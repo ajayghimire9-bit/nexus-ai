@@ -38,12 +38,28 @@ class TaskSpec:
         )
 
 
+# Gymnasium 1.4 CartPoleEnv caches these at __init__. Changing mass/length
+# without recomputing them leaves the Euler step on the default pole.
+CARTPOLE_PHYSICS_VERSION = "cartpole_derived_v1"
+CARTPOLE_PHYSICS_VERSION_LEGACY = "cartpole_setattr_only"
+
+
+def sync_cartpole_derived(inner: Any) -> None:
+    """Recompute CartPole quantities that Gymnasium derives in ``__init__``."""
+    if hasattr(inner, "masscart") and hasattr(inner, "masspole"):
+        inner.total_mass = inner.masscart + inner.masspole
+    if hasattr(inner, "masspole") and hasattr(inner, "length"):
+        inner.polemass_length = inner.masspole * inner.length
+
+
 def apply_params(env: gym.Env, spec: TaskSpec) -> gym.Env:
     inner = env.unwrapped
     for key, value in spec.params.items():
         if not hasattr(inner, key):
             raise AttributeError(f"{spec.gym_id} has no attribute {key}")
         setattr(inner, key, value)
+    if spec.family == "cartpole" or str(spec.gym_id).startswith("CartPole"):
+        sync_cartpole_derived(inner)
     return env
 
 
