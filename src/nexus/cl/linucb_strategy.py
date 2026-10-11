@@ -12,6 +12,7 @@ ARMS = (
     "encoder_new_heads_finetune",
     "frozen_encoder_new_heads",
     "scratch",
+    "rms_only",
 )
 
 

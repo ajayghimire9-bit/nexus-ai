@@ -166,6 +166,7 @@ def run_named_strategy(
         "frozen_encoder_new_heads": "F_frozen_encoder_source_rms",
         "reuse": "E_full_policy_source_rms",
         "conservative_low_lr": "E_full_policy_source_rms",
+        "rms_only": "B_random_encoder_source_rms",
     }
     abl = mapping[strategy]
     trainer = make_v064_trainer(seed=seed + 23, timesteps=max(steps, 1), spec=target)

@@ -275,3 +275,13 @@ Source at 32 768 / 10 epochs: independent **154.7 [75, 234]**; **0/10** val-so
 Branch `cursor/v065-causal-transfer`. Full write-up: `docs/NEXUS_V065.md`. `pytest` **105 passed**. V0.6–V0.6.4 artifacts preserved. Empty CIs are JSON `null`.
 
 On new confirmation tasks (eval 75000, n=10 seeds, 2 048 steps): **random encoder + source RMS (B) 227.5 [169, 286]** vs pretrained encoder + source RMS (D) **117.8 [84, 151]**. Paired **D − B = −110 [−181, −39]**. **B − A (RMS only) = +128 [73, 184]**. The V0.6.4 encoder win is **not** independent representation transfer. LinUCB always chose conservative LR and did not beat B. Not AGI.
+
+## V0.6.6 — transfer finalization (V0.6 complete)
+
+Branch `cursor/v066-transfer-finalization`. Write-ups: `docs/NEXUS_V066.md`, `docs/NEXUS_V06_FINAL.md`. `pytest` **110 passed**. Artifact `artifacts/v066_transfer.json`. Prior JSON preserved.
+
+Probe-and-continue **resumes** the VAL winner checkpoint. Normalization is an explicit mechanism (A–H, freeze vs update). Selectors include `rms_only` and a measured RMS-shift feature; LinUCB is fit on development VAL and scored on **held-out source seeds 4–9**. New confirmation suite `cartpole_v066_*` (eval 76000).
+
+Confirmation (1 024 steps, n=10): **B 312 [263, 362]** vs A **90**; B−A **+222 [173, 272]**. D−B **−223 [−294, −152]**. Frozen vs updating RMS is inconclusive. Learned LinUCB always chose `rms_only` but did not beat fixed B (paired CI includes 0). Continual naive/replay/EWC/multi-head ACC ~80 with forgetting CIs including 0. Source still **0/10** solved; lr=1e-4 @ 16k **0/3** solved.
+
+**V0.6 closed.** Do not add further V0.6 subversions. Not AGI. Not V0.7.

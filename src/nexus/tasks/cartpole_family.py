@@ -153,6 +153,48 @@ def v065_confirmation_targets() -> tuple[TaskSpec, ...]:
     return tuple(out)
 
 
+def v066_development_targets() -> tuple[TaskSpec, ...]:
+    """Previously inspected V0.6.5 confirmation tasks."""
+    return v065_confirmation_targets()
+
+
+_V066_CONFIRMATION_RULE = {
+    "generator": "base_plus_frozen_offsets_v066",
+    "physics_version": CARTPOLE_PHYSICS_VERSION,
+    "base": {"gravity": 9.8, "length": 0.5, "masspole": 0.1},
+    "offsets": (
+        {"gravity": -1.4, "length": 0.11, "masspole": 0.07},
+        {"gravity": 2.6, "length": -0.09, "masspole": 0.11},
+        {"gravity": -4.0, "length": 0.28, "masspole": -0.02},
+    ),
+}
+
+
+def v066_confirmation_rule() -> dict:
+    return {
+        "generator": _V066_CONFIRMATION_RULE["generator"],
+        "physics_version": _V066_CONFIRMATION_RULE["physics_version"],
+        "base": dict(_V066_CONFIRMATION_RULE["base"]),
+        "offsets": [dict(o) for o in _V066_CONFIRMATION_RULE["offsets"]],
+    }
+
+
+def v066_confirmation_targets() -> tuple[TaskSpec, ...]:
+    out: list[TaskSpec] = []
+    base = _V066_CONFIRMATION_RULE["base"]
+    for i, off in enumerate(_V066_CONFIRMATION_RULE["offsets"]):
+        params = {k: float(base[k]) + float(off[k]) for k in base}
+        out.append(
+            _cartpole(
+                f"cartpole_v066_{i}",
+                "confirm_v066",
+                f"V0.6.6 frozen confirmation offset {i}.",
+                **params,
+            )
+        )
+    return tuple(out)
+
+
 def confirmation_targets() -> tuple[TaskSpec, ...]:
     """Pre-registered V0.6.4 confirmation suite. Not used to tune the selector."""
     out: list[TaskSpec] = []

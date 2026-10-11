@@ -116,6 +116,7 @@ class PPOTrainer:
         self.obs_dim = obs_dim
         self.discrete = hasattr(act_space, "n")
         self.obs_rms = RunningMeanStd((obs_dim,)) if ppo.normalize_obs else None
+        self.freeze_obs_rms = False
         obs, _ = self.envs.reset(seed=ppo.seed)
         self._raw_obs = np.asarray(obs, dtype=np.float32).reshape(ppo.num_envs, obs_dim)
         self._episode_return = np.zeros(ppo.num_envs, dtype=np.float64)
@@ -128,7 +129,8 @@ class PPOTrainer:
     def _obs_tensor(self, obs: np.ndarray) -> torch.Tensor:
         arr = np.asarray(obs, dtype=np.float32).reshape(-1, self.obs_dim)
         if self.obs_rms is not None:
-            self.obs_rms.update(arr)
+            if not getattr(self, "freeze_obs_rms", False):
+                self.obs_rms.update(arr)
             arr = self.obs_rms.normalize(arr)
         return torch.as_tensor(arr, dtype=torch.float32, device=self.device)
 
@@ -155,7 +157,7 @@ class PPOTrainer:
         next_val_buf = torch.zeros(n_steps, n_envs, device=self.device)
         val_buf = torch.zeros(n_steps, n_envs, device=self.device)
 
-        if self.obs_rms is not None:
+        if self.obs_rms is not None and not getattr(self, "freeze_obs_rms", False):
             self.obs_rms.update(self._raw_obs)
         obs_t = self._obs_tensor_no_update(self._raw_obs)
         episode_returns: list[float] = []
@@ -407,6 +409,7 @@ class PPOTrainer:
             "obs_rms": None if self.obs_rms is None else self.obs_rms.state_dict(),
             "num_updates": int(self._num_updates),
             "timesteps_done": int(getattr(self, "_timesteps_done", 0)),
+            "freeze_obs_rms": bool(getattr(self, "freeze_obs_rms", False)),
             "raw_obs": self._raw_obs,
             "episode_return": self._episode_return,
             "autoreset_envs": np.asarray(getattr(self.envs, "_autoreset_envs", np.zeros(self.ppo.num_envs, dtype=bool))),
@@ -429,6 +432,7 @@ class PPOTrainer:
             self.obs_rms.load_state_dict(payload["obs_rms"])
         self._num_updates = int(payload.get("num_updates", 0))
         self._timesteps_done = int(payload.get("timesteps_done", 0))
+        self.freeze_obs_rms = bool(payload.get("freeze_obs_rms", getattr(self, "freeze_obs_rms", False)))
         if payload.get("raw_obs") is not None:
             self._raw_obs = np.asarray(payload["raw_obs"], dtype=np.float32)
         if payload.get("episode_return") is not None:
