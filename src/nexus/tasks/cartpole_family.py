@@ -386,6 +386,102 @@ def v081_confirmation_targets() -> tuple[TaskSpec, ...]:
     return tuple(out)
 
 
+V082_OBS_NOISE = 0.10
+
+
+def v082_safety_ok(spec: TaskSpec) -> bool:
+    p = spec.params
+    g, length, m = float(p["gravity"]), float(p["length"]), float(p["masspole"])
+    noise = float(p.get("obs_noise_std", 0.0) or 0.0)
+    return (
+        spec.gym_id == "CartPole-v1"
+        and spec.obs_dim == 4
+        and spec.n_actions == 2
+        and 5.0 <= g <= 16.0
+        and 0.25 <= length <= 0.9
+        and 0.04 <= m <= 0.3
+        and 0.0 <= noise <= 0.12
+    )
+
+
+def v082_development_target() -> TaskSpec:
+    return _cartpole(
+        "cartpole_v082_dev",
+        "dev_v082",
+        "V0.8.2 development. Noise 0.10, unused physics. Selection only.",
+        gravity=10.4,
+        length=0.37,
+        masspole=0.23,
+        obs_noise_std=V082_OBS_NOISE,
+    )
+
+
+def v082_sequence_tasks() -> tuple[TaskSpec, TaskSpec, TaskSpec]:
+    a = _cartpole(
+        "cartpole_v082_A",
+        "dev_v082",
+        "V0.8.2 sequence A.",
+        gravity=9.8,
+        length=0.5,
+        masspole=0.1,
+        obs_noise_std=V082_OBS_NOISE,
+    )
+    b = _cartpole(
+        "cartpole_v082_B",
+        "dev_v082",
+        "V0.8.2 sequence B.",
+        gravity=14.1,
+        length=0.31,
+        masspole=0.16,
+        obs_noise_std=V082_OBS_NOISE,
+    )
+    c = _cartpole(
+        "cartpole_v082_C",
+        "dev_v082",
+        "V0.8.2 sequence C.",
+        gravity=6.1,
+        length=0.73,
+        masspole=0.21,
+        obs_noise_std=V082_OBS_NOISE,
+    )
+    return a, b, c
+
+
+_V082_NOISY_CONFIRM = (
+    {"gravity": 1.4, "length": 0.11, "masspole": 0.04},
+    {"gravity": -3.3, "length": -0.17, "masspole": 0.08},
+)
+_V082_CLEAN_CONFIRM = ({"gravity": 2.1, "length": -0.19, "masspole": 0.07},)
+
+
+def v082_confirmation_targets() -> tuple[TaskSpec, ...]:
+    """Frozen before method ranking. Mix of noisy (estimation) and clean (transfer)."""
+    base = {"gravity": 9.8, "length": 0.5, "masspole": 0.1}
+    out: list[TaskSpec] = []
+    for i, off in enumerate(_V082_NOISY_CONFIRM):
+        params = {k: float(base[k]) + float(off[k]) for k in base}
+        out.append(
+            _cartpole(
+                f"cartpole_v082_noisy_{i}",
+                "confirm_v082",
+                f"V0.8.2 noisy confirmation {i}. Not used to select.",
+                obs_noise_std=V082_OBS_NOISE,
+                **params,
+            )
+        )
+    for i, off in enumerate(_V082_CLEAN_CONFIRM):
+        params = {k: float(base[k]) + float(off[k]) for k in base}
+        out.append(
+            _cartpole(
+                f"cartpole_v082_clean_{i}",
+                "confirm_v082",
+                f"V0.8.2 clean confirmation {i}. Not used to select.",
+                **params,
+            )
+        )
+    return tuple(out)
+
+
 def confirmation_targets() -> tuple[TaskSpec, ...]:
     """Pre-registered V0.6.4 confirmation suite. Not used to tune the selector."""
     out: list[TaskSpec] = []

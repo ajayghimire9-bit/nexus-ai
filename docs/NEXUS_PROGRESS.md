@@ -323,3 +323,9 @@ Frozen V0.7 residual+H=3 reused. Confirmation physics unused in V0.6/V0.7; eval 
 Branch `cursor/v081-predictive-adaptation`. Write-up: `docs/NEXUS_V081.md`. `pytest` **150 passed**. Artifact `artifacts/v081_adaptation.json` (n=10, 431 s). Prior JSON preserved.
 
 Non-saturated suite: `obs_noise_std=0.08` (weak force still sat at 500). Frozen confirm H=3 **290 [236, 343]**, fail 0.80. Window detector FPR **0** on clean source; delay 31 / miss 0 on noise and shift B. Fine-tune@128 MAE 0.094 vs frozen 0.101 but return **263 vs 290** (paired −26, CI includes 0). Scratch **−182**. Shared A→B→C→A return 184 vs snapshot 298. MAE≠control. Not AGI.
+
+## V0.8.2 — belief states and gated adaptation
+
+Branch `cursor/v082-belief-adaptation`. Write-up: `docs/NEXUS_V082.md`. `pytest` **156 passed**. Artifact `artifacts/v082_belief.json` (n=10, 323 s). Prior JSON preserved.
+
+Dev returns: Kalman **243**, identity **224**, EMA 186, stack 55, GRU 20 (overlap Kalman/identity). Noisy confirm identity never **284**; gated 270; always 282 (paired CIs include 0). MAE gate committed 85% without helping control. Clean identity **500**; Kalman on clean **281** (filter hurts). Snapshot A **284** vs gated shared **236**. Target budgets enforced. Not AGI.

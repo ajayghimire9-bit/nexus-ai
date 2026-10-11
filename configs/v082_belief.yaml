@@ -1,0 +1,16 @@
+parent_commit: 21c2925
+beliefs: [identity, ema, kalman, stack, gru]
+kalman: {A: identity, H: identity, Q: 1.0e-4, R: 0.01, independent_dims: true}
+ema_alpha: 0.6
+stack_k: 3
+gru_hidden: 16
+confirm_eval_seed: 106000
+dev_eval_seed: 105000
+n_model_seeds: 10
+budgets: [0, 64, 128, 256]
+policies: [never, always, gated]
+commit_rule: val_mae_improve_3pct
+retuned_on_confirmation: false
+planner_uses_simulator: false
+inference_uses_privileged_state: false
+is_agi: false
