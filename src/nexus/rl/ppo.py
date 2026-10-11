@@ -18,6 +18,7 @@ from nexus.config import ArchitectureConfig, PPOConfig
 from nexus.nn.spec import ArchitectureSpec
 from nexus.rl.actor_critic import ActorCritic
 from nexus.rl.gae import compute_gae
+from nexus.rl.rng_state import capture_library_rng, capture_vector_env, restore_library_rng, restore_vector_env
 from nexus.rl.running_stats import RunningMeanStd
 
 
@@ -397,6 +398,8 @@ class PPOTrainer:
             "raw_obs": self._raw_obs,
             "episode_return": self._episode_return,
             "autoreset_envs": np.asarray(getattr(self.envs, "_autoreset_envs", np.zeros(self.ppo.num_envs, dtype=bool))),
+            "library_rng": capture_library_rng(),
+            "vector_env": capture_vector_env(self.envs),
         }
         torch.save(payload, path)
         meta = path.with_suffix(".json")
@@ -417,5 +420,13 @@ class PPOTrainer:
             self._raw_obs = np.asarray(payload["raw_obs"], dtype=np.float32)
         if payload.get("episode_return") is not None:
             self._episode_return = np.asarray(payload["episode_return"], dtype=np.float64)
-        if payload.get("autoreset_envs") is not None and hasattr(self.envs, "_autoreset_envs"):
-            self.envs._autoreset_envs = np.asarray(payload["autoreset_envs"], dtype=bool)
+        if payload.get("library_rng"):
+            restore_library_rng(payload["library_rng"])
+        env_snap = payload.get("vector_env")
+        if env_snap:
+            fidelity = restore_vector_env(self.envs, env_snap)
+        else:
+            fidelity = "approximate"
+            if payload.get("autoreset_envs") is not None and hasattr(self.envs, "_autoreset_envs"):
+                self.envs._autoreset_envs = np.asarray(payload["autoreset_envs"], dtype=bool)
+        self._resume_fidelity = fidelity

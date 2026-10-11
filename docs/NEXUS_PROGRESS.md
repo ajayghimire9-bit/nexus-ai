@@ -111,6 +111,55 @@ Actual env steps differ across methods because extra-eval and duplicate skips ar
 
 - Controller study is still n=2 seeds and 256-step PPO inner loops; CartPole ceiling not relevant here.
 - Extra-evaluation of a missing champion is a failed experiment.
-- Mid-experiment resume restores weights/optimizer/timestep cursor; Gymnasium internal env RNG is not fully serialized.
 - NEXUS Alpha / live trading: not implemented.
 - The agent cannot alter its own safety, eval, or financial-risk rules.
+
+## V0.5.1 — prove or reject learned research improvement
+
+Branch `cursor/v05-budget-aware-meta-controller`. Not merged to `main`. Measured 2026-10-11. `pytest` **56 passed** in **3.07s**. Artifacts: `artifacts/v051_synthetic_bandit.json`, `artifacts/v051_ppo_meta.json`. Reproduce with `PYTHONPATH=src:.deps python3 scripts/run_v051_benchmarks.py`.
+
+### PPO checkpoint restoration
+
+`save()` now stores Python / NumPy / PyTorch (and CUDA if present) RNG plus a vector-env snapshot. CartPole-v1 restore fidelity is `classic_control_state` (unwrapped `.state`, TimeLimit `_elapsed_steps`, env `np_random` when present). Envs without those fields restore as **`approximate`**: weights, optimizer, timestep cursor, and library RNG match; the Gymnasium trajectory is not claimed bit-identical. Tests encode both classes (`test_cartpole_resume_restores_classic_control_state`, `test_unsupported_env_resume_is_approximate`).
+
+### Proposal filter (no slot for unrun actions)
+
+Invalid / duplicate / unaffordable / `extra_evaluation` without a champion are rejected before execution (`src/nexus/meta/schedule.py`). Rejected proposals increment `n_rejected_proposals` and do **not** decrement the experiment budget. After `MAX_PROPOSE_ATTEMPTS=32` consecutive failures the loop stops (`stopped: no_valid_proposal`).
+
+### Synthetic contextual bandit (known optimal policy) — **hypothesis supported**
+
+Separate from PPO. Linear rewards `r = x·θ_a + noise`, 4 arms, dim 8, horizon 200, **20 seeds**. Last-50 optimal-action rate (95% CI) and cumulative regret:
+
+| Method | last-50 opt rate (95% CI) | final regret (95% CI) | mean action freq |
+| --- | --- | --- | --- |
+| random | 0.257 [0.235, 0.279] | 362.4 [339.1, 385.7] | ~uniform 0.24–0.26 |
+| ε-greedy (updates) | 0.894 [0.879, 0.909] | 66.3 [59.0, 73.7] | 0.32 / 0.24 / 0.23 / 0.21 |
+| **LinUCB (updating)** | **0.957 [0.946, 0.968]** | **30.9 [27.5, 34.2]** | 0.35 / 0.23 / 0.21 / 0.22 |
+| LinUCB frozen | 0.369 [0.336, 0.402] | 354.0 [340.6, 367.4] | **1.00 / 0 / 0 / 0** (always arm 0) |
+
+Learning curve (mean optimal-hit rate): LinUCB 0.45 (t=0) → 0.80 (t=49) → **1.00 (t=199)**; random stays ~0.1–0.35. Frozen never leaves arm 0. Updating LinUCB therefore **learns the known optimal preference**; frozen LinUCB does not.
+
+**Generalization:** train 200 steps on default contexts; greedy accuracy on shifted/scaled contexts (`shift=1.5`, `scale=1.2`, 200 eval steps, 20 seeds): LinUCB **0.991** [0.988, 0.995]; frozen 0.916 [0.901, 0.932]; random 0.248 [0.240, 0.255]. Frozen is high because the shift makes arm 0 frequently optimal while frozen always picks arm 0 — not evidence of learned transfer. LinUCB still beats frozen and random on the shifted set.
+
+This **does not** imply the PPO research controller improved.
+
+### PPO meta-controller (kept separate) — **hypothesis not supported**
+
+Paired seeds `{0,1}`; 4 experiment slots; cap 1024 env steps; 256 inner train steps; 1 train seed; 4 eval episodes. Holdout 80000 / assessment 81000 / independent champion eval **92000**. Wall ~2.2 s for the comparison.
+
+| Controller | mean bandit reward ± std | independent return ± std | total env steps | mean rejected (not slots) |
+| --- | --- | --- | --- | --- |
+| random | 0.003 ± 0.055 | **336 ± 203** | 2048 | 0.5 |
+| ε-greedy | 0.035 ± 0.032 | 127 ± 92 | 2048 | 0.5 |
+| LinUCB (updating) | **0.080 ± 0.004** | **336 ± 203** | 1792 | 17.0 |
+| LinUCB frozen | −0.050 ± 0.037 | 60 ± 52 | 2048 | 1.5 |
+
+Independent per-pair returns: random 192.5 / 480.3; ε-greedy 192.5 / 61.8; LinUCB 192.5 / 480.3; frozen 23.3 / 97.0. Failures/skips after the filter: **0** (duplicates/unaffordable no longer occupy completed-experiment slots). LinUCB seed 1 stopped after **33** rejected retries (`32` consecutive + earlier) with only 3 completed runs / 768 steps — budget not exceeded, no infinite retry.
+
+Updating LinUCB **tied** random on independent champion return and beat frozen. Bandit reward is higher for LinUCB, but independent eval (the decision that matters) shows **no improvement over random**. n=2, 256-step inner PPO: still underpowered for a research-controller claim.
+
+### Verdict
+
+- **Supported:** LinUCB learns a known-optimal linear bandit and generalizes better than random/frozen on shifted contexts. Scheduling no longer burns slots on unrun proposals. CartPole PPO resume is classified as classic-control exact vs approximate.
+- **Rejected:** learned PPO experiment selection does **not** beat random search on independent champion return under this CPU budget.
+- Not AGI. Not meta-RL. Not a trading system.

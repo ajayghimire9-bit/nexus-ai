@@ -21,6 +21,7 @@ from nexus.meta.controller import (
     make_controller,
 )
 from nexus.meta.reward import research_reward
+from nexus.meta.schedule import MAX_PROPOSE_ATTEMPTS, champion_exists, reject_reason
 from nexus.meta.schema import ExperimentAction, Proposal
 from nexus.nn.spec import ArchitectureSpec
 from nexus.rl.ppo import PPOTrainer
@@ -306,6 +307,8 @@ def run_research_loop(
     extra_recent = 0.0
     baselines: dict[str, float] = {}
     in_flight: dict[str, Any] | None = None
+    rejected: list[dict[str, Any]] = []
+    n_rejected = 0
     wall_clock_s = 0.0
     t_loop = time.perf_counter()
 
@@ -330,6 +333,7 @@ def run_research_loop(
                     "baselines": baselines,
                     "rng": serialize_rng(rng),
                     "in_flight": in_flight,
+                    "n_rejected": n_rejected,
                     "note": "Limits are frozen. Controller cannot edit max_experiments or eval rules.",
                 },
                 indent=2,
@@ -359,6 +363,7 @@ def run_research_loop(
             restore_rng(rng, saved["rng"])
         if saved.get("in_flight"):
             in_flight = saved["in_flight"]
+        n_rejected = int(saved.get("n_rejected", n_rejected))
 
     try:
         while remaining_exp > 0:
@@ -390,8 +395,31 @@ def run_research_loop(
                     is_meta_rl=False,
                 )
             else:
-                proposal = ctrl.propose(obs_state, limits, rng)
-                action = proposal.action
+                proposal = None
+                action = None
+                for attempt in range(MAX_PROPOSE_ATTEMPTS):
+                    cand = ctrl.propose(obs_state, limits, rng)
+                    why = reject_reason(
+                        cand.action,
+                        seen=seen,
+                        remaining_steps=remaining_steps,
+                        champion_exists=champion_exists(champion_dir),
+                    )
+                    if why is None:
+                        proposal = cand
+                        action = cand.action
+                        break
+                    n_rejected += 1
+                    rejected.append({"reason": why, "kind": cand.action.kind, "attempt": attempt})
+                if proposal is None or action is None:
+                    history.append(
+                        {
+                            "stopped": "no_valid_proposal",
+                            "n_rejected": n_rejected,
+                            "max_propose_attempts": MAX_PROPOSE_ATTEMPTS,
+                        }
+                    )
+                    break
             if action.holdout_eval_seed == action.assessment_eval_seed:
                 raise ValueError("assessment seed must not equal holdout feedback seed")
             if (
@@ -399,15 +427,6 @@ def run_research_loop(
                 or meta.independent_eval_seed == meta.assessment_eval_seed
             ):
                 raise ValueError("independent_eval_seed must be unused in selection and feedback")
-            est = action.estimated_timesteps()
-            if not in_flight and est > remaining_steps and action.kind != "extra_evaluation":
-                break
-            if not in_flight and action.fingerprint() in seen:
-                n_fail += 1
-                remaining_exp -= 1
-                history.append({"skipped_duplicate": action.fingerprint(), "kind": action.kind})
-                _dump_state()
-                continue
             if not in_flight:
                 seen.add(action.fingerprint())
                 in_flight = {"action": action.to_dict(), "completed_seeds": []}
@@ -515,6 +534,7 @@ def run_research_loop(
         "n_experiments": len([h for h in history if "result" in h]),
         "n_fail": n_fail,
         "n_skipped": len([h for h in history if "skipped_duplicate" in h]),
+        "n_rejected_proposals": n_rejected,
         "best_score_by_env": best_by_env,
         "champion_history": champion_history,
         "remaining_experiments": remaining_exp,
@@ -591,6 +611,7 @@ def compare_controllers(
                 "n_experiments": result["n_experiments"],
                 "n_fail": result["n_fail"],
                 "n_skipped": result["n_skipped"],
+                "n_rejected_proposals": result.get("n_rejected_proposals", 0),
                 "mean_controller_reward": float(np.mean(rewards)) if rewards else 0.0,
                 "best_score_by_env": result["best_score_by_env"],
                 "env_steps_consumed": result["env_steps_consumed"],
@@ -611,6 +632,7 @@ def compare_controllers(
         steps = [p["runs"][name]["env_steps_consumed"] for p in paired]
         fails = [p["runs"][name]["n_fail"] for p in paired]
         skips = [p["runs"][name]["n_skipped"] for p in paired]
+        rejected = [p["runs"][name]["n_rejected_proposals"] for p in paired]
         walls = [p["runs"][name]["wall_clock_s"] or 0.0 for p in paired]
         indep = [
             p["runs"][name]["independent_eval"].get("mean_return")
@@ -630,6 +652,7 @@ def compare_controllers(
                 "mean_wall_clock_s": float(np.mean(walls)),
                 "mean_fail": float(np.mean(fails)),
                 "mean_skipped": float(np.mean(skips)),
+                "mean_rejected_proposals": float(np.mean(rejected)),
                 "is_meta_rl": False,
             }
         )

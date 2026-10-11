@@ -281,3 +281,45 @@ def test_train_resume_from_disk_does_not_double_count(tmp_path) -> None:  # type
     finally:
         second.close()
 
+
+def test_cartpole_resume_restores_classic_control_state(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    ppo = PPOConfig(
+        env_id="CartPole-v1",
+        num_envs=1,
+        num_steps=8,
+        update_epochs=1,
+        num_minibatches=1,
+        seed=0,
+        device="cpu",
+    )
+    arch = ArchitectureConfig(hidden_sizes=(8,), activation="tanh")
+    ckpt = tmp_path / "rng.pt"
+    a = PPOTrainer(ppo, arch)
+    try:
+        obs_before = a._raw_obs.copy()
+        a.save(ckpt)
+        snap = torch.load(ckpt, map_location="cpu", weights_only=False)
+        assert snap["vector_env"]["fidelity"] == "classic_control_state"
+        a.envs.step(a.envs.action_space.sample())
+        b = PPOTrainer(ppo, arch)
+        try:
+            b.load_training_state(ckpt)
+            assert b._resume_fidelity == "classic_control_state"
+            assert (b._raw_obs == obs_before).all()
+        finally:
+            b.close()
+    finally:
+        a.close()
+
+
+def test_unsupported_env_resume_is_approximate() -> None:
+    from nexus.rl.rng_state import capture_vector_env, restore_vector_env
+
+    class _Bag:
+        envs = [object()]
+        _autoreset_envs = None
+
+    snap = capture_vector_env(_Bag())
+    assert snap["fidelity"] == "approximate"
+    assert restore_vector_env(_Bag(), snap) == "approximate"
+

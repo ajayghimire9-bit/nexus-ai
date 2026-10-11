@@ -1,0 +1,637 @@
+{
+  "equal_budget": {
+    "max_experiments": 4,
+    "max_timesteps": 1024,
+    "train_timesteps": 256,
+    "n_train_seeds": 1,
+    "controller_seeds": [
+      0,
+      1
+    ],
+    "holdout_eval_seed": 80000,
+    "assessment_eval_seed": 81000,
+    "independent_eval_seed": 92000
+  },
+  "paired": [
+    {
+      "controller_seed": 0,
+      "train_seeds": [
+        1000
+      ],
+      "runs": {
+        "random": {
+          "n_experiments": 4,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 0,
+          "mean_controller_reward": 0.041937417543475033,
+          "best_score_by_env": {
+            "Acrobot-v1": 0.218,
+            "CartPole-v1": 0.397
+          },
+          "env_steps_consumed": 1024,
+          "remaining_timesteps": 0,
+          "wall_clock_s": 0.627928542002337,
+          "independent_eval": {
+            "mean_return": 192.5,
+            "std_return": 177.69285297951632,
+            "min_return": 82.0,
+            "max_return": 500.0,
+            "mean_length": 192.5,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "transfer_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "search_learning_rate",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 3,
+              "kind": "optimize_network_size",
+              "ucb_scores": null,
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1000
+          ]
+        },
+        "epsilon_greedy": {
+          "n_experiments": 4,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 0,
+          "mean_controller_reward": 0.0578766649445207,
+          "best_score_by_env": {
+            "CartPole-v1": 0.4035
+          },
+          "env_steps_consumed": 1024,
+          "remaining_timesteps": 0,
+          "wall_clock_s": 0.17283470799884526,
+          "independent_eval": {
+            "mean_return": 192.5,
+            "std_return": 177.69285297951632,
+            "min_return": 82.0,
+            "max_return": 500.0,
+            "mean_length": 192.5,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 3,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1000
+          ]
+        },
+        "linucb": {
+          "n_experiments": 4,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 1,
+          "mean_controller_reward": 0.07648091271438887,
+          "best_score_by_env": {
+            "CartPole-v1": 0.416
+          },
+          "env_steps_consumed": 1024,
+          "remaining_timesteps": 0,
+          "wall_clock_s": 0.18996400000105496,
+          "independent_eval": {
+            "mean_return": 192.5,
+            "std_return": 177.69285297951632,
+            "min_return": 82.0,
+            "max_return": 500.0,
+            "mean_length": 192.5,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5008334252182358,
+                "crossover_architecture": 0.5008334252182358,
+                "mutate_activation_expr": 0.5008334252182358,
+                "search_learning_rate": 0.5008334252182358,
+                "optimize_network_size": 0.5008334252182358,
+                "extra_evaluation": 0.5008334252182358,
+                "transfer_architecture": 0.5008334252182358
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "crossover_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.3809222524984022,
+                "crossover_architecture": 0.474246797433019,
+                "mutate_activation_expr": 0.474246797433019,
+                "search_learning_rate": 0.474246797433019,
+                "optimize_network_size": 0.474246797433019,
+                "extra_evaluation": 0.474246797433019,
+                "transfer_architecture": 0.474246797433019
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "crossover_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5280137325471053,
+                "crossover_architecture": 0.7234558789519155,
+                "mutate_activation_expr": 0.5632245971973399,
+                "search_learning_rate": 0.5632245971973399,
+                "optimize_network_size": 0.5632245971973399,
+                "extra_evaluation": 0.5632245971973399,
+                "transfer_architecture": 0.5632245971973399
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 3,
+              "kind": "mutate_activation_expr",
+              "ucb_scores": {
+                "mutate_architecture": 0.545540020572203,
+                "crossover_architecture": 0.5330006276400411,
+                "mutate_activation_expr": 0.5560845595976528,
+                "search_learning_rate": 0.5560845595976528,
+                "optimize_network_size": 0.5560845595976528,
+                "extra_evaluation": 0.5560845595976528,
+                "transfer_architecture": 0.5560845595976528
+              },
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1000
+          ]
+        },
+        "linucb_frozen": {
+          "n_experiments": 4,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 1,
+          "mean_controller_reward": -0.07643533863281307,
+          "best_score_by_env": {
+            "CartPole-v1": 0.007
+          },
+          "env_steps_consumed": 1024,
+          "remaining_timesteps": 0,
+          "wall_clock_s": 0.13195674999951734,
+          "independent_eval": {
+            "mean_return": 23.25,
+            "std_return": 2.277608394786075,
+            "min_return": 21.0,
+            "max_return": 27.0,
+            "mean_length": 23.25,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5008334252182358,
+                "crossover_architecture": 0.5008334252182358,
+                "mutate_activation_expr": 0.5008334252182358,
+                "search_learning_rate": 0.5008334252182358,
+                "optimize_network_size": 0.5008334252182358,
+                "extra_evaluation": 0.5008334252182358,
+                "transfer_architecture": 0.5008334252182358
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.4740102417164886,
+                "crossover_architecture": 0.4740102417164886,
+                "mutate_activation_expr": 0.4740102417164886,
+                "search_learning_rate": 0.4740102417164886,
+                "optimize_network_size": 0.4740102417164886,
+                "extra_evaluation": 0.4740102417164886,
+                "transfer_architecture": 0.4740102417164886
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.45009553505163524,
+                "crossover_architecture": 0.45009553505163524,
+                "mutate_activation_expr": 0.45009553505163524,
+                "search_learning_rate": 0.45009553505163524,
+                "optimize_network_size": 0.45009553505163524,
+                "extra_evaluation": 0.45009553505163524,
+                "transfer_architecture": 0.45009553505163524
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 3,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.4935801678225715,
+                "crossover_architecture": 0.4935801678225715,
+                "mutate_activation_expr": 0.4935801678225715,
+                "search_learning_rate": 0.4935801678225715,
+                "optimize_network_size": 0.4935801678225715,
+                "extra_evaluation": 0.4935801678225715,
+                "transfer_architecture": 0.4935801678225715
+              },
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1000
+          ]
+        }
+      }
+    },
+    {
+      "controller_seed": 1,
+      "train_seeds": [
+        1001
+      ],
+      "runs": {
+        "random": {
+          "n_experiments": 4,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 1,
+          "mean_controller_reward": -0.036351027432798395,
+          "best_score_by_env": {
+            "CartPole-v1": 0.4935,
+            "Acrobot-v1": 0.0
+          },
+          "env_steps_consumed": 1024,
+          "remaining_timesteps": 0,
+          "wall_clock_s": 0.3421147500012012,
+          "independent_eval": {
+            "mean_return": 480.25,
+            "std_return": 34.208003449485325,
+            "min_return": 421.0,
+            "max_return": 500.0,
+            "mean_length": 480.25,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "crossover_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "search_learning_rate",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "transfer_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 3,
+              "kind": "optimize_network_size",
+              "ucb_scores": null,
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1001
+          ]
+        },
+        "epsilon_greedy": {
+          "n_experiments": 4,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 1,
+          "mean_controller_reward": 0.012215686357906857,
+          "best_score_by_env": {
+            "Acrobot-v1": 0.0,
+            "CartPole-v1": 0.1215
+          },
+          "env_steps_consumed": 1024,
+          "remaining_timesteps": 0,
+          "wall_clock_s": 0.2628201250008715,
+          "independent_eval": {
+            "mean_return": 61.75,
+            "std_return": 30.776411421736615,
+            "min_return": 35.0,
+            "max_return": 114.0,
+            "mean_length": 61.75,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "transfer_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            },
+            {
+              "t": 3,
+              "kind": "mutate_architecture",
+              "ucb_scores": null,
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1001
+          ]
+        },
+        "linucb": {
+          "n_experiments": 3,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 33,
+          "mean_controller_reward": 0.08273537616982966,
+          "best_score_by_env": {
+            "CartPole-v1": 0.4865
+          },
+          "env_steps_consumed": 768,
+          "remaining_timesteps": 256,
+          "wall_clock_s": 0.1844241670005431,
+          "independent_eval": {
+            "mean_return": 480.25,
+            "std_return": 34.208003449485325,
+            "min_return": 421.0,
+            "max_return": 500.0,
+            "mean_length": 480.25,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5008334252182358,
+                "crossover_architecture": 0.5008334252182358,
+                "mutate_activation_expr": 0.5008334252182358,
+                "search_learning_rate": 0.5008334252182358,
+                "optimize_network_size": 0.5008334252182358,
+                "extra_evaluation": 0.5008334252182358,
+                "transfer_architecture": 0.5008334252182358
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "crossover_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.4495244060818512,
+                "crossover_architecture": 0.5289651214074413,
+                "mutate_activation_expr": 0.5289651214074413,
+                "search_learning_rate": 0.5289651214074413,
+                "optimize_network_size": 0.5289651214074413,
+                "extra_evaluation": 0.5289651214074413,
+                "transfer_architecture": 0.5289651214074413
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "crossover_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5638876567542161,
+                "crossover_architecture": 0.7784368132753932,
+                "mutate_activation_expr": 0.5937679955150316,
+                "search_learning_rate": 0.5937679955150316,
+                "optimize_network_size": 0.5937679955150316,
+                "extra_evaluation": 0.5937679955150316,
+                "transfer_architecture": 0.5937679955150316
+              },
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1001
+          ]
+        },
+        "linucb_frozen": {
+          "n_experiments": 4,
+          "n_fail": 0,
+          "n_skipped": 0,
+          "n_rejected_proposals": 2,
+          "mean_controller_reward": -0.02417471174002946,
+          "best_score_by_env": {
+            "CartPole-v1": 0.1025
+          },
+          "env_steps_consumed": 1024,
+          "remaining_timesteps": 0,
+          "wall_clock_s": 0.16123754100044607,
+          "independent_eval": {
+            "mean_return": 97.0,
+            "std_return": 39.15992849840255,
+            "min_return": 67.0,
+            "max_return": 164.0,
+            "mean_length": 97.0,
+            "episodes": 4.0,
+            "eval_seed": 92000,
+            "env_id": "CartPole-v1"
+          },
+          "arm_trace": [
+            {
+              "t": 0,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5008334252182358,
+                "crossover_architecture": 0.5008334252182358,
+                "mutate_activation_expr": 0.5008334252182358,
+                "search_learning_rate": 0.5008334252182358,
+                "optimize_network_size": 0.5008334252182358,
+                "extra_evaluation": 0.5008334252182358,
+                "transfer_architecture": 0.5008334252182358
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 1,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5293886652945718,
+                "crossover_architecture": 0.5293886652945718,
+                "mutate_activation_expr": 0.5293886652945718,
+                "search_learning_rate": 0.5293886652945718,
+                "optimize_network_size": 0.5293886652945718,
+                "extra_evaluation": 0.5293886652945718,
+                "transfer_architecture": 0.5293886652945718
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 2,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.507133767553603,
+                "crossover_architecture": 0.507133767553603,
+                "mutate_activation_expr": 0.507133767553603,
+                "search_learning_rate": 0.507133767553603,
+                "optimize_network_size": 0.507133767553603,
+                "extra_evaluation": 0.507133767553603,
+                "transfer_architecture": 0.507133767553603
+              },
+              "controller_updated": true
+            },
+            {
+              "t": 3,
+              "kind": "mutate_architecture",
+              "ucb_scores": {
+                "mutate_architecture": 0.5430782103259286,
+                "crossover_architecture": 0.5430782103259286,
+                "mutate_activation_expr": 0.5430782103259286,
+                "search_learning_rate": 0.5430782103259286,
+                "optimize_network_size": 0.5430782103259286,
+                "extra_evaluation": 0.5430782103259286,
+                "transfer_architecture": 0.5430782103259286
+              },
+              "controller_updated": true
+            }
+          ],
+          "is_meta_rl": false,
+          "train_seeds": [
+            1001
+          ]
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "controller": "random",
+      "n_replicates": 2,
+      "mean_controller_reward": 0.002793195055338319,
+      "std_controller_reward": 0.05535829033127285,
+      "mean_independent_return": 336.375,
+      "std_independent_return": 203.46997628642904,
+      "mean_env_steps": 1024.0,
+      "total_env_steps": 2048,
+      "mean_wall_clock_s": 0.4850216460017691,
+      "mean_fail": 0.0,
+      "mean_skipped": 0.0,
+      "mean_rejected_proposals": 0.5,
+      "is_meta_rl": false
+    },
+    {
+      "controller": "epsilon_greedy",
+      "n_replicates": 2,
+      "mean_controller_reward": 0.035046175651213776,
+      "std_controller_reward": 0.032287187594208386,
+      "mean_independent_return": 127.125,
+      "std_independent_return": 92.45421164014108,
+      "mean_env_steps": 1024.0,
+      "total_env_steps": 2048,
+      "mean_wall_clock_s": 0.21782741649985837,
+      "mean_fail": 0.0,
+      "mean_skipped": 0.0,
+      "mean_rejected_proposals": 0.5,
+      "is_meta_rl": false
+    },
+    {
+      "controller": "linucb",
+      "n_replicates": 2,
+      "mean_controller_reward": 0.07960814444210926,
+      "std_controller_reward": 0.0044225735220256345,
+      "mean_independent_return": 336.375,
+      "std_independent_return": 203.46997628642904,
+      "mean_env_steps": 896.0,
+      "total_env_steps": 1792,
+      "mean_wall_clock_s": 0.18719408350079902,
+      "mean_fail": 0.0,
+      "mean_skipped": 0.0,
+      "mean_rejected_proposals": 17.0,
+      "is_meta_rl": false
+    },
+    {
+      "controller": "linucb_frozen",
+      "n_replicates": 2,
+      "mean_controller_reward": -0.050305025186421264,
+      "std_controller_reward": 0.03695384366494734,
+      "mean_independent_return": 60.125,
+      "std_independent_return": 52.14912511250788,
+      "mean_env_steps": 1024.0,
+      "total_env_steps": 2048,
+      "mean_wall_clock_s": 0.1465971454999817,
+      "mean_fail": 0.0,
+      "mean_skipped": 0.0,
+      "mean_rejected_proposals": 1.5,
+      "is_meta_rl": false
+    }
+  ],
+  "caveat": "Paired comparison: identical controller seeds and train-seed sets. Independent champion eval uses independent_eval_seed. linucb_frozen never updates A,b. LinUCB is a contextual bandit, not meta-RL."
+}

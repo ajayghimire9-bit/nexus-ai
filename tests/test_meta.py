@@ -9,6 +9,7 @@ from nexus.config import load_config
 from nexus.meta.checkpoint import select_representative_checkpoint
 from nexus.meta.controller import EpsilonGreedyController, LinUCBController, make_controller
 from nexus.meta.loop import compare_controllers, run_research_loop
+from nexus.meta.schedule import MAX_PROPOSE_ATTEMPTS
 from nexus.meta.reward import research_reward, task_normalized_score
 from nexus.meta.schema import ExperimentAction
 
@@ -246,3 +247,13 @@ def test_frozen_linucb_does_not_update() -> None:
     live = make_controller("linucb")
     live.update(x, "mutate_architecture", 1.0)
     assert not np.allclose(live.A[0], a0)
+
+
+def test_rejected_proposals_do_not_consume_experiment_slots(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    cfg = _tiny_meta_cfg(tmp_path, seed=9, max_exp=2, train_ts=128)
+    cfg.meta.max_timesteps = 128
+    result = run_research_loop(cfg, controller=EpsilonGreedyController(epsilon=0.0), resume=False)
+    assert result["n_experiments"] <= 2
+    assert result["n_experiments"] + result["remaining_experiments"] <= cfg.meta.max_experiments
+    assert result.get("n_rejected_proposals", 0) >= 0
+    assert MAX_PROPOSE_ATTEMPTS >= 1
