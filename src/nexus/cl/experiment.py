@@ -92,6 +92,7 @@ def _run_method(
         }
 
     first = tasks[0]
+    untrained: dict[str, float] = {}
     if method == "multihead":
         ids = tuple(t.task_id for t in tasks)
         probe = make_trainer(seed=seed, timesteps=steps_per_task, spec=first)
@@ -106,6 +107,8 @@ def _run_method(
         trainer = make_trainer(seed=seed, timesteps=steps_per_task, spec=first)
 
     trainer.aux_loss_fn = None
+    untrained_eval = _eval_all(trainer, tasks, episodes=eval_episodes, seed=eval_seed)
+    untrained = {k: float(v["mean_return"]) for k, v in untrained_eval.items()}
     for spec in tasks:
         if method == "multihead":
             trainer.agent.set_task(spec.task_id)  # type: ignore[union-attr]
@@ -134,7 +137,12 @@ def _run_method(
         if method == "ewc":
             batch = getattr(trainer, "_last_rl_batch", None)
             if batch is not None:
-                ewc.consolidate(trainer.agent, batch["obs"][:256], batch["actions"][:256])
+                ewc.consolidate(
+                    trainer.agent,
+                    batch["obs"][:64],
+                    batch["actions"][:64],
+                    task_id=spec.task_id,
+                )
         scores = _eval_all(trainer, tasks, episodes=eval_episodes, seed=eval_seed)
         val_scores = _eval_all(trainer, tasks, episodes=eval_episodes, seed=val_seed)
         matrix[spec.task_id] = {k: float(v["mean_return"]) for k, v in scores.items()}
@@ -162,6 +170,7 @@ def _run_method(
         "trace": traces,
         "agent": trainer.agent,
         "trainer": trainer,
+        "untrained": untrained,
     }
     return payload
 

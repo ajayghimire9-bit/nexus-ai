@@ -73,10 +73,27 @@ class MultiHeadActorCritic(nn.Module):
         return self.value_heads[self._task](critic_x).squeeze(-1)
 
 
-def copy_encoder_into(dst: ActorCritic | MultiHeadActorCritic, src: nn.Module) -> None:
-    """Copy shared backbone / encoder weights. Heads are not copied."""
+def copy_encoder_into(dst: ActorCritic | MultiHeadActorCritic, src: nn.Module) -> int:
+    """Copy shared backbone / encoder weights. Heads are not copied. Returns tensors copied."""
     src_sd = src.state_dict()
     dst_sd = dst.state_dict()
-    overlap = {k: v for k, v in src_sd.items() if k.startswith("backbone.") and k in dst_sd and dst_sd[k].shape == v.shape}
+    overlap = {
+        k: v
+        for k, v in src_sd.items()
+        if k.startswith("backbone.") and k in dst_sd and dst_sd[k].shape == v.shape
+    }
     dst_sd.update(overlap)
     dst.load_state_dict(dst_sd)
+    return len(overlap)
+
+
+def copy_full_policy(dst: nn.Module, src: nn.Module) -> int:
+    """Copy every overlapping parameter used by the destination forward pass."""
+    src_sd = src.state_dict()
+    dst_sd = dst.state_dict()
+    overlap = {k: v for k, v in src_sd.items() if k in dst_sd and dst_sd[k].shape == v.shape}
+    if not overlap:
+        raise RuntimeError("copy_full_policy copied 0 tensors; destination would ignore the source")
+    dst_sd.update(overlap)
+    dst.load_state_dict(dst_sd)
+    return len(overlap)

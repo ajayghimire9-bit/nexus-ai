@@ -12,6 +12,7 @@ from nexus.cl.models import MultiHeadActorCritic, copy_encoder_into
 from nexus.cl.regularizers import EWCPenalty, ReplayBuffer
 from nexus.rl.actor_critic import ActorCritic
 from nexus.rl.ppo import PPOTrainer
+from nexus.rl.running_stats import RunningMeanStd
 from nexus.tasks.spec import TaskSpec, task_env_fns
 
 
@@ -63,6 +64,16 @@ def train_on_task(
     target = int(getattr(trainer, "_timesteps_done", 0)) + int(timesteps)
     result = trainer.train(target)
     return result
+
+
+def copy_obs_rms(dst: PPOTrainer, src: PPOTrainer) -> None:
+    """Use the source observation normalizer so copied weights see matching inputs."""
+    if src.obs_rms is None:
+        dst.obs_rms = None
+        return
+    if dst.obs_rms is None:
+        dst.obs_rms = RunningMeanStd(tuple(src.obs_rms.mean.shape))
+    dst.obs_rms.load_state_dict(src.obs_rms.state_dict())
 
 
 def make_trainer(

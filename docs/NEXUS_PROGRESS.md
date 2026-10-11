@@ -241,3 +241,13 @@ Fixes: val seed 71000 vs independent 72000 (curriculum never sees test); task-ba
 Specialists **do not solve** CartPole variants at 16384 steps (best mean 217 on long, CI [60, 375]; solve=475). At 8192/task, naive FWT **−44.8 [−84.9, −4.8]**; multi-head ACC 57 vs specialists 138; held-out scratch **164** vs frozen encoder **22**. Adaptive curriculum does not beat fixed order.
 
 **Success criterion not met.** Negative FWT is the statistically credible result. Next hypothesis: transfer requires source policies that actually solve the variant, not 8–16k of unstable PPO.
+
+## V0.6.2 — valid EWC, metrics, and transfer tests
+
+Branch `cursor/v06-continual-transfer`. Full write-up: `docs/NEXUS_V062.md`. `pytest` **83 passed**. V0.6 / V0.6.1 JSON artifacts unchanged.
+
+EWC is now per-sample diagonal empirical Fisher of `log π` with **per-task** `(θ*, F)` snapshots. Zero-shot FWT is vs **untrained**, not vs a specialist. Transfer copies weights used in the forward pass and copies `obs_rms`.
+
+Source `cartpole_default` at 32 768 steps: mean **250.8** [4.5, 497]; per seed 99 / **500** / 153. Not a reliable specialist (one collapse). Sequential CL kept at 2 048 steps/task.
+
+Held-out `cartpole_lowg`, 8 192 matched target steps: encoder + new-head fine-tune **438.5** [373, 504] vs scratch **138.3** [66, 211]. Paired deltas **+311, +299, +291**. That transfer test is supported. Frozen encoder and sequential CL are not. Multi-head BWT **−12.9 [−14.1, −11.6]**. Adaptive curriculum does not beat fixed. Not AGI.

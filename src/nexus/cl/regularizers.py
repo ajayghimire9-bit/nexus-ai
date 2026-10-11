@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from dataclasses import dataclass
 
 import torch
 from torch import nn
@@ -53,43 +54,98 @@ class ReplayBuffer:
         return -logp.mean()
 
 
+def diagonal_empirical_fisher(
+    agent: nn.Module,
+    obs: torch.Tensor,
+    actions: torch.Tensor,
+    *,
+    max_samples: int = 64,
+) -> dict[str, torch.Tensor]:
+    """Diagonal empirical Fisher of the policy log-likelihood.
+
+    F_i = (1/N) Σ_n (∂ log π(a_n | s_n) / ∂θ_i)^2
+
+    Gradients are taken **per sample**. Averaging log-probabilities and then
+    squaring the batch gradient is not the empirical Fisher (it scales as 1/N^2
+    and couples samples). The critic is not part of this likelihood.
+    """
+    n = min(int(obs.shape[0]), int(max_samples))
+    if n < 1:
+        raise ValueError("need at least one sample for Fisher estimation")
+    named = [(name, p) for name, p in agent.named_parameters() if p.requires_grad]
+    fisher = {name: torch.zeros_like(p, device="cpu") for name, p in named}
+    for i in range(n):
+        agent.zero_grad(set_to_none=True)
+        logp, _, _ = agent.evaluate_actions(obs[i : i + 1], actions[i : i + 1])
+        logp.reshape(()).backward()
+        for name, p in named:
+            if p.grad is None:
+                continue
+            fisher[name] += p.grad.detach().cpu() ** 2
+    for name in fisher:
+        fisher[name] /= float(n)
+    agent.zero_grad(set_to_none=True)
+    return fisher
+
+
+@dataclass
+class TaskFisher:
+    task_id: str
+    fisher: dict[str, torch.Tensor]
+    params: dict[str, torch.Tensor]
+
+
 class EWCPenalty:
-    """Diagonal Fisher accumulated across tasks from representative batches."""
+    """Multi-task diagonal EWC (Kirkpatrick et al.).
 
-    def __init__(self, lam: float = 10.0) -> None:
+    After each task k, store a **separate** snapshot (θ*_k, F_k). The penalty is
+
+        (λ/2) Σ_k Σ_i F_{k,i} (θ_i − θ*_k,i)^2
+
+    Earlier snapshots are never replaced. Fishers are not summed into one
+    buffer that would then be paired only with the latest parameters (that mix
+    is not EWC). This is not Online-EWC (which would decay a single F and move
+    a single θ*).
+    """
+
+    def __init__(self, lam: float = 10.0, max_samples: int = 64) -> None:
         self.lam = lam
-        self.params: dict[str, torch.Tensor] = {}
-        self.fisher: dict[str, torch.Tensor] = {}
-        self.n_tasks = 0
+        self.max_samples = max_samples
+        self.tasks: list[TaskFisher] = []
 
-    def consolidate(self, agent: nn.Module, obs: torch.Tensor, actions: torch.Tensor) -> None:
-        agent.zero_grad(set_to_none=True)
-        logp, value, _ = agent.evaluate_actions(obs, actions)
-        (logp.mean() + 0.5 * value.mean()).backward()
-        new_fisher: dict[str, torch.Tensor] = {}
-        params: dict[str, torch.Tensor] = {}
-        for name, p in agent.named_parameters():
-            params[name] = p.detach().clone()
-            g = torch.zeros_like(p) if p.grad is None else p.grad.detach() ** 2
-            new_fisher[name] = g
-        if not self.fisher:
-            self.fisher = new_fisher
-        else:
-            for name, f in new_fisher.items():
-                if name in self.fisher:
-                    self.fisher[name] = self.fisher[name] + f
-                else:
-                    self.fisher[name] = f
-        self.params = params
-        self.n_tasks += 1
-        agent.zero_grad(set_to_none=True)
+    @property
+    def n_tasks(self) -> int:
+        return len(self.tasks)
+
+    def consolidate(
+        self,
+        agent: nn.Module,
+        obs: torch.Tensor,
+        actions: torch.Tensor,
+        *,
+        task_id: str | None = None,
+    ) -> None:
+        device = next(agent.parameters()).device
+        fisher = diagonal_empirical_fisher(
+            agent,
+            obs.to(device),
+            actions.to(device),
+            max_samples=self.max_samples,
+        )
+        params = {name: p.detach().cpu().clone() for name, p in agent.named_parameters()}
+        tid = task_id if task_id is not None else f"task_{self.n_tasks}"
+        self.tasks.append(TaskFisher(task_id=tid, fisher=fisher, params=params))
 
     def loss(self, agent: nn.Module) -> torch.Tensor:
-        if not self.fisher:
-            return torch.zeros((), device=next(agent.parameters()).device)
-        total = torch.zeros((), device=next(agent.parameters()).device)
-        for name, p in agent.named_parameters():
-            if name not in self.fisher:
-                continue
-            total = total + (self.fisher[name].to(p.device) * (p - self.params[name].to(p.device)) ** 2).sum()
+        device = next(agent.parameters()).device
+        if not self.tasks:
+            return torch.zeros((), device=device)
+        total = torch.zeros((), device=device)
+        for rec in self.tasks:
+            for name, p in agent.named_parameters():
+                if name not in rec.fisher:
+                    continue
+                f = rec.fisher[name].to(device=p.device, dtype=p.dtype)
+                star = rec.params[name].to(device=p.device, dtype=p.dtype)
+                total = total + (f * (p - star) ** 2).sum()
         return 0.5 * self.lam * total

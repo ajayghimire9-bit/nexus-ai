@@ -1,0 +1,27 @@
+# V0.6.2 protocol. Does not overwrite V0.6 / V0.6.1 artifacts.
+architecture:
+  hidden_sizes: [64, 64]
+  activation: tanh
+  shared_backbone: true
+
+ppo:
+  env_id: CartPole-v1
+  num_envs: 4
+  num_steps: 128
+  update_epochs: 4
+  num_minibatches: 4
+  seed: 0
+  device: cpu
+  normalize_obs: true
+  log_interval: 50000
+  checkpoint_dir: checkpoints/v062
+
+protocol:
+  val_seed: 71000
+  independent_eval_seed: 72000
+  holdout_eval_seed: 73000
+  source_budgets: [8192, 32768]
+  transfer_steps: 8192
+  cl_steps_per_task: 2048
+  n_seeds: 3
+  eval_episodes: 8

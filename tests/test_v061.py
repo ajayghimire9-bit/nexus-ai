@@ -34,15 +34,14 @@ def test_ewc_fisher_accumulates() -> None:
         n = 2
 
     agent = ActorCritic(4, _Sp(), spec)
-    ewc = EWCPenalty(lam=1.0)
+    ewc = EWCPenalty(lam=1.0, max_samples=4)
     obs = torch.randn(8, 4)
     act = torch.zeros(8)
-    ewc.consolidate(agent, obs, act)
-    f0 = {k: v.clone() for k, v in ewc.fisher.items()}
-    ewc.consolidate(agent, obs, act)
+    ewc.consolidate(agent, obs, act, task_id="t0")
+    ewc.consolidate(agent, obs, act, task_id="t1")
     assert ewc.n_tasks == 2
-    name = next(iter(f0))
-    assert torch.all(ewc.fisher[name] >= f0[name] - 1e-8)
+    assert ewc.tasks[0].task_id == "t0"
+    assert ewc.tasks[1].task_id == "t1"
 
 
 def test_continual_metrics_from_matrix() -> None:

@@ -77,13 +77,103 @@ def summarize_seeds(rows: list[dict[str, Any]], key: str) -> dict[str, float]:
     return _ci95(vals)
 
 
+def cl_evaluation_metrics(
+    *,
+    matrix: dict[str, dict[str, float]],
+    task_order: list[str] | tuple[str, ...],
+    untrained: dict[str, float],
+    independent: dict[str, float] | None = None,
+) -> dict[str, Any]:
+    """Continual-learning metrics from R[trained_through][eval_task].
+
+    Distinguishes quantities that V0.6/V0.6.1 mixed together:
+
+    - ``average_return``: (1/T) Σ_i R_{T,i}
+    - ``forgetting``: R_{i,i} − R_{T,i} for i < T
+    - ``backward_transfer``: R_{T,i} − R_{i,i} (negative BWT is forgetting)
+    - ``zero_shot_forward_transfer``: R_{i−1,i} − untrained_i
+      (untrained / random-init return on task i, **not** a fully trained specialist)
+    - ``forward_adaptation``: R_{i,i} − independent_i after matched on-task steps
+      (sample-efficiency / sequential vs specialist; only if ``independent`` given)
+    """
+    order = list(task_order)
+    empty: dict[str, Any] = {
+        "average_return": 0.0,
+        "acc": 0.0,
+        "forgetting": {},
+        "mean_forgetting": 0.0,
+        "backward_transfer": {},
+        "mean_backward_transfer": 0.0,
+        "zero_shot_forward_transfer": {},
+        "mean_zero_shot_forward_transfer": 0.0,
+        "forward_adaptation": {},
+        "mean_forward_adaptation": 0.0,
+        "task_order": order,
+    }
+    if not order:
+        return empty
+    last = order[-1]
+
+    def _mean(xs: list[float | None]) -> float:
+        vals = [float(v) for v in xs if v is not None]
+        return float(np.mean(vals)) if vals else 0.0
+
+    acc_vals = [float(matrix[last][t]) for t in order if last in matrix and t in matrix[last]]
+    forgetting: dict[str, float | None] = {}
+    bwd: dict[str, float | None] = {}
+    for t in order[:-1]:
+        r_ii = matrix.get(t, {}).get(t)
+        r_ti = matrix.get(last, {}).get(t)
+        if r_ii is None or r_ti is None:
+            forgetting[t] = None
+            bwd[t] = None
+        else:
+            forgetting[t] = float(r_ii) - float(r_ti)
+            bwd[t] = float(r_ti) - float(r_ii)
+    zs: dict[str, float | None] = {}
+    for i, t in enumerate(order):
+        if i == 0:
+            continue
+        prev = order[i - 1]
+        r_prev = matrix.get(prev, {}).get(t)
+        base = untrained.get(t)
+        if r_prev is None or base is None:
+            zs[t] = None
+        else:
+            zs[t] = float(r_prev) - float(base)
+    adapt: dict[str, float | None] = {}
+    if independent:
+        for t in order:
+            r_ii = matrix.get(t, {}).get(t)
+            spec = independent.get(t)
+            if r_ii is None or spec is None:
+                adapt[t] = None
+            else:
+                adapt[t] = float(r_ii) - float(spec)
+    return {
+        "average_return": float(np.mean(acc_vals)) if acc_vals else 0.0,
+        "acc": float(np.mean(acc_vals)) if acc_vals else 0.0,
+        "forgetting": forgetting,
+        "mean_forgetting": _mean(list(forgetting.values())),
+        "backward_transfer": bwd,
+        "mean_backward_transfer": _mean(list(bwd.values())),
+        "zero_shot_forward_transfer": zs,
+        "mean_zero_shot_forward_transfer": _mean(list(zs.values())),
+        "forward_adaptation": adapt,
+        "mean_forward_adaptation": _mean(list(adapt.values())),
+        "task_order": order,
+        "untrained": dict(untrained),
+        "independent": dict(independent or {}),
+    }
+
+
 def continual_metrics(
     *,
     matrix: dict[str, dict[str, float]],
     task_order: list[str] | tuple[str, ...],
     scratch: dict[str, float],
 ) -> dict[str, Any]:
-    """Lopez-Paz-style ACC / FWT / BWT from R[trained_through][eval_task]."""
+    """Legacy V0.6.1 helper. FWT here uses ``scratch`` specialists — prefer ``cl_evaluation_metrics``."""
     order = list(task_order)
     if not order:
         return {"acc": 0.0, "forgetting": {}, "mean_forgetting": 0.0, "forward_transfer": {}, "backward_transfer": {}}
