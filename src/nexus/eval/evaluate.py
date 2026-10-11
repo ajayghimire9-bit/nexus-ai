@@ -7,6 +7,7 @@ import numpy as np
 import torch
 
 from nexus.rl.actor_critic import ActorCritic
+from nexus.rl.running_stats import RunningMeanStd
 
 
 def evaluate_policy(
@@ -17,6 +18,7 @@ def evaluate_policy(
     seed: int,
     device: torch.device,
     deterministic: bool = True,
+    obs_rms: RunningMeanStd | None = None,
 ) -> dict[str, float]:
     env = gym.make(env_id)
     returns: list[float] = []
@@ -28,7 +30,10 @@ def evaluate_policy(
         total = 0.0
         steps = 0
         while not done:
-            obs_t = torch.as_tensor(obs, dtype=torch.float32, device=device).view(1, -1)
+            obs_np = np.asarray(obs, dtype=np.float32).reshape(1, -1)
+            if obs_rms is not None:
+                obs_np = obs_rms.normalize(obs_np)
+            obs_t = torch.as_tensor(obs_np, dtype=torch.float32, device=device)
             with torch.no_grad():
                 actor_x, _ = agent._features(obs_t)
                 dist = agent._distribution(actor_x)

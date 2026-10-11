@@ -3,16 +3,10 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from typing import Any
 
+from nexus.nn.activations import ACTIVATIONS
+
 ALLOWED_INIT = {"orthogonal", "xavier"}
-ALLOWED_ACTIVATIONS = {
-    "relu",
-    "gelu",
-    "silu",
-    "tanh",
-    "elu",
-    "identity",
-    "swishish",
-}
+ALLOWED_ACTIVATIONS = frozenset(ACTIVATIONS)
 
 
 @dataclass(frozen=True)

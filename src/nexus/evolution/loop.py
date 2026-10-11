@@ -45,6 +45,7 @@ def _evaluate_candidate(
             seed=seed + 10_000,
             device=trainer.device,
             deterministic=True,
+            obs_rms=trainer.obs_rms if train_cfg.normalize_obs else None,
         )
     finally:
         trainer.close()

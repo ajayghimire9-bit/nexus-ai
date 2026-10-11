@@ -17,6 +17,7 @@ from nexus.config import ArchitectureConfig, PPOConfig
 from nexus.nn.spec import ArchitectureSpec
 from nexus.rl.actor_critic import ActorCritic
 from nexus.rl.gae import compute_gae
+from nexus.rl.running_stats import RunningMeanStd
 
 
 def _make_env(env_id: str, seed: int) -> callable:
@@ -72,15 +73,27 @@ class PPOTrainer:
         self.optimizer = torch.optim.Adam(self.agent.parameters(), lr=ppo.learning_rate, eps=1e-5)
         self.obs_dim = obs_dim
         self.discrete = hasattr(act_space, "n")
+        self.obs_rms = RunningMeanStd((obs_dim,)) if ppo.normalize_obs else None
         obs, _ = self.envs.reset(seed=ppo.seed)
-        self._obs = self._obs_tensor(obs)
+        self._raw_obs = np.asarray(obs, dtype=np.float32).reshape(ppo.num_envs, obs_dim)
         self._episode_return = np.zeros(ppo.num_envs, dtype=np.float64)
+        self._num_updates = 0
 
     def close(self) -> None:
         self.envs.close()
 
     def _obs_tensor(self, obs: np.ndarray) -> torch.Tensor:
-        return torch.as_tensor(obs, dtype=torch.float32, device=self.device).view(obs.shape[0], -1)
+        arr = np.asarray(obs, dtype=np.float32).reshape(-1, self.obs_dim)
+        if self.obs_rms is not None:
+            self.obs_rms.update(arr)
+            arr = self.obs_rms.normalize(arr)
+        return torch.as_tensor(arr, dtype=torch.float32, device=self.device)
+
+    def _obs_tensor_no_update(self, obs: np.ndarray) -> torch.Tensor:
+        arr = np.asarray(obs, dtype=np.float32).reshape(-1, self.obs_dim)
+        if self.obs_rms is not None:
+            arr = self.obs_rms.normalize(arr)
+        return torch.as_tensor(arr, dtype=torch.float32, device=self.device)
 
     def collect(self) -> tuple[dict[str, torch.Tensor], dict[str, float]]:
         cfg = self.ppo
@@ -96,7 +109,9 @@ class PPOTrainer:
         term_buf = torch.zeros(n_steps, n_envs, device=self.device)
         val_buf = torch.zeros(n_steps, n_envs, device=self.device)
 
-        obs_t = self._obs
+        if self.obs_rms is not None:
+            self.obs_rms.update(self._raw_obs)
+        obs_t = self._obs_tensor_no_update(self._raw_obs)
         episode_returns: list[float] = []
         cumulative = self._episode_return
 
@@ -121,20 +136,19 @@ class PPOTrainer:
             # Terminate bootstrap only on true terminals, not time-limit truncations.
             term_buf[step] = torch.as_tensor(terminated, dtype=torch.float32, device=self.device)
             val_buf[step] = value
-            obs_t = self._obs_tensor(next_obs)
+            self._raw_obs = np.asarray(next_obs, dtype=np.float32).reshape(n_envs, self.obs_dim)
+            obs_t = self._obs_tensor(self._raw_obs)
 
-        self._obs = obs_t
         self._episode_return = cumulative
 
         with torch.no_grad():
             next_value = self.agent.value(obs_t)
-            # If truncated, bootstrap from the true next observation when provided.
             finals = infos.get("final_observation") if isinstance(infos, dict) else None
             if finals is not None:
                 for i, trunc in enumerate(truncated):
                     final_obs = finals[i]
                     if trunc and final_obs is not None:
-                        fo = torch.as_tensor(final_obs, dtype=torch.float32, device=self.device).view(1, -1)
+                        fo = self._obs_tensor_no_update(np.asarray(final_obs).reshape(1, -1))
                         next_value[i] = self.agent.value(fo).reshape(())
 
             advantages, returns = compute_gae(
@@ -184,7 +198,7 @@ class PPOTrainer:
                 old_v = batch["values"][mb]
 
                 logp, value, entropy = self.agent.evaluate_actions(obs, actions)
-                ratio = torch.exp(logp - old_logp)
+                ratio = torch.exp(logp - old_logp.detach())
                 pg_loss1 = -adv * ratio
                 pg_loss2 = -adv * torch.clamp(ratio, 1.0 - cfg.clip_coef, 1.0 + cfg.clip_coef)
                 pg_loss = torch.max(pg_loss1, pg_loss2).mean()
@@ -207,11 +221,17 @@ class PPOTrainer:
                     pg_losses.append(float(pg_loss.item()))
                     vf_losses.append(float(vf_loss.item()))
 
+        with torch.no_grad():
+            y_true = batch["returns"]
+            y_pred = batch["values"]
+            var_y = torch.var(y_true)
+            explained = float("nan") if float(var_y) < 1e-8 else float(1.0 - torch.var(y_true - y_pred) / var_y)
         return {
             "policy_loss": float(np.mean(pg_losses)),
             "value_loss": float(np.mean(vf_losses)),
             "entropy": float(np.mean(entropies)),
             "clipfrac": float(np.mean(clipfracs)),
+            "explained_variance": explained,
         }
 
     def train(self, total_timesteps: int | None = None) -> dict[str, Any]:
@@ -223,17 +243,26 @@ class PPOTrainer:
         start = time.time()
         timesteps = 0
         for it in range(iterations):
+            if cfg.anneal_lr:
+                frac = 1.0 - (it / max(1, iterations))
+                lrnow = frac * cfg.learning_rate
+                for group in self.optimizer.param_groups:
+                    group["lr"] = lrnow
             batch, roll_metrics = self.collect()
             update_metrics = self.update(batch)
+            self._num_updates += 1
             timesteps += steps_per_iter
             row = {"iteration": float(it), "timesteps": float(timesteps), **roll_metrics, **update_metrics}
             history.append(row)
-            print(
-                f"iter={it} steps={timesteps} "
-                f"rollout_return={row['rollout_mean_return']:.1f} "
-                f"policy_loss={row['policy_loss']:.4f} value_loss={row['value_loss']:.4f}",
-                flush=True,
-            )
+            interval = max(1, cfg.log_interval)
+            if it % interval == 0 or it == iterations - 1:
+                print(
+                    f"iter={it} steps={timesteps} "
+                    f"rollout_return={row['rollout_mean_return']:.1f} "
+                    f"policy_loss={row['policy_loss']:.4f} value_loss={row['value_loss']:.4f} "
+                    f"explained_var={row['explained_variance']:.3f} clipfrac={row['clipfrac']:.3f}",
+                    flush=True,
+                )
         elapsed = time.time() - start
         result = {
             "timesteps": timesteps,
@@ -250,6 +279,7 @@ class PPOTrainer:
             "model": self.agent.state_dict(),
             "architecture": asdict(self.architecture),
             "ppo": asdict(self.ppo),
+            "obs_rms": None if self.obs_rms is None else self.obs_rms.state_dict(),
         }
         torch.save(payload, path)
         meta = path.with_suffix(".json")

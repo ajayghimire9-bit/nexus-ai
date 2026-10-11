@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import random
 
-from nexus.nn.spec import ALLOWED_ACTIVATIONS, ArchitectureSpec
+from nexus.nn.activations import BASELINE_ACTIVATIONS
+from nexus.nn.spec import ArchitectureSpec
+
+EVOLVE_ACTIVATIONS = BASELINE_ACTIVATIONS + ("elu", "swishish", "mish")
 
 WIDTHS = (16, 32, 48, 64, 96, 128, 256)
 MAX_LAYERS = 4
@@ -13,7 +16,7 @@ def random_spec(rng: random.Random) -> ArchitectureSpec:
     sizes = tuple(rng.choice(WIDTHS) for _ in range(n_layers))
     return ArchitectureSpec(
         hidden_sizes=sizes,
-        activation=rng.choice(tuple(ALLOWED_ACTIVATIONS - {"identity"})),
+        activation=rng.choice(EVOLVE_ACTIVATIONS),
         use_residual=rng.choice([False, True]),
         dropout=0.0,
         layer_norm=rng.choice([False, True]),
@@ -39,7 +42,7 @@ def mutate_spec(spec: ArchitectureSpec, rng: random.Random) -> ArchitectureSpec:
     elif kind == "drop" and len(sizes) > 1:
         sizes.pop(rng.randrange(len(sizes)))
     elif kind == "activation":
-        activation = rng.choice(tuple(ALLOWED_ACTIVATIONS - {"identity"}))
+        activation = rng.choice(EVOLVE_ACTIVATIONS)
     elif kind == "residual":
         use_residual = not use_residual
     elif kind == "layernorm":

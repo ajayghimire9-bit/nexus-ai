@@ -22,7 +22,7 @@ class ArchitectureConfig:
 class PPOConfig:
     env_id: str = "CartPole-v1"
     num_envs: int = 4
-    total_timesteps: int = 50_000
+    total_timesteps: int = 200_000
     num_steps: int = 128
     update_epochs: int = 4
     num_minibatches: int = 4
@@ -36,7 +36,10 @@ class PPOConfig:
     seed: int = 1
     device: str = "cpu"
     normalize_advantages: bool = True
-    clip_vloss: bool = True
+    normalize_obs: bool = False
+    anneal_lr: bool = False
+    clip_vloss: bool = False
+    log_interval: int = 20
     checkpoint_dir: str = "checkpoints"
 
 
