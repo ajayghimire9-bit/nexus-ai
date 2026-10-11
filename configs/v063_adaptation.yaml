@@ -1,0 +1,16 @@
+# V0.6.3. Does not overwrite V0.6–V0.6.2 artifacts.
+source_task: cartpole_default
+dev_targets: [cartpole_lowg]
+final_test_targets: [cartpole_short, cartpole_highg, cartpole_longheavy]
+n_seeds: 3
+source_budgets: [8192, 32768]
+transfer_steps: 4096
+eval_episodes: 8
+val_seed: 71000
+independent_eval_seed: 72000
+final_eval_seed: 73000
+selector:
+  reuse_val_threshold: 350
+  conservative_val_threshold: 80
+  source_useless_val: 50
+  frozen_from: v062_lowg

@@ -1,0 +1,1976 @@
+{
+  "protocol": {
+    "family": "cartpole",
+    "source_task": "cartpole_default",
+    "dev_targets": [
+      "cartpole_lowg"
+    ],
+    "final_test_targets": [
+      "cartpole_short",
+      "cartpole_highg",
+      "cartpole_longheavy"
+    ],
+    "n_seeds": 3,
+    "source_budgets": [
+      8192,
+      32768
+    ],
+    "transfer_steps": 4096,
+    "eval_episodes": 8,
+    "val_seed": 71000,
+    "independent_eval_seed": 72000,
+    "final_eval_seed": 73000,
+    "selector_sees_independent": false,
+    "selector_sees_final_test_returns": false,
+    "selection_uses_independent": false,
+    "checkpoint_selection": "max val return on source task",
+    "not_acrobot": true
+  },
+  "summary": {
+    "source": {
+      "n": 3,
+      "mean": 291.2916666666667,
+      "lo": 83.2612095148886,
+      "hi": 499.32212381844477
+    },
+    "dev": {
+      "scratch": {
+        "target_after": {
+          "n": 3,
+          "mean": 116.41666666666667,
+          "lo": 86.29583440540418,
+          "hi": 146.53749892792916
+        },
+        "source_delta": {}
+      },
+      "reuse": {
+        "target_after": {
+          "n": 3,
+          "mean": 345.7083333333333,
+          "lo": 187.52379457313157,
+          "hi": 503.89287209353506
+        },
+        "source_delta": {
+          "n": 3,
+          "mean": 0.0,
+          "lo": 0.0,
+          "hi": 0.0
+        }
+      },
+      "full_finetune": {
+        "target_after": {
+          "n": 3,
+          "mean": 216.91666666666666,
+          "lo": 155.49958677208215,
+          "hi": 278.3337465612512
+        },
+        "source_delta": {
+          "n": 3,
+          "mean": -142.04166666666666,
+          "lo": -318.80189876873703,
+          "hi": 34.71856543540369
+        }
+      },
+      "encoder_new_heads_finetune": {
+        "target_after": {
+          "n": 3,
+          "mean": 110.58333333333333,
+          "lo": 49.57795069285552,
+          "hi": 171.58871597381113
+        },
+        "source_delta": {
+          "n": 3,
+          "mean": -218.08333333333334,
+          "lo": -437.35930663967724,
+          "hi": 1.1926399730105572
+        }
+      },
+      "frozen_encoder_new_heads": {
+        "target_after": {
+          "n": 3,
+          "mean": 117.95833333333333,
+          "lo": 2.8037867327853405,
+          "hi": 233.11287993388132
+        },
+        "source_delta": {
+          "n": 3,
+          "mean": -211.625,
+          "lo": -466.8754959838472,
+          "hi": 43.6254959838472
+        }
+      },
+      "conservative_low_lr": {
+        "target_after": {
+          "n": 3,
+          "mean": 332.4166666666667,
+          "lo": 168.17129470413278,
+          "hi": 496.6620386292006
+        },
+        "source_delta": {
+          "n": 3,
+          "mean": -15.333333333333334,
+          "lo": -400.85416091957126,
+          "hi": 370.1874942529046
+        }
+      },
+      "selector": {
+        "target_after": {
+          "n": 3,
+          "mean": 415.5833333333333,
+          "lo": 250.12666666666664,
+          "hi": 581.04
+        },
+        "source_delta": {
+          "n": 3,
+          "mean": 94.58333333333333,
+          "lo": -154.96622841632086,
+          "hi": 344.1328950829875
+        }
+      }
+    },
+    "test": {
+      "scratch": {
+        "target_after": {
+          "n": 9,
+          "mean": 78.75,
+          "lo": 59.18265132860924,
+          "hi": 98.31734867139076
+        },
+        "source_delta": {}
+      },
+      "reuse": {
+        "target_after": {
+          "n": 9,
+          "mean": 268.52777777777777,
+          "lo": 154.27196818063942,
+          "hi": 382.7835873749161
+        },
+        "source_delta": {
+          "n": 9,
+          "mean": 0.0,
+          "lo": 0.0,
+          "hi": 0.0
+        }
+      },
+      "full_finetune": {
+        "target_after": {
+          "n": 9,
+          "mean": 257.1666666666667,
+          "lo": 132.06124304267308,
+          "hi": 382.2720902906603
+        },
+        "source_delta": {
+          "n": 9,
+          "mean": -19.694444444444443,
+          "lo": -194.87196253478078,
+          "hi": 155.48307364589192
+        }
+      },
+      "encoder_new_heads_finetune": {
+        "target_after": {
+          "n": 9,
+          "mean": 68.06944444444444,
+          "lo": 31.332715153279374,
+          "hi": 104.80617373560952
+        },
+        "source_delta": {
+          "n": 9,
+          "mean": -219.47222222222223,
+          "lo": -323.7312836504356,
+          "hi": -115.21316079400883
+        }
+      },
+      "frozen_encoder_new_heads": {
+        "target_after": {
+          "n": 9,
+          "mean": 49.94444444444444,
+          "lo": 22.123932654857114,
+          "hi": 77.76495623403177
+        },
+        "source_delta": {
+          "n": 9,
+          "mean": -238.31944444444446,
+          "lo": -362.02782100157674,
+          "hi": -114.61106788731219
+        }
+      },
+      "conservative_low_lr": {
+        "target_after": {
+          "n": 9,
+          "mean": 320.8888888888889,
+          "lo": 209.2886215464202,
+          "hi": 432.48915623135764
+        },
+        "source_delta": {
+          "n": 9,
+          "mean": 45.44444444444444,
+          "lo": -22.605737232275345,
+          "hi": 113.49462612116423
+        }
+      },
+      "selector": {
+        "target_after": {
+          "n": 9,
+          "mean": 320.8888888888889,
+          "lo": 209.2886215464202,
+          "hi": 432.48915623135764
+        },
+        "source_delta": {
+          "n": 9,
+          "mean": 45.44444444444444,
+          "lo": -22.605737232275345,
+          "hi": 113.49462612116423
+        }
+      }
+    },
+    "test_paired_selector": {
+      "selector_minus_scratch": {
+        "n": 9,
+        "mean": 242.13888888888889,
+        "lo": 119.61451759407966,
+        "hi": 364.6632601836981
+      },
+      "selector_minus_encoder_new_heads_finetune": {
+        "n": 9,
+        "mean": 252.81944444444446,
+        "lo": 152.60317921166506,
+        "hi": 353.03570967722385
+      },
+      "selector_minus_reuse": {
+        "n": 9,
+        "mean": 52.361111111111114,
+        "lo": -22.244612176713005,
+        "hi": 126.96683439893523
+      },
+      "selector_minus_full_finetune": {
+        "n": 9,
+        "mean": 63.72222222222222,
+        "lo": -79.99179389341771,
+        "hi": 207.43623833786216
+      },
+      "selector_minus_conservative_low_lr": {
+        "n": 9,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0
+      }
+    }
+  },
+  "source": {
+    "task_id": "cartpole_default",
+    "per_seed": [
+      {
+        "seed": 0,
+        "curve": [
+          {
+            "steps": 8192,
+            "val_return": 181.625,
+            "independent_return": 220.5,
+            "checkpoint": "checkpoints/v063/source_cartpole_default_s0_t8192.pt",
+            "solved_independent": false
+          },
+          {
+            "steps": 32768,
+            "val_return": 96.875,
+            "independent_return": 98.875,
+            "checkpoint": "checkpoints/v063/source_cartpole_default_s0_t32768.pt",
+            "solved_independent": false
+          }
+        ],
+        "n_params": 4675,
+        "selected_checkpoint": "checkpoints/v063/source_cartpole_default_s0_t8192.pt",
+        "selected_steps": 8192,
+        "selected_val": 181.625,
+        "selected_independent": 220.5,
+        "last_independent": 98.875,
+        "collapsed": true
+      },
+      {
+        "seed": 1,
+        "curve": [
+          {
+            "steps": 8192,
+            "val_return": 126.0,
+            "independent_return": 119.625,
+            "checkpoint": "checkpoints/v063/source_cartpole_default_s1_t8192.pt",
+            "solved_independent": false
+          },
+          {
+            "steps": 32768,
+            "val_return": 500.0,
+            "independent_return": 500.0,
+            "checkpoint": "checkpoints/v063/source_cartpole_default_s1_t32768.pt",
+            "solved_independent": true
+          }
+        ],
+        "n_params": 4675,
+        "selected_checkpoint": "checkpoints/v063/source_cartpole_default_s1_t32768.pt",
+        "selected_steps": 32768,
+        "selected_val": 500.0,
+        "selected_independent": 500.0,
+        "last_independent": 500.0,
+        "collapsed": false
+      },
+      {
+        "seed": 2,
+        "curve": [
+          {
+            "steps": 8192,
+            "val_return": 104.75,
+            "independent_return": 93.875,
+            "checkpoint": "checkpoints/v063/source_cartpole_default_s2_t8192.pt",
+            "solved_independent": false
+          },
+          {
+            "steps": 32768,
+            "val_return": 149.125,
+            "independent_return": 153.375,
+            "checkpoint": "checkpoints/v063/source_cartpole_default_s2_t32768.pt",
+            "solved_independent": false
+          }
+        ],
+        "n_params": 4675,
+        "selected_checkpoint": "checkpoints/v063/source_cartpole_default_s2_t32768.pt",
+        "selected_steps": 32768,
+        "selected_val": 149.125,
+        "selected_independent": 153.375,
+        "last_independent": 153.375,
+        "collapsed": false
+      }
+    ],
+    "budgets": [
+      8192,
+      32768
+    ],
+    "val_seed": 71000,
+    "independent_eval_seed": 72000,
+    "selection_uses_independent": false,
+    "selected_independent": {
+      "n": 3,
+      "mean": 291.2916666666667,
+      "lo": 83.2612095148886,
+      "hi": 499.32212381844477
+    },
+    "last_checkpoint_independent": {
+      "n": 3,
+      "mean": 250.75,
+      "lo": 4.546291136113581,
+      "hi": 496.9537088638864
+    },
+    "n_solved_selected": 1,
+    "n_params": 4675,
+    "recipe": "shared 64-64, 4 envs, 128 steps, 4 epochs; val-best checkpoint"
+  },
+  "per_seed": [
+    {
+      "seed": 0,
+      "source_val": 181.625,
+      "targets": {
+        "cartpole_lowg": {
+          "split": "dev",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 41.625,
+              "target_after": 123.0,
+              "target_val_before": 53.0,
+              "source_before": 220.5,
+              "source_after": 83.625,
+              "source_delta": null,
+              "target_delta": 81.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 309.625,
+              "target_after": 309.625,
+              "target_val_before": 285.25,
+              "source_before": 220.5,
+              "source_after": 220.5,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 309.625,
+              "target_after": 234.625,
+              "target_val_before": 285.25,
+              "source_before": 220.5,
+              "source_after": 162.0,
+              "source_delta": -58.5,
+              "target_delta": -75.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.75,
+              "target_after": 53.25,
+              "target_val_before": 9.125,
+              "source_before": 220.5,
+              "source_after": 36.125,
+              "source_delta": -184.375,
+              "target_delta": 43.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.75,
+              "target_after": 42.75,
+              "target_val_before": 9.125,
+              "source_before": 220.5,
+              "source_after": 32.625,
+              "source_delta": -187.875,
+              "target_delta": 33.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 309.625,
+              "target_after": 246.75,
+              "target_val_before": 285.25,
+              "source_before": 220.5,
+              "source_after": 157.625,
+              "source_delta": -62.875,
+              "target_delta": -62.875,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 309.625,
+            "target_after": 246.75,
+            "target_val_before": 285.25,
+            "source_before": 220.5,
+            "source_after": 157.625,
+            "source_delta": -62.875,
+            "target_delta": -62.875,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 285.25,
+              "source_val": 181.625,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_short": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 31.875,
+              "target_after": 72.625,
+              "target_val_before": 47.875,
+              "source_before": 220.5,
+              "source_after": 80.5,
+              "source_delta": null,
+              "target_delta": 40.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 187.875,
+              "target_after": 187.875,
+              "target_val_before": 250.125,
+              "source_before": 220.5,
+              "source_after": 220.5,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 187.875,
+              "target_after": 70.0,
+              "target_val_before": 250.125,
+              "source_before": 220.5,
+              "source_after": 74.75,
+              "source_delta": -145.75,
+              "target_delta": -117.875,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 7.625,
+              "target_after": 26.625,
+              "target_val_before": 7.5,
+              "source_before": 220.5,
+              "source_after": 32.5,
+              "source_delta": -188.0,
+              "target_delta": 19.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 7.625,
+              "target_after": 23.375,
+              "target_val_before": 7.5,
+              "source_before": 220.5,
+              "source_after": 28.125,
+              "source_delta": -192.375,
+              "target_delta": 15.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 187.875,
+              "target_after": 177.125,
+              "target_val_before": 250.125,
+              "source_before": 220.5,
+              "source_after": 200.625,
+              "source_delta": -19.875,
+              "target_delta": -10.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 187.875,
+            "target_after": 177.125,
+            "target_val_before": 250.125,
+            "source_before": 220.5,
+            "source_after": 200.625,
+            "source_delta": -19.875,
+            "target_delta": -10.75,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 250.125,
+              "source_val": 181.625,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_highg": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 39.0,
+              "target_after": 75.75,
+              "target_val_before": 53.75,
+              "source_before": 220.5,
+              "source_after": 114.375,
+              "source_delta": null,
+              "target_delta": 36.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 123.375,
+              "target_after": 123.375,
+              "target_val_before": 153.25,
+              "source_before": 220.5,
+              "source_after": 220.5,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 123.375,
+              "target_after": 90.0,
+              "target_val_before": 153.25,
+              "source_before": 220.5,
+              "source_after": 112.25,
+              "source_delta": -108.25,
+              "target_delta": -33.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.625,
+              "target_after": 36.875,
+              "target_val_before": 9.0,
+              "source_before": 220.5,
+              "source_after": 45.875,
+              "source_delta": -174.625,
+              "target_delta": 27.25,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.625,
+              "target_after": 42.375,
+              "target_val_before": 9.0,
+              "source_before": 220.5,
+              "source_after": 52.625,
+              "source_delta": -167.875,
+              "target_delta": 32.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 123.375,
+              "target_after": 143.625,
+              "target_val_before": 153.25,
+              "source_before": 220.5,
+              "source_after": 175.375,
+              "source_delta": -45.125,
+              "target_delta": 20.25,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 123.375,
+            "target_after": 143.625,
+            "target_val_before": 153.25,
+            "source_before": 220.5,
+            "source_after": 175.375,
+            "source_delta": -45.125,
+            "target_delta": 20.25,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 153.25,
+              "source_val": 181.625,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_longheavy": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 44.5,
+              "target_after": 144.75,
+              "target_val_before": 59.125,
+              "source_before": 220.5,
+              "source_after": 173.125,
+              "source_delta": null,
+              "target_delta": 100.25,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 175.625,
+              "target_after": 175.625,
+              "target_val_before": 173.75,
+              "source_before": 220.5,
+              "source_after": 220.5,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 175.625,
+              "target_after": 281.0,
+              "target_val_before": 173.75,
+              "source_before": 220.5,
+              "source_after": 354.375,
+              "source_delta": 133.875,
+              "target_delta": 105.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 11.0,
+              "target_after": 44.75,
+              "target_val_before": 10.5,
+              "source_before": 220.5,
+              "source_after": 42.125,
+              "source_delta": -178.375,
+              "target_delta": 33.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 11.0,
+              "target_after": 87.5,
+              "target_val_before": 10.5,
+              "source_before": 220.5,
+              "source_after": 83.25,
+              "source_delta": -137.25,
+              "target_delta": 76.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 175.625,
+              "target_after": 176.25,
+              "target_val_before": 173.75,
+              "source_before": 220.5,
+              "source_after": 238.25,
+              "source_delta": 17.75,
+              "target_delta": 0.625,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 175.625,
+            "target_after": 176.25,
+            "target_val_before": 173.75,
+            "source_before": 220.5,
+            "source_after": 238.25,
+            "source_delta": 17.75,
+            "target_delta": 0.625,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 173.75,
+              "source_val": 181.625,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "source_val": 500.0,
+      "targets": {
+        "cartpole_lowg": {
+          "split": "dev",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 9.625,
+              "target_after": 87.125,
+              "target_val_before": 9.0,
+              "source_before": 500.0,
+              "source_after": 60.375,
+              "source_delta": null,
+              "target_delta": 77.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 260.125,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 177.75,
+              "source_delta": -322.25,
+              "target_delta": -239.875,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.75,
+              "target_after": 118.25,
+              "target_val_before": 9.125,
+              "source_before": 500.0,
+              "source_after": 73.5,
+              "source_delta": -426.5,
+              "target_delta": 108.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.75,
+              "target_after": 77.375,
+              "target_val_before": 9.125,
+              "source_before": 500.0,
+              "source_after": 51.875,
+              "source_delta": -448.125,
+              "target_delta": 67.625,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 250.5,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 170.25,
+              "source_delta": -329.75,
+              "target_delta": -249.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "reuse",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 500.0,
+            "target_after": 500.0,
+            "target_val_before": 500.0,
+            "source_before": 500.0,
+            "source_after": 500.0,
+            "source_delta": 0.0,
+            "target_delta": 0.0,
+            "steps_used": 0,
+            "n_params": 4675,
+            "learning_rate": 0.0003,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "reuse",
+              "reason": "zero_shot_val_already_strong",
+              "zero_shot_val": 500.0,
+              "source_val": 500.0,
+              "target_steps": 0,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_short": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 7.625,
+              "target_after": 45.375,
+              "target_val_before": 7.375,
+              "source_before": 500.0,
+              "source_after": 53.875,
+              "source_delta": null,
+              "target_delta": 37.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 122.625,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 123.875,
+              "source_delta": -376.125,
+              "target_delta": -377.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 7.625,
+              "target_after": 22.75,
+              "target_val_before": 7.5,
+              "source_before": 500.0,
+              "source_after": 28.25,
+              "source_delta": -471.75,
+              "target_delta": 15.125,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 7.625,
+              "target_after": 17.625,
+              "target_val_before": 7.5,
+              "source_before": 500.0,
+              "source_after": 22.125,
+              "source_delta": -477.875,
+              "target_delta": 10.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "reuse",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 500.0,
+            "target_after": 500.0,
+            "target_val_before": 500.0,
+            "source_before": 500.0,
+            "source_after": 500.0,
+            "source_delta": 0.0,
+            "target_delta": 0.0,
+            "steps_used": 0,
+            "n_params": 4675,
+            "learning_rate": 0.0003,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "reuse",
+              "reason": "zero_shot_val_already_strong",
+              "zero_shot_val": 500.0,
+              "source_val": 500.0,
+              "target_steps": 0,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_highg": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 9.75,
+              "target_after": 64.875,
+              "target_val_before": 9.0,
+              "source_before": 500.0,
+              "source_after": 82.0,
+              "source_delta": null,
+              "target_delta": 55.125,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.625,
+              "target_after": 51.625,
+              "target_val_before": 9.0,
+              "source_before": 500.0,
+              "source_after": 66.75,
+              "source_delta": -433.25,
+              "target_delta": 42.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 9.625,
+              "target_after": 15.375,
+              "target_val_before": 9.0,
+              "source_before": 500.0,
+              "source_after": 16.625,
+              "source_delta": -483.375,
+              "target_delta": 5.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "reuse",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 500.0,
+            "target_after": 500.0,
+            "target_val_before": 500.0,
+            "source_before": 500.0,
+            "source_after": 500.0,
+            "source_delta": 0.0,
+            "target_delta": 0.0,
+            "steps_used": 0,
+            "n_params": 4675,
+            "learning_rate": 0.0003,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "reuse",
+              "reason": "zero_shot_val_already_strong",
+              "zero_shot_val": 500.0,
+              "source_val": 500.0,
+              "target_steps": 0,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_longheavy": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 11.0,
+              "target_after": 89.375,
+              "target_val_before": 10.625,
+              "source_before": 500.0,
+              "source_after": 83.5,
+              "source_delta": null,
+              "target_delta": 78.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 118.875,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 118.0,
+              "source_delta": -382.0,
+              "target_delta": -381.125,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 11.0,
+              "target_after": 172.0,
+              "target_val_before": 10.5,
+              "source_before": 500.0,
+              "source_after": 171.375,
+              "source_delta": -328.625,
+              "target_delta": 161.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 11.0,
+              "target_after": 21.625,
+              "target_val_before": 10.5,
+              "source_before": 500.0,
+              "source_after": 19.5,
+              "source_delta": -480.5,
+              "target_delta": 10.625,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 500.0,
+              "target_after": 500.0,
+              "target_val_before": 500.0,
+              "source_before": 500.0,
+              "source_after": 500.0,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "reuse",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 500.0,
+            "target_after": 500.0,
+            "target_val_before": 500.0,
+            "source_before": 500.0,
+            "source_after": 500.0,
+            "source_delta": 0.0,
+            "target_delta": 0.0,
+            "steps_used": 0,
+            "n_params": 4675,
+            "learning_rate": 0.0003,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "reuse",
+              "reason": "zero_shot_val_already_strong",
+              "zero_shot_val": 500.0,
+              "source_val": 500.0,
+              "target_steps": 0,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "source_val": 149.125,
+      "targets": {
+        "cartpole_lowg": {
+          "split": "dev",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 8.75,
+              "target_after": 139.125,
+              "target_val_before": 9.25,
+              "source_before": 153.375,
+              "source_after": 89.25,
+              "source_delta": null,
+              "target_delta": 130.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 227.5,
+              "target_after": 227.5,
+              "target_val_before": 222.5,
+              "source_before": 153.375,
+              "source_after": 153.375,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 227.5,
+              "target_after": 156.0,
+              "target_val_before": 222.5,
+              "source_before": 153.375,
+              "source_after": 108.0,
+              "source_delta": -45.375,
+              "target_delta": -71.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 14.125,
+              "target_after": 160.25,
+              "target_val_before": 13.375,
+              "source_before": 153.375,
+              "source_after": 110.0,
+              "source_delta": -43.375,
+              "target_delta": 146.125,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 14.125,
+              "target_after": 233.75,
+              "target_val_before": 13.375,
+              "source_before": 153.375,
+              "source_after": 154.5,
+              "source_delta": 1.125,
+              "target_delta": 219.625,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 227.5,
+              "target_after": 500.0,
+              "target_val_before": 222.5,
+              "source_before": 153.375,
+              "source_after": 500.0,
+              "source_delta": 346.625,
+              "target_delta": 272.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 227.5,
+            "target_after": 500.0,
+            "target_val_before": 222.5,
+            "source_before": 153.375,
+            "source_after": 500.0,
+            "source_delta": 346.625,
+            "target_delta": 272.5,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 222.5,
+              "source_val": 149.125,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_short": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 7.125,
+              "target_after": 54.0,
+              "target_val_before": 7.5,
+              "source_before": 153.375,
+              "source_after": 62.25,
+              "source_delta": null,
+              "target_delta": 46.875,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 154.25,
+              "target_after": 154.25,
+              "target_val_before": 151.875,
+              "source_before": 153.375,
+              "source_after": 153.375,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 154.25,
+              "target_after": 500.0,
+              "target_val_before": 151.875,
+              "source_before": 153.375,
+              "source_after": 500.0,
+              "source_delta": 346.625,
+              "target_delta": 345.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 12.75,
+              "target_after": 137.625,
+              "target_val_before": 12.125,
+              "source_before": 153.375,
+              "source_after": 139.0,
+              "source_delta": -14.375,
+              "target_delta": 124.875,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 12.75,
+              "target_after": 138.875,
+              "target_val_before": 12.125,
+              "source_before": 153.375,
+              "source_after": 138.375,
+              "source_delta": -15.0,
+              "target_delta": 126.125,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 154.25,
+              "target_after": 500.0,
+              "target_val_before": 151.875,
+              "source_before": 153.375,
+              "source_after": 440.375,
+              "source_delta": 287.0,
+              "target_delta": 345.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 154.25,
+            "target_after": 500.0,
+            "target_val_before": 151.875,
+            "source_before": 153.375,
+            "source_after": 440.375,
+            "source_delta": 287.0,
+            "target_delta": 345.75,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 151.875,
+              "source_val": 149.125,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_highg": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 8.5,
+              "target_after": 61.875,
+              "target_val_before": 9.125,
+              "source_before": 153.375,
+              "source_after": 76.75,
+              "source_delta": null,
+              "target_delta": 53.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 122.125,
+              "target_after": 122.125,
+              "target_val_before": 119.125,
+              "source_before": 153.375,
+              "source_after": 153.375,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 122.125,
+              "target_after": 132.0,
+              "target_val_before": 119.125,
+              "source_before": 153.375,
+              "source_after": 161.125,
+              "source_delta": 7.75,
+              "target_delta": 9.875,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 13.875,
+              "target_after": 15.625,
+              "target_val_before": 13.0,
+              "source_before": 153.375,
+              "source_after": 16.75,
+              "source_delta": -136.625,
+              "target_delta": 1.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 13.875,
+              "target_after": 77.625,
+              "target_val_before": 13.0,
+              "source_before": 153.375,
+              "source_after": 94.625,
+              "source_delta": -58.75,
+              "target_delta": 63.75,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 122.125,
+              "target_after": 213.5,
+              "target_val_before": 119.125,
+              "source_before": 153.375,
+              "source_after": 292.5,
+              "source_delta": 139.125,
+              "target_delta": 91.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 122.125,
+            "target_after": 213.5,
+            "target_val_before": 119.125,
+            "source_before": 153.375,
+            "source_after": 292.5,
+            "source_delta": 139.125,
+            "target_delta": 91.375,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 119.125,
+              "source_val": 149.125,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        },
+        "cartpole_longheavy": {
+          "split": "test",
+          "fixed": {
+            "scratch": {
+              "strategy": "scratch",
+              "tensors_copied": 0,
+              "retention_defined": false,
+              "target_before": 9.75,
+              "target_after": 100.125,
+              "target_val_before": 10.625,
+              "source_before": 153.375,
+              "source_after": 97.875,
+              "source_delta": null,
+              "target_delta": 90.375,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "reuse": {
+              "strategy": "reuse",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 153.5,
+              "target_after": 153.5,
+              "target_val_before": 149.0,
+              "source_before": 153.375,
+              "source_after": 153.375,
+              "source_delta": 0.0,
+              "target_delta": 0.0,
+              "steps_used": 0,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "full_finetune": {
+              "strategy": "full_finetune",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 153.5,
+              "target_after": 500.0,
+              "target_val_before": 149.0,
+              "source_before": 153.375,
+              "source_after": 500.0,
+              "source_delta": 346.625,
+              "target_delta": 346.5,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "encoder_new_heads_finetune": {
+              "strategy": "encoder_new_heads_finetune",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 15.125,
+              "target_after": 104.75,
+              "target_val_before": 13.875,
+              "source_before": 153.375,
+              "source_after": 103.75,
+              "source_delta": -49.625,
+              "target_delta": 89.625,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "frozen_encoder_new_heads": {
+              "strategy": "frozen_encoder_new_heads",
+              "tensors_copied": 4,
+              "retention_defined": true,
+              "target_before": 15.125,
+              "target_after": 25.125,
+              "target_val_before": 13.875,
+              "source_before": 153.375,
+              "source_after": 21.5,
+              "source_delta": -131.875,
+              "target_delta": 10.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 0.0003,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            },
+            "conservative_low_lr": {
+              "strategy": "conservative_low_lr",
+              "tensors_copied": 8,
+              "retention_defined": true,
+              "target_before": 153.5,
+              "target_after": 177.5,
+              "target_val_before": 149.0,
+              "source_before": 153.375,
+              "source_after": 183.5,
+              "source_delta": 30.125,
+              "target_delta": 24.0,
+              "steps_used": 4096,
+              "n_params": 4675,
+              "learning_rate": 3e-05,
+              "final_eval_seed": 73000,
+              "val_seed": 71000
+            }
+          },
+          "selector": {
+            "strategy": "conservative_low_lr",
+            "tensors_copied": 8,
+            "retention_defined": true,
+            "target_before": 153.5,
+            "target_after": 177.5,
+            "target_val_before": 149.0,
+            "source_before": 153.375,
+            "source_after": 183.5,
+            "source_delta": 30.125,
+            "target_delta": 24.0,
+            "steps_used": 4096,
+            "n_params": 4675,
+            "learning_rate": 3e-05,
+            "final_eval_seed": 73000,
+            "val_seed": 71000,
+            "decision": {
+              "strategy": "conservative_low_lr",
+              "reason": "zero_shot_has_signal_low_lr",
+              "zero_shot_val": 149.0,
+              "source_val": 149.125,
+              "target_steps": 4096,
+              "used_independent_or_holdout_for_decision": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "wall_clock_s": 41.87171270800172,
+  "preserved_artifacts": [
+    "artifacts/v06_continual.json",
+    "artifacts/v061_continual.json",
+    "artifacts/v062_continual.json"
+  ],
+  "caveat": "CartPole physics variants only. Selector thresholds frozen from V0.6.2. Not AGI.",
+  "is_agi": false
+}

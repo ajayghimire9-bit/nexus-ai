@@ -251,3 +251,13 @@ EWC is now per-sample diagonal empirical Fisher of `log π` with **per-task** `(
 Source `cartpole_default` at 32 768 steps: mean **250.8** [4.5, 497]; per seed 99 / **500** / 153. Not a reliable specialist (one collapse). Sequential CL kept at 2 048 steps/task.
 
 Held-out `cartpole_lowg`, 8 192 matched target steps: encoder + new-head fine-tune **438.5** [373, 504] vs scratch **138.3** [66, 211]. Paired deltas **+311, +299, +291**. That transfer test is supported. Frozen encoder and sequential CL are not. Multi-head BWT **−12.9 [−14.1, −11.6]**. Adaptive curriculum does not beat fixed. Not AGI.
+
+## V0.6.3 — adaptive knowledge reuse
+
+Branch `cursor/v06-continual-transfer`. Full write-up: `docs/NEXUS_V063.md`. `pytest` **88 passed**. Prior V0.6–V0.6.2 JSON artifacts unchanged.
+
+Val-best source checkpoint (not last weights): independent **291 [83, 499]**; 1/3 seeds solve; seed 0 collapse at 32k is skipped via val. Selector uses val zero-shot only; thresholds frozen from V0.6.2.
+
+Untouched tests `short` / `highg` / `longheavy` (n=9): selector **320.9 [209, 433]** vs scratch **78.8 [59, 98]** (paired **+242 [120, 365]**). Encoder+new-head FT **68.1** and **destroys** source skill (Δ **−219 [−324, −115]**). Selector always chose reuse or conservative LR; it did not beat conservative itself.
+
+**Partial success:** useful strategy selection vs scratch and vs the V0.6.2 encoder recipe. Encoder-head transfer did **not** persist off low-g. Not AGI.
