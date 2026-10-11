@@ -68,8 +68,18 @@ class RandomShootingMPC:
     enforce_time_budget: bool = True
     chunk_size: int = 4
     objective: Objective = "predicted_reward"
-    stability_weight: float = 0.0
+    stability_weight: float = 1.0
     inference: InferenceCounter | None = field(default=None, repr=False)
+    _rng: np.random.Generator = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        self.reset_episode(int(self.seed))
+        self.last_seqs: np.ndarray | None = None
+
+    def reset_episode(self, seed: int | None = None) -> None:
+        """Re-seed the persistent planner RNG (call at episode start)."""
+        self._rng = np.random.default_rng(int(self.seed if seed is None else seed))
+        self.last_seqs = None
 
     def _score_batch(self, obs: np.ndarray, seqs: np.ndarray) -> np.ndarray:
         """Cumulative survival: rewards after predicted termination are unreachable."""
@@ -85,10 +95,9 @@ class RandomShootingMPC:
             hand = 0.0
             if self.objective in ("hand_stability", "both"):
                 theta = nxt[:, 2]
-                x = nxt[:, 0]
-                hand = -self.stability_weight * (np.square(theta) + 0.1 * np.square(x))
+                omega = nxt[:, 3]
+                hand = -self.stability_weight * (np.abs(theta) + 0.25 * np.abs(omega))
             r = predicted_env_reward if self.objective in ("predicted_reward", "both") else 0.0
-            # Alive at step start: credit this transition, then absorb if it terminates.
             score += alive * (r + hand)
             if self.uncertainty_penalty > 0:
                 inner = self.model
@@ -115,9 +124,9 @@ class RandomShootingMPC:
 
     def act(self, obs: np.ndarray) -> tuple[int, dict[str, Any]]:
         t0 = time.perf_counter()
-        rng = np.random.default_rng(int(self.seed))
         n_cand = int(self.n_candidates)
-        seqs = rng.integers(0, self.n_actions, size=(n_cand, int(self.horizon)))
+        seqs = self._rng.integers(0, self.n_actions, size=(n_cand, int(self.horizon)))
+        self.last_seqs = np.asarray(seqs)
         chunk = max(1, int(self.chunk_size))
         scored_scores: list[np.ndarray] = []
         n_scored = 0

@@ -299,3 +299,9 @@ Not AGI. PREDICT/PLAN only on CartPole.
 Branch `cursor/v071-planning-validation`. Write-up: `docs/NEXUS_V071.md`. `pytest` **125 passed**. Artifact `artifacts/v071_world_model.json`. Prior JSON preserved.
 
 Val-only selection froze **ridge** (test MAE 1.05e-4 vs residual 0.0037, n=10). Ridge one-step greedy **246**; ridge MPC **9.3** (paired −237). Residual MPC vs greedy **+5.6 [−159, +171]** (no planning gain). Uncertainty penalty vs ensemble-zero **+76 [−31, +183]** (not superior). Ridge terminate Brier worse than always-nonterminal. Fine-tune still lowers one-step MAE and can raise 20-step error. Matched PPO 2560-step **74** vs residual greedy **283**. Not AGI.
+
+## V0.7.2 — planning reliability
+
+Branch `cursor/v072-planning-reliability`. Write-up: `docs/NEXUS_V072.md`. `pytest` **130 passed**. Artifact `artifacts/v072_world_model.json`. Prior JSON preserved.
+
+MPC now uses a **persistent RNG** with episode reset. V0.7.1 ridge return **9** was from re-sampling the same candidates every step. With the fix, ridge H=6 **446 [387, 505]** vs greedy **317**; residual H=6 − greedy **+78 [47, 108]**. Horizon 3 at budget 48 is strongest (residual **500**); H=10–20 collapse from **too few candidates**, not terminate-model isolation (always-live vs learned CI includes 0). Uncertainty penalty **−5.6 [−33, +22]**. Not AGI.

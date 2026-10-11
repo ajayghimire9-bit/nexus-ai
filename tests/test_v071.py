@@ -70,8 +70,11 @@ def test_absorbing_termination_stops_future_reward() -> None:
 def test_mpc_seeded_action_is_deterministic() -> None:
     m = _ConstModel(0.1)
     obs = np.array([0.01, 0.0, 0.02, 0.0], dtype=np.float32)
-    a1, _ = RandomShootingMPC(m, n_actions=2, horizon=3, n_candidates=8, seed=4).act(obs)
-    a2, _ = RandomShootingMPC(m, n_actions=2, horizon=3, n_candidates=8, seed=4).act(obs)
+    mpc = RandomShootingMPC(m, n_actions=2, horizon=3, n_candidates=8, seed=4)
+    mpc.reset_episode(4)
+    a1, _ = mpc.act(obs)
+    mpc.reset_episode(4)
+    a2, _ = mpc.act(obs)
     assert a1 == a2
 
 

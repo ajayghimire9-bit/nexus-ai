@@ -26,6 +26,7 @@ def run_episodes(
     episodes: int,
     seed: int,
     max_steps: int = 500,
+    on_episode_start: Callable[[int], None] | None = None,
 ) -> dict[str, Any]:
     returns = []
     lengths = []
@@ -36,6 +37,8 @@ def run_episodes(
     trans_term: list[bool] = []
     env = make_task_env(spec, seed=seed)
     for ep in range(episodes):
+        if on_episode_start is not None:
+            on_episode_start(ep)
         obs, _ = env.reset(seed=seed + ep)
         done = False
         total = 0.0
