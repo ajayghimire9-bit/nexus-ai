@@ -161,21 +161,62 @@ class ExprActivation(nn.Module):
         return self.scale * eval_expr(self.node, x) + self.shift
 
 
+EXPR_TREES: dict[str, Expr] = {}
+
+
+def expr_to_jsonable(node: Expr) -> Any:
+    if isinstance(node, tuple):
+        return [expr_to_jsonable(x) for x in node]
+    return node
+
+
+def expr_from_jsonable(obj: Any) -> Expr:
+    if isinstance(obj, list):
+        return tuple(expr_from_jsonable(x) for x in obj)  # type: ignore[return-value]
+    return obj  # type: ignore[return-value]
+
+
 def register_expr(node: Expr) -> str:
+    node = _canonicalize(node)
     name = expr_key(node)
-    captured = node
+    EXPR_TREES[name] = node
 
-    class _Registered(nn.Module):
+    class _Registered(ExprActivation):
         def __init__(self) -> None:
-            super().__init__()
-            self.scale = nn.Parameter(torch.ones(()))
-            self.shift = nn.Parameter(torch.zeros(()))
-
-        def forward(self, x: torch.Tensor) -> torch.Tensor:
-            return self.scale * eval_expr(captured, x) + self.shift
+            super().__init__(EXPR_TREES[name])
 
     ACTIVATIONS[name] = _Registered
     return name
+
+
+def restore_expr(tree: Any, name: str | None = None) -> str:
+    """Re-register a saved expression tree in a fresh process."""
+    node = expr_from_jsonable(tree)
+    restored = register_expr(node)
+    if name is not None and name != restored:
+        ACTIVATIONS[name] = ACTIVATIONS[restored]
+        EXPR_TREES[name] = EXPR_TREES[restored]
+        return name
+    return restored
+
+
+def dump_expr(name: str) -> dict[str, Any] | None:
+    if name not in EXPR_TREES:
+        return None
+    return {"name": name, "tree": expr_to_jsonable(EXPR_TREES[name])}
+
+
+def maybe_restore_named(name: str, payload: dict[str, Any] | None = None) -> None:
+    if name in ACTIVATIONS:
+        return
+    if payload and payload.get("tree") is not None:
+        restore_expr(payload["tree"], name=payload.get("name") or name)
+        return
+    if name.startswith("expr_"):
+        raise ValueError(
+            f"activation '{name}' is a dynamic expression that is not registered. "
+            "Load the checkpoint expr_tree before constructing the network."
+        )
 
 
 def population_exprs(rng: random.Random, n: int, depth: int = 2) -> list[Expr]:

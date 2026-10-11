@@ -12,15 +12,21 @@ from nexus.rl.running_stats import RunningMeanStd
 
 def evaluate_policy(
     agent: ActorCritic,
-    env_id: str,
+    env_id: str | None = None,
     *,
     episodes: int,
     seed: int,
     device: torch.device,
     deterministic: bool = True,
     obs_rms: RunningMeanStd | None = None,
+    env_fn: Any | None = None,
 ) -> dict[str, float]:
-    env = gym.make(env_id)
+    if env_fn is not None:
+        env = env_fn()
+    elif env_id is not None:
+        env = gym.make(env_id)
+    else:
+        raise ValueError("evaluate_policy requires env_id or env_fn")
     returns: list[float] = []
     lengths: list[int] = []
     agent.eval()

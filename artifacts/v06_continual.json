@@ -1,0 +1,1584 @@
+{
+  "protocol": {
+    "family": "cartpole",
+    "source_tasks": [
+      "cartpole_default",
+      "cartpole_long",
+      "cartpole_heavy"
+    ],
+    "heldout_task": "cartpole_lowg",
+    "n_seeds": 3,
+    "steps_per_task": 2048,
+    "eval_episodes": 8,
+    "independent_eval_seed": 70000,
+    "not_acrobot": true,
+    "compatible_semantics": "obs_dim=4 discrete_n=2 CartPole physics variants only"
+  },
+  "summary": {
+    "methods": {
+      "independent": {
+        "mean_final_return_across_tasks": {
+          "n": 3,
+          "mean": 101.44444444444444,
+          "lo": 95.81608953271885,
+          "hi": 107.07279935617004
+        },
+        "mean_forgetting": {
+          "n": 3,
+          "mean": 0.0,
+          "lo": 0.0,
+          "hi": 0.0
+        },
+        "mean_steps": {
+          "n": 3,
+          "mean": 6144.0,
+          "lo": 6144.0,
+          "hi": 6144.0
+        }
+      },
+      "naive": {
+        "mean_final_return_across_tasks": {
+          "n": 3,
+          "mean": 117.36111111111113,
+          "lo": 94.48198718951497,
+          "hi": 140.2402350327073
+        },
+        "mean_forgetting": {
+          "n": 3,
+          "mean": -6.277777777777779,
+          "lo": -21.135526016190266,
+          "hi": 8.579970460634708
+        },
+        "mean_steps": {
+          "n": 3,
+          "mean": 6144.0,
+          "lo": 6144.0,
+          "hi": 6144.0
+        }
+      },
+      "replay": {
+        "mean_final_return_across_tasks": {
+          "n": 3,
+          "mean": 115.80555555555556,
+          "lo": 85.00728326254263,
+          "hi": 146.60382784856847
+        },
+        "mean_forgetting": {
+          "n": 3,
+          "mean": -9.069444444444445,
+          "lo": -17.143208616206866,
+          "hi": -0.9956802726820229
+        },
+        "mean_steps": {
+          "n": 3,
+          "mean": 6144.0,
+          "lo": 6144.0,
+          "hi": 6144.0
+        }
+      },
+      "ewc": {
+        "mean_final_return_across_tasks": {
+          "n": 3,
+          "mean": 118.30555555555556,
+          "lo": 95.06652942506062,
+          "hi": 141.5445816860505
+        },
+        "mean_forgetting": {
+          "n": 3,
+          "mean": -7.180555555555556,
+          "lo": -22.611474083139658,
+          "hi": 8.250362972028547
+        },
+        "mean_steps": {
+          "n": 3,
+          "mean": 6144.0,
+          "lo": 6144.0,
+          "hi": 6144.0
+        }
+      },
+      "multihead": {
+        "mean_final_return_across_tasks": {
+          "n": 3,
+          "mean": 140.36111111111111,
+          "lo": 68.97188823467665,
+          "hi": 211.75033398754556
+        },
+        "mean_forgetting": {
+          "n": 3,
+          "mean": 2.791666666666666,
+          "lo": -4.00304580646953,
+          "hi": 9.586379139802862
+        },
+        "mean_steps": {
+          "n": 3,
+          "mean": 6144.0,
+          "lo": 6144.0,
+          "hi": 6144.0
+        }
+      }
+    },
+    "encoder_transfer": {
+      "delta_vs_scratch": {
+        "n": 3,
+        "mean": -26.791666666666668,
+        "lo": -61.8047678257725,
+        "hi": 8.221434492439162
+      },
+      "heldout_task": "cartpole_lowg",
+      "note": "Positive delta is encoder weight transfer beating matched-step from-scratch on held-out cartpole_lowg."
+    },
+    "curriculum": {
+      "fixed": {
+        "n": 3,
+        "mean": 116.94444444444444,
+        "lo": 89.97216717593442,
+        "hi": 143.91672171295448
+      },
+      "random": {
+        "n": 3,
+        "mean": 115.22222222222223,
+        "lo": 111.76725138923533,
+        "hi": 118.67719305520913
+      },
+      "adaptive": {
+        "n": 3,
+        "mean": 95.7361111111111,
+        "lo": 90.61247232771545,
+        "hi": 100.85974989450675
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "seed": 0,
+      "methods": {
+        "independent": {
+          "method": "independent",
+          "seed": 0,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 102.5,
+              "cartpole_long": 107.875,
+              "cartpole_heavy": 103.0
+            },
+            "cartpole_long": {
+              "cartpole_default": 149.5,
+              "cartpole_long": 138.875,
+              "cartpole_heavy": 168.0
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 78.125,
+              "cartpole_long": 83.625,
+              "cartpole_heavy": 75.875
+            }
+          },
+          "peak": {
+            "cartpole_default": 102.5,
+            "cartpole_long": 138.875,
+            "cartpole_heavy": 75.875
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 1.1311097500001779,
+          "final_eval": {
+            "cartpole_default": 102.5,
+            "cartpole_long": 138.875,
+            "cartpole_heavy": 75.875
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 102.5,
+                "cartpole_long": 107.875,
+                "cartpole_heavy": 103.0
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 149.5,
+                "cartpole_long": 138.875,
+                "cartpole_heavy": 168.0
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 78.125,
+                "cartpole_long": 83.625,
+                "cartpole_heavy": 75.875
+              },
+              "steps": 6144
+            }
+          ],
+          "last_trainer_closed": true,
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": 0.0,
+              "cartpole_long": 0.0,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 0.0,
+            "forward_transfer": {},
+            "backward_transfer": {},
+            "note": "Independent specialists are not a sequential run; forgetting is undefined."
+          }
+        },
+        "naive": {
+          "method": "naive",
+          "seed": 0,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 102.5,
+              "cartpole_long": 107.875,
+              "cartpole_heavy": 103.0
+            },
+            "cartpole_long": {
+              "cartpole_default": 138.0,
+              "cartpole_long": 125.875,
+              "cartpole_heavy": 139.0
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 112.0,
+              "cartpole_long": 114.625,
+              "cartpole_heavy": 113.0
+            }
+          },
+          "peak": {
+            "cartpole_default": 102.5,
+            "cartpole_long": 125.875,
+            "cartpole_heavy": 113.0
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.79905008300193,
+          "final_eval": {
+            "cartpole_default": 112.0,
+            "cartpole_long": 114.625,
+            "cartpole_heavy": 113.0
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 102.5,
+                "cartpole_long": 107.875,
+                "cartpole_heavy": 103.0
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 138.0,
+                "cartpole_long": 125.875,
+                "cartpole_heavy": 139.0
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 112.0,
+                "cartpole_long": 114.625,
+                "cartpole_heavy": 113.0
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -9.5,
+              "cartpole_long": 11.25,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 0.5833333333333334,
+            "forward_transfer": {
+              "cartpole_long": -31.0,
+              "cartpole_heavy": 63.125
+            },
+            "backward_transfer": {
+              "cartpole_default": 9.5,
+              "cartpole_long": -11.25
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 102.5,
+              "cartpole_long": 138.875,
+              "cartpole_heavy": 75.875
+            }
+          }
+        },
+        "replay": {
+          "method": "replay",
+          "seed": 0,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 128.25,
+              "cartpole_long": 120.5,
+              "cartpole_heavy": 122.375
+            },
+            "cartpole_long": {
+              "cartpole_default": 139.375,
+              "cartpole_long": 123.125,
+              "cartpole_heavy": 123.5
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 138.75,
+              "cartpole_long": 155.75,
+              "cartpole_heavy": 139.375
+            }
+          },
+          "peak": {
+            "cartpole_default": 128.25,
+            "cartpole_long": 123.125,
+            "cartpole_heavy": 139.375
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.8845347089991265,
+          "final_eval": {
+            "cartpole_default": 138.75,
+            "cartpole_long": 155.75,
+            "cartpole_heavy": 139.375
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 128.25,
+                "cartpole_long": 120.5,
+                "cartpole_heavy": 122.375
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 139.375,
+                "cartpole_long": 123.125,
+                "cartpole_heavy": 123.5
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 138.75,
+                "cartpole_long": 155.75,
+                "cartpole_heavy": 139.375
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -10.5,
+              "cartpole_long": -32.625,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": -14.375,
+            "forward_transfer": {
+              "cartpole_long": -18.375,
+              "cartpole_heavy": 47.625
+            },
+            "backward_transfer": {
+              "cartpole_default": 10.5,
+              "cartpole_long": 32.625
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 102.5,
+              "cartpole_long": 138.875,
+              "cartpole_heavy": 75.875
+            }
+          }
+        },
+        "ewc": {
+          "method": "ewc",
+          "seed": 0,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 102.5,
+              "cartpole_long": 107.875,
+              "cartpole_heavy": 103.0
+            },
+            "cartpole_long": {
+              "cartpole_default": 138.0,
+              "cartpole_long": 125.875,
+              "cartpole_heavy": 139.0
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 112.875,
+              "cartpole_long": 114.875,
+              "cartpole_heavy": 113.0
+            }
+          },
+          "peak": {
+            "cartpole_default": 102.5,
+            "cartpole_long": 125.875,
+            "cartpole_heavy": 113.0
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.8077483749984822,
+          "final_eval": {
+            "cartpole_default": 112.875,
+            "cartpole_long": 114.875,
+            "cartpole_heavy": 113.0
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 102.5,
+                "cartpole_long": 107.875,
+                "cartpole_heavy": 103.0
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 138.0,
+                "cartpole_long": 125.875,
+                "cartpole_heavy": 139.0
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 112.875,
+                "cartpole_long": 114.875,
+                "cartpole_heavy": 113.0
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -10.375,
+              "cartpole_long": 11.0,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 0.20833333333333334,
+            "forward_transfer": {
+              "cartpole_long": -31.0,
+              "cartpole_heavy": 63.125
+            },
+            "backward_transfer": {
+              "cartpole_default": 10.375,
+              "cartpole_long": -11.0
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 102.5,
+              "cartpole_long": 138.875,
+              "cartpole_heavy": 75.875
+            }
+          }
+        },
+        "multihead": {
+          "method": "multihead",
+          "seed": 0,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 76.5,
+              "cartpole_long": 12.0,
+              "cartpole_heavy": 9.5
+            },
+            "cartpole_long": {
+              "cartpole_default": 93.875,
+              "cartpole_long": 109.0,
+              "cartpole_heavy": 9.375
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 69.875,
+              "cartpole_long": 92.0,
+              "cartpole_heavy": 476.5
+            }
+          },
+          "peak": {
+            "cartpole_default": 76.5,
+            "cartpole_long": 109.0,
+            "cartpole_heavy": 476.5
+          },
+          "steps": 6144,
+          "n_params": 1513,
+          "wall_clock_s": 0.7564530419986113,
+          "final_eval": {
+            "cartpole_default": 69.875,
+            "cartpole_long": 92.0,
+            "cartpole_heavy": 476.5
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 76.5,
+                "cartpole_long": 12.0,
+                "cartpole_heavy": 9.5
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 93.875,
+                "cartpole_long": 109.0,
+                "cartpole_heavy": 9.375
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 69.875,
+                "cartpole_long": 92.0,
+                "cartpole_heavy": 476.5
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": 6.625,
+              "cartpole_long": 17.0,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 7.875,
+            "forward_transfer": {
+              "cartpole_long": -126.875,
+              "cartpole_heavy": -66.5
+            },
+            "backward_transfer": {
+              "cartpole_default": -6.625,
+              "cartpole_long": -17.0
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 102.5,
+              "cartpole_long": 138.875,
+              "cartpole_heavy": 75.875
+            }
+          }
+        }
+      },
+      "encoder_transfer": {
+        "heldout_task": "cartpole_lowg",
+        "from_scratch": {
+          "mean_return": 107.625,
+          "steps": 2048
+        },
+        "encoder_weight_transfer": {
+          "mean_return": 111.5,
+          "steps": 2048,
+          "frozen_backbone": true
+        },
+        "architecture_reuse_only": "from_scratch uses the same MLP spec without copied weights",
+        "n_params_source": 1315,
+        "delta_vs_scratch": 3.875
+      },
+      "curriculum": {
+        "fixed": {
+          "order": [
+            "cartpole_default",
+            "cartpole_long",
+            "cartpole_heavy"
+          ],
+          "final": {
+            "cartpole_default": 129.0,
+            "cartpole_long": 140.375,
+            "cartpole_heavy": 126.375
+          },
+          "mean_across_tasks": 131.91666666666666
+        },
+        "random": {
+          "order": [
+            "cartpole_long",
+            "cartpole_long",
+            "cartpole_default"
+          ],
+          "final": {
+            "cartpole_default": 114.0,
+            "cartpole_long": 113.125,
+            "cartpole_heavy": 117.625
+          },
+          "mean_across_tasks": 114.91666666666667
+        },
+        "adaptive": {
+          "order": [
+            "cartpole_default",
+            "cartpole_heavy",
+            "cartpole_heavy"
+          ],
+          "final": {
+            "cartpole_default": 92.375,
+            "cartpole_long": 106.125,
+            "cartpole_heavy": 91.0
+          },
+          "mean_across_tasks": 96.5
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "methods": {
+        "independent": {
+          "method": "independent",
+          "seed": 1,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 86.375,
+              "cartpole_long": 94.375,
+              "cartpole_heavy": 94.25
+            },
+            "cartpole_long": {
+              "cartpole_default": 103.875,
+              "cartpole_long": 105.875,
+              "cartpole_heavy": 103.0
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 99.75,
+              "cartpole_long": 103.125,
+              "cartpole_heavy": 95.75
+            }
+          },
+          "peak": {
+            "cartpole_default": 86.375,
+            "cartpole_long": 105.875,
+            "cartpole_heavy": 95.75
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.7590683330017782,
+          "final_eval": {
+            "cartpole_default": 86.375,
+            "cartpole_long": 105.875,
+            "cartpole_heavy": 95.75
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 86.375,
+                "cartpole_long": 94.375,
+                "cartpole_heavy": 94.25
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 103.875,
+                "cartpole_long": 105.875,
+                "cartpole_heavy": 103.0
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 99.75,
+                "cartpole_long": 103.125,
+                "cartpole_heavy": 95.75
+              },
+              "steps": 6144
+            }
+          ],
+          "last_trainer_closed": true,
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": 0.0,
+              "cartpole_long": 0.0,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 0.0,
+            "forward_transfer": {},
+            "backward_transfer": {},
+            "note": "Independent specialists are not a sequential run; forgetting is undefined."
+          }
+        },
+        "naive": {
+          "method": "naive",
+          "seed": 1,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 86.375,
+              "cartpole_long": 94.375,
+              "cartpole_heavy": 94.25
+            },
+            "cartpole_long": {
+              "cartpole_default": 127.875,
+              "cartpole_long": 127.625,
+              "cartpole_heavy": 127.125
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 135.125,
+              "cartpole_long": 143.125,
+              "cartpole_heavy": 139.75
+            }
+          },
+          "peak": {
+            "cartpole_default": 86.375,
+            "cartpole_long": 127.625,
+            "cartpole_heavy": 139.75
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.8067755000010948,
+          "final_eval": {
+            "cartpole_default": 135.125,
+            "cartpole_long": 143.125,
+            "cartpole_heavy": 139.75
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 86.375,
+                "cartpole_long": 94.375,
+                "cartpole_heavy": 94.25
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 127.875,
+                "cartpole_long": 127.625,
+                "cartpole_heavy": 127.125
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 135.125,
+                "cartpole_long": 143.125,
+                "cartpole_heavy": 139.75
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -48.75,
+              "cartpole_long": -15.5,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": -21.416666666666668,
+            "forward_transfer": {
+              "cartpole_long": -11.5,
+              "cartpole_heavy": 31.375
+            },
+            "backward_transfer": {
+              "cartpole_default": 48.75,
+              "cartpole_long": 15.5
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 86.375,
+              "cartpole_long": 105.875,
+              "cartpole_heavy": 95.75
+            }
+          }
+        },
+        "replay": {
+          "method": "replay",
+          "seed": 1,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 92.75,
+              "cartpole_long": 96.25,
+              "cartpole_heavy": 91.25
+            },
+            "cartpole_long": {
+              "cartpole_default": 89.75,
+              "cartpole_long": 102.75,
+              "cartpole_heavy": 88.125
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 107.0,
+              "cartpole_long": 124.125,
+              "cartpole_heavy": 105.625
+            }
+          },
+          "peak": {
+            "cartpole_default": 92.75,
+            "cartpole_long": 102.75,
+            "cartpole_heavy": 105.625
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.8107526670028165,
+          "final_eval": {
+            "cartpole_default": 107.0,
+            "cartpole_long": 124.125,
+            "cartpole_heavy": 105.625
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 92.75,
+                "cartpole_long": 96.25,
+                "cartpole_heavy": 91.25
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 89.75,
+                "cartpole_long": 102.75,
+                "cartpole_heavy": 88.125
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 107.0,
+                "cartpole_long": 124.125,
+                "cartpole_heavy": 105.625
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -14.25,
+              "cartpole_long": -21.375,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": -11.875,
+            "forward_transfer": {
+              "cartpole_long": -9.625,
+              "cartpole_heavy": -7.625
+            },
+            "backward_transfer": {
+              "cartpole_default": 14.25,
+              "cartpole_long": 21.375
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 86.375,
+              "cartpole_long": 105.875,
+              "cartpole_heavy": 95.75
+            }
+          }
+        },
+        "ewc": {
+          "method": "ewc",
+          "seed": 1,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 86.375,
+              "cartpole_long": 94.375,
+              "cartpole_heavy": 94.25
+            },
+            "cartpole_long": {
+              "cartpole_default": 125.5,
+              "cartpole_long": 125.5,
+              "cartpole_heavy": 125.375
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 136.375,
+              "cartpole_long": 144.25,
+              "cartpole_heavy": 141.75
+            }
+          },
+          "peak": {
+            "cartpole_default": 86.375,
+            "cartpole_long": 125.5,
+            "cartpole_heavy": 141.75
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.8158135000012408,
+          "final_eval": {
+            "cartpole_default": 136.375,
+            "cartpole_long": 144.25,
+            "cartpole_heavy": 141.75
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 86.375,
+                "cartpole_long": 94.375,
+                "cartpole_heavy": 94.25
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 125.5,
+                "cartpole_long": 125.5,
+                "cartpole_heavy": 125.375
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 136.375,
+                "cartpole_long": 144.25,
+                "cartpole_heavy": 141.75
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -50.0,
+              "cartpole_long": -18.75,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": -22.916666666666668,
+            "forward_transfer": {
+              "cartpole_long": -11.5,
+              "cartpole_heavy": 29.625
+            },
+            "backward_transfer": {
+              "cartpole_default": 50.0,
+              "cartpole_long": 18.75
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 86.375,
+              "cartpole_long": 105.875,
+              "cartpole_heavy": 95.75
+            }
+          }
+        },
+        "multihead": {
+          "method": "multihead",
+          "seed": 1,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 67.5,
+              "cartpole_long": 11.25,
+              "cartpole_heavy": 34.875
+            },
+            "cartpole_long": {
+              "cartpole_default": 89.375,
+              "cartpole_long": 103.875,
+              "cartpole_heavy": 23.25
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 68.625,
+              "cartpole_long": 89.75,
+              "cartpole_heavy": 174.25
+            }
+          },
+          "peak": {
+            "cartpole_default": 67.5,
+            "cartpole_long": 103.875,
+            "cartpole_heavy": 174.25
+          },
+          "steps": 6144,
+          "n_params": 1513,
+          "wall_clock_s": 0.691567624999152,
+          "final_eval": {
+            "cartpole_default": 68.625,
+            "cartpole_long": 89.75,
+            "cartpole_heavy": 174.25
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 67.5,
+                "cartpole_long": 11.25,
+                "cartpole_heavy": 34.875
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 89.375,
+                "cartpole_long": 103.875,
+                "cartpole_heavy": 23.25
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 68.625,
+                "cartpole_long": 89.75,
+                "cartpole_heavy": 174.25
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -1.125,
+              "cartpole_long": 14.125,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 4.333333333333333,
+            "forward_transfer": {
+              "cartpole_long": -94.625,
+              "cartpole_heavy": -72.5
+            },
+            "backward_transfer": {
+              "cartpole_default": 1.125,
+              "cartpole_long": -14.125
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 86.375,
+              "cartpole_long": 105.875,
+              "cartpole_heavy": 95.75
+            }
+          }
+        }
+      },
+      "encoder_transfer": {
+        "heldout_task": "cartpole_lowg",
+        "from_scratch": {
+          "mean_return": 162.375,
+          "steps": 2048
+        },
+        "encoder_weight_transfer": {
+          "mean_return": 104.375,
+          "steps": 2048,
+          "frozen_backbone": true
+        },
+        "architecture_reuse_only": "from_scratch uses the same MLP spec without copied weights",
+        "n_params_source": 1315,
+        "delta_vs_scratch": -58.0
+      },
+      "curriculum": {
+        "fixed": {
+          "order": [
+            "cartpole_default",
+            "cartpole_long",
+            "cartpole_heavy"
+          ],
+          "final": {
+            "cartpole_default": 129.875,
+            "cartpole_long": 136.125,
+            "cartpole_heavy": 122.375
+          },
+          "mean_across_tasks": 129.45833333333334
+        },
+        "random": {
+          "order": [
+            "cartpole_default",
+            "cartpole_long",
+            "cartpole_long"
+          ],
+          "final": {
+            "cartpole_default": 113.625,
+            "cartpole_long": 117.75,
+            "cartpole_heavy": 105.625
+          },
+          "mean_across_tasks": 112.33333333333333
+        },
+        "adaptive": {
+          "order": [
+            "cartpole_default",
+            "cartpole_heavy",
+            "cartpole_long"
+          ],
+          "final": {
+            "cartpole_default": 103.5,
+            "cartpole_long": 97.0,
+            "cartpole_heavy": 99.0
+          },
+          "mean_across_tasks": 99.83333333333333
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "methods": {
+        "independent": {
+          "method": "independent",
+          "seed": 2,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 80.0,
+              "cartpole_long": 96.625,
+              "cartpole_heavy": 79.75
+            },
+            "cartpole_long": {
+              "cartpole_default": 119.75,
+              "cartpole_long": 133.125,
+              "cartpole_heavy": 117.875
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 96.625,
+              "cartpole_long": 99.375,
+              "cartpole_heavy": 94.625
+            }
+          },
+          "peak": {
+            "cartpole_default": 80.0,
+            "cartpole_long": 133.125,
+            "cartpole_heavy": 94.625
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.7734629999977187,
+          "final_eval": {
+            "cartpole_default": 80.0,
+            "cartpole_long": 133.125,
+            "cartpole_heavy": 94.625
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 80.0,
+                "cartpole_long": 96.625,
+                "cartpole_heavy": 79.75
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 119.75,
+                "cartpole_long": 133.125,
+                "cartpole_heavy": 117.875
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 96.625,
+                "cartpole_long": 99.375,
+                "cartpole_heavy": 94.625
+              },
+              "steps": 6144
+            }
+          ],
+          "last_trainer_closed": true,
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": 0.0,
+              "cartpole_long": 0.0,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 0.0,
+            "forward_transfer": {},
+            "backward_transfer": {},
+            "note": "Independent specialists are not a sequential run; forgetting is undefined."
+          }
+        },
+        "naive": {
+          "method": "naive",
+          "seed": 2,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 80.0,
+              "cartpole_long": 96.625,
+              "cartpole_heavy": 79.75
+            },
+            "cartpole_long": {
+              "cartpole_default": 144.75,
+              "cartpole_long": 132.875,
+              "cartpole_heavy": 126.0
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 93.0,
+              "cartpole_long": 113.875,
+              "cartpole_heavy": 91.75
+            }
+          },
+          "peak": {
+            "cartpole_default": 80.0,
+            "cartpole_long": 132.875,
+            "cartpole_heavy": 91.75
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.7928312080002797,
+          "final_eval": {
+            "cartpole_default": 93.0,
+            "cartpole_long": 113.875,
+            "cartpole_heavy": 91.75
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 80.0,
+                "cartpole_long": 96.625,
+                "cartpole_heavy": 79.75
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 144.75,
+                "cartpole_long": 132.875,
+                "cartpole_heavy": 126.0
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 93.0,
+                "cartpole_long": 113.875,
+                "cartpole_heavy": 91.75
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -13.0,
+              "cartpole_long": 19.0,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 2.0,
+            "forward_transfer": {
+              "cartpole_long": -36.5,
+              "cartpole_heavy": 31.375
+            },
+            "backward_transfer": {
+              "cartpole_default": 13.0,
+              "cartpole_long": -19.0
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 80.0,
+              "cartpole_long": 133.125,
+              "cartpole_heavy": 94.625
+            }
+          }
+        },
+        "replay": {
+          "method": "replay",
+          "seed": 2,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 75.0,
+              "cartpole_long": 98.0,
+              "cartpole_heavy": 76.25
+            },
+            "cartpole_long": {
+              "cartpole_default": 100.625,
+              "cartpole_long": 107.0,
+              "cartpole_heavy": 101.25
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 87.875,
+              "cartpole_long": 97.0,
+              "cartpole_heavy": 86.75
+            }
+          },
+          "peak": {
+            "cartpole_default": 75.0,
+            "cartpole_long": 107.0,
+            "cartpole_heavy": 86.75
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.8406895829975838,
+          "final_eval": {
+            "cartpole_default": 87.875,
+            "cartpole_long": 97.0,
+            "cartpole_heavy": 86.75
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 75.0,
+                "cartpole_long": 98.0,
+                "cartpole_heavy": 76.25
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 100.625,
+                "cartpole_long": 107.0,
+                "cartpole_heavy": 101.25
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 87.875,
+                "cartpole_long": 97.0,
+                "cartpole_heavy": 86.75
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -12.875,
+              "cartpole_long": 10.0,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": -0.9583333333333334,
+            "forward_transfer": {
+              "cartpole_long": -35.125,
+              "cartpole_heavy": 6.625
+            },
+            "backward_transfer": {
+              "cartpole_default": 12.875,
+              "cartpole_long": -10.0
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 80.0,
+              "cartpole_long": 133.125,
+              "cartpole_heavy": 94.625
+            }
+          }
+        },
+        "ewc": {
+          "method": "ewc",
+          "seed": 2,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 80.0,
+              "cartpole_long": 96.625,
+              "cartpole_heavy": 79.75
+            },
+            "cartpole_long": {
+              "cartpole_default": 143.625,
+              "cartpole_long": 132.75,
+              "cartpole_heavy": 126.75
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 93.125,
+              "cartpole_long": 116.125,
+              "cartpole_heavy": 92.375
+            }
+          },
+          "peak": {
+            "cartpole_default": 80.0,
+            "cartpole_long": 132.75,
+            "cartpole_heavy": 92.375
+          },
+          "steps": 6144,
+          "n_params": 1315,
+          "wall_clock_s": 0.7967836249990796,
+          "final_eval": {
+            "cartpole_default": 93.125,
+            "cartpole_long": 116.125,
+            "cartpole_heavy": 92.375
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 80.0,
+                "cartpole_long": 96.625,
+                "cartpole_heavy": 79.75
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 143.625,
+                "cartpole_long": 132.75,
+                "cartpole_heavy": 126.75
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 93.125,
+                "cartpole_long": 116.125,
+                "cartpole_heavy": 92.375
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -13.125,
+              "cartpole_long": 16.625,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": 1.1666666666666667,
+            "forward_transfer": {
+              "cartpole_long": -36.5,
+              "cartpole_heavy": 32.125
+            },
+            "backward_transfer": {
+              "cartpole_default": 13.125,
+              "cartpole_long": -16.625
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 80.0,
+              "cartpole_long": 133.125,
+              "cartpole_heavy": 94.625
+            }
+          }
+        },
+        "multihead": {
+          "method": "multihead",
+          "seed": 2,
+          "eval_matrix": {
+            "cartpole_default": {
+              "cartpole_default": 110.75,
+              "cartpole_long": 10.75,
+              "cartpole_heavy": 8.125
+            },
+            "cartpole_long": {
+              "cartpole_default": 111.75,
+              "cartpole_long": 104.0,
+              "cartpole_heavy": 8.625
+            },
+            "cartpole_heavy": {
+              "cartpole_default": 124.625,
+              "cartpole_long": 101.625,
+              "cartpole_heavy": 66.0
+            }
+          },
+          "peak": {
+            "cartpole_default": 110.75,
+            "cartpole_long": 104.0,
+            "cartpole_heavy": 66.0
+          },
+          "steps": 6144,
+          "n_params": 1513,
+          "wall_clock_s": 0.695005042001867,
+          "final_eval": {
+            "cartpole_default": 124.625,
+            "cartpole_long": 101.625,
+            "cartpole_heavy": 66.0
+          },
+          "trace": [
+            {
+              "trained": "cartpole_default",
+              "eval": {
+                "cartpole_default": 110.75,
+                "cartpole_long": 10.75,
+                "cartpole_heavy": 8.125
+              },
+              "steps": 2048
+            },
+            {
+              "trained": "cartpole_long",
+              "eval": {
+                "cartpole_default": 111.75,
+                "cartpole_long": 104.0,
+                "cartpole_heavy": 8.625
+              },
+              "steps": 4096
+            },
+            {
+              "trained": "cartpole_heavy",
+              "eval": {
+                "cartpole_default": 124.625,
+                "cartpole_long": 101.625,
+                "cartpole_heavy": 66.0
+              },
+              "steps": 6144
+            }
+          ],
+          "transfer": {
+            "forgetting": {
+              "cartpole_default": -13.875,
+              "cartpole_long": 2.375,
+              "cartpole_heavy": 0.0
+            },
+            "mean_forgetting": -3.8333333333333335,
+            "forward_transfer": {
+              "cartpole_long": -122.375,
+              "cartpole_heavy": -86.0
+            },
+            "backward_transfer": {
+              "cartpole_default": 13.875,
+              "cartpole_long": -2.375
+            },
+            "steps_to_threshold": null,
+            "independent_scratch": {
+              "cartpole_default": 80.0,
+              "cartpole_long": 133.125,
+              "cartpole_heavy": 94.625
+            }
+          }
+        }
+      },
+      "encoder_transfer": {
+        "heldout_task": "cartpole_lowg",
+        "from_scratch": {
+          "mean_return": 130.0,
+          "steps": 2048
+        },
+        "encoder_weight_transfer": {
+          "mean_return": 103.75,
+          "steps": 2048,
+          "frozen_backbone": true
+        },
+        "architecture_reuse_only": "from_scratch uses the same MLP spec without copied weights",
+        "n_params_source": 1315,
+        "delta_vs_scratch": -26.25
+      },
+      "curriculum": {
+        "fixed": {
+          "order": [
+            "cartpole_default",
+            "cartpole_long",
+            "cartpole_heavy"
+          ],
+          "final": {
+            "cartpole_default": 86.625,
+            "cartpole_long": 94.875,
+            "cartpole_heavy": 86.875
+          },
+          "mean_across_tasks": 89.45833333333333
+        },
+        "random": {
+          "order": [
+            "cartpole_heavy",
+            "cartpole_default",
+            "cartpole_heavy"
+          ],
+          "final": {
+            "cartpole_default": 114.875,
+            "cartpole_long": 120.5,
+            "cartpole_heavy": 119.875
+          },
+          "mean_across_tasks": 118.41666666666667
+        },
+        "adaptive": {
+          "order": [
+            "cartpole_default",
+            "cartpole_long",
+            "cartpole_default"
+          ],
+          "final": {
+            "cartpole_default": 83.375,
+            "cartpole_long": 104.125,
+            "cartpole_heavy": 85.125
+          },
+          "mean_across_tasks": 90.875
+        }
+      }
+    }
+  ],
+  "caveat": "Small CartPole-variant continual-learning study. Do not treat a win as AGI or as transfer to Acrobot. V0.5.2 research-controller results are unchanged.",
+  "is_meta_rl": false,
+  "is_agi": false
+}

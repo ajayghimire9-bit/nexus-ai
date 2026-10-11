@@ -213,3 +213,21 @@ Remaining timesteps never went negative. Failures occupying slots: **0**. Useful
 - **Supported:** paired LinUCB learns the synthetic optimal policy and beats random/frozen on in-distribution and held-out contexts with CIs excluding 0. Valid-candidate ranking avoids invalid proposals and stays inside the step cap.
 - **Rejected:** learned PPO experiment selection does **not** beat random search on independent champion return on CartPole or Acrobot under this budget. Frozen outperforming updating LinUCB on CartPole point estimates is **not** evidence of learned self-improvement.
 - Inner-loop compute (8k steps) is still too small for these classic-control tasks relative to the 250k PPO baseline. Not AGI. Not meta-RL. Not a trading system.
+
+## V0.6 — continual learning (CartPole family)
+
+Branch `cursor/v06-continual-transfer`. Not merged. Full write-up: `docs/NEXUS_V06.md`. `pytest` **69 passed**. V0.5.1/V0.5.2 artifacts were not overwritten; the paired synthetic 20-seed study reproduced to `1e-9`.
+
+Compatible tasks only: CartPole gravity/length/mass variants (4-D, 2 actions). **Not Acrobot.** Independent eval seed 70000. 2048 steps/task, 3 seeds, 6144 steps matched across methods.
+
+| Method | mean final across tasks (95% CI) | forgetting (95% CI) |
+| --- | --- | --- |
+| independent specialists | 101.4 [95.8, 107.1] | n/a |
+| naive fine-tune | 117.4 [94.5, 140.2] | −6.3 [−21.1, +8.6] |
+| replay | 115.8 [85.0, 146.6] | −9.1 [−17.1, −1.0] |
+| EWC | 118.3 [95.1, 141.5] | −7.2 [−22.6, +8.3] |
+| multi-head | 140.4 [69.0, 211.8] | +2.8 [−4.0, +9.6] |
+
+Held-out encoder transfer (`cartpole_lowg`) vs scratch: **−26.8** [−61.8, +8.2]. Adaptive curriculum 95.7 vs random 115.2.
+
+**Success criterion not met:** no method beat both specialists and naive fine-tuning with a CI excluding overlap. Expression checkpoints now reload in a fresh process. Not AGI.

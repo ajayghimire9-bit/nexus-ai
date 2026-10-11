@@ -18,6 +18,7 @@ from nexus.config import ArchitectureConfig, PPOConfig
 from nexus.nn.spec import ArchitectureSpec
 from nexus.rl.actor_critic import ActorCritic
 from nexus.rl.gae import compute_gae
+from nexus.nn.expr import dump_expr, maybe_restore_named
 from nexus.rl.rng_state import capture_library_rng, capture_vector_env, restore_library_rng, restore_vector_env
 from nexus.rl.running_stats import RunningMeanStd
 
@@ -239,6 +240,9 @@ class PPOTrainer:
             "rollout_episodes": float(len(episode_returns)),
             "rollout_mean_return": float(np.mean(episode_returns)) if episode_returns else 0.0,
         }
+        replay = getattr(self, "replay_buffer", None)
+        if replay is not None:
+            replay.add_batch(batch["obs"], batch["actions"])
         return batch, metrics
 
     def update(self, batch: dict[str, torch.Tensor]) -> dict[str, float]:
@@ -295,6 +299,9 @@ class PPOTrainer:
                 ent = (entropy * w).sum() / denom
 
                 loss = pg_loss + cfg.vf_coef * vf_loss - cfg.ent_coef * ent
+                aux_fn = getattr(self, "aux_loss_fn", None)
+                if aux_fn is not None:
+                    loss = loss + aux_fn(self.agent)
                 self.optimizer.zero_grad()
                 loss.backward()
                 clip_grad_norm_(self.agent.parameters(), cfg.max_grad_norm)
@@ -400,6 +407,7 @@ class PPOTrainer:
             "autoreset_envs": np.asarray(getattr(self.envs, "_autoreset_envs", np.zeros(self.ppo.num_envs, dtype=bool))),
             "library_rng": capture_library_rng(),
             "vector_env": capture_vector_env(self.envs),
+            "expr_tree": dump_expr(self.architecture.activation),
         }
         torch.save(payload, path)
         meta = path.with_suffix(".json")
@@ -430,3 +438,34 @@ class PPOTrainer:
             if payload.get("autoreset_envs") is not None and hasattr(self.envs, "_autoreset_envs"):
                 self.envs._autoreset_envs = np.asarray(payload["autoreset_envs"], dtype=bool)
         self._resume_fidelity = fidelity
+
+    def rebind_envs(self, env_fns: list, *, seed: int | None = None) -> None:
+        """Keep weights; replace the vector env (continual / transfer)."""
+        self.envs.close()
+        mode = getattr(self.envs, "autoreset_mode", AutoresetMode.NEXT_STEP)
+        self.envs = SyncVectorEnv(env_fns, autoreset_mode=mode)
+        use_seed = int(self.ppo.seed if seed is None else seed)
+        obs, _ = self.envs.reset(seed=use_seed)
+        self._raw_obs = np.asarray(obs, dtype=np.float32).reshape(self.ppo.num_envs, self.obs_dim)
+        self._episode_return = np.zeros(self.ppo.num_envs, dtype=np.float64)
+
+    @classmethod
+    def from_checkpoint(
+        cls,
+        path: str | Path,
+        *,
+        ppo: PPOConfig | None = None,
+        architecture: ArchitectureConfig | None = None,
+        env_fns: list | None = None,
+    ) -> "PPOTrainer":
+        payload = torch.load(path, map_location="cpu", weights_only=False)
+        if payload.get("expr_tree"):
+            maybe_restore_named(
+                payload["expr_tree"].get("name") or payload["architecture"]["activation"],
+                payload["expr_tree"],
+            )
+        arch = architecture or ArchitectureConfig(**payload["architecture"])
+        ppo_cfg = ppo or PPOConfig(**{k: v for k, v in payload["ppo"].items() if k in PPOConfig.__dataclass_fields__})
+        trainer = cls(ppo_cfg, arch, env_fns=env_fns)
+        trainer.load_training_state(path)
+        return trainer

@@ -1,0 +1,21 @@
+# Cheap CartPole-family continual-learning protocol. Not Acrobot. Not AGI.
+architecture:
+  hidden_sizes: [32, 32]
+  activation: tanh
+  shared_backbone: true
+
+ppo:
+  env_id: CartPole-v1
+  num_envs: 2
+  num_steps: 64
+  update_epochs: 2
+  num_minibatches: 2
+  seed: 0
+  device: cpu
+  normalize_obs: true
+  log_interval: 10000
+  checkpoint_dir: checkpoints/v06
+
+evaluation:
+  episodes: 8
+  seed: 70000
