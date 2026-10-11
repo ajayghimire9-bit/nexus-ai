@@ -53,8 +53,12 @@ def sync_cartpole_derived(inner: Any) -> None:
 
 
 def apply_params(env: gym.Env, spec: TaskSpec) -> gym.Env:
+    from nexus.tasks.wrappers import WRAPPER_PARAM_KEYS
+
     inner = env.unwrapped
     for key, value in spec.params.items():
+        if key in WRAPPER_PARAM_KEYS:
+            continue
         if not hasattr(inner, key):
             raise AttributeError(f"{spec.gym_id} has no attribute {key}")
         setattr(inner, key, value)
@@ -63,9 +67,23 @@ def apply_params(env: gym.Env, spec: TaskSpec) -> gym.Env:
     return env
 
 
+def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> gym.Env:
+    """Compatible wrappers: same Box(4) obs and discrete(2) actions."""
+    from nexus.tasks.wrappers import ActionDelayWrapper, ObservationNoiseWrapper
+
+    delay = int(spec.params.get("action_delay", 0) or 0)
+    noise = float(spec.params.get("obs_noise_std", 0.0) or 0.0)
+    if delay > 0:
+        env = ActionDelayWrapper(env, delay)
+    if noise > 0:
+        env = ObservationNoiseWrapper(env, noise, seed=0 if seed is None else int(seed) + 17)
+    return env
+
+
 def make_task_env(spec: TaskSpec, *, seed: int | None = None, render_mode: str | None = None) -> gym.Env:
     env = gym.make(spec.gym_id, render_mode=render_mode)
     apply_params(env, spec)
+    env = apply_wrappers(env, spec, seed=seed)
     if seed is not None:
         env.reset(seed=seed)
         env.action_space.seed(seed)

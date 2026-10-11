@@ -22,7 +22,13 @@ from nexus.tasks.cartpole_family import (
 )
 from nexus.tasks.spec import CARTPOLE_PHYSICS_VERSION, TaskSpec, make_task_env
 from nexus.world.baselines import heuristic_cartpole, run_episodes
-from nexus.world.data import TransitionDataset, assert_disjoint_seeds, collect_transitions, concat_datasets
+from nexus.world.data import (
+    TransitionDataset,
+    assert_disjoint_seeds,
+    collect_transitions,
+    concat_datasets,
+    split_by_episodes,
+)
 from nexus.world.dynamics import WorldModel
 from nexus.world.ensemble import train_ensemble
 from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_EPOCHS, FROZEN_KIND, FROZEN_N_TRAIN, FROZEN_N_VAL, FROZEN_OBJECTIVE, FROZEN_PRIMARY_HORIZON
@@ -124,6 +130,53 @@ class ResidualChangeDetector:
         }
 
 
+class WindowThresholdDetector:
+    """Alarm if rolling mean MAE exceeds source_mean + k * source_std. Residuals only."""
+
+    def __init__(self, *, window: int = 32, k: float = 3.0) -> None:
+        self.window = int(window)
+        self.k = float(k)
+        self.source_mean = 0.0
+        self.source_std = 1.0
+        self.threshold = 1.0
+        self._buf: list[float] = []
+        self.uses_privileged_physics = False
+
+    def fit(self, errors: np.ndarray) -> None:
+        arr = np.asarray(errors, dtype=np.float64).reshape(-1)
+        self.source_mean = float(arr.mean()) if arr.size else 0.0
+        self.source_std = max(float(arr.std(ddof=1)) if arr.size > 1 else 1e-6, 1e-8)
+        self.threshold = self.source_mean + self.k * self.source_std
+        self._buf = []
+
+    def update(self, error: float) -> dict[str, Any]:
+        self._buf.append(float(error))
+        w = self._buf[-self.window :]
+        mean = float(np.mean(w))
+        alarm = bool(len(w) >= self.window and mean > self.threshold)
+        return {
+            "error": float(error),
+            "window_mean": mean,
+            "threshold": self.threshold,
+            "alarm": alarm,
+            "uses_privileged_physics": False,
+        }
+
+    def scan(self, errors: np.ndarray) -> dict[str, Any]:
+        self._buf = []
+        flags = [self.update(float(e)) for e in np.asarray(errors, dtype=np.float64).reshape(-1)]
+        first = next((i for i, r in enumerate(flags) if r["alarm"]), None)
+        return {
+            "n": len(flags),
+            "n_alarm": int(sum(1 for r in flags if r["alarm"])),
+            "first_alarm": first,
+            "alarm_frac": float(np.mean([r["alarm"] for r in flags])) if flags else 0.0,
+            "detection_delay": first,
+            "missed": first is None,
+            "uses_privileged_physics": False,
+        }
+
+
 class AdditiveAdapter(nn.Module):
     """Target-specific residual in normalized next-state. Source trunk is frozen."""
 
@@ -184,6 +237,7 @@ def collect_with_actor(
     base_seed: int,
     actor: Callable[[np.ndarray], int],
     policy_name: str = "custom",
+    on_episode_start: Callable[[int], None] | None = None,
 ) -> TransitionDataset:
     obs_l: list[np.ndarray] = []
     act_l: list[int] = []
@@ -201,6 +255,8 @@ def collect_with_actor(
         env_seed = int(env_seeds[seed_i % len(env_seeds)]) + 1000 * (episode_id // max(len(env_seeds), 1))
         seed_i += 1
         env = make_task_env(spec, seed=env_seed)
+        if on_episode_start is not None:
+            on_episode_start(episode_id)
         obs, _ = env.reset(seed=env_seed)
         done = False
         while not done and interactions < n_transitions:
@@ -239,6 +295,7 @@ def collect_with_actor(
 
 
 def split_train_val(ds: TransitionDataset, *, rng: np.random.Generator, val_frac: float = 0.25) -> tuple[TransitionDataset, TransitionDataset]:
+    """Transition-shuffled split used by V0.8. Prefer ``split_by_episodes`` for new work."""
     n = len(ds)
     if n < 8:
         return ds, ds
@@ -246,6 +303,10 @@ def split_train_val(ds: TransitionDataset, *, rng: np.random.Generator, val_frac
     n_val = min(n_val, n - 4) if n > 8 else max(1, n // 4)
     idx = rng.permutation(n)
     return ds.slice(idx[n_val:]), ds.slice(idx[:n_val])
+
+
+def split_train_val_episodes(ds: TransitionDataset, *, rng: np.random.Generator, val_frac: float = 0.25) -> tuple[TransitionDataset, TransitionDataset]:
+    return split_by_episodes(ds, val_frac=val_frac, rng=rng)
 
 
 def finetune_world_model(wm: WorldModel, train: TransitionDataset, val: TransitionDataset, *, epochs: int, seed: int, lr: float = 5e-4) -> tuple[WorldModel, dict[str, Any]]:
@@ -345,8 +406,18 @@ def plan_h3(spec: TaskSpec, model: Any, *, seed: int, episodes: int) -> dict[str
     )
     row = _eval_mpc(spec, planner, episodes=episodes, seed=seed)
     h_row = run_episodes(spec, act_fn=heuristic_cartpole, episodes=episodes, seed=seed)
+    rets = [float(x) for x in row.get("returns", [])]
+    fail_rate = float(np.mean([r < 500.0 for r in rets])) if rets else None
+    onpol = None
+    tr = row.get("transitions")
+    if tr is not None and len(tr["obs"]):
+        pred, _ = model.step(tr["obs"], tr["action"])
+        onpol = float(np.mean(np.abs(pred - tr["next_obs"])))
     return {
         "mean_return": float(row["mean_return"]),
+        "returns": rets,
+        "fail_rate": fail_rate,
+        "on_policy_mae": onpol,
         "env_interactions": int(row["env_interactions"]),
         "model_states": int(inf.states),
         "heuristic_return": float(h_row["mean_return"]),
@@ -370,11 +441,12 @@ def adapt_method(
     *,
     epochs: int,
     seed: int,
+    episode_disjoint: bool = False,
 ) -> tuple[Any, dict[str, Any]]:
     if method == "frozen" or len(target) == 0:
         return source, {"method": "frozen", "train_n": 0, "val_n": 0}
     rng = np.random.default_rng(seed)
-    tr, va = split_train_val(target, rng=rng)
+    tr, va = split_train_val_episodes(target, rng=rng) if episode_disjoint else split_train_val(target, rng=rng)
     if method == "finetune":
         wm, log = finetune_world_model(source, tr, va, epochs=epochs, seed=seed)
         return wm, {"method": method, "train_n": len(tr), "val_n": len(va), **log}

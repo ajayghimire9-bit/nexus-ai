@@ -317,3 +317,9 @@ Frozen H=3 residual recipe, eval seed **87000**, three new physics tasks, n=10. 
 Branch `cursor/v08-adaptive-world-model`. Write-up: `docs/NEXUS_V08.md`. `pytest` **144 passed**. Artifact `artifacts/v08_adaptation.json` (172 s, n=5). V0.6/V0.7 JSON preserved.
 
 Frozen V0.7 residual+H=3 reused. Confirmation physics unused in V0.6/V0.7; eval seed **94000**; selection on `dev_v08` only. Fine-tune@128 confirmation MAE **0.0166 [0.0144, 0.0188]** vs frozen **0.0348**; scratch **0.0946** and planning **171** vs frozen **500** (paired −329). Frozen/fine-tune/replay H=3 already **500** on confirm — no control gain above ceiling. Page–Hinkley FPR/TPR CIs overlap; seed 3 missed B/C. Return-to-A shared MAE **0.0108** vs snapshot **0.0093** (overlap). Uncertainty collection MAE **worse** than random. Not AGI.
+
+## V0.8.1 — prediction-to-control
+
+Branch `cursor/v081-predictive-adaptation`. Write-up: `docs/NEXUS_V081.md`. `pytest` **150 passed**. Artifact `artifacts/v081_adaptation.json` (n=10, 431 s). Prior JSON preserved.
+
+Non-saturated suite: `obs_noise_std=0.08` (weak force still sat at 500). Frozen confirm H=3 **290 [236, 343]**, fail 0.80. Window detector FPR **0** on clean source; delay 31 / miss 0 on noise and shift B. Fine-tune@128 MAE 0.094 vs frozen 0.101 but return **263 vs 290** (paired −26, CI includes 0). Scratch **−182**. Shared A→B→C→A return 184 vs snapshot 298. MAE≠control. Not AGI.

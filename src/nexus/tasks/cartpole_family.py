@@ -266,6 +266,126 @@ def v08_confirmation_targets() -> tuple[TaskSpec, ...]:
     return tuple(out)
 
 
+# V0.8.1 non-saturation rule (frozen before method ranking):
+# compatible CartPole-v1; obs_noise_std=0.08; unused (g,L,m); length in [0.25,0.9],
+# gravity in [5,16], masspole in [0.04,0.3]. Screening uses frozen H=3 only.
+V081_OBS_NOISE = 0.08
+V081_SCREEN_RETURN_CAP = 400.0
+
+
+def v081_safety_ok(spec: TaskSpec) -> bool:
+    p = spec.params
+    g, length, m = float(p["gravity"]), float(p["length"]), float(p["masspole"])
+    noise = float(p.get("obs_noise_std", 0.0) or 0.0)
+    delay = int(p.get("action_delay", 0) or 0)
+    return (
+        spec.gym_id == "CartPole-v1"
+        and spec.obs_dim == 4
+        and spec.n_actions == 2
+        and 5.0 <= g <= 16.0
+        and 0.25 <= length <= 0.9
+        and 0.04 <= m <= 0.3
+        and 0.0 <= noise <= 0.1
+        and delay in (0, 1)
+    )
+
+
+def v081_sequence_tasks() -> tuple[TaskSpec, TaskSpec, TaskSpec]:
+    a = _cartpole(
+        "cartpole_v081_A",
+        "dev_v081",
+        "V0.8.1 sequence A: default physics, observation noise.",
+        gravity=9.8,
+        length=0.5,
+        masspole=0.1,
+        obs_noise_std=V081_OBS_NOISE,
+    )
+    b = _cartpole(
+        "cartpole_v081_B",
+        "dev_v081",
+        "V0.8.1 sequence B: unused physics, observation noise.",
+        gravity=13.2,
+        length=0.4,
+        masspole=0.22,
+        obs_noise_std=V081_OBS_NOISE,
+    )
+    c = _cartpole(
+        "cartpole_v081_C",
+        "dev_v081",
+        "V0.8.1 sequence C: unused physics, observation noise.",
+        gravity=7.2,
+        length=0.75,
+        masspole=0.08,
+        obs_noise_std=V081_OBS_NOISE,
+    )
+    return a, b, c
+
+
+def v081_development_target() -> TaskSpec:
+    return _cartpole(
+        "cartpole_v081_dev",
+        "dev_v081",
+        "V0.8.1 development target for method selection. Observation noise.",
+        gravity=6.4,
+        length=0.58,
+        masspole=0.24,
+        obs_noise_std=V081_OBS_NOISE,
+    )
+
+
+def v081_noise_probe() -> TaskSpec:
+    return _cartpole(
+        "cartpole_v081_noise",
+        "dev_v081",
+        "Source physics plus observation noise. Detector noise probe.",
+        gravity=9.8,
+        length=0.5,
+        masspole=0.1,
+        obs_noise_std=V081_OBS_NOISE,
+    )
+
+
+_V081_CONFIRMATION_RULE = {
+    "generator": "obs_noise_plus_frozen_offsets_v081",
+    "physics_version": CARTPOLE_PHYSICS_VERSION,
+    "obs_noise_std": V081_OBS_NOISE,
+    "base": {"gravity": 9.8, "length": 0.5, "masspole": 0.1},
+    "offsets": (
+        {"gravity": -2.8, "length": 0.14, "masspole": 0.09},
+        {"gravity": 3.6, "length": -0.16, "masspole": -0.03},
+        {"gravity": -1.1, "length": 0.21, "masspole": 0.12},
+    ),
+}
+
+
+def v081_confirmation_rule() -> dict:
+    return {
+        "generator": _V081_CONFIRMATION_RULE["generator"],
+        "physics_version": _V081_CONFIRMATION_RULE["physics_version"],
+        "obs_noise_std": _V081_CONFIRMATION_RULE["obs_noise_std"],
+        "base": dict(_V081_CONFIRMATION_RULE["base"]),
+        "offsets": [dict(o) for o in _V081_CONFIRMATION_RULE["offsets"]],
+    }
+
+
+def v081_confirmation_targets() -> tuple[TaskSpec, ...]:
+    out: list[TaskSpec] = []
+    base = _V081_CONFIRMATION_RULE["base"]
+    noise = float(_V081_CONFIRMATION_RULE["obs_noise_std"])
+    for i, off in enumerate(_V081_CONFIRMATION_RULE["offsets"]):
+        params = {k: float(base[k]) + float(off[k]) for k in base}
+        out.append(
+            _cartpole(
+                f"cartpole_v081_confirm_{i}",
+                "confirm_v081",
+                f"V0.8.1 frozen confirmation offset {i}. obs_noise={noise}. Not used to select methods.",
+                obs_noise_std=noise,
+                **params,
+            )
+        )
+    return tuple(out)
+
+
 def confirmation_targets() -> tuple[TaskSpec, ...]:
     """Pre-registered V0.6.4 confirmation suite. Not used to tune the selector."""
     out: list[TaskSpec] = []

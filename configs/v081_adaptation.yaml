@@ -1,0 +1,19 @@
+# V0.8.1 prediction-to-control. Selection uses development returns only.
+parent_commit: 3ca8435
+non_saturation_rule: obs_noise_std=0.08 plus unused CartPole physics
+screen_return_cap: 400
+episode_disjoint_splits: true
+source_collect_seed: 97000
+confirm_eval_seed: 101000
+dev_eval_seed: 100000
+n_model_seeds: 10
+adapt_epochs: 12
+budgets: [0, 64, 128, 256, 512]
+eval_episodes: 2
+methods: [frozen, finetune, scratch, replay, adapter]
+selection_split: dev_v081
+selection_metric: dev_plan_return
+retuned_on_confirmation: false
+planner_uses_simulator: false
+inference_uses_privileged_physics: false
+is_agi: false

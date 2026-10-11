@@ -136,6 +136,32 @@ def collect_transitions(
     )
 
 
+def split_by_episodes(
+    ds: TransitionDataset,
+    *,
+    val_frac: float = 0.25,
+    rng: np.random.Generator | None = None,
+) -> tuple[TransitionDataset, TransitionDataset]:
+    """Episode-disjoint train/val. Transitions from one episode never appear in both."""
+    eids = np.unique(ds.episode_id)
+    if eids.size == 0:
+        return ds, ds
+    if eids.size == 1:
+        return ds, ds
+    if rng is None:
+        order = np.sort(eids)
+    else:
+        order = rng.permutation(eids)
+    n_val = max(1, int(round(float(eids.size) * float(val_frac))))
+    n_val = min(n_val, int(eids.size) - 1)
+    val_set = set(int(x) for x in order[:n_val])
+    val_idx = np.array([i for i, e in enumerate(ds.episode_id) if int(e) in val_set], dtype=np.int64)
+    tr_idx = np.array([i for i, e in enumerate(ds.episode_id) if int(e) not in val_set], dtype=np.int64)
+    if tr_idx.size == 0 or val_idx.size == 0:
+        return ds, ds
+    return ds.slice(tr_idx), ds.slice(val_idx)
+
+
 def concat_datasets(*parts: TransitionDataset, task_id: str | None = None) -> TransitionDataset:
     nonempty = [p for p in parts if len(p)]
     if not nonempty:
