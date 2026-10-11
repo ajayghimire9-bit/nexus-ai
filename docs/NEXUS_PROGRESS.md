@@ -305,3 +305,9 @@ Val-only selection froze **ridge** (test MAE 1.05e-4 vs residual 0.0037, n=10). 
 Branch `cursor/v072-planning-reliability`. Write-up: `docs/NEXUS_V072.md`. `pytest` **130 passed**. Artifact `artifacts/v072_world_model.json`. Prior JSON preserved.
 
 MPC now uses a **persistent RNG** with episode reset. V0.7.1 ridge return **9** was from re-sampling the same candidates every step. With the fix, ridge H=6 **446 [387, 505]** vs greedy **317**; residual H=6 − greedy **+78 [47, 108]**. Horizon 3 at budget 48 is strongest (residual **500**); H=10–20 collapse from **too few candidates**, not terminate-model isolation (always-live vs learned CI includes 0). Uncertainty penalty **−5.6 [−33, +22]**. Not AGI.
+
+## V0.7 final confirmation — track closed
+
+Branch `cursor/v073-planning-final`. Write-up: `docs/NEXUS_V07_FINAL.md`. `pytest` **134 passed**. Artifact `artifacts/v073_world_model.json`. V0.6 and earlier V0.7 JSON preserved.
+
+Frozen H=3 residual recipe, eval seed **87000**, three new physics tasks, n=10. Confirm H=3 **486 [485, 487]** vs greedy **260**; paired **+225 [206, 245]**. Source H=3 **500**. H=6 worse than H=3. Heuristic still 500; hardest confirm (g=13) H=3 **459**. Not retuned. Not V0.8. Not AGI.

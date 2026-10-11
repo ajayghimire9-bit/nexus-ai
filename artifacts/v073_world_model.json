@@ -1,0 +1,2346 @@
+{
+  "protocol": {
+    "code_version": "v0.7.3",
+    "parent_commit": "6f0e3d3",
+    "physics_version": "cartpole_derived_v1",
+    "frozen_from": "v0.7.2 residual H=3 recipe",
+    "kind": "residual",
+    "n_train": 1024,
+    "n_val": 256,
+    "epochs": 20,
+    "objective": "both",
+    "plan_budget": 48,
+    "horizons": [
+      1,
+      3,
+      6
+    ],
+    "candidates": {
+      "1": 48,
+      "3": 16,
+      "6": 8
+    },
+    "primary_horizon": 3,
+    "confirm_eval_seed": 87000,
+    "n_model_seeds": 10,
+    "confirmation_tasks": [
+      "cartpole_v073_0",
+      "cartpole_v073_1",
+      "cartpole_v073_2"
+    ],
+    "confirmation_params": [
+      {
+        "gravity": 7.500000000000001,
+        "length": 0.42,
+        "masspole": 0.13
+      },
+      {
+        "gravity": 10.5,
+        "length": 0.58,
+        "masspole": 0.09000000000000001
+      },
+      {
+        "gravity": 13.0,
+        "length": 0.35,
+        "masspole": 0.18
+      }
+    ],
+    "retuned_on_confirmation": false,
+    "planner_uses_simulator": false,
+    "planner_uses_privileged_params": false,
+    "v08_not_implemented": true,
+    "is_agi": false
+  },
+  "source": {
+    "greedy": {
+      "n": 10,
+      "mean": 270.475,
+      "lo": 251.5018499544093,
+      "hi": 289.44815004559075,
+      "se": 8.387776324310673,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "h1": {
+      "n": 10,
+      "mean": 269.25,
+      "lo": 246.07538344869542,
+      "hi": 292.42461655130455,
+      "se": 10.24518857263686,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "h3": {
+      "n": 10,
+      "mean": 500.0,
+      "lo": 500.0,
+      "hi": 500.0,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "h6": {
+      "n": 10,
+      "mean": 413.7,
+      "lo": 385.69384761056955,
+      "hi": 441.70615238943043,
+      "se": 12.38114606075616,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "heuristic": {
+      "n": 10,
+      "mean": 500.0,
+      "lo": 500.0,
+      "hi": 500.0,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    }
+  },
+  "confirmation_mean": {
+    "greedy": {
+      "n": 10,
+      "mean": 260.46666666666664,
+      "lo": 241.4932637994949,
+      "hi": 279.44006953383837,
+      "se": 8.387888093356198,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "h1": {
+      "n": 10,
+      "mean": 266.75,
+      "lo": 249.11468574186065,
+      "hi": 284.3853142581394,
+      "se": 7.796336984146486,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "h3": {
+      "n": 10,
+      "mean": 485.9083333333333,
+      "lo": 484.9825486119873,
+      "hi": 486.8341180546793,
+      "se": 0.4092770651397171,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "h6": {
+      "n": 10,
+      "mean": 368.3,
+      "lo": 345.4985425748704,
+      "hi": 391.10145742512964,
+      "se": 10.080219905008684,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "heuristic": {
+      "n": 10,
+      "mean": 500.0,
+      "lo": 500.0,
+      "hi": 500.0,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    }
+  },
+  "confirmation_by_task": {
+    "cartpole_v073_0": {
+      "greedy": {
+        "n": 10,
+        "mean": 333.7,
+        "lo": 297.65627623898996,
+        "hi": 369.74372376101,
+        "se": 15.934449054381096,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h1": {
+        "n": 10,
+        "mean": 359.275,
+        "lo": 332.0578649661192,
+        "hi": 386.49213503388074,
+        "se": 12.032332022051621,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h3": {
+        "n": 10,
+        "mean": 500.0,
+        "lo": 500.0,
+        "hi": 500.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h6": {
+        "n": 10,
+        "mean": 392.95,
+        "lo": 366.8350546179013,
+        "hi": 419.0649453820987,
+        "se": 11.545068692351341,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "heuristic": {
+        "n": 10,
+        "mean": 500.0,
+        "lo": 500.0,
+        "hi": 500.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    },
+    "cartpole_v073_1": {
+      "greedy": {
+        "n": 10,
+        "mean": 285.275,
+        "lo": 254.75156454046333,
+        "hi": 315.7984354595366,
+        "se": 13.494003297761564,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h1": {
+        "n": 10,
+        "mean": 284.525,
+        "lo": 255.92445585915362,
+        "hi": 313.12554414084633,
+        "se": 12.643918718322874,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h3": {
+        "n": 10,
+        "mean": 498.375,
+        "lo": 496.4933016414685,
+        "hi": 500.2566983585315,
+        "se": 0.8318737217203636,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h6": {
+        "n": 10,
+        "mean": 391.8,
+        "lo": 364.2879358342563,
+        "hi": 419.3120641657437,
+        "se": 12.16271625364444,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "heuristic": {
+        "n": 10,
+        "mean": 500.0,
+        "lo": 500.0,
+        "hi": 500.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    },
+    "cartpole_v073_2": {
+      "greedy": {
+        "n": 10,
+        "mean": 162.425,
+        "lo": 151.1814687765587,
+        "hi": 173.66853122344133,
+        "se": 4.970615041309163,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h1": {
+        "n": 10,
+        "mean": 156.45,
+        "lo": 151.09328236603793,
+        "hi": 161.80671763396205,
+        "se": 2.3681333483475027,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h3": {
+        "n": 10,
+        "mean": 459.35,
+        "lo": 458.42193656466816,
+        "hi": 460.2780634353319,
+        "se": 0.41028445416970566,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "h6": {
+        "n": 10,
+        "mean": 320.15,
+        "lo": 278.1786897275055,
+        "hi": 362.12131027249444,
+        "se": 18.55495591180127,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "heuristic": {
+        "n": 10,
+        "mean": 500.0,
+        "lo": 500.0,
+        "hi": 500.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    }
+  },
+  "paired_confirmation": {
+    "h3_minus_greedy": {
+      "per_seed_mean_delta": [
+        227.66666666666669,
+        184.5,
+        247.08333333333334,
+        202.25,
+        195.5,
+        210.08333333333331,
+        261.0833333333333,
+        263.16666666666663,
+        230.25000000000003,
+        232.83333333333331
+      ],
+      "across_seeds": {
+        "n": 10,
+        "mean": 225.44166666666666,
+        "lo": 206.08422586754787,
+        "hi": 244.79910746578545,
+        "se": 8.557666135773117,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "by_task": {
+        "confirm": {
+          "n": 10,
+          "mean": 225.44166666666666,
+          "lo": 206.08422586754787,
+          "hi": 244.79910746578545,
+          "se": 8.557666135773117,
+          "interval": "student_t_95",
+          "df": 9
+        }
+      },
+      "replication_unit": "source_training_seed",
+      "n_seeds": 10
+    },
+    "h3_minus_h1": {
+      "per_seed_mean_delta": [
+        217.66666666666669,
+        199.91666666666669,
+        228.25,
+        195.0,
+        175.75,
+        239.33333333333331,
+        223.33333333333331,
+        261.3333333333333,
+        234.41666666666669,
+        216.58333333333331
+      ],
+      "across_seeds": {
+        "n": 10,
+        "mean": 219.15833333333336,
+        "lo": 201.6927359948749,
+        "hi": 236.6239306717918,
+        "se": 7.7213073998490005,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "by_task": {
+        "confirm": {
+          "n": 10,
+          "mean": 219.15833333333336,
+          "lo": 201.6927359948749,
+          "hi": 236.6239306717918,
+          "se": 7.7213073998490005,
+          "interval": "student_t_95",
+          "df": 9
+        }
+      },
+      "replication_unit": "source_training_seed",
+      "n_seeds": 10
+    },
+    "h6_minus_h3": {
+      "per_seed_mean_delta": [
+        -78.91666666666669,
+        -122.41666666666669,
+        -108.91666666666669,
+        -154.16666666666663,
+        -74.66666666666663,
+        -83.5,
+        -136.91666666666663,
+        -143.5,
+        -163.08333333333337,
+        -110.0
+      ],
+      "across_seeds": {
+        "n": 10,
+        "mean": -117.60833333333335,
+        "lo": -140.36444754766777,
+        "hi": -94.85221911899892,
+        "se": 10.060174276894088,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "by_task": {
+        "confirm": {
+          "n": 10,
+          "mean": -117.60833333333335,
+          "lo": -140.36444754766777,
+          "hi": -94.85221911899892,
+          "se": 10.060174276894088,
+          "interval": "student_t_95",
+          "df": 9
+        }
+      },
+      "replication_unit": "source_training_seed",
+      "n_seeds": 10
+    },
+    "h3_minus_heuristic": {
+      "per_seed_mean_delta": [
+        -13.5,
+        -16.083333333333314,
+        -13.5,
+        -13.166666666666686,
+        -13.166666666666686,
+        -16.166666666666686,
+        -13.416666666666686,
+        -13.166666666666686,
+        -15.583333333333314,
+        -13.166666666666686
+      ],
+      "across_seeds": {
+        "n": 10,
+        "mean": -14.091666666666674,
+        "lo": -15.017451388012715,
+        "hi": -13.165881945320633,
+        "se": 0.4092770651397171,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "by_task": {
+        "confirm": {
+          "n": 10,
+          "mean": -14.091666666666674,
+          "lo": -15.017451388012715,
+          "hi": -13.165881945320633,
+          "se": 0.4092770651397171,
+          "interval": "student_t_95",
+          "df": 9
+        }
+      },
+      "replication_unit": "source_training_seed",
+      "n_seeds": 10
+    }
+  },
+  "paired_source": {
+    "h3_minus_greedy": {
+      "per_seed_mean_delta": [
+        256.75,
+        241.25,
+        220.75,
+        187.75,
+        195.25,
+        207.25,
+        245.5,
+        263.5,
+        252.5,
+        224.75
+      ],
+      "across_seeds": {
+        "n": 10,
+        "mean": 229.525,
+        "lo": 210.55184995440925,
+        "hi": 248.49815004559076,
+        "se": 8.387776324310673,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "by_task": {
+        "src": {
+          "n": 10,
+          "mean": 229.525,
+          "lo": 210.55184995440925,
+          "hi": 248.49815004559076,
+          "se": 8.387776324310673,
+          "interval": "student_t_95",
+          "df": 9
+        }
+      },
+      "replication_unit": "source_training_seed",
+      "n_seeds": 10
+    }
+  },
+  "costs": {
+    "mean_learning_env_steps": 1280.0,
+    "n_train": 1024,
+    "n_val": 256,
+    "mean_model_states": 872798.4
+  },
+  "per_seed": [
+    {
+      "model_seed": 0,
+      "init_seed": 5,
+      "collect_seed": 80000,
+      "val_loss": 0.008664677385240793,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 243.25,
+            "h1": 247.5,
+            "h3": 500.0,
+            "h6": 421.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              257.0,
+              229.5
+            ],
+            "h1": [
+              233.0,
+              262.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              343.5,
+              500.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 973,
+            "h1": 990,
+            "h3": 2000,
+            "h6": 1687,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 305.75,
+            "h1": 362.5,
+            "h3": 500.0,
+            "h6": 401.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              356.5,
+              255.0
+            ],
+            "h1": [
+              420.0,
+              305.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              357.0,
+              445.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1223,
+            "h1": 1450,
+            "h3": 2000,
+            "h6": 1604,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 320.75,
+            "h1": 290.0,
+            "h3": 500.0,
+            "h6": 422.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              321.0,
+              320.5
+            ],
+            "h1": [
+              307.5,
+              272.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              345.5,
+              500.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1283,
+            "h1": 1160,
+            "h3": 2000,
+            "h6": 1691,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 150.0,
+            "h1": 154.0,
+            "h3": 459.5,
+            "h6": 399.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              163.5,
+              136.5
+            ],
+            "h1": [
+              151.5,
+              156.5
+            ],
+            "h3": [
+              500.0,
+              419.0
+            ],
+            "h6": [
+              298.0,
+              500.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 600,
+            "h1": 616,
+            "h3": 1838,
+            "h6": 1596,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 894336
+    },
+    {
+      "model_seed": 1,
+      "init_seed": 24,
+      "collect_seed": 80023,
+      "val_loss": 0.006832595565356314,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 258.75,
+            "h1": 267.75,
+            "h3": 500.0,
+            "h6": 386.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              279.0,
+              238.5
+            ],
+            "h1": [
+              263.5,
+              272.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              346.0,
+              427.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1035,
+            "h1": 1071,
+            "h3": 2000,
+            "h6": 1546,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 381.75,
+            "h1": 370.0,
+            "h3": 500.0,
+            "h6": 387.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              428.5,
+              335.0
+            ],
+            "h1": [
+              420.0,
+              320.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              386.5,
+              389.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1527,
+            "h1": 1480,
+            "h3": 2000,
+            "h6": 1551,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 339.25,
+            "h1": 321.75,
+            "h3": 494.25,
+            "h6": 376.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              356.5,
+              322.0
+            ],
+            "h1": [
+              341.5,
+              302.0
+            ],
+            "h3": [
+              500.0,
+              488.5
+            ],
+            "h6": [
+              352.0,
+              400.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1357,
+            "h1": 1287,
+            "h3": 1977,
+            "h6": 1504,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 177.25,
+            "h1": 160.25,
+            "h3": 457.5,
+            "h6": 320.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              186.0,
+              168.5
+            ],
+            "h1": [
+              163.5,
+              157.0
+            ],
+            "h3": [
+              500.0,
+              415.0
+            ],
+            "h6": [
+              387.5,
+              254.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 709,
+            "h1": 641,
+            "h3": 1830,
+            "h6": 1283,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 872160
+    },
+    {
+      "model_seed": 2,
+      "init_seed": 43,
+      "collect_seed": 80046,
+      "val_loss": 0.010819551767781377,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 279.25,
+            "h1": 253.25,
+            "h3": 500.0,
+            "h6": 342.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              323.5,
+              235.0
+            ],
+            "h1": [
+              235.0,
+              271.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              345.0,
+              339.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1117,
+            "h1": 1013,
+            "h3": 2000,
+            "h6": 1369,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 265.0,
+            "h1": 321.25,
+            "h3": 500.0,
+            "h6": 418.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              253.0,
+              277.0
+            ],
+            "h1": [
+              311.0,
+              331.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              458.5,
+              378.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1060,
+            "h1": 1285,
+            "h3": 2000,
+            "h6": 1674,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 304.0,
+            "h1": 301.0,
+            "h3": 500.0,
+            "h6": 398.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              307.0,
+              301.0
+            ],
+            "h1": [
+              328.5,
+              273.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              297.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1216,
+            "h1": 1204,
+            "h3": 2000,
+            "h6": 1594,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 149.25,
+            "h1": 152.5,
+            "h3": 459.5,
+            "h6": 315.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              145.0,
+              153.5
+            ],
+            "h1": [
+              150.0,
+              155.0
+            ],
+            "h3": [
+              500.0,
+              419.0
+            ],
+            "h6": [
+              403.5,
+              228.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 597,
+            "h1": 610,
+            "h3": 1838,
+            "h6": 1263,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 856800
+    },
+    {
+      "model_seed": 3,
+      "init_seed": 62,
+      "collect_seed": 80069,
+      "val_loss": 0.017774651292711496,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 312.25,
+            "h1": 320.0,
+            "h3": 500.0,
+            "h6": 423.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              323.5,
+              301.0
+            ],
+            "h1": [
+              358.5,
+              281.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              346.5,
+              500.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1249,
+            "h1": 1280,
+            "h3": 2000,
+            "h6": 1693,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 370.25,
+            "h1": 376.25,
+            "h3": 500.0,
+            "h6": 441.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              401.0,
+              339.5
+            ],
+            "h1": [
+              447.5,
+              305.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              382.0,
+              500.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1481,
+            "h1": 1505,
+            "h3": 2000,
+            "h6": 1764,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 307.25,
+            "h1": 323.0,
+            "h3": 500.0,
+            "h6": 305.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              340.5,
+              274.0
+            ],
+            "h1": [
+              340.5,
+              305.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              266.5,
+              344.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1229,
+            "h1": 1292,
+            "h3": 2000,
+            "h6": 1221,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 176.25,
+            "h1": 176.25,
+            "h3": 460.5,
+            "h6": 251.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              166.5,
+              186.0
+            ],
+            "h1": [
+              166.0,
+              186.5
+            ],
+            "h3": [
+              500.0,
+              421.0
+            ],
+            "h6": [
+              341.0,
+              162.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 705,
+            "h1": 705,
+            "h3": 1842,
+            "h6": 1007,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 878832
+    },
+    {
+      "model_seed": 4,
+      "init_seed": 81,
+      "collect_seed": 80092,
+      "val_loss": 0.011599523480981588,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 304.75,
+            "h1": 335.75,
+            "h3": 500.0,
+            "h6": 408.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              338.0,
+              271.5
+            ],
+            "h1": [
+              339.0,
+              332.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              316.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1219,
+            "h1": 1343,
+            "h3": 2000,
+            "h6": 1633,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 414.75,
+            "h1": 451.75,
+            "h3": 500.0,
+            "h6": 439.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              420.5,
+              409.0
+            ],
+            "h1": [
+              484.0,
+              419.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              379.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1659,
+            "h1": 1807,
+            "h3": 2000,
+            "h6": 1758,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 313.25,
+            "h1": 329.0,
+            "h3": 500.0,
+            "h6": 439.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              311.5,
+              315.0
+            ],
+            "h1": [
+              321.5,
+              336.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              379.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1253,
+            "h1": 1316,
+            "h3": 2000,
+            "h6": 1758,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 146.0,
+            "h1": 152.5,
+            "h3": 460.5,
+            "h6": 357.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              141.0,
+              151.0
+            ],
+            "h1": [
+              150.0,
+              155.0
+            ],
+            "h3": [
+              500.0,
+              421.0
+            ],
+            "h6": [
+              500.0,
+              215.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 584,
+            "h1": 610,
+            "h3": 1842,
+            "h6": 1430,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 935856
+    },
+    {
+      "model_seed": 5,
+      "init_seed": 100,
+      "collect_seed": 80115,
+      "val_loss": 0.008506925543770194,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 292.75,
+            "h1": 238.75,
+            "h3": 500.0,
+            "h6": 429.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              335.0,
+              250.5
+            ],
+            "h1": [
+              218.5,
+              259.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              358.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1171,
+            "h1": 955,
+            "h3": 2000,
+            "h6": 1716,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 328.0,
+            "h1": 328.75,
+            "h3": 500.0,
+            "h6": 380.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              367.5,
+              288.5
+            ],
+            "h1": [
+              312.0,
+              345.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              445.5,
+              315.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1312,
+            "h1": 1315,
+            "h3": 2000,
+            "h6": 1521,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 305.5,
+            "h1": 249.75,
+            "h3": 494.25,
+            "h6": 411.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              339.5,
+              271.5
+            ],
+            "h1": [
+              262.0,
+              237.5
+            ],
+            "h3": [
+              500.0,
+              488.5
+            ],
+            "h6": [
+              500.0,
+              323.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1222,
+            "h1": 999,
+            "h3": 1977,
+            "h6": 1647,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 187.75,
+            "h1": 155.0,
+            "h3": 457.25,
+            "h6": 409.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              209.0,
+              166.5
+            ],
+            "h1": [
+              152.5,
+              157.5
+            ],
+            "h3": [
+              500.0,
+              414.5
+            ],
+            "h6": [
+              500.0,
+              318.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 751,
+            "h1": 620,
+            "h3": 1829,
+            "h6": 1636,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 874320
+    },
+    {
+      "model_seed": 6,
+      "init_seed": 119,
+      "collect_seed": 80138,
+      "val_loss": 0.012704573338851333,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 254.5,
+            "h1": 254.75,
+            "h3": 500.0,
+            "h6": 462.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              225.0,
+              284.0
+            ],
+            "h1": [
+              264.0,
+              245.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              425.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1018,
+            "h1": 1019,
+            "h3": 2000,
+            "h6": 1851,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 266.5,
+            "h1": 365.0,
+            "h3": 500.0,
+            "h6": 389.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              256.5,
+              276.5
+            ],
+            "h1": [
+              456.0,
+              274.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              462.5,
+              316.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1066,
+            "h1": 1460,
+            "h3": 2000,
+            "h6": 1558,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 256.0,
+            "h1": 270.0,
+            "h3": 500.0,
+            "h6": 398.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              267.5,
+              244.5
+            ],
+            "h1": [
+              249.5,
+              290.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              296.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1024,
+            "h1": 1080,
+            "h3": 2000,
+            "h6": 1592,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 154.0,
+            "h1": 154.75,
+            "h3": 459.75,
+            "h6": 261.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              149.0,
+              159.0
+            ],
+            "h1": [
+              157.0,
+              152.5
+            ],
+            "h3": [
+              500.0,
+              419.5
+            ],
+            "h6": [
+              386.0,
+              137.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 616,
+            "h1": 619,
+            "h3": 1839,
+            "h6": 1046,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 867072
+    },
+    {
+      "model_seed": 7,
+      "init_seed": 138,
+      "collect_seed": 80161,
+      "val_loss": 0.006708654691465199,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 236.5,
+            "h1": 270.0,
+            "h3": 500.0,
+            "h6": 410.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              252.5,
+              220.5
+            ],
+            "h1": [
+              323.5,
+              216.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              349.5,
+              472.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 946,
+            "h1": 1080,
+            "h3": 2000,
+            "h6": 1643,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 314.0,
+            "h1": 323.25,
+            "h3": 500.0,
+            "h6": 341.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              336.5,
+              291.5
+            ],
+            "h1": [
+              297.5,
+              349.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              349.5,
+              334.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1256,
+            "h1": 1293,
+            "h3": 2000,
+            "h6": 1367,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 207.25,
+            "h1": 204.0,
+            "h3": 500.0,
+            "h6": 423.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              208.5,
+              206.0
+            ],
+            "h1": [
+              209.0,
+              199.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              347.0,
+              500.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 829,
+            "h1": 816,
+            "h3": 2000,
+            "h6": 1694,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 149.75,
+            "h1": 149.25,
+            "h3": 460.5,
+            "h6": 264.75,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              145.0,
+              154.5
+            ],
+            "h1": [
+              145.0,
+              153.5
+            ],
+            "h3": [
+              500.0,
+              421.0
+            ],
+            "h6": [
+              278.5,
+              251.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 599,
+            "h1": 597,
+            "h3": 1842,
+            "h6": 1059,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 834768
+    },
+    {
+      "model_seed": 8,
+      "init_seed": 157,
+      "collect_seed": 80184,
+      "val_loss": 0.005997447791742161,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 247.5,
+            "h1": 250.5,
+            "h3": 500.0,
+            "h6": 475.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              264.0,
+              231.0
+            ],
+            "h1": [
+              233.0,
+              268.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              500.0,
+              450.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 990,
+            "h1": 1002,
+            "h3": 2000,
+            "h6": 1901,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 314.5,
+            "h1": 341.75,
+            "h3": 500.0,
+            "h6": 330.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              367.5,
+              261.5
+            ],
+            "h1": [
+              364.5,
+              319.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              352.5,
+              308.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1258,
+            "h1": 1367,
+            "h3": 2000,
+            "h6": 1321,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 268.75,
+            "h1": 253.25,
+            "h3": 495.25,
+            "h6": 368.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              248.5,
+              289.0
+            ],
+            "h1": [
+              270.5,
+              236.0
+            ],
+            "h3": [
+              500.0,
+              490.5
+            ],
+            "h6": [
+              411.0,
+              325.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1075,
+            "h1": 1013,
+            "h3": 1981,
+            "h6": 1473,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 179.25,
+            "h1": 155.0,
+            "h3": 458.0,
+            "h6": 265.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              215.0,
+              143.5
+            ],
+            "h1": [
+              153.5,
+              156.5
+            ],
+            "h3": [
+              500.0,
+              416.0
+            ],
+            "h6": [
+              357.5,
+              173.5
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 717,
+            "h1": 620,
+            "h3": 1832,
+            "h6": 1062,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 843456
+    },
+    {
+      "model_seed": 9,
+      "init_seed": 176,
+      "collect_seed": 80207,
+      "val_loss": 0.006489272229373455,
+      "learning_env_steps": 1280,
+      "targets": {
+        "cartpole_default": {
+          "returns": {
+            "greedy": 275.25,
+            "h1": 254.25,
+            "h3": 500.0,
+            "h6": 377.25,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              262.5,
+              288.0
+            ],
+            "h1": [
+              237.0,
+              271.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              339.5,
+              415.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1101,
+            "h1": 1017,
+            "h3": 2000,
+            "h6": 1509,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 9.8,
+            "length": 0.5,
+            "masspole": 0.1
+          },
+          "split": "source"
+        },
+        "cartpole_v073_0": {
+          "returns": {
+            "greedy": 376.5,
+            "h1": 352.25,
+            "h3": 500.0,
+            "h6": 400.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              337.0,
+              416.0
+            ],
+            "h1": [
+              394.5,
+              310.0
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              349.0,
+              451.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 1506,
+            "h1": 1409,
+            "h3": 2000,
+            "h6": 1600,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 7.500000000000001,
+            "length": 0.42,
+            "masspole": 0.13
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_1": {
+          "returns": {
+            "greedy": 230.75,
+            "h1": 303.5,
+            "h3": 500.0,
+            "h6": 374.5,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              239.0,
+              222.5
+            ],
+            "h1": [
+              328.5,
+              278.5
+            ],
+            "h3": [
+              500.0,
+              500.0
+            ],
+            "h6": [
+              345.0,
+              404.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 923,
+            "h1": 1214,
+            "h3": 2000,
+            "h6": 1498,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 10.5,
+            "length": 0.58,
+            "masspole": 0.09000000000000001
+          },
+          "split": "confirm_v073"
+        },
+        "cartpole_v073_2": {
+          "returns": {
+            "greedy": 154.75,
+            "h1": 155.0,
+            "h3": 460.5,
+            "h6": 356.0,
+            "heuristic": 500.0
+          },
+          "per_eval": {
+            "greedy": [
+              151.5,
+              158.0
+            ],
+            "h1": [
+              153.5,
+              156.5
+            ],
+            "h3": [
+              500.0,
+              421.0
+            ],
+            "h6": [
+              444.0,
+              268.0
+            ],
+            "heuristic": [
+              500.0,
+              500.0
+            ]
+          },
+          "eval_env_steps": {
+            "greedy": 619,
+            "h1": 620,
+            "h3": 1842,
+            "h6": 1424,
+            "heuristic": 2000
+          },
+          "physics": {
+            "gravity": 13.0,
+            "length": 0.35,
+            "masspole": 0.18
+          },
+          "split": "confirm_v073"
+        }
+      },
+      "model_states": 870384
+    }
+  ],
+  "wall_clock_s": 113.56012320900118,
+  "is_agi": false,
+  "caveat": "V0.7 confirmation. Frozen H=3. Not V0.8. Not AGI."
+}
