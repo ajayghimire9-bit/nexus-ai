@@ -74,6 +74,7 @@ class MetaConfig:
     max_experiments: int = 4
     max_timesteps: int = 4_096
     train_timesteps: int = 512
+    explore_timesteps: int = 128
     n_train_seeds: int = 1
     eval_episodes: int = 4
     holdout_eval_seed: int = 80_000

@@ -125,6 +125,7 @@ def _tiny_meta_cfg(tmp_path, *, seed: int = 0, n_seeds: int = 1, max_exp: int = 
     cfg.meta.max_experiments = max_exp
     cfg.meta.max_timesteps = 10_000
     cfg.meta.train_timesteps = train_ts
+    cfg.meta.explore_timesteps = train_ts
     cfg.meta.n_train_seeds = n_seeds
     cfg.meta.eval_episodes = 2
     cfg.meta.holdout_eval_seed = 80_000

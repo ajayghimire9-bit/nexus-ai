@@ -3,11 +3,13 @@ from __future__ import annotations
 import math
 import random
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
 
 from nexus.evolution.mutate import WIDTHS, crossover_spec, mutate_spec, random_spec
+from nexus.meta.schedule import ranking_cost, research_value
 from nexus.meta.schema import ACTION_KINDS, ExperimentAction, Proposal
 from nexus.nn.expr import canonical_key, crossover_expr, expr_to_str, mutate_expr, random_expr, register_expr
 from nexus.nn.spec import ArchitectureSpec
@@ -56,6 +58,21 @@ class ResearchController(ABC):
     @abstractmethod
     def propose(self, state: dict[str, Any], limits: dict[str, Any], rng: random.Random) -> Proposal:
         raise NotImplementedError
+
+    def select_from_candidates(
+        self,
+        candidates: list[ExperimentAction],
+        state: dict[str, Any],
+        limits: dict[str, Any],
+        rng: random.Random,
+    ) -> Proposal | None:
+        """Rank only pre-filtered valid actions. Returns None if the set is empty."""
+        if not candidates:
+            return None
+        return self.propose(state, limits, rng)
+
+    def predicted_kind_value(self, context: np.ndarray, kind: str) -> float:
+        return 0.0
 
     def update(self, context: np.ndarray, kind: str, reward: float) -> None:
         return None
@@ -146,6 +163,58 @@ def _fill_action(
         assessment_eval_seed=assessment,
         notes=notes,
         expr=expr,
+        )
+
+
+def _rank_candidates(
+    *,
+    name: str,
+    candidates: list[ExperimentAction],
+    context: np.ndarray,
+    limits: dict[str, Any],
+    predicted: Callable[[str], float],
+    rng: random.Random,
+    epsilon: float | None,
+    reason: str,
+) -> Proposal:
+    confirm = int(limits.get("train_timesteps", 1))
+    scored: list[tuple[float, float, ExperimentAction]] = []
+    for action in candidates:
+        pred = float(predicted(action.kind))
+        cost = ranking_cost(action, confirm_timesteps=confirm)
+        value = research_value(pred, cost, confirm_timesteps=confirm)
+        scored.append((value, pred, action))
+    if epsilon is not None and rng.random() < epsilon:
+        action = rng.choice(candidates)
+        pred = float(predicted(action.kind))
+        cost = ranking_cost(action, confirm_timesteps=confirm)
+        value = research_value(pred, cost, confirm_timesteps=confirm)
+        pick_reason = f"{reason} ε-explore among {len(candidates)} valid candidates."
+    elif name == "random":
+        action = rng.choice(candidates)
+        pred = float(predicted(action.kind))
+        cost = ranking_cost(action, confirm_timesteps=confirm)
+        value = research_value(pred, cost, confirm_timesteps=confirm)
+        pick_reason = f"{reason} uniform among {len(candidates)} valid candidates."
+    else:
+        scored.sort(key=lambda row: row[0], reverse=True)
+        value, pred, action = scored[0]
+        pick_reason = (
+            f"{reason} ranked {action.kind}/{action.budget_tier} "
+            f"value={value:.4f} pred={pred:.4f} among {len(candidates)} valid."
+        )
+    return Proposal(
+        action=action,
+        predicted_value=float(pred),
+        estimated_cost=action.estimated_timesteps(),
+        reason=pick_reason,
+        controller=name,
+        is_meta_rl=False,
+        extras={
+            "n_valid_candidates": len(candidates),
+            "research_value": float(value),
+            "budget_tier": action.budget_tier,
+        },
     )
 
 
@@ -165,6 +234,26 @@ class RandomController(ResearchController):
             is_meta_rl=False,
         )
 
+    def select_from_candidates(
+        self,
+        candidates: list[ExperimentAction],
+        state: dict[str, Any],
+        limits: dict[str, Any],
+        rng: random.Random,
+    ) -> Proposal | None:
+        if not candidates:
+            return None
+        return _rank_candidates(
+            name=self.name,
+            candidates=candidates,
+            context=np.asarray(state["context"], dtype=np.float64),
+            limits=limits,
+            predicted=lambda _k: 0.0,
+            rng=rng,
+            epsilon=None,
+            reason="Random search baseline.",
+        )
+
 
 class EpsilonGreedyController(ResearchController):
     """Heuristic proposer. Not a trained bandit and not meta-RL."""
@@ -174,6 +263,14 @@ class EpsilonGreedyController(ResearchController):
 
     def __init__(self, epsilon: float = 0.2) -> None:
         self.epsilon = epsilon
+        self.kind_sum = {k: 0.0 for k in ACTION_KINDS}
+        self.kind_n = {k: 0 for k in ACTION_KINDS}
+
+    def predicted_kind_value(self, context: np.ndarray, kind: str) -> float:
+        n = self.kind_n.get(kind, 0)
+        if n <= 0:
+            return 0.0
+        return self.kind_sum[kind] / n
 
     def propose(self, state: dict[str, Any], limits: dict[str, Any], rng: random.Random) -> Proposal:
         if rng.random() < self.epsilon or not state.get("elites"):
@@ -192,11 +289,45 @@ class EpsilonGreedyController(ResearchController):
             is_meta_rl=False,
         )
 
+    def select_from_candidates(
+        self,
+        candidates: list[ExperimentAction],
+        state: dict[str, Any],
+        limits: dict[str, Any],
+        rng: random.Random,
+    ) -> Proposal | None:
+        if not candidates:
+            return None
+        ctx = np.asarray(state["context"], dtype=np.float64)
+        return _rank_candidates(
+            name=self.name,
+            candidates=candidates,
+            context=ctx,
+            limits=limits,
+            predicted=lambda k: self.predicted_kind_value(ctx, k),
+            rng=rng,
+            epsilon=self.epsilon,
+            reason=f"ε-greedy (ε={self.epsilon}).",
+        )
+
+    def update(self, context: np.ndarray, kind: str, reward: float) -> None:
+        self.kind_sum[kind] = self.kind_sum.get(kind, 0.0) + float(reward)
+        self.kind_n[kind] = self.kind_n.get(kind, 0) + 1
+
     def state_dict(self) -> dict[str, Any]:
-        return {"name": self.name, "epsilon": self.epsilon}
+        return {
+            "name": self.name,
+            "epsilon": self.epsilon,
+            "kind_sum": dict(self.kind_sum),
+            "kind_n": dict(self.kind_n),
+        }
 
     def load_state_dict(self, payload: dict[str, Any]) -> None:
         self.epsilon = float(payload.get("epsilon", self.epsilon))
+        if payload.get("kind_sum"):
+            self.kind_sum.update({k: float(v) for k, v in payload["kind_sum"].items()})
+        if payload.get("kind_n"):
+            self.kind_n.update({k: int(v) for k, v in payload["kind_n"].items()})
 
 
 class LinUCBController(ResearchController):
@@ -252,6 +383,34 @@ class LinUCBController(ResearchController):
             extras={"ucb_scores": {k: float(scores[i]) for i, k in enumerate(ACTION_KINDS)}},
         )
 
+    def predicted_kind_value(self, context: np.ndarray, kind: str) -> float:
+        scores = self._ucb(np.asarray(context, dtype=np.float64))
+        return float(scores[ACTION_KINDS.index(kind)])
+
+    def select_from_candidates(
+        self,
+        candidates: list[ExperimentAction],
+        state: dict[str, Any],
+        limits: dict[str, Any],
+        rng: random.Random,
+    ) -> Proposal | None:
+        if not candidates:
+            return None
+        x = np.asarray(state["context"], dtype=np.float64)
+        scores = self._ucb(x)
+        proposal = _rank_candidates(
+            name=self.name,
+            candidates=candidates,
+            context=x,
+            limits=limits,
+            predicted=lambda k: float(scores[ACTION_KINDS.index(k)]),
+            rng=rng,
+            epsilon=None,
+            reason="LinUCB cost-aware rank.",
+        )
+        proposal.extras["ucb_scores"] = {k: float(scores[i]) for i, k in enumerate(ACTION_KINDS)}
+        return proposal
+
     def update(self, context: np.ndarray, kind: str, reward: float) -> None:
         arm = ACTION_KINDS.index(kind)
         x = np.asarray(context, dtype=np.float64)
@@ -289,6 +448,21 @@ class FrozenLinUCBController(LinUCBController):
         proposal = super().propose(state, limits, rng)
         proposal.controller = self.name
         proposal.reason = "Frozen LinUCB (no parameter updates). Not meta-RL."
+        proposal.is_meta_rl = False
+        return proposal
+
+    def select_from_candidates(
+        self,
+        candidates: list[ExperimentAction],
+        state: dict[str, Any],
+        limits: dict[str, Any],
+        rng: random.Random,
+    ) -> Proposal | None:
+        proposal = LinUCBController.select_from_candidates(self, candidates, state, limits, rng)
+        if proposal is None:
+            return None
+        proposal.controller = self.name
+        proposal.reason = "Frozen LinUCB cost-aware rank (no parameter updates). Not meta-RL."
         proposal.is_meta_rl = False
         return proposal
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import random
 import shutil
 import time
@@ -17,11 +18,12 @@ from nexus.memory.store import ExperimentStore
 from nexus.meta.checkpoint import restore_rng, select_representative_checkpoint, serialize_rng
 from nexus.meta.controller import (
     ResearchController,
+    _fill_action,
     build_controller_state,
     make_controller,
 )
-from nexus.meta.reward import research_reward
-from nexus.meta.schedule import MAX_PROPOSE_ATTEMPTS, champion_exists, reject_reason
+from nexus.meta.reward import research_reward, task_normalized_score
+from nexus.meta.schedule import champion_exists, enumerate_candidates
 from nexus.meta.schema import ExperimentAction, Proposal
 from nexus.nn.spec import ArchitectureSpec
 from nexus.rl.ppo import PPOTrainer
@@ -52,6 +54,7 @@ def _limits_from_cfg(cfg: NexusConfig, remaining_timesteps: int) -> dict[str, An
         "remaining_timesteps": remaining_timesteps,
         "max_experiments": meta.max_experiments,
         "max_timesteps": meta.max_timesteps,
+        "explore_timesteps": int(meta.explore_timesteps or max(int(meta.train_timesteps) // 4, 1)),
     }
 
 
@@ -80,6 +83,7 @@ def _run_action(
     in_flight: dict[str, Any] | None = None,
     interrupt_after_iters: int | None = None,
     on_progress: Any | None = None,
+    remaining_step_budget: int | None = None,
 ) -> dict[str, Any]:
     spec = ArchitectureSpec.from_dict(action.architecture)
     failed = False
@@ -119,10 +123,14 @@ def _run_action(
         wall = float((in_flight or {}).get("wall") or 0.0)
         seed_ckpts = list((in_flight or {}).get("seed_checkpoints") or [])
         for seed in action.train_seeds:
+            left = None if remaining_step_budget is None else max(int(remaining_step_budget) - timesteps_used, 0)
+            seed_ts = int(action.train_timesteps) if left is None else min(int(action.train_timesteps), left)
+            if seed_ts <= 0:
+                break
             ppo = replace(
                 cfg.ppo,
                 seed=int(seed),
-                total_timesteps=action.train_timesteps,
+                total_timesteps=seed_ts,
                 env_id=action.env_id,
                 learning_rate=action.learning_rate,
             )
@@ -137,7 +145,7 @@ def _run_action(
             try:
                 t0 = time.perf_counter()
                 train_result = trainer.train(
-                    action.train_timesteps,
+                    seed_ts,
                     interrupt_after_iters=interrupt_after_iters,
                     progress_path=progress,
                 )
@@ -395,28 +403,35 @@ def run_research_loop(
                     is_meta_rl=False,
                 )
             else:
-                proposal = None
-                action = None
-                for attempt in range(MAX_PROPOSE_ATTEMPTS):
-                    cand = ctrl.propose(obs_state, limits, rng)
-                    why = reject_reason(
-                        cand.action,
-                        seen=seen,
-                        remaining_steps=remaining_steps,
-                        champion_exists=champion_exists(champion_dir),
-                    )
-                    if why is None:
-                        proposal = cand
-                        action = cand.action
-                        break
-                    n_rejected += 1
-                    rejected.append({"reason": why, "kind": cand.action.kind, "attempt": attempt})
+                valid, filtered = enumerate_candidates(
+                    fill=_fill_action,
+                    state=obs_state,
+                    limits=limits,
+                    rng=rng,
+                    seen=seen,
+                    remaining_steps=remaining_steps,
+                    has_champion=champion_exists(champion_dir),
+                )
+                n_rejected += len(filtered)
+                rejected.extend(filtered)
+                proposal = ctrl.select_from_candidates(valid, obs_state, limits, rng)
+                action = None if proposal is None else proposal.action
                 if proposal is None or action is None:
                     history.append(
                         {
-                            "stopped": "no_valid_proposal",
-                            "n_rejected": n_rejected,
-                            "max_propose_attempts": MAX_PROPOSE_ATTEMPTS,
+                            "stopped": "no_valid_candidates",
+                            "n_invalid_avoided": n_rejected,
+                            "n_valid_candidates": 0,
+                        }
+                    )
+                    break
+                if action.estimated_timesteps() > remaining_steps and action.kind != "extra_evaluation":
+                    history.append(
+                        {
+                            "stopped": "unaffordable_after_rank",
+                            "kind": action.kind,
+                            "estimated_timesteps": action.estimated_timesteps(),
+                            "remaining_timesteps": remaining_steps,
                         }
                     )
                     break
@@ -438,6 +453,7 @@ def run_research_loop(
                 champion_dir,
                 in_flight=in_flight,
                 interrupt_after_iters=interrupt_train_after_iters,
+                remaining_step_budget=remaining_steps,
             )
             if result.get("interrupted"):
                 in_flight = result["in_flight"]
@@ -488,8 +504,10 @@ def run_research_loop(
                             shutil.copy2(result["checkpoint"], champion_dir / "champion_current.pt")
                             champion_history.append(str(hist))
             remaining_exp -= 1
-            remaining_steps -= actual
             env_steps_consumed += actual
+            remaining_steps = max(0, remaining_steps - actual)
+            if env_steps_consumed > meta.max_timesteps:
+                remaining_steps = 0
             history.append(
                 {
                     "proposal": proposal.to_dict(),
@@ -527,14 +545,28 @@ def run_research_loop(
             raise RuntimeError("independent eval seed collided with selection/feedback seeds")
 
     wall_clock_s = time.perf_counter() - t_loop
+    n_done = len([h for h in history if "result" in h])
+    gain = float(best_score)
+    gain_per_1k = gain / max(env_steps_consumed / 1000.0, 1e-9)
+    gain_per_s = gain / max(wall_clock_s, 1e-9)
     return {
         "controller": ctrl.name,
         "is_meta_rl": ctrl.is_meta_rl,
         "history": history,
-        "n_experiments": len([h for h in history if "result" in h]),
+        "n_experiments": n_done,
         "n_fail": n_fail,
         "n_skipped": len([h for h in history if "skipped_duplicate" in h]),
         "n_rejected_proposals": n_rejected,
+        "n_invalid_avoided": n_rejected,
+        "n_useful_experiments": max(n_done - n_fail, 0),
+        "efficiency": {
+            "best_task_normalized_score": gain,
+            "gain_per_1k_env_steps": gain_per_1k,
+            "gain_per_wall_s": gain_per_s,
+            "env_steps_consumed": env_steps_consumed,
+            "wall_clock_s": wall_clock_s,
+            "budget_exceeded": env_steps_consumed > meta.max_timesteps,
+        },
         "best_score_by_env": best_by_env,
         "champion_history": champion_history,
         "remaining_experiments": remaining_exp,
@@ -562,7 +594,9 @@ def _arm_trace(history: list[dict[str, Any]]) -> list[dict[str, Any]]:
             {
                 "t": i,
                 "kind": action.get("kind"),
+                "budget_tier": action.get("budget_tier"),
                 "ucb_scores": prop.get("ucb_scores"),
+                "research_value": prop.get("research_value"),
                 "controller_updated": h.get("controller_updated"),
             }
         )
@@ -580,6 +614,11 @@ def compare_controllers(
     and assessment split). Replicates are the seed list, not offset-per-method RNGs.
     """
     seeds = controller_seeds if controller_seeds is not None else (int(cfg.meta.seed), int(cfg.meta.seed) + 1)
+    rand_bl = float(
+        random_policy_baseline(
+            cfg.meta.env_id, episodes=cfg.meta.eval_episodes, seed=cfg.meta.holdout_eval_seed + 7
+        )["mean_return"]
+    )
     paired: list[dict[str, Any]] = []
     for s in seeds:
         runs: dict[str, Any] = {}
@@ -606,17 +645,25 @@ def compare_controllers(
                 train_seeds_seen = [expected_train]
             elif expected_train not in train_seeds_seen:
                 train_seeds_seen.append(expected_train)
-            ind = result.get("independent_eval") or {}
+            ind = dict(result.get("independent_eval") or {})
+            if ind.get("mean_return") is not None:
+                ind["task_normalized"] = task_normalized_score(
+                    cfg.meta.env_id, float(ind["mean_return"]), rand_bl
+                )
+                ind["random_baseline"] = rand_bl
             runs[name] = {
                 "n_experiments": result["n_experiments"],
                 "n_fail": result["n_fail"],
                 "n_skipped": result["n_skipped"],
                 "n_rejected_proposals": result.get("n_rejected_proposals", 0),
+                "n_invalid_avoided": result.get("n_invalid_avoided", 0),
+                "n_useful_experiments": result.get("n_useful_experiments", result["n_experiments"]),
                 "mean_controller_reward": float(np.mean(rewards)) if rewards else 0.0,
                 "best_score_by_env": result["best_score_by_env"],
                 "env_steps_consumed": result["env_steps_consumed"],
                 "remaining_timesteps": result["remaining_timesteps"],
                 "wall_clock_s": result.get("wall_clock_s"),
+                "efficiency": result.get("efficiency"),
                 "independent_eval": ind,
                 "arm_trace": _arm_trace(result["history"]),
                 "is_meta_rl": False,
@@ -634,10 +681,23 @@ def compare_controllers(
         skips = [p["runs"][name]["n_skipped"] for p in paired]
         rejected = [p["runs"][name]["n_rejected_proposals"] for p in paired]
         walls = [p["runs"][name]["wall_clock_s"] or 0.0 for p in paired]
+        useful = [p["runs"][name]["n_useful_experiments"] for p in paired]
+        avoided = [p["runs"][name].get("n_invalid_avoided", 0) for p in paired]
         indep = [
             p["runs"][name]["independent_eval"].get("mean_return")
             for p in paired
             if p["runs"][name].get("independent_eval")
+        ]
+        normed = [
+            p["runs"][name]["independent_eval"].get("task_normalized")
+            for p in paired
+            if p["runs"][name].get("independent_eval")
+            and p["runs"][name]["independent_eval"].get("task_normalized") is not None
+        ]
+        gains = [
+            (p["runs"][name].get("efficiency") or {}).get("gain_per_1k_env_steps")
+            for p in paired
+            if (p["runs"][name].get("efficiency") or {}).get("gain_per_1k_env_steps") is not None
         ]
         summary.append(
             {
@@ -647,12 +707,16 @@ def compare_controllers(
                 "std_controller_reward": float(np.std(rewards, ddof=1)) if len(rewards) > 1 else 0.0,
                 "mean_independent_return": float(np.mean(indep)) if indep else None,
                 "std_independent_return": float(np.std(indep, ddof=1)) if len(indep) > 1 else (0.0 if indep else None),
+                "mean_independent_normalized": float(np.mean(normed)) if normed else None,
                 "mean_env_steps": float(np.mean(steps)),
                 "total_env_steps": int(np.sum(steps)),
                 "mean_wall_clock_s": float(np.mean(walls)),
                 "mean_fail": float(np.mean(fails)),
                 "mean_skipped": float(np.mean(skips)),
                 "mean_rejected_proposals": float(np.mean(rejected)),
+                "mean_invalid_avoided": float(np.mean(avoided)),
+                "mean_useful_experiments": float(np.mean(useful)),
+                "mean_gain_per_1k_env_steps": float(np.mean(gains)) if gains else None,
                 "is_meta_rl": False,
             }
         )
@@ -661,17 +725,64 @@ def compare_controllers(
             "max_experiments": cfg.meta.max_experiments,
             "max_timesteps": cfg.meta.max_timesteps,
             "train_timesteps": cfg.meta.train_timesteps,
+            "explore_timesteps": cfg.meta.explore_timesteps,
             "n_train_seeds": cfg.meta.n_train_seeds,
             "controller_seeds": list(seeds),
+            "env_id": cfg.meta.env_id,
             "holdout_eval_seed": cfg.meta.holdout_eval_seed,
             "assessment_eval_seed": cfg.meta.assessment_eval_seed,
             "independent_eval_seed": cfg.meta.independent_eval_seed,
         },
         "paired": paired,
         "summary": summary,
+        "paired_deltas_vs_random": _paired_deltas_vs_baseline(paired, names, baseline="random"),
         "caveat": (
             "Paired comparison: identical controller seeds and train-seed sets. "
             "Independent champion eval uses independent_eval_seed. "
-            "linucb_frozen never updates A,b. LinUCB is a contextual bandit, not meta-RL."
+            "linucb_frozen never updates A,b. LinUCB is a contextual bandit, not meta-RL. "
+            "V0.5.2 ranks only pre-filtered valid candidates."
         ),
     }
+
+
+def _ci95(xs: list[float] | np.ndarray) -> dict[str, float]:
+    arr = np.asarray(list(xs), dtype=np.float64)
+    if arr.size == 0:
+        return {"n": 0, "mean": float("nan"), "lo": float("nan"), "hi": float("nan")}
+    mean = float(arr.mean())
+    if arr.size < 2:
+        return {"n": int(arr.size), "mean": mean, "lo": mean, "hi": mean}
+    half = 1.96 * float(arr.std(ddof=1)) / math.sqrt(arr.size)
+    return {"n": int(arr.size), "mean": mean, "lo": mean - half, "hi": mean + half}
+
+
+def _paired_deltas_vs_baseline(
+    paired: list[dict[str, Any]],
+    names: tuple[str, ...],
+    baseline: str,
+) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    for name in names:
+        if name == baseline:
+            continue
+        indep: list[float] = []
+        normed: list[float] = []
+        steps: list[float] = []
+        for p in paired:
+            a = p["runs"][name]
+            b = p["runs"][baseline]
+            ia = (a.get("independent_eval") or {}).get("mean_return")
+            ib = (b.get("independent_eval") or {}).get("mean_return")
+            if ia is not None and ib is not None:
+                indep.append(float(ia) - float(ib))
+            na = (a.get("independent_eval") or {}).get("task_normalized")
+            nb = (b.get("independent_eval") or {}).get("task_normalized")
+            if na is not None and nb is not None:
+                normed.append(float(na) - float(nb))
+            steps.append(float(a["env_steps_consumed"]) - float(b["env_steps_consumed"]))
+        out[f"{name}_minus_{baseline}"] = {
+            "independent_return": _ci95(indep),
+            "independent_normalized": _ci95(normed),
+            "env_steps": _ci95(steps),
+        }
+    return out

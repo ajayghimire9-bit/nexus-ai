@@ -1,0 +1,2493 @@
+{
+  "envs": {
+    "CartPole-v1": {
+      "equal_budget": {
+        "max_experiments": 4,
+        "max_timesteps": 24576,
+        "train_timesteps": 8192,
+        "explore_timesteps": 2048,
+        "n_train_seeds": 1,
+        "controller_seeds": [
+          0,
+          1,
+          2
+        ],
+        "env_id": "CartPole-v1",
+        "holdout_eval_seed": 80000,
+        "assessment_eval_seed": 81000,
+        "independent_eval_seed": 92000
+      },
+      "summary": [
+        {
+          "controller": "random",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.02833536078564894,
+          "std_controller_reward": 0.020934059679868416,
+          "mean_independent_return": 85.66666666666667,
+          "std_independent_return": 100.46846001772563,
+          "mean_independent_normalized": 0.11858333333333333,
+          "mean_env_steps": 21162.666666666668,
+          "total_env_steps": 63488,
+          "mean_wall_clock_s": 1.2387326386669884,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 9.0,
+          "mean_invalid_avoided": 9.0,
+          "mean_useful_experiments": 3.3333333333333335,
+          "mean_gain_per_1k_env_steps": 0.005717444041418651,
+          "is_meta_rl": false
+        },
+        {
+          "controller": "epsilon_greedy",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.04292250362806988,
+          "std_controller_reward": 0.01904366759154553,
+          "mean_independent_return": 106.58333333333333,
+          "std_independent_return": 76.80579540850634,
+          "mean_independent_normalized": 0.16041666666666668,
+          "mean_env_steps": 10240.0,
+          "total_env_steps": 30720,
+          "mean_wall_clock_s": 0.639283708333096,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 12.0,
+          "mean_invalid_avoided": 12.0,
+          "mean_useful_experiments": 4.0,
+          "mean_gain_per_1k_env_steps": 0.014854794456845238,
+          "is_meta_rl": false
+        },
+        {
+          "controller": "linucb",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.022967718207096383,
+          "std_controller_reward": 0.04082848456847178,
+          "mean_independent_return": 99.75,
+          "std_independent_return": 82.48901442010323,
+          "mean_independent_normalized": 0.14675,
+          "mean_env_steps": 8192.0,
+          "total_env_steps": 24576,
+          "mean_wall_clock_s": 0.552402874668284,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 11.666666666666666,
+          "mean_invalid_avoided": 11.666666666666666,
+          "mean_useful_experiments": 4.0,
+          "mean_gain_per_1k_env_steps": 0.028096516927083332,
+          "is_meta_rl": false
+        },
+        {
+          "controller": "linucb_frozen",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.03215248839552343,
+          "std_controller_reward": 0.015695989290777826,
+          "mean_independent_return": 166.70833333333334,
+          "std_independent_return": 75.75220018806934,
+          "mean_independent_normalized": 0.2806666666666667,
+          "mean_env_steps": 8192.0,
+          "total_env_steps": 24576,
+          "mean_wall_clock_s": 0.5884606666671365,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 11.666666666666666,
+          "mean_invalid_avoided": 11.666666666666666,
+          "mean_useful_experiments": 4.0,
+          "mean_gain_per_1k_env_steps": 0.017038981119791668,
+          "is_meta_rl": false
+        }
+      ],
+      "paired_deltas_vs_random": {
+        "epsilon_greedy_minus_random": {
+          "independent_return": {
+            "n": 3,
+            "mean": 20.916666666666668,
+            "lo": -158.73090012113536,
+            "hi": 200.56423345446868
+          },
+          "independent_normalized": {
+            "n": 3,
+            "mean": 0.041833333333333333,
+            "lo": -0.31746180024227066,
+            "hi": 0.40112846690893733
+          },
+          "env_steps": {
+            "n": 3,
+            "mean": -10922.666666666666,
+            "lo": -21626.88,
+            "hi": -218.4533333333311
+          }
+        },
+        "linucb_minus_random": {
+          "independent_return": {
+            "n": 3,
+            "mean": 14.083333333333334,
+            "lo": -174.5239370800253,
+            "hi": 202.69060374669198
+          },
+          "independent_normalized": {
+            "n": 3,
+            "mean": 0.028166666666666656,
+            "lo": -0.3490478741600505,
+            "hi": 0.40538120749338385
+          },
+          "env_steps": {
+            "n": 3,
+            "mean": -12970.666666666666,
+            "lo": -19660.8,
+            "hi": -6280.533333333333
+          }
+        },
+        "linucb_frozen_minus_random": {
+          "independent_return": {
+            "n": 3,
+            "mean": 81.04166666666667,
+            "lo": -118.12712657860503,
+            "hi": 280.21045991193836
+          },
+          "independent_normalized": {
+            "n": 3,
+            "mean": 0.16208333333333333,
+            "lo": -0.23625425315721008,
+            "hi": 0.5604209198238768
+          },
+          "env_steps": {
+            "n": 3,
+            "mean": -12970.666666666666,
+            "lo": -19660.8,
+            "hi": -6280.533333333333
+          }
+        }
+      },
+      "paired": [
+        {
+          "controller_seed": 0,
+          "train_seeds": [
+            1000
+          ],
+          "runs": {
+            "random": {
+              "n_experiments": 3,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 7,
+              "n_invalid_avoided": 7,
+              "n_useful_experiments": 3,
+              "mean_controller_reward": -0.004520365382655295,
+              "best_score_by_env": {
+                "CartPole-v1": 0.201
+              },
+              "env_steps_consumed": 24576,
+              "remaining_timesteps": 0,
+              "wall_clock_s": 1.573967750002339,
+              "efficiency": {
+                "best_task_normalized_score": 0.201,
+                "gain_per_1k_env_steps": 0.0081787109375,
+                "gain_per_wall_s": 0.12770274359160239,
+                "env_steps_consumed": 24576,
+                "wall_clock_s": 1.573967750002339,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 199.5,
+                "std_return": 178.44536979142944,
+                "min_return": 57.0,
+                "max_return": 500.0,
+                "mean_length": 199.5,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.34625,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "optimize_network_size",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            },
+            "epsilon_greedy": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 12,
+              "n_invalid_avoided": 12,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.0341892152308355,
+              "best_score_by_env": {
+                "CartPole-v1": 0.15675
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.5430669589986792,
+              "efficiency": {
+                "best_task_normalized_score": 0.15675,
+                "gain_per_1k_env_steps": 0.019134521484375,
+                "gain_per_wall_s": 0.28863844025609603,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.5430669589986792,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 68.375,
+                "std_return": 16.87407404867005,
+                "min_return": 49.0,
+                "max_return": 102.0,
+                "mean_length": 68.375,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.084,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            },
+            "linucb": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 8,
+              "n_invalid_avoided": 8,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": 0.007365053604813619,
+              "best_score_by_env": {
+                "CartPole-v1": 0.3865
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.5523821250026231,
+              "efficiency": {
+                "best_task_normalized_score": 0.3865,
+                "gain_per_1k_env_steps": 0.04718017578125,
+                "gain_per_wall_s": 0.6996967905110337,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.5523821250026231,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 52.25,
+                "std_return": 7.101936355670896,
+                "min_return": 40.0,
+                "max_return": 61.0,
+                "mean_length": 52.25,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.05175,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.35735081074280345,
+                    "crossover_architecture": 0.4614496515224325,
+                    "mutate_activation_expr": 0.4614496515224325,
+                    "search_learning_rate": 0.4614496515224325,
+                    "optimize_network_size": 0.4614496515224325,
+                    "extra_evaluation": 0.4614496515224325,
+                    "transfer_architecture": 0.4614496515224325
+                  },
+                  "research_value": 0.369159721217946,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.3147078754207883,
+                    "crossover_architecture": 0.2850691067869109,
+                    "mutate_activation_expr": 0.3732244120423005,
+                    "search_learning_rate": 0.3732244120423005,
+                    "optimize_network_size": 0.3732244120423005,
+                    "extra_evaluation": 0.3732244120423005,
+                    "transfer_architecture": 0.3732244120423005
+                  },
+                  "research_value": 0.2985795296338404,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.32399898393651855,
+                    "crossover_architecture": 0.29189682706304365,
+                    "mutate_activation_expr": 0.2331267936411991,
+                    "search_learning_rate": 0.3428671336883108,
+                    "optimize_network_size": 0.3428671336883108,
+                    "extra_evaluation": 0.3428671336883108,
+                    "transfer_architecture": 0.3428671336883108
+                  },
+                  "research_value": 0.27429370695064864,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            },
+            "linucb_frozen": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 9,
+              "n_invalid_avoided": 9,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.03343098866221886,
+              "best_score_by_env": {
+                "CartPole-v1": 0.13275
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.5369226670009084,
+              "efficiency": {
+                "best_task_normalized_score": 0.13275,
+                "gain_per_1k_env_steps": 0.016204833984375,
+                "gain_per_wall_s": 0.2472423091047773,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.5369226670009084,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 79.625,
+                "std_return": 69.08678871535426,
+                "min_return": 48.0,
+                "max_return": 262.0,
+                "mean_length": 79.625,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.1065,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.4618625893360249,
+                    "crossover_architecture": 0.4618625893360249,
+                    "mutate_activation_expr": 0.4618625893360249,
+                    "search_learning_rate": 0.4618625893360249,
+                    "optimize_network_size": 0.4618625893360249,
+                    "extra_evaluation": 0.4618625893360249,
+                    "transfer_architecture": 0.4618625893360249
+                  },
+                  "research_value": 0.36949007146881996,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.42475450220756333,
+                    "crossover_architecture": 0.42475450220756333,
+                    "mutate_activation_expr": 0.42475450220756333,
+                    "search_learning_rate": 0.42475450220756333,
+                    "optimize_network_size": 0.42475450220756333,
+                    "extra_evaluation": 0.42475450220756333,
+                    "transfer_architecture": 0.42475450220756333
+                  },
+                  "research_value": 0.3398036017660507,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.38795759890849635,
+                    "crossover_architecture": 0.38795759890849635,
+                    "mutate_activation_expr": 0.38795759890849635,
+                    "search_learning_rate": 0.38795759890849635,
+                    "optimize_network_size": 0.38795759890849635,
+                    "extra_evaluation": 0.38795759890849635,
+                    "transfer_architecture": 0.38795759890849635
+                  },
+                  "research_value": 0.3103660791267971,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            }
+          }
+        },
+        {
+          "controller_seed": 1,
+          "train_seeds": [
+            1001
+          ],
+          "runs": {
+            "random": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 11,
+              "n_invalid_avoided": 11,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.043830246136513526,
+              "best_score_by_env": {
+                "CartPole-v1": 0.14425
+              },
+              "env_steps_consumed": 14336,
+              "remaining_timesteps": 10240,
+              "wall_clock_s": 0.9705698749967269,
+              "efficiency": {
+                "best_task_normalized_score": 0.14425,
+                "gain_per_1k_env_steps": 0.010062081473214284,
+                "gain_per_wall_s": 0.14862402359282628,
+                "env_steps_consumed": 14336,
+                "wall_clock_s": 0.9705698749967269,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 48.125,
+                "std_return": 8.006833019365397,
+                "min_return": 35.0,
+                "max_return": 58.0,
+                "mean_length": 48.125,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.0435,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            },
+            "epsilon_greedy": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 11,
+              "n_invalid_avoided": 11,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.06476651978774947,
+              "best_score_by_env": {
+                "CartPole-v1": 0.13225
+              },
+              "env_steps_consumed": 14336,
+              "remaining_timesteps": 10240,
+              "wall_clock_s": 0.8059822080031154,
+              "efficiency": {
+                "best_task_normalized_score": 0.13225,
+                "gain_per_1k_env_steps": 0.009225027901785714,
+                "gain_per_wall_s": 0.16408550795142218,
+                "env_steps_consumed": 14336,
+                "wall_clock_s": 0.8059822080031154,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 56.375,
+                "std_return": 10.723076750634586,
+                "min_return": 42.0,
+                "max_return": 73.0,
+                "mean_length": 56.375,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.06,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "optimize_network_size",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            },
+            "linucb": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 14,
+              "n_invalid_avoided": 14,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.006878586715112087,
+              "best_score_by_env": {
+                "CartPole-v1": 0.174
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.5503377909990377,
+              "efficiency": {
+                "best_task_normalized_score": 0.174,
+                "gain_per_1k_env_steps": 0.021240234374999997,
+                "gain_per_wall_s": 0.3161694560065279,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.5503377909990377,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 52.0,
+                "std_return": 8.5,
+                "min_return": 39.0,
+                "max_return": 64.0,
+                "mean_length": 52.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.05125,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.41399990375095613,
+                    "crossover_architecture": 0.5154438037541935,
+                    "mutate_activation_expr": 0.5154438037541935,
+                    "search_learning_rate": 0.5154438037541935,
+                    "optimize_network_size": 0.5154438037541935,
+                    "extra_evaluation": 0.5154438037541935,
+                    "transfer_architecture": 0.5154438037541935
+                  },
+                  "research_value": 0.4123550430033548,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.30890873663782364,
+                    "crossover_architecture": 0.27033689770711294,
+                    "mutate_activation_expr": 0.3718218118618962,
+                    "search_learning_rate": 0.3718218118618962,
+                    "optimize_network_size": 0.3718218118618962,
+                    "extra_evaluation": 0.3718218118618962,
+                    "transfer_architecture": 0.3718218118618962
+                  },
+                  "research_value": 0.29745744948951697,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.311875033597627,
+                    "crossover_architecture": 0.26938434548049556,
+                    "mutate_activation_expr": 0.28547270205815,
+                    "search_learning_rate": 0.3333682157757221,
+                    "optimize_network_size": 0.3333682157757221,
+                    "extra_evaluation": 0.3333682157757221,
+                    "transfer_architecture": 0.3333682157757221
+                  },
+                  "research_value": 0.2666945726205777,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            },
+            "linucb_frozen": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 14,
+              "n_invalid_avoided": 14,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.01585634975847688,
+              "best_score_by_env": {
+                "CartPole-v1": 0.168
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.570242458001303,
+              "efficiency": {
+                "best_task_normalized_score": 0.168,
+                "gain_per_1k_env_steps": 0.0205078125,
+                "gain_per_wall_s": 0.29461152469922913,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.570242458001303,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 203.125,
+                "std_return": 182.9121630045416,
+                "min_return": 62.0,
+                "max_return": 500.0,
+                "mean_length": 203.125,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.3535,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5159438579676738,
+                    "crossover_architecture": 0.5159438579676738,
+                    "mutate_activation_expr": 0.5159438579676738,
+                    "search_learning_rate": 0.5159438579676738,
+                    "optimize_network_size": 0.5159438579676738,
+                    "extra_evaluation": 0.5159438579676738,
+                    "transfer_architecture": 0.5159438579676738
+                  },
+                  "research_value": 0.41275508637413905,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.4004538763336505,
+                    "crossover_architecture": 0.4004538763336505,
+                    "mutate_activation_expr": 0.4004538763336505,
+                    "search_learning_rate": 0.4004538763336505,
+                    "optimize_network_size": 0.4004538763336505,
+                    "extra_evaluation": 0.4004538763336505,
+                    "transfer_architecture": 0.4004538763336505
+                  },
+                  "research_value": 0.3203631010669204,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.3457209051510948,
+                    "crossover_architecture": 0.3457209051510948,
+                    "mutate_activation_expr": 0.3457209051510948,
+                    "search_learning_rate": 0.3457209051510948,
+                    "optimize_network_size": 0.3457209051510948,
+                    "extra_evaluation": 0.3457209051510948,
+                    "transfer_architecture": 0.3457209051510948
+                  },
+                  "research_value": 0.27657672412087586,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            }
+          }
+        },
+        {
+          "controller_seed": 2,
+          "train_seeds": [
+            1002
+          ],
+          "runs": {
+            "random": {
+              "n_experiments": 3,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 9,
+              "n_invalid_avoided": 9,
+              "n_useful_experiments": 3,
+              "mean_controller_reward": -0.03665547083777799,
+              "best_score_by_env": {
+                "CartPole-v1": -0.02675
+              },
+              "env_steps_consumed": 24576,
+              "remaining_timesteps": 0,
+              "wall_clock_s": 1.1716602910018992,
+              "efficiency": {
+                "best_task_normalized_score": -0.02675,
+                "gain_per_1k_env_steps": -0.0010884602864583333,
+                "gain_per_wall_s": -0.022830849697164174,
+                "env_steps_consumed": 24576,
+                "wall_clock_s": 1.1716602910018992,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 9.375,
+                "std_return": 0.4841229182759271,
+                "min_return": 9.0,
+                "max_return": 10.0,
+                "mean_length": 9.375,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": -0.034,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            },
+            "epsilon_greedy": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.02981177586562468,
+              "best_score_by_env": {
+                "CartPole-v1": 0.13275
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.5688019579974934,
+              "efficiency": {
+                "best_task_normalized_score": 0.13275,
+                "gain_per_1k_env_steps": 0.016204833984375,
+                "gain_per_wall_s": 0.2333852725601641,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.5688019579974934,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 195.0,
+                "std_return": 114.85316713090675,
+                "min_return": 79.0,
+                "max_return": 452.0,
+                "mean_length": 195.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.33725,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            },
+            "linucb": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.06938962151099069,
+              "best_score_by_env": {
+                "CartPole-v1": 0.13
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.5544887080031913,
+              "efficiency": {
+                "best_task_normalized_score": 0.13,
+                "gain_per_1k_env_steps": 0.015869140625,
+                "gain_per_wall_s": 0.2344502207595034,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.5544887080031913,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 195.0,
+                "std_return": 114.85316713090675,
+                "min_return": 79.0,
+                "max_return": 452.0,
+                "mean_length": 195.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.33725,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.35978418211101293,
+                    "crossover_architecture": 0.4628385336175624,
+                    "mutate_activation_expr": 0.4628385336175624,
+                    "search_learning_rate": 0.4628385336175624,
+                    "optimize_network_size": 0.4628385336175624,
+                    "extra_evaluation": 0.4628385336175624,
+                    "transfer_architecture": 0.4628385336175624
+                  },
+                  "research_value": 0.3702708268940499,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.3287197652948191,
+                    "crossover_architecture": 0.2796584313442278,
+                    "mutate_activation_expr": 0.38544492343728276,
+                    "search_learning_rate": 0.38544492343728276,
+                    "optimize_network_size": 0.38544492343728276,
+                    "extra_evaluation": 0.38544492343728276,
+                    "transfer_architecture": 0.38544492343728276
+                  },
+                  "research_value": 0.3083559387498262,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.3376715924857886,
+                    "crossover_architecture": 0.2916400441418967,
+                    "mutate_activation_expr": 0.2344412742288622,
+                    "search_learning_rate": 0.3560137722520623,
+                    "optimize_network_size": 0.3560137722520623,
+                    "extra_evaluation": 0.3560137722520623,
+                    "transfer_architecture": 0.3560137722520623
+                  },
+                  "research_value": 0.28481101780164986,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            },
+            "linucb_frozen": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 12,
+              "n_invalid_avoided": 12,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.047170126765874565,
+              "best_score_by_env": {
+                "CartPole-v1": 0.118
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 0.6582168749991979,
+              "efficiency": {
+                "best_task_normalized_score": 0.118,
+                "gain_per_1k_env_steps": 0.014404296874999998,
+                "gain_per_wall_s": 0.1792722193580099,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 0.6582168749991979,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": 217.375,
+                "std_return": 141.4575355893068,
+                "min_return": 67.0,
+                "max_return": 486.0,
+                "mean_length": 217.375,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "CartPole-v1",
+                "task_normalized": 0.382,
+                "random_baseline": 26.375
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.4628072372921668,
+                    "crossover_architecture": 0.4628072372921668,
+                    "mutate_activation_expr": 0.4628072372921668,
+                    "search_learning_rate": 0.4628072372921668,
+                    "optimize_network_size": 0.4628072372921668,
+                    "extra_evaluation": 0.4628072372921668,
+                    "transfer_architecture": 0.4628072372921668
+                  },
+                  "research_value": 0.3702457898337334,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.3862723528305514,
+                    "crossover_architecture": 0.3862723528305514,
+                    "mutate_activation_expr": 0.3862723528305514,
+                    "search_learning_rate": 0.3862723528305514,
+                    "optimize_network_size": 0.3862723528305514,
+                    "extra_evaluation": 0.3862723528305514,
+                    "transfer_architecture": 0.3862723528305514
+                  },
+                  "research_value": 0.3090178822644411,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.34385588129530564,
+                    "crossover_architecture": 0.34385588129530564,
+                    "mutate_activation_expr": 0.34385588129530564,
+                    "search_learning_rate": 0.34385588129530564,
+                    "optimize_network_size": 0.34385588129530564,
+                    "extra_evaluation": 0.34385588129530564,
+                    "transfer_architecture": 0.34385588129530564
+                  },
+                  "research_value": 0.2750847050362445,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            }
+          }
+        }
+      ],
+      "caveat": "Paired comparison: identical controller seeds and train-seed sets. Independent champion eval uses independent_eval_seed. linucb_frozen never updates A,b. LinUCB is a contextual bandit, not meta-RL. V0.5.2 ranks only pre-filtered valid candidates."
+    },
+    "Acrobot-v1": {
+      "equal_budget": {
+        "max_experiments": 4,
+        "max_timesteps": 24576,
+        "train_timesteps": 8192,
+        "explore_timesteps": 2048,
+        "n_train_seeds": 1,
+        "controller_seeds": [
+          0,
+          1,
+          2
+        ],
+        "env_id": "Acrobot-v1",
+        "holdout_eval_seed": 80000,
+        "assessment_eval_seed": 81000,
+        "independent_eval_seed": 92000
+      },
+      "summary": [
+        {
+          "controller": "random",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.044795240652362754,
+          "std_controller_reward": 0.009266605573331308,
+          "mean_independent_return": -500.0,
+          "std_independent_return": 0.0,
+          "mean_independent_normalized": 0.0,
+          "mean_env_steps": 21162.666666666668,
+          "total_env_steps": 63488,
+          "mean_wall_clock_s": 2.2366083606660445,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 9.666666666666666,
+          "mean_invalid_avoided": 9.666666666666666,
+          "mean_useful_experiments": 3.3333333333333335,
+          "mean_gain_per_1k_env_steps": -0.0002848307291666667,
+          "is_meta_rl": false
+        },
+        {
+          "controller": "epsilon_greedy",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.04255444570341129,
+          "std_controller_reward": 0.0016573114230030515,
+          "mean_independent_return": -500.0,
+          "std_independent_return": 0.0,
+          "mean_independent_normalized": 0.0,
+          "mean_env_steps": 10240.0,
+          "total_env_steps": 30720,
+          "mean_wall_clock_s": 1.6770979723344983,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 12.666666666666666,
+          "mean_invalid_avoided": 12.666666666666666,
+          "mean_useful_experiments": 4.0,
+          "mean_gain_per_1k_env_steps": -0.0007832845052083334,
+          "is_meta_rl": false
+        },
+        {
+          "controller": "linucb",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.12266995845964791,
+          "std_controller_reward": 0.13123565079063007,
+          "mean_independent_return": -500.0,
+          "std_independent_return": 0.0,
+          "mean_independent_normalized": 0.0,
+          "mean_env_steps": 8192.0,
+          "total_env_steps": 24576,
+          "mean_wall_clock_s": 1.5864032080001682,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 11.666666666666666,
+          "mean_invalid_avoided": 11.666666666666666,
+          "mean_useful_experiments": 4.0,
+          "mean_gain_per_1k_env_steps": 0.014394124348958334,
+          "is_meta_rl": false
+        },
+        {
+          "controller": "linucb_frozen",
+          "n_replicates": 3,
+          "mean_controller_reward": -0.12463084720872769,
+          "std_controller_reward": 0.12912183991698775,
+          "mean_independent_return": -500.0,
+          "std_independent_return": 0.0,
+          "mean_independent_normalized": 0.0,
+          "mean_env_steps": 8192.0,
+          "total_env_steps": 24576,
+          "mean_wall_clock_s": 1.7131780693343899,
+          "mean_fail": 0.0,
+          "mean_skipped": 0.0,
+          "mean_rejected_proposals": 11.0,
+          "mean_invalid_avoided": 11.0,
+          "mean_useful_experiments": 4.0,
+          "mean_gain_per_1k_env_steps": 0.021982828776041668,
+          "is_meta_rl": false
+        }
+      ],
+      "paired_deltas_vs_random": {
+        "epsilon_greedy_minus_random": {
+          "independent_return": {
+            "n": 3,
+            "mean": 0.0,
+            "lo": 0.0,
+            "hi": 0.0
+          },
+          "independent_normalized": {
+            "n": 3,
+            "mean": 0.0,
+            "lo": 0.0,
+            "hi": 0.0
+          },
+          "env_steps": {
+            "n": 3,
+            "mean": -10922.666666666666,
+            "lo": -21626.88,
+            "hi": -218.4533333333311
+          }
+        },
+        "linucb_minus_random": {
+          "independent_return": {
+            "n": 3,
+            "mean": 0.0,
+            "lo": 0.0,
+            "hi": 0.0
+          },
+          "independent_normalized": {
+            "n": 3,
+            "mean": 0.0,
+            "lo": 0.0,
+            "hi": 0.0
+          },
+          "env_steps": {
+            "n": 3,
+            "mean": -12970.666666666666,
+            "lo": -19660.8,
+            "hi": -6280.533333333333
+          }
+        },
+        "linucb_frozen_minus_random": {
+          "independent_return": {
+            "n": 3,
+            "mean": 0.0,
+            "lo": 0.0,
+            "hi": 0.0
+          },
+          "independent_normalized": {
+            "n": 3,
+            "mean": 0.0,
+            "lo": 0.0,
+            "hi": 0.0
+          },
+          "env_steps": {
+            "n": 3,
+            "mean": -12970.666666666666,
+            "lo": -19660.8,
+            "hi": -6280.533333333333
+          }
+        }
+      },
+      "paired": [
+        {
+          "controller_seed": 0,
+          "train_seeds": [
+            1000
+          ],
+          "runs": {
+            "random": {
+              "n_experiments": 3,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 7,
+              "n_invalid_avoided": 7,
+              "n_useful_experiments": 3,
+              "mean_controller_reward": -0.0388565454895869,
+              "best_score_by_env": {
+                "Acrobot-v1": -0.021
+              },
+              "env_steps_consumed": 24576,
+              "remaining_timesteps": 0,
+              "wall_clock_s": 2.245626957999775,
+              "efficiency": {
+                "best_task_normalized_score": -0.021,
+                "gain_per_1k_env_steps": -0.0008544921875,
+                "gain_per_wall_s": -0.009351508684552451,
+                "env_steps_consumed": 24576,
+                "wall_clock_s": 2.245626957999775,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "optimize_network_size",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            },
+            "epsilon_greedy": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 14,
+              "n_invalid_avoided": 14,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.04078198605352191,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.0
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 1.4949077920027776,
+              "efficiency": {
+                "best_task_normalized_score": 0.0,
+                "gain_per_1k_env_steps": 0.0,
+                "gain_per_wall_s": 0.0,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 1.4949077920027776,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            },
+            "linucb": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 9,
+              "n_invalid_avoided": 9,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.2741270223048629,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.35375
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 1.5072659580000618,
+              "efficiency": {
+                "best_task_normalized_score": 0.35375,
+                "gain_per_1k_env_steps": 0.043182373046875,
+                "gain_per_wall_s": 0.23469647020316073,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 1.5072659580000618,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.40910681197547255,
+                    "crossover_architecture": 0.4988114283471954,
+                    "mutate_activation_expr": 0.4988114283471954,
+                    "search_learning_rate": 0.4988114283471954,
+                    "optimize_network_size": 0.4988114283471954,
+                    "extra_evaluation": 0.4988114283471954,
+                    "transfer_architecture": 0.4988114283471954
+                  },
+                  "research_value": 0.3990491426777563,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.42751146629688835,
+                    "crossover_architecture": 0.20336056429931404,
+                    "mutate_activation_expr": 0.4708794602636877,
+                    "search_learning_rate": 0.4708794602636877,
+                    "optimize_network_size": 0.4708794602636877,
+                    "extra_evaluation": 0.4708794602636877,
+                    "transfer_architecture": 0.4708794602636877
+                  },
+                  "research_value": 0.3767035682109502,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.4236860863708374,
+                    "crossover_architecture": 0.23987834411960224,
+                    "mutate_activation_expr": 0.1637718557070023,
+                    "search_learning_rate": 0.43742094596452774,
+                    "optimize_network_size": 0.43742094596452774,
+                    "extra_evaluation": 0.43742094596452774,
+                    "transfer_architecture": 0.43742094596452774
+                  },
+                  "research_value": 0.34993675677162217,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            },
+            "linucb_frozen": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 7,
+              "n_invalid_avoided": 7,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.27372787107546753,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.35375
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 1.4722914170015429,
+              "efficiency": {
+                "best_task_normalized_score": 0.35375,
+                "gain_per_1k_env_steps": 0.043182373046875,
+                "gain_per_wall_s": 0.2402717260421476,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 1.4722914170015429,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.49881084260495945,
+                    "crossover_architecture": 0.49881084260495945,
+                    "mutate_activation_expr": 0.49881084260495945,
+                    "search_learning_rate": 0.49881084260495945,
+                    "optimize_network_size": 0.49881084260495945,
+                    "extra_evaluation": 0.49881084260495945,
+                    "transfer_architecture": 0.49881084260495945
+                  },
+                  "research_value": 0.39904867408396755,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.4735176545710747,
+                    "crossover_architecture": 0.4735176545710747,
+                    "mutate_activation_expr": 0.4735176545710747,
+                    "search_learning_rate": 0.4735176545710747,
+                    "optimize_network_size": 0.4735176545710747,
+                    "extra_evaluation": 0.4735176545710747,
+                    "transfer_architecture": 0.4735176545710747
+                  },
+                  "research_value": 0.37881412365685974,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.43740789921114065,
+                    "crossover_architecture": 0.43740789921114065,
+                    "mutate_activation_expr": 0.43740789921114065,
+                    "search_learning_rate": 0.43740789921114065,
+                    "optimize_network_size": 0.43740789921114065,
+                    "extra_evaluation": 0.43740789921114065,
+                    "transfer_architecture": 0.43740789921114065
+                  },
+                  "research_value": 0.3499263193689125,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1000
+              ]
+            }
+          }
+        },
+        {
+          "controller_seed": 1,
+          "train_seeds": [
+            1001
+          ],
+          "runs": {
+            "random": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.05547295405760802,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.0
+              },
+              "env_steps_consumed": 14336,
+              "remaining_timesteps": 10240,
+              "wall_clock_s": 2.1234939159985515,
+              "efficiency": {
+                "best_task_normalized_score": 0.0,
+                "gain_per_1k_env_steps": 0.0,
+                "gain_per_wall_s": 0.0,
+                "env_steps_consumed": 14336,
+                "wall_clock_s": 2.1234939159985515,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            },
+            "epsilon_greedy": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 11,
+              "n_invalid_avoided": 11,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.042815798544500835,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.0
+              },
+              "env_steps_consumed": 14336,
+              "remaining_timesteps": 10240,
+              "wall_clock_s": 1.9590116250001302,
+              "efficiency": {
+                "best_task_normalized_score": 0.0,
+                "gain_per_1k_env_steps": 0.0,
+                "gain_per_wall_s": 0.0,
+                "env_steps_consumed": 14336,
+                "wall_clock_s": 1.9590116250001302,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "optimize_network_size",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            },
+            "linucb": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.05122679664708288,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.0
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 1.6474518750001153,
+              "efficiency": {
+                "best_task_normalized_score": 0.0,
+                "gain_per_1k_env_steps": 0.0,
+                "gain_per_wall_s": 0.0,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 1.6474518750001153,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.411760682309828,
+                    "crossover_architecture": 0.5154913937292966,
+                    "mutate_activation_expr": 0.5154913937292966,
+                    "search_learning_rate": 0.5154913937292966,
+                    "optimize_network_size": 0.5154913937292966,
+                    "extra_evaluation": 0.5154913937292966,
+                    "transfer_architecture": 0.5154913937292966
+                  },
+                  "research_value": 0.41239311498343734,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.3893312252671409,
+                    "crossover_architecture": 0.30408625928477667,
+                    "mutate_activation_expr": 0.44688615044094987,
+                    "search_learning_rate": 0.44688615044094987,
+                    "optimize_network_size": 0.44688615044094987,
+                    "extra_evaluation": 0.44688615044094987,
+                    "transfer_architecture": 0.44688615044094987
+                  },
+                  "research_value": 0.3575089203527599,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.3902303000080855,
+                    "crossover_architecture": 0.31186090288084034,
+                    "mutate_activation_expr": 0.2958989134074016,
+                    "search_learning_rate": 0.4111386503236252,
+                    "optimize_network_size": 0.4111386503236252,
+                    "extra_evaluation": 0.4111386503236252,
+                    "transfer_architecture": 0.4111386503236252
+                  },
+                  "research_value": 0.3289109202589001,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            },
+            "linucb_frozen": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.04999487609160133,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.0
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 1.6016483749990584,
+              "efficiency": {
+                "best_task_normalized_score": 0.0,
+                "gain_per_1k_env_steps": 0.0,
+                "gain_per_wall_s": 0.0,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 1.6016483749990584,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5154913922919788,
+                    "crossover_architecture": 0.5154913922919788,
+                    "mutate_activation_expr": 0.5154913922919788,
+                    "search_learning_rate": 0.5154913922919788,
+                    "optimize_network_size": 0.5154913922919788,
+                    "extra_evaluation": 0.5154913922919788,
+                    "transfer_architecture": 0.5154913922919788
+                  },
+                  "research_value": 0.41239311383358307,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.44701749014074527,
+                    "crossover_architecture": 0.44701749014074527,
+                    "mutate_activation_expr": 0.44701749014074527,
+                    "search_learning_rate": 0.44701749014074527,
+                    "optimize_network_size": 0.44701749014074527,
+                    "extra_evaluation": 0.44701749014074527,
+                    "transfer_architecture": 0.44701749014074527
+                  },
+                  "research_value": 0.3576139921125962,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.4110136195863795,
+                    "crossover_architecture": 0.4110136195863795,
+                    "mutate_activation_expr": 0.4110136195863795,
+                    "search_learning_rate": 0.4110136195863795,
+                    "optimize_network_size": 0.4110136195863795,
+                    "extra_evaluation": 0.4110136195863795,
+                    "transfer_architecture": 0.4110136195863795
+                  },
+                  "research_value": 0.3288108956691036,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1001
+              ]
+            }
+          }
+        },
+        {
+          "controller_seed": 2,
+          "train_seeds": [
+            1002
+          ],
+          "runs": {
+            "random": {
+              "n_experiments": 3,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 9,
+              "n_invalid_avoided": 9,
+              "n_useful_experiments": 3,
+              "mean_controller_reward": -0.04005622240989334,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.0
+              },
+              "env_steps_consumed": 24576,
+              "remaining_timesteps": 0,
+              "wall_clock_s": 2.3407042079998064,
+              "efficiency": {
+                "best_task_normalized_score": 0.0,
+                "gain_per_1k_env_steps": 0.0,
+                "gain_per_wall_s": 0.0,
+                "env_steps_consumed": 24576,
+                "wall_clock_s": 2.3407042079998064,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "confirm",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            },
+            "epsilon_greedy": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.04406555251221113,
+              "best_score_by_env": {
+                "Acrobot-v1": -0.01925
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 1.5773745000005874,
+              "efficiency": {
+                "best_task_normalized_score": -0.01925,
+                "gain_per_1k_env_steps": -0.002349853515625,
+                "gain_per_wall_s": -0.012203823505447077,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 1.5773745000005874,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": null,
+                  "research_value": 0.0,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            },
+            "linucb": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.04265605642699793,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.0
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 1.6044917910003278,
+              "efficiency": {
+                "best_task_normalized_score": 0.0,
+                "gain_per_1k_env_steps": 0.0,
+                "gain_per_wall_s": 0.0,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 1.6044917910003278,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "crossover_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.36003671549566446,
+                    "crossover_architecture": 0.4668104942390055,
+                    "mutate_activation_expr": 0.4668104942390055,
+                    "search_learning_rate": 0.4668104942390055,
+                    "optimize_network_size": 0.4668104942390055,
+                    "extra_evaluation": 0.4668104942390055,
+                    "transfer_architecture": 0.4668104942390055
+                  },
+                  "research_value": 0.3734483953912044,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_activation_expr",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.33093884160725884,
+                    "crossover_architecture": 0.2778916805734498,
+                    "mutate_activation_expr": 0.39020554589544326,
+                    "search_learning_rate": 0.39020554589544326,
+                    "optimize_network_size": 0.39020554589544326,
+                    "extra_evaluation": 0.39020554589544326,
+                    "transfer_architecture": 0.39020554589544326
+                  },
+                  "research_value": 0.31216443671635463,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "search_learning_rate",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.32777604098327173,
+                    "crossover_architecture": 0.27729197727885624,
+                    "mutate_activation_expr": 0.27054811085969727,
+                    "search_learning_rate": 0.3481608227998527,
+                    "optimize_network_size": 0.3481608227998527,
+                    "extra_evaluation": 0.3481608227998527,
+                    "transfer_architecture": 0.3481608227998527
+                  },
+                  "research_value": 0.27852865823988215,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            },
+            "linucb_frozen": {
+              "n_experiments": 4,
+              "n_fail": 0,
+              "n_skipped": 0,
+              "n_rejected_proposals": 13,
+              "n_invalid_avoided": 13,
+              "n_useful_experiments": 4,
+              "mean_controller_reward": -0.05016979445911425,
+              "best_score_by_env": {
+                "Acrobot-v1": 0.1865
+              },
+              "env_steps_consumed": 8192,
+              "remaining_timesteps": 16384,
+              "wall_clock_s": 2.0655944160025683,
+              "efficiency": {
+                "best_task_normalized_score": 0.1865,
+                "gain_per_1k_env_steps": 0.02276611328125,
+                "gain_per_wall_s": 0.09028878009891372,
+                "env_steps_consumed": 8192,
+                "wall_clock_s": 2.0655944160025683,
+                "budget_exceeded": false
+              },
+              "independent_eval": {
+                "mean_return": -500.0,
+                "std_return": 0.0,
+                "min_return": -500.0,
+                "max_return": -500.0,
+                "mean_length": 500.0,
+                "episodes": 8.0,
+                "eval_seed": 92000,
+                "env_id": "Acrobot-v1",
+                "task_normalized": 0.0,
+                "random_baseline": -500.0
+              },
+              "arm_trace": [
+                {
+                  "t": 0,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.5008334252182358,
+                    "crossover_architecture": 0.5008334252182358,
+                    "mutate_activation_expr": 0.5008334252182358,
+                    "search_learning_rate": 0.5008334252182358,
+                    "optimize_network_size": 0.5008334252182358,
+                    "extra_evaluation": 0.5008334252182358,
+                    "transfer_architecture": 0.5008334252182358
+                  },
+                  "research_value": 0.40066674017458864,
+                  "controller_updated": true
+                },
+                {
+                  "t": 1,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.46681050923094436,
+                    "crossover_architecture": 0.46681050923094436,
+                    "mutate_activation_expr": 0.46681050923094436,
+                    "search_learning_rate": 0.46681050923094436,
+                    "optimize_network_size": 0.46681050923094436,
+                    "extra_evaluation": 0.46681050923094436,
+                    "transfer_architecture": 0.46681050923094436
+                  },
+                  "research_value": 0.3734484073847555,
+                  "controller_updated": true
+                },
+                {
+                  "t": 2,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.49976173117984424,
+                    "crossover_architecture": 0.49976173117984424,
+                    "mutate_activation_expr": 0.49976173117984424,
+                    "search_learning_rate": 0.49976173117984424,
+                    "optimize_network_size": 0.49976173117984424,
+                    "extra_evaluation": 0.49976173117984424,
+                    "transfer_architecture": 0.49976173117984424
+                  },
+                  "research_value": 0.3998093849438754,
+                  "controller_updated": true
+                },
+                {
+                  "t": 3,
+                  "kind": "mutate_architecture",
+                  "budget_tier": "explore",
+                  "ucb_scores": {
+                    "mutate_architecture": 0.4795892683056285,
+                    "crossover_architecture": 0.4795892683056285,
+                    "mutate_activation_expr": 0.4795892683056285,
+                    "search_learning_rate": 0.4795892683056285,
+                    "optimize_network_size": 0.4795892683056285,
+                    "extra_evaluation": 0.4795892683056285,
+                    "transfer_architecture": 0.4795892683056285
+                  },
+                  "research_value": 0.3836714146445028,
+                  "controller_updated": true
+                }
+              ],
+              "is_meta_rl": false,
+              "train_seeds": [
+                1002
+              ]
+            }
+          }
+        }
+      ],
+      "caveat": "Paired comparison: identical controller seeds and train-seed sets. Independent champion eval uses independent_eval_seed. linucb_frozen never updates A,b. LinUCB is a contextual bandit, not meta-RL. V0.5.2 ranks only pre-filtered valid candidates."
+    }
+  },
+  "protocol": {
+    "controller_seeds": [
+      0,
+      1,
+      2
+    ],
+    "max_experiments": 4,
+    "max_timesteps": 24576,
+    "confirm_timesteps": 8192,
+    "explore_timesteps": 2048,
+    "eval_episodes": 8,
+    "independent_eval_seed": 92000,
+    "holdout_eval_seed": 80000,
+    "assessment_eval_seed": 81000
+  }
+}

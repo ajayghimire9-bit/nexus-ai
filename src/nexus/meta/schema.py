@@ -49,6 +49,7 @@ class ExperimentAction:
     parent_ids: tuple[str, ...] = ()
     expr: str | None = None
     notes: str = ""
+    budget_tier: str = "confirm"
 
     def __post_init__(self) -> None:
         if self.kind not in ACTION_KINDS:
@@ -65,6 +66,8 @@ class ExperimentAction:
             raise ValueError("architecture must not contain executable fields")
         if "hidden_sizes" not in self.architecture:
             raise ValueError("architecture.hidden_sizes required")
+        if self.budget_tier not in {"explore", "confirm"}:
+            raise ValueError("budget_tier must be explore or confirm")
 
     def fingerprint(self) -> str:
         return fingerprint_payload(
@@ -77,6 +80,7 @@ class ExperimentAction:
                 "train_seeds": list(self.train_seeds),
                 "holdout_eval_seed": self.holdout_eval_seed,
                 "expr": self.expr,
+                "budget_tier": self.budget_tier,
             }
         )
 
@@ -105,6 +109,7 @@ class ExperimentAction:
             "parent_ids": tuple(data.get("parent_ids") or ()),
             "expr": data.get("expr"),
             "notes": data.get("notes") or "",
+            "budget_tier": data.get("budget_tier") or "confirm",
         }
         return cls(**payload)
 

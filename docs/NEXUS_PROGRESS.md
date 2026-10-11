@@ -163,3 +163,53 @@ Updating LinUCB **tied** random on independent champion return and beat frozen. 
 - **Supported:** LinUCB learns a known-optimal linear bandit and generalizes better than random/frozen on shifted contexts. Scheduling no longer burns slots on unrun proposals. CartPole PPO resume is classified as classic-control exact vs approximate.
 - **Rejected:** learned PPO experiment selection does **not** beat random search on independent champion return under this CPU budget.
 - Not AGI. Not meta-RL. Not a trading system.
+
+## V0.5.2 — valid decisions and budget efficiency
+
+Branch `cursor/v05-budget-aware-meta-controller`. Not merged to `main`. Measured 2026-10-11. `pytest` **60 passed**. V0.5.1 unpaired synthetic results remain in `artifacts/v051_synthetic_bandit.json` and are not overwritten.
+
+Reproduce: `PYTHONPATH=src:.deps python3 scripts/run_v052_benchmarks.py`.
+
+### Task 1 — paired synthetic bandit (**hypothesis supported**)
+
+Within each of **20 seeds**, every controller sees the same pre-generated context sequence and the same potential-reward noise. Metrics are paired differences vs random (mean and 95% CI). Horizon 200; held-out 200 in-distribution + 200 shifted contexts (no updates on held-out).
+
+| Method | last-50 opt | train regret | held-out in-dist opt | held-out shifted opt |
+| --- | --- | --- | --- | --- |
+| random | 0.262 [0.240, 0.284] | 367.6 | 0.243 | 0.258 |
+| ε-greedy (updates) | 0.893 [0.881, 0.905] | 66.7 | 0.972 | 0.992 |
+| **LinUCB** | **0.961 [0.945, 0.977]** | **31.6** | **0.970** | **0.992** |
+| LinUCB frozen | 0.344 [0.310, 0.378] | 370.8 | 0.356 | 0.926 |
+
+Paired deltas **LinUCB − random**: last-50 opt **+0.699** [0.673, 0.725]; regret **−336.0** [−359.1, −312.8]; held-out in-dist **+0.728** [0.718, 0.737]; shifted **+0.735** [0.722, 0.747]. CIs exclude 0. Frozen vs random regret CI **includes 0** (+3.3 [−12.2, +18.7]). Frozen shifted accuracy is high because frozen always picks arm 0 and the shift makes arm 0 often optimal — not learned transfer.
+
+Action frequencies: frozen **1.0 / 0 / 0 / 0**; LinUCB 0.33 / 0.23 / 0.20 / 0.24; random ~uniform. Learning curve: LinUCB opt-hit 0.40 → **1.00**.
+
+### Task 2 — feasible action selection
+
+The loop enumerates unique `ExperimentAction`s, filters duplicate / unaffordable / unsupported / impossible (`extra_evaluation` without a champion), then ranks the remainder. Invalid actions are never proposed. Empty valid set stops with `no_valid_candidates`. Confirmatory vs exploratory tiers (`train_timesteps=8192`, `explore_timesteps=2048`) share an arm but differ in cost.
+
+### Task 3–4 — PPO meta (CartPole + Acrobot), paired seeds `{0,1,2}` (**hypothesis not supported**)
+
+Protocol: 4 experiment slots; cap **24 576** env steps; confirm 8192 / explore 2048; 1 train seed; 8 eval episodes. Holdout 80000 / assessment 81000 / **independent 92000**. Task-normalized vs a random-policy baseline on the same env. Inner PPO is still far below the V0.4 250k CartPole recipe.
+
+**CartPole-v1 independent champion (seed 92000):**
+
+| Controller | indep return ± std | task-norm | total env steps | useful exp | invalid avoided | gain / 1k steps |
+| --- | --- | --- | --- | --- | --- | --- |
+| random | 85.7 ± 100.5 | 0.119 | 63 488 | 3.33 | 9.0 | 0.006 |
+| ε-greedy | 106.6 ± 76.8 | 0.160 | 30 720 | 4.0 | 12.0 | 0.015 |
+| LinUCB | 99.8 ± 82.5 | 0.147 | 24 576 | 4.0 | 11.7 | 0.028 |
+| LinUCB frozen | **166.7 ± 75.8** | **0.281** | 24 576 | 4.0 | 11.7 | 0.017 |
+
+Paired indep deltas vs random (n=3): LinUCB **+14.1** [−174.5, +202.7]; ε-greedy **+20.9** [−158.7, +200.6]; frozen **+81.0** [−118.1, +280.2]. **All CIs include 0.** Frozen’s point estimate is highest; that is not a learning effect (no `A,b` updates; it only chose `mutate_architecture` / explore). Updating LinUCB preferred explore (`mutate → crossover → expr → lr`) and used **fewer** steps than random (paired step delta −12 971 [−19 661, −6 281]) without a reliable independent-return gain.
+
+**Acrobot-v1:** every controller’s independent return is **−500** (task-norm 0). 8192-step inner PPO does not produce Acrobot progress. LinUCB/frozen again used 24 576 vs random 63 488 steps. No controller beat random; there was no signal to beat.
+
+Remaining timesteps never went negative. Failures occupying slots: **0**. Useful completed experiments: 3–4 per replicate. Cost-aware ranking did choose inexpensive explore runs; that improved compute use, not independent CartPole/Acrobot skill.
+
+### Verdict
+
+- **Supported:** paired LinUCB learns the synthetic optimal policy and beats random/frozen on in-distribution and held-out contexts with CIs excluding 0. Valid-candidate ranking avoids invalid proposals and stays inside the step cap.
+- **Rejected:** learned PPO experiment selection does **not** beat random search on independent champion return on CartPole or Acrobot under this budget. Frozen outperforming updating LinUCB on CartPole point estimates is **not** evidence of learned self-improvement.
+- Inner-loop compute (8k steps) is still too small for these classic-control tasks relative to the 250k PPO baseline. Not AGI. Not meta-RL. Not a trading system.

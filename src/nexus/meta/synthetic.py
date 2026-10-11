@@ -176,7 +176,249 @@ def run_synthetic_bandit(
         "generalization_shifted_context": gen_summary,
         "per_seed": [{"seed": p["seed"], "final_regret": {m: p["methods"][m]["final_regret"] for m in names}, "last50_opt_rate": {m: p["methods"][m]["last50_opt_rate"] for m in names}} for p in per_seed],
         "is_meta_rl": False,
-        "caveat": "Synthetic bandit with known optimal arm. Success here does not imply PPO meta-controller improvement.",
+        "caveat": "Synthetic bandit with known optimal arm. Success here does not imply PPO meta-controller improvement. V0.5.1 unpaired world streams; see run_paired_synthetic_bandit for V0.5.2.",
+    }
+    if artifact_path is not None:
+        path = Path(artifact_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload, indent=2))
+    return payload
+
+
+class PairedBanditDataset:
+    """Shared contexts and potential-reward noise for every controller in a seed."""
+
+    def __init__(
+        self,
+        *,
+        n_arms: int,
+        dim: int,
+        horizon: int,
+        n_holdout: int,
+        seed: int,
+        noise_std: float = 0.1,
+    ) -> None:
+        rng = np.random.default_rng(seed)
+        self.n_arms = n_arms
+        self.dim = dim
+        self.theta = rng.normal(size=(n_arms, dim))
+        self.theta[0] *= 0.1
+        self.theta[0, 0] = 3.0
+        self.theta[1:, 0] = -1.0
+        self.train_x = rng.uniform(-1.0, 1.0, size=(horizon, dim))
+        self.holdout_x = rng.uniform(-1.0, 1.0, size=(n_holdout, dim))
+        self.shift_x = rng.uniform(-1.0, 1.0, size=(n_holdout, dim)) * 1.2
+        self.shift_x[:, 0] = self.shift_x[:, 0] + 1.5
+        self.train_noise = rng.normal(0.0, noise_std, size=(horizon, n_arms))
+        self.holdout_noise = rng.normal(0.0, noise_std, size=(n_holdout, n_arms))
+        self.shift_noise = rng.normal(0.0, noise_std, size=(n_holdout, n_arms))
+
+    def means(self, xs: np.ndarray) -> np.ndarray:
+        return xs @ self.theta.T
+
+    def optimal(self, xs: np.ndarray) -> np.ndarray:
+        return np.argmax(self.means(xs), axis=1)
+
+
+def _eval_policy(
+    *,
+    name: str,
+    ctrl: Any,
+    xs: np.ndarray,
+    theta: np.ndarray,
+    rng: np.random.Generator,
+) -> dict[str, float]:
+    means = xs @ theta.T
+    opt = np.argmax(means, axis=1)
+    hits = np.zeros(len(xs), dtype=np.float64)
+    inst = np.zeros(len(xs), dtype=np.float64)
+    freq = np.zeros(ctrl.n_arms, dtype=np.float64)
+    for t, x in enumerate(xs):
+        if name == "random":
+            arm = int(rng.integers(0, ctrl.n_arms))
+        else:
+            arm = int(np.argmax(ctrl._ucb(x)))
+        hits[t] = float(arm == int(opt[t]))
+        inst[t] = float(means[t, int(opt[t])] - means[t, arm])
+        freq[arm] += 1
+    return {
+        "opt_rate": float(hits.mean()),
+        "regret": float(inst.sum()),
+        "action_freq": (freq / max(len(xs), 1)).tolist(),
+    }
+
+
+def run_paired_synthetic_bandit(
+    *,
+    n_seeds: int = 20,
+    horizon: int = 200,
+    n_holdout: int = 200,
+    n_arms: int = 4,
+    dim: int = 8,
+    epsilon: float = 0.1,
+    alpha: float = 0.5,
+    noise_std: float = 0.1,
+    artifact_path: str | Path | None = "artifacts/v052_synthetic_paired.json",
+) -> dict[str, Any]:
+    """Paired LinUCB comparison: identical contexts and potential rewards within each seed."""
+    names = ("random", "epsilon_greedy", "linucb", "linucb_frozen")
+    per_seed: list[dict[str, Any]] = []
+    for seed in range(n_seeds):
+        world = PairedBanditDataset(
+            n_arms=n_arms,
+            dim=dim,
+            horizon=horizon,
+            n_holdout=n_holdout,
+            seed=10_000 + seed,
+            noise_std=noise_std,
+        )
+        ctrls: dict[str, Any] = {
+            "random": LinUCBController(alpha=alpha, n_arms=n_arms),
+            "epsilon_greedy": LinUCBController(alpha=alpha, n_arms=n_arms),
+            "linucb": LinUCBController(alpha=alpha, n_arms=n_arms),
+            "linucb_frozen": FrozenLinUCBController(alpha=alpha, n_arms=n_arms),
+        }
+        # Action-selection RNG is method-specific; the world (x, noise) is shared.
+        rngs = {n: np.random.default_rng(70_000 + seed * 19 + i) for i, n in enumerate(names)}
+        train_rows: dict[str, dict[str, Any]] = {}
+        means = world.means(world.train_x)
+        opt = np.argmax(means, axis=1)
+        for name in names:
+            ctrl = ctrls[name]
+            regrets = np.zeros(horizon)
+            opt_hits = np.zeros(horizon)
+            freq = np.zeros(n_arms)
+            cum = 0.0
+            for t in range(horizon):
+                x = world.train_x[t]
+                arm = _select(name, ctrl, x, rngs[name], epsilon)
+                r = float(means[t, arm] + world.train_noise[t, arm])
+                inst = float(means[t, int(opt[t])] - means[t, arm])
+                cum += inst
+                regrets[t] = cum
+                opt_hits[t] = float(arm == int(opt[t]))
+                freq[arm] += 1
+                if name in {"linucb", "epsilon_greedy"}:
+                    ctrl.A[arm] += np.outer(x, x)
+                    ctrl.b[arm] += r * x
+            hold_rng = np.random.default_rng(80_000 + seed * 19 + names.index(name))
+            shift_rng = np.random.default_rng(90_000 + seed * 19 + names.index(name))
+            train_rows[name] = {
+                "final_regret": float(regrets[-1]),
+                "last50_opt_rate": float(opt_hits[-50:].mean()),
+                "opt_curve": opt_hits.tolist(),
+                "regret_curve": regrets.tolist(),
+                "action_freq": (freq / horizon).tolist(),
+                "heldout_in_distribution": _eval_policy(
+                    name=name, ctrl=ctrl, xs=world.holdout_x, theta=world.theta, rng=hold_rng
+                ),
+                "heldout_shifted": _eval_policy(
+                    name=name, ctrl=ctrl, xs=world.shift_x, theta=world.theta, rng=shift_rng
+                ),
+            }
+        per_seed.append({"seed": seed, "methods": train_rows})
+
+    def _metric(method: str, key: str) -> np.ndarray:
+        return np.asarray([p["methods"][method][key] for p in per_seed], dtype=np.float64)
+
+    summary = []
+    for name in names:
+        regret = _metric(name, "final_regret")
+        opt50 = _metric(name, "last50_opt_rate")
+        curves = np.asarray([p["methods"][name]["regret_curve"] for p in per_seed], dtype=np.float64)
+        optc = np.asarray([p["methods"][name]["opt_curve"] for p in per_seed], dtype=np.float64)
+        freqs = np.asarray([p["methods"][name]["action_freq"] for p in per_seed], dtype=np.float64)
+        hold = np.asarray(
+            [p["methods"][name]["heldout_in_distribution"]["opt_rate"] for p in per_seed], dtype=np.float64
+        )
+        shift = np.asarray(
+            [p["methods"][name]["heldout_shifted"]["opt_rate"] for p in per_seed], dtype=np.float64
+        )
+        rm, rlo, rhi = _ci95(regret)
+        om, olo, ohi = _ci95(opt50)
+        hm, hlo, hhi = _ci95(hold)
+        sm, slo, shi = _ci95(shift)
+        summary.append(
+            {
+                "method": name,
+                "n_seeds": n_seeds,
+                "horizon": horizon,
+                "mean_final_regret": rm,
+                "ci95_final_regret": [rlo, rhi],
+                "mean_last50_opt_rate": om,
+                "ci95_last50_opt_rate": [olo, ohi],
+                "mean_heldout_in_distribution": hm,
+                "ci95_heldout_in_distribution": [hlo, hhi],
+                "mean_heldout_shifted": sm,
+                "ci95_heldout_shifted": [slo, shi],
+                "mean_regret_curve": curves.mean(axis=0).tolist(),
+                "mean_opt_curve": optc.mean(axis=0).tolist(),
+                "mean_action_freq": freqs.mean(axis=0).tolist(),
+            }
+        )
+
+    paired_deltas: dict[str, Any] = {}
+    for name in names:
+        if name == "random":
+            continue
+        d_reg = _metric(name, "final_regret") - _metric("random", "final_regret")
+        d_opt = _metric(name, "last50_opt_rate") - _metric("random", "last50_opt_rate")
+        d_hold = np.asarray(
+            [p["methods"][name]["heldout_in_distribution"]["opt_rate"] for p in per_seed], dtype=np.float64
+        ) - np.asarray(
+            [p["methods"]["random"]["heldout_in_distribution"]["opt_rate"] for p in per_seed], dtype=np.float64
+        )
+        d_shift = np.asarray(
+            [p["methods"][name]["heldout_shifted"]["opt_rate"] for p in per_seed], dtype=np.float64
+        ) - np.asarray(
+            [p["methods"]["random"]["heldout_shifted"]["opt_rate"] for p in per_seed], dtype=np.float64
+        )
+        drm, drlo, drhi = _ci95(d_reg)
+        dom, dolo, dohi = _ci95(d_opt)
+        dhm, dhlo, dhhi = _ci95(d_hold)
+        dsm, dslo, dshi = _ci95(d_shift)
+        paired_deltas[f"{name}_minus_random"] = {
+            "final_regret": {"mean": drm, "ci95": [drlo, drhi]},
+            "last50_opt_rate": {"mean": dom, "ci95": [dolo, dohi]},
+            "heldout_in_distribution": {"mean": dhm, "ci95": [dhlo, dhhi]},
+            "heldout_shifted": {"mean": dsm, "ci95": [dslo, dshi]},
+        }
+        dfr = _metric(name, "final_regret") - _metric("linucb_frozen", "final_regret")
+        dfo = _metric(name, "last50_opt_rate") - _metric("linucb_frozen", "last50_opt_rate")
+        if name != "linucb_frozen":
+            fm, flo, fhi = _ci95(dfr)
+            om2, olo2, ohi2 = _ci95(dfo)
+            paired_deltas[f"{name}_minus_frozen"] = {
+                "final_regret": {"mean": fm, "ci95": [flo, fhi]},
+                "last50_opt_rate": {"mean": om2, "ci95": [olo2, ohi2]},
+            }
+
+    payload = {
+        "task": "paired_linear_contextual_bandit",
+        "protocol": "identical_contexts_and_potential_rewards_within_seed",
+        "n_seeds": n_seeds,
+        "horizon": horizon,
+        "n_holdout": n_holdout,
+        "n_arms": n_arms,
+        "dim": dim,
+        "summary": summary,
+        "paired_deltas": paired_deltas,
+        "per_seed": [
+            {
+                "seed": p["seed"],
+                "final_regret": {m: p["methods"][m]["final_regret"] for m in names},
+                "last50_opt_rate": {m: p["methods"][m]["last50_opt_rate"] for m in names},
+                "heldout_in_distribution": {m: p["methods"][m]["heldout_in_distribution"]["opt_rate"] for m in names},
+                "heldout_shifted": {m: p["methods"][m]["heldout_shifted"]["opt_rate"] for m in names},
+            }
+            for p in per_seed
+        ],
+        "v051_artifact": "artifacts/v051_synthetic_bandit.json",
+        "is_meta_rl": False,
+        "caveat": (
+            "Paired synthetic bandit with a known optimal arm. "
+            "Does not imply PPO meta-controller improvement."
+        ),
     }
     if artifact_path is not None:
         path = Path(artifact_path)
