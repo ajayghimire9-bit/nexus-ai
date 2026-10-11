@@ -72,3 +72,52 @@ class AdaptationSelector:
         return AdaptationDecision(
             "encoder_new_heads_finetune", "zero_shot_weak_encoder_adapt", zs, src, self.max_target_steps
         )
+
+
+class RiskAwareSelector:
+    """Val-only rule using competence, budget and forgetting risk.
+
+    Frozen after V0.6.3 development: encoder-head FT destroyed source skill, so this
+    controller does not select it unless source val is unusable. Cannot edit limits.
+    """
+
+    name = "risk_aware_val"
+
+    def __init__(self, *, max_target_steps: int, limits: dict[str, Any]) -> None:
+        self.max_target_steps = int(max_target_steps)
+        self.limits = dict(limits)
+        for key in FROZEN_LIMIT_KEYS:
+            if key not in self.limits:
+                raise ValueError(f"missing frozen limit {key}")
+
+    def assert_limits(self, current: dict[str, Any]) -> None:
+        for key in FROZEN_LIMIT_KEYS:
+            if current.get(key) != self.limits[key]:
+                raise RuntimeError(f"selector tried to change frozen limit {key}")
+
+    def decide(
+        self,
+        *,
+        zero_shot_val: float,
+        source_val: float,
+        current_limits: dict[str, Any],
+        zero_shot_std: float = 0.0,
+        budget: int | None = None,
+    ) -> AdaptationDecision:
+        self.assert_limits(current_limits)
+        zs = float(zero_shot_val)
+        src = float(source_val)
+        steps = self.max_target_steps if budget is None else int(budget)
+        if src < SOURCE_USELESS_VAL:
+            return AdaptationDecision("scratch", "source_incompetent", zs, src, steps)
+        if zs >= REUSE_VAL_THRESHOLD:
+            return AdaptationDecision("reuse", "zero_shot_already_strong_preserve", zs, src, 0)
+        if zs >= CONSERVATIVE_VAL_THRESHOLD:
+            if steps < 512:
+                return AdaptationDecision("reuse", "budget_too_small_to_adapt", zs, src, 0)
+            return AdaptationDecision("conservative_low_lr", "signal_plus_forget_risk", zs, src, steps)
+        if src >= 200.0:
+            return AdaptationDecision("conservative_low_lr", "weak_zs_but_competent_source", zs, src, steps)
+        if zs + 0.5 * float(zero_shot_std) < 25.0:
+            return AdaptationDecision("scratch", "no_reuse_signal", zs, src, steps)
+        return AdaptationDecision("conservative_low_lr", "default_conservative", zs, src, steps)

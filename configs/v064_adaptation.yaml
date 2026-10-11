@@ -1,0 +1,20 @@
+# Frozen V0.6.4 protocol. Do not retune after seeing confirmation outcomes.
+physics_version: cartpole_derived_v1
+legacy_physics: cartpole_setattr_only
+n_seeds: 10
+replication_unit: source_training_seed
+source_budgets: [8192, 32768]
+transfer_steps: 8192
+curve_points: [0, 512, 2048, 4096, 8192]
+eval_episodes: 8
+val_seed: 71000
+independent_eval_seed: 72000
+confirm_eval_seed: 74000
+source:
+  hidden_sizes: [64, 64]
+  update_epochs: 10
+  learning_rate: 0.00025
+  num_envs: 4
+  num_steps: 128
+selector_thresholds_frozen_from: v063_development
+rollback_source_drop: 80

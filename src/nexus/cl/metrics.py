@@ -6,15 +6,114 @@ from typing import Any
 import numpy as np
 
 
-def _ci95(xs: list[float] | np.ndarray) -> dict[str, float]:
+# Two-sided 95% Student-t critical values by df. df>=30 uses 1.96.
+_T_CRIT_95 = {
+    1: 12.706,
+    2: 4.303,
+    3: 3.182,
+    4: 2.776,
+    5: 2.571,
+    6: 2.447,
+    7: 2.365,
+    8: 2.306,
+    9: 2.262,
+    10: 2.228,
+    11: 2.201,
+    12: 2.179,
+    15: 2.131,
+    20: 2.086,
+    29: 2.045,
+}
+
+
+def _t_crit_95(df: int) -> float:
+    if df < 1:
+        return float("nan")
+    if df >= 30:
+        return 1.96
+    if df in _T_CRIT_95:
+        return _T_CRIT_95[df]
+    keys = sorted(k for k in _T_CRIT_95 if k <= df)
+    return _T_CRIT_95[keys[-1]]
+
+
+def _ci95(xs: list[float] | np.ndarray, *, student_t: bool = False) -> dict[str, float]:
     arr = np.asarray(list(xs), dtype=np.float64)
     if arr.size == 0:
         return {"n": 0, "mean": float("nan"), "lo": float("nan"), "hi": float("nan")}
     mean = float(arr.mean())
     if arr.size < 2:
         return {"n": int(arr.size), "mean": mean, "lo": mean, "hi": mean}
-    half = 1.96 * float(arr.std(ddof=1)) / math.sqrt(arr.size)
-    return {"n": int(arr.size), "mean": mean, "lo": mean - half, "hi": mean + half}
+    se = float(arr.std(ddof=1)) / math.sqrt(arr.size)
+    crit = _t_crit_95(int(arr.size) - 1) if student_t else 1.96
+    half = crit * se
+    out = {"n": int(arr.size), "mean": mean, "lo": mean - half, "hi": mean + half, "se": se}
+    if student_t:
+        out["interval"] = "student_t_95"
+        out["df"] = int(arr.size) - 1
+    else:
+        out["interval"] = "normal_95"
+    return out
+
+
+def seed_level_ci(per_seed: list[float]) -> dict[str, float]:
+    """95% Student-t interval. ``n`` is independent source-training seeds, not tasks."""
+    return _ci95(per_seed, student_t=True)
+
+
+def paired_seed_deltas(
+    *,
+    per_seed_task: dict[int, dict[str, float]],
+    treatment: str,
+    baseline: str,
+) -> dict[str, Any]:
+    """Each source seed contributes one mean (treatment−baseline) across its targets."""
+    deltas: list[float] = []
+    by_task: dict[str, list[float]] = {}
+    for _seed, tasks in sorted(per_seed_task.items()):
+        diffs = []
+        for task_id, row in tasks.items():
+            if not isinstance(row, dict):
+                continue
+            t = row.get(treatment)
+            b = row.get(baseline)
+            if t is None or b is None:
+                continue
+            d = float(t) - float(b)
+            diffs.append(d)
+            by_task.setdefault(task_id, []).append(d)
+        if diffs:
+            deltas.append(float(np.mean(diffs)))
+    return {
+        "per_seed_mean_delta": deltas,
+        "across_seeds": seed_level_ci(deltas),
+        "by_task": {k: seed_level_ci(v) for k, v in by_task.items()},
+        "replication_unit": "source_training_seed",
+        "n_seeds": len(deltas),
+    }
+
+
+def hierarchical_bootstrap_ci(
+    per_seed_means: list[float],
+    *,
+    n_boot: int = 2000,
+    seed: int = 0,
+) -> dict[str, float]:
+    """Resample source seeds, then percentile interval of the mean."""
+    arr = np.asarray(per_seed_means, dtype=np.float64)
+    if arr.size == 0:
+        return {"n": 0, "mean": float("nan"), "lo": float("nan"), "hi": float("nan")}
+    rng = np.random.default_rng(seed)
+    boots = [float(arr[rng.integers(0, arr.size, size=arr.size)].mean()) for _ in range(n_boot)]
+    b = np.asarray(boots)
+    return {
+        "n": int(arr.size),
+        "mean": float(arr.mean()),
+        "lo": float(np.quantile(b, 0.025)),
+        "hi": float(np.quantile(b, 0.975)),
+        "interval": "hierarchical_bootstrap_seed_95",
+        "n_boot": n_boot,
+    }
 
 
 def transfer_metrics(

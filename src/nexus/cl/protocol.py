@@ -4,3 +4,4 @@ TRAIN_FEEDBACK_SEED = 70_000  # unused by curriculum; training uses controller s
 VAL_SEED = 71_000
 INDEPENDENT_SEED = 72_000
 HOLDOUT_EVAL_SEED = 73_000
+CONFIRM_EVAL_SEED = 74_000  # V0.6.4 confirmation suite; selector never sees this
