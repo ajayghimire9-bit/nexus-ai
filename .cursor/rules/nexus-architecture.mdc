@@ -1,0 +1,24 @@
+---
+description: NEXUS two-layer architecture, NAS factory, and activation search
+alwaysApply: true
+---
+
+# Architecture
+
+## Level 1 — Task intelligence
+
+Actor–critic RL: PPO first; A2C, SAC, and DQN where appropriate. Include neural state representations, memory, planning, and continual learning. The actor chooses actions; the critic evaluates states; learning comes from environment feedback.
+
+## Level 2 — Meta-intelligence
+
+Proposes architectures (depth, width, residual/attention), activations, learning rates, optimizers, memory, training configs, and alternative learning strategies. Selects experiments from prior evidence, compute cost, and predicted research value. Start with contextual bandits; use RL when enough experiment data exists.
+
+## Neural Architecture Factory
+
+Build PyTorch models from structured specs. Investigate NAS, evolution (mutation/crossover), PBT, modular/learnable components, efficient search, and transfer of successful architectures. **Judge trained models**, not untrained proposals.
+
+## Activation discovery
+
+Compose primitives (add/mul, protected div, sigmoid, tanh, softplus, sin/cos, bounded exp, learnable scalars). Example: `f(x) = x * sigmoid(a*x) + b * tanh(x)`. Every candidate needs stability tests, gradient checks, autograd verification, training, independent eval, and comparison to ReLU/GELU/SiLU. Optimize for experimental usefulness, not novelty of formulas.
+
+LLMs may help planning and code. They must not replace neural training, evolution, or independent evaluation.

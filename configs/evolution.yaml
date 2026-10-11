@@ -1,0 +1,28 @@
+architecture:
+  hidden_sizes: [64, 64]
+  activation: tanh
+  shared_backbone: true
+
+ppo:
+  env_id: CartPole-v1
+  num_envs: 4
+  num_steps: 64
+  update_epochs: 4
+  num_minibatches: 4
+  learning_rate: 0.0003
+  seed: 1
+  device: cpu
+  checkpoint_dir: checkpoints/evolution
+
+evaluation:
+  episodes: 10
+
+evolution:
+  generations: 2
+  population_size: 4
+  elite_count: 2
+  train_timesteps: 8192
+  eval_episodes: 10
+  env_id: CartPole-v1
+  seed: 7
+  db_path: runs/experiments.sqlite

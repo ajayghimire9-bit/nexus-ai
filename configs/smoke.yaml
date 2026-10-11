@@ -1,0 +1,31 @@
+# Cheap local config for tests and CI. Not a claimed research result.
+architecture:
+  hidden_sizes: [32]
+  activation: tanh
+  shared_backbone: true
+
+ppo:
+  env_id: CartPole-v1
+  num_envs: 2
+  total_timesteps: 1024
+  num_steps: 64
+  update_epochs: 2
+  num_minibatches: 2
+  learning_rate: 0.0003
+  seed: 0
+  device: cpu
+  checkpoint_dir: checkpoints/smoke
+
+evaluation:
+  episodes: 3
+  seed: 123
+
+evolution:
+  generations: 1
+  population_size: 2
+  elite_count: 1
+  train_timesteps: 512
+  eval_episodes: 2
+  env_id: CartPole-v1
+  seed: 0
+  db_path: runs/smoke.sqlite

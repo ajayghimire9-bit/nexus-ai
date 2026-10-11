@@ -1,0 +1,30 @@
+architecture:
+  hidden_sizes: [64, 64]
+  activation: tanh
+  use_residual: false
+  dropout: 0.0
+  layer_norm: false
+  shared_backbone: true
+  init: orthogonal
+
+ppo:
+  env_id: CartPole-v1
+  num_envs: 4
+  total_timesteps: 50000
+  num_steps: 128
+  update_epochs: 4
+  num_minibatches: 4
+  learning_rate: 0.0003
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_coef: 0.2
+  ent_coef: 0.01
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+  seed: 1
+  device: cpu
+  checkpoint_dir: checkpoints
+
+evaluation:
+  episodes: 20
+  seed: 10000
