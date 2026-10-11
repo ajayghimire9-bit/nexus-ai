@@ -56,9 +56,12 @@ class EvolutionConfig:
     elite_count: int = 2
     train_timesteps: int = 8_192
     eval_episodes: int = 10
+    n_train_seeds: int = 2
+    holdout_eval_seed: int = 50_000
     env_id: str = "CartPole-v1"
     seed: int = 7
     db_path: str = "runs/experiments.sqlite"
+    champion_dir: str = "checkpoints/champions"
 
 
 @dataclass

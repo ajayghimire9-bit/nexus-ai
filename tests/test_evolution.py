@@ -29,10 +29,15 @@ def test_evolution_smoke(tmp_path) -> None:  # type: ignore[no-untyped-def]
     cfg.evolution.elite_count = 1
     cfg.evolution.train_timesteps = 256
     cfg.evolution.eval_episodes = 2
+    cfg.evolution.n_train_seeds = 1
+    cfg.evolution.champion_dir = str(tmp_path / "champs")
     cfg.ppo.num_envs = 2
     cfg.ppo.num_steps = 64
     cfg.ppo.num_minibatches = 2
     result = run_evolution(cfg)
     assert result["best"] is not None
     assert "mean_return" in result["best"]
+    assert "stderr" in result["best"]
+    assert "n_params" in result["best"]
+    assert result["train_seeds"] == [cfg.evolution.seed + 1000]
     assert result["baseline_random"]["episodes"] == 2

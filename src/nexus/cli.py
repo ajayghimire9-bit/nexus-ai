@@ -9,7 +9,9 @@ from nexus.eval.evaluate import evaluate_policy
 from nexus.evolution.loop import run_evolution
 from nexus.memory.store import ExperimentStore
 from nexus.meta.select import propose_next_experiment
-from nexus.nn.search import run_activation_search
+from nexus.eval.transfer import run_architecture_transfer
+from nexus.nn.search import run_activation_search, run_expr_search
+from nexus.rl.ppo import spec_from_arch_config
 from nexus.nn.spec import ArchitectureSpec
 from nexus.rl.actor_critic import ActorCritic
 from nexus.rl.running_stats import RunningMeanStd
@@ -85,8 +87,20 @@ def _cmd_remember(args: argparse.Namespace) -> None:
 
 def _cmd_activations(args: argparse.Namespace) -> None:
     cfg = load_config(args.config)
-    result = run_activation_search(cfg)
-    out = Path(args.output) if args.output else Path("runs") / "activation_report.json"
+    result = run_expr_search(cfg, n_candidates=args.n) if args.expr else run_activation_search(cfg)
+    default = "runs/expr_report.json" if args.expr else "runs/activation_report.json"
+    out = Path(args.output) if args.output else Path(default)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    serializable = json.loads(json.dumps(result, default=str))
+    out.write_text(json.dumps(serializable, indent=2))
+    print(json.dumps(serializable, indent=2))
+
+
+def _cmd_transfer(args: argparse.Namespace) -> None:
+    cfg = load_config(args.config)
+    source = spec_from_arch_config(cfg.architecture)
+    result = run_architecture_transfer(cfg, source)
+    out = Path(args.output) if args.output else Path("runs") / "transfer_report.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     serializable = json.loads(json.dumps(result, default=str))
     out.write_text(json.dumps(serializable, indent=2))
@@ -99,7 +113,7 @@ def _cmd_select(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="nexus", description="NEXUS Research V0.3 CLI")
+    parser = argparse.ArgumentParser(prog="nexus", description="NEXUS Research V0.5 CLI")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_train = sub.add_parser("train", help="Train PPO actor-critic")

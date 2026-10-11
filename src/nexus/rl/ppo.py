@@ -36,6 +36,44 @@ def set_seed(seed: int) -> None:
     torch.manual_seed(seed)
 
 
+def _final_obs_for_env(infos: dict[str, Any] | None, env_index: int) -> np.ndarray | None:
+    """Gymnasium SameStep stores the timeout state under final_obs / final_observation."""
+    if not isinstance(infos, dict):
+        return None
+    for key in ("final_observation", "final_obs"):
+        block = infos.get(key)
+        if block is None:
+            continue
+        try:
+            item = block[env_index]
+        except (TypeError, IndexError, KeyError):
+            continue
+        if item is not None:
+            return np.asarray(item, dtype=np.float32)
+    return None
+
+
+def _bootstrap_from_final_obs(
+    successor_value: torch.Tensor,
+    infos: dict[str, Any] | None,
+    truncated: np.ndarray,
+    terminated: np.ndarray,
+    pending_reset: np.ndarray,
+    trainer: "PPOTrainer",
+) -> torch.Tensor:
+    """If SameStep autoreset replaced next_obs, bootstrap truncations from final_obs."""
+    out = successor_value.clone()
+    for i, (trunc, term, dummy) in enumerate(zip(truncated, terminated, pending_reset, strict=True)):
+        if dummy or term or not trunc:
+            continue
+        final = _final_obs_for_env(infos, i)
+        if final is None:
+            continue
+        fo = trainer._obs_tensor_no_update(final.reshape(1, -1))
+        out[i] = trainer.agent.value(fo).reshape(())
+    return out
+
+
 def spec_from_arch_config(arch: ArchitectureConfig) -> ArchitectureSpec:
     return ArchitectureSpec(
         hidden_sizes=tuple(arch.hidden_sizes),
@@ -55,14 +93,14 @@ class PPOTrainer:
         architecture: ArchitectureConfig,
         *,
         agent: ActorCritic | None = None,
+        env_fns: list | None = None,
     ) -> None:
         self.ppo = ppo
         self.architecture = architecture
         set_seed(ppo.seed)
         self.device = torch.device(ppo.device)
-        self.envs = SyncVectorEnv(
-            [_make_env(ppo.env_id, ppo.seed + i) for i in range(ppo.num_envs)]
-        )
+        fns = env_fns if env_fns is not None else [_make_env(ppo.env_id, ppo.seed + i) for i in range(ppo.num_envs)]
+        self.envs = SyncVectorEnv(fns)
         obs_space = self.envs.single_observation_space
         act_space = self.envs.single_action_space
         if not isinstance(obs_space, gym.spaces.Box):
@@ -107,6 +145,9 @@ class PPOTrainer:
         logp_buf = torch.zeros(n_steps, n_envs, device=self.device)
         rew_buf = torch.zeros(n_steps, n_envs, device=self.device)
         term_buf = torch.zeros(n_steps, n_envs, device=self.device)
+        trunc_buf = torch.zeros(n_steps, n_envs, device=self.device)
+        reset_buf = torch.zeros(n_steps, n_envs, device=self.device)
+        next_val_buf = torch.zeros(n_steps, n_envs, device=self.device)
         val_buf = torch.zeros(n_steps, n_envs, device=self.device)
 
         if self.obs_rms is not None:
@@ -116,6 +157,8 @@ class PPOTrainer:
         cumulative = self._episode_return
 
         for step in range(n_steps):
+            # Gymnasium NextStep autoreset: this step is a dummy reset if the prior step ended.
+            pending_reset = np.asarray(getattr(self.envs, "_autoreset_envs", np.zeros(n_envs, dtype=bool)), dtype=bool)
             with torch.no_grad():
                 action, log_prob, value, _ = self.agent(obs_t)
             env_action = action.detach().cpu().numpy()
@@ -125,35 +168,52 @@ class PPOTrainer:
             done = np.logical_or(terminated, truncated)
             cumulative += reward
             for i, finished in enumerate(done):
-                if finished:
+                if finished and not pending_reset[i]:
                     episode_returns.append(float(cumulative[i]))
                     cumulative[i] = 0.0
+
+            self._raw_obs = np.asarray(next_obs, dtype=np.float32).reshape(n_envs, self.obs_dim)
+            next_obs_t = self._obs_tensor(self._raw_obs)
+            with torch.no_grad():
+                successor_value = self.agent.value(next_obs_t)
+                successor_value = _bootstrap_from_final_obs(
+                    successor_value, infos, truncated, terminated, pending_reset, self
+                )
 
             obs_buf[step] = obs_t
             act_buf[step] = action
             logp_buf[step] = log_prob
             rew_buf[step] = torch.as_tensor(reward, dtype=torch.float32, device=self.device)
-            # Terminate bootstrap only on true terminals, not time-limit truncations.
             term_buf[step] = torch.as_tensor(terminated, dtype=torch.float32, device=self.device)
+            trunc_buf[step] = torch.as_tensor(truncated, dtype=torch.float32, device=self.device)
+            reset_buf[step] = torch.as_tensor(pending_reset, dtype=torch.float32, device=self.device)
             val_buf[step] = value
-            self._raw_obs = np.asarray(next_obs, dtype=np.float32).reshape(n_envs, self.obs_dim)
-            obs_t = self._obs_tensor(self._raw_obs)
+            next_val_buf[step] = successor_value
+            obs_t = next_obs_t
 
         self._episode_return = cumulative
 
         with torch.no_grad():
-            next_value = self.agent.value(obs_t)
-            finals = infos.get("final_observation") if isinstance(infos, dict) else None
-            if finals is not None:
-                for i, trunc in enumerate(truncated):
-                    final_obs = finals[i]
-                    if trunc and final_obs is not None:
-                        fo = self._obs_tensor_no_update(np.asarray(final_obs).reshape(1, -1))
-                        next_value[i] = self.agent.value(fo).reshape(())
-
             advantages, returns = compute_gae(
-                rew_buf, val_buf, term_buf, next_value, gamma=cfg.gamma, gae_lambda=cfg.gae_lambda
+                rew_buf,
+                val_buf,
+                term_buf,
+                next_val_buf,
+                gamma=cfg.gamma,
+                gae_lambda=cfg.gae_lambda,
+                truncated=trunc_buf,
+                reset_steps=reset_buf,
             )
+
+        self._last_collect = {
+            "terminated": term_buf.detach().cpu(),
+            "truncated": trunc_buf.detach().cpu(),
+            "reset_steps": reset_buf.detach().cpu(),
+            "next_values": next_val_buf.detach().cpu(),
+            "advantages": advantages.detach().cpu(),
+            "values": val_buf.detach().cpu(),
+            "rewards": rew_buf.detach().cpu(),
+        }
 
         batch = {
             "obs": obs_buf.reshape(-1, self.obs_dim),

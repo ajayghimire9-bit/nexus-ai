@@ -6,7 +6,7 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**NEXUS Research V0.3 (measured):** multi-seed PPO confirmation, architecture evolution with the working trainer, and an ε-greedy experiment proposer over SQLite memory.
+**NEXUS Research V0.4 (measured):** Acrobot architecture evolution (no 500-cap) and a longer retrain of the failing CartPole seed.
 
 No self-improving system, profitable trading system, or AGI has been demonstrated.
 
@@ -18,12 +18,16 @@ CartPole-v1 is solved at mean return ≥ 475 on a given eval set.
 | --- | --- | --- | --- |
 | PPO CartPole seed 1 | separate trunks, 10 epochs | 249 856 | **500.0** vs random 22.4 |
 | PPO CartPole seed 2 | same | 249 856 | **409.5** vs random 26.2 (**not solved**) |
+| PPO CartPole seed 2 (retrain) | same recipe | **399 872** | **500.0** vs random 26.3 |
 | PPO CartPole seed 3 | same | 249 856 | **500.0** vs random 21.5 |
-| Multi-seed summary | seeds 1,2,3 | 249 856 | mean **469.8**, std 42.7; `solved_cartpole=false` |
-| PPO Acrobot seed 2 | separate agent | 249 856 | **−83.25** vs random −500 |
-| Evolution gen 0–1 | 49 152 steps/candidate | 49 152 | baseline tanh 64-64 **500**; gen 1 **all four** hit 500 (ceiling) |
+| Multi-seed @ 250k | seeds 1,2,3 | 249 856 | mean **469.8**, std 42.7 |
+| PPO Acrobot | separate agent | 249 856 | **−83.25** vs random −500 |
+| CartPole evolution | 49 152 / candidate | 49 152 | all gen-1 candidates **500** (ceiling) |
+| **Acrobot evolution** | 81 920 / candidate, 2 gen × 4 | 81 920 | best **−75.2** (tanh 64-64, separate trunks, gen 1) |
 
-A single seed of 500 is **not** a robust solve. Seed 2 failed the 475 bar at the same budget. Evolution cannot rank architectures once they all saturate CartPole; next search should use a harder env or a tighter budget/seed protocol.
+Seed 2 **did** solve when given more steps, but training was unstable (rollout return collapsed to 0 several times). 250k is not a reliable CartPole budget across seeds.
+
+Acrobot search **does rank**: gen 0 had a failed relu 48-32 at **−500**, a mish 256-96 at **−123.8**, and two near-equivalent elites (~−80). Gen 1 clustered **−75 to −105**. Differences of a few points at 10 eval episodes are not a validated architecture win; the −500 collapse is a real reject.
 
 The ε-greedy selector (`nexus select`) only **proposes** a mutation of the current best stored spec. It does not train itself and is not meta-RL.
 
@@ -56,8 +60,9 @@ PYTHONPATH=src:.deps python3 -m nexus.cli train --config configs/ppo_acrobot.yam
 # Independent eval of a checkpoint
 PYTHONPATH=src:.deps python3 -m nexus.cli eval --checkpoint checkpoints/ppo_latest.pt
 
-# Architecture mutation loop
+# Architecture mutation loop (CartPole saturates; use Acrobot to rank)
 PYTHONPATH=src:.deps python3 -m nexus.cli evolve --config configs/evolution.yaml
+PYTHONPATH=src:.deps python3 -m nexus.cli evolve --config configs/evolution_acrobot.yaml
 
 # Activation screen + short matched training
 PYTHONPATH=src:.deps python3 -m nexus.cli activations --config configs/activations.yaml

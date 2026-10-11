@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import random
 from dataclasses import asdict, replace
 from pathlib import Path
 from typing import Any
 
-from nexus.config import ArchitectureConfig, NexusConfig, PPOConfig
+from nexus.config import NexusConfig
 from nexus.eval.evaluate import evaluate_policy, random_policy_baseline
 from nexus.memory.store import ExperimentStore
 from nexus.nn.activations import BASELINE_ACTIVATIONS, SEARCH_ACTIVATIONS, get_activation
+from nexus.nn.expr import expr_to_str, random_expr, register_expr
 from nexus.nn.validate import validate_activation
 from nexus.rl.ppo import PPOTrainer
 
@@ -85,4 +87,82 @@ def run_activation_search(cfg: NexusConfig) -> dict[str, Any]:
             "Candidates trained for a short matched budget after stability/grad checks. "
             "Do not treat a single ranking as a new SOTA activation."
         ),
+    }
+
+
+def run_expr_search(cfg: NexusConfig, *, n_candidates: int = 8, expr_seed: int = 0) -> dict[str, Any]:
+    """Generate expression-tree activations, screen, then train survivors vs tanh.
+
+    Trees are interpreted with approved torch ops. Generated Python is never exec'd.
+    """
+    rng = random.Random(expr_seed)
+    generated: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    while len(generated) < n_candidates:
+        node = random_expr(rng, depth=2)
+        name = register_expr(node)
+        if name in seen:
+            continue
+        seen.add(name)
+        report = validate_activation(get_activation(name))
+        generated.append({"name": name, "expr": expr_to_str(node), **report})
+
+    survivors = [g for g in generated if g["passed"]]
+    names_to_train = ["tanh"] + [g["name"] for g in survivors[:5]]
+    # Deduplicate tanh if a generated expr somehow aliases.
+    ordered: list[str] = []
+    for n in names_to_train:
+        if n not in ordered:
+            ordered.append(n)
+
+    evo = cfg.evolution
+    store = ExperimentStore(evo.db_path)
+    results: list[dict[str, Any]] = []
+    baseline = random_policy_baseline(cfg.ppo.env_id, episodes=evo.eval_episodes, seed=evo.seed + 9_000)
+    try:
+        for i, name in enumerate(ordered):
+            arch = replace(cfg.architecture, activation=name, hidden_sizes=tuple(cfg.architecture.hidden_sizes))
+            ppo = replace(cfg.ppo, total_timesteps=evo.train_timesteps, seed=evo.seed + 100 + i)
+            trainer = PPOTrainer(ppo, arch)
+            try:
+                train_result = trainer.train(evo.train_timesteps)
+                eval_stats = evaluate_policy(
+                    trainer.agent,
+                    ppo.env_id,
+                    episodes=evo.eval_episodes,
+                    seed=evo.seed + 30_000,
+                    device=trainer.device,
+                    obs_rms=trainer.obs_rms if ppo.normalize_obs else None,
+                )
+            finally:
+                trainer.close()
+            rec = store.add(
+                env_id=ppo.env_id,
+                generation=0,
+                architecture={"activation": name, "hidden_sizes": list(arch.hidden_sizes)},
+                train_config={"timesteps": train_result["timesteps"], "kind": "expr_search"},
+                mean_return=eval_stats["mean_return"],
+                std_return=eval_stats["std_return"],
+                timesteps=int(train_result["timesteps"]),
+                seed=ppo.seed,
+                notes=f"expr search {name}",
+            )
+            results.append(
+                {
+                    "name": name,
+                    "is_baseline": name in BASELINE_ACTIVATIONS,
+                    "mean_return": eval_stats["mean_return"],
+                    "id": rec.id,
+                    "eval": eval_stats,
+                }
+            )
+    finally:
+        store.close()
+    results.sort(key=lambda r: r["mean_return"], reverse=True)
+    return {
+        "generated": generated,
+        "rejected": [g["name"] for g in generated if not g["passed"]],
+        "ranked": results,
+        "random_baseline": baseline,
+        "caveat": "Expression search uses a short matched budget. Beating tanh here is not a published activation discovery.",
     }

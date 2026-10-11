@@ -20,6 +20,25 @@ def test_tanh_passes_saturation_fd() -> None:
     assert report["passed"] is True
 
 
+def test_nonfinite_forward_rejected() -> None:
+    import torch
+    from torch import nn
+
+    class Boom(nn.Module):
+        def forward(self, x: torch.Tensor) -> torch.Tensor:
+            return x * float("inf")
+
+    report = validate_activation(Boom())
+    assert report["passed"] is False
+    assert report["reason"] == "non_finite_forward"
+
+
+def test_relu_is_nonsmooth_and_still_passes() -> None:
+    report = validate_activation(get_activation("relu"))
+    assert report["nonsmooth"] is True
+    assert report["passed"] is True
+
+
 def test_running_mean_std() -> None:
     import numpy as np
 

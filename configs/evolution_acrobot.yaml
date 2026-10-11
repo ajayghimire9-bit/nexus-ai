@@ -1,0 +1,33 @@
+# Architecture search on Acrobot-v1, where CartPole's 500 ceiling does not hide differences.
+architecture:
+  hidden_sizes: [64, 64]
+  activation: tanh
+  shared_backbone: false
+
+ppo:
+  env_id: Acrobot-v1
+  num_envs: 4
+  num_steps: 128
+  update_epochs: 10
+  num_minibatches: 4
+  learning_rate: 0.00025
+  seed: 2
+  device: cpu
+  normalize_obs: false
+  anneal_lr: false
+  clip_vloss: false
+  log_interval: 50
+  checkpoint_dir: checkpoints/evolution_acrobot
+
+evaluation:
+  episodes: 10
+
+evolution:
+  generations: 2
+  population_size: 4
+  elite_count: 2
+  train_timesteps: 81920
+  eval_episodes: 10
+  env_id: Acrobot-v1
+  seed: 11
+  db_path: runs/experiments.sqlite

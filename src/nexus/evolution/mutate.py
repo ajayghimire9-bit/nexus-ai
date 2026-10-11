@@ -62,3 +62,23 @@ def mutate_spec(spec: ArchitectureSpec, rng: random.Random) -> ArchitectureSpec:
         )
     except ValueError:
         return spec
+
+
+def crossover_spec(a: ArchitectureSpec, b: ArchitectureSpec, rng: random.Random) -> ArchitectureSpec:
+    """Single-point mix of two compatible genomes. Falls back to parent a if invalid."""
+    sizes_a, sizes_b = list(a.hidden_sizes), list(b.hidden_sizes)
+    cut = rng.randint(1, max(len(sizes_a), len(sizes_b)))
+    child_sizes = (sizes_a[:cut] + sizes_b[cut:]) or sizes_a
+    child_sizes = child_sizes[:MAX_LAYERS] or sizes_a
+    try:
+        return ArchitectureSpec(
+            hidden_sizes=tuple(child_sizes),
+            activation=rng.choice([a.activation, b.activation]),
+            use_residual=rng.choice([a.use_residual, b.use_residual]),
+            dropout=a.dropout,
+            layer_norm=rng.choice([a.layer_norm, b.layer_norm]),
+            shared_backbone=rng.choice([a.shared_backbone, b.shared_backbone]),
+            init=a.init,
+        )
+    except ValueError:
+        return a
