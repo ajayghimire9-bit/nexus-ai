@@ -13,6 +13,7 @@ import numpy as np
 import torch
 
 from nexus.config import ArchitectureConfig, EvolutionConfig, NexusConfig, PPOConfig
+from nexus.meta.checkpoint import select_representative_checkpoint
 from nexus.eval.evaluate import evaluate_policy, random_policy_baseline
 from nexus.evolution.mutate import crossover_spec, mutate_spec, random_spec
 from nexus.memory.store import ExperimentStore
@@ -53,11 +54,12 @@ def _evaluate_candidate(
     wall_times: list[float] = []
     timesteps_used = 0
     n_params = 0
-    last_ckpt: Path | None = None
+    seed_ckpts: list[dict[str, Any]] = []
 
     for seed in train_seeds:
         train_cfg = replace(ppo_cfg, seed=seed, total_timesteps=evo.train_timesteps, env_id=evo.env_id)
         trainer = PPOTrainer(train_cfg, arch)
+        eval_stats: dict[str, float] = {"mean_return": 0.0, "std_return": 0.0}
         try:
             t0 = time.perf_counter()
             train_result = trainer.train(evo.train_timesteps)
@@ -74,13 +76,15 @@ def _evaluate_candidate(
             )
             ckpt = champion_dir / f"cand_gen{generation}_seed{seed}_{id(spec) & 0xFFFF:x}.pt"
             trainer.save(ckpt)
-            last_ckpt = ckpt
+            seed_ckpts.append(
+                {"seed": seed, "mean_return": float(eval_stats["mean_return"]), "path": str(ckpt)}
+            )
         finally:
             trainer.close()
         seed_returns.append(float(eval_stats["mean_return"]))
         seed_stds.append(float(eval_stats["std_return"]))
         wall_times.append(float(wall))
-        timesteps_used = int(train_result["timesteps"])
+        timesteps_used += int(train_result["timesteps"])
 
     returns_arr = np.asarray(seed_returns, dtype=np.float64)
     mean_return = float(returns_arr.mean())
@@ -123,7 +127,8 @@ def _evaluate_candidate(
         "wall_clock_s": wall_mean,
         "timesteps": timesteps_used,
         "sample_efficiency": sample_efficiency,
-        "checkpoint": str(last_ckpt) if last_ckpt else None,
+        "checkpoint": (select_representative_checkpoint(seed_ckpts) or {}).get("path"),
+        "seed_checkpoints": seed_ckpts,
         "id": record.id,
     }
 

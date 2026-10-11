@@ -17,11 +17,19 @@ Measured 2026-10-11, CPU. Prior CartPole / Acrobot PPO and evolution numbers are
 | CartPole evolution | 49 152 / candidate | 49 152 | all gen-1 candidates **500** (ceiling) |
 | Acrobot evolution | 81 920 / candidate | 81 920 | best **−75.2** (tanh 64-64, gen 1) |
 
-## V0.5 (this increment)
+## V0.5 corrections (budget, resume, champions, pairing)
+
+Fixes on `cursor/v05-budget-aware-meta-controller`, not merged to `main` by this work.
+
+- Env-step accounting **sums every training seed**; remaining budget subtracts **actual** PPO timesteps, not the last seed or the estimate alone.
+- Resume restores elites, scores, baselines, LinUCB/`ε` state, Python RNG state, champion history, and remaining caps. Interrupted+resume matched an uninterrupted 2-experiment fingerprint sequence in tests.
+- Champion file is the evaluated seed **closest to the multi-seed mean**, not the last seed in the loop.
+- Controller comparison is **paired**: the same predefined controller seeds (and therefore the same train-seed formula, holdout, and assessment split) for random, ε-greedy, and LinUCB.
+- `extra_evaluation` writes an independent assessment on `assessment_eval_seed` and **does not** call `controller.update`. Training feedback uses `holdout_eval_seed` only. Equal holdout/assessment seeds raise.
 
 ### Tests
 
-`pytest` **41 passed** in **1.03s** (Python 3.13.5, pytest 9.1.1). No tests skipped.
+`pytest` **46 passed** in **1.78s** (Python 3.13.5, pytest 9.1.1). No tests skipped.
 
 ### PPO / GAE (Stage 1)
 
@@ -41,17 +49,19 @@ Loop: OBSERVE → PROPOSE → VALIDATE → TRAIN → EVALUATE → STORE → UPDA
 
 The controller cannot change resource caps, eval seeds, or permissions.
 
-### Equal-budget smoke comparison (Stage 7)
+### Equal-budget paired comparison (measured)
 
-Budget frozen at **2 experiments**, **512 env-steps cap**, **256 train steps** per train action, **1 train seed**, **2 eval episodes**. This is a protocol check, not a ranking study.
+Protocol: **2 controller seeds** `{0, 1}` shared by all methods; **2 experiments**; **512 env-step cap**; **256 train steps**; **1 train seed**; **2 eval episodes**. Within seed 0 every method used train seed **1000**; within seed 1, **1001**. Actual env steps consumed: **512 per replicate**, **1024 total per controller**. Failures: **0**.
 
-| Controller | n experiments | n fail | mean controller reward | best task-normalized score |
+| Controller | mean controller reward | std (n=2) | total env steps | mean fail |
 | --- | --- | --- | --- | --- |
-| random | 2 | 0 | 0.085 | CartPole 0.236; Acrobot 0.185 |
-| ε-greedy | 1 | 1 | 0.046 | CartPole 0.148 |
-| LinUCB | 2 | 0 | −0.017 | CartPole 0.034 |
+| random | 0.108 | 0.019 | 1024 | 0 |
+| ε-greedy | −0.035 | 0.014 | 1024 | 0 |
+| LinUCB | 0.261 | 0.057 | 1024 | 0 |
 
-**LinUCB is not superior on this budget.** ε-greedy recorded a failure/skip (likely extra-eval with no champion or a duplicate fingerprint). Scores are tiny-budget PPO returns, far from CartPole-solved. Robustness across many controller seeds and a held-out experimental condition set was **not** run.
+Per-pair controller rewards: seed 0 — random 0.095, ε-greedy −0.045, LinUCB 0.221; seed 1 — random 0.122, ε-greedy −0.026, LinUCB 0.301.
+
+LinUCB’s mean was higher **on this 256-step, n=2 smoke**. That is **not** evidence of meta-learning or a reliable ranking: two replicates, PPO far from CartPole-solved (best normalized CartPole score 0.45 ≈ not 475/500), controller reward is not an independent assessment set, and no larger held-out condition suite was run. Do not treat LinUCB as superior.
 
 ### Activation expressions (Stage 6)
 
@@ -60,7 +70,7 @@ Restricted trees (approved torch ops only), population + mutate/crossover, node 
 ### Incomplete
 
 - No 250k PPO confirmation after dummy-loss masking.
-- No large equal-budget controller study; no multi-seed controller robustness.
+- Paired controller study is n=2 at 256 PPO steps; not a ranking result.
 - Extra-evaluation of a missing champion is a failed experiment.
 - Architecture transfer in the loop uses matched seeds but still a tiny train budget.
 - NEXUS Alpha / live trading: not implemented.
