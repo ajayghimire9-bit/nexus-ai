@@ -1,0 +1,22 @@
+# Frozen V0.7 protocol. Do not retune after confirmation.
+physics_version: cartpole_derived_v1
+source_task: cartpole_default
+n_train: 4096
+n_val: 1024
+n_test: 1024
+collect_train_seed: 80000
+collect_val_seed: 81000
+collect_test_seed: 82000
+control_eval_seed: 83000
+model:
+  hidden: [64, 64]
+  kinds: [residual, direct]
+  epochs: 40
+planning:
+  algorithm: random_shooting
+  candidates: 32
+  horizon: 8
+  max_plan_ms: 50
+ensemble_members: 3
+is_agi: false
+v06_not_reopened: true

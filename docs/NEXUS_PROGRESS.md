@@ -285,3 +285,11 @@ Probe-and-continue **resumes** the VAL winner checkpoint. Normalization is an ex
 Confirmation (1 024 steps, n=10): **B 312 [263, 362]** vs A **90**; B−A **+222 [173, 272]**. D−B **−223 [−294, −152]**. Frozen vs updating RMS is inconclusive. Learned LinUCB always chose `rms_only` but did not beat fixed B (paired CI includes 0). Continual naive/replay/EWC/multi-head ACC ~80 with forgetting CIs including 0. Source still **0/10** solved; lr=1e-4 @ 16k **0/3** solved.
 
 **V0.6 closed.** Do not add further V0.6 subversions. Not AGI. Not V0.7.
+
+## V0.7 — world models and planning
+
+Branch `cursor/v07-world-models-planning`. Write-up: `docs/NEXUS_V07.md`. `pytest` **119 passed**. Artifact `artifacts/v07_world_model.json`. V0.5/V0.6 JSON preserved.
+
+Residual 2×64 MLP next-state MAE **0.00272** vs persistence **0.125** on 1024 held-out CartPole transitions. Multi-step MAE grows 0.002→0.020 over 1–20 steps. Random-shooting MPC (model only) **325 [289, 362]** vs random **23.4** vs matched 4096-step PPO **111 [88, 133]** vs heuristic **500**. Uncertainty-penalized MPC **448 [420, 476]**; ensemble error–std corr 0.72, **not** claimed calibrated. Target-physics scratch planning fails (65); source model still plans (288). Source RMS without dynamics weights does not help (V0.6 control, negative here).
+
+Not AGI. PREDICT/PLAN only on CartPole.

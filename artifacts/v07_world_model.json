@@ -1,0 +1,356 @@
+{
+  "protocol": {
+    "code_version": "v0.7.0",
+    "parent_commit": "c38b54e",
+    "physics_version": "cartpole_derived_v1",
+    "task": "cartpole_default",
+    "transfer_task": "cartpole_v07_transfer",
+    "transfer_params": {
+      "gravity": 11.0,
+      "length": 0.45,
+      "masspole": 0.15
+    },
+    "collect_seeds": {
+      "train_base": 80000,
+      "val_base": 81000,
+      "test_base": 82000
+    },
+    "control_eval_seed": 83000,
+    "n_train": 4096,
+    "n_val": 1024,
+    "n_test": 1024,
+    "mpc_candidates": 32,
+    "mpc_horizon": 8,
+    "winner_kind": "residual",
+    "planner_uses_simulator": false,
+    "is_agi": false
+  },
+  "collection": {
+    "train": 4096,
+    "val": 1024,
+    "test": 1024,
+    "env_interactions": 6144,
+    "disjoint_seeds": true
+  },
+  "prediction": {
+    "persistence": {
+      "mae": 0.12465474754571915,
+      "rmse": 0.1753193736076355,
+      "n": 1024
+    },
+    "residual": {
+      "one_step": {
+        "mae_per_dim": [
+          0.0029200769495218992,
+          0.0029439777135849,
+          0.00037501342012546957,
+          0.004657280631363392
+        ],
+        "rmse_per_dim": [
+          0.0046379342675209045,
+          0.004857070278376341,
+          0.0005982723087072372,
+          0.007619871292263269
+        ],
+        "mae": 0.002724087331444025,
+        "rmse": 0.005087286699563265,
+        "term_brier": 0.0032052270453753213,
+        "term_accuracy": 0.99609375,
+        "n": 1024
+      },
+      "val": 0.007185521331848577
+    },
+    "direct": {
+      "one_step": {
+        "mae_per_dim": [
+          0.011845485307276249,
+          0.006833103485405445,
+          0.0005962006980553269,
+          0.005995121318846941
+        ],
+        "rmse_per_dim": [
+          0.015449539758265018,
+          0.014925342053174973,
+          0.0010652827331796288,
+          0.015275887213647366
+        ],
+        "mae": 0.006317479535937309,
+        "rmse": 0.013190354220569134,
+        "term_brier": 0.003314761379130756,
+        "term_accuracy": 0.99609375,
+        "n": 1024
+      },
+      "val": 0.009814313030801713
+    },
+    "winner": "residual",
+    "reload_test_mae": 0.002724087331444025,
+    "multi_step": {
+      "1": {
+        "mean_mae": 0.0020892040241354457,
+        "horizon_end_mae": 0.0020892040241354457,
+        "term_brier": 2.100910031682251e-07,
+        "n_episodes": 6
+      },
+      "5": {
+        "mean_mae": 0.005277709414561589,
+        "horizon_end_mae": 0.008603106873730818,
+        "term_brier": 6.995925111636338e-07,
+        "n_episodes": 6
+      },
+      "10": {
+        "mean_mae": 0.009747435338795185,
+        "horizon_end_mae": 0.017474445669601362,
+        "term_brier": 9.415366540800932e-05,
+        "n_episodes": 6
+      },
+      "20": {
+        "mean_mae": 0.019823430106043816,
+        "horizon_end_mae": 0.04262236971408129,
+        "term_brier": 7.190665918832504e-07,
+        "n_episodes": 4
+      }
+    },
+    "persistence_multi_step_mae": {
+      "1": 0.12195366248488426,
+      "5": 0.12598447874188423,
+      "10": 0.20253712435563406,
+      "20": 0.1470342930406332
+    },
+    "action_sensitivity": {
+      "l2_action_gap": 0.7021836042404175,
+      "distinct": true
+    },
+    "oracle_check": {
+      "mae_vs_recorded": 0.009798133745789528,
+      "n": 10,
+      "note": "recorded test trajectory is the oracle; actions were collected independently of the model"
+    }
+  },
+  "ensemble": {
+    "n": 3,
+    "members": [
+      {
+        "member": 0,
+        "best_val": 0.009300662553869188
+      },
+      {
+        "member": 1,
+        "best_val": 0.009148890268988907
+      },
+      {
+        "member": 2,
+        "best_val": 0.009280348167521879
+      }
+    ],
+    "calibration": {
+      "mean_disagreement": 0.002542946022003889,
+      "mean_mae": 0.0026169896591454744,
+      "error_vs_std_corr": 0.7202210442275468,
+      "calibrated_claim": false,
+      "n": 1024
+    }
+  },
+  "control": {
+    "random": {
+      "returns": {
+        "n": 5,
+        "mean": 23.4,
+        "lo": 17.37038198058948,
+        "hi": 29.429618019410515,
+        "se": 2.1720526006522034,
+        "interval": "student_t_95",
+        "df": 4
+      },
+      "eval_env_interactions": 936
+    },
+    "heuristic": {
+      "returns": {
+        "n": 5,
+        "mean": 500.0,
+        "lo": 500.0,
+        "hi": 500.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 4
+      },
+      "eval_env_interactions": 20000
+    },
+    "one_step_model": {
+      "returns": {
+        "n": 5,
+        "mean": 307.45,
+        "lo": 267.1636736020768,
+        "hi": 347.73632639792316,
+        "se": 14.512365417119293,
+        "interval": "student_t_95",
+        "df": 4
+      },
+      "eval_env_interactions": 12298
+    },
+    "mpc": {
+      "returns": {
+        "n": 5,
+        "mean": 325.425,
+        "lo": 288.6730310331542,
+        "hi": 362.17696896684583,
+        "se": 13.239181904483372,
+        "interval": "student_t_95",
+        "df": 4
+      },
+      "eval_env_interactions": 13017
+    },
+    "mpc_uncertainty": {
+      "returns": {
+        "n": 5,
+        "mean": 447.85,
+        "lo": 419.8934695561127,
+        "hi": 475.80653044388737,
+        "se": 10.070796269411867,
+        "interval": "student_t_95",
+        "df": 4
+      },
+      "eval_env_interactions": 17914
+    },
+    "ppo": {
+      "returns": {
+        "n": 5,
+        "mean": 110.725,
+        "lo": 88.4873621204949,
+        "hi": 132.96263787950508,
+        "se": 8.010676469562355,
+        "interval": "student_t_95",
+        "df": 4
+      },
+      "eval_env_interactions": 0
+    }
+  },
+  "costs": {
+    "model_collect_env_steps": 6144,
+    "ppo_train_env_steps_sum": 20480,
+    "ppo_matched_collect_n_train": 4096,
+    "mean_plan_ms": 0.5438166544410346,
+    "n_plan_calls": 13017
+  },
+  "transfer": {
+    "prediction": {
+      "source_zero_shot": {
+        "mae_per_dim": [
+          0.0033333832398056984,
+          0.004241164308041334,
+          0.0003687323769554496,
+          0.02820909395813942
+        ],
+        "rmse_per_dim": [
+          0.005175460129976273,
+          0.006403674837201834,
+          0.0005549319321289659,
+          0.029877442866563797
+        ],
+        "mae": 0.009038092568516731,
+        "rmse": 0.01549808494746685,
+        "term_brier": 0.0053874089692361495,
+        "term_accuracy": 0.9931640625,
+        "n": 1024
+      },
+      "scratch_target": {
+        "mae_per_dim": [
+          0.014040087349712849,
+          0.040564607828855515,
+          0.001161064486950636,
+          0.05758761242032051
+        ],
+        "rmse_per_dim": [
+          0.019549613818526268,
+          0.05569450929760933,
+          0.0018800231628119946,
+          0.07889100909233093
+        ],
+        "mae": 0.028338344767689705,
+        "rmse": 0.049273207783699036,
+        "term_brier": 0.06065492622955955,
+        "term_accuracy": 0.9931640625,
+        "n": 1024
+      },
+      "finetune_source_weights": {
+        "mae_per_dim": [
+          0.004051219206303358,
+          0.0045463694259524345,
+          0.00037862692261114717,
+          0.006217726040631533
+        ],
+        "rmse_per_dim": [
+          0.006306767463684082,
+          0.007929864339530468,
+          0.0005845777923241258,
+          0.01010262593626976
+        ],
+        "mae": 0.003798485267907381,
+        "rmse": 0.0071600074879825115,
+        "term_brier": 0.005791172961999333,
+        "term_accuracy": 0.9931640625,
+        "n": 1024
+      },
+      "source_rms_random_weights": {
+        "mae_per_dim": [
+          0.03492560610175133,
+          0.027198798954486847,
+          0.001310877618379891,
+          0.056862715631723404
+        ],
+        "rmse_per_dim": [
+          0.04394897446036339,
+          0.03813859820365906,
+          0.0022895417641848326,
+          0.07362397760152817
+        ],
+        "mae": 0.03007449023425579,
+        "rmse": 0.04693559184670448,
+        "term_brier": 0.07355123411382819,
+        "term_accuracy": 0.9775390625,
+        "n": 1024
+      },
+      "target_collect_interactions": 1408
+    },
+    "control": {
+      "source_mpc": {
+        "n": 3,
+        "mean": 288.0,
+        "lo": 258.2851444276184,
+        "hi": 317.7148555723816,
+        "se": 6.905613658466567,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "finetune_mpc": {
+        "n": 3,
+        "mean": 221.41666666666666,
+        "lo": 190.39765382026425,
+        "hi": 252.43567951306906,
+        "se": 7.20869459595687,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "scratch_mpc": {
+        "n": 3,
+        "mean": 65.41666666666667,
+        "lo": 63.519222018081514,
+        "hi": 67.31411131525182,
+        "se": 0.4409585518440985,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "rms_mpc": {
+        "n": 3,
+        "mean": 169.0,
+        "lo": 157.19939351046594,
+        "hi": 180.80060648953406,
+        "se": 2.7424137786507226,
+        "interval": "student_t_95",
+        "df": 2
+      }
+    }
+  },
+  "wall_clock_s": 55.87933366699872,
+  "is_agi": false,
+  "caveat": "CartPole world model. Not AGI. Simulator used only as eval oracle."
+}
