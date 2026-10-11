@@ -90,7 +90,7 @@ def train_world_model(
     return wm, {"best_val": best_val, "history": history, "kind": kind, "epochs": epochs, "train_n": len(train), "val_n": len(val)}
 
 
-def one_step_errors(wm: WorldModel, ds: TransitionDataset) -> dict[str, Any]:
+def one_step_errors(wm: Any, ds: TransitionDataset) -> dict[str, Any]:
     pred, p_term = wm.step(ds.obs, ds.action)
     err = pred - ds.next_obs
     mae = np.mean(np.abs(err), axis=0)

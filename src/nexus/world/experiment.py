@@ -110,14 +110,15 @@ def run_v07_benchmark(
     direct, direct_log = train_world_model(train_ds, val_ds, kind="direct", epochs=epochs, seed=7)
     residual.save(ckpt / "residual.pt")
     loaded = type(residual).load(ckpt / "residual.pt")
-    reload_mae = one_step_errors(loaded, test_ds)["mae"]
+    from nexus.world.select import select_winner
 
-    res_err = one_step_errors(residual, test_ds)
-    dir_err = one_step_errors(direct, test_ds)
-    persist = persistence_errors(test_ds)
-    winner_kind = "residual" if res_err["mae"] <= dir_err["mae"] else "direct"
+    winner_kind, val_mae = select_winner({"residual": residual, "direct": direct}, val_ds)
     winner = residual if winner_kind == "residual" else direct
     winner.save(ckpt / "winner.pt")
+    persist = persistence_errors(test_ds)
+    res_err = one_step_errors(residual, test_ds)
+    dir_err = one_step_errors(direct, test_ds)
+    reload_mae = one_step_errors(loaded, test_ds)["mae"]
 
     horizons = (1, 5, 10, 20)
     multi = multi_step_errors(winner, test_ds, horizons)
@@ -318,6 +319,7 @@ def run_v07_benchmark(
             "residual": {"one_step": res_err, "val": residual_log["best_val"]},
             "direct": {"one_step": dir_err, "val": direct_log["best_val"]},
             "winner": winner_kind,
+            "val_mae_used_for_selection": val_mae,
             "reload_test_mae": reload_mae,
             "multi_step": multi,
             "persistence_multi_step_mae": persist_h,

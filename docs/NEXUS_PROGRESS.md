@@ -293,3 +293,9 @@ Branch `cursor/v07-world-models-planning`. Write-up: `docs/NEXUS_V07.md`. `pytes
 Residual 2×64 MLP next-state MAE **0.00272** vs persistence **0.125** on 1024 held-out CartPole transitions. Multi-step MAE grows 0.002→0.020 over 1–20 steps. Random-shooting MPC (model only) **325 [289, 362]** vs random **23.4** vs matched 4096-step PPO **111 [88, 133]** vs heuristic **500**. Uncertainty-penalized MPC **448 [420, 476]**; ensemble error–std corr 0.72, **not** claimed calibrated. Target-physics scratch planning fails (65); source model still plans (288). Source RMS without dynamics weights does not help (V0.6 control, negative here).
 
 Not AGI. PREDICT/PLAN only on CartPole.
+
+## V0.7.1 — planning validation
+
+Branch `cursor/v071-planning-validation`. Write-up: `docs/NEXUS_V071.md`. `pytest` **125 passed**. Artifact `artifacts/v071_world_model.json`. Prior JSON preserved.
+
+Val-only selection froze **ridge** (test MAE 1.05e-4 vs residual 0.0037, n=10). Ridge one-step greedy **246**; ridge MPC **9.3** (paired −237). Residual MPC vs greedy **+5.6 [−159, +171]** (no planning gain). Uncertainty penalty vs ensemble-zero **+76 [−31, +183]** (not superior). Ridge terminate Brier worse than always-nonterminal. Fine-tune still lowers one-step MAE and can raise 20-step error. Matched PPO 2560-step **74** vs residual greedy **283**. Not AGI.

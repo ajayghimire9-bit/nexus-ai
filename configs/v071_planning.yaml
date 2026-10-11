@@ -1,0 +1,22 @@
+# Frozen V0.7.1 protocol. Selection uses validation only.
+physics_version: cartpole_derived_v1
+parent_commit: 5c14294
+n_model_seeds: 10
+n_train: 2048
+n_val: 512
+n_test: 512
+selection: val_mae_only
+planner_kind_frozen_from: model_seed_0
+mpc:
+  algorithm: random_shooting
+  candidates: 16
+  horizon: 6
+  objective: predicted_reward
+  absorbing_termination: true
+  enforce_time_budget: true
+  max_plan_ms: 50
+ensemble_members: 3
+ppo_short_steps: train_plus_val
+ppo_strong_steps: 16384
+is_agi: false
+v06_not_reopened: true

@@ -30,6 +30,10 @@ def run_episodes(
     returns = []
     lengths = []
     interactions = 0
+    trans_obs: list[np.ndarray] = []
+    trans_act: list[int] = []
+    trans_next: list[np.ndarray] = []
+    trans_term: list[bool] = []
     env = make_task_env(spec, seed=seed)
     for ep in range(episodes):
         obs, _ = env.reset(seed=seed + ep)
@@ -37,8 +41,14 @@ def run_episodes(
         total = 0.0
         steps = 0
         while not done and steps < max_steps:
-            a = int(act_fn(np.asarray(obs, dtype=np.float32)))
-            obs, rew, term, trunc, _ = env.step(a)
+            o = np.asarray(obs, dtype=np.float32).reshape(-1)
+            a = int(act_fn(o))
+            nxt, rew, term, trunc, _ = env.step(a)
+            trans_obs.append(o)
+            trans_act.append(a)
+            trans_next.append(np.asarray(nxt, dtype=np.float32).reshape(-1))
+            trans_term.append(bool(term))
+            obs = nxt
             total += float(rew)
             steps += 1
             interactions += 1
@@ -56,4 +66,10 @@ def run_episodes(
         "episodes": episodes,
         "eval_seed": seed,
         "task_id": spec.task_id,
+        "transitions": {
+            "obs": np.stack(trans_obs, axis=0) if trans_obs else np.zeros((0, spec.obs_dim), dtype=np.float32),
+            "action": np.asarray(trans_act, dtype=np.int64),
+            "next_obs": np.stack(trans_next, axis=0) if trans_next else np.zeros((0, spec.obs_dim), dtype=np.float32),
+            "terminated": np.asarray(trans_term, dtype=np.bool_),
+        },
     }
