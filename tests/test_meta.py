@@ -128,6 +128,7 @@ def _tiny_meta_cfg(tmp_path, *, seed: int = 0, n_seeds: int = 1, max_exp: int = 
     cfg.meta.eval_episodes = 2
     cfg.meta.holdout_eval_seed = 80_000
     cfg.meta.assessment_eval_seed = 81_000
+    cfg.meta.independent_eval_seed = 92_000
     cfg.meta.seed = seed
     cfg.meta.controller = "epsilon_greedy"
     cfg.meta.epsilon = 0.0
@@ -204,5 +205,44 @@ def test_assessment_seed_not_used_as_controller_feedback(tmp_path) -> None:  # t
             continue
         assert rw["eval_seed"] == cfg.meta.holdout_eval_seed
         assert rw["eval_seed"] != cfg.meta.assessment_eval_seed
+        assert rw["eval_seed"] != cfg.meta.independent_eval_seed
         if h.get("result", {}).get("independent_assessment"):
             assert h["result"]["independent_assessment"]["eval_seed"] == cfg.meta.assessment_eval_seed
+
+
+def test_inflight_resume_does_not_double_count_or_exceed_budget(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    cfg = _tiny_meta_cfg(tmp_path, seed=5, max_exp=1, train_ts=256)
+    ctrl = EpsilonGreedyController(epsilon=0.0)
+    paused = run_research_loop(
+        cfg, controller=ctrl, resume=False, interrupt_train_after_iters=1
+    )
+    assert paused["interrupted"] is True
+    assert paused["n_experiments"] == 0
+    assert paused["env_steps_consumed"] == 0
+    assert paused["remaining_timesteps"] == cfg.meta.max_timesteps
+    finished = run_research_loop(cfg, controller=ctrl, resume=True)
+    assert finished["interrupted"] is False
+    assert finished["n_experiments"] == 1
+    assert finished["env_steps_consumed"] == 256
+    assert finished["remaining_timesteps"] == cfg.meta.max_timesteps - 256
+    assert finished["remaining_timesteps"] >= 0
+    fps = [
+        h["proposal"]["action"]["fingerprint"]
+        for h in finished["history"]
+        if "proposal" in h
+    ]
+    assert len(fps) == len(set(fps))
+    ind = finished["independent_eval"]
+    assert ind is not None
+    assert ind["eval_seed"] == cfg.meta.independent_eval_seed
+
+
+def test_frozen_linucb_does_not_update() -> None:
+    frozen = make_controller("linucb_frozen")
+    x = np.ones(8)
+    a0 = frozen.A[0].copy()
+    frozen.update(x, "mutate_architecture", 1.0)
+    assert np.allclose(frozen.A[0], a0)
+    live = make_controller("linucb")
+    live.update(x, "mutate_architecture", 1.0)
+    assert not np.allclose(live.A[0], a0)

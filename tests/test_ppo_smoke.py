@@ -227,3 +227,57 @@ def test_collect_same_step_autoreset_finite() -> None:
     finally:
         trainer.close()
 
+
+def test_train_resume_does_not_double_count_steps() -> None:
+    ppo = PPOConfig(
+        env_id="CartPole-v1",
+        num_envs=2,
+        num_steps=64,
+        total_timesteps=256,
+        update_epochs=1,
+        num_minibatches=2,
+        seed=0,
+        device="cpu",
+    )
+    trainer = PPOTrainer(ppo, ArchitectureConfig(hidden_sizes=(8,), activation="tanh"))
+    try:
+        first = trainer.train(256, interrupt_after_iters=1)
+        assert first["interrupted"] is True
+        assert first["timesteps"] == 128
+        second = trainer.train(256)
+        assert second["interrupted"] is False
+        assert second["timesteps"] == 256
+        assert second["complete"] is True
+        assert trainer._num_updates == 2
+    finally:
+        trainer.close()
+
+
+def test_train_resume_from_disk_does_not_double_count(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    ppo = PPOConfig(
+        env_id="CartPole-v1",
+        num_envs=2,
+        num_steps=64,
+        total_timesteps=256,
+        update_epochs=1,
+        num_minibatches=2,
+        seed=1,
+        device="cpu",
+    )
+    arch = ArchitectureConfig(hidden_sizes=(8,), activation="tanh")
+    ckpt = tmp_path / "mid.pt"
+    first = PPOTrainer(ppo, arch)
+    try:
+        first.train(256, interrupt_after_iters=1, progress_path=ckpt)
+        assert first._timesteps_done == 128
+    finally:
+        first.close()
+    second = PPOTrainer(ppo, arch)
+    try:
+        second.load_training_state(ckpt)
+        out = second.train(256)
+        assert out["timesteps"] == 256
+        assert second._num_updates == 2
+    finally:
+        second.close()
+

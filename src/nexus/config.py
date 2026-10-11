@@ -78,6 +78,7 @@ class MetaConfig:
     eval_episodes: int = 4
     holdout_eval_seed: int = 80_000
     assessment_eval_seed: int = 81_000
+    independent_eval_seed: int = 92_000
     env_id: str = "CartPole-v1"
     transfer_env_id: str = "Acrobot-v1"
     seed: int = 0

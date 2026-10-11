@@ -91,6 +91,23 @@ class ExperimentAction:
         data["estimated_timesteps"] = self.estimated_timesteps()
         return data
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> ExperimentAction:
+        payload = {
+            "kind": data["kind"],
+            "env_id": data["env_id"],
+            "architecture": data["architecture"],
+            "learning_rate": float(data["learning_rate"]),
+            "train_timesteps": int(data["train_timesteps"]),
+            "train_seeds": tuple(int(s) for s in data["train_seeds"]),
+            "holdout_eval_seed": int(data["holdout_eval_seed"]),
+            "assessment_eval_seed": int(data["assessment_eval_seed"]),
+            "parent_ids": tuple(data.get("parent_ids") or ()),
+            "expr": data.get("expr"),
+            "notes": data.get("notes") or "",
+        }
+        return cls(**payload)
+
 
 @dataclass
 class Proposal:

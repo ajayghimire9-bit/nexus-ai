@@ -274,6 +274,31 @@ class LinUCBController(ResearchController):
         self.alpha = float(payload.get("alpha", self.alpha))
 
 
+class FrozenLinUCBController(LinUCBController):
+    """Same initialization as LinUCB, but parameters never update.
+
+    Ablation: any advantage that remains here is prior/initialization, not learning.
+    """
+
+    name = "linucb_frozen"
+
+    def update(self, context: np.ndarray, kind: str, reward: float) -> None:
+        return None
+
+    def propose(self, state: dict[str, Any], limits: dict[str, Any], rng: random.Random) -> Proposal:
+        proposal = super().propose(state, limits, rng)
+        proposal.controller = self.name
+        proposal.reason = "Frozen LinUCB (no parameter updates). Not meta-RL."
+        proposal.is_meta_rl = False
+        return proposal
+
+    def state_dict(self) -> dict[str, Any]:
+        data = super().state_dict()
+        data["name"] = self.name
+        data["frozen"] = True
+        return data
+
+
 def make_controller(name: str, **kwargs: Any) -> ResearchController:
     if name == "random":
         return RandomController()
@@ -281,6 +306,8 @@ def make_controller(name: str, **kwargs: Any) -> ResearchController:
         return EpsilonGreedyController(epsilon=float(kwargs.get("epsilon", 0.2)))
     if name == "linucb":
         return LinUCBController(alpha=float(kwargs.get("alpha", 0.5)))
+    if name in {"linucb_frozen", "frozen_linucb"}:
+        return FrozenLinUCBController(alpha=float(kwargs.get("alpha", 0.5)))
     raise ValueError(f"unknown controller: {name}")
 
 

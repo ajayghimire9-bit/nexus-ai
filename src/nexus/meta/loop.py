@@ -75,6 +75,10 @@ def _run_action(
     action: ExperimentAction,
     store: ExperimentStore,
     champion_dir: Path,
+    *,
+    in_flight: dict[str, Any] | None = None,
+    interrupt_after_iters: int | None = None,
+    on_progress: Any | None = None,
 ) -> dict[str, Any]:
     spec = ArchitectureSpec.from_dict(action.architecture)
     failed = False
@@ -108,6 +112,11 @@ def _run_action(
         std = 0.0
         stderr = 0.0
     else:
+        done_seeds = set(int(s) for s in (in_flight or {}).get("completed_seeds") or [])
+        seed_returns = list((in_flight or {}).get("seed_returns") or [])
+        timesteps_used = int((in_flight or {}).get("timesteps_used") or 0)
+        wall = float((in_flight or {}).get("wall") or 0.0)
+        seed_ckpts = list((in_flight or {}).get("seed_checkpoints") or [])
         for seed in action.train_seeds:
             ppo = replace(
                 cfg.ppo,
@@ -116,12 +125,54 @@ def _run_action(
                 env_id=action.env_id,
                 learning_rate=action.learning_rate,
             )
+            if int(seed) in done_seeds:
+                continue
             trainer = PPOTrainer(ppo, _arch_cfg(spec))
             train_result: dict[str, Any] = {"timesteps": 0}
+            progress = champion_dir / f"inflight_{action.fingerprint()}_s{seed}.pt"
+            inflight_ckpt = (in_flight or {}).get("trainer_ckpt")
+            if inflight_ckpt and int((in_flight or {}).get("current_seed") or -1) == int(seed) and Path(str(inflight_ckpt)).exists():
+                trainer.load_training_state(inflight_ckpt)
             try:
                 t0 = time.perf_counter()
-                train_result = trainer.train(action.train_timesteps)
+                train_result = trainer.train(
+                    action.train_timesteps,
+                    interrupt_after_iters=interrupt_after_iters,
+                    progress_path=progress,
+                )
                 wall += time.perf_counter() - t0
+                if train_result.get("interrupted"):
+                    trainer.save(progress)
+                    inflight_payload = {
+                        "action": action.to_dict(),
+                        "completed_seeds": [int(s) for s in done_seeds],
+                        "seed_returns": seed_returns,
+                        "timesteps_used": timesteps_used,
+                        "wall": wall,
+                        "seed_checkpoints": seed_ckpts,
+                        "current_seed": int(seed),
+                        "trainer_ckpt": str(progress),
+                    }
+                    if on_progress is not None:
+                        on_progress(inflight_payload)
+                    return {
+                        "interrupted": True,
+                        "in_flight": inflight_payload,
+                        "failed": False,
+                        "mean_return": 0.0,
+                        "stderr": 0.0,
+                        "std_return": 0.0,
+                        "seed_returns": seed_returns,
+                        "n_params": int(sum(p.numel() for p in trainer.agent.parameters())),
+                        "wall_clock_s": wall,
+                        "timesteps": timesteps_used + int(train_result["timesteps"]),
+                        "env_steps": timesteps_used + int(train_result["timesteps"]),
+                        "checkpoint": None,
+                        "controller_updated": False,
+                        "feedback_eval_seed": action.holdout_eval_seed,
+                        "independent_assessment": None,
+                        "action": action.to_dict(),
+                    }
                 n_params = int(sum(p.numel() for p in trainer.agent.parameters()))
                 if not torch.isfinite(torch.nn.utils.parameters_to_vector(trainer.agent.parameters())).all():
                     failed = True
@@ -149,6 +200,10 @@ def _run_action(
                 trainer.close()
             seed_returns.append(float(holdout_stats.get("mean_return", 0.0)))
             timesteps_used += int(train_result["timesteps"])
+            done_seeds.add(int(seed))
+            interrupt_after_iters = None
+            if progress.exists():
+                progress.unlink()
 
         arr = np.asarray(seed_returns, dtype=np.float64) if seed_returns else np.zeros(1)
         mean_return = float(arr.mean())
@@ -208,6 +263,7 @@ def run_research_loop(
     controller: ResearchController | None = None,
     resume: bool = True,
     stop_after: int | None = None,
+    interrupt_train_after_iters: int | None = None,
 ) -> dict[str, Any]:
     """OBSERVE → PROPOSE → VALIDATE → TRAIN → EVALUATE → STORE → UPDATE → REPEAT.
 
@@ -249,6 +305,9 @@ def run_research_loop(
     n_params = 1
     extra_recent = 0.0
     baselines: dict[str, float] = {}
+    in_flight: dict[str, Any] | None = None
+    wall_clock_s = 0.0
+    t_loop = time.perf_counter()
 
     def _dump_state() -> None:
         state_path.write_text(
@@ -270,6 +329,7 @@ def run_research_loop(
                     "extra_recent": extra_recent,
                     "baselines": baselines,
                     "rng": serialize_rng(rng),
+                    "in_flight": in_flight,
                     "note": "Limits are frozen. Controller cannot edit max_experiments or eval rules.",
                 },
                 indent=2,
@@ -297,6 +357,8 @@ def run_research_loop(
         baselines = {k: float(v) for k, v in dict(saved.get("baselines") or {}).items()}
         if saved.get("rng"):
             restore_rng(rng, saved["rng"])
+        if saved.get("in_flight"):
+            in_flight = saved["in_flight"]
 
     try:
         while remaining_exp > 0:
@@ -317,21 +379,53 @@ def run_research_loop(
                 default_architecture=elites[0].to_dict(),
                 best_expr=None,
             )
-            proposal: Proposal = ctrl.propose(obs_state, limits, rng)
-            action = proposal.action
+            if in_flight:
+                action = ExperimentAction.from_dict(in_flight["action"])
+                proposal = Proposal(
+                    action=action,
+                    predicted_value=0.0,
+                    estimated_cost=action.estimated_timesteps(),
+                    reason="resume in-flight experiment",
+                    controller=ctrl.name,
+                    is_meta_rl=False,
+                )
+            else:
+                proposal = ctrl.propose(obs_state, limits, rng)
+                action = proposal.action
             if action.holdout_eval_seed == action.assessment_eval_seed:
                 raise ValueError("assessment seed must not equal holdout feedback seed")
+            if (
+                meta.independent_eval_seed == meta.holdout_eval_seed
+                or meta.independent_eval_seed == meta.assessment_eval_seed
+            ):
+                raise ValueError("independent_eval_seed must be unused in selection and feedback")
             est = action.estimated_timesteps()
-            if est > remaining_steps and action.kind != "extra_evaluation":
+            if not in_flight and est > remaining_steps and action.kind != "extra_evaluation":
                 break
-            if action.fingerprint() in seen:
+            if not in_flight and action.fingerprint() in seen:
                 n_fail += 1
                 remaining_exp -= 1
                 history.append({"skipped_duplicate": action.fingerprint(), "kind": action.kind})
                 _dump_state()
                 continue
-            seen.add(action.fingerprint())
-            result = _run_action(cfg, action, store, champion_dir)
+            if not in_flight:
+                seen.add(action.fingerprint())
+                in_flight = {"action": action.to_dict(), "completed_seeds": []}
+                _dump_state()
+            result = _run_action(
+                cfg,
+                action,
+                store,
+                champion_dir,
+                in_flight=in_flight,
+                interrupt_after_iters=interrupt_train_after_iters,
+            )
+            if result.get("interrupted"):
+                in_flight = result["in_flight"]
+                _dump_state()
+                break
+            in_flight = None
+            interrupt_train_after_iters = None
             actual = int(result["env_steps"])
             env_id = action.env_id
             rw: dict[str, Any] | None = None
@@ -396,6 +490,24 @@ def run_research_loop(
     finally:
         store.close()
 
+    independent: dict[str, Any] | None = None
+    champ = Path(meta.champion_dir) / "champion_current.pt"
+    if champ.exists() and in_flight is None:
+        agent, payload = _load_champion_agent(champ, meta.env_id, cfg.ppo.device)
+        independent = evaluate_policy(
+            agent,
+            meta.env_id,
+            episodes=meta.eval_episodes,
+            seed=meta.independent_eval_seed,
+            device=torch.device(cfg.ppo.device),
+        )
+        independent["eval_seed"] = meta.independent_eval_seed
+        independent["env_id"] = meta.env_id
+        used = {meta.holdout_eval_seed, meta.assessment_eval_seed, meta.holdout_eval_seed + 7}
+        if meta.independent_eval_seed in used:
+            raise RuntimeError("independent eval seed collided with selection/feedback seeds")
+
+    wall_clock_s = time.perf_counter() - t_loop
     return {
         "controller": ctrl.name,
         "is_meta_rl": ctrl.is_meta_rl,
@@ -409,16 +521,37 @@ def run_research_loop(
         "remaining_timesteps": remaining_steps,
         "env_steps_consumed": env_steps_consumed,
         "max_timesteps": meta.max_timesteps,
+        "independent_eval": independent,
+        "interrupted": in_flight is not None,
+        "wall_clock_s": wall_clock_s,
         "caveat": (
-            "Controller reward uses holdout eval seeds only. Assessment seeds are "
-            "never used as bandit feedback. LinUCB is not meta-RL."
+            "Controller reward uses holdout eval seeds only. Independent eval uses "
+            "independent_eval_seed, never selection or bandit feedback. LinUCB is not meta-RL."
         ),
     }
 
 
+def _arm_trace(history: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows = []
+    for i, h in enumerate(history):
+        if "proposal" not in h:
+            continue
+        prop = h["proposal"]
+        action = prop.get("action") or {}
+        rows.append(
+            {
+                "t": i,
+                "kind": action.get("kind"),
+                "ucb_scores": prop.get("ucb_scores"),
+                "controller_updated": h.get("controller_updated"),
+            }
+        )
+    return rows
+
+
 def compare_controllers(
     cfg: NexusConfig,
-    names: tuple[str, ...] = ("random", "epsilon_greedy", "linucb"),
+    names: tuple[str, ...] = ("random", "epsilon_greedy", "linucb", "linucb_frozen"),
     controller_seeds: tuple[int, ...] | None = None,
 ) -> dict[str, Any]:
     """Paired equal-budget comparison on a predefined controller-seed set.
@@ -453,13 +586,18 @@ def compare_controllers(
                 train_seeds_seen = [expected_train]
             elif expected_train not in train_seeds_seen:
                 train_seeds_seen.append(expected_train)
+            ind = result.get("independent_eval") or {}
             runs[name] = {
                 "n_experiments": result["n_experiments"],
                 "n_fail": result["n_fail"],
+                "n_skipped": result["n_skipped"],
                 "mean_controller_reward": float(np.mean(rewards)) if rewards else 0.0,
                 "best_score_by_env": result["best_score_by_env"],
                 "env_steps_consumed": result["env_steps_consumed"],
                 "remaining_timesteps": result["remaining_timesteps"],
+                "wall_clock_s": result.get("wall_clock_s"),
+                "independent_eval": ind,
+                "arm_trace": _arm_trace(result["history"]),
                 "is_meta_rl": False,
                 "train_seeds": expected_train,
             }
@@ -472,15 +610,26 @@ def compare_controllers(
         rewards = [p["runs"][name]["mean_controller_reward"] for p in paired]
         steps = [p["runs"][name]["env_steps_consumed"] for p in paired]
         fails = [p["runs"][name]["n_fail"] for p in paired]
+        skips = [p["runs"][name]["n_skipped"] for p in paired]
+        walls = [p["runs"][name]["wall_clock_s"] or 0.0 for p in paired]
+        indep = [
+            p["runs"][name]["independent_eval"].get("mean_return")
+            for p in paired
+            if p["runs"][name].get("independent_eval")
+        ]
         summary.append(
             {
                 "controller": name,
                 "n_replicates": len(seeds),
                 "mean_controller_reward": float(np.mean(rewards)),
                 "std_controller_reward": float(np.std(rewards, ddof=1)) if len(rewards) > 1 else 0.0,
+                "mean_independent_return": float(np.mean(indep)) if indep else None,
+                "std_independent_return": float(np.std(indep, ddof=1)) if len(indep) > 1 else (0.0 if indep else None),
                 "mean_env_steps": float(np.mean(steps)),
                 "total_env_steps": int(np.sum(steps)),
+                "mean_wall_clock_s": float(np.mean(walls)),
                 "mean_fail": float(np.mean(fails)),
+                "mean_skipped": float(np.mean(skips)),
                 "is_meta_rl": False,
             }
         )
@@ -491,11 +640,15 @@ def compare_controllers(
             "train_timesteps": cfg.meta.train_timesteps,
             "n_train_seeds": cfg.meta.n_train_seeds,
             "controller_seeds": list(seeds),
+            "holdout_eval_seed": cfg.meta.holdout_eval_seed,
+            "assessment_eval_seed": cfg.meta.assessment_eval_seed,
+            "independent_eval_seed": cfg.meta.independent_eval_seed,
         },
         "paired": paired,
         "summary": summary,
         "caveat": (
             "Paired comparison: identical controller seeds and train-seed sets. "
-            "LinUCB is a contextual bandit, not meta-RL. Superiority requires these numbers."
+            "Independent champion eval uses independent_eval_seed. "
+            "linucb_frozen never updates A,b. LinUCB is a contextual bandit, not meta-RL."
         ),
     }

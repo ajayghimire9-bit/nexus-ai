@@ -118,6 +118,7 @@ class PPOTrainer:
         self._raw_obs = np.asarray(obs, dtype=np.float32).reshape(ppo.num_envs, obs_dim)
         self._episode_return = np.zeros(ppo.num_envs, dtype=np.float64)
         self._num_updates = 0
+        self._timesteps_done = 0
 
     def close(self) -> None:
         self.envs.close()
@@ -326,15 +327,24 @@ class PPOTrainer:
             "explained_variance": explained,
         }
 
-    def train(self, total_timesteps: int | None = None) -> dict[str, Any]:
+    def train(
+        self,
+        total_timesteps: int | None = None,
+        *,
+        interrupt_after_iters: int | None = None,
+        progress_path: str | Path | None = None,
+    ) -> dict[str, Any]:
         cfg = self.ppo
         target = total_timesteps if total_timesteps is not None else cfg.total_timesteps
         steps_per_iter = cfg.num_steps * cfg.num_envs
         iterations = max(1, target // steps_per_iter)
         history: list[dict[str, float]] = []
         start = time.time()
-        timesteps = 0
-        for it in range(iterations):
+        timesteps = int(getattr(self, "_timesteps_done", 0))
+        start_it = int(self._num_updates)
+        iters_this_call = 0
+        interrupted = False
+        for it in range(start_it, iterations):
             if cfg.anneal_lr:
                 frac = 1.0 - (it / max(1, iterations))
                 lrnow = frac * cfg.learning_rate
@@ -344,8 +354,12 @@ class PPOTrainer:
             update_metrics = self.update(batch)
             self._num_updates += 1
             timesteps += steps_per_iter
+            self._timesteps_done = timesteps
+            iters_this_call += 1
             row = {"iteration": float(it), "timesteps": float(timesteps), **roll_metrics, **update_metrics}
             history.append(row)
+            if progress_path is not None:
+                self.save(progress_path)
             interval = max(1, cfg.log_interval)
             if it % interval == 0 or it == iterations - 1:
                 print(
@@ -355,12 +369,17 @@ class PPOTrainer:
                     f"explained_var={row['explained_variance']:.3f} clipfrac={row['clipfrac']:.3f}",
                     flush=True,
                 )
+            if interrupt_after_iters is not None and iters_this_call >= interrupt_after_iters:
+                interrupted = True
+                break
         elapsed = time.time() - start
         result = {
             "timesteps": timesteps,
             "seconds": elapsed,
             "final_rollout_mean_return": history[-1]["rollout_mean_return"] if history else 0.0,
             "history": history,
+            "interrupted": interrupted,
+            "complete": timesteps >= target and not interrupted,
         }
         return result
 
@@ -369,12 +388,34 @@ class PPOTrainer:
         path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "model": self.agent.state_dict(),
+            "optimizer": self.optimizer.state_dict(),
             "architecture": asdict(self.architecture),
             "ppo": asdict(self.ppo),
             "obs_rms": None if self.obs_rms is None else self.obs_rms.state_dict(),
+            "num_updates": int(self._num_updates),
+            "timesteps_done": int(getattr(self, "_timesteps_done", 0)),
+            "raw_obs": self._raw_obs,
+            "episode_return": self._episode_return,
+            "autoreset_envs": np.asarray(getattr(self.envs, "_autoreset_envs", np.zeros(self.ppo.num_envs, dtype=bool))),
         }
         torch.save(payload, path)
         meta = path.with_suffix(".json")
         meta.write_text(
             json.dumps({"architecture": asdict(self.architecture), "ppo": asdict(self.ppo)}, indent=2)
         )
+
+    def load_training_state(self, path: str | Path) -> None:
+        payload = torch.load(path, map_location=self.device, weights_only=False)
+        self.agent.load_state_dict(payload["model"])
+        if payload.get("optimizer"):
+            self.optimizer.load_state_dict(payload["optimizer"])
+        if payload.get("obs_rms") is not None and self.obs_rms is not None:
+            self.obs_rms.load_state_dict(payload["obs_rms"])
+        self._num_updates = int(payload.get("num_updates", 0))
+        self._timesteps_done = int(payload.get("timesteps_done", 0))
+        if payload.get("raw_obs") is not None:
+            self._raw_obs = np.asarray(payload["raw_obs"], dtype=np.float32)
+        if payload.get("episode_return") is not None:
+            self._episode_return = np.asarray(payload["episode_return"], dtype=np.float64)
+        if payload.get("autoreset_envs") is not None and hasattr(self.envs, "_autoreset_envs"):
+            self.envs._autoreset_envs = np.asarray(payload["autoreset_envs"], dtype=bool)

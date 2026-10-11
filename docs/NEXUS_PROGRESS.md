@@ -67,11 +67,50 @@ LinUCB’s mean was higher **on this 256-step, n=2 smoke**. That is **not** evid
 
 Restricted trees (approved torch ops only), population + mutate/crossover, node cap 12, SHA canonical dedup, learnable affine `(scale, shift)`, numerical validation. Training eval of expr search at V0.3/V0.4 activation-screen scale was **not re-run** in this increment beyond unit tests.
 
+## V0.5 independent validation (this increment)
+
+Branch `cursor/v05-budget-aware-meta-controller`. Not merged to `main`.
+
+`pytest` **50 passed** in **1.96s**. Mid-experiment PPO resume and in-flight loop resume tests included: interrupted runs do not decrement the budget, and resume does not double-count env steps.
+
+### CartPole 250k with dummy-reset loss masking vs V0.4
+
+Matched recipe: separate trunks, 10 epochs, 249 856 steps, eval 20 episodes seed 10 000. Wall ~21.5 s/seed, 66.3 s total.
+
+| Seed | V0.4 eval | V0.5 eval (masked PPO) | Random |
+| --- | --- | --- | --- |
+| 1 | 500.0 | **500.0** | 22.2 |
+| 2 | 409.5 (not solved) | **457.5 ± 127.5** (not solved) | 22.6 |
+| 3 | 500.0 | **500.0** | 24.2 |
+| Mean | 469.8 | **485.8** (std 24.5) | — |
+
+`solved_cartpole` remains **false** (seed 2 < 475). Seed 2 still collapsed to 0 rollout return during training. The +48 on seed 2 vs V0.4 is **not** treated as a confirmed algorithm win: one noisy seed, still unsolved, training still unstable.
+
+### Paired controller study (enough decisions for LinUCB updates)
+
+Protocol: controller seeds `{0, 1}`; **8** experiment slots; cap **2048** env steps; **256** train steps; 1 train seed; 4 eval episodes. Feedback holdout seed **80000**; extra-eval assessment **81000**; **independent champion eval seed 92000** (unused in selection, updates, or champion ranking). Methods: random, ε-greedy, LinUCB, **frozen LinUCB** (no `A,b` updates). Wall-clock for the whole comparison: **2.89 s**.
+
+| Controller | mean bandit reward ± std | independent return ± std | total env steps | mean fails / skips |
+| --- | --- | --- | --- | --- |
+| random | 0.016 ± 0.002 | **336 ± 203** | 2816 | 2.0 / 2.0 |
+| ε-greedy | 0.002 ± 0.000 | 127 ± 92 | 3072 | 2.0 / 2.0 |
+| LinUCB (updating) | 0.079 ± 0.065 | 224 ± 45 | 3072 | 1.5 / 1.5 |
+| LinUCB frozen | 0.015 ± 0.068 | 145 ± 68 | 2560 | 3.0 / 3.0 |
+
+Independent per-pair champion returns (seed 92000): random 192.5 / **480.3**; ε-greedy 192.5 / 61.8; LinUCB 192.5 / 256.3; frozen 192.5 / 97.0.
+
+LinUCB **did not** beat random on independent evaluation. Random’s mean is dominated by one 480 run. Updating LinUCB beat frozen LinUCB on this sample (224 vs 145 independent; 0.079 vs 0.015 bandit reward) but **n=2** and intervals overlap — not evidence that learning, rather than action-sequence luck, caused the gap.
+
+Actual env steps differ across methods because extra-eval and duplicate skips are 0-step; the cap was 2048/replicate. Failures listed are duplicate fingerprints counted as skips.
+
+**Arm traces (LinUCB vs frozen):** frozen stayed on `mutate_architecture` for all 5 completed actions both seeds. Updating LinUCB diversified: seed 0 `mutate → crossover ×2 → expr → lr → size → extra_eval`; seed 1 `mutate → crossover ×2 → expr ×3`. Preference change is real; it did not produce a better independent champion than random.
+
+**Hypothesis not supported:** a learned (updating) research controller does **not** show repeatable independent-eval gains over random under this CPU budget. Frozen vs updating is suggestive but underpowered.
+
 ### Incomplete
 
-- No 250k PPO confirmation after dummy-loss masking.
-- Paired controller study is n=2 at 256 PPO steps; not a ranking result.
+- Controller study is still n=2 seeds and 256-step PPO inner loops; CartPole ceiling not relevant here.
 - Extra-evaluation of a missing champion is a failed experiment.
-- Architecture transfer in the loop uses matched seeds but still a tiny train budget.
+- Mid-experiment resume restores weights/optimizer/timestep cursor; Gymnasium internal env RNG is not fully serialized.
 - NEXUS Alpha / live trading: not implemented.
 - The agent cannot alter its own safety, eval, or financial-risk rules.
