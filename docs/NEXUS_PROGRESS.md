@@ -261,3 +261,11 @@ Val-best source checkpoint (not last weights): independent **291 [83, 499]**; 1/
 Untouched tests `short` / `highg` / `longheavy` (n=9): selector **320.9 [209, 433]** vs scratch **78.8 [59, 98]** (paired **+242 [120, 365]**). Encoder+new-head FT **68.1** and **destroys** source skill (Δ **−219 [−324, −115]**). Selector always chose reuse or conservative LR; it did not beat conservative itself.
 
 **Partial success:** useful strategy selection vs scratch and vs the V0.6.2 encoder recipe. Encoder-head transfer did **not** persist off low-g. Not AGI.
+
+## V0.6.4 — corrected physics, seed-level inference
+
+Branch `cursor/v064-validated-adaptation`. Full write-up: `docs/NEXUS_V064.md`. `pytest` **98 passed**. V0.6–V0.6.3 JSON kept as **legacy physics** (`cartpole_setattr_only`); they are not evidence on `cartpole_derived_v1`.
+
+Gymnasium 1.4 derived `total_mass` / `polemass_length` are now recomputed after param edits. CIs use **n=10 source seeds** (Student-t), not 30 correlated task cells. Encoder-only retention is undefined.
+
+Source at 32 768 / 10 epochs: independent **154.7 [75, 234]**; **0/10** val-solved. Confirmation (3 frozen offsets, eval 74000): encoder+new-head FT **392 [316, 468]** vs scratch **92 [60, 124]**; paired **+300 [224, 376]**. Risk-aware selector **tied conservative** (237) and **lost to encoder** (−155 [−279, −30]). Selector hypothesis failed; encoder-vs-scratch transfer succeeded. Not AGI.
