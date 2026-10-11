@@ -22,9 +22,16 @@ class BudgetExceededError(RuntimeError):
     pass
 
 
+TARGET_BUCKETS = frozenset({"detect", "adapt_collect", "online_val"})
+
+
 @dataclass
 class InteractionLedger:
-    """Target-learning cap is independent of pretrain and eval-only counters."""
+    """Target-learning cap is independent of pretrain and eval-only counters.
+
+    Each env step is charged to exactly one target bucket, or to pretrain/eval_only.
+    Detect and adapt never share the same charged step.
+    """
 
     target_cap: int
     target_used: int = 0
@@ -40,19 +47,30 @@ class InteractionLedger:
         n = int(n)
         if n < 0:
             raise ValueError("negative interactions")
+        if n == 0:
+            return 0
         if bucket == "pretrain":
             self.pretrain += n
             return n
         if bucket == "eval_only":
             self.eval_only += n
             return n
+        if bucket not in TARGET_BUCKETS:
+            raise ValueError(f"unknown bucket {bucket}")
         if self.target_used + n > int(self.target_cap):
             raise BudgetExceededError(f"{self.target_used}+{n} exceeds cap {self.target_cap}")
         self.target_used += n
         self.buckets[bucket] = int(self.buckets.get(bucket, 0)) + n
         return n
 
+    def charge_upto(self, n: int, bucket: str) -> int:
+        if bucket in ("pretrain", "eval_only"):
+            return self.charge(n, bucket)
+        take = min(int(n), self.remaining)
+        return self.charge(take, bucket) if take else 0
+
     def snapshot(self) -> dict[str, Any]:
+        bsum = int(sum(self.buckets.values()))
         return {
             "target_cap": int(self.target_cap),
             "target_used": int(self.target_used),
@@ -60,7 +78,9 @@ class InteractionLedger:
             "pretrain": int(self.pretrain),
             "eval_only": int(self.eval_only),
             "buckets": dict(self.buckets),
+            "bucket_sum": bsum,
             "within_cap": self.target_used <= self.target_cap,
+            "no_double_count": bsum == int(self.target_used),
         }
 
 
@@ -84,13 +104,17 @@ def plan_with_belief(
         objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
     )
 
+    prev = {"a": None}
+
     def act(obs: np.ndarray) -> int:
-        b = est.observe(obs, None)
+        b = est.observe(obs, prev["a"])
         a, _meta = planner.act(b)
+        prev["a"] = int(a)
         return int(a)
 
     def on_start(ep: int) -> None:
         est.reset()
+        prev["a"] = None
         planner.reset_episode(int(seed) + 1000 * int(ep))
 
     row = run_episodes(spec, act_fn=act, episodes=episodes, seed=seed, on_episode_start=on_start)
@@ -116,8 +140,21 @@ def collect_planned_belief(
     base_seed: int,
 ) -> TransitionDataset:
     if n <= 0:
-        ds = collect_with_actor(spec, n_transitions=1, env_seeds=(1,), base_seed=1, actor=lambda o: 0)
-        return ds.slice(np.zeros(0, dtype=np.int64))
+        z = np.zeros((0, spec.obs_dim), dtype=np.float32)
+        return TransitionDataset(
+            obs=z,
+            action=np.zeros((0,), dtype=np.int64),
+            next_obs=z.copy(),
+            reward=np.zeros((0,), dtype=np.float32),
+            terminated=np.zeros((0,), dtype=np.bool_),
+            truncated=np.zeros((0,), dtype=np.bool_),
+            task_id=spec.task_id,
+            seed=np.zeros((0,), dtype=np.int64),
+            episode_id=np.zeros((0,), dtype=np.int64),
+            policy=np.array([], dtype=object),
+            physics=dict(spec.params),
+            env_interactions=0,
+        )
     step = BeliefStepModel(wm)
     planner = RandomShootingMPC(
         model=step,
@@ -128,13 +165,17 @@ def collect_planned_belief(
         objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
     )
 
+    prev = {"a": None}
+
     def act(obs: np.ndarray) -> int:
-        b = est.observe(obs, None)
+        b = est.observe(obs, prev["a"])
         a, _ = planner.act(b)
+        prev["a"] = int(a)
         return int(a)
 
     def on_start(ep: int) -> None:
         est.reset()
+        prev["a"] = None
         planner.reset_episode(int(base_seed) + 1000 * int(ep))
 
     return collect_with_actor(
@@ -218,7 +259,6 @@ def run_closed_loop(
         err = per_transition_mae(deployed, bds.obs, bds.action, bds.next_obs)
         scan = detector.scan(err)
         detected = bool(scan["first_alarm"] is not None)
-        ledger.buckets["detect"] = int(ds.env_interactions)
     adapt_ds = bds
     # Source replay must match belief dim.
     if policy == "never":

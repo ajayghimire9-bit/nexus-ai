@@ -329,3 +329,9 @@ Non-saturated suite: `obs_noise_std=0.08` (weak force still sat at 500). Frozen 
 Branch `cursor/v082-belief-adaptation`. Write-up: `docs/NEXUS_V082.md`. `pytest` **156 passed**. Artifact `artifacts/v082_belief.json` (n=10, 323 s). Prior JSON preserved.
 
 Dev returns: Kalman **243**, identity **224**, EMA 186, stack 55, GRU 20 (overlap Kalman/identity). Noisy confirm identity never **284**; gated 270; always 282 (paired CIs include 0). MAE gate committed 85% without helping control. Clean identity **500**; Kalman on clean **281** (filter hurts). Snapshot A **284** vs gated shared **236**. Target budgets enforced. Not AGI.
+
+## V0.8.3 — decision-aware learning
+
+Branch `cursor/v083-decision-aware-learning`. Write-up: `docs/NEXUS_V083.md`. `pytest` **161 passed**. Artifact `artifacts/v083_learning.json` (n=10, 306 s). Prior JSON preserved.
+
+Online step loop; ledger `bucket_sum==target_used`; GRU excluded from MPC. Noisy confirm never **225**; MAE **237** (paired +12, CI includes 0); always harmful-commit **0.50**, MAE **0.35**, action/control **0.00** (they almost never commit). Continual naive shared **116** vs snapshot/control-gate **286**. No control gain vs never. Not V0.9. Not AGI.
