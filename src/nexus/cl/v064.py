@@ -12,6 +12,7 @@ from nexus.cl.metrics import hierarchical_bootstrap_ci, paired_seed_deltas, seed
 from nexus.cl.models import copy_encoder_into, copy_full_policy
 from nexus.cl.protocol import CONFIRM_EVAL_SEED, HOLDOUT_EVAL_SEED, INDEPENDENT_SEED, VAL_SEED
 from nexus.cl.selector import AdaptationSelector, RiskAwareSelector, Strategy
+from nexus.cl.checkpoint_stop import save_adapt_checkpoint, stop_at_checkpoint
 from nexus.cl.snapshot import capture_snapshot, eval_snapshot, retention_bundle
 from nexus.cl.train import copy_obs_rms, eval_task, train_on_task
 from nexus.cl.v062 import source_arch
@@ -188,10 +189,12 @@ def run_strategy(
             [p for p in trainer.agent.parameters() if p.requires_grad], lr=lr, eps=1e-5
         )
 
-    pre_adapt = capture_snapshot(trainer)
+    ckpt_path = Path(getattr(trainer, "ppo").checkpoint_dir) / f"adapt_pre_{strategy}_s{seed}.pt"
+    save_adapt_checkpoint(trainer, ckpt_path)
     source_val_before = eval_snapshot(source, source_spec, source_snap, episodes=eval_episodes, seed=VAL_SEED, eval_fn=eval_task)
     curve = []
-    rolled_back = False
+    stopped = False
+    stop_info: dict[str, Any] | None = None
     used = 0
     points = (0,) if strategy == "reuse" or max_steps <= 0 else tuple(p for p in curve_points if p <= max_steps)
     if 0 not in points:
@@ -199,19 +202,17 @@ def run_strategy(
     done = 0
     for b in points:
         extra = int(b) - done
-        if extra > 0 and strategy != "reuse":
+        if extra > 0 and strategy != "reuse" and not stopped:
             train_on_task(trainer, target, timesteps=extra, seed=seed + 17)
             used += extra
             done = int(b)
             if rollback and not new_heads:
                 src_now = _eval(trainer.agent, source_spec, episodes=eval_episodes, seed=VAL_SEED, trainer=trainer)
                 if src_now < source_val_before - SOURCE_DROP_ABORT:
-                    trainer.agent.load_state_dict(pre_adapt["state_dict"])
-                    if trainer.obs_rms is not None and pre_adapt.get("obs_rms") is not None:
-                        trainer.obs_rms.load_state_dict(pre_adapt["obs_rms"])
-                    rolled_back = True
+                    stop_info = stop_at_checkpoint(trainer, ckpt_path)
+                    stopped = True
         tgt = _eval(trainer.agent, target, episodes=eval_episodes, seed=final_eval_seed, trainer=trainer)
-        curve.append({"steps": b, "target_final": tgt, "rolled_back": rolled_back})
+        curve.append({"steps": b, "target_final": tgt, "stopped_at_checkpoint": stopped})
 
     retain = retention_bundle(
         trainer=trainer,
@@ -231,7 +232,9 @@ def run_strategy(
         "target_after": curve[-1]["target_final"],
         "target_at_0": curve[0]["target_final"],
         "steps_used": used,
-        "rolled_back": rolled_back,
+        "stopped_at_checkpoint": stopped,
+        "checkpoint_stop": stop_info,
+        "rolled_back": stopped,
         "retention": retain,
         "n_params": n_params,
         "learning_rate": lr,

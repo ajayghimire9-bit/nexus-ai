@@ -1,0 +1,14 @@
+# Frozen V0.6.5 protocol. Do not retune after confirmation outcomes.
+physics_version: cartpole_derived_v1
+n_seeds: 10
+replication_unit: source_training_seed
+source_budgets: [8192, 32768]
+transfer_steps: 2048
+probe_steps: 256
+eval_episodes: 8
+val_seed: 71000
+independent_eval_seed: 72000
+confirm_eval_seed: 75000
+development: v064_confirmation_tasks
+learned_selector: disjoint_linucb_val_only
+ablations: [A, B, C, D, E, F]

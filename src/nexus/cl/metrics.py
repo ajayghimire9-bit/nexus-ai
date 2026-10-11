@@ -26,9 +26,9 @@ _T_CRIT_95 = {
 }
 
 
-def _t_crit_95(df: int) -> float:
+def _t_crit_95(df: int) -> float | None:
     if df < 1:
-        return float("nan")
+        return None
     if df >= 30:
         return 1.96
     if df in _T_CRIT_95:
@@ -37,17 +37,22 @@ def _t_crit_95(df: int) -> float:
     return _T_CRIT_95[keys[-1]]
 
 
-def _ci95(xs: list[float] | np.ndarray, *, student_t: bool = False) -> dict[str, float]:
+def _ci95(xs: list[float] | np.ndarray, *, student_t: bool = False) -> dict[str, Any]:
     arr = np.asarray(list(xs), dtype=np.float64)
+    empty = {"n": 0, "mean": None, "lo": None, "hi": None, "se": None}
     if arr.size == 0:
-        return {"n": 0, "mean": float("nan"), "lo": float("nan"), "hi": float("nan")}
+        return empty
     mean = float(arr.mean())
+    if not math.isfinite(mean):
+        return {**empty, "n": int(arr.size)}
     if arr.size < 2:
-        return {"n": int(arr.size), "mean": mean, "lo": mean, "hi": mean}
+        return {"n": int(arr.size), "mean": mean, "lo": mean, "hi": mean, "se": 0.0}
     se = float(arr.std(ddof=1)) / math.sqrt(arr.size)
     crit = _t_crit_95(int(arr.size) - 1) if student_t else 1.96
-    half = crit * se
-    out = {"n": int(arr.size), "mean": mean, "lo": mean - half, "hi": mean + half, "se": se}
+    if crit is None:
+        return {**empty, "n": int(arr.size)}
+    half = float(crit) * se
+    out: dict[str, Any] = {"n": int(arr.size), "mean": mean, "lo": mean - half, "hi": mean + half, "se": se}
     if student_t:
         out["interval"] = "student_t_95"
         out["df"] = int(arr.size) - 1
@@ -102,7 +107,7 @@ def hierarchical_bootstrap_ci(
     """Resample source seeds, then percentile interval of the mean."""
     arr = np.asarray(per_seed_means, dtype=np.float64)
     if arr.size == 0:
-        return {"n": 0, "mean": float("nan"), "lo": float("nan"), "hi": float("nan")}
+        return {"n": 0, "mean": None, "lo": None, "hi": None, "se": None, "interval": "hierarchical_bootstrap_seed_95", "n_boot": n_boot}
     rng = np.random.default_rng(seed)
     boots = [float(arr[rng.integers(0, arr.size, size=arr.size)].mean()) for _ in range(n_boot)]
     b = np.asarray(boots)

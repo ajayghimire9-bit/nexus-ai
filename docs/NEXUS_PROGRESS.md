@@ -269,3 +269,9 @@ Branch `cursor/v064-validated-adaptation`. Full write-up: `docs/NEXUS_V064.md`. 
 Gymnasium 1.4 derived `total_mass` / `polemass_length` are now recomputed after param edits. CIs use **n=10 source seeds** (Student-t), not 30 correlated task cells. Encoder-only retention is undefined.
 
 Source at 32 768 / 10 epochs: independent **154.7 [75, 234]**; **0/10** val-solved. Confirmation (3 frozen offsets, eval 74000): encoder+new-head FT **392 [316, 468]** vs scratch **92 [60, 124]**; paired **+300 [224, 376]**. Risk-aware selector **tied conservative** (237) and **lost to encoder** (−155 [−279, −30]). Selector hypothesis failed; encoder-vs-scratch transfer succeeded. Not AGI.
+
+## V0.6.5 — causal transfer (normalization vs encoder)
+
+Branch `cursor/v065-causal-transfer`. Full write-up: `docs/NEXUS_V065.md`. `pytest` **105 passed**. V0.6–V0.6.4 artifacts preserved. Empty CIs are JSON `null`.
+
+On new confirmation tasks (eval 75000, n=10 seeds, 2 048 steps): **random encoder + source RMS (B) 227.5 [169, 286]** vs pretrained encoder + source RMS (D) **117.8 [84, 151]**. Paired **D − B = −110 [−181, −39]**. **B − A (RMS only) = +128 [73, 184]**. The V0.6.4 encoder win is **not** independent representation transfer. LinUCB always chose conservative LR and did not beat B. Not AGI.
