@@ -136,6 +136,29 @@ def collect_transitions(
     )
 
 
+def concat_datasets(*parts: TransitionDataset, task_id: str | None = None) -> TransitionDataset:
+    nonempty = [p for p in parts if len(p)]
+    if not nonempty:
+        raise ValueError("concat_datasets requires at least one nonempty dataset")
+    first = nonempty[0]
+    return TransitionDataset(
+        obs=np.concatenate([p.obs for p in nonempty], axis=0),
+        action=np.concatenate([p.action for p in nonempty], axis=0),
+        next_obs=np.concatenate([p.next_obs for p in nonempty], axis=0),
+        reward=np.concatenate([p.reward for p in nonempty], axis=0),
+        terminated=np.concatenate([p.terminated for p in nonempty], axis=0),
+        truncated=np.concatenate([p.truncated for p in nonempty], axis=0),
+        task_id=task_id if task_id is not None else first.task_id,
+        seed=np.concatenate([p.seed for p in nonempty], axis=0),
+        episode_id=np.concatenate([p.episode_id for p in nonempty], axis=0),
+        policy=np.concatenate([p.policy for p in nonempty], axis=0),
+        physics=dict(first.physics),
+        physics_version=first.physics_version,
+        env_interactions=int(sum(p.env_interactions for p in nonempty)),
+        notes={"concat": [p.task_id for p in nonempty]},
+    )
+
+
 def assert_disjoint_seeds(*datasets: TransitionDataset) -> None:
     seen: set[int] = set()
     for ds in datasets:

@@ -311,3 +311,9 @@ MPC now uses a **persistent RNG** with episode reset. V0.7.1 ridge return **9** 
 Branch `cursor/v073-planning-final`. Write-up: `docs/NEXUS_V07_FINAL.md`. `pytest` **134 passed**. Artifact `artifacts/v073_world_model.json`. V0.6 and earlier V0.7 JSON preserved.
 
 Frozen H=3 residual recipe, eval seed **87000**, three new physics tasks, n=10. Confirm H=3 **486 [485, 487]** vs greedy **260**; paired **+225 [206, 245]**. Source H=3 **500**. H=6 worse than H=3. Heuristic still 500; hardest confirm (g=13) H=3 **459**. Not retuned. Not V0.8. Not AGI.
+
+## V0.8 — adaptive world models
+
+Branch `cursor/v08-adaptive-world-model`. Write-up: `docs/NEXUS_V08.md`. `pytest` **144 passed**. Artifact `artifacts/v08_adaptation.json` (172 s, n=5). V0.6/V0.7 JSON preserved.
+
+Frozen V0.7 residual+H=3 reused. Confirmation physics unused in V0.6/V0.7; eval seed **94000**; selection on `dev_v08` only. Fine-tune@128 confirmation MAE **0.0166 [0.0144, 0.0188]** vs frozen **0.0348**; scratch **0.0946** and planning **171** vs frozen **500** (paired −329). Frozen/fine-tune/replay H=3 already **500** on confirm — no control gain above ceiling. Page–Hinkley FPR/TPR CIs overlap; seed 3 missed B/C. Return-to-A shared MAE **0.0108** vs snapshot **0.0093** (overlap). Uncertainty collection MAE **worse** than random. Not AGI.

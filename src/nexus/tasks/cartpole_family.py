@@ -195,6 +195,77 @@ def v066_confirmation_targets() -> tuple[TaskSpec, ...]:
     return tuple(out)
 
 
+def v08_sequence_tasks() -> tuple[TaskSpec, TaskSpec, TaskSpec]:
+    """Continual A→B→C with A = source default. B/C unused in V0.6/V0.7."""
+    a = CARTPOLE_FAMILY["cartpole_default"]
+    b = _cartpole(
+        "cartpole_v08_B",
+        "dev_v08",
+        "V0.8 sequence B. Unused prior physics.",
+        gravity=8.05,
+        length=0.54,
+        masspole=0.21,
+    )
+    c = _cartpole(
+        "cartpole_v08_C",
+        "dev_v08",
+        "V0.8 sequence C. Unused prior physics.",
+        gravity=12.15,
+        length=0.66,
+        masspole=0.04,
+    )
+    return a, b, c
+
+
+def v08_development_target() -> TaskSpec:
+    """Held-out development physics for method/budget selection. Not confirmation."""
+    return _cartpole(
+        "cartpole_v08_dev",
+        "dev_v08",
+        "V0.8 development target. Selection may use this split only.",
+        gravity=6.15,
+        length=0.36,
+        masspole=0.17,
+    )
+
+
+_V08_CONFIRMATION_RULE = {
+    "generator": "base_plus_frozen_offsets_v08",
+    "physics_version": CARTPOLE_PHYSICS_VERSION,
+    "base": {"gravity": 9.8, "length": 0.5, "masspole": 0.1},
+    "offsets": (
+        {"gravity": -1.15, "length": -0.24, "masspole": 0.10},
+        {"gravity": 1.95, "length": 0.19, "masspole": -0.045},
+        {"gravity": -4.35, "length": -0.03, "masspole": 0.16},
+    ),
+}
+
+
+def v08_confirmation_rule() -> dict:
+    return {
+        "generator": _V08_CONFIRMATION_RULE["generator"],
+        "physics_version": _V08_CONFIRMATION_RULE["physics_version"],
+        "base": dict(_V08_CONFIRMATION_RULE["base"]),
+        "offsets": [dict(o) for o in _V08_CONFIRMATION_RULE["offsets"]],
+    }
+
+
+def v08_confirmation_targets() -> tuple[TaskSpec, ...]:
+    out: list[TaskSpec] = []
+    base = _V08_CONFIRMATION_RULE["base"]
+    for i, off in enumerate(_V08_CONFIRMATION_RULE["offsets"]):
+        params = {k: float(base[k]) + float(off[k]) for k in base}
+        out.append(
+            _cartpole(
+                f"cartpole_v08_confirm_{i}",
+                "confirm_v08",
+                f"V0.8 frozen confirmation offset {i}. Not used to select methods.",
+                **params,
+            )
+        )
+    return tuple(out)
+
+
 def confirmation_targets() -> tuple[TaskSpec, ...]:
     """Pre-registered V0.6.4 confirmation suite. Not used to tune the selector."""
     out: list[TaskSpec] = []

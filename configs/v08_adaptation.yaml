@@ -1,0 +1,26 @@
+# V0.8 adaptive world models. Selection uses development only.
+parent_commit: 25f4bf9
+frozen_v07:
+  kind: residual
+  n_train: 1024
+  n_val: 256
+  epochs: 20
+  objective: both
+  primary_horizon: 3
+  candidates: {1: 48, 3: 16, 6: 8}
+source_collect_seed: 90000
+target_collect_seed: 91000
+detect_collect_seed: 92000
+dev_eval_seed: 93000
+confirm_eval_seed: 94000
+sequence_eval_seed: 95000
+explore_collect_seed: 96000
+n_model_seeds: 5
+adapt_epochs: 12
+budgets: [0, 64, 128, 256, 512]
+methods: [frozen, finetune, scratch, replay, adapter]
+selection_split: dev_v08
+retuned_on_confirmation: false
+planner_uses_simulator: false
+inference_uses_privileged_physics: false
+is_agi: false

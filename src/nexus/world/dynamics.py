@@ -76,6 +76,21 @@ class WorldModel:
     def copy_rms(self, other: RunningMeanStd) -> None:
         self.obs_rms.load_state_dict(other.state_dict())
 
+    def clone(self) -> "WorldModel":
+        """CPU snapshot. Does not share parameters with ``self``."""
+        other = WorldModel.create(
+            self.net.obs_dim,
+            self.net.n_actions,
+            kind=self.kind,
+            hidden=(64, 64),
+            device=str(self.device),
+            seed=0,
+        )
+        other.net.load_state_dict({k: v.detach().cpu().clone() for k, v in self.net.state_dict().items()})
+        other.copy_rms(self.obs_rms)
+        other.net.eval()
+        return other
+
     def normalize(self, obs: np.ndarray) -> np.ndarray:
         return self.obs_rms.normalize(np.asarray(obs, dtype=np.float32).reshape(-1, self.net.obs_dim))
 
