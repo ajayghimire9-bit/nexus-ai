@@ -75,3 +75,53 @@ def transfer_metrics(
 def summarize_seeds(rows: list[dict[str, Any]], key: str) -> dict[str, float]:
     vals = [float(r[key]) for r in rows if r.get(key) is not None]
     return _ci95(vals)
+
+
+def continual_metrics(
+    *,
+    matrix: dict[str, dict[str, float]],
+    task_order: list[str] | tuple[str, ...],
+    scratch: dict[str, float],
+) -> dict[str, Any]:
+    """Lopez-Paz-style ACC / FWT / BWT from R[trained_through][eval_task]."""
+    order = list(task_order)
+    if not order:
+        return {"acc": 0.0, "forgetting": {}, "mean_forgetting": 0.0, "forward_transfer": {}, "backward_transfer": {}}
+    last = order[-1]
+    acc_vals = [float(matrix[last][t]) for t in order if last in matrix and t in matrix[last]]
+    forgetting = {}
+    bwd = {}
+    for t in order[:-1]:
+        r_ii = matrix.get(t, {}).get(t)
+        r_ti = matrix.get(last, {}).get(t)
+        if r_ii is None or r_ti is None:
+            forgetting[t] = None
+            bwd[t] = None
+        else:
+            forgetting[t] = float(r_ii) - float(r_ti)
+            bwd[t] = float(r_ti) - float(r_ii)
+    fwd = {}
+    for i, t in enumerate(order):
+        if i == 0:
+            continue
+        prev = order[i - 1]
+        r_prev = matrix.get(prev, {}).get(t)
+        base = scratch.get(t)
+        if r_prev is None or base is None:
+            fwd[t] = None
+        else:
+            fwd[t] = float(r_prev) - float(base)
+    def _mean(xs: list[float | None]) -> float:
+        vals = [float(v) for v in xs if v is not None]
+        return float(np.mean(vals)) if vals else 0.0
+
+    return {
+        "acc": float(np.mean(acc_vals)) if acc_vals else 0.0,
+        "forgetting": forgetting,
+        "mean_forgetting": _mean(list(forgetting.values())),
+        "forward_transfer": fwd,
+        "mean_forward_transfer": _mean(list(fwd.values())),
+        "backward_transfer": bwd,
+        "mean_backward_transfer": _mean(list(bwd.values())),
+        "task_order": order,
+    }

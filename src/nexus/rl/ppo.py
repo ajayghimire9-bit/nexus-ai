@@ -242,7 +242,12 @@ class PPOTrainer:
         }
         replay = getattr(self, "replay_buffer", None)
         if replay is not None:
-            replay.add_batch(batch["obs"], batch["actions"])
+            replay.add_batch(
+                batch["obs"],
+                batch["actions"],
+                task_id=getattr(self, "current_task_id", None),
+            )
+        self._last_rl_batch = batch
         return batch, metrics
 
     def update(self, batch: dict[str, torch.Tensor]) -> dict[str, float]:

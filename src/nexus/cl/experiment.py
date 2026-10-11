@@ -9,17 +9,16 @@ from typing import Any
 import torch
 
 from nexus.cl.curriculum import CurriculumSelector, assert_frozen_eval_rules, fixed_order, random_order
-from nexus.cl.metrics import summarize_seeds, transfer_metrics
+from nexus.cl.metrics import continual_metrics, summarize_seeds, transfer_metrics
 from nexus.cl.models import MultiHeadActorCritic, copy_encoder_into
+from nexus.cl.protocol import HOLDOUT_EVAL_SEED, INDEPENDENT_SEED, VAL_SEED
 from nexus.cl.regularizers import EWCPenalty, ReplayBuffer
-from nexus.cl.train import _arch, _ppo, eval_task, make_trainer, train_on_task
-from nexus.nn.spec import ArchitectureSpec
-from nexus.rl.actor_critic import ActorCritic
+from nexus.cl.train import _arch, eval_task, make_trainer, train_on_task
 from nexus.rl.ppo import spec_from_arch_config
 from nexus.tasks.cartpole_family import heldout_task, source_tasks
-from nexus.tasks.spec import TaskSpec, task_env_fns
+from nexus.tasks.spec import TaskSpec
 
-INDEPENDENT_EVAL_SEED = 70_000
+INDEPENDENT_EVAL_SEED = INDEPENDENT_SEED
 METHODS = ("independent", "naive", "replay", "ewc", "multihead")
 
 
@@ -43,6 +42,7 @@ def _run_method(
     steps_per_task: int,
     eval_episodes: int,
     eval_seed: int,
+    val_seed: int = VAL_SEED,
 ) -> dict[str, Any]:
     t0 = time.perf_counter()
     n_params = 0
@@ -50,7 +50,7 @@ def _run_method(
     matrix: dict[str, dict[str, float]] = {}
     steps_used = 0
     traces: list[dict[str, Any]] = []
-    replay = ReplayBuffer(capacity=2048)
+    replay = ReplayBuffer(capacity_per_task=2048)
     ewc = EWCPenalty(lam=8.0)
 
     if method == "independent":
@@ -61,9 +61,17 @@ def _run_method(
             steps_used += int(phase["timesteps"])
             n_params = int(sum(p.numel() for p in tr.agent.parameters()))
             scores = _eval_all(tr, tasks, episodes=eval_episodes, seed=eval_seed)
+            val_scores = _eval_all(tr, tasks, episodes=eval_episodes, seed=val_seed)
             matrix[spec.task_id] = {k: float(v["mean_return"]) for k, v in scores.items()}
             peak[spec.task_id] = float(scores[spec.task_id]["mean_return"])
-            traces.append({"trained": spec.task_id, "eval": matrix[spec.task_id], "steps": steps_used})
+            traces.append(
+                {
+                    "trained": spec.task_id,
+                    "eval_independent": matrix[spec.task_id],
+                    "eval_val": {k: float(v["mean_return"]) for k, v in val_scores.items()},
+                    "steps": steps_used,
+                }
+            )
             trainers[spec.task_id] = tr
         specialist = {t.task_id: float(matrix[t.task_id][t.task_id]) for t in tasks}
         for spec in tasks:
@@ -123,15 +131,22 @@ def _run_method(
         delta = int(phase["timesteps"]) - start_steps
         steps_used += max(delta, 0)
         n_params = int(sum(p.numel() for p in trainer.agent.parameters()))
-        obs_t = trainer._obs_tensor_no_update(trainer._raw_obs)
-        with torch.no_grad():
-            act, _, _, _ = trainer.agent(obs_t)
         if method == "ewc":
-            ewc.consolidate(trainer.agent, obs_t.detach(), act.detach())
+            batch = getattr(trainer, "_last_rl_batch", None)
+            if batch is not None:
+                ewc.consolidate(trainer.agent, batch["obs"][:256], batch["actions"][:256])
         scores = _eval_all(trainer, tasks, episodes=eval_episodes, seed=eval_seed)
+        val_scores = _eval_all(trainer, tasks, episodes=eval_episodes, seed=val_seed)
         matrix[spec.task_id] = {k: float(v["mean_return"]) for k, v in scores.items()}
-        peak[spec.task_id] = max(peak.get(spec.task_id, float("-inf")), float(scores[spec.task_id]["mean_return"]))
-        traces.append({"trained": spec.task_id, "eval": matrix[spec.task_id], "steps": steps_used})
+        peak[spec.task_id] = float(scores[spec.task_id]["mean_return"])
+        traces.append(
+            {
+                "trained": spec.task_id,
+                "eval_independent": matrix[spec.task_id],
+                "eval_val": {k: float(v["mean_return"]) for k, v in val_scores.items()},
+                "steps": steps_used,
+            }
+        )
 
     final = {k: float(v) for k, v in matrix[tasks[-1].task_id].items()}
     wall = time.perf_counter() - t0
@@ -207,17 +222,20 @@ def _curriculum_compare(
     steps_per_phase: int,
     eval_episodes: int,
     eval_seed: int,
+    val_seed: int = VAL_SEED,
 ) -> dict[str, Any]:
+    if val_seed == eval_seed:
+        raise ValueError("curriculum val_seed must differ from independent eval_seed")
     limits = {
         "independent_eval_seed": eval_seed,
         "eval_episodes": eval_episodes,
         "max_timesteps_per_task": steps_per_phase,
     }
     rng_sel = random.Random(seed + 99)
-    selector = CurriculumSelector(tasks)
     modes = ("fixed", "random", "adaptive")
     results: dict[str, Any] = {}
     for mode in modes:
+        selector = CurriculumSelector(tasks)
         spec0 = tasks[0]
         trainer = make_trainer(seed=seed, timesteps=steps_per_phase, spec=spec0)
         order: list[str] = []
@@ -239,16 +257,24 @@ def _curriculum_compare(
                     chosen = selector.select(rng_sel)
             order.append(chosen.task_id)
             train_on_task(trainer, chosen, timesteps=steps_per_phase, seed=seed + phase)
-            scores = _eval_all(trainer, tasks, episodes=eval_episodes, seed=eval_seed)
+            val_scores = _eval_all(trainer, tasks, episodes=eval_episodes, seed=val_seed)
             if mode == "adaptive":
                 for spec in tasks:
-                    selector.observe(spec.task_id, scores[spec.task_id]["mean_return"], scores[spec.task_id]["std_return"])
-        final = _eval_all(trainer, tasks, episodes=eval_episodes, seed=eval_seed)
+                    selector.observe(
+                        spec.task_id,
+                        val_scores[spec.task_id]["mean_return"],
+                        val_scores[spec.task_id]["std_return"],
+                    )
+        independent = _eval_all(trainer, tasks, episodes=eval_episodes, seed=eval_seed)
         trainer.close()
         results[mode] = {
             "order": order,
-            "final": {k: float(v["mean_return"]) for k, v in final.items()},
-            "mean_across_tasks": float(sum(v["mean_return"] for v in final.values()) / len(final)),
+            "final_independent": {k: float(v["mean_return"]) for k, v in independent.items()},
+            "final": {k: float(v["mean_return"]) for k, v in independent.items()},
+            "mean_across_tasks": float(sum(v["mean_return"] for v in independent.values()) / len(independent)),
+            "val_seed": val_seed,
+            "independent_seed": eval_seed,
+            "curriculum_observed_independent": False,
         }
     return results
 
@@ -291,10 +317,10 @@ def run_continual_benchmark(
                     "note": "Independent specialists are not a sequential run; forgetting is undefined.",
                 }
             else:
-                metrics = transfer_metrics(
-                    peak_during_task=row["peak"],
-                    final_matrix={k: v for k, v in row["eval_matrix"].items()},
-                    independent=independent_scratch or {t.task_id: 0.0 for t in tasks},
+                metrics = continual_metrics(
+                    matrix=row["eval_matrix"],
+                    task_order=[t.task_id for t in tasks],
+                    scratch=independent_scratch or {t.task_id: 0.0 for t in tasks},
                 )
             packed = {k: v for k, v in row.items() if k not in {"agent", "trainer"}}
             packed["transfer"] = metrics
@@ -309,7 +335,7 @@ def run_continual_benchmark(
                 seed=seed,
                 steps=steps_per_task,
                 eval_episodes=eval_episodes,
-                eval_seed=INDEPENDENT_EVAL_SEED + 500,
+                eval_seed=HOLDOUT_EVAL_SEED,
             )
             naive_trainer.close()
         curriculum = _curriculum_compare(
@@ -367,6 +393,8 @@ def run_continual_benchmark(
             "steps_per_task": steps_per_task,
             "eval_episodes": eval_episodes,
             "independent_eval_seed": INDEPENDENT_EVAL_SEED,
+            "val_seed": VAL_SEED,
+            "curriculum_sees_independent": False,
             "not_acrobot": True,
             "compatible_semantics": "obs_dim=4 discrete_n=2 CartPole physics variants only",
         },

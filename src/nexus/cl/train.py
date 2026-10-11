@@ -58,6 +58,7 @@ def train_on_task(
 ) -> dict[str, Any]:
     trainer.rebind_envs(task_env_fns(spec, trainer.ppo.num_envs, seed), seed=seed)
     trainer.ppo = replace(trainer.ppo, seed=seed, env_id=spec.gym_id)
+    trainer.current_task_id = spec.task_id
     # Continue from the current PPO cursor so sequential tasks actually train.
     target = int(getattr(trainer, "_timesteps_done", 0)) + int(timesteps)
     result = trainer.train(target)

@@ -43,4 +43,6 @@ def test_continual_smoke_runs(tmp_path) -> None:  # type: ignore[no-untyped-def]
     for method in out["per_seed"][0]["methods"].values():
         assert method["steps"] > 0
         assert method["n_params"] > 0
+    assert "eval_independent" in out["per_seed"][0]["methods"]["naive"]["trace"][0]
+    assert out["per_seed"][0]["curriculum"]["adaptive"]["curriculum_observed_independent"] is False
     assert (tmp_path / "cl.json").exists()

@@ -231,3 +231,13 @@ Compatible tasks only: CartPole gravity/length/mass variants (4-D, 2 actions). *
 Held-out encoder transfer (`cartpole_lowg`) vs scratch: **−26.8** [−61.8, +8.2]. Adaptive curriculum 95.7 vs random 115.2.
 
 **Success criterion not met:** no method beat both specialists and naive fine-tuning with a CI excluding overlap. Expression checkpoints now reload in a fresh process. Not AGI.
+
+## V0.6.1 — corrected protocol, still no positive transfer
+
+Branch `cursor/v06-continual-transfer`. Full write-up: `docs/NEXUS_V061.md`. `pytest` **74 passed**. `artifacts/v06_continual.json` not overwritten.
+
+Fixes: val seed 71000 vs independent 72000 (curriculum never sees test); task-balanced replay; accumulated Fisher; Lopez-Paz ACC/FWT/BWT; specialist curves at 2k/8k/16k; held-out zero-shot/frozen/finetune/scratch.
+
+Specialists **do not solve** CartPole variants at 16384 steps (best mean 217 on long, CI [60, 375]; solve=475). At 8192/task, naive FWT **−44.8 [−84.9, −4.8]**; multi-head ACC 57 vs specialists 138; held-out scratch **164** vs frozen encoder **22**. Adaptive curriculum does not beat fixed order.
+
+**Success criterion not met.** Negative FWT is the statistically credible result. Next hypothesis: transfer requires source policies that actually solve the variant, not 8–16k of unstable PPO.
