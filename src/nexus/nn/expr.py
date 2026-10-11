@@ -14,6 +14,7 @@ Expr = tuple[Any, ...]
 
 UNARY = ("id", "tanh", "sigmoid", "softplus", "sin")
 BINARY = ("add", "mul", "pdiv")
+MAX_NODES = 12
 
 
 def _unary(name: str, x: torch.Tensor) -> torch.Tensor:
@@ -52,17 +53,52 @@ def eval_expr(node: Expr, x: torch.Tensor) -> torch.Tensor:
     raise ValueError(f"unknown expr op {op}")
 
 
+def node_count(node: Expr) -> int:
+    op = node[0]
+    if op == "x":
+        return 1
+    if op == "unary":
+        return 1 + node_count(node[2])  # type: ignore[arg-type]
+    if op == "binary":
+        return 1 + node_count(node[2]) + node_count(node[3])  # type: ignore[arg-type]
+    return 1
+
+
+def _canonicalize(node: Expr) -> Expr:
+    op = node[0]
+    if op == "x":
+        return ("x",)
+    if op == "unary":
+        return ("unary", node[1], _canonicalize(node[2]))  # type: ignore[arg-type]
+    if op == "binary":
+        left, right = _canonicalize(node[2]), _canonicalize(node[3])  # type: ignore[arg-type]
+        if node[1] in {"add", "mul"} and json.dumps(left, default=str) > json.dumps(right, default=str):
+            left, right = right, left
+        return ("binary", node[1], left, right)
+    return node
+
+
+def canonical_key(node: Expr) -> str:
+    blob = json.dumps(_canonicalize(node), separators=(",", ":"), default=str)
+    return hashlib.sha1(blob.encode()).hexdigest()[:12]
+
+
 def random_expr(rng: random.Random, depth: int = 2) -> Expr:
     if depth <= 0 or rng.random() < 0.35:
         return ("x",)
     if rng.random() < 0.55:
-        return ("unary", rng.choice(UNARY), random_expr(rng, depth - 1))
-    return (
-        "binary",
-        rng.choice(BINARY),
-        random_expr(rng, depth - 1),
-        random_expr(rng, depth - 1),
-    )
+        child = random_expr(rng, depth - 1)
+        node: Expr = ("unary", rng.choice(UNARY), child)
+    else:
+        node = (
+            "binary",
+            rng.choice(BINARY),
+            random_expr(rng, depth - 1),
+            random_expr(rng, depth - 1),
+        )
+    if node_count(node) > MAX_NODES:
+        return ("x",)
+    return node
 
 
 def mutate_expr(node: Expr, rng: random.Random) -> Expr:
@@ -70,18 +106,35 @@ def mutate_expr(node: Expr, rng: random.Random) -> Expr:
         return random_expr(rng, depth=2)
     op = node[0]
     if op == "unary":
-        return ("unary", rng.choice(UNARY), mutate_expr(node[2], rng))  # type: ignore[arg-type]
-    if op == "binary":
+        out: Expr = ("unary", rng.choice(UNARY), mutate_expr(node[2], rng))  # type: ignore[arg-type]
+    elif op == "binary":
         if rng.random() < 0.5:
-            return ("binary", rng.choice(BINARY), mutate_expr(node[2], rng), node[3])  # type: ignore[arg-type]
-        return ("binary", node[1], node[2], mutate_expr(node[3], rng))  # type: ignore[arg-type]
-    return random_expr(rng, depth=1)
+            out = ("binary", rng.choice(BINARY), mutate_expr(node[2], rng), node[3])  # type: ignore[arg-type]
+        else:
+            out = ("binary", node[1], node[2], mutate_expr(node[3], rng))  # type: ignore[arg-type]
+    else:
+        out = random_expr(rng, depth=1)
+    if node_count(out) > MAX_NODES:
+        return node
+    return out
+
+
+def crossover_expr(a: Expr, b: Expr, rng: random.Random) -> Expr:
+    if a[0] == "binary" and rng.random() < 0.5:
+        child: Expr = ("binary", a[1], a[2], b)  # type: ignore[misc]
+    elif b[0] == "binary":
+        child = ("binary", b[1], a, b[3] if len(b) > 3 else a)  # type: ignore[misc]
+    elif a[0] == "unary":
+        child = ("unary", a[1], b)
+    else:
+        child = mutate_expr(a, rng)
+    if node_count(child) > MAX_NODES:
+        return a
+    return child
 
 
 def expr_key(node: Expr) -> str:
-    blob = json.dumps(node, separators=(",", ":"), default=str)
-    digest = hashlib.sha1(blob.encode()).hexdigest()[:10]
-    return f"expr_{digest}"
+    return f"expr_{canonical_key(node)}"
 
 
 def expr_to_str(node: Expr) -> str:
@@ -96,12 +149,16 @@ def expr_to_str(node: Expr) -> str:
 
 
 class ExprActivation(nn.Module):
+    """Restricted tree plus learnable affine coefficients (scale, shift)."""
+
     def __init__(self, node: Expr) -> None:
         super().__init__()
         self.node = node
+        self.scale = nn.Parameter(torch.ones(()))
+        self.shift = nn.Parameter(torch.zeros(()))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return eval_expr(self.node, x)
+        return self.scale * eval_expr(self.node, x) + self.shift
 
 
 def register_expr(node: Expr) -> str:
@@ -109,8 +166,28 @@ def register_expr(node: Expr) -> str:
     captured = node
 
     class _Registered(nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.scale = nn.Parameter(torch.ones(()))
+            self.shift = nn.Parameter(torch.zeros(()))
+
         def forward(self, x: torch.Tensor) -> torch.Tensor:
-            return eval_expr(captured, x)
+            return self.scale * eval_expr(captured, x) + self.shift
 
     ACTIVATIONS[name] = _Registered
     return name
+
+
+def population_exprs(rng: random.Random, n: int, depth: int = 2) -> list[Expr]:
+    seen: set[str] = set()
+    out: list[Expr] = []
+    guard = 0
+    while len(out) < n and guard < n * 20:
+        guard += 1
+        node = random_expr(rng, depth=depth)
+        key = canonical_key(node)
+        if key in seen or node_count(node) > MAX_NODES:
+            continue
+        seen.add(key)
+        out.append(node)
+    return out

@@ -6,7 +6,7 @@ from typing import Any
 from nexus.nn.activations import ACTIVATIONS
 
 ALLOWED_INIT = {"orthogonal", "xavier"}
-ALLOWED_ACTIVATIONS = frozenset(ACTIVATIONS)
+ALLOWED_ACTIVATIONS = ACTIVATIONS
 
 
 @dataclass(frozen=True)

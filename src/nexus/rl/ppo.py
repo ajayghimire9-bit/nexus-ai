@@ -11,6 +11,7 @@ import gymnasium as gym
 import numpy as np
 import torch
 from gymnasium.vector import SyncVectorEnv
+from gymnasium.vector.vector_env import AutoresetMode
 from torch.nn.utils import clip_grad_norm_
 
 from nexus.config import ArchitectureConfig, PPOConfig
@@ -94,13 +95,14 @@ class PPOTrainer:
         *,
         agent: ActorCritic | None = None,
         env_fns: list | None = None,
+        autoreset_mode: AutoresetMode | str = AutoresetMode.NEXT_STEP,
     ) -> None:
         self.ppo = ppo
         self.architecture = architecture
         set_seed(ppo.seed)
         self.device = torch.device(ppo.device)
         fns = env_fns if env_fns is not None else [_make_env(ppo.env_id, ppo.seed + i) for i in range(ppo.num_envs)]
-        self.envs = SyncVectorEnv(fns)
+        self.envs = SyncVectorEnv(fns, autoreset_mode=autoreset_mode)
         obs_space = self.envs.single_observation_space
         act_space = self.envs.single_action_space
         if not isinstance(obs_space, gym.spaces.Box):
@@ -157,8 +159,14 @@ class PPOTrainer:
         cumulative = self._episode_return
 
         for step in range(n_steps):
-            # Gymnasium NextStep autoreset: this step is a dummy reset if the prior step ended.
-            pending_reset = np.asarray(getattr(self.envs, "_autoreset_envs", np.zeros(n_envs, dtype=bool)), dtype=bool)
+            # NextStep: prior done → this step is a dummy reset. SameStep resets in-step (no dummy).
+            mode = getattr(self.envs, "autoreset_mode", AutoresetMode.NEXT_STEP)
+            if mode == AutoresetMode.NEXT_STEP:
+                pending_reset = np.asarray(
+                    getattr(self.envs, "_autoreset_envs", np.zeros(n_envs, dtype=bool)), dtype=bool
+                )
+            else:
+                pending_reset = np.zeros(n_envs, dtype=bool)
             with torch.no_grad():
                 action, log_prob, value, _ = self.agent(obs_t)
             env_action = action.detach().cpu().numpy()
@@ -215,6 +223,7 @@ class PPOTrainer:
             "rewards": rew_buf.detach().cpu(),
         }
 
+        valid = (1.0 - reset_buf).reshape(-1)
         batch = {
             "obs": obs_buf.reshape(-1, self.obs_dim),
             "actions": act_buf.reshape(n_steps * n_envs, *act_buf.shape[2:]),
@@ -222,6 +231,7 @@ class PPOTrainer:
             "advantages": advantages.reshape(-1),
             "returns": returns.reshape(-1),
             "values": val_buf.reshape(-1),
+            "valid": valid,
         }
         metrics = {
             "rollout_episodes": float(len(episode_returns)),
@@ -236,9 +246,16 @@ class PPOTrainer:
         if minibatch_size < 1:
             raise ValueError("num_minibatches too large for batch size")
 
+        valid_all = batch.get("valid")
+        if valid_all is None:
+            valid_all = torch.ones(bsz, device=batch["obs"].device, dtype=batch["obs"].dtype)
         advantages = batch["advantages"]
         if cfg.normalize_advantages:
-            advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
+            mask = valid_all > 0.5
+            if bool(mask.any()):
+                sel = advantages[mask]
+                advantages = (advantages - sel.mean()) / (sel.std() + 1e-8)
+            advantages = advantages * valid_all
 
         clipfracs: list[float] = []
         entropies: list[float] = []
@@ -250,6 +267,10 @@ class PPOTrainer:
             np.random.shuffle(inds)
             for start in range(0, bsz, minibatch_size):
                 mb = inds[start : start + minibatch_size]
+                w = valid_all[mb]
+                denom = w.sum().clamp_min(1.0)
+                if float(w.sum()) < 1.0:
+                    continue
                 obs = batch["obs"][mb]
                 actions = batch["actions"][mb]
                 old_logp = batch["log_probs"][mb]
@@ -261,31 +282,42 @@ class PPOTrainer:
                 ratio = torch.exp(logp - old_logp.detach())
                 pg_loss1 = -adv * ratio
                 pg_loss2 = -adv * torch.clamp(ratio, 1.0 - cfg.clip_coef, 1.0 + cfg.clip_coef)
-                pg_loss = torch.max(pg_loss1, pg_loss2).mean()
+                pg_loss = (torch.max(pg_loss1, pg_loss2) * w).sum() / denom
 
                 if cfg.clip_vloss:
                     v_clipped = old_v + torch.clamp(value - old_v, -cfg.clip_coef, cfg.clip_coef)
-                    vf_loss = 0.5 * torch.max((value - ret) ** 2, (v_clipped - ret) ** 2).mean()
+                    vf_elem = 0.5 * torch.max((value - ret) ** 2, (v_clipped - ret) ** 2)
                 else:
-                    vf_loss = 0.5 * ((value - ret) ** 2).mean()
+                    vf_elem = 0.5 * ((value - ret) ** 2)
+                vf_loss = (vf_elem * w).sum() / denom
+                ent = (entropy * w).sum() / denom
 
-                loss = pg_loss + cfg.vf_coef * vf_loss - cfg.ent_coef * entropy.mean()
+                loss = pg_loss + cfg.vf_coef * vf_loss - cfg.ent_coef * ent
                 self.optimizer.zero_grad()
                 loss.backward()
                 clip_grad_norm_(self.agent.parameters(), cfg.max_grad_norm)
                 self.optimizer.step()
 
                 with torch.no_grad():
-                    clipfracs.append(float(((ratio - 1.0).abs() > cfg.clip_coef).float().mean().item()))
-                    entropies.append(float(entropy.mean().item()))
+                    clipfracs.append(float((((ratio - 1.0).abs() > cfg.clip_coef).float() * w).sum().item() / float(denom)))
+                    entropies.append(float(ent.item()))
                     pg_losses.append(float(pg_loss.item()))
                     vf_losses.append(float(vf_loss.item()))
 
         with torch.no_grad():
-            y_true = batch["returns"]
-            y_pred = batch["values"]
+            mask = valid_all > 0.5
+            y_true = batch["returns"][mask] if bool(mask.any()) else batch["returns"]
+            y_pred = batch["values"][mask] if bool(mask.any()) else batch["values"]
             var_y = torch.var(y_true)
             explained = float("nan") if float(var_y) < 1e-8 else float(1.0 - torch.var(y_true - y_pred) / var_y)
+        if not pg_losses:
+            return {
+                "policy_loss": float("nan"),
+                "value_loss": float("nan"),
+                "entropy": float("nan"),
+                "clipfrac": float("nan"),
+                "explained_variance": explained,
+            }
         return {
             "policy_loss": float(np.mean(pg_losses)),
             "value_loss": float(np.mean(vf_losses)),

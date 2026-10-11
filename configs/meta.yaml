@@ -1,0 +1,46 @@
+# Tiny local meta-controller budget. Not a claimed AGI or trading result.
+architecture:
+  hidden_sizes: [32]
+  activation: tanh
+  shared_backbone: false
+
+ppo:
+  env_id: CartPole-v1
+  num_envs: 2
+  total_timesteps: 512
+  num_steps: 64
+  update_epochs: 2
+  num_minibatches: 2
+  learning_rate: 0.0003
+  seed: 0
+  device: cpu
+  checkpoint_dir: checkpoints/meta
+
+evaluation:
+  episodes: 4
+  seed: 81000
+
+evolution:
+  train_timesteps: 512
+  eval_episodes: 4
+  n_train_seeds: 1
+  holdout_eval_seed: 80000
+  env_id: CartPole-v1
+
+meta:
+  controller: linucb
+  epsilon: 0.2
+  linucb_alpha: 0.5
+  max_experiments: 3
+  max_timesteps: 1536
+  train_timesteps: 512
+  n_train_seeds: 1
+  eval_episodes: 4
+  holdout_eval_seed: 80000
+  assessment_eval_seed: 81000
+  env_id: CartPole-v1
+  transfer_env_id: Acrobot-v1
+  seed: 0
+  db_path: runs/meta.sqlite
+  state_path: runs/meta_state.json
+  champion_dir: checkpoints/meta_champions

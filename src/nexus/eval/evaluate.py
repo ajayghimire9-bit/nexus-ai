@@ -37,7 +37,10 @@ def evaluate_policy(
             with torch.no_grad():
                 actor_x, _ = agent._features(obs_t)
                 dist = agent._distribution(actor_x)
-                action = dist.probs.argmax(dim=-1) if (agent.discrete and deterministic) else dist.sample()
+                if deterministic:
+                    action = dist.probs.argmax(dim=-1) if agent.discrete else dist.mean
+                else:
+                    action = dist.sample()
             if agent.discrete:
                 act = int(action.item())
             else:

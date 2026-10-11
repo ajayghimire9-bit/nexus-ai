@@ -8,6 +8,7 @@ from nexus.config import load_config
 from nexus.eval.evaluate import evaluate_policy
 from nexus.evolution.loop import run_evolution
 from nexus.memory.store import ExperimentStore
+from nexus.meta.loop import compare_controllers, run_research_loop
 from nexus.meta.select import propose_next_experiment
 from nexus.eval.transfer import run_architecture_transfer
 from nexus.nn.search import run_activation_search, run_expr_search
@@ -112,6 +113,26 @@ def _cmd_select(args: argparse.Namespace) -> None:
     print(json.dumps(result, indent=2))
 
 
+def _cmd_research(args: argparse.Namespace) -> None:
+    cfg = load_config(args.config)
+    result = run_research_loop(cfg, resume=not args.no_resume)
+    out = Path(args.output) if args.output else Path("runs") / "research_loop.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    serializable = json.loads(json.dumps(result, default=str))
+    out.write_text(json.dumps(serializable, indent=2))
+    print(json.dumps(serializable, indent=2))
+
+
+def _cmd_compare(args: argparse.Namespace) -> None:
+    cfg = load_config(args.config)
+    result = compare_controllers(cfg)
+    out = Path(args.output) if args.output else Path("runs") / "controller_compare.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    serializable = json.loads(json.dumps(result, default=str))
+    out.write_text(json.dumps(serializable, indent=2))
+    print(json.dumps(serializable, indent=2))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="nexus", description="NEXUS Research V0.5 CLI")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -141,7 +162,25 @@ def main() -> None:
     p_act = sub.add_parser("activations", help="Screen and train candidate activations")
     p_act.add_argument("--config", default="configs/activations.yaml")
     p_act.add_argument("--output", default=None)
+    p_act.add_argument("--expr", action="store_true", help="Restricted expression-tree search (no exec)")
+    p_act.add_argument("-n", type=int, default=8)
     p_act.set_defaults(func=_cmd_activations)
+
+    p_tr = sub.add_parser("transfer", help="Architecture-genome transfer to another env (not weight copy)")
+    p_tr.add_argument("--config", default="configs/evolution_acrobot.yaml")
+    p_tr.add_argument("--output", default=None)
+    p_tr.set_defaults(func=_cmd_transfer)
+
+    p_res = sub.add_parser("research", help="Budgeted meta-controller research loop")
+    p_res.add_argument("--config", default="configs/meta.yaml")
+    p_res.add_argument("--output", default=None)
+    p_res.add_argument("--no-resume", action="store_true")
+    p_res.set_defaults(func=_cmd_research)
+
+    p_cmp = sub.add_parser("compare-controllers", help="Equal-budget random vs ε-greedy vs LinUCB")
+    p_cmp.add_argument("--config", default="configs/meta.yaml")
+    p_cmp.add_argument("--output", default=None)
+    p_cmp.set_defaults(func=_cmd_compare)
 
     p_sel = sub.add_parser("select", help="Propose next experiment from stored results (ε-greedy)")
     p_sel.add_argument("--db", default="runs/experiments.sqlite")

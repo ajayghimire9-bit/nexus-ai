@@ -6,11 +6,15 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**NEXUS Research V0.4 (measured):** Acrobot architecture evolution (no 500-cap) and a longer retrain of the failing CartPole seed.
+**NEXUS Research V0.5 (code + tests):** budget-aware experiment controller (random / ε-greedy / LinUCB), validated research actions, and PPO dummy-reset loss masking. LinUCB is a **contextual bandit**, not meta-RL.
+
+**NEXUS Research V0.4 (measured, retained):** Acrobot architecture evolution and a longer retrain of the failing CartPole seed. Those numbers are still the last full PPO/evolution benchmarks.
 
 No self-improving system, profitable trading system, or AGI has been demonstrated.
 
-### Measured local runs (2026-10-11, CPU)
+See `docs/NEXUS_PROGRESS.md` for the V0.5 test log and the tiny equal-budget controller comparison (LinUCB did **not** beat random there).
+
+### Measured local runs (2026-10-11, CPU) — V0.4 retained
 
 CartPole-v1 is solved at mean return ≥ 475 on a given eval set.
 
@@ -25,11 +29,9 @@ CartPole-v1 is solved at mean return ≥ 475 on a given eval set.
 | CartPole evolution | 49 152 / candidate | 49 152 | all gen-1 candidates **500** (ceiling) |
 | **Acrobot evolution** | 81 920 / candidate, 2 gen × 4 | 81 920 | best **−75.2** (tanh 64-64, separate trunks, gen 1) |
 
-Seed 2 **did** solve when given more steps, but training was unstable (rollout return collapsed to 0 several times). 250k is not a reliable CartPole budget across seeds.
+Seed 2 **did** solve when given more steps, but training was unstable. 250k is not a reliable CartPole budget across seeds.
 
-Acrobot search **does rank**: gen 0 had a failed relu 48-32 at **−500**, a mish 256-96 at **−123.8**, and two near-equivalent elites (~−80). Gen 1 clustered **−75 to −105**. Differences of a few points at 10 eval episodes are not a validated architecture win; the −500 collapse is a real reject.
-
-The ε-greedy selector (`nexus select`) only **proposes** a mutation of the current best stored spec. It does not train itself and is not meta-RL.
+The ε-greedy selector (`nexus select`) only **proposes** a mutation of comparable stored specs. `nexus research` runs a frozen-budget loop; the controller cannot change caps or evaluation rules.
 
 ## Setup
 
@@ -66,30 +68,40 @@ PYTHONPATH=src:.deps python3 -m nexus.cli evolve --config configs/evolution_acro
 
 # Activation screen + short matched training
 PYTHONPATH=src:.deps python3 -m nexus.cli activations --config configs/activations.yaml
+PYTHONPATH=src:.deps python3 -m nexus.cli activations --config configs/activations.yaml --expr
+
+# Architecture-genome transfer (matched seeds; weights not copied)
+PYTHONPATH=src:.deps python3 -m nexus.cli transfer --config configs/evolution_acrobot.yaml
+
+# Budgeted research loop (LinUCB default in configs/meta.yaml)
+PYTHONPATH=src:.deps python3 -m nexus.cli research --config configs/meta.yaml --no-resume
+
+# Equal-budget random vs ε-greedy vs LinUCB
+PYTHONPATH=src:.deps python3 -m nexus.cli compare-controllers --config configs/meta.yaml
+PYTHONPATH=src:.deps python3 scripts/compare_controllers.py
 
 # Independent seeds
 PYTHONPATH=src:.deps python3 -m nexus.cli train --config configs/ppo_cartpole.yaml --seeds 1,2,3
 
-# Propose next architecture from stored evals (does not train)
+# Propose next architecture from stored evals (does not train; not meta-RL)
 PYTHONPATH=src:.deps python3 -m nexus.cli select --db runs/experiments.sqlite
 
 pytest
 ```
 
-Trained models are compared against a random-policy baseline on held-out episode seeds. Evolution stores results in SQLite (`runs/experiments.sqlite` by default).
-
 ## Layout
 
 | Path | Role |
 | --- | --- |
-| `src/nexus/nn/` | Architecture spec + PyTorch factory |
+| `src/nexus/nn/` | Architecture spec, factory, restricted expression activations |
 | `src/nexus/rl/` | Actor–critic + GAE + PPO |
-| `src/nexus/evolution/` | Mutation and generation loop |
+| `src/nexus/evolution/` | Mutation / crossover generation loop |
 | `src/nexus/memory/` | SQLite experiment store |
-| `src/nexus/eval/` | Independent policy evaluation |
-| `src/nexus/meta/` | ε-greedy next-experiment proposal |
+| `src/nexus/eval/` | Independent policy evaluation + architecture transfer |
+| `src/nexus/meta/` | Schemas, research reward, LinUCB/ε-greedy/random, research loop |
 | `docs/MASTER_CONTEXT.md` | Full research context |
+| `docs/NEXUS_PROGRESS.md` | Measured logs and incomplete items |
 
 ## What this is not
 
-V0.3 does not search activations at scale, does not transfer weights across envs, does not trade, and does not modify its own safety or evaluation rules. `nexus select` cannot change those rules.
+V0.5 does not demonstrate that NEXUS learns to pick better experiments than random. The smoke controller comparison did not support that claim. It does not trade, and it does not modify its own safety or evaluation rules.

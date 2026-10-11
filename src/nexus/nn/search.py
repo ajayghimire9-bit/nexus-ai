@@ -9,7 +9,14 @@ from nexus.config import NexusConfig
 from nexus.eval.evaluate import evaluate_policy, random_policy_baseline
 from nexus.memory.store import ExperimentStore
 from nexus.nn.activations import BASELINE_ACTIVATIONS, SEARCH_ACTIVATIONS, get_activation
-from nexus.nn.expr import expr_to_str, random_expr, register_expr
+from nexus.nn.expr import (
+    canonical_key,
+    crossover_expr,
+    expr_to_str,
+    mutate_expr,
+    population_exprs,
+    register_expr,
+)
 from nexus.nn.validate import validate_activation
 from nexus.rl.ppo import PPOTrainer
 
@@ -98,14 +105,20 @@ def run_expr_search(cfg: NexusConfig, *, n_candidates: int = 8, expr_seed: int =
     rng = random.Random(expr_seed)
     generated: list[dict[str, Any]] = []
     seen: set[str] = set()
-    while len(generated) < n_candidates:
-        node = random_expr(rng, depth=2)
-        name = register_expr(node)
-        if name in seen:
+    nodes = population_exprs(rng, n_candidates)
+    if len(nodes) >= 2:
+        nodes.append(mutate_expr(nodes[0], rng))
+        nodes.append(crossover_expr(nodes[0], nodes[1], rng))
+    for node in nodes:
+        key = canonical_key(node)
+        if key in seen:
             continue
-        seen.add(name)
+        seen.add(key)
+        name = register_expr(node)
         report = validate_activation(get_activation(name))
-        generated.append({"name": name, "expr": expr_to_str(node), **report})
+        generated.append({"name": name, "expr": expr_to_str(node), "n_nodes": None, **report})
+        if len(generated) >= n_candidates:
+            break
 
     survivors = [g for g in generated if g["passed"]]
     names_to_train = ["tanh"] + [g["name"] for g in survivors[:5]]

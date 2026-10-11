@@ -65,11 +65,34 @@ class EvolutionConfig:
 
 
 @dataclass
+class MetaConfig:
+    """Frozen research-loop limits. The controller must not rewrite these caps."""
+
+    controller: str = "linucb"
+    epsilon: float = 0.2
+    linucb_alpha: float = 0.5
+    max_experiments: int = 4
+    max_timesteps: int = 4_096
+    train_timesteps: int = 512
+    n_train_seeds: int = 1
+    eval_episodes: int = 4
+    holdout_eval_seed: int = 80_000
+    assessment_eval_seed: int = 81_000
+    env_id: str = "CartPole-v1"
+    transfer_env_id: str = "Acrobot-v1"
+    seed: int = 0
+    db_path: str = "runs/meta.sqlite"
+    state_path: str = "runs/meta_state.json"
+    champion_dir: str = "checkpoints/meta_champions"
+
+
+@dataclass
 class NexusConfig:
     architecture: ArchitectureConfig = field(default_factory=ArchitectureConfig)
     ppo: PPOConfig = field(default_factory=PPOConfig)
     evaluation: EvalConfig = field(default_factory=EvalConfig)
     evolution: EvolutionConfig = field(default_factory=EvolutionConfig)
+    meta: MetaConfig = field(default_factory=MetaConfig)
 
 
 def _filter_fields(cls: type, data: dict[str, Any]) -> dict[str, Any]:
@@ -85,9 +108,10 @@ def load_config(path: str | Path | None) -> NexusConfig:
     ppo = PPOConfig(**_filter_fields(PPOConfig, raw.get("ppo", {})))
     evaluation = EvalConfig(**_filter_fields(EvalConfig, raw.get("evaluation", {})))
     evolution = EvolutionConfig(**_filter_fields(EvolutionConfig, raw.get("evolution", {})))
+    meta = MetaConfig(**_filter_fields(MetaConfig, raw.get("meta", {})))
     if "hidden_sizes" in raw.get("architecture", {}):
         arch.hidden_sizes = tuple(raw["architecture"]["hidden_sizes"])
-    return NexusConfig(architecture=arch, ppo=ppo, evaluation=evaluation, evolution=evolution)
+    return NexusConfig(architecture=arch, ppo=ppo, evaluation=evaluation, evolution=evolution, meta=meta)
 
 
 def config_to_dict(cfg: NexusConfig) -> dict[str, Any]:

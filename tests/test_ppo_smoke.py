@@ -171,3 +171,59 @@ def test_collect_time_limit_truncation_bootstraps() -> None:
         assert torch.isfinite(flags["advantages"]).all()
     finally:
         trainer.close()
+
+
+def test_update_excludes_dummy_reset_from_value_loss() -> None:
+    ppo = PPOConfig(
+        env_id="CartPole-v1",
+        num_envs=2,
+        num_steps=8,
+        update_epochs=1,
+        num_minibatches=1,
+        seed=0,
+        device="cpu",
+        normalize_advantages=False,
+    )
+    trainer = PPOTrainer(ppo, ArchitectureConfig(hidden_sizes=(8,), activation="tanh"), env_fns=_toy_fns(2))
+    try:
+        batch, _ = trainer.collect()
+        assert "valid" in batch
+        dummy = batch["valid"] < 0.5
+        assert bool(dummy.any())
+        poisoned = dict(batch)
+        poisoned["returns"] = batch["returns"].clone()
+        poisoned["returns"][dummy] = 1.0e6
+        metrics = trainer.update(poisoned)
+        assert metrics["value_loss"] < 1.0e4
+        assert math.isfinite(metrics["entropy"])
+        assert math.isfinite(metrics["policy_loss"])
+    finally:
+        trainer.close()
+
+
+def test_collect_same_step_autoreset_finite() -> None:
+    from gymnasium.vector.vector_env import AutoresetMode
+
+    ppo = PPOConfig(
+        env_id="CartPole-v1",
+        num_envs=2,
+        num_steps=8,
+        update_epochs=1,
+        num_minibatches=1,
+        seed=0,
+        device="cpu",
+    )
+    trainer = PPOTrainer(
+        ppo,
+        ArchitectureConfig(hidden_sizes=(8,), activation="tanh"),
+        env_fns=_toy_fns(2),
+        autoreset_mode=AutoresetMode.SAME_STEP,
+    )
+    try:
+        batch, _ = trainer.collect()
+        assert torch.isfinite(batch["advantages"]).all()
+        metrics = trainer.update(batch)
+        assert math.isfinite(metrics["policy_loss"])
+    finally:
+        trainer.close()
+
