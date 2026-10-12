@@ -20,6 +20,8 @@ Evidence is from committed artifacts unless marked *reproduced this checkpoint*.
 | H-V088 | Change-triggered multi-cycle learning improves control | Detector works; ~0.95 accepts / 3 cycles | Δ **+3.3 [−35, +42]** includes 0; retrieval = gated, not > never | Accepts don’t move MPC | Deployed-data vs frozen pool | **No** further cycles on CartPole without better candidates |
 | H-V089 | Past tasks reduce data needed on a new task D | Persistent episodes work | Frozen **384** vs scratch **43**; ABC-then-D Δ **0**; MAE-gated 4/4 rejects | Gate never commits; frozen already strong | If we forced always-adapt on D after ABC | **Falsified** under the frozen protocol |
 | H-V089b | Low-LR proposals fail the MAE gate because they are tiny, not because the gate is blind to huge gains | *Reproduced:* ratio 0.996, L2 Δ 0.10, disagreement 2%; 0/40 ≤ 0.97 | 13/40 1-ep Δ≥10 but 13/40 Δ≤−10; seed Δ includes 0 | 1-ep control is a weak audit | Multi-episode matched control on the same 40 pairs | **Do not retune 0.97** |
+| H-V089c | Frozen H=3 residual MPC beats random on Pendulum | — | Default-g confirm Δ **+143 [−84, +370] includes 0** | Horizon too short vs dt=0.05 s swing-up | New g/eval later showed H=3 Δ>0; do not overwrite H1 | **H1 failed**; keep the artifact |
+| H-V089d | A longer development-selected horizon of the **same** planner beats random on new Pendulum physics | Confirm H=16 Δ **+524 [443, 605]**; CartPole H=3 still 500 | Oracle-on-dev **−128** vs learned **−621**; not swing-up | Search and WM error remain | MAE-gated adapt on shifted Pendulum with frozen H=16 | **Yes, small A-on-family-2 only.** Not L2L |
 
 ## Mechanisms that have never shown useful transfer
 

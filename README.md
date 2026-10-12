@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: NEXUS Research V0.8.9** — learning efficiency and persistent online control (CartPole). Write-up: `docs/NEXUS_V089.md`. Artifact `artifacts/v089_learning.json`.
+**Current: planning-generality diagnostic** after V0.8.9 and the H=3 Pendulum cross-environment test. Write-up: `docs/NEXUS_PLANNING_GENERALITY.md`. Artifact `artifacts/planning_generality.json`. Prior `cross_environment.json` is preserved.
 
-A frozen pretrained world model still beats scratch on CartPole. The same H=3 residual MPC recipe did **not** significantly beat random on Pendulum-v1 (paired CI includes 0). Completing this milestone is **not** AGI.
+A frozen pretrained world model still beats scratch on CartPole. H=3 residual MPC did **not** significantly beat random on default Pendulum. Development-selected H=16 (same architecture, independently trained) **did** beat random on new Pendulum gravity settings. Completing this milestone is **not** AGI or learning-to-learn.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
@@ -90,6 +90,9 @@ PYTHONPATH=src:.deps python3 -m nexus.cli select --db runs/experiments.sqlite
 PYTHONPATH=src:.deps python3 -m pytest tests -q
 PYTHONPATH=src:.deps python3 scripts/run_v089_benchmarks.py
 
+# Planning-generality diagnostic (does not overwrite cross_environment.json)
+PYTHONPATH=src:.deps python3 scripts/run_planning_generality.py
+
 pytest
 ```
 
@@ -108,4 +111,4 @@ pytest
 
 ## What this is not
 
-V0.8.9 does not demonstrate AGI or that past experience improves learning efficiency. It does not trade, and it does not modify its own safety or evaluation rules.
+V0.8.9 and the planning diagnostic do not demonstrate AGI or learning-to-learn. The stack does not trade, and it does not modify its own safety or evaluation rules.

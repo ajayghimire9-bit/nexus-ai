@@ -318,11 +318,11 @@ If the current project code, hardware specifications, or experimental metrics ar
 
 ## 12. CURRENT PROJECT STATUS
 
-Implemented through **NEXUS Research V0.8.9**, a research checkpoint, and a Pendulum-v1 cross-environment test (`docs/NEXUS_CROSS_ENVIRONMENT.md`). V0.1–V0.8.9 artifacts are retained.
+Implemented through **NEXUS Research V0.8.9**, a research checkpoint, a Pendulum-v1 H=3 cross-environment test (`docs/NEXUS_CROSS_ENVIRONMENT.md`), and a planning-generality diagnostic (`docs/NEXUS_PLANNING_GENERALITY.md`). V0.1–V0.8.9 artifacts are retained. The H=3 Pendulum confirmation (`402ce4151837eb0d`) was not overwritten.
 
-We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. The frozen CartPole world-model+MPC recipe did **not** significantly beat random on Pendulum (paired CI includes 0). That is algorithm reuse, not representation transfer or learning-to-learn.
+We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Frozen H=3 MPC did **not** significantly beat random on default Pendulum. A development-selected H=16 (same residual 64×64, independently trained) **did** beat random on new Pendulum physics (Δ **+524 [443, 605]**). That is still algorithm reuse plus a horizon search, not representation transfer or learning-to-learn.
 
-Do not skip to live trading, NEXUS Alpha, or a large meta-learner. Do not raise horizon/width from the Pendulum confirmation.
+Do not skip to live trading, NEXUS Alpha, or a large meta-learner. Do not raise width or MAE 0.97 from this confirm. If a next step is taken, freeze H=16 and test small gated Pendulum adaptation vs never-adapt.
 
 Future claims of implementation progress must be based on actual code and experiment results.
 

@@ -26,6 +26,10 @@ class InferenceCounter:
         self.calls = 0
         self.states = 0
 
+    @property
+    def uses_simulator(self) -> bool:
+        return bool(getattr(self.model, "uses_simulator", False))
+
     def step(self, obs: np.ndarray, action: int | np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         arr = np.asarray(obs, dtype=np.float32)
         o = arr.reshape(1, -1) if arr.ndim == 1 else arr.reshape(-1, arr.shape[-1])
@@ -158,7 +162,10 @@ class RandomShootingMPC:
             "best_score": float(scores[best]),
             "over_time_budget": bool(ms > self.max_plan_ms),
             "time_budget_enforced": bool(self.enforce_time_budget and budget_hit),
-            "used_simulator": False,
+            "used_simulator": bool(
+                getattr(self.model, "uses_simulator", False)
+                or getattr(getattr(self.inference, "model", None), "uses_simulator", False)
+            ),
             "objective": self.objective,
             "uncertainty_penalty": float(self.uncertainty_penalty),
             "model_calls": 0 if inf is None else inf.calls,

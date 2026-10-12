@@ -381,3 +381,9 @@ Branch `cursor/v089-research-checkpoint`. Write-ups: `docs/NEXUS_RESEARCH_CHECKP
 Branch `cursor/v089-cross-environment-test`. Write-up: `docs/NEXUS_CROSS_ENVIRONMENT.md`. `pytest` **238 passed**. Artifact `artifacts/cross_environment.json` (n=10, 17 s).
 
 Frozen residual 64×64, H=3, 16 candidates, 3 torques {−2,0,+2}, Gymnasium reward. Tensors incompatible with CartPole (no weight transfer). MPC **−1053** vs random **−1196**, paired **+143 [−84, +370] includes 0**. H1 not supported. Heuristic **−1114**. PPO@16k **−1461** (worse than random). Not learning-to-learn. Not AGI.
+
+## Planning-generality diagnostic
+
+Branch `cursor/planning-generality-diagnostic`. Write-up: `docs/NEXUS_PLANNING_GENERALITY.md`. Artifact `artifacts/planning_generality.json` (dev n=5, confirm n=10, wall **95.4 s**). `pytest` **244 passed**. Prior `cross_environment.json` hash `402ce4151837eb0d` preserved.
+
+Dev horizon grid (architecture frozen): H=3 learned **−1358** (worse than random **−1091**); selected **H=16 × 16** **−621**. Simulator oracle (dev only) H=16 **−128**. Confirm new g={8.3,12.1}: selected **−649** vs random **−1173**, Δ **+524 [443, 605]** excludes 0. CartPole H=3 still **500**. Not weight transfer. Not L2L. Not AGI.
