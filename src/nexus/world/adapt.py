@@ -318,6 +318,7 @@ def finetune_world_model(
     seed: int,
     lr: float = 5e-4,
     select_by_val: bool = True,
+    patience: int | None = None,
 ) -> tuple[WorldModel, dict[str, Any]]:
     """Fine-tune a clone. Empty val never substitutes train (that would label train loss as val)."""
     out = wm.clone()
@@ -330,7 +331,10 @@ def finetune_world_model(
     history: list[float] = []
     use_val = bool(select_by_val and len(val) > 0)
     train_hist: list[float] = []
+    bad = 0
+    epochs_run = 0
     for _epoch in range(int(epochs)):
+        epochs_run += 1
         out.net.train()
         idx = rng.permutation(len(train))
         ep_loss = 0.0
@@ -364,6 +368,11 @@ def finetune_world_model(
             if v < best:
                 best = v
                 best_state = {k: t.detach().cpu().clone() for k, t in out.net.state_dict().items()}
+                bad = 0
+            else:
+                bad += 1
+                if patience is not None and bad >= int(patience):
+                    break
     if use_val:
         out.net.load_state_dict(best_state)
         rule = "best_independent_val"
@@ -379,7 +388,23 @@ def finetune_world_model(
         "checkpoint_rule": rule,
         "independent_validation": use_val,
         "val_used_for_selection": use_val,
+        "epochs_run": int(epochs_run),
+        "patience": None if patience is None else int(patience),
+        "lr": float(lr),
     }
+
+
+def interpolate_world_models(source: WorldModel, adapted: WorldModel, *, alpha: float) -> WorldModel:
+    """θ ← (1-α) θ_source + α θ_adapted. RMS copied from source."""
+    a = float(alpha)
+    if not 0.0 <= a <= 1.0:
+        raise ValueError("alpha must be in [0, 1]")
+    out = source.clone()
+    sd_s = source.net.state_dict()
+    sd_t = adapted.net.state_dict()
+    out.net.load_state_dict({k: (1.0 - a) * sd_s[k] + a * sd_t[k] for k in sd_s})
+    out.net.eval()
+    return out
 
 
 def train_adapter(base: WorldModel, train: TransitionDataset, val: TransitionDataset, *, epochs: int, seed: int) -> tuple[AdaptedWorldModel, dict[str, Any]]:

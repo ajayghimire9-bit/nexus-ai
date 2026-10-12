@@ -347,3 +347,9 @@ Matched H=32 MPC incumbent vs candidate; both charged to `online_val`; observe-o
 Branch `cursor/v085-candidate-quality-verification`. Write-up: `docs/NEXUS_V085.md`. `pytest` **188 passed**. Artifact `artifacts/v085_verification.json` (n=10, 89.5 s). Prior JSON preserved.
 
 Fixed candidate bank; long-horizon reference (H=500 × 2) never feeds the gate. Noisy 40 pairs: **23 benefit / 15 harm / 2 inconclusive**; seed-mean Δ **+41.9 [−7.3, +91.1]** (includes 0). H=32 still 32 vs 32 on all 40 noisy. Dev selected **MAE**. Confirm MAE choice vs never **+50.5 [8.7, 92.2]** (excludes 0); 22 benefit / 6 harm accepted. H=128 still ~92% ceiling. Not a new env family. Not AGI.
+
+## V0.8.6 — safer candidate generation
+
+Branch `cursor/v086-safe-candidate-generation`. Write-up: `docs/NEXUS_V086.md`. `pytest` **196 passed**. Artifact `artifacts/v086_candidates.json` (n=10, 420 s). Prior JSON preserved.
+
+Matched data; MAE 0.97 frozen. Dev selected **low_lr**. Noisy confirm: low_lr harm **0.25** vs finetune **0.60**; benefit 17 vs 14. MAE|accept harm **1/16**. MAE choice vs never **+5.6 [−2.7, +13.8]** (includes 0). Online A→B→C→A MAE accepted **0** updates (tied with never/snapshot **241**); always **214**. Not AGI.

@@ -1,0 +1,19 @@
+parent_commit: cf6780e
+methods: [finetune, low_lr, early_stop, replay, interpolate]
+ft_lr: 0.0005
+low_lr: 0.0001
+interpolate_alpha: 0.5
+early_stop_patience: 2
+mae_ratio: 0.97
+mae_steps: 32
+recipes: [c128, c256]
+n_model_seeds: 10
+adapt_epochs: 8
+ref_horizon: 500
+ref_episodes: 2
+ref_margin: 10.0
+retuned_mae: false
+retuned_on_v085_confirm: false
+reference_feeds_gate: false
+planned_runtime: 8-15min local CPU
+is_agi: false

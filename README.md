@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: NEXUS Research V0.8.5** — candidate quality vs verifier quality (CartPole, frozen V0.7 H=3 MPC). Write-up: `docs/NEXUS_V085.md`. Artifact `artifacts/v085_verification.json`.
+**Current: NEXUS Research V0.8.6** — safer candidate generation (CartPole, frozen V0.7 H=3 MPC, frozen V0.8.5 MAE gate). Write-up: `docs/NEXUS_V086.md`. Artifact `artifacts/v086_candidates.json`.
 
-Long-horizon reference shows mixed candidates (benefit and harm). H=32 control gates still saturate. A frozen MAE gate had confirmatory decision value versus never-accept on that bank (CI excludes 0) but still accepted some harmful updates. Completing this milestone is **not** AGI.
+Lower-LR finetune reduced harmful candidates versus the V0.8.5 recipe. MAE-gated mean return versus never-adapt still has a confidence interval through 0. Completing this milestone is **not** AGI.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
@@ -86,9 +86,9 @@ PYTHONPATH=src:.deps python3 -m nexus.cli train --config configs/ppo_cartpole.ya
 # Propose next architecture from stored evals (does not train; not meta-RL)
 PYTHONPATH=src:.deps python3 -m nexus.cli select --db runs/experiments.sqlite
 
-# V0.8.5 candidate/verifier diagnostic (does not overwrite prior artifacts)
+# V0.8.6 safer candidate generation (does not overwrite prior artifacts)
 PYTHONPATH=src:.deps python3 -m pytest tests -q
-PYTHONPATH=src:.deps python3 scripts/run_v085_benchmarks.py
+PYTHONPATH=src:.deps python3 scripts/run_v086_benchmarks.py
 
 pytest
 ```
@@ -108,4 +108,4 @@ pytest
 
 ## What this is not
 
-V0.8.5 does not demonstrate AGI or a uniformly beneficial adapter. It does not trade, and it does not modify its own safety or evaluation rules.
+V0.8.6 does not demonstrate AGI or a uniformly beneficial adapter. It does not trade, and it does not modify its own safety or evaluation rules.

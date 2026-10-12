@@ -318,9 +318,9 @@ If the current project code, hardware specifications, or experimental metrics ar
 
 ## 12. CURRENT PROJECT STATUS
 
-Implemented through **NEXUS Research V0.8.5** (candidate vs verifier quality) on CartPole world models and H=3 MPC. V0.1–V0.8.4 artifacts are retained. See `docs/NEXUS_PROGRESS.md` and `docs/NEXUS_V085.md`.
+Implemented through **NEXUS Research V0.8.6** (safer candidate generation) on CartPole world models and H=3 MPC. V0.1–V0.8.5 artifacts are retained. See `docs/NEXUS_PROGRESS.md` and `docs/NEXUS_V086.md`.
 
-We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Adaptation candidates are mixed (benefit and harm). A frozen MAE gate showed confirmatory decision value versus never-accept on that bank; short-horizon control gates did not.
+We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Lower learning-rate finetune reduced the fraction of harmful candidates versus standard finetune; gated mean-return gains remain inconclusive.
 
 Do not skip to live trading, NEXUS Alpha, or V0.9 without closing the current world-model adaptation questions.
 

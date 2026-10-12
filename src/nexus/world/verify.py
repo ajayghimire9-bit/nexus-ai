@@ -224,6 +224,7 @@ V085_REF_EPISODES = 2
 V085_REF_MARGIN = 10.0
 V085_H128 = 128
 V085_MAE_STEPS = 32
+V085_MAE_RATIO = 0.97  # frozen V0.8.5 threshold; do not retune on V0.8.6
 
 
 @dataclass(frozen=True)
@@ -343,7 +344,7 @@ def run_gate(name: str, inp: GateInput) -> dict[str, Any]:
         )
         del z
         before, after = _mae(inp.incumbent, ds), _mae(inp.candidate, ds)
-        if after <= before * 0.97:
+        if after <= before * V085_MAE_RATIO:
             dec, reason = "accept", "mae_improved"
         else:
             dec, reason = "reject", "mae_reject"
