@@ -6,13 +6,13 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**NEXUS Research V0.5 (code + tests):** budget-aware experiment controller (random / ε-greedy / LinUCB), validated research actions, and PPO dummy-reset loss masking. LinUCB is a **contextual bandit**, not meta-RL.
+**Current: NEXUS Research V0.8.4** — fair online world-model adaptation verification (CartPole, frozen V0.7 H=3 MPC). Write-up: `docs/NEXUS_V084.md`. Artifact `artifacts/v084_verification.json`.
 
-**NEXUS Research V0.4 (measured, retained):** Acrobot architecture evolution and a longer retrain of the failing CartPole seed. Those numbers are still the last full PPO/evolution benchmarks.
+Matched incumbent/candidate MPC validation, exact interaction ledgers, and accept/reject tests are in place. Confirmation did **not** show useful adaptation versus never-adapt (MAE paired CI includes 0; the repaired control gate accepted **zero** updates, all ties). Rejection-only is not adaptation success.
+
+Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
 No self-improving system, profitable trading system, or AGI has been demonstrated.
-
-See `docs/NEXUS_PROGRESS.md` for the V0.5 test log and the tiny equal-budget controller comparison (LinUCB did **not** beat random there).
 
 ### Measured local runs (2026-10-11, CPU) — V0.4 retained
 
@@ -86,6 +86,10 @@ PYTHONPATH=src:.deps python3 -m nexus.cli train --config configs/ppo_cartpole.ya
 # Propose next architecture from stored evals (does not train; not meta-RL)
 PYTHONPATH=src:.deps python3 -m nexus.cli select --db runs/experiments.sqlite
 
+# V0.8.4 fair adaptation verification (does not overwrite prior artifacts)
+PYTHONPATH=src:.deps python3 -m pytest tests -q
+PYTHONPATH=src:.deps python3 scripts/run_v084_benchmarks.py
+
 pytest
 ```
 
@@ -104,4 +108,4 @@ pytest
 
 ## What this is not
 
-V0.5 does not demonstrate that NEXUS learns to pick better experiments than random. The smoke controller comparison did not support that claim. It does not trade, and it does not modify its own safety or evaluation rules.
+V0.8.4 does not demonstrate useful online adaptation, a self-improving research agent, or AGI. It does not trade, and it does not modify its own safety or evaluation rules.

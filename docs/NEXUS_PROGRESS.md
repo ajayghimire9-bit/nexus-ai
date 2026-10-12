@@ -335,3 +335,9 @@ Dev returns: Kalman **243**, identity **224**, EMA 186, stack 55, GRU 20 (overla
 Branch `cursor/v083-decision-aware-learning`. Write-up: `docs/NEXUS_V083.md`. `pytest` **161 passed**. Artifact `artifacts/v083_learning.json` (n=10, 306 s). Prior JSON preserved.
 
 Online step loop; ledger `bucket_sum==target_used`; GRU excluded from MPC. Noisy confirm never **225**; MAE **237** (paired +12, CI includes 0); always harmful-commit **0.50**, MAE **0.35**, action/control **0.00** (they almost never commit). Continual naive shared **116** vs snapshot/control-gate **286**. No control gain vs never. Not V0.9. Not AGI.
+
+## V0.8.4 — fair adaptation verification
+
+Branch `cursor/v084-fair-adaptation-verification`. Write-up: `docs/NEXUS_V084.md`. `pytest` **175 passed**. Artifact `artifacts/v084_verification.json` (n=10, 267 s). Prior JSON preserved.
+
+Matched H=32 MPC incumbent vs candidate; both charged to `online_val`; observe-once; disjoint one-episode splits; harm N/A if no accepts. Dev selected **MAE**. Noisy confirm@128 never **230.7**; MAE **231.4** (paired +0.7, CI includes 0); always +2.5 (CI includes 0); `control_fair` **0 accepts**, all proposals `tie_or_small_diff`, return identical to never. Clean confirm **500**. Continual naive **147** vs snapshot **247**. Engineering OK; scientific adaptation **not** shown. Not V0.9. Not AGI.

@@ -318,15 +318,11 @@ If the current project code, hardware specifications, or experimental metrics ar
 
 ## 12. CURRENT PROJECT STATUS
 
-NEXUS AI is currently at the architecture and research-planning stage.
+Implemented through **NEXUS Research V0.8.4** (fair adaptation verification) on CartPole world models and H=3 MPC. V0.1–V0.8.3 artifacts are retained. See `docs/NEXUS_PROGRESS.md` and `docs/NEXUS_V084.md`.
 
-We have defined the long-term ambition and principal subsystems.
+We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. V0.8.4 did **not** show useful online adaptation versus never-adapt on confirmation.
 
-We have not yet demonstrated a functioning self-improving neural research system, profitable trading system, or AGI.
-
-The next engineering milestone is:
-
-**NEXUS Research V0.1** — a tested PyTorch actor–critic baseline with a configurable neural-network factory and an initial evolutionary experiment loop.
+Do not skip to live trading, NEXUS Alpha, or V0.9 without closing the current world-model adaptation questions.
 
 Future claims of implementation progress must be based on actual code and experiment results.
 

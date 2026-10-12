@@ -310,6 +310,8 @@ def split_train_val_episodes(ds: TransitionDataset, *, rng: np.random.Generator,
 
 
 def finetune_world_model(wm: WorldModel, train: TransitionDataset, val: TransitionDataset, *, epochs: int, seed: int, lr: float = 5e-4) -> tuple[WorldModel, dict[str, Any]]:
+    if len(val) == 0:
+        val = train
     out = wm.clone()
     rng = np.random.default_rng(seed)
     opt = torch.optim.Adam(out.net.parameters(), lr=lr)
@@ -447,6 +449,8 @@ def adapt_method(
         return source, {"method": "frozen", "train_n": 0, "val_n": 0}
     rng = np.random.default_rng(seed)
     tr, va = split_train_val_episodes(target, rng=rng) if episode_disjoint else split_train_val(target, rng=rng)
+    if len(va) == 0:
+        va = tr
     if method == "finetune":
         wm, log = finetune_world_model(source, tr, va, epochs=epochs, seed=seed)
         return wm, {"method": method, "train_n": len(tr), "val_n": len(va), **log}

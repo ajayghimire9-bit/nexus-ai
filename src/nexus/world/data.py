@@ -145,9 +145,9 @@ def split_by_episodes(
     """Episode-disjoint train/val. Transitions from one episode never appear in both."""
     eids = np.unique(ds.episode_id)
     if eids.size == 0:
-        return ds, ds
+        return ds, ds.slice(np.zeros(0, dtype=np.int64))
     if eids.size == 1:
-        return ds, ds
+        return ds, ds.slice(np.zeros(0, dtype=np.int64))
     if rng is None:
         order = np.sort(eids)
     else:
@@ -158,7 +158,7 @@ def split_by_episodes(
     val_idx = np.array([i for i, e in enumerate(ds.episode_id) if int(e) in val_set], dtype=np.int64)
     tr_idx = np.array([i for i, e in enumerate(ds.episode_id) if int(e) not in val_set], dtype=np.int64)
     if tr_idx.size == 0 or val_idx.size == 0:
-        return ds, ds
+        return ds, ds.slice(np.zeros(0, dtype=np.int64))
     return ds.slice(tr_idx), ds.slice(val_idx)
 
 
