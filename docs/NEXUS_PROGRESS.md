@@ -359,3 +359,9 @@ Matched data; MAE 0.97 frozen. Dev selected **low_lr**. Noisy confirm: low_lr ha
 Branch `cursor/v087-online-learning-bridge`. Write-up: `docs/NEXUS_V087.md`. `pytest` **203 passed**. Artifact `artifacts/v087_online.json` (n=10, 183 s). Prior JSON preserved.
 
 Ablation: V0.8.6-style 64/32 split MAE accept **0**; bank and online 128/64 both **0.10**. Frozen **matched_sizes**. Confirm MAE+low_lr accept **0.25**, Δ vs never **+7.5 [−3.5, +18.5]** (includes 0). Always-adapt **−14**. Not AGI.
+
+## V0.8.8 — genuine continual online learning
+
+Branch `cursor/v088-continual-online-learning`. Write-up: `docs/NEXUS_V088.md`. `pytest` **214 passed**. Artifact `artifacts/v088_online.json` (n=10, 238 s). Prior JSON preserved.
+
+Frozen MAE 0.97, 128/64, cap **672**, 3 alarm-triggered cycles. Factorial pool ablation: all cells accept **0**. Detector FPR **0**, delay **32**, miss **0**. Confirm MAE+low_lr mean accepts **0.95**/3, Δ **+3.3 [−34.9, +41.6]** (includes 0). Always **+3.8** (includes 0); finetune **−44**. Probe retrieval matched gated-shared, not better than never on A-return. Not AGI.

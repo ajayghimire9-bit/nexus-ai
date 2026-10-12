@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: NEXUS Research V0.8.7** — online learning bridge (CartPole). Write-up: `docs/NEXUS_V087.md`. Artifact `artifacts/v087_online.json`.
+**Current: NEXUS Research V0.8.8** — genuine continual online learning (CartPole). Write-up: `docs/NEXUS_V088.md`. Artifact `artifacts/v088_online.json`.
 
-V0.8.6’s zero online MAE accepts came from a 64/32 collect split. Bank-matched 128/64 collection yields some online accepts; paired return versus never-adapt still includes 0. Completing this milestone is **not** AGI.
+Change-triggered MAE+low_lr deploys some online updates (mean 0.95 of 3 cycles); paired return versus never-adapt still includes 0. Completing this milestone is **not** AGI.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
@@ -86,9 +86,9 @@ PYTHONPATH=src:.deps python3 -m nexus.cli train --config configs/ppo_cartpole.ya
 # Propose next architecture from stored evals (does not train; not meta-RL)
 PYTHONPATH=src:.deps python3 -m nexus.cli select --db runs/experiments.sqlite
 
-# V0.8.7 online learning bridge (does not overwrite prior artifacts)
+# V0.8.8 continual online learning (does not overwrite prior artifacts)
 PYTHONPATH=src:.deps python3 -m pytest tests -q
-PYTHONPATH=src:.deps python3 scripts/run_v087_benchmarks.py
+PYTHONPATH=src:.deps python3 scripts/run_v088_benchmarks.py
 
 pytest
 ```
@@ -108,4 +108,4 @@ pytest
 
 ## What this is not
 
-V0.8.7 does not demonstrate AGI or solved online continual learning. It does not trade, and it does not modify its own safety or evaluation rules.
+V0.8.8 does not demonstrate AGI or solved online continual learning. It does not trade, and it does not modify its own safety or evaluation rules.

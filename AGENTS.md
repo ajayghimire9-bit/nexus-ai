@@ -23,7 +23,7 @@ Optional LLMs may help planning, engineering, and explanation. They must **not**
 
 **NEXUS Research V0.1:** tested PyTorch actor–critic baseline + configurable neural-network factory + initial evolutionary experiment loop.
 
-Current status: research code and measured experiments through **V0.8.7** (online learning bridge). No functioning self-improving system, profitable trading system, or AGI has been demonstrated. V0.8.6’s zero online MAE accepts were explained by a 64/32 collect split; bank-matched 128/64 collection yields some online accepts without a significant return gain. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
+Current status: research code and measured experiments through **V0.8.8** (continual online learning). No functioning self-improving system, profitable trading system, or AGI has been demonstrated. V0.8.8 detected shifts and sometimes committed MAE-gated updates; paired return versus never-adapt still includes 0. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
 
 ## Research loop
 
