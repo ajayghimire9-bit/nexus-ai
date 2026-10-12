@@ -29,13 +29,15 @@ def train_world_model(
     lr: float = 1e-3,
     seed: int = 0,
     hidden: tuple[int, ...] = (64, 64),
+    n_actions: int | None = None,
     term_weight: float = 0.25,
     obs_rms: RunningMeanStd | None = None,
     freeze_rms: bool = False,
 ) -> tuple[WorldModel, dict[str, Any]]:
     obs_dim = int(train.obs.shape[-1])
-    n_actions = int(max(int(train.action.max()) + 1 if train.action.size else 2, 2))
-    wm = WorldModel.create(obs_dim, n_actions, kind=kind, hidden=hidden, seed=seed)
+    inferred = int(max(int(train.action.max()) + 1 if train.action.size else 2, 2))
+    n_act = int(n_actions) if n_actions is not None else inferred
+    wm = WorldModel.create(obs_dim, n_act, kind=kind, hidden=hidden, seed=seed)
     if obs_rms is not None:
         wm.copy_rms(obs_rms)
     else:

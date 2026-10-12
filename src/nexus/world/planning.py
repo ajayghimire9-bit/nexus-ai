@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
+from collections.abc import Callable
 from typing import Any, Literal, Protocol
 
 import numpy as np
@@ -69,6 +70,7 @@ class RandomShootingMPC:
     chunk_size: int = 4
     objective: Objective = "predicted_reward"
     stability_weight: float = 1.0
+    step_reward: Callable[[np.ndarray, np.ndarray, np.ndarray], np.ndarray] | None = field(default=None, repr=False)
     inference: InferenceCounter | None = field(default=None, repr=False)
     _rng: np.random.Generator = field(init=False, repr=False)
 
@@ -91,13 +93,17 @@ class RandomShootingMPC:
         for t in range(h):
             nxt, p = model.step(s, seqs[:, t])
             p = np.clip(np.asarray(p, dtype=np.float64).reshape(n), 0.0, 1.0)
-            predicted_env_reward = 1.0
-            hand = 0.0
-            if self.objective in ("hand_stability", "both"):
-                theta = nxt[:, 2]
-                omega = nxt[:, 3]
-                hand = -self.stability_weight * (np.abs(theta) + 0.25 * np.abs(omega))
-            r = predicted_env_reward if self.objective in ("predicted_reward", "both") else 0.0
+            if self.step_reward is not None:
+                r = np.asarray(self.step_reward(s, seqs[:, t], nxt), dtype=np.float64).reshape(n)
+                hand = 0.0
+            else:
+                predicted_env_reward = 1.0
+                hand = 0.0
+                if self.objective in ("hand_stability", "both"):
+                    theta = nxt[:, 2]
+                    omega = nxt[:, 3]
+                    hand = -self.stability_weight * (np.abs(theta) + 0.25 * np.abs(omega))
+                r = predicted_env_reward if self.objective in ("predicted_reward", "both") else 0.0
             score += alive * (r + hand)
             if self.uncertainty_penalty > 0:
                 inner = self.model

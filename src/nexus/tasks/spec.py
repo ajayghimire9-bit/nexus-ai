@@ -69,7 +69,7 @@ def apply_params(env: gym.Env, spec: TaskSpec) -> gym.Env:
 
 def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> gym.Env:
     """Compatible wrappers: same Box(4) obs and discrete(2) actions."""
-    from nexus.tasks.wrappers import ActionDelayWrapper, ObservationNoiseWrapper
+    from nexus.tasks.wrappers import ActionDelayWrapper, DiscreteTorqueWrapper, ObservationNoiseWrapper
 
     delay = int(spec.params.get("action_delay", 0) or 0)
     noise = float(spec.params.get("obs_noise_std", 0.0) or 0.0)
@@ -77,6 +77,13 @@ def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> 
         env = ActionDelayWrapper(env, delay)
     if noise > 0:
         env = ObservationNoiseWrapper(env, noise, seed=0 if seed is None else int(seed) + 17)
+    if spec.family == "pendulum" or "torque_neg" in spec.params:
+        torques = (
+            float(spec.params.get("torque_neg", -2.0)),
+            float(spec.params.get("torque_zero", 0.0)),
+            float(spec.params.get("torque_pos", 2.0)),
+        )
+        env = DiscreteTorqueWrapper(env, torques)
     return env
 
 

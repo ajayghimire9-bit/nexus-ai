@@ -375,3 +375,9 @@ Persistent episodes; detector FPR **0**, delay **31**, miss **0**. MAE-gated **4
 ## Research checkpoint (after V0.8.9)
 
 Branch `cursor/v089-research-checkpoint`. Write-ups: `docs/NEXUS_RESEARCH_CHECKPOINT.md`, `docs/NEXUS_HYPOTHESIS_REGISTER.md`, `docs/NEXUS_NEXT_EXPERIMENT.md`. `pytest` **230 passed**. MAE audit `artifacts/v089_mae_audit.json` (40 proposals, 0 accepts, mean gate ratio **0.996**, control Δ **−2.7** includes 0). Did not retune 0.97. Recommended next: frozen WM+MPC on a **second env family**, not another CartPole MAE iteration. Not AGI.
+
+## Cross-environment (Pendulum-v1)
+
+Branch `cursor/v089-cross-environment-test`. Write-up: `docs/NEXUS_CROSS_ENVIRONMENT.md`. `pytest` **238 passed**. Artifact `artifacts/cross_environment.json` (n=10, 17 s).
+
+Frozen residual 64×64, H=3, 16 candidates, 3 torques {−2,0,+2}, Gymnasium reward. Tensors incompatible with CartPole (no weight transfer). MPC **−1053** vs random **−1196**, paired **+143 [−84, +370] includes 0**. H1 not supported. Heuristic **−1114**. PPO@16k **−1461** (worse than random). Not learning-to-learn. Not AGI.

@@ -1,0 +1,19 @@
+hypothesis: H1_same_wm_mpc_algorithm_on_pendulum
+parent_commit: ef6588c
+kind: residual
+hidden: [64, 64]
+horizon: 3
+n_candidates: 16
+n_train: 1024
+n_val: 256
+epochs: 20
+n_model_seeds: 10
+eval_episodes: 2
+eval_seed: 163000
+ppo_timesteps: 16384
+pendulum_torques: [-2.0, 0.0, 2.0]
+reward: gymnasium_pendulum_published
+retuned_architecture: false
+claims_weight_transfer: false
+claims_learning_to_learn: false
+is_agi: false

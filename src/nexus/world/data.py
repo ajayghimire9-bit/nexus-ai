@@ -18,10 +18,11 @@ def random_action(obs: np.ndarray, rng: np.random.Generator, n_actions: int) -> 
 
 
 def exploratory_action(obs: np.ndarray, rng: np.random.Generator, n_actions: int) -> int:
-    """Mix of random and a weak angle heuristic. Not the evaluation controller."""
-    if rng.random() < 0.35:
+    """Mix of random and a weak angle heuristic. CartPole-shaped obs only; else random."""
+    o = np.asarray(obs, dtype=np.float32).reshape(-1)
+    if rng.random() < 0.35 or int(n_actions) != 2 or o.size < 4:
         return random_action(obs, rng, n_actions)
-    return 1 if float(obs[2] + 0.3 * obs[3]) > 0.0 else 0
+    return 1 if float(o[2] + 0.3 * o[3]) > 0.0 else 0
 
 
 POLICIES: dict[str, Callable[[np.ndarray, np.random.Generator, int], int]] = {

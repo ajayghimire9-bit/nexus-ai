@@ -8,7 +8,7 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 **Current: NEXUS Research V0.8.9** — learning efficiency and persistent online control (CartPole). Write-up: `docs/NEXUS_V089.md`. Artifact `artifacts/v089_learning.json`.
 
-A frozen pretrained world model still beats scratch and does not lose to target fine-tuning/replay on paired CIs. Past tasks did not speed learning of a new environment. Completing this milestone is **not** AGI.
+A frozen pretrained world model still beats scratch on CartPole. The same H=3 residual MPC recipe did **not** significantly beat random on Pendulum-v1 (paired CI includes 0). Completing this milestone is **not** AGI.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 

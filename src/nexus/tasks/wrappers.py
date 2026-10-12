@@ -6,7 +6,7 @@ import gymnasium as gym
 import numpy as np
 
 # Not Gymnasium CartPoleEnv attributes. Applied after native physics setattr.
-WRAPPER_PARAM_KEYS = frozenset({"obs_noise_std", "action_delay"})
+WRAPPER_PARAM_KEYS = frozenset({"obs_noise_std", "action_delay", "torque_neg", "torque_zero", "torque_pos"})
 
 
 class ObservationNoiseWrapper(gym.ObservationWrapper):
@@ -40,3 +40,16 @@ class ActionDelayWrapper(gym.Wrapper):
         applied = int(self._pending)
         self._pending = int(action)
         return self.env.step(applied)
+
+
+class DiscreteTorqueWrapper(gym.ActionWrapper):
+    """Map a discrete index to a 1-D torque. Pendulum published reward still uses the real u."""
+
+    def __init__(self, env: gym.Env, torques: tuple[float, ...] | list[float]) -> None:
+        super().__init__(env)
+        self.torques = np.asarray(list(torques), dtype=np.float32)
+        self.action_space = gym.spaces.Discrete(int(self.torques.size))
+
+    def action(self, action):  # type: ignore[no-untyped-def]
+        u = float(self.torques[int(action)])
+        return np.asarray([u], dtype=np.float32)

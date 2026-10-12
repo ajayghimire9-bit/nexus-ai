@@ -1,0 +1,659 @@
+{
+  "protocol": {
+    "code_version": "v0.8.9-cross-env",
+    "parent_commit": "ef6588c",
+    "hypothesis": "H1_same_wm_mpc_algorithm_on_pendulum",
+    "kind": "residual",
+    "hidden": [
+      64,
+      64
+    ],
+    "horizon": 3,
+    "n_candidates": 16,
+    "n_train": 1024,
+    "n_val": 256,
+    "epochs": 20,
+    "eval_episodes": 2,
+    "eval_seed": 163000,
+    "n_model_seeds": 10,
+    "ppo_timesteps": 16384,
+    "pendulum_torques": [
+      -2.0,
+      0.0,
+      2.0
+    ],
+    "reward": "gymnasium_pendulum_published",
+    "retuned_architecture": false,
+    "cartpole_physics_version": "cartpole_derived_v1",
+    "compatibility": {
+      "source_obs_dim": 4,
+      "source_n_actions": 2,
+      "target_obs_dim": 3,
+      "target_n_actions": 3,
+      "tensors_compatible": false,
+      "weight_transfer_attempted": false,
+      "reason": "obs/action ranks differ; CartPole checkpoint cannot load into Pendulum tensors"
+    },
+    "is_agi": false,
+    "claims_weight_transfer": false,
+    "claims_learning_to_learn": false,
+    "quick": false,
+    "git": {
+      "revision": "ef6588ce1732129cdf223b7be2efa699eaf838f1",
+      "dirty": true,
+      "branch": "cursor/v089-cross-environment-test"
+    },
+    "protocol_hash": "402ce4151837eb0d"
+  },
+  "task": {
+    "torque_neg": -2.0,
+    "torque_zero": 0.0,
+    "torque_pos": 2.0,
+    "task_id": "pendulum_default",
+    "obs_dim": 3,
+    "n_actions": 3
+  },
+  "returns": {
+    "random": {
+      "n": 10,
+      "mean": -1195.5108122647632,
+      "lo": -1195.5108122647632,
+      "hi": -1195.5108122647632,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "always_zero": {
+      "n": 10,
+      "mean": -1237.4703689185244,
+      "lo": -1237.4703689185244,
+      "hi": -1237.4703689185244,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "always_neg": {
+      "n": 10,
+      "mean": -1507.120399881544,
+      "lo": -1507.120399881544,
+      "hi": -1507.120399881544,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "always_pos": {
+      "n": 10,
+      "mean": -1527.4648705223444,
+      "lo": -1527.4648705223444,
+      "hi": -1527.4648705223444,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "heuristic_pd": {
+      "n": 10,
+      "mean": -1114.4328365894758,
+      "lo": -1114.432836589476,
+      "hi": -1114.4328365894755,
+      "se": 7.579122514774402e-14,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "mpc": {
+      "n": 10,
+      "mean": -1052.7870223637308,
+      "lo": -1279.6951112051063,
+      "hi": -825.8789335223553,
+      "se": 100.31303662306607,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "ppo": {
+      "n": 10,
+      "mean": -1461.3281819452602,
+      "lo": -1546.000937080967,
+      "hi": -1376.6554268095533,
+      "se": 37.43269457811971,
+      "interval": "student_t_95",
+      "df": 9
+    }
+  },
+  "paired": {
+    "mpc_minus_random": {
+      "n": 10,
+      "mean": 142.7237899010325,
+      "lo": -84.18429894034296,
+      "hi": 369.63187874240793,
+      "se": 100.31303662306607,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "mpc_minus_heuristic": {
+      "n": 10,
+      "mean": 61.64581422574482,
+      "lo": -165.26227461563062,
+      "hi": 288.55390306712025,
+      "se": 100.31303662306607,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "mpc_minus_zero": {
+      "n": 10,
+      "mean": 184.68334655479367,
+      "lo": -42.22474228658177,
+      "hi": 411.5914353961691,
+      "se": 100.31303662306607,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "ppo_minus_random": {
+      "n": 10,
+      "mean": -265.817369680497,
+      "lo": -350.4901248162038,
+      "hi": -181.14461454479022,
+      "se": 37.43269457811971,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "heuristic_minus_random": {
+      "n": 10,
+      "mean": 81.07797567528769,
+      "lo": 81.07797567528769,
+      "hi": 81.07797567528769,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    }
+  },
+  "prediction": {
+    "one_step_mae": {
+      "n": 10,
+      "mean": 0.034779660589993,
+      "lo": 0.025654788503267634,
+      "hi": 0.04390453267671837,
+      "se": 0.0040339841232207635,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "source_val_mae": {
+      "n": 10,
+      "mean": 0.004417619938612916,
+      "lo": 0.0022113700851521447,
+      "hi": 0.006623869792073687,
+      "se": 0.00097535360453615,
+      "interval": "student_t_95",
+      "df": 9
+    }
+  },
+  "costs": {
+    "mean_pretrain": 1280.0,
+    "mean_mpc_inferences": 19200.0,
+    "ppo_timesteps": 16384
+  },
+  "h1_mpc_beats_random": false,
+  "per_seed": [
+    {
+      "model_seed": 0,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.003053201944567263,
+      "val_one_step_mae": 0.023605426773428917,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.02026154601480812,
+          "horizon_end_mae": 0.02026154601480812,
+          "term_brier": 2.1580328948305545e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.046984003856778145,
+          "horizon_end_mae": 0.08101122360676527,
+          "term_brier": 3.0931172941836124e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.14483987540006638,
+          "horizon_end_mae": 0.28014620766043663,
+          "term_brier": 4.130698717688797e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 5.5468676784614385e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -1074.1156539330163,
+        "ppo": -1507.120399881544
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 1,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.003910390892997384,
+      "val_one_step_mae": 0.03505457565188408,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.019152058754116297,
+          "horizon_end_mae": 0.019152058754116297,
+          "term_brier": 4.158677190464841e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.03988887742161751,
+          "horizon_end_mae": 0.06281894631683826,
+          "term_brier": 4.055825310588438e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.15185829997062683,
+          "horizon_end_mae": 0.3486226499080658,
+          "term_brier": 4.760238042696521e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 6.425746030446755e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -1382.4399608905874,
+        "ppo": -1237.4703689185244
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 2,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.002028443559538573,
+      "val_one_step_mae": 0.02469583787024021,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.024303478188812733,
+          "horizon_end_mae": 0.024303478188812733,
+          "term_brier": 3.1738317471331464e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.047234950587153435,
+          "horizon_end_mae": 0.06955261901021004,
+          "term_brier": 3.226137157170874e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.07678046077489853,
+          "horizon_end_mae": 0.0971628911793232,
+          "term_brier": 3.135154971038835e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 3.656617435973154e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -748.245108830905,
+        "ppo": -1507.120399881544
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 3,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.012044843751937151,
+      "val_one_step_mae": 0.05969509854912758,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.0356403524056077,
+          "horizon_end_mae": 0.0356403524056077,
+          "term_brier": 3.8556412013306205e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.08261780068278313,
+          "horizon_end_mae": 0.12898748368024826,
+          "term_brier": 3.93764336631763e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.2486739605665207,
+          "horizon_end_mae": 0.5085297524929047,
+          "term_brier": 4.317569644690387e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 7.044073312888933e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -843.5393623292214,
+        "ppo": -1237.4703689185244
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 4,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.004360863473266363,
+      "val_one_step_mae": 0.035131994634866714,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.03003305196762085,
+          "horizon_end_mae": 0.03003305196762085,
+          "term_brier": 2.3217352004514802e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.044254861772060394,
+          "horizon_end_mae": 0.06206325255334377,
+          "term_brier": 1.597475771183195e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.22233160585165024,
+          "horizon_end_mae": 0.5186204165220261,
+          "term_brier": 2.249902103053855e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 4.944244630645332e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -1411.1283022216626,
+        "ppo": -1527.4648705223444
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 5,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.0017265545320697129,
+      "val_one_step_mae": 0.01593310385942459,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.01660202955827117,
+          "horizon_end_mae": 0.01660202955827117,
+          "term_brier": 2.9359686589294277e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.02217348897829652,
+          "horizon_end_mae": 0.026149715296924114,
+          "term_brier": 3.121764027098204e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.05306914076209068,
+          "horizon_end_mae": 0.11229681596159935,
+          "term_brier": 3.6302976082647616e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 3.428504507031616e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -1418.8949718181334,
+        "ppo": -1527.4648705223444
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 6,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.0016457414312753826,
+      "val_one_step_mae": 0.029998740181326866,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.022862139623612165,
+          "horizon_end_mae": 0.022862139623612165,
+          "term_brier": 2.3606332673128537e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.03986659925431013,
+          "horizon_end_mae": 0.05558032658882439,
+          "term_brier": 2.4647833384519234e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.08179851993918419,
+          "horizon_end_mae": 0.1284124180674553,
+          "term_brier": 2.3442763992523715e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 2.5784328768940365e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -746.8860353334871,
+        "ppo": -1507.120399881544
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 7,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.0036958492128178477,
+      "val_one_step_mae": 0.032498735934495926,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.013455588603392243,
+          "horizon_end_mae": 0.013455588603392243,
+          "term_brier": 1.7816724482190447e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.04237399436533451,
+          "horizon_end_mae": 0.07484017685055733,
+          "term_brier": 2.0897806923177494e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.1367403343319893,
+          "horizon_end_mae": 0.31689755991101265,
+          "term_brier": 2.5699835935022052e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 8.524541504560052e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -752.6532050599212,
+        "ppo": -1507.120399881544
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 8,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.005724081536754966,
+      "val_one_step_mae": 0.04560741409659386,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.03241126053035259,
+          "horizon_end_mae": 0.03241126053035259,
+          "term_brier": 3.187049721160352e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.06856189481914043,
+          "horizon_end_mae": 0.10313557833433151,
+          "term_brier": 3.400421470432299e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.1301923580467701,
+          "horizon_end_mae": 0.17633900046348572,
+          "term_brier": 3.4150305004070926e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 5.743620514936986e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -1401.2525100716125,
+        "ppo": -1527.4648705223444
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    },
+    {
+      "model_seed": 9,
+      "pretrain_interactions": 1280,
+      "source_val_mae": 0.005986229050904512,
+      "val_one_step_mae": 0.04557567834854126,
+      "val_multi_step": {
+        "1": {
+          "mean_mae": 0.027059216983616352,
+          "horizon_end_mae": 0.027059216983616352,
+          "term_brier": 2.0271122015354427e-05,
+          "n_episodes": 2
+        },
+        "3": {
+          "mean_mae": 0.06564977765083313,
+          "horizon_end_mae": 0.1109003983438015,
+          "term_brier": 2.262350830358844e-05,
+          "n_episodes": 2
+        },
+        "8": {
+          "mean_mae": 0.20003913342952728,
+          "horizon_end_mae": 0.4341527596116066,
+          "term_brier": 2.862706554560321e-05,
+          "n_episodes": 2
+        }
+      },
+      "mean_pred_term_on_val": 4.7818652971731564e-05,
+      "returns": {
+        "random": -1195.5108122647632,
+        "always_zero": -1237.4703689185244,
+        "always_neg": -1507.120399881544,
+        "always_pos": -1527.4648705223444,
+        "heuristic_pd": -1114.4328365894755,
+        "mpc": -748.7151131487601,
+        "ppo": -1527.4648705223444
+      },
+      "eval_interactions": {
+        "random": 400,
+        "always_zero": 400,
+        "heuristic_pd": 400,
+        "mpc": 400,
+        "ppo": 400
+      },
+      "mpc_inferences": 19200,
+      "mpc_calls": 4800,
+      "ppo_timesteps": 16384
+    }
+  ],
+  "wall_clock_s": 17.023622249995242,
+  "is_agi": false,
+  "caveat": "Same algorithm, new family. Not CartPole weight transfer. Not learning-to-learn. Not AGI."
+}

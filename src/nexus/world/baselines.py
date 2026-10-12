@@ -19,6 +19,24 @@ def random_cartpole(obs: np.ndarray, rng: np.random.Generator) -> int:
     return int(rng.integers(0, 2))
 
 
+def heuristic_pendulum_pd(obs: np.ndarray) -> int:
+    """Frozen PD on angle/rate, nearest of {-2,0,+2}. Gains not tuned on confirmation."""
+    o = np.asarray(obs, dtype=np.float64).reshape(-1)
+    theta = float(np.arctan2(o[1], o[0]))
+    thdot = float(o[2])
+    u = float(np.clip(-2.0 * theta - 0.5 * thdot, -2.0, 2.0))
+    grid = np.asarray([-2.0, 0.0, 2.0], dtype=np.float64)
+    return int(np.argmin(np.abs(grid - u)))
+
+
+def fixed_pendulum_action(index: int) -> Callable[[np.ndarray], int]:
+    def _act(obs: np.ndarray) -> int:
+        del obs
+        return int(index)
+
+    return _act
+
+
 def run_episodes(
     spec: TaskSpec,
     *,
