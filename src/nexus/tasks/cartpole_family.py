@@ -919,6 +919,93 @@ def v088_confirmation_targets() -> tuple[TaskSpec, ...]:
     )
 
 
+V089_OBS_NOISE = 0.09
+
+
+def v089_development_target() -> TaskSpec:
+    return _cartpole(
+        "cartpole_v089_dev",
+        "dev_v089",
+        "V0.8.9 development. Detector/exploitation only.",
+        gravity=10.4,
+        length=0.41,
+        masspole=0.18,
+        obs_noise_std=V089_OBS_NOISE,
+    )
+
+
+def v089_sequence_tasks() -> tuple[TaskSpec, TaskSpec, TaskSpec, TaskSpec]:
+    a = _cartpole(
+        "cartpole_v089_seq_A",
+        "seq_v089",
+        "V0.8.9 sequence A.",
+        gravity=7.6,
+        length=0.52,
+        masspole=0.13,
+        obs_noise_std=V089_OBS_NOISE,
+    )
+    b = _cartpole(
+        "cartpole_v089_seq_B",
+        "seq_v089",
+        "V0.8.9 sequence B.",
+        gravity=15.8,
+        length=0.36,
+        masspole=0.22,
+        obs_noise_std=V089_OBS_NOISE,
+    )
+    c = _cartpole(
+        "cartpole_v089_seq_C",
+        "seq_v089",
+        "V0.8.9 sequence C.",
+        gravity=4.7,
+        length=0.71,
+        masspole=0.16,
+        obs_noise_std=V089_OBS_NOISE,
+    )
+    d = _cartpole(
+        "cartpole_v089_seq_D",
+        "seq_v089",
+        "V0.8.9 sequence D. Unused in A-B-C.",
+        gravity=12.6,
+        length=0.44,
+        masspole=0.27,
+        obs_noise_std=V089_OBS_NOISE,
+    )
+    return a, b, c, d
+
+
+def v089_confirmation_targets() -> tuple[TaskSpec, ...]:
+    """Frozen before ranking. Unused V0.8.8 physics."""
+    return (
+        _cartpole(
+            "cartpole_v089_noisy_0",
+            "confirm_v089",
+            "V0.8.9 noisy confirm 0.",
+            gravity=6.1,
+            length=0.62,
+            masspole=0.21,
+            obs_noise_std=V089_OBS_NOISE,
+        ),
+        _cartpole(
+            "cartpole_v089_noisy_1",
+            "confirm_v089",
+            "V0.8.9 noisy confirm 1.",
+            gravity=14.7,
+            length=0.28,
+            masspole=0.15,
+            obs_noise_std=V089_OBS_NOISE,
+        ),
+        _cartpole(
+            "cartpole_v089_clean_0",
+            "confirm_v089",
+            "V0.8.9 clean confirm 0.",
+            gravity=11.2,
+            length=0.55,
+            masspole=0.08,
+        ),
+    )
+
+
 def confirmation_targets() -> tuple[TaskSpec, ...]:
     """Pre-registered V0.6.4 confirmation suite. Not used to tune the selector."""
     out: list[TaskSpec] = []

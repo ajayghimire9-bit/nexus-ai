@@ -318,9 +318,9 @@ If the current project code, hardware specifications, or experimental metrics ar
 
 ## 12. CURRENT PROJECT STATUS
 
-Implemented through **NEXUS Research V0.8.8** (continual online learning) on CartPole world models and H=3 MPC. V0.1–V0.8.7 artifacts are retained. See `docs/NEXUS_PROGRESS.md` and `docs/NEXUS_V088.md`.
+Implemented through **NEXUS Research V0.8.9** (learning efficiency / persistent online control) on CartPole world models and H=3 MPC. V0.1–V0.8.8 artifacts are retained. See `docs/NEXUS_PROGRESS.md` and `docs/NEXUS_V089.md`.
 
-We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Change-triggered MAE+low_lr can deploy ~1 of 3 online updates; paired return versus never-adapt still includes 0.
+We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Prior-task experience did not reduce target data need vs a frozen pretrained model.
 
 Do not skip to live trading, NEXUS Alpha, or V0.9 without closing the current world-model adaptation questions.
 

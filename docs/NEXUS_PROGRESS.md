@@ -365,3 +365,9 @@ Ablation: V0.8.6-style 64/32 split MAE accept **0**; bank and online 128/64 both
 Branch `cursor/v088-continual-online-learning`. Write-up: `docs/NEXUS_V088.md`. `pytest` **214 passed**. Artifact `artifacts/v088_online.json` (n=10, 238 s). Prior JSON preserved.
 
 Frozen MAE 0.97, 128/64, cap **672**, 3 alarm-triggered cycles. Factorial pool ablation: all cells accept **0**. Detector FPR **0**, delay **32**, miss **0**. Confirm MAE+low_lr mean accepts **0.95**/3, Δ **+3.3 [−34.9, +41.6]** (includes 0). Always **+3.8** (includes 0); finetune **−44**. Probe retrieval matched gated-shared, not better than never on A-return. Not AGI.
+
+## V0.8.9 — learning efficiency and persistent online control
+
+Branch `cursor/v089-learning-efficiency`. Write-up: `docs/NEXUS_V089.md`. `pytest` **224 passed**. Artifact `artifacts/v089_learning.json` (n=10, 221 s). Prior JSON preserved.
+
+Persistent episodes; detector FPR **0**, delay **31**, miss **0**. MAE-gated **4 proposes / 0 accepts**. Frozen return **384** vs scratch **43**; low_lr/replay CIs vs frozen include 0. ABC-then-D vs naive **0**. Past experience did not improve learning efficiency. Not AGI.

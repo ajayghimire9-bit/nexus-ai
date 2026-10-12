@@ -1,0 +1,2478 @@
+{
+  "protocol": {
+    "code_version": "v0.8.9",
+    "parent_commit": "24ca276",
+    "physics_version": "cartpole_derived_v1",
+    "mae_ratio": 0.97,
+    "retuned_mae": false,
+    "budgets": [
+      0,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "stage_cap": 224,
+    "confirm_eval_seed": 156000,
+    "dev_eval_seed": 155000,
+    "n_model_seeds": 10,
+    "paired_eval": true,
+    "persistent_episodes": true,
+    "reference_feeds_gate": false,
+    "planned_runtime_note": "n=10 persistent detection + exploitation + learning curve + A-B-C-A / A-B-D; ~15\u201335 min CPU",
+    "is_agi": false,
+    "quick": false,
+    "git": {
+      "revision": "24ca276780d4abfa5a1b8b010296f5418a4093d9",
+      "dirty": true,
+      "branch": "cursor/v089-learning-efficiency"
+    },
+    "protocol_hash": "e10d512ec0a20f05"
+  },
+  "tasks": {
+    "development": {
+      "gravity": 10.4,
+      "length": 0.41,
+      "masspole": 0.18,
+      "obs_noise_std": 0.09,
+      "task_id": "cartpole_v089_dev"
+    },
+    "confirmation": [
+      {
+        "gravity": 6.1,
+        "length": 0.62,
+        "masspole": 0.21,
+        "obs_noise_std": 0.09,
+        "task_id": "cartpole_v089_noisy_0"
+      },
+      {
+        "gravity": 14.7,
+        "length": 0.28,
+        "masspole": 0.15,
+        "obs_noise_std": 0.09,
+        "task_id": "cartpole_v089_noisy_1"
+      },
+      {
+        "gravity": 11.2,
+        "length": 0.55,
+        "masspole": 0.08,
+        "task_id": "cartpole_v089_clean_0"
+      }
+    ],
+    "curve_task": "cartpole_v089_noisy_0"
+  },
+  "detection": {
+    "fixed": {
+      "source_alarm_frac": {
+        "n": 10,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "target_delay": {
+        "n": 10,
+        "mean": 31.0,
+        "lo": 31.0,
+        "hi": 31.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "target_miss": {
+        "n": 10,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    },
+    "recalib": {
+      "source_alarm_frac": {
+        "n": 10,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "target_delay": {
+        "n": 10,
+        "mean": 31.0,
+        "lo": 31.0,
+        "hi": 31.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "target_miss": {
+        "n": 10,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    },
+    "trend": {
+      "source_alarm_frac": {
+        "n": 10,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "target_delay": {
+        "n": 10,
+        "mean": 31.0,
+        "lo": 31.0,
+        "hi": 31.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "target_miss": {
+        "n": 10,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "se": 0.0,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    }
+  },
+  "exploitation": {
+    "delta_return": {
+      "n": 10,
+      "mean": -8.15,
+      "lo": -59.39289898405436,
+      "hi": 43.092898984054365,
+      "se": 22.653801496045254,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "action_disagreement": {
+      "n": 10,
+      "mean": 0.00625,
+      "lo": -0.003174999999999999,
+      "hi": 0.015675,
+      "se": 0.004166666666666667,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "mae_cand_on_cand": {
+      "n": 10,
+      "mean": 0.10170746371150016,
+      "lo": 0.09590003276454218,
+      "hi": 0.10751489465845815,
+      "se": 0.002567387686541989,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "mae_inc_on_inc": {
+      "n": 10,
+      "mean": 0.10189018994569779,
+      "lo": 0.09676854975670342,
+      "hi": 0.10701183013469216,
+      "se": 0.0022642087484502083,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "shift_on_own_traj_rate": {
+      "n": 10,
+      "mean": 0.5,
+      "lo": 0.123,
+      "hi": 0.877,
+      "se": 0.16666666666666666,
+      "interval": "student_t_95",
+      "df": 9
+    }
+  },
+  "learning_curve": {
+    "budgets": [
+      0,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "mae_gated_accepts": {
+      "n": 10,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "mae_gated_proposes": {
+      "n": 10,
+      "mean": 4.0,
+      "lo": 4.0,
+      "hi": 4.0,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "final_return": {
+      "scratch": {
+        "n": 10,
+        "mean": 43.05,
+        "lo": 26.336990025432282,
+        "hi": 59.76300997456771,
+        "se": 7.38859857407945,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "frozen": {
+        "n": 10,
+        "mean": 384.25,
+        "lo": 331.0613921986108,
+        "hi": 437.4386078013892,
+        "se": 23.513973386997876,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "low_lr": {
+        "n": 10,
+        "mean": 380.35,
+        "lo": 337.95834903557073,
+        "hi": 422.7416509644293,
+        "se": 18.74078291973002,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "replay": {
+        "n": 10,
+        "mean": 402.15,
+        "lo": 330.27377590127594,
+        "hi": 474.026224098724,
+        "se": 31.775519053370488,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "retrieved": {
+        "n": 10,
+        "mean": 384.25,
+        "lo": 331.0613921986108,
+        "hi": 437.4386078013892,
+        "se": 23.513973386997876,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "mae_gated": {
+        "n": 10,
+        "mean": 384.25,
+        "lo": 331.0613921986108,
+        "hi": 437.4386078013892,
+        "se": 23.513973386997876,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    },
+    "auc": {
+      "scratch": {
+        "n": 10,
+        "mean": 56355.2,
+        "lo": 35105.78546514633,
+        "hi": 77604.61453485367,
+        "se": 9394.082464568377,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "frozen": {
+        "n": 10,
+        "mean": 393472.0,
+        "lo": 339006.86561137746,
+        "hi": 447937.13438862254,
+        "se": 24078.308748285825,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "low_lr": {
+        "n": 10,
+        "mean": 389073.6,
+        "lo": 362732.9714256403,
+        "hi": 415414.2285743597,
+        "se": 11644.840218549823,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "replay": {
+        "n": 10,
+        "mean": 367606.4,
+        "lo": 316431.5060459561,
+        "hi": 418781.29395404394,
+        "se": 22623.737380213923,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "retrieved": {
+        "n": 10,
+        "mean": 393472.0,
+        "lo": 339006.86561137746,
+        "hi": 447937.13438862254,
+        "se": 24078.308748285825,
+        "interval": "student_t_95",
+        "df": 9
+      },
+      "mae_gated": {
+        "n": 10,
+        "mean": 393472.0,
+        "lo": 339006.86561137746,
+        "hi": 447937.13438862254,
+        "se": 24078.308748285825,
+        "interval": "student_t_95",
+        "df": 9
+      }
+    },
+    "mean_return_by_budget": {
+      "scratch": {
+        "0": 54.95,
+        "64": 42.7,
+        "128": 26.85,
+        "256": 139.8,
+        "512": 29.75,
+        "1024": 43.05
+      },
+      "frozen": {
+        "0": 384.25,
+        "64": 384.25,
+        "128": 384.25,
+        "256": 384.25,
+        "512": 384.25,
+        "1024": 384.25
+      },
+      "low_lr": {
+        "0": 384.25,
+        "64": 365.25,
+        "128": 378.5,
+        "256": 364.05,
+        "512": 390.1,
+        "1024": 380.35
+      },
+      "replay": {
+        "0": 384.25,
+        "64": 369.45,
+        "128": 376.35,
+        "256": 322.25,
+        "512": 340.4,
+        "1024": 402.15
+      },
+      "retrieved": {
+        "0": 384.25,
+        "64": 384.25,
+        "128": 384.25,
+        "256": 384.25,
+        "512": 384.25,
+        "1024": 384.25
+      },
+      "mae_gated": {
+        "0": 384.25,
+        "64": 384.25,
+        "128": 384.25,
+        "256": 384.25,
+        "512": 384.25,
+        "1024": 384.25
+      }
+    }
+  },
+  "transfer": {
+    "D_naive": {
+      "n": 10,
+      "mean": 286.15,
+      "lo": 224.47066846592773,
+      "hi": 347.82933153407225,
+      "se": 27.267608989421863,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "D_ABC": {
+      "n": 10,
+      "mean": 286.15,
+      "lo": 224.47066846592773,
+      "hi": 347.82933153407225,
+      "se": 27.267608989421863,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "D_AB": {
+      "n": 10,
+      "mean": 292.9,
+      "lo": 235.71398356381167,
+      "hi": 350.0860164361883,
+      "se": 25.28117437497273,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "D_matched_volume": {
+      "n": 10,
+      "mean": 286.15,
+      "lo": 224.47066846592773,
+      "hi": 347.82933153407225,
+      "se": 27.267608989421863,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "delta_ABC_vs_naive": {
+      "n": 10,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "delta_ABC_vs_matched": {
+      "n": 10,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0,
+      "se": 0.0,
+      "interval": "student_t_95",
+      "df": 9
+    },
+    "A_return": {
+      "n": 10,
+      "mean": 395.1,
+      "lo": 347.94732124852294,
+      "hi": 442.2526787514771,
+      "se": 20.845569739821883,
+      "interval": "student_t_95",
+      "df": 9
+    }
+  },
+  "failures": [
+    {
+      "model_seed": 1,
+      "delta_return": -99.5,
+      "auc_mae_vs_frozen": 0.0
+    },
+    {
+      "model_seed": 5,
+      "delta_return": -70.0,
+      "auc_mae_vs_frozen": 0.0
+    },
+    {
+      "model_seed": 7,
+      "delta_return": -99.0,
+      "auc_mae_vs_frozen": 0.0
+    },
+    {
+      "model_seed": 9,
+      "delta_return": -85.5,
+      "auc_mae_vs_frozen": 0.0
+    }
+  ],
+  "costs": {
+    "mean_pretrain": 1328.0,
+    "pool_n": 1024,
+    "stage_cap": 224
+  },
+  "per_seed": [
+    {
+      "model_seed": 0,
+      "pretrain": 1328,
+      "source_val": 0.005288309243042022,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.10210404545068741,
+        "one_step_mae_cand_on_inc": 0.10151264816522598,
+        "one_step_mae_inc_on_cand": 0.11799293756484985,
+        "one_step_mae_cand_on_cand": 0.11733385175466537,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.11890065670013428,
+        "multi_h3_cand_on_cand": 0.06308601051568985,
+        "multi_h3_cand_on_inc": 0.11962615698575974,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": true,
+        "return_never": 282.0,
+        "return_adapted": 349.5,
+        "delta_return": 67.5
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 134.0,
+            "frozen": 282.0,
+            "low_lr": 282.0,
+            "replay": 282.0,
+            "retrieved": 282.0,
+            "mae_gated": 282.0
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 11.0,
+            "frozen": 282.0,
+            "low_lr": 370.0,
+            "replay": 493.0,
+            "retrieved": 282.0,
+            "mae_gated": 282.0
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 32.5,
+            "frozen": 282.0,
+            "low_lr": 311.0,
+            "replay": 402.5,
+            "retrieved": 282.0,
+            "mae_gated": 282.0
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 199.5,
+            "frozen": 282.0,
+            "low_lr": 264.5,
+            "replay": 225.5,
+            "retrieved": 282.0,
+            "mae_gated": 282.0
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 14.0,
+            "frozen": 282.0,
+            "low_lr": 295.5,
+            "replay": 216.5,
+            "retrieved": 282.0,
+            "mae_gated": 282.0
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 89.5,
+            "frozen": 282.0,
+            "low_lr": 435.5,
+            "replay": 208.0,
+            "retrieved": 282.0,
+            "mae_gated": 282.0
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 74704.0,
+        "frozen": 288768.0,
+        "low_lr": 338304.0,
+        "replay": 258896.0,
+        "retrieved": 288768.0,
+        "mae_gated": 288768.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 4
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 307.5,
+          "ABC_then_D": 307.5,
+          "AB_then_D": 307.5,
+          "matched_D_volume": 307.5,
+          "source": 307.5
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 398.0,
+        "A_source": 398.0,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 1,
+      "pretrain": 1328,
+      "source_val": 0.006643543689278886,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.1002349853515625,
+        "one_step_mae_cand_on_inc": 0.10090931504964828,
+        "one_step_mae_inc_on_cand": 0.09708025306463242,
+        "one_step_mae_cand_on_cand": 0.09637904912233353,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.09384449571371078,
+        "multi_h3_cand_on_cand": 0.14668993651866913,
+        "multi_h3_cand_on_inc": 0.09907644987106323,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": false,
+        "return_never": 433.0,
+        "return_adapted": 333.5,
+        "delta_return": -99.5
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 48.5,
+            "frozen": 433.0,
+            "low_lr": 433.0,
+            "replay": 433.0,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 67.0,
+            "frozen": 433.0,
+            "low_lr": 415.5,
+            "replay": 382.0,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 14.0,
+            "frozen": 433.0,
+            "low_lr": 406.5,
+            "replay": 500.0,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 15.5,
+            "frozen": 433.0,
+            "low_lr": 350.5,
+            "replay": 409.5,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 41.0,
+            "frozen": 433.0,
+            "low_lr": 419.0,
+            "replay": 500.0,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 34.0,
+            "frozen": 433.0,
+            "low_lr": 407.0,
+            "replay": 500.0,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 34608.0,
+        "frozen": 443392.0,
+        "low_lr": 411856.0,
+        "replay": 484928.0,
+        "retrieved": 443392.0,
+        "mae_gated": 443392.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 2
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 241.0,
+          "ABC_then_D": 241.0,
+          "AB_then_D": 268.5,
+          "matched_D_volume": 241.0,
+          "source": 241.0
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 361.0,
+        "A_source": 361.0,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 2,
+      "pretrain": 1328,
+      "source_val": 0.006326651433482766,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.10363799333572388,
+        "one_step_mae_cand_on_inc": 0.10282975435256958,
+        "one_step_mae_inc_on_cand": 0.10031703859567642,
+        "one_step_mae_cand_on_cand": 0.0999559760093689,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.07842443138360977,
+        "multi_h3_cand_on_cand": 0.12868547439575195,
+        "multi_h3_cand_on_inc": 0.08299615979194641,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": false,
+        "return_never": 393.5,
+        "return_adapted": 423.0,
+        "delta_return": 29.5
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 140.5,
+            "frozen": 393.5,
+            "low_lr": 393.5,
+            "replay": 393.5,
+            "retrieved": 393.5,
+            "mae_gated": 393.5
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 15.0,
+            "frozen": 393.5,
+            "low_lr": 432.5,
+            "replay": 328.5,
+            "retrieved": 393.5,
+            "mae_gated": 393.5
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 10.5,
+            "frozen": 393.5,
+            "low_lr": 371.0,
+            "replay": 441.5,
+            "retrieved": 393.5,
+            "mae_gated": 393.5
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 10.5,
+            "frozen": 393.5,
+            "low_lr": 444.0,
+            "replay": 207.0,
+            "retrieved": 393.5,
+            "mae_gated": 393.5
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 19.5,
+            "frozen": 393.5,
+            "low_lr": 351.5,
+            "replay": 272.0,
+            "retrieved": 393.5,
+            "mae_gated": 393.5
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 26.5,
+            "frozen": 393.5,
+            "low_lr": 296.5,
+            "replay": 430.0,
+            "retrieved": 393.5,
+            "mae_gated": 393.5
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 22752.0,
+        "frozen": 402944.0,
+        "low_lr": 372016.0,
+        "replay": 330272.0,
+        "retrieved": 402944.0,
+        "mae_gated": 402944.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 3
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 439.5,
+          "ABC_then_D": 439.5,
+          "AB_then_D": 439.5,
+          "matched_D_volume": 439.5,
+          "source": 439.5
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 378.5,
+        "A_source": 378.5,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 3,
+      "pretrain": 1328,
+      "source_val": 0.019490062724798918,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.11859816312789917,
+        "one_step_mae_cand_on_inc": 0.11759704351425171,
+        "one_step_mae_inc_on_cand": 0.10196969658136368,
+        "one_step_mae_cand_on_cand": 0.10127899795770645,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.06608622521162033,
+        "multi_h3_cand_on_cand": 0.1372346431016922,
+        "multi_h3_cand_on_inc": 0.06438370794057846,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": false,
+        "return_never": 333.0,
+        "return_adapted": 380.0,
+        "delta_return": 47.0
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 11.5,
+            "frozen": 333.0,
+            "low_lr": 333.0,
+            "replay": 333.0,
+            "retrieved": 333.0,
+            "mae_gated": 333.0
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 174.0,
+            "frozen": 333.0,
+            "low_lr": 353.5,
+            "replay": 358.5,
+            "retrieved": 333.0,
+            "mae_gated": 333.0
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 43.0,
+            "frozen": 333.0,
+            "low_lr": 352.5,
+            "replay": 360.5,
+            "retrieved": 333.0,
+            "mae_gated": 333.0
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 271.0,
+            "frozen": 333.0,
+            "low_lr": 277.0,
+            "replay": 361.5,
+            "retrieved": 333.0,
+            "mae_gated": 333.0
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 37.0,
+            "frozen": 333.0,
+            "low_lr": 412.0,
+            "replay": 429.0,
+            "retrieved": 333.0,
+            "mae_gated": 333.0
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 58.5,
+            "frozen": 333.0,
+            "low_lr": 289.5,
+            "replay": 461.0,
+            "retrieved": 333.0,
+            "mae_gated": 333.0
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 96848.0,
+        "frozen": 340992.0,
+        "low_lr": 352624.0,
+        "replay": 420368.0,
+        "retrieved": 340992.0,
+        "mae_gated": 340992.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 3
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 176.0,
+          "ABC_then_D": 176.0,
+          "AB_then_D": 216.0,
+          "matched_D_volume": 176.0,
+          "source": 176.0
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 298.0,
+        "A_source": 298.0,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 4,
+      "pretrain": 1328,
+      "source_val": 0.014080235734581947,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.09262558817863464,
+        "one_step_mae_cand_on_inc": 0.09229952096939087,
+        "one_step_mae_inc_on_cand": 0.10125910490751266,
+        "one_step_mae_cand_on_cand": 0.10040769726037979,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.14669640362262726,
+        "multi_h3_cand_on_cand": 0.09486960619688034,
+        "multi_h3_cand_on_inc": 0.14452065527439117,
+        "action_disagreement": 0.03125,
+        "shift_on_own_traj": true,
+        "return_never": 407.5,
+        "return_adapted": 420.0,
+        "delta_return": 12.5
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 13.5,
+            "frozen": 407.5,
+            "low_lr": 407.5,
+            "replay": 407.5,
+            "retrieved": 407.5,
+            "mae_gated": 407.5
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 19.5,
+            "frozen": 407.5,
+            "low_lr": 362.5,
+            "replay": 378.0,
+            "retrieved": 407.5,
+            "mae_gated": 407.5
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 51.5,
+            "frozen": 407.5,
+            "low_lr": 391.0,
+            "replay": 385.0,
+            "retrieved": 407.5,
+            "mae_gated": 407.5
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 177.5,
+            "frozen": 407.5,
+            "low_lr": 500.0,
+            "replay": 374.5,
+            "retrieved": 407.5,
+            "mae_gated": 407.5
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 37.0,
+            "frozen": 407.5,
+            "low_lr": 442.0,
+            "replay": 484.0,
+            "retrieved": 407.5,
+            "mae_gated": 407.5
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 74.0,
+            "frozen": 407.5,
+            "low_lr": 361.0,
+            "replay": 456.0,
+            "retrieved": 407.5,
+            "mae_gated": 407.5
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 73856.0,
+        "frozen": 417280.0,
+        "low_lr": 431920.0,
+        "replay": 448688.0,
+        "retrieved": 417280.0,
+        "mae_gated": 417280.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 3
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 318.5,
+          "ABC_then_D": 318.5,
+          "AB_then_D": 318.5,
+          "matched_D_volume": 318.5,
+          "source": 318.5
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 425.5,
+        "A_source": 425.5,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 5,
+      "pretrain": 1328,
+      "source_val": 0.008415071060881019,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.10278254747390747,
+        "one_step_mae_cand_on_inc": 0.10189395397901535,
+        "one_step_mae_inc_on_cand": 0.09321948885917664,
+        "one_step_mae_cand_on_cand": 0.09243675321340561,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.1253805011510849,
+        "multi_h3_cand_on_cand": 0.09672725200653076,
+        "multi_h3_cand_on_inc": 0.12519240379333496,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": false,
+        "return_never": 452.5,
+        "return_adapted": 382.5,
+        "delta_return": -70.0
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 150.0,
+            "frozen": 452.5,
+            "low_lr": 452.5,
+            "replay": 452.5,
+            "retrieved": 452.5,
+            "mae_gated": 452.5
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 13.5,
+            "frozen": 452.5,
+            "low_lr": 339.5,
+            "replay": 401.0,
+            "retrieved": 452.5,
+            "mae_gated": 452.5
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 12.5,
+            "frozen": 452.5,
+            "low_lr": 359.0,
+            "replay": 366.5,
+            "retrieved": 452.5,
+            "mae_gated": 452.5
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 75.0,
+            "frozen": 452.5,
+            "low_lr": 367.5,
+            "replay": 224.0,
+            "retrieved": 452.5,
+            "mae_gated": 452.5
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 71.0,
+            "frozen": 452.5,
+            "low_lr": 378.0,
+            "replay": 252.5,
+            "retrieved": 452.5,
+            "mae_gated": 452.5
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 28.0,
+            "frozen": 452.5,
+            "low_lr": 390.5,
+            "replay": 288.5,
+            "retrieved": 452.5,
+            "mae_gated": 452.5
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 55696.0,
+        "frozen": 463360.0,
+        "low_lr": 386352.0,
+        "replay": 289152.0,
+        "retrieved": 463360.0,
+        "mae_gated": 463360.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 3
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 377.0,
+          "ABC_then_D": 377.0,
+          "AB_then_D": 377.0,
+          "matched_D_volume": 377.0,
+          "source": 377.0
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 462.5,
+        "A_source": 462.5,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 6,
+      "pretrain": 1328,
+      "source_val": 0.007822053623385727,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.10143806785345078,
+        "one_step_mae_cand_on_inc": 0.10123530775308609,
+        "one_step_mae_inc_on_cand": 0.10298926383256912,
+        "one_step_mae_cand_on_cand": 0.10233438014984131,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.13017134368419647,
+        "multi_h3_cand_on_cand": 0.07518266886472702,
+        "multi_h3_cand_on_inc": 0.1278812140226364,
+        "action_disagreement": 0.03125,
+        "shift_on_own_traj": true,
+        "return_never": 290.5,
+        "return_adapted": 363.0,
+        "delta_return": 72.5
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 11.5,
+            "frozen": 290.5,
+            "low_lr": 290.5,
+            "replay": 290.5,
+            "retrieved": 290.5,
+            "mae_gated": 290.5
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 85.0,
+            "frozen": 290.5,
+            "low_lr": 251.0,
+            "replay": 272.0,
+            "retrieved": 290.5,
+            "mae_gated": 290.5
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 14.0,
+            "frozen": 290.5,
+            "low_lr": 456.5,
+            "replay": 371.0,
+            "retrieved": 290.5,
+            "mae_gated": 290.5
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 420.5,
+            "frozen": 290.5,
+            "low_lr": 256.5,
+            "replay": 393.0,
+            "retrieved": 290.5,
+            "mae_gated": 290.5
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 10.5,
+            "frozen": 290.5,
+            "low_lr": 332.0,
+            "replay": 386.0,
+            "retrieved": 290.5,
+            "mae_gated": 290.5
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 35.5,
+            "frozen": 290.5,
+            "low_lr": 358.5,
+            "replay": 470.0,
+            "retrieved": 290.5,
+            "mae_gated": 290.5
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 101008.0,
+        "frozen": 297472.0,
+        "low_lr": 337696.0,
+        "replay": 406320.0,
+        "retrieved": 297472.0,
+        "mae_gated": 297472.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 3
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 196.0,
+          "ABC_then_D": 196.0,
+          "AB_then_D": 196.0,
+          "matched_D_volume": 196.0,
+          "source": 196.0
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 432.5,
+        "A_source": 432.5,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 7,
+      "pretrain": 1328,
+      "source_val": 0.011200582550372928,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.09585516899824142,
+        "one_step_mae_cand_on_inc": 0.09507330507040024,
+        "one_step_mae_inc_on_cand": 0.09606536477804184,
+        "one_step_mae_cand_on_cand": 0.09569068998098373,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.08899971097707748,
+        "multi_h3_cand_on_cand": 0.11300421506166458,
+        "multi_h3_cand_on_inc": 0.09182453155517578,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": false,
+        "return_never": 500.0,
+        "return_adapted": 401.0,
+        "delta_return": -99.0
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 11.5,
+            "frozen": 500.0,
+            "low_lr": 500.0,
+            "replay": 500.0,
+            "retrieved": 500.0,
+            "mae_gated": 500.0
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 20.0,
+            "frozen": 500.0,
+            "low_lr": 436.5,
+            "replay": 409.5,
+            "retrieved": 500.0,
+            "mae_gated": 500.0
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 15.0,
+            "frozen": 500.0,
+            "low_lr": 436.0,
+            "replay": 395.0,
+            "retrieved": 500.0,
+            "mae_gated": 500.0
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 66.0,
+            "frozen": 500.0,
+            "low_lr": 404.0,
+            "replay": 333.0,
+            "retrieved": 500.0,
+            "mae_gated": 500.0
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 10.5,
+            "frozen": 500.0,
+            "low_lr": 442.0,
+            "replay": 276.0,
+            "retrieved": 500.0,
+            "mae_gated": 500.0
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 17.5,
+            "frozen": 500.0,
+            "low_lr": 374.5,
+            "replay": 444.0,
+            "retrieved": 500.0,
+            "mae_gated": 500.0
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 24272.0,
+        "frozen": 512000.0,
+        "low_lr": 428960.0,
+        "replay": 363712.0,
+        "retrieved": 512000.0,
+        "mae_gated": 512000.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 3
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 352.0,
+          "ABC_then_D": 352.0,
+          "AB_then_D": 352.0,
+          "matched_D_volume": 352.0,
+          "source": 352.0
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 500.0,
+        "A_source": 500.0,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 8,
+      "pretrain": 1328,
+      "source_val": 0.006309746531769633,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.09577164053916931,
+        "one_step_mae_cand_on_inc": 0.09486231952905655,
+        "one_step_mae_inc_on_cand": 0.09657978266477585,
+        "one_step_mae_cand_on_cand": 0.09661682695150375,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.09762289375066757,
+        "multi_h3_cand_on_cand": 0.09686022251844406,
+        "multi_h3_cand_on_inc": 0.10069423168897629,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": true,
+        "return_never": 433.0,
+        "return_adapted": 476.5,
+        "delta_return": 43.5
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 18.0,
+            "frozen": 433.0,
+            "low_lr": 433.0,
+            "replay": 433.0,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 11.5,
+            "frozen": 433.0,
+            "low_lr": 445.5,
+            "replay": 459.5,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 15.5,
+            "frozen": 433.0,
+            "low_lr": 442.0,
+            "replay": 322.5,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 24.5,
+            "frozen": 433.0,
+            "low_lr": 433.0,
+            "replay": 389.5,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 25.5,
+            "frozen": 433.0,
+            "low_lr": 329.0,
+            "replay": 319.0,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 27.0,
+            "frozen": 433.0,
+            "low_lr": 485.0,
+            "replay": 291.5,
+            "retrieved": 433.0,
+            "mae_gated": 433.0
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 24208.0,
+        "frozen": 443392.0,
+        "low_lr": 418432.0,
+        "replay": 346128.0,
+        "retrieved": 443392.0,
+        "mae_gated": 443392.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 3
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 224.5,
+          "ABC_then_D": 224.5,
+          "AB_then_D": 224.5,
+          "matched_D_volume": 224.5,
+          "source": 224.5
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 293.5,
+        "A_source": 293.5,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    },
+    {
+      "model_seed": 9,
+      "pretrain": 1328,
+      "source_val": 0.008545264601707458,
+      "detection": {
+        "source_interactions": 64,
+        "target_interactions": 128,
+        "n_resets": 2,
+        "n_scheduled_switches": 1,
+        "recalib_n": 32,
+        "used_train_for_detection": false,
+        "fpr": {
+          "fixed": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "recalib": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          },
+          "trend": {
+            "alarm_frac": 0.0,
+            "n_alarm": 0
+          }
+        },
+        "target": {
+          "fixed": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "recalib": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          },
+          "trend": {
+            "delay": 31,
+            "missed": false,
+            "alarm_frac": 0.7578125
+          }
+        }
+      },
+      "exploit": {
+        "collect_inc": 48,
+        "collect_cand": 48,
+        "one_step_mae_inc_on_inc": 0.10585369914770126,
+        "one_step_mae_cand_on_inc": 0.10387181490659714,
+        "one_step_mae_inc_on_cand": 0.11462236195802689,
+        "one_step_mae_cand_on_cand": 0.11464041471481323,
+        "fail_tail_mae_inc_on_inc": null,
+        "fail_tail_mae_cand_on_cand": null,
+        "multi_h3_inc_on_inc": 0.07613015174865723,
+        "multi_h3_cand_on_cand": 0.06809905916452408,
+        "multi_h3_cand_on_inc": 0.0757904052734375,
+        "action_disagreement": 0.0,
+        "shift_on_own_traj": true,
+        "return_never": 317.5,
+        "return_adapted": 232.0,
+        "delta_return": -85.5
+      },
+      "curve": {
+        "0": {
+          "eval": {
+            "scratch": 10.5,
+            "frozen": 317.5,
+            "low_lr": 317.5,
+            "replay": 317.5,
+            "retrieved": 317.5,
+            "mae_gated": 317.5
+          },
+          "train_n": 0,
+          "val_n": 0,
+          "probe_n": 0,
+          "mae_accept_so_far": 0
+        },
+        "64": {
+          "eval": {
+            "scratch": 10.5,
+            "frozen": 317.5,
+            "low_lr": 246.0,
+            "replay": 212.5,
+            "retrieved": 317.5,
+            "mae_gated": 317.5
+          },
+          "train_n": 48,
+          "val_n": 16,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "128": {
+          "eval": {
+            "scratch": 60.0,
+            "frozen": 317.5,
+            "low_lr": 259.5,
+            "replay": 219.0,
+            "retrieved": 317.5,
+            "mae_gated": 317.5
+          },
+          "train_n": 96,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "256": {
+          "eval": {
+            "scratch": 138.0,
+            "frozen": 317.5,
+            "low_lr": 343.5,
+            "replay": 305.0,
+            "retrieved": 317.5,
+            "mae_gated": 317.5
+          },
+          "train_n": 224,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "512": {
+          "eval": {
+            "scratch": 31.5,
+            "frozen": 317.5,
+            "low_lr": 500.0,
+            "replay": 269.0,
+            "retrieved": 317.5,
+            "mae_gated": 317.5
+          },
+          "train_n": 480,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        },
+        "1024": {
+          "eval": {
+            "scratch": 40.0,
+            "frozen": 317.5,
+            "low_lr": 405.5,
+            "replay": 472.5,
+            "retrieved": 317.5,
+            "mae_gated": 317.5
+          },
+          "train_n": 992,
+          "val_n": 32,
+          "probe_n": 16,
+          "mae_accept_so_far": 0
+        }
+      },
+      "auc": {
+        "scratch": 55600.0,
+        "frozen": 325120.0,
+        "low_lr": 412576.0,
+        "replay": 327600.0,
+        "retrieved": 325120.0,
+        "mae_gated": 325120.0
+      },
+      "mae_online": {
+        "n_accept": 0,
+        "n_propose": 4,
+        "n_reject": 4,
+        "ledger": {
+          "target_cap": 1024,
+          "target_used": 1024,
+          "remaining": 0,
+          "pretrain": 0,
+          "eval_only": 0,
+          "buckets": {
+            "detect": 640,
+            "adapt_collect": 256,
+            "online_val": 128
+          },
+          "bucket_sum": 1024,
+          "within_cap": true,
+          "no_double_count": true
+        },
+        "n_resets": 4
+      },
+      "pool_interactions": 1024,
+      "transfer": {
+        "D": {
+          "naive_D": 229.5,
+          "ABC_then_D": 229.5,
+          "AB_then_D": 229.5,
+          "matched_D_volume": 229.5,
+          "source": 229.5
+        },
+        "delta_ABC_vs_naive": 0.0,
+        "delta_ABC_vs_matched": 0.0,
+        "A_return": 401.5,
+        "A_source": 401.5,
+        "abc_accepts": 0,
+        "D_accepts": {
+          "naive": 0,
+          "abc": 0,
+          "matched": 0
+        },
+        "stage_cap": 224,
+        "matched_cap": 896
+      }
+    }
+  ],
+  "wall_clock_s": 220.7038332499942,
+  "is_agi": false,
+  "caveat": "V0.8.9 learning efficiency. Frozen MAE 0.97. Not AGI. Confirmation not used to retune."
+}
