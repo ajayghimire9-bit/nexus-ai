@@ -371,3 +371,7 @@ Frozen MAE 0.97, 128/64, cap **672**, 3 alarm-triggered cycles. Factorial pool a
 Branch `cursor/v089-learning-efficiency`. Write-up: `docs/NEXUS_V089.md`. `pytest` **224 passed**. Artifact `artifacts/v089_learning.json` (n=10, 221 s). Prior JSON preserved.
 
 Persistent episodes; detector FPR **0**, delay **31**, miss **0**. MAE-gated **4 proposes / 0 accepts**. Frozen return **384** vs scratch **43**; low_lr/replay CIs vs frozen include 0. ABC-then-D vs naive **0**. Past experience did not improve learning efficiency. Not AGI.
+
+## Research checkpoint (after V0.8.9)
+
+Branch `cursor/v089-research-checkpoint`. Write-ups: `docs/NEXUS_RESEARCH_CHECKPOINT.md`, `docs/NEXUS_HYPOTHESIS_REGISTER.md`, `docs/NEXUS_NEXT_EXPERIMENT.md`. `pytest` **230 passed**. MAE audit `artifacts/v089_mae_audit.json` (40 proposals, 0 accepts, mean gate ratio **0.996**, control Δ **−2.7** includes 0). Did not retune 0.97. Recommended next: frozen WM+MPC on a **second env family**, not another CartPole MAE iteration. Not AGI.

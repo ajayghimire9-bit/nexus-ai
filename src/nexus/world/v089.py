@@ -186,6 +186,175 @@ def exploit_diagnostics(
     }
 
 
+def weight_l2_delta(a: Any, b: Any) -> float:
+    tot = 0.0
+    sa = a.net.state_dict()
+    sb = b.net.state_dict()
+    for k in sa:
+        da = sa[k].detach().cpu().numpy().astype(np.float64) - sb[k].detach().cpu().numpy().astype(np.float64)
+        tot += float(np.square(da).sum())
+    return float(np.sqrt(tot))
+
+
+def _proposal_audit(
+    spec: TaskSpec,
+    incumbent: Any,
+    candidate: Any,
+    train_ds: TransitionDataset,
+    val_ds: TransitionDataset,
+    gate: dict[str, Any],
+    index: int,
+) -> dict[str, Any]:
+    """Diagnostics after the frozen MAE decision. Extra rollouts are eval-only and do not feed the gate."""
+    mae_tr_b = _mae(incumbent, train_ds)
+    mae_tr_a = _mae(candidate, train_ds)
+    mae_va_b = _mae(incumbent, val_ds)
+    mae_va_a = _mae(candidate, val_ds)
+    gate_before = gate.get("mae_before")
+    gate_after = gate.get("mae_after")
+    ratio = None if gate_before in (None, 0) else float(gate_after) / float(gate_before)
+    disag = mpc_action_disagreement(incumbent, candidate, val_ds.obs if len(val_ds) else train_ds.obs, seed=11 + index)
+    ctrl = paired_control_eval(spec, {"incumbent": incumbent, "candidate": candidate}, seed=V089_CONFIRM_EVAL_SEED + 17 * index, episodes=1)
+    useful_ctrl = float(ctrl["candidate"]["mean_return"]) - float(ctrl["incumbent"]["mean_return"])
+    return {
+        "index": int(index),
+        "decision": gate.get("decision"),
+        "reason": gate.get("reason"),
+        "gate_ratio_threshold": V085_MAE_RATIO,
+        "gate_mae_before": gate_before,
+        "gate_mae_after": gate_after,
+        "gate_ratio": ratio,
+        "needed_ratio": V085_MAE_RATIO,
+        "train_mae_before": mae_tr_b,
+        "train_mae_after": mae_tr_a,
+        "val_mae_before": mae_va_b,
+        "val_mae_after": mae_va_a,
+        "on_policy_mae_inc_on_val": mae_va_b,
+        "on_policy_mae_cand_on_val": mae_va_a,
+        "weight_l2_delta": weight_l2_delta(incumbent, candidate),
+        "action_disagreement": disag,
+        "control_incumbent": float(ctrl["incumbent"]["mean_return"]),
+        "control_candidate": float(ctrl["candidate"]["mean_return"]),
+        "control_delta": useful_ctrl,
+        "gate_rejected_useful_control": bool(gate.get("decision") != "accept" and useful_ctrl >= 10.0),
+        "eval_only_episodes": 1,
+        "eval_feeds_gate": False,
+    }
+
+
+def validate_v089_artifact(path: str | Path = "artifacts/v089_learning.json") -> dict[str, Any]:
+    p = json_sanitize_load(Path(path))
+    proto = p["protocol"]
+    issues: list[str] = []
+    if proto.get("mae_ratio") != V085_MAE_RATIO:
+        issues.append("mae_ratio")
+    if proto.get("retuned_mae") is not False:
+        issues.append("retuned_mae")
+    if proto.get("n_model_seeds") != 10:
+        issues.append("n_seeds")
+    if proto.get("budgets") != list(BUDGETS):
+        issues.append("budgets")
+    if int(proto.get("stage_cap", 0)) != STAGE_CAP:
+        issues.append("stage_cap")
+    if len(p.get("per_seed", [])) != 10:
+        issues.append("per_seed")
+    for s in p.get("per_seed", []):
+        led = s["mae_online"]["ledger"]
+        if led["bucket_sum"] != led["target_used"] or not led["no_double_count"]:
+            issues.append(f"ledger_seed_{s['model_seed']}")
+        if int(s["mae_online"]["n_propose"]) != 4 or int(s["mae_online"]["n_accept"]) != 0:
+            issues.append(f"mae_counts_seed_{s['model_seed']}")
+        if s["curve"]["0"]["eval"]["frozen"] != s["curve"]["1024"]["eval"]["frozen"]:
+            issues.append(f"frozen_drift_{s['model_seed']}")
+    return {
+        "path": str(path),
+        "protocol_hash": proto.get("protocol_hash"),
+        "ok": len(issues) == 0,
+        "issues": issues,
+        "reported_wall_s": p.get("wall_clock_s"),
+        "is_agi": proto.get("is_agi"),
+    }
+
+
+def json_sanitize_load(path: Path) -> dict[str, Any]:
+    import json
+
+    return json.loads(path.read_text())
+
+
+def run_mae_rejection_audit(
+    *,
+    n_model_seeds: int = 10,
+    cap: int = 1024,
+    epochs: int = 8,
+    artifact_path: str | Path | None = "artifacts/v089_mae_audit.json",
+    quick: bool = False,
+) -> dict[str, Any]:
+    """Re-run the 1024-step MAE stream with per-proposal diagnostics. Does not retune 0.97."""
+    t0 = time.perf_counter()
+    n_train, n_val, src_epochs = FROZEN_N_TRAIN, FROZEN_N_VAL, FROZEN_EPOCHS
+    if quick:
+        n_model_seeds, cap, epochs, n_train, n_val, src_epochs = min(n_model_seeds, 1), 80, 1, 48, 24, 1
+    source_spec = source_policy_task()
+    spec = v089_confirmation_targets()[0]
+    rows: list[dict[str, Any]] = []
+    proposals: list[dict[str, Any]] = []
+    for mseed in range(n_model_seeds):
+        train = collect_transitions(
+            source_spec, n_transitions=n_train, env_seeds=tuple(range(12 + 20 * mseed, 32 + 20 * mseed)),
+            base_seed=V089_SOURCE_COLLECT_SEED + 19 * mseed, mix=("random", "exploratory"),
+        )
+        val = collect_transitions(
+            source_spec, n_transitions=n_val, env_seeds=tuple(range(420 + 8 * mseed, 428 + 8 * mseed)),
+            base_seed=V089_SOURCE_COLLECT_SEED + 300 + 19 * mseed, mix=("random", "exploratory"),
+        )
+        assert_disjoint_seeds(train, val)
+        source, _ = train_world_model(train, val, kind=FROZEN_KIND, epochs=src_epochs, seed=4 + 13 * mseed)  # type: ignore[arg-type]
+        calib = collect_transitions(source_spec, n_transitions=16 if quick else 48, env_seeds=tuple(range(700, 706)), base_seed=V089_DETECT_SEED + mseed, mix=("random",))
+        det = WindowThresholdDetector(window=8 if quick else 32, k=3.0)
+        det.fit(per_transition_mae(source, calib.obs, calib.action, calib.next_obs))
+        plist: list[dict[str, Any]] = []
+        out = run_mae_persistent(
+            spec, source, train, cap=cap, epochs=epochs, seed=V089_TARGET_COLLECT_SEED + 50 + mseed,
+            adapt_seed=V089_ADAPT_SEED + 13 * mseed, gate_seed=V089_GATE_SEED + 11 * mseed, detector=det,
+            train_n=16 if quick else TRAIN_N, val_n=8 if quick else VAL_N, snapshots_at=(0, cap), proposals_out=plist,
+        )
+        for pr in plist:
+            pr["model_seed"] = mseed
+            proposals.append(pr)
+        rows.append({"model_seed": mseed, "n_propose": out["n_propose"], "n_accept": out["n_accept"], "n_reject": out["n_reject"], "ledger": out["ledger"]})
+        print(f"v089 mae audit seed={mseed} propose={out['n_propose']} accept={out['n_accept']}", flush=True)
+    useful_rejected = [pr for pr in proposals if pr.get("gate_rejected_useful_control")]
+    payload = {
+        "protocol": {
+            "audit": "mae_rejection",
+            "mae_ratio": V085_MAE_RATIO,
+            "retuned_mae": False,
+            "n_model_seeds": n_model_seeds,
+            "cap": cap,
+            "eval_feeds_gate": False,
+            "is_agi": False,
+            "quick": quick,
+        },
+        "n_proposals": len(proposals),
+        "n_accept": int(sum(r["n_accept"] for r in rows)),
+        "mean_gate_ratio": float(np.mean([p["gate_ratio"] for p in proposals if p.get("gate_ratio") is not None])) if proposals else None,
+        "mean_control_delta": float(np.mean([p["control_delta"] for p in proposals])) if proposals else None,
+        "mean_weight_l2": float(np.mean([p["weight_l2_delta"] for p in proposals])) if proposals else None,
+        "mean_disagreement": float(np.mean([p["action_disagreement"] for p in proposals])) if proposals else None,
+        "n_gate_rejected_useful_control": len(useful_rejected),
+        "control_delta_ci": seed_level_ci([float(np.mean([p["control_delta"] for p in proposals if p["model_seed"] == s])) for s in range(n_model_seeds) if any(p["model_seed"] == s for p in proposals)]) if proposals else None,
+        "proposals": proposals,
+        "per_seed": rows,
+        "wall_clock_s": time.perf_counter() - t0,
+        "is_agi": False,
+    }
+    if artifact_path is not None:
+        Path(artifact_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(artifact_path).write_text(dumps_strict(payload))
+    return payload
+
+
 def run_mae_persistent(
     spec: TaskSpec,
     source: Any,
@@ -200,6 +369,7 @@ def run_mae_persistent(
     train_n: int = TRAIN_N,
     val_n: int = VAL_N,
     snapshots_at: tuple[int, ...] = BUDGETS,
+    proposals_out: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     deployed = source.clone()
     det = copy_detector(detector)
@@ -252,6 +422,8 @@ def run_mae_persistent(
             cand, _log = apply_method("low_lr", deployed, replay, train_ds, val_ds, epochs=epochs, seed=int(adapt_seed) + n_propose)
             n_propose += 1
             g = run_gate("mae", GateInput(spec=spec, incumbent=deployed, candidate=cand, ledger=ledger, seed=int(gate_seed) + n_propose))
+            if proposals_out is not None:
+                proposals_out.append(_proposal_audit(spec, deployed, cand, train_ds, val_ds, g, n_propose - 1))
             if g["decision"] == "accept":
                 deployed = cand
                 sess.set_model(deployed)

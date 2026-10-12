@@ -318,11 +318,11 @@ If the current project code, hardware specifications, or experimental metrics ar
 
 ## 12. CURRENT PROJECT STATUS
 
-Implemented through **NEXUS Research V0.8.9** (learning efficiency / persistent online control) on CartPole world models and H=3 MPC. V0.1–V0.8.8 artifacts are retained. See `docs/NEXUS_PROGRESS.md` and `docs/NEXUS_V089.md`.
+Implemented through **NEXUS Research V0.8.9** plus a research checkpoint (`docs/NEXUS_RESEARCH_CHECKPOINT.md`). V0.1–V0.8.9 artifacts are retained. See `docs/NEXUS_PROGRESS.md` and `docs/NEXUS_NEXT_EXPERIMENT.md`.
 
-We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Prior-task experience did not reduce target data need vs a frozen pretrained model.
+We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Prior-task experience did not reduce target data need vs a frozen pretrained model. Low-LR online candidates do not meet the frozen 0.97 MAE test (mean ratio 0.996).
 
-Do not skip to live trading, NEXUS Alpha, or V0.9 without closing the current world-model adaptation questions.
+Do not skip to live trading, NEXUS Alpha, or a large new architecture. The recommended next measurement is whether the frozen world-model+MPC recipe works on a second environment family.
 
 Future claims of implementation progress must be based on actual code and experiment results.
 

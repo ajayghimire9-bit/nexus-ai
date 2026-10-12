@@ -23,7 +23,7 @@ Optional LLMs may help planning, engineering, and explanation. They must **not**
 
 **NEXUS Research V0.1:** tested PyTorch actor–critic baseline + configurable neural-network factory + initial evolutionary experiment loop.
 
-Current status: research code and measured experiments through **V0.8.9** (learning efficiency). No functioning self-improving system, profitable trading system, or AGI has been demonstrated. V0.8.9 did not show that past tasks reduce the data needed to learn a new environment. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
+Current status: research code and measured experiments through **V0.8.9**, with a checkpoint recommending a second environment family rather than more CartPole MAE retuning. No functioning self-improving system, profitable trading system, or AGI has been demonstrated. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
 
 ## Research loop
 
