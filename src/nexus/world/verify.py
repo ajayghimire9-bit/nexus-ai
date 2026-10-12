@@ -216,3 +216,184 @@ def mpc_action_disagreement(
         if int(ai) != int(ac):
             differ += 1
     return float(differ / max(n, 1))
+
+
+# V0.8.5 reference protocol. Frozen before confirmation. Not used by run_gate.
+V085_REF_HORIZON = 500
+V085_REF_EPISODES = 2
+V085_REF_MARGIN = 10.0
+V085_H128 = 128
+V085_MAE_STEPS = 32
+
+
+@dataclass(frozen=True)
+class GateInput:
+    """Verifier input. Reference-evaluation scores are not a field and must not be added."""
+
+    spec: TaskSpec
+    incumbent: WorldModel
+    candidate: WorldModel
+    ledger: InteractionLedger
+    seed: int
+    val_data: Any | None = None
+    horizon: int = CONTROL_VAL_HORIZON
+    n_episodes: int = CONTROL_VAL_EPISODES
+    min_improve: float = MIN_IMPROVE
+
+
+def weights_hash(wm: WorldModel) -> str:
+    import hashlib
+
+    h = hashlib.sha256()
+    for k, v in sorted(wm.net.state_dict().items()):
+        h.update(k.encode())
+        h.update(np.ascontiguousarray(v.detach().cpu().numpy()).tobytes())
+    return h.hexdigest()[:16]
+
+
+def classify_reference(incumbent_scores: list[float], candidate_scores: list[float], *, margin: float = V085_REF_MARGIN) -> str:
+    if not incumbent_scores or not candidate_scores:
+        return "unresolved"
+    diff = float(np.mean(candidate_scores)) - float(np.mean(incumbent_scores))
+    if diff >= float(margin):
+        return "benefit"
+    if diff <= -float(margin):
+        return "harm"
+    return "inconclusive"
+
+
+def harm_status(*, n_accept: int, n_harmful_accept: int, n_unresolved_accept: int) -> dict[str, Any]:
+    """Distinguish no acceptance, no detected harm, and inconclusive audits."""
+    if int(n_accept) <= 0:
+        return {"conditional_harm": "not_applicable", "status": "no_acceptance"}
+    if int(n_unresolved_accept) > 0:
+        rate = float(n_harmful_accept) / float(n_accept)
+        return {"conditional_harm": rate, "status": "inconclusive_audits", "n_unresolved_accept": int(n_unresolved_accept)}
+    rate = float(n_harmful_accept) / float(n_accept)
+    return {
+        "conditional_harm": rate,
+        "status": "no_detected_harm" if n_harmful_accept == 0 else "detected_harm",
+    }
+
+
+def run_gate(name: str, inp: GateInput) -> dict[str, Any]:
+    """Decision from GateInput only. Callers must not pass reference outcomes here."""
+    from nexus.world.agent import _mae
+    from nexus.world.belief import IdentityBelief
+    from nexus.world.online import _planner
+    from nexus.tasks.spec import make_task_env
+    from nexus.world.data import TransitionDataset
+
+    if name == "never":
+        return {"decision": "reject", "reason": "never", "val_incumbent_steps": 0, "val_candidate_steps": 0, "ceiling_both": False, "incumbent_scores": [], "candidate_scores": []}
+    if name == "always":
+        return {"decision": "accept", "reason": "always", "val_incumbent_steps": 0, "val_candidate_steps": 0, "ceiling_both": False, "incumbent_scores": [], "candidate_scores": []}
+    if name == "mae":
+        need = V085_MAE_STEPS
+        if inp.ledger.remaining < need:
+            return {"decision": "reject", "reason": "insufficient_budget", "val_incumbent_steps": 0, "val_candidate_steps": 0, "ceiling_both": False, "incumbent_scores": [], "candidate_scores": []}
+        spec = inp.spec
+        vo, va, vn, vr, vt, vtr, vs, ve = [], [], [], [], [], [], [], []
+        envv = make_task_env(spec, seed=int(inp.seed) + 8000)
+        ov, _ = envv.reset(seed=int(inp.seed) + 8000)
+        est = IdentityBelief()
+        est.reset()
+        pd = _planner(inp.incumbent)
+        pd.reset_episode(int(inp.seed) + 4000)
+        pa: int | None = None
+        steps = 0
+        donev = False
+        while steps < need and not donev and inp.ledger.remaining > 0:
+            oo = np.asarray(ov, dtype=np.float32).reshape(-1)
+            bb = est.observe(oo, pa)
+            aa, _ = pd.act(bb)
+            nx, rw, tm, trc, _ = envv.step(int(aa))
+            inp.ledger.charge(1, "online_val")
+            nxx = np.asarray(nx, dtype=np.float32).reshape(-1)
+            vo.append(oo)
+            va.append(int(aa))
+            vn.append(nxx)
+            vr.append(float(rw))
+            vt.append(bool(tm))
+            vtr.append(bool(trc))
+            vs.append(int(inp.seed) + 8000)
+            ve.append(0)
+            pa = int(aa)
+            ov = nx
+            steps += 1
+            donev = bool(tm or trc)
+        envv.close()
+        n = len(vo)
+        if n == 0:
+            return {"decision": "reject", "reason": "insufficient_evidence", "val_incumbent_steps": 0, "val_candidate_steps": 0, "ceiling_both": False, "incumbent_scores": [], "candidate_scores": []}
+        z = np.zeros((0, spec.obs_dim), dtype=np.float32)
+        ds = TransitionDataset(
+            obs=np.stack(vo),
+            action=np.asarray(va, dtype=np.int64),
+            next_obs=np.stack(vn),
+            reward=np.asarray(vr, dtype=np.float32),
+            terminated=np.asarray(vt, dtype=np.bool_),
+            truncated=np.asarray(vtr, dtype=np.bool_),
+            task_id=spec.task_id,
+            seed=np.asarray(vs, dtype=np.int64),
+            episode_id=np.asarray(ve, dtype=np.int64),
+            policy=np.array(["mae_val"] * n, dtype=object),
+            physics=dict(spec.params),
+            env_interactions=n,
+        )
+        del z
+        before, after = _mae(inp.incumbent, ds), _mae(inp.candidate, ds)
+        if after <= before * 0.97:
+            dec, reason = "accept", "mae_improved"
+        else:
+            dec, reason = "reject", "mae_reject"
+        return {
+            "decision": dec,
+            "reason": reason,
+            "val_incumbent_steps": n,
+            "val_candidate_steps": n,
+            "ceiling_both": False,
+            "incumbent_scores": [float(before)],
+            "candidate_scores": [float(after)],
+            "mae_before": float(before),
+            "mae_after": float(after),
+        }
+    cmp = matched_control_compare(
+        inp.spec,
+        inp.incumbent,
+        inp.candidate,
+        ledger=inp.ledger,
+        seed=int(inp.seed),
+        horizon=int(inp.horizon),
+        n_episodes=int(inp.n_episodes),
+        bucket="online_val",
+    )
+    if not cmp["ok"]:
+        return {
+            "decision": "reject",
+            "reason": str(cmp.get("reason", "insufficient_budget")),
+            "val_incumbent_steps": 0,
+            "val_candidate_steps": 0,
+            "ceiling_both": False,
+            "incumbent_scores": [],
+            "candidate_scores": [],
+        }
+    inc_s = list(cmp["incumbent_scores"])
+    cand_s = list(cmp["candidate_scores"])
+    decision, reason, diff = control_decision(inc_s, cand_s, min_improve=float(inp.min_improve))
+    if decision == "inconclusive":
+        out_dec = "reject"
+    else:
+        out_dec = decision
+    h = int(inp.horizon)
+    ceil = bool(inc_s and cand_s and all(s >= h - 1e-6 for s in inc_s) and all(s >= h - 1e-6 for s in cand_s))
+    return {
+        "decision": out_dec,
+        "reason": reason,
+        "diff": None if diff != diff else float(diff),
+        "val_incumbent_steps": int(cmp["incumbent_steps"]),
+        "val_candidate_steps": int(cmp["candidate_steps"]),
+        "ceiling_both": ceil,
+        "incumbent_scores": inc_s,
+        "candidate_scores": cand_s,
+    }

@@ -309,9 +309,17 @@ def split_train_val_episodes(ds: TransitionDataset, *, rng: np.random.Generator,
     return split_by_episodes(ds, val_frac=val_frac, rng=rng)
 
 
-def finetune_world_model(wm: WorldModel, train: TransitionDataset, val: TransitionDataset, *, epochs: int, seed: int, lr: float = 5e-4) -> tuple[WorldModel, dict[str, Any]]:
-    if len(val) == 0:
-        val = train
+def finetune_world_model(
+    wm: WorldModel,
+    train: TransitionDataset,
+    val: TransitionDataset,
+    *,
+    epochs: int,
+    seed: int,
+    lr: float = 5e-4,
+    select_by_val: bool = True,
+) -> tuple[WorldModel, dict[str, Any]]:
+    """Fine-tune a clone. Empty val never substitutes train (that would label train loss as val)."""
     out = wm.clone()
     rng = np.random.default_rng(seed)
     opt = torch.optim.Adam(out.net.parameters(), lr=lr)
@@ -320,9 +328,13 @@ def finetune_world_model(wm: WorldModel, train: TransitionDataset, val: Transiti
     best = 1e18
     best_state = {k: v.detach().cpu().clone() for k, v in out.net.state_dict().items()}
     history: list[float] = []
+    use_val = bool(select_by_val and len(val) > 0)
+    train_hist: list[float] = []
     for _epoch in range(int(epochs)):
         out.net.train()
         idx = rng.permutation(len(train))
+        ep_loss = 0.0
+        n_b = 0
         for i in range(0, len(train), 64):
             sl = idx[i : i + 64]
             obs = torch.as_tensor(out.normalize(train.obs[sl]))
@@ -336,21 +348,38 @@ def finetune_world_model(wm: WorldModel, train: TransitionDataset, val: Transiti
             loss.backward()
             nn.utils.clip_grad_norm_(out.net.parameters(), 1.0)
             opt.step()
+            ep_loss += float(loss.item())
+            n_b += 1
+        train_hist.append(ep_loss / max(n_b, 1))
         out.net.eval()
-        with torch.no_grad():
-            obs = torch.as_tensor(out.normalize(val.obs))
-            nxt = torch.as_tensor(out.normalize(val.next_obs))
-            act = torch.as_tensor(val.action, dtype=torch.int64)
-            pred, logit = out.net(obs, act)
-            target = nxt - obs if out.kind == "residual" else nxt
-            v = float(loss_fn(pred, target).item())
-        history.append(v)
-        if v < best:
-            best = v
-            best_state = {k: t.detach().cpu().clone() for k, t in out.net.state_dict().items()}
-    out.net.load_state_dict(best_state)
+        if use_val:
+            with torch.no_grad():
+                obs = torch.as_tensor(out.normalize(val.obs))
+                nxt = torch.as_tensor(out.normalize(val.next_obs))
+                act = torch.as_tensor(val.action, dtype=torch.int64)
+                pred, logit = out.net(obs, act)
+                target = nxt - obs if out.kind == "residual" else nxt
+                v = float(loss_fn(pred, target).item())
+            history.append(v)
+            if v < best:
+                best = v
+                best_state = {k: t.detach().cpu().clone() for k, t in out.net.state_dict().items()}
+    if use_val:
+        out.net.load_state_dict(best_state)
+        rule = "best_independent_val"
+        val_metric: float | None = float(best)
+    else:
+        rule = "last_epoch"
+        val_metric = None
     out.net.eval()
-    return out, {"best_val": best, "history": history}
+    return out, {
+        "best_val": val_metric,
+        "history": history,
+        "train_loss_history": train_hist,
+        "checkpoint_rule": rule,
+        "independent_validation": use_val,
+        "val_used_for_selection": use_val,
+    }
 
 
 def train_adapter(base: WorldModel, train: TransitionDataset, val: TransitionDataset, *, epochs: int, seed: int) -> tuple[AdaptedWorldModel, dict[str, Any]]:
@@ -444,16 +473,42 @@ def adapt_method(
     epochs: int,
     seed: int,
     episode_disjoint: bool = False,
+    allow_overlap_val: bool = True,
+    independent_val: TransitionDataset | None = None,
 ) -> tuple[Any, dict[str, Any]]:
+    """Adapt. V0.8.4 default ``allow_overlap_val=True`` keeps train-as-val when one episode.
+
+    V0.8.5 passes ``allow_overlap_val=False`` and/or a disjoint ``independent_val``.
+    Training loss is never recorded as ``best_val`` without independent val.
+    """
     if method == "frozen" or len(target) == 0:
-        return source, {"method": "frozen", "train_n": 0, "val_n": 0}
+        return source, {"method": "frozen", "train_n": 0, "val_n": 0, "independent_validation": False, "checkpoint_rule": "none"}
     rng = np.random.default_rng(seed)
-    tr, va = split_train_val_episodes(target, rng=rng) if episode_disjoint else split_train_val(target, rng=rng)
-    if len(va) == 0:
-        va = tr
+    if independent_val is not None:
+        tr, va = target, independent_val
+        if len(tr) and len(va) and set(int(x) for x in tr.seed.tolist()) & set(int(x) for x in va.seed.tolist()):
+            raise ValueError("independent_val shares reset seeds with train")
+        select = len(va) > 0
+    else:
+        tr, va = split_train_val_episodes(target, rng=rng) if episode_disjoint else split_train_val(target, rng=rng)
+        if len(va) == 0:
+            if allow_overlap_val:
+                va = tr
+                select = True
+            else:
+                select = False
+        else:
+            select = True
+    extra = {"independent_validation": bool(select and independent_val is not None), "allow_overlap_val": bool(allow_overlap_val)}
     if method == "finetune":
-        wm, log = finetune_world_model(source, tr, va, epochs=epochs, seed=seed)
-        return wm, {"method": method, "train_n": len(tr), "val_n": len(va), **log}
+        wm, log = finetune_world_model(source, tr, va, epochs=epochs, seed=seed, select_by_val=select)
+        if allow_overlap_val and independent_val is None and select and len(va) and set(getattr(tr, "episode_id", np.array([]))) is not None:
+            same = len(tr) == len(va) and len(tr) and np.array_equal(tr.obs, va.obs)
+            extra["independent_validation"] = bool(select and not same and independent_val is not None)
+            if same:
+                extra["independent_validation"] = False
+                extra["overlap_val"] = True
+        return wm, {"method": method, "train_n": len(tr), "val_n": 0 if not select else len(va), **extra, **log}
     if method == "scratch":
         wm, log = train_world_model(tr, va, kind=FROZEN_KIND, epochs=epochs, seed=seed, hidden=(64, 64))  # type: ignore[arg-type]
         return wm, {"method": method, "train_n": len(tr), "val_n": len(va), **log}

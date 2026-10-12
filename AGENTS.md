@@ -23,7 +23,7 @@ Optional LLMs may help planning, engineering, and explanation. They must **not**
 
 **NEXUS Research V0.1:** tested PyTorch actor–critic baseline + configurable neural-network factory + initial evolutionary experiment loop.
 
-Current status: research code and measured experiments through **V0.8.4** (fair adaptation verification). No functioning self-improving system, profitable trading system, or AGI has been demonstrated. V0.8.4 confirmation did not support useful adaptation versus never-adapt. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
+Current status: research code and measured experiments through **V0.8.5** (candidate quality vs verifier quality). No functioning self-improving system, profitable trading system, or AGI has been demonstrated. V0.8.4 H=32 gates could not see candidate effects; V0.8.5 long-horizon reference found mixed benefit and harm, and a frozen MAE gate had confirmatory decision value vs never on that bank. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
 
 ## Research loop
 

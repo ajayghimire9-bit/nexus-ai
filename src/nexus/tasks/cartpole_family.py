@@ -638,6 +638,53 @@ def v084_confirmation_targets() -> tuple[TaskSpec, ...]:
     )
 
 
+V085_OBS_NOISE = 0.09
+
+
+def v085_development_target() -> TaskSpec:
+    return _cartpole(
+        "cartpole_v085_dev",
+        "dev_v085",
+        "V0.8.5 development. Candidate bank and verifier selection only.",
+        gravity=10.4,
+        length=0.62,
+        masspole=0.16,
+        obs_noise_std=V085_OBS_NOISE,
+    )
+
+
+def v085_confirmation_targets() -> tuple[TaskSpec, ...]:
+    """Frozen before ranking. Unused V0.8.4 physics."""
+    return (
+        _cartpole(
+            "cartpole_v085_noisy_0",
+            "confirm_v085",
+            "V0.8.5 noisy confirm 0.",
+            gravity=7.1,
+            length=0.33,
+            masspole=0.24,
+            obs_noise_std=V085_OBS_NOISE,
+        ),
+        _cartpole(
+            "cartpole_v085_noisy_1",
+            "confirm_v085",
+            "V0.8.5 noisy confirm 1.",
+            gravity=14.9,
+            length=0.55,
+            masspole=0.11,
+            obs_noise_std=V085_OBS_NOISE,
+        ),
+        _cartpole(
+            "cartpole_v085_clean_0",
+            "confirm_v085",
+            "V0.8.5 clean confirm 0.",
+            gravity=8.6,
+            length=0.24,
+            masspole=0.18,
+        ),
+    )
+
+
 def confirmation_targets() -> tuple[TaskSpec, ...]:
     """Pre-registered V0.6.4 confirmation suite. Not used to tune the selector."""
     out: list[TaskSpec] = []

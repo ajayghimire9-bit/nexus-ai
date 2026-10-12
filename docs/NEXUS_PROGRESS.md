@@ -341,3 +341,9 @@ Online step loop; ledger `bucket_sum==target_used`; GRU excluded from MPC. Noisy
 Branch `cursor/v084-fair-adaptation-verification`. Write-up: `docs/NEXUS_V084.md`. `pytest` **175 passed**. Artifact `artifacts/v084_verification.json` (n=10, 267 s). Prior JSON preserved.
 
 Matched H=32 MPC incumbent vs candidate; both charged to `online_val`; observe-once; disjoint one-episode splits; harm N/A if no accepts. Dev selected **MAE**. Noisy confirm@128 never **230.7**; MAE **231.4** (paired +0.7, CI includes 0); always +2.5 (CI includes 0); `control_fair` **0 accepts**, all proposals `tie_or_small_diff`, return identical to never. Clean confirm **500**. Continual naive **147** vs snapshot **247**. Engineering OK; scientific adaptation **not** shown. Not V0.9. Not AGI.
+
+## V0.8.5 — candidate quality and verification
+
+Branch `cursor/v085-candidate-quality-verification`. Write-up: `docs/NEXUS_V085.md`. `pytest` **188 passed**. Artifact `artifacts/v085_verification.json` (n=10, 89.5 s). Prior JSON preserved.
+
+Fixed candidate bank; long-horizon reference (H=500 × 2) never feeds the gate. Noisy 40 pairs: **23 benefit / 15 harm / 2 inconclusive**; seed-mean Δ **+41.9 [−7.3, +91.1]** (includes 0). H=32 still 32 vs 32 on all 40 noisy. Dev selected **MAE**. Confirm MAE choice vs never **+50.5 [8.7, 92.2]** (excludes 0); 22 benefit / 6 harm accepted. H=128 still ~92% ceiling. Not a new env family. Not AGI.
