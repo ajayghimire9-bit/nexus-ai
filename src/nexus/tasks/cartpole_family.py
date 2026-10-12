@@ -763,6 +763,84 @@ def v086_confirmation_targets() -> tuple[TaskSpec, ...]:
     )
 
 
+V087_OBS_NOISE = 0.09
+
+
+def v087_development_target() -> TaskSpec:
+    return _cartpole(
+        "cartpole_v087_dev",
+        "dev_v087",
+        "V0.8.7 development. Online protocol selection only.",
+        gravity=12.1,
+        length=0.35,
+        masspole=0.19,
+        obs_noise_std=V087_OBS_NOISE,
+    )
+
+
+def v087_sequence_tasks() -> tuple[TaskSpec, TaskSpec, TaskSpec]:
+    a = _cartpole(
+        "cartpole_v087_A",
+        "dev_v087",
+        "V0.8.7 sequence A.",
+        gravity=9.8,
+        length=0.5,
+        masspole=0.1,
+        obs_noise_std=V087_OBS_NOISE,
+    )
+    b = _cartpole(
+        "cartpole_v087_B",
+        "dev_v087",
+        "V0.8.7 sequence B.",
+        gravity=14.1,
+        length=0.38,
+        masspole=0.16,
+        obs_noise_std=V087_OBS_NOISE,
+    )
+    c = _cartpole(
+        "cartpole_v087_C",
+        "dev_v087",
+        "V0.8.7 sequence C.",
+        gravity=6.4,
+        length=0.81,
+        masspole=0.21,
+        obs_noise_std=V087_OBS_NOISE,
+    )
+    return a, b, c
+
+
+def v087_confirmation_targets() -> tuple[TaskSpec, ...]:
+    """Frozen before ranking. Unused V0.8.6 physics."""
+    return (
+        _cartpole(
+            "cartpole_v087_noisy_0",
+            "confirm_v087",
+            "V0.8.7 noisy confirm 0.",
+            gravity=5.9,
+            length=0.47,
+            masspole=0.22,
+            obs_noise_std=V087_OBS_NOISE,
+        ),
+        _cartpole(
+            "cartpole_v087_noisy_1",
+            "confirm_v087",
+            "V0.8.7 noisy confirm 1.",
+            gravity=15.5,
+            length=0.26,
+            masspole=0.13,
+            obs_noise_std=V087_OBS_NOISE,
+        ),
+        _cartpole(
+            "cartpole_v087_clean_0",
+            "confirm_v087",
+            "V0.8.7 clean confirm 0.",
+            gravity=9.2,
+            length=0.66,
+            masspole=0.29,
+        ),
+    )
+
+
 def confirmation_targets() -> tuple[TaskSpec, ...]:
     """Pre-registered V0.6.4 confirmation suite. Not used to tune the selector."""
     out: list[TaskSpec] = []

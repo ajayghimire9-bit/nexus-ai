@@ -353,3 +353,9 @@ Fixed candidate bank; long-horizon reference (H=500 × 2) never feeds the gate. 
 Branch `cursor/v086-safe-candidate-generation`. Write-up: `docs/NEXUS_V086.md`. `pytest` **196 passed**. Artifact `artifacts/v086_candidates.json` (n=10, 420 s). Prior JSON preserved.
 
 Matched data; MAE 0.97 frozen. Dev selected **low_lr**. Noisy confirm: low_lr harm **0.25** vs finetune **0.60**; benefit 17 vs 14. MAE|accept harm **1/16**. MAE choice vs never **+5.6 [−2.7, +13.8]** (includes 0). Online A→B→C→A MAE accepted **0** updates (tied with never/snapshot **241**); always **214**. Not AGI.
+
+## V0.8.7 — online learning bridge
+
+Branch `cursor/v087-online-learning-bridge`. Write-up: `docs/NEXUS_V087.md`. `pytest` **203 passed**. Artifact `artifacts/v087_online.json` (n=10, 183 s). Prior JSON preserved.
+
+Ablation: V0.8.6-style 64/32 split MAE accept **0**; bank and online 128/64 both **0.10**. Frozen **matched_sizes**. Confirm MAE+low_lr accept **0.25**, Δ vs never **+7.5 [−3.5, +18.5]** (includes 0). Always-adapt **−14**. Not AGI.
