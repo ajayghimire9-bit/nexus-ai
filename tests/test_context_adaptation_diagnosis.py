@@ -243,7 +243,7 @@ def test_interpretation_priority() -> None:
     flags = {
         "real_context_fails_source_prediction": True,
         "source_prediction_helps_but_development_does_not": True,
-        "variable_length_helps_short_histories": True,
+        "variable_length_short_history_point_estimate_positive": True,
         "prediction_improves_but_control_worsens": False,
         "zero_context_far_below_mlp": True,
     }

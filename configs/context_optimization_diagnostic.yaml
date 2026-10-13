@@ -1,0 +1,36 @@
+protocol_id: context_optimization_diagnostic_v1
+starting_sha: 462b388e24933842297ea9719ed1c9dc5b3902bd
+confirmation_unlocked: false
+control_sweep: false
+is_agi: false
+h_optimization: Increasing source-training updates, with architecture, data, learning rate, loss, and context policy fixed, enables real context to improve held-out source prediction over both zero and wrong-task context.
+updates: [300, 1000, 3000]
+total_updates: 3000
+n_seeds: 3
+n_source_tasks: 8
+context_dim: 8
+encoder_hidden: 32
+trunk_hidden: [48, 48]
+mlp_hidden: [64, 64]
+lr: 0.001
+batch: 64
+empty_prob: 0.2
+support_policy: fixed_128
+support_budget: 128
+angular_velocity_index: 2
+horizons: [3, 8, 16]
+rollout_starts: [0, 32, 64, 96, 128, 160]
+source_per_task: 400
+time_limit_s: 3600
+donor: source_task_(i+1)_mod_n
+screen_angvel_improvement: 0.05
+screen_min_positive_seeds: 2
+screen_max_worsening: 0.05
+audit_support_env0: 20000
+audit_query_env0: 24000
+audit_support_base: 210000
+audit_query_base: 211000
+prior_diagnosis:
+  source_fixed_real_mae_128: 0.0703
+  source_fixed_zero_mae_128: 0.0700
+  source_fixed_wrong_mae_128: 0.0702

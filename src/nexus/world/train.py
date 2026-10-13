@@ -106,6 +106,59 @@ def train_world_model(
     }
 
 
+def train_mlp_updates(
+    train: TransitionDataset,
+    *,
+    updates: int,
+    snapshot_at: tuple[int, ...] | list[int],
+    seed: int,
+    batch_size: int = 64,
+    lr: float = 1e-3,
+    hidden: tuple[int, ...] = (64, 64),
+    n_actions: int = 3,
+    obs_rms: RunningMeanStd | None = None,
+    kind: HeadKind = "residual",
+) -> tuple[WorldModel, torch.optim.Optimizer, dict[int, dict[str, torch.Tensor]], list[dict[str, float]]]:
+    """Train by optimizer update. Snapshots are detached copies and are not the best-validation checkpoint."""
+    obs_dim = int(train.obs.shape[-1])
+    wm = WorldModel.create(obs_dim, n_actions, kind=kind, hidden=tuple(hidden), seed=int(seed), arch="mlp")
+    if obs_rms is not None:
+        wm.copy_rms(obs_rms)
+    else:
+        wm.fit_rms(train.obs)
+    opt = torch.optim.Adam(wm.net.parameters(), lr=float(lr))
+    loss_fn = nn.MSELoss()
+    bce = nn.BCEWithLogitsLoss()
+    rng = np.random.default_rng(int(seed))
+    batches: list[np.ndarray] = []
+    while len(batches) < int(updates):
+        batches.extend(_batches(len(train), int(batch_size), rng))
+    batches = batches[: int(updates)]
+    wanted = {int(x) for x in snapshot_at}
+    snapshots: dict[int, dict[str, torch.Tensor]] = {}
+    history: list[dict[str, float]] = []
+    for step, idx in enumerate(batches, start=1):
+        wm.net.train()
+        obs = torch.as_tensor(wm.normalize(train.obs[idx]), dtype=torch.float32)
+        nxt = torch.as_tensor(wm.normalize(train.next_obs[idx]), dtype=torch.float32)
+        act = torch.as_tensor(train.action[idx], dtype=torch.int64)
+        term = torch.as_tensor(train.terminated[idx].astype(np.float32))
+        pred, logit = wm.net(obs, act)
+        target = nxt - obs if kind == "residual" else nxt
+        state = loss_fn(pred, target)
+        term_loss = bce(logit, term)
+        loss = state + 0.25 * term_loss
+        opt.zero_grad(set_to_none=True)
+        loss.backward()
+        nn.utils.clip_grad_norm_(wm.net.parameters(), 1.0)
+        opt.step()
+        history.append({"update": float(step), "state_loss": float(state.detach().item()), "term_loss": float(term_loss.detach().item())})
+        if step in wanted:
+            snapshots[step] = {k: v.detach().cpu().clone() for k, v in wm.net.state_dict().items()}
+    wm.net.eval()
+    return wm, opt, snapshots, history
+
+
 def one_step_errors(wm: Any, ds: TransitionDataset) -> dict[str, Any]:
     pred, p_term = wm.step(ds.obs, ds.action)
     err = pred - ds.next_obs

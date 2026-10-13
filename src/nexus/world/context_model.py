@@ -184,11 +184,17 @@ class ContextWorldModel:
             raise RuntimeError("step updated context")
         return nxt.reshape(o.shape), p
 
-    def query_loss(self, obs: np.ndarray, action: np.ndarray, nxt: np.ndarray, terminated: np.ndarray, z: torch.Tensor) -> torch.Tensor:
+    def query_terms(self, obs: np.ndarray, action: np.ndarray, nxt: np.ndarray, terminated: np.ndarray, z: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         obs_n, act, delta = self._tensors(obs, action, nxt)
         pred, logit = self.net(obs_n, act, z)
         term = torch.as_tensor(np.asarray(terminated, dtype=np.float32).reshape(-1))
-        return nn.functional.mse_loss(pred, delta) + 0.25 * nn.functional.binary_cross_entropy_with_logits(logit, term)
+        state = nn.functional.mse_loss(pred, delta)
+        term_loss = nn.functional.binary_cross_entropy_with_logits(logit, term)
+        return state, term_loss, state + 0.25 * term_loss
+
+    def query_loss(self, obs: np.ndarray, action: np.ndarray, nxt: np.ndarray, terminated: np.ndarray, z: torch.Tensor) -> torch.Tensor:
+        _state, _term, total = self.query_terms(obs, action, nxt, terminated, z)
+        return total
 
     def clone_trainable(self) -> "ContextWorldModel":
         other = ContextWorldModel.create(
@@ -346,6 +352,73 @@ def support_take(row: dict[str, Any], mode: str) -> np.ndarray:
     return idx[:n]
 
 
+def context_optimizer(model: ContextWorldModel, lr: float = 1e-3) -> torch.optim.Optimizer:
+    params = [p for p in list(model.encoder.parameters()) + list(model.net.parameters()) if p.requires_grad]
+    return torch.optim.Adam(params, lr=float(lr))
+
+
+def run_context_updates(
+    model: ContextWorldModel,
+    opt: torch.optim.Optimizer,
+    tasks: list[TransitionDataset],
+    rows: list[dict[str, Any]],
+    *,
+    support_mode: str,
+) -> dict[str, Any]:
+    """Apply an existing Adam optimizer to a precomputed schedule slice. Does not rebuild the schedule."""
+    if support_mode not in ("fixed", "variable"):
+        raise ValueError(support_mode)
+    grad_norms: list[float] = []
+    state_losses: list[float] = []
+    term_losses: list[float] = []
+    n_query = 0
+    n_support = 0
+    hist: dict[str, int] = {"empty": 0, "16": 0, "32": 0, "64": 0, "128": 0}
+    params = [p for p in opt.param_groups[0]["params"]]
+    for row in rows:
+        ds = tasks[int(row["task_index"])]
+        q = ds.slice(np.asarray(row["query_index"], dtype=np.int64))
+        take = support_take(row, support_mode)
+        model.net.train()
+        if take.size == 0:
+            z = torch.zeros(model.context_dim())
+            hist["empty"] += 1
+        else:
+            s = ds.slice(take)
+            if set(np.unique(s.episode_id).tolist()) & set(np.unique(q.episode_id).tolist()):
+                raise RuntimeError("support and query episodes overlap")
+            z = model.encode(s.obs, s.action, s.next_obs, differentiable=not model.random_encoder)
+            n_support += int(take.size)
+            hist[str(int(take.size) if int(take.size) in (16, 32, 64, 128) else "128")] += 1
+        state, term_loss, loss = model.query_terms(q.obs, q.action, q.next_obs, q.terminated, z)
+        opt.zero_grad(set_to_none=True)
+        loss.backward()
+        g = 0.0
+        for p in model.encoder.parameters():
+            if p.grad is not None:
+                g += float(p.grad.detach().norm().item())
+        grad_norms.append(g)
+        nn.utils.clip_grad_norm_(params, 1.0)
+        opt.step()
+        n_query += len(q)
+        state_losses.append(float(state.detach().item()))
+        term_losses.append(float(term_loss.detach().item()))
+    model.clear_context()
+    model.encoder.eval()
+    model.net.eval()
+    return {
+        "optimizer_updates": len(rows),
+        "query_examples": int(n_query),
+        "support_examples": int(n_support),
+        "support_mode": support_mode,
+        "support_length_counts": hist,
+        "mean_encoder_grad_norm": float(np.mean(grad_norms)) if grad_norms else 0.0,
+        "mean_state_loss": float(np.mean(state_losses)) if state_losses else 0.0,
+        "mean_term_loss": float(np.mean(term_losses)) if term_losses else 0.0,
+        "random_encoder": bool(model.random_encoder),
+    }
+
+
 def train_context_model(
     model: ContextWorldModel,
     tasks: list[TransitionDataset],
@@ -369,50 +442,10 @@ def train_context_model(
     )
     if len(rows) != int(updates):
         raise ValueError("schedule length does not match the update budget")
-    params = [p for p in list(model.encoder.parameters()) + list(model.net.parameters()) if p.requires_grad]
-    opt = torch.optim.Adam(params, lr=1e-3)
+    opt = context_optimizer(model, lr=1e-3)
     before = torch.cat([p.detach().flatten().clone() for p in model.encoder.parameters()])
-    grad_norms: list[float] = []
-    n_query = 0
-    n_support = 0
-    hist: dict[str, int] = {"empty": 0, "16": 0, "32": 0, "64": 0, "128": 0}
-    for row in rows:
-        ds = tasks[int(row["task_index"])]
-        q = ds.slice(np.asarray(row["query_index"], dtype=np.int64))
-        take = support_take(row, support_mode)
-        model.net.train()
-        if take.size == 0:
-            z = torch.zeros(model.context_dim())
-            hist["empty"] += 1
-        else:
-            s = ds.slice(take)
-            if set(np.unique(s.episode_id).tolist()) & set(np.unique(q.episode_id).tolist()):
-                raise RuntimeError("support and query episodes overlap")
-            z = model.encode(s.obs, s.action, s.next_obs, differentiable=not model.random_encoder)
-            n_support += int(take.size)
-            hist[str(int(take.size) if int(take.size) in (16, 32, 64, 128) else "128")] += 1
-        loss = model.query_loss(q.obs, q.action, q.next_obs, q.terminated, z)
-        opt.zero_grad(set_to_none=True)
-        loss.backward()
-        g = 0.0
-        for p in model.encoder.parameters():
-            if p.grad is not None:
-                g += float(p.grad.detach().norm().item())
-        grad_norms.append(g)
-        nn.utils.clip_grad_norm_(params, 1.0)
-        opt.step()
-        n_query += len(q)
+    log = run_context_updates(model, opt, tasks, rows, support_mode=support_mode)
     after = torch.cat([p.detach().flatten() for p in model.encoder.parameters()])
-    model.clear_context()
-    model.encoder.eval()
-    model.net.eval()
-    return {
-        "optimizer_updates": int(updates),
-        "query_examples": int(n_query),
-        "support_examples": int(n_support),
-        "support_mode": support_mode,
-        "support_length_counts": hist,
-        "mean_encoder_grad_norm": float(np.mean(grad_norms)) if grad_norms else 0.0,
-        "encoder_l2_delta": float(torch.linalg.vector_norm(after - before).item()),
-        "random_encoder": bool(model.random_encoder),
-    }
+    log["optimizer_updates"] = int(updates)
+    log["encoder_l2_delta"] = float(torch.linalg.vector_norm(after - before).item())
+    return log

@@ -119,14 +119,29 @@ def complete_episodes(ds: TransitionDataset, min_len: int) -> TransitionDataset:
     return ds.slice(np.concatenate(chunks))
 
 
-def open_loop_mae(model: Any, ds: TransitionDataset, horizons: tuple[int, ...] | list[int]) -> dict[str, float]:
-    """Recorded-action rollout inside complete episodes. Context is not updated."""
+ROLLOUT_STARTS = (0, 32, 64, 96, 128, 160)
+
+
+def open_loop_mae(
+    model: Any,
+    ds: TransitionDataset,
+    horizons: tuple[int, ...] | list[int],
+    starts: tuple[int, ...] | list[int] = ROLLOUT_STARTS,
+) -> dict[str, float]:
+    """Recorded-action rollouts from fixed offsets. Windows are averaged inside each episode first.
+
+    The returned horizon value is a mean over episodes, not over overlapping windows.
+    Context is not updated. A window that would leave its episode is skipped.
+    """
     z0 = getattr(model, "z", None)
     if z0 is not None:
         z0 = z0.detach().clone()
     n0 = getattr(model, "n_encodes", None)
-    sums = {int(h): [] for h in horizons}
+    episode_means = {int(h): [] for h in horizons}
+    window_counts = {int(h): 0 for h in horizons}
+    n_episodes = 0
     for eid in np.unique(ds.episode_id):
+        n_episodes += 1
         idx = np.flatnonzero(ds.episode_id == eid)
         obs = ds.obs[idx]
         act = ds.action[idx]
@@ -135,17 +150,30 @@ def open_loop_mae(model: Any, ds: TransitionDataset, horizons: tuple[int, ...] |
             raise RuntimeError("rollout episode is not contiguous")
         for h in horizons:
             h = int(h)
-            if obs.shape[0] <= h:
-                continue
-            state = obs[0:1]
-            for t in range(h):
-                state, _p = model.step(state, act[t : t + 1])
-            sums[h].append(float(np.mean(np.abs(state.reshape(-1) - obs[h]))))
+            errs = []
+            for start in starts:
+                start = int(start)
+                end = start + h
+                if end >= int(obs.shape[0]):
+                    continue
+                state = obs[start : start + 1]
+                for t in range(start, end):
+                    state, _p = model.step(state, act[t : t + 1])
+                errs.append(float(np.mean(np.abs(state.reshape(-1) - obs[end]))))
+            if errs:
+                episode_means[h].append(float(np.mean(errs)))
+                window_counts[h] += len(errs)
     if z0 is not None and not torch.equal(model.z, z0):
         raise RuntimeError("open-loop rollout updated context")
     if n0 is not None and int(model.n_encodes) != int(n0):
         raise RuntimeError("open-loop rollout encoded a new context")
-    return {str(h): float(np.mean(v)) if v else float("nan") for h, v in sums.items()}
+    out = {str(h): (float(np.mean(episode_means[h])) if episode_means[h] else float("nan")) for h in episode_means}
+    out["n_episodes"] = float(n_episodes)
+    out["n_windows"] = float(sum(window_counts.values()))
+    for h, count in window_counts.items():
+        out[f"windows_{h}"] = float(count)
+        out[f"episodes_used_{h}"] = float(len(episode_means[h]))
+    return out
 
 
 def _predict(model: Any, query: TransitionDataset, horizons: list[int]) -> dict[str, Any]:
@@ -182,7 +210,7 @@ def interpret_diagnosis(flags: dict[str, bool]) -> dict[str, Any]:
     order = (
         ("real_context_fails_source_prediction", "representation_or_optimization"),
         ("source_prediction_helps_but_development_does_not", "task_distribution_generalization"),
-        ("variable_length_helps_short_histories", "adopt_variable_support_length"),
+        ("variable_length_short_history_point_estimate_positive", "adopt_variable_support_length"),
         ("prediction_improves_but_control_worsens", "rollout_and_planner_sensitivity"),
         ("zero_context_far_below_mlp", "trunk_capacity"),
     )
@@ -192,8 +220,13 @@ def interpret_diagnosis(flags: dict[str, bool]) -> dict[str, Any]:
 
 
 def _mean(xs: list[float]) -> float:
-    vals = [float(x) for x in xs if np.isfinite(x)]
-    return float(np.mean(vals)) if vals else float("nan")
+    """Mean of every value. A non-finite entry makes the result non-finite instead of being dropped."""
+    if not xs:
+        return float("nan")
+    arr = np.asarray(xs, dtype=np.float64)
+    if not np.isfinite(arr).all():
+        return float("nan")
+    return float(arr.mean())
 
 
 def run_context_diagnosis(
@@ -633,7 +666,7 @@ def _flags(per_seed: list[dict[str, Any]], budgets: tuple[int, ...]) -> dict[str
     return {
         "real_context_fails_source_prediction": bool(positive) and source_real_fails,
         "source_prediction_helps_but_development_does_not": bool(positive) and source_helps and dev_fails,
-        "variable_length_helps_short_histories": var_helps,
+        "variable_length_short_history_point_estimate_positive": var_helps,
         "prediction_improves_but_control_worsens": bool(positive) and pred_better and control_worse,
         "zero_context_far_below_mlp": bool(trunk_gap) and _mean(trunk_gap) < -50,
     }
