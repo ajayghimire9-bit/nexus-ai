@@ -398,4 +398,10 @@ Frozen H=16 residual. Confirm mean over g/m/l shifts: MAE-gated vs frozen **+29 
 
 Branch `cursor/meta-learning-pilot`. Write-up: `docs/NEXUS_META_LEARNING_PILOT.md`. Artifact `artifacts/meta_learning_pilot.json` (n=10, wall **2300 s**). `pytest` **255 passed**. Prior hashes preserved.
 
-Dev-selected **film** (5828 params). Confirm: multitask final **−491** vs source **−597**; Reptile **−1120** (≈ scratch). Reptile − multitask AUC **−765k [−857k, −672k]** (Reptile worse). Multitask − source AUC **+163k** excludes 0 (pooled data, not L2L). Not AGI.
+Dev-selected **film** (5828 params). Confirm: multitask final **−491** vs source **−597**; Reptile **−1120** (≈ scratch). Reptile − multitask AUC **−765k [−857k, −672k]** (Reptile worse). Multitask − source AUC **+163k** excludes 0 (pooled data, not L2L). Not AGI. That Reptile result is for this configuration, not a general disproof.
+
+## Context-adaptation pilot
+
+Branch `cursor/context-adaptation-pilot`, starting SHA `a9c184c`. Write-up: `docs/NEXUS_CONTEXT_ADAPTATION_PILOT.md`. Development artifact `artifacts/context_adaptation_dev.json` (2 seeds, wall **313 s**). `pytest` **260 passed**. Confirmation artifact was not created. Prior artifacts preserved.
+
+FiLM transition context, trunk (48, 48), 4332 parameters, vs residual MLP (64, 64), 4868 parameters. Development primary AUC: fine-tune **−454**, zero context **−652**, real context **−755**. Gate means: real−fine-tune **−302**, real−zero **−103**, real−wrong **−30**. Encoder weights moved (L2 Δ **1.52**) and still hurt control. H1 confirmation **not run** (inconclusive). Not AGI.

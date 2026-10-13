@@ -1,0 +1,2952 @@
+{
+  "protocol": {
+    "code_version": "context_adaptation_pilot",
+    "starting_sha": "a9c184c85c2a22317098d0c3637812386f4207e6",
+    "phase": "dev",
+    "conditioning": "film",
+    "context_dim": 8,
+    "max_context": 128,
+    "gru_excluded": "Shuffled transition minibatches do not form a coherent GRU trajectory. Excluded; not a recurrent rewrite.",
+    "budgets": [
+      0,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "primary_metric": "trapz_return_auc_0_to_256_divided_by_256",
+    "primary_comparison": "ctx_real_minus_mlp_ft",
+    "secondary_comparisons": [
+      "ctx_real_minus_ctx_zero",
+      "ctx_real_minus_ctx_wrong"
+    ],
+    "multiplicity": "primary_only_confirmatory; secondary_unadjusted; no_bonferroni",
+    "ft_lr": 0.0005,
+    "ft_epochs": 4,
+    "ft_target_validation": false,
+    "source_epochs": 6,
+    "n_model_seeds": 2,
+    "eval_episodes": 2,
+    "eval_seed": 193000,
+    "prior_confirm_eval_unused": 187000,
+    "horizon": 16,
+    "candidates": 16,
+    "cartpole_horizon": 3,
+    "train_hash": "c61358588a9da3b5",
+    "dev_hash": "e3d6d6dd1a08cf4f",
+    "confirm_hash": "87b83c41be34aa1a",
+    "confirm_evaluated": false,
+    "reptile_note": "Previous Reptile loss is a negative result for that run, not a disproof of Reptile.",
+    "is_agi": false,
+    "quick": false,
+    "git": {
+      "revision": "a9c184c85c2a22317098d0c3637812386f4207e6",
+      "dirty": true,
+      "branch": "cursor/context-adaptation-pilot"
+    }
+  },
+  "ft_search": {
+    "candidates": [
+      {
+        "epochs": 2,
+        "return": -147.59550224649078,
+        "optimizer_updates": 2,
+        "target_train_examples": 128,
+        "wall_s": 0.0031267089999573727,
+        "used_target_val": false
+      },
+      {
+        "epochs": 4,
+        "return": -146.753451673003,
+        "optimizer_updates": 4,
+        "target_train_examples": 256,
+        "wall_s": 0.0026093330000094284,
+        "used_target_val": false
+      }
+    ],
+    "selected_epochs": 4,
+    "rule": "dev_task0_budget64_one_episode_max_return"
+  },
+  "gate": {
+    "pass": false,
+    "rule": "dev point means: real-zero>0, real-wrong>0, real-ft>0, encoder_l2_delta>0, all finite. Not a significance test.",
+    "real_minus_zero": -103.4645854200765,
+    "real_minus_wrong": -29.987443135003787,
+    "real_minus_ft": -301.739697020004,
+    "encoder_l2_delta": 1.5194829106330872,
+    "finite": true
+  },
+  "summary_primary_auc": {
+    "mlp_frozen": {
+      "n": 2,
+      "mean": -470.5104974369864,
+      "lo": -474.8150937592806,
+      "hi": -466.20590111469215,
+      "se": 0.3387845366200395,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "mlp_ft": {
+      "n": 2,
+      "mean": -453.5790948866954,
+      "lo": -1875.813519186269,
+      "hi": 968.6553294128782,
+      "se": 111.93408030061181,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "ctx_real": {
+      "n": 2,
+      "mean": -755.3187919066993,
+      "lo": -1074.95879769052,
+      "hi": -435.6787861228785,
+      "se": 25.15661937539909,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "ctx_zero": {
+      "n": 2,
+      "mean": -651.8542064866228,
+      "lo": -1719.6180095470997,
+      "hi": 415.90959657385406,
+      "se": 84.03618786876098,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "ctx_wrong": {
+      "n": 2,
+      "mean": -725.3313487716955,
+      "lo": -1182.7733079696277,
+      "hi": -267.88938957376337,
+      "se": 36.00204306610516,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "ctx_rand": {
+      "n": 2,
+      "mean": -723.7685201152681,
+      "lo": -2257.6430839730183,
+      "hi": 810.1060437424821,
+      "se": 120.72049141018026,
+      "interval": "student_t_95",
+      "df": 1
+    }
+  },
+  "deltas_primary_auc": {
+    "real_minus_mlp_ft": {
+      "n": 2,
+      "mean": -301.739697020004,
+      "lo": -1404.3341155357566,
+      "hi": 800.8547214957488,
+      "se": 86.77746092521272,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "real_minus_mlp_frozen": {
+      "n": 2,
+      "mean": -284.80829446971296,
+      "lo": -608.752896575828,
+      "hi": 39.13630763640208,
+      "se": 25.49540391201913,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "real_minus_ctx_zero": {
+      "n": 2,
+      "mean": -103.4645854200765,
+      "lo": -851.5883826967324,
+      "hi": 644.6592118565795,
+      "se": 58.87956849336188,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "real_minus_ctx_wrong": {
+      "n": 2,
+      "mean": -29.987443135003787,
+      "lo": -167.7893965491151,
+      "hi": 107.81451027910754,
+      "se": 10.84542369070607,
+      "interval": "student_t_95",
+      "df": 1
+    },
+    "real_minus_ctx_rand": {
+      "n": 2,
+      "mean": -31.550271791431214,
+      "lo": -1885.0648414330021,
+      "hi": 1821.9642978501397,
+      "se": 145.87711078557933,
+      "interval": "student_t_95",
+      "df": 1
+    }
+  },
+  "per_seed": [
+    {
+      "model_seed": 0,
+      "train": {
+        "source_env": 3200,
+        "source_val_env": 256,
+        "mlp_updates": 300,
+        "mlp_examples": 19200,
+        "mlp_wall_s": 0.8733414580000272,
+        "ctx_log": {
+          "optimizer_updates": 300,
+          "query_examples": 19200,
+          "support_examples": 30720,
+          "mean_encoder_grad_norm": 0.016372370381068323,
+          "encoder_l2_delta": 1.4986236095428467,
+          "random_encoder": false
+        },
+        "ctx_wall_s": 0.16548408400001335,
+        "rand_log": {
+          "optimizer_updates": 300,
+          "query_examples": 19200,
+          "support_examples": 30720,
+          "mean_encoder_grad_norm": 0.0,
+          "encoder_l2_delta": 0.0,
+          "random_encoder": true
+        },
+        "params_mlp": 4868,
+        "params_ctx": 4332,
+        "nbytes_mlp": 19524,
+        "nbytes_ctx": 17328,
+        "rms_frozen_from_source": true
+      },
+      "curves": {
+        "incomplete": false,
+        "per_task": {
+          "pendulum_ctx_dev0": {
+            "params": {
+              "torque_neg": -2.0,
+              "torque_zero": 0.0,
+              "torque_pos": 2.0,
+              "g": 6.0,
+              "m": 1.0,
+              "l": 1.0
+            },
+            "prefix_hashes": {
+              "0": "e3b0c44298fc1c14",
+              "16": "37fb36576f1fbaad",
+              "32": "e01293d2b9328f34",
+              "64": "b42e86fc662e6c5f",
+              "128": "d9c327ba9d80543a",
+              "256": "b2a432987de04fcd",
+              "512": "c087cb49dfa5375e",
+              "1024": "fd58dd8620ee474a"
+            },
+            "curve": {
+              "mlp_frozen": [
+                -73.14184925870539,
+                -73.14184925870539,
+                -73.14184925870539,
+                -73.14184925870539,
+                -73.14184925870539,
+                -73.14184925870539,
+                -73.14184925870539,
+                -73.14184925870539
+              ],
+              "mlp_ft": [
+                -73.14184925870539,
+                -73.36188514652143,
+                -74.47363618274935,
+                -74.36740689737726,
+                -146.3763530846333,
+                -150.08198853968412,
+                -75.61350590514962,
+                -74.58569133326858
+              ],
+              "ctx_real": [
+                -402.8083925277654,
+                -746.4144465336017,
+                -480.9951800434248,
+                -818.559322915681,
+                -800.2802658020232,
+                -800.2802658020232,
+                -800.2802658020232,
+                -800.2802658020232
+              ],
+              "ctx_zero": [
+                -402.8083925277654,
+                -402.8083925277654,
+                -402.8083925277654,
+                -402.8083925277654,
+                -402.8083925277654,
+                -402.8083925277654,
+                -402.8083925277654,
+                -402.8083925277654
+              ],
+              "ctx_wrong": [
+                -402.8083925277654,
+                -479.0769870461157,
+                -478.36987576184487,
+                -477.8205725426422,
+                -721.4347292147881,
+                -721.4347292147881,
+                -721.4347292147881,
+                -721.4347292147881
+              ],
+              "ctx_rand": [
+                -529.0219634333226,
+                -1011.6296673707091,
+                -1029.7260469475505,
+                -932.2445090752941,
+                -942.1731435939971,
+                -942.1731435939971,
+                -942.1731435939971,
+                -942.1731435939971
+              ]
+            },
+            "auc": {
+              "mlp_frozen": {
+                "primary": -73.14184925870539,
+                "full": -73.14184925870539
+              },
+              "mlp_ft": {
+                "primary": -120.20822233804164,
+                "full": -95.81379169971918
+              },
+              "ctx_real": {
+                "primary": -757.9870024768686,
+                "full": -789.7069499707345
+              },
+              "ctx_zero": {
+                "primary": -402.8083925277654,
+                "full": -402.8083925277654
+              },
+              "ctx_wrong": {
+                "primary": -627.8653129205359,
+                "full": -698.0423751412251
+              },
+              "ctx_rand": {
+                "primary": -939.9496676671594,
+                "full": -941.6172746122877
+              }
+            },
+            "prediction_in_prefix": {
+              "ctx_real_prefix_mae": 0.10612785816192627,
+              "mlp_ft_prefix_mae": 0.0161525197327137
+            },
+            "sensitivity": {
+              "z_real_norm": 2.691861391067505,
+              "z_real_minus_zero": 2.691861391067505,
+              "z_real_minus_wrong": 0.7183969616889954
+            },
+            "resources": {
+              "0": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 0,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "16": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 64,
+                  "wall_s": 0.0026749999999537977,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 16,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 16,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 16,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "32": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 128,
+                  "wall_s": 0.00263570900006016,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 32,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 32,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 32,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "64": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 256,
+                  "wall_s": 0.003051541999980145,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 64,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 64,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 64,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "128": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 8,
+                  "target_train_examples": 512,
+                  "wall_s": 0.004281209000055242,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "256": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 16,
+                  "target_train_examples": 1024,
+                  "wall_s": 0.007915540999874793,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "512": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 32,
+                  "target_train_examples": 2048,
+                  "wall_s": 0.013043665999930454,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "1024": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 64,
+                  "target_train_examples": 4096,
+                  "wall_s": 0.023019167000029483,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              }
+            },
+            "finite": true
+          },
+          "pendulum_ctx_dev1": {
+            "params": {
+              "torque_neg": -2.0,
+              "torque_zero": 0.0,
+              "torque_pos": 2.0,
+              "g": 10.0,
+              "m": 2.0,
+              "l": 1.0
+            },
+            "prefix_hashes": {
+              "0": "e3b0c44298fc1c14",
+              "16": "fa2f425ad8a62bc6",
+              "32": "8c933c682cfbea4a",
+              "64": "f3063209f4caaa85",
+              "128": "2aeba2045a4caf01",
+              "256": "7bbda6d62807418c",
+              "512": "0436657992240d02",
+              "1024": "dfc0a7cb55f43f6a"
+            },
+            "curve": {
+              "mlp_frozen": [
+                -942.4450651765337,
+                -942.4450651765337,
+                -942.4450651765337,
+                -942.4450651765337,
+                -942.4450651765337,
+                -942.4450651765337,
+                -942.4450651765337,
+                -942.4450651765337
+              ],
+              "mlp_ft": [
+                -942.4450651765337,
+                -749.4057538972525,
+                -623.3180333439055,
+                -804.422147510781,
+                -561.8418088462773,
+                -251.07162585390256,
+                -251.68117042701542,
+                -437.35503932191375
+              ],
+              "ctx_real": [
+                -838.1947480382676,
+                -752.5026987692175,
+                -754.7133980500782,
+                -718.6605714374562,
+                -711.9078514524421,
+                -711.9078514524421,
+                -711.9078514524421,
+                -711.9078514524421
+              ],
+              "ctx_zero": [
+                -838.1947480382676,
+                -838.1947480382676,
+                -838.1947480382676,
+                -838.1947480382676,
+                -838.1947480382676,
+                -838.1947480382676,
+                -838.1947480382676,
+                -838.1947480382676
+              ],
+              "ctx_wrong": [
+                -838.1947480382676,
+                -625.0717648516935,
+                -693.231779891009,
+                -749.3730038349216,
+                -749.3730038349216,
+                -749.3730038349216,
+                -749.3730038349216,
+                -749.3730038349216
+              ],
+              "ctx_rand": [
+                -758.2917272895281,
+                -802.297485820731,
+                -688.521621929538,
+                -778.8757475379315,
+                -872.5000618007281,
+                -872.5000618007281,
+                -872.5000618007281,
+                -872.5000618007281
+              ]
+            },
+            "auc": {
+              "mlp_frozen": {
+                "primary": -942.4450651765337,
+                "full": -942.4450651765337
+              },
+              "mlp_ft": {
+                "primary": -559.0130709704372,
+                "full": -374.85641971495636
+              },
+              "ctx_real": {
+                "primary": -723.670649918766,
+                "full": -714.848551069023
+              },
+              "ctx_zero": {
+                "primary": -838.1947480382676,
+                "full": -838.1947480382676
+              },
+              "ctx_wrong": {
+                "primary": -739.1166161600827,
+                "full": -746.808906916212
+              },
+              "ctx_rand": {
+                "primary": -829.7408526863048,
+                "full": -861.8102595221224
+              }
+            },
+            "prediction_in_prefix": {
+              "ctx_real_prefix_mae": 0.07248628884553909,
+              "mlp_ft_prefix_mae": 0.02061104215681553
+            },
+            "sensitivity": {
+              "z_real_norm": 2.589470863342285,
+              "z_real_minus_zero": 2.589470863342285,
+              "z_real_minus_wrong": 0.43978482484817505
+            },
+            "resources": {
+              "0": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 0,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "16": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 64,
+                  "wall_s": 0.0026160840000102326,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 16,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 16,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 16,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "32": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 128,
+                  "wall_s": 0.002650874999972075,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 32,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 32,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 32,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "64": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 256,
+                  "wall_s": 0.0027802090000932367,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 64,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 64,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 64,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "128": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 8,
+                  "target_train_examples": 512,
+                  "wall_s": 0.0043676669999968,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "256": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 16,
+                  "target_train_examples": 1024,
+                  "wall_s": 0.006915999999819178,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "512": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 32,
+                  "target_train_examples": 2048,
+                  "wall_s": 0.0122571249999055,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "1024": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 64,
+                  "target_train_examples": 4096,
+                  "wall_s": 0.022999625000011292,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              }
+            },
+            "finite": true
+          },
+          "pendulum_ctx_dev2": {
+            "params": {
+              "torque_neg": -2.0,
+              "torque_zero": 0.0,
+              "torque_pos": 2.0,
+              "g": 10.0,
+              "m": 1.0,
+              "l": 1.55
+            },
+            "prefix_hashes": {
+              "0": "e3b0c44298fc1c14",
+              "16": "5d2ab2edfcd69113",
+              "32": "c4e28fdca41551eb",
+              "64": "812aea53efe37175",
+              "128": "f7265a5e6997f9db",
+              "256": "0fae88d6ea89d519",
+              "512": "8fec477d3200cb07",
+              "1024": "3ee4a86c1d45ac1b"
+            },
+            "curve": {
+              "mlp_frozen": [
+                -396.9609314855801,
+                -396.9609314855801,
+                -396.9609314855801,
+                -396.9609314855801,
+                -396.9609314855801,
+                -396.9609314855801,
+                -396.9609314855801,
+                -396.9609314855801
+              ],
+              "mlp_ft": [
+                -396.9609314855801,
+                -401.70635753308227,
+                -681.7299781392398,
+                -278.62917556762295,
+                -466.90469415848816,
+                -67.83063126445518,
+                -68.40163769470621,
+                -68.5864979928684
+              ],
+              "ctx_real": [
+                -462.45091528755245,
+                -534.3091095959375,
+                -745.5310816355543,
+                -751.5735147719174,
+                -720.2710109163462,
+                -720.2710109163462,
+                -720.2710109163462,
+                -720.2710109163462
+              ],
+              "ctx_zero": [
+                -462.45091528755245,
+                -462.45091528755245,
+                -462.45091528755245,
+                -462.45091528755245,
+                -462.45091528755245,
+                -462.45091528755245,
+                -462.45091528755245,
+                -462.45091528755245
+              ],
+              "ctx_wrong": [
+                -462.45091528755245,
+                -537.8141935735921,
+                -753.3152621154557,
+                -728.0916758048986,
+                -713.2808236773199,
+                -713.2808236773199,
+                -713.2808236773199,
+                -713.2808236773199
+              ],
+              "ctx_rand": [
+                -724.1498256352376,
+                -732.4805790406176,
+                -703.3351204229411,
+                -756.0730414528352,
+                -780.2646930714939,
+                -780.2646930714939,
+                -780.2646930714939,
+                -780.2646930714939
+              ]
+            },
+            "auc": {
+              "mlp_frozen": {
+                "primary": -396.9609314855801,
+                "full": -396.9609314855801
+              },
+              "mlp_ft": {
+                "primary": -345.7137504497719,
+                "full": -137.7045051542318
+              },
+              "ctx_real": {
+                "primary": -708.8288651982662,
+                "full": -717.4104744868262
+              },
+              "ctx_zero": {
+                "primary": -462.45091528755245,
+                "full": -462.45091528755245
+              },
+              "ctx_wrong": {
+                "primary": -701.0059880361529,
+                "full": -710.2121147670281
+              },
+              "ctx_rand": {
+                "primary": -763.7765142228808,
+                "full": -776.1426483593406
+              }
+            },
+            "prediction_in_prefix": {
+              "ctx_real_prefix_mae": 0.11012745648622513,
+              "mlp_ft_prefix_mae": 0.016658147796988487
+            },
+            "sensitivity": {
+              "z_real_norm": 2.4688074588775635,
+              "z_real_minus_zero": 2.4688074588775635,
+              "z_real_minus_wrong": 0.09955788403749466
+            },
+            "resources": {
+              "0": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 0,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "16": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 64,
+                  "wall_s": 0.0025712500000736327,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 16,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 16,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 16,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "32": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 128,
+                  "wall_s": 0.0026552500000889268,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 32,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 32,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 32,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "64": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 256,
+                  "wall_s": 0.0028414159999101685,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 64,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 64,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 64,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "128": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 8,
+                  "target_train_examples": 512,
+                  "wall_s": 0.0044244579999030975,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "256": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 16,
+                  "target_train_examples": 1024,
+                  "wall_s": 0.006755041999895184,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "512": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 32,
+                  "target_train_examples": 2048,
+                  "wall_s": 0.012327874999982669,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "1024": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 64,
+                  "target_train_examples": 4096,
+                  "wall_s": 0.023217917000010857,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              }
+            },
+            "finite": true
+          }
+        }
+      }
+    },
+    {
+      "model_seed": 1,
+      "train": {
+        "source_env": 3200,
+        "source_val_env": 256,
+        "mlp_updates": 300,
+        "mlp_examples": 19200,
+        "mlp_wall_s": 0.41268429199999446,
+        "ctx_log": {
+          "optimizer_updates": 300,
+          "query_examples": 19200,
+          "support_examples": 31104,
+          "mean_encoder_grad_norm": 0.01297178763668247,
+          "encoder_l2_delta": 1.5403422117233276,
+          "random_encoder": false
+        },
+        "ctx_wall_s": 0.16420366600004854,
+        "rand_log": {
+          "optimizer_updates": 300,
+          "query_examples": 19200,
+          "support_examples": 31488,
+          "mean_encoder_grad_norm": 0.0,
+          "encoder_l2_delta": 0.0,
+          "random_encoder": true
+        },
+        "params_mlp": 4868,
+        "params_ctx": 4332,
+        "nbytes_mlp": 19524,
+        "nbytes_ctx": 17328,
+        "rms_frozen_from_source": true
+      },
+      "curves": {
+        "incomplete": false,
+        "per_task": {
+          "pendulum_ctx_dev0": {
+            "params": {
+              "torque_neg": -2.0,
+              "torque_zero": 0.0,
+              "torque_pos": 2.0,
+              "g": 6.0,
+              "m": 1.0,
+              "l": 1.0
+            },
+            "prefix_hashes": {
+              "0": "e3b0c44298fc1c14",
+              "16": "f6643fb9ee988e82",
+              "32": "a4a2e6ea7b8f9041",
+              "64": "bb4e0dc11ca20aca",
+              "128": "fae28f682095df0f",
+              "256": "0d44fab7d9553e8c",
+              "512": "837614c25efc14ba",
+              "1024": "2226c8ea99f83404"
+            },
+            "curve": {
+              "mlp_frozen": [
+                -72.05107512472452,
+                -72.05107512472452,
+                -72.05107512472452,
+                -72.05107512472452,
+                -72.05107512472452,
+                -72.05107512472452,
+                -72.05107512472452,
+                -72.05107512472452
+              ],
+              "mlp_ft": [
+                -72.05107512472452,
+                -279.31888149043766,
+                -716.4797909232179,
+                -695.2335103037556,
+                -704.9508479264331,
+                -610.8368476791625,
+                -211.32411501823196,
+                -78.1833731972597
+              ],
+              "ctx_real": [
+                -517.5737835280484,
+                -626.0150077017558,
+                -640.7072706409931,
+                -633.9265117121059,
+                -628.0847981100945,
+                -628.0847981100945,
+                -628.0847981100945,
+                -628.0847981100945
+              ],
+              "ctx_zero": [
+                -517.5737835280484,
+                -517.5737835280484,
+                -517.5737835280484,
+                -517.5737835280484,
+                -517.5737835280484,
+                -517.5737835280484,
+                -517.5737835280484,
+                -517.5737835280484
+              ],
+              "ctx_wrong": [
+                -517.5737835280484,
+                -561.9667332783727,
+                -618.4155088563195,
+                -687.0484522076606,
+                -573.3690136609464,
+                -573.3690136609464,
+                -573.3690136609464,
+                -573.3690136609464
+              ],
+              "ctx_rand": [
+                -224.05132104021845,
+                -425.9071978568182,
+                -216.7379242445958,
+                -358.19535586424183,
+                -147.83514805007297,
+                -147.83514805007297,
+                -147.83514805007297,
+                -147.83514805007297
+              ]
+            },
+            "auc": {
+              "mlp_frozen": {
+                "primary": -72.05107512472452,
+                "full": -72.05107512472452
+              },
+              "mlp_ft": {
+                "primary": -634.3010696640089,
+                "full": -333.72225980704945
+              },
+              "ctx_real": {
+                "primary": -626.7806451040333,
+                "full": -627.7587598585792
+              },
+              "ctx_zero": {
+                "primary": -517.5737835280484,
+                "full": -517.5737835280484
+              },
+              "ctx_wrong": {
+                "primary": -596.4507738474576,
+                "full": -579.1394537075741
+              },
+              "ctx_rand": {
+                "primary": -213.49858080232977,
+                "full": -164.25100623813717
+              }
+            },
+            "prediction_in_prefix": {
+              "ctx_real_prefix_mae": 0.08852240443229675,
+              "mlp_ft_prefix_mae": 0.029536748304963112
+            },
+            "sensitivity": {
+              "z_real_norm": 2.517895221710205,
+              "z_real_minus_zero": 2.517895221710205,
+              "z_real_minus_wrong": 0.3798961937427521
+            },
+            "resources": {
+              "0": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 0,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "16": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 64,
+                  "wall_s": 0.002485291999846595,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 16,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 16,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 16,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "32": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 128,
+                  "wall_s": 0.00263425000002826,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 32,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 32,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 32,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "64": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 256,
+                  "wall_s": 0.0028498750000380824,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 64,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 64,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 64,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "128": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 8,
+                  "target_train_examples": 512,
+                  "wall_s": 0.004071832999898106,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "256": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 16,
+                  "target_train_examples": 1024,
+                  "wall_s": 0.006891792000033092,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "512": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 32,
+                  "target_train_examples": 2048,
+                  "wall_s": 0.01242750000005799,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "1024": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 64,
+                  "target_train_examples": 4096,
+                  "wall_s": 0.02280608299997766,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              }
+            },
+            "finite": true
+          },
+          "pendulum_ctx_dev1": {
+            "params": {
+              "torque_neg": -2.0,
+              "torque_zero": 0.0,
+              "torque_pos": 2.0,
+              "g": 10.0,
+              "m": 2.0,
+              "l": 1.0
+            },
+            "prefix_hashes": {
+              "0": "e3b0c44298fc1c14",
+              "16": "77d34a0d9fa22fa1",
+              "32": "3a4815f98743cf3b",
+              "64": "23d304cd55b97c21",
+              "128": "02f9794a16665646",
+              "256": "d3cb3ee878e0d7fd",
+              "512": "5acc260fcd3f6d93",
+              "1024": "28346e253aa1ec53"
+            },
+            "curve": {
+              "mlp_frozen": [
+                -811.7523658157183,
+                -811.7523658157183,
+                -811.7523658157183,
+                -811.7523658157183,
+                -811.7523658157183,
+                -811.7523658157183,
+                -811.7523658157183,
+                -811.7523658157183
+              ],
+              "mlp_ft": [
+                -811.7523658157183,
+                -899.7400420340346,
+                -694.6738928451798,
+                -660.8354706236826,
+                -563.1710559807376,
+                -624.1793828592898,
+                -503.44606324662846,
+                -503.9269504404708
+              ],
+              "ctx_real": [
+                -1062.468132813483,
+                -1068.421658573433,
+                -1078.8217844189808,
+                -1083.4093823412165,
+                -1075.6532595903855,
+                -1075.6532595903855,
+                -1075.6532595903855,
+                -1075.6532595903855
+              ],
+              "ctx_zero": [
+                -1062.468132813483,
+                -1062.468132813483,
+                -1062.468132813483,
+                -1062.468132813483,
+                -1062.468132813483,
+                -1062.468132813483,
+                -1062.468132813483,
+                -1062.468132813483
+              ],
+              "ctx_wrong": [
+                -1062.468132813483,
+                -1069.7052448281643,
+                -1067.4662241479061,
+                -1082.7094608375196,
+                -1075.6858813586023,
+                -1075.6858813586023,
+                -1075.6858813586023,
+                -1075.6858813586023
+              ],
+              "ctx_rand": [
+                -990.4688312118506,
+                -1020.9389246797798,
+                -1001.3389081232697,
+                -1023.9956291643948,
+                -1014.1017469622907,
+                -1014.1017469622907,
+                -1014.1017469622907,
+                -1014.1017469622907
+              ]
+            },
+            "auc": {
+              "mlp_frozen": {
+                "primary": -811.7523658157183,
+                "full": -811.7523658157183
+              },
+              "mlp_ft": {
+                "primary": -637.8673339626436,
+                "full": -552.2632676756755
+              },
+              "ctx_real": {
+                "primary": -1076.5405715335094,
+                "full": -1075.8750875761664
+              },
+              "ctx_zero": {
+                "primary": -1062.468132813483,
+                "full": -1062.468132813483
+              },
+              "ctx_wrong": {
+                "primary": -1075.4453652222091,
+                "full": -1075.625752324504
+              },
+              "ctx_rand": {
+                "primary": -1014.4491287241688,
+                "full": -1014.1885924027602
+              }
+            },
+            "prediction_in_prefix": {
+              "ctx_real_prefix_mae": 0.07365633547306061,
+              "mlp_ft_prefix_mae": 0.020433183759450912
+            },
+            "sensitivity": {
+              "z_real_norm": 2.218158721923828,
+              "z_real_minus_zero": 2.218158721923828,
+              "z_real_minus_wrong": 0.3536440432071686
+            },
+            "resources": {
+              "0": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 0,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "16": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 64,
+                  "wall_s": 0.002491208000037659,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 16,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 16,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 16,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "32": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 128,
+                  "wall_s": 0.0025116249998973217,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 32,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 32,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 32,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "64": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 256,
+                  "wall_s": 0.0028153339999335003,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 64,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 64,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 64,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "128": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 8,
+                  "target_train_examples": 512,
+                  "wall_s": 0.00436145799994847,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "256": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 16,
+                  "target_train_examples": 1024,
+                  "wall_s": 0.006918499999983396,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "512": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 32,
+                  "target_train_examples": 2048,
+                  "wall_s": 0.012330666000025303,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "1024": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 64,
+                  "target_train_examples": 4096,
+                  "wall_s": 0.023174542000106158,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              }
+            },
+            "finite": true
+          },
+          "pendulum_ctx_dev2": {
+            "params": {
+              "torque_neg": -2.0,
+              "torque_zero": 0.0,
+              "torque_pos": 2.0,
+              "g": 10.0,
+              "m": 1.0,
+              "l": 1.55
+            },
+            "prefix_hashes": {
+              "0": "e3b0c44298fc1c14",
+              "16": "91b4b8f458c157de",
+              "32": "f7e0e2374ac2d3ee",
+              "64": "4cc6ce4ee8161cae",
+              "128": "7df0844b2931a60c",
+              "256": "ede7312943317ea8",
+              "512": "245dbacbd4b9f081",
+              "1024": "1664f50b2bf665b9"
+            },
+            "curve": {
+              "mlp_frozen": [
+                -526.7116977606561,
+                -526.7116977606561,
+                -526.7116977606561,
+                -526.7116977606561,
+                -526.7116977606561,
+                -526.7116977606561,
+                -526.7116977606561,
+                -526.7116977606561
+              ],
+              "mlp_ft": [
+                -526.7116977606561,
+                -439.3284567208518,
+                -398.24529477568353,
+                -390.1827951864415,
+                -541.6884971180222,
+                -267.30158373303584,
+                -265.1691223167069,
+                -330.47608338871686
+              ],
+              "ctx_real": [
+                -627.6292667246203,
+                -602.6760421002498,
+                -660.5366621213994,
+                -638.3057071507197,
+                -638.7467485243228,
+                -638.7467485243228,
+                -638.7467485243228,
+                -638.7467485243228
+              ],
+              "ctx_zero": [
+                -627.6292667246203,
+                -627.6292667246203,
+                -627.6292667246203,
+                -627.6292667246203,
+                -627.6292667246203,
+                -627.6292667246203,
+                -627.6292667246203,
+                -627.6292667246203
+              ],
+              "ctx_wrong": [
+                -627.6292667246203,
+                -630.1043623303178,
+                -664.8914487828193,
+                -625.9806552261059,
+                -597.446644855459,
+                -597.446644855459,
+                -597.446644855459,
+                -597.446644855459
+              ],
+              "ctx_rand": [
+                -524.2324831458882,
+                -583.0339215385353,
+                -583.0339215385353,
+                -583.0339215385353,
+                -583.0339215385353,
+                -583.0339215385353,
+                -583.0339215385353,
+                -583.0339215385353
+              ]
+            },
+            "auc": {
+              "mlp_frozen": {
+                "primary": -526.7116977606561,
+                "full": -526.7116977606561
+              },
+              "mlp_ft": {
+                "primary": -424.3711219352691,
+                "full": -321.56292016639105
+              },
+              "ctx_real": {
+                "primary": -638.1050172087529,
+                "full": -638.5863156954304
+              },
+              "ctx_zero": {
+                "primary": -627.6292667246203,
+                "full": -627.6292667246203
+              },
+              "ctx_wrong": {
+                "primary": -612.1040364437354,
+                "full": -601.1109927525281
+              },
+              "ctx_rand": {
+                "primary": -581.1963765887651,
+                "full": -582.5745353010927
+              }
+            },
+            "prediction_in_prefix": {
+              "ctx_real_prefix_mae": 0.04782075807452202,
+              "mlp_ft_prefix_mae": 0.01673755794763565
+            },
+            "sensitivity": {
+              "z_real_norm": 2.753394365310669,
+              "z_real_minus_zero": 2.753394365310669,
+              "z_real_minus_wrong": 0.34764209389686584
+            },
+            "resources": {
+              "0": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 0,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "16": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 64,
+                  "wall_s": 0.002461541999991823,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 16,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 16,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 16,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "32": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 128,
+                  "wall_s": 0.0024822499999572756,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 32,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 32,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 32,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "64": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 4,
+                  "target_train_examples": 256,
+                  "wall_s": 0.0026665410000532574,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 64,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 64,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 64,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "128": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 8,
+                  "target_train_examples": 512,
+                  "wall_s": 0.004099334000102317,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "256": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 16,
+                  "target_train_examples": 1024,
+                  "wall_s": 0.007000125000104163,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "512": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 32,
+                  "target_train_examples": 2048,
+                  "wall_s": 0.012373207999871738,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              },
+              "1024": {
+                "mlp_frozen": {
+                  "optimizer_updates": 0,
+                  "target_train_examples": 0,
+                  "wall_s": 0.0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "mlp_ft": {
+                  "optimizer_updates": 64,
+                  "target_train_examples": 4096,
+                  "wall_s": 0.022962083000038547,
+                  "used_target_val": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_real": {
+                  "context_rows": 128,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_zero": {
+                  "context_rows": 0,
+                  "weight_updates": 0,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_wrong": {
+                  "donor_task": "pendulum_ctx_tr0",
+                  "context_rows": 128,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                },
+                "ctx_rand": {
+                  "context_rows": 128,
+                  "encoder_trained": false,
+                  "eval_env": 400,
+                  "imagined_states": 102400
+                }
+              }
+            },
+            "finite": true
+          }
+        }
+      }
+    }
+  ],
+  "incomplete": false,
+  "wall_clock_s": 312.66507004100015,
+  "is_agi": false
+}

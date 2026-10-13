@@ -17,6 +17,12 @@ HeadKind = Literal["residual", "direct"]
 ArchName = Literal["mlp", "film", "gru"]
 
 
+# GRU note (not used by the context-adaptation pilot):
+# Training minibatches shuffle individual transitions, and `_h` is detached each
+# step. That hidden state is not a coherent trajectory, so GRU weights here are
+# not a recurrent world model. The pilot excludes GRU instead of rewriting sequence training.
+
+
 class DynamicsMLP(nn.Module):
     def __init__(
         self,
@@ -75,6 +81,8 @@ class DynamicsMLP(nn.Module):
             self.context.zero_()
             return
         oh = torch.nn.functional.one_hot(a.long(), num_classes=self.n_actions).float()
+        # Historical FiLM path. no_grad + buffer copy blocks encoder gradients.
+        # The context-adaptation pilot does not use this method.
         with torch.no_grad():
             vec = self.ctx_enc(torch.cat([o, oh], dim=-1)).mean(dim=0)
         self.context.copy_(vec)
@@ -203,6 +211,8 @@ class WorldModel:
                 "n_actions": self.net.n_actions,
                 "hidden": tuple(getattr(self.net, "hidden", (64, 64))),
                 "arch": getattr(self.net, "arch", "mlp"),
+                "context_dim": int(getattr(self.net, "context_dim", 16)),
+                "gru_hidden": int(getattr(self.net, "gru_hidden", 36)),
             },
             path,
         )
@@ -210,13 +220,23 @@ class WorldModel:
     @classmethod
     def load(cls, path: str | Path, *, device: str = "cpu") -> "WorldModel":
         payload = torch.load(path, map_location=device, weights_only=False)
-        hidden = payload.get("hidden") or (64, 64)
-        # reconstruct hidden from first two linear layers of trunk if needed
-        net = DynamicsMLP(int(payload["obs_dim"]), int(payload["n_actions"]), hidden=(64, 64), kind=payload["kind"])
+        # Legacy MLP checkpoints omit arch/hidden and were always residual 64×64.
+        hidden = tuple(int(x) for x in (payload.get("hidden") or (64, 64)))
+        arch = str(payload.get("arch") or "mlp")
+        if arch not in ("mlp", "film", "gru"):
+            arch = "mlp"
+        net = DynamicsMLP(
+            int(payload["obs_dim"]),
+            int(payload["n_actions"]),
+            hidden=hidden,
+            kind=payload["kind"],
+            arch=arch,  # type: ignore[arg-type]
+            context_dim=int(payload.get("context_dim") or 16),
+            gru_hidden=int(payload.get("gru_hidden") or 36),
+        )
         net.load_state_dict(payload["state_dict"])
         wm = cls(net=net.to(device), obs_rms=RunningMeanStd((int(payload["obs_dim"]),)), kind=payload["kind"], device=torch.device(device))
         wm.obs_rms.load_state_dict(payload["obs_rms"])
-        del hidden
         return wm
 
     def state_meta(self) -> dict[str, Any]:

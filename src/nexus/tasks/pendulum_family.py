@@ -180,6 +180,42 @@ def pendulum_meta_confirm() -> tuple[TaskSpec, ...]:
     )
 
 
+def pendulum_context_train() -> tuple[TaskSpec, ...]:
+    """Eight source physics. Frozen before development returns. Not confirmation."""
+    rows = (
+        (8.0, 1.0, 1.0),
+        (10.0, 0.85, 1.0),
+        (10.0, 1.0, 1.15),
+        (9.4, 1.25, 0.95),
+        (11.0, 0.9, 1.05),
+        (7.6, 1.1, 1.2),
+        (12.4, 0.6, 0.85),
+        (10.5, 1.35, 1.3),
+    )
+    return tuple(
+        _pendulum(f"pendulum_ctx_tr{i}", "context_train", f"Context source {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
+def pendulum_context_development() -> tuple[TaskSpec, ...]:
+    """Development only. Not an untouched confirmation set."""
+    rows = ((6.0, 1.0, 1.0), (10.0, 2.0, 1.0), (10.0, 1.0, 1.55))
+    return tuple(
+        _pendulum(f"pendulum_ctx_dev{i}", "context_dev", f"Context development {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
+def pendulum_context_confirmation() -> tuple[TaskSpec, ...]:
+    """Fresh confirmation physics. Do not evaluate until the development gate passes."""
+    rows = ((4.8, 1.0, 1.0), (15.2, 1.0, 1.0), (10.0, 0.35, 1.0), (11.8, 1.6, 0.75))
+    return tuple(
+        _pendulum(f"pendulum_ctx_c{i}", "context_confirm", f"Context confirmation {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
 def pendulum_physics_key(spec: TaskSpec) -> tuple[float, float, float]:
     p = spec.params
     return (float(p.get("g", PENDULUM_SOURCE_G)), float(p.get("m", PENDULUM_SOURCE_M)), float(p.get("l", PENDULUM_SOURCE_L)))

@@ -24,7 +24,8 @@ Evidence is from committed artifacts unless marked *reproduced this checkpoint*.
 | H-V089d | A longer development-selected horizon of the **same** planner beats random on new Pendulum physics | Confirm H=16 Δ **+524 [443, 605]**; CartPole H=3 still 500 | Oracle-on-dev **−128** vs learned **−621**; not swing-up | Search and WM error remain | — | Diagnostic closed |
 | H-V089e | MAE-gated low-LR beats frozen H=16 MPC on shifted Pendulum | Always-adapt **+211 [134, 288]**; low-LR **+106 [39, 173]** vs frozen | **Primary MAE-gated +29 [−28, +86] includes 0** | Gate rejects useful updates / accepts mixed harm | Control-based gate as a **new** pre-register, not 0.97 retune | **No** meta-learning on the MAE inner loop |
 | H-V089f | A→B→C reduces data needed on Pendulum D | — | ABC vs naive **+22 includes 0**; vs matched **−6 includes 0** | Same as CartPole V0.8.9 | Different inner adapter | **L2L not shown** |
-| H-V089g | First-order Reptile init adapts faster than matched-data multitask on new Pendulum physics | Multitask beats source AUC **+163k [70k, 257k]** | Reptile − multitask AUC **−765k** excludes 0 (worse); Reptile ≈ scratch | Reptile interpolation destroyed useful init; inner k/ε not tuned on confirm | MAML / more outer steps would be a **new** pre-register | **No.** Do not scale meta-learning from this |
+| H-V089g | First-order Reptile init adapts faster than matched-data multitask on new Pendulum physics | Multitask beats source AUC **+163k [70k, 257k]** | Reptile − multitask AUC **−765k** excludes 0 (worse); Reptile ≈ scratch | Reptile interpolation destroyed useful init; inner k/ε not tuned on confirm | MAML / more outer steps would be a **new** pre-register | **No.** Do not scale meta-learning from this. This does not disprove Reptile in general |
+| H-V089h | Transition-context FiLM adapts with fewer Pendulum steps than multitask fine-tuning | Encoder L2 Δ **1.52**; returns finite | Dev primary AUC real **−755** vs fine-tune **−454**; real−zero **−103**; real−wrong **−30**. All gate signs negative | Weaker (48, 48) trunk; z poorly separated; real context hurt control | Matched 64×64 trunk plus a source-only separation check. Do not open the unused confirmation tuples | **Inconclusive** on the locked confirm test (not run). Development screen **failed** |
 
 ## Mechanisms that have never shown useful transfer
 
@@ -39,6 +40,7 @@ These produced no paired control/sample-efficiency gain that survived an indepen
 7. Probe-MAE snapshot retrieval without task labels (V0.8.8–V0.8.9).
 8. ABC experience as initialization for D under MAE (V0.8.9).
 9. Always-adapt online (often negative point estimates).
+10. Transition-context FiLM on Pendulum prefixes (development gate failed; confirmation physics not evaluated). The Reptile loss in H-V089g is specific to that configuration.
 
 **Normalization reuse (RMS)** transferred vs scratch. That is a statistics-copy, not an improving learner.
 
