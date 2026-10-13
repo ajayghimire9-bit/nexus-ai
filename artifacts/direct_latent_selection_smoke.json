@@ -1,0 +1,741 @@
+{
+  "protocol": {
+    "code_version": "direct_latent_context_diagnostic",
+    "config": {
+      "protocol_id": "direct_latent_context_diagnostic_v1",
+      "starting_sha": "5cc3a6611ffd0c6d4839d813c2521181e248a6e8",
+      "prior_frozen_selection": "artifacts/frozen_dynamics_selection.json",
+      "prior_frozen_audit": "artifacts/frozen_dynamics_audit.json",
+      "confirmation_unlocked": false,
+      "control_sweep": false,
+      "is_agi": false,
+      "h_latent": "With all network weights fixed, a latent vector optimized from a task's support transitions improves held-out query angular-velocity MAE over zero context, a global task-independent vector, and a vector optimized from wrong-task support.",
+      "n_seeds": 3,
+      "n_source_tasks": 8,
+      "support_budget": 128,
+      "context_dim": 8,
+      "global_updates": 300,
+      "global_lr": 0.01,
+      "learning_rates": [
+        0.01,
+        0.1
+      ],
+      "task_updates": [
+        0,
+        16,
+        64,
+        256
+      ],
+      "max_task_updates": 256,
+      "source_per_task": 400,
+      "query_episodes": 4,
+      "query_transitions": 800,
+      "angular_velocity_index": 2,
+      "horizons": [
+        3,
+        8,
+        16
+      ],
+      "rollout_starts": [
+        0,
+        32,
+        64,
+        96,
+        128,
+        160
+      ],
+      "time_limit_s": 3600,
+      "donor": "source_task_(i+1)_mod_n",
+      "screen_angvel_improvement": 0.05,
+      "screen_min_positive_seeds": 2,
+      "screen_max_worsening": 0.05,
+      "audit_support_env0": 48000,
+      "audit_query_env0": 52000,
+      "audit_support_base": 240000,
+      "audit_query_base": 241000,
+      "parent_history_updates": 1000,
+      "mlp_reference_updates": 1000
+    },
+    "executed_learning_rates": [
+      0.01
+    ],
+    "executed_task_updates": [
+      0,
+      2
+    ],
+    "executed_seeds": 1,
+    "smoke": true,
+    "implementation_sha": null,
+    "source_dirty": true,
+    "git": {
+      "revision": "5cc3a6611ffd0c6d4839d813c2521181e248a6e8",
+      "dirty": true,
+      "branch": "cursor/direct-latent-context-diagnostic"
+    },
+    "confirm_evaluated": false,
+    "control_evaluated": false,
+    "is_agi": false,
+    "h_latent": "With all network weights fixed, a latent vector optimized from a task's support transitions improves held-out query angular-velocity MAE over zero context, a global task-independent vector, and a vector optimized from wrong-task support.",
+    "prior_result": "Frozen-trunk encoder and FiLM training failed the context screen. That result is unchanged."
+  },
+  "selection_record": {
+    "selection_recorded": false,
+    "chosen_lr": null,
+    "chosen_updates": null,
+    "chosen_rule": "lowest mean development query angular-velocity MAE across seeds and tasks; ties prefer fewer updates, then the lower learning rate",
+    "scores_angvel_mae": {},
+    "global_vector_sha256": {
+      "0": "c86c85e4caa65570bb4c1f1808e681e5b4909fe81e22ae887694c6470140dbd7"
+    },
+    "global_vectors": {
+      "0": [
+        -0.019973214715719223,
+        -0.020002689212560654,
+        0.019976647570729256,
+        0.01998100057244301,
+        -0.019548479467630386,
+        -0.019978350028395653,
+        0.019981838762760162,
+        -0.019951390102505684
+      ]
+    },
+    "parent_checkpoint_sha256": {
+      "0": "83e90a9b187cdffe5e39d794ce86abf65ef891fde011daf8e55b7eee1f348959"
+    },
+    "frozen_network_sha256": {
+      "0": "71d44b7880f145c99bc99f6b8e24921134e5b90f58dbf8c78f56d942daf80636"
+    },
+    "frozen_network_unchanged": false,
+    "smoke": true,
+    "incomplete": true
+  },
+  "schema": {
+    "seed_ids": [
+      0
+    ],
+    "task_ids": [
+      "pendulum_ctx_tr0",
+      "pendulum_ctx_tr1"
+    ],
+    "labels": [
+      "direct_lr0.01_u0",
+      "direct_lr0.01_u2",
+      "zero",
+      "global",
+      "encoder",
+      "mlp_reference",
+      "constant_external"
+    ],
+    "conditions_by_label": {
+      "direct_lr0.01_u0": [
+        "task",
+        "wrong"
+      ],
+      "direct_lr0.01_u2": [
+        "task",
+        "wrong"
+      ],
+      "zero": [
+        "zero"
+      ],
+      "global": [
+        "global"
+      ],
+      "encoder": [
+        "encoder"
+      ],
+      "mlp_reference": [
+        "mlp_reference"
+      ],
+      "constant_external": [
+        "constant_external"
+      ]
+    },
+    "metrics": [
+      "mae",
+      "rmse",
+      "angvel_mae"
+    ],
+    "horizons": [
+      "3",
+      "8",
+      "16"
+    ],
+    "per_dim": 3
+  },
+  "raw_records": [
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "zero",
+      "condition": "zero",
+      "mae": 0.035737451165914536,
+      "rmse": 0.06215145066380501,
+      "angvel_mae": 0.09832495450973511,
+      "mae_per_dim": [
+        0.005868746433407068,
+        0.0030186562798917294,
+        0.09832495450973511
+      ],
+      "rollout_mae": {
+        "3": 0.11648212124903996,
+        "8": 0.2752315954615672,
+        "16": 0.45696962624788284
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "global",
+      "condition": "global",
+      "mae": 0.034370485693216324,
+      "rmse": 0.059891682118177414,
+      "angvel_mae": 0.0944669246673584,
+      "mae_per_dim": [
+        0.005483095534145832,
+        0.00316143361851573,
+        0.0944669246673584
+      ],
+      "rollout_mae": {
+        "3": 0.11169151092569034,
+        "8": 0.2632061118880908,
+        "16": 0.4366234391927719
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "encoder",
+      "condition": "encoder",
+      "mae": 0.06758362799882889,
+      "rmse": 0.1173178032040596,
+      "angvel_mae": 0.18909938633441925,
+      "mae_per_dim": [
+        0.009510139003396034,
+        0.004141329787671566,
+        0.18909938633441925
+      ],
+      "rollout_mae": {
+        "3": 0.2112993523478508,
+        "8": 0.5557743050158024,
+        "16": 0.8120744725068411
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "mlp_reference",
+      "condition": "mlp_reference",
+      "mae": 0.03190089017152786,
+      "rmse": 0.05832147225737572,
+      "angvel_mae": 0.08752916008234024,
+      "mae_per_dim": [
+        0.004725982900708914,
+        0.003447500057518482,
+        0.08752916008234024
+      ],
+      "rollout_mae": {
+        "3": 0.10722147549192111,
+        "8": 0.2432920535405477,
+        "16": 0.4308713302016258
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "constant_external",
+      "condition": "constant_external",
+      "mae": 0.03297555446624756,
+      "rmse": 0.056817445904016495,
+      "angvel_mae": 0.08934137225151062,
+      "mae_per_dim": [
+        0.006273316685110331,
+        0.0033119535073637962,
+        0.08934137225151062
+      ],
+      "rollout_mae": {
+        "3": 0.10519821134706338,
+        "8": 0.25817576174934703,
+        "16": 0.3921952272454898
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "direct_lr0.01_u0",
+      "condition": "task",
+      "mae": 0.034370485693216324,
+      "rmse": 0.059891682118177414,
+      "angvel_mae": 0.0944669246673584,
+      "mae_per_dim": [
+        0.005483095534145832,
+        0.00316143361851573,
+        0.0944669246673584
+      ],
+      "rollout_mae": {
+        "3": 0.11169151092569034,
+        "8": 0.2632061118880908,
+        "16": 0.4366234391927719
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "direct_lr0.01_u0",
+      "condition": "wrong",
+      "mae": 0.034370485693216324,
+      "rmse": 0.059891682118177414,
+      "angvel_mae": 0.0944669246673584,
+      "mae_per_dim": [
+        0.005483095534145832,
+        0.00316143361851573,
+        0.0944669246673584
+      ],
+      "rollout_mae": {
+        "3": 0.11169151092569034,
+        "8": 0.2632061118880908,
+        "16": 0.4366234391927719
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "direct_lr0.01_u2",
+      "condition": "task",
+      "mae": 0.031977687031030655,
+      "rmse": 0.05604952573776245,
+      "angvel_mae": 0.08777469396591187,
+      "mae_per_dim": [
+        0.005055219400674105,
+        0.0031031202524900436,
+        0.08777469396591187
+      ],
+      "rollout_mae": {
+        "3": 0.10424389565984409,
+        "8": 0.24337014059225717,
+        "16": 0.40752574304739636
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "label": "direct_lr0.01_u2",
+      "condition": "wrong",
+      "mae": 0.0364963635802269,
+      "rmse": 0.06355734914541245,
+      "angvel_mae": 0.10073824226856232,
+      "mae_per_dim": [
+        0.005465704016387463,
+        0.0032851058058440685,
+        0.10073824226856232
+      ],
+      "rollout_mae": {
+        "3": 0.11795516063769658,
+        "8": 0.2812525884558757,
+        "16": 0.45866576333840686
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "zero",
+      "condition": "zero",
+      "mae": 0.022767335176467896,
+      "rmse": 0.04373839870095253,
+      "angvel_mae": 0.05860472843050957,
+      "mae_per_dim": [
+        0.0052785975858569145,
+        0.004418678116053343,
+        0.05860472843050957
+      ],
+      "rollout_mae": {
+        "3": 0.05159102426841855,
+        "8": 0.14323894989987215,
+        "16": 0.15719702715675035
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "global",
+      "condition": "global",
+      "mae": 0.022955693304538727,
+      "rmse": 0.04445604234933853,
+      "angvel_mae": 0.05934379622340202,
+      "mae_per_dim": [
+        0.005167677532881498,
+        0.004355590790510178,
+        0.05934379622340202
+      ],
+      "rollout_mae": {
+        "3": 0.05388837059338888,
+        "8": 0.1504549359281858,
+        "16": 0.16279874059061208
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "encoder",
+      "condition": "encoder",
+      "mae": 0.021872764453291893,
+      "rmse": 0.042683713138103485,
+      "angvel_mae": 0.05544041097164154,
+      "mae_per_dim": [
+        0.005387321580201387,
+        0.004790566395968199,
+        0.05544041097164154
+      ],
+      "rollout_mae": {
+        "3": 0.03678247115264336,
+        "8": 0.14617222299178442,
+        "16": 0.25755686561266583
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "mlp_reference",
+      "condition": "mlp_reference",
+      "mae": 0.028046341612935066,
+      "rmse": 0.05592533200979233,
+      "angvel_mae": 0.07571246474981308,
+      "mae_per_dim": [
+        0.004601805005222559,
+        0.0038247534539550543,
+        0.07571246474981308
+      ],
+      "rollout_mae": {
+        "3": 0.07276655330012242,
+        "8": 0.22516069933772087,
+        "16": 0.2575986286004384
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "constant_external",
+      "condition": "constant_external",
+      "mae": 0.020543308928608894,
+      "rmse": 0.04208885505795479,
+      "angvel_mae": 0.05190441012382507,
+      "mae_per_dim": [
+        0.005137679632753134,
+        0.00458784494549036,
+        0.05190441012382507
+      ],
+      "rollout_mae": {
+        "3": 0.047945387195795774,
+        "8": 0.13021299118796983,
+        "16": 0.15772532361249128
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "direct_lr0.01_u0",
+      "condition": "task",
+      "mae": 0.022955693304538727,
+      "rmse": 0.04445604234933853,
+      "angvel_mae": 0.05934379622340202,
+      "mae_per_dim": [
+        0.005167677532881498,
+        0.004355590790510178,
+        0.05934379622340202
+      ],
+      "rollout_mae": {
+        "3": 0.05388837059338888,
+        "8": 0.1504549359281858,
+        "16": 0.16279874059061208
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "direct_lr0.01_u0",
+      "condition": "wrong",
+      "mae": 0.022955693304538727,
+      "rmse": 0.04445604234933853,
+      "angvel_mae": 0.05934379622340202,
+      "mae_per_dim": [
+        0.005167677532881498,
+        0.004355590790510178,
+        0.05934379622340202
+      ],
+      "rollout_mae": {
+        "3": 0.05388837059338888,
+        "8": 0.1504549359281858,
+        "16": 0.16279874059061208
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "direct_lr0.01_u2",
+      "condition": "task",
+      "mae": 0.022236647084355354,
+      "rmse": 0.04284404590725899,
+      "angvel_mae": 0.05725618824362755,
+      "mae_per_dim": [
+        0.005096071399748325,
+        0.004357681144028902,
+        0.05725618824362755
+      ],
+      "rollout_mae": {
+        "3": 0.0499888703537484,
+        "8": 0.13766700339814028,
+        "16": 0.1622692234814167
+      }
+    },
+    {
+      "seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "label": "direct_lr0.01_u2",
+      "condition": "wrong",
+      "mae": 0.023792477324604988,
+      "rmse": 0.0464305654168129,
+      "angvel_mae": 0.06182396784424782,
+      "mae_per_dim": [
+        0.005195590201765299,
+        0.004357867408543825,
+        0.06182396784424782
+      ],
+      "rollout_mae": {
+        "3": 0.058743096655234694,
+        "8": 0.16533900424838066,
+        "16": 0.17384914184610048
+      }
+    }
+  ],
+  "completeness": {
+    "declared_complete": false,
+    "failures": [
+      "smoke or incomplete or missing selection"
+    ],
+    "n_expected": 0,
+    "n_records": 18
+  },
+  "curves": [
+    {
+      "model_seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "lr": 0.01,
+      "kind": "task",
+      "updates": [
+        0,
+        2
+      ],
+      "query_angvel": [
+        0.0944669246673584,
+        0.08777469396591187
+      ],
+      "support_loss": [
+        0.0002648892696015537,
+        0.0002375546027906239
+      ],
+      "summary": {
+        "support_loss_before": 0.0002648892696015537,
+        "support_loss_after": 0.0002375546027906239,
+        "mean_grad_norm": 0.0006273382459767163,
+        "max_grad_norm": 0.0006409783381968737,
+        "latent_norm_after": 0.08916094154119492,
+        "nonfinite_steps": 0,
+        "optimizer_steps": 2
+      }
+    },
+    {
+      "model_seed": 0,
+      "task": "pendulum_ctx_tr0",
+      "lr": 0.01,
+      "kind": "wrong",
+      "updates": [
+        0,
+        2
+      ],
+      "query_angvel": [
+        0.0944669246673584,
+        0.10073824226856232
+      ],
+      "support_loss": [
+        7.708725752308965e-05,
+        6.703892722725868e-05
+      ],
+      "summary": {
+        "support_loss_before": 7.708725752308965e-05,
+        "support_loss_after": 6.703892722725868e-05,
+        "mean_grad_norm": 0.0002010229291045107,
+        "max_grad_norm": 0.0002077310928143561,
+        "latent_norm_after": 0.0893351212143898,
+        "nonfinite_steps": 0,
+        "optimizer_steps": 2
+      }
+    },
+    {
+      "model_seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "lr": 0.01,
+      "kind": "task",
+      "updates": [
+        0,
+        2
+      ],
+      "query_angvel": [
+        0.05934379622340202,
+        0.05725618824362755
+      ],
+      "support_loss": [
+        7.708725752308965e-05,
+        6.703892722725868e-05
+      ],
+      "summary": {
+        "support_loss_before": 7.708725752308965e-05,
+        "support_loss_after": 6.703892722725868e-05,
+        "mean_grad_norm": 0.0002010229291045107,
+        "max_grad_norm": 0.0002077310928143561,
+        "latent_norm_after": 0.0893351212143898,
+        "nonfinite_steps": 0,
+        "optimizer_steps": 2
+      }
+    },
+    {
+      "model_seed": 0,
+      "task": "pendulum_ctx_tr1",
+      "lr": 0.01,
+      "kind": "wrong",
+      "updates": [
+        0,
+        2
+      ],
+      "query_angvel": [
+        0.05934379622340202,
+        0.06182396784424782
+      ],
+      "support_loss": [
+        0.0002648892696015537,
+        0.0002375546027906239
+      ],
+      "summary": {
+        "support_loss_before": 0.0002648892696015537,
+        "support_loss_after": 0.0002375546027906239,
+        "mean_grad_norm": 0.0006273382459767163,
+        "max_grad_norm": 0.0006409783381968737,
+        "latent_norm_after": 0.08916094154119492,
+        "nonfinite_steps": 0,
+        "optimizer_steps": 2
+      }
+    }
+  ],
+  "data_hashes": {
+    "selection_support": [
+      "16ad6f6126094cfa",
+      "3da27d6f353594de"
+    ],
+    "selection_query": [
+      "8fbcc7c8dce4d40d",
+      "4f481c630d78c86e"
+    ],
+    "seed0_train": [
+      "ab6cd782be47eed0",
+      "3391ee3b8a6d441e"
+    ]
+  },
+  "prior_paired_constant_minus_mlp": {
+    "n": 3,
+    "mean": -0.002282666740939021,
+    "lo": -0.013728664441413138,
+    "hi": 0.009163330959535096,
+    "se": 0.0026600041135194322,
+    "interval": "student_t_95",
+    "df": 2,
+    "per_seed": [
+      -0.007584247039631009,
+      0.0007512688171118498,
+      -1.5022000297904015e-05
+    ],
+    "contrast": "constant_external_minus_mlp",
+    "source": "artifacts/frozen_dynamics_audit.json"
+  },
+  "resources": {
+    "source_train_env": 440,
+    "selection_support_env": 64,
+    "selection_query_env": 440,
+    "audit_support_env": 0,
+    "audit_query_env": 0,
+    "global_optimizer_steps": 2,
+    "task_optimizer_steps": 8,
+    "support_examples_processed": 1136,
+    "global_wall_s": 0.46758541700000933,
+    "task_wall_s": 0.004672292001487222,
+    "audit_collected": false
+  },
+  "per_seed": [
+    {
+      "model_seed": 0,
+      "frozen_network_sha256": "71d44b7880f145c99bc99f6b8e24921134e5b90f58dbf8c78f56d942daf80636",
+      "global_vector_sha256": "c86c85e4caa65570bb4c1f1808e681e5b4909fe81e22ae887694c6470140dbd7",
+      "global_trace": {
+        "support_loss_before": 0.00034123146906495094,
+        "support_loss_after": 0.00032834336161613464,
+        "mean_grad_norm": 0.0002945236337836832,
+        "max_grad_norm": 0.00030358359799720347,
+        "latent_norm_after": 0.056355591863393784,
+        "nonfinite_steps": 0,
+        "optimizer_steps": 2
+      },
+      "parent_checkpoint_sha256": "83e90a9b187cdffe5e39d794ce86abf65ef891fde011daf8e55b7eee1f348959",
+      "constant_external_network_sha256": "fc41ce4e96134662362931ce8224c159b87c1f8e9bdfb66afc4464eca2930d8f",
+      "task_ids": [
+        "pendulum_ctx_tr0",
+        "pendulum_ctx_tr1"
+      ]
+    }
+  ],
+  "summary": {
+    "direct_lr0.01_u0": {
+      "task": {
+        "n": 1,
+        "mean": 0.07690536044538021
+      },
+      "wrong": {
+        "n": 1,
+        "mean": 0.07690536044538021
+      }
+    },
+    "direct_lr0.01_u2": {
+      "task": {
+        "n": 1,
+        "mean": 0.0725154411047697
+      },
+      "wrong": {
+        "n": 1,
+        "mean": 0.08128110505640507
+      }
+    },
+    "zero": {
+      "n": 1,
+      "mean": 0.07846484147012234
+    },
+    "global": {
+      "n": 1,
+      "mean": 0.07690536044538021
+    },
+    "encoder": {
+      "n": 1,
+      "mean": 0.1222698986530304
+    }
+  },
+  "registered_audit_seeds": {
+    "support_env0": 48000,
+    "query_env0": 52000,
+    "support_base": 240000,
+    "query_base": 241000,
+    "query_episodes": 4,
+    "query_transitions": 800
+  },
+  "wall_clock_s": 0.769810249999864,
+  "audit_evaluated": false,
+  "confirm_evaluated": false,
+  "control_evaluated": false,
+  "is_agi": false,
+  "smoke": true
+}
