@@ -293,3 +293,8 @@ class BeliefStepModel:
 
     def step(self, obs: np.ndarray, action: int | np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         return self.wm.step(obs, action)
+
+    def begin_rollout(self, n: int) -> None:
+        fn = getattr(self.wm, "begin_rollout", None)
+        if fn is not None:
+            fn(int(n))

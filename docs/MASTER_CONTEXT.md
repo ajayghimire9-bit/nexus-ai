@@ -318,11 +318,11 @@ If the current project code, hardware specifications, or experimental metrics ar
 
 ## 12. CURRENT PROJECT STATUS
 
-Implemented through **NEXUS Research V0.8.9**, a Pendulum H=3 cross-environment test, a planning-generality diagnostic (dev-selected H=16), and a Pendulum adaptation/transfer experiment (`docs/NEXUS_PENDULUM_TRANSFER.md`). Prior artifacts are retained.
+Implemented through **NEXUS Research V0.8.9**, Pendulum H=3/H=16 planning tests, Pendulum adaptation/transfer, and a Reptile vs multitask meta-learning pilot (`docs/NEXUS_META_LEARNING_PILOT.md`). Prior artifacts are retained.
 
-We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. H=16 residual MPC beats random on new Pendulum physics. MAE-gated adaptation vs frozen **failed** its pre-registered CI (Δ **+29 [−28, +86]**). Ungated / low-LR fine-tuning beat frozen; A→B→C did **not** help held-out D. That is not learning-to-learn.
+We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Ordinary fine-tuning and multitask pooling beat a single-source init on new Pendulum physics. Reptile lost to matched-data multitask (AUC CI excludes 0, Reptile worse). That is not learning-to-learn.
 
-Do not skip to live trading, NEXUS Alpha, or a large meta-learner. Do not retune MAE 0.97 or raise width from this confirm.
+Do not skip to live trading, NEXUS Alpha, or a large meta-learner/NAS. Do not retune MAE 0.97 from this confirm.
 
 Future claims of implementation progress must be based on actual code and experiment results.
 

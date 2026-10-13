@@ -11,7 +11,7 @@ import torch
 from torch import nn
 
 from nexus.world.data import TransitionDataset
-from nexus.world.dynamics import HeadKind, WorldModel
+from nexus.world.dynamics import ArchName, HeadKind, WorldModel
 
 
 def _batches(n: int, batch: int, rng: np.random.Generator) -> list[np.ndarray]:
@@ -29,6 +29,7 @@ def train_world_model(
     lr: float = 1e-3,
     seed: int = 0,
     hidden: tuple[int, ...] = (64, 64),
+    arch: ArchName = "mlp",
     n_actions: int | None = None,
     term_weight: float = 0.25,
     obs_rms: RunningMeanStd | None = None,
@@ -37,7 +38,7 @@ def train_world_model(
     obs_dim = int(train.obs.shape[-1])
     inferred = int(max(int(train.action.max()) + 1 if train.action.size else 2, 2))
     n_act = int(n_actions) if n_actions is not None else inferred
-    wm = WorldModel.create(obs_dim, n_act, kind=kind, hidden=hidden, seed=seed)
+    wm = WorldModel.create(obs_dim, n_act, kind=kind, hidden=hidden, seed=seed, arch=arch)
     if obs_rms is not None:
         wm.copy_rms(obs_rms)
     else:
@@ -61,6 +62,8 @@ def train_world_model(
         return obs, nxt, act, term
 
     for epoch in range(int(epochs)):
+        if getattr(wm.net, "arch", "mlp") == "film":
+            wm.net.set_context_from_obs_action(wm.normalize(train.obs), train.action)
         wm.net.train()
         tr_loss = 0.0
         n_b = 0

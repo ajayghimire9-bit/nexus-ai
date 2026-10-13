@@ -335,6 +335,8 @@ def finetune_world_model(
     epochs_run = 0
     for _epoch in range(int(epochs)):
         epochs_run += 1
+        if getattr(out.net, "arch", "mlp") == "film":
+            out.net.set_context_from_obs_action(out.normalize(train.obs), train.action)
         out.net.train()
         idx = rng.permutation(len(train))
         ep_loss = 0.0

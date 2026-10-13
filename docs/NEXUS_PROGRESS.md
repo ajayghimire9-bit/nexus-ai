@@ -393,3 +393,9 @@ Dev horizon grid (architecture frozen): H=3 learned **−1358** (worse than rand
 Branch `cursor/pendulum-adaptation-transfer`. Write-up: `docs/NEXUS_PENDULUM_TRANSFER.md`. Artifact `artifacts/pendulum_transfer.json` (n=10, wall **1167 s**). `pytest` **250 passed**. Prior hashes preserved.
 
 Frozen H=16 residual. Confirm mean over g/m/l shifts: MAE-gated vs frozen **+29 [−28, +86] includes 0** (primary **fail**). Always-adapt **+211 [134, 288]**; low-LR **+106 [39, 173]**. Scratch worse. A→B→C vs naive D **+22 includes 0**; vs matched volume **−6 includes 0**. Not L2L. Not AGI.
+
+## Meta-learning pilot (Reptile vs multitask)
+
+Branch `cursor/meta-learning-pilot`. Write-up: `docs/NEXUS_META_LEARNING_PILOT.md`. Artifact `artifacts/meta_learning_pilot.json` (n=10, wall **2300 s**). `pytest` **255 passed**. Prior hashes preserved.
+
+Dev-selected **film** (5828 params). Confirm: multitask final **−491** vs source **−597**; Reptile **−1120** (≈ scratch). Reptile − multitask AUC **−765k [−857k, −672k]** (Reptile worse). Multitask − source AUC **+163k** excludes 0 (pooled data, not L2L). Not AGI.

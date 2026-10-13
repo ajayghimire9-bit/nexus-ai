@@ -152,6 +152,34 @@ def pendulum_transfer_sequence() -> tuple[TaskSpec, TaskSpec, TaskSpec, TaskSpec
     return a, b, c, d
 
 
+def pendulum_meta_train() -> tuple[TaskSpec, ...]:
+    """Reptile/multitask tasks. Frozen before architecture ranking and confirmation."""
+    return (
+        _pendulum("pendulum_meta_tr0", "meta_train", "Meta-train g=7.2.", g=7.2, m=1.0, l=1.0),
+        _pendulum("pendulum_meta_tr1", "meta_train", "Meta-train m=0.7.", g=10.0, m=0.7, l=1.0),
+        _pendulum("pendulum_meta_tr2", "meta_train", "Meta-train l=0.8.", g=10.0, m=1.0, l=0.8),
+        _pendulum("pendulum_meta_tr3", "meta_train", "Meta-train mild compound.", g=10.8, m=1.2, l=1.1),
+    )
+
+
+def pendulum_meta_val() -> tuple[TaskSpec, ...]:
+    """Architecture selection only. Not confirmation."""
+    return (
+        _pendulum("pendulum_meta_va0", "meta_val", "Meta-val g=14.0.", g=14.0, m=1.0, l=1.0),
+        _pendulum("pendulum_meta_va1", "meta_val", "Meta-val m=1.5 l=0.9.", g=10.0, m=1.5, l=0.9),
+    )
+
+
+def pendulum_meta_confirm() -> tuple[TaskSpec, ...]:
+    """Held-out physics. Frozen before ranking. Distinct from all prior Pendulum confirms."""
+    return (
+        _pendulum("pendulum_meta_c0", "meta_confirm", "Confirm g=5.5.", g=5.5, m=1.0, l=1.0),
+        _pendulum("pendulum_meta_c1", "meta_confirm", "Confirm m=2.2.", g=10.0, m=2.2, l=1.0),
+        _pendulum("pendulum_meta_c2", "meta_confirm", "Confirm l=1.7.", g=10.0, m=1.0, l=1.7),
+        _pendulum("pendulum_meta_c3", "meta_confirm", "Confirm compound D'.", g=12.8, m=0.4, l=1.35),
+    )
+
+
 def pendulum_physics_key(spec: TaskSpec) -> tuple[float, float, float]:
     p = spec.params
     return (float(p.get("g", PENDULUM_SOURCE_G)), float(p.get("m", PENDULUM_SOURCE_M)), float(p.get("l", PENDULUM_SOURCE_L)))

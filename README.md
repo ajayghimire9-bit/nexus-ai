@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: Pendulum adaptation and transfer** after the H=16 planning diagnostic. Write-up: `docs/NEXUS_PENDULUM_TRANSFER.md`. Artifact `artifacts/pendulum_transfer.json`. Prior planning and cross-environment artifacts are preserved.
+**Current: meta-learning pilot** (Reptile vs matched-data multitask on Pendulum). Write-up: `docs/NEXUS_META_LEARNING_PILOT.md`. Artifact `artifacts/meta_learning_pilot.json`. Prior transfer and planning artifacts are preserved.
 
-H=16 residual MPC can beat random on Pendulum. MAE-gated target adaptation did **not** beat frozen (CI includes 0). Ungated fine-tuning did. A→B→C did not help held-out D. Completing this milestone is **not** AGI or learning-to-learn.
+Multitask pooling beat a single-source init. Reptile did **not** beat multitask. Completing this milestone is **not** AGI or learning-to-learn.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
@@ -96,6 +96,9 @@ PYTHONPATH=src:.deps python3 scripts/run_planning_generality.py
 # Pendulum adaptation / transfer (does not overwrite prior artifacts)
 PYTHONPATH=src:.deps python3 scripts/run_pendulum_transfer.py
 
+# Reptile vs multitask meta-learning pilot
+PYTHONPATH=src:.deps python3 scripts/run_meta_learning_pilot.py
+
 pytest
 ```
 
@@ -114,4 +117,4 @@ pytest
 
 ## What this is not
 
-V0.8.9, the planning diagnostic, and Pendulum transfer do not demonstrate AGI or learning-to-learn. The stack does not trade, and it does not modify its own safety or evaluation rules.
+V0.8.9, Pendulum transfer, and the meta-learning pilot do not demonstrate AGI or learning-to-learn. The stack does not trade, and it does not modify its own safety or evaluation rules.

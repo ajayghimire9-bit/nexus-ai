@@ -37,6 +37,11 @@ class InferenceCounter:
         self.states += int(o.shape[0])
         return self.model.step(obs, action)
 
+    def begin_rollout(self, n: int) -> None:
+        fn = getattr(self.model, "begin_rollout", None)
+        if fn is not None:
+            fn(int(n))
+
 
 class MeanEnsemble:
     def __init__(self, members: tuple[StepModel, ...] | list[StepModel]) -> None:
@@ -94,6 +99,11 @@ class RandomShootingMPC:
         alive = np.ones(n, dtype=np.float64)
         score = np.zeros(n, dtype=np.float64)
         model = self.inference if self.inference is not None else self.model
+        begin = getattr(model, "begin_rollout", None) or getattr(getattr(model, "model", None), "begin_rollout", None)
+        if begin is None:
+            begin = getattr(getattr(model, "wm", None), "begin_rollout", None)
+        if begin is not None:
+            begin(n)
         for t in range(h):
             nxt, p = model.step(s, seqs[:, t])
             p = np.clip(np.asarray(p, dtype=np.float64).reshape(n), 0.0, 1.0)

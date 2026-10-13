@@ -1,0 +1,20 @@
+parent_commit: eb7a083
+algorithm: first_order_reptile
+inner_learner: ordinary_finetune
+inner_lr: 0.0005
+reptile_eps: 0.1
+reptile_outer: 24
+reptile_inner_epochs: 5
+pendulum_horizon: 16
+pendulum_candidates: 16
+mae_ratio: 0.97
+retuned_mae: false
+architectures: [mlp, film, gru]
+budgets: [0, 32, 64, 128, 256, 512, 1024]
+n_model_seeds: 10
+n_arch_seeds: 2
+confirm_eval_seed: 187000
+film_uses_privileged_physics: false
+primary_success: reptile_auc_minus_multitask_auc_seed_ci_lo>0
+is_agi: false
+claims_learning_to_learn: false
