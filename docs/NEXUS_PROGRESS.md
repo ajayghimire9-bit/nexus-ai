@@ -423,3 +423,9 @@ The first 300 updates reproduce the diagnosis. Real-context angular velocity on 
 Branch `cursor/frozen-dynamics-context-diagnostic`. Write-up: `docs/NEXUS_FROZEN_DYNAMICS_CONTEXT.md`. Selection and audit artifacts are separate. Wall **10.3 s**. No control sweep and no confirmation.
 
 The trunk, heads, and normalization of the 3000-update context model stayed fixed. Encoder and FiLM training moved the encoder (L2 **1.60–2.32**) and still failed the fresh source audit: real angular velocity **0.1484** versus zero **0.1159**, wrong **0.1207**, and a constant vector **0.1127**. The fixed MLP reference was **0.1149**. The screen failed. Not AGI.
+
+## Direct latent context diagnostic
+
+Branch `cursor/direct-latent-context-diagnostic`. Write-up: `docs/NEXUS_DIRECT_LATENT_CONTEXT.md`. Selection and audit artifacts are separate. Execution SHA `d037ffda2fb34238411f39c82d64ff5812b98810`. Wall **29.3 s**. No control sweep and no confirmation.
+
+With the history decoder frozen, a latent fit only on 128 new support transitions (Adam **0.1**, **256** steps, from a global training vector) reached fresh-audit angular velocity **0.0628** versus zero **0.1151**, global **0.1109**, and wrong-support **0.1762**. Paired intervals exclude 0. The frozen encoder on those same rows stayed at **0.1256**. The external MLP reference was **0.1141**. The source screen passed. This is source-physics prediction, not unseen physics and not control. Not AGI.
