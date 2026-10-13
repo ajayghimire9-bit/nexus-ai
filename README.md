@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: context optimization diagnostic** (source prediction only). Write-up: `docs/NEXUS_CONTEXT_OPTIMIZATION_DIAGNOSTIC.md`. Artifacts `artifacts/context_optimization_selection.json` and `artifacts/context_optimization_audit.json`. Confirmation physics and control sweeps were not run.
+**Current: frozen-dynamics context diagnostic** (source prediction only). Write-up: `docs/NEXUS_FROZEN_DYNAMICS_CONTEXT.md`. Artifacts `artifacts/frozen_dynamics_selection.json` and `artifacts/frozen_dynamics_audit.json`. Confirmation physics and control sweeps were not run.
 
-More Adam updates improved the shared dynamics. Real context still did not beat zero or wrong context on a fresh source audit. Completing this milestone is **not** AGI or learning-to-learn.
+With the 3000-update trunk frozen, encoder and FiLM training still left real context worse than zero context, wrong-task context, and a constant vector on a fresh source audit. Completing this milestone is **not** AGI or learning-to-learn.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
@@ -107,6 +107,9 @@ PYTHONPATH=src:.deps python3 scripts/run_context_adaptation_diagnosis.py dev
 
 # Bounded context-optimization diagnostic (source prediction only)
 PYTHONPATH=src:.deps python3 scripts/run_context_optimization_diagnostic.py dev
+
+# Frozen-dynamics context diagnostic (source prediction only; does not evaluate confirmation)
+PYTHONPATH=src:.deps python3 scripts/run_frozen_dynamics_context.py dev
 
 pytest
 ```

@@ -20,18 +20,23 @@ The development diagnosis (`docs/NEXUS_CONTEXT_ADAPTATION_DIAGNOSIS.md`) kept th
 
 More updates improved the shared dynamics and did not make real context useful (`docs/NEXUS_CONTEXT_OPTIMIZATION_DIAGNOSTIC.md`). At 3000 updates the source audit still had real angular-velocity MAE **0.1264** versus zero **0.1256** and wrong **0.1234**. The 5% screen failed. Do not continue to 10,000 updates.
 
+## Frozen-dynamics diagnostic
+
+Freezing that 3000-update trunk and training the encoder and FiLM did not make real context useful (`docs/NEXUS_FROZEN_DYNAMICS_CONTEXT.md`). On a fresh source audit, selected real-context angular velocity was **0.1484** versus zero **0.1159**, wrong **0.1207**, and a trained constant vector **0.1127**. The screen failed. The constant vector sat next to the fixed 1000-update MLP (**0.1149**), with overlapping seed intervals. Do not add more encoder updates.
+
 ## The one next experiment
 
-**Train only the encoder and FiLM on a frozen 3000-update trunk.**
+**Ask whether a latent context can help when it is optimized directly, with no history encoder.**
 
-Question: with the dynamics trunk held at the 3000-update weights, can encoder and FiLM updates make real context beat zero and wrong context on held-out source angular-velocity error?
+Question: with the same frozen 3000-update trunk and the same prediction loss, can a low-dimensional context vector trained on held-out source transitions reduce angular-velocity error relative to a zero context and to a vector that is not allowed to depend on the task's own transitions?
+
+This is a mechanism check. It separates an encoder that never produces a useful code from a dynamics model that cannot use conditioning. It is not another frozen-trunk encoder run.
 
 Freeze before any new returns:
 
-- Start from the saved 3000-update context checkpoints. Freeze the trunk. Train the encoder and FiLM only, with the same loss, Adam learning rate, fixed support policy, and source data.
-- Use a fresh source-audit split, disjoint from the optimization audit. Do not reuse that audit as the success set.
-- Donor remains source task `(i+1) mod 8`.
-- Same 5% screen: real angular-velocity MAE at least 5% below zero and wrong, positive in at least two of three seeds, and overall MAE and horizon-16 error no more than 5% worse than zero context.
+- Start from the saved 3000-update trunk, heads, and normalization. Do not train them.
+- Do not train the history encoder in the success arm.
+- Use a fresh source-audit split. Do not reuse the frozen-dynamics audit as the success set.
 - No MPC, no wider trunk, no extra joint-training updates, and no confirmation physics.
 
-If the screen fails, mean-pooled FiLM context is not a useful dynamics code under this loss. Stop there.
+If that latent vector does not beat a matched constant or zero context under a pre-registered screen, stop treating mean-pooled FiLM as a useful dynamics code under this loss.

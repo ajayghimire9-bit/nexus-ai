@@ -417,3 +417,9 @@ Fixed-length real context did not beat zero context on held-out source MAE (**0.
 Branch `cursor/context-optimization-diagnostic`. Write-up: `docs/NEXUS_CONTEXT_OPTIMIZATION_DIAGNOSTIC.md`. Selection and audit artifacts are separate. Wall **17.4 s**. No control sweep and no confirmation.
 
 The first 300 updates reproduce the diagnosis. Real-context angular velocity on the selection set fell from **0.150** at 300 updates to **0.136** at 3000, and zero context fell further, to **0.126**. The independent audit at the selected 3000-update checkpoint has real **0.1264** versus zero **0.1256** and wrong **0.1234**. The screen failed. More training improved the shared dynamics. It did not make real context useful. Not AGI.
+
+## Frozen-dynamics context diagnostic
+
+Branch `cursor/frozen-dynamics-context-diagnostic`. Write-up: `docs/NEXUS_FROZEN_DYNAMICS_CONTEXT.md`. Selection and audit artifacts are separate. Wall **10.3 s**. No control sweep and no confirmation.
+
+The trunk, heads, and normalization of the 3000-update context model stayed fixed. Encoder and FiLM training moved the encoder (L2 **1.60–2.32**) and still failed the fresh source audit: real angular velocity **0.1484** versus zero **0.1159**, wrong **0.1207**, and a constant vector **0.1127**. The fixed MLP reference was **0.1149**. The screen failed. Not AGI.
