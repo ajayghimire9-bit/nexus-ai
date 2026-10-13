@@ -323,7 +323,7 @@ def run_context_diagnosis(
         mlp_wall = time.perf_counter() - t_mlp
         resources["mlp_wall_s"] += mlp_wall
         final_mlp = mlp.clone()
-        final_mlp.net.load_state_dict(slog.pop("final_state"))
+        final_mlp.net.load_state_dict(mlp.final_state)
         init_seed = V089C_TRAIN_SEED + 17 * int(s)
         base = ContextWorldModel.create(3, 3, seed=init_seed)
         base.copy_rms(rms)

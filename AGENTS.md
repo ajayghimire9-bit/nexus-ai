@@ -23,7 +23,7 @@ Optional LLMs may help planning, engineering, and explanation. They must **not**
 
 **NEXUS Research V0.1:** tested PyTorch actor–critic baseline + configurable neural-network factory + initial evolutionary experiment loop.
 
-Current status: research through **V0.8.9**, Pendulum H=3/H=16 planning, Pendulum adaptation/transfer (MAE-gated vs frozen CI includes 0), a Reptile vs multitask pilot (Reptile lost to matched-data multitask in that configuration; not a general disproof; not L2L), and a context-adaptation development pilot (real context lost to fine-tuning and to zero/wrong context; confirmation not run). No self-improving system, profitable trading, or AGI. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
+Current status: research through **V0.8.9**, Pendulum H=3/H=16 planning, Pendulum adaptation/transfer (MAE-gated vs frozen CI includes 0), a Reptile vs multitask pilot (Reptile lost to matched-data multitask in that configuration; not a general disproof; not L2L), a context-adaptation development pilot (real context lost to fine-tuning and to zero/wrong context; confirmation not run), and a context-length diagnosis (real context did not beat zero context on held-out source prediction; confirmation still not run). No self-improving system, profitable trading, or AGI. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
 
 ## Research loop
 

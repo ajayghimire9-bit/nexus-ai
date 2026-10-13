@@ -320,7 +320,7 @@ If the current project code, hardware specifications, or experimental metrics ar
 
 Implemented through **NEXUS Research V0.8.9**, Pendulum H=3/H=16 planning tests, Pendulum adaptation/transfer, a Reptile vs multitask meta-learning pilot (`docs/NEXUS_META_LEARNING_PILOT.md`), and a context-adaptation development pilot (`docs/NEXUS_CONTEXT_ADAPTATION_PILOT.md`). Prior artifacts are retained. The context confirmation set was not evaluated.
 
-We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Ordinary fine-tuning and multitask pooling beat a single-source init on new Pendulum physics. Reptile lost to matched-data multitask in that configuration (AUC CI excludes 0, Reptile worse). A learned transition context did not beat fine-tuning or its own zero/wrong-context controls on the development screen. That is not learning-to-learn.
+We have not demonstrated a functioning self-improving neural research system, profitable trading system, or AGI. Ordinary fine-tuning and multitask pooling beat a single-source init on new Pendulum physics. Reptile lost to matched-data multitask in that configuration (AUC CI excludes 0, Reptile worse). A learned transition context did not beat fine-tuning or its own zero/wrong-context controls on the development screen. A follow-up diagnosis found that real context also fails to reduce held-out source prediction error, and that it increases development angular-velocity error. That is not learning-to-learn. Confirmation physics for that pilot remain unused.
 
 Do not skip to live trading, NEXUS Alpha, or a large meta-learner/NAS. Do not retune MAE 0.97 from this confirm.
 

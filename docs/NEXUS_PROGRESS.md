@@ -405,3 +405,9 @@ Dev-selected **film** (5828 params). Confirm: multitask final **−491** vs sour
 Branch `cursor/context-adaptation-pilot`, starting SHA `a9c184c`. Write-up: `docs/NEXUS_CONTEXT_ADAPTATION_PILOT.md`. Development artifact `artifacts/context_adaptation_dev.json` (2 seeds, wall **313 s**). `pytest` **260 passed**. Confirmation artifact was not created. Prior artifacts preserved.
 
 FiLM transition context, trunk (48, 48), 4332 parameters, vs residual MLP (64, 64), 4868 parameters. Development primary AUC: fine-tune **−454**, zero context **−652**, real context **−755**. Gate means: real−fine-tune **−302**, real−zero **−103**, real−wrong **−30**. Encoder weights moved (L2 Δ **1.52**) and still hurt control. H1 confirmation **not run** (inconclusive). Not AGI.
+
+## Context-adaptation diagnosis
+
+Branch `cursor/context-adaptation-diagnosis`. Write-up: `docs/NEXUS_CONTEXT_ADAPTATION_DIAGNOSIS.md`. Artifact `artifacts/context_adaptation_diagnosis.json` (3 seeds, wall **521 s**). Confirmation physics were not evaluated. The original development artifact is preserved.
+
+Fixed-length real context did not beat zero context on held-out source MAE (**0.0703** vs **0.0700** at budget 128) and raised development MAE (**0.084** vs **0.077**). The 0–128 control AUC interval for variable-minus-fixed length includes 0 (point estimate **+22**). Zero-context control remains about **146** points below the frozen MLP. Not AGI.

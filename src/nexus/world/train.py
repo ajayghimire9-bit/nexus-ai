@@ -93,6 +93,8 @@ def train_world_model(
     final_state = {k: t.detach().cpu().clone() for k, t in wm.net.state_dict().items()}
     wm.net.load_state_dict(best_state)
     wm.net.eval()
+    # Kept off the log dict so experiment JSON never receives a tensor.
+    wm.final_state = final_state
     return wm, {
         "best_val": best_val,
         "history": history,
@@ -101,7 +103,6 @@ def train_world_model(
         "train_n": len(train),
         "val_n": len(val),
         "selection": "best_source_validation",
-        "final_state": final_state,
     }
 
 

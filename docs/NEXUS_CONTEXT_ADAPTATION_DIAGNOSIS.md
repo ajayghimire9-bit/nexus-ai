@@ -83,4 +83,77 @@ The confirmation entry point rejects a run unless the development artifact is co
 
 ## Results
 
-Not run yet.
+Implementation revision `5c636093a8fe25edb6005d2e504ee60015ad1064`. Source tree was clean. A later commit keeps the final-epoch MLP weights off the training log so they are not written into JSON; it does not change this run. Artifact `artifacts/context_adaptation_diagnosis.json`. Plots `artifacts/context_adaptation_diagnosis_prediction.svg` and `artifacts/context_adaptation_diagnosis_control.svg`. Wall clock **520.9 s**. Declared run complete. Confirmation evaluated: **no**.
+
+Three training seeds, three development tasks, three evaluation episodes. Intervals below are exploratory Student-t intervals across seeds (2 degrees of freedom). Episodes are not training replicates. The metric is the 0–128 AUC, not the original 0–256 result.
+
+### Training
+
+Both context models used 300 updates and 19,200 query examples. Fixed-length support examples were 30,720 / 31,104 / 31,360. Variable-length support examples were 15,152 / 15,280 / 14,752. The same query schedule was used. Compute is not matched.
+
+Encoder L2 change was about **1.50–1.57** (fixed) and **1.44–1.49** (variable). Mean encoder gradient norms were about **0.013–0.017**. Parameters: context model **4332**, multitask MLP **4868**.
+
+The final-epoch MLP, scored only as a secondary check, matched the best-validation MLP at budget zero on every development task (returns agreed to about 0.1). Checkpoint selection is not what makes the MLP baseline stronger in this run.
+
+### Held-out prediction
+
+One-step MAE, mean over tasks and seeds.
+
+Source physics, fixed-length model:
+
+| Budget | Real | Zero | Wrong | MLP frozen | MLP fine-tune |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.0700 | 0.0700 | 0.0700 | 0.0484 | 0.0484 |
+| 16 | 0.0704 | 0.0700 | 0.0705 | 0.0484 | 0.0414 |
+| 128 | 0.0703 | 0.0700 | 0.0702 | 0.0484 | 0.0317 |
+
+Real context does not beat zero or wrong-task context on source data for the original fixed-length trainer. The gap is small, and both sit well above the MLP. Fine-tuning lowers source MAE from 0.0484 to 0.0317 at 128 transitions.
+
+The variable-length model is slightly different on source data: zero MAE **0.0693**, real **0.0682**, wrong **0.0679** at budget 128. Real beats that model's own zero context by a small margin and does not beat wrong-task context.
+
+Development physics, fixed-length model: zero MAE **0.0774**; real and wrong rise to about **0.084**. Variable-length real is about **0.0825**, still worse than zero. Fine-tuning lowers development MAE from 0.0646 to **0.0336** at budget 128.
+
+The error is concentrated in angular velocity. At development budget 128, fixed real context has per-dimension MAE about **0.027 / 0.038 / 0.187**, versus zero context **0.041 / 0.047 / 0.144**. Context slightly reduces the angle error and increases the velocity error. Fine-tuning reduces that velocity term to about **0.063**.
+
+Open-loop error agrees. On development physics at budget 64, fixed real-context MAE at horizons 3, 8, and 16 is **0.267 / 0.541 / 0.821**, versus zero context **0.204 / 0.474 / 0.513**. Real and wrong-task rollouts are close. Mean `‖z_real − z_wrong‖` is about **0.25** on source tasks and **0.17** on development tasks, while `‖z‖` is about **2.7**. That distance is not evidence that the vector identifies the task.
+
+### Control
+
+Mean 0–128 AUC:
+
+| Method | Mean | Exploratory 95% interval |
+| --- | ---: | --- |
+| MLP frozen | −490.0 | [−533.3, −446.6] |
+| MLP fine-tune | −505.7 | [−708.3, −303.1] |
+| Fixed, real context | −647.0 | [−1004.9, −289.1] |
+| Fixed, zero context | −635.7 | [−835.2, −436.1] |
+| Fixed, wrong context | −637.7 | [−998.0, −277.5] |
+| Variable, real context | −624.6 | [−1007.2, −242.0] |
+| Variable, zero context | −633.9 | [−866.4, −401.4] |
+| Variable, wrong context | −624.3 | [−973.4, −275.2] |
+
+Seed-level contrasts, all with intervals that include 0:
+
+- Variable real minus fixed real: **+22.4 [−65.4, +110.3]**
+- Fixed real minus fixed zero: **−11.4 [−246.5, +223.8]**
+- Fixed real minus fixed wrong: **−9.3 [−100.9, +82.4]**
+- Variable real minus its own zero: **+9.3 [−170.3, +188.9]**
+- Variable real minus wrong: **−0.3 [−49.3, +48.7]**
+
+Relative to each method's own budget-zero return, fixed real context is **11** points worse, variable real context is **9** points better, and fine-tuning is **16** points worse on this 0–128 window. The short-budget (16 and 32) point estimate favors variable length by about **22** return points. That estimate pools tasks and seeds; the seed-level AUC interval still includes 0. H-length is not established.
+
+Individual tasks disagree. On seed 2, development task `(g=10, m=1, l=1.55)`, fixed real context reaches AUC **−414** against its zero-context **−640**. On seed 0, `(g=6, m=1, l=1)`, fixed real context falls from **−407** at budget zero to an AUC of **−623**. The average is not a uniform failure mode.
+
+### What the patterns say
+
+Real context fails held-out source prediction for the fixed-length trainer, including a higher development rollout error. It does not help source prediction and then fail only on new physics. Variable length has a positive short-history point estimate and a small source-MAE improvement, without a seed-level control interval that excludes 0. Zero-context control remains about **146** points worse than the frozen MLP at budget zero, so trunk capacity is still unresolved. Because prediction does not improve, this run does not isolate a planner-only failure.
+
+The predeclared priority therefore selects representation or optimization, not a wider trunk and not a new control sweep. The coexisting length and capacity patterns stay on the record.
+
+### Resources
+
+Source training interactions **9,600**. Source validation **768**. Diagnostic support **1,408**. Diagnostic query **4,400**. Target prefixes **9,216**. Executed evaluation interactions **129,600**. Imagined model states **33,177,600**. Cached evaluations were not added again. Training walls: MLP **0.63 s**, fixed context **0.48 s**, variable context **0.46 s**. Almost all of the 521 s is planning.
+
+### Next experiment
+
+Keep the (48, 48) trunk and the fixed-length schedule. Train longer, or with a learning rate chosen for the small encoder gradients, and stop on held-out source one-step error by state dimension. Require real context to beat both zero and wrong-task context on source angular velocity before any new control curve, trunk change, or confirmation run.
