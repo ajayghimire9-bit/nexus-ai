@@ -1,0 +1,73 @@
+protocol_id: direct_latent_confirmation_v1
+starting_sha: f3ab5e6914d7c399be4235fdf4ffc628c78c952f
+prior_selection: artifacts/direct_latent_selection.json
+prior_audit: artifacts/direct_latent_audit.json
+prior_frozen_selection: artifacts/frozen_dynamics_selection.json
+prior_frozen_audit: artifacts/frozen_dynamics_audit.json
+confirm_hash: 87b83c41be34aa1a
+is_agi: false
+control_sweep: false
+replication_unit: model_training_seed
+h_confirm: "With all network weights fixed, the locked support-only latent rule lowers held-out query angular-velocity MAE on the reserved confirmation physics relative to zero context, the global vector, and a vector fit on the cyclic donor task's support."
+n_seeds: 3
+n_tasks: 4
+task_ids:
+  - pendulum_ctx_c0
+  - pendulum_ctx_c1
+  - pendulum_ctx_c2
+  - pendulum_ctx_c3
+physics:
+  - [4.8, 1.0, 1.0]
+  - [15.2, 1.0, 1.0]
+  - [10.0, 0.35, 1.0]
+  - [11.8, 1.6, 0.75]
+support_budget: 128
+query_episodes: 4
+query_transitions: 800
+learning_rate: 0.1
+updates: 256
+angular_velocity_index: 2
+horizons: [3, 8, 16]
+rollout_starts: [0, 32, 64, 96, 128, 160]
+donor: confirmation_task_(i+1)_mod_n
+screen_angvel_improvement: 0.05
+screen_min_positive_seeds: 2
+screen_max_worsening: 0.05
+support_env0: 64000
+query_env0: 68000
+support_base: 250000
+query_base: 251000
+time_limit_s: 3600
+same_decoder_conditions: [task, zero, global, wrong, encoder]
+external_conditions: [mlp_reference]
+parent_checkpoints:
+  - seed: 0
+    path: artifacts/frozen_dynamics_checkpoints/seed0_history_u1000.pt
+    sha256: 83e90a9b187cdffe5e39d794ce86abf65ef891fde011daf8e55b7eee1f348959
+    frozen_network_sha256: 71d44b7880f145c99bc99f6b8e24921134e5b90f58dbf8c78f56d942daf80636
+    global_vector_sha256: d40d71a3e5c0e62ef158e08ec82617f10a8f6fcfeaac436744c9e9958b31f8ba
+  - seed: 1
+    path: artifacts/frozen_dynamics_checkpoints/seed1_history_u1000.pt
+    sha256: cd5400070a69238ce8e35ca036c57448b18664f7ce1e8600ac5a3aab2983ef3e
+    frozen_network_sha256: 4bcdc147a80171bf6123b1bc9079f1174614e750a2337a75f9d3ef79942a3104
+    global_vector_sha256: 4705c19a62e0547267705e1b10aeb4f06c1a62058ab077534b24a8f2cc4fdb33
+  - seed: 2
+    path: artifacts/frozen_dynamics_checkpoints/seed2_history_u1000.pt
+    sha256: 254b097c5dbd3df02c463913c60392928aaed0584c6c29245e060ed25113b6fd
+    frozen_network_sha256: 13090d27d02476584c39284cc045f19d9b727c33721e22186be25a055bc064ac
+    global_vector_sha256: 9910f28a645a7a4d8a714cf0523f6c8a9c7b58b7dd71103e96a511583be31218
+mlp_checkpoints:
+  - seed: 0
+    path: artifacts/context_optimization_checkpoints/seed0_mlp_u1000.pt
+    sha256: 4f4db2ca0ade8d2e19cb37971cf7343959edcdc17befe73e1aa9169e19c21cc2
+  - seed: 1
+    path: artifacts/context_optimization_checkpoints/seed1_mlp_u1000.pt
+    sha256: eb72c8c9f41d6e53a123e9f9b9aa86ce0540117e33a97c5617c164ff4456526f
+  - seed: 2
+    path: artifacts/context_optimization_checkpoints/seed2_mlp_u1000.pt
+    sha256: 58dc9209c1435543b33cb48878785a30705bc9909090510631e40f7e95b466a1
+prior_artifact_sha256:
+  artifacts/direct_latent_selection.json: ef99a31fd1c50ee27e4de35dff6c810397a22ab267622d1b4aa938cf4ffb5c5f
+  artifacts/direct_latent_audit.json: 9681f5de77d53c8fafba54aa5c0e41eeb60cd39a8e0f4d8308615dcf7476f9dc
+  artifacts/frozen_dynamics_selection.json: b8506c2d9670692cfafdfc42fc6cffe2c36565b4219cfc22e39128cf84294f11
+  artifacts/frozen_dynamics_audit.json: 72a65dee5ecb694b0c2137f05f8d885c200933df11f0f85a5b4cc0986af22ba3
