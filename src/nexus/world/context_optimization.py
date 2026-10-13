@@ -170,7 +170,7 @@ def _episode_prediction(model: Any, query: TransitionDataset, horizons: list[int
         "rmse": avg("rmse"),
         "mae_per_dim": [float(x) for x in dims],
         "angvel_mae": avg("angvel_mae"),
-        "rollout_mae": {h: float(roll[str(h)]) for h in horizons},
+        "rollout_mae": {str(h): float(roll[str(h)]) for h in horizons},
         "rollout_counts": {
             "n_episodes": roll["n_episodes"],
             "n_windows": roll["n_windows"],
