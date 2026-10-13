@@ -1,0 +1,39 @@
+protocol_id: frozen_dynamics_context_diagnostic_v1
+starting_sha: eecdd7b813601613c176b0005d053dc53604ea61
+prior_optimization_sha: 6fbf78d865e328ca137a8be8fdd55f6d6e781018
+prior_selection_artifact: artifacts/context_optimization_selection.json
+prior_context_updates: 3000
+mlp_reference_updates: 1000
+confirmation_unlocked: false
+control_sweep: false
+is_agi: false
+h_frozen: "With shared dynamics fixed, training a history encoder and FiLM produces lower held-out source prediction error with real context than with zero context, wrong-task context, and a trainable constant-context control."
+additional_updates: [0, 300, 1000]
+total_additional_updates: 1000
+n_seeds: 3
+n_source_tasks: 8
+context_dim: 8
+encoder_hidden: 32
+trunk_hidden: [48, 48]
+mlp_hidden: [64, 64]
+lr: 0.001
+batch: 64
+empty_prob: 0.2
+support_policy: fixed_128
+support_budget: 128
+angular_velocity_index: 2
+horizons: [3, 8, 16]
+rollout_starts: [0, 32, 64, 96, 128, 160]
+source_per_task: 400
+time_limit_s: 3600
+donor: source_task_(i+1)_mod_n
+screen_angvel_improvement: 0.05
+screen_min_positive_seeds: 2
+screen_max_worsening: 0.05
+audit_support_env0: 36000
+audit_query_env0: 40000
+audit_support_base: 230000
+audit_query_base: 231000
+init_seed_offset: 8000
+prior_audit_support_env0: 20000
+prior_audit_query_env0: 24000
