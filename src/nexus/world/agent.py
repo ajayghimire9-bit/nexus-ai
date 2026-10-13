@@ -13,8 +13,8 @@ from nexus.world.baselines import run_episodes
 from nexus.world.belief import BeliefEstimator, BeliefStepModel
 from nexus.world.data import TransitionDataset, split_by_episodes
 from nexus.world.dynamics import WorldModel
-from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_OBJECTIVE, FROZEN_PRIMARY_HORIZON
-from nexus.world.planning import InferenceCounter, RandomShootingMPC
+from nexus.tasks.pendulum_family import PENDULUM_MAX_STEPS
+from nexus.world.planning import InferenceCounter, mpc_for_model
 from nexus.world.train import one_step_errors
 
 
@@ -94,15 +94,7 @@ def plan_with_belief(
 ) -> dict[str, Any]:
     step = BeliefStepModel(wm)
     inf = InferenceCounter(step)
-    planner = RandomShootingMPC(
-        model=step,
-        n_actions=2,
-        horizon=FROZEN_PRIMARY_HORIZON,
-        n_candidates=FROZEN_CANDIDATES[FROZEN_PRIMARY_HORIZON],
-        seed=0,
-        inference=inf,
-        objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
-    )
+    planner = mpc_for_model(step, seed=0, inference=inf)
 
     prev = {"a": None}
 
@@ -117,11 +109,13 @@ def plan_with_belief(
         prev["a"] = None
         planner.reset_episode(int(seed) + 1000 * int(ep))
 
-    row = run_episodes(spec, act_fn=act, episodes=episodes, seed=seed, on_episode_start=on_start)
+    max_steps = int(PENDULUM_MAX_STEPS) if spec.family == "pendulum" else 500
+    row = run_episodes(spec, act_fn=act, episodes=episodes, seed=seed, max_steps=max_steps, on_episode_start=on_start)
     rets = [float(x) for x in row["returns"]]
+    fail = None if spec.family == "pendulum" else (float(np.mean([r < 500.0 for r in rets])) if rets else None)
     return {
         "mean_return": float(row["mean_return"]),
-        "fail_rate": float(np.mean([r < 500.0 for r in rets])) if rets else None,
+        "fail_rate": fail,
         "env_interactions": int(row["env_interactions"]),
         "model_states": int(inf.states),
         "used_simulator": False,
@@ -156,14 +150,7 @@ def collect_planned_belief(
             env_interactions=0,
         )
     step = BeliefStepModel(wm)
-    planner = RandomShootingMPC(
-        model=step,
-        n_actions=2,
-        horizon=FROZEN_PRIMARY_HORIZON,
-        n_candidates=FROZEN_CANDIDATES[FROZEN_PRIMARY_HORIZON],
-        seed=0,
-        objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
-    )
+    planner = mpc_for_model(step, seed=0)
 
     prev = {"a": None}
 

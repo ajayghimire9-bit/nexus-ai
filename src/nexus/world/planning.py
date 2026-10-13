@@ -173,6 +173,61 @@ class RandomShootingMPC:
         }
 
 
+PENDULUM_PLAN_HORIZON = 16
+PENDULUM_PLAN_CANDIDATES = 16
+
+
+def _model_dims(model: Any) -> tuple[int, int]:
+    net = getattr(model, "net", None)
+    if net is None:
+        inner = getattr(model, "wm", None) or getattr(model, "model", None)
+        net = getattr(inner, "net", None) if inner is not None else None
+        if net is None and inner is not None:
+            return _model_dims(inner)
+    if net is None:
+        return 4, 2
+    return int(getattr(net, "obs_dim", 4)), int(getattr(net, "n_actions", 2))
+
+
+def mpc_for_model(
+    model: StepModel,
+    *,
+    seed: int = 0,
+    inference: InferenceCounter | None = None,
+    enforce_time_budget: bool | None = None,
+) -> RandomShootingMPC:
+    """CartPole keeps frozen H=3; Pendulum uses the diagnostic-selected H=16 recipe."""
+    obs_dim, n_actions = _model_dims(model)
+    if int(n_actions) == 3 or int(obs_dim) == 3:
+        from nexus.world.rewards import pendulum_step_reward
+
+        etb = False if enforce_time_budget is None else bool(enforce_time_budget)
+        return RandomShootingMPC(
+            model=model,
+            n_actions=3,
+            horizon=PENDULUM_PLAN_HORIZON,
+            n_candidates=PENDULUM_PLAN_CANDIDATES,
+            seed=int(seed),
+            objective="predicted_reward",
+            step_reward=pendulum_step_reward,
+            inference=inference,
+            enforce_time_budget=etb,
+        )
+    from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_OBJECTIVE, FROZEN_PRIMARY_HORIZON
+
+    etb = True if enforce_time_budget is None else bool(enforce_time_budget)
+    return RandomShootingMPC(
+        model=model,
+        n_actions=2,
+        horizon=FROZEN_PRIMARY_HORIZON,
+        n_candidates=FROZEN_CANDIDATES[FROZEN_PRIMARY_HORIZON],
+        seed=int(seed),
+        objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
+        inference=inference,
+        enforce_time_budget=etb,
+    )
+
+
 def one_step_greedy(model: StepModel, obs: np.ndarray, n_actions: int) -> int:
     """No multi-step planning: pick the action with lowest predicted |theta'|."""
     best_a = 0

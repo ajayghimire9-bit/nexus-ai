@@ -1,0 +1,20 @@
+parent_commit: a63c391
+kind: residual
+hidden: [64, 64]
+pendulum_horizon: 16
+pendulum_candidates: 16
+cartpole_horizon_frozen: 3
+mae_ratio: 0.97
+retuned_mae: false
+n_train: 1024
+n_val: 256
+epochs: 20
+budgets: [0, 64, 128, 256, 512, 1024]
+n_model_seeds: 10
+eval_episodes: 2
+confirm_eval_seed: 175000
+oracle_on_confirmation: false
+is_agi: false
+claims_learning_to_learn: false
+primary_success: mae_gated_minus_frozen_at_max_budget_seed_ci_lo>0
+l2l_success: ABC_then_D_beats_naive_and_matched_volume_ci_lo>0

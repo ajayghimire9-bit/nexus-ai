@@ -20,8 +20,7 @@ from nexus.tasks.spec import TaskSpec, make_task_env
 from nexus.world.agent import InteractionLedger
 from nexus.world.belief import BeliefEstimator, BeliefStepModel, IdentityBelief
 from nexus.world.dynamics import WorldModel
-from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_OBJECTIVE, FROZEN_PRIMARY_HORIZON
-from nexus.world.planning import RandomShootingMPC
+from nexus.world.planning import mpc_for_model
 
 # Frozen 2026-10-12 before V0.8.4 confirmation. Do not edit after inspecting confirm.
 CONTROL_VAL_HORIZON = 32
@@ -104,14 +103,7 @@ def _rollout_frozen(
     env = make_task_env(spec, seed=seed)
     obs, _ = env.reset(seed=seed)
     est.reset()
-    planner = RandomShootingMPC(
-        model=BeliefStepModel(frozen),
-        n_actions=2,
-        horizon=FROZEN_PRIMARY_HORIZON,
-        n_candidates=FROZEN_CANDIDATES[FROZEN_PRIMARY_HORIZON],
-        seed=0,
-        objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
-    )
+    planner = mpc_for_model(BeliefStepModel(frozen), seed=0)
     planner.reset_episode(seed)
     prev_a: int | None = None
     total = 0.0
@@ -207,8 +199,8 @@ def mpc_action_disagreement(
     n = min(int(o.shape[0]), 32)
     differ = 0
     for i in range(n):
-        pi = RandomShootingMPC(BeliefStepModel(incumbent), n_actions=2, horizon=3, n_candidates=16, seed=0, objective="both")  # type: ignore[arg-type]
-        pc = RandomShootingMPC(BeliefStepModel(candidate), n_actions=2, horizon=3, n_candidates=16, seed=0, objective="both")  # type: ignore[arg-type]
+        pi = mpc_for_model(BeliefStepModel(incumbent), seed=0)
+        pc = mpc_for_model(BeliefStepModel(candidate), seed=0)
         pi.reset_episode(int(seed) + i)
         pc.reset_episode(int(seed) + i)
         ai, _ = pi.act(o[i])

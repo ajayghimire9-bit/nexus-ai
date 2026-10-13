@@ -12,23 +12,14 @@ from nexus.world.agent import InteractionLedger, _mae
 from nexus.world.belief import BeliefEstimator, BeliefStepModel, IdentityBelief
 from nexus.world.data import TransitionDataset
 from nexus.world.dynamics import WorldModel
-from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_OBJECTIVE, FROZEN_PRIMARY_HORIZON
-from nexus.world.planning import RandomShootingMPC
+from nexus.world.planning import RandomShootingMPC, mpc_for_model
 from nexus.world.planning import one_step_greedy
 
 GatePolicy = Literal["never", "always", "mae", "action", "control"]
 
 
 def _planner(wm: WorldModel) -> RandomShootingMPC:
-    return RandomShootingMPC(
-        model=BeliefStepModel(wm),
-        n_actions=2,
-        horizon=FROZEN_PRIMARY_HORIZON,
-        n_candidates=FROZEN_CANDIDATES[FROZEN_PRIMARY_HORIZON],
-        seed=0,
-        objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
-        enforce_time_budget=True,
-    )
+    return mpc_for_model(BeliefStepModel(wm), seed=0)
 
 
 def _pack(obs: list, act: list, nxt: list, rew: list, term: list, spec: TaskSpec) -> TransitionDataset:

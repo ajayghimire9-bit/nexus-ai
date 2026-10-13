@@ -23,7 +23,7 @@ Optional LLMs may help planning, engineering, and explanation. They must **not**
 
 **NEXUS Research V0.1:** tested PyTorch actor–critic baseline + configurable neural-network factory + initial evolutionary experiment loop.
 
-Current status: research through **V0.8.9**, a Pendulum H=3 cross-environment test (CI includes 0; artifact preserved), and a planning-generality diagnostic. Development-selected H=16 beat random on new Pendulum physics (Δ +524, CI excludes 0) with independently trained residual models. That is not learning-to-learn. No self-improving system, profitable trading, or AGI. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
+Current status: research through **V0.8.9**, a Pendulum H=3 cross-environment test (CI includes 0; artifact preserved), a planning-generality diagnostic (dev-selected H=16 beat random on new Pendulum physics; not L2L), and a Pendulum adaptation/transfer test. MAE-gated vs frozen CI includes 0; A→B→C did not help D. No self-improving system, profitable trading, or AGI. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
 
 ## Research loop
 

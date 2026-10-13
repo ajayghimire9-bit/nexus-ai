@@ -9,8 +9,7 @@ import numpy as np
 from nexus.tasks.spec import TaskSpec, make_task_env
 from nexus.world.belief import BeliefEstimator, BeliefStepModel, IdentityBelief
 from nexus.world.data import TransitionDataset
-from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_OBJECTIVE, FROZEN_PRIMARY_HORIZON
-from nexus.world.planning import RandomShootingMPC
+from nexus.world.planning import mpc_for_model
 
 
 class PersistentSession:
@@ -30,14 +29,7 @@ class PersistentSession:
         self.env_seed = int(env_seed)
         self.plan_seed = int(plan_seed)
         self.est: BeliefEstimator = est if est is not None else IdentityBelief()
-        self.planner = RandomShootingMPC(
-            model=BeliefStepModel(wm),
-            n_actions=2,
-            horizon=FROZEN_PRIMARY_HORIZON,
-            n_candidates=FROZEN_CANDIDATES[FROZEN_PRIMARY_HORIZON],
-            seed=0,
-            objective=FROZEN_OBJECTIVE,  # type: ignore[arg-type]
-        )
+        self.planner = mpc_for_model(BeliefStepModel(wm), seed=0)
         self.env = make_task_env(spec, seed=self.env_seed)
         self.obs, _ = self.env.reset(seed=self.env_seed)
         self.est.reset()

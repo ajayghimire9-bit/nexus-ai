@@ -11,9 +11,9 @@ Not AGI. Do not retune MAE 0.97 from V0.8.5–V0.8.9 confirmation. Do not start 
 | Risk of theater | High: another gate/LR/cycle count | Medium: family 2 may be too hard at local compute | High: meta-fit noise from a 0-accept inner loop |
 | Falsifiable cheaply? | Only with a **new candidate class**, not another 0.97 tweak | Yes: planning vs random on family 2 | Not until A or B produces an adapter that sometimes helps |
 
-**Status after the planning diagnostic:** direction **B** with frozen **H=3** failed on default Pendulum (`cross_environment.json`). A **development-selected H=16** of the same residual MPC beat random on **new** Pendulum gravity (`planning_generality.json`, Δ +524 excludes 0). That is not L2L.
+**Status after Pendulum transfer:** H=16 planning works vs random. Pre-registered **MAE-gated vs frozen failed** (`pendulum_transfer.json`, +29 includes 0). Ungated fine-tuning **did** beat frozen. A→B→C did **not** help D. **C (meta-learn adaptation rules) remains unjustified.**
 
-**Primary direction now:** small **A-on-family-2** — MAE 0.97 / low-LR vs never-adapt on shifted Pendulum with **H=16 frozen**, n=10. If that CI includes 0, **C remains unjustified**. Do not start a large meta-learner.
+**Primary direction now:** stop iterating MAE 0.97. If continued, pre-register a **control-based** commit rule on Pendulum H=16 vs frozen, n=10 — or a model-free PPO inner loop on two families. Do not start a large meta-learner, finance, or NAS.
 
 CartPole physics variants are not “unfamiliar environments.” Continuing A on CartPole without a new candidate generator repeats V0.8.x.
 

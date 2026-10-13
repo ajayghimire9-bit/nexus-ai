@@ -387,3 +387,9 @@ Frozen residual 64×64, H=3, 16 candidates, 3 torques {−2,0,+2}, Gymnasium rew
 Branch `cursor/planning-generality-diagnostic`. Write-up: `docs/NEXUS_PLANNING_GENERALITY.md`. Artifact `artifacts/planning_generality.json` (dev n=5, confirm n=10, wall **95.4 s**). `pytest` **244 passed**. Prior `cross_environment.json` hash `402ce4151837eb0d` preserved.
 
 Dev horizon grid (architecture frozen): H=3 learned **−1358** (worse than random **−1091**); selected **H=16 × 16** **−621**. Simulator oracle (dev only) H=16 **−128**. Confirm new g={8.3,12.1}: selected **−649** vs random **−1173**, Δ **+524 [443, 605]** excludes 0. CartPole H=3 still **500**. Not weight transfer. Not L2L. Not AGI.
+
+## Pendulum adaptation and transfer
+
+Branch `cursor/pendulum-adaptation-transfer`. Write-up: `docs/NEXUS_PENDULUM_TRANSFER.md`. Artifact `artifacts/pendulum_transfer.json` (n=10, wall **1167 s**). `pytest` **250 passed**. Prior hashes preserved.
+
+Frozen H=16 residual. Confirm mean over g/m/l shifts: MAE-gated vs frozen **+29 [−28, +86] includes 0** (primary **fail**). Always-adapt **+211 [134, 288]**; low-LR **+106 [39, 173]**. Scratch worse. A→B→C vs naive D **+22 includes 0**; vs matched volume **−6 includes 0**. Not L2L. Not AGI.
