@@ -30,8 +30,9 @@ class TransitionContextEncoder(nn.Module):
         super().__init__()
         self.obs_dim = int(obs_dim)
         self.n_actions = int(n_actions)
+        self.hidden = int(hidden)
         self.z_dim = int(z_dim)
-        self.net = nn.Sequential(nn.Linear(obs_dim + n_actions + obs_dim, hidden), nn.Tanh(), nn.Linear(hidden, z_dim))
+        self.net = nn.Sequential(nn.Linear(obs_dim + n_actions + obs_dim, self.hidden), nn.Tanh(), nn.Linear(self.hidden, self.z_dim))
 
     def forward(self, obs_n: torch.Tensor, action: torch.Tensor, delta_n: torch.Tensor) -> torch.Tensor:
         oh = torch.nn.functional.one_hot(action.long(), num_classes=self.n_actions).float()
@@ -52,7 +53,9 @@ class ContextResidualDynamics(nn.Module):
         trunk, last = build_mlp(obs_dim + n_actions, hidden, "tanh", init="xavier")
         self.trunk = trunk
         self.film = nn.Linear(z_dim, 2 * last)
-        # Zero FiLM weights make d(loss)/d(z) zero, so the encoder never learns.
+        # Exact-zero FiLM weights make d(loss)/d(z) zero on that step, so the encoder
+        # gets no gradient until those weights move. They can move: d(loss)/d(W) depends
+        # on z, not on W. The old no_grad context path was the persistent blockage.
         nn.init.normal_(self.film.weight, std=0.02)
         nn.init.zeros_(self.film.bias)
         self.state_head = nn.Linear(last, obs_dim)
@@ -80,14 +83,24 @@ class ContextWorldModel:
     random_encoder: bool = False
 
     @classmethod
-    def create(cls, obs_dim: int, n_actions: int, *, seed: int = 0, random_encoder: bool = False) -> "ContextWorldModel":
+    def create(
+        cls,
+        obs_dim: int,
+        n_actions: int,
+        *,
+        seed: int = 0,
+        random_encoder: bool = False,
+        encoder_hidden: int = ENCODER_HIDDEN,
+        context_dim: int = CONTEXT_DIM,
+        trunk_hidden: tuple[int, ...] = TRUNK_HIDDEN,
+    ) -> "ContextWorldModel":
         torch.manual_seed(int(seed))
-        enc = TransitionContextEncoder(obs_dim, n_actions)
-        net = ContextResidualDynamics(obs_dim, n_actions)
+        enc = TransitionContextEncoder(obs_dim, n_actions, hidden=int(encoder_hidden), z_dim=int(context_dim))
+        net = ContextResidualDynamics(obs_dim, n_actions, hidden=tuple(int(h) for h in trunk_hidden), z_dim=int(context_dim))
         if random_encoder:
             for p in enc.parameters():
                 p.requires_grad_(False)
-        z = torch.zeros(CONTEXT_DIM)
+        z = torch.zeros(int(context_dim))
         return cls(encoder=enc, net=net, obs_rms=RunningMeanStd((obs_dim,)), device=torch.device("cpu"), z=z, random_encoder=bool(random_encoder))
 
     def n_parameters(self) -> int:
@@ -99,8 +112,12 @@ class ContextWorldModel:
     def copy_rms(self, other: RunningMeanStd) -> None:
         self.obs_rms.load_state_dict(other.state_dict())
 
+    def context_dim(self) -> int:
+        return int(self.encoder.z_dim)
+
     def clear_context(self) -> None:
-        self.z = torch.zeros(CONTEXT_DIM)
+        """Drop the current task vector. A loaded checkpoint starts cleared on purpose."""
+        self.z = torch.zeros(self.context_dim())
 
     def normalize(self, obs: np.ndarray) -> np.ndarray:
         return self.obs_rms.normalize(np.asarray(obs, dtype=np.float32).reshape(-1, self.net.obs_dim))
@@ -119,7 +136,7 @@ class ContextWorldModel:
         """Mean-pool at most MAX_CONTEXT rows. differentiable=False detaches and stores z."""
         o = np.asarray(obs, dtype=np.float32)
         if o.shape[0] == 0:
-            z = torch.zeros(CONTEXT_DIM)
+            z = torch.zeros(self.context_dim())
             if not differentiable:
                 self.z = z
                 self.n_encodes += 1
@@ -173,12 +190,26 @@ class ContextWorldModel:
         term = torch.as_tensor(np.asarray(terminated, dtype=np.float32).reshape(-1))
         return nn.functional.mse_loss(pred, delta) + 0.25 * nn.functional.binary_cross_entropy_with_logits(logit, term)
 
-    def clone_frozen(self) -> "ContextWorldModel":
-        other = ContextWorldModel.create(self.net.obs_dim, self.net.n_actions, seed=0, random_encoder=self.random_encoder)
+    def clone_trainable(self) -> "ContextWorldModel":
+        other = ContextWorldModel.create(
+            self.net.obs_dim,
+            self.net.n_actions,
+            seed=0,
+            random_encoder=self.random_encoder,
+            encoder_hidden=self.encoder.hidden,
+            context_dim=self.context_dim(),
+            trunk_hidden=self.net.hidden,
+        )
         other.encoder.load_state_dict({k: v.detach().cpu().clone() for k, v in self.encoder.state_dict().items()})
         other.net.load_state_dict({k: v.detach().cpu().clone() for k, v in self.net.state_dict().items()})
         other.copy_rms(self.obs_rms)
         other.clear_context()
+        for src, dst in zip(self.encoder.parameters(), other.encoder.parameters()):
+            dst.requires_grad_(bool(src.requires_grad))
+        return other
+
+    def clone_frozen(self) -> "ContextWorldModel":
+        other = self.clone_trainable()
         other.encoder.eval()
         other.net.eval()
         for p in list(other.encoder.parameters()) + list(other.net.parameters()):
@@ -193,23 +224,45 @@ class ContextWorldModel:
                 "encoder": self.encoder.state_dict(),
                 "net": self.net.state_dict(),
                 "obs_rms": self.obs_rms.state_dict(),
-                "obs_dim": self.net.obs_dim,
-                "n_actions": self.net.n_actions,
+                "obs_dim": int(self.net.obs_dim),
+                "n_actions": int(self.net.n_actions),
                 "arch": "context_film",
-                "context_dim": CONTEXT_DIM,
-                "trunk_hidden": TRUNK_HIDDEN,
-                "random_encoder": self.random_encoder,
+                "encoder_hidden": int(self.encoder.hidden),
+                "context_dim": int(self.context_dim()),
+                "trunk_hidden": tuple(int(h) for h in self.net.hidden),
+                "random_encoder": bool(self.random_encoder),
             },
             path,
         )
 
     @classmethod
     def load(cls, path: str | Path) -> "ContextWorldModel":
+        """Restore architecture from the payload. Target context is cleared on purpose.
+
+        A reusable checkpoint must not keep the previous task's z. Defaults match the
+        original pilot (encoder 32, context 8, trunk 48×48) when those keys are absent.
+        Hidden sizes are also inferred from the encoder tensors when the key is missing.
+        """
         payload = torch.load(path, map_location="cpu", weights_only=False)
-        wm = cls.create(int(payload["obs_dim"]), int(payload["n_actions"]), seed=0, random_encoder=bool(payload.get("random_encoder")))
-        wm.encoder.load_state_dict(payload["encoder"])
+        enc_state = payload["encoder"]
+        inferred_hidden = int(enc_state["net.0.weight"].shape[0])
+        inferred_z = int(enc_state["net.2.weight"].shape[0])
+        trunk = payload.get("trunk_hidden") or TRUNK_HIDDEN
+        wm = cls.create(
+            int(payload["obs_dim"]),
+            int(payload["n_actions"]),
+            seed=0,
+            random_encoder=bool(payload.get("random_encoder", False)),
+            encoder_hidden=int(payload.get("encoder_hidden") or inferred_hidden),
+            context_dim=int(payload.get("context_dim") or inferred_z),
+            trunk_hidden=tuple(int(h) for h in trunk),
+        )
+        wm.encoder.load_state_dict(enc_state)
         wm.net.load_state_dict(payload["net"])
         wm.obs_rms.load_state_dict(payload["obs_rms"])
+        if wm.random_encoder:
+            for p in wm.encoder.parameters():
+                p.requires_grad_(False)
         wm.clear_context()
         return wm
 
@@ -229,6 +282,70 @@ def split_support_query(ds: TransitionDataset, rng: np.random.Generator) -> tupl
     return ds.slice(s_idx), ds.slice(q_idx)
 
 
+LENGTH_SEED_OFFSET = 10_007
+VARIABLE_SUPPORT_LENGTHS = (16, 32, 64, 128)
+
+
+def make_context_schedule(
+    tasks: list[TransitionDataset],
+    *,
+    updates: int,
+    seed: int,
+    batch: int = 64,
+    empty_prob: float = EMPTY_CONTEXT_PROB,
+) -> list[dict[str, Any]]:
+    """Pair two learners on one schedule.
+
+    `seed` chooses the task, the episode split, the query minibatch, and the empty draw.
+    Support length uses `seed + LENGTH_SEED_OFFSET` and is drawn only on non-empty steps,
+    so length sampling cannot change the rest of the schedule.
+    """
+    sched = np.random.default_rng(int(seed))
+    length_rng = np.random.default_rng(int(seed) + LENGTH_SEED_OFFSET)
+    rows: list[dict[str, Any]] = []
+    for _step in range(int(updates)):
+        task_index = int(sched.integers(0, len(tasks)))
+        ds = tasks[task_index]
+        eids = np.unique(ds.episode_id)
+        if eids.size < 2:
+            raise ValueError("support/query split needs at least two episodes")
+        perm = sched.permutation(eids)
+        n_sup = max(1, int(eids.size) // 2)
+        sup = {int(x) for x in perm[:n_sup]}
+        qry = {int(x) for x in perm[n_sup:]}
+        if not qry or sup & qry:
+            raise ValueError("support/query episode overlap")
+        sup_idx = np.flatnonzero(np.isin(ds.episode_id, np.fromiter(sup, dtype=np.int64))).astype(np.int64)
+        qry_idx = np.flatnonzero(np.isin(ds.episode_id, np.fromiter(qry, dtype=np.int64))).astype(np.int64)
+        q_idx = np.asarray(sched.choice(qry_idx, size=min(int(batch), int(qry_idx.size)), replace=False), dtype=np.int64)
+        empty = bool(sched.random() < float(empty_prob))
+        variable_length = None if empty else int(length_rng.choice(np.asarray(VARIABLE_SUPPORT_LENGTHS, dtype=np.int64)))
+        rows.append(
+            {
+                "task_index": task_index,
+                "support_index": sup_idx,
+                "query_index": q_idx,
+                "empty": empty,
+                "variable_length": variable_length,
+            }
+        )
+    return rows
+
+
+def support_take(row: dict[str, Any], mode: str) -> np.ndarray:
+    """Prefix of the eligible support history. Variable length never sees rows the fixed run skips."""
+    idx = np.asarray(row["support_index"], dtype=np.int64)
+    if row["empty"]:
+        return idx[:0]
+    if mode == "fixed":
+        n = min(int(idx.size), MAX_CONTEXT)
+    elif mode == "variable":
+        n = min(int(idx.size), int(row["variable_length"]), MAX_CONTEXT)
+    else:
+        raise ValueError(mode)
+    return idx[:n]
+
+
 def train_context_model(
     model: ContextWorldModel,
     tasks: list[TransitionDataset],
@@ -237,30 +354,43 @@ def train_context_model(
     seed: int,
     batch: int = 64,
     empty_prob: float = EMPTY_CONTEXT_PROB,
+    support_mode: str = "fixed",
+    schedule: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    """One task per update. Support and query are episode-disjoint. z is not detached."""
-    rng = np.random.default_rng(int(seed))
+    """One task per update. Support and query are episode-disjoint. z is not detached.
+
+    `support_mode='fixed'` is the original pilot: empty with probability 0.2, otherwise 128 rows.
+    `support_mode='variable'` uses the scheduled length in {16, 32, 64, 128} on the same rows.
+    """
+    if support_mode not in ("fixed", "variable"):
+        raise ValueError(support_mode)
+    rows = schedule if schedule is not None else make_context_schedule(
+        tasks, updates=updates, seed=seed, batch=batch, empty_prob=empty_prob
+    )
+    if len(rows) != int(updates):
+        raise ValueError("schedule length does not match the update budget")
     params = [p for p in list(model.encoder.parameters()) + list(model.net.parameters()) if p.requires_grad]
     opt = torch.optim.Adam(params, lr=1e-3)
     before = torch.cat([p.detach().flatten().clone() for p in model.encoder.parameters()])
     grad_norms: list[float] = []
     n_query = 0
     n_support = 0
-    for step in range(int(updates)):
-        ds = tasks[int(rng.integers(0, len(tasks)))]
-        support, query = split_support_query(ds, rng)
-        q_idx = rng.choice(len(query), size=min(int(batch), len(query)), replace=False)
-        q = query.slice(np.asarray(q_idx, dtype=np.int64))
-        use_empty = bool(rng.random() < float(empty_prob))
+    hist: dict[str, int] = {"empty": 0, "16": 0, "32": 0, "64": 0, "128": 0}
+    for row in rows:
+        ds = tasks[int(row["task_index"])]
+        q = ds.slice(np.asarray(row["query_index"], dtype=np.int64))
+        take = support_take(row, support_mode)
         model.net.train()
-        if use_empty:
-            z = torch.zeros(CONTEXT_DIM)
-            n_support += 0
+        if take.size == 0:
+            z = torch.zeros(model.context_dim())
+            hist["empty"] += 1
         else:
-            s_n = min(len(support), MAX_CONTEXT)
-            s = support.slice(np.arange(s_n))
+            s = ds.slice(take)
+            if set(np.unique(s.episode_id).tolist()) & set(np.unique(q.episode_id).tolist()):
+                raise RuntimeError("support and query episodes overlap")
             z = model.encode(s.obs, s.action, s.next_obs, differentiable=not model.random_encoder)
-            n_support += int(s_n)
+            n_support += int(take.size)
+            hist[str(int(take.size) if int(take.size) in (16, 32, 64, 128) else "128")] += 1
         loss = model.query_loss(q.obs, q.action, q.next_obs, q.terminated, z)
         opt.zero_grad(set_to_none=True)
         loss.backward()
@@ -272,7 +402,6 @@ def train_context_model(
         nn.utils.clip_grad_norm_(params, 1.0)
         opt.step()
         n_query += len(q)
-        del step
     after = torch.cat([p.detach().flatten() for p in model.encoder.parameters()])
     model.clear_context()
     model.encoder.eval()
@@ -281,6 +410,8 @@ def train_context_model(
         "optimizer_updates": int(updates),
         "query_examples": int(n_query),
         "support_examples": int(n_support),
+        "support_mode": support_mode,
+        "support_length_counts": hist,
         "mean_encoder_grad_norm": float(np.mean(grad_norms)) if grad_norms else 0.0,
         "encoder_l2_delta": float(torch.linalg.vector_norm(after - before).item()),
         "random_encoder": bool(model.random_encoder),

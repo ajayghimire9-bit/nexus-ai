@@ -90,9 +90,19 @@ def train_world_model(
         if v < best_val:
             best_val = v
             best_state = {k: t.detach().cpu().clone() for k, t in wm.net.state_dict().items()}
+    final_state = {k: t.detach().cpu().clone() for k, t in wm.net.state_dict().items()}
     wm.net.load_state_dict(best_state)
     wm.net.eval()
-    return wm, {"best_val": best_val, "history": history, "kind": kind, "epochs": epochs, "train_n": len(train), "val_n": len(val)}
+    return wm, {
+        "best_val": best_val,
+        "history": history,
+        "kind": kind,
+        "epochs": epochs,
+        "train_n": len(train),
+        "val_n": len(val),
+        "selection": "best_source_validation",
+        "final_state": final_state,
+    }
 
 
 def one_step_errors(wm: Any, ds: TransitionDataset) -> dict[str, Any]:

@@ -7,6 +7,7 @@ import json
 import sys
 from pathlib import Path
 
+from nexus.world.confirm_guard import ConfirmationRejected
 from nexus.world.context_pilot import run_context_adaptation
 
 
@@ -22,19 +23,15 @@ def main() -> None:
         return
     if phase != "confirm":
         raise SystemExit(f"unknown phase {phase}")
-    dev_path = Path("artifacts/context_adaptation_dev.json")
-    dev = json.loads(dev_path.read_text())
-    if not dev.get("gate", {}).get("pass"):
-        raise SystemExit("development gate did not pass; confirmation set stays unused")
-    if dev.get("incomplete"):
-        raise SystemExit("development run was incomplete")
-    epochs = int(dev["protocol"]["ft_epochs"])
-    out = run_context_adaptation(
-        phase="confirm",
-        ft_epochs=epochs,
-        artifact_path="artifacts/context_adaptation_confirm.json",
-        plot_path="artifacts/context_adaptation_confirm.svg",
-    )
+    try:
+        out = run_context_adaptation(
+            phase="confirm",
+            dev_artifact_path=Path("artifacts/context_adaptation_dev.json"),
+            artifact_path="artifacts/context_adaptation_confirm.json",
+            plot_path="artifacts/context_adaptation_confirm.svg",
+        )
+    except ConfirmationRejected as exc:
+        raise SystemExit(f"confirmation rejected: {exc}") from exc
     print(json.dumps({"incomplete": out["incomplete"], "deltas": out["deltas_primary_auc"], "wall_clock_s": out["wall_clock_s"]}, indent=2, default=str))
 
 

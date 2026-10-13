@@ -109,9 +109,25 @@ def assert_context_physics_disjoint() -> None:
 
 
 def prefix_hash(ds: TransitionDataset, budget: int) -> str:
+    """Hash the allowed prefix, including outcomes and array metadata.
+
+    Observations, actions, next observations, termination, and truncation are included,
+    with shape and dtype. Rows past `budget` do not enter the digest.
+    """
     k = max(0, min(int(budget), len(ds)))
-    blob = np.ascontiguousarray(ds.obs[:k]).tobytes() + np.ascontiguousarray(ds.action[:k]).tobytes()
-    return hashlib.sha256(blob).hexdigest()[:16]
+    parts: list[bytes] = []
+    arrays = {
+        "obs": ds.obs[:k],
+        "action": ds.action[:k],
+        "next_obs": ds.next_obs[:k],
+        "terminated": np.asarray(ds.terminated[:k]),
+        "truncated": np.asarray(ds.truncated[:k]),
+    }
+    for name, arr in arrays.items():
+        block = np.ascontiguousarray(arr)
+        parts.append(f"{name}:{block.shape}:{block.dtype}:".encode())
+        parts.append(block.tobytes())
+    return hashlib.sha256(b"".join(parts)).hexdigest()[:16]
 
 
 def norm_auc(budgets: tuple[int, ...] | list[int], values: list[float], hi: int) -> float:
@@ -215,13 +231,16 @@ def _train_pair(
     updates: int | None,
     include_random: bool,
 ) -> dict[str, Any]:
-    t0 = time.perf_counter()
+    t_prep = time.perf_counter()
     rms = _fit_rms(tasks)
+    prep_wall = time.perf_counter() - t_prep
     pooled = concat_datasets(*tasks, task_id="context_source_pool")
+    t_mlp = time.perf_counter()
     mlp, slog = train_world_model(
         pooled, val, kind=FROZEN_KIND, epochs=epochs, batch_size=MLP_BATCH,
         seed=V089C_TRAIN_SEED + int(seed), hidden=FROZEN_HIDDEN, n_actions=3, obs_rms=rms,
     )
+    mlp_wall = time.perf_counter() - t_mlp
     n_updates = _mlp_updates(len(pooled), epochs)
     ctx = ContextWorldModel.create(3, 3, seed=V089C_TRAIN_SEED + 17 * int(seed))
     ctx.copy_rms(rms)
@@ -241,7 +260,8 @@ def _train_pair(
         "rms_mean": np.asarray(rms.mean).tolist(),
         "mlp_updates": n_updates,
         "mlp_examples": int(len(pooled) * epochs),
-        "mlp_wall_s": time.perf_counter() - t0,
+        "mlp_wall_s": mlp_wall,
+        "prep_wall_s": prep_wall,
         "ctx_log": ctx_log,
         "ctx_wall_s": ctx_wall,
         "rand_log": rand_log,
@@ -328,16 +348,26 @@ def _curves_for_seed(
                 built["ctx_rand"] = m
                 res_b["ctx_rand"] = {"context_rows": min(b, MAX_CONTEXT, len(prefix)), "encoder_trained": False}
             for name, model in built.items():
-                cache_ok = name in ("mlp_frozen", "ctx_zero") or (name == "ctx_rand" and b == 0 and False)
-                if name in ("mlp_frozen", "ctx_zero") and name in frozen_cache:
+                cached = name in ("mlp_frozen", "ctx_zero") and name in frozen_cache
+                if cached:
                     ev = frozen_cache[name]
+                    executed_env = 0
+                    executed_imagined = 0
                 else:
                     ev = _eval(spec, model, seed=eval_seed, episodes=episodes)
+                    executed_env = int(ev["env_interactions"])
+                    executed_imagined = int(ev["model_states"])
                     if name in ("mlp_frozen", "ctx_zero"):
                         frozen_cache[name] = ev
                 curves[name].append(float(ev["mean_return"]))
-                res_b[name] = {**res_b.get(name, {}), "eval_env": ev["env_interactions"], "imagined_states": ev["model_states"]}
-                del cache_ok
+                res_b[name] = {
+                    **res_b.get(name, {}),
+                    "eval_env": int(ev["env_interactions"]),
+                    "eval_env_executed": executed_env,
+                    "imagined_states": int(ev["model_states"]),
+                    "imagined_executed": executed_imagined,
+                    "cached": cached,
+                }
             if b == min(PRIMARY_HI, max(budgets)):
                 pred = {}
                 if "ctx_real" in built and b > 0:
@@ -399,11 +429,20 @@ def run_context_adaptation(
     ft_epochs: int | None = None,
     artifact_path: str | Path | None = None,
     plot_path: str | Path | None = None,
+    dev_artifact: dict[str, Any] | None = None,
+    dev_artifact_path: str | Path | None = None,
 ) -> dict[str, Any]:
     t0 = time.perf_counter()
     assert_context_physics_disjoint()
     if phase not in ("dev", "confirm", "smoke"):
         raise ValueError(phase)
+    if phase == "confirm":
+        from nexus.world.confirm_guard import assert_confirmation_allowed, load_dev_artifact
+
+        evidence = dev_artifact if dev_artifact is not None else load_dev_artifact(dev_artifact_path)
+        assert_confirmation_allowed(evidence)
+        if ft_epochs is None and not quick:
+            ft_epochs = int(evidence["protocol"]["ft_epochs"])
     dev_specs = pendulum_context_development()
     confirm_specs = pendulum_context_confirmation() if phase == "confirm" else ()
     source_specs = pendulum_context_train()
@@ -503,6 +542,8 @@ def run_context_adaptation(
             if other in methods_present:
                 xs = [_mean_auc(s["curves"], "ctx_real") - _mean_auc(s["curves"], other) for s in per_seed if s["curves"]["per_task"]]
                 deltas[f"real_minus_{other}"] = seed_level_ci(xs) if len(xs) >= 2 else ({"n": len(xs), "mean": float(np.mean(xs))} if xs else None)
+    from nexus.world.confirm_guard import provenance_fields
+
     payload = {
         "protocol": {
             "code_version": "context_adaptation_pilot",
@@ -534,6 +575,7 @@ def run_context_adaptation(
             "confirm_evaluated": phase == "confirm",
             "reptile_note": "Previous Reptile loss is a negative result for that run, not a disproof of Reptile.",
             "is_agi": False,
+            **provenance_fields(),
             "quick": quick or phase == "smoke",
             "git": _git_meta(),
         },
