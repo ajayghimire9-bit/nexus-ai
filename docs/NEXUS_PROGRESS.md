@@ -411,3 +411,9 @@ FiLM transition context, trunk (48, 48), 4332 parameters, vs residual MLP (64, 6
 Branch `cursor/context-adaptation-diagnosis`. Write-up: `docs/NEXUS_CONTEXT_ADAPTATION_DIAGNOSIS.md`. Artifact `artifacts/context_adaptation_diagnosis.json` (3 seeds, wall **521 s**). Confirmation physics were not evaluated. The original development artifact is preserved.
 
 Fixed-length real context did not beat zero context on held-out source MAE (**0.0703** vs **0.0700** at budget 128) and raised development MAE (**0.084** vs **0.077**). The 0–128 control AUC interval for variable-minus-fixed length includes 0 (point estimate **+22**). Zero-context control remains about **146** points below the frozen MLP. Not AGI.
+
+## Context optimization diagnostic
+
+Branch `cursor/context-optimization-diagnostic`. Write-up: `docs/NEXUS_CONTEXT_OPTIMIZATION_DIAGNOSTIC.md`. Selection and audit artifacts are separate. Wall **17.4 s**. No control sweep and no confirmation.
+
+The first 300 updates reproduce the diagnosis. Real-context angular velocity on the selection set fell from **0.150** at 300 updates to **0.136** at 3000, and zero context fell further, to **0.126**. The independent audit at the selected 3000-update checkpoint has real **0.1264** versus zero **0.1256** and wrong **0.1234**. The screen failed. More training improved the shared dynamics. It did not make real context useful. Not AGI.

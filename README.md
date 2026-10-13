@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: context-adaptation diagnosis** (development only). Write-up: `docs/NEXUS_CONTEXT_ADAPTATION_DIAGNOSIS.md`. Artifact `artifacts/context_adaptation_diagnosis.json`. The confirmation set was not evaluated. The earlier development screen in `artifacts/context_adaptation_dev.json` is preserved.
+**Current: context optimization diagnostic** (source prediction only). Write-up: `docs/NEXUS_CONTEXT_OPTIMIZATION_DIAGNOSTIC.md`. Artifacts `artifacts/context_optimization_selection.json` and `artifacts/context_optimization_audit.json`. Confirmation physics and control sweeps were not run.
 
-Real context did not beat zero context on held-out source prediction, and it raised development prediction error. Completing this milestone is **not** AGI or learning-to-learn.
+More Adam updates improved the shared dynamics. Real context still did not beat zero or wrong context on a fresh source audit. Completing this milestone is **not** AGI or learning-to-learn.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
@@ -105,6 +105,9 @@ PYTHONPATH=src:.deps python3 scripts/run_context_adaptation_pilot.py dev
 # Context-length diagnosis (development only; does not evaluate confirmation physics)
 PYTHONPATH=src:.deps python3 scripts/run_context_adaptation_diagnosis.py dev
 
+# Bounded context-optimization diagnostic (source prediction only)
+PYTHONPATH=src:.deps python3 scripts/run_context_optimization_diagnostic.py dev
+
 pytest
 ```
 
@@ -123,4 +126,4 @@ pytest
 
 ## What this is not
 
-V0.8.9, Pendulum transfer, the meta-learning pilot, the context-adaptation development screen, and the context-length diagnosis do not demonstrate AGI or learning-to-learn. The stack does not trade, and it does not modify its own safety or evaluation rules.
+V0.8.9, Pendulum transfer, the meta-learning pilot, the context-adaptation screen, the context-length diagnosis, and the optimization diagnostic do not demonstrate AGI or learning-to-learn. The stack does not trade, and it does not modify its own safety or evaluation rules.

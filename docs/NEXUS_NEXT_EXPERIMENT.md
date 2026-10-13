@@ -16,20 +16,22 @@ The (48, 48) context trunk (4332 parameters) was already far behind the (64, 64)
 
 The development diagnosis (`docs/NEXUS_CONTEXT_ADAPTATION_DIAGNOSIS.md`) kept the (48, 48) trunk. Fixed-length real context did not beat zero context on held-out source MAE (0.0703 vs 0.0700 at budget 128) and raised development MAE from 0.0774 to about 0.084, mostly in angular velocity. Open-loop horizon-16 error moved the same way. Variable-length training had a positive short-budget point estimate and a seed-level AUC interval that includes 0. Zero-context control stayed about 146 points below the frozen MLP. The final-epoch MLP matched the selected checkpoint, so that asymmetry is not the gap.
 
+## Optimization diagnostic
+
+More updates improved the shared dynamics and did not make real context useful (`docs/NEXUS_CONTEXT_OPTIMIZATION_DIAGNOSTIC.md`). At 3000 updates the source audit still had real angular-velocity MAE **0.1264** versus zero **0.1256** and wrong **0.1234**. The 5% screen failed. Do not continue to 10,000 updates.
+
 ## The one next experiment
 
-**Longer fixed-length training, scored on source prediction only.**
+**Train only the encoder and FiLM on a frozen 3000-update trunk.**
 
-Question: with the same FiLM encoder and (48, 48) trunk, do more optimizer updates make real context beat zero context and wrong-task context on held-out source one-step error, including angular velocity?
+Question: with the dynamics trunk held at the 3000-update weights, can encoder and FiLM updates make real context beat zero and wrong context on held-out source angular-velocity error?
 
 Freeze before any new returns:
 
-- Same source physics, source-only normalization, context dimension 8, encoder width 32, trunk (48, 48), and the fixed-length schedule (20% empty, otherwise 128).
-- Do not switch to variable length in the same run. That hint stays separate.
-- Do not add a separation loss, widen the trunk, or run MPC.
-- Do not construct environments from `pendulum_context_confirmation`.
-- Hold out source episodes that are not the training set and not the checkpoint-selection set. Donor for task `i` remains source task `(i+1) mod 8`.
+- Start from the saved 3000-update context checkpoints. Freeze the trunk. Train the encoder and FiLM only, with the same loss, Adam learning rate, fixed support policy, and source data.
+- Use a fresh source-audit split, disjoint from the optimization audit. Do not reuse that audit as the success set.
+- Donor remains source task `(i+1) mod 8`.
+- Same 5% screen: real angular-velocity MAE at least 5% below zero and wrong, positive in at least two of three seeds, and overall MAE and horizon-16 error no more than 5% worse than zero context.
+- No MPC, no wider trunk, no extra joint-training updates, and no confirmation physics.
 
-Stop rule: if real-context source MAE, and the angular-velocity component, are not lower than both zero and wrong-task context, stop. The context vector is still not a useful dynamics code. A later trunk-capacity run is allowed only after that prediction gap exists. Control curves and confirmation stay closed until then.
-
-Out of scope: GRU training, Reptile, ensembles, architecture search, changing the confirmation tuples, and retuning MAE 0.97.
+If the screen fails, mean-pooled FiLM context is not a useful dynamics code under this loss. Stop there.
