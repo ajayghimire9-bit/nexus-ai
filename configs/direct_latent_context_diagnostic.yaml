@@ -1,0 +1,34 @@
+protocol_id: direct_latent_context_diagnostic_v1
+starting_sha: 5cc3a6611ffd0c6d4839d813c2521181e248a6e8
+prior_frozen_selection: artifacts/frozen_dynamics_selection.json
+prior_frozen_audit: artifacts/frozen_dynamics_audit.json
+confirmation_unlocked: false
+control_sweep: false
+is_agi: false
+h_latent: "With all network weights fixed, a latent vector optimized from a task's support transitions improves held-out query angular-velocity MAE over zero context, a global task-independent vector, and a vector optimized from wrong-task support."
+n_seeds: 3
+n_source_tasks: 8
+support_budget: 128
+context_dim: 8
+global_updates: 300
+global_lr: 0.01
+learning_rates: [0.01, 0.1]
+task_updates: [0, 16, 64, 256]
+max_task_updates: 256
+source_per_task: 400
+query_episodes: 4
+query_transitions: 800
+angular_velocity_index: 2
+horizons: [3, 8, 16]
+rollout_starts: [0, 32, 64, 96, 128, 160]
+time_limit_s: 3600
+donor: source_task_(i+1)_mod_n
+screen_angvel_improvement: 0.05
+screen_min_positive_seeds: 2
+screen_max_worsening: 0.05
+audit_support_env0: 48000
+audit_query_env0: 52000
+audit_support_base: 240000
+audit_query_base: 241000
+parent_history_updates: 1000
+mlp_reference_updates: 1000
