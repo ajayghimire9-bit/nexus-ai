@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: direct latent context diagnostic** (source prediction only). Write-up: `docs/NEXUS_DIRECT_LATENT_CONTEXT.md`. Artifacts `artifacts/direct_latent_selection.json` and `artifacts/direct_latent_audit.json`. Confirmation physics and control sweeps were not run.
+**Current: direct latent unseen-physics confirmation.** Write-up: `docs/NEXUS_DIRECT_LATENT_CONFIRMATION.md`. Artifact `artifacts/direct_latent_confirmation.json`. No control sweep.
 
-With the history decoder frozen, a latent fit on 128 support transitions lowered fresh source-audit angular velocity to **0.0628** versus zero **0.1151**, a global vector **0.1109**, and a wrong-support vector **0.1762**. The frozen encoder on those rows stayed at **0.1256**. Completing this milestone is **not** AGI, learning-to-learn, or a result on unseen physics.
+The locked latent rule (Adam 0.1, 256 updates, decoder frozen) lowered confirmation angular velocity to **0.152** versus zero **0.308**, a global vector **0.314**, and a wrong-support vector **0.398**. The frozen encoder stayed at **0.307**. Completing this milestone is **not** AGI, learning-to-learn, or amortized inference.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 
@@ -111,8 +111,11 @@ PYTHONPATH=src:.deps python3 scripts/run_context_optimization_diagnostic.py dev
 # Frozen-dynamics context diagnostic (source prediction only; does not evaluate confirmation)
 PYTHONPATH=src:.deps python3 scripts/run_frozen_dynamics_context.py dev
 
-# Direct latent context diagnostic (source prediction only; does not evaluate confirmation)
+# Direct latent context diagnostic (source prediction only)
 PYTHONPATH=src:.deps python3 scripts/run_direct_latent_context.py dev
+
+# Direct latent confirmation on the reserved physics (locked rule; no retune)
+PYTHONPATH=src:.deps python3 scripts/run_direct_latent_confirmation.py
 
 pytest
 ```

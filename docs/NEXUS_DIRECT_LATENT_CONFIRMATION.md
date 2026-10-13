@@ -82,4 +82,50 @@ A pass would mean the locked fitting procedure transferred to this physics set. 
 
 ## Results
 
-The confirmation has not been run in the implementation commit.
+Execution SHA `aac5e33d677f05fc57e9191bd522e82982e3ef20`. `source_dirty` was false. Wall clock **5.2 s**. The split hash checked out as `87b83c41be34aa1a`. The three frozen-network digests matched the source diagnostic (`71d44b78…`, `4bcdc147…`, `13090d27…`). Nonfinite steps **0**. Mean gradient norm **1.37e-4**.
+
+Support loss fell from **0.00411** to **0.00154**. That is not the screen. The screen uses held-out query error.
+
+Angular velocity, mean of three model seeds, exploratory Student-t interval, df = 2:
+
+| Condition | Angvel | Overall MAE | RMSE | Horizon 16 |
+| --- | ---: | ---: | ---: | ---: |
+| Task latent | **0.152 [0.104, 0.201]** | 0.0584 [0.0436, 0.0732] | 0.108 [0.0769, 0.139] | 0.523 [0.308, 0.738] |
+| Zero | 0.308 [0.279, 0.338] | 0.111 [0.100, 0.121] | 0.200 [0.182, 0.218] | 1.176 [1.073, 1.279] |
+| Global | 0.314 [0.301, 0.328] | 0.112 [0.108, 0.117] | 0.203 [0.195, 0.212] | 1.225 [1.199, 1.251] |
+| Wrong-support | 0.398 [0.348, 0.448] | 0.144 [0.124, 0.163] | 0.262 [0.230, 0.293] | 1.717 [1.597, 1.837] |
+| Frozen encoder | 0.307 [0.269, 0.344] | 0.110 [0.0976, 0.122] | 0.198 [0.174, 0.221] | — |
+| MLP reference | 0.316 [0.297, 0.335] | 0.113 [0.106, 0.120] | 0.204 [0.194, 0.215] | — |
+
+The MLP is an external network. Paired contrasts are control minus task on angular velocity, so a positive number is a lower task error. All five exclude 0:
+
+| Contrast | Mean [interval] |
+| --- | --- |
+| Zero − task | **+0.156 [0.136, 0.176]** |
+| Global − task | **+0.162 [0.127, 0.197]** |
+| Wrong − task | **+0.245 [0.146, 0.344]** |
+| Encoder − task | **+0.154 [0.120, 0.189]** |
+| MLP − task | **+0.164 [0.134, 0.194]** |
+
+Per seed, task angular velocity was **0.164, 0.163, 0.130**. Each seed beat its own zero, global, and wrong-support vector. Positive seeds **3/3**. The task mean is about **51%** below zero, **52%** below the global vector, and **62%** below the wrong-support vector.
+
+Open-loop error at horizons 3 and 8: task **0.129** and **0.294**, global **0.294** and **0.724**. Paired task-minus-global MAE **−0.0539 [−0.0640, −0.0439]** and horizon 16 **−0.702 [−0.892, −0.513]** exclude 0, both in the direction of a lower task error.
+
+Cosine task-minus-global **−0.00201 [−0.00824, +0.00422]** includes 0. Sine **+0.00236 [−0.00019, +0.00490]** includes 0. The angular-velocity component is the one that moves.
+
+Every confirmation task met the 5% point bar. Means across the three seeds:
+
+| Task | Physics | Task | Zero | Global | Wrong |
+| --- | --- | ---: | ---: | ---: | ---: |
+| c0 | g=4.8 | 0.0725 | 0.233 | 0.214 | 0.436 |
+| c1 | g=15.2 | 0.108 | 0.295 | 0.316 | 0.188 |
+| c2 | m=0.35 | 0.335 | 0.374 | 0.374 | 0.391 |
+| c3 | m=1.6, l=0.75 | 0.0943 | 0.332 | 0.354 | 0.575 |
+
+No task missed the point screen, and no seed-task cell failed to beat a same-decoder control. The low-mass task c2 is the weak case: the relative drop is about **10%** versus zero and the global vector, and the remaining angular-velocity MAE is **0.335**.
+
+The frozen encoder, given the same 128 support rows, sits on zero context (**0.307** versus **0.308**). The useful code was the optimized latent, not the encoder's inference.
+
+Env steps: support **512**, query **3200** (four episodes on each of four tasks). Optimizer steps **6144**. Support examples processed **786432**. Plots: `artifacts/direct_latent_confirmation_angvel.svg`, `artifacts/direct_latent_confirmation_dims.svg`, `artifacts/direct_latent_confirmation_tasks.svg`.
+
+The locked fitting procedure lowered prediction error on this four-task physics set. n=3 is exploratory, and the primary intervals exclude 0. This is not a universal pendulum result, not amortized inference, not a control result, and not learning-to-learn. No control sweep was run.

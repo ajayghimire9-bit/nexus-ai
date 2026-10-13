@@ -1,6 +1,6 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-Not AGI. Do not retune MAE 0.97. Do not start finance, NAS, Reptile, MAML, or a meta-controller. The reserved confirmation tuples stay closed until the latent-rule protocol below is the experiment being run.
+Not AGI. Do not retune MAE 0.97. Do not start finance, NAS, Reptile, MAML, or a meta-controller. The direct-latent confirmation protocol is closed; do not retune its learning rate or update count.
 
 ## Closed on measured runs
 
@@ -28,10 +28,12 @@ Freezing that 3000-update trunk and training the encoder and FiLM did not make r
 
 Optimizing `z` alone, with the history decoder frozen, passed the source screen (`docs/NEXUS_DIRECT_LATENT_CONTEXT.md`). The locked rule is Adam learning rate **0.1** for **256** updates from the global vector. Fresh-audit angular velocity was **0.0628** versus zero **0.1151**, global **0.1109**, and wrong-support **0.1762**. Paired intervals exclude 0. The frozen encoder on the same 128 rows stayed worse than zero context (**0.1256**). Cos and sin paired differences versus the global vector include 0.
 
+## Direct latent confirmation
+
+The locked rule passed on the reserved physics (`docs/NEXUS_DIRECT_LATENT_CONFIRMATION.md`). Confirmation angular velocity was **0.152** versus zero **0.308**, global **0.314**, and wrong-support **0.398**. Paired intervals exclude 0. The frozen encoder on the same support rows stayed at **0.307**, level with zero context. Low-mass task c2 remained the high-error case at **0.335**.
+
 ## The one next experiment
 
-**Ask whether that locked latent rule still lowers query angular-velocity error on the reserved confirmation physics.**
+**Ask whether a history encoder can be trained to predict the support-optimized latent, and whether that predicted latent keeps the query gain.**
 
-Use the same frozen history checkpoints, the same global vectors, and the same rule: Adam **0.1**, **256** updates, initialized from the global vector, fit only on confirmation-task support. Keep zero, global, and wrong-support vectors on that same decoder. Keep the encoder and the MLP as external references. Pre-register the episode seeds before scoring. Do not choose a new learning rate or update count from confirmation query error. Do not train the encoder, FiLM, trunk, or heads. Report all three observation dimensions and horizons 3, 8, and 16. The confirmation tuples stay hash `87b83c41be34aa1a` until that protocol is written and run.
-
-If the rule fails there, the source result is adaptation inside the trained physics. If it passes, the encoder is still unsolved: this confirmation would test the latent rule, not a trained history encoder.
+Keep the decoder frozen. On each training task, fit the teacher latent with the locked rule (Adam **0.1**, **256** updates from the global vector, support only). Train a small encoder so its inferred `z` matches that teacher. The success metric is held-out query angular-velocity MAE against zero context, the global vector, and the teacher latent itself. Matching the teacher on support is not success if the query error does not move. Do not retune the teacher rule from the student scores. Do not run control. A student that fails to beat zero leaves the useful step as test-time optimization, not amortized inference.

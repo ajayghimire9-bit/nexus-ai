@@ -429,3 +429,9 @@ The trunk, heads, and normalization of the 3000-update context model stayed fixe
 Branch `cursor/direct-latent-context-diagnostic`. Write-up: `docs/NEXUS_DIRECT_LATENT_CONTEXT.md`. Selection and audit artifacts are separate. Execution SHA `d037ffda2fb34238411f39c82d64ff5812b98810`. Wall **29.3 s**. No control sweep and no confirmation.
 
 With the history decoder frozen, a latent fit only on 128 new support transitions (Adam **0.1**, **256** steps, from a global training vector) reached fresh-audit angular velocity **0.0628** versus zero **0.1151**, global **0.1109**, and wrong-support **0.1762**. Paired intervals exclude 0. The frozen encoder on those same rows stayed at **0.1256**. The external MLP reference was **0.1141**. The source screen passed. This is source-physics prediction, not unseen physics and not control. Not AGI.
+
+## Direct latent unseen-physics confirmation
+
+Branch `cursor/direct-latent-confirmation`. Write-up: `docs/NEXUS_DIRECT_LATENT_CONFIRMATION.md`. Artifact `artifacts/direct_latent_confirmation.json`. Execution SHA `aac5e33d677f05fc57e9191bd522e82982e3ef20`. Wall **5.2 s**. No control sweep.
+
+The same locked rule, on confirmation physics hash `87b83c41be34aa1a`, reached angular velocity **0.152** versus zero **0.308**, global **0.314**, and wrong-support **0.398**. Paired intervals exclude 0. All four tasks met the 5% point bar. The low-mass task stayed at **0.335**. The frozen encoder stayed at **0.307**. The screen passed for this physics set. Not amortized inference, not control, and not AGI.
