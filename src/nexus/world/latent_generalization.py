@@ -507,6 +507,7 @@ def run_latent_generalization(
     protocol_path: str | Path = PROTOCOL_PATH,
     out_path: str | Path = "artifacts/latent_generalization_dev.json",
     plot_path: str | Path = "artifacts/latent_generalization_dev.svg",
+    sink: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     t0 = time.perf_counter()
     cfg = load_generalization_config()
@@ -577,6 +578,7 @@ def run_latent_generalization(
     deadline = t0 + float(cfg["time_limit_s"])
     runs: list[dict[str, Any]] = []
     pair_rows: list[dict[str, Any]] = []
+    decoder_digests: list[str] = []
     raw_records: list[dict[str, Any]] = []
     teacher_seconds = []
     infer_seconds = []
@@ -591,6 +593,7 @@ def run_latent_generalization(
         model = load_context_checkpoint(Path(parent["path"]))
         lock_network(model)
         digest = decoder_digest(model)
+        decoder_digests.append(digest)
         init_state = {key: value.detach().cpu().clone() for key, value in model.encoder.state_dict().items()}
         global_z = torch.tensor(selection["global_vectors"][str(decoder)], dtype=torch.float32)
         if vector_hash(global_z) != parent["global_vector_sha256"]:
@@ -827,6 +830,9 @@ def run_latent_generalization(
         _svg(Path(plot_path), epochs, series)
         payload["plot"] = str(plot_path)
     Path(out_path).write_text(dumps_strict(payload))
+    if sink is not None:
+        sink["snapshots"] = snapshots
+        sink["decoder_digests"] = list(decoder_digests)
     return payload
 
 

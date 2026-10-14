@@ -242,6 +242,24 @@ def pendulum_latent_train() -> tuple[TaskSpec, ...]:
     )
 
 
+def pendulum_latent_confirmation() -> tuple[TaskSpec, ...]:
+    """Fresh physics for the amortized generalization confirmation.
+
+    Outside the twelve-task training box, and disjoint from development,
+    validation, and both reserved confirmation splits.
+    """
+    rows = (
+        (5.1, 0.88, 0.96),
+        (15.8, 0.92, 1.04),
+        (10.4, 2.45, 0.58),
+        (11.4, 0.48, 1.82),
+    )
+    return tuple(
+        _pendulum(f"pendulum_lat_cf{i}", "latent_confirm", f"Latent generalization confirmation {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
 def pendulum_latent_validation() -> tuple[TaskSpec, ...]:
     """Physics held out of training. Scored after checkpoint selection. Not confirmation."""
     rows = ((8.2, 0.95, 1.08), (11.6, 1.12, 0.92), (9.8, 0.58, 1.18), (12.7, 1.42, 1.08))

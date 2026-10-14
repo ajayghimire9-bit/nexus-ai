@@ -46,6 +46,8 @@ The development screen passed (`docs/NEXUS_LATENT_GENERALIZATION.md`). Epoch 200
 
 ## The one next experiment
 
-**Ask whether the same locked student, retrained from these seeds, lowers angular-velocity error below zero context and below the frozen encoder on a new Pendulum confirmation split.**
+The protocol is locked in `docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`. The confirmation artifact is not in the implementation commit.
 
-Register the new physics before collection. Keep them disjoint from the twelve training tasks, the four validation tasks, the three development tasks, and both reserved hashes `87b83c41be34aa1a` and `d1fa621351d286cf`. Retrain the 584-parameter encoder at learning rate 0.01 for 200 epochs on the locked broad supports. Do not retune the epoch, the learning rate, or the teacher rule after seeing the new scores. Do not add capacity, an attention pool, a GRU, or a Transformer. Do not run control. A pass would still not be learning-to-learn.
+**Ask whether the same locked student, retrained from these seeds, lowers confirmation angular-velocity error at least 0.01 below zero context, the frozen encoder, and the global vector.**
+
+The four physics are already registered, hash `baa655fcb94e61bc`. Retrain at learning rate 0.01 for 200 epochs. Match the development artifact before collecting the new episodes. Do not retune after seeing the confirmation scores. Do not reopen hash `87b83c41be34aa1a` or hash `d1fa621351d286cf`. Do not run control. A pass would still not be learning-to-learn.
