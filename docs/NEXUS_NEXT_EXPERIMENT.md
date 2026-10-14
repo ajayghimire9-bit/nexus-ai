@@ -40,10 +40,12 @@ The development gate failed (`docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`). The se
 
 The existing encoder can reproduce the eight saved codes (`docs/NEXUS_ENCODER_REPRESENTABILITY.md`). At Adam learning rate **0.01** for 2000 full-batch steps, mean latent distance was **0.0074, 0.0021, and 0.000024** against constant baselines of **1.31, 1.75, and 1.51**. Rate 0.001 did not pass. A second support of the same task does not reproduce the saved vector (median distance **1.42, 1.43, 0.87**) and usually changes the support loss. That fit is not generalization and not control.
 
+## Latent encoder generalization
+
+The development screen passed (`docs/NEXUS_LATENT_GENERALIZATION.md`). Epoch 200 angular velocity was **0.0913** versus zero **0.1587**, the frozen encoder **0.1773**, the global vector **0.1478**, and the direct teacher **0.0781**. The eight-task baseline at the same epoch was **0.1672**. The validation mean also passed, at **0.0832** versus zero **0.0972**. Training latent distance stayed **0.648**, and a new support of a training physics stayed at **1.752**. Validation task `pendulum_lat_va3` is worse than zero context, and its teacher is too. Neither reserved confirmation hash was collected.
+
 ## The one next experiment
 
-The protocol for this question is locked in `docs/NEXUS_LATENT_GENERALIZATION.md`. The development artifact is not in the implementation commit.
+**Ask whether the same locked student, retrained from these seeds, lowers angular-velocity error below zero context and below the frozen encoder on a new Pendulum confirmation split.**
 
-**Ask whether this same encoder, trained at learning rate 0.01 on a broader set of meta-training tasks, lowers held-out development query angular-velocity error below zero context and below the frozen encoder.**
-
-Keep the 584-parameter mean pool. Fit each teacher on that task's own support with the locked rule, and train the student on that same support. Do not reuse a teacher from a different support of the same task. The checkpoint is chosen on the existing development query only. Do not open hash `87b83c41be34aa1a` or hash `d1fa621351d286cf`. Do not run control. A lower query error would still not be learning-to-learn.
+Register the new physics before collection. Keep them disjoint from the twelve training tasks, the four validation tasks, the three development tasks, and both reserved hashes `87b83c41be34aa1a` and `d1fa621351d286cf`. Retrain the 584-parameter encoder at learning rate 0.01 for 200 epochs on the locked broad supports. Do not retune the epoch, the learning rate, or the teacher rule after seeing the new scores. Do not add capacity, an attention pool, a GRU, or a Transformer. Do not run control. A pass would still not be learning-to-learn.

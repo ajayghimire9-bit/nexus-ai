@@ -447,3 +447,9 @@ The existing encoder was trained to match support-fit teacher latents. The best 
 Branch `cursor/encoder-representability-diagnostic`. Write-up: `docs/NEXUS_ENCODER_REPRESENTABILITY.md`. Artifact `artifacts/encoder_representability.json`. Implementation SHA `76c1e4aa87a611217288de15ccc59544689ff9da`. Wall **19.0 s**. No confirmation and no control sweep.
 
 The same 584-parameter encoder, trained at learning rate **0.01** for 2000 full-batch steps, reproduced the eight saved meta-training teachers. Mean latent distance was **0.0074, 0.0021, and 0.000024**, against constant baselines **1.31, 1.75, and 1.51**. Rate 0.001 missed the threshold. A second support of the same task did not reproduce the saved code. This is a training-set fit, not generalization and not AGI.
+
+## Latent encoder generalization
+
+Branch `cursor/latent-encoder-generalization`. Write-up: `docs/NEXUS_LATENT_GENERALIZATION.md`. Artifact `artifacts/latent_generalization_dev.json`. Implementation SHA `fd1e864cb2e1dff91e73bf35b184becc4c81be22`. Wall **51.2 s**. No confirmation and no control sweep.
+
+The same encoder, trained at learning rate **0.01** on twelve new physics with two support-specific teachers each, reached development angular velocity **0.0913** versus zero **0.1587**, the frozen encoder **0.1773**, a global vector **0.1478**, and the direct teacher **0.0781**. The eight-task baseline at the same epoch was **0.1672**. Paired intervals exclude 0. The validation mean was **0.0832** versus zero **0.0972**. Training latent distance stayed **0.648**, and a held-out support of the same training physics stayed at **1.752**. One validation physics is worse than zero context. Not learning-to-learn and not AGI.
