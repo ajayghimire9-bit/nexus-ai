@@ -6,9 +6,11 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: latent-encoder confirmation, prediction screen passed.** Write-up: `docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`. Artifact `artifacts/latent_generalization_confirmation.json`. No control sweep.
+**Current: H=16 control comparison, inconclusive.** Write-up: `docs/NEXUS_LATENT_CONTROL.md`. Artifact `artifacts/latent_control.json`.
 
-The same 584-parameter encoder, retrained at learning rate **0.01**, reached confirmation angular velocity **0.1016** versus zero context **0.2729**, the frozen encoder **0.2660**, and a global vector **0.2742**. The direct teacher was **0.0876**. Latent distance stayed **1.558**. This is **not** a recovered teacher code, AGI, learning-to-learn, or a control result.
+The epoch-200 encoder returned **−683.0** versus zero context **−768.4** and the frozen encoder **−773.2**. Both decoder-level intervals include 0, so the 25-point screen does not pass. The direct teacher returned **−682.4**. This is **not** a demonstrated control improvement, AGI, or learning-to-learn.
+
+The earlier prediction confirmation reached angular velocity **0.1016** versus zero **0.2729**, the frozen encoder **0.2660**, and a global vector **0.2742**.
 
 The development screen on the earlier three tasks was angular velocity **0.0913** versus zero **0.1587** and the frozen encoder **0.1773**.
 

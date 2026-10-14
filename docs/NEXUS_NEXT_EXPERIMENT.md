@@ -48,10 +48,12 @@ The development screen passed (`docs/NEXUS_LATENT_GENERALIZATION.md`). Epoch 200
 
 The prediction screen passed (`docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`). Confirmation angular velocity was **0.1016** versus zero **0.2729**, the frozen encoder **0.2660**, and the global vector **0.2742**. The decoder-level gaps clear the 0.01 margin and exclude 0. The direct teacher was **0.0876**, and that paired interval includes 0. Latent distance stayed **1.558**. All four tasks cleared the three primary controls. No control sweep was run.
 
+## Latent context control
+
+The H=16 comparison is inconclusive (`docs/NEXUS_LATENT_CONTROL.md`). Student return was **−683.0** versus zero **−768.4** and the frozen encoder **−773.2**. The decoder-level intervals are **+85.4 [−109.4, +280.3]** and **+90.2 [−5.7, +186.1]**. Both include 0. The teacher return was **−682.4**. These episode seeds stay closed.
+
 ## The one next experiment
 
-The protocol is locked in `docs/NEXUS_LATENT_CONTROL.md`. The control artifact is not in the implementation commit.
+**Do not rerun these control episodes and do not change the encoder.**
 
-**Ask whether the saved epoch-200 student context raises H=16 MPC return by at least 25 points above zero context and the frozen encoder on the four confirmation physics.**
-
-Horizon 16 and 16 candidates stay frozen. Verify the checkpoint hashes before any return. Do not retune on these episodes. A pass would be a control result on physics whose prediction scores are already known. It would still not be learning-to-learn.
+A later control claim needs a new pre-registered evaluation sample and the same frozen H=16 controller. The 25-point rule stays in force. Decoder disagreement, not a new architecture, is what left this interval across 0. A higher return on a new sample would still not be learning-to-learn.

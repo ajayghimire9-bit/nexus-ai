@@ -1,0 +1,5306 @@
+{
+  "protocol_id": "latent_context_control_v1",
+  "hypothesis": "The epoch-200 student context raises H=16 MPC return by at least 25 points above zero context and above the frozen encoder on the four confirmation physics.",
+  "implementation_sha": "9506604ba1aae853d8be3421d87b9e9477a9b5a4",
+  "source_dirty": false,
+  "git": {
+    "revision": "9506604ba1aae853d8be3421d87b9e9477a9b5a4",
+    "dirty": false,
+    "branch": "cursor/latent-context-control"
+  },
+  "decision_recorded": true,
+  "gate_pass": false,
+  "inconclusive": true,
+  "minimum_effect": 25.0,
+  "primary_unit": "decoder after averaging its five student seeds, four tasks, and four episodes",
+  "means": {
+    "student": -682.9733549445573,
+    "baseline": -717.1871178541804,
+    "zero": -768.39772401338,
+    "global": -760.7280122130436,
+    "encoder": -773.1944602755735,
+    "teacher": -682.3628799270379,
+    "mlp": -771.0746305775446
+  },
+  "paired_student_minus_control": {
+    "zero": {
+      "per_decoder": [
+        167.34740732985244,
+        11.01035804949413,
+        77.91534182712144
+      ],
+      "interval": {
+        "n": 3,
+        "mean": 85.42436906882267,
+        "lo": -109.44353727371018,
+        "hi": 280.2922754113555,
+        "se": 45.28652250581754,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "pass": false,
+      "sign": "student_minus_control"
+    },
+    "encoder": {
+      "per_decoder": [
+        81.6209299810456,
+        56.638493640167894,
+        132.403892371835
+      ],
+      "interval": {
+        "n": 3,
+        "mean": 90.22110533101618,
+        "lo": -5.69401538404594,
+        "hi": 186.1362260460783,
+        "se": 22.290290661181064,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "pass": false,
+      "sign": "student_minus_control"
+    },
+    "global": {
+      "per_decoder": [
+        133.08580735101862,
+        15.607475789296586,
+        84.57068866514385
+      ],
+      "interval": {
+        "n": 3,
+        "mean": 77.75465726848635,
+        "lo": -68.90829272307003,
+        "hi": 224.41760726004276,
+        "se": 34.08388333524434,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "sign": "student_minus_control"
+    },
+    "teacher": {
+      "per_decoder": [
+        49.21637022682262,
+        -48.19968860281642,
+        -2.8481066765647256
+      ],
+      "interval": {
+        "n": 3,
+        "mean": -0.6104750175195098,
+        "lo": -121.71342328279479,
+        "hi": 120.49247324775578,
+        "se": 28.14384110278301,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "sign": "student_minus_control"
+    },
+    "baseline": {
+      "per_decoder": [
+        69.97196065351602,
+        -16.86205287453663,
+        49.53138094988958
+      ],
+      "interval": {
+        "n": 3,
+        "mean": 34.21376290962299,
+        "lo": -78.57104772944226,
+        "hi": 146.99857354868823,
+        "se": 26.210739167805077,
+        "interval": "student_t_95",
+        "df": 2
+      },
+      "sign": "student_minus_control"
+    }
+  },
+  "per_decoder": [
+    {
+      "decoder": 0,
+      "student": -636.6738272404903,
+      "baseline": -706.6457878940063,
+      "zero": -804.0212345703427,
+      "global": -769.7596345915089,
+      "encoder": -718.2947572215359,
+      "teacher": -685.8901974673129
+    },
+    {
+      "decoder": 1,
+      "student": -731.7362396413231,
+      "baseline": -714.8741867667865,
+      "zero": -742.7465976908172,
+      "global": -747.3437154306197,
+      "encoder": -788.374733281491,
+      "teacher": -683.5365510385067
+    },
+    {
+      "decoder": 2,
+      "student": -680.509997951859,
+      "baseline": -730.0413789017485,
+      "zero": -758.4253397789804,
+      "global": -765.0806866170028,
+      "encoder": -812.913890323694,
+      "teacher": -677.6618912752942
+    }
+  ],
+  "per_task": [
+    {
+      "task": "pendulum_lat_cf0",
+      "physics": [
+        5.1,
+        0.88,
+        0.96
+      ],
+      "student": -82.33892320631728,
+      "baseline": -94.06047069195526,
+      "zero": -122.22863894563574,
+      "global": -96.60932125340486,
+      "encoder": -85.18108678328294,
+      "teacher": -93.73952074277565,
+      "student_above_zero": true,
+      "student_above_encoder": true,
+      "student_above_global": true,
+      "teacher_above_zero": true
+    },
+    {
+      "task": "pendulum_lat_cf1",
+      "physics": [
+        15.8,
+        0.92,
+        1.04
+      ],
+      "student": -1061.6879809748862,
+      "baseline": -1182.1186158228613,
+      "zero": -1246.6167961287083,
+      "global": -1257.320648431292,
+      "encoder": -1244.8380392459221,
+      "teacher": -1084.973898040497,
+      "student_above_zero": true,
+      "student_above_encoder": true,
+      "student_above_global": true,
+      "teacher_above_zero": true
+    },
+    {
+      "task": "pendulum_lat_cf2",
+      "physics": [
+        10.4,
+        2.45,
+        0.58
+      ],
+      "student": -1283.8525856014007,
+      "baseline": -1307.0873153707737,
+      "zero": -1339.56809992949,
+      "global": -1357.839688686777,
+      "encoder": -1352.9933337108866,
+      "teacher": -1293.2487918264599,
+      "student_above_zero": true,
+      "student_above_encoder": true,
+      "student_above_global": true,
+      "teacher_above_zero": true
+    },
+    {
+      "task": "pendulum_lat_cf3",
+      "physics": [
+        11.4,
+        0.48,
+        1.82
+      ],
+      "student": -304.01392999562523,
+      "baseline": -285.48206953113134,
+      "zero": -365.1773610496861,
+      "global": -331.1423904807013,
+      "encoder": -409.76538136220285,
+      "teacher": -257.48930909841897,
+      "student_above_zero": true,
+      "student_above_encoder": true,
+      "student_above_global": true,
+      "teacher_above_zero": true
+    }
+  ],
+  "gains_across_tasks": 4,
+  "gains_concentrated": false,
+  "catastrophic_rate": {
+    "student": 0.0,
+    "baseline": 0.0,
+    "zero": 0.0,
+    "global": 0.0,
+    "encoder": 0.0,
+    "teacher": 0.0,
+    "mlp": 0.0
+  },
+  "latency": {
+    "mean_plan_ms": 3.9273402590990827,
+    "encoder_infer_seconds_mean": 0.00012445931039992226,
+    "teacher_fit_seconds_mean": 0.1359136078338755
+  },
+  "resources": {
+    "encoder_parameters": 584,
+    "decoder_parameters": 3748,
+    "mlp_parameters": 4868,
+    "encoder_bytes": 2336,
+    "decoder_bytes": 14992,
+    "support_env_interactions": 512,
+    "control_env_interactions": 144000,
+    "imagined_model_states": 36864000
+  },
+  "checkpoints_verified": true,
+  "schema_failures": [],
+  "declared_complete": true,
+  "raw_records": [
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -218.10484951019723,
+      "returns": [
+        -180.41515079562623,
+        -5.465775396225429,
+        -680.3800191478812,
+        -6.158452701056001
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9004593062736603,
+      "mean_predicted_score": -19.48659756827786,
+      "first_actions": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -106.05898410909595,
+      "returns": [
+        -146.71102309802237,
+        -4.776844641289087,
+        -266.56363724503285,
+        -6.184431452039448
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.88847499127678,
+      "mean_predicted_score": -8.225459577055094,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -80.85936253631856,
+      "returns": [
+        -176.8217326430753,
+        -5.082312626023698,
+        -135.60837358586568,
+        -5.925031290309501
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.090221783649213,
+      "mean_predicted_score": -6.0280976297525335,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "encoder",
+      "infer_seconds": 0.00017262499750358984,
+      "mean_return": -76.19865189585715,
+      "returns": [
+        -152.82633526530836,
+        -5.109107414188312,
+        -140.7260544264493,
+        -6.133110477482681
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.944422239896994,
+      "mean_predicted_score": -6.715094278709278,
+      "first_actions": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00013575000048149377,
+      "mean_return": -80.37988559699109,
+      "returns": [
+        -175.32406677218245,
+        -4.8908557383082565,
+        -134.7334563633377,
+        -6.571163514135929
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9443899212437827,
+      "mean_predicted_score": -5.623070588828059,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.0001144580019172281,
+      "mean_return": -111.35631571265999,
+      "returns": [
+        -150.5533428708505,
+        -5.7734681982964,
+        -282.65113272760703,
+        -6.447319053886032
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9146343263337258,
+      "mean_predicted_score": -11.017915961605766,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.0001172499978565611,
+      "mean_return": -81.8839101172652,
+      "returns": [
+        -177.18036488531507,
+        -4.898054355750729,
+        -139.44963028813223,
+        -6.007590939862804
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.921421812551671,
+      "mean_predicted_score": -6.0102330558979045,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.0001221249985974282,
+      "mean_return": -73.44418366261158,
+      "returns": [
+        -149.6706973016148,
+        -5.471824762346505,
+        -131.9575611267497,
+        -6.676651459735322
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9248141987263807,
+      "mean_predicted_score": -5.845437621846256,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011808300041593611,
+      "mean_return": -79.42083308325314,
+      "returns": [
+        -171.90211731528763,
+        -4.7217090920800935,
+        -134.2321460960687,
+        -6.827359829576181
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.935352133739798,
+      "mean_predicted_score": -5.432553545271564,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00011649999942164868,
+      "mean_return": -79.89713422812959,
+      "returns": [
+        -171.64419112341832,
+        -5.161633396221628,
+        -136.562641162624,
+        -6.220071230254415
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.012934738666445,
+      "mean_predicted_score": -7.354872314525826,
+      "first_actions": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011858400102937594,
+      "mean_return": -81.91156985921702,
+      "returns": [
+        -177.47625575087008,
+        -4.658238884658213,
+        -139.4434891534145,
+        -6.068295647925284
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.94795481995061,
+      "mean_predicted_score": -6.094809980939903,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00012312499893596396,
+      "mean_return": -150.6536706380128,
+      "returns": [
+        -178.367967766858,
+        -5.039819888955421,
+        -412.91845495383274,
+        -6.288439942405035
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9329393225307285,
+      "mean_predicted_score": -13.524985238466947,
+      "first_actions": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011641699893516488,
+      "mean_return": -79.86640277928134,
+      "returns": [
+        -174.40798439528524,
+        -4.667293566357425,
+        -134.24838678839507,
+        -6.141946367087641
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.950506397541176,
+      "mean_predicted_score": -5.503510098938756,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00011916699804714881,
+      "mean_return": -111.27422271135738,
+      "returns": [
+        -150.151946656942,
+        -5.691095168540254,
+        -282.8028057524395,
+        -6.4510432675078295
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9229349549714243,
+      "mean_predicted_score": -11.0223325311275,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -1220.4113692803173,
+      "returns": [
+        -1242.1219851166722,
+        -1246.9739851297093,
+        -1236.5387774475932,
+        -1156.0107294272948
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.910554046183279,
+      "mean_predicted_score": -77.49303425851117,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -1268.44194582288,
+      "returns": [
+        -1301.734062714014,
+        -1311.706453874917,
+        -1229.411715694179,
+        -1230.9155510084088
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.933904789978442,
+      "mean_predicted_score": -77.47499319122691,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -1100.3028072117484,
+      "returns": [
+        -1170.5242469885798,
+        -1223.093433661146,
+        -1044.9582973449972,
+        -962.6352508522704
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9090974950113377,
+      "mean_predicted_score": -82.14722284949163,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "encoder",
+      "infer_seconds": 0.00013929099804954603,
+      "mean_return": -1240.0162130552271,
+      "returns": [
+        -1247.129073940408,
+        -1260.4191976987163,
+        -1231.3196227828057,
+        -1221.196957798978
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.923961579907882,
+      "mean_predicted_score": -77.8700132786656,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00012758299999404699,
+      "mean_return": -919.157292816943,
+      "returns": [
+        -1144.7291711018956,
+        -1127.2889602001048,
+        -336.44576456782414,
+        -1068.1652753979477
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.938077710017751,
+      "mean_predicted_score": -70.81620700465832,
+      "first_actions": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00015324999912991188,
+      "mean_return": -1163.011956903311,
+      "returns": [
+        -1242.0618946727614,
+        -1232.661589808163,
+        -1123.9476706505861,
+        -1053.376672481734
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9236773949915005,
+      "mean_predicted_score": -79.1275159511515,
+      "first_actions": [
+        2,
+        1,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.0001449999981559813,
+      "mean_return": -941.0649387245921,
+      "returns": [
+        -1212.6906840603488,
+        -1128.6211373591466,
+        -462.6539462427737,
+        -960.2939872360995
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9301521387096727,
+      "mean_predicted_score": -72.08527119623847,
+      "first_actions": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.0001188749993161764,
+      "mean_return": -1187.6821221303103,
+      "returns": [
+        -1233.74433881564,
+        -1236.6661767410446,
+        -1153.9187550224547,
+        -1126.3992179421016
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9403909162592754,
+      "mean_predicted_score": -80.3964359005749,
+      "first_actions": [
+        2,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011787499897764064,
+      "mean_return": -1026.5536107804178,
+      "returns": [
+        -1212.5932858403787,
+        -1132.5329427507543,
+        -693.5242807116844,
+        -1067.5639338188541
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9753822999182375,
+      "mean_predicted_score": -78.17739480993437,
+      "first_actions": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00012024999887216836,
+      "mean_return": -1170.4853856220982,
+      "returns": [
+        -1241.917409500603,
+        -1234.8000741185276,
+        -1151.766191112118,
+        -1053.4578677571444
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.924027500002012,
+      "mean_predicted_score": -79.48247132167188,
+      "first_actions": [
+        2,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011466700016171671,
+      "mean_return": -979.9629086985601,
+      "returns": [
+        -1144.7291711018956,
+        -1126.6789790607133,
+        -580.4039659214038,
+        -1068.0395187102279
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.945437761303765,
+      "mean_predicted_score": -76.48475704718952,
+      "first_actions": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00013016700177104212,
+      "mean_return": -1168.2042052849051,
+      "returns": [
+        -1231.449455776249,
+        -1235.7481926067492,
+        -1151.720941594341,
+        -1053.8982311622808
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.026413253723149,
+      "mean_predicted_score": -79.0147354735723,
+      "first_actions": [
+        2,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011837500278488733,
+      "mean_return": -914.1021723838995,
+      "returns": [
+        -1212.6906840603488,
+        -1128.1844815397653,
+        -587.6245374675872,
+        -727.9089864678969
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9333424050073518,
+      "mean_predicted_score": -69.65732483016453,
+      "first_actions": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00011475000064820051,
+      "mean_return": -1163.1128170065028,
+      "returns": [
+        -1237.7357347687248,
+        -1237.0132247996253,
+        -1123.0087961801985,
+        -1054.6935122774632
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.924221361285163,
+      "mean_predicted_score": -79.22608610786934,
+      "first_actions": [
+        2,
+        1,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -1325.517836702966,
+      "returns": [
+        -1312.8787133747167,
+        -1293.7715318862743,
+        -1380.4765834161894,
+        -1314.9445181346834
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.944079630059605,
+      "mean_predicted_score": -78.38277769713692,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -1362.2096294158628,
+      "returns": [
+        -1354.0570840467096,
+        -1299.455459474987,
+        -1417.0600353572695,
+        -1378.2659387844847
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.936586023669406,
+      "mean_predicted_score": -77.87089741562723,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -1315.0391977943116,
+      "returns": [
+        -1314.2178362629506,
+        -1241.4026493621727,
+        -1434.4334942030503,
+        -1270.1028113490727
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9302599887378165,
+      "mean_predicted_score": -101.14054257119471,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "encoder",
+      "infer_seconds": 0.00013495799794327468,
+      "mean_return": -1345.15464118284,
+      "returns": [
+        -1322.9829027656037,
+        -1301.3528593830076,
+        -1408.3786133698363,
+        -1347.9041892129126
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.941838573750829,
+      "mean_predicted_score": -78.14081908061473,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00012024999887216836,
+      "mean_return": -1293.324725637771,
+      "returns": [
+        -1315.0337702942052,
+        -1169.0563326906101,
+        -1446.465891065702,
+        -1242.7429085005672
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9294827749245087,
+      "mean_predicted_score": -98.77617567724566,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00013533299716073088,
+      "mean_return": -1279.4260069807044,
+      "returns": [
+        -1249.588338975677,
+        -1240.4454257208706,
+        -1378.7239212919778,
+        -1248.946341934292
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.931106848745003,
+      "mean_predicted_score": -82.69659418018196,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00011699999959091656,
+      "mean_return": -1276.4151506946305,
+      "returns": [
+        -1241.1856545556773,
+        -1169.0603326908001,
+        -1448.5738918053678,
+        -1246.840723726676
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9337548399453226,
+      "mean_predicted_score": -97.15248732110803,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011704200005624443,
+      "mean_return": -1314.9864216892327,
+      "returns": [
+        -1322.2129718661815,
+        -1235.9356580804138,
+        -1380.3121488478791,
+        -1321.4849079624566
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.943856102450809,
+      "mean_predicted_score": -83.15799170620784,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00013308300185599364,
+      "mean_return": -1287.8386300689142,
+      "returns": [
+        -1315.3469931518016,
+        -1161.8110082981764,
+        -1449.8077161346741,
+        -1224.3888026910047
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9892890637020173,
+      "mean_predicted_score": -96.62803832803205,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011241599713684991,
+      "mean_return": -1282.9815791444457,
+      "returns": [
+        -1253.805807271424,
+        -1240.608423919438,
+        -1312.4026995879392,
+        -1325.1093857989822
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.919677547464744,
+      "mean_predicted_score": -82.2273144775536,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00012891699952888303,
+      "mean_return": -1296.1502079186914,
+      "returns": [
+        -1314.0290943297468,
+        -1164.5068923003719,
+        -1440.7415653242365,
+        -1265.3232797204105
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.944309572543716,
+      "mean_predicted_score": -100.69003066824727,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.0001315000008617062,
+      "mean_return": -1313.5951938722746,
+      "returns": [
+        -1307.8434062819915,
+        -1237.5696520490244,
+        -1385.2113284327097,
+        -1323.7563887253723
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9169359737206833,
+      "mean_predicted_score": -82.51938809581081,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00011254199853283353,
+      "mean_return": -1293.8221628106971,
+      "returns": [
+        -1315.0337702942052,
+        -1169.0603326908001,
+        -1448.4516397572158,
+        -1242.7429085005672
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.918145477600774,
+      "mean_predicted_score": -99.00850041280918,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011579199781408533,
+      "mean_return": -1291.184268016306,
+      "returns": [
+        -1303.4169765525737,
+        -1234.309350824674,
+        -1378.291456516464,
+        -1248.719288171513
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9193157299268933,
+      "mean_predicted_score": -82.95294244601217,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -452.05088278789015,
+      "returns": [
+        -711.6319149976907,
+        -132.36258326391658,
+        -133.26360423165832,
+        -830.9454286582951
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9789121387775594,
+      "mean_predicted_score": -38.498745104056745,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -342.3279790181968,
+      "returns": [
+        -265.93752166949577,
+        -133.43418535988613,
+        -131.83142497706496,
+        -838.1087840663404
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9435526975239554,
+      "mean_predicted_score": -28.58912795893667,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -247.3594223268728,
+      "returns": [
+        -134.9903283207625,
+        -134.75723621686032,
+        -265.1723716461538,
+        -454.5177531237145
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9285560388088925,
+      "mean_predicted_score": -18.473000320497782,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "encoder",
+      "infer_seconds": 0.00013558399950852618,
+      "mean_return": -211.80952275221927,
+      "returns": [
+        -133.85293911132078,
+        -137.24232624654348,
+        -132.15635091173905,
+        -443.9864747392737
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.931887181224738,
+      "mean_predicted_score": -15.56879176307083,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00013166699864086695,
+      "mean_return": -211.7834805548385,
+      "returns": [
+        -134.30170745245607,
+        -135.02217977353902,
+        -134.04109253418503,
+        -443.76894245917384
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9248644761846663,
+      "mean_predicted_score": -15.029971396939786,
+      "first_actions": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 0,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00012504099868237972,
+      "mean_return": -240.8165604567179,
+      "returns": [
+        -134.11676087104232,
+        -265.72428014265455,
+        -130.63178675643144,
+        -432.79341405674325
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.929120722514199,
+      "mean_predicted_score": -18.612816930422238,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00011616700066952035,
+      "mean_return": -215.8565136809553,
+      "returns": [
+        -133.5074760850036,
+        -135.11884607811646,
+        -134.52812139557005,
+        -460.271611165131
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9308411450383574,
+      "mean_predicted_score": -15.704247373279317,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 1,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.0001310420011577662,
+      "mean_return": -273.8593694598055,
+      "returns": [
+        -266.1344308170124,
+        -264.8295546002046,
+        -132.32748232201897,
+        -432.1460100999861
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9497743162701227,
+      "mean_predicted_score": -21.566118707674306,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00012591699851327576,
+      "mean_return": -212.45213851049272,
+      "returns": [
+        -134.45135073070696,
+        -135.76733524842217,
+        -134.09707821897163,
+        -445.4927898438702
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9573949487385107,
+      "mean_predicted_score": -15.089861878266278,
+      "first_actions": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 2,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00015016700126579963,
+      "mean_return": -208.49023763896633,
+      "returns": [
+        -133.98269471835,
+        -135.6693566446094,
+        -131.36437694153335,
+        -432.9445222513726
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9649988724067953,
+      "mean_predicted_score": -15.65086293309886,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00011912499758182094,
+      "mean_return": -212.47687073993114,
+      "returns": [
+        -134.67835619498695,
+        -135.24675097626033,
+        -133.73205762364915,
+        -446.2503181648281
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.0013259350325825,
+      "mean_predicted_score": -15.207068778370774,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 3,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00013591700189863332,
+      "mean_return": -240.9855297509801,
+      "returns": [
+        -266.2452174396658,
+        -133.86306214101864,
+        -131.63998622815413,
+        -432.1938531950819
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9835067200920093,
+      "mean_predicted_score": -18.424971594268985,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.0001167090013041161,
+      "mean_return": -249.05313935246087,
+      "returns": [
+        -132.68767848736678,
+        -277.53139315237695,
+        -135.00747689490242,
+        -450.9860088751974
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.941787468693292,
+      "mean_predicted_score": -18.043060303322317,
+      "first_actions": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 0,
+      "student": 4,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00013108299754094332,
+      "mean_return": -307.46857697079383,
+      "returns": [
+        -397.81892016573215,
+        -265.2960865374507,
+        -132.18094422570837,
+        -434.57835695428423
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9722509875173273,
+      "mean_predicted_score": -24.36983582421796,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -73.34938932615759,
+      "returns": [
+        -146.59308922921565,
+        -5.552281498250719,
+        -135.22594902743168,
+        -6.026237549732267
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9508462874846373,
+      "mean_predicted_score": -4.908480384738799,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -72.53218630879826,
+      "returns": [
+        -146.4992143413024,
+        -5.274468268680838,
+        -131.51677697441028,
+        -6.83828565079955
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9522096987775512,
+      "mean_predicted_score": -4.8754658725905555,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -80.03964172890475,
+      "returns": [
+        -160.35996679595354,
+        -6.831558358031514,
+        -145.9276660932647,
+        -7.039375668369241
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9596074450719243,
+      "mean_predicted_score": -4.889469136962423,
+      "first_actions": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "encoder",
+      "infer_seconds": 0.00012675000107265078,
+      "mean_return": -77.46570213522315,
+      "returns": [
+        -167.83825231130768,
+        -4.699858537017472,
+        -131.25342651075678,
+        -6.071271181810663
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9642865561745566,
+      "mean_predicted_score": -5.62669862865243,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011416699999244884,
+      "mean_return": -116.40649017305198,
+      "returns": [
+        -182.3261938187646,
+        -8.850974029582586,
+        -130.87954046324901,
+        -143.56925238061172
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9786810075111134,
+      "mean_predicted_score": -8.123583540515575,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00011408399950596504,
+      "mean_return": -72.46215066568168,
+      "returns": [
+        -146.7684534403847,
+        -5.261493906907924,
+        -131.5979194119593,
+        -6.2207359034747975
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.001014682417008,
+      "mean_predicted_score": -5.5914008569821885,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011837499914690852,
+      "mean_return": -82.6341529968196,
+      "returns": [
+        -182.01803423889893,
+        -8.051216822958223,
+        -131.007548298088,
+        -9.459812627333179
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.959917646247959,
+      "mean_predicted_score": -5.212654690685969,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00011604199971770868,
+      "mean_return": -72.13694511713342,
+      "returns": [
+        -147.1362167044931,
+        -4.774979975754316,
+        -130.77889470484152,
+        -5.857689083444735
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.965326442539663,
+      "mean_predicted_score": -5.514257670829954,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00012516700007836334,
+      "mean_return": -73.51692430546841,
+      "returns": [
+        -148.60919026154932,
+        -6.447518290442004,
+        -131.37296801572666,
+        -7.638020654155699
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.075457389913026,
+      "mean_predicted_score": -4.30424946883426,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00011645799895632081,
+      "mean_return": -74.3479293744473,
+      "returns": [
+        -154.66010456459662,
+        -4.968954597976403,
+        -130.84774672351975,
+        -6.91491161169646
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9594335373840295,
+      "mean_predicted_score": -5.992094661980475,
+      "first_actions": [
+        0,
+        2,
+        1,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.0001156250000349246,
+      "mean_return": -81.29630483760867,
+      "returns": [
+        -182.6686885099201,
+        -6.159668807764065,
+        -128.39061148571832,
+        -7.966250547032214
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.025727489906785,
+      "mean_predicted_score": -5.110241072681784,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00012695800251094624,
+      "mean_return": -74.68793166737433,
+      "returns": [
+        -154.9936075490468,
+        -4.975287100701252,
+        -130.70789030243645,
+        -8.074941717312782
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.00880177873205,
+      "mean_predicted_score": -6.268933675081679,
+      "first_actions": [
+        0,
+        2,
+        1,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011691600229823962,
+      "mean_return": -82.4596483695819,
+      "returns": [
+        -182.8679187443394,
+        -7.242119992796028,
+        -129.53960360589386,
+        -10.188951135298282
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.950144719983655,
+      "mean_predicted_score": -5.264912916513781,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00012270899969735183,
+      "mean_return": -72.41824800876127,
+      "returns": [
+        -146.77998889068095,
+        -4.8821022786116535,
+        -131.50564705462483,
+        -6.50525381112761
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9632299424783923,
+      "mean_predicted_score": -5.660383666987837,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -1267.3481621518802,
+      "returns": [
+        -1301.6425966190461,
+        -1308.45787381156,
+        -1235.059979604555,
+        -1224.2321985723595
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.007806822455677,
+      "mean_predicted_score": -77.3574310427724,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -1249.5786214900247,
+      "returns": [
+        -1250.6506771111833,
+        -1288.4608599061949,
+        -1234.9831534001432,
+        -1224.2197955425775
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9504286501141905,
+      "mean_predicted_score": -76.19832393787996,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -1118.2148267960633,
+      "returns": [
+        -1206.799796397093,
+        -1142.4405861443956,
+        -1052.479371208846,
+        -1071.139553433919
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9599497824383434,
+      "mean_predicted_score": -83.6905359674722,
+      "first_actions": [
+        2,
+        2,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "encoder",
+      "infer_seconds": 0.00011804200039478019,
+      "mean_return": -1250.1891697062172,
+      "returns": [
+        -1250.5686939514817,
+        -1301.3706412601634,
+        -1232.7318793373195,
+        -1216.0854642759043
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.952265286270631,
+      "mean_predicted_score": -77.9034439237465,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011429200094426051,
+      "mean_return": -1173.679241569639,
+      "returns": [
+        -1235.8261315887305,
+        -1230.0231227528673,
+        -1155.0888725255782,
+        -1073.7788394113804
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.959968304989161,
+      "mean_predicted_score": -80.71766493222768,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.0001238329969055485,
+      "mean_return": -1174.7920242273187,
+      "returns": [
+        -1234.479343454146,
+        -1238.3702296000238,
+        -1161.852522933676,
+        -1064.466000921429
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9529474361916073,
+      "mean_predicted_score": -77.76511634385578,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011937499948544428,
+      "mean_return": -1172.9737281061373,
+      "returns": [
+        -1226.9169327474024,
+        -1242.8020137352673,
+        -1153.7556527312381,
+        -1068.4203132106416
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9443850574571115,
+      "mean_predicted_score": -80.39437329464504,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00011629199798335321,
+      "mean_return": -1172.0485294426192,
+      "returns": [
+        -1226.2129059367458,
+        -1240.0195220923317,
+        -1158.3674325542806,
+        -1063.594257187118
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.976555616227415,
+      "mean_predicted_score": -78.97581043793771,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00012649999916902743,
+      "mean_return": -1148.6145953656317,
+      "returns": [
+        -1229.092962831332,
+        -1237.86202989326,
+        -1052.9481760577335,
+        -1074.5552126802013
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.941009591180773,
+      "mean_predicted_score": -80.00999091317875,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00011320900011924095,
+      "mean_return": -1179.145767434496,
+      "returns": [
+        -1235.1801624328145,
+        -1240.8489498120366,
+        -1175.781068387608,
+        -1064.7728891055249
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9958562512038043,
+      "mean_predicted_score": -79.4755770371822,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.0001507500019215513,
+      "mean_return": -1142.850084666065,
+      "returns": [
+        -1232.877258317382,
+        -1125.4447032857704,
+        -1153.978847964853,
+        -1059.0995290962549
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9562727400834774,
+      "mean_predicted_score": -78.13346542399039,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00011950000043725595,
+      "mean_return": -1175.9059385134829,
+      "returns": [
+        -1235.6332146865886,
+        -1240.71915723826,
+        -1162.7327528865812,
+        -1064.5386292425019
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.944835665015489,
+      "mean_predicted_score": -78.13834537379068,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011733299834304489,
+      "mean_return": -1135.4031044234875,
+      "returns": [
+        -1227.9432972860332,
+        -1224.6116038913283,
+        -1056.0624689467202,
+        -1032.995047569869
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9307208000809624,
+      "mean_predicted_score": -81.98520146996096,
+      "first_actions": [
+        2,
+        2,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00011241700121900067,
+      "mean_return": -1173.2314171599735,
+      "returns": [
+        -1230.8533282809947,
+        -1240.8489498120366,
+        -1156.6533893476249,
+        -1064.5700011992383
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.963588545047969,
+      "mean_predicted_score": -77.46865820805421,
+      "first_actions": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -1359.007356857308,
+      "returns": [
+        -1375.3786197575487,
+        -1298.615088806922,
+        -1404.4236931779885,
+        -1357.612025686772
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9393771862933136,
+      "mean_predicted_score": -77.35519414252818,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -1360.0969894263715,
+      "returns": [
+        -1376.7001437017293,
+        -1299.0438455165645,
+        -1403.4467335625277,
+        -1361.1972349246644
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.944146222524978,
+      "mean_predicted_score": -76.60227542617133,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -1292.7188973657185,
+      "returns": [
+        -1303.146121234914,
+        -1189.5896510207258,
+        -1353.7514447209878,
+        -1324.3883724862467
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9434552524926403,
+      "mean_predicted_score": -95.13028164439514,
+      "first_actions": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "encoder",
+      "infer_seconds": 0.00012091700045857579,
+      "mean_return": -1347.3183190436387,
+      "returns": [
+        -1351.1510522052429,
+        -1303.6856513589678,
+        -1377.3765250277302,
+        -1357.0600475826138
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9392680674291114,
+      "mean_predicted_score": -77.9478069458504,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00011749999976018444,
+      "mean_return": -1303.2597666211946,
+      "returns": [
+        -1325.02430319619,
+        -1233.2470920632975,
+        -1398.0732659949874,
+        -1256.6944052303033
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.945774837529825,
+      "mean_predicted_score": -87.97010742004142,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011741599882952869,
+      "mean_return": -1306.240167997003,
+      "returns": [
+        -1319.7353443613504,
+        -1237.2379799612006,
+        -1387.1172128586393,
+        -1280.870134806822
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9904018687320786,
+      "mean_predicted_score": -82.48312320452582,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00011695899956976064,
+      "mean_return": -1279.028936165435,
+      "returns": [
+        -1308.9957405457696,
+        -1181.6787218602733,
+        -1376.1007375658075,
+        -1249.3405446898894
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.940103952518257,
+      "mean_predicted_score": -87.9415956758025,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.0001269999993382953,
+      "mean_return": -1292.1014923138164,
+      "returns": [
+        -1261.866458516552,
+        -1237.7743074346997,
+        -1389.409465046247,
+        -1279.3557382577671
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9591444125380804,
+      "mean_predicted_score": -81.96886395951857,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00012229200001456775,
+      "mean_return": -1298.6177377629117,
+      "returns": [
+        -1252.723585503826,
+        -1230.0589820808927,
+        -1396.1020951841217,
+        -1315.5862882828058
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.95424552372333,
+      "mean_predicted_score": -89.86499274917318,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011974999870290048,
+      "mean_return": -1293.4630638708675,
+      "returns": [
+        -1321.6325030857845,
+        -1232.5835137381605,
+        -1321.0861524427028,
+        -1298.550086216822
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.947607171226082,
+      "mean_predicted_score": -82.10070848531446,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00011820899817394093,
+      "mean_return": -1302.8577056312965,
+      "returns": [
+        -1323.657597499792,
+        -1232.5089652352729,
+        -1404.6094075487601,
+        -1250.6548522413616
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9345082050294877,
+      "mean_predicted_score": -89.42662793516949,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00012387500100885518,
+      "mean_return": -1296.1306175401169,
+      "returns": [
+        -1319.5788248846507,
+        -1221.2254096637066,
+        -1388.2609776166378,
+        -1255.457257995472
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9841252512496794,
+      "mean_predicted_score": -82.01493796850569,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00011975000234087929,
+      "mean_return": -1306.49214821728,
+      "returns": [
+        -1298.945697420116,
+        -1173.0802026125164,
+        -1438.5010698430287,
+        -1315.441622993459
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9610538599936262,
+      "mean_predicted_score": -91.6071193315741,
+      "first_actions": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011604199971770868,
+      "mean_return": -1306.4564913563154,
+      "returns": [
+        -1321.4559378198799,
+        -1237.6853028030143,
+        -1385.8145899955446,
+        -1280.870134806822
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.965193171256942,
+      "mean_predicted_score": -82.19874602884788,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -271.2814824279231,
+      "returns": [
+        -267.290801932164,
+        -263.43676979632266,
+        -132.67204793124165,
+        -421.72631005196405
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.134423683826753,
+      "mean_predicted_score": -21.16620942940129,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -307.1670644972841,
+      "returns": [
+        -133.37355337373384,
+        -528.5192464103291,
+        -132.4819062575195,
+        -434.293551947554
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9649342675511434,
+      "mean_predicted_score": -23.148646317672664,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -243.17283826333988,
+      "returns": [
+        -133.78712205620855,
+        -268.9138602214304,
+        -133.14627009668294,
+        -436.84410067903764
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9709347400184924,
+      "mean_predicted_score": -17.552404422063432,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "encoder",
+      "infer_seconds": 0.0001221249985974282,
+      "mean_return": -478.5257422408851,
+      "returns": [
+        -136.8459755474486,
+        -634.8305176333513,
+        -266.42382087297875,
+        -876.0026549097618
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9915769900562736,
+      "mean_predicted_score": -42.3524081964414,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00013258300168672577,
+      "mean_return": -462.60524237570826,
+      "returns": [
+        -420.0148218679513,
+        -272.78904787021014,
+        -439.74103023471963,
+        -717.876069529952
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9597599924172755,
+      "mean_predicted_score": -33.935130250963745,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 0,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00011645899940049276,
+      "mean_return": -306.34786727941946,
+      "returns": [
+        -265.8789060543375,
+        -132.4291180110808,
+        -131.9542322544967,
+        -695.1292127977628
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.992950962538089,
+      "mean_predicted_score": -23.99070268833123,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.000150040999869816,
+      "mean_return": -350.6818659144403,
+      "returns": [
+        -406.02065489843966,
+        -139.5919382592715,
+        -277.40429366795723,
+        -579.7105768320927
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9520807411963688,
+      "mean_predicted_score": -25.316018886902274,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 1,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.0001438330000382848,
+      "mean_return": -307.10214793460693,
+      "returns": [
+        -267.6784279278803,
+        -132.72266368423521,
+        -131.9661960812724,
+        -696.0413040450399
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9606338025214427,
+      "mean_predicted_score": -24.7095457028483,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00012129099923186004,
+      "mean_return": -423.8947710996764,
+      "returns": [
+        -402.7658707854752,
+        -273.9340962191262,
+        -421.2594745066889,
+        -597.6196428874154
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9764975687558035,
+      "mean_predicted_score": -29.643004579547053,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 2,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00011604099927353673,
+      "mean_return": -207.27219020269064,
+      "returns": [
+        -133.82281933879614,
+        -132.2427768785766,
+        -130.8382951955152,
+        -432.1848693978747
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9654462049975336,
+      "mean_predicted_score": -15.346843602576305,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00011929199899896048,
+      "mean_return": -349.9038557112966,
+      "returns": [
+        -403.5735268034597,
+        -271.65561867148284,
+        -277.91594829809344,
+        -446.4703290721506
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9665831574893673,
+      "mean_predicted_score": -25.146888864056244,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 3,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00011983299918938428,
+      "mean_return": -368.2569645946146,
+      "returns": [
+        -512.667312682644,
+        -132.8877229954292,
+        -132.6339778965961,
+        -694.8388448037892
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9744373174926295,
+      "mean_predicted_score": -30.17984521872633,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00012829099796363153,
+      "mean_return": -347.5484885137324,
+      "returns": [
+        -274.30935033678065,
+        -268.4864060054644,
+        -276.4391927733942,
+        -570.9590049392904
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9589710550808377,
+      "mean_predicted_score": -25.053747924651415,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 1,
+      "student": 4,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00012775000141118653,
+      "mean_return": -372.93585063498705,
+      "returns": [
+        -139.15067927883985,
+        -132.23274774020632,
+        -525.0655140860982,
+        -695.2944614348038
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9694929349889208,
+      "mean_predicted_score": -31.15564931278323,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -75.2316780005524,
+      "returns": [
+        -151.84763825716098,
+        -5.364662792879409,
+        -137.13786610298249,
+        -6.576544849186742
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.969566414957626,
+      "mean_predicted_score": -5.678246127168752,
+      "first_actions": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -111.23679334232037,
+      "returns": [
+        -151.4372300342557,
+        -6.403222755417595,
+        -280.4345352571117,
+        -6.672185322496462
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.032715727489631,
+      "mean_predicted_score": -9.821906465985911,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -120.31955796310368,
+      "returns": [
+        -166.70641739279637,
+        -16.11661613108271,
+        -279.8020863625897,
+        -18.653111965945918
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.976954851245864,
+      "mean_predicted_score": -8.561835711420704,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf0",
+      "label": "encoder",
+      "infer_seconds": 0.0001315000008617062,
+      "mean_return": -101.87890631876849,
+      "returns": [
+        -258.15872134187464,
+        -5.427275757042538,
+        -136.35744456903083,
+        -7.572183607125885
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9841692812160545,
+      "mean_predicted_score": -8.187774122715984,
+      "first_actions": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.000152749998960644,
+      "mean_return": -78.22672999339193,
+      "returns": [
+        -165.69819915509865,
+        -5.070416372544616,
+        -135.68676535147912,
+        -6.451539094445321
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9868600124555087,
+      "mean_predicted_score": -5.128125923712363,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00011883299885084853,
+      "mean_return": -108.8462161986826,
+      "returns": [
+        -148.40093755418044,
+        -5.840514256828652,
+        -273.96875287587744,
+        -7.174660107843888
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.99789714745566,
+      "mean_predicted_score": -8.867577377009662,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.0001217500030179508,
+      "mean_return": -78.18488194649984,
+      "returns": [
+        -166.4768358852817,
+        -5.878851975840719,
+        -134.0112340777494,
+        -6.372605847127573
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.976962607493988,
+      "mean_predicted_score": -4.978018070193882,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.0001229579975188244,
+      "mean_return": -100.96888436690632,
+      "returns": [
+        -258.38709801318214,
+        -5.2797738038699435,
+        -134.09002572390546,
+        -6.118639926667742
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9756803624868553,
+      "mean_predicted_score": -9.961808929378401,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011579200145206414,
+      "mean_return": -81.3685203195616,
+      "returns": [
+        -179.49605353810637,
+        -5.006213962348727,
+        -134.02027186053368,
+        -6.9515419172576145
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9811732424732327,
+      "mean_predicted_score": -5.425392481752962,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00015799999891896732,
+      "mean_return": -92.97114055595472,
+      "returns": [
+        -226.31942601025477,
+        -5.8045163855325255,
+        -133.6419799013638,
+        -6.118639926667742
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.0154888637698605,
+      "mean_predicted_score": -8.457194273266765,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011654199988697655,
+      "mean_return": -79.32153912755486,
+      "returns": [
+        -168.95653472252434,
+        -6.2752513795945895,
+        -134.22260923122374,
+        -7.831761176876806
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9756733437297953,
+      "mean_predicted_score": -5.243124432568277,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00012449999849195592,
+      "mean_return": -107.70988403094337,
+      "returns": [
+        -148.42767010560317,
+        -5.507652518451781,
+        -269.2551347428196,
+        -7.649078756898912
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9764176650032823,
+      "mean_predicted_score": -8.640086302855632,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf0",
+      "label": "student",
+      "infer_seconds": 0.00011908400119864382,
+      "mean_return": -78.20605458921241,
+      "returns": [
+        -159.2324024158455,
+        -5.9358796815490065,
+        -140.2727280024313,
+        -7.3832082570238695
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9667794936212886,
+      "mean_predicted_score": -5.067342445472425,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf0",
+      "label": "baseline",
+      "infer_seconds": 0.00012191700079711154,
+      "mean_return": -107.73220344067265,
+      "returns": [
+        -149.2219468253535,
+        -5.584721211666357,
+        -269.7711129336975,
+        -6.351032791973163
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9709528074581613,
+      "mean_predicted_score": -8.676740501732882,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -1252.0908569539276,
+      "returns": [
+        -1245.3429242118727,
+        -1315.04261298685,
+        -1233.1441649572153,
+        -1214.8337256597724
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.963604980017408,
+      "mean_predicted_score": -78.37644445210836,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -1253.9413779809713,
+      "returns": [
+        -1295.185572260303,
+        -1271.590088965661,
+        -1233.8309763795903,
+        -1215.158874318331
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.958602746388351,
+      "mean_predicted_score": -75.97884776749997,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -1036.4040601136792,
+      "returns": [
+        -1222.447802886946,
+        -1140.8040992884446,
+        -935.355466023979,
+        -847.0088722553477
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9685003837757904,
+      "mean_predicted_score": -75.63069199162504,
+      "first_actions": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf1",
+      "label": "encoder",
+      "infer_seconds": 0.000167124999279622,
+      "mean_return": -1244.3087349763216,
+      "returns": [
+        -1238.4793877719922,
+        -1271.537546689351,
+        -1239.2433745080043,
+        -1227.9746309359386
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9694042125756823,
+      "mean_predicted_score": -75.1137455663823,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011129199992865324,
+      "mean_return": -1097.718848632813,
+      "returns": [
+        -1229.9654507450548,
+        -1219.2725207899384,
+        -938.1654430799292,
+        -1003.4719799163298
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.975074868840238,
+      "mean_predicted_score": -79.3506218374288,
+      "first_actions": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.0001225829983013682,
+      "mean_return": -1193.0486824996422,
+      "returns": [
+        -1146.3252648835946,
+        -1228.1681019516338,
+        -1237.6474173333147,
+        -1160.0539458300254
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.005028017600125,
+      "mean_predicted_score": -77.97218288440489,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.0001436669990653172,
+      "mean_return": -1083.182341556182,
+      "returns": [
+        -1227.977776052975,
+        -1209.9308379490221,
+        -828.1029559504714,
+        -1066.7177962722594
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9694891550470857,
+      "mean_predicted_score": -78.24594322846764,
+      "first_actions": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.0001294169996981509,
+      "mean_return": -1209.140609536858,
+      "returns": [
+        -1232.785938830861,
+        -1243.4700142981587,
+        -1201.1630712823976,
+        -1159.1434137360145
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9649237574485596,
+      "mean_predicted_score": -79.63828390002435,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00011587499830056913,
+      "mean_return": -1038.9643448280644,
+      "returns": [
+        -1229.9654507450548,
+        -1122.212104861024,
+        -823.8195959620222,
+        -979.8602277441573
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9525302162610387,
+      "mean_predicted_score": -76.6313122634806,
+      "first_actions": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00011166700278408825,
+      "mean_return": -1188.9300746399836,
+      "returns": [
+        -1225.256570572694,
+        -1177.012257440799,
+        -1199.4747484314403,
+        -1153.976722115001
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.969681726202907,
+      "mean_predicted_score": -79.11530498033834,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00015474999963771552,
+      "mean_return": -1073.9890170396925,
+      "returns": [
+        -1227.8897477733908,
+        -1130.1647699107784,
+        -937.297374359824,
+        -1000.6041761147764
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9715610300299886,
+      "mean_predicted_score": -78.60429073064344,
+      "first_actions": [
+        0,
+        2,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.00012508399959187955,
+      "mean_return": -1217.6061666755286,
+      "returns": [
+        -1235.0980071356769,
+        -1241.7888766317426,
+        -1235.7700159457956,
+        -1157.7677669888992
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9561248112750036,
+      "mean_predicted_score": -79.6775150119949,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf1",
+      "label": "student",
+      "infer_seconds": 0.00012195800081826746,
+      "mean_return": -1077.1034850311707,
+      "returns": [
+        -1221.8615329912407,
+        -1207.2606699453079,
+        -876.3775804204016,
+        -1002.9141567677326
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9653490050159235,
+      "mean_predicted_score": -78.61070151452928,
+      "first_actions": [
+        2,
+        1,
+        2,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf1",
+      "label": "baseline",
+      "infer_seconds": 0.0001261670004168991,
+      "mean_return": -1195.4335402658883,
+      "returns": [
+        -1235.5274422355103,
+        -1235.6444415817716,
+        -1150.0123042986306,
+        -1160.5499729476408
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.013246411232103,
+      "mean_predicted_score": -78.53941648445975,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -1334.1791062281961,
+      "returns": [
+        -1319.1808919068078,
+        -1300.8983058876777,
+        -1387.6471623185707,
+        -1328.9900647997285
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.957885518771036,
+      "mean_predicted_score": -78.01619583413539,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -1351.2124472180967,
+      "returns": [
+        -1323.7920958937932,
+        -1305.0082778052622,
+        -1408.7697194636246,
+        -1367.2796957097066
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9534594299811943,
+      "mean_predicted_score": -76.00564756499796,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -1271.9882803193495,
+      "returns": [
+        -1250.3448318949481,
+        -1158.2279756792677,
+        -1436.5161449110333,
+        -1242.864168792149
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9653946125963557,
+      "mean_predicted_score": -97.4675443765851,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf2",
+      "label": "encoder",
+      "infer_seconds": 0.00012200000128359534,
+      "mean_return": -1366.5070409061814,
+      "returns": [
+        -1370.9072558457954,
+        -1304.3834324238114,
+        -1410.7960179437587,
+        -1379.94145741136
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9749774123856696,
+      "mean_predicted_score": -76.01210298722225,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00011954100045841187,
+      "mean_return": -1255.0884389675396,
+      "returns": [
+        -1256.3169617531673,
+        -1164.7309117110426,
+        -1368.854566516624,
+        -1230.4513158893244
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9655109861314486,
+      "mean_predicted_score": -92.39627236567601,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011595799878705293,
+      "mean_return": -1322.6452577553428,
+      "returns": [
+        -1323.5703262959858,
+        -1241.8993761077747,
+        -1403.864107450636,
+        -1321.247221166975
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.957554747485119,
+      "mean_predicted_score": -81.3873166151143,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00013000000035390258,
+      "mean_return": -1256.7234837142105,
+      "returns": [
+        -1254.4564371352008,
+        -1159.1800531109873,
+        -1368.4907130735014,
+        -1244.7667315371523
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.955424288742506,
+      "mean_predicted_score": -91.26673470060325,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00012858300033258274,
+      "mean_return": -1321.9227343495086,
+      "returns": [
+        -1322.55693837475,
+        -1229.4120171385748,
+        -1416.3426129139111,
+        -1319.3793689707986
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9842068687494248,
+      "mean_predicted_score": -82.34293550510152,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.0001201250015583355,
+      "mean_return": -1258.649460035629,
+      "returns": [
+        -1198.5536885207855,
+        -1160.5732072376745,
+        -1429.1375157460104,
+        -1246.3334286380464
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.008128932487125,
+      "mean_predicted_score": -92.77736660084688,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011995800014119595,
+      "mean_return": -1334.317368645092,
+      "returns": [
+        -1325.3340347734913,
+        -1238.161898725338,
+        -1452.8644844413413,
+        -1320.9090566401972
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.972583686231701,
+      "mean_predicted_score": -82.25621760205424,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.00012454099851311184,
+      "mean_return": -1282.4286786742205,
+      "returns": [
+        -1273.5475839515987,
+        -1228.484574736046,
+        -1370.5445452009603,
+        -1257.138010808277
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.013329837525816,
+      "mean_predicted_score": -94.65238743807336,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00011799999992945231,
+      "mean_return": -1330.594564021438,
+      "returns": [
+        -1323.631314400594,
+        -1229.436827749807,
+        -1451.225461415342,
+        -1318.0846525200084
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.980305209965991,
+      "mean_predicted_score": -82.0488414697813,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf2",
+      "label": "student",
+      "infer_seconds": 0.0001132910001615528,
+      "mean_return": -1267.091551100593,
+      "returns": [
+        -1251.2595507028452,
+        -1167.9224781436967,
+        -1412.3625408372154,
+        -1236.8216347186149
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.988241201263918,
+      "mean_predicted_score": -93.72404309721286,
+      "first_actions": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf2",
+      "label": "baseline",
+      "infer_seconds": 0.00013520799984689802,
+      "mean_return": -1320.26450300914,
+      "returns": [
+        -1324.212315991208,
+        -1232.2533912235492,
+        -1405.0794468440506,
+        -1319.5128579777522
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9725366186257816,
+      "mean_predicted_score": -82.42926774933225,
+      "first_actions": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "zero",
+      "infer_seconds": 0.0,
+      "mean_return": -372.19971793324504,
+      "returns": [
+        -654.8710160938424,
+        -267.81223989195576,
+        -133.79667887538625,
+        -432.31893687179576
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9818457250567008,
+      "mean_predicted_score": -30.765441822988173,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "global",
+      "infer_seconds": 0.0,
+      "mean_return": -343.932127926623,
+      "returns": [
+        -133.41172377366087,
+        -267.4081607110479,
+        -135.2679887894608,
+        -839.6406384323225
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9707414937538488,
+      "mean_predicted_score": -27.709399393397348,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "teacher",
+      "infer_seconds": 0.0,
+      "mean_return": -281.9356667050442,
+      "returns": [
+        -251.27734006597322,
+        -132.4229186780443,
+        -133.98799789979958,
+        -610.0544101763596
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9636385162202714,
+      "mean_predicted_score": -20.527538073545074,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": null,
+      "task": "pendulum_lat_cf3",
+      "label": "encoder",
+      "infer_seconds": 0.00012112500189687125,
+      "mean_return": -538.9608790935042,
+      "returns": [
+        -531.1122501507867,
+        -528.7030508043412,
+        -400.7218834246951,
+        -695.306331994194
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.03394483871125,
+      "mean_predicted_score": -43.49503463112896,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.0001143750014307443,
+      "mean_return": -340.9079198966357,
+      "returns": [
+        -250.15879167892783,
+        -265.5131637118363,
+        -266.4368068749651,
+        -581.5229173208135
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.96080532887936,
+      "mean_predicted_score": -25.776347420344024,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 0,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.0001248339976882562,
+      "mean_return": -247.249275836072,
+      "returns": [
+        -135.04825748859258,
+        -132.63690732817264,
+        -151.4540396995019,
+        -569.8578988280209
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.95488853876941,
+      "mean_predicted_score": -19.608205133016135,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00013658299940288998,
+      "mean_return": -280.16509537356137,
+      "returns": [
+        -267.5566775756775,
+        -263.82695218351705,
+        -131.9263946233596,
+        -457.3503571116914
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9534428862270943,
+      "mean_predicted_score": -19.815728835735833,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 1,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00011270799950580113,
+      "mean_return": -310.17775094279665,
+      "returns": [
+        -133.92580416626564,
+        -133.00128642756016,
+        -264.674128506294,
+        -709.1097846710668
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9514076562818445,
+      "mean_predicted_score": -23.732380403486196,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00012812500062864274,
+      "mean_return": -342.17514717585345,
+      "returns": [
+        -387.98463401382315,
+        -268.09094660695854,
+        -264.0222395178447,
+        -448.6027685647875
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9513881712173315,
+      "mean_predicted_score": -25.631818154848105,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 2,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00011937499948544428,
+      "mean_return": -243.06946320998583,
+      "returns": [
+        -135.04825748859258,
+        -132.65352378989553,
+        -131.2167359850655,
+        -573.3593355763898
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.961847862497052,
+      "mean_predicted_score": -17.819122715665863,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00011683399861794896,
+      "mean_return": -278.528371054406,
+      "returns": [
+        -136.2883273944795,
+        -134.3825195781053,
+        -400.1984553883373,
+        -443.2441818567019
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.956256961218969,
+      "mean_predicted_score": -20.269170379034207,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 3,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.00012145900109317154,
+      "mean_return": -275.409023248371,
+      "returns": [
+        -135.991974479373,
+        -264.3678428351314,
+        -130.36481709393613,
+        -570.9114585850434
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.9485687388241786,
+      "mean_predicted_score": -20.508894261029983,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf3",
+      "label": "student",
+      "infer_seconds": 0.00011875000200234354,
+      "mean_return": -282.17604998038814,
+      "returns": [
+        -268.6052668158932,
+        -265.18823100464624,
+        -133.87386088973506,
+        -461.036841211278
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.967197959977966,
+      "mean_predicted_score": -20.720128370072793,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": 2,
+      "student": 4,
+      "task": "pendulum_lat_cf3",
+      "label": "baseline",
+      "infer_seconds": 0.0001205830012622755,
+      "mean_return": -372.7902348061627,
+      "returns": [
+        -135.64572885913532,
+        -393.16075676879296,
+        -131.56619315012782,
+        -830.7882604465947
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 4.006269270048506,
+      "mean_predicted_score": -28.22106888613731,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 0,
+      "task": "pendulum_lat_cf0",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -78.13842847749339,
+      "returns": [
+        -158.88711771258582,
+        -6.280162010241029,
+        -139.9593964673355,
+        -7.427037719811189
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.433150223722805,
+      "mean_predicted_score": -5.997059880507179,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 0,
+      "task": "pendulum_lat_cf1",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -1223.0926301488785,
+      "returns": [
+        -1240.094256078524,
+        -1251.6790017993376,
+        -1234.8279341418156,
+        -1165.7693285758364
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.442079391243169,
+      "mean_predicted_score": -76.23539626232235,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 0,
+      "task": "pendulum_lat_cf2",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -1351.0357310129602,
+      "returns": [
+        -1367.5953787048893,
+        -1293.0660195924454,
+        -1401.879905153825,
+        -1341.6016206006811
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.4407969924313875,
+      "mean_predicted_score": -77.9764057946226,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 0,
+      "task": "pendulum_lat_cf3",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -575.5533541624146,
+      "returns": [
+        -576.2117639448901,
+        -394.67077616331414,
+        -483.16314716367884,
+        -848.1677293777753
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.4298595300060697,
+      "mean_predicted_score": -49.77263683548999,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 1,
+      "task": "pendulum_lat_cf0",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -111.2599955472842,
+      "returns": [
+        -145.51670440572676,
+        -5.083295782083936,
+        -130.48540247492727,
+        -163.95457952639887
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.43525818002945,
+      "mean_predicted_score": -9.91126873720321,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 1,
+      "task": "pendulum_lat_cf1",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -1257.7498879665097,
+      "returns": [
+        -1263.4364190011117,
+        -1314.0463324466007,
+        -1235.264066708189,
+        -1218.2527337101371
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.4369708162876123,
+      "mean_predicted_score": -74.8962862062054,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 1,
+      "task": "pendulum_lat_cf2",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -1356.2262018170836,
+      "returns": [
+        -1373.7065437276858,
+        -1300.74536160958,
+        -1384.3678274562694,
+        -1366.085074474799
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.4357444749412025,
+      "mean_predicted_score": -75.01278586093571,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 1,
+      "task": "pendulum_lat_cf3",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -303.65544912525684,
+      "returns": [
+        -392.3094000022458,
+        -133.7431779957305,
+        -132.59167397465234,
+        -555.9775445283987
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.440616827424492,
+      "mean_predicted_score": -22.623113981395985,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 2,
+      "task": "pendulum_lat_cf0",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -110.38244522483154,
+      "returns": [
+        -150.17752741961237,
+        -7.075805509371739,
+        -277.27895214313133,
+        -6.997495827210752
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.4865025788212733,
+      "mean_predicted_score": -8.867567900530066,
+      "first_actions": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110000
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 2,
+      "task": "pendulum_lat_cf1",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -1230.7877464994147,
+      "returns": [
+        -1250.7960624491304,
+        -1245.1920303022341,
+        -1235.644239134299,
+        -1191.5186541119951
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.425244546228896,
+      "mean_predicted_score": -74.77818639505648,
+      "first_actions": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110010
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 2,
+      "task": "pendulum_lat_cf2",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -1343.4448270491491,
+      "returns": [
+        -1317.9755066540354,
+        -1302.1279130102919,
+        -1388.2351833255882,
+        -1365.4407052066806
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.435281191177637,
+      "mean_predicted_score": -75.70033342078321,
+      "first_actions": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110020
+    },
+    {
+      "decoder": null,
+      "student": null,
+      "mlp_seed": 2,
+      "task": "pendulum_lat_cf3",
+      "label": "mlp",
+      "infer_seconds": 0.0,
+      "mean_return": -311.5688698992575,
+      "returns": [
+        -398.51730442977686,
+        -139.80010412252076,
+        -136.0297970414788,
+        -571.9282740032537
+      ],
+      "catastrophic_rate": 0.0,
+      "catastrophic_episodes": 0,
+      "env_interactions": 800,
+      "mean_plan_ms": 3.4316284737633396,
+      "mean_predicted_score": -24.402725687545225,
+      "first_actions": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "model_states": 204800,
+      "n_decisions": 800,
+      "eval_seed": 110030
+    }
+  ],
+  "control_evaluated": true,
+  "is_agi": false,
+  "is_learning_to_learn": false,
+  "recommendation": "inconclusive",
+  "wall_clock_s": 569.455127833,
+  "plot": "artifacts/latent_control.svg"
+}

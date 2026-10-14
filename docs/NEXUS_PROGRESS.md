@@ -459,3 +459,9 @@ The same encoder, trained at learning rate **0.01** on twelve new physics with t
 Branch `cursor/latent-generalization-confirmation`. Write-up: `docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`. Artifact `artifacts/latent_generalization_confirmation.json`. Implementation SHA `4da390da236c2b8fb172bcbc13c65ebce6aae9da`. Wall **56.5 s**. No control sweep.
 
 The retrained encoder matched the development artifact exactly, then scored four new physics (hash `baa655fcb94e61bc`). Confirmation angular velocity was **0.1016** versus zero **0.2729**, the frozen encoder **0.2660**, and a global vector **0.2742**. Decoder-level paired gaps were **+0.171 [+0.136, +0.207]**, **+0.164 [+0.156, +0.173]**, and **+0.173 [+0.133, +0.213]**. The direct teacher was **0.0876**, and that interval includes 0. Latent distance stayed **1.558**. All four tasks cleared the three primary controls. Not learning-to-learn and not AGI.
+
+## Latent context control
+
+Branch `cursor/latent-context-control`. Write-up: `docs/NEXUS_LATENT_CONTROL.md`. Artifact `artifacts/latent_control.json`. Implementation SHA `9506604ba1aae853d8be3421d87b9e9477a9b5a4`. Wall **569.5 s**.
+
+The same epoch-200 encoder in the frozen H=16 controller returned **−683.0** versus zero **−768.4** and the frozen encoder **−773.2**. Decoder-level intervals **+85.4 [−109.4, +280.3]** and **+90.2 [−5.7, +186.1]** both include 0. The result is inconclusive. The direct teacher returned **−682.4**. Not a control improvement, not learning-to-learn, and not AGI.
