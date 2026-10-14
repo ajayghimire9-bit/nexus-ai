@@ -38,10 +38,12 @@ The development gate failed (`docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`). The se
 
 ## The one next experiment
 
+The protocol for this question is locked in `docs/NEXUS_ENCODER_REPRESENTABILITY.md`. The diagnostic artifact is not in the implementation commit.
+
 **Ask whether the existing mean-pool encoder can match the eight saved meta-training teacher codes at all.**
 
 Under the locked learning rate, training latent distance was still **1.27** after 400 epochs, and it was still falling, while development prediction had already worsened after epoch 120. That does not yet separate an encoder that cannot express the codes from a step size that never arrived.
 
-Fit only the existing 584-parameter encoder to those saved meta-training vectors. Pre-register the learning rate, the step budget, and a training-distance threshold before looking at development prediction. Do not read development query outcomes during the fit. Do not retune the teacher. Do not open hash `d1fa621351d286cf` or the closed hash `87b83c41be34aa1a`.
+Fit only the existing 584-parameter encoder to those saved meta-training vectors. The locked rates are 0.001, 0.01, and 0.1, for 2000 steps. The pass bar is mean latent distance at most 0.25, worst task at most 0.5, and strictly below the constant mean teacher. Do not read development query outcomes during the fit. Do not retune the teacher. Do not open hash `d1fa621351d286cf` or the closed hash `87b83c41be34aa1a`.
 
 If the training distance stays large, a later protocol can change the inference family. If the training distance collapses and development error still loses to zero, the failure is generalization from eight tasks. Test-time optimization remains the procedure that has lowered held-out error. Do not run control from this negative screen.
