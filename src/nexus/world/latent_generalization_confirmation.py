@@ -509,6 +509,7 @@ def run_latent_generalization_confirmation(
     teacher_rows = []
     for decoder, parent in enumerate(cfg["parent_checkpoints"]):
         model = load_context_checkpoint(Path(parent["path"]))
+        lock_network(model)
         if decoder_digest(model) != sink["decoder_digests"][decoder]:
             raise RuntimeError("confirmation teacher fit saw a changed decoder")
         global_z = torch.tensor(selection["global_vectors"][str(decoder)], dtype=torch.float32)

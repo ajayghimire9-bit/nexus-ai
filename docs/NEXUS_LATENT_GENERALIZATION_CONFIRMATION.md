@@ -8,7 +8,7 @@ Not AGI. Not learning-to-learn. No MPC. Hashes `87b83c41be34aa1a` and `d1fa62135
 
 ## What stays frozen
 
-The three history decoders stay frozen. The encoder stays the mean pool with width 32, eight latent numbers, and 584 parameters. The student learning rate stays **0.01** for **200** epochs. Each of the twelve source physics keeps two independent 128-row supports and its own teacher. The teacher rule stays Adam learning rate 0.1 for 256 updates from the stored global vector. The confirmation score uses epoch 200 only. Epochs 40 and 100 are still produced by the locked training loop. They do not choose a checkpoint.
+The three history decoders stay frozen. The encoder stays the mean pool with width 32, eight latent numbers, and 584 parameters. The student learning rate stays **0.01** for **200** epochs. Each of the twelve source physics keeps two independent 128-row supports and its own teacher. The teacher rule stays Adam learning rate 0.1 for 256 updates from the stored global vector, with the decoder locked before the fit. The confirmation score uses epoch 200 only. Epochs 40 and 100 are still produced by the locked training loop. They do not choose a checkpoint.
 
 ## Reproduction before any new physics
 

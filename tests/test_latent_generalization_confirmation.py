@@ -87,6 +87,35 @@ def test_a_development_mismatch_blocks_confirmation(monkeypatch) -> None:
     assert calls == []
 
 
+def test_confirmation_teacher_fit_requires_a_locked_decoder() -> None:
+    from nexus.world.context_model import ContextWorldModel
+    from nexus.world.data import TransitionDataset
+    from nexus.world.direct_latent import lock_network
+    from nexus.world.latent_generalization import _fit_teacher
+    import numpy as np
+    import torch
+
+    rng = np.random.default_rng(0)
+    n = 8
+    obs = rng.normal(size=(n, 3)).astype(np.float32)
+    action = rng.integers(0, 3, size=n).astype(np.int64)
+    support = TransitionDataset(
+        obs=obs, action=action, next_obs=obs + 0.05, reward=np.zeros(n, dtype=np.float32),
+        terminated=np.zeros(n, dtype=bool), truncated=np.zeros(n, dtype=bool), task_id="toy",
+        seed=np.zeros(n, dtype=np.int64), episode_id=np.zeros(n, dtype=np.int64),
+        policy=np.array(["random"] * n, dtype=object), physics={}, env_interactions=n,
+    )
+    unlocked = ContextWorldModel.create(3, 3, seed=1)
+    unlocked.obs_rms.update(obs)
+    with pytest.raises(RuntimeError, match="received a gradient"):
+        _fit_teacher(unlocked, support, torch.zeros(8))
+    locked = ContextWorldModel.create(3, 3, seed=1)
+    locked.obs_rms.update(obs)
+    lock_network(locked)
+    vector = _fit_teacher(locked, support, torch.zeros(8))
+    assert torch.isfinite(vector).all()
+
+
 def test_reproduction_tolerance_and_the_primary_gate() -> None:
     cfg = load_confirmation_config()
     reference = {
