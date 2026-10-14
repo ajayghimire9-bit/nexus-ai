@@ -589,7 +589,7 @@ def run_latent_generalization_confirmation(
         "means": means,
         "paired_control_minus_student": gate_report | {
             "teacher": {"per_decoder": paired["teacher"], "interval": seed_level_ci(paired["teacher"])},
-            "baseline": {"per_decoder": paired["baseline"], "interval": seed_level_ci(paired["baseline"])},
+            "baseline": {"per_decoder": paired[baseline_label(epoch)], "interval": seed_level_ci(paired[baseline_label(epoch)])},
         },
         "secondary_student_seed_interval": seed_level_ci(_student_seed_means(records, label, cfg)),
         "secondary_student_seed_note": "This interval averages decoders inside each student seed. It is not the primary replication unit.",
