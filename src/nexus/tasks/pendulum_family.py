@@ -225,6 +225,32 @@ def pendulum_amortized_confirmation() -> tuple[TaskSpec, ...]:
     )
 
 
+def pendulum_latent_train() -> tuple[TaskSpec, ...]:
+    """Twelve-point grid for encoder generalization. Not a confirmation set.
+
+    Gravity is 7.3, 8.7, or 13.2. Mass is 0.65 or 1.05. Length is 0.78 or 1.22.
+    """
+    rows = tuple(
+        (g, m, l)
+        for g in (7.3, 8.7, 13.2)
+        for m in (0.65, 1.05)
+        for l in (0.78, 1.22)
+    )
+    return tuple(
+        _pendulum(f"pendulum_lat_tr{i}", "latent_train", f"Latent generalization train {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
+def pendulum_latent_validation() -> tuple[TaskSpec, ...]:
+    """Physics held out of training. Scored after checkpoint selection. Not confirmation."""
+    rows = ((8.2, 0.95, 1.08), (11.6, 1.12, 0.92), (9.8, 0.58, 1.18), (12.7, 1.42, 1.08))
+    return tuple(
+        _pendulum(f"pendulum_lat_va{i}", "latent_val", f"Latent generalization validation {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
 def pendulum_physics_key(spec: TaskSpec) -> tuple[float, float, float]:
     p = spec.params
     return (float(p.get("g", PENDULUM_SOURCE_G)), float(p.get("m", PENDULUM_SOURCE_M)), float(p.get("l", PENDULUM_SOURCE_L)))

@@ -1,0 +1,178 @@
+protocol_id: latent_encoder_generalization_v1
+starting_sha: cc0341c3df6a3fc6e0127b068258c5f805280450
+teacher_artifact: artifacts/amortized_latent_dev.json
+teacher_artifact_sha256: cd120f53ffdd1efbaaff8b632faad01b251e3b4e4afccd201af28c267ac1162f
+prior_selection: artifacts/direct_latent_selection.json
+prior_selection_sha256: ef99a31fd1c50ee27e4de35dff6c810397a22ab267622d1b4aa938cf4ffb5c5f
+forbidden_confirm_hash: 87b83c41be34aa1a
+amort_confirm_hash: d1fa621351d286cf
+train_split_hash: a3e558f2eeea1298
+val_split_hash: 601715664052382b
+dev_split_hash: e3d6d6dd1a08cf4f
+is_agi: false
+is_learning_to_learn: false
+control_sweep: false
+confirmation_evaluated: false
+h_generalize: The existing 584-parameter encoder, trained at learning rate 0.01 on
+  a broader grid of support-specific teacher codes, lowers held-out development angular-velocity
+  error below zero context and below the frozen encoder.
+n_decoder_seeds: 3
+n_student_seeds: 5
+n_train_supports: 2
+support_budget: 128
+query_episodes: 4
+query_transitions: 800
+epochs:
+- 40
+- 100
+- 200
+student_learning_rate: 0.01
+teacher_learning_rate: 0.1
+teacher_updates: 256
+encoder_hidden: 32
+context_dim: 8
+n_parameters: 584
+angular_velocity_index: 2
+horizons:
+- 3
+- 8
+- 16
+rollout_starts:
+- 0
+- 32
+- 64
+- 96
+- 128
+- 160
+mean_fit_l2: 0.25
+history_fail_l2: 0.5
+teacher_pair_l2: 0.5
+recovery_min_relative: 0.05
+broad_h0_env0: 96000
+broad_h0_base: 262000
+broad_h1_env0: 97000
+broad_h1_base: 263000
+history_env0: 98000
+history_base: 264000
+val_support_env0: 99000
+val_support_base: 265000
+val_query_env0: 100000
+val_query_base: 266000
+dev_support_env0: 74000
+dev_support_base: 256000
+dev_query_env0: 76000
+dev_query_base: 257000
+baseline_support_env0: 72000
+baseline_support_base: 255000
+time_limit_s: 1800
+train_physics:
+- - 7.3
+  - 0.65
+  - 0.78
+- - 7.3
+  - 0.65
+  - 1.22
+- - 7.3
+  - 1.05
+  - 0.78
+- - 7.3
+  - 1.05
+  - 1.22
+- - 8.7
+  - 0.65
+  - 0.78
+- - 8.7
+  - 0.65
+  - 1.22
+- - 8.7
+  - 1.05
+  - 0.78
+- - 8.7
+  - 1.05
+  - 1.22
+- - 13.2
+  - 0.65
+  - 0.78
+- - 13.2
+  - 0.65
+  - 1.22
+- - 13.2
+  - 1.05
+  - 0.78
+- - 13.2
+  - 1.05
+  - 1.22
+val_physics:
+- - 8.2
+  - 0.95
+  - 1.08
+- - 11.6
+  - 1.12
+  - 0.92
+- - 9.8
+  - 0.58
+  - 1.18
+- - 12.7
+  - 1.42
+  - 1.08
+train_task_ids:
+- pendulum_lat_tr0
+- pendulum_lat_tr1
+- pendulum_lat_tr2
+- pendulum_lat_tr3
+- pendulum_lat_tr4
+- pendulum_lat_tr5
+- pendulum_lat_tr6
+- pendulum_lat_tr7
+- pendulum_lat_tr8
+- pendulum_lat_tr9
+- pendulum_lat_tr10
+- pendulum_lat_tr11
+val_task_ids:
+- pendulum_lat_va0
+- pendulum_lat_va1
+- pendulum_lat_va2
+- pendulum_lat_va3
+dev_task_ids:
+- pendulum_ctx_dev0
+- pendulum_ctx_dev1
+- pendulum_ctx_dev2
+baseline_task_ids:
+- pendulum_ctx_tr0
+- pendulum_ctx_tr1
+- pendulum_ctx_tr2
+- pendulum_ctx_tr3
+- pendulum_ctx_tr4
+- pendulum_ctx_tr5
+- pendulum_ctx_tr6
+- pendulum_ctx_tr7
+dev_support_hashes:
+- f9da7cd596004681
+- a384f4090a0be298
+- a6b676ab2d289b90
+dev_query_hashes:
+- cdb2c816fa4b235e
+- 0e8f4b2d167c2ab6
+- 1f954f66b08b219d
+forbidden_task_ids:
+- pendulum_ctx_c0
+- pendulum_ctx_c1
+- pendulum_ctx_c2
+- pendulum_ctx_c3
+- pendulum_amort_c0
+- pendulum_amort_c1
+- pendulum_amort_c2
+- pendulum_amort_c3
+parent_checkpoints:
+- seed: 0
+  path: artifacts/frozen_dynamics_checkpoints/seed0_history_u1000.pt
+  sha256: 83e90a9b187cdffe5e39d794ce86abf65ef891fde011daf8e55b7eee1f348959
+  global_vector_sha256: d40d71a3e5c0e62ef158e08ec82617f10a8f6fcfeaac436744c9e9958b31f8ba
+- seed: 1
+  path: artifacts/frozen_dynamics_checkpoints/seed1_history_u1000.pt
+  sha256: cd5400070a69238ce8e35ca036c57448b18664f7ce1e8600ac5a3aab2983ef3e
+  global_vector_sha256: 4705c19a62e0547267705e1b10aeb4f06c1a62058ab077534b24a8f2cc4fdb33
+- seed: 2
+  path: artifacts/frozen_dynamics_checkpoints/seed2_history_u1000.pt
+  sha256: 254b097c5dbd3df02c463913c60392928aaed0584c6c29245e060ed25113b6fd
+  global_vector_sha256: 9910f28a645a7a4d8a714cf0523f6c8a9c7b58b7dd71103e96a511583be31218

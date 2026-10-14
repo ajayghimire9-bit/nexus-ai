@@ -42,6 +42,8 @@ The existing encoder can reproduce the eight saved codes (`docs/NEXUS_ENCODER_RE
 
 ## The one next experiment
 
+The protocol for this question is locked in `docs/NEXUS_LATENT_GENERALIZATION.md`. The development artifact is not in the implementation commit.
+
 **Ask whether this same encoder, trained at learning rate 0.01 on a broader set of meta-training tasks, lowers held-out development query angular-velocity error below zero context and below the frozen encoder.**
 
-Keep the 584-parameter mean pool. Fit each teacher on that task's own support with the locked rule, and train the student on that same support. Do not reuse a teacher from a different support of the same task. Choose any remaining training choices on development prediction only, and lock them before a confirmation. Do not open hash `87b83c41be34aa1a` or hash `d1fa621351d286cf` for that selection. Do not run control. A lower query error would still not be learning-to-learn.
+Keep the 584-parameter mean pool. Fit each teacher on that task's own support with the locked rule, and train the student on that same support. Do not reuse a teacher from a different support of the same task. The checkpoint is chosen on the existing development query only. Do not open hash `87b83c41be34aa1a` or hash `d1fa621351d286cf`. Do not run control. A lower query error would still not be learning-to-learn.
