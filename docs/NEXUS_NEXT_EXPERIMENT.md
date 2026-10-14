@@ -44,10 +44,12 @@ The existing encoder can reproduce the eight saved codes (`docs/NEXUS_ENCODER_RE
 
 The development screen passed (`docs/NEXUS_LATENT_GENERALIZATION.md`). Epoch 200 angular velocity was **0.0913** versus zero **0.1587**, the frozen encoder **0.1773**, the global vector **0.1478**, and the direct teacher **0.0781**. The eight-task baseline at the same epoch was **0.1672**. The validation mean also passed, at **0.0832** versus zero **0.0972**. Training latent distance stayed **0.648**, and a new support of a training physics stayed at **1.752**. Validation task `pendulum_lat_va3` is worse than zero context, and its teacher is too. Neither reserved confirmation hash was collected.
 
+## Latent generalization confirmation
+
+The prediction screen passed (`docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`). Confirmation angular velocity was **0.1016** versus zero **0.2729**, the frozen encoder **0.2660**, and the global vector **0.2742**. The decoder-level gaps clear the 0.01 margin and exclude 0. The direct teacher was **0.0876**, and that paired interval includes 0. Latent distance stayed **1.558**. All four tasks cleared the three primary controls. No control sweep was run.
+
 ## The one next experiment
 
-The protocol is locked in `docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`. The confirmation artifact is not in the implementation commit.
+**Ask whether the saved epoch-200 student context improves H=16 MPC return against zero context, the frozen encoder, and the global vector on the same confirmation physics.**
 
-**Ask whether the same locked student, retrained from these seeds, lowers confirmation angular-velocity error at least 0.01 below zero context, the frozen encoder, and the global vector.**
-
-The four physics are already registered, hash `baa655fcb94e61bc`. Retrain at learning rate 0.01 for 200 epochs. Match the development artifact before collecting the new episodes. Do not retune after seeing the confirmation scores. Do not reopen hash `87b83c41be34aa1a` or hash `d1fa621351d286cf`. Do not run control. A pass would still not be learning-to-learn.
+Use the checkpoint hashes in `artifacts/latent_generalization_confirmation.json`. Do not retune the encoder, the epoch, or the teacher rule on these scores. Register the return rule before any MPC rollouts. A higher return would be a control result on this physics set. It would still not be learning-to-learn.

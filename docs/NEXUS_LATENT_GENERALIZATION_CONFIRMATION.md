@@ -77,4 +77,50 @@ primary_unit: decoder
 
 ## Results
 
-The confirmation run has not been started in the implementation commit.
+Scored implementation `4da390da236c2b8fb172bcbc13c65ebce6aae9da`. The source tree was clean. Artifact `artifacts/latent_generalization_confirmation.json`, sha256 `18ef526655e8d0ce9d49fe5b67f4af17997c08bff564f256354e48e1086c04fa`. Wall clock **56.5 s**. The confirmation schema was complete. No control sweep. Not AGI and not learning-to-learn.
+
+The retraining matched the development artifact exactly: every compared angular-velocity mean, latent distance, and teacher binding differed by **0**. Decoder digests matched the checkpoint files. Thirty epoch-200 encoder files were saved under `artifacts/latent_generalization_confirmation_checkpoints/`, each with its own sha256 in the artifact. Those files are gitignored.
+
+Confirmation angular velocity, same query rows, epoch 200:
+
+| Condition | Angular velocity | Overall MAE | Latent L2 | Open-loop 3 / 8 / 16 |
+| --- | ---: | ---: | ---: | --- |
+| Broad student | **0.1016** | 0.0400 | 1.558 | 0.097 / 0.222 / 0.466 |
+| Direct teacher | 0.0876 | 0.0358 | 0 | 0.080 / 0.191 / 0.376 |
+| Eight-task baseline | 0.1886 | 0.0694 | 2.671 | 0.217 / 0.494 / 0.951 |
+| Frozen encoder | 0.2660 | 0.0955 | 2.774 | 0.304 / 0.690 / 1.225 |
+| Zero context | 0.2729 | 0.0974 | 2.926 | 0.311 / 0.708 / 1.286 |
+| Global vector | 0.2742 | 0.0979 | 2.763 | 0.313 / 0.713 / 1.283 |
+
+The primary unit is the decoder after averaging its five student seeds and the four tasks. Paired control minus student, df = 2. Positive means the student is lower. The locked margin is 0.01, and a lower bound of 0 fails.
+
+- Zero **+0.1714 [+0.1361, +0.2066]**
+- Frozen encoder **+0.1644 [+0.1557, +0.1732]**
+- Global **+0.1726 [+0.1328, +0.2125]**
+- Eight-task baseline **+0.0870 [+0.0534, +0.1206]**
+- Direct teacher **−0.0140 [−0.0329, +0.0050]**
+
+The three primary intervals clear 0.01 and exclude 0. The screen passes. The teacher interval includes 0, so this run does not separate the student from the direct teacher. The recovery fraction of the global-to-teacher gap is **0.925**.
+
+Cosine MAE is **0.0087** against zero **0.0114**. Sine MAE is **0.0098** against zero **0.0080**. The angular-velocity gain carries the overall MAE.
+
+Per decoder, student versus zero versus encoder versus global versus teacher:
+
+- Decoder 0: **0.1010** / 0.2736 / 0.2690 / 0.2750 / 0.0926
+- Decoder 1: **0.1193** / 0.2758 / 0.2835 / 0.2752 / 0.0966
+- Decoder 2: **0.0845** / 0.2693 / 0.2455 / 0.2725 / 0.0736
+
+Per task, student versus zero versus encoder versus global versus teacher:
+
+- `pendulum_lat_cf0` (5.1, 0.88, 0.96): **0.1145** / 0.2158 / 0.2131 / 0.1987 / 0.0997
+- `pendulum_lat_cf1` (15.8, 0.92, 1.04): **0.1096** / 0.2832 / 0.2907 / 0.3043 / 0.0919
+- `pendulum_lat_cf2` (10.4, 2.45, 0.58): **0.1274** / 0.4211 / 0.4349 / 0.4411 / 0.1142
+- `pendulum_lat_cf3` (11.4, 0.48, 1.82): **0.0548** / 0.1716 / 0.1254 / 0.1528 / 0.0445
+
+Every task is below zero context, the frozen encoder, and the global vector. The teacher is below zero context on every task. The student remains far from the teacher coordinates: latent distance **1.558**.
+
+A secondary student-seed interval, after averaging decoders, is **0.1016 [0.0986, 0.1045]**, df = 4. Those seeds share the decoders. They are not the primary unit.
+
+Confirmation support used **512** transitions and the query used **3200**. Confirmation teacher Adam steps were **3072**. A teacher fit averaged **0.097 s**. A student pass averaged **1.3 ms**. The reproduction reused the development budgets: 30720 teacher steps and 96000 student steps.
+
+The locked next experiment is whether this student context improves H=16 MPC return. That run has not started. This confirmation is a prediction result.

@@ -6,9 +6,11 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: latent-encoder generalization, development screen passed.** Write-up: `docs/NEXUS_LATENT_GENERALIZATION.md`. Artifact `artifacts/latent_generalization_dev.json`. No confirmation and no control sweep.
+**Current: latent-encoder confirmation, prediction screen passed.** Write-up: `docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`. Artifact `artifacts/latent_generalization_confirmation.json`. No control sweep.
 
-The same 584-parameter encoder, trained at learning rate **0.01** on twelve new physics, reached development angular velocity **0.0913** versus zero context **0.1587**, the frozen encoder **0.1773**, and a global vector **0.1478**. The direct teacher was **0.0781**. Training latent distance stayed **0.648**. This is **not** a recovered teacher code, AGI, learning-to-learn, or a control result.
+The same 584-parameter encoder, retrained at learning rate **0.01**, reached confirmation angular velocity **0.1016** versus zero context **0.2729**, the frozen encoder **0.2660**, and a global vector **0.2742**. The direct teacher was **0.0876**. Latent distance stayed **1.558**. This is **not** a recovered teacher code, AGI, learning-to-learn, or a control result.
+
+The development screen on the earlier three tasks was angular velocity **0.0913** versus zero **0.1587** and the frozen encoder **0.1773**.
 
 The earlier representability check showed that this encoder can reproduce the eight saved training codes at learning rate **0.01** (mean latent distance **0.0074, 0.0021, and 0.000024**). Rate **0.001** misses that bar. A second support of the same task does not reproduce the saved code.
 

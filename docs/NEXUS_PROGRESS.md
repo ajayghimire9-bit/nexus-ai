@@ -453,3 +453,9 @@ The same 584-parameter encoder, trained at learning rate **0.01** for 2000 full-
 Branch `cursor/latent-encoder-generalization`. Write-up: `docs/NEXUS_LATENT_GENERALIZATION.md`. Artifact `artifacts/latent_generalization_dev.json`. Implementation SHA `fd1e864cb2e1dff91e73bf35b184becc4c81be22`. Wall **51.2 s**. No confirmation and no control sweep.
 
 The same encoder, trained at learning rate **0.01** on twelve new physics with two support-specific teachers each, reached development angular velocity **0.0913** versus zero **0.1587**, the frozen encoder **0.1773**, a global vector **0.1478**, and the direct teacher **0.0781**. The eight-task baseline at the same epoch was **0.1672**. Paired intervals exclude 0. The validation mean was **0.0832** versus zero **0.0972**. Training latent distance stayed **0.648**, and a held-out support of the same training physics stayed at **1.752**. One validation physics is worse than zero context. Not learning-to-learn and not AGI.
+
+## Latent generalization confirmation
+
+Branch `cursor/latent-generalization-confirmation`. Write-up: `docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`. Artifact `artifacts/latent_generalization_confirmation.json`. Implementation SHA `4da390da236c2b8fb172bcbc13c65ebce6aae9da`. Wall **56.5 s**. No control sweep.
+
+The retrained encoder matched the development artifact exactly, then scored four new physics (hash `baa655fcb94e61bc`). Confirmation angular velocity was **0.1016** versus zero **0.2729**, the frozen encoder **0.2660**, and a global vector **0.2742**. Decoder-level paired gaps were **+0.171 [+0.136, +0.207]**, **+0.164 [+0.156, +0.173]**, and **+0.173 [+0.133, +0.213]**. The direct teacher was **0.0876**, and that interval includes 0. Latent distance stayed **1.558**. All four tasks cleared the three primary controls. Not learning-to-learn and not AGI.
