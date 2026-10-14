@@ -441,3 +441,9 @@ The same locked rule, on confirmation physics hash `87b83c41be34aa1a`, reached a
 Branch `cursor/amortized-latent-inference`. Write-up: `docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`. Artifact `artifacts/amortized_latent_dev.json`. Implementation SHA `29931126df34da0064a67fd3b8a239c673412f72`. Wall **230 s**. No confirmation and no control sweep.
 
 The existing encoder was trained to match support-fit teacher latents. The best development cell was distillation only, epoch 120, 128 support rows: angular velocity **0.1747** versus zero **0.1587** and the frozen encoder **0.1773**. The paired gap versus zero excludes 0 in the wrong direction. The teacher on the same frozen decoder was **0.0781**. All 48 grid cells lost to zero context. The new physics hash `d1fa621351d286cf` was not collected. Not learning-to-learn and not AGI.
+
+## Encoder representability
+
+Branch `cursor/encoder-representability-diagnostic`. Write-up: `docs/NEXUS_ENCODER_REPRESENTABILITY.md`. Artifact `artifacts/encoder_representability.json`. Implementation SHA `76c1e4aa87a611217288de15ccc59544689ff9da`. Wall **19.0 s**. No confirmation and no control sweep.
+
+The same 584-parameter encoder, trained at learning rate **0.01** for 2000 full-batch steps, reproduced the eight saved meta-training teachers. Mean latent distance was **0.0074, 0.0021, and 0.000024**, against constant baselines **1.31, 1.75, and 1.51**. Rate 0.001 missed the threshold. A second support of the same task did not reproduce the saved code. This is a training-set fit, not generalization and not AGI.

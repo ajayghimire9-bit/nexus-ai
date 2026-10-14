@@ -36,14 +36,12 @@ The locked rule passed on the reserved physics (`docs/NEXUS_DIRECT_LATENT_CONFIR
 
 The development gate failed (`docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`). The selected student, distillation only at epoch 120 with 128 support rows, had angular velocity **0.1747** versus zero **0.1587** and the frozen encoder **0.1773**. The teacher on the same decoder was **0.0781**. Every λ, epoch, and budget cell lost to zero context. Epoch 400 was worse than epoch 120. Confirmation physics hash `d1fa621351d286cf` was not collected. Do not add epochs. Do not run MPC.
 
+## Encoder representability
+
+The existing encoder can reproduce the eight saved codes (`docs/NEXUS_ENCODER_REPRESENTABILITY.md`). At Adam learning rate **0.01** for 2000 full-batch steps, mean latent distance was **0.0074, 0.0021, and 0.000024** against constant baselines of **1.31, 1.75, and 1.51**. Rate 0.001 did not pass. A second support of the same task does not reproduce the saved vector (median distance **1.42, 1.43, 0.87**) and usually changes the support loss. That fit is not generalization and not control.
+
 ## The one next experiment
 
-The protocol for this question is locked in `docs/NEXUS_ENCODER_REPRESENTABILITY.md`. The diagnostic artifact is not in the implementation commit.
+**Ask whether this same encoder, trained at learning rate 0.01 on a broader set of meta-training tasks, lowers held-out development query angular-velocity error below zero context and below the frozen encoder.**
 
-**Ask whether the existing mean-pool encoder can match the eight saved meta-training teacher codes at all.**
-
-Under the locked learning rate, training latent distance was still **1.27** after 400 epochs, and it was still falling, while development prediction had already worsened after epoch 120. That does not yet separate an encoder that cannot express the codes from a step size that never arrived.
-
-Fit only the existing 584-parameter encoder to those saved meta-training vectors. The locked rates are 0.001, 0.01, and 0.1, for 2000 steps. The pass bar is mean latent distance at most 0.25, worst task at most 0.5, and strictly below the constant mean teacher. Do not read development query outcomes during the fit. Do not retune the teacher. Do not open hash `d1fa621351d286cf` or the closed hash `87b83c41be34aa1a`.
-
-If the training distance stays large, a later protocol can change the inference family. If the training distance collapses and development error still loses to zero, the failure is generalization from eight tasks. Test-time optimization remains the procedure that has lowered held-out error. Do not run control from this negative screen.
+Keep the 584-parameter mean pool. Fit each teacher on that task's own support with the locked rule, and train the student on that same support. Do not reuse a teacher from a different support of the same task. Choose any remaining training choices on development prediction only, and lock them before a confirmation. Do not open hash `87b83c41be34aa1a` or hash `d1fa621351d286cf` for that selection. Do not run control. A lower query error would still not be learning-to-learn.

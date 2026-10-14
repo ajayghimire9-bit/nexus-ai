@@ -6,9 +6,11 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: amortized latent inference, development gate failed.** Write-up: `docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`. Artifact `artifacts/amortized_latent_dev.json`. No confirmation and no control sweep.
+**Current: encoder representability, training-set fit passed.** Write-up: `docs/NEXUS_ENCODER_REPRESENTABILITY.md`. Artifact `artifacts/encoder_representability.json`. No confirmation and no control sweep.
 
-The existing history encoder, trained to match support-fit teacher latents, reached development angular velocity **0.1747** versus zero context **0.1587** and the frozen encoder **0.1773**. The teacher on the same decoder was **0.0781**. Every grid cell lost to zero context, so the new confirmation physics were not collected. This is **not** AGI, learning-to-learn, or a control result.
+The existing 584-parameter encoder reproduces the eight saved meta-training teacher codes at learning rate **0.01**: mean latent distance **0.0074, 0.0021, and 0.000024**, against constant baselines near **1.3–1.7**. Rate **0.001** misses that bar. A second support of the same task does not reproduce the saved code. This is **not** generalization, AGI, learning-to-learn, or a control result.
+
+The earlier amortized student reached development angular velocity **0.1747** versus zero context **0.1587**. Every grid cell lost to zero context, so those confirmation physics were not collected.
 
 The earlier locked latent rule (Adam 0.1, 256 updates, decoder frozen) lowered confirmation angular velocity to **0.152** versus zero **0.308**, a global vector **0.314**, and a wrong-support vector **0.398**. The frozen encoder stayed at **0.307**.
 
