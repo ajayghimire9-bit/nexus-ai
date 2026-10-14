@@ -216,6 +216,15 @@ def pendulum_context_confirmation() -> tuple[TaskSpec, ...]:
     )
 
 
+def pendulum_amortized_confirmation() -> tuple[TaskSpec, ...]:
+    """Untouched physics for the amortized-encoder confirmation. Not the direct-latent confirm set."""
+    rows = ((16.4, 1.0, 1.0), (10.0, 2.6, 1.0), (10.0, 1.0, 0.5), (7.0, 1.45, 1.4))
+    return tuple(
+        _pendulum(f"pendulum_amort_c{i}", "amortized_confirm", f"Amortized confirmation {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
 def pendulum_physics_key(spec: TaskSpec) -> tuple[float, float, float]:
     p = spec.params
     return (float(p.get("g", PENDULUM_SOURCE_G)), float(p.get("m", PENDULUM_SOURCE_M)), float(p.get("l", PENDULUM_SOURCE_L)))

@@ -34,6 +34,8 @@ The locked rule passed on the reserved physics (`docs/NEXUS_DIRECT_LATENT_CONFIR
 
 ## The one next experiment
 
+The protocol for this question is locked in `docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`. The development artifact is not in the implementation commit.
+
 **Ask whether a history encoder can be trained to predict the support-optimized latent, and whether that predicted latent keeps the query gain.**
 
 Keep the decoder frozen. On each training task, fit the teacher latent with the locked rule (Adam **0.1**, **256** updates from the global vector, support only). Train a small encoder so its inferred `z` matches that teacher. The success metric is held-out query angular-velocity MAE against zero context, the global vector, and the teacher latent itself. Matching the teacher on support is not success if the query error does not move. Do not retune the teacher rule from the student scores. Do not run control. A student that fails to beat zero leaves the useful step as test-time optimization, not amortized inference.
