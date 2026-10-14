@@ -50,6 +50,8 @@ The prediction screen passed (`docs/NEXUS_LATENT_GENERALIZATION_CONFIRMATION.md`
 
 ## The one next experiment
 
-**Ask whether the saved epoch-200 student context improves H=16 MPC return against zero context, the frozen encoder, and the global vector on the same confirmation physics.**
+The protocol is locked in `docs/NEXUS_LATENT_CONTROL.md`. The control artifact is not in the implementation commit.
 
-Use the checkpoint hashes in `artifacts/latent_generalization_confirmation.json`. Do not retune the encoder, the epoch, or the teacher rule on these scores. Register the return rule before any MPC rollouts. A higher return would be a control result on this physics set. It would still not be learning-to-learn.
+**Ask whether the saved epoch-200 student context raises H=16 MPC return by at least 25 points above zero context and the frozen encoder on the four confirmation physics.**
+
+Horizon 16 and 16 candidates stay frozen. Verify the checkpoint hashes before any return. Do not retune on these episodes. A pass would be a control result on physics whose prediction scores are already known. It would still not be learning-to-learn.
