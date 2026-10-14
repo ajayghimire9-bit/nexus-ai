@@ -89,4 +89,44 @@ Split hash `d1fa621351d286cf`.
 
 ## Results
 
-The development run has not been started in the implementation commit. Confirmation has not been run.
+Implementation SHA `29931126df34da0064a67fd3b8a239c673412f72`. The source tree was clean. Artifact `artifacts/amortized_latent_dev.json`. Plot `artifacts/amortized_latent_dev.svg`. The development grid is complete: 5130 of 5130 cells. Wall time **230 s**. Confirmation was not run.
+
+The development rule chose distillation only, λ = **0**, epoch **120**, support budget **128**. Ties were not involved. Every one of the 48 student cells had higher angular-velocity error than zero context. The lowest cell is the one reported below. Epoch 400 was worse than epoch 120 for every λ and every budget. Raising λ above 0 made the development error worse, especially at 400 epochs.
+
+Held-out development angular-velocity MAE, same frozen decoder:
+
+| Condition | Angular velocity | State MAE | Cos | Sin | Latent distance to the task teacher |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Student, λ 0, epoch 120, 128 rows | 0.1747 | 0.0628 | 0.0073 | 0.0065 | 2.72 |
+| Zero context | 0.1587 | 0.0570 | 0.0059 | 0.0063 | 3.01 |
+| Global vector | 0.1478 | 0.0534 | 0.0060 | 0.0065 | 2.75 |
+| Frozen encoder, 128 rows | 0.1773 | 0.0640 | 0.0082 | 0.0065 | 2.89 |
+| Teacher, locked 128-row fit | 0.0781 | 0.0322 | 0.0077 | 0.0108 | 0 |
+| Wrong-task teacher | 0.1364 | 0.0522 | 0.0096 | 0.0106 | 3.44 |
+| MLP, external reference | 0.1458 | 0.0527 | 0.0064 | 0.0058 | — |
+
+Open-loop error for the student was 0.182, 0.430, and 0.683 at horizons 3, 8, and 16. Zero context was 0.164, 0.380, and 0.618. The teacher was 0.082, 0.183, and 0.346.
+
+Paired contrasts use the ten student seeds after averaging the three decoders and the three development tasks. The sign is control minus student, so a positive number would mean the student had lower error. Student-t intervals, df = 9:
+
+| Control | Mean difference | 95% interval |
+| --- | ---: | --- |
+| Zero | −0.0159 | [−0.0170, −0.0149] |
+| Frozen encoder | +0.0026 | [+0.0015, +0.0037] |
+| Global | −0.0269 | [−0.0280, −0.0258] |
+| Teacher | −0.0966 | [−0.0976, −0.0955] |
+| Wrong-task teacher | −0.0383 | [−0.0394, −0.0372] |
+
+The student interval itself is 0.1747 [0.1736, 0.1758]. All ten seeds sit between 0.1719 and 0.1768, above zero context. These are ten training runs on three shared decoders, not ten world models.
+
+The gate required the student to be strictly below both zero context and the frozen encoder. It is slightly below the frozen encoder and reliably above zero context. The gate fails. The new confirmation physics, hash `d1fa621351d286cf`, were not collected.
+
+The recovery fraction is **−0.39**. The teacher beats the global vector by enough for the denominator to be defined. The negative value means the student is worse than the global vector, so it keeps none of the teacher's reduction. That fraction is not a control result.
+
+By decoder, the same student label versus that decoder's zero context was 0.1948 versus 0.1533, 0.1912 versus 0.1567, and 0.1380 versus 0.1663. The third decoder is the only one whose student beat its own zero context, and there the student is level with its frozen encoder (0.1383) and still far from its teacher (0.0769). The pre-registered average is the gate, and that average failed.
+
+Teacher fits used the locked rule. Meta-training support loss moved from 0.00114 to 0.00040. Development support loss moved from 0.00067 to 0.00024. No fit was nonfinite. Within each decoder the eight meta-training teachers occupy about six latent directions. Development teachers are not copies of a nearby training teacher: the nearest training teacher is between 0.57 and 4.44 away. The labels are task-specific. They are also far from the vectors the student emits.
+
+A post-hoc check retrained λ = 0 with the same seeds and the saved teacher vectors. It did not choose a new student and did not read confirmation physics. Development latent distance at epoch 120 was 2.725, matching the artifact. Training-set latent distance was 1.53 at epoch 40, 1.37 at epoch 120, and 1.27 at epoch 400. Development distance went 2.78, 2.72, 2.74. Extra epochs pulled the training codes a little closer and made held-out prediction worse. The encoder has 584 parameters. Mean inference time was 1.3 ms. A teacher fit for one decoder, covering that decoder's meta-training and development fits, took 1.4–1.8 s. Recorded student-epoch steps were 48000. Teacher Adam steps were 10752. Environment steps were 1024 meta-training support, 384 development support, and 2400 development query.
+
+The useful latent is still the one optimized at test time. This student does not imitate it closely, and the small movement it does make does not lower held-out error below zero context. Not control. Not learning-to-learn. Not AGI.

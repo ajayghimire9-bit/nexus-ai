@@ -6,9 +6,11 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: direct latent unseen-physics confirmation.** Write-up: `docs/NEXUS_DIRECT_LATENT_CONFIRMATION.md`. Artifact `artifacts/direct_latent_confirmation.json`. No control sweep.
+**Current: amortized latent inference, development gate failed.** Write-up: `docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`. Artifact `artifacts/amortized_latent_dev.json`. No confirmation and no control sweep.
 
-The locked latent rule (Adam 0.1, 256 updates, decoder frozen) lowered confirmation angular velocity to **0.152** versus zero **0.308**, a global vector **0.314**, and a wrong-support vector **0.398**. The frozen encoder stayed at **0.307**. Completing this milestone is **not** AGI, learning-to-learn, or amortized inference.
+The existing history encoder, trained to match support-fit teacher latents, reached development angular velocity **0.1747** versus zero context **0.1587** and the frozen encoder **0.1773**. The teacher on the same decoder was **0.0781**. Every grid cell lost to zero context, so the new confirmation physics were not collected. This is **not** AGI, learning-to-learn, or a control result.
+
+The earlier locked latent rule (Adam 0.1, 256 updates, decoder frozen) lowered confirmation angular velocity to **0.152** versus zero **0.308**, a global vector **0.314**, and a wrong-support vector **0.398**. The frozen encoder stayed at **0.307**.
 
 Prior measured tracks (V0.4 PPO/evolution, V0.5–V0.6 CL, V0.7 planning, V0.8–V0.8.3 adaptation) are retained in `docs/NEXUS_PROGRESS.md` and `artifacts/`.
 

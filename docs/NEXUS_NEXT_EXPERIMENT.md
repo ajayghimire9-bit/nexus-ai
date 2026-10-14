@@ -32,10 +32,16 @@ Optimizing `z` alone, with the history decoder frozen, passed the source screen 
 
 The locked rule passed on the reserved physics (`docs/NEXUS_DIRECT_LATENT_CONFIRMATION.md`). Confirmation angular velocity was **0.152** versus zero **0.308**, global **0.314**, and wrong-support **0.398**. Paired intervals exclude 0. The frozen encoder on the same support rows stayed at **0.307**, level with zero context. Low-mass task c2 remained the high-error case at **0.335**.
 
+## Amortized latent inference
+
+The development gate failed (`docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`). The selected student, distillation only at epoch 120 with 128 support rows, had angular velocity **0.1747** versus zero **0.1587** and the frozen encoder **0.1773**. The teacher on the same decoder was **0.0781**. Every λ, epoch, and budget cell lost to zero context. Epoch 400 was worse than epoch 120. Confirmation physics hash `d1fa621351d286cf` was not collected. Do not add epochs. Do not run MPC.
+
 ## The one next experiment
 
-The protocol for this question is locked in `docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`. The development artifact is not in the implementation commit.
+**Ask whether the existing mean-pool encoder can match the eight saved meta-training teacher codes at all.**
 
-**Ask whether a history encoder can be trained to predict the support-optimized latent, and whether that predicted latent keeps the query gain.**
+Under the locked learning rate, training latent distance was still **1.27** after 400 epochs, and it was still falling, while development prediction had already worsened after epoch 120. That does not yet separate an encoder that cannot express the codes from a step size that never arrived.
 
-Keep the decoder frozen. On each training task, fit the teacher latent with the locked rule (Adam **0.1**, **256** updates from the global vector, support only). Train a small encoder so its inferred `z` matches that teacher. The success metric is held-out query angular-velocity MAE against zero context, the global vector, and the teacher latent itself. Matching the teacher on support is not success if the query error does not move. Do not retune the teacher rule from the student scores. Do not run control. A student that fails to beat zero leaves the useful step as test-time optimization, not amortized inference.
+Fit only the existing 584-parameter encoder to those saved meta-training vectors. Pre-register the learning rate, the step budget, and a training-distance threshold before looking at development prediction. Do not read development query outcomes during the fit. Do not retune the teacher. Do not open hash `d1fa621351d286cf` or the closed hash `87b83c41be34aa1a`.
+
+If the training distance stays large, a later protocol can change the inference family. If the training distance collapses and development error still loses to zero, the failure is generalization from eight tasks. Test-time optimization remains the procedure that has lowered held-out error. Do not run control from this negative screen.

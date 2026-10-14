@@ -435,3 +435,9 @@ With the history decoder frozen, a latent fit only on 128 new support transition
 Branch `cursor/direct-latent-confirmation`. Write-up: `docs/NEXUS_DIRECT_LATENT_CONFIRMATION.md`. Artifact `artifacts/direct_latent_confirmation.json`. Execution SHA `aac5e33d677f05fc57e9191bd522e82982e3ef20`. Wall **5.2 s**. No control sweep.
 
 The same locked rule, on confirmation physics hash `87b83c41be34aa1a`, reached angular velocity **0.152** versus zero **0.308**, global **0.314**, and wrong-support **0.398**. Paired intervals exclude 0. All four tasks met the 5% point bar. The low-mass task stayed at **0.335**. The frozen encoder stayed at **0.307**. The screen passed for this physics set. Not amortized inference, not control, and not AGI.
+
+## Amortized latent inference
+
+Branch `cursor/amortized-latent-inference`. Write-up: `docs/NEXUS_AMORTIZED_LATENT_INFERENCE.md`. Artifact `artifacts/amortized_latent_dev.json`. Implementation SHA `29931126df34da0064a67fd3b8a239c673412f72`. Wall **230 s**. No confirmation and no control sweep.
+
+The existing encoder was trained to match support-fit teacher latents. The best development cell was distillation only, epoch 120, 128 support rows: angular velocity **0.1747** versus zero **0.1587** and the frozen encoder **0.1773**. The paired gap versus zero excludes 0 in the wrong direction. The teacher on the same frozen decoder was **0.0781**. All 48 grid cells lost to zero context. The new physics hash `d1fa621351d286cf` was not collected. Not learning-to-learn and not AGI.
