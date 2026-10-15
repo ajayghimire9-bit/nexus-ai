@@ -2,7 +2,13 @@
 
 Not AGI. Do not retune MAE 0.97. Do not start finance, NAS, Reptile, MAML, or a meta-controller. The direct-latent confirmation protocol is closed; do not retune its learning rate or update count.
 
-## Current proposal — awaiting budget approval
+## Current evidence and one next direction
+
+The approved 64-step diagnostic completed (full-policy tail −8.661 [−14.513, −2.809], concentrated in rp2). The subsequent bounded policy-switch experiment isolates continuation choice after identical student prefixes: SS-SZ **−18.733 [−27.271, −10.195]**. Inheritance and overall SS-ZZ remain inconclusive. Both are development diagnostics, not general control confirmation.
+
+The single next direction is a separately preregistered source-only planning-value diagnostic on fresh development physics. Test whether action-sequence scores predict longer-horizon continuation values before changing encoder capacity or training a new controller. No new experiment is launched from this recommendation. Do not deploy a hard-coded rp2 or step-16 switching rule. The sections below are historical registrations and findings; their old pending statuses are not current authorizations.
+
+## Historical 64-step proposal — subsequently completed
 
 The latest completed late-state diagnostic remains inconclusive: common-zero +0.0312 [−0.0827,+0.1452], full-policy −0.0234 [−0.2236,+0.1767]. The single next proposal is the 64-step same-state study in `docs/NEXUS_LONG_CONTINUATION_PROTOCOL.md`, preserving all trained controllers and H=16/16 candidates. Its primary contrast is the full-policy student-minus-zero tail over local steps 16–63, averaged inside ten decoder units. Common-zero continuation is secondary.
 

@@ -73,3 +73,7 @@ H-long-policy: full-policy continuation from identical late states loses at leas
 ## H-policy-switch — predeclared bounded diagnostic
 
 After the measured rp2-concentrated longer-continuation loss, compare SS with SZ tail return after identical student-controlled 16-step prefixes. The same frozen controllers, H=16/16 candidates and ten decoder units are retained. SZ-ZZ inheritance and ZS-ZZ suffix-after-zero are secondary. See `docs/NEXUS_POLICY_SWITCH.md`. The one bounded local run is authorized; no performance improvement is claimed from its design or tests.
+
+## Latest bounded diagnostic: paired policy switching
+
+The rp2 prefix/suffix experiment completed with SS-SZ tail **−18.733 [−27.271, −10.195]**, favoring zero-context continuation after identical student prefixes in all ten decoders. SZ-ZZ inheritance **−4.025 [−23.422, +15.373]** and SS-ZZ overall **−22.758 [−45.939, +0.424]** remain inconclusive. This isolates a continuation-policy disadvantage on the registered states; it does not establish a general switching controller or explain the whole historical episode loss. All checkpoints remain frozen. Details: `docs/NEXUS_POLICY_SWITCH.md`, artifact `artifacts/policy_switch.json`. No general control improvement, learning-to-learn or AGI claim follows.

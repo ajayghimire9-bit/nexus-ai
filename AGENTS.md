@@ -72,3 +72,7 @@ Use the repository as persistent research context so the user does not need to e
 - Preserve all original scientific safeguards, frozen protocols, historical artifacts, and closed evaluation splits. These workflow instructions do not grant permission to change permissions, safety constraints, evaluation rules, or financial risk limits.
 - Do not claim general control improvement, learning-to-learn, or AGI without the evidence required by the corresponding locked protocol.
 - This file supplies persistent instructions; it does not create a background worker or scheduled execution. Do not set up recurring runs unless the user explicitly requests them.
+
+## Latest evidence pointer
+
+The most recent bounded results are in `docs/NEXUS_POLICY_SWITCH.md` and `docs/NEXUS_LONG_CONTINUATION_RESULTS.md`. They diagnose context-conditioned control harm on specific Pendulum dynamics with frozen models. They do not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.

@@ -347,3 +347,7 @@ Our long-term mission is:
 To investigate self-evolving artificial intelligence capable of learning how to learn, improving its neural mechanisms, adapting across domains, and applying verified capabilities to difficult real-world problems, including financial intelligence.
 
 When I provide future instructions, interpret them within this NEXUS AI project context unless I explicitly change the subject.
+
+## 14. LATEST EVIDENCE POINTER
+
+The most recent bounded results are in `docs/NEXUS_POLICY_SWITCH.md` and `docs/NEXUS_LONG_CONTINUATION_RESULTS.md`. They diagnose context-conditioned control harm on specific Pendulum dynamics with frozen models. They do not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
