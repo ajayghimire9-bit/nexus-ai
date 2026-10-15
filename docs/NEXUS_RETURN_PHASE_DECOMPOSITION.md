@@ -1,5 +1,17 @@
 # NEXUS — Full-episode return decomposition
 
+## Measured result
+
+The locked episodes finished on all ten decoders in **774.2 s**. Implementation SHA `cf1e81b07011c6e4a45039dba38a7b9dafb2d734`. Artifact `artifacts/return_phase_decomposition.json` (sha256 `aaa8fc037f8bc481799d65b08308e7e7bdf0f2a8cf27686c5803db22da2e2cc8`). Early plus late matched the total on every paired episode. The largest absolute gap was **2.8e-14**. The encoder, decoder, horizon, and candidate count were unchanged. The closed episode seeds were not reused.
+
+On the new fresh-physics episodes the pooled student-minus-zero return is **−30.671 [−41.540, −19.801]**. Steps 0–15 contribute **−1.230 [−2.583, 0.123]**, and that interval includes 0. Steps 16–199 contribute **−29.441 [−40.706, −18.175]**. The locked label is `primarily_late`. The late share of each decoder's total has mean **0.928 [0.836, 1.020]**. The early share is **0.072 [−0.020, 0.164]** and includes 0. A share interval can extend past 1 when a decoder's early difference has the opposite sign of its total. The lower bound of 0.836 is the stable statement: the late window carries most of the paired difference.
+
+Task totals are not the same size. `rp2` late is **−98.647 [−150.066, −47.227]** and its early interval includes 0. `rp0` late is **−1.582 [−3.118, −0.045]**, with an early interval that includes 0. `rp1` total is **2.249 [−8.745, 13.243]** and includes 0; its early difference is **−5.053 [−9.706, −0.399]**. `rp3` total is **−24.262 [−53.087, 4.564]** and includes 0. Percentages are reported only for the pooled total and for `rp2`, because those are the totals whose intervals exclude 0 and whose decoder denominators stay at least 1 in absolute value.
+
+Mean observation distance along the paired trajectories is **1.697 [1.520, 1.874]**. It is **0.583 [0.366, 0.799]** at step 16 and **2.865 [2.295, 3.434]** at step 199. Initial distance is below **1e-7**. The controllers leave the shared state, so the late sum is not a same-state effect. That distance is a limitation.
+
+This sample is not the closed **−19.4 [−35.4, −3.3]** measurement. Both samples favor zero context. The episode seeds differ, and so do the magnitudes. Environment steps were **192,512**, including **512** closed-support recollections, and model states were **49,152,000**. No architecture change follows. This is not a general control improvement, not learning-to-learn, and not AGI.
+
 The ten-decoder fresh-physics controller loses return to zero context by **−19.4 [−35.4, −3.3]** on the closed episode seeds. Those seeds stay closed. This study asks where a new paired sample of that same controller puts the student-minus-zero difference: in steps 0–15, in steps 16–199, or in both. It does not change the encoder, the decoder, the horizon, or the candidate count, and it does not fit a model.
 
 ## Protocol lock

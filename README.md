@@ -6,7 +6,7 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: receding-horizon diagnostic.** The ten-decoder H=16 controller still shows negative transfer on fresh physics. On visited states the one-shot regret gap and the matched next-16 gap both have intervals that include 0, while the H=16 score of the selected sequence stays closer for the student. Live decisions reproduced. The mechanism is unresolved. Write-up: `docs/NEXUS_RECEDING_HORIZON_DIAGNOSTIC.md`. Artifact `artifacts/receding_horizon_diagnostic.json`.
+**Current: return-phase decomposition.** On new fresh-physics episodes the student-minus-zero H=16 return difference is concentrated in steps 16–199. Steps 0–15 have an interval that includes 0. The closed episode seeds were not reused. Write-up: `docs/NEXUS_RETURN_PHASE_DECOMPOSITION.md`. Artifact `artifacts/return_phase_decomposition.json`.
 
 New episodes of the previous physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**. Both decoder-level intervals clear 25. Disjoint physics returned **−716.0** versus zero **−696.6**, and that interval lies below zero. This is **not** a general control improvement, AGI, or learning-to-learn.
 

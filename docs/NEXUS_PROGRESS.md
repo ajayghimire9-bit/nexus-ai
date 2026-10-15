@@ -479,3 +479,9 @@ On new states of the fresh physics, candidate one-step angular velocity improved
 Branch `cursor/receding-horizon-diagnostic`. Write-up: `docs/NEXUS_RECEDING_HORIZON_DIAGNOSTIC.md`. Artifact `artifacts/receding_horizon_diagnostic.json`. Implementation SHA `b6a079bab98c965b65a127e90a178a73ddcbb7f2`. Wall **784.6 s**.
 
 On states the existing controllers visit, fresh one-shot regret changed by **0.812 [−0.038, 1.662]** and the matched next-16 continuation by **−0.528 [−1.139, 0.083]**. Both intervals include 0. Selected-sequence score error still fell by **4.751 [3.023, 6.480]**. Live replay matched **1920/1920** decisions. The fresh decision is inconclusive. The previous physics agrees locally with its closed positive return. The next-16 sum is not a 200-step value. Not a control improvement, not learning-to-learn, and not AGI.
+
+## Return-phase decomposition
+
+Branch `cursor/return-phase-decomposition`. Write-up: `docs/NEXUS_RETURN_PHASE_DECOMPOSITION.md`. Artifact `artifacts/return_phase_decomposition.json`. Implementation SHA `cf1e81b07011c6e4a45039dba38a7b9dafb2d734`. Wall **774.2 s**.
+
+On new fresh-physics episodes the student-minus-zero return was **−30.671 [−41.540, −19.801]**. Steps 0–15 were **−1.230 [−2.583, 0.123]** and include 0. Steps 16–199 were **−29.441 [−40.706, −18.175]**. The locked label is `primarily_late`. This does not remeasure the closed episode seeds. Not a control improvement, not learning-to-learn, and not AGI.

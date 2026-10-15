@@ -2,11 +2,9 @@
 
 This list records what the latent-adaptation sequence has not established. It does not start an experiment. The sequence is not a general control improvement, not learning-to-learn, and not AGI.
 
-## Recommended next measurement
+## Measured phase split
 
-On newly registered fresh-physics episodes, with the saved student and zero-context controllers held fixed, what fraction of the paired student-minus-zero return difference accumulates during steps 0-15, and what fraction accumulates during steps 16-199?
-
-That is the one recommended question. The saved weights stay fixed. The closed episode seeds stay closed. The receding-horizon next-16 continuation is a different measurement: it follows one committed action with a shared zero-context replanner, and its fresh interval includes 0. A split of the live return would say whether the closed **−19.4 [−35.4, −3.3]** gap is already present inside one planning horizon of the executed policy. This document does not collect those episodes.
+On newly registered fresh-physics episodes, with the saved student and zero-context controllers held fixed, the paired student-minus-zero return was **−30.671 [−41.540, −19.801]**. Steps 0–15 were **−1.230 [−2.583, 0.123]** and include 0. Steps 16–199 were **−29.441 [−40.706, −18.175]**. The late share was **0.928 [0.836, 1.020]**. The locked label is `primarily_late` (`docs/NEXUS_RETURN_PHASE_DECOMPOSITION.md`). This is a new episode sample, not a remeasurement of the closed **−19.4** gap. `rp2` carries most of the late difference. Observation distance grows from step 16 to step 199, so the late sum is not a same-state effect. No architecture change follows.
 
 ## Still unresolved, and not the next run
 
