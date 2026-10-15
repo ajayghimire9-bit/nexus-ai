@@ -1,0 +1,32 @@
+protocol_id: source_planning_value_v1
+starting_sha: 850dbaa9ebb3f00eb2bdb81d5b1209c43600e9c8
+parent_artifact: artifacts/policy_switch.json
+parent_sha256: 123bd0fd168397c4f030b049217116f4c7b6678f3b78d0df3e3627a9747c01b5
+manifest_sha256: 265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b
+decoders: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+students: [0, 1, 2, 3, 4]
+tasks:
+  - [pendulum_ctx_tr0, 8.0, 1.0, 1.0]
+  - [pendulum_ctx_tr1, 10.0, 0.85, 1.0]
+  - [pendulum_ctx_tr2, 10.0, 1.0, 1.15]
+  - [pendulum_ctx_tr3, 9.4, 1.25, 0.95]
+  - [pendulum_ctx_tr4, 11.0, 0.9, 1.05]
+  - [pendulum_ctx_tr5, 7.6, 1.1, 1.2]
+  - [pendulum_ctx_tr6, 12.4, 0.6, 0.85]
+  - [pendulum_ctx_tr7, 10.5, 1.35, 1.3]
+states_per_task: 1
+horizon: 16
+candidates: 16
+suffix_steps: 48
+support_budget: 128
+env_seed_base: 1200000
+support_env_base: 1210000
+support_action_base: 1211000
+candidate_seed_base: 1220000
+continuation_seed_base: 1230000
+practical_margin: 5.0
+env_cap: 64512
+model_cap: 15851520
+time_cap_s: 600
+primary: exact16_selection_regret_at64
+scope: source_physics_development_no_training
