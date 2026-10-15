@@ -13,7 +13,12 @@ import yaml
 if __name__=='__main__':
     path=Path('artifacts/planning_value.json'); p=json.loads(path.read_text())
     cfg=yaml.safe_load(Path('configs/planning_value.yaml').read_text())
-    if not p['complete']: raise RuntimeError('incomplete run')
+    recovery=json.loads(Path('artifacts/planning_value_validation.json').read_text())
+    if not recovery['complete'] or recovery['raw_capture_sha256']!=hashlib.sha256(path.read_bytes()).hexdigest():
+        raise RuntimeError('missing/stale complete validation')
+    if not p['complete'] and p.get('failure')!={'type':'ValueError','message':'invalid support hash'}:
+        raise RuntimeError('unrecovered incomplete run')
+    if hashlib.sha256(Path('configs/planning_value.yaml').read_bytes()).hexdigest()!=p['config_sha256']: raise RuntimeError('current config drift')
     for file,key in [('configs/planning_value.yaml','config_sha256'),('docs/NEXUS_PLANNING_VALUE.md','protocol_sha256')]:
         locked=subprocess.check_output(['git','show',p['implementation_sha']+':'+file])
         if hashlib.sha256(locked).hexdigest()!=p[key]: raise RuntimeError('execution provenance mismatch')
@@ -42,7 +47,7 @@ if __name__=='__main__':
     values=[statistics.mean(cells[(d,t)] for t in range(8)) for d in cfg['decoders']]
     mean=statistics.mean(values);se=statistics.stdev(values)/math.sqrt(10)
     ci=dict(n=10,df=9,mean=mean,lo=mean-2.262*se,hi=mean+2.262*se)
-    saved=p['comparisons']['primary']['interval']
+    saved=recovery['comparisons']['primary']['interval']
     if any(not math.isclose(ci[k],saved[k],abs_tol=1e-8) for k in ('mean','lo','hi')): raise RuntimeError('decoder aggregation mismatch')
     from nexus.world.planning_value import validate_and_summarize
     validate_and_summarize(p,cfg)
@@ -50,5 +55,5 @@ if __name__=='__main__':
     if out.exists(): raise RuntimeError('refusing audit overwrite')
     result=dict(audit_passed=True,kind='independent_arithmetic_not_external_replication',interval=ci,
         per_decoder=values,decisions_verified=checked,new_environment_steps=0,
-        artifact_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),implementation_sha=p['implementation_sha'])
+        artifact_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),implementation_sha=p['implementation_sha'],processing_sha=recovery['processing_sha'])
     out.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n');print(json.dumps(result,indent=2))

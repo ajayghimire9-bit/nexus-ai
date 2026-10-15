@@ -69,7 +69,7 @@ def grid():
         prefixes=[dict(rewards=[float(i)]*16,next_obs=[[1.,0.,0.]]*16,endpoint=[0.,0.]) for i in range(16)]
         p['prefixes'].append(dict(task=t,state=[0.,0.],obs=[1.,0.,0.],sequences=seq.tolist(),rollouts=prefixes,
             env_seed=cfg['env_seed_base']+t,candidate_seed=cfg['candidate_seed_base']+t))
-        p['supports'].append(dict(task=t,rows=128,sha256='a'*64))
+        p['supports'].append(dict(task=t,rows=128,sha256='a'*16))
     # Reuse immutable synthetic data; tests deep-copy before mutation.
     for d,t in itertools.product(range(10),range(8)):
         seq=p['prefixes'][t]['sequences']; scores={k:list(map(float,range(16))) for k in NAMES}
@@ -129,3 +129,26 @@ def test_ten_decoder_interval_and_hard_caps():
     with pytest.raises(ValueError): paired_interval(values[:-1])
     meter=ValueMeter(load_config());meter.deadline=0
     with pytest.raises(TimeoutError): meter.check()
+
+
+def test_actual_support_hash_helper_contract():
+    from nexus.world.planning_value import support_record
+    from nexus.world.context_pilot import prefix_hash
+    class Support:
+        obs=np.zeros((128,3),dtype=np.float32)
+        action=np.zeros(128,dtype=np.int64)
+        next_obs=np.ones((128,3),dtype=np.float32)
+        terminated=np.zeros(128,dtype=bool)
+        truncated=np.zeros(128,dtype=bool)
+        def __len__(self): return 128
+    support=Support();record=support_record(0,support)
+    assert record['sha256']==prefix_hash(support,128)
+    assert len(record['sha256'])==16 and record['rows']==128
+    old=record['sha256'];support.next_obs[0,0]=2
+    assert support_record(0,support)['sha256']!=old
+
+
+@pytest.mark.parametrize('bad',['a'*64,'g'*16,'a'*15,None])
+def test_unsupported_hash_formats_rejected(grid,bad):
+    grid['supports'][0]['sha256']=bad
+    with pytest.raises(ValueError):validate_and_summarize(grid,load_config())

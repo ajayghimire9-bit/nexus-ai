@@ -4,6 +4,7 @@ import hashlib
 import itertools
 import json
 import math
+import re
 import statistics
 import subprocess
 import sys
@@ -201,7 +202,8 @@ def validate_and_summarize(payload, cfg):
         raise ValueError('resource mismatch')
     if len(payload['supports']) != 8 or [r['task'] for r in payload['supports']] != list(range(8)):
         raise ValueError('missing support hash grid')
-    if any(type(r['task']) is not int or len(r['sha256']) != 64 or r['rows'] != 128 for r in payload['supports']): raise ValueError('invalid support hash')
+    if any(type(r['task']) is not int or not isinstance(r['sha256'],str) or re.fullmatch(r'[0-9a-f]{16}',r['sha256']) is None or r['rows'] != 128 for r in payload['supports']):
+        raise ValueError('invalid support hash')
     if any(payload.get(k) != dict(verified=120,missing=0,mismatched=0) for k in ('checkpoint_before','checkpoint_after')):
         raise ValueError('missing/failed checkpoint audit')
     finite_array([payload['wall_clock_s']], (1,))
@@ -214,6 +216,11 @@ def validate_and_summarize(payload, cfg):
     label = 'short_objective_misses_practical_value' if ci['mean'] >= cfg['practical_margin'] and ci['lo'] > 0 else 'objective_mismatch_inconclusive'
     task_means = {str(t): {m: statistics.mean(rows[(d,t)]['metrics'][m] for d in cfg['decoders']) for m in comparisons} for t in range(8)}
     return dict(label=label,comparisons=comparisons,per_task=task_means,valid=True)
+
+
+def support_record(task, support):
+    from nexus.world.context_pilot import prefix_hash
+    return dict(task=task,rows=len(support),sha256=prefix_hash(support,128))
 
 
 def save(payload):
@@ -252,7 +259,7 @@ def execute():
                                      set(load_generalization_config()['forbidden_task_ids']))
             if len(support) != 128: raise ValueError('short support')
             supports.append(support); meter.counts['support'] += len(support)
-            payload['supports'].append(dict(task=t,rows=128,sha256=prefix_hash(support,128)))
+            payload['supports'].append(support_record(t,support))
             env = make_task_env(spec); obs,_ = env.reset(seed=cfg['env_seed_base']+t)
             meter.instrument_env(env); meter.bucket = 'prefix'
             try:
