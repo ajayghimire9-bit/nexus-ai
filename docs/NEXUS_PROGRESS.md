@@ -467,3 +467,9 @@ Branch `cursor/latent-context-control`. Write-up: `docs/NEXUS_LATENT_CONTROL.md`
 The same epoch-200 encoder in the frozen H=16 controller returned **−683.0** versus zero **−768.4** and the frozen encoder **−773.2**. Decoder-level intervals **+85.4 [−109.4, +280.3]** and **+90.2 [−5.7, +186.1]** both include 0. The result is inconclusive. The direct teacher returned **−682.4**. Not a control improvement, not learning-to-learn, and not AGI.
 
 A ten-decoder replication on new episodes of those physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**, with gaps **+72.2 [+45.6, +98.8]** and **+62.8 [+31.3, +94.3]**. The same controllers on disjoint physics returned **−716.0** versus zero **−696.6**, gap **−19.4 [−35.4, −3.3]**. Negative transfer. Not learning-to-learn and not AGI.
+
+## Prediction-to-control gap
+
+Branch `cursor/prediction-control-gap-diagnostic`. Write-up: `docs/NEXUS_PREDICTION_CONTROL_GAP.md`. Artifact `artifacts/prediction_control_gap.json`. Implementation SHA `a1f192e2be254c5511774254ee613a3597e3148c`. Wall **29.6 s**.
+
+On new states of the fresh physics, candidate one-step angular velocity improved by **0.1148 [0.1030, 0.1266]**, shared-candidate regret by **1.313 [0.507, 2.118]**, and H=16 reward-forecast error by **6.386 [5.450, 7.322]**. The previous physics moved in the same direction. The closed fresh episode loss remains. The registered next step is an audit of the receding-horizon planner. Not a control improvement, not learning-to-learn, and not AGI.

@@ -6,7 +6,7 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: ten-decoder H=16 replication, negative transfer.** Write-up: `docs/NEXUS_CONTROL_REPLICATION.md`. Artifact `artifacts/control_replication.json`.
+**Current: prediction-to-control gap.** The ten-decoder H=16 controller still shows negative transfer on fresh physics. On new same-state candidates the student ranks actions and forecasts H=16 reward better than zero context; the episode loss remains. Write-up: `docs/NEXUS_PREDICTION_CONTROL_GAP.md`. Artifact `artifacts/prediction_control_gap.json`.
 
 New episodes of the previous physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**. Both decoder-level intervals clear 25. Disjoint physics returned **−716.0** versus zero **−696.6**, and that interval lies below zero. This is **not** a general control improvement, AGI, or learning-to-learn.
 

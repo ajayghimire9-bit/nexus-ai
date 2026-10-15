@@ -56,4 +56,8 @@ The H=16 comparison is inconclusive (`docs/NEXUS_LATENT_CONTROL.md`). Student re
 
 **Do not rerun these control episodes and do not change the encoder.**
 
-The ten-decoder replication passed on new episodes of the previous physics and failed on the disjoint physics (`docs/NEXUS_CONTROL_REPLICATION.md`). Fresh student-minus-zero is **−19.4 [−35.4, −3.3]**. Visited prediction still improved there. Do not retune this sample. A later study can ask why the planner's return follows prediction on one physics set and not the other. That is not learning-to-learn.
+The ten-decoder replication passed on new episodes of the previous physics and failed on the disjoint physics (`docs/NEXUS_CONTROL_REPLICATION.md`). Fresh student-minus-zero is **−19.4 [−35.4, −3.3]**. Visited prediction still improved there. Do not retune this sample.
+
+The same-state diagnostic (`docs/NEXUS_PREDICTION_CONTROL_GAP.md`) then found that the student also ranks shared H=16 candidates better and forecasts their return more closely than zero context, on both physics sets. Fresh regret improved by **1.313 [0.507, 2.118]** and the H=16 score error fell by **6.386 [5.450, 7.322]**. That does not reverse the closed episode loss.
+
+The one later experiment is an audit of the receding-horizon controller, not a new network. On the fresh physics, at states the existing H=16 controller actually visits, freeze the state and score the same shared candidate set with the saved student and with zero context. Compare that one-shot choice with the action the episode executed and with the realized return over the next 16 steps. The question is whether the one-shot advantage disappears on visited states, or whether a small first-action difference compounds across the episode. Keep the weights, horizon, and candidate count fixed. Do not treat a positive one-shot score as a control claim. That is not learning-to-learn.
