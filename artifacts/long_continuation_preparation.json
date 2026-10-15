@@ -1,0 +1,63 @@
+{
+  "status": "awaiting_budget_approval",
+  "config_sha256": "764afda08f1f614bc4e0151bf8ca203fd78caa043d6443a85467692599198918",
+  "implementation_sha": "3f483ddd7864b54fd5022942a038124487540e4f",
+  "source_dirty": false,
+  "parent_sha256": "b3a0642e46890f0d6296d103ecd5ed1353cc6f2849b6dd61e46507f5f8dd5ea9",
+  "manifest_sha256": "265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b",
+  "preparation_wall_s": 0.4425350420005998,
+  "proposed_budget": {
+    "restored_states": 480,
+    "paired_cells": 800,
+    "env_by_bucket": {
+      "support": 512,
+      "harvest": 24240,
+      "common": 92160,
+      "full_policy": 81920
+    },
+    "env_steps": 198832,
+    "model_by_bucket": {
+      "harvest": 6205440,
+      "live_replay": 122880,
+      "shared_scoring": 327680,
+      "common": 23224320,
+      "full_policy": 20971520
+    },
+    "model_states": 50851840,
+    "runtime_estimate_s": 816.6407637039862,
+    "hard_cap_s": 1800,
+    "estimate_is_not_measured": true
+  },
+  "parent_audit": {
+    "audit_passed": true,
+    "primary_recomputed": {
+      "n": 10,
+      "df": 9,
+      "mean": 0.031243175230177354,
+      "lo": -0.08270866371924587,
+      "hi": 0.1451950141796006
+    },
+    "per_decoder": [
+      0.3946193218962305,
+      -0.2438167630204121,
+      0.06773760323720068,
+      0.040179689225837235,
+      0.03377662809270707,
+      -0.0766518254974343,
+      -0.012897166282388104,
+      0.009174963725653441,
+      0.002764081806280328,
+      0.09754521911809881
+    ],
+    "raw_comparisons": 1600,
+    "new_environment_steps": 0,
+    "limitations": [
+      "Continuation per-step rewards were not saved in the parent artifact; their sums cannot be independently rederived.",
+      "This audit checks saved evidence and code provenance; it is not external replication.",
+      "Restoring elapsed time to zero is safe for these 16-step Pendulum windows, not arbitrary environments."
+    ]
+  },
+  "new_environment_steps": 0,
+  "new_model_training": false,
+  "simulation_executed": false
+}

@@ -56,3 +56,24 @@ After approval, implement the collection driver using the tested continuation pr
 Offline tests cover seed separation, budget arithmetic, reward-window identities, exact decoder CIs, fail-closed approval checks, raw-grid deletion/summary corruption, and the generalized 64-step continuation with a deterministic test double. No real environment is created by this preparation or its tests. The offline parent audit independently indexes saved actual-action returns and recomputes equal-group decoder statistics instead of calling the historical aggregation helper.
 
 Before execution, test exact simulator restoration and original-episode boundaries, paired candidate generation, full-policy/common-policy RNG, context immutability and every frozen hash using the real environment/checkpoint path. Require a clean committed revision, protocol/config hashes, exact complete-grid validation and cap enforcement in the final driver. Existing tests of the 16-step helpers are retained; their success does not establish correctness of an as-yet-unimplemented full collection driver.
+
+## Preparation completed (no new experiment)
+
+Preparation implementation commit: `3f483ddd7864b54fd5022942a038124487540e4f`.
+Artifact: `artifacts/long_continuation_preparation.json`.
+Configuration SHA256: `764afda08f1f614bc4e0151bf8ca203fd78caa043d6443a85467692599198918`.
+
+Commands actually executed:
+
+```sh
+PYTHONPATH=src:.deps python3 -m pytest tests/test_long_continuation.py tests/test_late_control_gap_design.py -p no:cacheprovider
+PYTHONPATH=src:.deps python3 scripts/prepare_long_continuation.py
+```
+
+Focused regression result: **21 passed**, final run 2.57 seconds. The current full suite was not rerun; the earlier 404-test result belongs to the previous implementation. The offline preparation took **0.443 seconds**, with a clean recorded source revision, **zero new environment steps**, no model training and no MPC evaluation.
+
+The separate raw-to-decoder arithmetic audit matched the saved primary mean **+0.031243** and interval **[−0.082709,+0.145195]** across all 1600 comparisons. It checked selected-action indexing, both saved comparison grids, live reward sums, frozen-check coverage, protocol bytes at the execution commit, the parent JSON and manifest hashes, and proposed seed separation. It did not replay simulator trajectories or constitute external independent replication.
+
+The parent JSON lacks per-step continuation rewards, so their sums cannot be independently reconstructed from that artifact. The proposed collection requires full per-step rewards to close that reporting gap. Existing checkpoint binaries were not retrained, rewritten or loaded by this preparation. Their explicit all-file verification remains a mandatory execution gate.
+
+Measured evidence remains the completed 16-step inconclusive result; the 64-step hypotheses remain **untested**. Approval must cover the exact proposed 198,832 environment steps, 50,851,840 imagined states and 1800-second hard cap. No outcome labels have been assigned for the proposed experiment.
