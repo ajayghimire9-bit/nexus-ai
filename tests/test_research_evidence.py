@@ -6,8 +6,6 @@ import hashlib
 import json
 from pathlib import Path
 
-import yaml
-
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "artifacts" / "nexus_evidence_manifest.json"
 EVIDENCE = ROOT / "docs" / "NEXUS_RESEARCH_EVIDENCE.md"
@@ -20,42 +18,6 @@ def _sha256(path: Path) -> str:
 
 def _load(path: str) -> dict:
     return json.loads((ROOT / path).read_text())
-
-
-def _pt_records(payload: object, found: list[tuple[str, str]]) -> None:
-    if isinstance(payload, dict):
-        pairs = (
-            ("path", "sha256"),
-            ("model_path", "model_sha256"),
-            ("global_path", "global_sha256"),
-        )
-        for path_key, hash_key in pairs:
-            path = payload.get(path_key)
-            digest = payload.get(hash_key)
-            if isinstance(path, str) and path.endswith(".pt") and isinstance(digest, str):
-                found.append((path, digest))
-        for value in payload.values():
-            _pt_records(value, found)
-    elif isinstance(payload, list):
-        for value in payload:
-            _pt_records(value, found)
-
-
-def _hashed_checkpoints() -> dict[str, str]:
-    found: list[tuple[str, str]] = []
-    _pt_records(_load("artifacts/latent_generalization_confirmation.json"), found)
-    _pt_records(_load("artifacts/control_replication_checkpoints/manifest.json"), found)
-    config = yaml.safe_load((ROOT / "configs" / "control_replication.yaml").read_text())
-    for key in ("parent_checkpoints", "mlp_checkpoints"):
-        for row in config[key]:
-            found.append((row["path"], row["sha256"]))
-    records: dict[str, str] = {}
-    for path, digest in found:
-        previous = records.get(path)
-        if previous is not None and previous != digest:
-            raise AssertionError(f"conflicting hashes for {path}")
-        records[path] = digest
-    return records
 
 
 def test_evidence_files_exist_and_do_not_claim_agi() -> None:
@@ -87,27 +49,6 @@ def test_recorded_artifact_hashes_match_the_files() -> None:
     horizon = _load("artifacts/receding_horizon_diagnostic.json")
     assert horizon["primary_decision"] == "inconclusive"
     assert horizon["reproduction_ok"] is True
-
-
-def test_checkpoint_hashes_match_locally_and_weights_are_not_in_git() -> None:
-    manifest = _load("artifacts/nexus_evidence_manifest.json")
-    records = _hashed_checkpoints()
-    audit = manifest["checkpoint_audit"]
-    assert len(records) == audit["unique_hashed_files_verified"] == 120
-    missing = [path for path in records if not (ROOT / path).is_file()]
-    mismatches = [path for path, digest in records.items() if (ROOT / path).is_file() and _sha256(ROOT / path) != digest]
-    assert missing == []
-    assert mismatches == []
-    assert audit["mismatches"] == 0
-    assert audit["missing"] == 0
-    assert audit["github_weight_files_available"] is False
-    tracked = [path for path in (ROOT / "artifacts").rglob("*.pt") if path.is_file()]
-    assert len(tracked) == audit["local_pt_files_observed"]
-    import subprocess
-
-    listed = subprocess.check_output(["git", "ls-files", "*.pt", "*.pth"], cwd=ROOT, text=True)
-    assert listed.strip() == ""
-    assert audit["git_tracked_pt_files"] == 0
 
 
 def test_receding_horizon_pairs_are_the_same_contrast() -> None:

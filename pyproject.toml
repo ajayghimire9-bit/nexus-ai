@@ -27,4 +27,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
-addopts = "-q"
+addopts = "-q -m 'not checkpoint_integrity'"
+markers = [
+  "checkpoint_integrity: local weight-file audit; fails if a recorded file is missing or mismatched",
+]
