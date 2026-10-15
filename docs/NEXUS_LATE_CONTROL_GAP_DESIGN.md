@@ -14,7 +14,7 @@ That is the distance between the mean student observation and zero context. It i
 
 `mean_s || observation_s,t − observation_zero,t ||`.
 
-The L2 norm is convex, so the distance of the mean is less than or equal to the mean of the distances. They are equal only when the five student observations at that step are identical. After the first action difference they generally are not. Students on opposite sides of the zero-context observation can make the mean close to zero context while every student is far from it. The mean of cosine and sine also need not lie on the unit circle, so the averaged observation need not be a state the pendulum can emit.
+The L2 norm is convex, so the distance of the mean is less than or equal to the mean of the distances. Equality holds when the student-minus-zero displacement vectors share a common direction with nonnegative magnitudes (including zero vectors); identical observations are sufficient but not necessary. After the first action difference they generally are not. Students on opposite sides of the zero-context observation can make the mean close to zero context while every student is far from it. The mean of cosine and sine also need not lie on the unit circle, so the averaged observation need not be a state the pendulum can emit.
 
 The stored decoder intervals average that mean-then-norm quantity over steps and episodes inside each decoder. Averaging afterward does not recover the mean of the per-student distances.
 
