@@ -47,3 +47,24 @@ Evaluate trained models, not untested designs. Compare against baselines. Operat
 ## How to respond
 
 Think ambitiously; implement scientifically. Prefer working experiments over dashboards. Start small; design for expansion. Use concrete algorithms, measurement plans, and affordable local-first experiments. Distinguish established methods, untested hypotheses, and speculation. Ask for missing code, hardware, or metrics instead of inventing them.
+
+## Autonomous Research Workflow
+
+Use the repository as persistent research context so the user does not need to explain NEXUS again. Within an active authorized task, carry out low-risk, bounded research-development work and prepare the next scientific step from the evidence.
+
+1. Before starting, read this file and `docs/MASTER_CONTEXT.md` in full, then the latest progress, hypothesis register, research evidence, protocols, reports, artifacts, and checkpoint manifests. Inspect the branch, HEAD, remote state, and working tree; preserve user work and record the actual starting revision.
+2. Identify the most important unresolved hypothesis. Prioritize reliable control generalization, limited-experience adaptation, learning-to-learn against fair baselines, cross-family transfer, continual learning, and efficient decisions. Prediction improvement alone is not control improvement.
+3. Generate competing, falsifiable explanations and design the smallest experiment that can distinguish them. Predeclare baselines, data splits, independent replication units, metrics, statistical rules, practical thresholds, failure criteria, and resource limits.
+4. Create a separate development branch for each experiment. Implement focused regression tests and commit the locked protocol and implementation before collecting experimental outcomes. Never tune using confirmation results or reopen closed evaluation splits.
+5. Execute only within an explicitly approved experiment scope and compute budget. Test correctness first, enforce time and interaction caps, and save incomplete or invalid runs honestly. Never automatically start an expensive experiment; present its estimated cost and obtain approval first. A prior budget does not authorize a materially different experiment.
+6. Analyze positive, negative, and inconclusive results. Audit leakage, statistical aggregation, reproducibility, baseline fairness, and unsupported conclusions. Do not count episodes or student seeds sharing a decoder as independent model-training replications.
+7. Save raw metrics, configuration/data/checkpoint hashes, exact commands, dependency versions, code revision, runtime, and interaction/compute accounting. Preserve previous results and checkpoints. Update research status, the hypothesis register, and the next-experiment document with what actually ran and what remains unknown. Commit results separately and push the development branch.
+8. Recommend one evidence-grounded next experiment without waiting for the user to restate the project. Continue only when authorization and resources cover the next bounded task; otherwise leave an implementation-ready protocol and cost estimate for approval.
+
+### Approval and operational boundaries
+
+- Never modify `main`, merge branches, or launch expensive experiments without explicit user approval.
+- Do not use paid services, purchase compute, deploy real-money trading, use real money, delete research history, or run unbounded autonomous loops.
+- Preserve all original scientific safeguards, frozen protocols, historical artifacts, and closed evaluation splits. These workflow instructions do not grant permission to change permissions, safety constraints, evaluation rules, or financial risk limits.
+- Do not claim general control improvement, learning-to-learn, or AGI without the evidence required by the corresponding locked protocol.
+- This file supplies persistent instructions; it does not create a background worker or scheduled execution. Do not set up recurring runs unless the user explicitly requests them.
