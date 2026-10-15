@@ -472,4 +472,10 @@ A ten-decoder replication on new episodes of those physics returned **−636.4**
 
 Branch `cursor/prediction-control-gap-diagnostic`. Write-up: `docs/NEXUS_PREDICTION_CONTROL_GAP.md`. Artifact `artifacts/prediction_control_gap.json`. Implementation SHA `a1f192e2be254c5511774254ee613a3597e3148c`. Wall **29.6 s**.
 
-On new states of the fresh physics, candidate one-step angular velocity improved by **0.1148 [0.1030, 0.1266]**, shared-candidate regret by **1.313 [0.507, 2.118]**, and H=16 reward-forecast error by **6.386 [5.450, 7.322]**. The previous physics moved in the same direction. The closed fresh episode loss remains. The registered next step is an audit of the receding-horizon planner. Not a control improvement, not learning-to-learn, and not AGI.
+On new states of the fresh physics, candidate one-step angular velocity improved by **0.1148 [0.1030, 0.1266]**, shared-candidate regret by **1.313 [0.507, 2.118]**, and H=16 reward-forecast error by **6.386 [5.450, 7.322]**. The previous physics moved in the same direction. The closed fresh episode loss remains. Not a control improvement, not learning-to-learn, and not AGI.
+
+## Receding-horizon diagnostic
+
+Branch `cursor/receding-horizon-diagnostic`. Write-up: `docs/NEXUS_RECEDING_HORIZON_DIAGNOSTIC.md`. Artifact `artifacts/receding_horizon_diagnostic.json`. Implementation SHA `b6a079bab98c965b65a127e90a178a73ddcbb7f2`. Wall **784.6 s**.
+
+On states the existing controllers visit, fresh one-shot regret changed by **0.812 [−0.038, 1.662]** and the matched next-16 continuation by **−0.528 [−1.139, 0.083]**. Both intervals include 0. Selected-sequence score error still fell by **4.751 [3.023, 6.480]**. Live replay matched **1920/1920** decisions. The fresh decision is inconclusive. The previous physics agrees locally with its closed positive return. The next-16 sum is not a 200-step value. Not a control improvement, not learning-to-learn, and not AGI.
