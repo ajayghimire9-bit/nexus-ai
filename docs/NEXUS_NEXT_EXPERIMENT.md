@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next question — after the inconclusive terminal-value pilot
+
+Do the **frozen** terminal-value readouts predict held-out continuation returns, and does using imagined rather than actual endpoints explain their error? The completed correction pilot did not demonstrate improved first actions: **−0.221 [−5.881,+5.438]**. It changed154/300 student actions, so the intervention was active; improved source fitting did not establish development decision quality.
+
+The one proposed experiment is in `docs/NEXUS_TERMINAL_VALUE_CALIBRATION_PROPOSAL.md`: retain all fitted weights and recorded contexts; collect fresh states on the eight source/three development physics; compare predicted48-step zero-policy value from actual versus imagined endpoints against a frozen source-mean reference. Proposed cost21,824 real steps,5,448,960 imagined transitions, estimated2–3 minutes, hard cap600 seconds. It needs a separately locked configuration and approval. No additional experiment has started. Do not increase capacity, refit on the just-closed sample or claim control improvement.
+
+Completed report: `docs/NEXUS_TERMINAL_VALUE_RESULTS.md`. Everything below is preserved preparation/history; its pending approval and next-direction wording is superseded by this section.
+
+
 ## Ready for budget approval: terminal-value pilot
 
 The source-only terminal-value comparison is implemented and tested; it has **not** collected registered data or fitted research readouts. Protocol: `docs/NEXUS_TERMINAL_VALUE_PROTOCOL.md`. Clean implementation: `f8a438e`. Preparation record: `artifacts/terminal_value_preparation.json`. All515 regression tests passed, plus the explicit120-file checkpoint audit.
