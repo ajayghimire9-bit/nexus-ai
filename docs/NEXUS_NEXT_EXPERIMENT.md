@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current preparation — frozen terminal-value calibration
+
+The proposed calibration experiment now has an executable locked configuration, runner, tests and protocol: `docs/NEXUS_TERMINAL_VALUE_CALIBRATION_PROTOCOL.md`, on `codex/terminal-value-calibration`. This is implementation readiness, **not new evidence**. It has collected no registered data and has not fitted or changed any model/readout. Original proposal and historical pending statuses below are preserved; their requirement for a separately locked configuration is now satisfied, while new exact-budget approval remains pending.
+
+The primary test is frozen student imagined-endpoint RMSE versus the existing source-label-mean reference on three development tasks, with at least10% reduction and a positive decoder-level95% lower bound. Actual-endpoint calibration is a paired research-only secondary diagnostic, not an oracle. Same saved contexts, ten decoders, one new state per eight source/three development physics; zero new support steps. Proposed one-run budget21,824 real steps,5,448,960 imagined transitions, estimated2–3 minutes local CPU, hard cap600 seconds. No further experiment is automatically authorized. Config SHA256: `0fea17504d5a5baea32d857947cd516ab14cef84df524d7f835594d71d7d6184`.
+
 ## Current next question — after the inconclusive terminal-value pilot
 
 Do the **frozen** terminal-value readouts predict held-out continuation returns, and does using imagined rather than actual endpoints explain their error? The completed correction pilot did not demonstrate improved first actions: **−0.221 [−5.881,+5.438]**. It changed154/300 student actions, so the intervention was active; improved source fitting did not establish development decision quality.

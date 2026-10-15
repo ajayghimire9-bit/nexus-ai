@@ -1,0 +1,104 @@
+starting_sha: d3c3fa8156e8b3ded896385fcf6085b6081a372c
+decoders:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+students:
+- 0
+- 1
+- 2
+- 3
+- 4
+candidate_indices:
+- 0
+- 4
+- 8
+- 12
+horizon: 16
+tail_steps: 48
+n_candidates: 16
+time_cap_s: 600
+env_cap: 21824
+model_cap: 5448960
+minimum_fraction: 0.1
+state_base: 2200000
+candidate_base: 2210000
+tail_base: 2220000
+tasks:
+- role: source
+  task_id: pendulum_ctx_tr0
+  physics:
+  - 8.0
+  - 1.0
+  - 1.0
+- role: source
+  task_id: pendulum_ctx_tr1
+  physics:
+  - 10.0
+  - 0.85
+  - 1.0
+- role: source
+  task_id: pendulum_ctx_tr2
+  physics:
+  - 10.0
+  - 1.0
+  - 1.15
+- role: source
+  task_id: pendulum_ctx_tr3
+  physics:
+  - 9.4
+  - 1.25
+  - 0.95
+- role: source
+  task_id: pendulum_ctx_tr4
+  physics:
+  - 11.0
+  - 0.9
+  - 1.05
+- role: source
+  task_id: pendulum_ctx_tr5
+  physics:
+  - 7.6
+  - 1.1
+  - 1.2
+- role: source
+  task_id: pendulum_ctx_tr6
+  physics:
+  - 12.4
+  - 0.6
+  - 0.85
+- role: source
+  task_id: pendulum_ctx_tr7
+  physics:
+  - 10.5
+  - 1.35
+  - 1.3
+- role: development
+  task_id: pendulum_ctx_dev0
+  physics:
+  - 6.0
+  - 1.0
+  - 1.0
+- role: development
+  task_id: pendulum_ctx_dev1
+  physics:
+  - 10.0
+  - 2.0
+  - 1.0
+- role: development
+  task_id: pendulum_ctx_dev2
+  physics:
+  - 10.0
+  - 1.0
+  - 1.55
+parents:
+  artifacts/terminal_value.json: 74dcff9c710e6108020c11b64f68b4321fc9306a8f69b9a8491af60a86f9a420
+  artifacts/terminal_value_source_fit.json: 9cd44bb05759c7df5313997ae7176f655f1d2397c437a01145ee60cd8060c994
+  artifacts/control_replication_checkpoints/manifest.json: 265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b

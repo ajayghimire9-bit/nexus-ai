@@ -354,3 +354,6 @@ The most recent bounded result is `docs/NEXUS_PLANNING_VALUE.md`: on eight exist
 
 
 The terminal-value pilot was subsequently approved and completed (`docs/NEXUS_TERMINAL_VALUE_RESULTS.md`). Its primary same-state corrected-student minus unchanged-student common64 difference is −0.221 [−5.881,+5.438], inconclusive; the one-point screen did not pass. The readout changed154/300 first actions but did not establish better choices. All original weights stayed frozen, all120 files verified, and516 regression tests passed. The next proposal is held-out calibration of these fixed readouts, separating actual from imagined endpoint inputs; it remains unexecuted. The prediction/control distinction and compact cross-environment research mission remain unchanged.
+
+
+The proposed frozen readout calibration now has a separate locked implementation and protocol (`docs/NEXUS_TERMINAL_VALUE_CALIBRATION_PROTOCOL.md`, branch `codex/terminal-value-calibration`). This is preparation only: all120 files and110 saved model/context groups verified without new environment data. The next run still requires separate approval of its600-second/21,824-step budget; no prior experimental result or closed split has changed. Pendulum remains the current testbed for the broader compact adaptive intelligence research objective.
