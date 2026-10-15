@@ -109,13 +109,15 @@ def split_rewards(rewards, split=16, horizon=64):
     return {'early':early,'late':late,'total':total}
 
 
-def continuation_trace(env, model, state, seeds, *, first_action=None, horizon=64):
+def continuation_trace(env, model, state, seeds, *, first_action=None, horizon=64, original_phase=0):
     """Reusable rollout primitive; only called after approval by a future driver.
 
     first_action=None: full policy. Otherwise commit it then replan with the supplied
     model. A zero-context model must be supplied for the common-policy intervention.
     """
     if len(seeds)!=horizon: raise ValueError('continuation RNG length mismatch')
+    if original_phase<0 or original_phase+horizon>200:
+        raise ValueError('continuation crosses original episode boundary')
     from nexus.world.receding_horizon import restore_state, _context_snapshot, _same_context, _reward_ok
     from nexus.world.planning import mpc_for_model
     snapshot=_context_snapshot(model)
@@ -123,21 +125,32 @@ def continuation_trace(env, model, state, seeds, *, first_action=None, horizon=6
         if first_action not in (0,1,2) or bool((snapshot != 0).any()):
             raise ValueError('common continuation requires a valid first action and exact zero context')
     obs=restore_state(env,state)
-    rewards=[]; actions=[]
+    cursor=env
+    while cursor is not None:
+        if '_elapsed_steps' in vars(cursor): cursor._elapsed_steps=int(original_phase)
+        cursor=getattr(cursor,'env',None)
+    rewards=[]; actions=[]; decisions=[]
     planner=mpc_for_model(model,seed=seeds[0],enforce_time_budget=False)
     for k,seed in enumerate(seeds):
         if k==0 and first_action is not None:
             action=int(first_action)
+            selected=None; score=None
         else:
             planner.reset_episode(int(seed))
             action,info=planner.act(obs)
             if info['n_scored']!=16: raise ValueError('candidate budget drift')
+            scores=np.asarray(info['candidate_scores'],dtype=np.float64)
+            if scores.shape!=(16,) or not np.isfinite(scores).all():
+                raise ValueError('invalid candidate scores')
+            selected=int(np.argmax(scores)); score=float(scores[selected])
         nxt,reward,term,trunc,_=env.step(int(action))
         _reward_ok(obs,action,nxt,reward)
         _same_context(model,snapshot)
         rewards.append(float(reward)); actions.append(int(action)); obs=nxt
+        decisions.append({'seed':int(seed),'selected_index':selected,'predicted_score':score,
+                          'original_step':int(original_phase+k),'terminated':bool(term),'truncated':bool(trunc)})
         if (term or trunc) and k<horizon-1: raise ValueError('short continuation')
-    return {'rewards':rewards,'actions':actions,**split_rewards(rewards,horizon=horizon)}
+    return {'rewards':rewards,'actions':actions,'decisions':decisions,**split_rewards(rewards,horizon=horizon)}
 
 
 def paired_interval(values):

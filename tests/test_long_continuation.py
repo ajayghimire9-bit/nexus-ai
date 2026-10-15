@@ -87,7 +87,7 @@ def test_future_rollout_uses_shared_rng_and_records_all_rewards(monkeypatch):
         def reset_episode(self,seed): self.seed=seed
         def act(self,obs):
             calls.append(self.seed)
-            return self.seed%3,{'n_scored':16}
+            return self.seed%3,{'n_scored':16,'candidate_scores':[0.]*16,'best_score':0.}
     def restore(env,state): env.state=float(state[0]); return np.array(state)
     calls=[]
     monkeypatch.setattr(planning,'mpc_for_model',lambda *a,**kw:Planner())
