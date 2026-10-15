@@ -1,0 +1,189 @@
+{
+  "protocol_id": "research_evidence_consolidation_v1",
+  "base_sha": "f9468a5b233347135e3485fbae0fd25cdc981d61",
+  "training_executed": false,
+  "new_environment_data_collected": false,
+  "previous_results_modified": false,
+  "is_agi": false,
+  "is_learning_to_learn": false,
+  "general_control_claim": false,
+  "artifacts": [
+    {
+      "id": "direct_latent_audit",
+      "path": "artifacts/direct_latent_audit.json",
+      "sha256": "9681f5de77d53c8fafba54aa5c0e41eeb60cd39a8e0f4d8308615dcf7476f9dc",
+      "implementation_sha": "d037ffda2fb34238411f39c82d64ff5812b98810",
+      "physics_hash": null,
+      "replication_unit": "model_training_seed",
+      "n": 3,
+      "outcome": "source_screen_passed"
+    },
+    {
+      "id": "direct_latent_confirmation",
+      "path": "artifacts/direct_latent_confirmation.json",
+      "sha256": "1de5b1ebfa33caafe602f55d709490d71a25d07122a3198019a0aca5e73bb67f",
+      "implementation_sha": "aac5e33d677f05fc57e9191bd522e82982e3ef20",
+      "physics_hash": "87b83c41be34aa1a",
+      "replication_unit": "model_training_seed",
+      "n": 3,
+      "outcome": "confirmation_passed"
+    },
+    {
+      "id": "amortized_latent_dev",
+      "path": "artifacts/amortized_latent_dev.json",
+      "sha256": "cd120f53ffdd1efbaaff8b632faad01b251e3b4e4afccd201af28c267ac1162f",
+      "implementation_sha": "29931126df34da0064a67fd3b8a239c673412f72",
+      "physics_hash": null,
+      "replication_unit": "student_training_seed_sharing_three_decoders",
+      "n": 10,
+      "outcome": "gate_failed"
+    },
+    {
+      "id": "encoder_representability",
+      "path": "artifacts/encoder_representability.json",
+      "sha256": "a5967f26fc4e88a850b84a81c53647850945e8bb3275307e6e9ff27a76e08d5f",
+      "implementation_sha": "76c1e4aa87a611217288de15ccc59544689ff9da",
+      "physics_hash": null,
+      "replication_unit": "decoder",
+      "n": 3,
+      "outcome": "training_set_fit_passed_at_learning_rate_0_01"
+    },
+    {
+      "id": "latent_generalization_dev",
+      "path": "artifacts/latent_generalization_dev.json",
+      "sha256": "c8438e09c383fc669b3b9f4cad275725d7daa9f49d2616083f256cefa1f24aba",
+      "implementation_sha": "fd1e864cb2e1dff91e73bf35b184becc4c81be22",
+      "physics_hash": null,
+      "replication_unit": "student_seed_sharing_three_decoders",
+      "n": 5,
+      "outcome": "development_screen_passed"
+    },
+    {
+      "id": "latent_generalization_confirmation",
+      "path": "artifacts/latent_generalization_confirmation.json",
+      "sha256": "18ef526655e8d0ce9d49fe5b67f4af17997c08bff564f256354e48e1086c04fa",
+      "implementation_sha": "4da390da236c2b8fb172bcbc13c65ebce6aae9da",
+      "physics_hash": "baa655fcb94e61bc",
+      "replication_unit": "decoder",
+      "n": 3,
+      "outcome": "prediction_confirmation_passed"
+    },
+    {
+      "id": "latent_control",
+      "path": "artifacts/latent_control.json",
+      "sha256": "ce04ce90f368a6d0ecd45b42cce881e045619fd642bfe39d13c8c32216c5e9b4",
+      "implementation_sha": "9506604ba1aae853d8be3421d87b9e9477a9b5a4",
+      "physics_hash": "baa655fcb94e61bc",
+      "replication_unit": "decoder",
+      "n": 3,
+      "outcome": "inconclusive"
+    },
+    {
+      "id": "control_replication",
+      "path": "artifacts/control_replication.json",
+      "sha256": "35c75320e1c243eaa1914cf6e726e9849d246910ebfc79f6ac0f390c86daf0e9",
+      "implementation_sha": "b3cd0cec251cf996bde1a8b87b52ac656d16be01",
+      "physics_hash": "baa655fcb94e61bc",
+      "fresh_physics_hash": "053e8efca60fb4ac",
+      "replication_unit": "decoder",
+      "n": 10,
+      "outcome": "replication_passed_fresh_negative_transfer"
+    },
+    {
+      "id": "control_replication_manifest",
+      "path": "artifacts/control_replication_checkpoints/manifest.json",
+      "sha256": "265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b",
+      "implementation_sha": null,
+      "physics_hash": null,
+      "replication_unit": null,
+      "n": 7,
+      "outcome": "manifest_matches_embedded_artifact_record"
+    },
+    {
+      "id": "prediction_control_gap",
+      "path": "artifacts/prediction_control_gap.json",
+      "sha256": "f1f36506d3c64086898b6f462f9915a28037784dee52f47bce5c19b91bfe390a",
+      "implementation_sha": "a1f192e2be254c5511774254ee613a3597e3148c",
+      "physics_hash": "053e8efca60fb4ac",
+      "replication_unit": "decoder",
+      "n": 10,
+      "outcome": "evaluation_variance"
+    },
+    {
+      "id": "receding_horizon_diagnostic",
+      "path": "artifacts/receding_horizon_diagnostic.json",
+      "sha256": "46b0eb85e655b7bb9e71d9a19268202733211f3741ab2fcb8729e193bc7c49f0",
+      "implementation_sha": "b6a079bab98c965b65a127e90a178a73ddcbb7f2",
+      "physics_hash": "053e8efca60fb4ac",
+      "replication_unit": "decoder",
+      "n": 10,
+      "outcome": "inconclusive"
+    }
+  ],
+  "checkpoint_audit": {
+    "confirmation_encoder_files": 30,
+    "replication_manifest_files": 84,
+    "parent_history_files": 3,
+    "parent_mlp_files": 3,
+    "unique_hashed_files_verified": 120,
+    "mismatches": 0,
+    "missing": 0,
+    "local_pt_files_observed": 191,
+    "git_tracked_pt_files": 0,
+    "github_weight_files_available": false,
+    "json_results_available_from_git": true
+  },
+  "dependent_metrics": [
+    {
+      "id": "receding_regret_equals_open_loop_return",
+      "artifact": "artifacts/receding_horizon_diagnostic.json",
+      "left": "regret_improvement",
+      "right": "sequence_return_improvement",
+      "max_abs_difference": 3.9968028886505635e-14,
+      "cells": 640,
+      "reason": "On one shared candidate set, regret improvement equals the selected sequence's realized-return improvement."
+    },
+    {
+      "id": "receding_continuation_equals_action_regret",
+      "artifact": "artifacts/receding_horizon_diagnostic.json",
+      "left": "continuation_improvement",
+      "right": "action_regret_improvement",
+      "max_abs_difference": 3.9745984281580604e-14,
+      "cells": 640,
+      "reason": "With one shared three-action continuation, the return gap equals the selected-action regret gap."
+    }
+  ],
+  "conclusions": [
+    {
+      "id": "prediction_on_tested_unfamiliar_physics",
+      "statement": "Fast learned context improves prediction on tested unfamiliar physics.",
+      "status": "supported_on_named_sets",
+      "scope": "Direct-latent confirmation hash 87b83c41be34aa1a and encoder confirmation hash baa655fcb94e61bc. The earlier distillation on development physics failed."
+    },
+    {
+      "id": "control_return_on_earlier_physics",
+      "statement": "Contextual control improves return on the earlier physics group.",
+      "status": "supported_by_ten_decoder_replication",
+      "scope": "Physics hash baa655fcb94e61bc, ten decoders, new episodes. The three-decoder interval included 0."
+    },
+    {
+      "id": "negative_transfer_on_fresh_physics",
+      "statement": "Contextual control transfers negatively on the fresh physics group.",
+      "status": "supported_versus_zero_context",
+      "scope": "Physics hash 053e8efca60fb4ac. Student minus zero is entirely below 0. Student minus frozen encoder includes 0."
+    },
+    {
+      "id": "one_shot_ranking_in_some_measurements",
+      "statement": "One-shot action ranking improves in some measurements.",
+      "status": "supported_on_sampled_states_not_on_pooled_visited_states",
+      "scope": "Sampled-state regret intervals exclude 0 on both physics groups. Pooled visited-state regret on the fresh group includes 0."
+    },
+    {
+      "id": "fresh_receding_mechanism_unresolved",
+      "statement": "The fresh-physics receding-horizon mechanism remains unresolved.",
+      "status": "unresolved",
+      "scope": "Primary decision inconclusive. Live replay matched 1920 of 1920 stored decisions."
+    }
+  ],
+  "recommended_question": "On newly registered fresh-physics episodes, with the saved student and zero-context controllers held fixed, what fraction of the paired student-minus-zero return difference accumulates during steps 0-15, and what fraction accumulates during steps 16-199?"
+}
