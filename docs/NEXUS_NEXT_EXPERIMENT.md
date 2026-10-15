@@ -56,4 +56,4 @@ The H=16 comparison is inconclusive (`docs/NEXUS_LATENT_CONTROL.md`). Student re
 
 **Do not rerun these control episodes and do not change the encoder.**
 
-A later control claim needs a new pre-registered evaluation sample and the same frozen H=16 controller. The 25-point rule stays in force. Decoder disagreement, not a new architecture, is what left this interval across 0. A higher return on a new sample would still not be learning-to-learn.
+The replication study is registered in `docs/NEXUS_CONTROL_REPLICATION.md`. It has not been collected. It keeps the frozen H=16 controller and the 25-point rule, adds seven new decoder seeds to the original three, and uses new episode seeds plus a disjoint physics set. A higher return on that sample would still not be learning-to-learn.

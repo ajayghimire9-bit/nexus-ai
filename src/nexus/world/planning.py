@@ -170,6 +170,7 @@ class RandomShootingMPC:
             "n_scored": n_scored,
             "horizon": int(self.horizon),
             "best_score": float(scores[best]),
+            "candidate_scores": [float(value) for value in scores],
             "over_time_budget": bool(ms > self.max_plan_ms),
             "time_budget_enforced": bool(self.enforce_time_budget and budget_hit),
             "used_simulator": bool(

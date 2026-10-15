@@ -1,0 +1,136 @@
+protocol_id: control_replication_v1
+starting_sha: 5889c3c4fabec814fb83b07607139adfea0b9639
+is_agi: false
+is_learning_to_learn: false
+retune_on_return: false
+h_replication: Across ten independently trained decoders, the 584-parameter student
+  raises H=16 return by at least 25 points above zero context and above the frozen
+  encoder, on new episodes of the previous physics and on a disjoint physics set.
+target_decoders: 10
+original_seeds:
+- 0
+- 1
+- 2
+new_seeds:
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+horizon: 16
+n_candidates: 16
+chunk_size: 4
+enforce_time_budget: false
+episodes: 4
+support_budget: 128
+n_student_seeds: 5
+student_learning_rate: 0.01
+student_epochs: 200
+teacher_learning_rate: 0.1
+teacher_updates: 256
+global_learning_rate: 0.01
+global_updates: 300
+context_updates: 3000
+history_updates: 1000
+context_lr: 0.001
+batch: 64
+empty_prob: 0.2
+source_per_task: 400
+n_source_tasks: 8
+n_parameters: 584
+n_decoder_parameters: 3748
+minimum_effect: 25
+catastrophic_return: -1500
+primary_unit: decoder
+time_limit_s: 9000
+previous_control_eval_env0: 110000
+replication_eval_env0: 120000
+fresh_support_env0: 124000
+fresh_support_base: 280000
+fresh_eval_env0: 126000
+confirm_support_env0: 102000
+confirm_support_base: 268000
+confirm_split_hash: baa655fcb94e61bc
+fresh_split_hash: 053e8efca60fb4ac
+fresh_task_ids:
+- pendulum_ctrl_rp0
+- pendulum_ctrl_rp1
+- pendulum_ctrl_rp2
+- pendulum_ctrl_rp3
+fresh_physics:
+- - 3.6
+  - 0.42
+  - 1.35
+- - 18.5
+  - 1.85
+  - 0.62
+- - 9.1
+  - 3.1
+  - 1.05
+- - 13.7
+  - 0.22
+  - 1.95
+replication_task_ids:
+- pendulum_lat_cf0
+- pendulum_lat_cf1
+- pendulum_lat_cf2
+- pendulum_lat_cf3
+replication_physics:
+- - 5.1
+  - 0.88
+  - 0.96
+- - 15.8
+  - 0.92
+  - 1.04
+- - 10.4
+  - 2.45
+  - 0.58
+- - 11.4
+  - 0.48
+  - 1.82
+broad_h0_env0: 96000
+broad_h0_base: 262000
+broad_h1_env0: 97000
+broad_h1_base: 263000
+baseline_support_env0: 72000
+baseline_support_base: 255000
+development_artifact: artifacts/latent_generalization_dev.json
+development_artifact_sha256: c8438e09c383fc669b3b9f4cad275725d7daa9f49d2616083f256cefa1f24aba
+confirmation_artifact: artifacts/latent_generalization_confirmation.json
+confirmation_artifact_sha256: 18ef526655e8d0ce9d49fe5b67f4af17997c08bff564f256354e48e1086c04fa
+control_artifact: artifacts/latent_control.json
+control_artifact_sha256: ce04ce90f368a6d0ecd45b42cce881e045619fd642bfe39d13c8c32216c5e9b4
+parent_checkpoints:
+- seed: 0
+  path: artifacts/frozen_dynamics_checkpoints/seed0_history_u1000.pt
+  sha256: 83e90a9b187cdffe5e39d794ce86abf65ef891fde011daf8e55b7eee1f348959
+  global_vector_sha256: d40d71a3e5c0e62ef158e08ec82617f10a8f6fcfeaac436744c9e9958b31f8ba
+- seed: 1
+  path: artifacts/frozen_dynamics_checkpoints/seed1_history_u1000.pt
+  sha256: cd5400070a69238ce8e35ca036c57448b18664f7ce1e8600ac5a3aab2983ef3e
+  global_vector_sha256: 4705c19a62e0547267705e1b10aeb4f06c1a62058ab077534b24a8f2cc4fdb33
+- seed: 2
+  path: artifacts/frozen_dynamics_checkpoints/seed2_history_u1000.pt
+  sha256: 254b097c5dbd3df02c463913c60392928aaed0584c6c29245e060ed25113b6fd
+  global_vector_sha256: 9910f28a645a7a4d8a714cf0523f6c8a9c7b58b7dd71103e96a511583be31218
+mlp_checkpoints:
+- seed: 0
+  path: artifacts/context_optimization_checkpoints/seed0_mlp_u1000.pt
+  sha256: 4f4db2ca0ade8d2e19cb37971cf7343959edcdc17befe73e1aa9169e19c21cc2
+  hidden:
+  - 64
+  - 64
+- seed: 1
+  path: artifacts/context_optimization_checkpoints/seed1_mlp_u1000.pt
+  sha256: eb72c8c9f41d6e53a123e9f9b9aa86ce0540117e33a97c5617c164ff4456526f
+  hidden:
+  - 64
+  - 64
+- seed: 2
+  path: artifacts/context_optimization_checkpoints/seed2_mlp_u1000.pt
+  sha256: 58dc9209c1435543b33cb48878785a30705bc9909090510631e40f7e95b466a1
+  hidden:
+  - 64
+  - 64

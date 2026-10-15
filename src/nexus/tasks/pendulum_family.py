@@ -260,6 +260,24 @@ def pendulum_latent_confirmation() -> tuple[TaskSpec, ...]:
     )
 
 
+def pendulum_control_replication() -> tuple[TaskSpec, ...]:
+    """Physics registered for the control-replication study.
+
+    Disjoint from training, development, validation, and every earlier
+    confirmation split. These are not a retune of the previous control tasks.
+    """
+    rows = (
+        (3.6, 0.42, 1.35),
+        (18.5, 1.85, 0.62),
+        (9.1, 3.1, 1.05),
+        (13.7, 0.22, 1.95),
+    )
+    return tuple(
+        _pendulum(f"pendulum_ctrl_rp{i}", "control_replication", f"Control replication physics {g, m, l}.", g=g, m=m, l=l)
+        for i, (g, m, l) in enumerate(rows)
+    )
+
+
 def pendulum_latent_validation() -> tuple[TaskSpec, ...]:
     """Physics held out of training. Scored after checkpoint selection. Not confirmation."""
     rows = ((8.2, 0.95, 1.08), (11.6, 1.12, 0.92), (9.8, 0.58, 1.18), (12.7, 1.42, 1.08))
