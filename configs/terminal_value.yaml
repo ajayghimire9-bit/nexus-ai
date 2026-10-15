@@ -1,0 +1,36 @@
+protocol_id: terminal_value_pilot_v1
+starting_sha: 03ae1874339ffa2d7e3cb63daa4d72b0d200f143
+parent_capture: artifacts/planning_value.json
+parent_capture_sha256: 597faebffee7354141a512ac3c970e37d11bf1ee0ed3feed074a6a2d82345781
+manifest_sha256: 265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b
+decoders: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+students: [0, 1, 2, 3, 4]
+train_task_ids: [pendulum_ctx_tr0, pendulum_ctx_tr1, pendulum_ctx_tr2, pendulum_ctx_tr3, pendulum_ctx_tr4, pendulum_ctx_tr5, pendulum_ctx_tr6, pendulum_ctx_tr7]
+eval_task_ids: [pendulum_ctx_dev0, pendulum_ctx_dev1, pendulum_ctx_dev2]
+train_candidate_indices: [0, 4, 8, 12]
+eval_states_per_task: 2
+support_budget: 128
+horizon: 16
+candidates: 16
+value_tail_steps: 48
+common_steps: 64
+ridge: 1.0
+feature_standard_deviation_floor: 0.00000001
+practical_margin: 1.0
+train_support_env_base: 2000000
+train_support_action_base: 2001000
+train_state_base: 2010000
+train_candidate_base: 2020000
+train_tail_base: 2030000
+eval_support_env_base: 2040000
+eval_support_action_base: 2041000
+eval_state_base: 2050000
+eval_candidate_base: 2060000
+eval_continuation_base: 2070000
+time_cap_s: 600
+env_cap: 28800
+model_cap: 7050240
+primary: corrected_student_minus_student_common64
+scope: source_fitted_readout_development_first_action_only
+train_physics: [[8.0, 1.0, 1.0], [10.0, 0.85, 1.0], [10.0, 1.0, 1.15], [9.4, 1.25, 0.95], [11.0, 0.9, 1.05], [7.6, 1.1, 1.2], [12.4, 0.6, 0.85], [10.5, 1.35, 1.3]]
+eval_physics: [[6.0, 1.0, 1.0], [10.0, 2.0, 1.0], [10.0, 1.0, 1.55]]
