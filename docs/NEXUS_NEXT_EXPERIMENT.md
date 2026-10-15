@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next scientific question — after source planning-value diagnostic
+
+Can a small source-trained terminal-value correction improve same-state first-action decisions while keeping the encoder, decoder, H=16 and sixteen candidates fixed? The completed diagnostic found exact16 selection regret **34.685 [22.677, 46.694]** over a 64-step intervention, while student-minus-zero chosen64 return remained **+1.507 [−2.870, +5.885]**, inconclusive. Accurate short reward ranking alone is insufficient on this finite source suite.
+
+Propose one bounded comparison: train the terminal-value estimator only on newly collected source episodes; lock it before testing on disjoint development states against unchanged MPC, using paired common continuation and decoder-level uncertainty. Do not fit to the closed diagnostic or reuse its seeds as independent evidence. Suggested ceiling: 600 seconds and 65,000 total real steps, with exact training/evaluation allocations and minimum effect registered before collecting data. No further experiment has run. This is a candidate score correction to test, not an established controller improvement.
+
+The latest completed report is `docs/NEXUS_PLANNING_VALUE.md`. All following recommendations and pending-status wording are preserved historical entries, superseded by this section.
+
+
 Not AGI. Do not retune MAE 0.97. Do not start finance, NAS, Reptile, MAML, or a meta-controller. The direct-latent confirmation protocol is closed; do not retune its learning rate or update count.
 
 ## Current evidence and one next direction
