@@ -63,3 +63,9 @@ These produced no paired control/sample-efficiency gain that survived an indepen
 1. Can any CartPole WM update improve H=3 MPC return vs frozen with a CI excluding 0 **and** without retuning 0.97?
 2. Does the V0.7 residual+H=3 recipe plan at all off CartPole?
 3. Is one-step MAE on incumbent actions the wrong proxy for planner-relevant error (multi-step / near-failure)?
+
+## Current late-control hypotheses (later than the historical register above)
+
+H-late-action: on the registered late states, the student-selected first action loses at least one return point under shared zero-context next-16 continuation. **Not established**: +0.0312 [−0.0827,+0.1452], ten decoder units, complete grid. Full-policy next-16 is also inconclusive. This is not equivalence and not a general control result.
+
+H-long-policy: full-policy continuation from identical late states loses at least five points in local steps 16–63. H-long-first-action: the selected first action alone has delayed adverse consequences under common-zero continuation. **Both are untested proposals**, locked in `docs/NEXUS_LONG_CONTINUATION_PROTOCOL.md`; no new data collected, budget not yet approved. A future negative/inconclusive outcome must not trigger automatic architecture expansion.

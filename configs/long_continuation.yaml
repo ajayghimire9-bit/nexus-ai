@@ -1,0 +1,34 @@
+protocol_id: long_continuation_v1
+status: awaiting_budget_approval
+starting_sha: 9996af93b852c58b026aaa40c851686ccadf38c4
+parent_artifact: artifacts/late_control_gap.json
+parent_sha256: b3a0642e46890f0d6296d103ecd5ed1353cc6f2849b6dd61e46507f5f8dd5ea9
+manifest: artifacts/control_replication_checkpoints/manifest.json
+manifest_sha256: 265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b
+decoders: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+students: [0, 1, 2, 3, 4]
+tasks:
+- [pendulum_ctrl_rp0, 3.6, 0.42, 1.35]
+- [pendulum_ctrl_rp1, 18.5, 1.85, 0.62]
+- [pendulum_ctrl_rp2, 9.1, 3.1, 1.05]
+- [pendulum_ctrl_rp3, 13.7, 0.22, 1.95]
+phases: [50, 100]
+episodes_per_slot: 1
+harvest_steps: 101
+support_steps_per_task: 128
+continuation_steps: 64
+analysis_split: 16
+max_episode_steps: 200
+horizon: 16
+candidates: 16
+actions: 3
+practical_margin: 5.0
+interval: decoder_student_t_95
+primary: full_policy_return_steps_16_63
+secondary: common_zero_return_steps_16_63
+env_seed_base: 600000
+planner_seed_base: 650000
+candidate_seed_base: 700000
+common_seed_base: 750000
+policy_seed_base: 800000
+time_cap_s: 1800

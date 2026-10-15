@@ -485,3 +485,9 @@ On states the existing controllers visit, fresh one-shot regret changed by **0.8
 Branch `cursor/return-phase-decomposition`. Write-up: `docs/NEXUS_RETURN_PHASE_DECOMPOSITION.md`. Artifact `artifacts/return_phase_decomposition.json`. Implementation SHA `cf1e81b07011c6e4a45039dba38a7b9dafb2d734`. Wall **774.2 s**.
 
 On new fresh-physics episodes the student-minus-zero return was **−30.671 [−41.540, −19.801]**. Steps 0–15 were **−1.230 [−2.583, 0.123]** and include 0. Steps 16–199 were **−29.441 [−40.706, −18.175]**. The locked label is `primarily_late`. This does not remeasure the closed episode seeds. Not a control improvement, not learning-to-learn, and not AGI.
+
+## Late-control result and longer-continuation preparation
+
+The completed `codex/late-control-gap-execution` run (`e1f35e2`, results `d20b055`) finished 960 late states in 557.8 s. The primary same-state common-zero difference was **+0.0312 [−0.0827,+0.1452]** and the secondary full-policy difference **−0.0234 [−0.2236,+0.1767]**. Both remain inconclusive. No causal explanation of the closed late return deficit follows.
+
+`docs/NEXUS_LONG_CONTINUATION_PROTOCOL.md` now proposes a new 64-step, same-state development study. The preparation includes independent raw-to-decoder arithmetic checks, seed/budget helpers, a tested continuation-trace primitive and offline tests. No new simulation or training has run. The proposed local 1800-second budget requires explicit approval; the final collection driver and real-environment integration are still pending.

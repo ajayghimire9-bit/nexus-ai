@@ -2,6 +2,12 @@
 
 Not AGI. Do not retune MAE 0.97. Do not start finance, NAS, Reptile, MAML, or a meta-controller. The direct-latent confirmation protocol is closed; do not retune its learning rate or update count.
 
+## Current proposal — awaiting budget approval
+
+The latest completed late-state diagnostic remains inconclusive: common-zero +0.0312 [−0.0827,+0.1452], full-policy −0.0234 [−0.2236,+0.1767]. The single next proposal is the 64-step same-state study in `docs/NEXUS_LONG_CONTINUATION_PROTOCOL.md`, preserving all trained controllers and H=16/16 candidates. Its primary contrast is the full-policy student-minus-zero tail over local steps 16–63, averaged inside ten decoder units. Common-zero continuation is secondary.
+
+Proposed cost: 198,832 environment steps, 50,851,840 imagined states; roughly 14 minutes local runtime, hard cap 1800 seconds. **Do not run until the user approves this exact budget and configuration.** No new experiment has been executed. Current preparation supplies an offline audit, configuration, tested rollout primitive and explicit remaining integration checks. The prior recommendations below are chronological history, superseded by this approved direction for design work only.
+
 ## Closed on measured runs
 
 Pendulum H=16 planning beat random on its confirmation physics (`docs/NEXUS_PLANNING_GENERALITY.md`). MAE-gated adaptation did not (`docs/NEXUS_PENDULUM_TRANSFER.md`). Reptile lost to matched-data multitask in that configuration (`docs/NEXUS_META_LEARNING_PILOT.md`). That Reptile result is not a general disproof.

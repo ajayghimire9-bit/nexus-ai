@@ -16,3 +16,7 @@ On newly registered fresh-physics episodes, with the saved student and zero-cont
 - Whether seeds 0–2 would have separated the original three-decoder return interval with more episodes. Those episode seeds are closed, and the ten-decoder replication is the later sample.
 
 No architecture change, planner change, or new training run follows from this list.
+
+## Latest development decision
+
+The completed late-control result leaves both same-state 16-step comparisons unresolved: common-zero **+0.0312 [−0.0827,+0.1452]**, full policy **−0.0234 [−0.2236,+0.1767]**. The next question is whether a disadvantage appears in a longer continuation tail while the frozen policies start from identical late states. `docs/NEXUS_LONG_CONTINUATION_PROTOCOL.md` defines one proposed 64-step study and competing delayed-action versus full-policy descriptions. No new environment data have been collected; approval is required before execution.
