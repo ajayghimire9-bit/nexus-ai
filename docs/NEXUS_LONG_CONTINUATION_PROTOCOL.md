@@ -77,3 +77,11 @@ The separate raw-to-decoder arithmetic audit matched the saved primary mean **+0
 The parent JSON lacks per-step continuation rewards, so their sums cannot be independently reconstructed from that artifact. The proposed collection requires full per-step rewards to close that reporting gap. Existing checkpoint binaries were not retrained, rewritten or loaded by this preparation. Their explicit all-file verification remains a mandatory execution gate.
 
 Measured evidence remains the completed 16-step inconclusive result; the 64-step hypotheses remain **untested**. Approval must cover the exact proposed 198,832 environment steps, 50,851,840 imagined states and 1800-second hard cap. No outcome labels have been assigned for the proposed experiment.
+
+## Analysis preparation follow-up
+
+The registered 800-cell result schema and primary classification are now implemented in `validate_result_grid` and `summarize_result_grid`. Expected decoder/task/phase/visitor/student IDs come from the locked configuration, not the produced output. Missing axes, duplicate cells, booleans/numeric strings in metric fields, nonfinite values, and failed early-plus-tail identities are rejected before aggregation. Student seeds, visitor groups, phases and tasks are averaged in the prescribed order before the ten-decoder Student-t interval.
+
+The five-point rule is unchanged. A secondary common-continuation result cannot upgrade an inconclusive full-policy primary result. A complete metric grid alone does not establish valid execution: the returned summary explicitly leaves checkpoint, context, replay, reward-trace and run-integrity gates outstanding for the future collection driver.
+
+Focused command: `PYTHONPATH=src:.deps python3 -m pytest tests/test_long_continuation.py tests/test_late_control_gap_design.py -p no:cacheprovider`. **35 passed in 2.74 seconds** on the final run. New cases use synthetic numeric fixtures only. The full regression suite was not rerun in this follow-up. No new environment data, MPC experiment, training or scientific outcome was produced; all historical artifacts and the configuration hash remain unchanged.

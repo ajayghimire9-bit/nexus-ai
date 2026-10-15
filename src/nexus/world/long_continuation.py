@@ -219,3 +219,61 @@ def prepare():
             'preparation_wall_s':time.perf_counter()-started,
             'proposed_budget':budget(cfg),'parent_audit':audit,'new_environment_steps':0,
             'new_model_training':False,'simulation_executed':False}
+
+
+RESULT_METRICS = tuple(f'{policy}_{window}' for policy in ('full','common') for window in ('early','late','total'))
+
+
+def validate_result_grid(rows, cfg):
+    """Validate planned cells before aggregation; never infer expected IDs from output."""
+    axes=('decoder','task','phase','visitor','student')
+    expected=set(itertools.product(cfg['decoders'],range(len(cfg['tasks'])),cfg['phases'],
+                                   ('student','zero'),cfg['students']))
+    indexed={}
+    for row in rows:
+        for name in ('decoder','task','phase','student'):
+            if type(row.get(name)) is not int:
+                raise ValueError(f'{name} must be an integer identifier')
+        key=tuple(row.get(k) for k in axes)
+        if key not in expected or key in indexed:
+            raise ValueError(f'unplanned or duplicate result cell: {key}')
+        for metric in RESULT_METRICS:
+            value=row.get(metric)
+            if type(value) not in (int,float) or not math.isfinite(value):
+                raise ValueError(f'missing or invalid result metric: {key} {metric}')
+        for policy in ('full','common'):
+            if not math.isclose(row[policy+'_early']+row[policy+'_late'],row[policy+'_total'],rel_tol=1e-12,abs_tol=1e-8):
+                raise ValueError('paired reward decomposition failed')
+        indexed[key]=row
+    if set(indexed)!=expected:
+        raise ValueError(f'incomplete result grid: {len(indexed)}/{len(expected)}')
+    return indexed
+
+
+def summarize_result_grid(rows, cfg):
+    indexed=validate_result_grid(rows,cfg)
+    summary={}
+    for metric in RESULT_METRICS:
+        decoder_values=[]
+        for decoder in cfg['decoders']:
+            task_values=[]
+            for task in range(len(cfg['tasks'])):
+                phase_values=[]
+                for phase in cfg['phases']:
+                    visitors=[]
+                    for visitor in ('student','zero'):
+                        visitors.append(statistics.mean(indexed[(decoder,task,phase,visitor,s)][metric]
+                                                        for s in cfg['students']))
+                    phase_values.append(statistics.mean(visitors))
+                task_values.append(statistics.mean(phase_values))
+            decoder_values.append(float(statistics.mean(task_values)))
+        summary[metric]={'per_decoder':decoder_values,'interval':paired_interval(decoder_values)}
+    ci=summary['full_late']['interval']
+    if ci['lo']<=0<=ci['hi']:
+        label='long_policy_tail_unseparated'
+    elif ci['hi']<0:
+        label='long_policy_tail_worse' if ci['mean']<=-cfg['practical_margin'] else 'long_policy_tail_below_margin'
+    else:
+        label='long_policy_tail_favors_student'
+    return {'complete_metric_grid':True,'primary_label':label,'comparisons':summary,
+            'execution_integrity_still_required':True}
