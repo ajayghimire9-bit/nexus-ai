@@ -1,0 +1,75 @@
+protocol_id: receding_horizon_diagnostic_v1
+starting_sha: 5260f6474e86e0f1db5e6d7820d4a3feaafe4783
+prediction_artifact: artifacts/prediction_control_gap.json
+prediction_artifact_sha256: f1f36506d3c64086898b6f462f9915a28037784dee52f47bce5c19b91bfe390a
+control_artifact_sha256: 35c75320e1c243eaa1914cf6e726e9849d246910ebfc79f6ac0f390c86daf0e9
+manifest_sha256: 265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b
+fresh_support_hashes:
+- aa78f66887b76dcf
+- 97b370d876c2a569
+- bd47719e5850bbf7
+- 9b97c8539673828c
+is_agi: false
+is_learning_to_learn: false
+control_claim: false
+full_episode_remeasured: false
+fresh_full_episode_student_better: false
+replication_full_episode_student_better: true
+primary_split: fresh
+target_decoders: 10
+original_seeds:
+- 0
+- 1
+- 2
+new_seeds:
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+n_student_seeds: 5
+student_kind: broad
+episodes_per_task: 1
+horizon: 16
+n_candidates: 16
+n_actions: 3
+chunk_size: 4
+max_steps: 200
+phases:
+- 0
+- 50
+- 100
+- 150
+continuation_policy: zero_context_replan
+continuation_context: zero
+score_atol: 1e-05
+live_replication_env0: 170000
+live_fresh_env0: 174000
+live_seed_stride: 10
+planner_seed_base: 176000
+diagnostic_candidate_base: 210000
+continuation_seed_base: 280000
+time_limit_s: 1800
+primary_unit: decoder
+confirm_split_hash: baa655fcb94e61bc
+fresh_split_hash: 053e8efca60fb4ac
+replication_task_ids:
+- pendulum_lat_cf0
+- pendulum_lat_cf1
+- pendulum_lat_cf2
+- pendulum_lat_cf3
+fresh_task_ids:
+- pendulum_ctrl_rp0
+- pendulum_ctrl_rp1
+- pendulum_ctrl_rp2
+- pendulum_ctrl_rp3
+support_budget: 128
+confirm_support_env0: 102000
+confirm_support_base: 268000
+fresh_support_env0: 124000
+fresh_support_base: 280000
+closed_previous_control_eval_env0: 110000
+closed_replication_eval_env0: 120000
+closed_fresh_eval_env0: 126000
