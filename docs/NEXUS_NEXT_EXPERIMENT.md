@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Ready for budget approval: terminal-value pilot
+
+The source-only terminal-value comparison is implemented and tested; it has **not** collected registered data or fitted research readouts. Protocol: `docs/NEXUS_TERMINAL_VALUE_PROTOCOL.md`. Clean implementation: `f8a438e`. Preparation record: `artifacts/terminal_value_preparation.json`. All515 regression tests passed, plus the explicit120-file checkpoint audit.
+
+Request one fixed development run: estimated2–4 minutes, hard cap600 seconds,28,800 environment steps and7,050,240 imagined transitions. Exact executable config SHA256: `b426beef6da918c94c300fe8935b97c8b1640dadd03f1f9cedc17f3f8bd5b094`. The underlying entry point rejects absent or stale budget approval before any collector call. Do not self-supply approval.
+
+The single question is whether the source-trained terminal correction improves the student’s same-state first-action choice under common-zero continuation. Primary margin1point with positive decoder-level95% lower bound; no general-control or learning-to-learn claim. Approval of this new training/evaluation scope remains pending. Following recommendations and costs are preserved history.
+
+
 ## Current next scientific question — after source planning-value diagnostic
 
 Can a small source-trained terminal-value correction improve same-state first-action decisions while keeping the encoder, decoder, H=16 and sixteen candidates fixed? The completed diagnostic found exact16 selection regret **34.685 [22.677, 46.694]** over a 64-step intervention, while student-minus-zero chosen64 return remained **+1.507 [−2.870, +5.885]**, inconclusive. Accurate short reward ranking alone is insufficient on this finite source suite.
