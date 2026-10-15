@@ -465,3 +465,5 @@ The retrained encoder matched the development artifact exactly, then scored four
 Branch `cursor/latent-context-control`. Write-up: `docs/NEXUS_LATENT_CONTROL.md`. Artifact `artifacts/latent_control.json`. Implementation SHA `9506604ba1aae853d8be3421d87b9e9477a9b5a4`. Wall **569.5 s**.
 
 The same epoch-200 encoder in the frozen H=16 controller returned **−683.0** versus zero **−768.4** and the frozen encoder **−773.2**. Decoder-level intervals **+85.4 [−109.4, +280.3]** and **+90.2 [−5.7, +186.1]** both include 0. The result is inconclusive. The direct teacher returned **−682.4**. Not a control improvement, not learning-to-learn, and not AGI.
+
+A ten-decoder replication on new episodes of those physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**, with gaps **+72.2 [+45.6, +98.8]** and **+62.8 [+31.3, +94.3]**. The same controllers on disjoint physics returned **−716.0** versus zero **−696.6**, gap **−19.4 [−35.4, −3.3]**. Negative transfer. Not learning-to-learn and not AGI.

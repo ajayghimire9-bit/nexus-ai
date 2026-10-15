@@ -6,9 +6,9 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: H=16 control comparison, inconclusive.** Write-up: `docs/NEXUS_LATENT_CONTROL.md`. Artifact `artifacts/latent_control.json`.
+**Current: ten-decoder H=16 replication, negative transfer.** Write-up: `docs/NEXUS_CONTROL_REPLICATION.md`. Artifact `artifacts/control_replication.json`.
 
-The epoch-200 encoder returned **−683.0** versus zero context **−768.4** and the frozen encoder **−773.2**. Both decoder-level intervals include 0, so the 25-point screen does not pass. The direct teacher returned **−682.4**. This is **not** a demonstrated control improvement, AGI, or learning-to-learn.
+New episodes of the previous physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**. Both decoder-level intervals clear 25. Disjoint physics returned **−716.0** versus zero **−696.6**, and that interval lies below zero. This is **not** a general control improvement, AGI, or learning-to-learn.
 
 The earlier prediction confirmation reached angular velocity **0.1016** versus zero **0.2729**, the frozen encoder **0.2660**, and a global vector **0.2742**.
 

@@ -56,4 +56,4 @@ The H=16 comparison is inconclusive (`docs/NEXUS_LATENT_CONTROL.md`). Student re
 
 **Do not rerun these control episodes and do not change the encoder.**
 
-The replication study is registered in `docs/NEXUS_CONTROL_REPLICATION.md`. It has not been collected. It keeps the frozen H=16 controller and the 25-point rule, adds seven new decoder seeds to the original three, and uses new episode seeds plus a disjoint physics set. A higher return on that sample would still not be learning-to-learn.
+The ten-decoder replication passed on new episodes of the previous physics and failed on the disjoint physics (`docs/NEXUS_CONTROL_REPLICATION.md`). Fresh student-minus-zero is **−19.4 [−35.4, −3.3]**. Visited prediction still improved there. Do not retune this sample. A later study can ask why the planner's return follows prediction on one physics set and not the other. That is not learning-to-learn.

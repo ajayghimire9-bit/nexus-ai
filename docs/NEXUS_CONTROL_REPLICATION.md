@@ -1,6 +1,14 @@
 # NEXUS control replication
 
-Not AGI. Not learning-to-learn. The previous H=16 comparison stays inconclusive. Its episode seeds stay closed, and its returns are not used to retune the encoder, the decoder, the planner, or this protocol.
+Not AGI. Not learning-to-learn. The previous H=16 comparison stays inconclusive. Its episode seeds stay closed, and its returns were not used to retune the encoder, the decoder, the planner, or this protocol.
+
+## Measured result
+
+Ten independent decoders finished. Seven are new seeds (3–9). Seeds 0–2 were reproduced exactly and then re-scored on new episodes. The grid is complete. Wall clock was 3708 seconds. The joint screen does not pass.
+
+On new episodes of the previous physics, the student return was **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**. The decoder-level gaps are **+72.2 [+45.6, +98.8]** versus zero and **+62.8 [+31.3, +94.3]** versus the encoder. Both means clear 25 and both lower bounds clear 25. That is the replication the earlier three-decoder interval could not support.
+
+On the new physics, the student return was **−716.0** versus zero **−696.6** and the frozen encoder **−705.7**. The gaps are **−19.4 [−35.4, −3.3]** versus zero and **−10.3 [−26.4, +5.9]** versus the encoder. The zero interval lies entirely below zero. The registered reading is negative transfer. Visited angular-velocity error still improved on both sets, so a prediction gain did not carry the return. This sample is not reused for a retune.
 
 ## Question
 
