@@ -11,3 +11,7 @@ No existing instruction, mission, safeguard, closed split or historical result w
 5. After approval, append current status to the progress document, hypothesis register and next-experiment document: the approved 64-step experiment completed with primary tail −8.661 [−14.513, −2.809], common-zero tail +0.627 [−1.448, +2.701], loss concentrated in rp2. Mark the older “awaiting budget approval” status as historical, preserve its frozen protocol, and link the separate approval/execution record. Do not modify old artifacts or reinterpret the result as general control improvement.
 
 The completed run and audit are recorded in docs/NEXUS_LONG_CONTINUATION_RESULTS.md. No additional simulation was launched. The only proposed next scientific question is the rp2 prefix/suffix policy-switch diagnostic described there; it is not approved or executed.
+
+## Subsequent authorization and application
+
+The user subsequently authorized proceeding with significant bounded improvements without repeated small permission requests. Previously proposed mission clarifications 1–4 are applied on `codex/policy-switch-diagnostic`; current status updates are being recorded there as the research proceeds. Existing approval boundaries, scientific safeguards, negative findings and closed splits remain unchanged. This note supersedes the historical pending status above; it does not authorize unbounded or paid execution.

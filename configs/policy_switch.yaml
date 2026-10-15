@@ -1,0 +1,25 @@
+protocol_id: rp2_policy_switch_v1
+starting_sha: 7b018ec764736ad33416c8075f853e8c3bd3b936
+parent_artifact: artifacts/long_continuation.json
+parent_sha256: 15e2c4ce461287f2df5686e7b346aafe5ecbe9f4aa7fd237d9e5cf94920af92a
+manifest_sha256: 265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b
+task: [pendulum_ctrl_rp2, 9.1, 3.1, 1.05]
+source_task_index: 2
+decoders: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+students: [0, 1, 2, 3, 4]
+phases: [50, 100]
+harvest_steps: 101
+prefix_steps: 16
+suffix_steps: 48
+horizon: 16
+candidates: 16
+support_budget: 128
+env_seed: 1000200
+planner_seed: 1050200
+switch_seed_base: 1100000
+practical_margin: 5.0
+env_cap: 52268
+model_cap: 13378560
+time_cap_s: 600
+primary: SS_tail_minus_SZ_tail
+authorization_scope: one_bounded_local_development_run

@@ -69,3 +69,7 @@ These produced no paired control/sample-efficiency gain that survived an indepen
 H-late-action: on the registered late states, the student-selected first action loses at least one return point under shared zero-context next-16 continuation. **Not established**: +0.0312 [−0.0827,+0.1452], ten decoder units, complete grid. Full-policy next-16 is also inconclusive. This is not equivalence and not a general control result.
 
 H-long-policy: full-policy continuation from identical late states loses at least five points in local steps 16–63. H-long-first-action: the selected first action alone has delayed adverse consequences under common-zero continuation. **Both are untested proposals**, locked in `docs/NEXUS_LONG_CONTINUATION_PROTOCOL.md`; no new data collected, budget not yet approved. A future negative/inconclusive outcome must not trigger automatic architecture expansion.
+
+## H-policy-switch — predeclared bounded diagnostic
+
+After the measured rp2-concentrated longer-continuation loss, compare SS with SZ tail return after identical student-controlled 16-step prefixes. The same frozen controllers, H=16/16 candidates and ten decoder units are retained. SZ-ZZ inheritance and ZS-ZZ suffix-after-zero are secondary. See `docs/NEXUS_POLICY_SWITCH.md`. The one bounded local run is authorized; no performance improvement is claimed from its design or tests.

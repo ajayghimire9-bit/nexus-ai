@@ -8,6 +8,10 @@ Interpret future instructions within this project unless the user explicitly cha
 
 ## What NEXUS is
 
+Our long-term research goal is a compact, adaptive autonomous intelligence system that learns from experience, plans, transfers useful knowledge, improves its learning methods and eventually operates across different environments. These are research objectives, not a list of currently demonstrated capabilities.
+
+Pendulum is our current experimental testbed, not the final product. Success on Pendulum alone does not establish general intelligence, general control transfer or learning-to-learn. AGI remains a long-term research aspiration.
+
 An experimental, self-evolving AI research system. Long-term ambition: investigate AGI by testing whether models can improve their own learning mechanisms, architectures, and problem-solving through measured experiments.
 
 This is **not** a ChatGPT wrapper, chatbot, prompt-only agent, or basic trading bot. Completing the roadmap does **not** constitute AGI.
@@ -19,7 +23,7 @@ This is **not** a ChatGPT wrapper, chatbot, prompt-only agent, or basic trading 
 
 Optional LLMs may help planning, engineering, and explanation. They must **not** replace genuine neural training, architecture evolution, or independent evaluation.
 
-## Immediate milestone
+## Historical initial milestone
 
 **NEXUS Research V0.1:** tested PyTorch actor–critic baseline + configurable neural-network factory + initial evolutionary experiment loop.
 
