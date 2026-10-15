@@ -1,0 +1,50 @@
+{
+  "status": "awaiting_budget_approval",
+  "config_sha256": "0fea17504d5a5baea32d857947cd516ab14cef84df524d7f835594d71d7d6184",
+  "protocol_sha256": "118011dc945578fbc1e0dfef6dd88b4799d27bafdf5b01e3b6aa323b1fe3e6d1",
+  "parents": {
+    "artifacts/terminal_value.json": "74dcff9c710e6108020c11b64f68b4321fc9306a8f69b9a8491af60a86f9a420",
+    "artifacts/terminal_value_source_fit.json": "9cd44bb05759c7df5313997ae7176f655f1d2397c437a01145ee60cd8060c994",
+    "artifacts/control_replication_checkpoints/manifest.json": "265cd1822ec73bab8eac6fd792438c3c9fe7834ae5af307b8c33104bf919d06b"
+  },
+  "counts": {
+    "prefix": 704,
+    "tail": 21120,
+    "model_states": 5448960
+  },
+  "new_environment_steps": 0,
+  "network_updates": 0,
+  "readout_fits": 0,
+  "new_support_steps": 0,
+  "estimated_minutes": [
+    2,
+    3
+  ],
+  "time_cap_s": 600,
+  "source_revision": "24db6c469a94d75810fba809582428b9f8964704",
+  "source_dirty": false,
+  "preparation_wall_s": 0.7315122079999128,
+  "research_execution": "not_run",
+  "verified_existing_inputs": {
+    "checkpoints": 120,
+    "model_context_groups": 110,
+    "readouts": 10
+  },
+  "checks": {
+    "focused": {
+      "passed": 34,
+      "wall_s": 11.41
+    },
+    "full_suite": {
+      "passed": 550,
+      "deselected": 1,
+      "wall_s": 123.39
+    }
+  },
+  "commands": [
+    "PYTHONPATH=src:.deps python3 -m pytest tests/test_terminal_value_calibration.py -p no:cacheprovider",
+    "PYTHONPATH=src:.deps python3 scripts/run_terminal_value_calibration.py",
+    "PYTHONPATH=src:.deps python3 scripts/run_terminal_value_calibration.py --verify-inputs",
+    "PYTHONPATH=src:.deps python3 -m pytest -p no:cacheprovider"
+  ]
+}
