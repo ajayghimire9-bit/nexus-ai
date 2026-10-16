@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — horizon-alignment complete, full-episode gain not established
+
+The 60-cell development grid completed under the 180 s / 25,920 / 6,405,120 cap. Prefix identity held. Full-episode remaining-horizon minus H=16 **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. Short diagnostic **+7.425 [+4.349, +10.501]** is not a controller pass. Execute 32.438 s, process 32.480 s. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — horizon-alignment diagnostic locked, not executed
 
 Remaining-horizon MPC versus fixed H=16 is implemented on development physics. Primary: 200-step TimeLimit return, margin 25. Short 16-step window is a diagnostic cutoff. TimeLimit is truncation not termination; the planner does not clip a clock. Collection unauthorized (180 s / 25,920 / 6,405,120). Report `NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.

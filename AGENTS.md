@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded results are in `docs/NEXUS_SAME_SET_PLANNING_RESULTS.md`. Same-set versus equal-horizon fresh was not established (**+0.834 [−0.955, +2.623]**). A remaining-horizon versus fixed H=16 protocol is locked in `docs/NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md` and is not authorized. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded results are in `docs/NEXUS_HORIZON_ALIGNMENT_RESULTS.md`. Remaining-horizon versus fixed H=16 did not establish a 200-step control gain (**+0.523 [−0.077, +1.123]**). Label `boundary_specific_alignment`. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — remaining-horizon alignment is boundary-specific
+
+The authorized development screen completed: 200-step remaining-horizon minus H=16 **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. Close general remaining-horizon alignment as a controller change. A later distinct question would address candidate quality, model bias, or receding search itself—not further shortening of H on these episodes. That proposal is not implemented and is not authorized here. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`.
+
 ## Locked — remaining-horizon versus fixed H=16, collection unauthorized
 
 Protocol `docs/NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md` on `cursor/horizon-alignment-diagnostic` from `aa3a5fb`. Primary: remaining-horizon MPC minus fixed H=16 on 200-step development episodes, mean ≥ 25 and decoder-level lower bound > 0. The 16-step window is a diagnostic cutoff. Budget **180 s total process**, **25,920** real steps, **6,405,120** imagined transitions, 10×3×2 cells. Collection is **not** authorized. Audit: `docs/NEXUS_HORIZON_ALIGNMENT_AUDIT.md`. Do not treat this heading as a result.

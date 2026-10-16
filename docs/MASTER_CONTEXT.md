@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — horizon-alignment diagnostic, 2026-10-16
+
+The locked 60-cell development screen completed with prefix identity intact. Remaining-horizon minus fixed H=16 **200-step** return: **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. The 16-step diagnostic **+7.425 [+4.349, +10.501]** cannot upgrade the primary; all episode difference sat in the last 15 steps. Cost 32.438 s execute / 32.480 s process, 25,920 real steps, 6,405,120 imagined. Checkpoints 120/0/0. Close general horizon alignment. Not control improvement, learning-to-learn or AGI. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — horizon-alignment protocol, 2026-10-16
 
 A remaining-horizon versus fixed H=16 diagnostic is locked on `cursor/horizon-alignment-diagnostic` from `aa3a5fb`. Pendulum TimeLimit truncates at 200 with `terminated=False`; MPC does not clip elapsed time, so H=16 can score post-cutoff imagined rewards. Primary is 200-step episode return, margin 25. The 16-step window is an artificial cutoff and cannot pass general control improvement. Budget 180 s / 25,920 / 6,405,120. Collection unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Protocol `NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md`. Earlier entries remain history.

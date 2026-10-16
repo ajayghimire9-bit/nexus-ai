@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-remaining-horizon-beats-fixed-H16 was not established on episodes
+
+The complete development screen failed the 25-point full-episode rule: remaining-horizon minus fixed H=16 **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. The 16-step diagnostic passed its own margin and all episode difference was in the last 15 steps. Close general horizon alignment rather than retuning. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`.
+
 ## Latest — H-remaining-horizon-beats-fixed-H16 is implemented, not yet tested
 
 The previous 16-step H=16 loss is an artificial cutoff, not episode termination. The locked experiment compares remaining-horizon `H=min(16, remaining)` with fixed H=16 on complete 200-step development episodes (primary, margin 25) and a 16-step diagnostic (cannot upgrade). Shared per-step seeds must match actions on steps 0–184. Collection unauthorized. Report `NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md`.
