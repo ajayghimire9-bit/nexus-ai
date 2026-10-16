@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Acrobot lookahead versus frozen H=16 established on development, 2026-10-16
+
+The locked development screen completed. Lookahead minus H=16 dense-height return **27.914 [13.962, 41.867]**. Label `acrobot_lookahead_established`. Not the Gymnasium −1/step benchmark. Cost 27.797 s execute / 28.843 s process, 24,800 real steps, 6,162,000 imagined, 200 frozen-recipe epochs. CartPole H=3 unused. Pendulum FiLM unused. Do not retune from this development sample. Not learning-to-learn or AGI. Report `NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — Acrobot lookahead versus H=16 locked unauthorized, 2026-10-16
 
 Preparation from `5d2e616` on `cursor/acrobot-lookahead-h16`. New family. Dense upright height, 200-step episodes, no goal termination. Holdout `911ea726b6ed2111`. Frozen residual recipe, H=16 × 16, 300 s / 24,800 / 6,162,000. CartPole H=3 unused. Pendulum FiLM unused. **Authorized: false.** Not a result. Reports `NEXUS_ACROBOT_LOOKAHEAD_PREP.md` and `NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md`. Earlier entries remain history.

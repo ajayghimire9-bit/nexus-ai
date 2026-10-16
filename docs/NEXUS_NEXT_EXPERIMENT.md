@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — Acrobot lookahead versus H=16 is established on development; do not retune
+
+The authorized development screen completed: lookahead minus H=16 **27.914 [13.962, 41.867]**. Label `acrobot_lookahead_established`. Dense height, not Gymnasium −1/step. Do not retune H=16, candidates, or reward from this sample. A later distinct question is lookahead versus frozen H=16 on a **new unused Acrobot confirmation holdout**. That proposal is not implemented and is not authorized here. Report `NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md`.
+
+## Consumed — Acrobot lookahead versus frozen H=16, one-run remaining 0
+
+Protocol `docs/NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md` on `cursor/acrobot-lookahead-h16` from `5d2e616`. Config SHA256 `3978b7e309f41339a56a2e6993bc48344f2bbf211baf88d3e86ce994ffa7122a`. Protocol SHA256 `e2b83a21e89292e0aec5112c5456f56f82eb0d14d2b9548389ef8e79ed432567`. Primary completed: lookahead minus H=16 **27.914 [13.962, 41.867]**, label `acrobot_lookahead_established`. Holdout hash `911ea726b6ed2111`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md`.
+
 ## Current decision — lock Acrobot lookahead versus H=16; do not collect yet
 
 CartPole lookahead versus H=3 **14.000 [−4.621, 32.621]** stays closed. Do not retune CartPole H=3. The locked next test uses a new family without a +1 survival ceiling: dense-height Acrobot, H=16 × 16, holdout `911ea726b6ed2111`. Collection is **not** authorized. Report `NEXUS_ACROBOT_LOOKAHEAD_PREP.md`.

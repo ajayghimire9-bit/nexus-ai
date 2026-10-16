@@ -1,4 +1,4 @@
-"""Acrobot lookahead protocol locks. One-run allocation is live and unconsumed."""
+"""Acrobot lookahead protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -35,14 +35,20 @@ def test_dense_height_replaces_gym_minus_one_and_does_not_goal_terminate():
     env.close()
 
 
-def test_one_run_allocation_is_live_and_has_no_output():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['pendulum_weight_transfer'] is False and record['cartpole_h3'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
     usage=json.loads(Path(record['one_run_usage_record']).read_text())
-    assert float(usage['remaining_session_allowance_s'])==300.0
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    assert float(usage['remaining_session_allowance_s'])==0.0
+    assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='acrobot_lookahead_established'
 
 
 def test_primary_labels_and_parents():
@@ -58,3 +64,8 @@ def test_primary_labels_and_parents():
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='e2b83a21e89292e0aec5112c5456f56f82eb0d14d2b9548389ef8e79ed432567'
     seq=m.shared_candidates(22100000)
     assert seq.shape==(16,16) and int(seq.max())<=2
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='acrobot_lookahead_established'
+    assert audit['pendulum_weights'] is False and audit['cartpole_h3'] is False
+    assert audit['holdout_split_hash']=='911ea726b6ed2111'

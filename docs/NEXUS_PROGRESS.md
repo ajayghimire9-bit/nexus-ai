@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — Acrobot lookahead versus frozen H=16 established on development
+
+The 60-episode development grid completed under the 300 s / 24,800 / 6,162,000 cap. Lookahead minus H=16 **27.914 [13.962, 41.867]**. Label `acrobot_lookahead_established`. Execute 27.797 s, exact resource counts, 200 frozen-recipe epochs. Independent audit passed. Dense height, not Gymnasium −1/step. CartPole H=3 unused. Pendulum FiLM unused. Report `NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — Acrobot lookahead versus H=16 protocol locked, collection unauthorized
 
 CartPole lookahead versus H=3 stays closed on three draws. New unused Acrobot physics `911ea726b6ed2111`. Dense height reward, H=16 × 16 residual recipe, 300 s / 24,800 / 6,162,000, `authorized: false`. CartPole H=3 unused. Pendulum FiLM unused. Reports `NEXUS_ACROBOT_LOOKAHEAD_PREP.md` and `NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md`.
