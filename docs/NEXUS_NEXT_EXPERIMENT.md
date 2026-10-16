@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — harder CartPole lookahead not established; still near ceiling; do not retune H=3
+
+The authorized harder-physics screen completed: lookahead minus H=3 **4.600 [−7.481, 16.681]**. Label `cartpole_hard_lookahead_not_established`. H=3 was already at 500 on 8/10 seed means. Do not retune H=3 and do not resample the same published box. A later distinct question is an **H=3-only saturation diagnostic** on unused stricter-corner CartPole physics, with lookahead withheld until H=3 is unsaturated. That proposal is not implemented and is not authorized here. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_RESULTS.md`.
+
+## Consumed — harder CartPole lookahead versus frozen H=3, one-run remaining 0
+
+Protocol `docs/NEXUS_CARTPOLE_LOOKAHEAD_HARD_PROTOCOL.md` on `cursor/cartpole-lookahead-hard-h3` from `82d8551`. Config SHA256 `0515452c75a45d94d610a21ddea91727c499b00a4aeae3d72f56f322a65f954c`. Protocol SHA256 `c2bb743a003544ee1ef6a310ea4c77633fa6f9b42db428a5cfe4a0b40cb26f6e`. Primary completed: lookahead minus H=3 **4.600 [−7.481, 16.681]**, label `cartpole_hard_lookahead_not_established`. Holdout hash `9a60e48299b738ef`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_RESULTS.md`.
+
 ## Current decision — lock harder unused CartPole lookahead versus H=3; do not collect yet
 
 The ceilinged screen **4.000 [−5.048, 13.048]** stays closed. Do not retune H=3. The locked next test uses the same frozen planner on unused hard physics `9a60e48299b738ef` in the published V0.7.3 off-ceiling region. Collection is **not** authorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_PREP.md`.

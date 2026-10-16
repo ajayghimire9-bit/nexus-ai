@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — harder CartPole lookahead versus frozen H=3 not established, 2026-10-16
+
+The locked harder-physics screen completed. Lookahead minus H=3 **4.600 [−7.481, 16.681]**. Label `cartpole_hard_lookahead_not_established`. H=3 already returned 500 on 8/10 seed means and 28/30 episodes. Cost 12.275 s execute / 13.344 s process, 42,418 real steps, 2,165,564 imagined, 200 frozen-recipe epochs. H=3 not retuned. Closed V0.7.3 confirmation unused. Do not resample the same box to retune H=3. Not learning-to-learn or AGI. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — harder CartPole lookahead versus H=3 locked unauthorized, 2026-10-16
 
 Preparation from `82d8551` on `cursor/cartpole-lookahead-hard-h3`. H=3 was not retuned. Hard region is the published V0.7.3 off-ceiling corner; closed confirmation tuples unused. Holdout `9a60e48299b738ef`. Frozen V0.7.2 recipe, 300 s / 42,800 / 2,190,000. **Authorized: false.** Not a result. Reports `NEXUS_CARTPOLE_LOOKAHEAD_HARD_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_HARD_PROTOCOL.md`. Earlier entries remain history.
