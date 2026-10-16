@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — source-trained first-action Q, not yet executed
+
+Protocol `docs/NEXUS_FIRST_ACTION_VALUE_PROTOCOL.md` and config `configs/first_action_value.yaml` are committed on `cursor/first-action-value-learning`. No source labels, fits or development returns have been collected. The primary screen is aligned-Q minus H=16 first-action 64-return, mean ≥ 1 with decoder-level lower bound > 0. Frozen world models, encoders, sequence-value V, H=16 and 16 candidates stay unchanged. Budget 150 s, 29,880 real steps, 7,741,440 imagined transitions, inside the standing grant and the conservative 174.408 s leftover. Do not treat this heading as a result.
+
 ## Current proposal — source-only replanning-aligned value labels
 
 The offline alignment screen passed: the best recorded64-return sequence's first action incurs **20.254 [11.382,29.127]** regret under immediate zero-context replanning. All60 states cover all three actions, but this does not rule out limited suffix search or establish a cause of the old full-episode loss. No new controller improvement was demonstrated. See `NEXUS_ACTION_VALUE_ALIGNMENT_RESULTS.md`.
