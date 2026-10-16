@@ -1,5 +1,8 @@
-"""MountainCar compute-matched protocol locks. The one-run allocation is armed."""
+"""MountainCar compute-matched protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
+import json
+from pathlib import Path
+import pytest
 from nexus.tasks.mountaincar_family import (
     mountaincar_lookahead_confirmation,
     mountaincar_lookahead_development,
@@ -41,14 +44,20 @@ def test_forty_eight_candidates_are_a_prefix_of_frozen_sixteen():
     assert counts['training_updates']==0
 
 
-def test_one_run_allocation_is_armed_and_output_is_absent():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['retune_from_confirmation'] is False
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==0.0
+    assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='mountaincar_compute_matched_lookahead_established'
 
 
 def test_primary_labels_require_the_25_point_episode_margin():
@@ -73,3 +82,9 @@ def test_frozen_checkpoints_and_lookahead_identity():
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='6f5be2802e132bc944e8c97437b0e60a22ebb304b6fdb2a54445fdc3fe75b076'
     assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
     assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='mountaincar_compute_matched_lookahead_established'
+    assert audit['pendulum_weights'] is False and audit['cartpole_h3'] is False
+    assert audit['holdout_split_hash']=='2a5cc4979642cc2a'
+    assert audit['retune_from_confirmation'] is False

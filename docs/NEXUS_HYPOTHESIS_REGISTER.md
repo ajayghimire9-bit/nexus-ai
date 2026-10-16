@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-compute-matched-h16-on-mountaincar passed on development
+
+The complete development screen passed the 25-point rule: lookahead minus 48-candidate H=16 **54.649 [26.611, 82.686]**. Label `mountaincar_compute_matched_lookahead_established`. Extra search did not remove the remainder on these physics. This does not reverse the closed Acrobot compute-matched miss. Do not retune from this sample. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md`.
+
 ## Latest — H-lookahead-beats-compute-matched-h16-on-mountaincar is implemented, not yet tested
 
 MountainCar lookahead transferred versus 16-candidate H=16. That comparison used 771 versus 256 imagined states per step. This protocol tests the same frozen lookahead against 48-candidate H=16 (768 imagined/step) on development physics with fresh seeds, margin 25. Confirmation unused. Collection unauthorized. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PROTOCOL.md`.

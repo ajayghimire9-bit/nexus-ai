@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — MountainCar lookahead versus compute-matched H=16 established
+
+The 60-episode grid completed under the 180 s / 12,000 / 9,234,000 cap. Lookahead minus 48-candidate H=16 **54.649 [26.611, 82.686]**. Label `mountaincar_compute_matched_lookahead_established`. Execute 29.071 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. 16-candidate successor not retuned. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — MountainCar lookahead versus compute-matched H=16 protocol locked, collection unauthorized
 
 Confirmation stays closed and is not used to retune. Frozen development checkpoints are read-only. Matched H=16 uses 48 candidates versus frozen 16-candidate lookahead. Fresh development episode seeds. 180 s / 12,000 / 9,234,000, `authorized: false`. Reports `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PREP.md` and `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PROTOCOL.md`.

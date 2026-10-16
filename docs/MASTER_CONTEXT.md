@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MountainCar lookahead versus compute-matched H=16 established, 2026-10-16
+
+The locked development screen completed. Lookahead minus 48-candidate H=16 dense valley-height return **54.649 [26.611, 82.686]**. Label `mountaincar_compute_matched_lookahead_established`. Cost 29.071 s execute / 29.85 s process, 12,000 real steps, 9,234,000 imagined, 0 updates. Frozen checkpoints. Confirmation unused. Do not retune from this sample. Does not reverse the Acrobot compute-matched miss. Not learning-to-learn or AGI. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — MountainCar lookahead versus compute-matched H=16 locked unauthorized, 2026-10-16
 
 Preparation from `41fb0c5` on `cursor/mountaincar-compute-matched-h16`. Frozen development checkpoints reused read-only. Confirmation physics unused. Matched H=16 uses 48 candidates (768 imagined/step); lookahead stays 16-candidate successor (771/step). Fresh seeds `27000000+`. **180 s / 12,000 / 9,234,000 / 0 updates.** **Authorized: false.** Not a result. Reports `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PREP.md` and `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PROTOCOL.md`. Earlier entries remain history.
