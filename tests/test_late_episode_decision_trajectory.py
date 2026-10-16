@@ -60,12 +60,12 @@ def test_scoring_excludes_returns_and_three_action_forks_are_off():
     assert int(cfg['episode_steps'])==PENDULUM_MAX_STEPS==200
 
 
-def test_budget_seeds_unauthorized_and_parents_frozen():
+def test_budget_seeds_one_run_authorization_and_parents_frozen():
     cfg=m.load_config();record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
+    assert record['authorized'] is True and record['runs']==1
+    assert record['authority_commit']=='2f81d4130a954cec67f22ce579c9115b228ffcdd'
     assert record['time_cap_s']==90 and record['training_authorized'] is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(cfg)
+    m.require_allocation(cfg)
     assert m.OUTPUT.exists() is False
     recede_cfg=yaml.safe_load(recede.CONFIG.read_text());same_cfg=yaml.safe_load(same.CONFIG.read_text())
     horizon_cfg=yaml.safe_load(horizon.CONFIG.read_text());dawm_cfg=yaml.safe_load(dawm.CONFIG.read_text())
@@ -83,7 +83,7 @@ def test_budget_seeds_unauthorized_and_parents_frozen():
 def test_offline_audit_zero_new_steps():
     report=m.offline_audit()
     assert report['new_environment_steps']==0 and report['new_imagined_transitions']==0
-    assert report['authorized'] is False and report['three_action_forks'] is False
+    assert report['three_action_forks'] is False
     assert report['confirmation_used'] is False
     assert Path('docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_AUDIT.md').is_file()
     assert Path('docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md').is_file()
