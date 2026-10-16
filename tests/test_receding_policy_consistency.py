@@ -65,14 +65,15 @@ def test_summarize_uses_ten_decoder_units_and_equal_visitors():
     assert summary['groups']['pooled']['gain_commit_fresh']['interval']['n']==10
 
 
-def test_budget_seeds_unauthorized_and_score_correction_closed():
+def test_budget_seeds_one_run_authorization_and_score_correction_closed():
     cfg=m.load_config();counts=m.budget(cfg)
     assert counts['commit']+counts['recede_same']+counts['recede_fresh']+counts['common_zero']==8960
     assert counts['model_states']==1515520
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval'):
-        m.require_allocation(cfg)
+    assert record['authorized'] is True and record['runs']==1
+    assert record['authority_commit']=='7b4637d423e64aac29305bf188f6d35b1d058563'
+    assert record['time_cap_s']==120 and record['env_cap']==8960 and record['model_cap']==1515520
+    m.require_allocation(cfg)
     blocked=set().union(*acq.seed_groups(yaml.safe_load(acq.CONFIG.read_text())))
     used=set().union(*m.seed_groups(cfg))
     assert not (used & blocked) and min(used)>=7000000
