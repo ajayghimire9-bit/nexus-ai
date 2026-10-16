@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the lookahead-versus-H=16 transfer screen in `docs/NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`. Lookahead minus H=16 200-step holdout return **98.608 [43.258, 153.957]** is labeled `lookahead_transfer_established`. Development lookahead minus H=16 **155.647 [109.825, 201.469]** stays labeled `bellman_backup_improves_episode_return`. Student-versus-zero includes 0. Successor value remained open-loop H=16 from s'. Score-correction remains closed. That is not learning-to-learn, cross-family generalization, or AGI. Do not retune from confirmation. Preserve historical artifacts and closed splits. The next distinct question is replication on a different environment family. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the CartPole lookahead-versus-H=3 preparation in `docs/NEXUS_CARTPOLE_LOOKAHEAD_PREP.md`. Pendulum lookahead minus H=16 holdout return **98.608 [43.258, 153.957]** stays labeled `lookahead_transfer_established`. CartPole keeps frozen H=3 × 16; Pendulum weights are not loaded. Collection is locked and unauthorized on unused CartPole physics (`4bc1f5866ac6c753`). That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

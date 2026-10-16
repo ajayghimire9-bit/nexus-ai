@@ -1,0 +1,36 @@
+starting_sha: 98001817019102aadf20d5c0e60a23eeb341402b
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 2
+candidate_horizon: 3
+n_candidates: 16
+max_episode_steps: 500
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 300
+env_cap: 42800
+model_cap: 2190000
+training_updates: 200
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+objective: both
+enforce_time_budget: false
+compute_matched_control: false
+pendulum_weights: false
+student_zero_context: false
+holdout_rule: cartpole_lookahead_dev_v1
+holdout_split_hash: 4bc1f5866ac6c753
+eval_task_ids: [cartpole_look_dev0, cartpole_look_dev1, cartpole_look_dev2]
+eval_physics: [[8.5, 0.39, 0.19], [11.6, 0.9, 0.07], [7.9, 0.88, 0.29]]
+reset_base: 18000000
+step_seed_base: 18100000
+train_collect_base: 160000
+val_collect_base: 165000
+parents:
+  configs/v073_planning.yaml: 6b5f1748c65627bba60360493b20586882d6c76d11c0616501bae44bba5b6959
+  artifacts/v073_world_model.json: 93718a548d84db9629b8f9d7bf35c8e63e7000be9fb61ab4a90fcf44283f2066
+  artifacts/lookahead_transfer_confirmation.json: 226e649ea34b8b7ada752143e797d43853076863a76a123f8f88de6d75298019
+  docs/NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md: 5c2e0d7300e497c65c0564990aa2a86ab4d08e79979c40d8ce7d2ea51735c942

@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock CartPole lookahead versus frozen H=3; do not collect yet
+
+Pendulum lookahead minus H=16 **98.608 [43.258, 153.957]** stays closed. Do not copy H=16 onto CartPole. The locked next test uses CartPole’s frozen H=3 × 16 planner and the V0.7.2 residual recipe on unused physics `4bc1f5866ac6c753`. Collection is **not** authorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_PREP.md`.
+
+## Locked — CartPole lookahead versus frozen H=3, collection unauthorized
+
+Protocol `docs/NEXUS_CARTPOLE_LOOKAHEAD_PROTOCOL.md` on `cursor/cartpole-lookahead-h3` from `9800181`. Config SHA256 `de1113d814ef506eba7e477fc314c48a9d289a497bab018a02cd1acaa6673ece`. Protocol SHA256 `6bbd5caa29fc4156adfb13f72d00466d0d640812b62b7ca4215ddc8e0335c112`. Primary: lookahead minus H=3 episode return, ten training seeds, mean ≥ 25 and lower bound > 0. Budget **300 s**, **42,800** real steps, **2,190,000** imagined transitions, frozen-recipe training only. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — Pendulum lookahead transfer is established; do not retune
 
 The authorized holdout screen completed: lookahead minus frozen H=16 **98.608 [43.258, 153.957]**. Label `lookahead_transfer_established`. Student-versus-zero includes 0. Do not retune the lookahead backup, candidates, horizon, or reward from this confirmation sample. The next distinct question is whether the same frozen package beats H=16 on a **different environment family**. That proposal is not implemented and is not authorized here. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`.

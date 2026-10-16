@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — CartPole lookahead versus frozen H=3 locked unauthorized, 2026-10-16
+
+Preparation from `9800181` on `cursor/cartpole-lookahead-h3`. Pendulum FiLM weights are not loaded. CartPole keeps frozen H=3 × 16, not Pendulum H=16. New development physics `4bc1f5866ac6c753`. Frozen V0.7.2 residual recipe, margin 25, 300 s / 42,800 / 2,190,000 / 200 frozen-recipe epochs. **Authorized: false.** Not a result, not learning-to-learn or AGI. Reports `NEXUS_CARTPOLE_LOOKAHEAD_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — frozen lookahead transferred versus H=16 on a new Pendulum holdout, 2026-10-16
 
 The locked 120-episode transfer screen completed. Lookahead minus H=16 200-step return **98.608 [43.258, 153.957]**. Label `lookahead_transfer_established`. Successor value remained frozen open-loop H=16 from s'. Student-minus-zero includes 0 on both arms and cannot be inferred from this transfer. Cost 61.312 s execute / 62.495 s process, 27,840 real steps, 12,324,000 imagined, 0 updates. Checkpoints 120/0/0. Historically closed confirmation physics unused. Not learning-to-learn, not cross-family generalization, not AGI. Do not retune from this confirmation. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`. Earlier entries remain history.

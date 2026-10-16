@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — CartPole lookahead versus frozen H=3 protocol locked, collection unauthorized
+
+Pendulum transfer stays closed and is not used to retune CartPole H=3. New unused CartPole development physics `4bc1f5866ac6c753`. Frozen V0.7.2 residual recipe, 300 s / 42,800 / 2,190,000, `authorized: false`. Reports `NEXUS_CARTPOLE_LOOKAHEAD_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — frozen lookahead beat H=16 on a new Pendulum holdout
 
 The 120-episode transfer grid completed under the 180 s / 27,840 / 12,324,000 cap. Lookahead minus H=16 **98.608 [43.258, 153.957]**. Label `lookahead_transfer_established`. Execute 61.312 s, process 62.495 s, exact resource counts, 0 updates. Independent audit passed. Frozen checkpoints 120/0/0. Student-versus-zero includes 0. Closed confirmation physics unused. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`. No architecture change, learning-to-learn or AGI. Do not retune from confirmation.
