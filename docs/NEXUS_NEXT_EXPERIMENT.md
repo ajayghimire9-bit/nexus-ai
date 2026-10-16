@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — decision-aware training is not justified from the source audit
+
+Source-only recomputation did not establish concentrated student H=16 score error on near-best candidates: **+0.577 [−0.233, +1.387]**. 16-step ranking is already strong. Closed ranking-versus-episode evidence already showed better one-shot ranking without general control. Do not train an action-ranking or value-aware world-model loss from this inventory. Report `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md`.
+
+## Locked — development near-best score-error diagnostic, collection unauthorized
+
+Protocol `docs/NEXUS_DECISION_AWARE_WORLD_MODEL_PROTOCOL.md` on `cursor/decision-aware-world-model-diagnostic` from `9cf3d19`. Primary: student near-best minus dominated H=16 absolute score error on three development physics, mean ≥ 1 and decoder-level lower bound > 0. 200-step return is a separate secondary. Budget **90 s total process**, **19,680** real steps, **3,164,160** imagined transitions, 30 decoder×task states. Collection is **not** authorized. The exhausted 3600 s ledger remaining 47.766 s is below this cap and is not reused. Audit: `docs/NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md`. Do not treat this heading as a result.
+
 ## Current decision — remaining-horizon alignment is boundary-specific
 
 The authorized development screen completed: 200-step remaining-horizon minus H=16 **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. Close general remaining-horizon alignment as a controller change. A later distinct question would address candidate quality, model bias, or receding search itself—not further shortening of H on these episodes. That proposal is not implemented and is not authorized here. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`.

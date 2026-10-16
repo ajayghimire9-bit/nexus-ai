@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — decision-aware diagnostic locked from a source-only audit, collection unauthorized
+
+Existing artifacts were inventoried with zero new steps. Source H1 (near-best minus dominated H=16 score error) was not established: **+0.577 [−0.233, +1.387]**. Student 16-step ranking is already strong. Decision-aware training is not justified. Development protocol locked, `authorized: false`, 90 s / 19,680 / 3,164,160. Exhausted standing ledger unmodified. Reports `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md` and `NEXUS_DECISION_AWARE_WORLD_MODEL_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — horizon-alignment complete, full-episode gain not established
 
 The 60-cell development grid completed under the 180 s / 25,920 / 6,405,120 cap. Prefix identity held. Full-episode remaining-horizon minus H=16 **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. Short diagnostic **+7.425 [+4.349, +10.501]** is not a controller pass. Execute 32.438 s, process 32.480 s. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`. No architecture change, learning-to-learn or AGI.

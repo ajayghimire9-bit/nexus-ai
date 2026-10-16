@@ -1,0 +1,31 @@
+starting_sha: 9cf3d198060d2bb2df7f13a4dfa1ddb2403ba81a
+decoders: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+students: [0, 1, 2, 3, 4]
+eval_tasks: 3
+horizon: 16
+n_candidates: 16
+n_actions: 3
+episode_steps: 200
+phase: 0
+near_best_tau: 1.0
+practical_margin: 1.0
+time_cap_s: 90
+env_cap: 19680
+model_cap: 3164160
+reset_base: 10000000
+candidate_base: 10100000
+episode_student_base: 10200000
+episode_zero_base: 10300000
+eval_task_ids: [pendulum_ctx_dev0, pendulum_ctx_dev1, pendulum_ctx_dev2]
+eval_physics: [[6.0, 1.0, 1.0], [10.0, 2.0, 1.0], [10.0, 1.0, 1.55]]
+parents:
+  artifacts/horizon_alignment.json: 910ada43a1c0abc43ca2898bafb7e7678654a21c0e8e7806d19508a3dbd2032e
+  configs/horizon_alignment.yaml: dc199c8241135420ad195b51fbafc41db235ef512a6dfaece45e2228b730d3f5
+  docs/NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md: 8a31b4e9690ed7e863fff31ae3e696e808950e70b5143d89f79b1b9e1050e71c
+  docs/NEXUS_HORIZON_ALIGNMENT_RESULTS.md: 05ba5c5ff21c7c2563c409e98e3cb344d615f4c155612102a10e9e46dad70067
+  artifacts/planning_value.json: 597faebffee7354141a512ac3c970e37d11bf1ee0ed3feed074a6a2d82345781
+  artifacts/prediction_control_gap.json: f1f36506d3c64086898b6f462f9915a28037784dee52f47bce5c19b91bfe390a
+  artifacts/first_action_value.json: 1ea6c5e28930b1e6670a4894862af23f2f701f0ebd1d0d4ebeebefcd43e3828a
+  artifacts/visited_commitment.json: 2ecf9ab383aa592a5d92f72eb8347c3711badc84eda08a43b3173392d35315f2
+  artifacts/research_session_first_action_value_usage.json: c14f16e667d1e52d3ebddff1412498f5db75832c25a74b0579bc8bcf98750462
+  artifacts/research_session_horizon_alignment_usage.json: 43c4b2fe8abc606558e1510861009129bd454f1ab19c862e7407747c80e1898c

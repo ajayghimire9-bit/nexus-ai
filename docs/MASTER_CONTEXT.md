@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — decision-aware world-model diagnostic locked, not collected, 2026-10-16
+
+Source-only audit of saved trajectories found strong 16-step ranking (student Spearman **0.923 [0.874, 0.973]**, regret **0.336 [0.106, 0.566]**) and did **not** establish larger student score error on near-best versus dominated candidates (**+0.577 [−0.233, +1.387]**). Label `source_h1_not_established`. Decision-aware training is not justified. A development near-best contrast is locked and **unauthorized** (90 s / 19,680 / 3,164,160). Exhausted 3600 s ledger unmodified. Not control improvement, learning-to-learn or AGI. Reports `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md` and `NEXUS_DECISION_AWARE_WORLD_MODEL_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — horizon-alignment diagnostic, 2026-10-16
 
 The locked 60-cell development screen completed with prefix identity intact. Remaining-horizon minus fixed H=16 **200-step** return: **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. The 16-step diagnostic **+7.425 [+4.349, +10.501]** cannot upgrade the primary; all episode difference sat in the last 15 steps. Cost 32.438 s execute / 32.480 s process, 25,920 real steps, 6,405,120 imagined. Checkpoints 120/0/0. Close general horizon alignment. Not control improvement, learning-to-learn or AGI. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`. Earlier entries remain history.

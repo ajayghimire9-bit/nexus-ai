@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-decision-relevant-score-error was not established on source
+
+Independent recomputation of frozen `planning_value` prefixes and scores found student near-best minus dominated H=16 absolute error **+0.577 [−0.233, +1.387]**, n=10 decoder units, τ=1. Label `source_h1_not_established`. 16-step ranking is already strong (Spearman **0.923 [0.874, 0.973]**). Closed prediction-control-gap fresh ranking gains with episode loss stay closed and already reject “better prediction, worse ranking” on that split. Decision-aware training is not justified. A development diagnostic is locked and unauthorized. Report `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md`.
+
+## Latest — H-decision-relevant-score-error is implemented, not yet tested
+
+The remaining open measurement is whether development physics with fresh seeds show concentrated H=16 score error on near-best candidates. Primary: student near-best minus dominated absolute score error, mean ≥ 1 and lower bound > 0. Episode return is a separate secondary and cannot pass the screen. Collection unauthorized. Report `NEXUS_DECISION_AWARE_WORLD_MODEL_PROTOCOL.md`.
+
 ## Latest — H-remaining-horizon-beats-fixed-H16 was not established on episodes
 
 The complete development screen failed the 25-point full-episode rule: remaining-horizon minus fixed H=16 **+0.523 [−0.077, +1.123]**. Label `boundary_specific_alignment`. The 16-step diagnostic passed its own margin and all episode difference was in the last 15 steps. Close general horizon alignment rather than retuning. Report `NEXUS_HORIZON_ALIGNMENT_RESULTS.md`.
