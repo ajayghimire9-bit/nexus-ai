@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest measured development result — 2026-10-16
+
+The same-state commitment diagnostic is now complete (`docs/NEXUS_COMMITMENT_VALUE_RESULTS.md`). Across ten independently pretrained decoders, the frozen correction's gain16-minus-gain1 is **+39.366 [26.247,52.484]**; full-sequence gain **+36.710 [26.599,46.821]**; first-action gain **−2.656 [−7.215,+1.904]**, inconclusive. The registered interaction-and-gain screen passed. This supports commitment sensitivity on six known-development initial states, not better full-episode control or an explanation of the closed fresh-physics loss. Corrected16-action return still averages below original one-action return. Zero-context correction also benefits from commitment, so learned context is not established as necessary for that effect. All weights/readouts remain frozen, all120 files verified;225.528seconds,59,136 real steps,14,883,840 imagined transitions, no fitting. One next proposal is late-visited-state replication of this interaction. No further simulation has run; historical preparation entries below are superseded where marked pending. The compact adaptive cross-environment vision remains separate from these narrow measurements.
+
 Persistent Project Context for Any AI Assistant
 
 You are my Chief AI Research Scientist, AGI Research Architect, Reinforcement Learning Engineer, and Technical Co-Founder for a long-term project called NEXUS AI.

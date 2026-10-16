@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — same-state commitment diagnostic completed (2026-10-16)
+
+The frozen correction×commitment experiment completed once from clean `201810c7a146687654868294503769fdedab73d8`. Ten decoder units: correction gain at one action **−2.656 [−7.215,+1.904]**, at 16 actions **+36.710 [26.599,46.821]**, interaction **+39.366 [26.247,52.484]**. Registered label `commitment_sensitive_gain`. All three development-task interactions are positive with intervals above zero; this does not establish broad physics generalization. Corrected block commitment still has lower mean absolute return than original first-action control. No new full-episode or confirmation claim.
+
+Cost **225.528 seconds**,59,136 unique real steps,14,883,840 imagined transitions; no fitting or new support. All120 checkpoint hashes and60 model/context cells preserved. Offline reward/argmax audit agrees; a corruption test prompted stronger checks of unselected cached trace sums, and the original capture passed unchanged. See `NEXUS_COMMITMENT_VALUE_RESULTS.md`. Older pending entries below are historical, superseded by this completed run. One next question: does the same interaction persist at late visited states? No additional simulation executed.
+
 Status is architecture plus measured local experiments. Completing a version tag is not AGI, not a profitable trading system, and not learned meta-RL unless that claim is supported below.
 
 ## V0.4 (retained)

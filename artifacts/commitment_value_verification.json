@@ -1,0 +1,31 @@
+{
+  "experiment": "commitment_value",
+  "raw_artifact_sha256": "1844bf2a97316cf8a2c5e4a00ef145c03c88bb693632c5fc3b13181865975623",
+  "execution_sha": "201810c7a146687654868294503769fdedab73d8",
+  "before_collection": {
+    "focused_tests_passed": 37,
+    "focused_wall_s": 9.41,
+    "checkpoint_files_verified": 120,
+    "model_context_groups_verified": 30
+  },
+  "after_collection": {
+    "focused_tests_passed": 41,
+    "focused_wall_s": 14.67,
+    "full_tests_passed": 608,
+    "full_tests_deselected": 1,
+    "full_wall_s": 146.26,
+    "explicit_checkpoint_audit": {"verified": 120, "missing": 0, "mismatched": 0},
+    "independent_reward_and_selection_arithmetic_passed": true,
+    "svg_xml_and_raw_audit_hash_linkage_passed": true
+  },
+  "maintenance_failures_preserved_in_report": [
+    "Initial plot generation lacked matplotlib; replaced with dependency-free SVG, without resimulation.",
+    "A corruption test found an unselected trace reward could change without affecting selected metrics. Added checks of all saved early/late/total trace sums in the offline audit. Actual capture unchanged.",
+    "The first focused postcollection suite had 40 passes and one audit-corruption failure; first full attempt had 607 passes and the same failure. Final reruns passed.",
+    "One restricted pytest invocation could not create temporary files and did not execute tests; final tests used narrowly scoped required temporary-file access."
+  ],
+  "experiment_runs": 1,
+  "simulation_retries": 0,
+  "new_environment_steps_from_offline_audit": 0,
+  "external_scientific_replication": false
+}

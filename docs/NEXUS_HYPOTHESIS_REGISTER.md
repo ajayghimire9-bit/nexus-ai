@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-commitment, completed development diagnostic
+
+The same-state experiment supports sensitivity to commitment length: corrected-minus-original return gain16 minus gain1 is **+39.366 [26.247,52.484]** across ten independent decoders. Gain16 **+36.710 [26.599,46.821]**; gain1 **−2.656 [−7.215,+1.904]**. Both registered screen conditions passed. This distinguishes a commitment interaction from the earlier unmatched-state comparison. All three task-level interactions are positive, but only two initial states per known development physics were sampled. Zero-context correction also has a positive interaction, so student context is not established as necessary. Corrected sequence commitment remains descriptively below original first-action return. Full-episode usefulness and late-state persistence remain unknown. No model training, confirmation reuse, or control-generality claim. Raw artifact `artifacts/commitment_value.json`, SHA1844bf2a97316cf8a2c5e4a00ef145c03c88bb693632c5fc3b13181865975623; report `NEXUS_COMMITMENT_VALUE_RESULTS.md`.
+
 Evidence is from committed artifacts unless marked *reproduced this checkpoint*. CIs are seed-clustered Student-t 95% where that protocol existed. Completing a version tag is not AGI.
 
 | ID | Hypothesis | Support | Contradiction | Failure modes | Unresolved | Further work? |

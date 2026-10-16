@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — test late-state persistence, not a controller change
+
+The initial-state commitment interaction is now complete: **+39.366 [26.247,52.484]**, with positive full-sequence correction gain and inconclusive first-action gain. See `NEXUS_COMMITMENT_VALUE_RESULTS.md`. The registered screen passed, but corrected sequence commitment still returned less on average than original one-action control. Do not deploy a commitment change from these results.
+
+The single next experiment should replicate the same frozen correction×commitment interaction at **late visited states**, weighting student-visitor and zero-visitor states equally within each of ten decoders. Keep the five scoring student seeds, all weights/readouts, H16/16 candidates and zero-context continuation unchanged. This directly tests state-distribution sensitivity rather than adding capacity or fitting on closed outcomes.
+
+Proposed minimal allocation: one phase-50 state per visitor/controller, decoder and each of the same three development tasks. A deterministic balanced student-visitor seed assignment must be preregistered, not selected by return; all five students still score every state. Sixty distinct decoder-specific states require15,360 prefix steps,46,080 block-tail steps,11,520 first-action steps, plus3,000 collection steps = **75,960 new real interactions**. Estimate5–7 CPU minutes, hard cap900seconds, no fitting. Finalize fresh seed sets, exact imagined counts, complete-grid tests and protocol before collecting anything. This is a proposal, not an executed or already finalized protocol. No further experiment launched this cycle. Earlier readiness/approval entries are preserved historical records.
+
 ## Current readiness — same-state commitment interaction implemented
 
 The commitment-length experiment is now implemented and tested on `codex/commitment-value-diagnostic`, from clean GitHub-matched c458803d820902e4d1eeb3c3208db1ce40fb50f7. Locked executable config and finalized protocol: `configs/commitment_value.yaml` and `docs/NEXUS_COMMITMENT_VALUE_PROTOCOL.md`. There are **no new registered outcomes**. The code enforces zero-context continuation in both arms, identical candidates/future RNG, cached interaction accounting, complete-grid validation and fresh exact-budget approval before environment access. Earlier proposal and results below are preserved history.
