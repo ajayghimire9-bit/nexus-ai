@@ -1,5 +1,19 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — strict episode implementation parity passed; integration gate met
+
+Registered validation rule passed: on 60 paired fresh 200-step Pendulum
+episodes (ten decoders, three development tasks, archived-student and zero
+contexts, coupled seeds), the recorded serial successor scorer and the opt-in
+batched scorer produced identical action sequences everywhere, Q within
+2e-4/2e-5 and rewards/returns equal within 1e-8 (deviation 0.0). Label
+`episode_implementation_parity_established_on_tested_grid`. This validates the
+implementation, not a control hypothesis: no return improvement is claimed and
+no closed screen is reopened. The evidence gate for controlled integration of
+the batched scorer into experiment runners is met; integration itself remains
+a separate engineering step with its own tests. Report
+`NEXUS_SUCCESSOR_EPISODE_PARITY_CLINE_RESULTS.md`.
+
 ## Latest — archived decision parity independently reproduced by fresh re-scoring
 
 The recorded engineering claim is now verified end-to-end by a second agent:

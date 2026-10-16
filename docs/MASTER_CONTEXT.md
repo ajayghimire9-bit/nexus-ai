@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — full-episode successor implementation parity established, 2026-10-16
+
+The locked 120-episode screen on `cline/successor-episode-parity` passed:
+**all 60 paired 200-step episodes produced identical action sequences**
+(serial vs batched successor scorer) on ten frozen decoders, three development
+tasks and archived-student/zero contexts, with coupled seeds. Max Q deviation
+7.204e-05 within the predeclared tolerance; **reward/return deviation 0.0**
+everywhere; fingerprints/checkpoints unchanged. 65.672 s / 24,000 fresh real
+steps / 816,000 model calls / 18,504,000 imagined, zero updates; one
+externally aborted no-result attempt disclosed. Label
+`episode_implementation_parity_established_on_tested_grid`. The evidence gate
+for controlled runner integration of the opt-in batched scorer is met; no
+runner was switched here. Not a control improvement, not learning-to-learn,
+not AGI. Reports `NEXUS_SUCCESSOR_EPISODE_PARITY_CLINE_PROTOCOL.md` and
+`NEXUS_SUCCESSOR_EPISODE_PARITY_CLINE_RESULTS.md`. Earlier entries remain
+history.
+
 ## Latest — archived successor parity independently reproduced, 2026-10-16
 
 A second-agent verification on `cline/successor-search-archived-parity` (from

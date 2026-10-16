@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — full-episode serial-versus-batched parity established on the tested grid
+
+The authorized one-run 120-episode screen completed under the 180 s / 24,000 /
+18,504,000 cap: **60/60 paired episodes identical actions**, zero divergences,
+max Q deviation 7.204e-05, reward/return deviation 0.0. 65.672 s wall, zero
+updates; one externally aborted no-result attempt disclosed in the report.
+Label `episode_implementation_parity_established_on_tested_grid`. The batched
+scorer stays opt-in; no default runner changed. Report
+`NEXUS_SUCCESSOR_EPISODE_PARITY_CLINE_RESULTS.md`. Controlled integration of
+the accelerated scorer into experiment runners is now evidence-supported and
+remains a separate engineering step. No learning-to-learn or AGI.
+
 ## Latest — independent Cline re-scoring reproduced the archived parity grid bitwise
 
 Second-agent verification of the recorded archived-parity result: offline
