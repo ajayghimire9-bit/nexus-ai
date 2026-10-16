@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-frozen-h3-unsaturated-on-stricter-cartpole is implemented, not yet tested
+
+Two CartPole lookahead screens could not measure lookahead because H=3 was at the TimeLimit. This diagnostic keeps frozen H=3, withholds lookahead, and tests six unused stricter-corner physics, margin 25 below 500. Collection unauthorized. Report `NEXUS_CARTPOLE_H3_SATURATION_PROTOCOL.md`.
+
 ## Latest — H-lookahead-beats-h3-on-hard-cartpole was not established (still near ceiling)
 
 The complete harder-physics screen failed the 25-point rule: lookahead minus H=3 **4.600 [−7.481, 16.681]**. Label `cartpole_hard_lookahead_not_established`. Frozen H=3 was already at the 500-step cap on 8/10 seed means and 28/30 episodes. Do not retune H=3 from this sample. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_RESULTS.md`.

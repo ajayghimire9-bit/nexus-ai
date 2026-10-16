@@ -103,6 +103,34 @@ def cartpole_lookahead_hard() -> tuple[TaskSpec, ...]:
     )
 
 
+def cartpole_h3_saturation() -> tuple[TaskSpec, ...]:
+    """Unused stricter-corner CartPole physics for an H=3-only saturation diagnostic.
+
+    Rule `cartpole_h3_saturation_v1` samples g∈[13,16], length∈[0.25,0.34],
+    masspole∈[0.20,0.30]. Lookahead is withheld. Closed confirmation tuples and
+    both ceilinged lookahead draws are rejected. H=3 is not retuned.
+    """
+    rows = (
+        (13.2, 0.27, 0.23),
+        (15.6, 0.25, 0.28),
+        (15.4, 0.27, 0.20),
+        (15.5, 0.30, 0.28),
+        (16.0, 0.34, 0.20),
+        (13.8, 0.31, 0.27),
+    )
+    return tuple(
+        _cartpole(
+            f"cartpole_h3_sat{i}",
+            "h3_saturation",
+            f"H=3 saturation diagnostic {g, length, masspole}.",
+            gravity=g,
+            length=length,
+            masspole=masspole,
+        )
+        for i, (g, length, masspole) in enumerate(rows)
+    )
+
+
 def source_tasks() -> tuple[TaskSpec, TaskSpec, TaskSpec]:
     return (
         CARTPOLE_FAMILY["cartpole_default"],

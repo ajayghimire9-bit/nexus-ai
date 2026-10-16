@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock an H=3-only CartPole saturation diagnostic; do not collect yet
+
+The harder lookahead screen **4.600 [−7.481, 16.681]** stays closed. Do not retune H=3 and do not run lookahead. The locked next test is an H=3-only saturation diagnostic on unused stricter-corner physics `a69833ab38a34ab4`. Collection is **not** authorized. Report `NEXUS_CARTPOLE_H3_SATURATION_PREP.md`.
+
+## Locked — CartPole H=3 saturation diagnostic, collection unauthorized
+
+Protocol `docs/NEXUS_CARTPOLE_H3_SATURATION_PROTOCOL.md` on `cursor/cartpole-h3-saturation-diagnostic` from `894f5ca`. Config SHA256 `55be38a5d77e76bb38a56c50d92e9522037855e8b500577de55c665af9291421`. Protocol SHA256 `657cf38d25c9d013b733e8ba6ef373845b487f980d19f6b815e3cf4ad96cd157`. Primary: seed-mean of (500 − H=3 return) across six tasks, mean ≥ 25 and lower bound > 0. Budget **300 s**, **42,800** real steps, **1,440,000** imagined. Lookahead withheld. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — harder CartPole lookahead not established; still near ceiling; do not retune H=3
 
 The authorized harder-physics screen completed: lookahead minus H=3 **4.600 [−7.481, 16.681]**. Label `cartpole_hard_lookahead_not_established`. H=3 was already at 500 on 8/10 seed means. Do not retune H=3 and do not resample the same published box. A later distinct question is an **H=3-only saturation diagnostic** on unused stricter-corner CartPole physics, with lookahead withheld until H=3 is unsaturated. That proposal is not implemented and is not authorized here. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_RESULTS.md`.

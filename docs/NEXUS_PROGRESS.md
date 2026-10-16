@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — CartPole H=3 saturation diagnostic protocol locked, collection unauthorized
+
+Both lookahead screens stay closed and are not used to retune H=3. New unused stricter-corner physics `a69833ab38a34ab4`. Lookahead withheld. Frozen recipe, 300 s / 42,800 / 1,440,000, `authorized: false`. Reports `NEXUS_CARTPOLE_H3_SATURATION_PREP.md` and `NEXUS_CARTPOLE_H3_SATURATION_PROTOCOL.md`.
+
 ## Latest — harder CartPole lookahead versus frozen H=3 not established (still near ceiling)
 
 The 60-episode harder-physics grid completed under the 300 s / 42,800 / 2,190,000 cap. Lookahead minus H=3 **4.600 [−7.481, 16.681]**. Label `cartpole_hard_lookahead_not_established`. H=3 already 500 on 8/10 seed means and 28/30 episodes. Execute 12.275 s, exact resource counts under cap, 200 frozen-recipe epochs. Independent audit passed. H=3 not retuned. Closed confirmation unused. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_RESULTS.md`. Do not retune H=3. No learning-to-learn or AGI.
