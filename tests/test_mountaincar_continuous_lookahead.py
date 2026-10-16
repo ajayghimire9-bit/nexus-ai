@@ -59,14 +59,14 @@ def test_injected_gravity_matches_gym_at_default_and_changes_when_raised():
     assert not np.allclose(np.asarray(alt,dtype=np.float32),np.asarray(gym_nxt,dtype=np.float32),atol=1e-6)
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_is_armed_and_output_is_absent():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['mountaincar_copy'] is False and record['cartpole_h3'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.execute()
 
 
 def test_primary_labels_and_parents():
@@ -78,10 +78,7 @@ def test_primary_labels_and_parents():
     assert cfg['mountaincar_copy'] is False and cfg['pendulum_weights'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
-    report=m.prep()
-    assert report['authorized'] is False
-    assert report['eligibility']['reused_discrete_mountaincar'] is False
-    assert sha(m.CONFIG)==m.LOCKED_CONFIG
-    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    assert sha(m.CONFIG)==m.LOCKED_CONFIG=='4ea518200f94cdd4f5994baa943afd1ee6dcf688701264d86b29614ff6eae02c'
+    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='9c998dab8030e2fd7605c48efcca4fb26a05f4f27245b09faff1153b69be5b23'
     assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
     assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
