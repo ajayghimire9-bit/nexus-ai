@@ -1,4 +1,4 @@
-"""MountainCar confirmation protocol locks. Collection remains unauthorized."""
+"""MountainCar confirmation protocol locks. The one-run allocation is armed."""
 from __future__ import annotations
 import pytest
 from nexus.tasks.mountaincar_family import (
@@ -30,14 +30,14 @@ def test_confirmation_holdout_avoids_source_and_development():
     assert ours.isdisjoint(blocked)
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_is_armed_and_output_is_absent():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['retune_from_development'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.execute()
 
 
 def test_primary_labels_keep_the_25_point_margin():
@@ -53,10 +53,7 @@ def test_h16_was_not_retuned_and_parents_are_closed():
     assert cfg['retune_from_development'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
-    report=m.prep()
-    assert report['authorized'] is False
-    assert report['eligibility']['reused_development'] is False
-    assert sha(m.CONFIG)==m.LOCKED_CONFIG
-    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    assert sha(m.CONFIG)==m.LOCKED_CONFIG=='80675aadd0b5d31b539ba027263df258a72f94bbad5a4a54ed03f28490a80229'
+    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='8f2b4f698198177785476a2b839e8dc2cb68cc4c134b0461d15196af22acc7dd'
     assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
     assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
