@@ -1,7 +1,8 @@
-"""H=3 saturation diagnostic protocol locks. One-run allocation is live and unconsumed."""
+"""H=3 saturation diagnostic protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
 import json
 from pathlib import Path
+import pytest
 from nexus.tasks.cartpole_family import (
     cartpole_h3_saturation,
     cartpole_lookahead_development,
@@ -31,14 +32,20 @@ def test_saturation_holdout_is_stricter_and_avoids_closed_splits():
     assert cfg['eval_tasks']==6
 
 
-def test_one_run_allocation_is_live_and_has_no_output():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['lookahead_authorized'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
     usage=json.loads(Path(record['one_run_usage_record']).read_text())
-    assert float(usage['remaining_session_allowance_s'])==300.0
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    assert float(usage['remaining_session_allowance_s'])==0.0
+    assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='cartpole_h3_unsaturated'
 
 
 def test_primary_labels_keep_the_25_point_gap_from_ceiling():
@@ -56,3 +63,9 @@ def test_h3_was_not_retuned_lookahead_is_withheld_and_parents_are_closed():
         assert sha(path)==digest
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='55be38a5d77e76bb38a56c50d92e9522037855e8b500577de55c665af9291421'
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='657cf38d25c9d013b733e8ba6ef373845b487f980d19f6b815e3cf4ad96cd157'
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='cartpole_h3_unsaturated'
+    assert audit['lookahead_run'] is False
+    assert audit['retuned_h3'] is False
+    assert audit['holdout_split_hash']=='a69833ab38a34ab4'

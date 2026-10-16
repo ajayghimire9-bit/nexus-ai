@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — frozen H=3 is unsaturated on the stricter corner; do not retune; lookahead still untested
+
+The authorized diagnostic completed: ceiling gap **33.183 [2.481, 63.886]**. Label `cartpole_h3_unsaturated`. Lookahead was not run. Do not retune H=3 and do not drop ceilinged tasks. A later distinct question is lookahead versus frozen H=3 on the **same** holdout `a69833ab38a34ab4`. That proposal is not implemented and is not authorized here. Report `NEXUS_CARTPOLE_H3_SATURATION_RESULTS.md`.
+
+## Consumed — CartPole H=3 saturation diagnostic, one-run remaining 0
+
+Protocol `docs/NEXUS_CARTPOLE_H3_SATURATION_PROTOCOL.md` on `cursor/cartpole-h3-saturation-diagnostic` from `894f5ca`. Config SHA256 `55be38a5d77e76bb38a56c50d92e9522037855e8b500577de55c665af9291421`. Protocol SHA256 `657cf38d25c9d013b733e8ba6ef373845b487f980d19f6b815e3cf4ad96cd157`. Primary completed: ceiling gap **33.183 [2.481, 63.886]**, label `cartpole_h3_unsaturated`. Holdout hash `a69833ab38a34ab4`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_CARTPOLE_H3_SATURATION_RESULTS.md`.
+
 ## Current decision — lock an H=3-only CartPole saturation diagnostic; do not collect yet
 
 The harder lookahead screen **4.600 [−7.481, 16.681]** stays closed. Do not retune H=3 and do not run lookahead. The locked next test is an H=3-only saturation diagnostic on unused stricter-corner physics `a69833ab38a34ab4`. Collection is **not** authorized. Report `NEXUS_CARTPOLE_H3_SATURATION_PREP.md`.

@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — CartPole frozen H=3 unsaturated on a stricter unused corner
+
+The 60-episode H=3-only diagnostic completed under the 300 s / 42,800 / 1,440,000 cap. Ceiling gap **33.183 [2.481, 63.886]**. Label `cartpole_h3_unsaturated`. Execute 7.095 s, exact resource counts under cap, 200 frozen-recipe epochs. Independent audit passed. Lookahead withheld. H=3 not retuned. Closed confirmation unused. Report `NEXUS_CARTPOLE_H3_SATURATION_RESULTS.md`. Do not drop ceilinged tasks. No learning-to-learn or AGI.
+
 ## Latest — CartPole H=3 saturation diagnostic protocol locked, collection unauthorized
 
 Both lookahead screens stay closed and are not used to retune H=3. New unused stricter-corner physics `a69833ab38a34ab4`. Lookahead withheld. Frozen recipe, 300 s / 42,800 / 1,440,000, `authorized: false`. Reports `NEXUS_CARTPOLE_H3_SATURATION_PREP.md` and `NEXUS_CARTPOLE_H3_SATURATION_PROTOCOL.md`.
