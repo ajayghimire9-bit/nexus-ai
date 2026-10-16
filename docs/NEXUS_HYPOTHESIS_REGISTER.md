@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-objective alignment gap supported on the recorded suite
+
+The best actual64-value sampled sequence's first action loses **20.254 [11.382,29.127]** under forced-first-action+63zero replanning versus the best measured action, across ten decoder units. All60 states cover all3first actions, so the gap is not absent-action coverage. Represented-action and total regret are identical here and are dependent evidence. The exploratory screen passed. However, this is not the globally best sequence, limited future-suffix search is not excluded, and the zero continuation is not a student full-policy value. Learned-baseline versus sequence-reference first-action comparisons remain inconclusive. Further work justified: a source-only readout trained to the actual replanning intervention and evaluated on fresh states, not more scalar tuning. Report `NEXUS_ACTION_VALUE_ALIGNMENT_RESULTS.md`.
+
 ## Latest — H-magnitude source-scalar screen failed
 
 The prespecified source-only covariance rule selected common beta0.823947 before fresh visited outcomes. It improved centered prediction error by **+221.281 [73.560,369.002]** but did not establish chosen64 return improvement: calibrated−base **−9.228 [−22.358,+3.901]**, calibrated−original **+1.194 [−0.102,+2.489]**. Both primary return intervals include zero, and no task/visitor subgroup establishes a gain. No claim that all calibration fails or that a scaling-only cause is disproven. Decoder intervals are conditional on the shared source-fitted scalar; uncertainty in fitting beta is not included. Further scalar tuning on this closed data is unjustified. One next question: does even perfect full-sequence value ranking align with executing its first action then replanning? Existing16-sequence and three first-action outcomes can support a separate exploratory offline audit. Report `NEXUS_SOURCE_SCALAR_RESULTS.md`.

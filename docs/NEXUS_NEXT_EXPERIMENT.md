@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current proposal — source-only replanning-aligned value labels
+
+The offline alignment screen passed: the best recorded64-return sequence's first action incurs **20.254 [11.382,29.127]** regret under immediate zero-context replanning. All60 states cover all three actions, but this does not rule out limited suffix search or establish a cause of the old full-episode loss. No new controller improvement was demonstrated. See `NEXUS_ACTION_VALUE_ALIGNMENT_RESULTS.md`.
+
+**One next experiment:** fit a separate small source-only value readout to forced-first-action/common-zero return labels, freeze it before fresh visited-state evaluation, and compare selected first-action64 return against the existing H16 and sequence-value scores. Keep original networks/readouts intact. Specify whether features use actual source endpoints versus imagined evaluation endpoints; preserve independent source/target episodes and equal visitor/task aggregation inside ten decoders. Prediction loss alone cannot pass the screen. Finalize the exact feature/architecture/compute and inference-baseline comparisons before fitting.
+
+Preliminary cost29,880 new real steps (15,360 source labels,3,000 visitor collection,11,520 action branches), around7.7million imagined transitions, estimated110–130CPU seconds, proposed hard cap150seconds. The current conservative ledger has174.408seconds left; the final enforced cap must fit the allowance at execution time. This is a proposal, not a locked implementation or authorization to bypass preconditions. No extra training or collection has run. Previous entries below are chronological history.
+
 ## Current proposal — offline action-value alignment, no more scalar tuning
 
 The source-only scalar test is complete and failed its selection screen: beta0.823947 improved centered prediction error, but calibrated−base return **−9.228 [−22.358,+3.901]** and calibrated−original **+1.194 [−0.102,+2.489]** remain inconclusive. Stop this scalar branch; do not select a new weight from these closed outcomes. See `NEXUS_SOURCE_SCALAR_RESULTS.md`.

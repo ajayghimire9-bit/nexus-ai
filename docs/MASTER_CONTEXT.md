@@ -1,5 +1,11 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — sequence-to-first-action alignment gap, 2026-10-16
+
+The registered offline audit detected **20.254 [11.382,29.127]** points of first-action/common-zero regret when choosing the first action of the actually best sampled64-return sequence. All60 states represented all three first actions, so coverage gap is0 and represented-action regret is the same metric, not independent corroboration. The sequence-reference first action is optimal for the replanning intervention in18/60 states. Ten independent decoder units, no primary state-metric duplication across students; label `sequence_first_action_misalignment_detected`.
+
+This supports a finite-candidate objective/future-policy alignment gap under the specified common-zero continuation. It does not prove a globally optimal sequence would fail, exclude limited suffix search, explain historical full-episode loss or improve a controller. Direct comparison of the sequence reference's first-action return with the learned baseline includes zero. No fitting or new real/imagined data;3.09675CPU seconds. Source `0070332091722b675d212b2330b201b9bf038f55`; report `NEXUS_ACTION_VALUE_ALIGNMENT_RESULTS.md`. One next proposal is a separate source-trained value readout labeled for the actual first-action/replanning intervention, judged on fresh first-action return. It has not been trained or evaluated. Earlier status entries remain history; the compact adaptive cross-environment mission is unchanged.
+
 ## Latest — source-only scalar calibration, 2026-10-16
 
 One shared scalar fit only to archived source physics was committed before fresh visited-state collection: beta **0.8239474184740522**. The complete ten-decoder test did **not establish a selection gain**: calibrated−base **−9.228 [−22.358,+3.901]**, calibrated−original **+1.194 [−0.102,+2.489]**. Centered tail error improved **+221.281 [73.560,369.002]** but did not establish better choices; label `scalar_selection_gain_not_established`. Do not tune more weights on this sample. The common scalar was fit across ten decoders' source data, so reported decoder intervals are conditional on that shared fitted value, not independent complete scalar-training replications.

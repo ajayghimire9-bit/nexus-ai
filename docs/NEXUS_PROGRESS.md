@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — recorded action-value alignment audit completed
+
+The best actual64-return sequence's first action has **20.254 [11.382,29.127]** regret under first-action+63zero replanning, averaged inside ten decoder units. All60 states include all three first actions; coverage gap0. First-action optimality18/60. Registered exploratory screen passed (`sequence_first_action_misalignment_detected`). This is an objective/future-policy alignment finding in a finite candidate set, not a deployed control improvement or causal explanation of the episode loss. The oracle-style sequence reference is research-only, and limited suffix search remains a possible contributor. No historical models/data changed.
+
+Cost3.09675seconds, zero new real/imagined transitions or fitting; independent raw arithmetic agrees. Report `NEXUS_ACTION_VALUE_ALIGNMENT_RESULTS.md`. Next proposed experiment: source-only value learning with first-action/replanning-aligned labels and fresh first-action return evaluation. No implementation, training or collection for that proposal has occurred. Older pending entries below are history.
+
 ## Latest — source scalar did not establish better selection
 
 The source-only coefficient beta0.823947 was fit from1,600 archived source examples, then committed before fresh visited-state collection. Calibrated−base full-sequence gain **−9.228 [−22.358,+3.901]**, calibrated−original **+1.194 [−0.102,+2.489]**; screen failed, complete valid run. Centered tail-error improvement **+221.281 [73.560,369.002]** is a prediction result, not control success. All task/visitor return intervals include zero. Conditional-on-shared-scalar ten-decoder intervals exclude scalar-estimation uncertainty. No further weight tuning on this sample.
