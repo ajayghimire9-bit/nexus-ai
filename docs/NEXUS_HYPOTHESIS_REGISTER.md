@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-action-conditioned-Q is implemented, not yet tested
+
+Additive first-action Q, including the unexecuted 81-coefficient polynomial, cannot change preferred action across states. A compact action×observation family (16 weights) can, on synthetic data. Source-only cross-task identification on 24 historical unique labels is 0.463 versus additive 0.312; action×context was not justified. The locked experiment collects two distinct source states per task and compares action-conditioned Q, additive Q, frozen sequence-value and H=16 on new development visited states. Collection unauthorized. If that screen fails, close score-correction rather than enlarging the readout. Reports `NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md` and `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`.
+
 ## Latest — H-capacity-matched-Q is implemented, not yet tested
 
 The 15-coefficient miss left open whether aligned first-action labels fail because of capacity. The locked 81-coefficient protocol reuses V's 77 polynomial coordinates plus three action dummies, ridge λ=1. Offline diagnostics show only 24 unique source labels versus 81 weights, rank 50, and state-independent action ranking. That does not answer the decision question. Collection is unauthorized until a fresh 150 s / 29,880-step approval. If the complete run fails the registered first-action screen, close this score-correction branch. Report `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`.

@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — action-conditioned first-action Q protocol, 2026-10-16
+
+A 16-coefficient action×observation first-action Q is locked on `cursor/action-conditioned-first-action-q` from `6ecb09c`. The 81-coefficient additive protocol is preserved and was not executed: matching V's parameter count does not yield a state-dependent action ranking. Source-only leave-one-task-out action identification is **0.463** versus additive **0.312**; λ=0.1; action×context not justified. Proposed collection uses two distinct source states/task (48 unique labels), 45,240 real steps, 240 s. Standing remainder 47.766 s, so **no new labels have been collected**. Not control improvement, learning-to-learn or AGI. Protocol `NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — capacity-matched first-action Q protocol, 2026-10-16
 
 An 81-coefficient first-action Q protocol is locked on `cursor/capacity-matched-first-action-value` from `a833a2c`. Features are V's exact 77 polynomial observation/context coordinates plus three action indicators and an intercept. Offline feasibility (zero new steps) found 24 unique source labels per decoder, design rank 50, and additive action ranking that cannot depend on state. Ridge λ=1 is prespecified. The standing session remainder is 47.766 s, below the 150 s cap, so **no source labels or development returns have been collected**. This is not a result, not control improvement, not learning-to-learn and not AGI. Protocol `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`. Earlier entries remain history.

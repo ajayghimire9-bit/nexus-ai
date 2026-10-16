@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — action-conditioned first-action Q, collection unauthorized
+
+Protocol `docs/NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md` on `cursor/action-conditioned-first-action-q` from `6ecb09c`. The 81-coefficient additive protocol is preserved and was not edited. Source-only CV selected compact `action_obs` (16 weights, λ=0.1): leave-one-task action identification 0.463 versus additive 0.312 (chance). Additive ranking is state-independent on synthetic data; action×observation ranking is not. Proposed collection uses **two distinct source states per task** (48 unique labels/decoder), not repeated contexts. Primary screen: conditioned minus H=16 first-action 64-return, mean ≥ 1 and lower bound > 0. Budget **240 s**, **45,240** real steps, **11,612,160** imagined transitions. Standing-session remainder is 47.766 s, so collection is **not** authorized. Feasibility: `docs/NEXUS_ACTION_CONDITIONED_Q_FEASIBILITY.md`. Do not treat this heading as a result.
+
 ## Locked — capacity-matched first-action Q, collection unauthorized
 
 Protocol `docs/NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md` and config `configs/capacity_matched_q.yaml` are committed on `cursor/capacity-matched-first-action-value` from `a833a2c`. Offline feasibility (`docs/NEXUS_CAPACITY_MATCHED_Q_FEASIBILITY.md`) found 24 unique source labels versus 81 coefficients, design rank 50, and state-independent additive action ranking. Ridge λ=1 is prespecified. **No source labels, fits or development returns have been collected for this estimator.**

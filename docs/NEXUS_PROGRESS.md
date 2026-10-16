@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — action-conditioned first-action Q protocol locked, not executed
+
+A separately versioned 16-coefficient action×observation Q protocol is implemented on `cursor/action-conditioned-first-action-q` from `6ecb09c`. The 81-coefficient additive protocol remains unmodified and unexecuted. Synthetic tests show additive preferred actions cannot change across states; action×observation can. Source-only leave-one-task-out identification is 0.463 versus additive 0.312. Action×context was not justified (tied identification, unidentified z). Proposed experiment: two new source states per task, 48 unique labels, 45,240 real steps, 240 s cap. Collection unauthorized (47.766 s remaining). Report `NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md`.
+
 ## Latest — capacity-matched first-action Q protocol locked, not executed
 
 The 81-coefficient Q protocol is implemented and tested on `cursor/capacity-matched-first-action-value` from `a833a2c`. It reuses sequence-value V's 77 polynomial coordinates plus three action dummies. Offline feasibility: 24 unique source labels/decoder, design rank 50, ridge Gram condition ~43 on historical source observations, additive action ranking independent of state. Zero new environment steps. Collection remains unauthorized because the standing session has 47.766 s left versus a 150 s cap. No registered Q fit or development return exists. Report `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`.
