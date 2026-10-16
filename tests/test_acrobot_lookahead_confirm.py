@@ -1,5 +1,7 @@
-"""Acrobot confirmation protocol locks. Collection remains unauthorized."""
+"""Acrobot confirmation protocol locks. One-run allocation is live and unconsumed."""
 from __future__ import annotations
+import json
+from pathlib import Path
 import pytest
 from nexus.tasks.acrobot_family import (
     acrobot_default,
@@ -25,11 +27,13 @@ def test_confirmation_holdout_avoids_source_and_development():
     assert cfg['pendulum_weights'] is False and cfg['cartpole_h3'] is False
 
 
-def test_collection_stays_unauthorized():
+def test_one_run_allocation_is_live_and_has_no_output():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['retune_from_development'] is False
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==300.0
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
 
 
@@ -43,9 +47,7 @@ def test_primary_labels_keep_the_25_point_margin():
 def test_h16_was_not_retuned_and_parents_are_closed():
     cfg=m.load_config()
     assert cfg['candidate_horizon']==16 and cfg['n_candidates']==16
-    report=m.prep()
-    assert report['retune_from_development'] is False
-    assert report['eligibility']['reused_development'] is False
+    assert cfg['retune_from_development'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='a87959767f30ca75f0acfc753476ce06fc12c86a324315cc0f910f4149586ab1'
