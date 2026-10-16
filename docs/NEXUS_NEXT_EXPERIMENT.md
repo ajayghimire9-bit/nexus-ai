@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Authorized — one 180-second tree-reuse lookahead versus frozen H=16 run
+
+Protocol `docs/NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md` on `cursor/lookahead-generalization-synthesis` from `57cff66`. Implementation SHA `cabf4eab4cee31d8aeaaa83f76aa021aa0fa6fdb`. Config SHA256 `5d85db5bbab131f1bcb7f9a51b96aef4254753e14325713be34e5af5afc40451`. Protocol SHA256 `fdaf615cef38209afcaf3a199c8094a41df2ad798a8920ffd957142d5c0b5500`. One execution only. **180 s / 18,000 / 7,716,000 / 0 updates.** Frozen MountainCar development checkpoints. Confirmation unused. No fitted critic. Remaining one-run allowance equals the protocol cap. Does not reset the exhausted 3600-second standing ledger. Further experiments are **not** authorized by this allocation.
+
 ## Current decision — lock tree-reuse lookahead versus H=16; do not collect yet
 
 Source synthesis closed the copy-the-771-planner question as algorithm reuse, not cross-family learning. Extra search explains the Acrobot miss relative to the 25-point rule. The locked next test reuses frozen MountainCar development checkpoints and asks whether nearest remaining open-loop H=16 height from the current-step tree keeps the 25-point full-episode gain versus 16-candidate H=16 at 259 imagined states/step. Confirmation unused. No fitted critic. Collection is **not** authorized. Report `NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md`.
