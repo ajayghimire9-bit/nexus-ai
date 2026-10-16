@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — tree-reuse lookahead is not established; do not retune
+
+The authorized development screen completed: tree-reuse minus H=16 **−14.751 [−37.142, 7.641]**. Label `tree_reuse_lookahead_not_established`. Nearest remaining height from the current-step tree does not keep the 25-point MountainCar remainder. Do not retune H=16, fit another Q, or reopen confirmation. A later distinct question is **prefix-max** remaining at cached t=1 nodes whose first action matches `a` (still 259 imagined/step) versus H=16 on these frozen checkpoints with new seeds. That proposal is not implemented and is not authorized here. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`.
+
+## Consumed — tree-reuse lookahead versus frozen H=16, one-run remaining 0
+
+Protocol `docs/NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md` on `cursor/lookahead-generalization-synthesis` from `57cff66`. Config SHA256 `5d85db5bbab131f1bcb7f9a51b96aef4254753e14325713be34e5af5afc40451`. Protocol SHA256 `fdaf615cef38209afcaf3a199c8094a41df2ad798a8920ffd957142d5c0b5500`. Primary completed: tree-reuse minus H=16 **−14.751 [−37.142, 7.641]**, label `tree_reuse_lookahead_not_established`. Holdout hash `2a5cc4979642cc2a`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`.
+
 ## Authorized — one 180-second tree-reuse lookahead versus frozen H=16 run
 
 Protocol `docs/NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md` on `cursor/lookahead-generalization-synthesis` from `57cff66`. Implementation SHA `cabf4eab4cee31d8aeaaa83f76aa021aa0fa6fdb`. Config SHA256 `5d85db5bbab131f1bcb7f9a51b96aef4254753e14325713be34e5af5afc40451`. Protocol SHA256 `fdaf615cef38209afcaf3a199c8094a41df2ad798a8920ffd957142d5c0b5500`. One execution only. **180 s / 18,000 / 7,716,000 / 0 updates.** Frozen MountainCar development checkpoints. Confirmation unused. No fitted critic. Remaining one-run allowance equals the protocol cap. Does not reset the exhausted 3600-second standing ledger. Further experiments are **not** authorized by this allocation.

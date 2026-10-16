@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — Tree-reuse lookahead versus frozen H=16 not established
+
+The 90-episode grid completed under the 180 s / 18,000 / 7,716,000 cap. Tree-reuse minus H=16 **−14.751 [−37.142, 7.641]**. Label `tree_reuse_lookahead_not_established`. Execute 34.065 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. No fitted critic. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`. No learning-to-learn or AGI.
+
+## Latest — Tree-reuse lookahead versus frozen H=16 one-run authorized
+
+Standing grant plus explicit continue/full-authorization after `cabf4ea`. Frozen development checkpoints. Confirmation unused. 180 s / 18,000 / 7,716,000, one execution. Remaining equals the protocol cap. Does not reset the exhausted 3600-second standing ledger.
+
 ## Latest — Lookahead generalization synthesis locked, tree-reuse collection unauthorized
 
 Source-only audit of closed lookahead and Q/V screens. Shared successful controller is family-specific dynamics plus one-step backup of open-loop H=16 height, not shared weights. Acrobot compute-matched remainder 12.834 stays not established; Pendulum 60.182 and MountainCar 54.649 remain established. No cross-family learning claim. Tree-reuse protocol locked at 180 s / 18,000 / 7,716,000, `authorized: false`. Reports `NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md` and `NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md`. No environment collection, no learning-to-learn or AGI.

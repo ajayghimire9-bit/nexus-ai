@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-tree-reuse-beats-h16-on-mountaincar was not established
+
+The complete development screen failed the 25-point rule: tree-reuse minus H=16 **−14.751 [−37.142, 7.641]**. Label `tree_reuse_lookahead_not_established`. Nearest remaining open-loop height from the current-step tree did not replace successor H=16 search. Mean nearest-neighbor distance ~0. Closed Q/V failures stay closed. Do not retune from this sample. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`.
+
 ## Latest — H-tree-reuse-beats-h16-on-mountaincar is implemented, not yet tested
 
 Source synthesis: extra H=16 search explains the Acrobot unmatched remainder relative to the 25-point rule, not Pendulum or MountainCar. Closed Q/V readouts failed to replace successor search. This protocol tests whether nearest remaining open-loop height from the current-step H=16 tree keeps the MountainCar 25-point gain at 259 imagined states/step versus 16-candidate H=16. No fitted critic. Confirmation unused. Collection unauthorized. Report `NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md`.

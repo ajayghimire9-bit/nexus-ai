@@ -1,4 +1,4 @@
-"""Tree-reuse protocol locks. One-run allocation is authorized and unused."""
+"""Tree-reuse protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -59,18 +59,24 @@ def test_budget_is_three_arms_at_256_259_and_771():
     assert 10*3*200*(256+259+771)==7716000
 
 
-def test_one_run_allocation_is_authorized_and_unused():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['fitted_critic'] is False
     assert record['retune_from_confirmation'] is False
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
-    m.require_allocation(m.load_config())
+    with pytest.raises(PermissionError, match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
     usage=json.loads(Path(record['one_run_usage_record']).read_text())
-    assert float(usage['remaining_session_allowance_s'])==180.0
+    assert float(usage['remaining_session_allowance_s'])==0.0
     assert int(usage['retries'])==0
-    assert m.OUTPUT.exists() is False
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='tree_reuse_lookahead_not_established'
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='tree_reuse_lookahead_not_established'
 
 
 def test_primary_labels_require_the_25_point_episode_margin():

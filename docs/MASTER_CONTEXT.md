@@ -1,5 +1,13 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Tree-reuse lookahead versus frozen H=16 not established, 2026-10-16
+
+The locked development screen completed. Tree-reuse minus H=16 dense valley-height return **−14.751 [−37.142, 7.641]**. Label `tree_reuse_lookahead_not_established`. Mean nearest-neighbor distance ~0, so the miss is not an off-manifold interpolator. Cost 34.065 s execute / 35.30 s process, 18,000 real steps, 7,716,000 imagined, 0 updates. Frozen checkpoints. Confirmation unused. Do not retune from this sample. Closed MountainCar unmatched/compute-matched labels stay closed. Not learning-to-learn or AGI. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`. Earlier entries remain history.
+
+## Latest — Tree-reuse lookahead versus frozen H=16 one-run authorized, 2026-10-16
+
+One 180-second execution on `cursor/lookahead-generalization-synthesis` after `cabf4ea`. Frozen MountainCar development checkpoints. Confirmation unused. No fitted critic. **180 s / 18,000 / 7,716,000 / 0 updates.** Remaining one-run allowance equals the protocol cap. Does not reset the exhausted 3600-second standing ledger. Report allocation `configs/tree_reuse_lookahead_allocation.json`. Earlier entries remain history.
+
 ## Latest — Lookahead generalization synthesis, tree-reuse locked unauthorized, 2026-10-16
 
 Source-only audit on `cursor/lookahead-generalization-synthesis` from `57cff66`. Successful controllers share a planning rule, not weights: family-specific frozen world models plus H=16 shooting and one-step backup on dense 200-step rewards. Extra 48-candidate H=16 search closed 15.080 unpaired points of Acrobot's 27.914 unmatched gap and dropped the remainder below 25; Pendulum 60.182 and MountainCar 54.649 still cleared that isolation. Cross-family learning and meta-learning are not supported. Bottleneck of the 771-step lookahead is three successor H=16 trees. One unauthorized follow-up: tree-reuse nearest remaining open-loop height at 259 imagined states/step versus H=16 on frozen MountainCar development, **180 s / 18,000 / 7,716,000 / 0 updates**, confirmation unused, no fitted critic. **Authorized: false.** Not a result. Reports `NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md` and `NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md`. Earlier entries remain history.
