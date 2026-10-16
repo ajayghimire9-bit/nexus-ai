@@ -46,3 +46,20 @@ def test_budget_matches_the_locked_caps():
     assert counts['train']==12800 and counts['control_max']==12000
     assert counts['time_cap_s']==300 and counts['training_updates']==200
     assert counts['lookahead_imagined_per_step']==771 and counts['h16_imagined_per_step']==256
+
+
+def test_one_run_allocation_is_authorized_and_binds_the_locked_hashes():
+    from pathlib import Path
+    import json
+    from nexus.world.planning_value import sha
+    cfg=m.load_config()
+    record=m.load_allocation()
+    assert record['authorized'] is True and record['runs']==1
+    assert record['retune_from_development'] is False and record['mountaincar_copy'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    m.require_allocation(cfg)
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])>=cfg['time_cap_s']
+    assert float(usage['ledger']['consumed_before_this_run_s'])==108.341
+    assert int(usage['retries'])==0
