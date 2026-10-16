@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-h3-on-unsaturated-cartpole is implemented, not yet tested
+
+The H=3-only diagnostic passed. This protocol tests one-step backup of frozen H=3 versus receding H=3 on the same six-task split `a69833ab38a34ab4`, margin 25. Ceilinged tasks are kept. Collection unauthorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PROTOCOL.md`.
+
 ## Latest — H-frozen-h3-unsaturated-on-stricter-cartpole passed; lookahead still untested
 
 The complete H=3-only diagnostic passed the 25-point gap-from-ceiling rule: **33.183 [2.481, 63.886]**. Label `cartpole_h3_unsaturated`. Lookahead was not run. 50/60 episodes still hit 500; do not drop those tasks. A later lookahead-versus-H=3 screen on this same holdout is unimplemented. Report `NEXUS_CARTPOLE_H3_SATURATION_RESULTS.md`.

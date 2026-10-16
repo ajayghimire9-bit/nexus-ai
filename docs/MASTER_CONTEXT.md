@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — CartPole lookahead versus H=3 on the unsaturated holdout locked unauthorized, 2026-10-16
+
+Preparation from `18ed8e4` on `cursor/cartpole-lookahead-sat-h3`. Same six-task split `a69833ab38a34ab4`. Ceilinged tasks kept. H=3 not retuned. Frozen V0.7.2 recipe, 300 s / 72,800 / 4,380,000. **Authorized: false.** Not a result. Reports `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — CartPole frozen H=3 is unsaturated on a stricter unused corner, 2026-10-16
 
 The locked H=3-only diagnostic completed. Ceiling gap (500 − H=3) **33.183 [2.481, 63.886]**. Label `cartpole_h3_unsaturated`. H=3 mean **466.817 [436.114, 497.519]**. 50/60 episodes still at 500; task 0 fully ceilinged. Lookahead not run. Cost 7.095 s execute / 8.198 s process, 40,809 real steps, 1,344,432 imagined, 200 frozen-recipe epochs. Do not drop ceilinged tasks post-hoc. Not lookahead improvement, learning-to-learn or AGI. Report `NEXUS_CARTPOLE_H3_SATURATION_RESULTS.md`. Earlier entries remain history.

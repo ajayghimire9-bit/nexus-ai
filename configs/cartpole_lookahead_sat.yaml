@@ -1,0 +1,37 @@
+starting_sha: 18ed8e424daf5351f84c8f5763730c644ea54574
+n_model_seeds: 10
+eval_tasks: 6
+n_actions: 2
+candidate_horizon: 3
+n_candidates: 16
+max_episode_steps: 500
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 300
+env_cap: 72800
+model_cap: 4380000
+training_updates: 200
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+objective: both
+enforce_time_budget: false
+compute_matched_control: false
+pendulum_weights: false
+student_zero_context: false
+drop_ceilinged_tasks: false
+holdout_rule: cartpole_h3_saturation_v1
+holdout_split_hash: a69833ab38a34ab4
+eval_task_ids: [cartpole_h3_sat0, cartpole_h3_sat1, cartpole_h3_sat2, cartpole_h3_sat3, cartpole_h3_sat4, cartpole_h3_sat5]
+eval_physics: [[13.2, 0.27, 0.23], [15.6, 0.25, 0.28], [15.4, 0.27, 0.20], [15.5, 0.30, 0.28], [16.0, 0.34, 0.20], [13.8, 0.31, 0.27]]
+reset_base: 21000000
+step_seed_base: 21100000
+train_collect_base: 190000
+val_collect_base: 195000
+parents:
+  configs/cartpole_h3_saturation.yaml: 55be38a5d77e76bb38a56c50d92e9522037855e8b500577de55c665af9291421
+  docs/NEXUS_CARTPOLE_H3_SATURATION_PROTOCOL.md: 657cf38d25c9d013b733e8ba6ef373845b487f980d19f6b815e3cf4ad96cd157
+  artifacts/cartpole_h3_saturation.json: fbdbbddc792a5a27d821d9119de6b8af251f53c28421c5a5152628a1bdc3015d
+  docs/NEXUS_CARTPOLE_H3_SATURATION_RESULTS.md: 456ed0c3bce610a6a0f276ef829c7e9cf349ad84fd77a69171c0781420cc1479

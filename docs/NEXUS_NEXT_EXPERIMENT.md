@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock lookahead versus H=3 on the unsaturated holdout; do not collect yet
+
+The H=3-only diagnostic **33.183 [2.481, 63.886]** stays closed. Do not retune H=3 and do not drop ceilinged tasks. The locked next test is lookahead versus frozen H=3 on the same split `a69833ab38a34ab4`. Collection is **not** authorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PREP.md`.
+
+## Locked — CartPole lookahead versus frozen H=3 on the unsaturated holdout, collection unauthorized
+
+Protocol `docs/NEXUS_CARTPOLE_LOOKAHEAD_SAT_PROTOCOL.md` on `cursor/cartpole-lookahead-sat-h3` from `18ed8e4`. Config SHA256 `7fe2a70eaf88953f2203f9f70de586d69991e16741864075fcdfbe7148547dbe`. Protocol SHA256 `3c82cdd477082ea3898ac346e4d193eda5506e6aab947f259d76fe954d75dac8`. Primary: lookahead minus H=3 return, ten training seeds, six tasks, mean ≥ 25 and lower bound > 0. Budget **300 s**, **72,800** real steps, **4,380,000** imagined. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — frozen H=3 is unsaturated on the stricter corner; do not retune; lookahead still untested
 
 The authorized diagnostic completed: ceiling gap **33.183 [2.481, 63.886]**. Label `cartpole_h3_unsaturated`. Lookahead was not run. Do not retune H=3 and do not drop ceilinged tasks. A later distinct question is lookahead versus frozen H=3 on the **same** holdout `a69833ab38a34ab4`. That proposal is not implemented and is not authorized here. Report `NEXUS_CARTPOLE_H3_SATURATION_RESULTS.md`.
