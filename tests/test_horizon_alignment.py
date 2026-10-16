@@ -63,15 +63,16 @@ def test_labels_do_not_promote_the_short_window():
     assert m.classify_primary(30.0,1.0,40.0,2.0,1.1,3.0,10,True,False)=='incomplete'
 
 
-def test_budget_seeds_unauthorized_and_parents_frozen():
+def test_budget_seeds_one_run_authorization_and_parents_frozen():
     cfg=m.load_config();counts=m.budget(cfg)
     assert counts['short_fixed']+counts['short_aligned']+counts['full_fixed']+counts['full_aligned']==25920
     assert counts['model_states']==6405120
     assert counts['short_aligned']==counts['short_fixed'] and counts['full_aligned']==counts['full_fixed']
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval'):
-        m.require_allocation(cfg)
+    assert record['authorized'] is True and record['runs']==1
+    assert record['authority_commit']=='b4691dbdd3661db52399b709edf3148b8cdd0bf6'
+    assert record['time_cap_s']==180 and record['env_cap']==25920 and record['model_cap']==6405120
+    m.require_allocation(cfg)
     recede_cfg=yaml.safe_load(recede.CONFIG.read_text());same_cfg=yaml.safe_load(same.CONFIG.read_text())
     blocked=set().union(*acq.seed_groups(yaml.safe_load(acq.CONFIG.read_text())),*recede.seed_groups(recede_cfg),*same.seed_groups(same_cfg))
     used=set().union(*m.seed_groups(cfg))
