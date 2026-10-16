@@ -1,6 +1,7 @@
 """Action-conditioned Q protocol locks. These tests do not collect the registered grid."""
 from __future__ import annotations
 import itertools
+import json
 from pathlib import Path
 import numpy as np
 import pytest
@@ -119,7 +120,7 @@ def test_primary_label_distinguishes_incomplete_from_inconclusive():
     assert m.classify_primary(2.0,0.5,3.0,9,1.0,True)=='incomplete'
 
 
-def test_budget_seeds_and_unauthorized_allocation():
+def test_budget_seeds_and_one_run_allocation():
     cfg=m.load_config();counts=m.budget(cfg)
     assert counts['source_labels']==30720 and counts['collection']+counts['first_common']==14520
     assert counts['model_states']==11612160
@@ -128,9 +129,11 @@ def test_budget_seeds_and_unauthorized_allocation():
     used=set().union(*m.seed_groups(cfg))
     assert not (used & blocked) and min(used)>=6000000
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval'):
-        m.require_allocation(cfg)
+    assert record['authorized'] is True and record['runs']==1
+    assert record['previous_usage_record']=='artifacts/research_session_action_conditioned_q_authorization.json'
+    m.require_allocation(cfg)
+    exhausted=json.loads(Path('artifacts/research_session_first_action_value_usage.json').read_text())
+    assert exhausted['remaining_session_allowance_s']<cfg['time_cap_s']
     text=Path('docs/NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md').read_text()
     assert 'n_weights: 16' in text and 'authorized: false' in text
     assert 'architecture_change_authorized: false' in text
