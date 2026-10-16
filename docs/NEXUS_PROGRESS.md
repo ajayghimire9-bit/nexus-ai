@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — action-conditioned Q resume completed, gain versus H=16 not established
+
+The fail-closed resume collected decoder 9 / task 2 / zero visitor once. Complete 60-cell grid, independent audit passed, original 59 cells unchanged. Conditioned−H=16 **−4.293 [−15.751, +7.165]**. Label `action_conditioned_gain_not_established`. Cost 1.061 s, 242 real steps, 64,512 imagined. Original capture/fit hashes frozen. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — action-conditioned Q resume implemented, missing cell not collected
 
 A fail-closed resume protocol is locked on `cursor/action-conditioned-q-resume` from `36a9753`. Original incomplete capture and Q-fit hashes are unchanged. Offline reconstruction of 160 source cells, ten frozen Qs, and 59 evaluation cells is the entry condition. The missing cell is decoder 9 / task 2 / zero visitor. Proposed cap 60 s, 242 real steps, 64,512 imagined transitions. Collection unauthorized. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.

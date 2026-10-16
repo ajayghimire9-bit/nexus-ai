@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded results are in `docs/NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`. The authorized action-conditioned Q run is **incomplete** (240 s cap, 59/60 evaluation cells). A fail-closed resume of the single missing cell is proposed in `docs/NEXUS_ACTION_CONDITIONED_Q_RESUME_PROTOCOL.md` and is not authorized. That is not a registered first-action gain or harm versus H=16, and not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded results are in `docs/NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`. The fail-closed resume completed the 60-cell grid: conditioned−H=16 **−4.293 [−15.751, +7.165]**, label `action_conditioned_gain_not_established`. The original incomplete capture remains unchanged. That is not a registered first-action gain versus H=16, and not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

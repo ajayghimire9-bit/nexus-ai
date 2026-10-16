@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-action-conditioned-Q did not establish a first-action gain
+
+The resumed complete 60-cell development screen failed its registered pass rule: conditioned−H=16 **−4.293 [−15.751, +7.165]**. Label `action_conditioned_gain_not_established`. H-additive-enough is not supported as a decision upgrade (conditioned−additive includes 0). Close score-correction rather than enlarging the readout. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`.
+
 ## Latest — H-resume-valid is implemented, not yet tested
 
 The incomplete 59/60 action-conditioned grid can be completed only if the missing zero-visitor cell (decoder 9, development task 2) is independently generated from locked seeds and frozen fits, the 59 cells reconstruct, and assembly refuses to replace completed outcomes. If reconstruction fails, the hypothesis is rejected in favor of a fresh full run. Collection unauthorized. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_PROTOCOL.md`.

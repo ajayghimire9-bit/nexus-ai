@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — action-conditioned Q resume completed, 2026-10-16
+
+The missing cell (decoder 9 / development task 2 / zero visitor) was collected once under a 60 s / 242 / 64,512 cap. The assembled 60-cell grid did **not** establish a first-action return gain versus H=16: **−4.293 [−15.751, +7.165]**. Label `action_conditioned_gain_not_established`. Original incomplete capture and Q fits are unchanged. Collection 1.061 s, 242 real steps, 64,512 imagined transitions. Not control improvement, learning-to-learn or AGI. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — action-conditioned Q resume protocol, 2026-10-16
 
 A fail-closed one-cell resume is locked on `cursor/action-conditioned-q-resume` from `36a9753`. The incomplete capture SHA `6f80696c…` and fit SHA `2da13f24…` stay frozen. Offline reconstruction of source labels, ten Q fits and 59 cells is required before collecting decoder 9 / task 2 / zero visitor into a **separate** completed artifact. Budget 60 s, 242 real steps, 64,512 imagined transitions. Collection unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Protocol `NEXUS_ACTION_CONDITIONED_Q_RESUME_PROTOCOL.md`. Earlier entries remain history.

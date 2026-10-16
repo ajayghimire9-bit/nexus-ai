@@ -1,5 +1,7 @@
 # Action-conditioned first-action Q — incomplete execution
 
+A later fail-closed resume completed a **separate** 60-cell artifact without modifying this file. See `docs/NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`. This incomplete capture remains the original one-run record.
+
 ## Registered decision
 
 The one authorized run is **incomplete**. Label: `incomplete`.

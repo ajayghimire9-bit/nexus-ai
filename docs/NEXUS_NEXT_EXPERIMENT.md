@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — close terminal-value score-correction
+
+The resumed action-conditioned first-action screen is complete and did not pass: conditioned−H=16 **−4.293 [−15.751, +7.165]**. Additive and sequence-value secondaries also include 0. The locked original protocol says to close this score-correction branch rather than add layers, polynomials, or action×context terms. Next work should address receding-horizon policy consistency, action selection and online adaptation under a **new** protocol. That proposal is not implemented and is not authorized here. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`.
+
 ## Proposed — fail-closed resume of the missing action-conditioned Q cell, collection unauthorized
 
 The incomplete 59/60 capture is frozen (`artifacts/action_conditioned_q.json` SHA `6f80696ca7cb94d0789ef950c90cf34aa425aab20b4fc9d776c4397201322680`). Offline reconstruction: 160 source cells and ten Q fits rebuild; 59 evaluation cells have complete raw traces and rebuild metrics. The missing cell is decoder 9 / development task 2 / zero visitor, independently seeded from the original lock. Resume writes a **separate** completed artifact and refuses to alter the original files or retune on the 59 outcomes.
