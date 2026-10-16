@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — receding long-term value is an objective mismatch; do not collect yet
+
+Offline audit from `580dfb0`: the deployed planner maximises imagined open-loop H=16 return and executes only the first action. Nested H=8 hurt 200-step return. Closed Q/V used 64-step zero-replan labels and never ran as 200-step receding controllers. H3 distribution shift is not isolated. One proposed mechanism: parameter-free one-step Bellman backup of frozen H=16 open-loop value. That protocol is locked and **not authorized**. Do not shorten the horizon again, fit another Q/V, or train a ranking loss from this sample. Report `NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md`.
+
+## Locked — one-step Bellman backup versus frozen H=16, collection unauthorized
+
+Protocol `docs/NEXUS_BELLMAN_BACKUP_CONTROL_PROTOCOL.md` on `cursor/receding-long-term-value-audit` from `580dfb0`. Config SHA256 `1a50c953ceb5a20daf3c4e876adc6a8eb855cb5f4ecd1f7d7dffece4fcad625e`. Protocol SHA256 `6025b926475035677bcb4b7056ef7e0729275be169235f5b94bf956583c4e357`. Primary: Bellman minus frozen H=16 200-step development return, mean ≥ 25 and decoder-level lower bound > 0. Shared `candidate_sequences(seed,16,16)`. No new network. Fresh seeds `13000000+`. Budget **180 s**, **24,000** real steps, **12,324,000** imagined transitions, **0** optimizer updates. Collection is **not** authorized. Exhausted 3600 s remainder 47.766 s and consumed one-runs are not transferred. Audit: `docs/NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md`. Do not treat this heading as a result.
+
 ## Current decision — nested H=8 hurt complete-episode return
 
 The authorized development screen completed: H=8 minus archived H=16 **−174.178 [−265.830, −82.527]**. Label `shorter_horizon_hurts_episode_return`. Do not shorten the horizon further and do not train a ranking loss from this sample. A later distinct question should address long-term decision value under receding control rather than another MPC-horizon sweep. That proposal is not implemented and is not authorized here. Report `NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`.

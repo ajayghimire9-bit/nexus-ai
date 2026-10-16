@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H1 planning-objective mismatch is best supported; H-bellman-backup-beats-h16 is unimplemented
+
+Offline receding-value audit: H1 (open-loop plan value ≠ first-action+replan value) is the strongest supported explanation of long-horizon control failure. H2 (Q coverage/representation) explains closed 64-step Q/V failures, not the deployed rule. H3 (policy-induced distribution shift) is not isolated. Nested H=8, score-correction, and fitted Q/V stay closed. One locked test: parameter-free Bellman backup of frozen H=16 open-loop value versus frozen H=16 receding on 200-step development return, margin 25. Collection unauthorized. Report `NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md`.
+
 ## Latest — H-shorter-horizon-improves-episodes was rejected; nested H=8 hurt return
 
 The complete development screen failed the improvement rule and met the hurt rule: H=8 minus H=16 **−174.178 [−265.830, −82.527]**. Label `shorter_horizon_hurts_episode_return`. Executed one-step MAE stayed small. Do not retune H∈{4,8,16,32} on this sample. Report `NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`.

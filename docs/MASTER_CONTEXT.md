@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — receding long-term value audit, Bellman backup locked unauthorized, 2026-10-16
+
+Offline synthesis from `580dfb0` on `cursor/receding-long-term-value-audit`. Zero new environment steps, zero training, confirmation closed. Strongest supported explanation is **H1 / B: incorrect objective** — `RandomShootingMPC.act` maximises imagined open-loop H=16 return, then executes only the first action. Nested H=8 hurt 200-step return **−174.178 [−265.830, −82.527]**. Closed Q/V screens used 64-step zero-replan labels and never replaced H=16 inside a 200-step loop. Proposed mechanism: parameter-free one-step Bellman backup of frozen H=16 open-loop value over three first actions. Protocol locked, **authorized: false**, 180 s / 24,000 / 12,324,000 / 0 updates. Exhausted 3600 s remainder 47.766 s is not transferred. Not a result, not control improvement, learning-to-learn or AGI. Reports `NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md` and `NEXUS_BELLMAN_BACKUP_CONTROL_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — nested H=8 versus archived H=16, 2026-10-16
 
 The locked 60-episode development screen completed. H=8 minus H=16 200-step return **−174.178 [−265.830, −82.527]**. Label `shorter_horizon_hurts_episode_return`. Student-only **−200.518**; zero-only **−147.839**. Cost 8.542 s execute, 12,000 real steps, 1,536,000 imagined. Checkpoints 120/0/0. Do not retune MPC horizon from this sample. Not control improvement, learning-to-learn or AGI. Report `NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`. Earlier entries remain history.

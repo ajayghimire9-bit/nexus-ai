@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — receding long-term value audited offline; Bellman backup locked unauthorized
+
+Existing source and development artifacts were synthesised with zero new steps. Strongest explanation: H1/B incorrect open-loop objective. H2 explains why fitted Q/V failed (wrong labels/intervention). H3 remains open and not isolated. One proposed mechanism: parameter-free Bellman backup of frozen H=16 value, no new network. Protocol `NEXUS_BELLMAN_BACKUP_CONTROL_PROTOCOL.md`, `authorized: false`, 180 s / 24,000 / 12,324,000 / 0 updates. Report `NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — nested H=8 scoring hurt 200-step development return
 
 The 60-episode development grid completed under the 90 s / 12,000 / 1,536,000 cap. H=8 minus archived H=16 **−174.178 [−265.830, −82.527]**. Label `shorter_horizon_hurts_episode_return`. Execute 8.542 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`. No architecture change, learning-to-learn or AGI.
