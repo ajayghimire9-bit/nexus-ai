@@ -1,0 +1,25 @@
+starting_sha: beab44938076d454a12129e60fe3667619b33e2f
+decoders: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+students: [0, 1, 2, 3, 4]
+states_per_task: 2
+phase: 50
+horizon: 16
+n_candidates: 16
+total_steps: 64
+practical_margin: 1.0
+time_cap_s: 360
+env_cap: 75960
+model_cap: 15667200
+reset_base: 3000000
+collection_base: 3010000
+candidate_base: 3200000
+future_base: 3300000
+tasks:
+  - {task_id: pendulum_ctx_dev0, physics: [6.0, 1.0, 1.0]}
+  - {task_id: pendulum_ctx_dev1, physics: [10.0, 2.0, 1.0]}
+  - {task_id: pendulum_ctx_dev2, physics: [10.0, 1.0, 1.55]}
+parents:
+  artifacts/terminal_value_calibration.json: 419a07b95881aaeae1a61c57e194acd75d37a73031e23990a4ca315ca7245d4d
+  artifacts/terminal_value_calibration_validation.json: e55f3e96652070cdf24fc8e195efa7f75aaa83b0a97dbaf4c9160bb565ec99c7
+  artifacts/research_session_visited_value_ranking_usage.json: 7babe07c386bafcada2a9b2c271ace9ef98271d81225040b06d56122cdab9a31
+  artifacts/visited_commitment.json: 2ecf9ab383aa592a5d92f72eb8347c3711badc84eda08a43b3173392d35315f2

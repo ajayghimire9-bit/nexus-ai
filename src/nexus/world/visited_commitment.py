@@ -137,7 +137,9 @@ def summarize(rows,cfg):
     return main
 
 
-def validate(p,cfg,parent,stage):
+def validate(p,cfg,parent,stage,*,config_path=None,protocol_path=None):
+    config_path=CONFIG if config_path is None else config_path
+    protocol_path=PROTOCOL if protocol_path is None else protocol_path
     cells=checked_id_grid(p['cells'],('decoder','task','state'),set(itertools.product(cfg['decoders'],range(3),range(2))))
     for (d,t,v),row in cells.items():
         _,expected=prior.saved_contexts(parent,stage,d,t+8)
@@ -175,7 +177,7 @@ def validate(p,cfg,parent,stage):
         br=[prior.total(pre['rewards'],16)+prior.total(tail['rewards'],48) for pre,tail in zip(row['prefixes'],row['block_tails'])]
         rebuilt=prior.contrasts(row['scores'],seq,fr,br,[tr['endpoint_obs'] for tr in row['first_traces']],[tr['endpoint_obs'] for tr in row['block_tails']])
         if row['metrics']!=rebuilt:raise ValueError('raw metrics mismatch')
-    if p['counts']!=budget(cfg) or p['config_sha256']!=prior.sha(CONFIG) or p['protocol_sha256']!=prior.sha(PROTOCOL) or p['parents']!=cfg['parents'] or p['source_dirty'] is not False:raise ValueError('accounting/provenance mismatch')
+    if p['counts']!=budget(cfg) or p['config_sha256']!=prior.sha(config_path) or p['protocol_sha256']!=prior.sha(protocol_path) or p['parents']!=cfg['parents'] or p['source_dirty'] is not False:raise ValueError('accounting/provenance mismatch')
     for key in ('checkpoint_before','checkpoint_after'):
         if p[key]!=dict(verified=120,missing=0,mismatched=0):raise ValueError('missing binary audit')
     if p.get('input_verification')!=dict(checkpoints=dict(verified=120,missing=0,mismatched=0),model_context_groups=30,readouts=10,new_environment_steps=0):raise ValueError('missing before-collection verification')
@@ -186,13 +188,25 @@ def validate(p,cfg,parent,stage):
     return summarize(p['cells'],cfg)
 
 
-def execute():
-    cfg=load_config();require_allocation(cfg)
-    if OUTPUT.exists():raise RuntimeError('refusing repeat/overwrite')
+def execute(*,configuration=None,config_path=None,protocol_path=None,output=None,allocation_path=None,preflight=None,finalize=None,prior_execution_s=0.,execution_metadata=None):
+    config_path=CONFIG if config_path is None else config_path
+    protocol_path=PROTOCOL if protocol_path is None else protocol_path
+    output=OUTPUT if output is None else output
+    allocation_path=ALLOCATION if allocation_path is None else allocation_path
+    if configuration is None:
+        cfg=load_config();require_allocation(cfg)
+    else:
+        cfg=configuration
+        if preflight is None:raise PermissionError('custom protocol requires its own locked preflight')
+        preflight(cfg)
+    if not 0<=prior_execution_s<cfg['time_cap_s']:raise ValueError('invalid carried execution time')
+    if output.exists():raise RuntimeError('refusing repeat/overwrite')
     if subprocess.check_output(['git','status','--porcelain'],text=True).strip():raise RuntimeError('commit clean protocol and implementation first')
     subprocess.run(['git','merge-base','--is-ancestor',cfg['starting_sha'],'HEAD'],check=True)
-    started=time.perf_counter();meter=Meter(cfg);parent,stage=prior.parent_evidence()
-    p=dict(complete=False,label='incomplete',cells=[],counts=meter.counts,implementation_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),source_dirty=False,config_sha256=prior.sha(CONFIG),protocol_sha256=prior.sha(PROTOCOL),allocation_sha256=prior.sha(ALLOCATION),parents=cfg['parents'])
+    started=time.perf_counter();meter=Meter({**cfg,'time_cap_s':cfg['time_cap_s']-prior_execution_s});parent,stage=prior.parent_evidence()
+    p=dict(complete=False,label='incomplete',cells=[],counts=meter.counts,implementation_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),source_dirty=False,config_sha256=prior.sha(config_path),protocol_sha256=prior.sha(protocol_path),allocation_sha256=prior.sha(allocation_path),parents=cfg['parents'])
+    if set(execution_metadata or {}) & set(p):raise ValueError('custom metadata cannot replace standard provenance')
+    p.update(execution_metadata or {})
     try:
         import sys,torch,gymnasium
         from nexus.tasks.spec import make_task_env
@@ -223,8 +237,10 @@ def execute():
                     fr=[prior.total(tr['rewards'],64) for tr in first];br=[prior.total(pre['rewards'],16)+prior.total(tail['rewards'],48) for pre,tail in zip(prefixes,tails)]
                     metrics=prior.contrasts(scores,seq,fr,br,[tr['endpoint_obs'] for tr in first],[tr['endpoint_obs'] for tr in tails])
                     p['cells'].append(dict(decoder=d,task=t,state=v,visitor='student' if v==0 else 'zero',visitor_model=visitor,reset_seed=reset_seed(cfg,d,t),collection=live,live_replay_matched=True,true_state=state.tolist(),obs=obs.tolist(),restore_exact=True,sequences=seq.tolist(),prefixes=prefixes,first_traces=first,block_tails=tails,scores=scores,before=before,after=after,readout_sha256=readout.digest(),metrics=metrics))
-                p['wall_clock_s']=time.perf_counter()-started;save(OUTPUT,p)
+                p['wall_clock_s']=prior_execution_s+time.perf_counter()-started;save(output,p)
             print(f'visited decoder={d} seconds={time.perf_counter()-started:.1f}',flush=True)
-        p['checkpoint_after']=verify_checkpoint_integrity();p['wall_clock_s']=time.perf_counter()-started;p.update(validate(p,cfg,parent,stage));meter.check();p['complete']=True
+        p['checkpoint_after']=verify_checkpoint_integrity();p['wall_clock_s']=prior_execution_s+time.perf_counter()-started;p.update(validate(p,cfg,parent,stage,config_path=config_path,protocol_path=protocol_path))
+        if finalize is not None:p.update(finalize(p,cfg,parent,stage))
+        meter.check();p['complete']=True
     except Exception as exc:p['failure']=dict(type=type(exc).__name__,message=str(exc));print('INCOMPLETE',p['failure'],flush=True)
-    p['wall_clock_s']=time.perf_counter()-started;save(OUTPUT,p);return p
+    p['evaluation_wall_s']=time.perf_counter()-started;p['wall_clock_s']=prior_execution_s+p['evaluation_wall_s'];save(output,p);return p
