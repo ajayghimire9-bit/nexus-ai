@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — nested H=8 versus archived H=16, 2026-10-16
+
+The locked 60-episode development screen completed. H=8 minus H=16 200-step return **−174.178 [−265.830, −82.527]**. Label `shorter_horizon_hurts_episode_return`. Student-only **−200.518**; zero-only **−147.839**. Cost 8.542 s execute, 12,000 real steps, 1,536,000 imagined. Checkpoints 120/0/0. Do not retune MPC horizon from this sample. Not control improvement, learning-to-learn or AGI. Report `NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — multi-step rollout offline audit, 2026-10-16
 
 Teacher-forced executed-action free-run on the frozen late-episode traces, zero new environment steps. H=16 angular-velocity MAE **1.935 [1.591, 2.279]** (student own-path) and **2.030 [1.627, 2.432]** (zero). Isolation at H=16 includes 0. One-step student advantage holds through H=4 and is gone by H=16. Receding suffix mismatch is not model error. Next locked contrast is nested H=8 versus archived H=16 on 200-step return, **unauthorized**. Report `NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md`. Not control improvement, learning-to-learn or AGI. Earlier entries remain history.

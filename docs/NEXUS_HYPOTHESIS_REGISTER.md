@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-shorter-horizon-improves-episodes was rejected; nested H=8 hurt return
+
+The complete development screen failed the improvement rule and met the hurt rule: H=8 minus H=16 **−174.178 [−265.830, −82.527]**. Label `shorter_horizon_hurts_episode_return`. Executed one-step MAE stayed small. Do not retune H∈{4,8,16,32} on this sample. Report `NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`.
+
 ## Latest — H-multi-step-error-accumulates-on-live-actions is descriptively large; H-shorter-horizon-improves-episodes is unimplemented
 
 Teacher-forced H=16 angvel MAE on recorded development actions is **1.935 / 2.030** (student / zero own-path). Isolation **−0.095 [−0.515, +0.325]** includes 0. H=1 isolation excludes 0 favoring the student. Exact H=16 sequence-versus-64-step objective mismatch stays demonstrated and closed. Nested H=8 200-step control is locked and unauthorized. Report `NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md`.

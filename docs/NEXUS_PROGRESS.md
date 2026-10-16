@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — nested H=8 scoring hurt 200-step development return
+
+The 60-episode development grid completed under the 90 s / 12,000 / 1,536,000 cap. H=8 minus archived H=16 **−174.178 [−265.830, −82.527]**. Label `shorter_horizon_hurts_episode_return`. Execute 8.542 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — live 16-step teacher-forced error is large; H=8 episode test locked unauthorized
 
 Archived late-episode (obs, action) traces support teacher-forced 2/4/8/16-step reconstruction without new environment transitions. H=16 angvel MAE ~1.93–2.03. Student isolation includes 0 at H=16. Planned-candidate simulator open-loop is not reconstructable. Nested H=8 versus archived H=16 200-step protocol is locked, `authorized: false`, 90 s / 12,000 / 1,536,000. Reports `NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md` and `NEXUS_HORIZON_OBJECTIVE_CONTROL_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.

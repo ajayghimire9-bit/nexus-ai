@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the offline multi-step rollout audit in `docs/NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md`. Teacher-forced H=16 executed-action angvel MAE is **1.935 [1.591, 2.279]** versus **2.030 [1.627, 2.432]**; isolation includes 0. Nested H=8 versus archived H=16 200-step collection stays unauthorized. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the nested H=8 versus archived H=16 screen in `docs/NEXUS_HORIZON_OBJECTIVE_CONTROL_RESULTS.md`. H=8 minus H=16 200-step return **−174.178 [−265.830, −82.527]** is labeled `shorter_horizon_hurts_episode_return`. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority
