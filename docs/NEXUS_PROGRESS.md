@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — receding policy-consistency protocol locked, not executed
+
+Score-correction is closed. A source-only commit-versus-replan protocol is implemented on `cursor/receding-policy-consistency` from `0aed2e3`. Primary contrast: 16-step open-loop execution of the H=16 selected sequence minus receding execution that keeps the same first action then redraws candidates. Search-noise at the same state is a separate switch-rate control. Offline archived live mismatch is confounded. Collection unauthorized (120 s / 8,960 / 1,515,520). Report `NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — action-conditioned Q resume completed, gain versus H=16 not established
 
 The fail-closed resume collected decoder 9 / task 2 / zero visitor once. Complete 60-cell grid, independent audit passed, original 59 cells unchanged. Conditioned−H=16 **−4.293 [−15.751, +7.165]**. Label `action_conditioned_gain_not_established`. Cost 1.061 s, 242 real steps, 64,512 imagined. Original capture/fit hashes frozen. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`. No architecture change, learning-to-learn or AGI.

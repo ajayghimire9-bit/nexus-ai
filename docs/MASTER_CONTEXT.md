@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — receding policy-consistency protocol, 2026-10-16
+
+Score-correction is closed. A source-only receding-horizon consistency protocol is locked on `cursor/receding-policy-consistency` from `0aed2e3`. It compares 16-step plan continuation, same-set receding, fresh-candidate receding, and common-zero continuation from identical restored source states, and it separates search-noise switches from state-driven suffix re-ranking. Offline live-suffix mismatch on archived traces is confounded and cannot pass the screen. Budget 120 s, 8,960 real steps, 1,515,520 imagined. Collection unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Protocol `NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — action-conditioned Q resume completed, 2026-10-16
 
 The missing cell (decoder 9 / development task 2 / zero visitor) was collected once under a 60 s / 242 / 64,512 cap. The assembled 60-cell grid did **not** establish a first-action return gain versus H=16: **−4.293 [−15.751, +7.165]**. Label `action_conditioned_gain_not_established`. Original incomplete capture and Q fits are unchanged. Collection 1.061 s, 242 real steps, 64,512 imagined transitions. Not control improvement, learning-to-learn or AGI. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`. Earlier entries remain history.

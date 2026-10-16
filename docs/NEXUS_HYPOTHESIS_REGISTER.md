@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-commit-beats-replan is implemented, not yet tested
+
+After score-correction closed, the remaining control question is whether receding replanning loses 16-step return relative to executing the H=16 selected sequence from the same restored source state. Search noise at that state is measured separately from state-driven re-ranking of the same 16 suffixes. Collection unauthorized. Archived live suffix mismatch is confounded and is not this test. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md`.
+
 ## Latest — H-action-conditioned-Q did not establish a first-action gain
 
 The resumed complete 60-cell development screen failed its registered pass rule: conditioned−H=16 **−4.293 [−15.751, +7.165]**. Label `action_conditioned_gain_not_established`. H-additive-enough is not supported as a decision upgrade (conditioned−additive includes 0). Close score-correction rather than enlarging the readout. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`.

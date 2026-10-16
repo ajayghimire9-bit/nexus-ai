@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — receding policy consistency, collection unauthorized
+
+Protocol `docs/NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md` on `cursor/receding-policy-consistency` from `0aed2e3`. Score-correction stays closed. Primary screen: commit-16 minus recede-fresh 16-step return on eight source physics, mean ≥ 1 and decoder-level lower bound > 0. Strong baseline is executing the already selected H=16 sequence. Search-noise first-action disagreement at the same state is not a return result. Budget **120 s**, **8,960** real steps, **1,515,520** imagined transitions. Collection is **not** authorized. Feasibility: `docs/NEXUS_RECEDING_POLICY_CONSISTENCY_FEASIBILITY.md`. Do not treat this heading as a result.
+
 ## Current decision — close terminal-value score-correction
 
 The resumed action-conditioned first-action screen is complete and did not pass: conditioned−H=16 **−4.293 [−15.751, +7.165]**. Additive and sequence-value secondaries also include 0. The locked original protocol says to close this score-correction branch rather than add layers, polynomials, or action×context terms. Next work should address receding-horizon policy consistency, action selection and online adaptation under a **new** protocol. That proposal is not implemented and is not authorized here. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`.
