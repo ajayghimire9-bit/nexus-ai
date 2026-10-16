@@ -1,5 +1,19 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — archived-state successor batching parity, 2026-10-16
+
+The read-only engineering audit matched2160/2160 actions and full Q rankings on
+recorded H=16-controller observations with all50 actual student encoders/task
+contexts and zero context. Ten decoders, three development tasks, both visitors,
+six fixed phases. All eight near ties matched; max Q difference0.0000811. All60
+checkpoint files and frozen fingerprints preserved.13.443seconds,3,330,720 imagined
+transitions, zero real steps/updates. Independent archive/arithmetic check agreed;
+93 relevant Git-only tests and2 explicit checkpoint tests passed. Report
+`NEXUS_SUCCESSOR_ARCHIVED_PARITY_RESULTS.md`. No default controller changed, no
+reserved evaluation, no new return finding. Full-episode serial-versus-batched
+parity is proposed, not executed; no expired scientific budget is reused. Historical
+claims and the compact adaptive cross-environment research vision are unchanged.
+
 ## Latest — opt-in exact successor batching engineering audit, 2026-10-16
 
 From fetched prefix-max HEAD `57cbf25`, `codex/successor-search-efficiency-audit`

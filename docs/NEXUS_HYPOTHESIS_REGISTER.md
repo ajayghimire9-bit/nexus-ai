@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — archived decision parity supported on the tested Pendulum grid
+
+Registered engineering rule passed:2160/2160 top actions and numerical checks
+matched across10 frozen decoders, actual student/zero contexts,6 phases and both
+archived H=16 visitors. Full rankings also all matched, including8 near ties.
+No universal bitwise/episode parity or new control improvement follows. Other
+families lack matching archived observation streams for this check. No network
+update, environment episode or closed-hypothesis retest. Report
+`NEXUS_SUCCESSOR_ARCHIVED_PARITY_RESULTS.md`. Next proposed validation is strict
+full-episode serial-versus-batched parity, not another control-improvement claim.
+
 ## Latest — exact successor batching reduces overhead on tested inputs
 
 Engineering claim: batching three independent successor trees preserves the

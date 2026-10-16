@@ -1,5 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current proposal — strict full-episode successor implementation parity
+
+Archived state/context parity now passed2160/2160 actions and rankings, including
+8 near ties. This covers recorded H=16 visitors, not unseen closed-loop lookahead
+states. Do not switch a default runner from finite offline agreement alone.
+
+**One next validation:** paired serial-versus-batched lookahead200-step episodes,
+ten existing decoders/three known Pendulum development tasks/student and zero
+contexts. Require every action/reward sequence to match; no return-improvement
+claim or retuning. Proposed180seconds/24,000 new real steps/18,504,000 imagined,
+zero updates. See `NEXUS_SUCCESSOR_EPISODE_PARITY_PROPOSAL.md` for seed rule,
+integrity/failure criteria and cost derivation. No runner/allocation/data is created
+for that simulation here; the exhausted scientific ledger is not reset. Latest
+completed report: `NEXUS_SUCCESSOR_ARCHIVED_PARITY_RESULTS.md`. Older entries below
+remain chronological history, not new authorizations.
+
 ## Current decision — validate exact batching on archived contexts before integration
 
 The engineering audit preserved160/160 synthetic actions/rankings while reducing

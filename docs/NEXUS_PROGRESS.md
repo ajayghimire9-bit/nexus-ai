@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — archived observations and actual contexts preserve batched decisions
+
+One committed read-only audit:2160/2160 actions/rankings/numerical checks passed,
+including8 near ties;60 checkpoint files unchanged.13.443seconds, zero real steps
+or updates.93 relevant repository-only tests passed/4 deselected;2 explicit local
+binary tests passed. Independent source-log mapping and arithmetic agreed.
+No full-suite or control-return pass is claimed. Report
+`NEXUS_SUCCESSOR_ARCHIVED_PARITY_RESULTS.md`; full-episode parity proposed only.
+
 ## Latest — exact successor batching, engineering evidence only
 
 The opt-in scorer preserves the formula/candidates and reduces51→17 calls at
