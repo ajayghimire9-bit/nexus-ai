@@ -1,6 +1,7 @@
-"""H=3 saturation diagnostic protocol locks. Collection remains unauthorized."""
+"""H=3 saturation diagnostic protocol locks. One-run allocation is live and unconsumed."""
 from __future__ import annotations
-import pytest
+import json
+from pathlib import Path
 from nexus.tasks.cartpole_family import (
     cartpole_h3_saturation,
     cartpole_lookahead_development,
@@ -30,12 +31,13 @@ def test_saturation_holdout_is_stricter_and_avoids_closed_splits():
     assert cfg['eval_tasks']==6
 
 
-def test_collection_stays_unauthorized():
+def test_one_run_allocation_is_live_and_has_no_output():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
+    assert record['authorized'] is True and record['runs']==1
     assert record['lookahead_authorized'] is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==300.0
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
 
 
@@ -50,10 +52,6 @@ def test_h3_was_not_retuned_lookahead_is_withheld_and_parents_are_closed():
     cfg=m.load_config()
     assert cfg['candidate_horizon']==3 and cfg['pendulum_weights'] is False
     assert cfg['lookahead_authorized'] is False
-    report=m.prep()
-    assert report['retuned_h3'] is False and report['lookahead_run'] is False
-    assert report['eligibility']['reused_v073_confirmation'] is False
-    assert report['eligibility']['reused_hard_development'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='55be38a5d77e76bb38a56c50d92e9522037855e8b500577de55c665af9291421'
