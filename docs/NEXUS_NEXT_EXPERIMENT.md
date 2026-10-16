@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock Acrobot lookahead versus H=16; do not collect yet
+
+CartPole lookahead versus H=3 **14.000 [−4.621, 32.621]** stays closed. Do not retune CartPole H=3. The locked next test uses a new family without a +1 survival ceiling: dense-height Acrobot, H=16 × 16, holdout `911ea726b6ed2111`. Collection is **not** authorized. Report `NEXUS_ACROBOT_LOOKAHEAD_PREP.md`.
+
+## Locked — Acrobot lookahead versus frozen H=16, collection unauthorized
+
+Protocol `docs/NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md` on `cursor/acrobot-lookahead-h16` from `5d2e616`. Config SHA256 `3978b7e309f41339a56a2e6993bc48344f2bbf211baf88d3e86ce994ffa7122a`. Protocol SHA256 `e2b83a21e89292e0aec5112c5456f56f82eb0d14d2b9548389ef8e79ed432567`. Primary: lookahead minus H=16 200-step dense-height return, ten training seeds, mean ≥ 25 and lower bound > 0. Budget **300 s**, **24,800** real steps, **6,162,000** imagined. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — CartPole lookahead versus H=3 not established on the unsaturated holdout; do not retune
 
 The authorized six-task screen completed: lookahead minus H=3 **14.000 [−4.621, 32.621]**. Label `cartpole_sat_lookahead_not_established`. Do not retune H=3 and do not drop ceilinged tasks. CartPole lookahead versus H=3 is not established on three development draws. A later distinct question is whether frozen lookahead beats the frozen planner on a **family without a 500-step survival ceiling**. That proposal is not implemented and is not authorized here. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md`.

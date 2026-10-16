@@ -1,0 +1,35 @@
+starting_sha: 5d2e616d48990cacbb6da1a8eead0074c9d3bd86
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 3
+candidate_horizon: 16
+n_candidates: 16
+episode_steps: 200
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 300
+env_cap: 24800
+model_cap: 6162000
+training_updates: 200
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+enforce_time_budget: false
+compute_matched_control: false
+pendulum_weights: false
+cartpole_h3: false
+holdout_rule: acrobot_lookahead_dev_v1
+holdout_split_hash: 911ea726b6ed2111
+eval_task_ids: [acrobot_look_dev0, acrobot_look_dev1, acrobot_look_dev2]
+eval_physics: [[0.95, 1.2, 0.8], [1.25, 1.35, 0.95], [0.75, 1.4, 1.4]]
+reset_base: 22000000
+step_seed_base: 22100000
+train_collect_base: 200000
+val_collect_base: 205000
+parents:
+  configs/cartpole_lookahead_sat.yaml: 7fe2a70eaf88953f2203f9f70de586d69991e16741864075fcdfbe7148547dbe
+  docs/NEXUS_CARTPOLE_LOOKAHEAD_SAT_PROTOCOL.md: 3c82cdd477082ea3898ac346e4d193eda5506e6aab947f259d76fe954d75dac8
+  artifacts/cartpole_lookahead_sat.json: 76fef73eb814607a4567ff6d655f4a2ea8f5134cf6b938a2f93d3bc690de7826
+  docs/NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md: 3cb1fe22c0a89ca4ea56e2fba92da74e01cb1ac9d00b39e9c39271622a7f5a38

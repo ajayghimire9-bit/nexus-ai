@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — Acrobot lookahead versus H=16 protocol locked, collection unauthorized
+
+CartPole lookahead versus H=3 stays closed on three draws. New unused Acrobot physics `911ea726b6ed2111`. Dense height reward, H=16 × 16 residual recipe, 300 s / 24,800 / 6,162,000, `authorized: false`. CartPole H=3 unused. Pendulum FiLM unused. Reports `NEXUS_ACROBOT_LOOKAHEAD_PREP.md` and `NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md`.
+
 ## Latest — CartPole lookahead versus frozen H=3 on the unsaturated holdout not established
 
 The 120-episode six-task grid completed under the 300 s / 72,800 / 4,380,000 cap. Lookahead minus H=3 **14.000 [−4.621, 32.621]**. Label `cartpole_sat_lookahead_not_established`. Execute 23.088 s, exact resource counts under cap, 200 frozen-recipe epochs. Independent audit passed. Ceilinged tasks kept. H=3 not retuned. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md`. No learning-to-learn or AGI.

@@ -69,7 +69,12 @@ def apply_params(env: gym.Env, spec: TaskSpec) -> gym.Env:
 
 def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> gym.Env:
     """Compatible wrappers: same Box(4) obs and discrete(2) actions."""
-    from nexus.tasks.wrappers import ActionDelayWrapper, DiscreteTorqueWrapper, ObservationNoiseWrapper
+    from nexus.tasks.wrappers import (
+        AcrobotDenseRewardWrapper,
+        ActionDelayWrapper,
+        DiscreteTorqueWrapper,
+        ObservationNoiseWrapper,
+    )
 
     delay = int(spec.params.get("action_delay", 0) or 0)
     noise = float(spec.params.get("obs_noise_std", 0.0) or 0.0)
@@ -84,11 +89,18 @@ def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> 
             float(spec.params.get("torque_pos", 2.0)),
         )
         env = DiscreteTorqueWrapper(env, torques)
+    if spec.family == "acrobot":
+        env = AcrobotDenseRewardWrapper(env)
     return env
 
 
 def make_task_env(spec: TaskSpec, *, seed: int | None = None, render_mode: str | None = None) -> gym.Env:
-    env = gym.make(spec.gym_id, render_mode=render_mode)
+    make_kwargs: dict[str, Any] = {}
+    if render_mode is not None:
+        make_kwargs["render_mode"] = render_mode
+    if spec.family == "acrobot":
+        make_kwargs["max_episode_steps"] = 200
+    env = gym.make(spec.gym_id, **make_kwargs)
     apply_params(env, spec)
     env = apply_wrappers(env, spec, seed=seed)
     if seed is not None:

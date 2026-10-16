@@ -31,6 +31,21 @@ def pendulum_step_reward(
     return -(PENDULUM_THETA_COST * theta**2 + PENDULUM_THDOT_COST * thdot**2 + PENDULUM_U_COST * (u**2))
 
 
+def acrobot_height(obs: np.ndarray) -> np.ndarray:
+    """Gymnasium tip-height proxy: -cos(theta1) - cos(theta1+theta2). Hang-down is -2."""
+    cur = np.asarray(obs, dtype=np.float64)
+    if cur.ndim == 1:
+        cur = cur.reshape(1, -1)
+    c1, s1, c2, s2 = cur[:, 0], cur[:, 1], cur[:, 2], cur[:, 3]
+    return -c1 - (c1 * c2 - s1 * s2)
+
+
+def acrobot_step_reward(obs: np.ndarray, action: np.ndarray | int, next_obs: np.ndarray) -> np.ndarray:
+    """Frozen dense upright height of the successor. Not Gymnasium -1/step. Not Pendulum cost."""
+    del obs, action
+    return acrobot_height(next_obs)
+
+
 def cartpole_unit_reward(obs: np.ndarray, action: np.ndarray | int, next_obs: np.ndarray) -> np.ndarray:
     n = np.asarray(next_obs).reshape(-1, next_obs.shape[-1] if np.ndim(next_obs) > 1 else 1).shape[0]
     del obs, action

@@ -53,3 +53,16 @@ class DiscreteTorqueWrapper(gym.ActionWrapper):
     def action(self, action):  # type: ignore[no-untyped-def]
         u = float(self.torques[int(action)])
         return np.asarray([u], dtype=np.float32)
+
+
+class AcrobotDenseRewardWrapper(gym.Wrapper):
+    """Replace Gymnasium -1/step with frozen upright height. Goal does not terminate."""
+
+    def step(self, action):  # type: ignore[no-untyped-def]
+        obs, gym_r, terminated, truncated, info = self.env.step(action)
+        arr = np.asarray(obs, dtype=np.float64).reshape(-1)
+        height = float(-arr[0] - (arr[0] * arr[2] - arr[1] * arr[3]))
+        info = dict(info or {})
+        info["gym_reward"] = float(gym_r)
+        info["gym_terminated"] = bool(terminated)
+        return obs, height, False, truncated, info

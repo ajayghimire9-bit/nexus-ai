@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Acrobot lookahead versus H=16 locked unauthorized, 2026-10-16
+
+Preparation from `5d2e616` on `cursor/acrobot-lookahead-h16`. New family. Dense upright height, 200-step episodes, no goal termination. Holdout `911ea726b6ed2111`. Frozen residual recipe, H=16 × 16, 300 s / 24,800 / 6,162,000. CartPole H=3 unused. Pendulum FiLM unused. **Authorized: false.** Not a result. Reports `NEXUS_ACROBOT_LOOKAHEAD_PREP.md` and `NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — CartPole lookahead versus frozen H=3 on the unsaturated holdout not established, 2026-10-16
 
 The locked six-task screen completed. Lookahead minus H=3 **14.000 [−4.621, 32.621]**. Label `cartpole_sat_lookahead_not_established`. Cost 23.088 s execute / 24.176 s process, 71,292 real steps, 4,290,916 imagined, 200 frozen-recipe epochs. Ceilinged tasks kept. H=3 not retuned. Closed V0.7.3 confirmation unused. Not learning-to-learn or AGI. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md`. Earlier entries remain history.

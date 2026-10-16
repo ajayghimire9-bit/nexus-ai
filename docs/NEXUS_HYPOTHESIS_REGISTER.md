@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-h16-on-acrobot is implemented, not yet tested
+
+CartPole lookahead versus H=3 failed three development draws because of the survival ceiling. This protocol tests one-step backup of frozen H=16 dense-height value versus receding H=16 on unused Acrobot physics, margin 25. CartPole H=3 and Pendulum FiLM unused. Collection unauthorized. Report `NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md`.
+
 ## Latest — H-lookahead-beats-h3-on-unsaturated-cartpole was not established
 
 The complete six-task screen failed the 25-point rule: lookahead minus H=3 **14.000 [−4.621, 32.621]**. Label `cartpole_sat_lookahead_not_established`. Ceilinged tasks were kept. Do not retune H=3 from this sample. CartPole lookahead versus H=3 is now not established on three development draws. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md`.
