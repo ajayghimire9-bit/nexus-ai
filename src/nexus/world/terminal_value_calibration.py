@@ -182,7 +182,7 @@ def validate(p,cfg,parent,stage):
         if len(row['traces'])!=4 or set(row['inputs'])!=set(NAMES):raise ValueError('missing trace/context')
         targets=[]
         for tr in row['traces']:
-            rewards=finite_array(tr['rewards'],(48,));targets.append(float(sum(rewards)))
+            rewards=finite_array(tr['rewards'],(48,));targets.append(float(sum(rewards.tolist())))
             if len(tr['actions'])!=48 or len(tr['decisions'])!=48:raise ValueError('short trace')
             for k,(a,dec) in enumerate(zip(tr['actions'],tr['decisions'])):
                 seed=tail_seeds(cfg,t)[k];idx=dec['selected_index']

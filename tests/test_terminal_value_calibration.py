@@ -30,8 +30,9 @@ def test_budget_and_seed_closure():
     with pytest.raises(TypeError):module.tail_seeds(cfg,0,action=2)
 
 
-def test_prepare_approval_and_audit_inputs_never_collect_or_refit(monkeypatch):
+def test_prepare_approval_and_audit_inputs_never_collect_or_refit(monkeypatch,tmp_path):
     def forbidden(*a,**kw):raise AssertionError('no new collection/fitting allowed')
+    monkeypatch.setattr(module,'APPROVAL',tmp_path/'missing_approval.json')
     monkeypatch.setattr(module,'make_task_env',forbidden)
     monkeypatch.setattr(TerminalReadout,'fit',forbidden)
     result=module.prepare()
@@ -182,3 +183,18 @@ def test_complete_capture_corruption_rejected(synthetic_capture,bad):
     if bad=='prediction':cell['predictions']['zero']['imagined'][0]+=1.
     if bad=='stored_bool':cell['metrics']['zero']['imagined']=True
     with pytest.raises(ValueError):module.validate(p,cfg,parent,stage)
+
+
+def test_real_capture_nonuniform_reward_sums_and_all_axes(monkeypatch):
+    import nexus.world.checkpoint_integrity as checkpoints
+    def forbidden():raise AssertionError('repository-only audit cannot require .pt binaries')
+    monkeypatch.setattr(checkpoints,'verify_checkpoint_integrity',forbidden)
+    p=json.loads(module.OUTPUT.read_text());parent,stage=module.parent_evidence()
+    assert p['complete'] is False and p['failure']['message']=='wrong continuation label'
+    # Recorded nonuniform float rewards catch compensated-Python versus NumPy
+    # scalar accumulation differences that the all-minus-one fixture missed.
+    assert any(sum(tr['rewards'])!=sum(np.array(tr['rewards'])) for r in p['cells'] for tr in r['traces'])
+    result=module.validate(p,module.load_config(),parent,stage)
+    assert result['summaries']['development']['benefit']['n']==10
+    assert result['label']=='held_out_calibration_screen_pass'
+    assert result['summaries']['development']['benefit']['mean']==pytest.approx(42.887241647087194)
