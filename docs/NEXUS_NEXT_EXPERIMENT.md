@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next question — candidate discrimination after calibration
+
+The frozen readout passed held-out development calibration versus a source-mean constant:33.42% RMSE reduction, paired +42.887 [34.451,51.323]. Actual endpoints gave no reliable improvement. These results do not establish candidate discrimination; a constant predictor cannot rank actions. The earlier first-action return test remains inconclusive.
+
+Next prepare one exploratory analysis of the saved calibration trajectories: distinguish task/state mean error from within-state candidate error, and compare unchanged versus terminal-corrected in-set64-step sequence selection on the four already labeled candidates. Use only existing data, frozen models and exact original score logic, with zero new environment interactions and a small inference cap. Commit its analysis protocol before calculating these new contrasts. It is a diagnostic on an already inspected sample, not independent confirmation or a new control-success claim. Everything below is preserved history.
+
 ## Current preparation — frozen terminal-value calibration
 
 The proposed calibration experiment now has an executable locked configuration, runner, tests and protocol: `docs/NEXUS_TERMINAL_VALUE_CALIBRATION_PROTOCOL.md`, on `codex/terminal-value-calibration`. This is implementation readiness, **not new evidence**. It has collected no registered data and has not fitted or changed any model/readout. Original proposal and historical pending statuses below are preserved; their requirement for a separately locked configuration is now satisfied, while new exact-budget approval remains pending.
