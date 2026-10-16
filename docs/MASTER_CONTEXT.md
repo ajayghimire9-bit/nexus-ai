@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MountainCarContinuous lookahead versus frozen H=16 established on development, 2026-10-16
+
+The locked development screen completed. Lookahead minus H=16 dense valley-height return **69.758 [29.321, 110.196]**. Label `mountaincar_continuous_lookahead_established`. Not the Gymnasium sparse +100 benchmark. Cost 26.884 s execute / 27.74 s process, 24,800 real steps, 6,162,000 imagined, 200 frozen-recipe epochs. Discrete MountainCar unused. CartPole H=3 unused. Pendulum FiLM unused. Acrobot unused. Do not retune from this development sample. Not learning-to-learn or AGI. Report `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — MountainCarContinuous lookahead versus H=16 locked unauthorized, 2026-10-16
 
 Preparation from `ae69917` on `cursor/mountaincar-continuous-lookahead-h16`. New family. Discretized force, dense valley height, 200-step episodes, no goal termination. Holdout `d247d7921d6afff7`. Frozen residual recipe, H=16 × 16, 300 s / 24,800 / 6,162,000. Discrete MountainCar unused. CartPole H=3 unused. Pendulum FiLM unused. Acrobot unused. **Authorized: false.** Not a result. Reports `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PREP.md` and `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PROTOCOL.md`. Earlier entries remain history.

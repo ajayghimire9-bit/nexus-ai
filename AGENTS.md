@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the MountainCarContinuous lookahead-versus-H=16 preparation in `docs/NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PREP.md`. MountainCar compute-matched **54.649 [26.611, 82.686]** stays labeled `mountaincar_compute_matched_lookahead_established`. Collection is locked and unauthorized on a new family (`d247d7921d6afff7`); discrete MountainCar is unused. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the MountainCarContinuous lookahead-versus-H=16 development screen in `docs/NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_RESULTS.md`. Lookahead minus H=16 **69.758 [29.321, 110.196]** is labeled `mountaincar_continuous_lookahead_established`. MountainCar compute-matched **54.649 [26.611, 82.686]** stays labeled `mountaincar_compute_matched_lookahead_established`. Do not retune from this sample. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority
