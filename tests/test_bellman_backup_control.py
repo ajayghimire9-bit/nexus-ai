@@ -1,4 +1,4 @@
-"""Bellman-backup protocol locks. One-run allocation is bound; collection is not yet executed."""
+"""Bellman-backup protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -39,16 +39,18 @@ def test_fresh_seeds_do_not_reuse_late_episode_or_h8_resets():
     assert counts['episode']==24000 and counts['model_states']==12324000
 
 
-def test_one_run_allocation_binds_the_registered_hashes():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
     usage=json.loads(Path(record['one_run_usage_record']).read_text())
-    assert float(usage['remaining_session_allowance_s'])==180.0
+    assert float(usage['remaining_session_allowance_s'])==0.0
     assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
 
 
 def test_primary_labels_require_the_25_point_episode_margin():

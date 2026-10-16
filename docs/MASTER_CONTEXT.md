@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — parameter-free H=16 lookahead versus frozen H=16, 2026-10-16
+
+The locked 120-episode development screen completed. Lookahead minus H=16 200-step return **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Successor value remained frozen open-loop H=16 score from s', so this does not isolate Bellman-consistent receding value. Cost 68.146 s execute / 68.721 s process, 24,000 real steps, 12,324,000 imagined, 0 updates. Checkpoints 120/0/0. Confirmation unused. Not general control improvement, learning-to-learn or AGI. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — receding long-term value audit, Bellman backup locked unauthorized, 2026-10-16
 
 Offline synthesis from `580dfb0` on `cursor/receding-long-term-value-audit`. Zero new environment steps, zero training, confirmation closed. Strongest supported explanation is **H1 / B: incorrect objective** — `RandomShootingMPC.act` maximises imagined open-loop H=16 return, then executes only the first action. Nested H=8 hurt 200-step return **−174.178 [−265.830, −82.527]**. Closed Q/V screens used 64-step zero-replan labels and never replaced H=16 inside a 200-step loop. Proposed mechanism: parameter-free one-step Bellman backup of frozen H=16 open-loop value over three first actions. Protocol locked, **authorized: false**, 180 s / 24,000 / 12,324,000 / 0 updates. Exhausted 3600 s remainder 47.766 s is not transferred. Not a result, not control improvement, learning-to-learn or AGI. Reports `NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md` and `NEXUS_BELLMAN_BACKUP_CONTROL_PROTOCOL.md`. Earlier entries remain history.

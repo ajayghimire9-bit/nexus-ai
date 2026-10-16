@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-h16 passed on development; Bellman consistency is not isolated
+
+The complete development screen passed the 25-point episode rule: lookahead minus frozen H=16 **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Successor value was frozen open-loop H=16 from s', not receding-policy Q. H1 remains the supported mechanism class; this result does not prove Bellman consistency. Confirmation transfer is untested. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`.
+
 ## Latest — H1 planning-objective mismatch is best supported; H-bellman-backup-beats-h16 is unimplemented
 
 Offline receding-value audit: H1 (open-loop plan value ≠ first-action+replan value) is the strongest supported explanation of long-horizon control failure. H2 (Q coverage/representation) explains closed 64-step Q/V failures, not the deployed rule. H3 (policy-induced distribution shift) is not isolated. Nested H=8, score-correction, and fitted Q/V stay closed. One locked test: parameter-free Bellman backup of frozen H=16 open-loop value versus frozen H=16 receding on 200-step development return, margin 25. Collection unauthorized. Report `NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md`.

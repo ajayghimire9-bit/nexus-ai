@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the receding long-term value audit in `docs/NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md`. Strongest supported explanation is H1/B incorrect open-loop objective. Nested H=8 minus H=16 200-step return **−174.178 [−265.830, −82.527]** stays labeled `shorter_horizon_hurts_episode_return`. A parameter-free Bellman-backup control test is locked and unauthorized (`docs/NEXUS_BELLMAN_BACKUP_CONTROL_PROTOCOL.md`). Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the parameter-free H=16 lookahead screen in `docs/NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`. Lookahead minus frozen H=16 200-step return **155.647 [109.825, 201.469]** is labeled `bellman_backup_improves_episode_return`. Successor value remained open-loop H=16 from s', so Bellman-consistent receding value is not isolated. Nested H=8 stays labeled `shorter_horizon_hurts_episode_return`. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

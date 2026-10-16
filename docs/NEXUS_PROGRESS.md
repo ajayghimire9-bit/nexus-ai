@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — parameter-free H=16 lookahead raised 200-step development return versus frozen H=16
+
+The 120-episode development grid completed under the 180 s / 24,000 / 12,324,000 cap. Lookahead minus H=16 **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Execute 68.146 s, process 68.721 s, exact resource counts, 0 updates. Independent audit passed. Frozen checkpoints 120/0/0. Successor value was open-loop H=16 from s', not receding-policy Q. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — receding long-term value audited offline; Bellman backup locked unauthorized
 
 Existing source and development artifacts were synthesised with zero new steps. Strongest explanation: H1/B incorrect open-loop objective. H2 explains why fitted Q/V failed (wrong labels/intervention). H3 remains open and not isolated. One proposed mechanism: parameter-free Bellman backup of frozen H=16 value, no new network. Protocol `NEXUS_BELLMAN_BACKUP_CONTROL_PROTOCOL.md`, `authorized: false`, 180 s / 24,000 / 12,324,000 / 0 updates. Report `NEXUS_RECEDING_LONG_TERM_VALUE_AUDIT.md`. No architecture change, learning-to-learn or AGI.
