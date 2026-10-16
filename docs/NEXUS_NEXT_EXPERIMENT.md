@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next experiment — same-state commitment interaction
+
+The calibration screen passed, and a subsequent recorded-data analysis found terminal-corrected complete-sequence selection +24.030 [1.279,46.781] on the four labeled development candidates. This is retrospective and task-concentrated. It does not overturn the earlier inconclusive first-action test on a different sample.
+
+The one next design is `docs/NEXUS_COMMITMENT_VALUE_PROPOSAL.md`: a paired2×2 correction×commitment-length test at identical fresh states/candidates. Measure the interaction between correction gains when committing1 versus16 actions, followed by the same zero-policy future to64. Keep all weights, readouts, H16 and16 candidates fixed. Evaluate all16 candidates' real full-block tails to remove the retrospective subset limitation. Estimated4–6 minutes local CPU, hard cap900s; exact proposed59,136 real steps and14,883,840 imagined transitions. This new simulation has not run and is not authorized by the expired earlier wall-clock allocation. Existing closed splits/results remain unchanged; prepare a separate branch/config/tests and current allocation before collection. Prior recommendations below are preserved history.
+
 ## Current next question — candidate discrimination after calibration
 
 The frozen readout passed held-out development calibration versus a source-mean constant:33.42% RMSE reduction, paired +42.887 [34.451,51.323]. Actual endpoints gave no reliable improvement. These results do not establish candidate discrimination; a constant predictor cannot rank actions. The earlier first-action return test remains inconclusive.

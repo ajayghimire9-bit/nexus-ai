@@ -110,3 +110,15 @@ def test_replay_corruption_rejected():
     prefix,cal,scores,indices=toy()
     scores['0']['inputs'][0][0]=1.
     with pytest.raises(ValueError):module.cell_metrics(prefix,cal,scores,indices)
+
+
+def test_recorded_complete_replay_validates_without_checkpoint_loading(monkeypatch):
+    import nexus.world.checkpoint_integrity as integrity
+    def forbidden():raise AssertionError('repository-only result test cannot require .pt files')
+    monkeypatch.setattr(integrity,'verify_checkpoint_integrity',forbidden)
+    cfg,parent,stage,capture=module.inputs();p=json.loads(module.OUTPUT.read_text())
+    assert p['complete'] is True and p['source_dirty'] is False
+    result=module.validate_result(p,cfg,parent,stage,capture)
+    ci=result['summaries']['development']['metrics']['benefit']['interval']
+    assert result['label']=='exploratory_in_set_gain' and ci['mean']==pytest.approx(24.030169236506037)
+    assert p['model_states']==337920 and p['new_environment_steps']==0
