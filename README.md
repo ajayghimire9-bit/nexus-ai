@@ -6,7 +6,7 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: action-conditioned first-action Q protocol, not executed.** Compact 16-coefficient action×observation Q; source-only identification 0.463 vs additive 0.312. Collection unauthorized. Protocol: `docs/NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md`. The 81-coefficient additive protocol remains locked and unexecuted.
+**Current: action-conditioned first-action Q run incomplete.** The 240 s authorized execution saved 59/60 evaluation cells. No registered decoder-level interval. Report: `docs/NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`.
 
 New episodes of the previous physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**. Both decoder-level intervals clear 25. Disjoint physics returned **−716.0** versus zero **−696.6**, and that interval lies below zero. This is **not** a general control improvement, AGI, or learning-to-learn.
 

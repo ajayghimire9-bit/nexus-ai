@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — action-conditioned first-action Q incomplete run, 2026-10-16
+
+One authorized 240 s execution timed out with evaluation **59/60**. Label `incomplete`. No registered decoder-level interval versus H=16. Source collection and both frozen Q fits completed. Checkpoints unchanged (120/0/0). The 3600 s standing ledger was not reset. This is not a controller result, learning-to-learn or AGI. Report `NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — action-conditioned first-action Q protocol, 2026-10-16
 
 A 16-coefficient action×observation first-action Q is locked on `cursor/action-conditioned-first-action-q` from `6ecb09c`. The 81-coefficient additive protocol is preserved and was not executed: matching V's parameter count does not yield a state-dependent action ranking. Source-only leave-one-task-out action identification is **0.463** versus additive **0.312**; λ=0.1; action×context not justified. Proposed collection uses two distinct source states/task (48 unique labels), 45,240 real steps, 240 s. Standing remainder 47.766 s, so **no new labels have been collected**. Not control improvement, learning-to-learn or AGI. Protocol `NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md`. Earlier entries remain history.

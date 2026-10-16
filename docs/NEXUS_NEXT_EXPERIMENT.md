@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Incomplete — action-conditioned first-action Q, one-run consumed
+
+The authorized 240 s run timed out with **59/60** evaluation cells (missing decoder 9, task 2, zero visitor). Label `incomplete`. No registered decoder-level interval. Source fit completed. The runner refuses overwrite; the one-run allocation remaining is 0. Completing the screen needs a **new** explicit approval with a higher cap (propose 360 s) and overwrite or new artifact paths. Do not treat the 59 cells as a decision. Report `NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`.
+
 ## Locked — action-conditioned first-action Q, collection unauthorized
 
 Protocol `docs/NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md` on `cursor/action-conditioned-first-action-q` from `6ecb09c`. The 81-coefficient additive protocol is preserved and was not edited. Source-only CV selected compact `action_obs` (16 weights, λ=0.1): leave-one-task action identification 0.463 versus additive 0.312 (chance). Additive ranking is state-independent on synthetic data; action×observation ranking is not. Proposed collection uses **two distinct source states per task** (48 unique labels/decoder), not repeated contexts. Primary screen: conditioned minus H=16 first-action 64-return, mean ≥ 1 and lower bound > 0. Budget **240 s**, **45,240** real steps, **11,612,160** imagined transitions. Standing-session remainder is 47.766 s, so collection is **not** authorized. Feasibility: `docs/NEXUS_ACTION_CONDITIONED_Q_FEASIBILITY.md`. Do not treat this heading as a result.

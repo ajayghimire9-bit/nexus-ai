@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded results are in `docs/NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. A 15-coefficient source-only linear first-action Q did not beat frozen H=16 on development visited states (−3.535 [−9.840, +2.769]). The additive 81-coefficient protocol remains locked and unexecuted. A separately versioned action×observation Q protocol is locked in `docs/NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md` and has **not** been executed. That does not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded results are in `docs/NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`. The authorized action-conditioned Q run is **incomplete** (240 s cap, 59/60 evaluation cells). That is not a registered first-action gain or harm versus H=16, and not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-action-conditioned-Q execution incomplete
+
+The registered development screen did not complete: timeout at 240 s, 59/60 evaluation cells. That is not a pass, fail, or equivalence result for first-action return versus H=16. Source labels and both Q fits were frozen before the timeout. A new approval is required to finish or rerun. Report `NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`.
+
 ## Latest — H-action-conditioned-Q is implemented, not yet tested
 
 Additive first-action Q, including the unexecuted 81-coefficient polynomial, cannot change preferred action across states. A compact action×observation family (16 weights) can, on synthetic data. Source-only cross-task identification on 24 historical unique labels is 0.463 versus additive 0.312; action×context was not justified. The locked experiment collects two distinct source states per task and compares action-conditioned Q, additive Q, frozen sequence-value and H=16 on new development visited states. Collection unauthorized. If that screen fails, close score-correction rather than enlarging the readout. Reports `NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md` and `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`.

@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — action-conditioned first-action Q run incomplete at the 240 s cap
+
+One authorized execution reached 240.000 s with source 160/160 and evaluation 59/60. Label `incomplete`. Official audit rejects the capture. No primary CI. Real steps 45,143; imagined 11,587,768. Frozen checkpoints 120/0/0. Exhausted 3600 s ledger unmodified. Report `NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — action-conditioned first-action Q protocol locked, not executed
 
 A separately versioned 16-coefficient action×observation Q protocol is implemented on `cursor/action-conditioned-first-action-q` from `6ecb09c`. The 81-coefficient additive protocol remains unmodified and unexecuted. Synthetic tests show additive preferred actions cannot change across states; action×observation can. Source-only leave-one-task-out identification is 0.463 versus additive 0.312. Action×context was not justified (tied identification, unidentified z). Proposed experiment: two new source states per task, 48 unique labels, 45,240 real steps, 240 s cap. Collection unauthorized (47.766 s remaining). Report `NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md`.
