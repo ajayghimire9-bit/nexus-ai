@@ -1,5 +1,13 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Prefix-max tree reuse versus frozen H=16 not established, 2026-10-16
+
+The locked development screen completed. Prefix-max minus H=16 dense valley-height return **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Prefix hit-rate 0.999. Cost 13.762 s execute / 14.71 s process, 12,000 real steps, 3,090,000 imagined, 0 updates. Frozen checkpoints. Confirmation unused. No 771 arm. Do not retune from this sample. Closed nearest-neighbor tree-reuse stays closed. Not learning-to-learn or AGI. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. Earlier entries remain history.
+
+## Latest — Prefix-max tree reuse versus frozen H=16 one-run authorized, 2026-10-16
+
+One 180-second execution on `cursor/prefix-max-tree-reuse-h16` after `99bc584`. Frozen MountainCar development checkpoints. Confirmation unused. No fitted critic. No 771 arm. **180 s / 12,000 / 3,090,000 / 0 updates.** Remaining one-run allowance equals the protocol cap. Does not reset the exhausted 3600-second standing ledger. Report allocation `configs/prefix_max_tree_reuse_allocation.json`. Earlier entries remain history.
+
 ## Latest — Prefix-max tree reuse versus H=16 locked unauthorized, 2026-10-16
 
 Preparation from `f3898f6` on `cursor/prefix-max-tree-reuse-h16`. Nearest-neighbor tree-reuse stays closed. Frozen development checkpoints reused read-only. Confirmation unused. Prefix-max remaining at matching first-action t=1 nodes (259/step) versus 16-candidate H=16 (256/step). Fresh seeds `30000000+`. **180 s / 12,000 / 3,090,000 / 0 updates.** No 771 arm. No fitted critic. **Authorized: false.** Not a result. Reports `NEXUS_PREFIX_MAX_TREE_REUSE_PREP.md` and `NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md`. Earlier entries remain history.

@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — Prefix-max tree reuse versus frozen H=16 not established
+
+The 60-episode grid completed under the 180 s / 12,000 / 3,090,000 cap. Prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Execute 13.762 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. No 771 arm. No fitted critic. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. No learning-to-learn or AGI.
+
+## Latest — Prefix-max tree reuse versus frozen H=16 one-run authorized
+
+Standing grant plus explicit continue/full-authorization after `99bc584`. Frozen development checkpoints. Confirmation unused. 180 s / 12,000 / 3,090,000, one execution. Remaining equals the protocol cap. Does not reset the exhausted 3600-second standing ledger.
+
 ## Latest — Prefix-max tree reuse versus H=16 protocol locked, collection unauthorized
 
 Nearest-neighbor tree-reuse stays closed and is not used to retune. Frozen development checkpoints are read-only. Confirmation unused. Prefix-max t=1 remaining versus 16-candidate H=16. Fresh seeds. 180 s / 12,000 / 3,090,000, `authorized: false`. Reports `NEXUS_PREFIX_MAX_TREE_REUSE_PREP.md` and `NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md`.

@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-prefix-max-tree-reuse-beats-h16-on-mountaincar was not established
+
+The complete development screen failed the 25-point rule: prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Prefix hit-rate 0.999. Max remaining at matching first-action t=1 nodes did not replace successor H=16 search. Closed nearest-neighbor tree-reuse stays closed. Do not retune from this sample. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`.
+
 ## Latest — H-prefix-max-tree-reuse-beats-h16-on-mountaincar is implemented, not yet tested
 
 Nearest remaining failed. This protocol tests max remaining at cached t=1 nodes whose first action matches `a` versus 16-candidate H=16 on frozen MountainCar development checkpoints, margin 25, 259 imagined/step. Confirmation unused. No 771 arm. No fitted critic. Collection unauthorized until a bound one-run allocation exists. Report `NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md`.

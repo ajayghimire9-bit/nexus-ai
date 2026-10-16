@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the locked unauthorized prefix-max tree-reuse protocol in `docs/NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md`. Nearest-neighbor tree-reuse **−14.751 [−37.142, 7.641]** stays labeled `tree_reuse_lookahead_not_established`. Prefix-max remaining at matching first-action t=1 nodes versus H=16 on frozen MountainCar development is **180 s / 12,000 / 3,090,000**, `authorized: false` until a bound one-run allocation exists. Compute-matched backup stays established on Pendulum **60.182** and MountainCar **54.649**, not Acrobot **12.834**. Cross-family learning is not supported. Do not retune closed screens. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the prefix-max tree-reuse versus H=16 development screen in `docs/NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. Prefix-max minus H=16 **−9.832 [−31.108, 11.445]** is labeled `prefix_max_tree_reuse_not_established`. Nearest remaining **−14.751** also failed. Cheap reuse of the H=16 tree from `s` did not replace 771-step successor search. Compute-matched backup stays established on Pendulum **60.182** and MountainCar **54.649**, not Acrobot **12.834**. Cross-family learning is not supported. Do not retune closed screens. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

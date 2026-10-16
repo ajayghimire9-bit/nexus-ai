@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — prefix-max tree reuse is not established; do not retune
+
+The authorized development screen completed: prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Nearest remaining and prefix-max both failed. Do not retune H=16, fit another Q, or reuse the tree grown from `s` again. The known MountainCar controller remains 771-step successor backup. A later distinct question is lookahead versus frozen H=16 on a **new unused MountainCarContinuous confirmation holdout**. That proposal is not implemented and is not authorized here. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`.
+
+## Consumed — prefix-max tree reuse versus frozen H=16, one-run remaining 0
+
+Protocol `docs/NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md` on `cursor/prefix-max-tree-reuse-h16` from `f3898f6`. Config SHA256 `1d1a39c11076644fcc590fa378e0d19c3bff8ec68f4f92e078de894609daf440`. Protocol SHA256 `7f7a3ca13b267d9873fa0d2339db6cd82e5c6f313239bc9835b4e057a5b6a634`. Primary completed: prefix-max minus H=16 **−9.832 [−31.108, 11.445]**, label `prefix_max_tree_reuse_not_established`. Holdout hash `2a5cc4979642cc2a`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`.
+
 ## Authorized — one 180-second prefix-max tree reuse versus frozen H=16 run
 
 Protocol `docs/NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md` on `cursor/prefix-max-tree-reuse-h16` from `f3898f6`. Implementation SHA `99bc584a668db188d527bb9dd509fbb919be5dc4`. Config SHA256 `1d1a39c11076644fcc590fa378e0d19c3bff8ec68f4f92e078de894609daf440`. Protocol SHA256 `7f7a3ca13b267d9873fa0d2339db6cd82e5c6f313239bc9835b4e057a5b6a634`. One execution only. **180 s / 12,000 / 3,090,000 / 0 updates.** Frozen MountainCar development checkpoints. Confirmation unused. No 771 arm. No fitted critic. Remaining one-run allowance equals the protocol cap. Does not reset the exhausted 3600-second standing ledger. Further experiments are **not** authorized by this allocation.
