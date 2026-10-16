@@ -1,5 +1,7 @@
-"""Prefix-max tree-reuse protocol locks. Collection stays unauthorized until bound."""
+"""Prefix-max tree-reuse protocol locks. One-run allocation is authorized and unused."""
 from __future__ import annotations
+import json
+from pathlib import Path
 import numpy as np
 import pytest
 from nexus.tasks.mountaincar_family import (
@@ -56,17 +58,17 @@ def test_budget_is_two_arms_at_256_and_259():
     assert 10*3*200*(256+259)==3090000
 
 
-def test_allocation_is_unauthorized_and_execute_refuses():
+def test_one_run_allocation_is_authorized_and_unused():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
+    assert record['authorized'] is True and record['runs']==1
     assert record['fitted_critic'] is False
     assert record['lookahead_arm'] is False
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
-    with pytest.raises(PermissionError, match='fresh human approval required'):
-        m.require_allocation(m.load_config())
-    with pytest.raises(PermissionError, match='fresh human approval required'):
-        m.execute()
+    m.require_allocation(m.load_config())
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==180.0
+    assert int(usage['retries'])==0
     assert m.OUTPUT.exists() is False
 
 
@@ -125,9 +127,6 @@ def test_missing_prefix_falls_back_to_nearest_t1_not_whole_tree():
     assert value==float(remaining[-1])
 
 
-def test_prep_stays_unauthorized():
-    payload=m.prep()
-    assert payload['authorized'] is False and payload['runs']==0
-    assert payload['controller']['prefix_max_imagined_per_step']==259
-    assert payload['eligibility']['reused_tree_reuse_seeds'] is False
-    assert payload['primary']=='return_gain'
+def test_prep_refuses_an_already_authorized_allocation():
+    with pytest.raises(PermissionError, match='already authorized'):
+        m.prep()

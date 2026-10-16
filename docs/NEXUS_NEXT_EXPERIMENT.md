@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Authorized — one 180-second prefix-max tree reuse versus frozen H=16 run
+
+Protocol `docs/NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md` on `cursor/prefix-max-tree-reuse-h16` from `f3898f6`. Implementation SHA `99bc584a668db188d527bb9dd509fbb919be5dc4`. Config SHA256 `1d1a39c11076644fcc590fa378e0d19c3bff8ec68f4f92e078de894609daf440`. Protocol SHA256 `7f7a3ca13b267d9873fa0d2339db6cd82e5c6f313239bc9835b4e057a5b6a634`. One execution only. **180 s / 12,000 / 3,090,000 / 0 updates.** Frozen MountainCar development checkpoints. Confirmation unused. No 771 arm. No fitted critic. Remaining one-run allowance equals the protocol cap. Does not reset the exhausted 3600-second standing ledger. Further experiments are **not** authorized by this allocation.
+
 ## Current decision — lock prefix-max tree reuse versus H=16; do not collect yet
 
 Nearest-neighbor tree-reuse **−14.751 [−37.142, 7.641]** stays closed. Do not retune H=16 or fit another Q. The locked next test uses max remaining at cached t=1 nodes whose first action matches `a` versus 16-candidate H=16 on frozen MountainCar development checkpoints with fresh seeds `30000000+`. Confirmation unused. Collection is **not** authorized until a bound one-run allocation exists. Report `NEXUS_PREFIX_MAX_TREE_REUSE_PREP.md`.
