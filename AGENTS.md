@@ -76,3 +76,33 @@ Use the repository as persistent research context so the user does not need to e
 ## Latest evidence pointer
 
 The most recent bounded results are in `docs/NEXUS_POLICY_SWITCH.md` and `docs/NEXUS_LONG_CONTINUATION_RESULTS.md`. They diagnose context-conditioned control harm on specific Pendulum dynamics with frozen models. They do not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+
+
+## Standing Coding and Local Research Authority
+
+Human-authorized on **2026-10-16**. Applies to future NEXUS development work during an active Codex session. Preserve the project vision and every scientific safeguard above. This standing grant supplies the experiment approval required by the workflow above **only within the following limits**; it supersedes repeated per-experiment human confirmation within that scope, not scientific preconditions or actual app permissions.
+
+### Coding authority
+
+- Independently read, create and edit NEXUS project files; run Python scripts and pytest; inspect checkpoints; and perform safe Git operations, commits and pushes on research branches.
+- Do not repeatedly request human approval for routine coding, testing or safe repository operations when Codex's actual permissions allow them. Preserve unrelated user changes.
+
+### Standing development experiment budget
+
+- **Maximum 15 minutes (900 seconds) of execution per experiment.** Use a smaller cap when the locked protocol specifies one.
+- **Maximum 60 minutes (3600 seconds) of aggregate experiment execution per active Codex session.** Maintain an auditable session ledger; include failed, partial and interrupted execution. Do not reset the tally by changing branches, retrying, or receiving another message in the same session. If the session boundary is unclear, carry the existing ledger forward instead of assuming a fresh budget.
+- **Maximum 100,000 new real-environment interactions per experiment**, including training collection, support, validation, probes, audits and evaluation. Count each executed interaction exactly once; disclose cached reuse and imagined transitions separately.
+- **Local CPU only**, with no paid cloud compute/services, live trading or financial transactions.
+- Do not retrain, modify or replace historical frozen checkpoints without separate explicit authorization. Read and verify them for inference; preserve historical binaries, hashes and artifacts.
+- Before execution, record the locked protocol/configuration hashes, allocated runtime/interaction caps and remaining session budget. Enforce the smaller of the protocol cap and remaining session allowance. Stop and save an honest partial result if a cap is reached.
+- Within these limits, independently select falsifiable questions, preregister hypotheses and decision rules, implement tests, run experiments, analyze results, and prepare the next experiment. Another bounded development experiment may proceed within the remaining session allowance without asking again.
+- If an existing runner requires an exact-config approval record, create and commit an auditable allocation citing **this human standing grant**, its configuration hash and budget. Do not fabricate a new human reply, reuse a consumed one-run record, or increase the grant. Older expired time-limited authorizations remain historical records; they do not negate this new standing grant.
+
+### Scientific safeguards and limits
+
+- Preserve closed evaluation seeds/splits and previous results. Standing authority does not reopen confirmation data, permit tuning on confirmation outcomes, or relax a locked protocol's scientific entry conditions.
+- Use separate research branches; commit protocol and tested implementation before collecting results, then commit results separately. Preserve ten-independent-decoder aggregation where applicable; student seeds, episodes and candidate trajectories are not extra decoder replications.
+- Save reproducible raw metrics, hashes, code revision, dependencies and resource accounting. Audit leakage, completeness and statistical aggregation. Report negative and inconclusive results without hiding failures or claiming unsupported control improvement, learning-to-learn or AGI.
+- Obtain separate explicit approval before modifying or merging into `main`, deleting important project data, changing security/permission settings, spending money, starting an unbounded autonomous loop, or exceeding any standing limit. This grant does not create a background worker or recurring automation.
+- **These repository instructions do not override Codex's actual sandbox, tool permissions, approval review, security settings, or higher-priority instructions.** Required app-level permission controls still apply; do not bypass them.
+- Confirm completion of this authority setup to the user **before starting the next experiment**. Configuration of these rules is not itself permission to skip that requested confirmation.
