@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the source-only next-direction assessment in `docs/NEXUS_NEXT_DIRECTION_ASSESSMENT.md`. Recommend episode-level control diagnosis (B), not the locked 90 s ranking screen (A). That ranking protocol stays unauthorized. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the unauthorized late-episode decision-trajectory protocol in `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`. Collection is not authorized. The 90 s ranking diagnostic also stays unauthorized. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — late-episode decision trajectory locked, not collected, 2026-10-16
+
+A development-only paired 200-step receding log is locked on `cursor/late-episode-decision-trajectory` from `e2da92c`. Primary: student minus zero late-minus-early executed one-step angular-velocity error growth, margin 0.05. No three-action first-action forks. Archives lack per-step actions and scores. Budget 90 s / 12,000 / 3,084,000. **Authorized: false.** Decision-aware ranking collection stays unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Reports `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_AUDIT.md` and `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — next-direction assessment recommends episode-level control, 2026-10-16
 
 Source-only comparison of short-horizon ranking (Direction A) versus 200-step control failure (Direction B). **Recommend B.** Recorded return-phase rewards put the pooled student-minus-zero loss after step 64, not in the first H=16 window. The locked 90 s decision-aware diagnostic stays unchanged and unauthorized. Zero new steps, zero training, confirmation not reopened. Not control improvement, learning-to-learn or AGI. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`. Earlier entries remain history.

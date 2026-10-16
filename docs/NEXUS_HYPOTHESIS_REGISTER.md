@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-student-late-executed-error-grows-faster is implemented, not yet tested
+
+Archives cannot reconstruct per-step scores or executed one-step errors on 200-step episodes. The locked development experiment logs paired H=16 receding traces with shared candidate seeds. Primary: differential late-minus-early executed angular-velocity error, margin 0.05. Same-state prefix until first mismatch; later steps are different-state. Three-action late-state forks stay closed. Collection unauthorized. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`.
+
 ## Latest — H-episode-loss-is-a-first-horizon-ranking-miss is not supported by recorded traces
 
 Exploratory decoder-level splits of closed return-phase rewards (not a new primary, `primarily_late` unchanged): steps 16–63 **+0.307 [−4.144, +4.759]** include 0; steps 64–127 and 128–199 exclude 0. Combined with strong source H=16 ranking and PCG ranking-without-control, further initial-state ranking screens are lower information than episode-level diagnosis. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`.

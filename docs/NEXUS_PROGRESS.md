@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — late-episode 200-step decision log locked, collection unauthorized
+
+Per-step actions and scores are missing from return-phase, horizon-alignment and PCG artifacts. A development-only paired H=16 receding logger is implemented. Primary is differential late executed-transition error growth, not another first-action fork. 90 s / 12,000 / 3,084,000. `authorized: false`. Reports `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_AUDIT.md` and `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — next-direction assessment: prefer 200-step control over another ranking screen
 
 Offline comparison of Direction A (development near-best H=16 error) versus Direction B (episode-level control failure). Recommendation **B**, from recorded evidence: ranking is already strong, source H1 is not established, and the pooled 200-step loss is after step 64. Decision-aware protocol hashes unchanged, `authorized: false`. Zero new steps. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`. No architecture change, learning-to-learn or AGI.

@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — late-episode decision trajectory, collection unauthorized
+
+Protocol `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md` on `cursor/late-episode-decision-trajectory` from `e2da92c`. Primary: (student late−early executed one-step angvel MAE) minus the same quantity for zero context, mean ≥ 0.05 and decoder-level lower bound > 0. No three-action forks. Budget **90 s total process**, **12,000** real steps, **3,084,000** imagined transitions. Collection is **not** authorized. The exhausted 3600 s ledger remaining 47.766 s is below this cap and is not reused. Audit: `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_AUDIT.md`. Do not treat this heading as a result.
+
 ## Current decision — prefer episode-level control diagnosis; do not run the 90 s ranking screen
 
 A source-only comparison of the locked development ranking diagnostic (Direction A) versus 200-step control failure (Direction B) recommends **B**. Recorded return-phase windows put the pooled loss after step 64. Do not execute the 90 s / 19,680 / 3,164,160 ranking collection. That protocol stays locked and unauthorized. No new simulation is authorized by this assessment. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`.
