@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — remaining-horizon versus fixed H=16, collection unauthorized
+
+Protocol `docs/NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md` on `cursor/horizon-alignment-diagnostic` from `aa3a5fb`. Primary: remaining-horizon MPC minus fixed H=16 on 200-step development episodes, mean ≥ 25 and decoder-level lower bound > 0. The 16-step window is a diagnostic cutoff. Budget **180 s total process**, **25,920** real steps, **6,405,120** imagined transitions, 10×3×2 cells. Collection is **not** authorized. Audit: `docs/NEXUS_HORIZON_ALIGNMENT_AUDIT.md`. Do not treat this heading as a result.
+
 ## Current decision — same-set versus equal-horizon fresh not established
 
 The authorized development screen completed: same-set minus equal-horizon fresh **+0.834 [−0.955, +2.623]**. Label `same_set_advantage_not_established`. Do not retune that contrast. A distinct later question is whether remaining-horizon receding beats production H=16 because the deployed controller plans past the 16-step evaluation window. That proposal is not implemented and is not authorized here. Report `NEXUS_SAME_SET_PLANNING_RESULTS.md`.

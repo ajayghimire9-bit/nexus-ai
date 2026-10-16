@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — horizon-alignment diagnostic locked, not executed
+
+Remaining-horizon MPC versus fixed H=16 is implemented on development physics. Primary: 200-step TimeLimit return, margin 25. Short 16-step window is a diagnostic cutoff. TimeLimit is truncation not termination; the planner does not clip a clock. Collection unauthorized (180 s / 25,920 / 6,405,120). Report `NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — same-set equal-horizon confirmation complete, registered advantage not established
 
 The 60-cell development grid completed under the 60 s / 2,880 / 506,880 cap. Same-set minus equal-horizon fresh **+0.834 [−0.955, +2.623]**. Label `same_set_advantage_not_established`. Execute 5.655 s, process 5.701 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_SAME_SET_PLANNING_RESULTS.md`. No architecture change, learning-to-learn or AGI.

@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-remaining-horizon-beats-fixed-H16 is implemented, not yet tested
+
+The previous 16-step H=16 loss is an artificial cutoff, not episode termination. The locked experiment compares remaining-horizon `H=min(16, remaining)` with fixed H=16 on complete 200-step development episodes (primary, margin 25) and a 16-step diagnostic (cannot upgrade). Shared per-step seeds must match actions on steps 0–184. Collection unauthorized. Report `NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md`.
+
 ## Latest — H-same-set-beats-equal-horizon-fresh was not established
 
 The complete development screen failed its registered pass rule: same-set minus equal-horizon fresh **+0.834 [−0.955, +2.623]**. Label `same_set_advantage_not_established`. Remaining-horizon methods beat production H=16 only as secondaries and cannot upgrade the primary. Do not retune same-set versus equal-horizon fresh. Report `NEXUS_SAME_SET_PLANNING_RESULTS.md`.

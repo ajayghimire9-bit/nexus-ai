@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — horizon-alignment protocol, 2026-10-16
+
+A remaining-horizon versus fixed H=16 diagnostic is locked on `cursor/horizon-alignment-diagnostic` from `aa3a5fb`. Pendulum TimeLimit truncates at 200 with `terminated=False`; MPC does not clip elapsed time, so H=16 can score post-cutoff imagined rewards. Primary is 200-step episode return, margin 25. The 16-step window is an artificial cutoff and cannot pass general control improvement. Budget 180 s / 25,920 / 6,405,120. Collection unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Protocol `NEXUS_HORIZON_ALIGNMENT_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — same-set planning confirmation, 2026-10-16
 
 The locked 60-cell development screen completed. Same-set minus equal-horizon fresh: **+0.834 [−0.955, +2.623]**. Label `same_set_advantage_not_established`. The source retrospective +5.442 did not replicate after remaining-horizon equalization. Cost 5.655 s execute / 5.701 s process, 2,880 real steps, 506,880 imagined. Checkpoints 120/0/0. Score-correction stays closed. Not control improvement, learning-to-learn or AGI. Report `NEXUS_SAME_SET_PLANNING_RESULTS.md`. Earlier entries remain history.
