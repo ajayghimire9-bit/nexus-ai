@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current readiness — same-state commitment interaction implemented
+
+The commitment-length experiment is now implemented and tested on `codex/commitment-value-diagnostic`, from clean GitHub-matched c458803d820902e4d1eeb3c3208db1ce40fb50f7. Locked executable config and finalized protocol: `configs/commitment_value.yaml` and `docs/NEXUS_COMMITMENT_VALUE_PROTOCOL.md`. There are **no new registered outcomes**. The code enforces zero-context continuation in both arms, identical candidates/future RNG, cached interaction accounting, complete-grid validation and fresh exact-budget approval before environment access. Earlier proposal and results below are preserved history.
+
+The one next run tests the paired gain16-minus-gain1 interaction, one-point practical margin and positive decoder-level95% lower bound, with a separate positive full16 interval required for a benefit label. Proposed4–6 minutes, cap900 seconds,59,136 real steps and14,883,840 imagined transitions. No new support/model/readout training; all120 checkpoint files and30 saved context groups have verified in read-only mode. The former two-hour authorization is expired; this implementation does not self-approve a new simulation.
+
 ## Current next experiment — same-state commitment interaction
 
 The calibration screen passed, and a subsequent recorded-data analysis found terminal-corrected complete-sequence selection +24.030 [1.279,46.781] on the four labeled development candidates. This is retrospective and task-concentrated. It does not overturn the earlier inconclusive first-action test on a different sample.
