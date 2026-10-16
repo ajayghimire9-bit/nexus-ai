@@ -1,4 +1,4 @@
-"""MountainCar lookahead protocol locks. Collection remains unauthorized."""
+"""MountainCar lookahead protocol locks. The one-run allocation is armed."""
 from __future__ import annotations
 import numpy as np
 import pytest
@@ -34,14 +34,14 @@ def test_dense_height_replaces_gym_minus_one_and_does_not_goal_terminate():
     env.close()
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_is_armed_and_output_is_absent():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['pendulum_weight_transfer'] is False and record['cartpole_h3'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.execute()
 
 
 def test_primary_labels_and_parents():
@@ -53,10 +53,7 @@ def test_primary_labels_and_parents():
     assert cfg['pendulum_weights'] is False and cfg['cartpole_h3'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
-    report=m.prep()
-    assert report['authorized'] is False
-    assert report['eligibility']['reused_cartpole'] is False
-    assert sha(m.CONFIG)==m.LOCKED_CONFIG
-    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    assert sha(m.CONFIG)==m.LOCKED_CONFIG=='9e4f9cf8b92cbb5e54d9a17b20c1518aae9f925e490930cd4b958ec7885e97f4'
+    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='4f7ebc5f30755e80adecee9c930e9b888a006f1e5edca00d742a8caa3932d4bb'
     assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
     assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
