@@ -1,6 +1,7 @@
-"""CartPole lookahead protocol locks. Collection remains unauthorized."""
+"""CartPole lookahead protocol locks. One-run allocation is live and unconsumed."""
 from __future__ import annotations
-import pytest
+import json
+from pathlib import Path
 from nexus.tasks.cartpole_family import cartpole_lookahead_development, cartpole_physics_key
 from nexus.world import cartpole_lookahead as m
 from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_PRIMARY_HORIZON
@@ -26,14 +27,16 @@ def test_holdout_is_disjoint_and_uses_frozen_h3():
     assert counts['lookahead_imagined_per_step']==98 and counts['h3_imagined_per_step']==48
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_is_live_and_has_no_output():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==300.0
+    assert int(usage['retries'])==0
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.execute()
 
 
 def test_primary_labels_require_the_25_point_margin():
@@ -46,11 +49,9 @@ def test_primary_labels_require_the_25_point_margin():
 def test_shared_candidates_are_cartpole_not_pendulum():
     seq=m.shared_candidates(18100000)
     assert seq.shape==(16,3) and int(seq.max())<=1
-    report=m.prep()
-    assert report['authorized'] is False
-    assert report['pendulum_weights'] is False
-    assert report['eligibility']['reused_closed_cartpole_confirmation'] is False
     cfg=m.load_config()
+    assert cfg['pendulum_weights'] is False
+    assert m.load_allocation()['pendulum_weight_transfer'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='de1113d814ef506eba7e477fc314c48a9d289a497bab018a02cd1acaa6673ece'
