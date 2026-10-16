@@ -1,6 +1,7 @@
 """Nested H=8 protocol locks. Collection remains unauthorized."""
 from __future__ import annotations
 import json
+from pathlib import Path
 import numpy as np
 import pytest
 from nexus.world import horizon_objective_control as m
@@ -39,12 +40,16 @@ def test_budget_and_paired_seeds_match_late_episode_resets():
     assert (0,0) in archived
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_binds_the_registered_hashes_before_collection():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['config_sha256']==sha(m.CONFIG)
+    assert record['protocol_sha256']==sha(m.PROTOCOL)
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert usage['remaining_session_allowance_s']==90.0
+    assert usage['status']=='authorized_not_executed'
 
 
 def test_primary_labels_require_the_25_point_episode_margin():
