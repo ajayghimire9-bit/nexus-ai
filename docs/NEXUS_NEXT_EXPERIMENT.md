@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — audit visited-state value ranking offline
+
+The visited-state replication is complete and inconclusive: **−5.999 [−22.293,+10.295]** commitment interaction, gain16 **−7.784 [−22.369,+6.800]**. Neither visitor group establishes a positive interaction. The earlier +39.366 initial-state result remains closed. Do not infer that block commitment improves deployed control and do not build a practical commitment policy yet. See `NEXUS_VISITED_COMMITMENT_RESULTS.md`.
+
+**One next experiment:** register an exploratory offline within-state terminal-value ranking/calibration audit of the saved16 candidates at each visited state. Compare frozen predicted48-step tails with actual recorded48-step common-zero tails, decompose bias/centered candidate error, and measure ranking/selection regret against a constant-tail comparator. Average students, equal visitor groups and tasks inside ten decoder units; label all reanalysis exploratory and preserve the primary inconclusive result. No fitting, MPC replay, new data or architecture changes. Estimated<30CPU seconds, proposed cap120seconds, **zero new real or imagined transitions**. Lock a separate protocol and implementation before calculating those outcomes. It has not run. This can test whether the existing readout's useful discrimination fails at the encountered state distribution before investing in controller changes. Earlier entries below are chronological history, superseded by this completed replication and proposed analysis.
+
 ## Current decision — test late-state persistence, not a controller change
 
 The initial-state commitment interaction is now complete: **+39.366 [26.247,52.484]**, with positive full-sequence correction gain and inconclusive first-action gain. See `NEXUS_COMMITMENT_VALUE_RESULTS.md`. The registered screen passed, but corrected sequence commitment still returned less on average than original one-action control. Do not deploy a commitment change from these results.

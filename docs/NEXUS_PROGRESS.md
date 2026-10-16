@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — visited-state commitment replication (2026-10-16)
+
+The registered phase50 replication completed once from clean `fb109c4d9cd2a3573cc4c3fc1d760cd39fc39a3f`. Primary interaction **−5.999 [−22.293,+10.295]**, full-sequence correction gain **−7.784 [−22.369,+6.800]**, one-action gain **−1.786 [−8.063,+4.492]** across ten decoder units. Label `commitment_interaction_not_established`: complete but inconclusive, not proof of disappearance/equivalence. Equal student/zero visitor weighting; neither visitor group nor any task has an interaction interval wholly above zero. Earlier initial-state +39.366 result remains unchanged. Do not deploy block commitment or change architecture from these results.
+
+Exactly75,960 real steps and15,667,200 imagined transitions in242.932seconds; no fitting/support collection; all120 checkpoints and60 model/context cells unchanged; all60 final live decisions replayed. Independent raw arithmetic agrees. Final full suite **639 passed,1 deselected**; explicit120-file audit passed. See `NEXUS_VISITED_COMMITMENT_RESULTS.md`. Next is a proposed offline within-state value-ranking audit using saved outcomes, zero new interactions; not yet executed. Older pending proposals below are preserved history.
+
 ## Latest — same-state commitment diagnostic completed (2026-10-16)
 
 The frozen correction×commitment experiment completed once from clean `201810c7a146687654868294503769fdedab73d8`. Ten decoder units: correction gain at one action **−2.656 [−7.215,+1.904]**, at 16 actions **+36.710 [26.599,46.821]**, interaction **+39.366 [26.247,52.484]**. Registered label `commitment_sensitive_gain`. All three development-task interactions are positive with intervals above zero; this does not establish broad physics generalization. Corrected block commitment still has lower mean absolute return than original first-action control. No new full-episode or confirmation claim.
