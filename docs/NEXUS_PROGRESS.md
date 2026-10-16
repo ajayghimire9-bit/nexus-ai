@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — same-set planning audited offline, development confirmation locked not executed
+
+Retrospective same-set minus recede-fresh **+5.442 [+3.607, +7.277]** on the complete 160-cell source capture, zero new steps. Horizon mismatch and 2× imagined receding remain open confounds. Equal remaining-horizon development confirmation is implemented and unauthorized (60 s, 2,880 real, 506,880 imagined). Report `NEXUS_SAME_SET_PLANNING_AUDIT.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — receding policy-consistency screen complete, neither registered gain established
 
 The 160-cell source grid completed under the 120 s / 8,960 / 1,515,520 cap. Commit-16 minus recede-fresh **−1.787 [−4.324, +0.751]**. Label `replan_consistency_not_established`. Execute 17.838 s, process 17.927 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`. No architecture change, learning-to-learn or AGI.

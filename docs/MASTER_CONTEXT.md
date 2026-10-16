@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — same-set planning retrospective audit, 2026-10-16
+
+Offline reconstruction of the locked 160 source cells found same-set minus recede-fresh **+5.442 [+3.607, +7.277]** and same-set minus commit-16 **+7.229 [+4.739, +9.718]**. That is a credible secondary, not a preregistered pass. Fresh receding scored twice as many imagined transitions and planned past the 16-step evaluation window. A development confirmation with equal remaining-horizon budgets is locked and **not authorized** (60 s / 2,880 / 506,880). Score-correction stays closed. Not control improvement, learning-to-learn or AGI. Reports `NEXUS_SAME_SET_PLANNING_AUDIT.md` and `NEXUS_SAME_SET_PLANNING_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — receding policy-consistency screen, 2026-10-16
 
 The locked 160-cell source screen completed. Commit-16 minus recede-fresh 16-step return: **−1.787 [−4.324, +0.751]**. Label `replan_consistency_not_established`. Mean and interval fail both registered pass rules. Cost 17.838 s execute / 17.927 s process, 8,960 real steps, 1,515,520 imagined. Checkpoints 120/0/0. Score-correction stays closed. Not control improvement, learning-to-learn or AGI. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`. Earlier entries remain history.

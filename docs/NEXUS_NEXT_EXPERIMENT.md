@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — equal-horizon same-set versus fresh replanning, collection unauthorized
+
+Protocol `docs/NEXUS_SAME_SET_PLANNING_PROTOCOL.md` on `cursor/same-set-planning-audit` from `16d904c`. Primary: same-set suffix receding minus equal remaining-horizon fresh draws on three development physics, mean ≥ 1 and decoder-level lower bound > 0. Production H=16 receding from `s0` is an unequal-budget baseline, not the primary. Budget **60 s total process**, **2,880** real steps, **506,880** imagined transitions. Collection is **not** authorized. Audit: `docs/NEXUS_SAME_SET_PLANNING_AUDIT.md`. Do not treat this heading as a result.
+
 ## Current decision — receding policy consistency not established
 
 The authorized source screen completed: commit-16 minus recede-fresh **−1.787 [−4.324, +0.751]**. Label `replan_consistency_not_established`. Same-set suffix receding beat both open-loop commitment and fresh-candidate receding, but only as a locked secondary. A new protocol would need to make remaining-suffix receding versus deployed recede-fresh the primary on a held-out split, with a fresh budget, without reopening confirmation physics or score-correction. That proposal is not implemented and is not authorized here. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`.
