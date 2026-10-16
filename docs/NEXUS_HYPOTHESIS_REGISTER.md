@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-compute-matched-h16-on-mountaincar is implemented, not yet tested
+
+MountainCar lookahead transferred versus 16-candidate H=16. That comparison used 771 versus 256 imagined states per step. This protocol tests the same frozen lookahead against 48-candidate H=16 (768 imagined/step) on development physics with fresh seeds, margin 25. Confirmation unused. Collection unauthorized. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PROTOCOL.md`.
+
 ## Latest — H-lookahead-transfers-on-new-mountaincar-physics passed on one confirmation holdout
 
 The complete confirmation screen passed the 25-point rule: lookahead minus H=16 **50.366 [36.493, 64.239]**. Label `mountaincar_lookahead_transfer_established`. Dense valley height, not Gymnasium −1/step. Development physics unused. H=16 not retuned. This is not learning-to-learn. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md`.

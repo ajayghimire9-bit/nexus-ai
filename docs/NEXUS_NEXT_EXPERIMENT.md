@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock compute-matched MountainCar H=16; do not collect yet
+
+MountainCar confirmation lookahead minus H=16 **50.366 [36.493, 64.239]** stays closed. Do not retune H=16 or the 16-candidate successor. The locked next test gives H=16 48 candidates (768 imagined/step) against frozen 16-candidate lookahead (771/step) on development physics with fresh seeds. Collection is **not** authorized. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PREP.md`.
+
+## Locked — MountainCar lookahead versus compute-matched H=16, collection unauthorized
+
+Protocol `docs/NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PROTOCOL.md` on `cursor/mountaincar-compute-matched-h16` from `41fb0c5`. Config SHA256 `e33b01b6d50aff45f7c7a99990b978fa7e8bc58503da472903c79651d0eda033`. Protocol SHA256 `6f5be2802e132bc944e8c97437b0e60a22ebb304b6fdb2a54445fdc3fe75b076`. Primary: lookahead minus 48-candidate H=16 return, ten frozen development seeds, mean ≥ 25 and lower bound > 0. Budget **180 s**, **12,000** real steps, **9,234,000** imagined, **0** updates. Confirmation physics unused. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — MountainCar lookahead transfer is established; do not retune
 
 The authorized confirmation screen completed: lookahead minus H=16 **50.366 [36.493, 64.239]**. Label `mountaincar_lookahead_transfer_established`. Do not retune H=16, candidates, or reward from this confirmation sample. A later distinct question is a **compute-matched** control of the same frozen package (771 vs 256 imagined states per step). That proposal is not implemented and is not authorized here. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md`.

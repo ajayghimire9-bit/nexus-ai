@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the MountainCar lookahead-versus-H=16 transfer screen in `docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md`. Lookahead minus H=16 **50.366 [36.493, 64.239]** is labeled `mountaincar_lookahead_transfer_established`. Development **44.092 [13.945, 74.239]** stays labeled `mountaincar_lookahead_established`. Do not retune from this confirmation. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the MountainCar lookahead-versus-compute-matched-H=16 preparation in `docs/NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PREP.md`. Confirmation lookahead minus H=16 **50.366 [36.493, 64.239]** stays labeled `mountaincar_lookahead_transfer_established`. Compute-matched collection is locked and unauthorized; confirmation physics are unused and H=16 is not retuned. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority
