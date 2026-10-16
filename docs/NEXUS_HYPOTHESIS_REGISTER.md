@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-frozen-h3-on-cartpole was not established (ceiling)
+
+The complete development screen failed the 25-point rule: lookahead minus H=3 **4.000 [−5.048, 13.048]**. Label `cartpole_lookahead_not_established`. Frozen H=3 was already at the 500-step cap on 9/10 seeds. Do not retune H=3 from this sample. Report `NEXUS_CARTPOLE_LOOKAHEAD_RESULTS.md`.
+
 ## Latest — H-lookahead-beats-frozen-h3-on-cartpole is implemented, not yet tested
 
 Pendulum lookahead transfer passed and is not used to copy H=16 onto CartPole. This protocol tests one-step backup of frozen CartPole H=3 open-loop value versus H=3 receding on unused CartPole physics, margin 25. Collection unauthorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_PROTOCOL.md`.

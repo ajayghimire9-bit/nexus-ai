@@ -1,7 +1,8 @@
-"""CartPole lookahead protocol locks. One-run allocation is live and unconsumed."""
+"""CartPole lookahead protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
 import json
 from pathlib import Path
+import pytest
 from nexus.tasks.cartpole_family import cartpole_lookahead_development, cartpole_physics_key
 from nexus.world import cartpole_lookahead as m
 from nexus.world.freeze import FROZEN_CANDIDATES, FROZEN_PRIMARY_HORIZON
@@ -27,16 +28,19 @@ def test_holdout_is_disjoint_and_uses_frozen_h3():
     assert counts['lookahead_imagined_per_step']==98 and counts['h3_imagined_per_step']==48
 
 
-def test_one_run_allocation_is_live_and_has_no_output():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
     usage=json.loads(Path(record['one_run_usage_record']).read_text())
-    assert float(usage['remaining_session_allowance_s'])==300.0
+    assert float(usage['remaining_session_allowance_s'])==0.0
     assert int(usage['retries'])==0
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='cartpole_lookahead_not_established'
 
 
 def test_primary_labels_require_the_25_point_margin():
@@ -54,5 +58,7 @@ def test_shared_candidates_are_cartpole_not_pendulum():
     assert m.load_allocation()['pendulum_weight_transfer'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
-    assert sha(m.CONFIG)==m.LOCKED_CONFIG=='de1113d814ef506eba7e477fc314c48a9d289a497bab018a02cd1acaa6673ece'
-    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='6bbd5caa29fc4156adfb13f72d00466d0d640812b62b7ca4215ddc8e0335c112'
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='cartpole_lookahead_not_established'
+    assert audit['pendulum_weights'] is False

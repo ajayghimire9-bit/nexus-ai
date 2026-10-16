@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — CartPole lookahead versus frozen H=3 not established, 2026-10-16
+
+The locked development screen completed. Lookahead minus H=3 **4.000 [−5.048, 13.048]**. Label `cartpole_lookahead_not_established`. H=3 already returned 500 on 9/10 seeds (ceiling). Cost 12.399 s execute / 13.465 s process, 42,680 real steps, 2,184,240 imagined, 200 frozen-recipe epochs. Pendulum weights unused. Do not retune H=3 from this draw. Not learning-to-learn or AGI. Report `NEXUS_CARTPOLE_LOOKAHEAD_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — CartPole lookahead versus frozen H=3 locked unauthorized, 2026-10-16
 
 Preparation from `9800181` on `cursor/cartpole-lookahead-h3`. Pendulum FiLM weights are not loaded. CartPole keeps frozen H=3 × 16, not Pendulum H=16. New development physics `4bc1f5866ac6c753`. Frozen V0.7.2 residual recipe, margin 25, 300 s / 42,800 / 2,190,000 / 200 frozen-recipe epochs. **Authorized: false.** Not a result, not learning-to-learn or AGI. Reports `NEXUS_CARTPOLE_LOOKAHEAD_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_PROTOCOL.md`. Earlier entries remain history.
