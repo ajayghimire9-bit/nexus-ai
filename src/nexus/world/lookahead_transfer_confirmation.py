@@ -9,6 +9,7 @@ import hashlib
 import inspect
 import itertools
 import json
+import math
 import subprocess
 from pathlib import Path
 import numpy as np
@@ -47,6 +48,7 @@ PROTOCOL=Path('docs/NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md')
 ALLOCATION=Path('configs/lookahead_transfer_confirmation_allocation.json')
 AUDIT=Path('docs/NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PREP.md')
 OUTPUT=Path('artifacts/lookahead_transfer_confirmation.json')
+USAGE=Path('artifacts/research_session_lookahead_transfer_confirmation_usage.json')
 HOLD_RULE='lookahead_transfer_holdout_v1'
 HOLD_SPLIT='73844661addfa11b'
 LOCKED_CONFIG='385285edca761d60c1759bf8ef951c2682794e7b3d6066e9223aad5236c9cae8'
@@ -333,6 +335,61 @@ def execute():
         p['failure']=dict(type=type(exc).__name__,message=str(exc));print('INCOMPLETE',p['failure'],flush=True)
         p['complete']=False;p['label']='incomplete'
     p['wall_clock_s']=time.perf_counter()-started;save(OUTPUT,p);return p
+
+
+def audit_results():
+    cfg=load_config();p=json.loads(OUTPUT.read_text())
+    if p.get('complete') is not True:raise RuntimeError('incomplete/invalid transfer evaluation')
+    rebuilt=summarize(p['cells'],cfg)
+    if p['label']!=rebuilt['label']:raise ValueError('saved label differs')
+    n_traces=0
+    specs=list(pendulum_lookahead_transfer_holdout())
+    if [s.task_id for s in specs]!=cfg['eval_task_ids']: raise ValueError('holdout task ids drifted')
+    for row in p['cells']:
+        for name,trace,kind in (('student_h16',row['student_h16'],'h16'),('zero_h16',row['zero_h16'],'h16'),
+                                ('student_lookahead',row['student_lookahead'],'lookahead'),
+                                ('zero_lookahead',row['zero_lookahead'],'lookahead')):
+            n_traces+=1
+            key={'student_h16':'return_h16_student','zero_h16':'return_h16_zero',
+                 'student_lookahead':'return_lookahead_student','zero_lookahead':'return_lookahead_zero'}[name]
+            if not np.isclose(math.fsum(trace['rewards']),row['metrics'][key],atol=1e-8):
+                raise ValueError('reward reconstruction drifted')
+            for step,seed in enumerate(trace['seeds']):
+                seq=bbc.shared_candidates(int(seed))
+                idx=int(trace['selected_index'][step])
+                if kind=='h16':
+                    if int(trace['actions'][step])!=int(seq[idx,0]): raise ValueError('H=16 selected action/seed mismatch')
+                    if int(np.argmax(trace['scores'][step]))!=idx: raise ValueError('H=16 score argmax mismatch')
+                    if len(trace['scores'][step])!=16: raise ValueError('H=16 score width drifted')
+                else:
+                    if int(trace['actions'][step])!=idx: raise ValueError('lookahead action is not argmax Q')
+                    if int(np.argmax(trace['scores'][step]))!=idx: raise ValueError('lookahead Q argmax mismatch')
+                    if len(trace['scores'][step])!=3: raise ValueError('lookahead Q width drifted')
+                    if idx not in (0,1,2): raise ValueError('lookahead action not in {0,1,2}')
+        rebuilt_metrics=bbc.cell_metrics(row['student_h16'],row['zero_h16'],row['student_lookahead'],row['zero_lookahead'])
+        for key in FIELDS:
+            if not np.isclose(row['metrics'][key],rebuilt_metrics[key],atol=1e-8):
+                raise ValueError(f'metric rebuild drifted: {key}')
+        if row['student_h16']['seeds']!=row['zero_lookahead']['seeds']:
+            raise ValueError('candidate-seed schedule drifted across arms')
+    if n_traces!=120: raise ValueError('120-episode grid drifted')
+    if int(p['counts']['episode'])!=27840: raise ValueError('env accounting drifted')
+    if int(p['counts']['model_states'])!=12324000: raise ValueError('imagined accounting drifted')
+    if p.get('confirmation_physics_reused') is not False: raise ValueError('closed confirmation physics were reused')
+    if p.get('holdout_split_hash')!=HOLD_SPLIT: raise ValueError('holdout split hash drifted')
+    if int(p.get('training_updates',1))!=0: raise ValueError('training updates were recorded')
+    if p.get('compute_matched_control') is not False: raise ValueError('compute-matched control was introduced')
+    if p['checkpoint_before']['verified']!=120 or p['checkpoint_after']['verified']!=120:
+        raise ValueError('checkpoint audit drifted')
+    if p['checkpoint_before'].get('missing') or p['checkpoint_after'].get('missing'):
+        raise ValueError('checkpoint missing')
+    if p['checkpoint_before'].get('mismatched') or p['checkpoint_after'].get('mismatched'):
+        raise ValueError('checkpoint mismatched')
+    return dict(audit_passed=True,label=p['label'],raw_sha256=sha(OUTPUT),groups=p['groups'],
+                n_episodes=120,new_environment_steps=int(p['counts']['episode']),
+                new_imagined_transitions=int(p['counts']['model_states']),
+                confirmation_physics_reused=False,training_updates=0,
+                holdout_split_hash=HOLD_SPLIT)
 
 
 def prep():

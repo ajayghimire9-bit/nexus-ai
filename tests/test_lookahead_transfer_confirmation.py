@@ -1,6 +1,7 @@
-"""Lookahead transfer protocol locks. Collection remains unauthorized."""
+"""Lookahead transfer protocol locks. One-run allocation is live and unconsumed."""
 from __future__ import annotations
-import pytest
+import json
+from pathlib import Path
 from nexus.tasks.pendulum_family import pendulum_amortized_confirmation, pendulum_lookahead_transfer_holdout, pendulum_physics_key
 from nexus.world import bellman_backup_control as bbc
 from nexus.world import late_episode_decision_trajectory as late
@@ -33,14 +34,16 @@ def test_seeds_do_not_reuse_development_lookahead_or_late_episode():
     assert min(ours)>=14000000
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_is_live_and_has_no_output():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==180.0
+    assert int(usage['retries'])==0
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.execute()
 
 
 def test_primary_labels_require_the_25_point_episode_margin():
@@ -60,12 +63,6 @@ def test_frozen_controller_is_the_development_lookahead_pair():
         assert sha(path)==digest
     assert 'artifacts/latent_control.json' not in cfg['parents']
     assert 'artifacts/control_replication.json' not in cfg['parents']
-    report=m.prep()
-    assert report['authorized'] is False
-    assert report['confirmation_outcomes_read'] is False
-    assert report['eligibility']['reused_closed_confirmation_outcomes'] is False
-    assert report['eligibility']['holdout_collides_registered'] is False
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='385285edca761d60c1759bf8ef951c2682794e7b3d6066e9223aad5236c9cae8'
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='5c2e0d7300e497c65c0564990aa2a86ab4d08e79979c40d8ce7d2ea51735c942'
-    assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
-    assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
+    assert m.load_allocation()['holdout_split_hash']=='73844661addfa11b'
