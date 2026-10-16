@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — CartPole lookahead versus frozen H=3 on the unsaturated holdout not established, 2026-10-16
+
+The locked six-task screen completed. Lookahead minus H=3 **14.000 [−4.621, 32.621]**. Label `cartpole_sat_lookahead_not_established`. Cost 23.088 s execute / 24.176 s process, 71,292 real steps, 4,290,916 imagined, 200 frozen-recipe epochs. Ceilinged tasks kept. H=3 not retuned. Closed V0.7.3 confirmation unused. Not learning-to-learn or AGI. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — CartPole lookahead versus H=3 on the unsaturated holdout locked unauthorized, 2026-10-16
 
 Preparation from `18ed8e4` on `cursor/cartpole-lookahead-sat-h3`. Same six-task split `a69833ab38a34ab4`. Ceilinged tasks kept. H=3 not retuned. Frozen V0.7.2 recipe, 300 s / 72,800 / 4,380,000. **Authorized: false.** Not a result. Reports `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PROTOCOL.md`. Earlier entries remain history.

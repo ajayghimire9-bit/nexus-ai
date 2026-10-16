@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — CartPole lookahead versus frozen H=3 on the unsaturated holdout not established
+
+The 120-episode six-task grid completed under the 300 s / 72,800 / 4,380,000 cap. Lookahead minus H=3 **14.000 [−4.621, 32.621]**. Label `cartpole_sat_lookahead_not_established`. Execute 23.088 s, exact resource counts under cap, 200 frozen-recipe epochs. Independent audit passed. Ceilinged tasks kept. H=3 not retuned. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — CartPole lookahead versus H=3 on the unsaturated holdout locked, collection unauthorized
 
 The H=3-only diagnostic stays closed. Same six-task split `a69833ab38a34ab4`. Ceilinged tasks kept. H=3 not retuned. Frozen recipe, 300 s / 72,800 / 4,380,000, `authorized: false`. Reports `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PROTOCOL.md`.

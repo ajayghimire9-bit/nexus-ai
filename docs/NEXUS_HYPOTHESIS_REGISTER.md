@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-h3-on-unsaturated-cartpole was not established
+
+The complete six-task screen failed the 25-point rule: lookahead minus H=3 **14.000 [−4.621, 32.621]**. Label `cartpole_sat_lookahead_not_established`. Ceilinged tasks were kept. Do not retune H=3 from this sample. CartPole lookahead versus H=3 is now not established on three development draws. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_RESULTS.md`.
+
 ## Latest — H-lookahead-beats-h3-on-unsaturated-cartpole is implemented, not yet tested
 
 The H=3-only diagnostic passed. This protocol tests one-step backup of frozen H=3 versus receding H=3 on the same six-task split `a69833ab38a34ab4`, margin 25. Ceilinged tasks are kept. Collection unauthorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_SAT_PROTOCOL.md`.
