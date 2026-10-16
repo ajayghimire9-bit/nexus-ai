@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — MountainCar lookahead versus frozen H=16 established on development
+
+The 60-episode development grid completed under the 300 s / 24,800 / 6,162,000 cap. Lookahead minus H=16 **44.092 [13.945, 74.239]**. Label `mountaincar_lookahead_established`. Execute 27.134 s, exact resource counts, 200 frozen-recipe epochs. Independent audit passed. CartPole H=3 unused. Pendulum FiLM unused. Acrobot unused. Do not retune from this development sample. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — MountainCar lookahead versus H=16 protocol locked, collection unauthorized
 
 Pendulum compute-matched stays closed and is not used to retune H=16. New family. Dense valley height, 200-step episodes, no goal termination. Holdout `2a5cc4979642cc2a`. Frozen recipe, 300 s / 24,800 / 6,162,000, `authorized: false`. Reports `NEXUS_MOUNTAINCAR_LOOKAHEAD_PREP.md` and `NEXUS_MOUNTAINCAR_LOOKAHEAD_PROTOCOL.md`.

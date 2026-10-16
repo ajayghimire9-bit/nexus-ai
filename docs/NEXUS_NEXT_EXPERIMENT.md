@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — MountainCar lookahead versus H=16 is established on development; do not retune
+
+The authorized development screen completed: lookahead minus H=16 **44.092 [13.945, 74.239]**. Label `mountaincar_lookahead_established`. Dense valley height, not Gymnasium −1/step. Do not retune H=16, candidates, or reward from this sample. A later distinct question is lookahead versus frozen H=16 on a **new unused MountainCar confirmation holdout**. That proposal is not implemented and is not authorized here. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_RESULTS.md`.
+
+## Consumed — MountainCar lookahead versus frozen H=16, one-run remaining 0
+
+Protocol `docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_PROTOCOL.md` on `cursor/mountaincar-lookahead-h16` from `004d10e`. Config SHA256 `9e4f9cf8b92cbb5e54d9a17b20c1518aae9f925e490930cd4b958ec7885e97f4`. Protocol SHA256 `4f7ebc5f30755e80adecee9c930e9b888a006f1e5edca00d742a8caa3932d4bb`. Primary completed: lookahead minus H=16 **44.092 [13.945, 74.239]**, label `mountaincar_lookahead_established`. Holdout hash `2a5cc4979642cc2a`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_RESULTS.md`.
+
 ## Current decision — lock MountainCar lookahead versus H=16; do not collect yet
 
 Pendulum compute-matched **60.182 [11.439, 108.924]** stays closed. Do not retune H=16. The locked next test uses a new family without a survival ceiling: dense-height MountainCar, H=16 × 16, holdout `2a5cc4979642cc2a`. Collection is **not** authorized. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_PREP.md`.

@@ -1,5 +1,7 @@
-"""MountainCar lookahead protocol locks. The one-run allocation is armed."""
+"""MountainCar lookahead protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
+import json
+from pathlib import Path
 import numpy as np
 import pytest
 from nexus.tasks.mountaincar_family import mountaincar_default, mountaincar_lookahead_development, mountaincar_physics_key
@@ -34,14 +36,20 @@ def test_dense_height_replaces_gym_minus_one_and_does_not_goal_terminate():
     env.close()
 
 
-def test_one_run_allocation_is_armed_and_output_is_absent():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['pendulum_weight_transfer'] is False and record['cartpole_h3'] is False
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==0.0
+    assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='mountaincar_lookahead_established'
 
 
 def test_primary_labels_and_parents():
@@ -57,3 +65,8 @@ def test_primary_labels_and_parents():
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='4f7ebc5f30755e80adecee9c930e9b888a006f1e5edca00d742a8caa3932d4bb'
     assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
     assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='mountaincar_lookahead_established'
+    assert audit['pendulum_weights'] is False and audit['cartpole_h3'] is False
+    assert audit['holdout_split_hash']=='2a5cc4979642cc2a'
