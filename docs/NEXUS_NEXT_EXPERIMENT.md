@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — Pendulum lookahead transfer is established; do not retune
+
+The authorized holdout screen completed: lookahead minus frozen H=16 **98.608 [43.258, 153.957]**. Label `lookahead_transfer_established`. Student-versus-zero includes 0. Do not retune the lookahead backup, candidates, horizon, or reward from this confirmation sample. The next distinct question is whether the same frozen package beats H=16 on a **different environment family**. That proposal is not implemented and is not authorized here. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`.
+
+## Consumed — lookahead versus H=16 transfer, one-run remaining 0
+
+Protocol `docs/NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md` on `cursor/lookahead-transfer-confirmation-prep` from `961e935`. Config SHA256 `385285edca761d60c1759bf8ef951c2682794e7b3d6066e9223aad5236c9cae8`. Protocol SHA256 `5c2e0d7300e497c65c0564990aa2a86ab4d08e79979c40d8ce7d2ea51735c942`. Primary completed: lookahead minus H=16 **98.608 [43.258, 153.957]**, label `lookahead_transfer_established`. Holdout hash `73844661addfa11b`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`.
+
 ## Current decision — lock transfer of frozen lookahead versus H=16; do not collect yet
 
 Development lookahead minus H=16 **155.647 [109.825, 201.469]** stays closed. Historically exposed confirmation splits are not reused. Reserved amortized confirmation is not consumed. A new holdout from rule `lookahead_transfer_holdout_v1` is locked. Collection is **not** authorized. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PREP.md`.

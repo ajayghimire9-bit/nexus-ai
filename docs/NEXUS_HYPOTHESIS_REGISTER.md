@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-transfers-to-new-physics passed on one Pendulum holdout; not L2L
+
+The complete transfer screen passed the 25-point episode rule: lookahead minus frozen H=16 **98.608 [43.258, 153.957]**. Label `lookahead_transfer_established`. Successor value remained open-loop H=16 from s'. Student-minus-zero includes 0 and is a separate estimand. This is not cross-family transfer, learning-to-learn, or AGI. Do not retune from these outcomes. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`.
+
 ## Latest — H-lookahead-transfers-to-new-physics is implemented, not yet tested
 
 Development lookahead versus H=16 passed. Transfer uses a new holdout (`73844661addfa11b`), not historically exposed confirmation physics. Primary: lookahead minus H=16 200-step return, margin 25. Student-versus-zero is secondary and cannot upgrade. Collection unauthorized. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md`.

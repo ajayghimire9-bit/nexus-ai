@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — frozen lookahead beat H=16 on a new Pendulum holdout
+
+The 120-episode transfer grid completed under the 180 s / 27,840 / 12,324,000 cap. Lookahead minus H=16 **98.608 [43.258, 153.957]**. Label `lookahead_transfer_established`. Execute 61.312 s, process 62.495 s, exact resource counts, 0 updates. Independent audit passed. Frozen checkpoints 120/0/0. Student-versus-zero includes 0. Closed confirmation physics unused. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md`. No architecture change, learning-to-learn or AGI. Do not retune from confirmation.
+
 ## Latest — lookahead versus H=16 transfer protocol locked, collection unauthorized
 
 Existing confirmation splits were audited without reading outcomes. Exposed splits are not reused. Reserved amortized hash `d1fa621351d286cf` is not consumed. New holdout `73844661addfa11b` is locked. Frozen development lookahead versus H=16, 180 s / 27,840 / 12,324,000 / 0 updates, `authorized: false`. Reports `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PREP.md` and `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
