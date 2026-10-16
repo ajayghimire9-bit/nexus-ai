@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-compute-matched-h16-on-acrobot was not established
+
+The complete development screen failed the 25-point rule: lookahead minus 48-candidate H=16 **12.834 [3.815, 21.853]**. Label `acrobot_compute_matched_lookahead_not_established`. The lower bound is above 0, but the mean is below 25. Extra H=16 search closed most of the earlier 16-candidate gap. Do not retune from this sample. Report `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md`.
+
 ## Latest — H-lookahead-beats-compute-matched-h16-on-acrobot is implemented, not yet tested
 
 Acrobot lookahead transferred versus 16-candidate H=16. That comparison used 771 versus 256 imagined states per step. This protocol tests the same frozen lookahead against 48-candidate H=16 (768 imagined/step) on development physics with fresh seeds, margin 25. Confirmation unused. Collection unauthorized. Report `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md`.
