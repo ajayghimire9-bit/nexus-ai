@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-transfers-on-new-acrobot-physics is implemented, not yet tested
+
+Development lookahead versus H=16 passed. Transfer uses a new holdout (`b309bd481fd8abcb`), not the development split. H=16, candidates, and dense height are not retuned. Collection unauthorized. Report `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md`.
+
 ## Latest — H-lookahead-beats-h16-on-acrobot passed on development; confirmation untested
 
 The complete development screen passed the 25-point rule: lookahead minus H=16 **27.914 [13.962, 41.867]**. Label `acrobot_lookahead_established`. Dense upright height, not Gymnasium −1/step. CartPole H=3 unused. Pendulum FiLM unused. Do not retune from this sample. Confirmation transfer is unimplemented. Report `NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md`.

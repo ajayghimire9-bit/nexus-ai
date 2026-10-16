@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock Acrobot lookahead transfer on a new holdout; do not collect yet
+
+Development **27.914 [13.962, 41.867]** stays closed. Do not retune H=16. The locked next test uses unused confirmation physics `b309bd481fd8abcb`. Collection is **not** authorized. Report `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PREP.md`.
+
+## Locked — Acrobot lookahead versus frozen H=16 transfer, collection unauthorized
+
+Protocol `docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md` on `cursor/acrobot-lookahead-h16-confirm` from `a09957f`. Config SHA256 `a87959767f30ca75f0acfc753476ce06fc12c86a324315cc0f910f4149586ab1`. Protocol SHA256 `dcf9913397acad3e9229ff60aa4b169250892f38f87bc2f9366a3564bf1a6b67`. Primary: lookahead minus H=16 return, ten training seeds, mean ≥ 25 and lower bound > 0. Budget **300 s**, **24,800** real steps, **6,162,000** imagined. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — Acrobot lookahead versus H=16 is established on development; do not retune
 
 The authorized development screen completed: lookahead minus H=16 **27.914 [13.962, 41.867]**. Label `acrobot_lookahead_established`. Dense height, not Gymnasium −1/step. Do not retune H=16, candidates, or reward from this sample. A later distinct question is lookahead versus frozen H=16 on a **new unused Acrobot confirmation holdout**. That proposal is not implemented and is not authorized here. Report `NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md`.

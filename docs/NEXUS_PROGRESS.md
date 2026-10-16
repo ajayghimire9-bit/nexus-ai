@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — Acrobot lookahead versus H=16 transfer protocol locked, collection unauthorized
+
+Development stays closed and is not used to retune H=16. New unused confirmation physics `b309bd481fd8abcb`. Frozen recipe, 300 s / 24,800 / 6,162,000, `authorized: false`. Reports `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PREP.md` and `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md`.
+
 ## Latest — Acrobot lookahead versus frozen H=16 established on development
 
 The 60-episode development grid completed under the 300 s / 24,800 / 6,162,000 cap. Lookahead minus H=16 **27.914 [13.962, 41.867]**. Label `acrobot_lookahead_established`. Execute 27.797 s, exact resource counts, 200 frozen-recipe epochs. Independent audit passed. Dense height, not Gymnasium −1/step. CartPole H=3 unused. Pendulum FiLM unused. Report `NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md`. No learning-to-learn or AGI.

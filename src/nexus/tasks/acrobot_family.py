@@ -64,3 +64,23 @@ def acrobot_lookahead_development() -> tuple[TaskSpec, ...]:
         )
         for i, row in enumerate(rows)
     )
+
+
+def acrobot_lookahead_confirmation() -> tuple[TaskSpec, ...]:
+    """Unused Acrobot physics for lookahead versus frozen H=16 transfer.
+
+    Rule `acrobot_lookahead_confirm_v1` rejects the source and the development
+    draw. H=16, candidates, and dense height are not retuned.
+    """
+    rows = ((0.75, 0.6, 0.95), (1.3, 1.4, 1.4), (1.15, 0.85, 0.6))
+    return tuple(
+        _acrobot(
+            f"acrobot_look_cf{i}",
+            "lookahead_confirm",
+            f"Lookahead versus H=16 confirmation masses/length {row}.",
+            LINK_MASS_1=row[0],
+            LINK_MASS_2=row[1],
+            LINK_LENGTH_1=row[2],
+        )
+        for i, row in enumerate(rows)
+    )
