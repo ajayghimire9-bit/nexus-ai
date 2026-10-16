@@ -46,6 +46,20 @@ def acrobot_step_reward(obs: np.ndarray, action: np.ndarray | int, next_obs: np.
     return acrobot_height(next_obs)
 
 
+def mountaincar_height(obs: np.ndarray) -> np.ndarray:
+    """Frozen valley height: sin(3 * position). Bottom of the valley is -1."""
+    cur = np.asarray(obs, dtype=np.float64)
+    if cur.ndim == 1:
+        cur = cur.reshape(1, -1)
+    return np.sin(3.0 * cur[:, 0])
+
+
+def mountaincar_step_reward(obs: np.ndarray, action: np.ndarray | int, next_obs: np.ndarray) -> np.ndarray:
+    """Frozen dense valley height of the successor. Not Gymnasium -1/step."""
+    del obs, action
+    return mountaincar_height(next_obs)
+
+
 def cartpole_unit_reward(obs: np.ndarray, action: np.ndarray | int, next_obs: np.ndarray) -> np.ndarray:
     n = np.asarray(next_obs).reshape(-1, next_obs.shape[-1] if np.ndim(next_obs) > 1 else 1).shape[0]
     del obs, action

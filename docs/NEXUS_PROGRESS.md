@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — MountainCar lookahead versus H=16 protocol locked, collection unauthorized
+
+Pendulum compute-matched stays closed and is not used to retune H=16. New family. Dense valley height, 200-step episodes, no goal termination. Holdout `2a5cc4979642cc2a`. Frozen recipe, 300 s / 24,800 / 6,162,000, `authorized: false`. Reports `NEXUS_MOUNTAINCAR_LOOKAHEAD_PREP.md` and `NEXUS_MOUNTAINCAR_LOOKAHEAD_PROTOCOL.md`.
+
 ## Latest — Pendulum lookahead versus compute-matched H=16 established
 
 The 120-episode grid completed under the 180 s / 24,000 / 18,468,000 cap. Lookahead minus 48-candidate H=16 **60.182 [11.439, 108.924]**. Label `pendulum_compute_matched_lookahead_established`. Execute 68.154 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. 16-candidate successor not retuned. Report `NEXUS_PENDULUM_COMPUTE_MATCHED_RESULTS.md`. No learning-to-learn or AGI.

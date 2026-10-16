@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-h16-on-mountaincar is implemented, not yet tested
+
+Pendulum compute-matched passed. This protocol tests one-step backup of frozen H=16 dense valley-height value versus receding H=16 on unused MountainCar physics, margin 25. CartPole H=3, Pendulum FiLM, and Acrobot unused. Collection unauthorized. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_PROTOCOL.md`.
+
 ## Latest — H-lookahead-beats-compute-matched-h16-on-pendulum passed on development
 
 The complete development screen passed the 25-point rule: lookahead minus 48-candidate H=16 **60.182 [11.439, 108.924]**. Label `pendulum_compute_matched_lookahead_established`. Extra search did not remove the remainder on these physics. This does not reverse the closed Acrobot compute-matched miss. Do not retune from this sample. Report `NEXUS_PENDULUM_COMPUTE_MATCHED_RESULTS.md`.

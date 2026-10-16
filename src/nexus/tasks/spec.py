@@ -11,8 +11,9 @@ import numpy as np
 class TaskSpec:
     """Reusable task identity. Compatible tasks share obs/action semantics.
 
-    CartPole-v1 and Acrobot-v1 are *not* compatible: 4 vs 6 observations,
-    2 vs 3 discrete actions, different dynamics. Do not transfer their states.
+    CartPole-v1, Acrobot-v1 and MountainCar-v0 are *not* compatible:
+    different observation sizes, action counts and dynamics. Do not transfer
+    their states or weights.
     """
 
     task_id: str
@@ -72,6 +73,7 @@ def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> 
     from nexus.tasks.wrappers import (
         AcrobotDenseRewardWrapper,
         ActionDelayWrapper,
+        MountainCarDenseRewardWrapper,
         DiscreteTorqueWrapper,
         ObservationNoiseWrapper,
     )
@@ -91,6 +93,8 @@ def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> 
         env = DiscreteTorqueWrapper(env, torques)
     if spec.family == "acrobot":
         env = AcrobotDenseRewardWrapper(env)
+    if spec.family == "mountaincar":
+        env = MountainCarDenseRewardWrapper(env)
     return env
 
 
@@ -98,7 +102,7 @@ def make_task_env(spec: TaskSpec, *, seed: int | None = None, render_mode: str |
     make_kwargs: dict[str, Any] = {}
     if render_mode is not None:
         make_kwargs["render_mode"] = render_mode
-    if spec.family == "acrobot":
+    if spec.family in ("acrobot", "mountaincar"):
         make_kwargs["max_episode_steps"] = 200
     env = gym.make(spec.gym_id, **make_kwargs)
     apply_params(env, spec)

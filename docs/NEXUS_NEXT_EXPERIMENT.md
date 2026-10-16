@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock MountainCar lookahead versus H=16; do not collect yet
+
+Pendulum compute-matched **60.182 [11.439, 108.924]** stays closed. Do not retune H=16. The locked next test uses a new family without a survival ceiling: dense-height MountainCar, H=16 × 16, holdout `2a5cc4979642cc2a`. Collection is **not** authorized. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_PREP.md`.
+
+## Locked — MountainCar lookahead versus frozen H=16, collection unauthorized
+
+Protocol `docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_PROTOCOL.md` on `cursor/mountaincar-lookahead-h16` from `004d10e`. Config SHA256 `9e4f9cf8b92cbb5e54d9a17b20c1518aae9f925e490930cd4b958ec7885e97f4`. Protocol SHA256 `4f7ebc5f30755e80adecee9c930e9b888a006f1e5edca00d742a8caa3932d4bb`. Primary: lookahead minus H=16 200-step dense-height return, ten training seeds, mean ≥ 25 and lower bound > 0. Budget **300 s**, **24,800** real steps, **6,162,000** imagined. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — Pendulum compute-matched lookahead is established; do not retune
 
 The authorized development screen completed: lookahead minus 48-candidate H=16 **60.182 [11.439, 108.924]**. Label `pendulum_compute_matched_lookahead_established`. Do not retune H=16, candidates, or reward from this sample. This does not reverse the closed Acrobot compute-matched miss. A later distinct question is the unmatched frozen lookahead package on a **new environment family**. That proposal is not implemented and is not authorized here. Report `NEXUS_PENDULUM_COMPUTE_MATCHED_RESULTS.md`.

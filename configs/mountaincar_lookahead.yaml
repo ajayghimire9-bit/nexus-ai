@@ -1,0 +1,40 @@
+starting_sha: 004d10edd7c39981d79e69d58951fdde1658587e
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 3
+candidate_horizon: 16
+n_candidates: 16
+episode_steps: 200
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 300
+env_cap: 24800
+model_cap: 6162000
+training_updates: 200
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+enforce_time_budget: false
+compute_matched_control: false
+pendulum_weights: false
+cartpole_h3: false
+acrobot_copy: false
+holdout_rule: mountaincar_lookahead_dev_v1
+holdout_split_hash: 2a5cc4979642cc2a
+eval_task_ids: [mountaincar_look_dev0, mountaincar_look_dev1, mountaincar_look_dev2]
+eval_physics: [[0.0035, 0.0006, 0.075], [0.0025, 0.0013, 0.07], [0.0015, 0.0013, 0.085]]
+reset_base: 25000000
+step_seed_base: 25100000
+train_collect_base: 300000
+val_collect_base: 305000
+parents:
+  artifacts/pendulum_compute_matched.json: 02ae07e32c5554f2464eb1e7202854d37003aa43b78fe991326a5547fe1853e6
+  docs/NEXUS_PENDULUM_COMPUTE_MATCHED_RESULTS.md: 5f9191af3169d9fbd999fada7203addd41a4f594cee985fc108b8d0d2db80d25
+  configs/pendulum_compute_matched.yaml: 5a553ab3a3718c0ef4e3404a44e284f20bc0aebc09e15884e197d405ebf36673
+  docs/NEXUS_PENDULUM_COMPUTE_MATCHED_PROTOCOL.md: bcc77ee3c6e3fdd886d66840f07100dd7b9da1a61407e77be83fb31b569e3f24
+  artifacts/acrobot_lookahead.json: 83b9fbeeb2558cd47d41f44342411c5cf69cb0f6261138ee7f0f5d1e07a04e87
+  docs/NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md: a2704bd8632f38c5431a0c126c1bc34f29f3054310b063a87bd24e61dc1f20ad
+  configs/acrobot_lookahead.yaml: 3978b7e309f41339a56a2e6993bc48344f2bbf211baf88d3e86ce994ffa7122a
+  docs/NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md: e2b83a21e89292e0aec5112c5456f56f82eb0d14d2b9548389ef8e79ed432567

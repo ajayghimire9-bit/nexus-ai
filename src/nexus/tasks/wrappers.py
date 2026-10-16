@@ -66,3 +66,16 @@ class AcrobotDenseRewardWrapper(gym.Wrapper):
         info["gym_reward"] = float(gym_r)
         info["gym_terminated"] = bool(terminated)
         return obs, height, False, truncated, info
+
+
+class MountainCarDenseRewardWrapper(gym.Wrapper):
+    """Replace Gymnasium -1/step with frozen valley height. Goal does not terminate."""
+
+    def step(self, action):  # type: ignore[no-untyped-def]
+        obs, gym_r, terminated, truncated, info = self.env.step(action)
+        arr = np.asarray(obs, dtype=np.float64).reshape(-1)
+        height = float(np.sin(3.0 * arr[0]))
+        info = dict(info or {})
+        info["gym_reward"] = float(gym_r)
+        info["gym_terminated"] = bool(terminated)
+        return obs, height, False, truncated, info
