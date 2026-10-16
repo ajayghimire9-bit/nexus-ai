@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current proposal — offline action-value alignment, no more scalar tuning
+
+The source-only scalar test is complete and failed its selection screen: beta0.823947 improved centered prediction error, but calibrated−base return **−9.228 [−22.358,+3.901]** and calibrated−original **+1.194 [−0.102,+2.489]** remain inconclusive. Stop this scalar branch; do not select a new weight from these closed outcomes. See `NEXUS_SOURCE_SCALAR_RESULTS.md`.
+
+**One next experiment:** preregister an exploratory recorded-data comparison of the first action chosen by the actual best64-step full sequence against the best of the three already measured first-action-plus-common-zero continuations. Include original/calibrated scoring choices as references, equal visitor/task weights inside ten decoder units, typed complete-grid checks and explicit oracle/research-only labels. This tests whether the full-sequence objective itself aligns with the executed first-action intervention before fitting a more complex model. No simulation, neural inference, refitting, architecture change or parameter search. Estimated<30CPU seconds, proposed cap60seconds, zero real/imagined transitions. Lock the exact contrasts and tie rule before calculating results. It is a proposal, not an executed extra experiment. Earlier sections below are chronological history.
+
 ## Current proposal — source-only scalar calibration, then fresh visited audit
 
 The offline visited ranking audit is complete: centered MSE benefit **−1,194.516 [−2,025.559,−363.473]** while pair ordering accuracy is55.597% [50.432%,60.763%]. The intersection screen failed. Some ordering survives, but its numerical values are unreliable relative to a constant; this does not prove a scaling-only cause. The earlier visited control effect remains inconclusive. See `NEXUS_VISITED_VALUE_RANKING_RESULTS.md`.

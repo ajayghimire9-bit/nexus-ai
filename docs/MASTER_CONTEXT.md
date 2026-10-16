@@ -1,5 +1,11 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — source-only scalar calibration, 2026-10-16
+
+One shared scalar fit only to archived source physics was committed before fresh visited-state collection: beta **0.8239474184740522**. The complete ten-decoder test did **not establish a selection gain**: calibrated−base **−9.228 [−22.358,+3.901]**, calibrated−original **+1.194 [−0.102,+2.489]**. Centered tail error improved **+221.281 [73.560,369.002]** but did not establish better choices; label `scalar_selection_gain_not_established`. Do not tune more weights on this sample. The common scalar was fit across ten decoders' source data, so reported decoder intervals are conditional on that shared fitted value, not independent complete scalar-training replications.
+
+No historical neural/readout weights changed. All120 binaries and60 model/context groups preserved; all60 live decisions replayed. Source fit0.6583seconds plus evaluation251.3581seconds =252.0164 total,75,960 real steps and15,667,200 imagined transitions, inside360seconds. Protocol `c6c5d0720f0414570de9d9b4471a86cc4b88fa99`, immutable-fit/evaluation `051adc7567ac4fb5a0b7c6a2c8a8b0300488c050`; report `NEXUS_SOURCE_SCALAR_RESULTS.md`. One next proposal is offline action-value alignment: compare the first action of the actual best64 full sequence against already measured first-action common-zero values. No new experiment executed. This does not establish control improvement, learning-to-learn or AGI; earlier entries remain history.
+
 ## Latest — offline visited-state tail discrimination, 2026-10-16
 
 The recorded-data audit completed once in2.0195seconds, with **zero new real/imagined transitions, model inference, fitting or binary changes**. The readout's centered tail MSE is3,081.068 against within-state variance1,886.552: benefit **−1,194.516 [−2,025.559,−363.473]** across ten decoder units. Tail ordering accuracy is55.597% [50.432%,60.763%]. The registered exploratory intersection screen failed (`tail_centered_error_worse_than_constant`): weak ordering information coexists with unreliable candidate-relative magnitudes. Do not claim no information, proven scaling causality or better control. Absolute-error benefit versus a fixed source mean includes zero. Zero-context scoring has the same centered-error failure direction, so this is not exclusive to student inference.

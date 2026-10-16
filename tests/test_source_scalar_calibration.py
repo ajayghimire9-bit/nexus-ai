@@ -6,6 +6,8 @@ import subprocess
 import numpy as np
 import pytest
 from nexus.world import source_scalar_calibration as m
+from test_commitment_value import master_capture
+from test_visited_commitment import visited_capture
 
 
 def cells(slope):
@@ -91,3 +93,12 @@ def test_all_source_fit_manifest_fields_must_be_committed(monkeypatch,tmp_path):
 def test_closed_visitor_rng_sets_are_not_reused():
     cfg=m.load_config();old=m.visited.load_config()
     assert not set().union(*m.seed_sets(cfg)) & set().union(*m.seed_sets(old))
+
+
+def test_raw_cell_beta_one_exactly_recovers_original_correction(visited_capture):
+    p,_,_,_=visited_capture;result=m.row_metrics(p['cells'][0],1.,-100.)
+    for metrics in result.values():
+        assert metrics['gain_vs_uncalibrated']==0.
+        assert metrics['block_calibrated']==metrics['block_uncalibrated']
+        assert metrics['first_calibrated']==metrics['first_uncalibrated']
+        assert metrics['centered_error_benefit']==0.
