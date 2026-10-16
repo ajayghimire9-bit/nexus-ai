@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — harder CartPole lookahead protocol locked, collection unauthorized
+
+Ceilinged H=3 screen stays closed and is not used to retune the planner. New unused hard physics `9a60e48299b738ef` in the published V0.7.3 off-ceiling region. Frozen recipe, 300 s / 42,800 / 2,190,000, `authorized: false`. Reports `NEXUS_CARTPOLE_LOOKAHEAD_HARD_PREP.md` and `NEXUS_CARTPOLE_LOOKAHEAD_HARD_PROTOCOL.md`.
+
 ## Latest — CartPole lookahead versus frozen H=3 not established (ceiling)
 
 The 60-episode development grid completed under the 300 s / 42,800 / 2,190,000 cap. Lookahead minus H=3 **4.000 [−5.048, 13.048]**. Label `cartpole_lookahead_not_established`. H=3 already 500 on 9/10 seeds. Execute 12.399 s, exact resource counts under cap, 200 frozen-recipe epochs. Independent audit passed. Pendulum weights unused. Report `NEXUS_CARTPOLE_LOOKAHEAD_RESULTS.md`. Do not retune H=3. No learning-to-learn or AGI.

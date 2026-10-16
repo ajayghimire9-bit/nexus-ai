@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-h3-on-hard-cartpole is implemented, not yet tested
+
+The ceilinged CartPole draw could not measure lookahead. This protocol keeps frozen H=3 and tests unused hard physics in the published V0.7.3 off-ceiling region, margin 25. Collection unauthorized. Report `NEXUS_CARTPOLE_LOOKAHEAD_HARD_PROTOCOL.md`.
+
 ## Latest — H-lookahead-beats-frozen-h3-on-cartpole was not established (ceiling)
 
 The complete development screen failed the 25-point rule: lookahead minus H=3 **4.000 [−5.048, 13.048]**. Label `cartpole_lookahead_not_established`. Frozen H=3 was already at the 500-step cap on 9/10 seeds. Do not retune H=3 from this sample. Report `NEXUS_CARTPOLE_LOOKAHEAD_RESULTS.md`.

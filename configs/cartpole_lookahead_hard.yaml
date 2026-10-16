@@ -1,0 +1,37 @@
+starting_sha: 82d85519f97533e2969834e09dd80c9333a0e3a6
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 2
+candidate_horizon: 3
+n_candidates: 16
+max_episode_steps: 500
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 300
+env_cap: 42800
+model_cap: 2190000
+training_updates: 200
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+objective: both
+enforce_time_budget: false
+compute_matched_control: false
+pendulum_weights: false
+student_zero_context: false
+holdout_rule: cartpole_lookahead_hard_v1
+holdout_split_hash: 9a60e48299b738ef
+eval_task_ids: [cartpole_look_hard0, cartpole_look_hard1, cartpole_look_hard2]
+eval_physics: [[14.0, 0.42, 0.22], [13.3, 0.43, 0.25], [12.4, 0.28, 0.22]]
+reset_base: 19000000
+step_seed_base: 19100000
+train_collect_base: 170000
+val_collect_base: 175000
+hard_region: {gravity: [12.0, 16.0], length: [0.25, 0.45], masspole: [0.15, 0.30]}
+parents:
+  configs/cartpole_lookahead.yaml: de1113d814ef506eba7e477fc314c48a9d289a497bab018a02cd1acaa6673ece
+  docs/NEXUS_CARTPOLE_LOOKAHEAD_PROTOCOL.md: 6bbd5caa29fc4156adfb13f72d00466d0d640812b62b7ca4215ddc8e0335c112
+  artifacts/cartpole_lookahead.json: 62cc377674bf2114027518d586306b25553752cf1986c1bad6279eac08489098
+  docs/NEXUS_CARTPOLE_LOOKAHEAD_RESULTS.md: e869c0dbe38b5ddd3bb70c7f0753dd06d6821afaf606f1cb833b837646ef49b3

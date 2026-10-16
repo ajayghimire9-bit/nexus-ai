@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the CartPole lookahead-versus-H=3 screen in `docs/NEXUS_CARTPOLE_LOOKAHEAD_RESULTS.md`. Lookahead minus H=3 **4.000 [−5.048, 13.048]** is labeled `cartpole_lookahead_not_established` (H=3 already at the 500-step ceiling on 9/10 seeds). Pendulum lookahead minus H=16 holdout return **98.608 [43.258, 153.957]** stays labeled `lookahead_transfer_established`. Do not retune CartPole H=3 or copy Pendulum H=16 from this draw. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the harder-CartPole lookahead preparation in `docs/NEXUS_CARTPOLE_LOOKAHEAD_HARD_PREP.md`. The ceilinged CartPole screen **4.000 [−5.048, 13.048]** stays labeled `cartpole_lookahead_not_established`. Pendulum transfer **98.608 [43.258, 153.957]** stays labeled `lookahead_transfer_established`. Harder unused physics `9a60e48299b738ef` are locked and unauthorized; H=3 is not retuned; V0.7.3 confirmation tuples are not reused. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

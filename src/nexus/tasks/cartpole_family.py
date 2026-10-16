@@ -80,6 +80,29 @@ def cartpole_lookahead_development() -> tuple[TaskSpec, ...]:
     )
 
 
+def cartpole_lookahead_hard() -> tuple[TaskSpec, ...]:
+    """Harder unused CartPole physics for lookahead versus frozen H=3.
+
+    Rule `cartpole_lookahead_hard_v1` samples g∈[12,16], length∈[0.25,0.45],
+    masspole∈[0.15,0.30] from the published V0.7.3 off-ceiling regime, rejecting
+    every previously registered key including V0.7.3 confirmation and the
+    ceilinged lookahead development draw. Not a reuse of closed confirmation
+    tuples and not a retune of H=3.
+    """
+    rows = ((14.0, 0.42, 0.22), (13.3, 0.43, 0.25), (12.4, 0.28, 0.22))
+    return tuple(
+        _cartpole(
+            f"cartpole_look_hard{i}",
+            "lookahead_hard",
+            f"Lookahead versus H=3 hard development {g, length, masspole}.",
+            gravity=g,
+            length=length,
+            masspole=masspole,
+        )
+        for i, (g, length, masspole) in enumerate(rows)
+    )
+
+
 def source_tasks() -> tuple[TaskSpec, TaskSpec, TaskSpec]:
     return (
         CARTPOLE_FAMILY["cartpole_default"],
