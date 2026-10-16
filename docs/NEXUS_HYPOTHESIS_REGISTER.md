@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-compute-matched-h16-on-acrobot is implemented, not yet tested
+
+Acrobot lookahead transferred versus 16-candidate H=16. That comparison used 771 versus 256 imagined states per step. This protocol tests the same frozen lookahead against 48-candidate H=16 (768 imagined/step) on development physics with fresh seeds, margin 25. Confirmation unused. Collection unauthorized. Report `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md`.
+
 ## Latest — H-lookahead-transfers-on-new-acrobot-physics passed on one confirmation holdout
 
 The complete confirmation screen passed the 25-point rule: lookahead minus H=16 **37.961 [21.106, 54.816]**. Label `acrobot_lookahead_transfer_established`. Dense height, not Gymnasium −1/step. Development physics unused. H=16 not retuned. This is not learning-to-learn. Report `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_RESULTS.md`.

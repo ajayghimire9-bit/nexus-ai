@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Acrobot lookahead versus compute-matched H=16 locked unauthorized, 2026-10-16
+
+Preparation from `84c3588` on `cursor/acrobot-compute-matched-h16`. Frozen development checkpoints reused read-only. Confirmation physics unused. Matched H=16 uses 48 candidates (768 imagined/step); lookahead stays 16-candidate successor (771/step). Fresh seeds `24000000+`. **180 s / 12,000 / 9,234,000 / 0 updates.** **Authorized: false.** Not a result. Reports `NEXUS_ACROBOT_COMPUTE_MATCHED_PREP.md` and `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — Acrobot lookahead versus frozen H=16 transferred on a new holdout, 2026-10-16
 
 The locked confirmation screen completed. Lookahead minus H=16 dense-height return **37.961 [21.106, 54.816]**. Label `acrobot_lookahead_transfer_established`. Development physics unused. H=16 not retuned. Cost 28.083 s execute / 29.191 s process, 24,800 real steps, 6,162,000 imagined, 200 frozen-recipe epochs. Not the Gymnasium −1/step benchmark. Not learning-to-learn or AGI. Report `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_RESULTS.md`. Earlier entries remain history.

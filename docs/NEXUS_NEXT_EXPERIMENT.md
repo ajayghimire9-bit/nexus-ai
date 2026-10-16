@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock compute-matched Acrobot H=16; do not collect yet
+
+Acrobot confirmation lookahead minus H=16 **37.961 [21.106, 54.816]** stays closed. Do not retune H=16 or the 16-candidate successor. The locked next test gives H=16 48 candidates (768 imagined/step) against frozen 16-candidate lookahead (771/step) on development physics with fresh seeds. Collection is **not** authorized. Report `NEXUS_ACROBOT_COMPUTE_MATCHED_PREP.md`.
+
+## Locked — Acrobot lookahead versus compute-matched H=16, collection unauthorized
+
+Protocol `docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md` on `cursor/acrobot-compute-matched-h16` from `84c3588`. Config SHA256 `530fc209dc3b8bef360fac3d112068f110915a99fd0a355ebbd2a2eb68950453`. Protocol SHA256 `e9804af7d07cefe74348415f88ca81ea1bfcc38269f5f1ab3da3edd46ac1f874`. Primary: lookahead minus 48-candidate H=16 return, ten frozen development seeds, mean ≥ 25 and lower bound > 0. Budget **180 s**, **12,000** real steps, **9,234,000** imagined, **0** updates. Confirmation physics unused. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — Acrobot lookahead transfer is established; do not retune
 
 The authorized confirmation screen completed: lookahead minus H=16 **37.961 [21.106, 54.816]**. Label `acrobot_lookahead_transfer_established`. Do not retune H=16, candidates, or reward from this confirmation sample. A later distinct question is a **compute-matched** control of the same frozen package (771 vs 256 imagined states per step). That proposal is not implemented and is not authorized here. Report `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_RESULTS.md`.

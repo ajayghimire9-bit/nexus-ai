@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — Acrobot lookahead versus compute-matched H=16 protocol locked, collection unauthorized
+
+Confirmation stays closed and is not used to retune. Frozen development checkpoints are read-only. Matched H=16 uses 48 candidates versus frozen 16-candidate lookahead. Fresh development episode seeds. 180 s / 12,000 / 9,234,000, `authorized: false`. Reports `NEXUS_ACROBOT_COMPUTE_MATCHED_PREP.md` and `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md`.
+
 ## Latest — Acrobot lookahead versus frozen H=16 transferred on a new holdout
 
 The 60-episode confirmation grid completed under the 300 s / 24,800 / 6,162,000 cap. Lookahead minus H=16 **37.961 [21.106, 54.816]**. Label `acrobot_lookahead_transfer_established`. Execute 28.083 s, exact resource counts, 200 frozen-recipe epochs. Independent audit passed. Development physics unused. H=16 not retuned. Report `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_RESULTS.md`. No learning-to-learn or AGI.

@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the Acrobot lookahead-transfer confirmation in `docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_RESULTS.md`. Lookahead minus H=16 **37.961 [21.106, 54.816]** is labeled `acrobot_lookahead_transfer_established`. Development **27.914 [13.962, 41.867]** stays labeled `acrobot_lookahead_established`. Pendulum transfer **98.608 [43.258, 153.957]** stays labeled `lookahead_transfer_established`. CartPole lookahead versus H=3 remains not established. Do not retune from confirmation; 771 vs 256 imagined states per step remains a confound. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the Acrobot compute-matched H=16 preparation in `docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PREP.md`. Confirmation lookahead minus H=16 **37.961 [21.106, 54.816]** stays labeled `acrobot_lookahead_transfer_established`. Collection of the 48-candidate matched control is locked and unauthorized. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

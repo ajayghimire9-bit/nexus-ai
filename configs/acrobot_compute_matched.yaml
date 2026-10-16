@@ -1,0 +1,55 @@
+starting_sha: 84c35883486b6b280e8930c02b20bd237e352a6d
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 3
+candidate_horizon: 16
+n_candidates: 16
+matched_candidates: 48
+episode_steps: 200
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 180
+env_cap: 12000
+model_cap: 9234000
+training_updates: 0
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+enforce_time_budget: false
+compute_matched_control: true
+reuse_development_checkpoints: true
+pendulum_weights: false
+cartpole_h3: false
+retune_from_confirmation: false
+holdout_rule: acrobot_lookahead_dev_v1
+holdout_split_hash: 911ea726b6ed2111
+eval_task_ids: [acrobot_look_dev0, acrobot_look_dev1, acrobot_look_dev2]
+eval_physics: [[0.95, 1.2, 0.8], [1.25, 1.35, 0.95], [0.75, 1.4, 1.4]]
+reset_base: 24000000
+step_seed_base: 24100000
+checkpoint_dir: checkpoints/acrobot_lookahead_h16
+checkpoint_sha256:
+  - bcd7fbb61231c314d83cf96d73e49e29f19d9dd10e299bc69b7fe3811ca05c2f
+  - ca37b1edb9c97dcf91ceb50efc2536b54d30d7d94e81677d1e9cfb52c8c1a556
+  - 846d0e9f1597b7b8aac85fa4a5d1fc7313e9077f0382e779de8cd4d2192dec3b
+  - abd0e6d0e24f0a2564281853cf627f18146d8f65013a1313ec3355a3d77f70b7
+  - 4f13c13af7c1f59860bdfcc27ba5e0d58111464abc58bb4fff6c3b0053c827aa
+  - 40177d4424c1e644eb0026609441b07adf669a961c5364c367443eb7f6b5516f
+  - 9960fe4efd40e81993d2c13061ebf2e248b23e5e80a7e8da6fa38f83ffd88055
+  - 37e6055fa7ffe16e0c75aafcd2bdfae3f15853487535ad88d12fb95ee262c54f
+  - f37ad2738d5a76cbb91c823f8597c4250c4d03432de3b3eb5cf6296ed8936fa9
+  - 72009a34fbbd7d585ce5ce8d8cb6de542d043caf9333fa44a7f4944a24209692
+closed_confirmation_split_hash: b309bd481fd8abcb
+parents:
+  artifacts/acrobot_lookahead.json: 83b9fbeeb2558cd47d41f44342411c5cf69cb0f6261138ee7f0f5d1e07a04e87
+  docs/NEXUS_ACROBOT_LOOKAHEAD_RESULTS.md: a2704bd8632f38c5431a0c126c1bc34f29f3054310b063a87bd24e61dc1f20ad
+  configs/acrobot_lookahead.yaml: 3978b7e309f41339a56a2e6993bc48344f2bbf211baf88d3e86ce994ffa7122a
+  docs/NEXUS_ACROBOT_LOOKAHEAD_PROTOCOL.md: e2b83a21e89292e0aec5112c5456f56f82eb0d14d2b9548389ef8e79ed432567
+  artifacts/acrobot_lookahead_confirm.json: 435fdcf70c64cc79a47f4b36cd947051a24b4d4263afd0e38efb79b93ebcde5b
+  docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_RESULTS.md: 61afb926fbf6937f14819d3c3070356dd7b6fe38f62567b0d0b3049635135ad4
+  configs/acrobot_lookahead_confirm.yaml: a87959767f30ca75f0acfc753476ce06fc12c86a324315cc0f910f4149586ab1
+  docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md: dcf9913397acad3e9229ff60aa4b169250892f38f87bc2f9366a3564bf1a6b67
+  artifacts/research_session_acrobot_lookahead_usage.json: ee783a56a9bbd6188aeb9d53ca8c8fa82e545a9676c2a57e3f932423f99b39a1
+  artifacts/research_session_acrobot_lookahead_confirm_usage.json: b4199563295e3e14fa3f5887cf368428e4b9247dc4899b84b19648b9640fff3e
