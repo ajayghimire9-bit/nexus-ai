@@ -1,4 +1,4 @@
-"""Pendulum compute-matched protocol locks. The one-run allocation is armed."""
+"""Pendulum compute-matched protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -35,17 +35,20 @@ def test_forty_eight_candidates_are_a_prefix_of_frozen_sixteen():
     assert counts['training_updates']==0
 
 
-def test_one_run_allocation_is_armed_and_output_is_absent():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['retune_from_confirmation'] is False
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
     usage=json.loads(Path(record['one_run_usage_record']).read_text())
-    assert float(usage['remaining_session_allowance_s'])>=180.0
+    assert float(usage['remaining_session_allowance_s'])==0.0
     assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='pendulum_compute_matched_lookahead_established'
 
 
 def test_primary_labels_require_the_25_point_episode_margin():
@@ -68,3 +71,8 @@ def test_frozen_lookahead_identity_and_prep():
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='bcc77ee3c6e3fdd886d66840f07100dd7b9da1a61407e77be83fb31b569e3f24'
     assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
     assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='pendulum_compute_matched_lookahead_established'
+    assert audit['confirmation_physics_used'] is False
+    assert audit['training_updates']==0

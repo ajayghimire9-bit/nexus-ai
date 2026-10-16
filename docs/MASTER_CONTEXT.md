@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Pendulum lookahead versus compute-matched H=16 established, 2026-10-16
+
+The locked development screen completed. Lookahead minus 48-candidate H=16 200-step return **60.182 [11.439, 108.924]**. Label `pendulum_compute_matched_lookahead_established`. Cost 68.154 s execute / 69.590 s process, 24,000 real steps, 18,468,000 imagined, 0 updates. Checkpoints 120/0/0. Confirmation unused. Do not retune from this sample. Does not reverse the Acrobot compute-matched miss. Not learning-to-learn or AGI. Report `NEXUS_PENDULUM_COMPUTE_MATCHED_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — Pendulum lookahead versus compute-matched H=16 locked unauthorized, 2026-10-16
 
 Preparation from `cceb4b1` on `cursor/pendulum-compute-matched-h16`. Frozen FiLM checkpoints reused read-only. Confirmation physics unused. Matched H=16 uses 48 candidates (768 imagined/step); lookahead stays 16-candidate successor (771/step). Fresh seeds `15000000+`. **180 s / 24,000 / 18,468,000 / 0 updates.** **Authorized: false.** Not a result. Reports `NEXUS_PENDULUM_COMPUTE_MATCHED_PREP.md` and `NEXUS_PENDULUM_COMPUTE_MATCHED_PROTOCOL.md`. Earlier entries remain history.

@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-compute-matched-h16-on-pendulum passed on development
+
+The complete development screen passed the 25-point rule: lookahead minus 48-candidate H=16 **60.182 [11.439, 108.924]**. Label `pendulum_compute_matched_lookahead_established`. Extra search did not remove the remainder on these physics. This does not reverse the closed Acrobot compute-matched miss. Do not retune from this sample. Report `NEXUS_PENDULUM_COMPUTE_MATCHED_RESULTS.md`.
+
 ## Latest — H-lookahead-beats-compute-matched-h16-on-pendulum is implemented, not yet tested
 
 Acrobot compute-matched failed the 25-point rule. Pendulum's unmatched development gap was larger. This protocol tests frozen 16-candidate lookahead against 48-candidate H=16 (768 imagined/step) on development physics with fresh seeds, margin 25. Confirmation unused. Collection unauthorized. Report `NEXUS_PENDULUM_COMPUTE_MATCHED_PROTOCOL.md`.
