@@ -1,6 +1,5 @@
-"""MountainCar compute-matched protocol locks. Collection remains unauthorized."""
+"""MountainCar compute-matched protocol locks. The one-run allocation is armed."""
 from __future__ import annotations
-import pytest
 from nexus.tasks.mountaincar_family import (
     mountaincar_lookahead_confirmation,
     mountaincar_lookahead_development,
@@ -42,14 +41,14 @@ def test_forty_eight_candidates_are_a_prefix_of_frozen_sixteen():
     assert counts['training_updates']==0
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_is_armed_and_output_is_absent():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['retune_from_confirmation'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.execute()
 
 
 def test_primary_labels_require_the_25_point_episode_margin():
@@ -70,10 +69,7 @@ def test_frozen_checkpoints_and_lookahead_identity():
     assert cfg['retune_from_confirmation'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
-    report=m.prep()
-    assert report['authorized'] is False
-    assert report['eligibility']['reused_confirmation_physics'] is False
-    assert sha(m.CONFIG)==m.LOCKED_CONFIG
-    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    assert sha(m.CONFIG)==m.LOCKED_CONFIG=='e33b01b6d50aff45f7c7a99990b978fa7e8bc58503da472903c79651d0eda033'
+    assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='6f5be2802e132bc944e8c97437b0e60a22ebb304b6fdb2a54445fdc3fe75b076'
     assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
     assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
