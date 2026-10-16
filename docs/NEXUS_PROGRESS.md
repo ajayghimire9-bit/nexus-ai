@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — live 16-step teacher-forced error is large; H=8 episode test locked unauthorized
+
+Archived late-episode (obs, action) traces support teacher-forced 2/4/8/16-step reconstruction without new environment transitions. H=16 angvel MAE ~1.93–2.03. Student isolation includes 0 at H=16. Planned-candidate simulator open-loop is not reconstructable. Nested H=8 versus archived H=16 200-step protocol is locked, `authorized: false`, 90 s / 12,000 / 1,536,000. Reports `NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md` and `NEXUS_HORIZON_OBJECTIVE_CONTROL_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — late-episode executed-error growth not established
 
 The 30-cell development grid completed under the 90 s / 12,000 / 3,084,000 cap. Growth_diff **+0.016 [+0.003, +0.029]**. Label `late_error_growth_not_established`. Episode return **−5.414 [−92.420, +81.592]**. Execute 16.743 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`. No architecture change, learning-to-learn or AGI.

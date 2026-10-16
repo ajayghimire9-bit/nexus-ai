@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — nested H=8 versus archived H=16, collection unauthorized
+
+Protocol `docs/NEXUS_HORIZON_OBJECTIVE_CONTROL_PROTOCOL.md` on `cursor/multistep-rollout-control-audit` from `a9ada15`. Config SHA256 `fc862b46b9ab1163e894acf4a57693282db8d0a20f9f4f35220e0f8f65999b56`. Primary: H=8 receding minus archived H=16 200-step return on the same development resets, mean ≥ 25 and decoder-level lower bound > 0. Shared `candidate_sequences(seed,16,16)[:, :8]`. Budget **90 s**, **12,000** real steps, **1,536,000** imagined transitions. Collection is **not** authorized. Audit: `docs/NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md`. Do not treat this heading as a result.
+
 ## Current decision — late executed-error growth not established
 
 The authorized development screen completed: student-minus-zero late-versus-early executed one-step angvel growth **+0.016 [+0.003, +0.029]**. Label `late_error_growth_not_established`. Mean below 0.05. 200-step return includes 0. Controllers typically diverged by step 10. Do not train a ranking loss from this sample. A later distinct question would address receding search or compounding state shift after early mismatch. That proposal is not implemented and is not authorized here. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`.

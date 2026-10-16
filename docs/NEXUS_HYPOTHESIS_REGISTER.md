@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-multi-step-error-accumulates-on-live-actions is descriptively large; H-shorter-horizon-improves-episodes is unimplemented
+
+Teacher-forced H=16 angvel MAE on recorded development actions is **1.935 / 2.030** (student / zero own-path). Isolation **−0.095 [−0.515, +0.325]** includes 0. H=1 isolation excludes 0 favoring the student. Exact H=16 sequence-versus-64-step objective mismatch stays demonstrated and closed. Nested H=8 200-step control is locked and unauthorized. Report `NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md`.
+
 ## Latest — H-student-late-executed-error-grows-faster was not established
 
 The complete development screen failed the 0.05 practical margin: growth_diff **+0.016 [+0.003, +0.029]**. Label `late_error_growth_not_established`. The lower bound is above 0 but the mean is too small. Student executed MAE did not rise late; zero improved more. Episode return includes 0. First mismatch mean 9.6 steps. Do not retune. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`.

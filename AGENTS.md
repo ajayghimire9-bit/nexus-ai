@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the late-episode decision-trajectory screen in `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`. Student-minus-zero late-versus-early executed-error growth **+0.016 [+0.003, +0.029]** did not establish H1. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the offline multi-step rollout audit in `docs/NEXUS_MULTISTEP_ROLLOUT_CONTROL_AUDIT.md`. Teacher-forced H=16 executed-action angvel MAE is **1.935 [1.591, 2.279]** versus **2.030 [1.627, 2.432]**; isolation includes 0. Nested H=8 versus archived H=16 200-step collection stays unauthorized. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority
