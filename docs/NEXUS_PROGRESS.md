@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — lookahead versus H=16 transfer protocol locked, collection unauthorized
+
+Existing confirmation splits were audited without reading outcomes. Exposed splits are not reused. Reserved amortized hash `d1fa621351d286cf` is not consumed. New holdout `73844661addfa11b` is locked. Frozen development lookahead versus H=16, 180 s / 27,840 / 12,324,000 / 0 updates, `authorized: false`. Reports `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PREP.md` and `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — parameter-free H=16 lookahead raised 200-step development return versus frozen H=16
 
 The 120-episode development grid completed under the 180 s / 24,000 / 12,324,000 cap. Lookahead minus H=16 **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Execute 68.146 s, process 68.721 s, exact resource counts, 0 updates. Independent audit passed. Frozen checkpoints 120/0/0. Successor value was open-loop H=16 from s', not receding-policy Q. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`. No architecture change, learning-to-learn or AGI.

@@ -1,8 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock transfer of frozen lookahead versus H=16; do not collect yet
+
+Development lookahead minus H=16 **155.647 [109.825, 201.469]** stays closed. Historically exposed confirmation splits are not reused. Reserved amortized confirmation is not consumed. A new holdout from rule `lookahead_transfer_holdout_v1` is locked. Collection is **not** authorized. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PREP.md`.
+
+## Locked — lookahead versus H=16 transfer, collection unauthorized
+
+Protocol `docs/NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md` on `cursor/lookahead-transfer-confirmation-prep` from `961e935`. Config SHA256 `385285edca761d60c1759bf8ef951c2682794e7b3d6066e9223aad5236c9cae8`. Protocol SHA256 `5c2e0d7300e497c65c0564990aa2a86ab4d08e79979c40d8ce7d2ea51735c942`. Primary: lookahead minus H=16 200-step holdout return, mean ≥ 25 and decoder-level lower bound > 0. Holdout hash `73844661addfa11b`. Budget **180 s**, **27,840** real steps, **12,324,000** imagined transitions, **0** optimizer updates. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — parameter-free H=16 lookahead beat frozen H=16 on development
 
-The authorized development screen completed: lookahead minus frozen H=16 **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Successor value remained open-loop H=16 from s'. Do not retune candidates, horizon, or reward weights on this sample. A later distinct question is whether the same frozen rule transfers to disjoint confirmation physics. That proposal is not implemented and is not authorized here. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`.
+The authorized development screen completed: lookahead minus frozen H=16 **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Successor value remained open-loop H=16 from s'. Do not retune candidates, horizon, or reward weights on this sample. Transfer of that frozen rule is now implemented and remains unauthorized. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`.
 
 ## Consumed — one-step lookahead versus frozen H=16, one-run remaining 0
 

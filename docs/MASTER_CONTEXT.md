@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — lookahead transfer confirmation locked unauthorized, 2026-10-16
+
+Preparation from `961e935` on `cursor/lookahead-transfer-confirmation-prep`. Closed confirmation splits are historically exposed or reserved; they are not reused. A new holdout from rule `lookahead_transfer_holdout_v1` (hash `73844661addfa11b`) is locked: (17.1, 1.5, 0.8), (12.5, 0.65, 0.9), (4.2, 3.2, 1.7). Frozen development lookahead versus H=16, margin 25, 180 s / 27,840 / 12,324,000 / 0 updates. **Authorized: false.** Closed confirmation outcomes were not read. Not a result, not general control improvement, learning-to-learn or AGI. Reports `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PREP.md` and `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — parameter-free H=16 lookahead versus frozen H=16, 2026-10-16
 
 The locked 120-episode development screen completed. Lookahead minus H=16 200-step return **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Successor value remained frozen open-loop H=16 score from s', so this does not isolate Bellman-consistent receding value. Cost 68.146 s execute / 68.721 s process, 24,000 real steps, 12,324,000 imagined, 0 updates. Checkpoints 120/0/0. Confirmation unused. Not general control improvement, learning-to-learn or AGI. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`. Earlier entries remain history.

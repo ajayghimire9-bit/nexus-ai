@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-transfers-to-new-physics is implemented, not yet tested
+
+Development lookahead versus H=16 passed. Transfer uses a new holdout (`73844661addfa11b`), not historically exposed confirmation physics. Primary: lookahead minus H=16 200-step return, margin 25. Student-versus-zero is secondary and cannot upgrade. Collection unauthorized. Report `NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_PROTOCOL.md`.
+
 ## Latest — H-lookahead-beats-h16 passed on development; Bellman consistency is not isolated
 
 The complete development screen passed the 25-point episode rule: lookahead minus frozen H=16 **155.647 [109.825, 201.469]**. Label `bellman_backup_improves_episode_return`. Successor value was frozen open-loop H=16 from s', not receding-policy Q. H1 remains the supported mechanism class; this result does not prove Bellman consistency. Confirmation transfer is untested. Report `NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md`.
