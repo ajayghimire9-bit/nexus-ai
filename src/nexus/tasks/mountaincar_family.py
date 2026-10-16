@@ -64,3 +64,23 @@ def mountaincar_lookahead_development() -> tuple[TaskSpec, ...]:
         )
         for i, row in enumerate(rows)
     )
+
+
+def mountaincar_lookahead_confirmation() -> tuple[TaskSpec, ...]:
+    """Unused MountainCar physics for lookahead versus frozen H=16 transfer.
+
+    Rule `mountaincar_lookahead_confirm_v1` rejects the source and the
+    development draw. H=16, candidates, and dense height are not retuned.
+    """
+    rows = ((0.0031, 0.0007, 0.09), (0.0022, 0.0014, 0.085), (0.0037, 0.0014, 0.07))
+    return tuple(
+        _mountaincar(
+            f"mountaincar_look_cf{i}",
+            "lookahead_confirm",
+            f"Lookahead versus H=16 confirmation gravity/force/speed {row}.",
+            gravity=row[0],
+            force=row[1],
+            max_speed=row[2],
+        )
+        for i, row in enumerate(rows)
+    )

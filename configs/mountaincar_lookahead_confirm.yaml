@@ -1,0 +1,38 @@
+starting_sha: 998e1d634f942d36a763c6d0229f67393a4fef1f
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 3
+candidate_horizon: 16
+n_candidates: 16
+episode_steps: 200
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 300
+env_cap: 24800
+model_cap: 6162000
+training_updates: 200
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+enforce_time_budget: false
+compute_matched_control: false
+pendulum_weights: false
+cartpole_h3: false
+acrobot_copy: false
+retune_from_development: false
+holdout_rule: mountaincar_lookahead_confirm_v1
+holdout_split_hash: bf4b4412f4f683dd
+eval_task_ids: [mountaincar_look_cf0, mountaincar_look_cf1, mountaincar_look_cf2]
+eval_physics: [[0.0031, 0.0007, 0.09], [0.0022, 0.0014, 0.085], [0.0037, 0.0014, 0.07]]
+reset_base: 26000000
+step_seed_base: 26100000
+train_collect_base: 310000
+val_collect_base: 315000
+parents:
+  configs/mountaincar_lookahead.yaml: 9e4f9cf8b92cbb5e54d9a17b20c1518aae9f925e490930cd4b958ec7885e97f4
+  docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_PROTOCOL.md: 4f7ebc5f30755e80adecee9c930e9b888a006f1e5edca00d742a8caa3932d4bb
+  artifacts/mountaincar_lookahead.json: 28e19af3e986a25bd094d9a271180002f85c03c2cb9bb655cfae52ab25fa78eb
+  docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_RESULTS.md: fd79ca7a7045b72b3277084d6109df2405e4037fae4f640e22ed3bcf01367e0e
+  artifacts/research_session_mountaincar_lookahead_usage.json: 67997458eb333601933291a78528b19b63bdec1b4831c86d9c494c085576d9e9

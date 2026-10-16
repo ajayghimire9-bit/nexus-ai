@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — MountainCar lookahead versus H=16 transfer protocol locked, collection unauthorized
+
+Development stays closed and is not used to retune H=16. New unused confirmation physics `bf4b4412f4f683dd`. Frozen recipe, 300 s / 24,800 / 6,162,000, `authorized: false`. Reports `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_PREP.md` and `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_PROTOCOL.md`.
+
 ## Latest — MountainCar lookahead versus frozen H=16 established on development
 
 The 60-episode development grid completed under the 300 s / 24,800 / 6,162,000 cap. Lookahead minus H=16 **44.092 [13.945, 74.239]**. Label `mountaincar_lookahead_established`. Execute 27.134 s, exact resource counts, 200 frozen-recipe epochs. Independent audit passed. CartPole H=3 unused. Pendulum FiLM unused. Acrobot unused. Do not retune from this development sample. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_RESULTS.md`. No learning-to-learn or AGI.
