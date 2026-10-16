@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — MountainCarContinuous lookahead versus H=16 protocol locked, collection unauthorized
+
+MountainCar compute-matched stays closed and is not used to retune H=16. New family. Discretized force, dense valley height, 200-step episodes, no goal termination. Holdout `d247d7921d6afff7`. Frozen recipe, 300 s / 24,800 / 6,162,000, `authorized: false`. Reports `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PREP.md` and `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PROTOCOL.md`.
+
 ## Latest — MountainCar lookahead versus compute-matched H=16 established
 
 The 60-episode grid completed under the 180 s / 12,000 / 9,234,000 cap. Lookahead minus 48-candidate H=16 **54.649 [26.611, 82.686]**. Label `mountaincar_compute_matched_lookahead_established`. Execute 29.071 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. 16-candidate successor not retuned. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md`. No learning-to-learn or AGI.

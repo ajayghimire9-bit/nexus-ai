@@ -68,6 +68,51 @@ class AcrobotDenseRewardWrapper(gym.Wrapper):
         return obs, height, False, truncated, info
 
 
+class ContinuousMountainCarGravityPatch(gym.Wrapper):
+    """Replace hardcoded 0.0025 gravity in MountainCarContinuous-v0.
+
+    Native ``step`` is patched on the unwrapped env so TimeLimit still counts.
+    Discrete torque mapping and dense height are applied by outer wrappers.
+    """
+
+    def __init__(self, env: gym.Env, gravity: float) -> None:
+        super().__init__(env)
+        inner = env.unwrapped
+        inner.gravity = float(gravity)
+        if getattr(inner, "_nexus_mcc_gravity_patched", False):
+            return
+        import math
+
+        def step(action):  # type: ignore[no-untyped-def]
+            position = inner.state[0]
+            velocity = inner.state[1]
+            force = min(max(float(np.asarray(action).reshape(-1)[0]), inner.min_action), inner.max_action)
+            velocity += force * inner.power - float(inner.gravity) * math.cos(3 * position)
+            if velocity > inner.max_speed:
+                velocity = inner.max_speed
+            if velocity < -inner.max_speed:
+                velocity = -inner.max_speed
+            position += velocity
+            if position > inner.max_position:
+                position = inner.max_position
+            if position < inner.min_position:
+                position = inner.min_position
+            if position == inner.min_position and velocity < 0:
+                velocity = 0
+            terminated = bool(position >= inner.goal_position and velocity >= inner.goal_velocity)
+            reward = 0.0
+            if terminated:
+                reward = 100.0
+            reward -= float(force) ** 2 * 0.1
+            inner.state = np.array([position, velocity], dtype=np.float32)
+            if inner.render_mode == "human":
+                inner.render()
+            return inner.state, reward, terminated, False, {}
+
+        inner.step = step  # type: ignore[method-assign]
+        inner._nexus_mcc_gravity_patched = True
+
+
 class MountainCarDenseRewardWrapper(gym.Wrapper):
     """Replace Gymnasium -1/step with frozen valley height. Goal does not terminate."""
 

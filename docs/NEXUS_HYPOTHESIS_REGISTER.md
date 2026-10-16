@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-beats-h16-on-mountaincar-continuous is implemented, not yet tested
+
+MountainCar compute-matched passed. This protocol tests one-step backup of frozen H=16 dense valley-height value versus receding H=16 on unused MountainCarContinuous physics, margin 25. Discrete MountainCar, CartPole H=3, Pendulum FiLM, and Acrobot unused. Collection unauthorized. Report `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PROTOCOL.md`.
+
 ## Latest — H-lookahead-beats-compute-matched-h16-on-mountaincar passed on development
 
 The complete development screen passed the 25-point rule: lookahead minus 48-candidate H=16 **54.649 [26.611, 82.686]**. Label `mountaincar_compute_matched_lookahead_established`. Extra search did not remove the remainder on these physics. This does not reverse the closed Acrobot compute-matched miss. Do not retune from this sample. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md`.

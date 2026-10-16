@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock MountainCarContinuous lookahead versus H=16; do not collect yet
+
+MountainCar compute-matched **54.649 [26.611, 82.686]** stays closed. Do not retune H=16. The locked next test uses a new family: discretized-force MountainCarContinuous, dense valley height, H=16 × 16, holdout `d247d7921d6afff7`. Discrete MountainCar unused. Collection is **not** authorized. Report `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PREP.md`.
+
+## Locked — MountainCarContinuous lookahead versus frozen H=16, collection unauthorized
+
+Protocol `docs/NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_PROTOCOL.md` on `cursor/mountaincar-continuous-lookahead-h16` from `ae69917`. Config SHA256 `4ea518200f94cdd4f5994baa943afd1ee6dcf688701264d86b29614ff6eae02c`. Protocol SHA256 `9c998dab8030e2fd7605c48efcca4fb26a05f4f27245b09faff1153b69be5b23`. Primary: lookahead minus H=16 200-step dense-height return, ten training seeds, mean ≥ 25 and lower bound > 0. Budget **300 s**, **24,800** real steps, **6,162,000** imagined. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — MountainCar compute-matched lookahead is established; do not retune
 
 The authorized development screen completed: lookahead minus 48-candidate H=16 **54.649 [26.611, 82.686]**. Label `mountaincar_compute_matched_lookahead_established`. Do not retune H=16, candidates, or reward from this sample. This does not reverse the closed Acrobot compute-matched miss. A later distinct question is the unmatched frozen lookahead package on a **new environment family**. That proposal is not implemented and is not authorized here. Report `NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md`.

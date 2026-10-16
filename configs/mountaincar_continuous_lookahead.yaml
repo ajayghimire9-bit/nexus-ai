@@ -1,0 +1,38 @@
+starting_sha: ae699174c853d409436ecdd03117a903f2be80c6
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 3
+candidate_horizon: 16
+n_candidates: 16
+episode_steps: 200
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 300
+env_cap: 24800
+model_cap: 6162000
+training_updates: 200
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+enforce_time_budget: false
+compute_matched_control: false
+pendulum_weights: false
+cartpole_h3: false
+acrobot_copy: false
+mountaincar_copy: false
+holdout_rule: mcc_lookahead_dev_v1
+holdout_split_hash: d247d7921d6afff7
+eval_task_ids: [mcc_look_dev0, mcc_look_dev1, mcc_look_dev2]
+eval_physics: [[0.0038, 0.0019, 0.085], [0.0024, 0.0019, 0.09], [0.0033, 0.0014, 0.05]]
+reset_base: 28000000
+step_seed_base: 28100000
+train_collect_base: 330000
+val_collect_base: 335000
+parents:
+  artifacts/mountaincar_compute_matched.json: 8a829874a5ba07d0e37e60b82efbce87afea83f04009c5f857be6e3523ca6c8f
+  docs/NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md: 48caf258d52f08213fc29d7aa784a48f101825599b2b99d04fb150e95733364a
+  configs/mountaincar_compute_matched.yaml: e33b01b6d50aff45f7c7a99990b978fa7e8bc58503da472903c79651d0eda033
+  docs/NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_PROTOCOL.md: 6f5be2802e132bc944e8c97437b0e60a22ebb304b6fdb2a54445fdc3fe75b076
+  artifacts/research_session_mountaincar_compute_matched_usage.json: fc3fe999ec0c4e4c55a649445d13cc69130abad1513c09b9def0a0f053470806

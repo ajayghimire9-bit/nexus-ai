@@ -11,9 +11,9 @@ import numpy as np
 class TaskSpec:
     """Reusable task identity. Compatible tasks share obs/action semantics.
 
-    CartPole-v1, Acrobot-v1 and MountainCar-v0 are *not* compatible:
-    different observation sizes, action counts and dynamics. Do not transfer
-    their states or weights.
+    CartPole-v1, Acrobot-v1, MountainCar-v0 and MountainCarContinuous-v0
+    are *not* compatible: different observation sizes, action counts or
+    dynamics. Do not transfer their states or weights.
     """
 
     task_id: str
@@ -61,6 +61,9 @@ def apply_params(env: gym.Env, spec: TaskSpec) -> gym.Env:
         if key in WRAPPER_PARAM_KEYS:
             continue
         if not hasattr(inner, key):
+            if spec.family == "mountaincar_continuous" and key == "gravity":
+                setattr(inner, key, value)
+                continue
             raise AttributeError(f"{spec.gym_id} has no attribute {key}")
         setattr(inner, key, value)
     if spec.family == "cartpole" or str(spec.gym_id).startswith("CartPole"):
@@ -73,6 +76,7 @@ def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> 
     from nexus.tasks.wrappers import (
         AcrobotDenseRewardWrapper,
         ActionDelayWrapper,
+        ContinuousMountainCarGravityPatch,
         MountainCarDenseRewardWrapper,
         DiscreteTorqueWrapper,
         ObservationNoiseWrapper,
@@ -95,6 +99,10 @@ def apply_wrappers(env: gym.Env, spec: TaskSpec, *, seed: int | None = None) -> 
         env = AcrobotDenseRewardWrapper(env)
     if spec.family == "mountaincar":
         env = MountainCarDenseRewardWrapper(env)
+    if spec.family == "mountaincar_continuous":
+        env = ContinuousMountainCarGravityPatch(env, float(spec.params["gravity"]))
+        env = DiscreteTorqueWrapper(env, (-1.0, 0.0, 1.0))
+        env = MountainCarDenseRewardWrapper(env)
     return env
 
 
@@ -102,7 +110,7 @@ def make_task_env(spec: TaskSpec, *, seed: int | None = None, render_mode: str |
     make_kwargs: dict[str, Any] = {}
     if render_mode is not None:
         make_kwargs["render_mode"] = render_mode
-    if spec.family in ("acrobot", "mountaincar"):
+    if spec.family in ("acrobot", "mountaincar", "mountaincar_continuous"):
         make_kwargs["max_episode_steps"] = 200
     env = gym.make(spec.gym_id, **make_kwargs)
     apply_params(env, spec)
