@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded results are in `docs/NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. A 15-coefficient source-only linear first-action Q did not beat frozen H=16 on development visited states (−3.535 [−9.840, +2.769]). That does not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded results are in `docs/NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. A 15-coefficient source-only linear first-action Q did not beat frozen H=16 on development visited states (−3.535 [−9.840, +2.769]). The capacity-matched 81-coefficient protocol is locked in `docs/NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md` but has **not** been executed. That does not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — capacity-matched first-action Q protocol, 2026-10-16
+
+An 81-coefficient first-action Q protocol is locked on `cursor/capacity-matched-first-action-value` from `a833a2c`. Features are V's exact 77 polynomial observation/context coordinates plus three action indicators and an intercept. Offline feasibility (zero new steps) found 24 unique source labels per decoder, design rank 50, and additive action ranking that cannot depend on state. Ridge λ=1 is prespecified. The standing session remainder is 47.766 s, below the 150 s cap, so **no source labels or development returns have been collected**. This is not a result, not control improvement, not learning-to-learn and not AGI. Protocol `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — linear first-action Q, 2026-10-16
 
 A source-trained 15-coefficient linear Q(s, z, a), fit on first-action-plus-zero-replanning 64-step returns and frozen before development evaluation, **did not establish a first-action return gain** versus frozen H=16: **−3.535 [−9.840, +2.769]**. Label `aligned_first_action_gain_not_established`. Aligned minus frozen sequence-value **−0.967 [−7.868, +5.934]** also includes 0. Development Q RMSE **107.5**; source-fit RMSE about **70**. Ten decoder units; students, visitor groups and tasks averaged inside decoders. World models, encoders, sequence-value V, H=16 and 16 candidates unchanged. No confirmation physics.

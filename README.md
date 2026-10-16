@@ -6,7 +6,7 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: first-action value learning.** A 15-coefficient source-only linear Q did not beat frozen H=16 on development first-action 64-return (−3.535 [−9.840, +2.769]). Write-up: `docs/NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. Artifact `artifacts/first_action_value.json`.
+**Current: capacity-matched first-action Q protocol, not executed.** The 81-coefficient estimator is implemented and audited offline (24 unique labels vs 81 weights; rank 50). Collection is unauthorized. Protocol: `docs/NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`. Previous linear-Q result: `docs/NEXUS_FIRST_ACTION_VALUE_RESULTS.md`.
 
 New episodes of the previous physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**. Both decoder-level intervals clear 25. Disjoint physics returned **−716.0** versus zero **−696.6**, and that interval lies below zero. This is **not** a general control improvement, AGI, or learning-to-learn.
 

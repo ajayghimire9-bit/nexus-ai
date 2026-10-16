@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — capacity-matched first-action Q protocol locked, not executed
+
+The 81-coefficient Q protocol is implemented and tested on `cursor/capacity-matched-first-action-value` from `a833a2c`. It reuses sequence-value V's 77 polynomial coordinates plus three action dummies. Offline feasibility: 24 unique source labels/decoder, design rank 50, ridge Gram condition ~43 on historical source observations, additive action ranking independent of state. Zero new environment steps. Collection remains unauthorized because the standing session has 47.766 s left versus a 150 s cap. No registered Q fit or development return exists. Report `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`.
+
 ## Latest — linear first-action Q did not establish a decision gain
 
 A 15-coefficient source-only linear Q, trained on first-action-plus-zero-replanning 64-step returns and frozen before development visited-state evaluation, did not beat frozen H=16: aligned−H=16 **−3.535 [−9.840, +2.769]**. Label `aligned_first_action_gain_not_established`. Aligned−sequence-value **−0.967 [−7.868, +5.934]** also includes 0. Development Q RMSE 107.5; source-fit RMSE ~70. World models, encoders, sequence-value V, H=16 and 16 candidates unchanged. Cost 126.642 s, 29,880 real steps, 7,741,440 imagined transitions. Report `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. One next proposal: capacity-matched 81-coefficient polynomial Q on the same labels; not executed. No architecture change, learning-to-learn or AGI.

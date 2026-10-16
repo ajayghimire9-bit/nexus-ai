@@ -1,10 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — capacity-matched first-action Q, collection unauthorized
+
+Protocol `docs/NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md` and config `configs/capacity_matched_q.yaml` are committed on `cursor/capacity-matched-first-action-value` from `a833a2c`. Offline feasibility (`docs/NEXUS_CAPACITY_MATCHED_Q_FEASIBILITY.md`) found 24 unique source labels versus 81 coefficients, design rank 50, and state-independent additive action ranking. Ridge λ=1 is prespecified. **No source labels, fits or development returns have been collected for this estimator.**
+
+The primary screen remains aligned-Q minus H=16 first-action 64-return, mean ≥ 1 with decoder-level lower bound > 0. If the complete run does not pass, this score-correction branch closes. Proposed cap 150 s, 29,880 real steps, 7,741,440 imagined transitions. Remaining standing-session allowance is 47.766 s, so collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current proposal — capacity-matched first-action Q, then stop if it fails
 
-The linear 15-coefficient aligned Q did not beat H=16 on first-action 64-return: **−3.535 [−9.840, +2.769]**. Source-fit RMSE stayed around 70 and development Q RMSE was 107.5. This is not a strong test of aligned labels at sequence-V capacity, and it is not an architecture warrant. See `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`.
-
-**One next experiment:** keep the frozen world models/encoders/H=16/16 candidates. Fit a ridge readout with the same 77 polynomial (observation, context) coordinates used by sequence-value V, plus three action dummies (81 coefficients), on source-only first-action-plus-zero-replanning 64-step labels. Freeze it before new development visited-state evaluation. Use the same primary screen (aligned minus H=16 first-action 64-return, mean ≥ 1 and lower > 0). If that also fails, close the score-correction branch rather than adding layers. Estimate ~30,000 real steps and a 150-second-class cap; remaining conservative session allowance is 47.8 s, so a later session or a smaller cap must be locked before collection. This proposal has not run.
+The linear 15-coefficient aligned Q did not beat H=16 on first-action 64-return: **−3.535 [−9.840, +2.769]**. Source-fit RMSE stayed around 70 and development Q RMSE was 107.5. This is not a strong test of aligned labels at sequence-V capacity, and it is not an architecture warrant. See `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. The executable protocol and unauthorized allocation now exist; they have not been executed.
 
 ## Current proposal — source-only replanning-aligned value labels
 

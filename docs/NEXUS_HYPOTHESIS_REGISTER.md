@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-capacity-matched-Q is implemented, not yet tested
+
+The 15-coefficient miss left open whether aligned first-action labels fail because of capacity. The locked 81-coefficient protocol reuses V's 77 polynomial coordinates plus three action dummies, ridge λ=1. Offline diagnostics show only 24 unique source labels versus 81 weights, rank 50, and state-independent action ranking. That does not answer the decision question. Collection is unauthorized until a fresh 150 s / 29,880-step approval. If the complete run fails the registered first-action screen, close this score-correction branch. Report `NEXUS_CAPACITY_MATCHED_Q_PROTOCOL.md`.
+
 ## Latest — H-aligned-Q not established for the 15-coefficient linear readout
 
 A source-trained linear Q(s,z,a) with 15 coefficients did not raise development first-action 64-return versus frozen H=16: **−3.535 [−9.840, +2.769]**, n=10 decoder units. The registered gain screen failed. Source RMSE remained ~70, so the aligned-label hypothesis was not given a capacity-matched test against sequence-value V. Sequence-value itself also did not beat H=16 on this sample. No architecture change is justified. Unknown: whether the same first-action labels become useful with the 77-coordinate polynomial feature class already used by V. Report `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`.
