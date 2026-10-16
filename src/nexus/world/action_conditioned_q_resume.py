@@ -279,6 +279,8 @@ def collect_missing_cell(cfg,resume_cfg,fit,meter,parent,seq_stage,rep,confirmat
 def validate_completed(payload,cfg,parent,seq_stage,fit,resume_cfg):
     if sha(PARENT_OUTPUT)!=payload['parent_raw_sha256'] or sha(PARENT_FIT)!=payload['parent_fit_sha256']:
         raise ValueError('completed artifact does not point at the frozen incomplete capture')
+    kept=[c for c in payload['cells'] if (c['decoder'],c['task'],c['state'])!=MISSING]
+    if freeze_cells(kept)!=PRESENT_DIGEST:raise ValueError('completed 59-cell set was replaced')
     inspect_source(payload,cfg,parent,seq_stage);inspect_fits(payload,fit,cfg)
     cells=checked_id_grid(payload['cells'],('decoder','task','state'),set(itertools.product(range(10),range(3),range(2))))
     for row in cells.values():inspect_eval_cell(row,cfg,parent,seq_stage,fit)
@@ -292,42 +294,60 @@ def validate_completed(payload,cfg,parent,seq_stage,fit,resume_cfg):
     return result
 
 
+def verify_before_collection():
+    from nexus.world.checkpoint_integrity import verify_checkpoint_integrity
+    resume_cfg,cfg=load_resume_config();raw,fit=load_parent()
+    if subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()=='':raise RuntimeError('missing implementation revision')
+    checkpoints=verify_checkpoint_integrity()
+    parent,seq_stage=q.visited.prior.parent_evidence()
+    present=inspect_present_cells(raw,cfg,parent,seq_stage,fit)
+    rebuilt=inspect_fits(raw,fit,cfg);inspect_source(raw,cfg,parent,seq_stage)
+    if present['cell_digest']!=PRESENT_DIGEST:raise ValueError('frozen 59-cell digest changed')
+    if sha(PARENT_OUTPUT)!='6f80696ca7cb94d0789ef950c90cf34aa425aab20b4fc9d776c4397201322680' or sha(PARENT_FIT)!='2da13f24f102f84474c466d6b214a4be51672e609881e69cf3054144e35771ae':
+        raise RuntimeError('verification mutated frozen parent artifacts')
+    return dict(resume_cfg=resume_cfg,cfg=cfg,raw=raw,fit=fit,parent=parent,seq_stage=seq_stage,present=present,
+                checkpoints=checkpoints,fits=rebuilt,implementation_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+                protocol_sha256=sha(PROTOCOL),config_sha256=sha(CONFIG),
+                parent_output_sha256=sha(PARENT_OUTPUT),parent_fit_sha256=sha(PARENT_FIT))
+
+
 def execute():
     resume_cfg,cfg=load_resume_config();require_allocation(resume_cfg)
     if CELL_OUTPUT.exists() or COMPLETED.exists():raise RuntimeError('refusing resume overwrite')
-    if PARENT_OUTPUT.stat().st_mtime and sha(PARENT_OUTPUT)!='6f80696ca7cb94d0789ef950c90cf34aa425aab20b4fc9d776c4397201322680':
-        raise RuntimeError('parent capture changed')
     if subprocess.check_output(['git','status','--porcelain'],text=True).strip():raise RuntimeError('commit clean resume protocol before collection')
     subprocess.run(['git','merge-base','--is-ancestor',resume_cfg['starting_sha'],'HEAD'],check=True)
-    started=time.perf_counter();raw,fit=load_parent();meter=Meter(resume_cfg)
-    parent,seq_stage=q.visited.prior.parent_evidence()
-    present=inspect_present_cells(raw,cfg,parent,seq_stage,fit);inspect_fits(raw,fit,cfg);inspect_source(raw,cfg,parent,seq_stage)
+    verified=verify_before_collection();raw,fit,parent,seq_stage,present=verified['raw'],verified['fit'],verified['parent'],verified['seq_stage'],verified['present']
     payload=dict(complete=False,label='incomplete')
+    started=time.perf_counter();meter=Meter(resume_cfg)
     try:
         from nexus.world.control_replication import load_replication_config,_confirmation_artifact
         from nexus.world.checkpoint_integrity import verify_checkpoint_integrity
         rep=load_replication_config();confirmation=_confirmation_artifact(rep)
         cell=collect_missing_cell(cfg,resume_cfg,fit,meter,parent,seq_stage,rep,confirmation)
+        collection_s=time.perf_counter()-started;meter.check()
         save(CELL_OUTPUT,dict(cell=cell,counts=meter.counts,parent_raw_sha256=sha(PARENT_OUTPUT),parent_fit_sha256=sha(PARENT_FIT)))
         if sha(PARENT_OUTPUT)!='6f80696ca7cb94d0789ef950c90cf34aa425aab20b4fc9d776c4397201322680' or sha(PARENT_FIT)!='2da13f24f102f84474c466d6b214a4be51672e609881e69cf3054144e35771ae':
             raise RuntimeError('resume collection mutated frozen parent artifacts')
-        meta=dict(present_digest=present['cell_digest'],wall_clock_s=time.perf_counter()-started,
-                  implementation_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+        meta=dict(present_digest=present['cell_digest'],wall_clock_s=collection_s,
+                  implementation_sha=verified['implementation_sha'],
                   config_sha256=sha(CONFIG),protocol_sha256=sha(PROTOCOL),allocation_sha256=sha(ALLOCATION),
                   resume_cfg={'time_cap_s':60,'env_cap':242,'model_cap':64512})
         assembled=assemble(raw,cell,fit,cfg,meta)
         assembled['resume_counts']=dict(meter.counts)
+        assembled['checkpoint_before']=verified['checkpoints']
         assembled['checkpoint_after']=verify_checkpoint_integrity()
+        assembled['input_verification']=dict(checkpoints=verified['checkpoints'],n_source_cells=160,n_eval_cells=59,
+                                             present_digest=PRESENT_DIGEST,implementation_sha=verified['implementation_sha'],
+                                             new_environment_steps=0)
         assembled['resume']=meta
-        assembled['resume']['wall_clock_s']=time.perf_counter()-started
         result=validate_completed(assembled,cfg,parent,seq_stage,fit,resume_cfg)
-        assembled.update(result);meter.check();assembled['complete']=True
+        assembled.update(result);assembled['complete']=True
         payload=assembled
     except Exception as exc:
         payload=dict(complete=False,label='incomplete',failure=dict(type=type(exc).__name__,message=str(exc)),
                      parent_raw_sha256=sha(PARENT_OUTPUT),wall_clock_s=time.perf_counter()-started)
         print('INCOMPLETE',payload['failure'],flush=True)
-    payload['wall_clock_s']=time.perf_counter()-started
+    payload['wall_clock_s']=payload.get('resume',{}).get('wall_clock_s',time.perf_counter()-started) if payload.get('complete') is True else time.perf_counter()-started
     if payload.get('complete') is True:save(COMPLETED,payload)
     else:save(CELL_OUTPUT.with_name('action_conditioned_q_resume_incomplete.json'),payload)
     return payload
@@ -339,6 +359,10 @@ def audit():
     if completed.get('complete') is not True:raise RuntimeError('incomplete/invalid resumed evaluation')
     rebuilt=validate_completed(completed,cfg,parent,seq_stage,fit,resume_cfg)
     if completed['label']!=rebuilt['label']:raise ValueError('saved label differs')
-    if sha(PARENT_OUTPUT)!='6f80696ca7cb94d0789ef950c90cf34aa425aab20b4fc9d776c4397201322680':raise ValueError('parent capture changed after resume')
+    if completed['groups']!=rebuilt['groups']:raise ValueError('saved decoder intervals differ from independent reconstruction')
+    kept=[c for c in completed['cells'] if (c['decoder'],c['task'],c['state'])!=MISSING]
+    if freeze_cells(kept)!=PRESENT_DIGEST:raise ValueError('completed artifact replaced a saved cell')
+    if sha(PARENT_OUTPUT)!='6f80696ca7cb94d0789ef950c90cf34aa425aab20b4fc9d776c4397201322680' or sha(PARENT_FIT)!='2da13f24f102f84474c466d6b214a4be51672e609881e69cf3054144e35771ae':
+        raise ValueError('parent capture changed after resume')
     return dict(audit_passed=True,label=completed['label'],raw_sha256=sha(COMPLETED),parent_raw_sha256=sha(PARENT_OUTPUT),
-                parent_fit_sha256=sha(PARENT_FIT),groups=completed['groups'])
+                parent_fit_sha256=sha(PARENT_FIT),present_digest=PRESENT_DIGEST,groups=completed['groups'])

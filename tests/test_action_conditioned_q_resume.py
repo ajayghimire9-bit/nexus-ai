@@ -105,15 +105,17 @@ def test_assemble_accepts_only_the_missing_cell_and_freezes_the_fifty_nine():
         m.assemble(mutated,new,fit,cfg,meta)
 
 
-def test_resume_budget_is_one_cell_and_unauthorized():
+def test_resume_budget_is_one_cell_and_one_run_authorized():
     resume_cfg,_=m.load_resume_config();counts=m.budget(resume_cfg)
     assert counts==dict(collection=50,first_common=192,model_states=64512)
     assert resume_cfg['env_cap']==242 and resume_cfg['model_cap']==64512 and resume_cfg['time_cap_s']==60
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
+    assert record['authorized'] is True and record['runs']==1
+    assert record['authority_commit']=='01256ca6a8129dfd10b2458b729bf7e69c5f0393'
     assert record['previous_exhausted_session_sha256']=='c14f16e667d1e52d3ebddff1412498f5db75832c25a74b0579bc8bcf98750462'
-    with pytest.raises(PermissionError,match='fresh human approval'):
-        m.require_allocation(resume_cfg)
+    m.require_allocation(resume_cfg)
+    exhausted=json.loads(Path('artifacts/research_session_first_action_value_usage.json').read_text())
+    assert exhausted['remaining_session_allowance_s']<resume_cfg['time_cap_s']
     text=Path('docs/NEXUS_ACTION_CONDITIONED_Q_RESUME_PROTOCOL.md').read_text()
     assert 'authorized: false' in text and 'architecture_change_authorized: false' in text
     assert 'NEXUS_ACTION_CONDITIONED_Q_PROTOCOL.md' in text
