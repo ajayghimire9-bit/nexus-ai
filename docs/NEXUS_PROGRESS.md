@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — Prefix-max tree reuse versus H=16 protocol locked, collection unauthorized
+
+Nearest-neighbor tree-reuse stays closed and is not used to retune. Frozen development checkpoints are read-only. Confirmation unused. Prefix-max t=1 remaining versus 16-candidate H=16. Fresh seeds. 180 s / 12,000 / 3,090,000, `authorized: false`. Reports `NEXUS_PREFIX_MAX_TREE_REUSE_PREP.md` and `NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md`.
+
 ## Latest — Tree-reuse lookahead versus frozen H=16 not established
 
 The 90-episode grid completed under the 180 s / 18,000 / 7,716,000 cap. Tree-reuse minus H=16 **−14.751 [−37.142, 7.641]**. Label `tree_reuse_lookahead_not_established`. Execute 34.065 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. No fitted critic. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`. No learning-to-learn or AGI.

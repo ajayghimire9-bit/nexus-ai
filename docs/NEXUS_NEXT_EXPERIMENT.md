@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock prefix-max tree reuse versus H=16; do not collect yet
+
+Nearest-neighbor tree-reuse **−14.751 [−37.142, 7.641]** stays closed. Do not retune H=16 or fit another Q. The locked next test uses max remaining at cached t=1 nodes whose first action matches `a` versus 16-candidate H=16 on frozen MountainCar development checkpoints with fresh seeds `30000000+`. Confirmation unused. Collection is **not** authorized until a bound one-run allocation exists. Report `NEXUS_PREFIX_MAX_TREE_REUSE_PREP.md`.
+
+## Locked — prefix-max tree reuse versus frozen H=16, collection unauthorized
+
+Protocol `docs/NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md` on `cursor/prefix-max-tree-reuse-h16` from `f3898f6`. Config SHA256 `1d1a39c11076644fcc590fa378e0d19c3bff8ec68f4f92e078de894609daf440`. Protocol SHA256 `7f7a3ca13b267d9873fa0d2339db6cd82e5c6f313239bc9835b4e057a5b6a634`. Primary: prefix-max minus H=16 200-step dense-height return, ten frozen development seeds, mean ≥ 25 and lower bound > 0. Budget **180 s**, **12,000** real steps, **3,090,000** imagined, **0** updates. Confirmation physics unused. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — tree-reuse lookahead is not established; do not retune
 
 The authorized development screen completed: tree-reuse minus H=16 **−14.751 [−37.142, 7.641]**. Label `tree_reuse_lookahead_not_established`. Nearest remaining height from the current-step tree does not keep the 25-point MountainCar remainder. Do not retune H=16, fit another Q, or reopen confirmation. A later distinct question is **prefix-max** remaining at cached t=1 nodes whose first action matches `a` (still 259 imagined/step) versus H=16 on these frozen checkpoints with new seeds. That proposal is not implemented and is not authorized here. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`.

@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Prefix-max tree reuse versus H=16 locked unauthorized, 2026-10-16
+
+Preparation from `f3898f6` on `cursor/prefix-max-tree-reuse-h16`. Nearest-neighbor tree-reuse stays closed. Frozen development checkpoints reused read-only. Confirmation unused. Prefix-max remaining at matching first-action t=1 nodes (259/step) versus 16-candidate H=16 (256/step). Fresh seeds `30000000+`. **180 s / 12,000 / 3,090,000 / 0 updates.** No 771 arm. No fitted critic. **Authorized: false.** Not a result. Reports `NEXUS_PREFIX_MAX_TREE_REUSE_PREP.md` and `NEXUS_PREFIX_MAX_TREE_REUSE_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — Tree-reuse lookahead versus frozen H=16 not established, 2026-10-16
 
 The locked development screen completed. Tree-reuse minus H=16 dense valley-height return **−14.751 [−37.142, 7.641]**. Label `tree_reuse_lookahead_not_established`. Mean nearest-neighbor distance ~0, so the miss is not an off-manifold interpolator. Cost 34.065 s execute / 35.30 s process, 18,000 real steps, 7,716,000 imagined, 0 updates. Frozen checkpoints. Confirmation unused. Do not retune from this sample. Closed MountainCar unmatched/compute-matched labels stay closed. Not learning-to-learn or AGI. Report `NEXUS_TREE_REUSE_LOOKAHEAD_RESULTS.md`. Earlier entries remain history.
