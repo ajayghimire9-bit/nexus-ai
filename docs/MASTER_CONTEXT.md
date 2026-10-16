@@ -1,5 +1,11 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — offline visited-state tail discrimination, 2026-10-16
+
+The recorded-data audit completed once in2.0195seconds, with **zero new real/imagined transitions, model inference, fitting or binary changes**. The readout's centered tail MSE is3,081.068 against within-state variance1,886.552: benefit **−1,194.516 [−2,025.559,−363.473]** across ten decoder units. Tail ordering accuracy is55.597% [50.432%,60.763%]. The registered exploratory intersection screen failed (`tail_centered_error_worse_than_constant`): weak ordering information coexists with unreliable candidate-relative magnitudes. Do not claim no information, proven scaling causality or better control. Absolute-error benefit versus a fixed source mean includes zero. Zero-context scoring has the same centered-error failure direction, so this is not exclusive to student inference.
+
+The prior visited-state gain16 **−7.784 [−22.369,+6.800]** is reproduced exactly, not new evidence. Source-constant correction changed0/360 context selections; its identical return contrast and regret reduction are dependent measurements. Report `NEXUS_VISITED_VALUE_RANKING_RESULTS.md`, execution `a1c70c35ced916f562636650f9f15afa69d80169`. One proposed next experiment is source-only scalar calibration of the frozen correction followed by a fresh locked visited-state audit, without modifying old checkpoints. Not executed. Earlier latest entries below are chronological history, with closed data preserved. Prediction/calibration remain distinct from control and learning-to-learn.
+
 ## Latest — visited-state commitment replication, 2026-10-16
 
 The positive initial-state commitment interaction did **not establish a positive replication** at registered phase50 visited states. Ten decoder units, five scoring students, equal student/zero visitor weighting: primary **−5.999 [−22.293,+10.295]**, gain16 **−7.784 [−22.369,+6.800]**, gain1 **−1.786 [−8.063,+4.492]**. Complete valid run, label `commitment_interaction_not_established`; not proof of equivalence or universal failure. The old +39.366 initial-state result remains unchanged. All visitor/task interaction intervals include zero. A posthoc cross-sample paired decline is descriptive because candidates/resets/state selection also differ. No deployment/architecture change or full-episode causal explanation follows.

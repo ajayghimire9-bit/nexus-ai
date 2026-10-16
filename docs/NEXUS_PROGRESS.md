@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — offline visited-value ranking audit completed
+
+All60 source cells/360 scoring-context cells completed in2.0195seconds, no new real/imagined transitions or model inference/fitting. Across ten decoders, centered tail error is worse than a constant: benefit **−1,194.516 [−2,025.559,−363.473]**. Pair ordering still clears neutral0.5 weakly:55.597% [50.432%,60.763%]. Registered exploratory label `tail_centered_error_worse_than_constant`; not a control-success or causal scaling result. dev0 has the clearest centered-error failure. Both visitor groups and zero scoring context also have negative centered-benefit intervals. Closed gain16 remains−7.784 and is not counted as new evidence. See `NEXUS_VISITED_VALUE_RANKING_RESULTS.md`. The single next proposal is source-only scalar calibration of the fixed correction, audited on fresh visited states; not run. No historical checkpoints, artifacts, main branch or closed splits changed.
+
 ## Latest — visited-state commitment replication (2026-10-16)
 
 The registered phase50 replication completed once from clean `fb109c4d9cd2a3573cc4c3fc1d760cd39fc39a3f`. Primary interaction **−5.999 [−22.293,+10.295]**, full-sequence correction gain **−7.784 [−22.369,+6.800]**, one-action gain **−1.786 [−8.063,+4.492]** across ten decoder units. Label `commitment_interaction_not_established`: complete but inconclusive, not proof of disappearance/equivalence. Equal student/zero visitor weighting; neither visitor group nor any task has an interaction interval wholly above zero. Earlier initial-state +39.366 result remains unchanged. Do not deploy block commitment or change architecture from these results.

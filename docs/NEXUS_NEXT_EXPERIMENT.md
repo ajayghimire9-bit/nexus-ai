@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current proposal — source-only scalar calibration, then fresh visited audit
+
+The offline visited ranking audit is complete: centered MSE benefit **−1,194.516 [−2,025.559,−363.473]** while pair ordering accuracy is55.597% [50.432%,60.763%]. The intersection screen failed. Some ordering survives, but its numerical values are unreliable relative to a constant; this does not prove a scaling-only cause. The earlier visited control effect remains inconclusive. See `NEXUS_VISITED_VALUE_RANKING_RESULTS.md`.
+
+**One next experiment:** fit or select a single external scalar correction weight using source-only calibration data, freeze it before inspecting fresh visited-state outcomes, then compare unchanged correction, scaled correction and no correction on the same candidates/states. Preserve all original decoder/encoder/readout checkpoints; do not fit the scalar on these closed visited results. Use the same ten independent decoders, equal visitor/task weights and paired intervals, with fair source calibration interaction accounting. Register exact scalar procedure, fresh seeds, scientific thresholds and a bounded runtime/interaction budget before execution. This tests whether weak usable ordering can become useful selection after numerical calibration, not whether a larger architecture can fit more data. No new experiment or scalar fitting has run. Earlier pending proposals below are history, superseded by the completed offline analysis.
+
 ## Current decision — audit visited-state value ranking offline
 
 The visited-state replication is complete and inconclusive: **−5.999 [−22.293,+10.295]** commitment interaction, gain16 **−7.784 [−22.369,+6.800]**. Neither visitor group establishes a positive interaction. The earlier +39.366 initial-state result remains closed. Do not infer that block commitment improves deployed control and do not build a practical commitment policy yet. See `NEXUS_VISITED_COMMITMENT_RESULTS.md`.
