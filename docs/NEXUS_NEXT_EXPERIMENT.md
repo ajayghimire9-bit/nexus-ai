@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock tree-reuse lookahead versus H=16; do not collect yet
+
+Source synthesis closed the copy-the-771-planner question as algorithm reuse, not cross-family learning. Extra search explains the Acrobot miss relative to the 25-point rule. The locked next test reuses frozen MountainCar development checkpoints and asks whether nearest remaining open-loop H=16 height from the current-step tree keeps the 25-point full-episode gain versus 16-candidate H=16 at 259 imagined states/step. Confirmation unused. No fitted critic. Collection is **not** authorized. Report `NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md`.
+
+## Locked — tree-reuse lookahead versus frozen H=16, collection unauthorized
+
+Protocol `docs/NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md` on `cursor/lookahead-generalization-synthesis` from `57cff66`. Config SHA256 `5d85db5bbab131f1bcb7f9a51b96aef4254753e14325713be34e5af5afc40451`. Protocol SHA256 `fdaf615cef38209afcaf3a199c8094a41df2ad798a8920ffd957142d5c0b5500`. Primary: tree-reuse minus H=16 200-step dense-height return, ten frozen development seeds, mean ≥ 25 and lower bound > 0. Budget **180 s**, **18,000** real steps, **7,716,000** imagined, **0** updates. Confirmation physics unused. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — MountainCarContinuous lookahead versus H=16 is established on development; do not retune
 
 The authorized development screen completed: lookahead minus H=16 **69.758 [29.321, 110.196]**. Label `mountaincar_continuous_lookahead_established`. Dense valley height, not Gymnasium sparse +100. Do not retune H=16, candidates, or reward from this sample. A later distinct question is lookahead versus frozen H=16 on a **new unused MountainCarContinuous confirmation holdout**. That proposal is not implemented and is not authorized here. Report `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_RESULTS.md`.

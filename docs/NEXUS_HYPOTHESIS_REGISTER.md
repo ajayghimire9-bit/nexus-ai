@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-tree-reuse-beats-h16-on-mountaincar is implemented, not yet tested
+
+Source synthesis: extra H=16 search explains the Acrobot unmatched remainder relative to the 25-point rule, not Pendulum or MountainCar. Closed Q/V readouts failed to replace successor search. This protocol tests whether nearest remaining open-loop height from the current-step H=16 tree keeps the MountainCar 25-point gain at 259 imagined states/step versus 16-candidate H=16. No fitted critic. Confirmation unused. Collection unauthorized. Report `NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md`.
+
+## Latest — H-lookahead-algorithm-generalizes-without-weight-sharing is supported as algorithm copy, not as cross-family learning
+
+Four dense-height families established unmatched lookahead versus H=16 with separately trained world models. Compute-matched backup holds on Pendulum and MountainCar, not Acrobot. CartPole H=3 failed three draws. No shared weights, no meta-update, historical Pendulum disjoint-physics control transfer was negative. Do not upgrade these labels to learning-to-learn. Report `NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md`.
+
 ## Latest — H-lookahead-beats-h16-on-mountaincar-continuous passed on development; confirmation untested
 
 The complete development screen passed the 25-point rule: lookahead minus H=16 **69.758 [29.321, 110.196]**. Label `mountaincar_continuous_lookahead_established`. Dense valley height, not Gymnasium sparse +100. Discrete MountainCar unused. CartPole H=3 unused. Pendulum FiLM unused. Acrobot unused. Do not retune from this sample. Confirmation transfer is unimplemented. Report `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_RESULTS.md`.

@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — Lookahead generalization synthesis locked, tree-reuse collection unauthorized
+
+Source-only audit of closed lookahead and Q/V screens. Shared successful controller is family-specific dynamics plus one-step backup of open-loop H=16 height, not shared weights. Acrobot compute-matched remainder 12.834 stays not established; Pendulum 60.182 and MountainCar 54.649 remain established. No cross-family learning claim. Tree-reuse protocol locked at 180 s / 18,000 / 7,716,000, `authorized: false`. Reports `NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md` and `NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md`. No environment collection, no learning-to-learn or AGI.
+
 ## Latest — MountainCarContinuous lookahead versus frozen H=16 established on development
 
 The 60-episode development grid completed under the 300 s / 24,800 / 6,162,000 cap. Lookahead minus H=16 **69.758 [29.321, 110.196]**. Label `mountaincar_continuous_lookahead_established`. Execute 26.884 s, exact resource counts, 200 frozen-recipe epochs. Independent audit passed. Discrete MountainCar unused. CartPole H=3 unused. Pendulum FiLM unused. Acrobot unused. Do not retune from this development sample. Report `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_RESULTS.md`. No learning-to-learn or AGI.

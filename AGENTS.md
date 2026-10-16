@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the MountainCarContinuous lookahead-versus-H=16 development screen in `docs/NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_RESULTS.md`. Lookahead minus H=16 **69.758 [29.321, 110.196]** is labeled `mountaincar_continuous_lookahead_established`. MountainCar compute-matched **54.649 [26.611, 82.686]** stays labeled `mountaincar_compute_matched_lookahead_established`. Do not retune from this sample. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the source-only lookahead generalization synthesis in `docs/NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md`. Successful controllers share a planning algorithm, not weights. Compute-matched backup is established on Pendulum **60.182** and MountainCar **54.649**, not Acrobot **12.834**. Cross-family learning is not supported. The locked unauthorized follow-up is tree-reuse lookahead versus H=16 on frozen MountainCar development (`docs/NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md`): **180 s / 18,000 / 7,716,000**, `authorized: false`. MountainCarContinuous unmatched **69.758 [29.321, 110.196]** stays labeled `mountaincar_continuous_lookahead_established`. Do not retune closed screens. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

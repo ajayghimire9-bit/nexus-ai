@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Lookahead generalization synthesis, tree-reuse locked unauthorized, 2026-10-16
+
+Source-only audit on `cursor/lookahead-generalization-synthesis` from `57cff66`. Successful controllers share a planning rule, not weights: family-specific frozen world models plus H=16 shooting and one-step backup on dense 200-step rewards. Extra 48-candidate H=16 search closed 15.080 unpaired points of Acrobot's 27.914 unmatched gap and dropped the remainder below 25; Pendulum 60.182 and MountainCar 54.649 still cleared that isolation. Cross-family learning and meta-learning are not supported. Bottleneck of the 771-step lookahead is three successor H=16 trees. One unauthorized follow-up: tree-reuse nearest remaining open-loop height at 259 imagined states/step versus H=16 on frozen MountainCar development, **180 s / 18,000 / 7,716,000 / 0 updates**, confirmation unused, no fitted critic. **Authorized: false.** Not a result. Reports `NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md` and `NEXUS_TREE_REUSE_LOOKAHEAD_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — MountainCarContinuous lookahead versus frozen H=16 established on development, 2026-10-16
 
 The locked development screen completed. Lookahead minus H=16 dense valley-height return **69.758 [29.321, 110.196]**. Label `mountaincar_continuous_lookahead_established`. Not the Gymnasium sparse +100 benchmark. Cost 26.884 s execute / 27.74 s process, 24,800 real steps, 6,162,000 imagined, 200 frozen-recipe epochs. Discrete MountainCar unused. CartPole H=3 unused. Pendulum FiLM unused. Acrobot unused. Do not retune from this development sample. Not learning-to-learn or AGI. Report `NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_RESULTS.md`. Earlier entries remain history.

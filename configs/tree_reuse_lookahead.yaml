@@ -1,0 +1,62 @@
+starting_sha: 57cff66fd5f8f0451fc45bcf9771a9d0bcdcf3d2
+n_model_seeds: 10
+eval_tasks: 3
+n_actions: 3
+candidate_horizon: 16
+n_candidates: 16
+episode_steps: 200
+episodes_per_cell: 1
+practical_margin: 25.0
+time_cap_s: 180
+env_cap: 18000
+model_cap: 7716000
+training_updates: 0
+support_budget: 0
+n_train: 1024
+n_val: 256
+epochs: 20
+kind: residual
+enforce_time_budget: false
+tree_reuse_control: true
+reuse_development_checkpoints: true
+distance_tau: inf
+pendulum_weights: false
+cartpole_h3: false
+acrobot_copy: false
+mountaincar_continuous: false
+fitted_critic: false
+retune_from_confirmation: false
+holdout_rule: mountaincar_lookahead_dev_v1
+holdout_split_hash: 2a5cc4979642cc2a
+eval_task_ids: [mountaincar_look_dev0, mountaincar_look_dev1, mountaincar_look_dev2]
+eval_physics: [[0.0035, 0.0006, 0.075], [0.0025, 0.0013, 0.07], [0.0015, 0.0013, 0.085]]
+reset_base: 29000000
+step_seed_base: 29100000
+checkpoint_dir: checkpoints/mountaincar_lookahead_h16
+checkpoint_sha256:
+  - 2aea15415aa75d2438e55cc766766ca5983c423a5f8d2e9a1a092c306ec25a1e
+  - bfb5d34946839c85e8c37c6c511978f351a43600ec8bb807049b08c4e06cf0a3
+  - 080d4ca4ad1fcccf1060deabee79edf52a1f028241652d7cee092e527c637410
+  - 7a4dc1f86524b92afd95f16e4ad4390b29fa2329a9ab97602c2ae4d4c1e2b689
+  - 0ad45f45b96bb4d4317a550c9f5bae451688bf449da928277192ea70117beff5
+  - 88210842f5670aa0f1ff964c23563c6a7ebd3de23a0e2476a04bb7a0807fa596
+  - a33069261cb20987d69cbf5cc8e2157f67ed135e2a93dfe3615bffb1c5e5bed6
+  - a2e66459c08dfa1677925bf3046e13a32bc1a86fe0f9e8e36aa90fef01fed9e9
+  - 6b924181dfdb0a0c8e940205e427394bef61f2443ce4a0eb6adf9f7b0de61747
+  - b91536792670e01dbcb87c7eb2689170fd7546ab839a86e680bc116d68a6515e
+closed_confirmation_split_hash: bf4b4412f4f683dd
+parents:
+  artifacts/mountaincar_lookahead.json: 28e19af3e986a25bd094d9a271180002f85c03c2cb9bb655cfae52ab25fa78eb
+  docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_RESULTS.md: fd79ca7a7045b72b3277084d6109df2405e4037fae4f640e22ed3bcf01367e0e
+  artifacts/mountaincar_lookahead_confirm.json: bbf22c1717cc82a7140d3728c9a0fa1101d0d5946ebedb447d96012080b81678
+  docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md: 24c369524d491e528007ce58c4d162e883551b7a7a61b75bf12a4994d0feb193
+  artifacts/mountaincar_compute_matched.json: 8a829874a5ba07d0e37e60b82efbce87afea83f04009c5f857be6e3523ca6c8f
+  docs/NEXUS_MOUNTAINCAR_COMPUTE_MATCHED_RESULTS.md: 48caf258d52f08213fc29d7aa784a48f101825599b2b99d04fb150e95733364a
+  configs/mountaincar_compute_matched.yaml: e33b01b6d50aff45f7c7a99990b978fa7e8bc58503da472903c79651d0eda033
+  artifacts/acrobot_compute_matched.json: ed99327d3a0f8be9501df13619957b416268ae3f3dfaa36676f93c51e256bcc2
+  artifacts/pendulum_compute_matched.json: 02ae07e32c5554f2464eb1e7202854d37003aa43b78fe991326a5547fe1853e6
+  artifacts/first_action_value.json: 1ea6c5e28930b1e6670a4894862af23f2f701f0ebd1d0d4ebeebefcd43e3828a
+  artifacts/terminal_value.json: 74dcff9c710e6108020c11b64f68b4321fc9306a8f69b9a8491af60a86f9a420
+  artifacts/action_conditioned_q_completed.json: aa78514a5a2bb560089453000d8049284aafe3136c83f03c1a88de9dc01a3793
+  docs/NEXUS_LOOKAHEAD_GENERALIZATION_SYNTHESIS.md: 2d20dae6c52b290163793865da0ac7ad98d0de208a6fe571257a5ead6c774ecc
+  src/nexus/world/planning.py: b1146ba19c278afb41eb301abe3e7d442a142c2f90d2edd4703ac97f71b286d9
