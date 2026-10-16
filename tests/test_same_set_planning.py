@@ -49,15 +49,16 @@ def test_summarize_uses_ten_decoder_units():
     assert summary['label']=='same_set_replanning_gain'
 
 
-def test_budget_seeds_unauthorized_and_parents_frozen():
+def test_budget_seeds_one_run_authorization_and_parents_frozen():
     cfg=m.load_config();counts=m.budget(cfg)
     assert counts['same']+counts['fresh_equal']+counts['h16']==2880
     assert counts['model_states']==506880
     assert counts['same']==counts['fresh_equal']==counts['h16']
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval'):
-        m.require_allocation(cfg)
+    assert record['authorized'] is True and record['runs']==1
+    assert record['authority_commit']=='018230a0c16e64cfe004bd5a7462e5ad6e0677a9'
+    assert record['time_cap_s']==60 and record['env_cap']==2880 and record['model_cap']==506880
+    m.require_allocation(cfg)
     recede_cfg=yaml.safe_load(recede.CONFIG.read_text())
     blocked=set().union(*acq.seed_groups(yaml.safe_load(acq.CONFIG.read_text())),*recede.seed_groups(recede_cfg))
     used=set().union(*m.seed_groups(cfg))
