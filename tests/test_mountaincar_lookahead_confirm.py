@@ -1,5 +1,7 @@
-"""MountainCar confirmation protocol locks. The one-run allocation is armed."""
+"""MountainCar confirmation protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
+import json
+from pathlib import Path
 import pytest
 from nexus.tasks.mountaincar_family import (
     mountaincar_default,
@@ -30,14 +32,20 @@ def test_confirmation_holdout_avoids_source_and_development():
     assert ours.isdisjoint(blocked)
 
 
-def test_one_run_allocation_is_armed_and_output_is_absent():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['retune_from_development'] is False
     assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
     assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==0.0
+    assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='mountaincar_lookahead_transfer_established'
 
 
 def test_primary_labels_keep_the_25_point_margin():
@@ -55,5 +63,8 @@ def test_h16_was_not_retuned_and_parents_are_closed():
         assert sha(path)==digest
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='80675aadd0b5d31b539ba027263df258a72f94bbad5a4a54ed03f28490a80229'
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='8f2b4f698198177785476a2b839e8dc2cb68cc4c134b0461d15196af22acc7dd'
-    assert m.load_allocation()['config_sha256']==m.LOCKED_CONFIG
-    assert m.load_allocation()['protocol_sha256']==m.LOCKED_PROTOCOL
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='mountaincar_lookahead_transfer_established'
+    assert audit['retune_from_development'] is False
+    assert audit['holdout_split_hash']=='bf4b4412f4f683dd'

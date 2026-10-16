@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-transfers-on-new-mountaincar-physics passed on one confirmation holdout
+
+The complete confirmation screen passed the 25-point rule: lookahead minus H=16 **50.366 [36.493, 64.239]**. Label `mountaincar_lookahead_transfer_established`. Dense valley height, not Gymnasium −1/step. Development physics unused. H=16 not retuned. This is not learning-to-learn. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md`.
+
 ## Latest — H-lookahead-transfers-on-new-mountaincar-physics is implemented, not yet tested
 
 Development lookahead versus H=16 passed. Transfer uses a new holdout (`bf4b4412f4f683dd`), not the development split. H=16, candidates, and dense height are not retuned. Collection unauthorized. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_PROTOCOL.md`.

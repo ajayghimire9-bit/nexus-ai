@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — MountainCar lookahead transfer is established; do not retune
+
+The authorized confirmation screen completed: lookahead minus H=16 **50.366 [36.493, 64.239]**. Label `mountaincar_lookahead_transfer_established`. Do not retune H=16, candidates, or reward from this confirmation sample. A later distinct question is a **compute-matched** control of the same frozen package (771 vs 256 imagined states per step). That proposal is not implemented and is not authorized here. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md`.
+
+## Consumed — MountainCar lookahead versus H=16 transfer, one-run remaining 0
+
+Protocol `docs/NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_PROTOCOL.md` on `cursor/mountaincar-lookahead-h16-confirm` from `998e1d6`. Config SHA256 `80675aadd0b5d31b539ba027263df258a72f94bbad5a4a54ed03f28490a80229`. Protocol SHA256 `8f2b4f698198177785476a2b839e8dc2cb68cc4c134b0461d15196af22acc7dd`. Primary completed: lookahead minus H=16 **50.366 [36.493, 64.239]**, label `mountaincar_lookahead_transfer_established`. Holdout hash `bf4b4412f4f683dd`. One-run remaining is 0. Further collection is **not** authorized. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md`.
+
 ## Current decision — lock MountainCar lookahead transfer on a new holdout; do not collect yet
 
 Development **44.092 [13.945, 74.239]** stays closed. Do not retune H=16. The locked next test uses unused confirmation physics `bf4b4412f4f683dd`. Collection is **not** authorized. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_PREP.md`.

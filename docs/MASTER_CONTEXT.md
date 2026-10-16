@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MountainCar lookahead versus frozen H=16 transferred on a new holdout, 2026-10-16
+
+The locked confirmation screen completed. Lookahead minus H=16 dense valley-height return **50.366 [36.493, 64.239]**. Label `mountaincar_lookahead_transfer_established`. Development physics unused. H=16 not retuned. Cost 27.013 s execute / 27.82 s process, 24,800 real steps, 6,162,000 imagined, 200 frozen-recipe epochs. Not the Gymnasium −1/step benchmark. Not learning-to-learn or AGI. Report `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — MountainCar lookahead versus H=16 transfer locked unauthorized, 2026-10-16
 
 Preparation from `998e1d6` on `cursor/mountaincar-lookahead-h16-confirm`. Development physics unused. H=16 not retuned. New holdout `bf4b4412f4f683dd`. Frozen residual recipe, 300 s / 24,800 / 6,162,000. **Authorized: false.** Not a result. Reports `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_PREP.md` and `NEXUS_MOUNTAINCAR_LOOKAHEAD_CONFIRM_PROTOCOL.md`. Earlier entries remain history.
