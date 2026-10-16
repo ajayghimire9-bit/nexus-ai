@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — next-direction assessment recommends episode-level control, 2026-10-16
+
+Source-only comparison of short-horizon ranking (Direction A) versus 200-step control failure (Direction B). **Recommend B.** Recorded return-phase rewards put the pooled student-minus-zero loss after step 64, not in the first H=16 window. The locked 90 s decision-aware diagnostic stays unchanged and unauthorized. Zero new steps, zero training, confirmation not reopened. Not control improvement, learning-to-learn or AGI. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`. Earlier entries remain history.
+
 ## Latest — decision-aware world-model diagnostic locked, not collected, 2026-10-16
 
 Source-only audit of saved trajectories found strong 16-step ranking (student Spearman **0.923 [0.874, 0.973]**, regret **0.336 [0.106, 0.566]**) and did **not** establish larger student score error on near-best versus dominated candidates (**+0.577 [−0.233, +1.387]**). Label `source_h1_not_established`. Decision-aware training is not justified. A development near-best contrast is locked and **unauthorized** (90 s / 19,680 / 3,164,160). Exhausted 3600 s ledger unmodified. Not control improvement, learning-to-learn or AGI. Reports `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md` and `NEXUS_DECISION_AWARE_WORLD_MODEL_PROTOCOL.md`. Earlier entries remain history.

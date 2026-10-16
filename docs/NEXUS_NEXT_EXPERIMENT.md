@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — prefer episode-level control diagnosis; do not run the 90 s ranking screen
+
+A source-only comparison of the locked development ranking diagnostic (Direction A) versus 200-step control failure (Direction B) recommends **B**. Recorded return-phase windows put the pooled loss after step 64. Do not execute the 90 s / 19,680 / 3,164,160 ranking collection. That protocol stays locked and unauthorized. No new simulation is authorized by this assessment. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`.
+
 ## Current decision — decision-aware training is not justified from the source audit
 
 Source-only recomputation did not establish concentrated student H=16 score error on near-best candidates: **+0.577 [−0.233, +1.387]**. 16-step ranking is already strong. Closed ranking-versus-episode evidence already showed better one-shot ranking without general control. Do not train an action-ranking or value-aware world-model loss from this inventory. Report `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md`.

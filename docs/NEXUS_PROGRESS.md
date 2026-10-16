@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — next-direction assessment: prefer 200-step control over another ranking screen
+
+Offline comparison of Direction A (development near-best H=16 error) versus Direction B (episode-level control failure). Recommendation **B**, from recorded evidence: ranking is already strong, source H1 is not established, and the pooled 200-step loss is after step 64. Decision-aware protocol hashes unchanged, `authorized: false`. Zero new steps. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — decision-aware diagnostic locked from a source-only audit, collection unauthorized
 
 Existing artifacts were inventoried with zero new steps. Source H1 (near-best minus dominated H=16 score error) was not established: **+0.577 [−0.233, +1.387]**. Student 16-step ranking is already strong. Decision-aware training is not justified. Development protocol locked, `authorized: false`, 90 s / 19,680 / 3,164,160. Exhausted standing ledger unmodified. Reports `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md` and `NEXUS_DECISION_AWARE_WORLD_MODEL_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.

@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-episode-loss-is-a-first-horizon-ranking-miss is not supported by recorded traces
+
+Exploratory decoder-level splits of closed return-phase rewards (not a new primary, `primarily_late` unchanged): steps 16–63 **+0.307 [−4.144, +4.759]** include 0; steps 64–127 and 128–199 exclude 0. Combined with strong source H=16 ranking and PCG ranking-without-control, further initial-state ranking screens are lower information than episode-level diagnosis. Report `NEXUS_NEXT_DIRECTION_ASSESSMENT.md`.
+
 ## Latest — H-decision-relevant-score-error was not established on source
 
 Independent recomputation of frozen `planning_value` prefixes and scores found student near-best minus dominated H=16 absolute error **+0.577 [−0.233, +1.387]**, n=10 decoder units, τ=1. Label `source_h1_not_established`. 16-step ranking is already strong (Spearman **0.923 [0.874, 0.973]**). Closed prediction-control-gap fresh ranking gains with episode loss stay closed and already reject “better prediction, worse ranking” on that split. Decision-aware training is not justified. A development diagnostic is locked and unauthorized. Report `NEXUS_DECISION_AWARE_WORLD_MODEL_AUDIT.md`.
