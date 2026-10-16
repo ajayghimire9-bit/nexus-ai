@@ -1,5 +1,7 @@
-"""Acrobot lookahead protocol locks. Collection remains unauthorized."""
+"""Acrobot lookahead protocol locks. One-run allocation is live and unconsumed."""
 from __future__ import annotations
+import json
+from pathlib import Path
 import numpy as np
 import pytest
 from nexus.tasks.acrobot_family import acrobot_default, acrobot_lookahead_development, acrobot_physics_key
@@ -33,11 +35,13 @@ def test_dense_height_replaces_gym_minus_one_and_does_not_goal_terminate():
     env.close()
 
 
-def test_collection_stays_unauthorized():
+def test_one_run_allocation_is_live_and_has_no_output():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['pendulum_weight_transfer'] is False and record['cartpole_h3'] is False
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==300.0
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
 
 
@@ -47,8 +51,7 @@ def test_primary_labels_and_parents():
     assert m.classify_primary(10.0,-1.0,20.0,10)=='acrobot_lookahead_not_established'
     assert m.classify_primary(30.0,1.0,40.0,9)=='incomplete'
     cfg=m.load_config()
-    report=m.prep()
-    assert report['pendulum_weights'] is False and report['cartpole_h3'] is False
+    assert cfg['pendulum_weights'] is False and cfg['cartpole_h3'] is False
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='3978b7e309f41339a56a2e6993bc48344f2bbf211baf88d3e86ce994ffa7122a'
