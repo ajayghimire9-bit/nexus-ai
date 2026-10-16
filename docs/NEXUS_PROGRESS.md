@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — Pendulum lookahead versus compute-matched H=16 protocol locked, collection unauthorized
+
+Acrobot compute-matched stays closed and is not used to retune. Frozen Pendulum checkpoints are read-only. Matched H=16 uses 48 candidates versus frozen 16-candidate lookahead. Fresh development episode seeds. 180 s / 24,000 / 18,468,000, `authorized: false`. Reports `NEXUS_PENDULUM_COMPUTE_MATCHED_PREP.md` and `NEXUS_PENDULUM_COMPUTE_MATCHED_PROTOCOL.md`.
+
 ## Latest — Acrobot lookahead versus compute-matched H=16 not established
 
 The 60-episode grid completed under the 180 s / 12,000 / 9,234,000 cap. Lookahead minus 48-candidate H=16 **12.834 [3.815, 21.853]**. Label `acrobot_compute_matched_lookahead_not_established`. Execute 29.728 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. H=16 successor not retuned. Report `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md`. No learning-to-learn or AGI.

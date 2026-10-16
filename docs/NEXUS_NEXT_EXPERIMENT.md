@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — lock Pendulum compute-matched H=16; do not collect yet
+
+Acrobot compute-matched **12.834 [3.815, 21.853]** stays closed. Do not retune H=16 or the 16-candidate successor. The locked next test gives Pendulum H=16 48 candidates (768 imagined/step) against frozen 16-candidate lookahead (771/step) on development physics with fresh seeds. Collection is **not** authorized. Report `NEXUS_PENDULUM_COMPUTE_MATCHED_PREP.md`.
+
+## Locked — Pendulum lookahead versus compute-matched H=16, collection unauthorized
+
+Protocol `docs/NEXUS_PENDULUM_COMPUTE_MATCHED_PROTOCOL.md` on `cursor/pendulum-compute-matched-h16` from `cceb4b1`. Config SHA256 `5a553ab3a3718c0ef4e3404a44e284f20bc0aebc09e15884e197d405ebf36673`. Protocol SHA256 `bcc77ee3c6e3fdd886d66840f07100dd7b9da1a61407e77be83fb31b569e3f24`. Primary: lookahead minus 48-candidate H=16 return, ten decoders, both visitors, mean ≥ 25 and lower bound > 0. Budget **180 s**, **24,000** real steps, **18,468,000** imagined, **0** updates. Confirmation unused. Collection is **not** authorized. Do not treat this heading as a result.
+
 ## Current decision — Acrobot compute-matched lookahead is not established; do not retune
 
 The authorized development screen completed: lookahead minus 48-candidate H=16 **12.834 [3.815, 21.853]**. Label `acrobot_compute_matched_lookahead_not_established`. Mean below 25. Do not retune H=16, candidates, or reward from this sample. A later distinct question is the same compute-matched contrast on **Pendulum development physics**, where the unmatched gap was larger. That proposal is not implemented and is not authorized here. Report `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md`.

@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the Acrobot compute-matched H=16 screen in `docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md`. Lookahead minus 48-candidate H=16 **12.834 [3.815, 21.853]** is labeled `acrobot_compute_matched_lookahead_not_established`. Confirmation **37.961 [21.106, 54.816]** stays labeled `acrobot_lookahead_transfer_established`. Do not retune from this sample. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the Pendulum compute-matched H=16 preparation in `docs/NEXUS_PENDULUM_COMPUTE_MATCHED_PREP.md`. Acrobot compute-matched **12.834 [3.815, 21.853]** stays labeled `acrobot_compute_matched_lookahead_not_established`. Collection of the Pendulum 48-candidate matched control is locked and unauthorized. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

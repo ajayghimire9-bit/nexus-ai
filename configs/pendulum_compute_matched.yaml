@@ -1,0 +1,40 @@
+starting_sha: cceb4b126c3d04ca0ca477a6294035ddca5b5aac
+decoders: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+students: [0, 1, 2, 3, 4]
+eval_tasks: 3
+visitors: 2
+candidate_horizon: 16
+n_candidates: 16
+matched_candidates: 48
+n_actions: 3
+episode_steps: 200
+phase: 0
+practical_margin: 25.0
+time_cap_s: 180
+env_cap: 24000
+model_cap: 18468000
+training_updates: 0
+reset_base: 15000000
+step_seed_base: 15100000
+paired_shared_candidates: true
+new_network: false
+three_action_counterfactuals: false
+compute_matched_control: true
+reuse_development_checkpoints: true
+retune_from_confirmation: false
+holdout_split_hash: development_pendulum_ctx
+closed_confirmation_split_hash: 73844661addfa11b
+eval_task_ids: [pendulum_ctx_dev0, pendulum_ctx_dev1, pendulum_ctx_dev2]
+eval_physics: [[6.0, 1.0, 1.0], [10.0, 2.0, 1.0], [10.0, 1.0, 1.55]]
+parents:
+  artifacts/bellman_backup_control.json: d9bc3a0d8cb65d49c3b94061c9079ed59268238007e724f71888cf830b86b0f6
+  docs/NEXUS_BELLMAN_BACKUP_CONTROL_RESULTS.md: 70e0a8632e734415635021c89ae1f2c5aa8e49d00e966d9e78a1afa04c8bf71b
+  configs/bellman_backup_control.yaml: 1a50c953ceb5a20daf3c4e876adc6a8eb855cb5f4ecd1f7d7dffece4fcad625e
+  docs/NEXUS_BELLMAN_BACKUP_CONTROL_PROTOCOL.md: 6025b926475035677bcb4b7056ef7e0729275be169235f5b94bf956583c4e357
+  artifacts/acrobot_compute_matched.json: ed99327d3a0f8be9501df13619957b416268ae3f3dfaa36676f93c51e256bcc2
+  docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md: b27faea328f97bb06c6ffbc3b8a3a44951fea2f8a749619db800950b211673af
+  artifacts/lookahead_transfer_confirmation.json: 226e649ea34b8b7ada752143e797d43853076863a76a123f8f88de6d75298019
+  docs/NEXUS_LOOKAHEAD_TRANSFER_CONFIRMATION_RESULTS.md: 6033b768f7d194d4680b7e1956012ed4a49bc8d65994c5bf0f7750ab84696f91
+  artifacts/research_session_bellman_backup_control_usage.json: 07c1114483a9745adb14b3dd801b453e792bc8c75bd97675ad5ddab23ce6fc98
+  artifacts/research_session_acrobot_compute_matched_usage.json: d6277508eb4eb82b3399769eccf5135f6ba984fa628aaa8e63bef2b393ed5a52
+  artifacts/research_session_first_action_value_usage.json: c14f16e667d1e52d3ebddff1412498f5db75832c25a74b0579bc8bcf98750462
