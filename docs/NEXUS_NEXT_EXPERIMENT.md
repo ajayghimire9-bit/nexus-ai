@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — same-set versus equal-horizon fresh not established
+
+The authorized development screen completed: same-set minus equal-horizon fresh **+0.834 [−0.955, +2.623]**. Label `same_set_advantage_not_established`. Do not retune that contrast. A distinct later question is whether remaining-horizon receding beats production H=16 because the deployed controller plans past the 16-step evaluation window. That proposal is not implemented and is not authorized here. Report `NEXUS_SAME_SET_PLANNING_RESULTS.md`.
+
 ## Locked — equal-horizon same-set versus fresh replanning, collection unauthorized
 
 Protocol `docs/NEXUS_SAME_SET_PLANNING_PROTOCOL.md` on `cursor/same-set-planning-audit` from `16d904c`. Primary: same-set suffix receding minus equal remaining-horizon fresh draws on three development physics, mean ≥ 1 and decoder-level lower bound > 0. Production H=16 receding from `s0` is an unequal-budget baseline, not the primary. Budget **60 s total process**, **2,880** real steps, **506,880** imagined transitions. Collection is **not** authorized. Audit: `docs/NEXUS_SAME_SET_PLANNING_AUDIT.md`. Do not treat this heading as a result.

@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-same-set-beats-equal-horizon-fresh was not established
+
+The complete development screen failed its registered pass rule: same-set minus equal-horizon fresh **+0.834 [−0.955, +2.623]**. Label `same_set_advantage_not_established`. Remaining-horizon methods beat production H=16 only as secondaries and cannot upgrade the primary. Do not retune same-set versus equal-horizon fresh. Report `NEXUS_SAME_SET_PLANNING_RESULTS.md`.
+
 ## Latest — H-same-set-beats-equal-horizon-fresh is implemented, not yet tested
 
 Retrospective source evidence that same-set suffix receding beat recede-fresh and commit-16 is decoder-consistent but confounded by remaining-horizon mismatch. The locked development experiment equalizes candidate count and scored horizon for same-set versus fresh draws; production H=16 receding is a separate unequal-budget baseline. Collection unauthorized. Reports `NEXUS_SAME_SET_PLANNING_AUDIT.md` and `NEXUS_SAME_SET_PLANNING_PROTOCOL.md`.

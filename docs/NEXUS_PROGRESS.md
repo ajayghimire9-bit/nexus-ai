@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — same-set equal-horizon confirmation complete, registered advantage not established
+
+The 60-cell development grid completed under the 60 s / 2,880 / 506,880 cap. Same-set minus equal-horizon fresh **+0.834 [−0.955, +2.623]**. Label `same_set_advantage_not_established`. Execute 5.655 s, process 5.701 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_SAME_SET_PLANNING_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — same-set planning audited offline, development confirmation locked not executed
 
 Retrospective same-set minus recede-fresh **+5.442 [+3.607, +7.277]** on the complete 160-cell source capture, zero new steps. Horizon mismatch and 2× imagined receding remain open confounds. Equal remaining-horizon development confirmation is implemented and unauthorized (60 s, 2,880 real, 506,880 imagined). Report `NEXUS_SAME_SET_PLANNING_AUDIT.md`. No architecture change, learning-to-learn or AGI.

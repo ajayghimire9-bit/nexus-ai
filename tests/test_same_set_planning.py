@@ -58,7 +58,8 @@ def test_budget_seeds_one_run_authorization_and_parents_frozen():
     assert record['authorized'] is True and record['runs']==1
     assert record['authority_commit']=='018230a0c16e64cfe004bd5a7462e5ad6e0677a9'
     assert record['time_cap_s']==60 and record['env_cap']==2880 and record['model_cap']==506880
-    m.require_allocation(cfg)
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(cfg)
     recede_cfg=yaml.safe_load(recede.CONFIG.read_text())
     blocked=set().union(*acq.seed_groups(yaml.safe_load(acq.CONFIG.read_text())),*recede.seed_groups(recede_cfg))
     used=set().union(*m.seed_groups(cfg))
@@ -68,4 +69,4 @@ def test_budget_seeds_one_run_authorization_and_parents_frozen():
     text=Path('docs/NEXUS_SAME_SET_PLANNING_PROTOCOL.md').read_text()
     assert 'authorized: false' in text and 'score_correction_closed: true' in text
     assert 'confirmation_physics_authorized: false' in text
-    assert not m.OUTPUT.exists()
+    assert m.OUTPUT.exists()
