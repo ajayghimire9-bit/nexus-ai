@@ -9,6 +9,15 @@ from nexus.world.planning_value import sha
 from nexus.world.prediction_control_gap import candidate_sequences
 
 
+class Drift:
+    def __init__(self,delta=0.01):
+        self.delta=float(delta);self.uses_simulator=False
+    def step(self,obs,actions):
+        o=np.asarray(obs,dtype=np.float32).reshape(-1,3)
+        nxt=o.copy();nxt[:,2]=o[:,2]+self.delta
+        return nxt,np.zeros(len(o),dtype=np.float64)
+
+
 def test_nested_prefix_is_not_an_independent_draw():
     seed=11100000
     full,prefix=m.nested_candidates(seed)
@@ -49,3 +58,19 @@ def test_closed_parents_are_byte_identical():
     cfg=m.load_config()
     for path,digest in cfg['parents'].items():
         assert sha(path)==digest
+    assert sha(m.CONFIG)=='fc862b46b9ab1163e894acf4a57693282db8d0a20f9f4f35220e0f8f65999b56'
+    assert sha(m.PROTOCOL)=='76894e91fe872fe600d652691203e2f38e5b611c96d22d8df527dffb24e93317'
+
+
+def test_score_prefix_matches_mpc_reference_without_extra_api_drift():
+    obs=np.array([1.0,0.0,0.2],dtype=np.float32)
+    _seq,prefix=m.nested_candidates(11100000)
+    model=Drift(0.03)
+    scores,first=m.score_prefix_with_first(model,obs,prefix)
+    ref=m.score_prefix_reference(Drift(0.03),obs,prefix)
+    assert np.allclose(scores,ref)
+    assert first.shape==(16,3)
+
+
+def test_config_hash_lock_is_the_registered_value():
+    assert m.sha(m.CONFIG).startswith('fc862b46')
