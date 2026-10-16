@@ -1,5 +1,7 @@
-"""Bellman-backup protocol locks. Collection remains unauthorized until the one-run record is committed."""
+"""Bellman-backup protocol locks. One-run allocation is bound; collection is not yet executed."""
 from __future__ import annotations
+import json
+from pathlib import Path
 import numpy as np
 import pytest
 from nexus.world import bellman_backup_control as m
@@ -37,12 +39,16 @@ def test_fresh_seeds_do_not_reuse_late_episode_or_h8_resets():
     assert counts['episode']==24000 and counts['model_states']==12324000
 
 
-def test_collection_stays_unauthorized_and_has_no_output():
+def test_one_run_allocation_binds_the_registered_hashes():
     record=m.load_allocation()
-    assert record['authorized'] is False and record['runs']==0
-    with pytest.raises(PermissionError,match='fresh human approval required'):
-        m.require_allocation(m.load_config())
+    assert record['authorized'] is True and record['runs']==1
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    m.require_allocation(m.load_config())
     assert m.OUTPUT.exists() is False
+    usage=json.loads(Path(record['one_run_usage_record']).read_text())
+    assert float(usage['remaining_session_allowance_s'])==180.0
+    assert int(usage['retries'])==0
 
 
 def test_primary_labels_require_the_25_point_episode_margin():
