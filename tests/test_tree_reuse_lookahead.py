@@ -86,6 +86,7 @@ def test_primary_labels_require_the_25_point_episode_margin():
     assert m.classify_primary(30.0,1.0,40.0,9)=='incomplete'
 
 
+@pytest.mark.checkpoint_integrity
 def test_frozen_checkpoints_and_no_fitted_critic():
     m.load_frozen_models(m.load_config())
     cfg=m.load_config()

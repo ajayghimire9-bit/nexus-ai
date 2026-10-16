@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — exact successor batching reduces overhead on tested inputs
+
+Engineering claim: batching three independent successor trees preserves the
+registered decision formula while reducing call overhead. Supported on160 synthetic
+cases/30 fixed decoders: all actions/rankings matched within declared numerical
+tolerance;51→17 calls at771 transitions; CPU microtimings2.53–2.61× faster.
+No scientific control-comparison hypothesis was tested. Universal numerical parity,
+actual student-context coverage and episode noninferiority remain unestablished.
+Both nearest and prefix-max tree-reuse improvement hypotheses stay closed.
+Report `NEXUS_SUCCESSOR_SEARCH_EFFICIENCY_RESULTS.md`; not learning-to-learn or AGI.
+
 ## Latest — H-prefix-max-tree-reuse-beats-h16-on-mountaincar was not established
 
 The complete development screen failed the 25-point rule: prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Prefix hit-rate 0.999. Max remaining at matching first-action t=1 nodes did not replace successor H=16 search. Closed nearest-neighbor tree-reuse stays closed. Do not retune from this sample. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`.

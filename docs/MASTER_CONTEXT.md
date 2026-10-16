@@ -1,5 +1,19 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — opt-in exact successor batching engineering audit, 2026-10-16
+
+From fetched prefix-max HEAD `57cbf25`, `codex/successor-search-efficiency-audit`
+adds an opt-in batched implementation of the same successor rule:51→17 model/net
+calls, still771 imagined transitions. Thirty existing decoders on160 synthetic
+cases matched all actions/rankings; max Q difference0.000034956 within declared
+tolerance. CPU microtiming speedups2.61× Pendulum,2.56× Acrobot,2.53× MountainCar.
+No new episodes, training, confirmation scoring or historical runner changes.
+Not universal bitwise parity or a new control result. Both failed tree-reuse screens
+remain closed. Report `NEXUS_SUCCESSOR_SEARCH_EFFICIENCY_RESULTS.md`. Next: archived
+state/context parity before any separately authorized control validation.
+Earlier entries remain chronological history. The compact adaptive cross-family
+vision remains an aspiration distinct from currently demonstrated capabilities.
+
 ## Latest — Prefix-max tree reuse versus frozen H=16 not established, 2026-10-16
 
 The locked development screen completed. Prefix-max minus H=16 dense valley-height return **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Prefix hit-rate 0.999. Cost 13.762 s execute / 14.71 s process, 12,000 real steps, 3,090,000 imagined, 0 updates. Frozen checkpoints. Confirmation unused. No 771 arm. Do not retune from this sample. Closed nearest-neighbor tree-reuse stays closed. Not learning-to-learn or AGI. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. Earlier entries remain history.

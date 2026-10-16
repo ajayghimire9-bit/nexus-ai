@@ -1,5 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — validate exact batching on archived contexts before integration
+
+The engineering audit preserved160/160 synthetic actions/rankings while reducing
+successor-search calls51→17, with unchanged771 imagined states. Short CPU scoring
+speedups2.53–2.61× are not episode-return evidence. No environment collection or
+training ran. Both failed approximate tree-reuse screens stay closed; no new
+critic/value approximation is justified by this engineering task.
+
+**One next recommendation:** lock a read-only archived-state parity audit covering
+actual saved student contexts and small action-score margins before changing a
+runner. Same candidates, original per-family reward/termination semantics, report
+all mismatches. No new episodes or fitting. A later environment-based noninferiority
+test would require separate explicit authorization and a locked protocol; it is
+not launched or authorized by this task. See `NEXUS_SUCCESSOR_SEARCH_EFFICIENCY_RESULTS.md`.
+All older proposals below remain chronological history.
+
 ## Current decision — prefix-max tree reuse is not established; do not retune
 
 The authorized development screen completed: prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Nearest remaining and prefix-max both failed. Do not retune H=16, fit another Q, or reuse the tree grown from `s` again. The known MountainCar controller remains 771-step successor backup. A later distinct question is lookahead versus frozen H=16 on a **new unused MountainCarContinuous confirmation holdout**. That proposal is not implemented and is not authorized here. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`.

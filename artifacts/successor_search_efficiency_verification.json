@@ -1,0 +1,40 @@
+{
+  "kind": "engineering_audit_not_control_experiment",
+  "execution_revision": "506ffc71b5483ac8494dcb4eb6d139935c457ffe",
+  "raw_path": "artifacts/successor_search_efficiency.json",
+  "raw_sha256": "63caba6312004984c311c17aaa52c6972788b00c077776dfe0ef30531a031d13",
+  "planned_and_completed_cells": 160,
+  "verified_checkpoint_files": 30,
+  "action_matches": 160,
+  "full_ranking_matches": 160,
+  "maximum_absolute_q_difference": 0.00003495600815739408,
+  "audit_wall_clock_s": 1.2399295000068378,
+  "per_decision": {
+    "reference_step_and_neural_calls": 51,
+    "batched_step_and_neural_calls": 17,
+    "imagined_transitions_each": 771
+  },
+  "audit_inference_accounting": {
+    "paired_case_imagined_transitions": 246720,
+    "warmup_and_timing_imagined_transitions": 106398,
+    "total_imagined_transitions": 353118,
+    "total_model_and_neural_calls": 15572,
+    "note": "Derived from actual per-cell counters and fixed warmup/timing loop counts. Unit-test inference is separate."
+  },
+  "new_environment_interactions": 0,
+  "optimizer_updates": 0,
+  "reserved_outcomes_accessed": false,
+  "historical_controller_code_changed": false,
+  "tests": {
+    "focused": {"passed": 43, "wall_s": 0.61},
+    "initial_relevant_run": {"passed": 68, "failed": 2, "deselected": 2, "wall_s": 2.07},
+    "initial_failure_reason": "Two legacy local-binary tests had no checkpoint_integrity marker and expected untracked files in the isolated worktree. Assertions retained; marked and explicitly rerun at the original binary root.",
+    "final_relevant_git_only": {"passed": 69, "failed": 0, "deselected": 4, "wall_s": 1.95},
+    "explicit_local_checkpoint_tests": {"passed": 2, "failed": 0, "wall_s": 0.53},
+    "full_suite_run": false,
+    "full_suite_not_run_reason": "Contains neural training and environment episodes outside the current authorization."
+  },
+  "scientific_session_budget_reused_or_reset": false,
+  "historical_results_preserved": true,
+  "default_controller_changed": false
+}

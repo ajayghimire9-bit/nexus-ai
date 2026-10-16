@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — exact successor batching, engineering evidence only
+
+The opt-in scorer preserves the formula/candidates and reduces51→17 calls at
+unchanged771 imagined transitions.160/160 synthetic checkpoint cases matched
+actions/rankings,30 frozen decoders verified. Measured scoring microtimings2.53–2.61×
+faster. No episodes, training or confirmation outcomes. Final relevant Git-only
+tests69 passed/4 deselected; explicit local binary tests2 passed. Full suite not
+run because it includes unauthorized training/environment execution. Original
+controllers and results unchanged. Report `NEXUS_SUCCESSOR_SEARCH_EFFICIENCY_RESULTS.md`.
+
 ## Latest — Prefix-max tree reuse versus frozen H=16 not established
 
 The 60-episode grid completed under the 180 s / 12,000 / 3,090,000 cap. Prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Execute 13.762 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. No 771 arm. No fitted critic. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. No learning-to-learn or AGI.
