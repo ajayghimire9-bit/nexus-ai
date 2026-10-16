@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — accelerated successor search integrated for future experiments (engineering)
+
+No hypothesis was tested in this step: the batched successor twin was
+integrated as an additive adapter (`src/nexus/world/successor_batched.py`)
+for new Pendulum-family experiments, with the three established parity gates
+(synthetic, archived-context, full-episode) attached as evidence and a
+regression test binding the historical hot path to its recorded provenance.
+All prior hypothesis statuses are unchanged: lookahead established on
+Pendulum/MountainCar/MountainCarContinuous (compute-matched on Pendulum and
+MountainCar, not Acrobot); nearest/prefix-max tree-reuse closed failures;
+context-adaptation lines negative/inconclusive; cross-family learning
+unsupported. Report `NEXUS_SUCCESSOR_BATCHED_INTEGRATION.md`.
+
 ## Latest — strict episode implementation parity passed; integration gate met
 
 Registered validation rule passed: on 60 paired fresh 200-step Pendulum

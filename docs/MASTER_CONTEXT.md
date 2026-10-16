@@ -1,5 +1,23 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — batched successor lookahead integrated for new experiments, 2026-10-16
+
+The controlled integration completed on `cline/successor-episode-parity`:
+new additive adapter `src/nexus/world/successor_batched.py` provides a
+drop-in twin of the Pendulum serial successor lookahead (same signature and
+`(action, q, preds[action])` triple, 17 calls instead of51 at unchanged771
+imagined transitions, ~2.6× measured scoring speedup) plus `prepare()` for
+immutable candidate-table reuse. Historical runners and the pinned
+code-hash provenance are untouched; a regression test fails if the historical
+hot path is edited. Bitwise toy parity, reuse and fail-closed guards pass; the
+offline parity suites still pass. Future Pendulum-family experiments import
+the adapter and inherit the three parity gates. No episode, training,
+closed-split access or budget consumption. Engineering only; not
+learning-to-learn, not AGI. Report `NEXUS_SUCCESSOR_BATCHED_INTEGRATION.md`.
+The open scientific question remains the prepared-but-uncommitted
+MountainCarContinuous confirmation screen (user's work, untouched). Earlier
+entries remain history.
+
 ## Latest — full-episode successor implementation parity established, 2026-10-16
 
 The locked 120-episode screen on `cline/successor-episode-parity` passed:

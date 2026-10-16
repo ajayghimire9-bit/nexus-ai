@@ -1,30 +1,32 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current proposal — controlled integration of the batched successor scorer
+## Current proposal — MountainCarContinuous confirmation transfer screen (user decision required)
 
-All three implementation-parity gates are now established on tested inputs:
-synthetic (160/160), archived states with genuine saved contexts (2160/2160,
-independently reproduced bitwise), and full fresh episodes (60/60 paired
-episodes, identical actions, reward/return deviation 0.0). The predeclared
-evidence gate for integration is met.
+The integration step is **done**: new Pendulum-family experiments use
+`src/nexus/world/successor_batched.py` (51→17 calls, parity evidence attached,
+historical path guarded). No engineering blocker remains for the accelerated
+lookahead on the Pendulum family.
 
-**One next engineering step:** on a separate branch, switch the successor
-search inside the experiment runners to `PreparedSuccessorSearch` behind the
-existing opt-in surface, keep the serial path available for audit, re-run the
-offline parity suites (rescore, archived, episode-parity recorded tests) plus
-runner regression tests, and commit. No control hypothesis, confirmation
-split or closed screen is reopened; any future controller comparison then
-inherits the 51→17-call acceleration with parity evidence attached.
+**The one open scientific question** is the MountainCarContinuous confirmation
+transfer screen: MountainCarContinuous lookahead versus frozen H=16 was
+established on development (25-point rule), and a confirmation protocol on a
+new holdout (`d247d7921d6afff7`, 300 s / 24,800 real steps / 6,162,000
+imagined, frozen checkpoints, zero training) is **prepared but uncommitted in
+the user's original checkout** (`configs/mountaincar_continuous_lookahead_confirm.yaml`,
+`docs/NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_CONFIRM_PREP.md`/`_PROTOCOL.md`,
+modified `src/nexus/tasks/mountaincar_continuous_family.py`). That is active
+user work on `cursor/mountaincar-continuous-lookahead-h16-confirm`; it must
+not be committed or executed without the user. Running it consumes the
+confirmation holdout and requires the locked one-run allocation to be
+explicitly authorized, committed clean, then executed once.
 
-**One next bounded experiment after that** (unchanged from the standing
-roadmap): the pending MountainCarContinuous confirmation transfer screen
-already prepared in the original checkout remains the open scientific
-question; its protocol/prep files are uncommitted user work and must not be
-touched without the user. Latest completed reports:
+Do not reopen closed screens (nearest/prefix-max tree reuse, Acrobot
+compute-matched, context-adaptation failures) and do not retune from closed
+results. Latest completed reports:
+`NEXUS_SUCCESSOR_BATCHED_INTEGRATION.md`,
 `NEXUS_SUCCESSOR_EPISODE_PARITY_CLINE_RESULTS.md`,
-`NEXUS_SUCCESSOR_ARCHIVED_PARITY_CLINE_RESCORE_RESULTS.md`,
-`NEXUS_SUCCESSOR_ARCHIVED_PARITY_RESULTS.md`. Older entries below remain
-chronological history, not new authorizations.
+`NEXUS_SUCCESSOR_ARCHIVED_PARITY_CLINE_RESCORE_RESULTS.md`. Older entries
+below remain chronological history, not new authorizations.
 
 ## Current decision — validate exact batching on archived contexts before integration
 

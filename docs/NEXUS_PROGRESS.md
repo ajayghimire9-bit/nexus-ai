@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — batched successor lookahead integrated as an additive adapter
+
+Engineering integration only: `src/nexus/world/successor_batched.py` gives new
+Pendulum-family experiments the 51→17-call twin of the serial successor
+lookahead with the three committed parity gates attached; historical runners
+and pinned code-hash provenance untouched (regression test guards the hot
+path). Toy parity bitwise, candidate-table reuse immutable, malformed/stateful
+inputs fail closed; offline suites pass. Zero episodes, updates or budget use.
+Report `NEXUS_SUCCESSOR_BATCHED_INTEGRATION.md`. Next open question: the
+user's uncommitted MountainCarContinuous confirmation screen. No learning-to-learn or AGI.
+
 ## Latest — full-episode serial-versus-batched parity established on the tested grid
 
 The authorized one-run 120-episode screen completed under the 180 s / 24,000 /
