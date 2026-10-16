@@ -44,12 +44,19 @@ def test_seeds_are_disjoint_from_all_closed_registries_and_config_bases():
             assert int(value) < cfg["reset_base"], (path, value)
 
 
-def test_allocation_blocks_collection_until_authorized():
+def test_allocation_gate_binds_the_authorized_one_run_record(monkeypatch, tmp_path):
     cfg = parity.load_config()
-    with pytest.raises(PermissionError):
-        parity.require_allocation(cfg)
     record = parity.load_allocation()
-    assert record["authorized"] is False and record["runs"] == 1
+    assert record["authorized"] is True and record["runs"] == 1
+    parity.require_allocation(cfg)
+    bad = tmp_path / "allocation.json"
+    for key, value in (("authorized", False), ("runs", 2)):
+        tampered = {**record, key: value}
+        bad.write_text(json.dumps(tampered))
+        monkeypatch.setattr(parity, "ALLOCATION", bad)
+        # An unauthorized or inconsistent record blocks collection either way.
+        with pytest.raises((PermissionError, ValueError)):
+            parity.require_allocation(cfg)
 
 
 def test_allocation_drift_fails(monkeypatch, tmp_path):
