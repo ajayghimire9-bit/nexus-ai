@@ -1,0 +1,19 @@
+audit_id: successor_search_exact_batching_v1
+starting_sha: 57cbf25b8a1f93210bce383846d05910248a6517
+families: [pendulum, acrobot, mountaincar]
+model_seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+synthetic_cases_per_context: 4
+pendulum_contexts: [zero, synthetic_nonzero]
+horizon: 16
+n_candidates: 16
+n_actions: 3
+q_atol: 0.0002
+q_rtol: 0.00002
+warmup_calls: 2
+timing_repeats: 7
+decisions_per_timing_repeat: 3
+audit_cap_s: 30
+new_environment_interactions: 0
+training_updates: 0
+controller_comparison_authorized: false
+reserved_outcome_access: false
