@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Acrobot lookahead versus frozen H=16 transferred on a new holdout, 2026-10-16
+
+The locked confirmation screen completed. Lookahead minus H=16 dense-height return **37.961 [21.106, 54.816]**. Label `acrobot_lookahead_transfer_established`. Development physics unused. H=16 not retuned. Cost 28.083 s execute / 29.191 s process, 24,800 real steps, 6,162,000 imagined, 200 frozen-recipe epochs. Not the Gymnasium −1/step benchmark. Not learning-to-learn or AGI. Report `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — Acrobot lookahead versus H=16 transfer locked unauthorized, 2026-10-16
 
 Preparation from `a09957f` on `cursor/acrobot-lookahead-h16-confirm`. Development physics unused. H=16 not retuned. New holdout `b309bd481fd8abcb`. Frozen residual recipe, 300 s / 24,800 / 6,162,000. **Authorized: false.** Not a result. Reports `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PREP.md` and `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md`. Earlier entries remain history.

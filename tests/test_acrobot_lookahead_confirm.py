@@ -1,4 +1,4 @@
-"""Acrobot confirmation protocol locks. One-run allocation is live and unconsumed."""
+"""Acrobot confirmation protocol locks. The one-run allocation is consumed."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -27,14 +27,20 @@ def test_confirmation_holdout_avoids_source_and_development():
     assert cfg['pendulum_weights'] is False and cfg['cartpole_h3'] is False
 
 
-def test_one_run_allocation_is_live_and_has_no_output():
+def test_one_run_allocation_is_consumed_and_output_exists():
     record=m.load_allocation()
     assert record['authorized'] is True and record['runs']==1
     assert record['retune_from_development'] is False
+    assert record['config_sha256']==sha(m.CONFIG)==m.LOCKED_CONFIG
+    assert record['protocol_sha256']==sha(m.PROTOCOL)==m.LOCKED_PROTOCOL
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(m.load_config())
+    assert m.OUTPUT.exists() is True
     usage=json.loads(Path(record['one_run_usage_record']).read_text())
-    assert float(usage['remaining_session_allowance_s'])==300.0
-    m.require_allocation(m.load_config())
-    assert m.OUTPUT.exists() is False
+    assert float(usage['remaining_session_allowance_s'])==0.0
+    assert int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT)
+    assert usage['label']=='acrobot_lookahead_transfer_established'
 
 
 def test_primary_labels_keep_the_25_point_margin():
@@ -52,3 +58,8 @@ def test_h16_was_not_retuned_and_parents_are_closed():
         assert sha(path)==digest
     assert sha(m.CONFIG)==m.LOCKED_CONFIG=='a87959767f30ca75f0acfc753476ce06fc12c86a324315cc0f910f4149586ab1'
     assert sha(m.PROTOCOL)==m.LOCKED_PROTOCOL=='dcf9913397acad3e9229ff60aa4b169250892f38f87bc2f9366a3564bf1a6b67'
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True
+    assert audit['label']=='acrobot_lookahead_transfer_established'
+    assert audit['retune_from_development'] is False
+    assert audit['holdout_split_hash']=='b309bd481fd8abcb'
