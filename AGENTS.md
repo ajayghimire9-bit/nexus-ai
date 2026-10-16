@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the unauthorized late-episode decision-trajectory protocol in `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`. Collection is not authorized. The 90 s ranking diagnostic also stays unauthorized. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded work is the late-episode decision-trajectory screen in `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`. Student-minus-zero late-versus-early executed-error growth **+0.016 [+0.003, +0.029]** did not establish H1. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

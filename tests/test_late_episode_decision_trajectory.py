@@ -65,8 +65,9 @@ def test_budget_seeds_one_run_authorization_and_parents_frozen():
     assert record['authorized'] is True and record['runs']==1
     assert record['authority_commit']=='2f81d4130a954cec67f22ce579c9115b228ffcdd'
     assert record['time_cap_s']==90 and record['training_authorized'] is False
-    m.require_allocation(cfg)
-    assert m.OUTPUT.exists() is False
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(cfg)
+    assert m.OUTPUT.exists() is True
     recede_cfg=yaml.safe_load(recede.CONFIG.read_text());same_cfg=yaml.safe_load(same.CONFIG.read_text())
     horizon_cfg=yaml.safe_load(horizon.CONFIG.read_text());dawm_cfg=yaml.safe_load(dawm.CONFIG.read_text())
     blocked=set().union(*acq.seed_groups(yaml.safe_load(acq.CONFIG.read_text())),*recede.seed_groups(recede_cfg),

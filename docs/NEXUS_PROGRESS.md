@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — late-episode executed-error growth not established
+
+The 30-cell development grid completed under the 90 s / 12,000 / 3,084,000 cap. Growth_diff **+0.016 [+0.003, +0.029]**. Label `late_error_growth_not_established`. Episode return **−5.414 [−92.420, +81.592]**. Execute 16.743 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — late-episode 200-step decision log locked, collection unauthorized
 
 Per-step actions and scores are missing from return-phase, horizon-alignment and PCG artifacts. A development-only paired H=16 receding logger is implemented. Primary is differential late executed-transition error growth, not another first-action fork. 90 s / 12,000 / 3,084,000. `authorized: false`. Reports `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_AUDIT.md` and `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.

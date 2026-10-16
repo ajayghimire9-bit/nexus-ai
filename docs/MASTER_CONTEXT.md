@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — late-episode decision trajectory, 2026-10-16
+
+The locked 30-cell development screen completed. Student-minus-zero late-versus-early executed one-step angvel error growth **+0.016 [+0.003, +0.029]**. Label `late_error_growth_not_established` (mean below 0.05). 200-step return **−5.414 [−92.420, +81.592]**. Cost 16.743 s execute, 12,000 real steps, 3,084,000 imagined. Checkpoints 120/0/0. No three-action forks. Not control improvement, learning-to-learn or AGI. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — late-episode decision trajectory locked, not collected, 2026-10-16
 
 A development-only paired 200-step receding log is locked on `cursor/late-episode-decision-trajectory` from `e2da92c`. Primary: student minus zero late-minus-early executed one-step angular-velocity error growth, margin 0.05. No three-action first-action forks. Archives lack per-step actions and scores. Budget 90 s / 12,000 / 3,084,000. **Authorized: false.** Decision-aware ranking collection stays unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Reports `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_AUDIT.md` and `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`. Earlier entries remain history.

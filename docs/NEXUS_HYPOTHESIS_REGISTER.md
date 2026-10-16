@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-student-late-executed-error-grows-faster was not established
+
+The complete development screen failed the 0.05 practical margin: growth_diff **+0.016 [+0.003, +0.029]**. Label `late_error_growth_not_established`. The lower bound is above 0 but the mean is too small. Student executed MAE did not rise late; zero improved more. Episode return includes 0. First mismatch mean 9.6 steps. Do not retune. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`.
+
 ## Latest — H-student-late-executed-error-grows-faster is implemented, not yet tested
 
 Archives cannot reconstruct per-step scores or executed one-step errors on 200-step episodes. The locked development experiment logs paired H=16 receding traces with shared candidate seeds. Primary: differential late-minus-early executed angular-velocity error, margin 0.05. Same-state prefix until first mismatch; later steps are different-state. Three-action late-state forks stay closed. Collection unauthorized. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md`.

@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — late executed-error growth not established
+
+The authorized development screen completed: student-minus-zero late-versus-early executed one-step angvel growth **+0.016 [+0.003, +0.029]**. Label `late_error_growth_not_established`. Mean below 0.05. 200-step return includes 0. Controllers typically diverged by step 10. Do not train a ranking loss from this sample. A later distinct question would address receding search or compounding state shift after early mismatch. That proposal is not implemented and is not authorized here. Report `NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_RESULTS.md`.
+
 ## Locked — late-episode decision trajectory, collection unauthorized
 
 Protocol `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_PROTOCOL.md` on `cursor/late-episode-decision-trajectory` from `e2da92c`. Primary: (student late−early executed one-step angvel MAE) minus the same quantity for zero context, mean ≥ 0.05 and decoder-level lower bound > 0. No three-action forks. Budget **90 s total process**, **12,000** real steps, **3,084,000** imagined transitions. Collection is **not** authorized. The exhausted 3600 s ledger remaining 47.766 s is below this cap and is not reused. Audit: `docs/NEXUS_LATE_EPISODE_DECISION_TRAJECTORY_AUDIT.md`. Do not treat this heading as a result.
