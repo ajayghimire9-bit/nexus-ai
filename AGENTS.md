@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded results are in `docs/NEXUS_POLICY_SWITCH.md` and `docs/NEXUS_LONG_CONTINUATION_RESULTS.md`. They diagnose context-conditioned control harm on specific Pendulum dynamics with frozen models. They do not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded results are in `docs/NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. A 15-coefficient source-only linear first-action Q did not beat frozen H=16 on development visited states (−3.535 [−9.840, +2.769]). That does not demonstrate a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

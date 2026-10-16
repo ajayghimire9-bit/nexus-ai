@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — linear first-action Q did not establish a decision gain
+
+A 15-coefficient source-only linear Q, trained on first-action-plus-zero-replanning 64-step returns and frozen before development visited-state evaluation, did not beat frozen H=16: aligned−H=16 **−3.535 [−9.840, +2.769]**. Label `aligned_first_action_gain_not_established`. Aligned−sequence-value **−0.967 [−7.868, +5.934]** also includes 0. Development Q RMSE 107.5; source-fit RMSE ~70. World models, encoders, sequence-value V, H=16 and 16 candidates unchanged. Cost 126.642 s, 29,880 real steps, 7,741,440 imagined transitions. Report `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. One next proposal: capacity-matched 81-coefficient polynomial Q on the same labels; not executed. No architecture change, learning-to-learn or AGI.
+
 ## Latest — recorded action-value alignment audit completed
 
 The best actual64-return sequence's first action has **20.254 [11.382,29.127]** regret under first-action+63zero replanning, averaged inside ten decoder units. All60 states include all three first actions; coverage gap0. First-action optimality18/60. Registered exploratory screen passed (`sequence_first_action_misalignment_detected`). This is an objective/future-policy alignment finding in a finite candidate set, not a deployed control improvement or causal explanation of the episode loss. The oracle-style sequence reference is research-only, and limited suffix search remains a possible contributor. No historical models/data changed.

@@ -1,5 +1,11 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — linear first-action Q, 2026-10-16
+
+A source-trained 15-coefficient linear Q(s, z, a), fit on first-action-plus-zero-replanning 64-step returns and frozen before development evaluation, **did not establish a first-action return gain** versus frozen H=16: **−3.535 [−9.840, +2.769]**. Label `aligned_first_action_gain_not_established`. Aligned minus frozen sequence-value **−0.967 [−7.868, +5.934]** also includes 0. Development Q RMSE **107.5**; source-fit RMSE about **70**. Ten decoder units; students, visitor groups and tasks averaged inside decoders. World models, encoders, sequence-value V, H=16 and 16 candidates unchanged. No confirmation physics.
+
+Cost **126.642 s**, **29,880** real steps, **7,741,440** imagined transitions, inside 150 s. Protocol/execution `0d08bfa7340a6b1a9c6de64d8ee890e70b613de5`; report `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. One next proposal is a capacity-matched 81-coefficient polynomial Q on the same labels; not executed. This is not control improvement, learning-to-learn or AGI. Earlier entries remain history.
+
 ## Latest — sequence-to-first-action alignment gap, 2026-10-16
 
 The registered offline audit detected **20.254 [11.382,29.127]** points of first-action/common-zero regret when choosing the first action of the actually best sampled64-return sequence. All60 states represented all three first actions, so coverage gap is0 and represented-action regret is the same metric, not independent corroboration. The sequence-reference first action is optimal for the replanning intervention in18/60 states. Ten independent decoder units, no primary state-metric duplication across students; label `sequence_first_action_misalignment_detected`.

@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-aligned-Q not established for the 15-coefficient linear readout
+
+A source-trained linear Q(s,z,a) with 15 coefficients did not raise development first-action 64-return versus frozen H=16: **−3.535 [−9.840, +2.769]**, n=10 decoder units. The registered gain screen failed. Source RMSE remained ~70, so the aligned-label hypothesis was not given a capacity-matched test against sequence-value V. Sequence-value itself also did not beat H=16 on this sample. No architecture change is justified. Unknown: whether the same first-action labels become useful with the 77-coordinate polynomial feature class already used by V. Report `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`.
+
 ## Latest — H-objective alignment gap supported on the recorded suite
 
 The best actual64-value sampled sequence's first action loses **20.254 [11.382,29.127]** under forced-first-action+63zero replanning versus the best measured action, across ten decoder units. All60 states cover all3first actions, so the gap is not absent-action coverage. Represented-action and total regret are identical here and are dependent evidence. The exploratory screen passed. However, this is not the globally best sequence, limited future-suffix search is not excluded, and the zero continuation is not a student full-policy value. Learned-baseline versus sequence-reference first-action comparisons remain inconclusive. Further work justified: a source-only readout trained to the actual replanning intervention and evaluated on fresh states, not more scalar tuning. Report `NEXUS_ACTION_VALUE_ALIGNMENT_RESULTS.md`.

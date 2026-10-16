@@ -1,8 +1,10 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Locked — source-trained first-action Q, not yet executed
+## Current proposal — capacity-matched first-action Q, then stop if it fails
 
-Protocol `docs/NEXUS_FIRST_ACTION_VALUE_PROTOCOL.md` and config `configs/first_action_value.yaml` are committed on `cursor/first-action-value-learning`. No source labels, fits or development returns have been collected. The primary screen is aligned-Q minus H=16 first-action 64-return, mean ≥ 1 with decoder-level lower bound > 0. Frozen world models, encoders, sequence-value V, H=16 and 16 candidates stay unchanged. Budget 150 s, 29,880 real steps, 7,741,440 imagined transitions, inside the standing grant and the conservative 174.408 s leftover. Do not treat this heading as a result.
+The linear 15-coefficient aligned Q did not beat H=16 on first-action 64-return: **−3.535 [−9.840, +2.769]**. Source-fit RMSE stayed around 70 and development Q RMSE was 107.5. This is not a strong test of aligned labels at sequence-V capacity, and it is not an architecture warrant. See `NEXUS_FIRST_ACTION_VALUE_RESULTS.md`.
+
+**One next experiment:** keep the frozen world models/encoders/H=16/16 candidates. Fit a ridge readout with the same 77 polynomial (observation, context) coordinates used by sequence-value V, plus three action dummies (81 coefficients), on source-only first-action-plus-zero-replanning 64-step labels. Freeze it before new development visited-state evaluation. Use the same primary screen (aligned minus H=16 first-action 64-return, mean ≥ 1 and lower > 0). If that also fails, close the score-correction branch rather than adding layers. Estimate ~30,000 real steps and a 150-second-class cap; remaining conservative session allowance is 47.8 s, so a later session or a smaller cap must be locked before collection. This proposal has not run.
 
 ## Current proposal — source-only replanning-aligned value labels
 

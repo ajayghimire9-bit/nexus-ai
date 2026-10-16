@@ -6,7 +6,7 @@ This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
 ## Status
 
-**Current: return-phase decomposition.** On new fresh-physics episodes the student-minus-zero H=16 return difference is concentrated in steps 16–199. Steps 0–15 have an interval that includes 0. The closed episode seeds were not reused. Write-up: `docs/NEXUS_RETURN_PHASE_DECOMPOSITION.md`. Artifact `artifacts/return_phase_decomposition.json`.
+**Current: first-action value learning.** A 15-coefficient source-only linear Q did not beat frozen H=16 on development first-action 64-return (−3.535 [−9.840, +2.769]). Write-up: `docs/NEXUS_FIRST_ACTION_VALUE_RESULTS.md`. Artifact `artifacts/first_action_value.json`.
 
 New episodes of the previous physics returned **−636.4** versus zero **−708.6** and the frozen encoder **−699.2**. Both decoder-level intervals clear 25. Disjoint physics returned **−716.0** versus zero **−696.6**, and that interval lies below zero. This is **not** a general control improvement, AGI, or learning-to-learn.
 
