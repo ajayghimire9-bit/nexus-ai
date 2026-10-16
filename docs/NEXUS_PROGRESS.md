@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — action-conditioned Q resume implemented, missing cell not collected
+
+A fail-closed resume protocol is locked on `cursor/action-conditioned-q-resume` from `36a9753`. Original incomplete capture and Q-fit hashes are unchanged. Offline reconstruction of 160 source cells, ten frozen Qs, and 59 evaluation cells is the entry condition. The missing cell is decoder 9 / task 2 / zero visitor. Proposed cap 60 s, 242 real steps, 64,512 imagined transitions. Collection unauthorized. Report `NEXUS_ACTION_CONDITIONED_Q_RESUME_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — action-conditioned first-action Q run incomplete at the 240 s cap
 
 One authorized execution reached 240.000 s with source 160/160 and evaluation 59/60. Label `incomplete`. Official audit rejects the capture. No primary CI. Real steps 45,143; imagined 11,587,768. Frozen checkpoints 120/0/0. Exhausted 3600 s ledger unmodified. Report `NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`. No architecture change, learning-to-learn or AGI.

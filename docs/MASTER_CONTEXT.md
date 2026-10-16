@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — action-conditioned Q resume protocol, 2026-10-16
+
+A fail-closed one-cell resume is locked on `cursor/action-conditioned-q-resume` from `36a9753`. The incomplete capture SHA `6f80696c…` and fit SHA `2da13f24…` stay frozen. Offline reconstruction of source labels, ten Q fits and 59 cells is required before collecting decoder 9 / task 2 / zero visitor into a **separate** completed artifact. Budget 60 s, 242 real steps, 64,512 imagined transitions. Collection unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Protocol `NEXUS_ACTION_CONDITIONED_Q_RESUME_PROTOCOL.md`. Earlier entries remain history.
+
 ## Latest — action-conditioned first-action Q incomplete run, 2026-10-16
 
 One authorized 240 s execution timed out with evaluation **59/60**. Label `incomplete`. No registered decoder-level interval versus H=16. Source collection and both frozen Q fits completed. Checkpoints unchanged (120/0/0). The 3600 s standing ledger was not reset. This is not a controller result, learning-to-learn or AGI. Report `NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`. Earlier entries remain history.
