@@ -1,5 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-commit-beats-replan was not established
+
+The complete source screen failed both registered pass rules: commit-16 minus recede-fresh **−1.787 [−4.324, +0.751]**. Label `replan_consistency_not_established`. Recede-same-set beat both open-loop commitment and recede-fresh as a secondary only and cannot upgrade the primary. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`.
+
 ## Latest — H-commit-beats-replan is implemented, not yet tested
 
 After score-correction closed, the remaining control question is whether receding replanning loses 16-step return relative to executing the H=16 selected sequence from the same restored source state. Search noise at that state is measured separately from state-driven re-ranking of the same 16 suffixes. Collection unauthorized. Archived live suffix mismatch is confounded and is not this test. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md`.

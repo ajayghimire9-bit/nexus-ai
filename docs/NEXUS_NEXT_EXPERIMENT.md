@@ -1,5 +1,9 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current decision — receding policy consistency not established
+
+The authorized source screen completed: commit-16 minus recede-fresh **−1.787 [−4.324, +0.751]**. Label `replan_consistency_not_established`. Same-set suffix receding beat both open-loop commitment and fresh-candidate receding, but only as a locked secondary. A new protocol would need to make remaining-suffix receding versus deployed recede-fresh the primary on a held-out split, with a fresh budget, without reopening confirmation physics or score-correction. That proposal is not implemented and is not authorized here. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`.
+
 ## Locked — receding policy consistency, collection unauthorized
 
 Protocol `docs/NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md` on `cursor/receding-policy-consistency` from `0aed2e3`. Score-correction stays closed. Primary screen: commit-16 minus recede-fresh 16-step return on eight source physics, mean ≥ 1 and decoder-level lower bound > 0. Strong baseline is executing the already selected H=16 sequence. Search-noise first-action disagreement at the same state is not a return result. Budget **120 s**, **8,960** real steps, **1,515,520** imagined transitions. Collection is **not** authorized. Feasibility: `docs/NEXUS_RECEDING_POLICY_CONSISTENCY_FEASIBILITY.md`. Do not treat this heading as a result.

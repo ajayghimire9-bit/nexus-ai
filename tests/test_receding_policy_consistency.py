@@ -73,7 +73,8 @@ def test_budget_seeds_one_run_authorization_and_score_correction_closed():
     assert record['authorized'] is True and record['runs']==1
     assert record['authority_commit']=='7b4637d423e64aac29305bf188f6d35b1d058563'
     assert record['time_cap_s']==120 and record['env_cap']==8960 and record['model_cap']==1515520
-    m.require_allocation(cfg)
+    with pytest.raises(PermissionError,match='session allowance exhausted'):
+        m.require_allocation(cfg)
     blocked=set().union(*acq.seed_groups(yaml.safe_load(acq.CONFIG.read_text())))
     used=set().union(*m.seed_groups(cfg))
     assert not (used & blocked) and min(used)>=7000000
@@ -81,4 +82,4 @@ def test_budget_seeds_one_run_authorization_and_score_correction_closed():
     assert sha('artifacts/action_conditioned_q_completed.json')=='aa78514a5a2bb560089453000d8049284aafe3136c83f03c1a88de9dc01a3793'
     text=Path('docs/NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md').read_text()
     assert 'authorized: false' in text and 'score_correction_closed: true' in text
-    assert not m.OUTPUT.exists()
+    assert m.OUTPUT.exists()

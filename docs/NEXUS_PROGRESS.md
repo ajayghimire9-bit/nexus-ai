@@ -1,5 +1,9 @@
 # NEXUS progress log
 
+## Latest — receding policy-consistency screen complete, neither registered gain established
+
+The 160-cell source grid completed under the 120 s / 8,960 / 1,515,520 cap. Commit-16 minus recede-fresh **−1.787 [−4.324, +0.751]**. Label `replan_consistency_not_established`. Execute 17.838 s, process 17.927 s, exact resource counts. Independent audit passed. Frozen checkpoints 120/0/0. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`. No architecture change, learning-to-learn or AGI.
+
 ## Latest — receding policy-consistency protocol locked, not executed
 
 Score-correction is closed. A source-only commit-versus-replan protocol is implemented on `cursor/receding-policy-consistency` from `0aed2e3`. Primary contrast: 16-step open-loop execution of the H=16 selected sequence minus receding execution that keeps the same first action then redraws candidates. Search-noise at the same state is a separate switch-rate control. Offline archived live mismatch is confounded. Collection unauthorized (120 s / 8,960 / 1,515,520). Report `NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md`. No architecture change, learning-to-learn or AGI.

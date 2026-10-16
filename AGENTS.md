@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded results are in `docs/NEXUS_ACTION_CONDITIONED_Q_RESUME_RESULTS.md`. Score-correction did not establish a first-action gain versus H=16 (**−4.293 [−15.751, +7.165]**). A receding-horizon policy-consistency protocol is proposed in `docs/NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md` and is not authorized. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent bounded results are in `docs/NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`. The complete source screen did not establish commit-16 versus recede-fresh (**−1.787 [−4.324, +0.751]**). Label `replan_consistency_not_established`. Score-correction remains closed. That is not a general control improvement, learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

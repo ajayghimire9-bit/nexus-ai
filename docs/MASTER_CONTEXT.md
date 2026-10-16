@@ -1,5 +1,9 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — receding policy-consistency screen, 2026-10-16
+
+The locked 160-cell source screen completed. Commit-16 minus recede-fresh 16-step return: **−1.787 [−4.324, +0.751]**. Label `replan_consistency_not_established`. Mean and interval fail both registered pass rules. Cost 17.838 s execute / 17.927 s process, 8,960 real steps, 1,515,520 imagined. Checkpoints 120/0/0. Score-correction stays closed. Not control improvement, learning-to-learn or AGI. Report `NEXUS_RECEDING_POLICY_CONSISTENCY_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — receding policy-consistency protocol, 2026-10-16
 
 Score-correction is closed. A source-only receding-horizon consistency protocol is locked on `cursor/receding-policy-consistency` from `0aed2e3`. It compares 16-step plan continuation, same-set receding, fresh-candidate receding, and common-zero continuation from identical restored source states, and it separates search-noise switches from state-driven suffix re-ranking. Offline live-suffix mismatch on archived traces is confounded and cannot pass the screen. Budget 120 s, 8,960 real steps, 1,515,520 imagined. Collection unauthorized. Not a result, not control improvement, learning-to-learn or AGI. Protocol `NEXUS_RECEDING_POLICY_CONSISTENCY_PROTOCOL.md`. Earlier entries remain history.
