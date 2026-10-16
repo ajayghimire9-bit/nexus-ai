@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Latest — independent Cline re-scoring reproduced the archived parity grid bitwise
+
+Second-agent verification of the recorded archived-parity result: offline
+verifier,93-test offline suite, fresh independent arithmetic and all60
+checkpoint hashes agreed first; then a single fresh frozen-model re-scoring on
+`cline/successor-search-archived-parity` reproduced the recorded2160-cell grid
+**bitwise** (max fresh-vs-recorded Q deviation0.0, both scorers), with all
+actions/rankings/metrics/8 near ties identical.12.669seconds,146,880 model
+calls,3,330,720 imagined transitions, zero real steps/updates. Label
+`independent_rescore_reproduced`. No runner, controller or closed split
+changed. Report `NEXUS_SUCCESSOR_ARCHIVED_PARITY_CLINE_RESCORE_RESULTS.md`;
+full-episode parity remains proposed only.
+
 ## Latest — archived observations and actual contexts preserve batched decisions
 
 One committed read-only audit:2160/2160 actions/rankings/numerical checks passed,

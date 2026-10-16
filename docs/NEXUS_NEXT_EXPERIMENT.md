@@ -2,19 +2,24 @@
 
 ## Current proposal — strict full-episode successor implementation parity
 
-Archived state/context parity now passed2160/2160 actions and rankings, including
-8 near ties. This covers recorded H=16 visitors, not unseen closed-loop lookahead
-states. Do not switch a default runner from finite offline agreement alone.
+Independent verification status (2026-10-16): the archived 2160-cell parity
+result was reproduced **bitwise** by a fresh frozen-model re-scoring on
+`cline/successor-search-archived-parity` (label `independent_rescore_reproduced`,
+report `NEXUS_SUCCESSOR_ARCHIVED_PARITY_CLINE_RESCORE_RESULTS.md`). This
+closes the review-level gap for recorded inputs only; it does not cover
+closed-loop lookahead-visited states.
 
-**One next validation:** paired serial-versus-batched lookahead200-step episodes,
-ten existing decoders/three known Pendulum development tasks/student and zero
-contexts. Require every action/reward sequence to match; no return-improvement
-claim or retuning. Proposed180seconds/24,000 new real steps/18,504,000 imagined,
-zero updates. See `NEXUS_SUCCESSOR_EPISODE_PARITY_PROPOSAL.md` for seed rule,
-integrity/failure criteria and cost derivation. No runner/allocation/data is created
-for that simulation here; the exhausted scientific ledger is not reset. Latest
-completed report: `NEXUS_SUCCESSOR_ARCHIVED_PARITY_RESULTS.md`. Older entries below
-remain chronological history, not new authorizations.
+**One next validation:** paired serial-versus-batched lookahead200-step
+episodes, ten existing decoders/three known Pendulum development tasks/student
+and zero contexts. Require every action/reward sequence to match; no
+return-improvement claim or retuning. Proposed180seconds/24,000 new real
+steps/18,504,000 imagined, zero updates. See
+`NEXUS_SUCCESSOR_EPISODE_PARITY_PROPOSAL.md` for seed rule, integrity/failure
+criteria and cost derivation. No runner/allocation/data is created for that
+simulation here; the exhausted scientific ledger is not reset. Latest completed
+reports: `NEXUS_SUCCESSOR_ARCHIVED_PARITY_RESULTS.md` and
+`NEXUS_SUCCESSOR_ARCHIVED_PARITY_CLINE_RESCORE_RESULTS.md`. Older entries
+below remain chronological history, not new authorizations.
 
 ## Current decision — validate exact batching on archived contexts before integration
 

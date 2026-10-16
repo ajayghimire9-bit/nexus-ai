@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — archived successor parity independently reproduced, 2026-10-16
+
+A second-agent verification on `cline/successor-search-archived-parity` (from
+`9c6ed4a`) first re-verified the recorded archived-parity result offline:
+arithmetic verifier,93-test offline suite, independent arithmetic and all60
+checkpoint hashes agreed. A single fresh frozen-model re-scoring of the
+identical locked2160-cell grid then reproduced the recorded reference and
+batched Q values **bitwise** (max deviation0.0, both scorers), with all
+actions/rankings/metrics and8 near ties identical and checkpoints/fingerprints
+unchanged. Label `independent_rescore_reproduced`. Cost12.669s,146,880 model
+calls,3,330,720 imagined transitions, zero real steps/updates. Not universal
+bitwise parity on unseen inputs, not a new control result, not AGI. The scorer
+stays opt-in; no default runner changed. Full-episode serial-versus-batched
+parity remains the next proposed validation and is not executed. Report
+`NEXUS_SUCCESSOR_ARCHIVED_PARITY_CLINE_RESCORE_RESULTS.md`. Earlier entries
+remain history.
+
 ## Latest — archived-state successor batching parity, 2026-10-16
 
 The read-only engineering audit matched2160/2160 actions and full Q rankings on

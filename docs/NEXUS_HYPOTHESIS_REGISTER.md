@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — archived decision parity independently reproduced by fresh re-scoring
+
+The recorded engineering claim is now verified end-to-end by a second agent:
+after arithmetic/provenance/checkpoint review, a fresh frozen-model re-scoring
+of the identical locked grid on `cline/successor-search-archived-parity`
+reproduced the recorded reference and batched Q values **bitwise in all2160
+cells**, including all8 near ties, with unchanged fingerprints and checkpoints.
+Label `independent_rescore_reproduced`. This is verification of recorded
+evidence, not a new hypothesis test: no new inputs, episodes, tolerances or
+rules were selected. Unseen closed-loop states, other families' missing
+archived observation streams and default-runner integration remain
+unestablished. Report `NEXUS_SUCCESSOR_ARCHIVED_PARITY_CLINE_RESCORE_RESULTS.md`.
+
 ## Latest — archived decision parity supported on the tested Pendulum grid
 
 Registered engineering rule passed:2160/2160 top actions and numerical checks
