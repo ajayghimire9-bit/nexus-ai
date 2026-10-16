@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-lookahead-transfers-on-new-mountaincarcontinuous-physics passed on one confirmation holdout
+
+The complete confirmation screen passed the 25-point rule: lookahead minus
+H=16 **81.518 [55.450, 107.586]** (student-t 95%, df 9, n=10) on holdout
+`bc7c74c781c9e24f` with the frozen development recipe and no retuning. Label
+`mountaincar_continuous_lookahead_transfer_established`. Development split
+stays closed; H=16, candidates and dense height were not retuned; the
+confirmation holdout is consumed by this one run. This is algorithm transfer
+with separately trained family models, not cross-family weight learning and
+not learning-to-learn. Report
+`NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_CONFIRM_RESULTS.md`.
+
 ## Latest — H-prefix-max-tree-reuse-beats-h16-on-mountaincar was not established
 
 The complete development screen failed the 25-point rule: prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Prefix hit-rate 0.999. Max remaining at matching first-action t=1 nodes did not replace successor H=16 search. Closed nearest-neighbor tree-reuse stays closed. Do not retune from this sample. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`.

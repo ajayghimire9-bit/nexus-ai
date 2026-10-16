@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MountainCarContinuous lookahead transfer confirmed on a new holdout, 2026-10-16
+
+The locked one-run confirmation screen completed on
+`cursor/mountaincar-continuous-lookahead-h16-confirm`: lookahead minus H=16
+**81.518 [55.450, 107.586]** (student-t 95%, df 9) on the new unused holdout
+`bc7c74c781c9e24f`, nine of ten seeds positive. Label
+`mountaincar_continuous_lookahead_transfer_established`. Frozen recipe, no
+H=16 retune, dense valley height, development split unused. Cost 27.054 s /
+24,800 real steps / 6,162,000 imagined / 200 frozen-recipe epochs; independent
+Git-only audit passed. Session ledger: 3464.606 s of the standing 3600 s
+allowance remains. The development result 69.758 stays closed. Not cross-family
+weight learning, not learning-to-learn, not AGI. Report
+`NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_CONFIRM_RESULTS.md`. Earlier entries
+remain history.
+
 ## Latest — Prefix-max tree reuse versus frozen H=16 not established, 2026-10-16
 
 The locked development screen completed. Prefix-max minus H=16 dense valley-height return **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Prefix hit-rate 0.999. Cost 13.762 s execute / 14.71 s process, 12,000 real steps, 3,090,000 imagined, 0 updates. Frozen checkpoints. Confirmation unused. No 771 arm. Do not retune from this sample. Closed nearest-neighbor tree-reuse stays closed. Not learning-to-learn or AGI. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. Earlier entries remain history.

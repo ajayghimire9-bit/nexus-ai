@@ -63,3 +63,22 @@ def test_one_run_allocation_is_authorized_and_binds_the_locked_hashes():
     assert float(usage['remaining_session_allowance_s'])>=cfg['time_cap_s']
     assert float(usage['ledger']['consumed_before_this_run_s'])==108.341
     assert int(usage['retries'])==0
+
+
+def test_recorded_confirmation_result_passes_the_independent_audit():
+    import json
+    from pathlib import Path
+    from nexus.world.planning_value import sha
+    p=json.loads(m.OUTPUT.read_text())
+    assert p['complete'] is True and p['n_episodes']==60
+    assert p['label']=='mountaincar_continuous_lookahead_transfer_established'
+    audit=m.audit_results()
+    assert audit['audit_passed'] is True and audit['label']==p['label']
+    assert audit['raw_sha256']==sha(m.OUTPUT)
+    assert int(audit['new_environment_steps'])==24800 and int(audit['new_imagined_transitions'])==6162000
+    primary=p['groups']['return_gain']['interval']
+    assert primary['mean']>=25.0 and primary['lo']>0 and primary['n']==10
+    usage=json.loads(Path('artifacts/research_session_mountaincar_continuous_lookahead_confirm_usage.json').read_text())
+    assert usage['status']=='complete' and int(usage['retries'])==0
+    assert usage['raw_sha256']==sha(m.OUTPUT) and usage['label']==p['label']
+    assert float(usage['remaining_session_allowance_s'])==3464.606

@@ -1,6 +1,31 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — prefix-max tree reuse is not established; do not retune
+## Current decision — MountainCarContinuous transfer is confirmed; no mandatory pending screen
+
+The MountainCarContinuous confirmation transfer screen is **complete and
+passed**: lookahead minus H=16 **81.518 [55.450, 107.586]** on holdout
+`bc7c74c781c9e24f`, label
+`mountaincar_continuous_lookahead_transfer_established`. The holdout is
+consumed and closed; the development split stays closed; do not retune or
+re-collect on either. Report
+`NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_CONFIRM_RESULTS.md`.
+
+No mandatory experiment is pending on this branch. Candidate next directions,
+each requiring a fresh locked protocol, user-visible cost and explicit
+authorization before implementation or collection:
+
+- Extend the parity-verified **accelerated batched successor search**
+  (established on the Pendulum family in the `cline/successor-*` branches) to
+  other families; each family needs its own parity gates before use.
+- Revisit the closed screens only with a genuinely new, preregistered
+  mechanism: nearest/prefix-max tree reuse and the Acrobot compute-matched
+  remainder are closed failures; context-adaptation lines are negative.
+- A new family or a new planning question consistent with the standing
+  roadmap; nothing is pre-authorized here.
+
+Earlier entries below remain chronological history, not new authorizations.
+
+## Previous decision — prefix-max tree reuse is not established; do not retune
 
 The authorized development screen completed: prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Nearest remaining and prefix-max both failed. Do not retune H=16, fit another Q, or reuse the tree grown from `s` again. The known MountainCar controller remains 771-step successor backup. A later distinct question is lookahead versus frozen H=16 on a **new unused MountainCarContinuous confirmation holdout**. That proposal is not implemented and is not authorized here. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`.
 

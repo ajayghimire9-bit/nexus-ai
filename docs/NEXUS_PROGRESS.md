@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — MountainCarContinuous lookahead transfer confirmed on a new confirmation holdout
+
+The authorized one-run 60-episode confirmation grid completed under the
+300 s / 24,800 / 6,162,000 / 200-epoch cap: lookahead minus H=16
+**81.518 [55.450, 107.586]**. Label
+`mountaincar_continuous_lookahead_transfer_established`. 27.054 s execute,
+exact resource counts, ten fresh frozen-recipe world models, development
+checkpoints unused. Independent Git-only audit passed. Confirmation holdout
+`bc7c74c781c9e24f` consumed by this one run. Report
+`NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_CONFIRM_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — Prefix-max tree reuse versus frozen H=16 not established
 
 The 60-episode grid completed under the 180 s / 12,000 / 3,090,000 cap. Prefix-max minus H=16 **−9.832 [−31.108, 11.445]**. Label `prefix_max_tree_reuse_not_established`. Execute 13.762 s, exact resource counts, 0 updates. Independent audit passed. Confirmation unused. No 771 arm. No fitted critic. Report `NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. No learning-to-learn or AGI.
