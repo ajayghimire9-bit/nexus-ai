@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-source-mcc-residual-scale-improves-128-transition-adaptation was harmful in this configuration
+
+Complete 128-only primary on unused MCC physics:
+`source_scale − unit_scale` **−54.381 [−105.776, −2.987]**. Label
+`mcc_residual_scale_harm_established`. Closes only this 2-d source
+residual-scale configuration. No retune. Report
+`NEXUS_MCC_RESIDUAL_SCALE_RESULTS.md`.
+
 ## Latest — H-source-mcc-residual-scale-improves-128-transition-adaptation is locked, not collected
 
 H9: a residual world model trained on 128 unused-MCC transitions with a

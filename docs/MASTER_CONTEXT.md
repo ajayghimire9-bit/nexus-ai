@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC residual-scale harm established, 2026-10-17
+
+On `cursor/mcc-residual-scale`: unused MCC (0.0021, 0.0018, 0.055),
+frozen 2-d source residual scale versus unit scale at 128 transitions.
+Primary `source_scale − unit_scale` **−54.381 [−105.776, −2.987]** —
+upper bound below 0. Label `mcc_residual_scale_harm_established`.
+4.965 s / 10,720 / 1,024,000. This configuration only. Not
+learning-to-learn, not AGI. Report `NEXUS_MCC_RESIDUAL_SCALE_RESULTS.md`.
+Earlier entries remain history.
+
 ## Latest — within-family MCC residual-scale locked unauthorized, 2026-10-17
 
 On `cursor/mcc-residual-scale` from `d8e6402`. Tests the remaining

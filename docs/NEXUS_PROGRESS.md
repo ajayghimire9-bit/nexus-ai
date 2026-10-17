@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — within-family MCC residual-scale harm established
+
+The authorized one-run screen completed: source residual scale versus
+unit scale on unused (0.0021, 0.0018, 0.055) gave
+`source_scale − unit_scale` **−54.381 [−105.776, −2.987]**. Label
+`mcc_residual_scale_harm_established`. 4.965 s / 10,720 / 1,024,000;
+audit passed; session ledger 3321.755 s remain. Report
+`NEXUS_MCC_RESIDUAL_SCALE_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — within-family MCC residual-scale locked, collection unauthorized
 
 H9 is locked on `cursor/mcc-residual-scale` from `d8e6402`: unused MCC

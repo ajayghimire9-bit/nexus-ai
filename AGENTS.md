@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the within-family MCC source-RMS screen in `docs/NEXUS_MCC_NATIVE_RMS_RESULTS.md`. Primary `source_rms − scratch_rms` **+2.185 [−64.564, +68.935]** is labeled `mcc_native_rms_not_established`. The locked unauthorized follow-up is residual-scale adaptation (`docs/NEXUS_MCC_RESIDUAL_SCALE_PROTOCOL.md`): **600 s / 10,720 / 1,024,000**, `authorized: false`. Do not retune `mcc_native_rms_v1` or add a shared-trunk variant. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the within-family MCC residual-scale screen in `docs/NEXUS_MCC_RESIDUAL_SCALE_RESULTS.md`. Primary `source_scale − unit_scale` **−54.381 [−105.776, −2.987]** is labeled `mcc_residual_scale_harm_established`. Source-RMS **+2.185** remains `not_established`. The seven xenv rungs remain closed. Do not retune these holdouts or add a shared-trunk variant. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

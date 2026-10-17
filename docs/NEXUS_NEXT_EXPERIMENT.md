@@ -1,6 +1,22 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Locked — within-family MCC residual-scale, collection unauthorized until allocation
+## Current decision — source residual-scale hurt; leave interface transplants closed
+
+H9 is **complete**: `source_scale − unit_scale`
+**−54.381 [−105.776, −2.987]** on `mcc_residual_scale_v1`
+(0.0021, 0.0018, 0.055). Label `mcc_residual_scale_harm_established`.
+Do not retune scale dimension or this holdout. Source-RMS is also
+closed. Leave transplanted source-interface statistics closed at this
+scale. Established levers remain family-local models and lookahead.
+Nothing is pre-authorized. Session ledger: 3321.755 s remain. Report
+`NEXUS_MCC_RESIDUAL_SCALE_RESULTS.md`.
+
+## Consumed — source residual-scale versus unit scale, one-run remaining 0
+
+Primary completed: **−54.381 [−105.776, −2.987]**. Further collection on
+this configuration is **not** authorized.
+
+## Previous — locked within-family MCC residual-scale, collection unauthorized until allocation
 
 Protocol `docs/NEXUS_MCC_RESIDUAL_SCALE_PROTOCOL.md` on
 `cursor/mcc-residual-scale` from `d8e6402`. Holdout
