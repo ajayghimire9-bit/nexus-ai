@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the within-family MCC multitask confirmation in `docs/NEXUS_MCC_MULTITASK_128_CONFIRM_RESULTS.md`. Primary `multitask − scratch` **+18.879 [−65.988, +103.747]** is labeled `mcc_multitask_128_confirm_not_established`. H10 **+145.785** remains a single-holdout `mcc_multitask_128_beats_scratch` screen and is not a replicated fact. Residual-scale **−54.381** remains `harm_established`. Source-RMS **+2.185** remains `not_established`. The seven xenv rungs remain closed. Do not retune these holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the H10/H11 source-only prediction-versus-control audit in `docs/NEXUS_H10_H11_CONTROL_DISAGREEMENT_AUDIT.md`. Closed primaries recompute exactly. Return gaps sit in steps 16–199. H11 seeds 4 and 5 lose control with still-better val MAE. That is not a harm label and not a replicated transfer fact. H11 remains `mcc_multitask_128_confirm_not_established`; H10 remains a single-holdout `mcc_multitask_128_beats_scratch` screen. Do not retune these holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

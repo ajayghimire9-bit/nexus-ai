@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H11 confirmation did not replicate; leave this holdout closed
+## Current decision — source audit closed; next is a same-state ranking diagnostic
+
+H10/H11 artifact audit is complete. MAE is not a control sufficient
+statistic on these holdouts. The smallest untested object is first-horizon
+ranking on shared candidates from matched resets, using the frozen H10
+recipe on one new unused MCC physics. That run is **not** authorized.
+Do not retune H10 or H11. Session ledger unchanged (no new execution).
+Report `NEXUS_H10_H11_CONTROL_DISAGREEMENT_AUDIT.md`.
+
+## Previous — H11 confirmation did not replicate; leave this holdout closed
 
 H11 is **complete**: `multitask − scratch`
 **+18.879 [−65.988, +103.747]** on `mcc_multitask_128_confirm_v1`

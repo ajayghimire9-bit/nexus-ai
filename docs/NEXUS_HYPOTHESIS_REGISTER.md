@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-one-step-val-MAE-is-insufficient-for-MCC-H16-control is supported on saved artifacts
+
+Source-only: H10 and H11 paired returns reconstruct; late-window
+deltas match the primaries; H11 seeds 4 and 5 have lower val MAE and
+large negative control deltas. Ranking and multi-step mechanisms remain
+untested. Not a harm label. Report
+`NEXUS_H10_H11_CONTROL_DISAGREEMENT_AUDIT.md`.
+
 ## Latest — H-within-family-mcc-multitask-128-replicates-on-new-holdout was not established
 
 Complete 128-only confirmation on unused MCC physics:

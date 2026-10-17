@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H10/H11 prediction-versus-control source audit, 2026-10-17
+
+On `cursor/h10-h11-control-disagreement-audit` from `668463e`.
+Source-only recomputation of closed H10/H11 artifacts. No new steps,
+no training. Primaries match. Return gaps sit in steps 16–199. H11
+seeds 4 and 5 lose control while still showing lower val MAE. Ranking,
+multi-step bias, and uncertainty are untestable from saved traces.
+Not a harm claim. Not learning-to-learn, not AGI. Report
+`NEXUS_H10_H11_CONTROL_DISAGREEMENT_AUDIT.md`. Earlier entries remain
+history.
+
 ## Latest — within-family MCC multitask confirmation not established, 2026-10-17
 
 On `cursor/mcc-multitask-128-confirm`: unused MCC (0.0022, 0.0016, 0.07),

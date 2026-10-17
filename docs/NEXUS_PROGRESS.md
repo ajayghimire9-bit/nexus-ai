@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — H10/H11 prediction-versus-control source audit
+
+Source-only audit on `cursor/h10-h11-control-disagreement-audit` from
+`668463e` recomputed both primaries, confirmed they live in steps
+16–199, and showed H11 seeds 4 and 5 lose return with still-better
+MAE. No new environment steps. Report
+`NEXUS_H10_H11_CONTROL_DISAGREEMENT_AUDIT.md`. No learning-to-learn
+or AGI.
+
 ## Latest — within-family MCC multitask confirmation not established
 
 The authorized one-run confirmation completed: frozen H10 recipe versus
