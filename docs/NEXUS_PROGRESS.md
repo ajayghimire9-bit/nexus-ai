@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — MCC same-state planning-ranking runner implemented, collection unauthorized
+
+The H12 runner is implemented on `cursor/mcc-planning-ranking-runner`
+from locked prep `b75417a`. Locked hashes unchanged. `authorized:
+false`. No training or collection. Sequence regret stays primary;
+recede stays secondary. Report
+`NEXUS_MCC_PLANNING_RANKING_RUNNER.md`. No learning-to-learn or AGI.
+
 ## Latest — MCC same-state planning-ranking diagnostic locked, collection unauthorized
 
 H12 is locked on `cursor/mcc-planning-ranking-diagnostic-prep` from

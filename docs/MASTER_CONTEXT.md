@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MCC same-state planning-ranking runner implemented, still unauthorized, 2026-10-17
+
+On `cursor/mcc-planning-ranking-runner` from locked prep `b75417a`.
+The H12 execution runner is implemented. Locked yaml/protocol hashes
+are unchanged. `authorized: false`, `runs: 0`. No training or
+collection. Primary remains sequence regret; recede stays secondary.
+Not a result. Not learning-to-learn, not AGI. Report
+`NEXUS_MCC_PLANNING_RANKING_RUNNER.md`. Earlier entries remain
+history.
+
 ## Latest — MCC same-state planning-ranking diagnostic locked unauthorized, 2026-10-17
 
 On `cursor/mcc-planning-ranking-diagnostic-prep` from `95dbebc`.

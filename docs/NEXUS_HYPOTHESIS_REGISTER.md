@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h10-recipe-ranks-shared-h16-candidates-better-than-scratch has a runner, not a result
+
+H12 execution logic is implemented. The locked design is unchanged.
+Collection unauthorized (`authorized: false`, `runs: 0`). This is not
+a ranking result. Report `NEXUS_MCC_PLANNING_RANKING_RUNNER.md`.
+
 ## Latest — H-h10-recipe-ranks-shared-h16-candidates-better-than-scratch is locked, not collected
 
 H12: frozen H10 multitask has lower same-state sequence regret than

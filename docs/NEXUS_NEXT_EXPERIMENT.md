@@ -1,6 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — lock MCC same-state ranking diagnostic; collection unauthorized
+## Current decision — H12 runner is implementation-ready; collection unauthorized
+
+The locked H12 design now has an execution runner on
+`cursor/mcc-planning-ranking-runner`. Yaml/protocol hashes are
+unchanged. `authorized: false`, `runs: 0`. Do not collect. Do not
+retune H10/H11. A separately authorized one-run allocation is still
+required. Report `NEXUS_MCC_PLANNING_RANKING_RUNNER.md`.
+
+## Previous — lock MCC same-state ranking diagnostic; collection unauthorized
 
 H12 is locked on unused MCC `mcc_planning_ranking_v1`
 **(0.0027, 0.0015, 0.075)**. Four reset states, shared 16×16

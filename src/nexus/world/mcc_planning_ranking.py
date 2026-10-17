@@ -1,22 +1,31 @@
-"""Same-state MCC planning-ranking diagnostic. Preparation only.
+"""Same-state MCC planning-ranking diagnostic.
 
 Tests whether H10-recipe multitask ranks shared H=16 candidates better
-than scratch on matched reset states. Pendulum already has a student-versus
-zero ranking audit; this MCC multitask-versus-scratch grid has not been run.
-Collection is unauthorized.
+than scratch on matched reset states. Collection stays unauthorized until
+a later one-run allocation. The locked yaml/protocol hashes must not change.
 """
 from __future__ import annotations
 import hashlib
 import importlib
 import json
+import math
 import re
+import subprocess
+import time
 from pathlib import Path
 import numpy as np
+import torch
 import yaml
 from nexus.cl.metrics import seed_level_ci
+from nexus.world.data import collect_transitions, concat_datasets
 from nexus.world.planning_value import sha
+from nexus.world.prediction_control_gap import candidate_sequences
+from nexus.world.rewards import mountaincar_step_reward
+from nexus.world.terminal_value_execution import save
+from nexus.world.train import train_world_model
 from nexus.world import mcc_multitask_128 as h10
 from nexus.world import mcc_multitask_128_confirm as h11
+from nexus.world import xenv_transfer as rung1
 
 CONFIG = Path('configs/mcc_planning_ranking.yaml')
 PROTOCOL = Path('docs/NEXUS_MCC_PLANNING_RANKING_PROTOCOL.md')
@@ -37,6 +46,8 @@ REGISTRIES = h11.REGISTRIES
 OTHER_BRANCH_BLOCKS = h11.OTHER_BRANCH_BLOCKS + (73_000_000,)
 SEED_MARGIN = h11.SEED_MARGIN
 ARMS = ('multitask', 'scratch')
+RESET_ATOL = 1e-6
+REWARD_ATOL = 1e-5
 FROZEN_TRAIN_FIELDS = (
     'n_model_seeds', 'source_family', 'target_family', 'target_budget',
     'n_source_physics', 'source_train', 'target_train', 'target_val',
@@ -263,7 +274,96 @@ def summarize(cells, cfg):
 
 def execute():
     cfg = load_config(); require_allocation(cfg)
-    raise PermissionError('ranking collection is not authorized on this prep branch')
+    if OUTPUT.exists():
+        raise RuntimeError('refusing ranking overwrite')
+    if subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip():
+        raise RuntimeError('commit clean protocol before collection')
+    subprocess.run(['git', 'merge-base', '--is-ancestor', cfg['starting_sha'], 'HEAD'], check=True)
+    from nexus.tasks.spec import make_task_env
+    torch.set_num_threads(1)
+    started = time.perf_counter(); meter = rung1.Meter(cfg)
+    key = holdout_from_rule()[0]
+    spec = target_spec(key)
+    priors = source_specs()
+    payload = dict(complete=False, label='incomplete', cells=[], parents=cfg['parents'],
+        implementation_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+        config_sha256=sha(CONFIG), protocol_sha256=sha(PROTOCOL), allocation_sha256=sha(ALLOCATION),
+        source_dirty=False, target_physics=list(key), holdout_rule=HOLD_RULE,
+        source_physics=[list(k) for k in source_physics_keys()],
+        new_environment_interactions=cfg['env_cap'], imagined_transitions=cfg['model_cap'],
+        restore_method=cfg['restore_method'], full_episode_primary=False,
+        primary_metric='scratch_minus_multitask_sequence_regret',
+        closed_loop_is_primary=False, claims_learning_to_learn=False, is_agi=False)
+    payload['code_hashes'] = {f: sha(f) for f in (
+        'src/nexus/world/mcc_planning_ranking.py', 'src/nexus/world/mcc_multitask_128.py',
+        'src/nexus/world/train.py', 'src/nexus/world/dynamics.py', 'src/nexus/world/data.py',
+        'src/nexus/world/planning.py', 'src/nexus/world/xenv_transfer.py',
+        'src/nexus/world/prediction_control_gap.py')}
+    try:
+        for seed in range(N_SEEDS):
+            meter.check()
+            models = train_seed_models(cfg, spec, priors, seed, meter)
+            env = make_task_env(spec)
+            try:
+                state_rows = []
+                for state_index in range(N_STATES):
+                    state_seed = int(cfg['state_reset_base']) + 10 * seed + state_index
+                    sequences = candidate_sequences(
+                        int(cfg['candidate_base']) + 10 * seed + state_index,
+                        N_CAND, HORIZON, n_actions=N_ACTIONS)
+                    state_rows.append(evaluate_state(
+                        env, models, state_seed, sequences, cfg, seed, state_index, meter))
+                sequence, first_action, closed = mean_seed_metrics(state_rows)
+            finally:
+                env.close()
+            if any(not np.isfinite(v) for arm in ARMS for v in (sequence[arm], first_action[arm], closed[arm])):
+                raise ValueError('nonfinite ranking metric')
+            payload['cells'].append(dict(
+                seed=seed, sequence_regret=sequence, first_action_regret=first_action,
+                closed_loop_return=closed, states=state_rows))
+            print(f'seed={seed} seconds={time.perf_counter()-started:.1f}', flush=True)
+        payload.update(summarize(payload['cells'], cfg))
+        if meter.env_steps != cfg['env_cap'] or meter.model_states != cfg['model_cap']:
+            raise ValueError('ranking totals inconsistent with the locked budget')
+        if payload.get('closed_loop_is_primary') is not False:
+            raise ValueError('closed-loop recede must stay secondary')
+        if payload['groups']['primary']['metric'] != 'scratch_minus_multitask_sequence_regret':
+            raise ValueError('primary metric drifted from sequence regret')
+        meter.check(); payload['complete'] = True
+    except Exception as exc:
+        payload['label'] = 'incomplete'
+        payload['complete'] = False
+        payload['failure'] = dict(type=type(exc).__name__, message=str(exc))
+        print('INCOMPLETE', payload['failure'], flush=True)
+    payload['wall_clock_s'] = time.perf_counter() - started
+    payload['counts'] = dict(env_steps=meter.env_steps, model_states=meter.model_states)
+    save(OUTPUT, payload)
+    return payload
+
+
+def audit_results():
+    cfg = load_config(); payload = json.loads(OUTPUT.read_text())
+    if payload.get('complete') is not True:
+        raise RuntimeError('incomplete/invalid ranking evaluation')
+    rebuilt = summarize(payload['cells'], cfg)
+    if payload['label'] != rebuilt['label']:
+        raise ValueError('saved label differs')
+    if payload.get('claims_learning_to_learn') is not False or payload.get('is_agi') is not False:
+        raise ValueError('forbidden claim flags drifted')
+    if payload.get('full_episode_primary') is not False or payload.get('closed_loop_is_primary') is not False:
+        raise ValueError('closed-loop or full-episode primary drifted')
+    if payload['groups']['primary']['metric'] != 'scratch_minus_multitask_sequence_regret':
+        raise ValueError('primary metric drifted from sequence regret')
+    if int(payload['counts']['env_steps']) != cfg['env_cap'] or int(payload['counts']['model_states']) != cfg['model_cap']:
+        raise ValueError('ranking execution totals drifted')
+    if int(payload['counts']['env_steps']) > cfg['env_cap'] or int(payload['counts']['model_states']) > cfg['model_cap']:
+        raise ValueError('ranking meters exceeded locked caps')
+    return dict(audit_passed=True, label=payload['label'], raw_sha256=sha(OUTPUT),
+        groups=payload['groups'],
+        new_environment_steps=int(payload['counts']['env_steps']),
+        new_imagined_transitions=int(payload['counts']['model_states']),
+        target_physics=payload['target_physics'], is_agi=False,
+        claims_learning_to_learn=False, closed_loop_is_primary=False)
 
 
 def prep():
@@ -305,3 +405,182 @@ def require_allocation(cfg):
     usage = json.loads(Path(record['one_run_usage_record']).read_text())
     if float(usage['remaining_session_allowance_s']) < cfg['time_cap_s']:
         raise PermissionError('session allowance exhausted')
+
+
+def as_obs(obs):
+    return np.asarray(obs, dtype=np.float32).reshape(-1)
+
+
+def record_reset(env, seed):
+    """First reset of a ranking state. Later restores must match this observation."""
+    obs, _info = env.reset(seed=int(seed))
+    return as_obs(obs).copy()
+
+
+def assert_same_reset(env, seed, obs0, atol=RESET_ATOL):
+    """Restore only by reset(seed=state_seed). A mismatch invalidates the cell."""
+    obs, _info = env.reset(seed=int(seed))
+    obs = as_obs(obs)
+    expected = as_obs(obs0)
+    if obs.shape != expected.shape or not np.allclose(obs, expected, atol=atol, rtol=0.0):
+        raise RuntimeError('reset identity failed')
+    return obs
+
+
+def score_candidates(model, obs, sequences, meter):
+    """Imagined H=16 scores. Realized counterfactual returns are not an argument."""
+    sequences = np.asarray(sequences, dtype=np.int64)
+    if sequences.shape != (N_CAND, HORIZON):
+        raise ValueError('candidate shape drifted')
+    original = model.step
+    meter.instrument(model)
+    try:
+        planner = rung1.make_planner(model)
+        scores = np.asarray(planner._score_batch(as_obs(obs), sequences), dtype=np.float64)
+    finally:
+        model.step = original
+    if scores.shape != (N_CAND,) or not np.isfinite(scores).all():
+        raise RuntimeError('planner dropped a candidate or produced nonfinite scores')
+    return scores
+
+
+def realize_open_loop(env, state_seed, obs0, sequences, meter, *, check_reward=True):
+    """Shared simulator returns. The model is not called and does not see these values."""
+    sequences = np.asarray(sequences, dtype=np.int64)
+    if sequences.shape != (N_CAND, HORIZON):
+        raise ValueError('candidate shape drifted')
+    actual = np.zeros(N_CAND, dtype=np.float64)
+    traces = []
+    for actions in sequences:
+        obs = assert_same_reset(env, state_seed, obs0)
+        rewards = []
+        for action in actions:
+            nxt, reward, terminated, truncated, _info = env.step(int(action))
+            meter.env_step()
+            nxt = as_obs(nxt)
+            if check_reward:
+                published = float(np.asarray(
+                    mountaincar_step_reward(obs, int(action), nxt), dtype=np.float64).reshape(-1)[0])
+                if abs(float(reward) - published) > REWARD_ATOL:
+                    raise RuntimeError('environment reward does not match published mountaincar height')
+            rewards.append(float(reward))
+            obs = nxt
+            if terminated or truncated:
+                break
+        if len(rewards) != HORIZON:
+            raise RuntimeError('open-loop ended before the candidate horizon')
+        actual[len(traces)] = float(math.fsum(rewards))
+        traces.append(rewards)
+    return actual, traces
+
+
+def recede_closed_loop(env, model, state_seed, obs0, cfg, seed, arm_index, meter):
+    """Secondary 16-step receding control from the same obs0. Not the primary metric."""
+    obs = assert_same_reset(env, state_seed, obs0)
+    original = model.step
+    meter.instrument(model)
+    try:
+        planner = rung1.make_planner(model)
+        rewards = []
+        for step in range(HORIZON):
+            cand_seed = int(cfg['closed_loop_step_base']) + 1000 * int(seed) + 100 * int(arm_index) + step
+            seq = candidate_sequences(cand_seed, N_CAND, HORIZON, n_actions=N_ACTIONS)
+            scores = planner._score_batch(obs, seq)
+            action = int(seq[int(np.argmax(scores)), 0])
+            nxt, reward, terminated, truncated, _info = env.step(action)
+            meter.env_step()
+            rewards.append(float(reward))
+            obs = as_obs(nxt)
+            if terminated or truncated:
+                break
+        if len(rewards) != HORIZON:
+            raise RuntimeError('closed-loop ended before the ranking horizon')
+        return float(math.fsum(rewards))
+    finally:
+        model.step = original
+
+
+def rank_shared_state(predictions, actual, sequences):
+    """Regrets from already-computed predicted scores and shared realized returns."""
+    actual = np.asarray(actual, dtype=np.float64).reshape(-1)
+    sequences = np.asarray(sequences, dtype=np.int64)
+    ranked = {}
+    for arm, pred in predictions.items():
+        pred = np.asarray(pred, dtype=np.float64).reshape(-1)
+        selected = int(np.argmax(pred))
+        ranked[arm] = dict(
+            selected=selected,
+            first_action=int(sequences[selected, 0]),
+            sequence_regret=sequence_regret(pred, actual),
+            first_action_regret=first_action_regret(pred, actual, sequences),
+            predicted=pred.tolist(),
+        )
+    return ranked
+
+
+def evaluate_state(env, models, state_seed, sequences, cfg, seed, state_index, meter,
+                   *, check_reward=True):
+    """Score both arms from obs0, then realize the shared open loop, then recede."""
+    obs0 = record_reset(env, state_seed)
+    predictions = {arm: score_candidates(models[arm], obs0, sequences, meter) for arm in ARMS}
+    actual, traces = realize_open_loop(
+        env, state_seed, obs0, sequences, meter, check_reward=check_reward)
+    ranked = rank_shared_state(predictions, actual, sequences)
+    for arm_index, arm in enumerate(ARMS):
+        ranked[arm]['closed_loop_return'] = recede_closed_loop(
+            env, models[arm], state_seed, obs0, cfg, seed, arm_index, meter)
+    return dict(state_index=int(state_index), state_seed=int(state_seed),
+                obs0=obs0.tolist(), actual=actual.tolist(), traces=traces, ranked=ranked)
+
+
+def mean_seed_metrics(state_rows):
+    if len(state_rows) != N_STATES:
+        raise ValueError('seed is missing a ranking state')
+    sequence = {arm: float(np.mean([row['ranked'][arm]['sequence_regret'] for row in state_rows]))
+                for arm in ARMS}
+    first_action = {arm: float(np.mean([row['ranked'][arm]['first_action_regret'] for row in state_rows]))
+                    for arm in ARMS}
+    closed = {arm: float(np.mean([row['ranked'][arm]['closed_loop_return'] for row in state_rows]))
+              for arm in ARMS}
+    return sequence, first_action, closed
+
+
+def train_seed_models(cfg, spec, priors, seed, meter):
+    """Frozen H10 recipe. Source RMS pretrain, then target RMS on both arms."""
+    parts = []
+    for i, prior in enumerate(priors):
+        base = cfg['collect_source_base'] + 120 * seed + 40 * i
+        ds = collect_transitions(prior, n_transitions=int(cfg['source_train']),
+            env_seeds=tuple(range(base, base + 6)), base_seed=base + 6,
+            mix=('random', 'exploratory'))
+        meter.collect(int(cfg['source_train']))
+        parts.append(ds)
+    source = concat_datasets(*parts, task_id='mcc_planning_rank_source')
+    source_train = source.slice(np.arange(len(source) - 32, dtype=np.int64))
+    source_val = source.slice(np.arange(len(source) - 32, len(source), dtype=np.int64))
+    if len(source_train) != 1504 or len(source_val) != 32:
+        raise ValueError('ranking source split drifted')
+    source_rms = rung1.fit_rms(source_train.obs)
+    target_base = cfg['collect_target_base'] + 40 * seed
+    train = collect_transitions(spec, n_transitions=int(cfg['target_train']),
+        env_seeds=tuple(range(target_base, target_base + 6)), base_seed=target_base + 6,
+        mix=('random', 'exploratory'))
+    val = collect_transitions(spec, n_transitions=int(cfg['target_val']),
+        env_seeds=(target_base + 8, target_base + 9), base_seed=target_base + 10,
+        mix=('random', 'exploratory'))
+    meter.collect(int(cfg['target_train']) + int(cfg['target_val']))
+    if len(train) != int(cfg['target_train']) or len(val) != int(cfg['target_val']):
+        raise ValueError('ranking target prefix length drifted')
+    target_rms = rung1.fit_rms(train.obs)
+    multi, _pre = train_world_model(source_train, source_val, kind='residual',
+        epochs=int(cfg['pretrain_epochs']), lr=cfg['train_lr'],
+        seed=5 + 19 * seed, n_actions=spec.n_actions, hidden=(64, 64),
+        obs_rms=source_rms, freeze_rms=True)
+    multi.copy_rms(target_rms)
+    h10.continue_train(multi, train, val, epochs=int(cfg['train_epochs']),
+        lr=cfg['train_lr'], seed=7 + 19 * seed)
+    scratch, _log = train_world_model(train, val, kind='residual',
+        epochs=int(cfg['train_epochs']), lr=cfg['train_lr'],
+        seed=5 + 19 * seed, n_actions=spec.n_actions, hidden=(64, 64),
+        obs_rms=target_rms, freeze_rms=True)
+    return {'multitask': multi, 'scratch': scratch}
