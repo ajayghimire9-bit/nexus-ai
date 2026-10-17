@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-shared-proposal-resampling-changes-relative-recede has a runner, not a result
+
+H14 execution logic is implemented. The locked design is unchanged.
+Collection unauthorized (`authorized: false`, `runs: 0`). This is not
+a control result. Report `NEXUS_H14_CANDIDATE_REUSE_RUNNER.md`.
+
 ## Latest — H-shared-proposal-resampling-changes-relative-recede is locked, not collected
 
 H14: fixed-library recede versus redraw recede, both arms seeing the

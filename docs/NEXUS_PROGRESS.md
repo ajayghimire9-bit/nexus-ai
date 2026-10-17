@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — H14 candidate-reuse runner implemented, collection unauthorized
+
+The H14 execution runner is implemented on
+`cursor/h14-candidate-reuse-runner` from locked prep `05542bb`.
+Locked yaml/protocol hashes are unchanged. `authorized: false`,
+`runs: 0`. No training. Report `NEXUS_H14_CANDIDATE_REUSE_RUNNER.md`.
+No learning-to-learn or AGI.
+
 ## Latest — H14 candidate-reuse protocol locked, collection unauthorized
 
 H14 is locked on `cursor/h14-candidate-reuse-protocol-lock` from

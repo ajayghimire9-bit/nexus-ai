@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — lock H14 runner; collection unauthorized
+## Current decision — H14 runner is implementation-ready; collection unauthorized
+
+H14 is locked on unused MCC `mcc_candidate_reuse_v1`
+**(0.0023, 0.0019, 0.065)**. The guarded runner exists and still
+refuses (`authorized: false`, `runs: 0`). Caps
+**300 s / 29,760 / 655,360**. Do not collect from this document.
+A later one-run allocation is required before execution. Do not
+retune H10–H13. Session ledger unchanged. Report
+`NEXUS_H14_CANDIDATE_REUSE_RUNNER.md`.
+
+## Previous — lock H14 runner; collection unauthorized
 
 H14 is locked on unused MCC `mcc_candidate_reuse_v1`
 **(0.0023, 0.0019, 0.065)**. Frozen H10 recipe versus scratch; shared

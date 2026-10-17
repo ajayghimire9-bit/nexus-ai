@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H14 candidate-reuse runner implemented, still unauthorized, 2026-10-17
+
+On `cursor/h14-candidate-reuse-runner` from locked prep `05542bb`.
+The guarded H14 runner is implemented. Locked yaml/protocol hashes
+are unchanged. `authorized: false`, `runs: 0`. No training or
+collection. Primary remains the shared-proposal DiD. Not a result.
+Not learning-to-learn, not AGI. Report
+`NEXUS_H14_CANDIDATE_REUSE_RUNNER.md`. Earlier entries remain
+history.
+
 ## Latest — H14 candidate-reuse protocol locked unauthorized, 2026-10-17
 
 On `cursor/h14-candidate-reuse-protocol-lock` from feasibility

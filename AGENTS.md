@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the H12/H13 ranking-versus-recede source-only audit in `docs/NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`. The H14 candidate-reuse protocol is locked on `cursor/h14-candidate-reuse-protocol-lock` and remains unauthorized (`authorized: false`, `runs: 0`); that is not a control result. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the H12/H13 ranking-versus-recede source-only audit in `docs/NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`. The H14 candidate-reuse runner is implemented on `cursor/h14-candidate-reuse-runner` and remains unauthorized (`authorized: false`, `runs: 0`); that is not a control result. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority
