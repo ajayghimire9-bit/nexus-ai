@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — residual-aware context (rung 4), collection unauthorized until allocation
+
+Protocol `docs/NEXUS_XENV_RESIDUAL_CONTEXT_PROTOCOL.md` on
+`cursor/xenv-residual-context` from `c129c62`. Holdout `mcc_xenv_v5`
+**(0.0019, 0.0013, 0.065)**. Seeds `66,000,000+`. Encoder may read
+normalized `s'−s` padded to 6. Caps **600 s / 44,000 / 3,072,000**.
+`authorized: false`. Rung 3 stays closed.
+
 ## Current decision — occupancy-only context-code is not established; do not retune
 
 Rung 3 is **complete**: `xenv − scratch` **−2.300 [−9.921, +5.320]** on new
