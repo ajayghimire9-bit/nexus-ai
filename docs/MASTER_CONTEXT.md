@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H12/H13 ranking-versus-recede source audit, 2026-10-17
+
+On `cursor/h12-h13-recede-disagreement-audit` from `6eb8265`.
+Source-only recomputation of closed H12/H13 artifacts. No new steps,
+no training. Primaries match. Reset-state ranking is better for the
+H10 recipe on both holdouts. H13 recede `multitask − scratch`
+**−0.253 [−0.431, −0.074]** stays secondary. The recede loss is
+scratch’s larger recede-over-commitment bonus; later-state mechanisms
+are untestable from saved traces. Not a control claim. Not
+learning-to-learn, not AGI. Report
+`NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`. Earlier entries remain
+history.
+
 ## Latest — MCC same-state ranking confirmation multitask better, 2026-10-17
 
 On `cursor/mcc-planning-ranking-confirm`: unused MCC (0.0039, 0.002, 0.075),

@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H13 ranking confirmation established; leave it closed
+## Current decision — source audit closed; next is frozen-candidate recede, unauthorized
+
+H12/H13 artifact audit is complete. Reset-state ranking replicated;
+H13 redraw recede favored scratch and is not a primary. The smallest
+untested object is whether **frozen-candidate recede** preserves the
+ranking advantage that redraw recede lost. That H14 run is **not**
+authorized. Do not retune H10–H13. Session ledger unchanged (no new
+execution). Report `NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`.
+
+## Previous — H13 ranking confirmation established; leave it closed
 
 H13 is **complete**: `scratch − multitask` sequence regret
 **+0.156 [+0.086, +0.226]** on `mcc_planning_ranking_confirm_v1`

@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-reset-ranking-is-insufficient-for-MCC-H16-recede is supported on saved artifacts
+
+Source-only: H12 and H13 ranking primaries recompute exactly. At
+`obs0`, multitask ranks the shared 16-set far better than scratch.
+H13 redraw recede favors scratch. The loss equals scratch’s larger
+recede-over-commitment bonus. Later-state ranking, compounding error,
+and occupancy remain untested. Recede is not a registered primary.
+Report `NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`.
+
 ## Latest — H-h12-ranking-replicates-on-new-holdout was supported in this configuration
 
 Complete ranking confirmation on unused MCC physics:

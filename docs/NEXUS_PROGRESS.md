@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — H12/H13 ranking-versus-recede source audit
+
+Source-only audit on `cursor/h12-h13-recede-disagreement-audit` from
+`6eb8265` recomputed both ranking primaries, confirmed they equal the
+selected open-loop identity, and showed H13 recede favors scratch
+because scratch gains more from recede than from the initial
+commitment. No later-state traces exist. No new environment steps.
+Report `NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`. No
+learning-to-learn or AGI.
+
 ## Latest — MCC same-state ranking confirmation multitask better
 
 The authorized one-run confirmation completed: frozen H12 recipe versus
