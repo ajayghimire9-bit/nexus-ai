@@ -1,6 +1,34 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Source audit — context-code lock is interpretable; collection still unauthorized
+## Current decision — occupancy-only context-code is not established; do not retune
+
+Rung 3 is **complete**: `xenv − scratch` **−2.300 [−9.921, +5.320]** on new
+MountainCarContinuous physics (0.0027, 0.0009, 0.05) — interval includes 0.
+Label `xenv_context_code_not_established`. Rungs 1 and 2 stay closed. The
+target physics and the occupancy-only `(obs, action)` FiLM configuration
+are closed; do not retune or rerun them. Report
+`NEXUS_XENV_CONTEXT_CODE_RESULTS.md`.
+
+**One next rung (new preregistered configuration, not a retune):** a
+residual-aware support encoder that may read `(s, a, s'−s)` from the same
+support slice, still with no family-ID table, matched scratch, and a fresh
+unused target draw. Pretraining-scale still exceeds the 100,000 standing
+interaction cap. Each needs its own locked protocol, cost estimate and
+one-run allocation; nothing is pre-authorized here. Session ledger:
+3395.797 s of the standing 3600 s remain.
+
+## Consumed — context-code versus matched scratch, one-run remaining 0
+
+Protocol `docs/NEXUS_XENV_CONTEXT_CODE_PROTOCOL.md` on
+`cursor/xenv-context-code` from `9d3e5ce`. Config SHA256
+`8a64693a9bb793b0db958768fe5dc42f957b6e4c3a785fdc8ff15cec13fa70c8`. Protocol
+SHA256 `34e9b8699d38e7c58888001d87a8bae84ee9e1c37c320ab28c06e649747d0f62`.
+Primary completed: `xenv − scratch` **−2.300 [−9.921, +5.320]**, label
+`xenv_context_code_not_established`. One-run remaining is 0. Further
+collection is **not** authorized. Report
+`NEXUS_XENV_CONTEXT_CODE_RESULTS.md`.
+
+## Previous — source audit — context-code lock is interpretable; collection still unauthorized
 
 `docs/NEXUS_XENV_CONTEXT_CODE_SOURCE_AUDIT.md` on this branch. Occupancy-only
 `(obs, action)` context cannot recover `T(s'|s,a)`; `training_epochs_budget:

@@ -1,5 +1,19 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — cross-environment occupancy-only context-code not established, 2026-10-17
+
+Rung 3 on `cursor/xenv-context-code`: support-inferred 8-d FiLM from
+`(obs, action)` occupancy on the closed rung-1 trunk, pretrained on
+CartPole+Acrobot+MountainCar, evaluated on new unused MountainCarContinuous
+physics (0.0027, 0.0009, 0.05) at matched data. Primary `xenv − scratch`
+**−2.300 [−9.921, +5.320]** — includes 0; per-budget gains include 0;
+prediction MAE includes 0. Label `xenv_context_code_not_established`.
+18.516 s / 44,000 steps / 3,072,000 imagined; one valid run; audit passed;
+session ledger 3395.797 s remain. Three consecutive cross-environment rungs
+are closed. This result does not test residual-aware support encoding. Not
+learning-to-learn, not AGI. Report `NEXUS_XENV_CONTEXT_CODE_RESULTS.md`.
+Earlier entries remain history.
+
 ## Latest — context-code source audit, 2026-10-17
 
 Source-only review of the locked `cursor/xenv-context-code` design. Safe to

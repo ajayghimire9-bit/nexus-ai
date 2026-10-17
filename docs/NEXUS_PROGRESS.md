@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — cross-environment occupancy-only context-code not established
+
+The authorized one-run rung completed (no invalid attempts): occupancy-
+conditioned FiLM on the rung-1 trunk gave `xenv − scratch` **−2.300
+[−9.921, +5.320]** on new MountainCarContinuous physics (0.0027, 0.0009,
+0.05) — interval includes 0. Label `xenv_context_code_not_established`.
+18.516 s / 44,000 / 3,072,000; audit passed; session ledger 3395.797 s
+remain. Three xenv rungs closed. This does not test residual-aware context.
+Report `NEXUS_XENV_CONTEXT_CODE_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — context-code source audit: interpretable under occupancy limits
 
 Source-only audit of the locked rung-3 design: H3 remains a valid

@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-support-inferred-context-code-improves-new-environment-adaptation was not established
+
+The complete matched-data rung passed its integrity gates but failed the
+predeclared rule: `xenv − scratch` **−2.300 [−9.921, +5.320]** (student-t
+95%, df 9) on new unused MountainCarContinuous physics, both per-budget
+intervals including 0, prediction MAE intervals including 0. Label
+`xenv_context_code_not_established`. This closes only the occupancy-only
+`(obs, action)` FiLM configuration. It does not test residual-aware
+support encoding. No retune, no rerun. Report
+`NEXUS_XENV_CONTEXT_CODE_RESULTS.md`.
+
 ## Latest — H3 source audit: occupancy-conditioned FiLM, not residual inference
 
 The locked H3 encoder never sees `next_obs` or `s'−s`. A later complete
