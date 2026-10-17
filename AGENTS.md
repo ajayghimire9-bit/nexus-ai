@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`). The most recent analysis is the source-only mechanism audit in `docs/NEXUS_H14_H15_CANDIDATE_REUSE_MECHANISM_AUDIT.md`: t=0 actions match, the DiD accrues after step 4, multitask occupancy diverges more than scratch, and no causal mechanism is identified. Do not retune closed holdouts. Do not treat that audit as a new primary or as H16. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`). The most recent analysis is the source-only mechanism audit in `docs/NEXUS_H14_H15_CANDIDATE_REUSE_MECHANISM_AUDIT.md`. A same-state library contrast is designed, not locked, in `docs/NEXUS_H16_SAME_STATE_LIBRARY_FEASIBILITY.md`. Do not retune closed holdouts. Do not authorize H16 from the feasibility draft. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

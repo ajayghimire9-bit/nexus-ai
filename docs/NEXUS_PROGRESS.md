@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — H16 same-state library feasibility
+
+Source-only design on `cursor/h16-same-state-library-feasibility`
+from `c157eb6`. The same-state ranking question is well-posed; an
+H16 protocol is **not** ready to lock. 84,000 / 81,920 prospective
+counts; mocks only; zero new steps. Session ledger unchanged:
+3296.223 s remain. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_FEASIBILITY.md`.
+No learning-to-learn or AGI.
+
 ## Latest — H14/H15 candidate-reuse mechanism audit
 
 Source-only reconstruction on

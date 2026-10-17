@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-same-state-library-ranking is designed, not tested
+
+Proposed H16: at model-independent later states t=8 and t=12, compare
+selected returns of L0 versus redraw for both arms. Primary D_same
+cancels oracle library value. Collection unauthorized. No physics
+chosen. This is not a result. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_FEASIBILITY.md`.
+
 ## Latest — H-reuse-mechanism is descriptively constrained, not identified
 
 Source-only H14/H15 audit. A (stability) is a treatment behavior in

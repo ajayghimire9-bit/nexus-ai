@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H16 same-state library feasibility, 2026-10-17
+
+Source-only design on `cursor/h16-same-state-library-feasibility`
+from audit `c157eb6`. Proposed common-later-state L0-versus-redraw
+ranking contrast. Prospective budget 84,000 real / 81,920 imagined,
+below the 100,000-step ceiling. Restoration is reset-plus-prefix,
+conditionally feasible, not empirically verified. No physics chosen.
+No protocol lock. Ledger unchanged (3296.223 s remain). Not a
+result. Not learning-to-learn, not AGI. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_FEASIBILITY.md`. Earlier entries
+remain history.
+
 ## Latest — H14/H15 candidate-reuse mechanism audit, 2026-10-17
 
 Source-only audit on `cursor/h14-h15-candidate-reuse-mechanism-audit`

@@ -1,6 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — mechanism unresolved; do not lock H16
+## Current decision — H16 same-state contrast is designed, not locked
+
+The mechanistic question is specified: at a common later state, does
+reused L0 change multitask-versus-scratch selected return relative to
+redraw? Feasibility finds a fitting 84,000-step budget and mock
+contracts, but no holdout rule, seed allocation, or real MCC
+restoration check exists. Do **not** lock or authorize H16 from this
+document. H14/H15 stay closed. Nothing is pre-authorized. Session
+ledger: 3296.223 s remain. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_FEASIBILITY.md`.
+
+## Previous — mechanism unresolved; do not lock H16
 
 H14 and H15 stay closed. Source-only traces show a late-episode DiD,
 identical t=0 actions, stronger multitask occupancy divergence, and

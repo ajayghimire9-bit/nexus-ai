@@ -1,0 +1,190 @@
+{
+  "complete": true,
+  "authorized": false,
+  "locked": false,
+  "trained": false,
+  "new_environment_steps": 0,
+  "new_imagined_transitions": 0,
+  "holdout_physics_selected": false,
+  "parent_audit": "c157eb65910b5bb45bd20b40148fb8020e7a5d69",
+  "parent_h15_results": "644a9f05781d543f03d41fc6e553b0da25be0ad4",
+  "question": "At the same later simulator state, does reused L0 change the relative selected-return quality of multitask versus scratch compared with a freshly drawn library?",
+  "question_class": "mechanistic",
+  "later_times_motivated_by_prior_results": true,
+  "later_times": [
+    8,
+    12
+  ],
+  "restore_method": "reset_plus_action_prefix",
+  "prefix_policy": "seeded_independent_integers",
+  "proposed_primary": "same_state_fixed_minus_redraw_relative_multitask_advantage",
+  "labels": [
+    "h16_l0_helps_multitask_relative_same_state",
+    "h16_redraw_helps_multitask_relative_same_state",
+    "h16_same_state_library_effect_not_established",
+    "incomplete"
+  ],
+  "budget": {
+    "source_collection": 15360,
+    "target_pool": 1600,
+    "reference_prefix": 480,
+    "prefix_replay": 25600,
+    "shared_candidate_realizations": 40960,
+    "env_total": 84000,
+    "imagined_total": 81920,
+    "standing_env_ceiling": 100000,
+    "margin_to_ceiling": 16000,
+    "time_cap_s": 300,
+    "later_times": [
+      8,
+      12
+    ],
+    "restore_method": "reset_plus_action_prefix",
+    "prefix_policy": "seeded_independent_integers",
+    "n_later_states": 80,
+    "notes": "Counts every intended simulator action: training collection, one reference prefix to t=12 per reset group, reset-plus-prefix replay before every candidate, and 16-step shared realizations. Resets are not steps. Training forwards are not imagined. make_planner uncertainty_penalty=0 adds no ensemble inferences. Direct .state mutation is not counted because it is not registered."
+  },
+  "redraw_aliasing": {
+    "intended": 80,
+    "unique": 80,
+    "colliding_groups": 0
+  },
+  "closed_mcc_physics": [
+    [
+      0.0016,
+      0.0011,
+      0.08
+    ],
+    [
+      0.0016,
+      0.0012,
+      0.09
+    ],
+    [
+      0.0019,
+      0.0013,
+      0.065
+    ],
+    [
+      0.0021,
+      0.0018,
+      0.055
+    ],
+    [
+      0.0022,
+      0.0016,
+      0.07
+    ],
+    [
+      0.0022,
+      0.0019,
+      0.08
+    ],
+    [
+      0.0023,
+      0.0019,
+      0.065
+    ],
+    [
+      0.0024,
+      0.0019,
+      0.09
+    ],
+    [
+      0.0025,
+      0.0015,
+      0.07
+    ],
+    [
+      0.0025,
+      0.0015,
+      0.09
+    ],
+    [
+      0.0027,
+      0.0009,
+      0.05
+    ],
+    [
+      0.0027,
+      0.0015,
+      0.075
+    ],
+    [
+      0.0028,
+      0.0013,
+      0.065
+    ],
+    [
+      0.0029,
+      0.0015,
+      0.08
+    ],
+    [
+      0.0029,
+      0.0022,
+      0.055
+    ],
+    [
+      0.0032,
+      0.0022,
+      0.06
+    ],
+    [
+      0.0033,
+      0.0014,
+      0.05
+    ],
+    [
+      0.0034,
+      0.001,
+      0.055
+    ],
+    [
+      0.0038,
+      0.0019,
+      0.05
+    ],
+    [
+      0.0038,
+      0.0019,
+      0.085
+    ],
+    [
+      0.0039,
+      0.002,
+      0.075
+    ],
+    [
+      0.004,
+      0.0021,
+      0.05
+    ]
+  ],
+  "restoration": {
+    "proposed_method": "reset_plus_action_prefix",
+    "direct_state_mutation": "rejected_unless_separately_validated",
+    "source_supports_determinism": "H14/H15 already require reset(seed) observation and raw-state identity at t=0. MCC dense-height wrapper forces goal terminated=False. TimeLimit is 200; prefix 12 plus horizon 16 cannot truncate. Inner MCC physics is a deterministic map of (position, velocity, action).",
+    "empirical_status": "not_verified_this_task_no_simulator",
+    "blocking_for_execution": "A future runner must fail closed if reset-plus-prefix misses the recorded later observation or raw state. This feasibility task cannot guarantee gymnasium float identity without a real env.",
+    "time_limit_note": "Mutating .state without reset would desynchronize TimeLimit elapsed_steps. For 16-step candidates that mismatch cannot truncate, but it remains unregistered and is rejected.",
+    "lock_readiness": "conditional"
+  },
+  "identifiability": {
+    "library_opportunity": "O(x,L); secondary only",
+    "model_ranking_error": "Regret_a(x,L) and D_same; proposed primary",
+    "closed_loop_occupancy": "controlled by shared model-independent prefixes; not measured as a controller occupancy",
+    "h14_h15_causal_attribution": "not identified",
+    "positive_d_means": "At sampled common later states, multitask-minus-scratch selected return is larger under L0 than under redraw.",
+    "positive_d_does_not_mean": "H14/H15 trajectory cause, compounding error, general control, cross-family transfer, learning-to-learn, or AGI."
+  },
+  "protocol_ready_to_lock": false,
+  "claims_learning_to_learn": false,
+  "is_agi": false,
+  "session_ledger": {
+    "used_s": 303.777,
+    "remaining_s": 3296.223,
+    "unchanged": true
+  },
+  "note": "Feasibility only. Nested reset states and later times are not extra model-training replications. No H16 execution."
+}
