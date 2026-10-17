@@ -88,7 +88,13 @@ def test_frozen_hashes_physics_and_77m_streams():
     from nexus.world.planning_value import sha
     assert sha(lock.CONFIG) == 'bc263e69e3a57ae3bcb4c27616f0c4736deaf123dab6c0c3cb49311b3804c193'
     assert sha(lock.PROTOCOL) == '4e5f7a5d0f55c6f183d1c78046597a99f5dfd8f788546a1d91c8270dad0116af'
-    assert sha(lock.ALLOCATION) == '210f3a631a3081152f63e7a6b4d53bf98a2b8e157be52e515a7c7b5a53e39362'
+    rec = lock.load_allocation()
+    if rec.get('authorized') is False:
+        assert sha(lock.ALLOCATION) == '210f3a631a3081152f63e7a6b4d53bf98a2b8e157be52e515a7c7b5a53e39362'
+        assert rec['runs'] == 0
+    else:
+        assert rec['authorized'] is True and rec['runs'] == 1
+        assert rec.get('one_run_usage_record')
     assert lock.holdout_from_rule() == [(0.004, 0.0021, 0.05)]
     assert lock.HOLD_RULE == 'mcc_candidate_reuse_confirm_v1'
     cfg = lock.load_config()
@@ -100,9 +106,6 @@ def test_frozen_hashes_physics_and_77m_streams():
         for state in range(4):
             local = [cfg['redraw_base'] + 1000 * seed + 10 * state + step for step in range(1, 16)]
             assert len(set(local)) == 15
-    rec = lock.load_allocation()
-    assert rec['authorized'] is False
-    assert rec['runs'] == 0
     _parent, h14_used = h14.seed_streams(h14.load_config())
     assert used & h14_used == set()
 
@@ -331,6 +334,8 @@ def test_incomplete_and_overwrite_never_succeed(tmp_path):
 
 
 def test_unauthorized_execute_fails_before_construction():
+    if lock.load_allocation().get('authorized') is True:
+        pytest.skip('one-run allocation already flipped')
     runner.EVENTS.clear()
     with pytest.raises(PermissionError, match='fresh human approval'):
         runner.execute()

@@ -239,8 +239,18 @@ def load_allocation():
         raise ValueError('allocation config hash does not match yaml')
     if record.get('protocol_sha256') != LOCKED_PROTOCOL or record.get('protocol_sha256') != sha(PROTOCOL):
         raise ValueError('allocation protocol hash does not match protocol')
-    if record.get('authorized') is not False or int(record.get('runs', 1)) != 0:
-        raise ValueError('H15 allocation must remain unauthorized')
+    authorized = record.get('authorized')
+    runs = int(record.get('runs', -1))
+    if authorized is False:
+        if runs != 0:
+            raise ValueError('unauthorized H15 allocation must have runs=0')
+    elif authorized is True:
+        if runs != 1:
+            raise ValueError('authorized H15 allocation must be exactly one run')
+        if not record.get('one_run_usage_record'):
+            raise ValueError('authorized H15 allocation missing usage record')
+    else:
+        raise ValueError('H15 allocation authorized flag invalid')
     return record
 
 
@@ -248,6 +258,13 @@ def require_allocation(cfg):
     record = load_allocation()
     if record.get('authorized') is not True or int(record.get('runs', 0)) != 1:
         raise PermissionError('fresh human approval required before H15 collection')
+    if record.get('consumed') is True or record.get('closed') is True:
+        raise PermissionError('H15 one-run allowance already consumed')
+    usage = json.loads(Path(record['one_run_usage_record']).read_text())
+    if usage.get('consumed') is True:
+        raise PermissionError('H15 one-run allowance already consumed')
+    if float(usage['remaining_session_allowance_s']) < cfg['time_cap_s']:
+        raise PermissionError('session allowance exhausted')
 
 
 def prep():

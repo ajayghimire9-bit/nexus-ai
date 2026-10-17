@@ -1,6 +1,7 @@
 """Source-only H15 same-design confirmation lock tests. No MountainCar env."""
 from __future__ import annotations
 import hashlib
+import json
 from pathlib import Path
 import numpy as np
 import pytest
@@ -93,7 +94,25 @@ def test_h15_labels_match_h14_decision_and_never_pool_h14():
     assert 'h14' not in out['label']
 
 
+def test_authorized_one_run_record_is_loadable_and_not_consumed():
+    rec = m.load_allocation()
+    if rec.get('authorized') is not True:
+        pytest.skip('one-run allocation not yet flipped')
+    cfg = m.load_config()
+    assert rec['runs'] == 1
+    assert rec['consumed'] is False
+    assert rec['closed'] is False
+    assert rec['config_sha256'] == m.LOCKED_CONFIG
+    assert rec['protocol_sha256'] == m.LOCKED_PROTOCOL
+    m.require_allocation(cfg)
+    usage = json.loads(Path(rec['one_run_usage_record']).read_text())
+    assert usage['consumed'] is False
+    assert float(usage['remaining_session_allowance_s']) >= cfg['time_cap_s']
+
+
 def test_locked_prep_refuses_execution_and_does_not_reuse_h14_allocation():
+    if m.load_allocation().get('authorized') is True:
+        pytest.skip('one-run allocation already flipped')
     cfg = m.load_config()
     assert tuple(cfg['target_physics'][0]) == m.LOCKED_TARGET
     report = m.prep()

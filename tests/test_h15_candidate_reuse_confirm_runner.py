@@ -109,16 +109,19 @@ def test_runner_binds_h15_lock_not_h14_yaml():
     assert Path(h14.CONFIG).name == 'mcc_candidate_reuse.yaml'
     assert sha(lock.CONFIG) == lock.LOCKED_CONFIG
     assert sha(lock.PROTOCOL) == lock.LOCKED_PROTOCOL
-    assert sha(lock.ALLOCATION) == '210f3a631a3081152f63e7a6b4d53bf98a2b8e157be52e515a7c7b5a53e39362'
+    rec = lock.load_allocation()
+    if rec.get('authorized') is False:
+        assert sha(lock.ALLOCATION) == '210f3a631a3081152f63e7a6b4d53bf98a2b8e157be52e515a7c7b5a53e39362'
+        assert rec['runs'] == 0
+    else:
+        assert rec['authorized'] is True and rec['runs'] == 1
+        assert rec.get('one_run_usage_record')
     assert lock.holdout_from_rule() == [lock.LOCKED_TARGET] == [(0.004, 0.0021, 0.05)]
     assert lock.LOCKED_TARGET != h14.LOCKED_TARGET
     assert runner.OUTPUT != h14_runner.OUTPUT
     loaded = cfg()
     assert loaded['reset_base'] == 77_000_000
     assert loaded['holdout_rule'] == 'mcc_candidate_reuse_confirm_v1'
-    rec = lock.load_allocation()
-    assert rec['authorized'] is False
-    assert rec['runs'] == 0
 
 
 def test_four_conditions_share_l0_on_h15_bases():
@@ -267,6 +270,8 @@ def test_partial_artifact_and_overwrite_refuse(tmp_path):
 
 
 def test_unauthorized_execute_never_trains_or_builds_env():
+    if lock.load_allocation().get('authorized') is True:
+        pytest.skip('one-run allocation already flipped')
     runner.EVENTS.clear()
     with pytest.raises(PermissionError, match='fresh human approval'):
         runner.execute()
