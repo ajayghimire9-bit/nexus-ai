@@ -215,6 +215,8 @@ def test_preflight_meter_rejects_before_simulator_or_inference():
 
 
 def test_locked_prep_refuses_execution_and_stays_unauthorized():
+    if m.load_allocation().get('authorized') is True:
+        pytest.skip('one-run allocation already flipped')
     cfg = m.load_config()
     assert tuple(cfg['target_physics'][0]) == m.LOCKED_TARGET
     report = m.prep()

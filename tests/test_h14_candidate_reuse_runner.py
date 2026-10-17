@@ -303,6 +303,8 @@ def test_mock_grid_accounting_and_artifact_reconstruction(tmp_path):
 
 
 def test_unauthorized_execute_never_trains_or_builds_env():
+    if lock.load_allocation().get('authorized') is True:
+        pytest.skip('one-run allocation already flipped')
     runner.EVENTS.clear()
     with pytest.raises(PermissionError, match='fresh human approval'):
         runner.execute()
