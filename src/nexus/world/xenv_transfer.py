@@ -354,26 +354,37 @@ def shared_candidates(seed):
 
 
 def h16_rollout(env, model, cfg, s, slot, meter):
-    """Frozen H=16 x 16 receding control on the target physics; 256 imagined/step."""
-    planner = make_planner(meter.instrument(model))
-    obs = np.asarray(env.reset(seed=cfg['reset_base'] + 100 * s + slot)[0], dtype=np.float32)
-    actions = []; rewards = []; seeds = []; terminated = truncated = False
-    for k in range(int(cfg['episode_steps'])):
-        if terminated or truncated:
-            break
-        seed = cfg['step_seed_base'] + 1000 * s + 100 * slot + k
-        seq = shared_candidates(seed)
-        scores = planner._score_batch(obs, seq)
-        idx = int(np.argmax(scores))
-        action = int(seq[idx, 0])
-        nxt, r, terminated, truncated, _ = env.step(action)
-        meter.env_step()
-        actions.append(action); rewards.append(float(r)); seeds.append(int(seed))
-        obs = np.asarray(nxt, dtype=np.float32)
-        meter.check()
-    return dict(actions=actions, rewards=rewards, seeds=seeds, n_steps=len(actions),
-                terminated=bool(terminated), truncated=bool(truncated),
-                episode_return=float(math.fsum(rewards)))
+    """Frozen H=16 x 16 receding control on the target physics; 256 imagined/step.
+
+    The imagined-transition instrumentation is rollout-scoped: the wrapper is
+    removed afterwards so evaluation-only model calls (prediction MAE) are not
+    counted as planning transitions.
+    """
+    original = model.step
+    meter.instrument(model)
+    try:
+        planner = make_planner(model)
+        obs = np.asarray(env.reset(seed=cfg['reset_base'] + 100 * s + slot)[0], dtype=np.float32)
+        actions = []; rewards = []; seeds = []; terminated = truncated = False
+        for k in range(int(cfg['episode_steps'])):
+            if terminated or truncated:
+                break
+            seed = cfg['step_seed_base'] + 1000 * s + 100 * slot + k
+            seq = shared_candidates(seed)
+            scores = planner._score_batch(obs, seq)
+            idx = int(np.argmax(scores))
+            action = int(seq[idx, 0])
+            nxt, r, terminated, truncated, _ = env.step(action)
+            meter.env_step()
+            actions.append(action); rewards.append(float(r)); seeds.append(int(seed))
+            obs = np.asarray(nxt, dtype=np.float32)
+            meter.check()
+        return dict(actions=actions, rewards=rewards, seeds=seeds, n_steps=len(actions),
+                    terminated=bool(terminated), truncated=bool(truncated),
+                    episode_return=float(math.fsum(rewards)))
+    finally:
+        model.step = original
+
 
 def classify_primary(mean, lo, hi, n, complete=True):
     if not complete or int(n) != N_SEEDS:

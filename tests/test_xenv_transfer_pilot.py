@@ -88,6 +88,40 @@ def test_finetune_target_updates_target_and_shared_and_reduces_loss():
     assert m.prediction_mae(model, vl) >= 0.0
 
 
+def test_rollout_instrumentation_is_rollout_scoped():
+    cfg = m.load_config()
+
+    class _Env:
+        def __init__(self):
+            self.n = 0
+
+        def reset(self, seed=None):
+            return np.zeros(2, np.float32), {}
+
+        def step(self, action):
+            self.n += 1
+            return np.zeros(2, np.float32), 0.1, False, self.n >= 200, {}
+
+        def close(self):
+            pass
+
+    class _ToyModel:
+        def step(self, obs, action):
+            o = np.asarray(obs, np.float32).reshape(-1, 2)
+            a = np.asarray(action).reshape(-1)
+            nxt = o + 0.01 * (a.astype(np.float32).reshape(-1, 1) - 1)
+            return nxt, np.full(len(o), 0.01)
+
+    meter = m.Meter(dict(time_cap_s=600, env_cap=10 ** 9, model_cap=10 ** 9))
+    model = _ToyModel()
+    trace = m.h16_rollout(_Env(), model, cfg, 0, 0, meter)
+    assert trace['n_steps'] == 200 and len(trace['seeds']) == 200
+    assert meter.model_states == 200 * 256
+    before = meter.model_states
+    m.prediction_mae(model, _toy(8, 2, 3))
+    assert meter.model_states == before  # instrumentation removed after the rollout
+
+
 def test_allocation_binds_the_authorized_one_run_record():
     cfg = m.load_config()
     record = m.load_allocation()
