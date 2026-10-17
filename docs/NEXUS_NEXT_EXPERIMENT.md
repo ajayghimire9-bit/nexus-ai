@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — lock H12 ranking confirmation; collection unauthorized
+## Current decision — one authorized 300-second 28,480-step H13 ranking confirmation
+
+H13 is locked on unused MCC `mcc_planning_ranking_confirm_v1`
+**(0.0039, 0.002, 0.075)**. Frozen H12/H10 recipe versus scratch on
+four reset states; sequence-regret primary. Caps
+**300 s / 28,480 / 348,160**. One-run remaining 1 after lock
+`6585c3f`. Do not retune H12, H10, or H11. Session ledger: 3307.802 s
+remain. Protocol `NEXUS_MCC_PLANNING_RANKING_CONFIRM_PROTOCOL.md`.
+
+## Previous — lock H12 ranking confirmation; collection unauthorized
 
 H13 is locked on unused MCC `mcc_planning_ranking_confirm_v1`
 **(0.0039, 0.002, 0.075)**. Frozen H12/H10 recipe, four reset states,
