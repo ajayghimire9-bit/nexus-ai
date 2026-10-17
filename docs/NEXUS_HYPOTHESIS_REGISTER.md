@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-same-state-library-ranking runner is audit-ready, not collected
+
+Independent source-only audit of the H16 runner. Locked design
+unchanged. Verdict READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION.
+Collection unauthorized (`authorized: false`, `runs: 0`). This is
+not a control result. Report
+`NEXUS_H16_INDEPENDENT_READINESS_AUDIT.md`.
+
 ## Latest — H-same-state-library-ranking has a runner, not a result
 
 H16 execution logic is implemented against unused MCC

@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H16 is ready for a separate one-run authorization
+## Current decision — H16 passed independent audit; do not authorize here
+
+Independent readiness audit verdict
+**READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. Locked hashes match.
+`authorized: false`, `runs: 0`. Real MCC restoration remains an
+unverified fail-closed gate. A later one-run allocation is still
+required and is not created by this audit. Do not collect. Do not
+retune H14–H16 science. Session ledger unchanged (3296.223 s remain).
+Report `NEXUS_H16_INDEPENDENT_READINESS_AUDIT.md`.
+
+## Previous — H16 is ready for a separate one-run authorization
 
 The guarded H16 runner is implemented. Locked hashes match.
 `authorized: false`, `runs: 0`. A later independent readiness audit

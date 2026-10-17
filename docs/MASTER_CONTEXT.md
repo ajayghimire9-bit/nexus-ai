@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H16 independent readiness audit, collection unauthorized, 2026-10-17
+
+On `cursor/h16-same-state-independent-readiness-audit` from runner
+`1f5a757`. Source-only adversarial review. Locked hashes match.
+No science files changed. Verdict
+**READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. Real Gymnasium
+restoration is still an unverified fail-closed gate.
+`authorized: false`, `runs: 0`. No collection. Not a result. Report
+`NEXUS_H16_INDEPENDENT_READINESS_AUDIT.md`. Earlier entries remain
+history.
+
 ## Latest — H16 same-state library runner implemented, still unauthorized, 2026-10-17
 
 On `cursor/h16-same-state-library-runner` from locked prep

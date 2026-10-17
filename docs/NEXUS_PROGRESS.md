@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — H16 independent readiness audit, collection unauthorized
+
+Source-only audit on
+`cursor/h16-same-state-independent-readiness-audit` from runner
+`1f5a757`. Locked hashes unchanged. Verdict
+**READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. `authorized: false`,
+`runs: 0`. No training. Report
+`NEXUS_H16_INDEPENDENT_READINESS_AUDIT.md`. No learning-to-learn
+or AGI.
+
 ## Latest — H16 same-state library runner implemented, collection unauthorized
 
 The H16 execution runner is implemented on
