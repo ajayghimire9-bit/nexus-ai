@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the H10/H11 source-only prediction-versus-control audit in `docs/NEXUS_H10_H11_CONTROL_DISAGREEMENT_AUDIT.md`. Closed primaries recompute exactly. Return gaps sit in steps 16–199. H11 seeds 4 and 5 lose control with still-better val MAE. That is not a harm label and not a replicated transfer fact. H11 remains `mcc_multitask_128_confirm_not_established`; H10 remains a single-holdout `mcc_multitask_128_beats_scratch` screen. The H12 same-state ranking runner is implemented on `cursor/mcc-planning-ranking-runner` and remains unauthorized (`authorized: false`, `runs: 0`); that is not a ranking result. Do not retune these holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the H12 same-state ranking diagnostic in `docs/NEXUS_MCC_PLANNING_RANKING_RESULTS.md`. Primary `scratch − multitask` sequence regret **+0.144 [+0.095, +0.193]**; label `mcc_planning_ranking_multitask_better`. That is ranking on four reset states, not 200-step control. H11 remains `mcc_multitask_128_confirm_not_established`; H10 remains a single-holdout `mcc_multitask_128_beats_scratch` screen. Do not retune these holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h10-recipe-ranks-shared-h16-candidates-better-than-scratch was supported in this configuration
+
+Complete ranking primary on unused MCC physics:
+`scratch − multitask` sequence regret **+0.144 [+0.095, +0.193]**.
+Label `mcc_planning_ranking_multitask_better`. Closes only this
+four-state same-state ranking configuration. No retune. Not a 200-step
+control claim. Report `NEXUS_MCC_PLANNING_RANKING_RESULTS.md`.
+
 ## Latest — H-h10-recipe-ranks-shared-h16-candidates-better-than-scratch has a runner, not a result
 
 H12 execution logic is implemented. The locked design is unchanged.

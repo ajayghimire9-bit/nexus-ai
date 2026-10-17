@@ -1,6 +1,22 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — one authorized 300-second 28,480-step H12 ranking run
+## Current decision — H12 ranking established on this holdout; leave it closed
+
+H12 is **complete**: `scratch − multitask` sequence regret
+**+0.144 [+0.095, +0.193]** on `mcc_planning_ranking_v1`
+(0.0027, 0.0015, 0.075). Label `mcc_planning_ranking_multitask_better`.
+Do not retune this holdout, H10, or H11. This is ranking, not 200-step
+return. The smallest untested follow-up is a same-design ranking
+confirmation on new unused MCC physics. That run is **not** authorized.
+Session ledger: 3307.802 s remain. Report
+`NEXUS_MCC_PLANNING_RANKING_RESULTS.md`.
+
+## Consumed — H12 same-state ranking, one-run remaining 0
+
+Primary completed: **+0.144 [+0.095, +0.193]**. Further collection
+on this configuration is **not** authorized.
+
+## Previous — one authorized 300-second 28,480-step H12 ranking run
 
 H12 is locked on unused MCC `mcc_planning_ranking_v1`
 **(0.0027, 0.0015, 0.075)**. Frozen H10 recipe versus scratch on four

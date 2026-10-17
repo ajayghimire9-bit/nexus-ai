@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — MCC same-state planning-ranking multitask better
+
+The authorized one-run ranking diagnostic completed: frozen H10 recipe
+versus scratch on unused (0.0027, 0.0015, 0.075) gave
+`scratch − multitask` sequence regret **+0.144 [+0.095, +0.193]**.
+Label `mcc_planning_ranking_multitask_better`. 2.913 s / 28,480 /
+348,160; audit passed; session ledger 3307.802 s remain. Closed-loop
+recede includes 0 and is not primary. This configuration only. Report
+`NEXUS_MCC_PLANNING_RANKING_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — MCC same-state planning-ranking runner implemented, collection unauthorized
 
 The H12 runner is implemented on `cursor/mcc-planning-ranking-runner`
