@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the H12/H13 ranking-versus-recede source-only audit in `docs/NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`. Closed ranking primaries recompute exactly. Reset-state ranking favors the H10 recipe on both holdouts. H13 redraw recede favors scratch because scratch’s recede-over-commitment bonus outweighs the ranking gap. Later-state mechanisms are untestable from saved traces. Recede is not a registered primary. H13 remains `mcc_planning_ranking_confirm_multitask_better`; H12 remains `mcc_planning_ranking_multitask_better`. H11 remains `mcc_multitask_128_confirm_not_established`; H10 remains a single-holdout `mcc_multitask_128_beats_scratch` screen. Do not retune these holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the H12/H13 ranking-versus-recede source-only audit in `docs/NEXUS_H12_H13_CONTROL_DISAGREEMENT_AUDIT.md`. H14 candidate-reuse feasibility on `cursor/h14-candidate-reuse-feasibility` is design-only and not locked; H12/H13 recede used arm-specific candidate seeds, so secondary recede comparisons are confounded while ranking primaries stand. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

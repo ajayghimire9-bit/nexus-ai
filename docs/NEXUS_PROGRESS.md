@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — H14 candidate-reuse feasibility, not locked
+
+Source-only design on `cursor/h14-candidate-reuse-feasibility` from
+`da8941b` found that H12/H13 recede used arm-specific candidate
+seeds. Ranking primaries stand. A fixed-library versus redraw recede
+grid with shared proposals is feasible at 29,760 env / 655,360
+imagined. No collection. Report
+`NEXUS_H14_CANDIDATE_REUSE_FEASIBILITY.md`. No learning-to-learn or
+AGI.
+
 ## Latest — H12/H13 ranking-versus-recede source audit
 
 Source-only audit on `cursor/h12-h13-recede-disagreement-audit` from

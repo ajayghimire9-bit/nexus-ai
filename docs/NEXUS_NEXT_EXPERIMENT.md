@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — source audit closed; next is frozen-candidate recede, unauthorized
+## Current decision — H14 candidate-reuse design is feasible, not locked
+
+Source-only feasibility is complete. H12/H13 recede comparisons were
+arm-confounded. The smallest identifiable next question is whether
+shared-proposal redraw changes the multitask-versus-scratch recede
+gap. Draft caps **300 s / 29,760 / 655,360**. No allocation. Do not
+lock or collect from this document. Do not retune H10–H13. Session
+ledger unchanged. Report `NEXUS_H14_CANDIDATE_REUSE_FEASIBILITY.md`.
+
+## Previous — source audit closed; next is frozen-candidate recede, unauthorized
 
 H12/H13 artifact audit is complete. Reset-state ranking replicated;
 H13 redraw recede favored scratch and is not a primary. The smallest

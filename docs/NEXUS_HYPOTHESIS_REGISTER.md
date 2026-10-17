@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-shared-proposal-resampling-changes-relative-recede is designed, not locked
+
+H14 draft: fixed-library recede versus redraw recede, both arms seeing
+the same candidate matrices, DiD primary. Collection unauthorized.
+This is not a result. Report
+`NEXUS_H14_CANDIDATE_REUSE_FEASIBILITY.md`.
+
 ## Latest — H-reset-ranking-is-insufficient-for-MCC-H16-recede is supported on saved artifacts
 
 Source-only: H12 and H13 ranking primaries recompute exactly. At

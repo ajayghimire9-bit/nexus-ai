@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H14 candidate-reuse feasibility, not locked, 2026-10-17
+
+On `cursor/h14-candidate-reuse-feasibility` from `da8941b`.
+Source-only design audit. H12/H13 recede used arm-specific candidate
+seeds; registered ranking primaries are unaffected. Proposed H14 is
+fixed-library versus redraw recede with shared proposals and a
+difference-in-differences primary. Caps **300 s / 29,760 / 655,360**
+if later locked. `authorized: false`. No collection. Not a result.
+Not learning-to-learn, not AGI. Report
+`NEXUS_H14_CANDIDATE_REUSE_FEASIBILITY.md`. Earlier entries remain
+history.
+
 ## Latest — H12/H13 ranking-versus-recede source audit, 2026-10-17
 
 On `cursor/h12-h13-recede-disagreement-audit` from `6eb8265`.
