@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — source residual-scale hurt; leave interface transplants closed
+## Current decision — lock within-family MCC multitask at 128; collection unauthorized
+
+H10 is locked on unused MCC `mcc_multitask_128_v1` **(0.0032, 0.0022, 0.06)**.
+Treatment is pretrained residual weights from three other MCC physics
+versus scratch. Both arms use target RMS. Caps **600 s / 20,960 /
+1,024,000**. `authorized: false`. Do not retune residual-scale, source-RMS,
+or any xenv holdout. Session ledger: 3321.755 s remain. Protocol
+`NEXUS_MCC_MULTITASK_128_PROTOCOL.md`.
+
+## Previous — source residual-scale hurt; leave interface transplants closed
 
 H9 is **complete**: `source_scale − unit_scale`
 **−54.381 [−105.776, −2.987]** on `mcc_residual_scale_v1`

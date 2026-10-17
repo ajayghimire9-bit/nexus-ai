@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC multitask at 128 locked unauthorized, 2026-10-17
+
+On `cursor/mcc-multitask-128` from `954beb1`. Tests the cited
+within-family lever: pretrained residual weights from three other MCC
+physics versus scratch on unused holdout `mcc_multitask_128_v1`
+**(0.0032, 0.0022, 0.06)** at 128 target transitions. Both arms use
+target RMS. Caps **600 s / 20,960 / 1,024,000**. `authorized: false`.
+No collection. Not a source-RMS or residual-scale retune. Not
+learning-to-learn, not AGI. Report `NEXUS_MCC_MULTITASK_128_PROTOCOL.md`.
+Earlier entries remain history.
+
 ## Latest — within-family MCC residual-scale harm established, 2026-10-17
 
 On `cursor/mcc-residual-scale`: unused MCC (0.0021, 0.0018, 0.055),

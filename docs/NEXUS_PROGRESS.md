@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — within-family MCC multitask at 128 locked, collection unauthorized
+
+H10 is locked on `cursor/mcc-multitask-128` from `954beb1`: unused MCC
+**(0.0032, 0.0022, 0.06)**, three-source multitask pretrain versus
+scratch at 128 transitions, same target RMS. Caps
+**600 s / 20,960 / 1,024,000**. `authorized: false`. No training.
+Report `NEXUS_MCC_MULTITASK_128_PROTOCOL.md`. No learning-to-learn or AGI.
+
 ## Latest — within-family MCC residual-scale harm established
 
 The authorized one-run screen completed: source residual scale versus

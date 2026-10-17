@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-within-family-mcc-multitask-improves-128-transition-adaptation is locked, not collected
+
+H10: a residual world model pretrained on three other MCC physics and
+fine-tuned on 128 unused-MCC transitions beats scratch on the same 128.
+Both arms share target RMS. Primary: `multitask − scratch` mean > 0 and
+CI lower bound > 0. Collection unauthorized. This is not a result.
+Protocol `NEXUS_MCC_MULTITASK_128_PROTOCOL.md`.
+
 ## Latest — H-source-mcc-residual-scale-improves-128-transition-adaptation was harmful in this configuration
 
 Complete 128-only primary on unused MCC physics:
