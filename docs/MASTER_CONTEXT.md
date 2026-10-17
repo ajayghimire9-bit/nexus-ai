@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MCC same-state ranking confirmation multitask better, 2026-10-17
+
+On `cursor/mcc-planning-ranking-confirm`: unused MCC (0.0039, 0.002, 0.075),
+frozen H12/H10 recipe versus scratch on four reset states. Primary
+`scratch − multitask` sequence regret **+0.156 [+0.086, +0.226]** —
+lower bound above 0; 10/10 seeds positive. Label
+`mcc_planning_ranking_confirm_multitask_better`. 2.857 s / 28,480 /
+348,160. Closed-loop recede **−0.253 [−0.431, −0.075]** is secondary
+and not the label. This configuration only. Not a 200-step control
+claim. Not learning-to-learn, not AGI. Report
+`NEXUS_MCC_PLANNING_RANKING_CONFIRM_RESULTS.md`. Earlier entries remain
+history.
+
 ## Latest — MCC same-state ranking confirmation locked unauthorized, 2026-10-17
 
 On `cursor/mcc-planning-ranking-confirm` from `4dbe664`. Same-design

@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — MCC same-state ranking confirmation multitask better
+
+The authorized one-run confirmation completed: frozen H12 recipe versus
+scratch on unused (0.0039, 0.002, 0.075) gave
+`scratch − multitask` sequence regret **+0.156 [+0.086, +0.226]**.
+Label `mcc_planning_ranking_confirm_multitask_better`. 2.857 s /
+28,480 / 348,160; audit passed; session ledger 3304.945 s remain.
+Closed-loop recede favored scratch and is not primary. This
+configuration only. Report
+`NEXUS_MCC_PLANNING_RANKING_CONFIRM_RESULTS.md`. No learning-to-learn
+or AGI.
+
 ## Latest — MCC same-state ranking confirmation locked, collection unauthorized
 
 H13 is locked on `cursor/mcc-planning-ranking-confirm` from `4dbe664`:

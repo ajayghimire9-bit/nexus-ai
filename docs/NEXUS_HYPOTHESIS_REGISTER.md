@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h12-ranking-replicates-on-new-holdout was supported in this configuration
+
+Complete ranking confirmation on unused MCC physics:
+`scratch − multitask` sequence regret **+0.156 [+0.086, +0.226]**.
+Label `mcc_planning_ranking_confirm_multitask_better`. Closes only this
+same-design ranking confirmation. H12 ranking now has two holdouts.
+No retune. Recede favored scratch and is not the primary. Report
+`NEXUS_MCC_PLANNING_RANKING_CONFIRM_RESULTS.md`.
+
 ## Latest — H-h12-ranking-replicates-on-new-holdout is locked, not collected
 
 H13: the frozen H12 ranking recipe on unused MCC (0.0039, 0.002, 0.075)

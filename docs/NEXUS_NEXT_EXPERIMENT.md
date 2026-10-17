@@ -1,6 +1,22 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — one authorized 300-second 28,480-step H13 ranking confirmation
+## Current decision — H13 ranking confirmation established; leave it closed
+
+H13 is **complete**: `scratch − multitask` sequence regret
+**+0.156 [+0.086, +0.226]** on `mcc_planning_ranking_confirm_v1`
+(0.0039, 0.002, 0.075). Label
+`mcc_planning_ranking_confirm_multitask_better`. Do not retune this
+holdout, H12, H10, or H11. Ranking replicated; 16-step recede favored
+scratch and is not a registered primary. Nothing is pre-authorized.
+Session ledger: 3304.945 s remain. Report
+`NEXUS_MCC_PLANNING_RANKING_CONFIRM_RESULTS.md`.
+
+## Consumed — H13 same-design ranking confirmation, one-run remaining 0
+
+Primary completed: **+0.156 [+0.086, +0.226]**. Further collection
+on this configuration is **not** authorized.
+
+## Previous — one authorized 300-second 28,480-step H13 ranking confirmation
 
 H13 is locked on unused MCC `mcc_planning_ranking_confirm_v1`
 **(0.0039, 0.002, 0.075)**. Frozen H12/H10 recipe versus scratch on
