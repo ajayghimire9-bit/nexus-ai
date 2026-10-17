@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H16 same-state library locked, collection unauthorized, 2026-10-17
+
+On `cursor/h16-same-state-library-protocol-lock` from feasibility
+`929c93c`. Unused MCC **(0.0015, 0.0014, 0.055)** via
+`mcc_same_state_library_v1`. Same-state L0-versus-redraw ranking
+primary, reset-plus-prefix contract, 78M seeds, caps **300 s /
+84,000 / 81,920**. `authorized: false`, `runs: 0`. No collection.
+Not a result. A separate guarded runner is still required. Do not
+retune H14/H15. Not learning-to-learn, not AGI. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_PROTOCOL.md`. Earlier entries remain
+history.
+
 ## Latest — H16 same-state library feasibility, 2026-10-17
 
 Source-only design on `cursor/h16-same-state-library-feasibility`

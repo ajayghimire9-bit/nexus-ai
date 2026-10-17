@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — H16 same-state library locked, collection unauthorized
+
+H16 is locked on `cursor/h16-same-state-library-protocol-lock` from
+feasibility `929c93c`: unused MCC **(0.0015, 0.0014, 0.055)**,
+same-state DiD primary, 84,000 / 81,920 / 300 s.
+`authorized: false`, `runs: 0`. No training. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_PROTOCOL.md`. No learning-to-learn or
+AGI.
+
 ## Latest — H16 same-state library feasibility
 
 Source-only design on `cursor/h16-same-state-library-feasibility`

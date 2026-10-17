@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-same-state-library-ranking is locked, not collected
+
+H16: same-state L0-versus-redraw selected-return DiD on unused MCC
+(0.0015, 0.0014, 0.055). Primary: mean D_same and CI entirely above
+or below 0, else not established. Collection unauthorized. This is
+not a result. Protocol `NEXUS_H16_SAME_STATE_LIBRARY_PROTOCOL.md`.
+
 ## Latest — H-same-state-library-ranking is designed, not tested
 
 Proposed H16: at model-independent later states t=8 and t=12, compare

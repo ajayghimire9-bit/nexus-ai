@@ -1,0 +1,74 @@
+starting_sha: 929c93c2813db9f9d9e74639f7682439364aecf1
+n_model_seeds: 10
+source_family: mountaincar_continuous
+target_family: mountaincar_continuous
+holdout_rule: mcc_same_state_library_v1
+holdout_counter: 0
+holdout_index: 16634735916735444846
+target_physics: [[0.0015, 0.0014, 0.055]]
+source_physics:
+  - [0.0025, 0.0015, 0.07]
+  - [0.0038, 0.0019, 0.085]
+  - [0.0024, 0.0019, 0.09]
+target_budget: 128
+n_source_physics: 3
+source_train: 512
+target_train: 128
+target_val: 32
+pretrain_epochs: 15
+train_epochs: 20
+train_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+hidden: [64, 64]
+horizon: 16
+n_candidates: 16
+n_actions: 3
+n_states: 4
+episode_steps: 16
+later_times: [8, 12]
+later_times_motivated_by_prior_results: true
+restore_method: reset_plus_action_prefix
+prefix_policy: seeded_independent_integers
+direct_state_mutation: false
+share_step0_scores: false
+closed_loop_horizon: 16
+include_shared_open_loop: false
+h10_negative_seeds_used: false
+full_episode_primary: false
+closed_loop_is_primary: false
+same_state_is_primary: true
+practical_margin: 0.0
+time_cap_s: 300
+env_cap: 84000
+model_cap: 81920
+reset_base: 78000000
+state_reset_base: 78100000
+prefix_base: 78200000
+library_base: 78300000
+collect_source_base: 78400000
+collect_target_base: 78500000
+redraw_base: 78600000
+model_init_base: 78700000
+redraw_stride: 10000s_plus_100k_plus_t
+cross_family_weights: false
+new_architecture_family: false
+retune_from_closed_splits: false
+claims_learning_to_learn: false
+is_agi: false
+parents:
+  artifacts/h14_candidate_reuse.json: 7e4a74ba0a8f21f735b41cc1fbceb4d5c005f68718159c0a2077caa27934959e
+  artifacts/h15_candidate_reuse_confirm.json: 440671d592c888e16f5c43d90de701c83bcae6887b9e0b83d1eb71b4312c7a15
+  docs/NEXUS_H14_CANDIDATE_REUSE_RESULTS.md: b59b62ca71f4c7e9829f03eb62dd7de0628bcc665ba00b9b2d18983cad301dc5
+  docs/NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RESULTS.md: 8e79cebab6c0b80825a3b1d7308b926c49f44805191cbbf9682344f6c0a8b959
+  docs/NEXUS_H14_CANDIDATE_REUSE_PROTOCOL.md: 1005e12568f3457f32638f9c7a08b0c29c7090785bf1085d097054224a012c1b
+  docs/NEXUS_H15_CANDIDATE_REUSE_CONFIRM_PROTOCOL.md: 4e5f7a5d0f55c6f183d1c78046597a99f5dfd8f788546a1d91c8270dad0116af
+  docs/NEXUS_H14_H15_CANDIDATE_REUSE_MECHANISM_AUDIT.md: 391711c5d08bc18c9a9423da579df4fe52c97a75e696eae431ce9192702e830b
+  docs/NEXUS_H16_SAME_STATE_LIBRARY_FEASIBILITY.md: 3e917c1e03224415d8912d389e0da589eacfe266324f7fdcb26c926c2fe09af7
+  configs/mcc_candidate_reuse.yaml: df155e89b8a4810bdbf04cfc121e93de7c9900235a440057dd66f7128459f81a
+  configs/mcc_candidate_reuse_confirm.yaml: bc263e69e3a57ae3bcb4c27616f0c4736deaf123dab6c0c3cb49311b3804c193
+  src/nexus/world/h14_candidate_reuse.py: dd997185e4672fda6b7b575fbee6b86f06814a9987ff85d67f350344bfb9e15e
+  src/nexus/world/h15_candidate_reuse_confirm.py: 96ace53b0f3473f75ecfd207eb4668af97ee005e4e60821aec3d1a0631da3039
+  src/nexus/world/h16_same_state_library_feasibility.py: 2286394020913172483bd0f059fa07f4ad9c734478e5d4b7fbffa010059c5dae
+  src/nexus/world/mcc_multitask_128.py: 79a26fed3d0b4a852cd8194492ae67977af41965a56effc01d7441b006dfc701
+  src/nexus/world/mcc_planning_ranking.py: 2cc7342ca747f4a667f14171353dad36a89907ac38bb475a94a7a862ef85d817

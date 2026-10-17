@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H16 same-state contrast is designed, not locked
+## Current decision — lock the H16 guarded runner; collection unauthorized
+
+H16 is locked on unused MCC `mcc_same_state_library_v1`
+**(0.0015, 0.0014, 0.055)**. Same-state L0-versus-redraw selected-return
+DiD, reset-plus-prefix restoration, 78M seeds, caps **300 s / 84,000 /
+81,920**. A separate guarded runner is still required. Do not
+authorize collection from this lock. Do not retune H14/H15. Session
+ledger unchanged (3296.223 s remain). Protocol
+`NEXUS_H16_SAME_STATE_LIBRARY_PROTOCOL.md`.
+
+## Previous — H16 same-state contrast is designed, not locked
 
 The mechanistic question is specified: at a common later state, does
 reused L0 change multitask-versus-scratch selected return relative to

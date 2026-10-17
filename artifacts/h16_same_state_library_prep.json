@@ -1,0 +1,96 @@
+{
+  "complete": true,
+  "authorized": false,
+  "runs": 0,
+  "locked": true,
+  "trained": false,
+  "runner_implemented": false,
+  "new_environment_steps": 0,
+  "new_imagined_transitions": 0,
+  "config_sha256": "e71b0053331afa39db5b368510c8524d23e454fb490a2bde57e72ac39f32834c",
+  "protocol_sha256": "f757e8a8e1f08d0b5abeb7cffa84071a79e1c5e93ded89b6817fe25e8f7fcea7",
+  "allocation_sha256": "02d4680d308ad17384ecd148ce48b7e319cffa4710be8304165ebc847d7474fd",
+  "target_physics": [
+    0.0015,
+    0.0014,
+    0.055
+  ],
+  "holdout_rule": "mcc_same_state_library_v1",
+  "holdout_counter": 0,
+  "holdout_index": 16634735916735444846,
+  "source_physics": [
+    [
+      0.0025,
+      0.0015,
+      0.07
+    ],
+    [
+      0.0038,
+      0.0019,
+      0.085
+    ],
+    [
+      0.0024,
+      0.0019,
+      0.09
+    ]
+  ],
+  "later_times": [
+    8,
+    12
+  ],
+  "restore_method": "reset_plus_action_prefix",
+  "restoration": {
+    "method": "reset_plus_action_prefix",
+    "direct_state_mutation": false,
+    "empirical_status": "runner_time_gate_not_verified_at_lock",
+    "reset_observation": "float32_array_equal",
+    "raw_state": "float32_array_equal",
+    "later_observation": "float32_array_equal",
+    "later_raw_state": "float32_array_equal",
+    "prefix_actions": "exact_int",
+    "prefix_rewards": "exact_float_to_reference",
+    "terminated_truncated": "exact_false_through_t12_and_candidates",
+    "elapsed_steps": "exact_int_equals_prefix_length",
+    "published_reward_check": "inherited_h12_reward_atol_1e-5",
+    "time_limit_steps": 200
+  },
+  "proposed_budget": {
+    "source_collection": 15360,
+    "target_pool": 1600,
+    "reference_prefix": 480,
+    "prefix_replay": 25600,
+    "shared_candidate_realizations": 40960,
+    "env_total": 84000,
+    "imagined_total": 81920,
+    "time_cap_s": 300,
+    "env_cap": 84000,
+    "model_cap": 81920
+  },
+  "redraw_unique": 80,
+  "arms": [
+    "multitask",
+    "scratch"
+  ],
+  "libraries": [
+    "l0",
+    "redraw"
+  ],
+  "labels": [
+    "h16_l0_helps_multitask_relative_same_state",
+    "h16_redraw_helps_multitask_relative_same_state",
+    "h16_same_state_library_effect_not_established",
+    "incomplete"
+  ],
+  "claims_learning_to_learn": false,
+  "is_agi": false,
+  "full_episode_primary": false,
+  "closed_loop_is_primary": false,
+  "same_state_is_primary": true,
+  "session_ledger": {
+    "used_s": 303.777,
+    "remaining_s": 3296.223,
+    "unchanged": true
+  },
+  "note": "Same-state library lock. No collection. H14/H15 stay closed."
+}
