@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H12 runner is implementation-ready; collection unauthorized
+## Current decision — one authorized 300-second 28,480-step H12 ranking run
+
+H12 is locked on unused MCC `mcc_planning_ranking_v1`
+**(0.0027, 0.0015, 0.075)**. Frozen H10 recipe versus scratch on four
+reset states; sequence-regret primary. Caps **300 s / 28,480 / 348,160**.
+One-run remaining 1 after implementation `c67c300`. Do not retune
+H10/H11. Session ledger: 3310.715 s remain. Protocol
+`NEXUS_MCC_PLANNING_RANKING_PROTOCOL.md`.
+
+## Previous — H12 runner is implementation-ready; collection unauthorized
 
 The locked H12 design now has an execution runner on
 `cursor/mcc-planning-ranking-runner`. Yaml/protocol hashes are

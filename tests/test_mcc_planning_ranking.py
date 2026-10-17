@@ -111,13 +111,19 @@ def test_budget_counts_shared_ground_truth_and_blocks_collection():
     assert cfg['env_cap'] == 28480 and cfg['model_cap'] == 348160
     assert cfg['time_cap_s'] == 300
     record = m.load_allocation()
-    assert record['authorized'] is False and record['runs'] == 0
     assert record['config_sha256'] == sha(m.CONFIG) == m.LOCKED_CONFIG
-    assert m.prep()['new_environment_steps'] == 0
-    with pytest.raises(PermissionError, match='fresh human approval'):
+    if record.get('authorized') is True:
+        assert record['runs'] == 1
         m.require_allocation(cfg)
-    with pytest.raises(PermissionError):
-        m.execute()
+        with pytest.raises(PermissionError, match='already authorized'):
+            m.prep()
+    else:
+        assert record['runs'] == 0
+        assert m.prep()['new_environment_steps'] == 0
+        with pytest.raises(PermissionError, match='fresh human approval'):
+            m.require_allocation(cfg)
+        with pytest.raises(PermissionError):
+            m.execute()
     assert m.LOCKED_CONFIG == sha(m.CONFIG)
     assert m.LOCKED_PROTOCOL == sha(m.PROTOCOL)
     assert 'actual' not in inspect.signature(m.score_candidates).parameters
