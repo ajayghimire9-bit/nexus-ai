@@ -1,6 +1,23 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Locked — 128-only primary on new unused physics, collection unauthorized until allocation
+## Current decision — 128-only transfer is not established; leave this MCC-target line closed
+
+Rung 6 is **complete**: primary `xenv − scratch` **+18.453 [−20.207, +57.113]**
+at budget 128 on `mcc_xenv_v7` (0.0016, 0.0011, 0.08). Label
+`xenv_low_budget_not_established`. Rung 5's @128 secondary did not
+replicate. Six xenv rungs are closed. Do not add FiLM variants or retune
+`mcc_xenv_v6` / `mcc_xenv_v7`. A 5× scale exceeds the 100k standing cap.
+Leave this MCC-target shared-trunk line closed at this scale. The remaining
+cheap discriminator, if later locked, is a different-family target with its
+own protocol. Nothing is pre-authorized. Session ledger: 3341.882 s remain.
+Report `NEXUS_XENV_LOW_BUDGET_RESULTS.md`.
+
+## Consumed — 128-only transfer versus matched scratch, one-run remaining 0
+
+Primary completed: **+18.453 [−20.207, +57.113]**. Further collection on
+this configuration is **not** authorized.
+
+## Previous — locked 128-only primary on new unused physics
 
 Protocol `docs/NEXUS_XENV_LOW_BUDGET_PROTOCOL.md` on
 `cursor/xenv-low-budget-128` from `2a005e0`. Holdout `mcc_xenv_v7`

@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — 128-only transfer primary not established, 2026-10-17
+
+Rung 6 on `cursor/xenv-low-budget-128`: 2×-prior closed rung-1 `XEnvNet`,
+unused MCC physics (0.0016, 0.0011, 0.08), primary at budget **128 only**.
+Primary `xenv − scratch` **+18.453 [−20.207, +57.113]** — includes 0. Label
+`xenv_low_budget_not_established`. 17.596 s / 63,200 / 3,072,000. Rung 5's
+@128 secondary did not replicate as a primary. Six xenv rungs are closed.
+Not learning-to-learn, not AGI. Report `NEXUS_XENV_LOW_BUDGET_RESULTS.md`.
+Earlier entries remain history.
+
 ## Latest — 2× prior-data scale not established, 2026-10-17
 
 Rung 5 on `cursor/xenv-prior-scale`: closed rung-1 `XEnvNet` with 1024+256

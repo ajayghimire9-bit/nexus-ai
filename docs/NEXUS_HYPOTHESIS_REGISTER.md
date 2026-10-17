@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-128-only-prior-establishes-scarce-target-transfer was not established
+
+Complete 128-only primary on unused MCC physics: `xenv − scratch`
+**+18.453 [−20.207, +57.113]**. Label `xenv_low_budget_not_established`.
+Rung 5's @128 secondary did not replicate as a primary. No retune of
+`mcc_xenv_v6` or `mcc_xenv_v7`. Report `NEXUS_XENV_LOW_BUDGET_RESULTS.md`.
+
 ## Latest — H-2x-prior-data-establishes-shared-layer-transfer was not established
 
 Complete matched-data rung: primary `xenv − scratch` **−4.761 [−36.121,

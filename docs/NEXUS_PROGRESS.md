@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — 128-only transfer primary not established
+
+The authorized one-run rung completed: 2×-prior `XEnvNet` on unused
+`mcc_xenv_v7` (0.0016, 0.0011, 0.08) gave primary `xenv − scratch`
+**+18.453 [−20.207, +57.113]** at budget 128 only. Label
+`xenv_low_budget_not_established`. 17.596 s / 63,200 / 3,072,000; audit
+passed; session ledger 3341.882 s remain. Rung 5's @128 secondary did not
+replicate. Six xenv rungs closed. Report
+`NEXUS_XENV_LOW_BUDGET_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — 2× prior-data scale not established
 
 The authorized one-run rung completed: 2× source data on closed rung-1
