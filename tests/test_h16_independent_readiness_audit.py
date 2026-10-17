@@ -111,9 +111,17 @@ def later_row(seed, values):
 def test_frozen_hashes_closed_parents_and_unauthorized_allocation():
     assert sha(lock.CONFIG) == 'e71b0053331afa39db5b368510c8524d23e454fb490a2bde57e72ac39f32834c'
     assert sha(lock.PROTOCOL) == 'f757e8a8e1f08d0b5abeb7cffa84071a79e1c5e93ded89b6817fe25e8f7fcea7'
-    assert sha(lock.ALLOCATION) == '02d4680d308ad17384ecd148ce48b7e319cffa4710be8304165ebc847d7474fd'
     rec = lock.load_allocation()
-    assert rec['authorized'] is False and rec['runs'] == 0
+    if rec.get('authorized') is False:
+        assert sha(lock.ALLOCATION) == '02d4680d308ad17384ecd148ce48b7e319cffa4710be8304165ebc847d7474fd'
+        assert rec['runs'] == 0
+        prep = lock.prep()
+        assert prep['session_ledger'] == {'used_s': 303.777, 'remaining_s': 3296.223, 'unchanged': True}
+        assert runner.prep()['authorized'] is False
+        assert runner.prep()['runner_implemented'] is True
+    else:
+        assert rec['authorized'] is True and rec['runs'] == 1
+        assert rec.get('one_run_usage_record')
     assert lock.LOCKED_TARGET == (0.0015, 0.0014, 0.055)
     assert lock.holdout_from_rule() == [lock.LOCKED_TARGET]
     assert lock.HOLD_RULE == 'mcc_same_state_library_v1'
@@ -127,13 +135,11 @@ def test_frozen_hashes_closed_parents_and_unauthorized_allocation():
     assert h14_alloc['authorized'] is True and int(h14_alloc['runs']) == 1
     assert h15_alloc['authorized'] is True and int(h15_alloc['runs']) == 1
     assert h15_alloc.get('consumed') is True
-    prep = lock.prep()
-    assert prep['session_ledger'] == {'used_s': 303.777, 'remaining_s': 3296.223, 'unchanged': True}
-    assert runner.prep()['authorized'] is False
-    assert runner.prep()['runner_implemented'] is True
 
 
 def test_unauthorized_cli_and_lock_execute_fail_before_construction():
+    if lock.load_allocation().get('authorized') is True:
+        pytest.skip('one-run allocation already flipped')
     runner.EVENTS.clear()
     with pytest.raises(PermissionError, match='fresh human approval'):
         runner.execute()

@@ -111,16 +111,20 @@ def train_hook(cfg, spec, priors, seed, meter):
 def test_frozen_lock_hashes_and_unauthorized_execute():
     assert sha(lock.CONFIG) == lock.LOCKED_CONFIG
     assert sha(lock.PROTOCOL) == lock.LOCKED_PROTOCOL
-    assert sha(lock.ALLOCATION) == '02d4680d308ad17384ecd148ce48b7e319cffa4710be8304165ebc847d7474fd'
     assert lock.LOCKED_TARGET == (0.0015, 0.0014, 0.055)
-    assert lock.load_allocation()['authorized'] is False
-    assert lock.load_allocation()['runs'] == 0
-    runner.EVENTS.clear()
-    with pytest.raises(PermissionError, match='fresh human approval'):
-        runner.execute()
-    assert 'authorized' not in runner.EVENTS
-    assert 'make_task_env' not in runner.EVENTS
-    assert not any(item.startswith('train:') for item in runner.EVENTS)
+    rec = lock.load_allocation()
+    if rec.get('authorized') is False:
+        assert sha(lock.ALLOCATION) == '02d4680d308ad17384ecd148ce48b7e319cffa4710be8304165ebc847d7474fd'
+        assert rec['runs'] == 0
+        runner.EVENTS.clear()
+        with pytest.raises(PermissionError, match='fresh human approval'):
+            runner.execute()
+        assert 'authorized' not in runner.EVENTS
+        assert 'make_task_env' not in runner.EVENTS
+        assert not any(item.startswith('train:') for item in runner.EVENTS)
+    else:
+        assert rec['authorized'] is True and rec['runs'] == 1
+        assert rec.get('one_run_usage_record')
     assert not runner.OUTPUT.exists()
 
 

@@ -147,13 +147,21 @@ def test_budget_hard_cap_and_unauthorized_execute():
     with pytest.raises(RuntimeError, match='imagined cap'):
         meter.reserve_imagined(1)
     record = m.load_allocation()
-    assert record['authorized'] is False and record['runs'] == 0
-    with pytest.raises(PermissionError, match='fresh human approval'):
-        m.execute()
-    report = m.prep()
-    assert report['authorized'] is False and report['runs'] == 0
-    assert report['locked'] is True
-    assert report['new_environment_steps'] == 0
+    if record.get('authorized') is False:
+        assert record['runs'] == 0
+        with pytest.raises(PermissionError, match='fresh human approval'):
+            m.execute()
+        report = m.prep()
+        assert report['authorized'] is False and report['runs'] == 0
+        assert report['locked'] is True
+        assert report['new_environment_steps'] == 0
+    else:
+        assert record['authorized'] is True and record['runs'] == 1
+        assert record.get('one_run_usage_record')
+        with pytest.raises(PermissionError, match='not implemented|already consumed'):
+            m.execute()
+        with pytest.raises(PermissionError, match='prep refuses'):
+            m.prep()
     src = Path(m.__file__).read_text(encoding='utf-8')
     assert 'from nexus.tasks.spec import make_task_env' not in src
     assert 'from nexus.world.data import collect_transitions' not in src
