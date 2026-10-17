@@ -14,9 +14,11 @@ trunk layers shared) **+2.575 [−16.248, +21.399]** are closed
 is complete; do not rerun it. Direction B as a learned family-ID table would
 be identification, not adaptation, and is not implemented. Direction C —
 support-inferred FiLM on the closed rung-1 trunk — is the one remaining
-mechanism change that stays inside the standing 100,000-step cap and
-connects to the within-family context line without opening confirmation
-physics.
+mechanism change that stays inside the standing 100,000-step cap without
+opening confirmation physics. Source audit
+`NEXUS_XENV_CONTEXT_CODE_SOURCE_AUDIT.md`: `z` is occupancy of `(obs,
+action)` only, not a residual dynamics code, and does not reproduce the
+within-family Pendulum support-latent line.
 
 A Cline worktree draft (`cline/xenv-context-adaptation`, uncommitted) asks
 the same class of question with `mcc_xenv_v3` / `64,000,000+`. That draft
@@ -32,7 +34,9 @@ and seed block so the two cannot collide.
 
 ## Cost (not authorized)
 
-**600 s / 44,000 real / 3,072,000 imagined / 10 epoch-budgets**, local CPU,
-one run. Session ledger 3414.313 s of 3600 s remain. Collection requires a
-new explicit authorization of this exact configuration. Do not treat this
-heading as a result.
+**600 s / 44,000 real / 3,072,000 imagined**. `training_epochs_budget: 10`
+is the inherited recipe label, not a 10-epoch cap; the locked loops are
+15 pretrain + 2×20 fine-tune + 2×20 reference (135 epoch-loops / seed).
+Local CPU, one run. Session ledger 3414.313 s of 3600 s remain. Collection
+requires a new explicit authorization of this exact configuration. Do not
+treat this heading as a result.

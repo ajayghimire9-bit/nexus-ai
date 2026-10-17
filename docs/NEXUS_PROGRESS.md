@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — context-code source audit: interpretable under occupancy limits
+
+Source-only audit of the locked rung-3 design: H3 remains a valid
+matched-scratch control comparison; `z` is occupancy of `(obs, action)`,
+not a residual dynamics code; `training_epochs_budget: 10` does not cap
+optimizer work. Parent hashes match. Collection still unauthorized. Report
+`NEXUS_XENV_CONTEXT_CODE_SOURCE_AUDIT.md`.
+
 ## Latest — cross-environment context-code (rung 3) locked, collection unauthorized
 
 Direction C is locked on `cursor/xenv-context-code` from `9d3e5ce`:

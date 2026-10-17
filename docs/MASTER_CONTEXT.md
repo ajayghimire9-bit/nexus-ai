@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — context-code source audit, 2026-10-17
+
+Source-only review of the locked `cursor/xenv-context-code` design. Safe to
+authorize the exact hash-locked run if the result is read as occupancy-
+conditioned FiLM versus scratch, not residual dynamics inference.
+`training_epochs_budget: 10` is a recipe label (135 epoch-loops / seed).
+Collection remains unauthorized. Report
+`NEXUS_XENV_CONTEXT_CODE_SOURCE_AUDIT.md`. Earlier entries remain history.
+
 ## Latest — cross-environment context-code (rung 3) locked unauthorized, 2026-10-17
 
 On `cursor/xenv-context-code` from `9d3e5ce`. Direction C chosen because

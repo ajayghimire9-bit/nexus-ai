@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H3 source audit: occupancy-conditioned FiLM, not residual inference
+
+The locked H3 encoder never sees `next_obs` or `s'−s`. A later complete
+grid would test pretrained occupancy-conditioned FiLM versus scratch, not
+whether support recovered unseen dynamics. Epoch label `10` is not a
+10-epoch cap. Collection unauthorized. Audit
+`NEXUS_XENV_CONTEXT_CODE_SOURCE_AUDIT.md`.
+
 ## Latest — H-support-inferred-context-code-improves-new-environment-adaptation is locked, not collected
 
 H3: a support-inferred 8-d FiLM context on the closed rung-1 shared trunk

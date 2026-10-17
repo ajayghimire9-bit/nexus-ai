@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Source audit — context-code lock is interpretable; collection still unauthorized
+
+`docs/NEXUS_XENV_CONTEXT_CODE_SOURCE_AUDIT.md` on this branch. Occupancy-only
+`(obs, action)` context cannot recover `T(s'|s,a)`; `training_epochs_budget:
+10` is the inherited recipe label, not a 10-epoch cap (135 locked
+epoch-loops / seed). Primary comparison remains fair. No replacement
+branch. Do not treat the audit as authorization.
+
 ## Locked — cross-environment context-code (rung 3), collection unauthorized
 
 Protocol `docs/NEXUS_XENV_CONTEXT_CODE_PROTOCOL.md` on

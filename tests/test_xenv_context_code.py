@@ -143,6 +143,61 @@ def test_classify_primary_requires_interval_and_completeness():
     assert m.classify_primary(10.0, 1.0, 20.0, 10, complete=False) == 'incomplete'
 
 
+def test_support_encoder_cannot_see_transition_residual():
+    net = _net()
+    sig = net.infer_context.__func__.__code__.co_varnames
+    assert 'support_obs' in sig and 'support_action' in sig
+    assert 'next_obs' not in sig and 'residual' not in sig
+    class Probe:
+        def __init__(self, ds):
+            self._ds = ds
+        def __getattr__(self, key):
+            if key in ('next_obs', 'terminated', 'reward'):
+                raise AssertionError(f'support context touched {key}')
+            if key not in ('obs', 'action'):
+                raise AssertionError(f'context inference touched {key}')
+            return getattr(self._ds, key)
+    ds = Probe(_toy(16, 2, 3))
+    obs, act = m.support_arrays(ds, 8)
+    z = net.infer_context('mcc', obs, act)
+    assert z.shape == (1, 8)
+
+
+def test_epoch_recipe_is_135_loops_not_the_label_10():
+    cfg = m.load_config()
+    assert cfg['pretrain_epochs'] == 15
+    assert cfg['finetune_epochs'] == 20
+    assert cfg['reference_epochs'] == 20
+    assert cfg['training_epochs_budget'] == 10
+    n_b = len(cfg['target_budgets'])
+    xenv = cfg['pretrain_epochs'] + n_b * cfg['finetune_epochs']
+    scratch = n_b * cfg['finetune_epochs']
+    reference = n_b * cfg['reference_epochs']
+    assert (xenv, scratch, reference, xenv + scratch + reference) == (55, 40, 40, 135)
+    counts = m.budget(cfg)
+    assert 'epochs' not in counts and 'updates' not in counts
+
+
+def test_post_finetune_diagnostic_target_code_is_not_the_frozen_z():
+    net = _net()
+    support = (np.ones((8, 2), np.float32), np.zeros(8, np.int64))
+    z_used = net.frozen_context('mcc', *support)
+    net.set_context('mcc', z_used)
+    with torch.no_grad():
+        net.in_proj['mcc'].weight.add_(0.5)
+    z_after = net.frozen_context('mcc', *support)
+    assert not torch.equal(z_used, z_after)
+    assert torch.equal(net.contexts['mcc'], z_used.reshape(-1, 8))
+
+
+def test_parent_hashes_and_locked_provenance():
+    cfg = m.load_config()
+    for path, digest in cfg['parents'].items():
+        assert sha(path) == digest, path
+    assert sha(m.CONFIG) == m.LOCKED_CONFIG
+    assert sha(m.PROTOCOL) == m.LOCKED_PROTOCOL
+
+
 def test_allocation_gate_and_no_repeat_execution(monkeypatch, tmp_path):
     cfg = m.load_config()
     record = m.load_allocation()
