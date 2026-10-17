@@ -131,3 +131,26 @@ def test_allocation_binds_the_authorized_one_run_record():
     m.require_allocation(cfg)
     with pytest.raises(PermissionError, match='already authorized'):
         m.prep()
+
+
+def test_recorded_pilot_result_passes_the_independent_audit():
+    import json
+    from pathlib import Path
+    p = json.loads(m.OUTPUT.read_text())
+    assert p['complete'] is True and p['label'] == 'xenv_shared_layer_not_established'
+    audit = m.audit_results()
+    assert audit['audit_passed'] is True and audit['label'] == p['label']
+    assert audit['raw_sha256'] == sha(m.OUTPUT)
+    assert int(audit['new_environment_steps']) == 44000
+    primary = p['groups']['primary']['interval']
+    assert primary['n'] == 10 and primary['mean'] > 0
+    assert primary['lo'] < 0 < primary['hi']  # interval includes zero: not established
+    for b in ('128', '1024'):
+        pb = p['groups']['per_budget_return_gain'][b]
+        assert pb['lo'] < 0 < pb['hi']
+    usage = json.loads(Path('artifacts/research_session_xenv_transfer_pilot_usage.json').read_text())
+    assert usage['status'] == 'complete' and int(usage['retries']) == 0
+    assert usage['raw_sha256'] == sha(m.OUTPUT) and usage['label'] == p['label']
+    assert usage['invalid_attempt1_preserved'] is True
+    assert Path(usage['invalid_attempt1_artifact']).is_file()
+    assert float(usage['remaining_session_allowance_s']) == 3432.177

@@ -6,12 +6,23 @@
     "episode_parity_aborted_external_attempt_s": 30.0,
     "episode_parity_execution_s": 65.672,
     "mcc_confirm_execution_s": 27.054,
-    "consumed_before_this_run_s": 135.395
+    "xenv_invalid_attempt1_s": 16.332,
+    "xenv_valid_execution_s": 16.096,
+    "consumed_total_s": 167.823
   },
   "session_cap_s": 3600.0,
-  "remaining_session_allowance_s": 3464.605,
+  "remaining_session_allowance_s": 3432.177,
   "experiment": "xenv_transfer_pilot",
-  "status": "allocated",
+  "status": "complete",
   "retries": 0,
-  "note": "Engineering test runs and offline audits are not experiment execution and are not counted. The aborted episode-parity attempt was externally killed by the agent tool timeout before saving any result; its wall time is still counted here."
+  "invalid_attempt1_preserved": true,
+  "invalid_attempt1_artifact": "artifacts/xenv_transfer_pilot_incomplete_attempt1.json",
+  "raw_sha256": "f6bf1a96a4fd78792eb9a0b43cf0d3677a415dc0134ebf49a8935223c8800c70",
+  "label": "xenv_shared_layer_not_established",
+  "wall_clock_s": 16.096,
+  "new_environment_steps_valid_run": 44000,
+  "new_environment_steps_invalid_attempt1": 43967,
+  "new_imagined_transitions_valid_run": 3072000,
+  "training_epochs_budget": 10,
+  "note": "Attempt 1 was invalid and incomplete (instrumentation accounting bug; no scientific outcome observed or used) and is preserved; the valid execution is the recorded result. Engineering test runs and offline audits are not counted as experiment execution."
 }

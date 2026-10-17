@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Latest — cross-environment shared-trunk transfer pilot not established
+
+The authorized one-run pilot completed (one invalid instrumentation-bug attempt
+disclosed and preserved; combined 87,967 real steps < 100,000 cap): shared
+64→64 layer pretrained on three other environments gave `xenv − scratch`
+**+18.618 [−20.400, +57.636]** on new MountainCarContinuous physics at matched
+data — interval includes 0. Label `xenv_shared_layer_not_established`.
+16.096 s / 44,000 steps / 3,072,000 imagined; audit passed; session ledger
+3432.177 s remain. The multi-head wrapper is at parity with the established
+single-family pipeline at the large budget. Next rung: deeper sharing as a new
+preregistered configuration. Report `NEXUS_XENV_TRANSFER_PILOT_RESULTS.md`.
+No learning-to-learn or AGI.
+
 ## Latest — MountainCarContinuous lookahead transfer confirmed on a new confirmation holdout
 
 The authorized one-run 60-episode confirmation grid completed under the

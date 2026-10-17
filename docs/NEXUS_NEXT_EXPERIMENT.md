@@ -1,6 +1,25 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — MountainCarContinuous transfer is confirmed; no mandatory pending screen
+## Current decision — cross-environment rung 1 (one shared layer) is not established; next rung is deeper sharing
+
+The cross-environment pilot is **complete**: `xenv − scratch` **+18.618
+[−20.400, +57.636]** on new MountainCarContinuous physics at matched data —
+interval includes 0. Label `xenv_shared_layer_not_established`. The target
+physics (0.0025, 0.0015, 0.09) and the minimal-sharing configuration are
+closed; do not retune or rerun them. The established positive adaptation
+lever remains multitask pretraining across physics variants **within** a
+family. Report `NEXUS_XENV_TRANSFER_PILOT_RESULTS.md`.
+
+**One next rung (new preregistered configuration, not a retune):** deepen the
+cross-family sharing — share the full two-layer trunk behind per-family input
+projections, or add a learned cross-family context code — with the identical
+matched-data scratch control, the same fairness gates (identical architecture
+across arms, only the pretrained component differing) and a fresh unused
+target draw. Each needs its own locked protocol, cost estimate and one-run
+allocation before implementation or collection; nothing is pre-authorized
+here. Session ledger: 3432.177 s of the standing 3600 s remain.
+
+## Previous decision — MountainCarContinuous transfer is confirmed; no mandatory pending screen
 
 The MountainCarContinuous confirmation transfer screen is **complete and
 passed**: lookahead minus H=16 **81.518 [55.450, 107.586]** on holdout

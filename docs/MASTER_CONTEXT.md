@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — cross-environment shared-trunk transfer not established (pilot), 2026-10-16
+
+First rung of the decided cross-environment adaptation direction, on
+`cline/xenv-transfer-pilot`: one shared 64→64 tanh layer pretrained jointly on
+CartPole+Acrobot+MountainCar, per-family heads, evaluated on new unused
+MountainCarContinuous physics at matched target data versus the identical
+architecture trained on the target only. Primary `xenv − scratch`
+**+18.618 [−20.400, +57.636]** — interval includes 0; per-budget gains also
+include 0; prediction MAE unchanged. Label `xenv_shared_layer_not_established`.
+Valid execution 16.096 s / 44,000 steps / 3,072,000 imagined; one invalid
+instrumentation-bug attempt (incomplete, preserved, disclosed; 43,967 steps);
+combined 87,967 < 100,000 cap. Independent audit passed. The established
+positive lever remains multitask pretraining across physics variants within
+a family; deeper cross-family sharing is the next preregistered rung. Not
+learning-to-learn, not AGI. Reports `NEXUS_XENV_TRANSFER_PILOT_PROTOCOL.md`
+and `NEXUS_XENV_TRANSFER_PILOT_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — MountainCarContinuous lookahead transfer confirmed on a new holdout, 2026-10-16
 
 The locked one-run confirmation screen completed on

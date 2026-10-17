@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-one-shared-layer-across-environments-improves-new-environment-adaptation was not established
+
+The complete matched-data pilot passed its integrity gates but failed the
+predeclared decision rule: `xenv − scratch` **+18.618 [−20.400, +57.636]**
+(student-t 95%, df 9) on a new unused MountainCarContinuous physics, both
+per-budget intervals including 0, prediction MAE unchanged. Label
+`xenv_shared_layer_not_established`. This closes only the minimal-sharing
+configuration (one shared 64→64 layer, per-family heads); it does not disprove
+cross-environment adaptation in general, and the multitask-across-physics
+lever within a family remains established. No retune, no rerun on this
+sample. Report `NEXUS_XENV_TRANSFER_PILOT_RESULTS.md`.
+
 ## Latest — H-lookahead-transfers-on-new-mountaincarcontinuous-physics passed on one confirmation holdout
 
 The complete confirmation screen passed the 25-point rule: lookahead minus
