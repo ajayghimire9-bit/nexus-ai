@@ -1,0 +1,43 @@
+starting_sha: 5263714ab6cb105d0ebb93c84e6c597a23618d35
+n_model_seeds: 10
+prior_families: [cartpole, acrobot, mountaincar]
+target_family: mountaincar_continuous
+holdout_rule: mcc_xenv_v1
+target_physics: [[0.0025, 0.0015, 0.09]]
+target_budgets: [128, 1024]
+target_pool_train: 1024
+target_pool_val: 256
+prior_train: 512
+prior_val: 128
+pretrain_epochs: 15
+pretrain_lr: 0.001
+finetune_epochs: 20
+finetune_lr: 0.0005
+reference_epochs: 20
+reference_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+horizon: 16
+n_candidates: 16
+n_actions: 3
+episode_steps: 200
+practical_margin: 0.0
+time_cap_s: 600
+env_cap: 44000
+model_cap: 3072000
+reset_base: 63000000
+step_seed_base: 63100000
+collect_prior_base: 63200000
+collect_target_base: 63300000
+training_epochs_budget: 10
+retune_from_closed_splits: false
+new_architecture_family: false
+claims_learning_to_learn: false
+claims_weight_transfer_across_families: false
+is_agi: false
+parents:
+  artifacts/meta_learning_pilot.json: 0dcb2407929c5b7d112c386ea3547cee4f36743ee008aa22ba9e5c3a93c6347a
+  artifacts/v089_learning.json: e72453f529f32bb68c7c5bd1fbda983db2cc7c8b003ae0808d2f4b6efa09d988
+  artifacts/mountaincar_continuous_lookahead.json: 668a9a85e121d82a830399e9c967765e3f507e9ab062195e3dee3f9dc1b49a15
+  artifacts/mountaincar_continuous_lookahead_confirm.json: 524bcd92ea4e5b10d6a6ec837a10fb2ca9ba639de0902beba8a7fe9d72f2579e
+  docs/NEXUS_MOUNTAINCAR_CONTINUOUS_LOOKAHEAD_CONFIRM_RESULTS.md: 7eb8c8c2f3acf790ac5f9733d064f8c057bae75c882587409bfb1e6e793b9a09
