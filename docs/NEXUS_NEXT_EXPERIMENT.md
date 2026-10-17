@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — lock the H16 guarded runner; collection unauthorized
+## Current decision — H16 is ready for a separate one-run authorization
+
+The guarded H16 runner is implemented. Locked hashes match.
+`authorized: false`, `runs: 0`. A later independent readiness audit
+and a separate one-run allocation are still required. Do not collect
+from this runner commit. Do not retune H14–H16 science. Session
+ledger unchanged (3296.223 s remain). Report
+`NEXUS_H16_SAME_STATE_LIBRARY_RUNNER.md`.
+
+## Previous — lock the H16 guarded runner; collection unauthorized
 
 H16 is locked on unused MCC `mcc_same_state_library_v1`
 **(0.0015, 0.0014, 0.055)**. Same-state L0-versus-redraw selected-return

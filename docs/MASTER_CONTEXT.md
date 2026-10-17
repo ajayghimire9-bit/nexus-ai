@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H16 same-state library runner implemented, still unauthorized, 2026-10-17
+
+On `cursor/h16-same-state-library-runner` from locked prep
+`b577d05`. The guarded H16 runner is implemented against unused MCC
+**(0.0015, 0.0014, 0.055)**. Locked yaml/protocol/allocation hashes
+are unchanged. `authorized: false`, `runs: 0`. No training or
+collection. Not a result. Not learning-to-learn, not AGI. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_RUNNER.md`. Earlier entries remain
+history.
+
 ## Latest — H16 same-state library locked, collection unauthorized, 2026-10-17
 
 On `cursor/h16-same-state-library-protocol-lock` from feasibility

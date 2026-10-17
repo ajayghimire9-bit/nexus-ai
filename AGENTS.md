@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`). H16 is locked and unauthorized in `docs/NEXUS_H16_SAME_STATE_LIBRARY_PROTOCOL.md` on unused MCC `(0.0015, 0.0014, 0.055)`. Do not retune closed holdouts. Do not collect H16 without a later one-run allocation and guarded runner. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`). H16 is locked on unused MCC `(0.0015, 0.0014, 0.055)`; the guarded runner is implemented and unauthorized (`docs/NEXUS_H16_SAME_STATE_LIBRARY_RUNNER.md`). Do not retune closed holdouts. Do not collect H16 without a later one-run allocation. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

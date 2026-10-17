@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — H16 same-state library runner implemented, collection unauthorized
+
+The H16 execution runner is implemented on
+`cursor/h16-same-state-library-runner` from locked prep `b577d05`.
+Locked hashes unchanged. `authorized: false`, `runs: 0`. No training.
+Report `NEXUS_H16_SAME_STATE_LIBRARY_RUNNER.md`. No learning-to-learn
+or AGI.
+
 ## Latest — H16 same-state library locked, collection unauthorized
 
 H16 is locked on `cursor/h16-same-state-library-protocol-lock` from

@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-same-state-library-ranking has a runner, not a result
+
+H16 execution logic is implemented against unused MCC
+(0.0015, 0.0014, 0.055). The locked design is unchanged. Collection
+unauthorized (`authorized: false`, `runs: 0`). This is not a control
+result. Report `NEXUS_H16_SAME_STATE_LIBRARY_RUNNER.md`.
+
 ## Latest — H-same-state-library-ranking is locked, not collected
 
 H16: same-state L0-versus-redraw selected-return DiD on unused MCC
