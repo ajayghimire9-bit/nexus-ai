@@ -53,13 +53,19 @@ def test_budget_and_unauthorized_allocation_block_collection():
     assert cfg['env_cap'] == 20960 and cfg['model_cap'] == 1024000
     assert cfg['time_cap_s'] == 600
     record = m.load_allocation()
-    assert record['authorized'] is False and record['runs'] == 0
     assert record['config_sha256'] == sha(m.CONFIG) == m.LOCKED_CONFIG
     assert record['protocol_sha256'] == sha(m.PROTOCOL) == m.LOCKED_PROTOCOL
-    assert m.prep()['authorized'] is False
-    assert m.prep()['new_environment_steps'] == 0
-    with pytest.raises(PermissionError, match='fresh human approval'):
+    if record.get('authorized') is True:
+        assert record['runs'] == 1
         m.require_allocation(cfg)
+        with pytest.raises(PermissionError, match='already authorized'):
+            m.prep()
+    else:
+        assert record['runs'] == 0
+        assert m.prep()['authorized'] is False
+        assert m.prep()['new_environment_steps'] == 0
+        with pytest.raises(PermissionError, match='fresh human approval'):
+            m.require_allocation(cfg)
     cells = [dict(seed=s, returns=dict(multitask=10.0 + s, scratch=0.0),
                   mae=dict(multitask=0.1, scratch=0.1)) for s in range(10)]
     out = m.summarize(cells, cfg)

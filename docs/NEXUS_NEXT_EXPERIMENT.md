@@ -1,12 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — lock same-design MCC multitask confirmation; collection unauthorized
+## Current decision — one authorized 600-second 20,960-step H11 confirmation run
 
 H11 is locked on unused MCC `mcc_multitask_128_confirm_v1`
 **(0.0022, 0.0016, 0.07)**. Frozen H10 recipe versus scratch. Caps
-**600 s / 20,960 / 1,024,000**. `authorized: false`. Do not retune H10,
-source-RMS, residual-scale, or xenv. Session ledger: 3316.143 s remain.
-Protocol `NEXUS_MCC_MULTITASK_128_CONFIRM_PROTOCOL.md`.
+**600 s / 20,960 / 1,024,000**. One-run remaining 1 after lock
+`0a076d3`. Do not retune H10, source-RMS, residual-scale, or xenv.
+Session ledger: 3316.143 s remain. Protocol
+`NEXUS_MCC_MULTITASK_128_CONFIRM_PROTOCOL.md`.
 
 ## Previous — within-family MCC multitask beat scratch; confirm on new unused physics
 
