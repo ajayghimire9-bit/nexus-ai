@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — cross-family shared-trunk synthesis, 2026-10-17
+
+Source-only review of the seven closed xenv rungs on
+`cursor/xenv-transfer-failure-synthesis` from `dbeebcc`. No collection.
+All primaries include 0. The supported bottleneck is that a hidden-layer
+weight matrix between incompatible family embeddings has no common
+dynamical coordinate. Next conceptual direction: family-native interface
+adaptation (RMS / residual scale), not another shared-trunk variant.
+Not authorized. Not learning-to-learn, not AGI. Report
+`NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md`. Earlier entries remain
+history.
+
 ## Latest — CartPole-target transfer not established, 2026-10-17
 
 Rung 7 on `cursor/xenv-cartpole-target`: closed rung-1 `XEnvNet`

@@ -1,6 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — CartPole-target transfer is not established; leave this xenv line closed
+## Current decision — leave shared-trunk xenv closed; next concept is family-native interface adaptation
+
+Seven xenv rungs are closed. Synthesis
+`NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md` does **not** authorize
+collection. The recommended next lock, if later authorized, is a
+within-family MCC residual world model with source-MCC observation RMS
+or a 1–3d residual-scale from support `s′−s`, versus matched scratch, at
+budget 128 on unused physics that is not a closed xenv holdout. Caps
+≤600 s / ≤44,000. No cross-family weights. Nothing is pre-authorized.
+Session ledger unchanged: 3331.649 s remain.
+
+## Previous decision — CartPole-target transfer is not established; leave this xenv line closed
 
 Rung 7 is **complete**: primary `xenv − scratch` **−2.500 [−10.359, +5.359]**
 on `cartpole_xenv_v1` (6.5, 0.57, 0.28). Label

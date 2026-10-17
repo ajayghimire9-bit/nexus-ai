@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — cross-family shared-trunk synthesis; no collection
+
+Source-only analysis of rungs 1–7: every primary includes 0. Shared
+object is a 64-d hidden matrix after family-specific embeddings
+(4,160 of 7,186 rung-1 weights). Next direction is family-native
+interface adaptation, not another xenv variant. 0 new steps. Report
+`NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md`. No learning-to-learn or AGI.
+
 ## Latest — CartPole-target transfer not established
 
 The authorized one-run rung completed: rung-1 `XEnvNet` on unused

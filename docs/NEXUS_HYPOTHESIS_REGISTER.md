@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-shared-hidden-layer-is-the-wrong-cross-family-unit is a supported interpretation, not a trained label
+
+Synthesis of seven closed `not_established` primaries plus the V0.6.6
+RMS result: a shared 64-d hidden matrix between incompatible embeddings
+is the wrong transfer object. Next untested hypothesis:
+family-native interface adaptation on unused MCC physics. Not a result.
+Not authorized. Report `NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md`.
+
 ## Latest — H-cartpole-target-shared-layer-improves-new-environment-adaptation was not established
 
 Complete matched-data rung: primary `xenv − scratch` **−2.500 [−10.359,
