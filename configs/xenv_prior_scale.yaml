@@ -1,0 +1,44 @@
+starting_sha: 81e02153b7781dc0fdb45bcbe608b011ba17ca4f
+n_model_seeds: 10
+prior_families: [cartpole, acrobot, mountaincar]
+target_family: mountaincar_continuous
+holdout_rule: mcc_xenv_v6
+target_physics: [[0.0022, 0.0019, 0.08]]
+target_budgets: [128, 1024]
+target_pool_train: 1024
+target_pool_val: 256
+prior_train: 1024
+prior_val: 256
+pretrain_epochs: 15
+pretrain_lr: 0.001
+finetune_epochs: 20
+finetune_lr: 0.0005
+reference_epochs: 20
+reference_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+horizon: 16
+n_candidates: 16
+n_actions: 3
+episode_steps: 200
+practical_margin: 0.0
+time_cap_s: 600
+env_cap: 63200
+model_cap: 3072000
+reset_base: 67000000
+step_seed_base: 67100000
+collect_prior_base: 67200000
+collect_target_base: 67300000
+training_epochs_budget: 10
+retune_from_closed_splits: false
+new_architecture_family: false
+claims_learning_to_learn: false
+claims_weight_transfer_across_families: false
+is_agi: false
+parents:
+  artifacts/xenv_residual_context.json: fe3885b47ab254082755fb76ae70b861ab9de8f998ba20d1e03ceab7dd818c30
+  docs/NEXUS_XENV_RESIDUAL_CONTEXT_RESULTS.md: 644f51103269077b8cce3dbec729e619c94a8c8da3ba99efcbba8ac1472f22c4
+  artifacts/xenv_context_code.json: e621ba941c084a743df68e7c4e29ccb9c87f4960b863087737c780f2ef087352
+  artifacts/xenv_deep_trunk.json: 5bbf342712498872a406171b8536a1155c74c25d4cd42ec297a270c3e8c90d55
+  docs/NEXUS_XENV_TRANSFER_PILOT_RESULTS.md: 81559d4090d368236fa441a7da6d1dded56da8ff4fa7bfdf586002dead8b6f07
+  configs/xenv_transfer_pilot.yaml: 531bfe1ab9456dfe93341b324a61ce4c40ff23594534575b141f7496e4fb8a58

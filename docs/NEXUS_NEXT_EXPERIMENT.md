@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — 2× prior-data scale on rung-1 XEnvNet, collection unauthorized until allocation
+
+Protocol `docs/NEXUS_XENV_PRIOR_SCALE_PROTOCOL.md` on
+`cursor/xenv-prior-scale` from `81e0215`. Holdout `mcc_xenv_v6`
+**(0.0022, 0.0019, 0.08)**. Seeds `67,000,000+`. Architecture is closed
+rung-1 `XEnvNet` (no FiLM). Prior 1024+256 per family. Caps
+**600 s / 63,200 / 3,072,000**. `authorized: false`. Rungs 1–4 stay closed.
+
 ## Current decision — residual-aware context is not established; do not add another FiLM variant
 
 Rung 4 is **complete**: `xenv − scratch` **−1.819 [−23.729, +20.091]** on
