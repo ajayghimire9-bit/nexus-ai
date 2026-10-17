@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H16 diagnosis separates ranking from the unresolved interaction
+
+Source-only reanalysis preserves the registered inconclusive H16 label.
+Multitask ranks/selects better than scratch in both libraries; that does
+not establish a library-dependent advantage. Shared oracle values cancel
+exactly from within-library arm comparisons. t8 versus t12 and reference
+state sensitivity are exploratory, not extra replications. Occupancy and
+compounding remain compatible explanations, not identified causes.
+No new hypothesis is locked, no H17 is designed, and no experiment ran.
+Report `NEXUS_H16_SELECTION_MECHANISM_DIAGNOSIS.md`.
+
 ## Latest — H-same-state-library-ranking is not established on this holdout
 
 H16: D_same **+0.023 [−0.014, +0.060]** (df 9, 6/10 positive).

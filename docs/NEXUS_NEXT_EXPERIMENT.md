@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current question — occupancy dependence, not another H16 ranking claim
+
+Saved-data diagnosis reproduces H16 exactly and finds multitask ranking
+advantages in both libraries. One prioritized question remains: does the
+relative library effect persist on controller-generated occupancies when
+physics is held fixed, rather than on model-independent prefix states?
+This is only a research question, not an H17 design, lock, authorization
+or execution. No seeds, physics, allocations or budgets are created here.
+H14–H16 remain closed. Ledger unchanged: 305.842 s used / 3294.158 s
+remaining. Report `NEXUS_H16_SELECTION_MECHANISM_DIAGNOSIS.md`.
+
 ## Current decision — H16 is closed and inconclusive; do not retune
 
 H16 did not establish a same-state L0-versus-redraw interaction

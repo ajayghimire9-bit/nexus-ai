@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Latest — H16 saved-data selection diagnosis, no new experiment
+
+Independent raw-candidate reconstruction exactly matches H16:
+**+0.022890 [−0.014211, +0.059990]**, 6/10 positive; original label
+unchanged. Multitask selected-return advantages occur in both L0
+(+0.177635) and redraw (+0.154746). Oracle opportunity is only
++0.006918 [−0.027872, +0.041708] and cancels within-library arm gaps.
+The later-time interaction and occupancy mechanism remain unresolved;
+different physics prevent a causal comparison with H14/H15. Source-only
+tests: 30 passed. Zero new real/imagined transitions, inference or training;
+ledger unchanged at 305.842 used / 3294.158 remaining. No H17 work.
+Report `NEXUS_H16_SELECTION_MECHANISM_DIAGNOSIS.md`.
+
 ## Latest — H16 same-state library effect not established
 
 On `cursor/h16-same-state-library-execute`: unused MCC
