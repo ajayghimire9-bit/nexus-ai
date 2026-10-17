@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H14 candidate-reuse protocol locked unauthorized, 2026-10-17
+
+On `cursor/h14-candidate-reuse-protocol-lock` from feasibility
+`1949bed`. Source-only lock of unused MCC **(0.0023, 0.0019, 0.065)**
+via `mcc_candidate_reuse_v1`. Shared L0 versus redraw recede; DiD
+primary. Caps **300 s / 29,760 / 655,360**. `authorized: false`,
+`runs: 0`. No collection. Not a result. Not learning-to-learn, not
+AGI. Protocol `NEXUS_H14_CANDIDATE_REUSE_PROTOCOL.md`. Earlier
+entries remain history.
+
 ## Latest — H14 candidate-reuse feasibility, not locked, 2026-10-17
 
 On `cursor/h14-candidate-reuse-feasibility` from `da8941b`.

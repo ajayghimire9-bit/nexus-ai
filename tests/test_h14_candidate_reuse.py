@@ -122,3 +122,109 @@ def test_budget_formulas_and_historical_audit_holes():
     assert 'collect_transitions' not in src
     assert 'make_task_env' not in src
     assert 'train_world_model' not in src
+
+
+def test_holdout_rule_is_deterministic_and_excludes_closed_physics():
+    first = m.holdout_from_rule()
+    second = m.holdout_from_rule()
+    assert first == second == [m.LOCKED_TARGET]
+    occupied = m.occupied_physics()
+    assert m.LOCKED_TARGET not in occupied
+    for closed in (m.CLOSED_H10, m.CLOSED_H11, m.CLOSED_H12, m.CLOSED_H13):
+        assert closed in occupied
+        assert closed != m.LOCKED_TARGET
+    for source in m.source_physics_keys():
+        assert source in occupied
+    assert m.HOLD_RULE == 'mcc_candidate_reuse_v1'
+
+
+def test_seed_streams_are_disjoint_and_shared_at_step_zero():
+    cfg = m.load_config()
+    streams, used = m.seed_streams(cfg)
+    names = list(streams)
+    for i, left in enumerate(names):
+        for right in names[i + 1:]:
+            assert not (streams[left] & streams[right])
+    assert min(used) >= cfg['reset_base']
+    lib = cfg['library_base']
+    redraw = cfg['redraw_base']
+    for seed in range(2):
+        for state in range(4):
+            shared = m.assert_shared_first_library(lib, seed, state)
+            mt = m.assert_arm_symmetric_library('fixed', lib, redraw, seed, state, 3)
+            sc = m.assert_arm_symmetric_library('redraw', lib, redraw, seed, state, 3)
+            assert np.array_equal(m.recede_candidates('fixed', lib, redraw, seed, state, 0), shared)
+            assert not np.array_equal(sc, shared)
+            assert mt.shape == (16, 16)
+
+
+def test_did_zero_boundary_and_incomplete_classification():
+    assert m.classify_primary(0.0, -0.1, 0.1, 10) == 'h14_resampling_effect_not_established'
+    assert m.classify_primary(0.1, 0.0, 0.2, 10) == 'h14_resampling_effect_not_established'
+    assert m.classify_primary(-0.1, -0.2, 0.0, 10) == 'h14_resampling_effect_not_established'
+    assert m.classify_primary(0.2, 0.1, 0.3, 10, complete=False) == 'incomplete'
+    assert m.classify_primary(float('nan'), 0.1, 0.3, 10) == 'incomplete'
+    means = {('multitask', 'fixed'): 1.0, ('scratch', 'fixed'): 1.0,
+             ('multitask', 'redraw'): 2.0, ('scratch', 'redraw'): 2.0}
+    assert m.difference_in_differences(means) == 0.0
+
+
+def test_reset_identity_and_mandatory_trace_schema():
+    obs = np.array([0.1, 0.0], dtype=np.float32)
+    assert np.allclose(m.check_reset_identity(obs, obs.copy()), obs)
+    with pytest.raises(RuntimeError, match='reset identity'):
+        m.check_reset_identity(obs, np.array([0.2, 0.0], dtype=np.float32))
+    seq = m.recede_candidates('fixed', 76200000, 76500000, 0, 0, 0)
+    scores = np.arange(16, dtype=np.float64)
+    idx, action = m.selected_first_action(seq, scores)
+    row = m.controller_trace(
+        seed=0, state_index=0, mode='fixed', arm='multitask', state_seed=76100000,
+        reset_observation=obs.tolist(), step=0, candidate_seed=76200000,
+        library_fingerprint=m.library_fingerprint(seq), observation=obs.tolist(),
+        predicted_scores=scores, selected_index=idx, executed_action=action,
+        next_observation=[0.11, 0.01], realized_reward=-0.1, terminated=False,
+        truncated=False, env_steps=1, imagined_transitions=256)
+    assert set(row) == set(m.TRACE_FIELDS)
+    with pytest.raises(ValueError, match='missing trace'):
+        m.controller_trace(seed=0)
+    residual = m.one_step_residual([0.2, 0.0], [0.1, 0.0])
+    assert residual[0] == pytest.approx(0.1)
+
+
+def test_preflight_meter_rejects_before_simulator_or_inference():
+    meter = m.PreflightMeter(dict(time_cap_s=30, env_cap=1, model_cap=2))
+    meter.reserve_env(1)
+    with pytest.raises(RuntimeError, match='env-step cap would be exceeded'):
+        meter.reserve_env(1)
+    with pytest.raises(ValueError, match='positive'):
+        meter.reserve_imagined(0)
+    class ToyStep:
+        def __init__(self):
+            self.calls = 0
+
+        def step(self, obs, action):
+            self.calls += 1
+            return np.zeros_like(obs), 0.0
+    model = ToyStep()
+    meter.instrument(model)
+    model.step(np.zeros((2, 2)), 0)
+    assert model.calls == 1
+    with pytest.raises(RuntimeError, match='imagined cap would be exceeded'):
+        model.step(np.zeros(2), 0)
+    assert model.calls == 1
+
+
+def test_locked_prep_refuses_execution_and_stays_unauthorized():
+    cfg = m.load_config()
+    assert tuple(cfg['target_physics'][0]) == m.LOCKED_TARGET
+    report = m.prep()
+    assert report['authorized'] is False
+    assert report['runs'] == 0
+    assert report['new_environment_steps'] == 0
+    assert report['new_imagined_transitions'] == 0
+    assert report['locked'] is True
+    with pytest.raises(PermissionError, match='fresh human approval'):
+        m.execute()
+    allocation = m.load_allocation()
+    assert allocation['authorized'] is False
+    assert allocation['runs'] == 0

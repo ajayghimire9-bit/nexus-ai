@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — H14 candidate-reuse protocol locked, collection unauthorized
+
+H14 is locked on `cursor/h14-candidate-reuse-protocol-lock` from
+`1949bed`: unused MCC **(0.0023, 0.0019, 0.065)**, shared-library
+versus redraw recede, DiD primary. Caps **300 s / 29,760 / 655,360**.
+`authorized: false`, `runs: 0`. No training. Report
+`NEXUS_H14_CANDIDATE_REUSE_PROTOCOL.md`. No learning-to-learn or
+AGI.
+
 ## Latest — H14 candidate-reuse feasibility, not locked
 
 Source-only design on `cursor/h14-candidate-reuse-feasibility` from

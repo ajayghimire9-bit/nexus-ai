@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-shared-proposal-resampling-changes-relative-recede is locked, not collected
+
+H14: fixed-library recede versus redraw recede, both arms seeing the
+same candidate matrices on unused MCC (0.0023, 0.0019, 0.065).
+Primary: mean D_s > 0 and CI lower bound > 0, or the reverse, else
+not established. Collection unauthorized. This is not a result.
+Protocol `NEXUS_H14_CANDIDATE_REUSE_PROTOCOL.md`.
+
 ## Latest — H-shared-proposal-resampling-changes-relative-recede is designed, not locked
 
 H14 draft: fixed-library recede versus redraw recede, both arms seeing

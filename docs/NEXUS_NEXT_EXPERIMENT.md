@@ -1,6 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H14 candidate-reuse design is feasible, not locked
+## Current decision — lock H14 runner; collection unauthorized
+
+H14 is locked on unused MCC `mcc_candidate_reuse_v1`
+**(0.0023, 0.0019, 0.065)**. Frozen H10 recipe versus scratch; shared
+L0 versus redraw recede; DiD primary. Caps
+**300 s / 29,760 / 655,360**. `authorized: false`. Do not collect
+from this document. The next development stage is a guarded
+source-only runner implementation on a separate branch. Do not
+retune H10–H13. Session ledger unchanged. Protocol
+`NEXUS_H14_CANDIDATE_REUSE_PROTOCOL.md`.
+
+## Previous — H14 candidate-reuse design is feasible, not locked
 
 Source-only feasibility is complete. H12/H13 recede comparisons were
 arm-confounded. The smallest identifiable next question is whether
