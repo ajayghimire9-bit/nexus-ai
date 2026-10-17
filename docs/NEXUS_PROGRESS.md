@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — H17 cross-branch exclusion metadata audited, no experiment
+
+On `codex/h17-exclusion-registry-audit`:348 refs/127 unique tips,
+167 input versions,23 explicit/historical MCC tuples plus6 conservative
+ambiguous exclusions. Corrected capture has zero parsing issues; first
+capture preserved. 115 source-only tests passed. No physics/seed selection,
+allocation, model loading, training or new transitions. Global registry
+completeness is not certified; H17 remains not lock-ready. Ledger stays
+305.842 used /3294.158 remaining. Report
+`NEXUS_H17_EXCLUSION_REGISTRY_AUDIT.md`.
+
 ## Latest — H17 draft readiness contracts, source only
 
 On `codex/h17-protocol-readiness`: connected non-executable draft config,

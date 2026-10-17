@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — H17 exclusion snapshot needs coverage acceptance before registration
+
+The source-only cross-branch inventory now records explicit and ambiguous
+physics exclusions plus conservative seed-base reservations, with full
+ref/blob hashes. It selects no target or actual seeds. One next task:
+review implicit/manual registration coverage, then use this inventory in
+a separate H17 target/seed registration and lock review. H17 remains
+unlocked and unallocated; no scientific execution. Ledger unchanged
+305.842 /3294.158. Report `NEXUS_H17_EXCLUSION_REGISTRY_AUDIT.md`.
+
 ## Current — H17 requires registration and independent lock review
 
 Source-only readiness contracts now validate the five-source/t12 draft,
