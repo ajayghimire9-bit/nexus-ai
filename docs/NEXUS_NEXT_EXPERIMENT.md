@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — 128-only primary on new unused physics, collection unauthorized until allocation
+
+Protocol `docs/NEXUS_XENV_LOW_BUDGET_PROTOCOL.md` on
+`cursor/xenv-low-budget-128` from `2a005e0`. Holdout `mcc_xenv_v7`
+**(0.0016, 0.0011, 0.08)**. Seeds `68,000,000+`. Same 2×-prior `XEnvNet`.
+Primary is budget **128 only**. Caps **600 s / 63,200 / 3,072,000**.
+`authorized: false`. Rung 5 holdout stays closed.
+
 ## Current decision — 2× prior scale is not established; leave this xenv line closed at this scale
 
 Rung 5 is **complete**: primary `xenv − scratch` **−4.761 [−36.121, +26.599]**
