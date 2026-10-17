@@ -88,14 +88,12 @@ def test_finetune_target_updates_target_and_shared_and_reduces_loss():
     assert m.prediction_mae(model, vl) >= 0.0
 
 
-def test_allocation_blocks_collection_until_authorized():
+def test_allocation_binds_the_authorized_one_run_record():
     cfg = m.load_config()
     record = m.load_allocation()
-    assert record['authorized'] is False and record['runs'] == 0
+    assert record['authorized'] is True and record['runs'] == 1
     assert record['config_sha256'] == sha(m.CONFIG) == m.LOCKED_CONFIG
     assert record['protocol_sha256'] == sha(m.PROTOCOL) == m.LOCKED_PROTOCOL
-    with pytest.raises(PermissionError):
-        m.require_allocation(cfg)
-    report = m.prep()
-    assert report['authorized'] is False and report['runs'] == 0
-    assert report['target_physics'] == [0.0025, 0.0015, 0.09]
+    m.require_allocation(cfg)
+    with pytest.raises(PermissionError, match='already authorized'):
+        m.prep()
