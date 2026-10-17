@@ -1,5 +1,19 @@
 # NEXUS progress log
 
+## Latest — H17 occupancy feasibility only, not locked or authorized
+
+Source-only design retains reference and all four learned source policies,
+with both scorers on every common state. Proposed ten-pair, one-reset,
+t12 grid costs 62,360 real / 174,080 imagined transitions; none executed.
+The five-source t8+t12 alternative exceeds the real-step ceiling (100,760).
+Primary would compare the equal controller-source mixture interaction with
+reference. Trajectory L0/state dependence prevents a pure occupancy causal
+claim. Historical model checkpoints are not manifest-backed for reuse;
+prospective fresh training would require a separate lock and authorization.
+No physics/seeds selected, no allocation, no ledger change (305.842 used /
+3294.158 remaining). Not lock-ready until operational contracts are complete.
+Report `NEXUS_H17_OCCUPANCY_DEPENDENCE_FEASIBILITY.md`.
+
 ## Latest — H16 saved-data selection diagnosis, no new experiment
 
 Independent raw-candidate reconstruction exactly matches H16:

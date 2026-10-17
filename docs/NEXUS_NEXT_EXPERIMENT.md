@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — H17 occupancy feasibility needs a separate lock review
+
+Recommended candidate: reference plus multitask/scratch × fixed/redraw
+state generators, t12 only, one reset per independent model pair, ten pairs.
+Both models score both libraries at every source state. Proposed primary:
+equal-controller-mixture D minus reference D, with oracle cancellation.
+62,360 real / 174,080 imagined, estimated 5–30s on the same local CPU,
+suggested 300s cap. None allocated or executed. No new physics or seeds
+selected. Final exclusion/RNG/checkpoint/restoration contracts remain
+required; not a locked protocol or execution permission. All prior holdouts
+and the 305.842 / 3294.158 ledger remain unchanged. Report
+`NEXUS_H17_OCCUPANCY_DEPENDENCE_FEASIBILITY.md`.
+
 ## Current question — occupancy dependence, not another H16 ranking claim
 
 Saved-data diagnosis reproduces H16 exactly and finds multitask ranking
