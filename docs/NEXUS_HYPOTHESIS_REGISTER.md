@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h14-interaction-replicates-on-new-holdout has a runner, not a result
+
+H15 execution logic is implemented against unused MCC
+(0.004, 0.0021, 0.05). The locked design is unchanged. Collection
+unauthorized (`authorized: false`, `runs: 0`). This is not a control
+result. Report `NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RUNNER.md`.
+
 ## Latest — H-h14-interaction-replicates-on-new-holdout is locked, not collected
 
 H15: exact H14 fixed-versus-redraw DiD on unused MCC

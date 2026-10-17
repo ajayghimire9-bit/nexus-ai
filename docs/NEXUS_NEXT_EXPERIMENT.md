@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — lock the H15 confirmation runner; collection unauthorized
+## Current decision — H15 runner is implementation-ready; collection unauthorized
+
+H15 is locked on unused MCC `mcc_candidate_reuse_confirm_v1`
+**(0.004, 0.0021, 0.05)**. The guarded runner exists and still
+refuses (`authorized: false`, `runs: 0`). Caps
+**300 s / 29,760 / 655,360**. Do not collect from this document.
+A later one-run allocation is required before execution. Do not
+retune H14 or H10–H13. Session ledger unchanged (3300.660 s remain).
+Report `NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RUNNER.md`.
+
+## Previous — lock the H15 confirmation runner; collection unauthorized
 
 H15 is locked on unused MCC `mcc_candidate_reuse_confirm_v1`
 **(0.004, 0.0021, 0.05)**. Same H14 controller, DiD primary, and

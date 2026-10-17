@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — H15 confirmation runner implemented, collection unauthorized
+
+The H15 execution runner is implemented on
+`cursor/h15-candidate-reuse-confirm-runner` from locked prep
+`ff91a94`. Locked yaml/protocol hashes are unchanged.
+`authorized: false`, `runs: 0`. No training. Report
+`NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RUNNER.md`. No learning-to-learn
+or AGI.
+
 ## Latest — H15 same-design confirmation locked, collection unauthorized
 
 H15 is locked on `cursor/h15-candidate-reuse-confirm-prep` from

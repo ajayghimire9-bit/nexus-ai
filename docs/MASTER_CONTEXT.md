@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H15 confirmation runner implemented, still unauthorized, 2026-10-17
+
+On `cursor/h15-candidate-reuse-confirm-runner` from locked prep
+`ff91a94`. The guarded H15 runner is implemented against unused MCC
+**(0.004, 0.0021, 0.05)**. Locked yaml/protocol hashes are unchanged.
+`authorized: false`, `runs: 0`. No training or collection. Not a
+result. Not learning-to-learn, not AGI. Report
+`NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RUNNER.md`. Earlier entries remain
+history.
+
 ## Latest — H15 same-design confirmation locked, collection unauthorized, 2026-10-17
 
 On `cursor/h15-candidate-reuse-confirm-prep` from H14 results
