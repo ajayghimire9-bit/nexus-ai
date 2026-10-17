@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — H16 same-state library effect not established
+
+On `cursor/h16-same-state-library-execute`: unused MCC
+(0.0015, 0.0014, 0.055). Primary D_same **+0.023 [−0.014, +0.060]**,
+label `h16_same_state_library_effect_not_established`. 2.065 s /
+84,000 / 81,920. One-run consumed. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_RESULTS.md`. No learning-to-learn or
+AGI.
+
 ## Latest — H16 independent readiness audit, collection unauthorized
 
 Source-only audit on

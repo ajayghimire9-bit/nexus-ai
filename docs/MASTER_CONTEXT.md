@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H16 same-state library effect not established, 2026-10-17
+
+On `cursor/h16-same-state-library-execute`: unused MCC
+**(0.0015, 0.0014, 0.055)**, same-state L0-versus-redraw ranking.
+Primary D_same **+0.023 [−0.014, +0.060]** — interval includes 0;
+6/10 seeds positive. Label
+`h16_same_state_library_effect_not_established`. 2.065 s / 84,000 /
+81,920. Reset-plus-prefix identity passed on this run. Not a
+200-step control claim. Not learning-to-learn, not AGI. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_RESULTS.md`. Earlier entries remain
+history.
+
 ## Latest — H16 independent readiness audit, collection unauthorized, 2026-10-17
 
 On `cursor/h16-same-state-independent-readiness-audit` from runner

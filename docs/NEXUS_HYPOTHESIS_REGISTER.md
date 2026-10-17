@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-same-state-library-ranking is not established on this holdout
+
+H16: D_same **+0.023 [−0.014, +0.060]** (df 9, 6/10 positive).
+Label `h16_same_state_library_effect_not_established`. Same-state
+L0-versus-redraw selection quality was not resolved. H14/H15 stay
+closed. Not a control result. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_RESULTS.md`.
+
 ## Latest — H-same-state-library-ranking runner is audit-ready, not collected
 
 Independent source-only audit of the H16 runner. Locked design

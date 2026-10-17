@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H16 passed independent audit; do not authorize here
+## Current decision — H16 is closed and inconclusive; do not retune
+
+H16 did not establish a same-state L0-versus-redraw interaction
+(`+0.023 [−0.014, +0.060]`). Do not enlarge the library, change
+physics, or reopen H14/H15. The remaining mechanistic question is
+whether occupancy after the comparison state, not library identity
+at that state, carries the closed H14/H15 return gap. Nothing is
+pre-authorized. Session ledger: 3294.158 s remain. Report
+`NEXUS_H16_SAME_STATE_LIBRARY_RESULTS.md`.
+
+## Previous — H16 passed independent audit; do not authorize here
 
 Independent readiness audit verdict
 **READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. Locked hashes match.
