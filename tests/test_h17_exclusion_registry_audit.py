@@ -23,6 +23,22 @@ def test_duplicate_or_malformed_mapping_rejected(text):
         m.parse_config(text)
 
 
+def test_legacy_on_off_keys_preserved_without_mutating_yaml_global_loader():
+    import yaml
+    text = 'modes:\n  on:\n    reset_base: 100\n  off:\n    reset_base: 200\nflag: false'
+    data = m.parse_config(text)
+    assert set(data['modes']) == {'on','off'}
+    assert data['flag'] is False
+    assert len(m.config_metadata('toy.yaml',data)['seed_bases']) == 2
+    assert set(yaml.safe_load(text)['modes']) == {True,False}
+
+
+def test_numeric_horizon_keys_preserved_and_nested_metadata_still_visited():
+    data = m.parse_config('candidates: {1: 48, 3: 16, 6: 8}\nother:\n  12:\n    reset_base: 300')
+    assert data['candidates'] == {1:48,3:16,6:8}
+    assert m.config_metadata('old.yaml',data)['seed_bases'] == [dict(field='other.[integer:12].reset_base',base=300)]
+
+
 @pytest.mark.parametrize('row', [[True,0.001,0.07], [float('nan'),0.001,0.07], ['0.002',0.001,0.07], [0.,0.001,0.07], [0.002,0.001]])
 def test_invalid_explicit_physics_rejected(row):
     with pytest.raises(ValueError):
@@ -79,6 +95,8 @@ def test_inventory_unions_divergent_refs_and_retains_parsing_failures(tmp_path,m
             return b'commitA\n'
         if args[1] == 'status':
             return b''
+        if args[1] == 'show':
+            return (tmp_path/'artifacts/h16_same_state_library_feasibility.json').read_bytes()
         raise AssertionError(args)
     monkeypatch.setattr(m.subprocess,'check_output',git)
     out = m.inventory(tmp_path)

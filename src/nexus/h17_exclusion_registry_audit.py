@@ -7,6 +7,7 @@ import ast
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 
 import yaml
@@ -16,6 +17,16 @@ from nexus.h16_selection_mechanism_diagnosis import number, require, verify_prov
 
 class UniqueLoader(yaml.SafeLoader):
     pass
+
+
+# Preserve literal legacy on/off/yes/no labels. Restrict boolean resolution
+# locally to true/false; do not mutate PyYAML's global loader or old configs.
+UniqueLoader.yaml_implicit_resolvers = {
+    key:[(tag,pattern) for tag,pattern in values if tag != 'tag:yaml.org,2002:bool']
+    for key,values in yaml.SafeLoader.yaml_implicit_resolvers.items()
+}
+UniqueLoader.add_implicit_resolver('tag:yaml.org,2002:bool',
+    re.compile(r'^(?:true|True|TRUE|false|False|FALSE)$'), list('tTfF'))
 
 
 def unique_mapping(loader, node):
@@ -60,11 +71,11 @@ def config_metadata(path, data):
 
     def visit(mapping, prefix=''):
         for key, value in mapping.items():
-            require(type(key) is str, 'non-string config key')
-            field = prefix+key
+            require(type(key) in (str,int), 'unsupported configuration key type')
+            field = prefix+(key if type(key) is str else f'[integer:{key}]')
             if type(value) is dict:
                 visit(value, field+'.')
-            elif key.endswith('_base') and type(value) is int:
+            elif type(key) is str and key.endswith('_base') and type(value) is int:
                 require(0 <= value < 2**32, 'invalid seed base')
                 bases.append(dict(field=field, base=value))
             elif key in ('source_physics', 'target_physics', 'eval_physics') and value is not None:
@@ -151,18 +162,20 @@ def inventory(root):
             issues.append(dict(path=path,git_blob=blob,error=str(error)))
     # Keep the previously reviewed historical exclusion list as additive evidence.
     legacy_path = root/'artifacts/h16_same_state_library_feasibility.json'
-    legacy = json.loads(legacy_path.read_text())
+    legacy_bytes = git('show', 'HEAD:artifacts/h16_same_state_library_feasibility.json')
+    legacy = json.loads(legacy_bytes)
     for row in legacy['closed_mcc_physics']:
         add(physics_key(row),dict(path=str(legacy_path.relative_to(root)),field='closed_mcc_physics',classification='historical_inventory'))
     ranges = merge_ranges([(0,999999)] + [(b['base'],min(2**32-1,b['base']+999999)) for b in bases])
     excluded = [dict(physics=list(k), evidence=v) for k,v in sorted(candidates.items())]
     ambiguous = [r['physics'] for r in excluded if not any(e['classification'] in ('explicit_mcc','historical_inventory') for e in r['evidence'])]
+    source_status = git('status','--porcelain').decode()
     return dict(status='metadata_inventory_only_not_a_lock', target_selected=False,
                 locked=False, authorized=False, source_revision=git('rev-parse','HEAD').decode().strip(),
-                source_dirty=bool(git('status','--porcelain').strip()),
+                source_dirty=bool(source_status.strip()), source_status_porcelain=source_status,
                 ref_snapshot=refs, unique_commits=len(commits), inputs=inputs,
                 input_config_blob_count=sum(r['path'] != family_path for r in inputs),
-                legacy_inventory_sha256=hashlib.sha256(legacy_path.read_bytes()).hexdigest(),
+                legacy_inventory_sha256=hashlib.sha256(legacy_bytes).hexdigest(),
                 excluded_physics=excluded, ambiguous_only_exclusions=ambiguous,
                 seed_base_evidence=bases, conservative_seed_reservations=ranges,
                 reservation_policy='exclude_0_to_999999_and_each_config_base_plus_999999_inclusive',
