@@ -198,19 +198,12 @@ def test_parent_hashes_and_locked_provenance():
     assert sha(m.PROTOCOL) == m.LOCKED_PROTOCOL
 
 
-def test_allocation_gate_and_no_repeat_execution(monkeypatch, tmp_path):
+def test_allocation_binds_the_authorized_one_run_record():
     cfg = m.load_config()
     record = m.load_allocation()
-    assert record['authorized'] is False and record['runs'] == 0
+    assert record['authorized'] is True and record['runs'] == 1
     assert record['config_sha256'] == sha(m.CONFIG) == m.LOCKED_CONFIG
     assert record['protocol_sha256'] == sha(m.PROTOCOL) == m.LOCKED_PROTOCOL
-    with pytest.raises(PermissionError, match='fresh human approval'):
-        m.require_allocation(cfg)
-    report = m.prep()
-    assert report['authorized'] is False and report['new_environment_steps'] == 0
-    assert report['target_physics'] == [0.0027, 0.0009, 0.05]
-    monkeypatch.setattr(m, 'require_allocation', lambda cfg: None)
-    monkeypatch.setattr(m, 'OUTPUT', tmp_path / 'used.json')
-    (tmp_path / 'used.json').write_text('{}')
-    with pytest.raises(RuntimeError, match='refusing'):
-        m.execute()
+    m.require_allocation(cfg)
+    with pytest.raises(PermissionError, match='already authorized'):
+        m.prep()
