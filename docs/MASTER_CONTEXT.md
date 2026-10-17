@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — cross-environment context-code (rung 3) locked unauthorized, 2026-10-17
+
+On `cursor/xenv-context-code` from `9d3e5ce`. Direction C chosen because
+rung 1 (+18.618) and rung 2 (+2.575) both failed to establish naive trunk
+sharing, and deepening sharing shrank the point estimate. Locked design:
+support-inferred 8-d FiLM on the rung-1 trunk, matched scratch, holdout
+`mcc_xenv_v4` **(0.0027, 0.0009, 0.05)**, seeds `65,000,000+`. Caps
+**600 s / 44,000 / 3,072,000**. `authorized: false`. No collection. A Cline
+uncommitted draft on `mcc_xenv_v3` was inspected and not used. Not
+learning-to-learn, not AGI. Reports `NEXUS_XENV_CONTEXT_CODE_PROTOCOL.md`
+and `NEXUS_XENV_CONTEXT_CODE_PREP.md`. Earlier entries remain history.
+
 ## Latest — cross-environment rung 2 (deep shared trunk) not established, 2026-10-16
 
 Rung 2 on `cline/xenv-deep-trunk`: both 64→64 trunk layers shared across

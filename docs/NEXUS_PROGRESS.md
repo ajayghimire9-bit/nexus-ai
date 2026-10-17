@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — cross-environment context-code (rung 3) locked, collection unauthorized
+
+Direction C is locked on `cursor/xenv-context-code` from `9d3e5ce`:
+support-inferred 8-d FiLM on the closed rung-1 trunk versus matched scratch
+on new unused MountainCarContinuous physics `mcc_xenv_v4`
+**(0.0027, 0.0009, 0.05)**. Seeds `65,000,000+`. Config SHA256 `8a64693a…`,
+protocol SHA256 `34e9b869…`. Allocation `authorized: false`. No training, no
+new episodes, no holdout outcomes. Rungs 1–2 stay closed. Report
+`NEXUS_XENV_CONTEXT_CODE_PROTOCOL.md`. No learning-to-learn or AGI.
+
 ## Latest — cross-environment rung 2 (deep shared trunk) not established
 
 The authorized one-run rung completed (no invalid attempts): both trunk

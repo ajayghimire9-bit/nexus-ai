@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent bounded work is the prefix-max tree-reuse versus H=16 development screen in `docs/NEXUS_PREFIX_MAX_TREE_REUSE_RESULTS.md`. Prefix-max minus H=16 **−9.832 [−31.108, 11.445]** is labeled `prefix_max_tree_reuse_not_established`. Nearest remaining **−14.751** also failed. Cheap reuse of the H=16 tree from `s` did not replace 771-step successor search. Compute-matched backup stays established on Pendulum **60.182** and MountainCar **54.649**, not Acrobot **12.834**. Cross-family learning is not supported. Do not retune closed screens. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the cross-environment deep-trunk screen in `docs/NEXUS_XENV_DEEP_TRUNK_RESULTS.md`. `xenv − scratch` **+2.575 [−16.248, +21.399]** is labeled `xenv_deep_trunk_not_established`. Rung 1 **+18.618 [−20.400, +57.636]** is also closed. The locked unauthorized follow-up is support-inferred FiLM context-code versus matched scratch on frozen unused MountainCarContinuous physics `mcc_xenv_v4` (`docs/NEXUS_XENV_CONTEXT_CODE_PROTOCOL.md`): **600 s / 44,000 / 3,072,000**, `authorized: false`. Do not retune closed screens. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

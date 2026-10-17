@@ -1,6 +1,30 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — cross-environment rungs 1 and 2 both not established; next is scale or mechanism, not trunk depth
+## Locked — cross-environment context-code (rung 3), collection unauthorized
+
+Protocol `docs/NEXUS_XENV_CONTEXT_CODE_PROTOCOL.md` on
+`cursor/xenv-context-code` from `9d3e5ce`. Config SHA256
+`8a64693a9bb793b0db958768fe5dc42f957b6e4c3a785fdc8ff15cec13fa70c8`. Protocol
+SHA256 `34e9b8699d38e7c58888001d87a8bae84ee9e1c37c320ab28c06e649747d0f62`.
+Direction **C**: support-inferred 8-d FiLM on the closed rung-1 trunk versus
+matched scratch. Holdout `mcc_xenv_v4` **(0.0027, 0.0009, 0.05)**. Seeds
+`65,000,000+`. Primary: `xenv − scratch` mean > 0 and CI lower bound > 0.
+Budget **600 s / 44,000 / 3,072,000 / 10 epoch-budgets**. Allocation
+`authorized: false`, `runs: 0`. Collection is **not** authorized. Do not
+treat this heading as a result. Prep `NEXUS_XENV_CONTEXT_CODE_PREP.md`.
+
+## Current decision — choose C (context-code), not A or B; do not collect yet
+
+Rungs 1 and 2 closed `not_established`. Direction A (deeper trunk) is
+complete; deepening sharing shrank the point estimate (+18.618 → +2.575).
+Direction B as a family-ID table is identification, not adaptation. The
+locked next test is C: support-inferred FiLM context on the rung-1 trunk,
+matched-data scratch, new unused physics. Scale (~125k steps) exceeds the
+100k standing cap and is not this lock. A Cline uncommitted draft uses
+`mcc_xenv_v3` / `64,000,000+` and is not this protocol. Collection is
+**not** authorized until a bound one-run allocation exists.
+
+## Previous decision — cross-environment rungs 1 and 2 both not established; next is scale or mechanism, not trunk depth
 
 Rung 2 is **complete**: `xenv − scratch` **+2.575 [−16.248, +21.399]** on new
 MountainCarContinuous physics (0.0028, 0.0013, 0.065) — interval includes 0.

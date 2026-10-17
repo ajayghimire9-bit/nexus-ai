@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-support-inferred-context-code-improves-new-environment-adaptation is locked, not collected
+
+H3: a support-inferred 8-d FiLM context on the closed rung-1 shared trunk
+improves matched-data MountainCarContinuous adaptation versus the identical
+architecture trained from scratch. No family-ID table. Target physics
+`mcc_xenv_v4` **(0.0027, 0.0009, 0.05)** unused. Primary: `xenv − scratch`
+mean > 0 and CI lower bound > 0 over ten seeds. Collection unauthorized.
+This is not a result. Protocol `NEXUS_XENV_CONTEXT_CODE_PROTOCOL.md`.
+
 ## Latest — H-deep-shared-trunk-across-environments-improves-new-environment-adaptation was not established
 
 The complete matched-data rung passed its integrity gates but failed the
