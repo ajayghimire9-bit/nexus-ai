@@ -1,0 +1,38 @@
+starting_sha: 925cb2ca929209500ac6bbcf29706d802420dd62
+n_model_seeds: 10
+source_family: mountaincar_continuous
+target_family: mountaincar_continuous
+holdout_rule: mcc_native_rms_v1
+target_physics: [[0.0029, 0.0022, 0.055]]
+target_budget: 128
+source_train: 512
+target_train: 128
+target_val: 32
+train_epochs: 20
+train_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+hidden: [64, 64]
+horizon: 16
+n_candidates: 16
+n_actions: 3
+episode_steps: 200
+practical_margin: 0.0
+time_cap_s: 600
+env_cap: 10720
+model_cap: 1024000
+reset_base: 70000000
+step_seed_base: 70100000
+collect_source_base: 70200000
+collect_target_base: 70300000
+cross_family_weights: false
+new_architecture_family: false
+retune_from_closed_splits: false
+claims_learning_to_learn: false
+is_agi: false
+parents:
+  docs/NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md: f394c78eade92bf87bf963dfc5e8fdb8fe5d4f23665d126687108554cd3c0179
+  artifacts/xenv_transfer_failure_synthesis.json: a4f04c16c62536c0efe25272b759824a2084d9525ecbf7854825d6a88e325d48
+  docs/NEXUS_XENV_CARTPOLE_TARGET_RESULTS.md: 519744aaff371c503308c5ccf7dcf2ce49b68a6efb2f33f6a435d73f77443865
+  docs/NEXUS_XENV_LOW_BUDGET_RESULTS.md: 181dc75f181728940e1f35c5b94ef3ef9f18726cfa403e4237f84d27dc2ebfbf
+  artifacts/xenv_cartpole_target.json: e04448c55be316ef4b6f55ef6ec05487ef0e1cc9d1739a67b8d556fa7834e498

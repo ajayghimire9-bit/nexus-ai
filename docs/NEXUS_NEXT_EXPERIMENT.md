@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — within-family MCC source-RMS, collection unauthorized until allocation
+
+Protocol `docs/NEXUS_MCC_NATIVE_RMS_PROTOCOL.md` on `cursor/mcc-native-rms`
+from `925cb2c`. Holdout `mcc_native_rms_v1` **(0.0029, 0.0022, 0.055)**.
+Seeds `70,000,000+`. Same residual MLP; treatment is frozen source-MCC
+RMS versus fresh target RMS at budget 128. Caps
+**600 s / 10,720 / 1,024,000**. `authorized: false`. No cross-family
+weights. Closed xenv holdouts stay closed.
+
 ## Current decision — leave shared-trunk xenv closed; next concept is family-native interface adaptation
 
 Seven xenv rungs are closed. Synthesis

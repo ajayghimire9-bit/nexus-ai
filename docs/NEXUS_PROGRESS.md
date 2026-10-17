@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — within-family MCC source-RMS locked, collection unauthorized
+
+H8 is locked on `cursor/mcc-native-rms` from `925cb2c`: unused MCC
+**(0.0029, 0.0022, 0.055)**, source RMS versus scratch RMS at 128
+transitions. Caps **600 s / 10,720 / 1,024,000**. `authorized: false`.
+No training. Report `NEXUS_MCC_NATIVE_RMS_PROTOCOL.md`. No
+learning-to-learn or AGI.
+
 ## Latest — cross-family shared-trunk synthesis; no collection
 
 Source-only analysis of rungs 1–7: every primary includes 0. Shared

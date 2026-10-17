@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the seven-rung xenv failure synthesis in `docs/NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md`. All seven primaries include 0. Do not add another shared-trunk, FiLM, low-budget, or target-family variant. The recommended next concept is family-native interface adaptation; it is not authorized. CartPole-target **−2.500**, low-budget **+18.453**, prior-scale **−4.761**, residual FiLM **−1.819**, occupancy FiLM **−2.300**, deep trunk **+2.575**, and shared layer **+18.618** remain closed. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the seven-rung xenv failure synthesis in `docs/NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md`. The locked unauthorized follow-up is within-family MCC source-RMS adaptation (`docs/NEXUS_MCC_NATIVE_RMS_PROTOCOL.md`): **600 s / 10,720 / 1,024,000**, `authorized: false`. Do not add another shared-trunk xenv variant or retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

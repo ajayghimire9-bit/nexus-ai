@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC source-RMS locked unauthorized, 2026-10-17
+
+On `cursor/mcc-native-rms` from `925cb2c`. Tests the synthesis
+recommendation: frozen source-MCC observation RMS versus fresh target
+RMS on unused MCC physics `mcc_native_rms_v1` **(0.0029, 0.0022, 0.055)**
+at 128 target transitions. Caps **600 s / 10,720 / 1,024,000**.
+`authorized: false`. No collection. No cross-family weights. Not
+learning-to-learn, not AGI. Report `NEXUS_MCC_NATIVE_RMS_PROTOCOL.md`.
+Earlier entries remain history.
+
 ## Latest — cross-family shared-trunk synthesis, 2026-10-17
 
 Source-only review of the seven closed xenv rungs on

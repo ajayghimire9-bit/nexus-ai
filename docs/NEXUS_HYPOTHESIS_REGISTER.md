@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-source-mcc-rms-improves-128-transition-adaptation is locked, not collected
+
+H8: a residual world model trained on 128 unused-MCC transitions with
+frozen source `mcc_default` observation RMS beats the identical model
+with fresh target RMS. Primary: `source_rms − scratch_rms` mean > 0 and
+CI lower bound > 0. Collection unauthorized. This is not a result.
+Protocol `NEXUS_MCC_NATIVE_RMS_PROTOCOL.md`.
+
 ## Latest — H-shared-hidden-layer-is-the-wrong-cross-family-unit is a supported interpretation, not a trained label
 
 Synthesis of seven closed `not_established` primaries plus the V0.6.6
