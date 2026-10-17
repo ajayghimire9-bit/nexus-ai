@@ -1,6 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Locked — residual-aware context (rung 4), collection unauthorized until allocation
+## Current decision — residual-aware context is not established; do not add another FiLM variant
+
+Rung 4 is **complete**: `xenv − scratch` **−1.819 [−23.729, +20.091]** on
+`mcc_xenv_v5` (0.0019, 0.0013, 0.065). Label
+`xenv_residual_context_not_established`. Rungs 1–3 stay closed. Do not
+retune FiLM, pad, support length, or this holdout. Four matched-data xenv
+rungs at this scale have failed. A scale-up exceeds the 100k standing cap.
+Nothing is pre-authorized. Session ledger: 3377.327 s remain. Report
+`NEXUS_XENV_RESIDUAL_CONTEXT_RESULTS.md`.
+
+## Consumed — residual-aware context versus matched scratch, one-run remaining 0
+
+Primary completed: **−1.819 [−23.729, +20.091]**. Further collection on
+this configuration is **not** authorized.
+
+## Previous — locked residual-aware context (rung 4)
 
 Protocol `docs/NEXUS_XENV_RESIDUAL_CONTEXT_PROTOCOL.md` on
 `cursor/xenv-residual-context` from `c129c62`. Holdout `mcc_xenv_v5`

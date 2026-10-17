@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the occupancy-only context-code screen in `docs/NEXUS_XENV_CONTEXT_CODE_RESULTS.md`. `xenv − scratch` **−2.300 [−9.921, +5.320]** is labeled `xenv_context_code_not_established`. Rung 1 **+18.618** and rung 2 **+2.575** remain closed. This does not test residual-aware support encoding. Do not retune closed screens. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the residual-aware context-code screen in `docs/NEXUS_XENV_RESIDUAL_CONTEXT_RESULTS.md`. `xenv − scratch` **−1.819 [−23.729, +20.091]** is labeled `xenv_residual_context_not_established`. Occupancy-only context **−2.300**, deep trunk **+2.575**, and shared layer **+18.618** remain closed. Do not retune closed screens or add another FiLM variant on this recipe. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

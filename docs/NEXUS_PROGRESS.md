@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — residual-aware context-code not established
+
+The authorized one-run rung completed: residual-aware FiLM gave
+`xenv − scratch` **−1.819 [−23.729, +20.091]** on (0.0019, 0.0013, 0.065).
+Label `xenv_residual_context_not_established`. 18.470 s / 44,000 /
+3,072,000; audit passed; session ledger 3377.327 s remain. Four xenv rungs
+closed. Report `NEXUS_XENV_RESIDUAL_CONTEXT_RESULTS.md`. No
+learning-to-learn or AGI.
+
 ## Latest — cross-environment occupancy-only context-code not established
 
 The authorized one-run rung completed (no invalid attempts): occupancy-

@@ -93,3 +93,17 @@ def test_allocation_binds_the_authorized_one_run_record():
     m.require_allocation(cfg)
     with pytest.raises(PermissionError, match='already authorized'):
         m.prep()
+
+
+def test_recorded_residual_context_result_passes_the_independent_audit():
+    import json
+    from pathlib import Path
+    p = json.loads(m.OUTPUT.read_text())
+    assert p['complete'] is True and p['label'] == 'xenv_residual_context_not_established'
+    audit = m.audit_results()
+    assert audit['audit_passed'] is True and audit['raw_sha256'] == sha(m.OUTPUT)
+    primary = p['groups']['primary']['interval']
+    assert primary['n'] == 10 and primary['lo'] < 0 < primary['hi']
+    usage = json.loads(Path('artifacts/research_session_xenv_residual_context_usage.json').read_text())
+    assert usage['status'] == 'complete' and usage['label'] == p['label']
+    assert float(usage['remaining_session_allowance_s']) == 3377.327

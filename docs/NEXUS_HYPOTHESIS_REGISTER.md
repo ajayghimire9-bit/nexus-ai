@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-residual-aware-context-code-improves-new-environment-adaptation was not established
+
+Complete matched-data rung: `xenv − scratch` **−1.819 [−23.729, +20.091]**
+on unused MCC physics. Label `xenv_residual_context_not_established`. Closes
+only this residual-aware FiLM configuration. No retune. Report
+`NEXUS_XENV_RESIDUAL_CONTEXT_RESULTS.md`.
+
 ## Latest — H-support-inferred-context-code-improves-new-environment-adaptation was not established
 
 The complete matched-data rung passed its integrity gates but failed the

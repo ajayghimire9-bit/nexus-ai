@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — residual-aware context-code not established, 2026-10-17
+
+Rung 4 on `cursor/xenv-residual-context`: support-inferred FiLM that may
+read normalized `s'−s`, evaluated on unused MCC physics (0.0019, 0.0013,
+0.065). Primary `xenv − scratch` **−1.819 [−23.729, +20.091]** — includes 0.
+Label `xenv_residual_context_not_established`. 18.470 s / 44,000 /
+3,072,000. Four consecutive xenv rungs are closed. Not learning-to-learn,
+not AGI. Report `NEXUS_XENV_RESIDUAL_CONTEXT_RESULTS.md`. Earlier entries
+remain history.
+
 ## Latest — cross-environment occupancy-only context-code not established, 2026-10-17
 
 Rung 3 on `cursor/xenv-context-code`: support-inferred 8-d FiLM from
