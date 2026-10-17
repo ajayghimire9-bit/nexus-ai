@@ -100,12 +100,51 @@ def guarded_env_step(env, action, meter):
         raise
 
 
-def guarded_collect(collect_fn, spec, n, env_seeds, base_seed, meter):
-    meter.preflight_collection(int(n))
-    dataset = collect_fn(spec, n_transitions=int(n), env_seeds=env_seeds,
-                         base_seed=base_seed, mix=('random', 'exploratory'))
-    if len(dataset) != int(n):
+def _wrap_collector_env(env, meter, reserved, inner_steps):
+    inner = env.step
+
+    def guarded_step(*args, **kwargs):
+        meter.check()
+        if inner_steps['n'] >= reserved:
+            raise RuntimeError('collector would exceed reserved env steps')
+        inner_steps['n'] += 1
+        return inner(*args, **kwargs)
+
+    env.step = guarded_step
+    return env
+
+
+def guarded_collect(collect_fn, spec, n, env_seeds, base_seed, meter, *, make_env_fn=None):
+    """Reserve n env steps, then reject any inner simulator step beyond that n.
+
+    Dataset length alone is not sufficient. Production collection goes through
+    ``make_task_env``; those constructors are wrapped for the duration of the
+    call so extra inner ``env.step`` calls fail before they execute.
+    """
+    reserved = int(n)
+    meter.preflight_collection(reserved)
+    inner_steps = {'n': 0}
+    import nexus.tasks.spec as spec_mod
+    import nexus.world.data as data_mod
+    original_spec = spec_mod.make_task_env
+    original_data = data_mod.make_task_env
+    factory = make_env_fn or original_spec
+
+    def counting_make(*args, **kwargs):
+        return _wrap_collector_env(factory(*args, **kwargs), meter, reserved, inner_steps)
+
+    spec_mod.make_task_env = counting_make
+    data_mod.make_task_env = counting_make
+    try:
+        dataset = collect_fn(spec, n_transitions=reserved, env_seeds=env_seeds,
+                             base_seed=base_seed, mix=('random', 'exploratory'))
+    finally:
+        spec_mod.make_task_env = original_spec
+        data_mod.make_task_env = original_data
+    if len(dataset) != reserved:
         raise ValueError('collection length drifted from reserved allocation')
+    if inner_steps['n'] not in (0, reserved):
+        raise ValueError('collector inner-step count drifted from reservation')
     return dataset
 
 
@@ -310,6 +349,8 @@ def train_seed_models(cfg, spec, priors, seed, meter, *, collect_fn=None, train_
         from nexus.world.data import concat_datasets
         concat = concat_datasets
     rms_fn = rms_fn or fit_rms
+    if len(priors) != int(cfg['n_source_physics']):
+        raise ValueError('H14 source count drifted')
     parts = []
     for i, prior in enumerate(priors):
         base = int(cfg['collect_source_base']) + 120 * seed + 40 * i

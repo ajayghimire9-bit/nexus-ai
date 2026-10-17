@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-shared-proposal-resampling-changes-relative-recede is audit-ready, not collected
+
+Independent readiness audit: runner may be authorized once, separately.
+Collection unauthorized. This is not a result. Report
+`NEXUS_H14_INDEPENDENT_READINESS_AUDIT.md`.
+
 ## Latest — H-shared-proposal-resampling-changes-relative-recede has a runner, not a result
 
 H14 execution logic is implemented. The locked design is unchanged.

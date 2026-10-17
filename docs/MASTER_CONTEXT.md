@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H14 runner independent readiness audit, 2026-10-17
+
+On `cursor/h14-runner-independent-readiness-audit` from runner
+`591c2c2`. Source-only adversarial review. Locked hashes match.
+A collector inner-step hole was closed without changing locked
+science. Verdict **READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**.
+`authorized: false`, `runs: 0`. No collection. Not a result. Report
+`NEXUS_H14_INDEPENDENT_READINESS_AUDIT.md`. Earlier entries remain
+history.
+
 ## Latest — H14 candidate-reuse runner implemented, still unauthorized, 2026-10-17
 
 On `cursor/h14-candidate-reuse-runner` from locked prep `05542bb`.

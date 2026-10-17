@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — H14 runner independent readiness audit
+
+Source-only audit on `cursor/h14-runner-independent-readiness-audit`
+from `591c2c2` verified locked hashes, closed a collector inner-step
+hole, and judged the runner
+**READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. No collection.
+`authorized: false`, `runs: 0`. Report
+`NEXUS_H14_INDEPENDENT_READINESS_AUDIT.md`. No learning-to-learn or
+AGI.
+
 ## Latest — H14 candidate-reuse runner implemented, collection unauthorized
 
 The H14 execution runner is implemented on
