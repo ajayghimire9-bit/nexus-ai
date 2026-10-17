@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — CartPole-target transfer locked, collection unauthorized
+
+Rung 7 is locked on `cursor/xenv-cartpole-target` from `fd50808`: unused
+CartPole physics `cartpole_xenv_v1` **(6.5, 0.57, 0.28)** versus matched
+scratch. Priors exclude CartPole. Caps **600 s / 44,000 / 3,072,000**.
+Allocation `authorized: false`. No training. Report
+`NEXUS_XENV_CARTPOLE_TARGET_PROTOCOL.md`. No learning-to-learn or AGI.
+
 ## Latest — 128-only transfer primary not established
 
 The authorized one-run rung completed: 2×-prior `XEnvNet` on unused

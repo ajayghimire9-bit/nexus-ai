@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — CartPole-target transfer, collection unauthorized until allocation
+
+Protocol `docs/NEXUS_XENV_CARTPOLE_TARGET_PROTOCOL.md` on
+`cursor/xenv-cartpole-target` from `fd50808`. Holdout `cartpole_xenv_v1`
+**(6.5, 0.57, 0.28)**. Seeds `69,000,000+`. Priors are Acrobot +
+MountainCar + MCC; target is unused CartPole. Caps
+**600 s / 44,000 / 3,072,000**. `authorized: false`. MCC-target rungs
+stay closed.
+
 ## Current decision — 128-only transfer is not established; leave this MCC-target line closed
 
 Rung 6 is **complete**: primary `xenv − scratch` **+18.453 [−20.207, +57.113]**

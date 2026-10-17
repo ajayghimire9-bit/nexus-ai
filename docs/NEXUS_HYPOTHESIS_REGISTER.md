@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-cartpole-target-shared-layer-improves-new-environment-adaptation is locked, not collected
+
+H7: closed rung-1 `XEnvNet` pretrained on Acrobot + MountainCar + MCC
+improves matched-data unused CartPole adaptation versus the identical
+architecture trained from scratch. Target physics `cartpole_xenv_v1`
+**(6.5, 0.57, 0.28)**. Primary: mean over {128, 1024} `xenv − scratch`
+with CI lower bound > 0. Collection unauthorized. This is not a result.
+Protocol `NEXUS_XENV_CARTPOLE_TARGET_PROTOCOL.md`.
+
 ## Latest — H-128-only-prior-establishes-scarce-target-transfer was not established
 
 Complete 128-only primary on unused MCC physics: `xenv − scratch`

@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — CartPole-target transfer locked unauthorized, 2026-10-17
+
+On `cursor/xenv-cartpole-target` from `fd50808`. Six MCC-target xenv rungs
+are closed. Locked next question: rung-1 `XEnvNet` pretrained on Acrobot +
+MountainCar + MCC versus matched scratch on unused CartPole physics
+`cartpole_xenv_v1` **(6.5, 0.57, 0.28)**. Seeds `69,000,000+`. Caps
+**600 s / 44,000 / 3,072,000**. `authorized: false`. No collection. Not
+learning-to-learn, not AGI. Report `NEXUS_XENV_CARTPOLE_TARGET_PROTOCOL.md`.
+Earlier entries remain history.
+
 ## Latest — 128-only transfer primary not established, 2026-10-17
 
 Rung 6 on `cursor/xenv-low-budget-128`: 2×-prior closed rung-1 `XEnvNet`,

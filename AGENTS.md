@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the 128-only transfer screen in `docs/NEXUS_XENV_LOW_BUDGET_RESULTS.md`. Primary `xenv − scratch` **+18.453 [−20.207, +57.113]** is labeled `xenv_low_budget_not_established`. Prior-scale **−4.761**, residual FiLM **−1.819**, occupancy FiLM **−2.300**, deep trunk **+2.575**, and shared layer **+18.618** remain closed. Do not retune `mcc_xenv_v6` or `mcc_xenv_v7`. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the 128-only transfer screen in `docs/NEXUS_XENV_LOW_BUDGET_RESULTS.md`. Primary `xenv − scratch` **+18.453 [−20.207, +57.113]** is labeled `xenv_low_budget_not_established`. The locked unauthorized follow-up is CartPole-target transfer on unused physics `cartpole_xenv_v1` (`docs/NEXUS_XENV_CARTPOLE_TARGET_PROTOCOL.md`): **600 s / 44,000 / 3,072,000**, `authorized: false`. Do not retune closed MCC holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority
