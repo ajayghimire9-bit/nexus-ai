@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MCC same-state planning-ranking diagnostic locked unauthorized, 2026-10-17
+
+On `cursor/mcc-planning-ranking-diagnostic-prep` from `95dbebc`.
+Four-state reset-only ranking grid of the frozen H10 recipe versus
+scratch on unused MCC **(0.0027, 0.0015, 0.075)**. Shared 16×16
+candidates. Primary is sequence regret, not 200-step return. Caps
+**300 s / 28,480 / 348,160**. `authorized: false`. No collection.
+Not learning-to-learn, not AGI. Report
+`NEXUS_MCC_PLANNING_RANKING_PROTOCOL.md`. Earlier entries remain
+history.
+
 ## Latest — H10/H11 prediction-versus-control source audit, 2026-10-17
 
 On `cursor/h10-h11-control-disagreement-audit` from `668463e`.

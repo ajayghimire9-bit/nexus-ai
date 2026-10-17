@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h10-recipe-ranks-shared-h16-candidates-better-than-scratch is locked, not collected
+
+H12: frozen H10 multitask has lower same-state sequence regret than
+scratch on four unused-MCC reset states. Primary:
+`scratch_regret − multitask_regret` mean > 0 and CI lower bound > 0.
+Collection unauthorized. This is not a result. Protocol
+`NEXUS_MCC_PLANNING_RANKING_PROTOCOL.md`.
+
 ## Latest — H-one-step-val-MAE-is-insufficient-for-MCC-H16-control is supported on saved artifacts
 
 Source-only: H10 and H11 paired returns reconstruct; late-window

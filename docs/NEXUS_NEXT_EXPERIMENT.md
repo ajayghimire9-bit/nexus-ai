@@ -1,6 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — source audit closed; next is a same-state ranking diagnostic
+## Current decision — lock MCC same-state ranking diagnostic; collection unauthorized
+
+H12 is locked on unused MCC `mcc_planning_ranking_v1`
+**(0.0027, 0.0015, 0.075)**. Four reset states, shared 16×16
+candidates, sequence-regret primary. Caps **300 s / 28,480 / 348,160**.
+`authorized: false`. Do not retune H10/H11. Protocol
+`NEXUS_MCC_PLANNING_RANKING_PROTOCOL.md`.
+
+## Previous — source audit closed; next is a same-state ranking diagnostic
 
 H10/H11 artifact audit is complete. MAE is not a control sufficient
 statistic on these holdouts. The smallest untested object is first-horizon

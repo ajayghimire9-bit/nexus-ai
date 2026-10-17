@@ -1,0 +1,52 @@
+starting_sha: 95dbebc962e53c12f271fe8ed02fe61c2ac55fc5
+n_model_seeds: 10
+source_family: mountaincar_continuous
+target_family: mountaincar_continuous
+holdout_rule: mcc_planning_ranking_v1
+target_physics: [[0.0027, 0.0015, 0.075]]
+source_physics:
+  - [0.0025, 0.0015, 0.07]
+  - [0.0038, 0.0019, 0.085]
+  - [0.0024, 0.0019, 0.09]
+target_budget: 128
+n_source_physics: 3
+source_train: 512
+target_train: 128
+target_val: 32
+pretrain_epochs: 15
+train_epochs: 20
+train_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+hidden: [64, 64]
+horizon: 16
+n_candidates: 16
+n_actions: 3
+n_states: 4
+episode_steps: 16
+restore_method: reset_same_seed
+closed_loop_horizon: 16
+h10_negative_seeds_used: false
+full_episode_primary: false
+practical_margin: 0.0
+time_cap_s: 300
+env_cap: 28480
+model_cap: 348160
+reset_base: 74000000
+state_reset_base: 74100000
+candidate_base: 74200000
+collect_source_base: 74300000
+collect_target_base: 74400000
+closed_loop_step_base: 74500000
+cross_family_weights: false
+new_architecture_family: false
+retune_from_closed_splits: false
+claims_learning_to_learn: false
+is_agi: false
+parents:
+  artifacts/h10_h11_control_disagreement_audit.json: 048a9f3bec9f23d1855e0aadde7bbfd516e4fb2d01b429bb40ca55fff9d35742
+  docs/NEXUS_H10_H11_CONTROL_DISAGREEMENT_AUDIT.md: ba733228b2bd1321fa9527bf1aa613982ffdc38d29f8f5e141292d8c0c78656e
+  artifacts/mcc_multitask_128_confirm.json: e8045423ff257e2f55acbead5a3f2eafc54f5ed5f88dab99933cca5eea286950
+  docs/NEXUS_MCC_MULTITASK_128_CONFIRM_RESULTS.md: 016c1853c3cd83adc893307e36227a3a6d67d56e4351a14c852ab6515c67cc9f
+  artifacts/mcc_multitask_128.json: caca746457eb72e89c95b6f8b9cd82c7cf06cff68713ff1d9ad8a98519e4d274
+  src/nexus/world/mcc_multitask_128.py: 79a26fed3d0b4a852cd8194492ae67977af41965a56effc01d7441b006dfc701

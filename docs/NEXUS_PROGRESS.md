@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — MCC same-state planning-ranking diagnostic locked, collection unauthorized
+
+H12 is locked on `cursor/mcc-planning-ranking-diagnostic-prep` from
+`95dbebc`: unused MCC **(0.0027, 0.0015, 0.075)**, four reset states,
+shared H=16 candidates, sequence-regret primary. Caps
+**300 s / 28,480 / 348,160**. `authorized: false`. No training. Report
+`NEXUS_MCC_PLANNING_RANKING_PROTOCOL.md`. No learning-to-learn or AGI.
+
 ## Latest — H10/H11 prediction-versus-control source audit
 
 Source-only audit on `cursor/h10-h11-control-disagreement-audit` from
