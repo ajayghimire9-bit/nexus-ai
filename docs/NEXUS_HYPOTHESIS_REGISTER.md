@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h14-interaction-replicates-on-new-holdout was supported in this configuration
+
+Complete H15 grid on unused MCC physics: DiD
+**+0.230 [+0.111, +0.349]**. Label
+`h15_fixed_library_helps_multitask_relative`. Closes only this
+same-design confirmation. No retune. Not a 200-step control claim.
+Report `NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RESULTS.md`.
+
 ## Latest — H-h14-interaction-replicates-on-new-holdout is audit-ready, not collected
 
 Independent readiness audit: runner may be authorized once, separately.

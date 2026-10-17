@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — H15 fixed-library helps multitask relative
+
+The authorized one-run H15 confirmation completed: unused MCC
+(0.004, 0.0021, 0.05), DiD primary **+0.230 [+0.111, +0.349]**.
+Label `h15_fixed_library_helps_multitask_relative`. 4.437 s /
+29,760 / 655,360; saved label rebuilds; session ledger 3296.223 s
+remain. Within-mode comparisons include 0 and are not primary. This
+configuration only. Report
+`NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RESULTS.md`.
+No learning-to-learn or AGI.
+
 ## Latest — H15 runner independent readiness audit
 
 Source-only audit on `cursor/h15-runner-independent-readiness-audit`

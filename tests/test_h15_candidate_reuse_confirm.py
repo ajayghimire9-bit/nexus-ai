@@ -98,6 +98,8 @@ def test_authorized_one_run_record_is_loadable_and_not_consumed():
     rec = m.load_allocation()
     if rec.get('authorized') is not True:
         pytest.skip('one-run allocation not yet flipped')
+    if rec.get('consumed') is True:
+        pytest.skip('one-run allocation already consumed')
     cfg = m.load_config()
     assert rec['runs'] == 1
     assert rec['consumed'] is False

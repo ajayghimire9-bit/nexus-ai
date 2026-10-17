@@ -9,6 +9,14 @@ if __name__ == '__main__':
                         help='refused until a later authorized one-run allocation exists')
     args = parser.parse_args()
     if args.execute:
-        runner.execute()
-    report = runner.prep()
-    print(json.dumps(report, indent=2, default=float))
+        payload = runner.execute()
+        print(json.dumps({
+            'complete': payload.get('complete'),
+            'label': payload.get('label'),
+            'wall_clock_s': payload.get('wall_clock_s'),
+            'counts': payload.get('counts'),
+            'target_physics': payload.get('target_physics'),
+        }, indent=2, default=float))
+    else:
+        report = runner.prep()
+        print(json.dumps(report, indent=2, default=float))

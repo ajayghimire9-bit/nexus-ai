@@ -1,6 +1,22 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H15 is ready for a separate one-run authorization
+## Current decision — H15 established on this holdout; leave it closed
+
+H15 is **complete**: DiD **+0.230 [+0.111, +0.349]** on
+`mcc_candidate_reuse_confirm_v1` (0.004, 0.0021, 0.05). Label
+`h15_fixed_library_helps_multitask_relative`. Do not retune this
+holdout or H10–H14. The H14 interaction replicated under the same
+controller on a second unused MCC physics. That is not general
+control or learning-to-learn. Nothing is pre-authorized. Session
+ledger: 3296.223 s remain. Report
+`NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RESULTS.md`.
+
+## Consumed — H15 same-design confirmation, one-run remaining 0
+
+Primary completed: **+0.230 [+0.111, +0.349]**. Further collection
+on this configuration is **not** authorized.
+
+## Previous — H15 is ready for a separate one-run authorization
 
 Independent source-only audit judged the guarded runner
 **READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. Locked unused MCC

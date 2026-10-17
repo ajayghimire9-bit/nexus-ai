@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H15 fixed-library helps multitask relative, 2026-10-17
+
+On `cursor/h15-candidate-reuse-confirm-execute`: unused MCC
+(0.004, 0.0021, 0.05), frozen H14 design, 77M seeds. Primary D
+**+0.230 [+0.111, +0.349]** — lower bound above 0; 10/10 seeds
+positive. Label `h15_fixed_library_helps_multitask_relative`.
+4.437 s / 29,760 / 655,360. Within-mode intervals include 0 and are
+not the label. Same-design confirmation of H14 on this holdout only.
+Not a 200-step control claim. Not learning-to-learn, not AGI. Report
+`NEXUS_H15_CANDIDATE_REUSE_CONFIRM_RESULTS.md`. Earlier entries remain
+history.
+
 ## Latest — H15 runner independent readiness audit, 2026-10-17
 
 On `cursor/h15-runner-independent-readiness-audit` from runner
