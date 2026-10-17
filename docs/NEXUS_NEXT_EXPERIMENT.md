@@ -1,6 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Locked — within-family MCC source-RMS, collection unauthorized until allocation
+## Current decision — source-MCC RMS is not established; do not retune this holdout
+
+H8 is **complete**: `source_rms − scratch_rms` **+2.185 [−64.564, +68.935]**
+on `mcc_native_rms_v1` (0.0029, 0.0022, 0.055). Label
+`mcc_native_rms_not_established`. Do not retune this holdout or reopen
+xenv. The remaining family-native object named by the synthesis is a
+1–3d residual-scale from support `s′−s`, which needs its own unused
+physics and protocol. Nothing is pre-authorized. Session ledger:
+3326.720 s remain. Report `NEXUS_MCC_NATIVE_RMS_RESULTS.md`.
+
+## Consumed — source-MCC RMS versus scratch RMS, one-run remaining 0
+
+Primary completed: **+2.185 [−64.564, +68.935]**. Further collection on
+this configuration is **not** authorized.
+
+## Previous — locked within-family MCC source-RMS, collection unauthorized until allocation
 
 Protocol `docs/NEXUS_MCC_NATIVE_RMS_PROTOCOL.md` on `cursor/mcc-native-rms`
 from `925cb2c`. Holdout `mcc_native_rms_v1` **(0.0029, 0.0022, 0.055)**.

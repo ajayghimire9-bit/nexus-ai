@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC source-RMS not established, 2026-10-17
+
+On `cursor/mcc-native-rms`: unused MCC (0.0029, 0.0022, 0.055), frozen
+source-MCC observation RMS versus fresh target RMS at 128 transitions.
+Primary `source_rms − scratch_rms` **+2.185 [−64.564, +68.935]** —
+includes 0. Label `mcc_native_rms_not_established`. 4.929 s / 10,720 /
+1,024,000. Not a shared-trunk xenv rung. Not learning-to-learn, not AGI.
+Report `NEXUS_MCC_NATIVE_RMS_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — within-family MCC source-RMS locked unauthorized, 2026-10-17
 
 On `cursor/mcc-native-rms` from `925cb2c`. Tests the synthesis

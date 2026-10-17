@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the seven-rung xenv failure synthesis in `docs/NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md`. The locked unauthorized follow-up is within-family MCC source-RMS adaptation (`docs/NEXUS_MCC_NATIVE_RMS_PROTOCOL.md`): **600 s / 10,720 / 1,024,000**, `authorized: false`. Do not add another shared-trunk xenv variant or retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the within-family MCC source-RMS screen in `docs/NEXUS_MCC_NATIVE_RMS_RESULTS.md`. Primary `source_rms − scratch_rms` **+2.185 [−64.564, +68.935]** is labeled `mcc_native_rms_not_established`. The seven xenv rungs remain closed. Do not retune `mcc_native_rms_v1` or add a shared-trunk variant. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

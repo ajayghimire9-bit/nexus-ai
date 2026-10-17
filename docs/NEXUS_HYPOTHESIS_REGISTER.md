@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-source-mcc-rms-improves-128-transition-adaptation was not established
+
+Complete 128-only primary on unused MCC physics: `source_rms − scratch_rms`
+**+2.185 [−64.564, +68.935]**. Label `mcc_native_rms_not_established`.
+Closes only this source-RMS configuration. No retune. Report
+`NEXUS_MCC_NATIVE_RMS_RESULTS.md`.
+
 ## Latest — H-source-mcc-rms-improves-128-transition-adaptation is locked, not collected
 
 H8: a residual world model trained on 128 unused-MCC transitions with

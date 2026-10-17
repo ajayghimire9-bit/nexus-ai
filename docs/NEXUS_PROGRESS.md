@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — within-family MCC source-RMS not established
+
+The authorized one-run screen completed: source-MCC RMS versus scratch
+RMS on unused (0.0029, 0.0022, 0.055) gave
+`source_rms − scratch_rms` **+2.185 [−64.564, +68.935]**. Label
+`mcc_native_rms_not_established`. 4.929 s / 10,720 / 1,024,000; audit
+passed; session ledger 3326.720 s remain. Report
+`NEXUS_MCC_NATIVE_RMS_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — within-family MCC source-RMS locked, collection unauthorized
 
 H8 is locked on `cursor/mcc-native-rms` from `925cb2c`: unused MCC
