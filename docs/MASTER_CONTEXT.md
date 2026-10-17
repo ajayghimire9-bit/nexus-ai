@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC multitask beat scratch at 128, 2026-10-17
+
+On `cursor/mcc-multitask-128`: unused MCC (0.0032, 0.0022, 0.06),
+three-source residual pretrain versus scratch at 128 transitions, same
+target RMS. Primary `multitask − scratch` **+145.785 [+106.617, +184.953]**
+— lower bound above 0; 10/10 seeds positive. Label
+`mcc_multitask_128_beats_scratch`. 5.612 s / 20,960 / 1,024,000. This
+configuration only. Not learning-to-learn, not AGI. Report
+`NEXUS_MCC_MULTITASK_128_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — within-family MCC multitask at 128 locked unauthorized, 2026-10-17
 
 On `cursor/mcc-multitask-128` from `954beb1`. Tests the cited

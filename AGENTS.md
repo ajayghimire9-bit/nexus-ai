@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the within-family MCC residual-scale screen in `docs/NEXUS_MCC_RESIDUAL_SCALE_RESULTS.md`. Primary `source_scale − unit_scale` **−54.381 [−105.776, −2.987]** is labeled `mcc_residual_scale_harm_established`. Source-RMS **+2.185** remains `not_established`. The seven xenv rungs remain closed. Do not retune these holdouts or add a shared-trunk variant. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the within-family MCC multitask-at-128 screen in `docs/NEXUS_MCC_MULTITASK_128_RESULTS.md`. Primary `multitask − scratch` **+145.785 [+106.617, +184.953]** is labeled `mcc_multitask_128_beats_scratch`. Residual-scale **−54.381** remains `harm_established`. Source-RMS **+2.185** remains `not_established`. The seven xenv rungs remain closed. Do not retune these holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

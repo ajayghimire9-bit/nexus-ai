@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-within-family-mcc-multitask-improves-128-transition-adaptation was supported in this configuration
+
+Complete 128-only primary on unused MCC physics:
+`multitask − scratch` **+145.785 [+106.617, +184.953]**. Label
+`mcc_multitask_128_beats_scratch`. Closes only this three-source
+weight-pretrain configuration. No retune. Report
+`NEXUS_MCC_MULTITASK_128_RESULTS.md`.
+
 ## Latest — H-within-family-mcc-multitask-improves-128-transition-adaptation is locked, not collected
 
 H10: a residual world model pretrained on three other MCC physics and

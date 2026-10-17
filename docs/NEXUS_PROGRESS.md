@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — within-family MCC multitask beat scratch at 128
+
+The authorized one-run screen completed: three-source residual pretrain
+versus scratch on unused (0.0032, 0.0022, 0.06) gave
+`multitask − scratch` **+145.785 [+106.617, +184.953]**. Label
+`mcc_multitask_128_beats_scratch`. 5.612 s / 20,960 / 1,024,000;
+audit passed; session ledger 3316.143 s remain. Report
+`NEXUS_MCC_MULTITASK_128_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — within-family MCC multitask at 128 locked, collection unauthorized
 
 H10 is locked on `cursor/mcc-multitask-128` from `954beb1`: unused MCC

@@ -1,6 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — one authorized 600-second 20,960-step MCC multitask-128 run
+## Current decision — within-family MCC multitask beat scratch; confirm on new unused physics
+
+H10 is **complete**: `multitask − scratch`
+**+145.785 [+106.617, +184.953]** on `mcc_multitask_128_v1`
+(0.0032, 0.0022, 0.06). Label `mcc_multitask_128_beats_scratch`.
+Do not retune this holdout, source count, or budget. Next is a
+same-design confirmation on new unused MCC physics. Interface
+transplants and xenv stay closed. Nothing is pre-authorized. Session
+ledger: 3316.143 s remain. Report `NEXUS_MCC_MULTITASK_128_RESULTS.md`.
+
+## Consumed — within-family MCC multitask versus scratch, one-run remaining 0
+
+Primary completed: **+145.785 [+106.617, +184.953]**. Further
+collection on this configuration is **not** authorized.
+
+## Previous — one authorized 600-second 20,960-step MCC multitask-128 run
 
 H10 is locked on unused MCC `mcc_multitask_128_v1` **(0.0032, 0.0022, 0.06)**.
 Treatment is pretrained residual weights from three other MCC physics
