@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — within-family MCC multitask confirmation not established
+
+The authorized one-run confirmation completed: frozen H10 recipe versus
+scratch on unused (0.0022, 0.0016, 0.07) gave
+`multitask − scratch` **+18.879 [−65.988, +103.747]**. Label
+`mcc_multitask_128_confirm_not_established`. 5.428 s / 20,960 /
+1,024,000; audit passed; session ledger 3310.715 s remain. Report
+`NEXUS_MCC_MULTITASK_128_CONFIRM_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — within-family MCC multitask confirmation locked, collection unauthorized
 
 H11 is locked on `cursor/mcc-multitask-128-confirm` from `5f8cda3`:

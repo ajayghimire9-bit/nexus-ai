@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-within-family-mcc-multitask-128-replicates-on-new-holdout was not established
+
+Complete 128-only confirmation on unused MCC physics:
+`multitask − scratch` **+18.879 [−65.988, +103.747]**. Label
+`mcc_multitask_128_confirm_not_established`. Closes only this
+same-design confirmation. H10 remains a single-holdout positive
+screen. No retune. Report `NEXUS_MCC_MULTITASK_128_CONFIRM_RESULTS.md`.
+
 ## Latest — H-within-family-mcc-multitask-128-replicates-on-new-holdout is locked, not collected
 
 H11: the frozen H10 recipe on unused MCC (0.0022, 0.0016, 0.07) beats

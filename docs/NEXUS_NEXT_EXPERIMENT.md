@@ -1,6 +1,22 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — one authorized 600-second 20,960-step H11 confirmation run
+## Current decision — H11 confirmation did not replicate; leave this holdout closed
+
+H11 is **complete**: `multitask − scratch`
+**+18.879 [−65.988, +103.747]** on `mcc_multitask_128_confirm_v1`
+(0.0022, 0.0016, 0.07). Label `mcc_multitask_128_confirm_not_established`.
+Do not retune this holdout, H10, source count, or budget. H10 remains
+a single-holdout positive screen, not a replicated fact. Interface
+transplants and xenv stay closed. Nothing is pre-authorized. Session
+ledger: 3310.715 s remain. Report
+`NEXUS_MCC_MULTITASK_128_CONFIRM_RESULTS.md`.
+
+## Consumed — H11 same-design confirmation, one-run remaining 0
+
+Primary completed: **+18.879 [−65.988, +103.747]**. Further collection
+on this configuration is **not** authorized.
+
+## Previous — one authorized 600-second 20,960-step H11 confirmation run
 
 H11 is locked on unused MCC `mcc_multitask_128_confirm_v1`
 **(0.0022, 0.0016, 0.07)**. Frozen H10 recipe versus scratch. Caps

@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC multitask confirmation not established, 2026-10-17
+
+On `cursor/mcc-multitask-128-confirm`: unused MCC (0.0022, 0.0016, 0.07),
+frozen H10 three-source residual pretrain versus scratch at 128
+transitions, same target RMS. Primary `multitask − scratch`
+**+18.879 [−65.988, +103.747]** — includes 0; 8/10 seeds positive.
+Label `mcc_multitask_128_confirm_not_established`. 5.428 s / 20,960 /
+1,024,000. H10 stay closed. This configuration only. Not
+learning-to-learn, not AGI. Report
+`NEXUS_MCC_MULTITASK_128_CONFIRM_RESULTS.md`. Earlier entries remain
+history.
+
 ## Latest — within-family MCC multitask confirmation locked unauthorized, 2026-10-17
 
 On `cursor/mcc-multitask-128-confirm` from `5f8cda3`. Same-design
