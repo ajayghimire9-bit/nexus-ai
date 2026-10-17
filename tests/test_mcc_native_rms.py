@@ -32,14 +32,11 @@ def test_summarize_is_source_minus_scratch_at_128():
     assert out['label'] == 'mcc_native_rms_beats_scratch'
 
 
-def test_allocation_unauthorized():
+def test_allocation_binds_the_authorized_one_run_record():
     cfg = m.load_config()
     record = m.load_allocation()
-    assert record['authorized'] is False and record['runs'] == 0
+    assert record['authorized'] is True and record['runs'] == 1
     assert record['config_sha256'] == sha(m.CONFIG) == m.LOCKED_CONFIG
-    with pytest.raises(PermissionError):
-        m.require_allocation(cfg)
-    report = m.prep()
-    assert report['target_physics'] == [0.0029, 0.0022, 0.055]
-    assert report['new_environment_steps'] == 0
-    assert report['cross_family_weights'] is False
+    m.require_allocation(cfg)
+    with pytest.raises(PermissionError, match='already authorized'):
+        m.prep()
