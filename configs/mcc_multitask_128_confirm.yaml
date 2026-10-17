@@ -1,0 +1,44 @@
+starting_sha: 5f8cda330194786dfe450292ba34a01e7b42540c
+n_model_seeds: 10
+source_family: mountaincar_continuous
+target_family: mountaincar_continuous
+holdout_rule: mcc_multitask_128_confirm_v1
+target_physics: [[0.0022, 0.0016, 0.07]]
+source_physics:
+  - [0.0025, 0.0015, 0.07]
+  - [0.0038, 0.0019, 0.085]
+  - [0.0024, 0.0019, 0.09]
+target_budget: 128
+n_source_physics: 3
+source_train: 512
+target_train: 128
+target_val: 32
+pretrain_epochs: 15
+train_epochs: 20
+train_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+hidden: [64, 64]
+horizon: 16
+n_candidates: 16
+n_actions: 3
+episode_steps: 200
+practical_margin: 0.0
+time_cap_s: 600
+env_cap: 20960
+model_cap: 1024000
+reset_base: 73000000
+step_seed_base: 73100000
+collect_source_base: 73200000
+collect_target_base: 73300000
+cross_family_weights: false
+new_architecture_family: false
+retune_from_closed_splits: false
+claims_learning_to_learn: false
+is_agi: false
+parents:
+  artifacts/mcc_multitask_128.json: caca746457eb72e89c95b6f8b9cd82c7cf06cff68713ff1d9ad8a98519e4d274
+  docs/NEXUS_MCC_MULTITASK_128_RESULTS.md: 9c8f0274ed3778f4197319e74217427a1432d05658b21c59676652eb4143d480
+  configs/mcc_multitask_128.yaml: eaa07dc035afe9f21be7f0dc9d4f99c3dc0f0d7f7c179ccf395485dd32745ae7
+  docs/NEXUS_MCC_MULTITASK_128_PROTOCOL.md: e3da47f78e25ef27f8296b4d6713d848dfad73709f9d044360ad5dd179c2cdcd
+  src/nexus/world/mcc_multitask_128.py: 79a26fed3d0b4a852cd8194492ae67977af41965a56effc01d7441b006dfc701

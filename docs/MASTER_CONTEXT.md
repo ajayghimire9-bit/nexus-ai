@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC multitask confirmation locked unauthorized, 2026-10-17
+
+On `cursor/mcc-multitask-128-confirm` from `5f8cda3`. Same-design
+replication of H10 on unused holdout `mcc_multitask_128_confirm_v1`
+**(0.0022, 0.0016, 0.07)**. Frozen H10 recipe, three source physics,
+target RMS, 128-transition scratch match. Caps
+**600 s / 20,960 / 1,024,000**. `authorized: false`. No collection.
+H10 data stay closed. Not learning-to-learn, not AGI. Report
+`NEXUS_MCC_MULTITASK_128_CONFIRM_PROTOCOL.md`. Earlier entries remain
+history.
+
 ## Latest — within-family MCC multitask beat scratch at 128, 2026-10-17
 
 On `cursor/mcc-multitask-128`: unused MCC (0.0032, 0.0022, 0.06),

@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — within-family MCC multitask confirmation locked, collection unauthorized
+
+H11 is locked on `cursor/mcc-multitask-128-confirm` from `5f8cda3`:
+unused MCC **(0.0022, 0.0016, 0.07)**, frozen H10 three-source
+multitask versus scratch at 128. Caps **600 s / 20,960 / 1,024,000**.
+`authorized: false`. No training. Report
+`NEXUS_MCC_MULTITASK_128_CONFIRM_PROTOCOL.md`. No learning-to-learn or AGI.
+
 ## Latest — within-family MCC multitask beat scratch at 128
 
 The authorized one-run screen completed: three-source residual pretrain

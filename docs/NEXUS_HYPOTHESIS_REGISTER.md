@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-within-family-mcc-multitask-128-replicates-on-new-holdout is locked, not collected
+
+H11: the frozen H10 recipe on unused MCC (0.0022, 0.0016, 0.07) beats
+scratch at 128. Same sources, target RMS, and decision rule. Primary:
+`multitask − scratch` mean > 0 and CI lower bound > 0. Collection
+unauthorized. This is not a result. Protocol
+`NEXUS_MCC_MULTITASK_128_CONFIRM_PROTOCOL.md`.
+
 ## Latest — H-within-family-mcc-multitask-improves-128-transition-adaptation was supported in this configuration
 
 Complete 128-only primary on unused MCC physics:
