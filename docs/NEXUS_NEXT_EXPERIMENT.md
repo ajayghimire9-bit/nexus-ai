@@ -1,6 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Locked — CartPole-target transfer, collection unauthorized until allocation
+## Current decision — CartPole-target transfer is not established; leave this xenv line closed
+
+Rung 7 is **complete**: primary `xenv − scratch` **−2.500 [−10.359, +5.359]**
+on `cartpole_xenv_v1` (6.5, 0.57, 0.28). Label
+`xenv_cartpole_target_not_established`. Seven xenv rungs are closed
+across two target families. Do not add an Acrobot-target copy, FiLM
+variants, or retune closed holdouts. Leave the cross-family shared-trunk
+line closed at this scale. Nothing is pre-authorized. Session ledger:
+3331.649 s remain. Report `NEXUS_XENV_CARTPOLE_TARGET_RESULTS.md`.
+
+## Consumed — CartPole-target versus matched scratch, one-run remaining 0
+
+Primary completed: **−2.500 [−10.359, +5.359]**. Further collection on
+this configuration is **not** authorized.
+
+## Previous — locked CartPole-target transfer, collection unauthorized until allocation
 
 Protocol `docs/NEXUS_XENV_CARTPOLE_TARGET_PROTOCOL.md` on
 `cursor/xenv-cartpole-target` from `fd50808`. Holdout `cartpole_xenv_v1`

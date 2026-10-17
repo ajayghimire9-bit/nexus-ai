@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — CartPole-target transfer not established
+
+The authorized one-run rung completed: rung-1 `XEnvNet` on unused
+`cartpole_xenv_v1` (6.5, 0.57, 0.28) gave primary `xenv − scratch`
+**−2.500 [−10.359, +5.359]**. Label
+`xenv_cartpole_target_not_established`. 10.233 s / 38,066 of 44,000 /
+1,552,896 of 3,072,000; audit passed; session ledger 3331.649 s remain.
+Seven xenv rungs closed. Report `NEXUS_XENV_CARTPOLE_TARGET_RESULTS.md`.
+No learning-to-learn or AGI.
+
 ## Latest — CartPole-target transfer locked, collection unauthorized
 
 Rung 7 is locked on `cursor/xenv-cartpole-target` from `fd50808`: unused

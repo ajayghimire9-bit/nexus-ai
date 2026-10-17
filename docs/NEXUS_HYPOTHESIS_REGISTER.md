@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-cartpole-target-shared-layer-improves-new-environment-adaptation was not established
+
+Complete matched-data rung: primary `xenv − scratch` **−2.500 [−10.359,
++5.359]** on unused CartPole physics. Label
+`xenv_cartpole_target_not_established`. Family swap off MCC did not
+establish transfer. No retune. Report
+`NEXUS_XENV_CARTPOLE_TARGET_RESULTS.md`.
+
 ## Latest — H-cartpole-target-shared-layer-improves-new-environment-adaptation is locked, not collected
 
 H7: closed rung-1 `XEnvNet` pretrained on Acrobot + MountainCar + MCC
