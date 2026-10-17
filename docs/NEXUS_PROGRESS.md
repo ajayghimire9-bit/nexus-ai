@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — H17 draft readiness contracts, source only
+
+On `codex/h17-protocol-readiness`: connected non-executable draft config,
+480 symbolic seed keys with alias checks, native-float64 replay-record
+checks, and complete20-file checkpoint byte-audit contract. 98 source-only
+tests pass. Readiness remains `not_lock_ready`: no target or actual seeds
+selected, no checkpoint/runner manifest, no allocation or scientific run.
+Proposed costs remain62,360 real /174,080 imagined; actual counts are zero.
+Ledger unchanged at305.842 used /3294.158 remaining. Report
+`NEXUS_H17_PROTOCOL_READINESS.md`. Closed H14–H16 evidence is unchanged.
+
 ## Latest — H17 occupancy feasibility only, not locked or authorized
 
 Source-only design retains reference and all four learned source policies,

@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — H17 requires registration and independent lock review
+
+Source-only readiness contracts now validate the five-source/t12 draft,
+symbolic RNG schema, native-state replay records and checkpoint-file grid.
+No physics or numerical seeds were selected. Complete exclusion/seed
+registries, future checkpoint/tensor manifests and a guarded native-state
+runner remain prerequisites. Draft status is `not_lock_ready`, not execution
+permission. One next task: separately scoped registration and independent
+lock review before scientific execution. Ledger unchanged305.842 /3294.158.
+Report `NEXUS_H17_PROTOCOL_READINESS.md`.
+
 ## Current — H17 occupancy feasibility needs a separate lock review
 
 Recommended candidate: reference plus multitask/scratch × fixed/redraw
