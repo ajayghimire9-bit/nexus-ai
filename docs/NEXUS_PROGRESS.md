@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — MCC same-state ranking confirmation locked, collection unauthorized
+
+H13 is locked on `cursor/mcc-planning-ranking-confirm` from `4dbe664`:
+unused MCC **(0.0039, 0.002, 0.075)**, same-design H12 ranking
+confirmation. Caps **300 s / 28,480 / 348,160**. `authorized: false`.
+No training. Report `NEXUS_MCC_PLANNING_RANKING_CONFIRM_PROTOCOL.md`.
+No learning-to-learn or AGI.
+
 ## Latest — MCC same-state planning-ranking multitask better
 
 The authorized one-run ranking diagnostic completed: frozen H10 recipe

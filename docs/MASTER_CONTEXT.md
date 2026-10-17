@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — MCC same-state ranking confirmation locked unauthorized, 2026-10-17
+
+On `cursor/mcc-planning-ranking-confirm` from `4dbe664`. Same-design
+replication of H12 on unused holdout `mcc_planning_ranking_confirm_v1`
+**(0.0039, 0.002, 0.075)**. Frozen H12/H10 recipe, four reset states,
+sequence-regret primary. Caps **300 s / 28,480 / 348,160**.
+`authorized: false`. No collection. H12 data stay closed. Not
+learning-to-learn, not AGI. Report
+`NEXUS_MCC_PLANNING_RANKING_CONFIRM_PROTOCOL.md`. Earlier entries remain
+history.
+
 ## Latest — MCC same-state planning-ranking multitask better, 2026-10-17
 
 On `cursor/mcc-planning-ranking-runner`: unused MCC (0.0027, 0.0015, 0.075),

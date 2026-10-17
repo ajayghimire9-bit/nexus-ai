@@ -1,0 +1,52 @@
+starting_sha: 4dbe664672eb5170e2a9848bf320c7750c5e869d
+n_model_seeds: 10
+source_family: mountaincar_continuous
+target_family: mountaincar_continuous
+holdout_rule: mcc_planning_ranking_confirm_v1
+target_physics: [[0.0039, 0.002, 0.075]]
+source_physics:
+  - [0.0025, 0.0015, 0.07]
+  - [0.0038, 0.0019, 0.085]
+  - [0.0024, 0.0019, 0.09]
+target_budget: 128
+n_source_physics: 3
+source_train: 512
+target_train: 128
+target_val: 32
+pretrain_epochs: 15
+train_epochs: 20
+train_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+hidden: [64, 64]
+horizon: 16
+n_candidates: 16
+n_actions: 3
+n_states: 4
+episode_steps: 16
+restore_method: reset_same_seed
+closed_loop_horizon: 16
+h10_negative_seeds_used: false
+full_episode_primary: false
+practical_margin: 0.0
+time_cap_s: 300
+env_cap: 28480
+model_cap: 348160
+reset_base: 75000000
+state_reset_base: 75100000
+candidate_base: 75200000
+collect_source_base: 75300000
+collect_target_base: 75400000
+closed_loop_step_base: 75500000
+cross_family_weights: false
+new_architecture_family: false
+retune_from_closed_splits: false
+claims_learning_to_learn: false
+is_agi: false
+parents:
+  artifacts/mcc_planning_ranking.json: c65bc9f42e3fbfe99b5b7dc4d68f8a08fb63fc04e08d374e619dba2f35bbcb8f
+  docs/NEXUS_MCC_PLANNING_RANKING_RESULTS.md: 88370eafbeae6643648db32f575716f9c60276ce381204151d7522a29bc30c8d
+  configs/mcc_planning_ranking.yaml: 17a48088591e8c9316f5b6bffd7cefac48ea2daf158cac98555204b47546feb6
+  docs/NEXUS_MCC_PLANNING_RANKING_PROTOCOL.md: 6acea6f51bdc8ec0ce0f72ce08996f38a333e2e68f854b8fb6c77e218a57148b
+  src/nexus/world/mcc_planning_ranking.py: 2cc7342ca747f4a667f14171353dad36a89907ac38bb475a94a7a862ef85d817
+  src/nexus/world/mcc_multitask_128.py: 79a26fed3d0b4a852cd8194492ae67977af41965a56effc01d7441b006dfc701

@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h12-ranking-replicates-on-new-holdout is locked, not collected
+
+H13: the frozen H12 ranking recipe on unused MCC (0.0039, 0.002, 0.075)
+beats scratch on same-state sequence regret. Same sources, four reset
+states, and decision rule. Primary: `scratch_regret − multitask_regret`
+mean > 0 and CI lower bound > 0. Collection unauthorized. This is not
+a result. Protocol `NEXUS_MCC_PLANNING_RANKING_CONFIRM_PROTOCOL.md`.
+
 ## Latest — H-h10-recipe-ranks-shared-h16-candidates-better-than-scratch was supported in this configuration
 
 Complete ranking primary on unused MCC physics:
