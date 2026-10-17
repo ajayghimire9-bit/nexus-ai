@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — cross-environment rung 2 (deep shared trunk) not established
+
+The authorized one-run rung completed (no invalid attempts): both trunk
+layers shared across families gave `xenv − scratch` **+2.575 [−16.248,
++21.399]** on new MountainCarContinuous physics (0.0028, 0.0013, 0.065) —
+interval includes 0; the point estimate shrank versus rung 1 and the deeper
+multi-head architecture underperformed the reference @1024. Label
+`xenv_deep_trunk_not_established`. 17.864 s / 44,000 / 3,072,000; audit
+passed; session ledger 3414.313 s remain. Two weight-sharing rungs closed;
+next preregistered decision: pretraining-scale rung or cross-family context
+code. Report `NEXUS_XENV_DEEP_TRUNK_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — cross-environment shared-trunk transfer pilot not established
 
 The authorized one-run pilot completed (one invalid instrumentation-bug attempt

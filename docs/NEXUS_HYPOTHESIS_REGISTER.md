@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-deep-shared-trunk-across-environments-improves-new-environment-adaptation was not established
+
+The complete matched-data rung passed its integrity gates but failed the
+predeclared rule: `xenv − scratch` **+2.575 [−16.248, +21.399]** (student-t
+95%, df 9) on new unused MountainCarContinuous physics, both per-budget
+intervals including 0, and the deeper multi-head architecture underperformed
+the single-family reference @1024. Label `xenv_deep_trunk_not_established`.
+With rung 1 also closed, naive weight sharing across heterogeneous families
+has two consecutive not-established rungs at these pretraining scales. This
+closes the configuration only; the multitask-across-physics lever within a
+family remains established. No retune, no rerun. Report
+`NEXUS_XENV_DEEP_TRUNK_RESULTS.md`.
+
 ## Latest — H-one-shared-layer-across-environments-improves-new-environment-adaptation was not established
 
 The complete matched-data pilot passed its integrity gates but failed the

@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — cross-environment rung 2 (deep shared trunk) not established, 2026-10-16
+
+Rung 2 on `cline/xenv-deep-trunk`: both 64→64 trunk layers shared across
+families behind per-family projections, pretrained on CartPole+Acrobot+
+MountainCar, evaluated on new unused MountainCarContinuous physics
+(0.0028, 0.0013, 0.065) at matched data. Primary `xenv − scratch`
+**+2.575 [−16.248, +21.399]** — includes 0; per-budget gains include 0;
+the deeper multi-head architecture underperformed the reference pipeline
+@1024. Label `xenv_deep_trunk_not_established`. 17.864 s / 44,000 steps /
+3,072,000 imagined; one valid run; audit passed; session ledger 3414.313 s
+remain. Two consecutive weight-sharing rungs closed; the evidence points
+away from naive trunk sharing across heterogeneous families — next
+preregistered decision is a pretraining-scale rung or a cross-family
+context-code mechanism, not another trunk variant. Not learning-to-learn,
+not AGI. Reports `NEXUS_XENV_DEEP_TRUNK_PROTOCOL.md` and
+`NEXUS_XENV_DEEP_TRUNK_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — cross-environment shared-trunk transfer not established (pilot), 2026-10-16
 
 First rung of the decided cross-environment adaptation direction, on

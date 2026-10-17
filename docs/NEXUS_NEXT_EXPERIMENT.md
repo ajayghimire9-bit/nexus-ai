@@ -1,6 +1,33 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — cross-environment rung 1 (one shared layer) is not established; next rung is deeper sharing
+## Current decision — cross-environment rungs 1 and 2 both not established; next is scale or mechanism, not trunk depth
+
+Rung 2 is **complete**: `xenv − scratch` **+2.575 [−16.248, +21.399]** on new
+MountainCarContinuous physics (0.0028, 0.0013, 0.065) — interval includes 0.
+Label `xenv_deep_trunk_not_established`. Rung 1 (+18.618 [−20.400, +57.636])
+is also closed. The target physics of both rungs and both configurations are
+closed; do not retune or rerun them, and do not run further trunk-depth
+variants — two consecutive rungs show naive weight sharing across
+heterogeneous families does not establish transfer at these pretraining
+scales. The established adaptation lever remains multitask pretraining across
+physics variants within a family.
+
+**Two preregistered candidate directions (user decision, fresh locked
+protocol + cost + one-run allocation each; nothing pre-authorized):**
+
+1. **Pretraining-scale rung** — rung-1 architecture with 5× prior data per
+   family (2,560+640 each), everything else frozen; tests whether the
+   mechanism is starved rather than wrong. Estimated ~3× collection cost
+   (~125,000 real steps total, above the 100,000 per-experiment standing cap —
+   would need either a reduced grid or a separate explicit authorization).
+2. **Cross-family context-code mechanism** — a learned per-family context
+   code conditioning the trunk (FiLM-style, connecting to the established
+   within-family context line), same matched-data scratch control.
+
+Session ledger: 3414.313 s of the standing 3600 s remain. Reports:
+`NEXUS_XENV_DEEP_TRUNK_RESULTS.md`, `NEXUS_XENV_TRANSFER_PILOT_RESULTS.md`.
+
+## Previous decision — cross-environment rung 1 (one shared layer) is not established; next rung is deeper sharing
 
 The cross-environment pilot is **complete**: `xenv − scratch` **+18.618
 [−20.400, +57.636]** on new MountainCarContinuous physics at matched data —
