@@ -1,0 +1,42 @@
+starting_sha: 8553c90b2341bc83fef251cd22d8efa711e4d9cd
+n_model_seeds: 10
+prior_families: [cartpole, acrobot, mountaincar]
+target_family: mountaincar_continuous
+holdout_rule: mcc_xenv_v2
+target_physics: [[0.0028, 0.0013, 0.065]]
+target_budgets: [128, 1024]
+target_pool_train: 1024
+target_pool_val: 256
+prior_train: 512
+prior_val: 128
+pretrain_epochs: 15
+pretrain_lr: 0.001
+finetune_epochs: 20
+finetune_lr: 0.0005
+reference_epochs: 20
+reference_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+horizon: 16
+n_candidates: 16
+n_actions: 3
+episode_steps: 200
+practical_margin: 0.0
+time_cap_s: 600
+env_cap: 44000
+model_cap: 3072000
+reset_base: 63500000
+step_seed_base: 63600000
+collect_prior_base: 63700000
+collect_target_base: 63800000
+training_epochs_budget: 10
+retune_from_closed_splits: false
+new_architecture_family: false
+claims_learning_to_learn: false
+claims_weight_transfer_across_families: false
+is_agi: false
+parents:
+  artifacts/xenv_transfer_pilot.json: f6bf1a96a4fd78792eb9a0b43cf0d3677a415dc0134ebf49a8935223c8800c70
+  docs/NEXUS_XENV_TRANSFER_PILOT_RESULTS.md: 81559d4090d368236fa441a7da6d1dded56da8ff4fa7bfdf586002dead8b6f07
+  docs/NEXUS_XENV_TRANSFER_PILOT_PROTOCOL.md: 4e309b4f61e9afa280a632bec024a230a0328d045893690c12596ba22745127e
+  configs/xenv_transfer_pilot.yaml: 531bfe1ab9456dfe93341b324a61ce4c40ff23594534575b141f7496e4fb8a58
