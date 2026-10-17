@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — H14 fixed-library helps multitask relative
+
+The authorized one-run H14 grid completed: unused MCC
+(0.0023, 0.0019, 0.065), DiD primary **+0.178 [+0.009, +0.348]**.
+Label `h14_fixed_library_helps_multitask_relative`. 4.285 s /
+29,760 / 655,360; saved label rebuilds; session ledger 3300.660 s
+remain. Within-mode comparisons include 0 and are not primary. This
+configuration only. Report `NEXUS_H14_CANDIDATE_REUSE_RESULTS.md`.
+No learning-to-learn or AGI.
+
 ## Latest — H14 runner independent readiness audit
 
 Source-only audit on `cursor/h14-runner-independent-readiness-audit`

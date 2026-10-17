@@ -1,6 +1,22 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H14 is ready for a separate one-run authorization
+## Current decision — H14 established on this holdout; leave it closed
+
+H14 is **complete**: DiD **+0.178 [+0.009, +0.348]** on
+`mcc_candidate_reuse_v1` (0.0023, 0.0019, 0.065). Label
+`h14_fixed_library_helps_multitask_relative`. Do not retune this
+holdout or H10–H13. Fixed-library reuse increased the
+multitask-minus-scratch gap relative to redraw under this
+controller. That is not general control or learning-to-learn.
+Nothing is pre-authorized. Session ledger: 3300.660 s remain.
+Report `NEXUS_H14_CANDIDATE_REUSE_RESULTS.md`.
+
+## Consumed — H14 candidate-reuse, one-run remaining 0
+
+Primary completed: **+0.178 [+0.009, +0.348]**. Further collection
+on this configuration is **not** authorized.
+
+## Previous — H14 is ready for a separate one-run authorization
 
 Independent source-only audit judged the guarded runner
 **READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. Locked unused MCC

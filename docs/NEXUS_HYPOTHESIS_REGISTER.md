@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-shared-proposal-resampling-changes-relative-recede was supported in this configuration
+
+Complete H14 grid on unused MCC physics: DiD
+**+0.178 [+0.009, +0.348]**. Label
+`h14_fixed_library_helps_multitask_relative`. Closes only this
+shared-proposal fixed-versus-redraw comparison. No retune. Not a
+200-step control claim. Report `NEXUS_H14_CANDIDATE_REUSE_RESULTS.md`.
+
 ## Latest — H-shared-proposal-resampling-changes-relative-recede is audit-ready, not collected
 
 Independent readiness audit: runner may be authorized once, separately.
