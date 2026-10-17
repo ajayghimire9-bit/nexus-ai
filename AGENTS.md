@@ -75,7 +75,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific result is the H14 candidate-reuse grid in `docs/NEXUS_H14_CANDIDATE_REUSE_RESULTS.md`: DiD **+0.178 [+0.009, +0.348]**, label `h14_fixed_library_helps_multitask_relative`. The H15 same-design confirmation runner is implemented on `cursor/h15-candidate-reuse-confirm-runner` and remains unauthorized (`authorized: false`, `runs: 0`); that is not a control result. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific result is the H14 candidate-reuse grid in `docs/NEXUS_H14_CANDIDATE_REUSE_RESULTS.md`: DiD **+0.178 [+0.009, +0.348]**, label `h14_fixed_library_helps_multitask_relative`. The H15 same-design confirmation is audit-ready on `cursor/h15-runner-independent-readiness-audit` and remains unauthorized (`authorized: false`, `runs: 0`); that is not a control result. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

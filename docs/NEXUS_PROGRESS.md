@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — H15 runner independent readiness audit
+
+Source-only audit on `cursor/h15-runner-independent-readiness-audit`
+from `f18ad85` verified locked hashes and judged the runner
+**READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. No collection.
+`authorized: false`, `runs: 0`. Report
+`NEXUS_H15_INDEPENDENT_READINESS_AUDIT.md`. No learning-to-learn or
+AGI.
+
 ## Latest — H15 confirmation runner implemented, collection unauthorized
 
 The H15 execution runner is implemented on

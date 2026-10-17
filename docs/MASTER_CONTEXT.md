@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H15 runner independent readiness audit, 2026-10-17
+
+On `cursor/h15-runner-independent-readiness-audit` from runner
+`f18ad85`. Source-only adversarial review. Locked hashes match.
+No science files changed. Verdict
+**READY_FOR_SEPARATE_ONE_RUN_AUTHORIZATION**. `authorized: false`,
+`runs: 0`. No collection. Not a result. Report
+`NEXUS_H15_INDEPENDENT_READINESS_AUDIT.md`. Earlier entries remain
+history.
+
 ## Latest — H15 confirmation runner implemented, still unauthorized, 2026-10-17
 
 On `cursor/h15-candidate-reuse-confirm-runner` from locked prep

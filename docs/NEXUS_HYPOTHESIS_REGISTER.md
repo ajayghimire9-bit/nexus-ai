@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h14-interaction-replicates-on-new-holdout is audit-ready, not collected
+
+Independent readiness audit: runner may be authorized once, separately.
+Collection unauthorized. This is not a result. Report
+`NEXUS_H15_INDEPENDENT_READINESS_AUDIT.md`.
+
 ## Latest — H-h14-interaction-replicates-on-new-holdout has a runner, not a result
 
 H15 execution logic is implemented against unused MCC
