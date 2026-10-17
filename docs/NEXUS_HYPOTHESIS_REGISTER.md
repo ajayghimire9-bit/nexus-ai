@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-source-mcc-residual-scale-improves-128-transition-adaptation is locked, not collected
+
+H9: a residual world model trained on 128 unused-MCC transitions with a
+frozen 2-d source residual scale beats unit scale. Both arms share target
+RMS. Primary: `source_scale − unit_scale` mean > 0 and CI lower bound > 0.
+Collection unauthorized. This is not a result. Protocol
+`NEXUS_MCC_RESIDUAL_SCALE_PROTOCOL.md`.
+
 ## Latest — H-source-mcc-rms-improves-128-transition-adaptation was not established
 
 Complete 128-only primary on unused MCC physics: `source_rms − scratch_rms`

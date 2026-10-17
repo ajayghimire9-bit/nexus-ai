@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Locked — within-family MCC residual-scale, collection unauthorized until allocation
+
+Protocol `docs/NEXUS_MCC_RESIDUAL_SCALE_PROTOCOL.md` on
+`cursor/mcc-residual-scale` from `d8e6402`. Holdout
+`mcc_residual_scale_v1` **(0.0021, 0.0018, 0.055)**. Seeds
+`71,000,000+`. Same residual MLP and target RMS; treatment is a frozen
+2-d source residual scale versus unit scale at budget 128. Caps
+**600 s / 10,720 / 1,024,000**. `authorized: false`. Native-RMS and xenv
+holdouts stay closed.
+
 ## Current decision — source-MCC RMS is not established; do not retune this holdout
 
 H8 is **complete**: `source_rms − scratch_rms` **+2.185 [−64.564, +68.935]**

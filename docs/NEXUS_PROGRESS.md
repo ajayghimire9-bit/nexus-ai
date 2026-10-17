@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — within-family MCC residual-scale locked, collection unauthorized
+
+H9 is locked on `cursor/mcc-residual-scale` from `d8e6402`: unused MCC
+**(0.0021, 0.0018, 0.055)**, source residual scale versus unit scale at
+128 transitions. Caps **600 s / 10,720 / 1,024,000**. `authorized: false`.
+No training. Report `NEXUS_MCC_RESIDUAL_SCALE_PROTOCOL.md`. No
+learning-to-learn or AGI.
+
 ## Latest — within-family MCC source-RMS not established
 
 The authorized one-run screen completed: source-MCC RMS versus scratch

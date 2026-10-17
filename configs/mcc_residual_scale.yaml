@@ -1,0 +1,39 @@
+starting_sha: d8e6402f294d8de37eb898d27c3c6f1cc89f8733
+n_model_seeds: 10
+source_family: mountaincar_continuous
+target_family: mountaincar_continuous
+holdout_rule: mcc_residual_scale_v1
+target_physics: [[0.0021, 0.0018, 0.055]]
+target_budget: 128
+source_train: 512
+target_train: 128
+target_val: 32
+scale_dim: 2
+train_epochs: 20
+train_lr: 0.001
+term_weight: 0.25
+batch_size: 128
+hidden: [64, 64]
+horizon: 16
+n_candidates: 16
+n_actions: 3
+episode_steps: 200
+practical_margin: 0.0
+time_cap_s: 600
+env_cap: 10720
+model_cap: 1024000
+reset_base: 71000000
+step_seed_base: 71100000
+collect_source_base: 71200000
+collect_target_base: 71300000
+cross_family_weights: false
+new_architecture_family: false
+retune_from_closed_splits: false
+claims_learning_to_learn: false
+is_agi: false
+parents:
+  docs/NEXUS_MCC_NATIVE_RMS_RESULTS.md: abd7d96af12e95cf0da712a5a03f766b23feec8d734bfb8b83d4b015e4dbc2b7
+  artifacts/mcc_native_rms.json: cdf80571701e78b30560fbed43aa5be77a17c58242167c9a6577ef2f7c067ac7
+  docs/NEXUS_MCC_NATIVE_RMS_PROTOCOL.md: 85f8c38301580fe10466ca2f920b8d5394169c6b45e9f2ffcf8286079a334478
+  docs/NEXUS_XENV_TRANSFER_FAILURE_SYNTHESIS.md: f394c78eade92bf87bf963dfc5e8fdb8fe5d4f23665d126687108554cd3c0179
+  artifacts/xenv_transfer_failure_synthesis.json: a4f04c16c62536c0efe25272b759824a2084d9525ecbf7854825d6a88e325d48

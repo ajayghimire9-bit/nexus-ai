@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — within-family MCC residual-scale locked unauthorized, 2026-10-17
+
+On `cursor/mcc-residual-scale` from `d8e6402`. Tests the remaining
+family-native object: a 2-d source residual scale from `|s′−s|` versus
+unit scale on unused MCC physics `mcc_residual_scale_v1`
+**(0.0021, 0.0018, 0.055)** at 128 transitions. Caps
+**600 s / 10,720 / 1,024,000**. `authorized: false`. No collection. Not
+learning-to-learn, not AGI. Report `NEXUS_MCC_RESIDUAL_SCALE_PROTOCOL.md`.
+Earlier entries remain history.
+
 ## Latest — within-family MCC source-RMS not established, 2026-10-17
 
 On `cursor/mcc-native-rms`: unused MCC (0.0029, 0.0022, 0.055), frozen
