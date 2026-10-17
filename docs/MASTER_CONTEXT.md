@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — 2× prior-data scale not established, 2026-10-17
+
+Rung 5 on `cursor/xenv-prior-scale`: closed rung-1 `XEnvNet` with 1024+256
+source transitions per family, unused MCC physics (0.0022, 0.0019, 0.08).
+Primary `xenv − scratch` **−4.761 [−36.121, +26.599]** — includes 0. Label
+`xenv_prior_scale_not_established`. 17.849 s / 63,200 / 3,072,000. The @128
+secondary (+23.887, lo > 0) is not a label and this holdout is closed. Five
+xenv rungs are closed. Not learning-to-learn, not AGI. Report
+`NEXUS_XENV_PRIOR_SCALE_RESULTS.md`. Earlier entries remain history.
+
 ## Latest — residual-aware context-code not established, 2026-10-17
 
 Rung 4 on `cursor/xenv-residual-context`: support-inferred FiLM that may

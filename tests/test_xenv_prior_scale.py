@@ -41,3 +41,18 @@ def test_allocation_binds_the_authorized_one_run_record():
     m.require_allocation(cfg)
     with pytest.raises(PermissionError, match='already authorized'):
         m.prep()
+
+
+def test_recorded_prior_scale_result_passes_the_independent_audit():
+    import json
+    from pathlib import Path
+    p = json.loads(m.OUTPUT.read_text())
+    assert p['complete'] is True and p['label'] == 'xenv_prior_scale_not_established'
+    audit = m.audit_results()
+    assert audit['audit_passed'] is True and audit['raw_sha256'] == sha(m.OUTPUT)
+    assert int(audit['new_environment_steps']) == 63200
+    primary = p['groups']['primary']['interval']
+    assert primary['n'] == 10 and primary['lo'] < 0 < primary['hi']
+    usage = json.loads(Path('artifacts/research_session_xenv_prior_scale_usage.json').read_text())
+    assert usage['status'] == 'complete' and usage['label'] == p['label']
+    assert float(usage['remaining_session_allowance_s']) == 3359.478

@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — 2× prior-data scale not established
+
+The authorized one-run rung completed: 2× source data on closed rung-1
+`XEnvNet` gave primary `xenv − scratch` **−4.761 [−36.121, +26.599]** on
+(0.0022, 0.0019, 0.08). Label `xenv_prior_scale_not_established`. 17.849 s
+/ 63,200 / 3,072,000; audit passed; session ledger 3359.478 s remain. The
+@128 secondary is not a label. Five xenv rungs closed. Report
+`NEXUS_XENV_PRIOR_SCALE_RESULTS.md`. No learning-to-learn or AGI.
+
 ## Latest — residual-aware context-code not established
 
 The authorized one-run rung completed: residual-aware FiLM gave

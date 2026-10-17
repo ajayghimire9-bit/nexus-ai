@@ -1,6 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Locked — 2× prior-data scale on rung-1 XEnvNet, collection unauthorized until allocation
+## Current decision — 2× prior scale is not established; leave this xenv line closed at this scale
+
+Rung 5 is **complete**: primary `xenv − scratch` **−4.761 [−36.121, +26.599]**
+on `mcc_xenv_v6` (0.0022, 0.0019, 0.08). Label
+`xenv_prior_scale_not_established`. The @128 secondary
+(+23.887 [+1.150, +46.624]) is **not** a label and must not be mined on
+this holdout. Five xenv rungs are closed. Do not add FiLM variants or
+retune. Nothing is pre-authorized. Session ledger: 3359.478 s remain.
+Report `NEXUS_XENV_PRIOR_SCALE_RESULTS.md`.
+
+## Consumed — 2× prior-data scale versus matched scratch, one-run remaining 0
+
+Primary completed: **−4.761 [−36.121, +26.599]**. Further collection on
+this configuration is **not** authorized.
+
+## Previous — locked 2× prior-data scale on rung-1 XEnvNet
 
 Protocol `docs/NEXUS_XENV_PRIOR_SCALE_PROTOCOL.md` on
 `cursor/xenv-prior-scale` from `81e0215`. Holdout `mcc_xenv_v6`

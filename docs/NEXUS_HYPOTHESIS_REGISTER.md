@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-2x-prior-data-establishes-shared-layer-transfer was not established
+
+Complete matched-data rung: primary `xenv − scratch` **−4.761 [−36.121,
++26.599]** on unused MCC physics. Label `xenv_prior_scale_not_established`.
+Starvation at 2× is not supported on the preregistered average of {128,
+1024}. The @128 secondary must not be promoted. No retune. Report
+`NEXUS_XENV_PRIOR_SCALE_RESULTS.md`.
+
 ## Latest — H-residual-aware-context-code-improves-new-environment-adaptation was not established
 
 Complete matched-data rung: `xenv − scratch` **−1.819 [−23.729, +20.091]**
