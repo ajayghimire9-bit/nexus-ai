@@ -67,13 +67,12 @@ def test_pretrain_moves_both_shared_layers_not_target_heads():
         assert torch.equal(sd0[key], sd1[key]), key
 
 
-def test_allocation_gate_stages(monkeypatch, tmp_path):
+def test_allocation_binds_the_authorized_one_run_record():
     cfg = m.load_config()
     record = m.load_allocation()
-    assert record['authorized'] is False and record['runs'] == 0
+    assert record['authorized'] is True and record['runs'] == 1
     assert record['config_sha256'] == sha(m.CONFIG) == m.LOCKED_CONFIG
     assert record['protocol_sha256'] == sha(m.PROTOCOL) == m.LOCKED_PROTOCOL
-    with pytest.raises(PermissionError):
-        m.require_allocation(cfg)
-    report = m.prep()
-    assert report['target_physics'] == [0.0028, 0.0013, 0.065]
+    m.require_allocation(cfg)
+    with pytest.raises(PermissionError, match='already authorized'):
+        m.prep()
