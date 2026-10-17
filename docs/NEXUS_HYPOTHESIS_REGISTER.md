@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-h14-interaction-replicates-on-new-holdout is locked, not collected
+
+H15: exact H14 fixed-versus-redraw DiD on unused MCC
+(0.004, 0.0021, 0.05). Primary: mean D_s and CI entirely above or
+below 0, else not established. Collection unauthorized. This is not
+a result. Protocol `NEXUS_H15_CANDIDATE_REUSE_CONFIRM_PROTOCOL.md`.
+
 ## Latest — H-shared-proposal-resampling-changes-relative-recede was supported in this configuration
 
 Complete H14 grid on unused MCC physics: DiD

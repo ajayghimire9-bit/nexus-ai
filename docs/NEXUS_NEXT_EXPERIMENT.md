@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H14 established on this holdout; leave it closed
+## Current decision — lock the H15 confirmation runner; collection unauthorized
+
+H15 is locked on unused MCC `mcc_candidate_reuse_confirm_v1`
+**(0.004, 0.0021, 0.05)**. Same H14 controller, DiD primary, and
+caps **300 s / 29,760 / 655,360**. `authorized: false`. Do not
+collect from this document. The next development stage is a guarded
+source-only runner implementation on a separate branch. Do not
+retune H14 or H10–H13. Session ledger unchanged (3300.660 s remain).
+Protocol `NEXUS_H15_CANDIDATE_REUSE_CONFIRM_PROTOCOL.md`.
+
+## Previous — H14 established on this holdout; leave it closed
 
 H14 is **complete**: DiD **+0.178 [+0.009, +0.348]** on
 `mcc_candidate_reuse_v1` (0.0023, 0.0019, 0.065). Label

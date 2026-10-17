@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H15 same-design confirmation locked, collection unauthorized, 2026-10-17
+
+On `cursor/h15-candidate-reuse-confirm-prep` from H14 results
+`b05f9f2`. Source-only lock of unused MCC **(0.004, 0.0021, 0.05)**
+via `mcc_candidate_reuse_confirm_v1`. Exact H14 design, 77M seeds,
+same DiD primary and caps **300 s / 29,760 / 655,360**.
+`authorized: false`, `runs: 0`. No collection. Not a result. A
+separate guarded runner is still required. Do not retune H14.
+Not learning-to-learn, not AGI. Report
+`NEXUS_H15_CANDIDATE_REUSE_CONFIRM_PREP.md`. Earlier entries remain
+history.
+
 ## Latest — H14 fixed-library helps multitask relative, 2026-10-17
 
 On `cursor/h14-candidate-reuse-execute`: unused MCC (0.0023, 0.0019, 0.065),

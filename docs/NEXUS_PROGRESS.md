@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — H15 same-design confirmation locked, collection unauthorized
+
+H15 is locked on `cursor/h15-candidate-reuse-confirm-prep` from
+`b05f9f2`: unused MCC **(0.004, 0.0021, 0.05)**, frozen H14
+fixed-versus-redraw design, 77M seeds, DiD primary. Caps
+**300 s / 29,760 / 655,360**. `authorized: false`, `runs: 0`. No
+training. H14 stays closed. Report
+`NEXUS_H15_CANDIDATE_REUSE_CONFIRM_PREP.md`. No learning-to-learn or
+AGI.
+
 ## Latest — H14 fixed-library helps multitask relative
 
 The authorized one-run H14 grid completed: unused MCC
