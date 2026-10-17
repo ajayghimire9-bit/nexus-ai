@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — H14/H15 candidate-reuse mechanism audit, 2026-10-17
+
+Source-only audit on `cursor/h14-h15-candidate-reuse-mechanism-audit`
+from H15 results `644a9f0`. Registered primaries rebuild: H14
+**+0.178 [+0.009, +0.348]** (6/10), H15 **+0.230 [+0.111, +0.349]**
+(10/10). t=0 actions match; DiD accrues after step 4; multitask
+occupancy diverges more than scratch; fixed almost never switches
+winner while redraw almost always does. Later unchosen returns and
+checkpoints are missing, so no causal mechanism is identified.
+Occupancy shift is a correlate, not a cause. Zero new env/imagined/
+training. Ledger unchanged (3296.223 s remain). Not a new primary.
+Not learning-to-learn, not AGI. Report
+`NEXUS_H14_H15_CANDIDATE_REUSE_MECHANISM_AUDIT.md`. Earlier entries
+remain history.
+
 ## Latest — H15 fixed-library helps multitask relative, 2026-10-17
 
 On `cursor/h15-candidate-reuse-confirm-execute`: unused MCC

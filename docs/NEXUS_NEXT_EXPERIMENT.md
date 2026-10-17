@@ -1,6 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current decision — H15 established on this holdout; leave it closed
+## Current decision — mechanism unresolved; do not lock H16
+
+H14 and H15 stay closed. Source-only traces show a late-episode DiD,
+identical t=0 actions, stronger multitask occupancy divergence, and
+fixed-versus-redraw winner-switch contrast, but later unchosen returns
+are missing. The one recommended question is a **same-state later-library
+ranking contrast**: restore a saved later observation, score and realize
+both the reused L0 library and the redraw library with both models.
+That would separate library quality at one state from occupancy shift.
+It is not designed, locked, authorized, or executed. No H16 protocol.
+Nothing is pre-authorized. Session ledger: 3296.223 s remain. Report
+`NEXUS_H14_H15_CANDIDATE_REUSE_MECHANISM_AUDIT.md`.
+
+## Previous — H15 established on this holdout; leave it closed
 
 H15 is **complete**: DiD **+0.230 [+0.111, +0.349]** on
 `mcc_candidate_reuse_confirm_v1` (0.004, 0.0021, 0.05). Label

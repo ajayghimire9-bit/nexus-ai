@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — H14/H15 candidate-reuse mechanism audit
+
+Source-only reconstruction on
+`cursor/h14-h15-candidate-reuse-mechanism-audit` from `644a9f0`.
+Both registered labels rebuild. Fixed reuse is descriptively more
+stable; multitask trajectories diverge more; the DiD is late-episode.
+No causal mechanism is identified. Zero new steps or training.
+Session ledger unchanged: 3296.223 s remain. Report
+`NEXUS_H14_H15_CANDIDATE_REUSE_MECHANISM_AUDIT.md`.
+No learning-to-learn or AGI.
+
 ## Latest — H15 fixed-library helps multitask relative
 
 The authorized one-run H15 confirmation completed: unused MCC

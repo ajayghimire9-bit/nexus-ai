@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-reuse-mechanism is descriptively constrained, not identified
+
+Source-only H14/H15 audit. A (stability) is a treatment behavior in
+both arms. B (library distribution) is not testable without later
+counterfactual returns. C (occupancy shift) is a correlate; seed-level
+D does not track occupancy L2. D (prediction residuals) is not a
+chosen-residual-magnitude story; full predicted next states are
+missing. No causal mechanism is established. Report
+`NEXUS_H14_H15_CANDIDATE_REUSE_MECHANISM_AUDIT.md`.
+
 ## Latest — H-h14-interaction-replicates-on-new-holdout was supported in this configuration
 
 Complete H15 grid on unused MCC physics: DiD
