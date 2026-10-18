@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — Evolution-2 runtime integrity repaired, science blocked
+
+Source-only audit on `cursor/evolution2-runtime-integrity` from
+`4a08b26`. H-R1/H-R2/H-R4/H-R5 were confirmed and repaired. H-R3
+remains measured-not-enforced. 9 integrity tests plus prior runtime
+and Evolution-1/2 regressions: 112 passed in the combined command.
+Ledger 305.842 / 3294.158 unchanged. Report
+`NEXUS_EVOLUTION2_RUNTIME_INTEGRITY_AUDIT.md`. Not learning-to-learn
+or AGI.
+
 ## Latest — Evolution-2 runtime gates implemented, science blocked
 
 Source-only milestone on `cursor/evolution2-runtime-gates` from

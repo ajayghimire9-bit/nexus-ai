@@ -9,27 +9,11 @@ import os
 import sys
 import time
 
-from nexus.evolution1.catalogue import ContractError, Rule, catalogue, digest
-from nexus.evolution2.bindings import FAMILIES, MODE, reviewed_binding
-
-
-SCHEMA = 'nexus.evolution2.evaluator_response.v1'
-REQUEST_SCHEMA = 'nexus.evolution2.evaluator_request.v1'
-REQUEST_KEYS = frozenset({
-    'schema', 'request_id', 'family', 'variant_id', 'binding_fingerprint',
-    'checkpoint_id', 'world_model_id', 'context', 'mode',
-})
-RESPONSE_KEYS = frozenset({
-    'schema', 'request_id', 'variant_id', 'score', 'failed', 'event_id',
-})
-MAX_MESSAGE = 4096
-BY_ID = {v.fingerprint: v for v in catalogue()}
-
-
-def _hex64(value):
-    if type(value) is not str or len(value) != 64 or any(c not in '0123456789abcdef' for c in value):
-        raise ContractError('invalid_identity_hash')
-    return value
+from nexus.evolution1.catalogue import ContractError, Rule
+from nexus.evolution2.bindings import (
+    MAX_MESSAGE, MODE, REQUEST_KEYS, REQUEST_SCHEMA, RESPONSE_SCHEMA,
+    expected_event_id, validate_public_payload,
+)
 
 
 def _unique(pairs):
@@ -54,53 +38,23 @@ def parse_request(raw):
     if type(raw) is not bytes or not raw or len(raw) > MAX_MESSAGE:
         raise ContractError('invalid_or_oversized_request')
     try:
-        text = raw.decode('utf-8')
-        data = json.loads(text, object_pairs_hook=_unique, parse_constant=_nonfinite)
+        data = json.loads(raw.decode('utf-8'), object_pairs_hook=_unique, parse_constant=_nonfinite)
     except (ValueError, TypeError, RecursionError, UnicodeDecodeError) as exc:
         raise ContractError('invalid_json') from exc
-    if type(data) is not dict or set(data) != REQUEST_KEYS:
+    if type(data) is not dict or set(data) != REQUEST_KEYS or data.get('schema') != REQUEST_SCHEMA:
         raise ContractError('unexpected_request_fields')
-    if data['schema'] != REQUEST_SCHEMA or data['mode'] != MODE:
-        raise ContractError('invalid_request_schema')
-    if data['family'] not in FAMILIES:
-        raise ContractError('unknown_family')
-    _hex64(data['request_id'])
-    _hex64(data['variant_id'])
-    _hex64(data['binding_fingerprint'])
-    _hex64(data['checkpoint_id'])
-    if data['variant_id'] not in BY_ID:
-        raise ContractError('unknown_variant')
-    binding = reviewed_binding(data['family'])
-    if data['binding_fingerprint'] != binding.fingerprint:
-        raise ContractError('family_semantics_mismatch')
-    if data['checkpoint_id'] != binding.checkpoint_id:
-        raise ContractError('incompatible_checkpoint')
-    if data['world_model_id'] != binding.world_model_id:
-        raise ContractError('incompatible_checkpoint')
-    context = data['context']
-    if type(context) is not dict or set(context) != {
-        'n_actions', 'obs_dim', 'episode_steps', 'imagined_cap',
-    }:
-        raise ContractError('invalid_context')
-    if (context['n_actions'], context['obs_dim']) != (binding.n_actions, binding.obs_dim):
-        raise ContractError('model_interface_mismatch')
-    return data
+    variant, _binding = validate_public_payload(data)
+    return data, variant
 
 
-def build_response(request):
-    variant = BY_ID[request['variant_id']]
-    score = stub_score(variant)
-    event_id = digest({
-        'request_id': request['request_id'], 'variant_id': request['variant_id'],
-        'mode': MODE, 'schema': SCHEMA,
-    })
+def build_response(request, variant):
     return {
-        'schema': SCHEMA,
+        'schema': RESPONSE_SCHEMA,
         'request_id': request['request_id'],
         'variant_id': request['variant_id'],
-        'score': score,
+        'score': stub_score(variant),
         'failed': False,
-        'event_id': event_id,
+        'event_id': expected_event_id(request),
     }
 
 
@@ -120,9 +74,12 @@ def main(argv=None):
     if behavior == 'oversized':
         sys.stdout.buffer.write(b'x' * (MAX_MESSAGE + 8))
         return 0
+    if behavior == 'flood':
+        sys.stdout.buffer.write(b'x' * 65536)
+        return 0
     try:
-        request = parse_request(raw)
-        payload = build_response(request)
+        request, variant = parse_request(raw)
+        payload = build_response(request, variant)
         if behavior == 'nonfinite':
             payload['score'] = float('inf')
         if behavior == 'extra':

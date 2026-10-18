@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — review repaired runtime integrity; do not collect
+
+Request-binding, bounded IPC, and fail-closed settlement are now
+tested. Worker CPU enforcement, OS isolation, and scientific
+authorization remain **BLOCKED**. One next step: independent review
+of `NEXUS_EVOLUTION2_RUNTIME_INTEGRITY_AUDIT.md`. Do not select a
+holdout, allocate scientific time, or treat synthetic Evolution-2
+scores as LEVEL 2 evidence. H17 stays blocked. Ledger 305.842 /
+3294.158.
+
 ## Current — review runtime gates; do not collect or lock a protocol
 
 Trusted metadata bindings, pre-call meters, and a process-separated

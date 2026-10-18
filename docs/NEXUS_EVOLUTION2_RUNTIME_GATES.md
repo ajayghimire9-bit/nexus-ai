@@ -42,8 +42,11 @@ stdout. It does not import `nexus.evolution2.tasks` or the host ledger.
 | Gate | Verdict | Meaning |
 |---|---|---|
 | Trusted adapter contracts | **PASS** | Explicit family, action decoding, observation layout, reward timing, termination/truncation, root survival, fixture world-model id, fixture checkpoint id, and planner-operator fingerprint. Family is never inferred from dimensions. Mismatch, unknown family, incompatible checkpoint, balanced generator, and unsupported decoding fail before dispatch. |
-| Metered execution host | **PASS** | `ReservationLedger` reserves declared logical work before any worker start. Failed, timed-out, interrupted, and invalid attempts keep the reservation. Parent CPU, child CPU, and wall are measured separately and are not lookup counts. |
-| Process-separated evaluator stub | **PASS** | Narrow request/response schema. Hidden Evolution-2 family scores are not in proposer IPC. Crash, hang, timeout, invalid, empty, extra-key, and oversized outputs fail closed. |
+| Request binding | **PASS** | Reserved `cache_record_hash` is the canonical request digest and is checked before dispatch. |
+| Metered execution host | **PASS** | `ReservationLedger` reserves declared logical work before any worker start. Failed, timed-out, interrupted, and invalid attempts keep the reservation. Wall timeout is enforced. CPU is measured, not enforced. |
+| Bounded IPC | **PASS** | Stdout/stderr are read with a 4096-byte cap; overflow kills the worker. |
+| Process-separated evaluator stub | **PASS** | Narrow request/response schema. Hidden Evolution-2 family scores are not in proposer IPC. Crash, hang, timeout, invalid, empty, extra-key, oversized, and flood outputs fail closed. |
+| Worker CPU enforcement | **BLOCKED** | Parent/child CPU are measured. `enforce_worker_cpu=True` fails closed. `RUSAGE_CHILDREN` is not exclusive to one worker. |
 | Hardened OS / filesystem sandbox | **BLOCKED** | Parent and child share UID, environment, and filesystem. No seccomp, landlock, or hidden-data mount isolation. Process separation is not a security sandbox. |
 | Real planner / simulator / checkpoint execution | **BLOCKED** | No Gymnasium env, no model load, no inference, no planner operator call. Physical `real_steps` remain 0. Fixture checkpoint ids are hashes, not loaded binaries. |
 | Scientific experiment authorization | **BLOCKED** | `authorized=False`, `scientific=False`. H17 remains blocked. No holdout, grant, or protocol lock. |

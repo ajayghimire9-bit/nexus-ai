@@ -6,7 +6,8 @@ from dataclasses import asdict, dataclass
 import math
 
 from nexus.evolution1.catalogue import (
-    ContractError, Generator, Rule, Variant, canonical, digest, plan_bound, positive_int,
+    ContractError, Generator, Rule, Variant, canonical, catalogue, digest, plan_bound,
+    positive_int,
 )
 from nexus.evolution1.fixtures import PublicFixtureContext
 from nexus.evolution1.resources import Work
@@ -16,6 +17,17 @@ FAMILIES = ('pendulum', 'acrobot', 'mountaincar', 'mountaincar_continuous')
 ACTION_KINDS = ('continuous_scalar', 'native_discrete_index')
 SCIENTIFIC = False
 MODE = 'synthetic_fixture'
+REQUEST_SCHEMA = 'nexus.evolution2.evaluator_request.v1'
+RESPONSE_SCHEMA = 'nexus.evolution2.evaluator_response.v1'
+REQUEST_KEYS = frozenset({
+    'schema', 'request_id', 'family', 'variant_id', 'binding_fingerprint',
+    'checkpoint_id', 'world_model_id', 'context', 'mode',
+})
+RESPONSE_KEYS = frozenset({
+    'schema', 'request_id', 'variant_id', 'score', 'failed', 'event_id',
+})
+MAX_MESSAGE = 4096
+BY_ID = {v.fingerprint: v for v in catalogue()}
 
 
 def _hex64(value):
@@ -198,3 +210,63 @@ def bind_evaluation(family, variant, *, checkpoint_id, world_model_id,
     declared = Work(imagined_transitions=plan_bound(
         variant, binding.n_actions, imagined_cap).imagined_per_decision)
     return BoundEvaluation(binding, variant, operator_fingerprint(family, variant), declared, context)
+
+
+def derived_request_id(family, variant_id, binding_fingerprint, checkpoint_id, world_model_id, context):
+    return digest({
+        'family': family, 'variant': variant_id, 'binding': binding_fingerprint,
+        'checkpoint': checkpoint_id, 'world_model': world_model_id,
+        'context': context, 'mode': MODE,
+    })
+
+
+def expected_event_id(request):
+    return digest({
+        'request_id': request['request_id'], 'variant_id': request['variant_id'],
+        'mode': MODE, 'schema': RESPONSE_SCHEMA,
+    })
+
+
+def validate_public_context(context, binding):
+    if type(context) is not dict or set(context) != {
+        'n_actions', 'obs_dim', 'episode_steps', 'imagined_cap',
+    }:
+        raise ContractError('invalid_context')
+    positive_int(context['n_actions'], 16)
+    positive_int(context['obs_dim'], 4096)
+    positive_int(context['episode_steps'], 200)
+    positive_int(context['imagined_cap'], 1536)
+    if (context['n_actions'], context['obs_dim'], context['episode_steps']) != (
+            binding.n_actions, binding.obs_dim, binding.episode_steps):
+        raise ContractError('model_interface_mismatch')
+
+
+def validate_public_payload(data):
+    """Shared host/worker check. Does not authorize scientific dispatch."""
+    if type(data) is not dict or set(data) != REQUEST_KEYS:
+        raise ContractError('unexpected_request_fields')
+    if data['schema'] != REQUEST_SCHEMA or data['mode'] != MODE:
+        raise ContractError('invalid_request_schema')
+    if data['family'] not in FAMILIES:
+        raise ContractError('unknown_family')
+    for key in ('request_id', 'variant_id', 'binding_fingerprint', 'checkpoint_id'):
+        _hex64(data[key])
+    if type(data['world_model_id']) is not str or not data['world_model_id']:
+        raise ContractError('incompatible_checkpoint')
+    if data['variant_id'] not in BY_ID:
+        raise ContractError('unknown_variant')
+    variant = BY_ID[data['variant_id']]
+    if variant.generator is not Generator.IID:
+        raise ContractError('unsupported_balanced_generator')
+    binding = reviewed_binding(data['family'])
+    if data['binding_fingerprint'] != binding.fingerprint:
+        raise ContractError('family_semantics_mismatch')
+    if data['checkpoint_id'] != binding.checkpoint_id or data['world_model_id'] != binding.world_model_id:
+        raise ContractError('incompatible_checkpoint')
+    validate_public_context(data['context'], binding)
+    expected = derived_request_id(
+        data['family'], data['variant_id'], data['binding_fingerprint'],
+        data['checkpoint_id'], data['world_model_id'], data['context'])
+    if data['request_id'] != expected:
+        raise ContractError('request_identity_mismatch')
+    return variant, binding

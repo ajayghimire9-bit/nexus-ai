@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2 runtime integrity repaired, science BLOCKED, 2026-10-18
+
+On `cursor/evolution2-runtime-integrity` from `4a08b26`. Adversarial
+review confirmed request substitution, adapter bypass, CPU-enforcement
+overclaim, unbounded `capture_output`, and unsettleable supervisor
+exceptions. Minimal repairs bind reserved request digests, share host/
+worker validation, bound pipes while reading, and settle every
+post-reserve path. Worker CPU enforcement stays **BLOCKED**. Ledger
+unchanged (305.842 / 3294.158). Not a scientific result. Report
+`NEXUS_EVOLUTION2_RUNTIME_INTEGRITY_AUDIT.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2 runtime gates, science still BLOCKED, 2026-10-18
 
 On `cursor/evolution2-runtime-gates` from audit `551de69`. Source-only
