@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.17 one-run persist-versus-reset grant recorded, 2026-10-18
+
+A separate science grant cites config `8e90b74a…`, source commit
+`170dec7`, `env_cap=17280`, and the four locked unused roles. Frozen
+request yaml/allocation hashes are unchanged. `dispatch()` stays
+refused. The grant is unused until the one authorized execution.
+H17 blocked. H16 ledger 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.16 four-role executor, science BLOCKED, 2026-10-18
 
 Independent four-role unused-instance verification PASSES against the

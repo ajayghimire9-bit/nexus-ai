@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.17 one-run science grant recorded
+
+Separate unused grant at env_cap=17280 citing 170dec7 and the four
+locked roles. Frozen request hashes unchanged. H16 ledger preserved
+305.842 / 3294.158. Report `NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`.
+
 ## Latest — Evolution-2.16 four-role executor, science BLOCKED
 
 Four locked unused roles match existing digests. Generic holdout-word

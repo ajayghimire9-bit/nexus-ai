@@ -46,8 +46,9 @@ ROLE_ASSIGN_RE = re.compile(
 
 
 def extract_named_roles(text: str) -> dict[str, str | tuple[float, float, float]]:
+    cleaned = str(text).replace("`", "")
     found: dict[str, str | tuple[float, float, float]] = {}
-    for match in ROLE_ASSIGN_RE.finditer(str(text)):
+    for match in ROLE_ASSIGN_RE.finditer(cleaned):
         role = match.group(1)
         if match.group(2):
             found[role] = match.group(2).lower()

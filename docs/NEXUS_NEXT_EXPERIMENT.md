@@ -1,5 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.17 one-run persist-versus-reset grant recorded
+
+The unused grant authorizes exactly one n=3 screen at `env_cap=17280`.
+Do not retry. Do not promote to n=10. Do not start Evolution-3. After
+the run, stop. Report `NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`.
+
 ## Current — Evolution-2.16 four-role executor; science BLOCKED
 
 Four locked unused roles are independently verified. Next scientific
