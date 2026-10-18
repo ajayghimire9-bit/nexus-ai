@@ -1,14 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — trusted planner adapter exists; full v2 likely incomplete
+## Current — v2-pilot worksheet locked; collection still BLOCKED
 
-Catalogue-faithful fake-model scoring and population-4 evolution
-are implemented. Historical residual-MLP rates extrapolate to
-**611.6 s** of planning alone for 110,592,000 imagined states, so
-the full v2 screen is likely `incomplete_budget` under 900 s. Do
-not collect. Do not rewrite v2. Next: a prospective v2-pilot
-worksheet, still unnamed holdout. Ledger 305.842 / 3294.158.
-Report `NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md`.
+Prospective v2-pilot keeps n=10 and Bonferroni-versus-all-five
+controls, but charges only six revealed rows and two development
+conditions: 57,600 real / 49,152,000 imagined. Historical planning
+extrapolation is 271.8 s versus 611.5 s for full v2. Source fitting
+is still unmeasured. `authorized: false`, holdout unnamed. Do not
+collect. Do not rewrite v2. Do not unlock H17. Next allowed step:
+an independent holdout-naming review, or a residual-MLP timing
+probe on existing checkpoints without new env collection. Ledger
+305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md`.
 
 ## Current — v2 contracts locked; collection still BLOCKED
 

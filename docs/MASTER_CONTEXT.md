@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2 v2-pilot worksheet locked, science BLOCKED, 2026-10-18
+
+On `cursor/evolution2-trusted-planner-adapter` from `e0eaa59`.
+Source-only prospective worksheet: n=10, five Bonferroni controls,
+six revealed rows, two development conditions (57,600 real /
+49,152,000 imagined). v2 hashes frozen. Unauthorized. Holdout
+unnamed. H17 blocked. Ledger unchanged (305.842 / 3294.158).
+Report `NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md`.
+Earlier entries remain history.
+
 ## Latest — Evolution-2.1 trusted planner adapter, science BLOCKED, 2026-10-18
 
 On `cursor/evolution2-trusted-planner-adapter` from `1ccaec7`.

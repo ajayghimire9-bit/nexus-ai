@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — v2-pilot worksheet locked, no collection
+
+Source-only prospective lock: 57,600 real / 49,152,000 imagined,
+n=10, Bonferroni five-control rule unchanged. v2 hashes frozen.
+`authorized: false`. Holdout unnamed. H17 blocked. Ledger
+305.842 / 3294.158 unchanged. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md`.
+
 ## Latest — trusted planner adapter and evolution repair, no collection
 
 Fake-model catalogue adapter and population-4 evolutionary baseline

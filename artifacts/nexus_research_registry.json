@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "1ccaec76afc508571a261200b56c3121dcd39323",
+  "head": "e0eaa59c8aa7b76a706301a8865f0a43a1751f14",
   "ledger_s": [
     305.842,
     3294.158
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 32,
+    "curated": 33,
     "incomplete_unindexed_docs": 93,
-    "total": 125,
+    "total": 126,
     "incomplete": 120,
-    "source_verified": 5
+    "source_verified": 6
   },
   "experiments": [
     {
@@ -600,6 +600,24 @@
         "artifacts/evolution2_planner_compatibility.json"
       ],
       "reuse": "Fake-model adapter. Not a scientific result. Do not collect.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2-pendulum-acrobot-v2-pilot",
+      "title": "Pendulum/Acrobot catalogue-proposer v2-pilot worksheet",
+      "hypothesis": "The v2 persist-versus-five-controls question can be asked on six revealed rows and two development conditions without rewriting n, Bonferroni, or v2 hashes.",
+      "implementation": [
+        "src/nexus/evolution2/pendulum_acrobot_protocol_v2_pilot.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md",
+      "results": null,
+      "status": "prospective_design_unauthorized",
+      "artifacts": [
+        "configs/evolution2_pendulum_acrobot_protocol_v2_pilot.yaml",
+        "configs/evolution2_pendulum_acrobot_allocation_v2_pilot.json"
+      ],
+      "reuse": "Reduced worksheet only. Do not collect. Do not rewrite v2. Holdout unnamed.",
       "coverage": "source_verified"
     },
     {

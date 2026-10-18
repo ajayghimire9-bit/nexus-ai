@@ -85,7 +85,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`) and H16 `+0.023 [−0.014, +0.060]` (`h16_same_state_library_effect_not_established`). Evolution-2 has a synthetic LEVEL 2 contract, a v2 design lock that is unauthorized, and an Evolution-2.1 fake-model planner adapter (`docs/NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md`). None is a transfer result. Full v2 is likely `incomplete_budget` under 900 s at historical rates. H17 remains blocked. Do not collect on the unnamed Acrobot holdout. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`) and H16 `+0.023 [−0.014, +0.060]` (`h16_same_state_library_effect_not_established`). Evolution-2 has a synthetic LEVEL 2 contract, an unauthorized v2 design lock, an Evolution-2.1 fake-model planner adapter, and a prospective unauthorized v2-pilot worksheet (`docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md`). None is a transfer result. Full v2 is likely `incomplete_budget` under 900 s; the pilot reduces imagined work but is still unmeasured. H17 remains blocked. Do not collect on the unnamed Acrobot holdout. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority

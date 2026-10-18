@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-pendulum-acrobot-persistence v2-pilot is designed, not collected
+
+A prospective six-row / two-condition worksheet exists so a 900 s
+grant is less likely to censor than full v2. n=10 and Bonferroni
+versus all five controls stay. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md`.
+
 ## Latest — H-e2-planner-adapter is engineered, not collected
 
 A catalogue-faithful fake-model adapter and population-4 evolution

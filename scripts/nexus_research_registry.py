@@ -456,6 +456,22 @@ EXPERIMENTS = [
         "reuse": "Fake-model adapter. Not a scientific result. Do not collect.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2-pendulum-acrobot-v2-pilot",
+        "title": "Pendulum/Acrobot catalogue-proposer v2-pilot worksheet",
+        "hypothesis": "The v2 persist-versus-five-controls question can be asked on six revealed rows and two development conditions without rewriting n, Bonferroni, or v2 hashes.",
+        "implementation": ["src/nexus/evolution2/pendulum_acrobot_protocol_v2_pilot.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md",
+        "results": None,
+        "status": "prospective_design_unauthorized",
+        "artifacts": [
+            "configs/evolution2_pendulum_acrobot_protocol_v2_pilot.yaml",
+            "configs/evolution2_pendulum_acrobot_allocation_v2_pilot.json",
+        ],
+        "reuse": "Reduced worksheet only. Do not collect. Do not rewrite v2. Holdout unnamed.",
+        "coverage": "source_verified",
+    },
 ]
 
 

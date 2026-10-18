@@ -13,7 +13,9 @@ Completing a roadmap item is not AGI. No profitable trading system exists.
 **`main` now carries the research tip** after the human-authorized
 merge of Evolution-2 integrity and the reuse audit. The
 Pendulum→Acrobot v1 lock is **not ready** against Evolution-1
-feasibility. v2 is a superseding design only. Neither is collection.
+feasibility. v2 is a superseding design only. A prospective
+v2-pilot worksheet exists and is unauthorized. None of these is
+collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
 

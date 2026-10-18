@@ -40,7 +40,19 @@ def test_registry_forbids_science_and_keeps_h17_blocked():
     assert registry["h17"] == "blocked"
     assert registry["ledger_s"] == [305.842, 3294.158]
     ids = {row["id"] for row in registry["experiments"]}
-    assert {"V0.1", "H1", "H8", "H14", "H15", "H16", "H17", "E1-feasibility", "E2-pendulum-acrobot-v1", "E2-pendulum-acrobot-v2"} <= ids
+    assert {
+        "V0.1",
+        "H1",
+        "H8",
+        "H14",
+        "H15",
+        "H16",
+        "H17",
+        "E1-feasibility",
+        "E2-pendulum-acrobot-v1",
+        "E2-pendulum-acrobot-v2",
+        "E2-pendulum-acrobot-v2-pilot",
+    } <= ids
     h17 = next(row for row in registry["experiments"] if row["id"] == "H17")
     assert h17["status"] == "blocked"
     v1 = next(row for row in registry["experiments"] if row["id"] == "E2-pendulum-acrobot-v1")
