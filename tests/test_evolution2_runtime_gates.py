@@ -92,8 +92,10 @@ def test_action_decoding_and_termination_metadata_are_validated():
 
 
 def test_unsupported_operator_and_incompatible_checkpoint_fail_closed():
-    with pytest.raises(ContractError, match='unsupported_balanced_generator'):
-        bound(variant=BALANCED)
+    balanced = bound(variant=BALANCED)
+    assert balanced.scientific is False
+    with pytest.raises(ContractError, match='scientific_dispatch_blocked'):
+        balanced.require_scientific()
     with pytest.raises(ContractError, match='incompatible_checkpoint'):
         bound(checkpoint_id=fixture_checkpoint('acrobot'))
     with pytest.raises(ContractError, match='incompatible_checkpoint'):

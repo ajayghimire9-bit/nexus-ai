@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.10 development dry-run complete; science BLOCKED
+
+Twelve-arm development binding PASSES. Scientific dispatch remains
+unauthorized and the holdout is unnamed. Do not collect. Do not fit
+again. Do not invent a twenty-fit cost. Do not unlock H17. Next: a
+separately authorized n=3 persist-versus-reset protocol that cites a
+named unused holdout. Report
+`NEXUS_EVOLUTION2_EVALUATOR_READINESS.md`.
+
 ## Current — Evolution-2.9 six-fit clock measured; twenty-fit still unauthorized
 
 Cited config `277d7ba628fcd4e528b27bf4407ed45f9e41ec9051bd9e26b4baef33c6df0ff0`,

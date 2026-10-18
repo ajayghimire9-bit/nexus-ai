@@ -27,8 +27,10 @@ payloads are weights only and keeps scientific dispatch **BLOCKED**.
 A 7680-step source persist collected twelve family-default
 Pendulum/Acrobot arrays as a development pilot citing config
 `325cd42b…`. A six-fit residual clock measured 1.215 s at
-`env_cap=0` citing config `277d7ba6…`. Neither is v2 confirmation.
-The twenty-fit v2 clock remains unavailable.
+`env_cap=0` citing config `277d7ba6…`. Evolution-2.10 binds all
+twelve catalogue variants for a development dry-run. Scientific
+dispatch stays BLOCKED. Neither is v2 confirmation. The twenty-fit
+v2 clock remains unavailable.
 None of these is n=10 collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
@@ -70,6 +72,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.7 source-persist request (7,680 or 25,600 steps; unauthorized)
 - Evolution-2.8 7680-step source persist (development pilot; not v2)
 - Evolution-2.9 six-fit residual clock (1.215 s; not v2; twenty-fit still unavailable)
+- Evolution-2.10 evaluator readiness (twelve-arm development dry-run; science BLOCKED)
 
 ## Engineering that exists at HEAD 4a08b26
 

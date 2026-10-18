@@ -310,6 +310,7 @@ def runtime_gate_status():
         'worker_cpu_enforcement': 'BLOCKED',
         'hardened_os_filesystem_sandbox': 'BLOCKED',
         'real_planner_simulator_checkpoint_execution': 'BLOCKED',
+        'development_twelve_arm_binding': 'PASS',
         'scientific_experiment_authorization': 'BLOCKED',
         'scientific': False,
         'authorized': False,

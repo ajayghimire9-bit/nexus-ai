@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.10 evaluator readiness, science still BLOCKED, 2026-10-18
+
+On `cursor/evolution2.10-evaluator-readiness` from `b9d0b2e`. All
+twelve catalogue variants bind for development. A dry-run scored
+locked default-family observations with disposable copies. No
+Gymnasium, no new steps, no new fits. Scientific dispatch stays
+BLOCKED. Holdout unnamed. H17 blocked. H16 ledger file preserved
+305.842 / 3294.158. Twenty-fit v2 clock remains unavailable. Report
+`NEXUS_EVOLUTION2_EVALUATOR_READINESS.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.9 six-fit residual clock measured, 2026-10-18
 
 Human-approved `env_cap=0`, `time_cap_s=300`, `n_fits=6` citing frozen

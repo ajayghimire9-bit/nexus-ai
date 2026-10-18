@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.10 twelve-arm development scores are not a scientific screen
+
+All twelve catalogue variants bind and produce development scores.
+Scientific dispatch stays blocked. Holdout unnamed. Report
+`NEXUS_EVOLUTION2_EVALUATOR_READINESS.md`.
+
 ## Latest — H-e2.9 six disposable residual fits are a clock, not confirmation
 
 Cited config `277d7ba6…`, `env_cap=0`, `n_fits=6`. Wall 1.215 s. Not

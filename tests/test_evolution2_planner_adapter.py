@@ -64,10 +64,7 @@ def test_compatibility_matrix_covers_twelve_variants_per_family():
     for variant in catalogue():
         for family in ("pendulum", "acrobot"):
             row = by[(family, variant.rule.value, variant.generator.value, variant.horizon)]
-            if variant.generator is Generator.BALANCED:
-                assert row["status"] == "IMPLEMENTED_adapter_DISPATCH_BLOCKED"
-            else:
-                assert row["status"] == "IMPLEMENTED_catalogue_faithful"
+            assert row["status"] == "IMPLEMENTED_catalogue_faithful"
             bound = plan_bound(variant, 3, 1536)
             assert row["historical_parity"] is (
                 variant.generator is Generator.IID
@@ -154,24 +151,25 @@ def test_reuses_planning_counter_and_score_batch_not_mpc_for_model():
     assert a.InferenceCounter is Historical
 
 
-def test_twelve_arm_scientific_dispatch_is_blocked_by_balanced_host():
+def test_twelve_arm_scientific_dispatch_stays_blocked_after_balanced_bind():
     report = a.twelve_arm_scientific_dispatch()
     assert report["ready"] is False
     assert report["status"] == "BLOCKED"
-    assert report["blocked_variants"] == 6
+    assert report["blocked_variants"] == 0
+    assert report["development_binding"] == "PASS"
     assert report["enabled_dispatch"] is False
     from nexus.evolution2.bindings import bind_evaluation
-    from nexus.evolution1.catalogue import ContractError
     binding = reviewed_binding("pendulum")
     for variant in catalogue():
-        if variant.generator is Generator.BALANCED:
-            with pytest.raises(ContractError, match="unsupported_balanced_generator"):
-                bind_evaluation(
-                    "pendulum",
-                    variant,
-                    checkpoint_id=binding.checkpoint_id,
-                    world_model_id=binding.world_model_id,
-                    model_obs_dim=binding.obs_dim,
-                    model_n_actions=binding.n_actions,
-                )
+        item = bind_evaluation(
+            "pendulum",
+            variant,
+            checkpoint_id=binding.checkpoint_id,
+            world_model_id=binding.world_model_id,
+            model_obs_dim=binding.obs_dim,
+            model_n_actions=binding.n_actions,
+        )
+        assert item.scientific is False
+        with pytest.raises(Exception, match="scientific_dispatch_blocked"):
+            item.require_scientific()
     assert a.SCIENTIFIC is False

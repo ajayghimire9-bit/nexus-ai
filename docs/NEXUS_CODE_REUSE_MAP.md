@@ -28,6 +28,7 @@ instead of opening parallel packages.
 | Source-array persist request | `evolution2.source_persist_request` plus `scripts/run_evolution2_source_persist.py` | Collecting 25600 or treating 7680 as v2 confirmation |
 | 7680-step persist plan/collect | `evolution2.source_persist_plan` and `source_persist_collect`; arrays already at `artifacts/evolution2_source_arrays` | Closed confirmation/H17 physics, a second write, or treating the persist as a residual fit |
 | Disposable residual fit clock | `evolution2.fit_clock` plus `fit_clock_run` and `scripts/run_evolution2_fit_clock.py` | Twenty-fit / n=10 training, new env steps, or treating disposable weights as v2 residuals |
+| Development evaluator dry-run | `evolution2.evaluator_readiness` plus `evaluator_dry_run`; reuses `TrustedEvaluator`, `ReservationLedger`, catalogue, `planner_adapter` | A second planner/proposer/memory, or treating the dry-run as persist-versus-reset science |
 | Unused Pendulum/Acrobot instance naming | `evolution2.pendulum_acrobot_holdout_review` (NAMING_BLOCKED) plus `evolution2.pendulum_acrobot_instance_rules` (unnamed four-role digests) | Shopping a new tuple or treating one Acrobot key as four roles |
 | E2 public IPC / stub host | `evolution2.bindings` + `evolution2.host` | Importing `FAMILY_SPEC` into the worker |
 | PPO training | `nexus.rl.ppo` | A new on-policy trainer for CartPole-scale tasks |

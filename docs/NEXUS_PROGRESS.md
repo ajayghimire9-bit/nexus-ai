@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.10 evaluator readiness, development only
+
+Twelve-arm development binding PASS. Scientific authorization BLOCKED.
+H16 ledger file preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_EVALUATOR_READINESS.md`.
+
 ## Latest — Evolution-2.9 six-fit clock measured, development pilot
 
 Cited config `277d7ba6…`, `env_cap=0`, `n_fits=6`. Wall 1.215 s, 0 env

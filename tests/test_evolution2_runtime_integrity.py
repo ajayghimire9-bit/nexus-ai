@@ -61,24 +61,27 @@ def test_hr1_reserved_request_cannot_be_substituted():
     assert receipt.variant_id == req_a['variant_id']
 
 
-def test_hr2_host_and_worker_reject_unbound_balanced_variant():
+def test_hr2_host_and_worker_reject_substituted_balanced_identity():
     item = bound()
     valid = public_request(item)
     crafted = dict(valid)
     crafted['variant_id'] = BALANCED.fingerprint
-    with pytest.raises(ContractError, match='unsupported_balanced_generator|request_identity_mismatch'):
+    with pytest.raises(ContractError, match='request_identity_mismatch'):
         encode_request(crafted)
-    with pytest.raises(ContractError, match='unsupported_balanced_generator|request_identity_mismatch'):
+    with pytest.raises(ContractError, match='request_identity_mismatch'):
         parse_request(json.dumps(crafted, sort_keys=True, separators=(',', ':')).encode())
-    with pytest.raises(ContractError, match='unsupported_balanced_generator'):
+    with pytest.raises(ContractError, match='request_identity_mismatch'):
         validate_public_payload(dict(valid, variant_id=BALANCED.fingerprint, request_id=valid['request_id']))
     operation = planned_operation(item, valid)
     host = MeteredHost((operation,), limits(), timeout_s=5.0)
-    with pytest.raises(ContractError, match='request_binding_mismatch|unsupported_balanced_generator|request_identity_mismatch'):
+    with pytest.raises(ContractError, match='request_binding_mismatch|request_identity_mismatch'):
         host.dispatch(operation.key, crafted)
     forged = Operation('eval_0', 'cached', item.declared_work, 'ab' * 32)
-    with pytest.raises(ContractError, match='request_binding_mismatch|unsupported_balanced_generator|request_identity_mismatch'):
+    with pytest.raises(ContractError, match='request_binding_mismatch|request_identity_mismatch'):
         MeteredHost((forged,), limits()).dispatch('eval_0', crafted)
+    own = bound(BALANCED)
+    assert own.variant.generator is Generator.BALANCED
+    assert own.scientific is False
 
 
 def test_hr3_cpu_is_measured_and_not_enforced():

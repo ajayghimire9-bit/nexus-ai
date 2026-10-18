@@ -655,6 +655,25 @@ EXPERIMENTS = [
         "reuse": "Not v2. Do not promote six fits to n=10. Do not invent a twenty-fit cost. Do not debit H16.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.10-evaluator-readiness",
+        "title": "Development-only evaluator readiness and twelve-arm dry-run",
+        "hypothesis": "All twelve catalogue variants can bind and produce development scores without enabling scientific Evolution-2 execution.",
+        "implementation": [
+            "src/nexus/evolution2/evaluator_readiness.py",
+            "src/nexus/evolution2/evaluator_dry_run.py",
+        ],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_EVALUATOR_READINESS.md",
+        "results": "docs/NEXUS_EVOLUTION2_EVALUATOR_READINESS.md",
+        "status": "development_only_science_blocked",
+        "artifacts": [
+            "artifacts/evolution2_evaluator_readiness.json",
+            "artifacts/evolution2_evaluator_dry_run.json",
+        ],
+        "reuse": "Not v2. Do not enable scientific dispatch. Do not invent a twenty-fit cost. Do not name a holdout.",
+        "coverage": "source_verified",
+    },
 ]
 
 

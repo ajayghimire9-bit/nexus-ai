@@ -53,9 +53,10 @@ def operator_fingerprint(family, variant):
         raise ContractError('unknown_family')
     if type(variant) is not Variant:
         raise ContractError('invalid_variant')
-    if variant.generator is not Generator.IID:
-        raise ContractError('unsupported_balanced_generator')
-    if family == 'pendulum':
+    if variant.generator is Generator.BALANCED:
+        path = 'src/nexus/evolution2/planner_adapter.py'
+        symbol = 'generate_candidates'
+    elif family == 'pendulum':
         path = 'src/nexus/world/bellman_backup_control.py'
         symbol = 'lookahead_first_action' if variant.rule is Rule.SUCCESSOR else '_score_open_loop'
     elif variant.rule is Rule.SUCCESSOR:
@@ -204,8 +205,6 @@ def bind_evaluation(family, variant, *, checkpoint_id, world_model_id,
         raise ContractError('model_interface_mismatch')
     if checkpoint_id != binding.checkpoint_id or world_model_id != binding.world_model_id:
         raise ContractError('incompatible_checkpoint')
-    if variant.generator is not Generator.IID:
-        raise ContractError('unsupported_balanced_generator')
     context = PublicFixtureContext(binding.n_actions, binding.obs_dim, binding.episode_steps, imagined_cap)
     declared = Work(imagined_transitions=plan_bound(
         variant, binding.n_actions, imagined_cap).imagined_per_decision)
@@ -256,8 +255,6 @@ def validate_public_payload(data):
     if data['variant_id'] not in BY_ID:
         raise ContractError('unknown_variant')
     variant = BY_ID[data['variant_id']]
-    if variant.generator is not Generator.IID:
-        raise ContractError('unsupported_balanced_generator')
     binding = reviewed_binding(data['family'])
     if data['binding_fingerprint'] != binding.fingerprint:
         raise ContractError('family_semantics_mismatch')

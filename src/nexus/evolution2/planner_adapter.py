@@ -138,8 +138,6 @@ class AdapterDecision:
 def variant_status(family: str, variant: Variant) -> str:
     if family not in {"pendulum", "acrobot", "mountaincar", "mountaincar_continuous"}:
         return "BLOCKED_unknown_family"
-    if variant.generator is Generator.BALANCED:
-        return "IMPLEMENTED_adapter_DISPATCH_BLOCKED"
     return "IMPLEMENTED_catalogue_faithful"
 
 
@@ -157,14 +155,14 @@ def historical_semantics_match(variant: Variant, n_candidates: int) -> bool:
 
 
 def twelve_arm_scientific_dispatch() -> dict:
-    """Host ``operator_fingerprint`` / ``bind_evaluation`` reject balanced."""
-    blocked = [v for v in catalogue() if v.generator is Generator.BALANCED]
+    """All 12 variants bind for development. Scientific dispatch stays blocked."""
     return {
         "ready": False,
         "status": "BLOCKED",
         "catalogue_size": len(catalogue()),
-        "blocked_variants": len(blocked),
-        "reason": "host_operator_fingerprint_rejects_balanced_generator",
+        "blocked_variants": 0,
+        "development_binding": "PASS",
+        "reason": "scientific_dispatch_unauthorized_holdout_unnamed",
         "scientific": False,
         "enabled_dispatch": False,
     }
