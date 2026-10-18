@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — unused-instance naming BLOCKED, 2026-10-18
+
+On `cursor/evolution2-trusted-planner-adapter` from `2b52894`.
+Occupancy covers family literals. An unused Acrobot cell exists
+(digest only). Naming is blocked: no Pendulum unused-instance rule,
+and one Acrobot key cannot fill four v2 roles. Holdout unnamed.
+H17 blocked. Ledger unchanged (305.842 / 3294.158). Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_HOLDOUT_REVIEW.md`. Earlier
+entries remain history.
+
 ## Latest — Evolution-2 v2-pilot worksheet locked, science BLOCKED, 2026-10-18
 
 On `cursor/evolution2-trusted-planner-adapter` from `e0eaa59`.

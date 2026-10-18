@@ -472,6 +472,19 @@ EXPERIMENTS = [
         "reuse": "Reduced worksheet only. Do not collect. Do not rewrite v2. Holdout unnamed.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2-pendulum-acrobot-holdout-review",
+        "title": "Independent unused-instance naming review",
+        "hypothesis": "The unused-instance rule can now name Pendulum and Acrobot source and development physics for v2.",
+        "implementation": ["src/nexus/evolution2/pendulum_acrobot_holdout_review.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_HOLDOUT_REVIEW.md",
+        "results": "artifacts/evolution2_pendulum_acrobot_holdout_review.json",
+        "status": "naming_blocked",
+        "artifacts": ["artifacts/evolution2_pendulum_acrobot_holdout_review.json"],
+        "reuse": "Naming blocked. Do not persist a physics tuple. Do not collect.",
+        "coverage": "source_verified",
+    },
 ]
 
 

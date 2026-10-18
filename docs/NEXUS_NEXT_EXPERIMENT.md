@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — unused-instance naming is BLOCKED
+
+Independent review: occupancy is complete and an unused Acrobot
+cell exists, but there is no Pendulum unused-instance rule and one
+Acrobot key cannot fill four v2 roles. Holdout stays unnamed. Do
+not collect. Do not rewrite v2. Do not unlock H17. Next allowed
+step: lock a Pendulum unused-instance rule and four-role assignment
+without persisting tuples, or a residual-MLP timing probe on
+existing checkpoints. Ledger 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_HOLDOUT_REVIEW.md`.
+
 ## Current — v2-pilot worksheet locked; collection still BLOCKED
 
 Prospective v2-pilot keeps n=10 and Bonferroni-versus-all-five

@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-pendulum-acrobot unused-instance naming is blocked
+
+The independent review does not name a holdout. Occupancy is
+complete; a live Acrobot unused cell exists; a Pendulum unused
+rule does not. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_HOLDOUT_REVIEW.md`.
+
 ## Latest — H-e2-pendulum-acrobot-persistence v2-pilot is designed, not collected
 
 A prospective six-row / two-condition worksheet exists so a 900 s

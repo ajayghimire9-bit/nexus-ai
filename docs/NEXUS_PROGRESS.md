@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — unused-instance naming review, still unnamed
+
+Verdict **NAMING_BLOCKED**. Occupied lists cover family literals.
+Acrobot unused cell exists as a digest only. No Pendulum rule.
+Four v2 roles unfilled. Holdout unnamed. H17 blocked. Ledger
+305.842 / 3294.158 unchanged. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_HOLDOUT_REVIEW.md`.
+
 ## Latest — v2-pilot worksheet locked, no collection
 
 Source-only prospective lock: 57,600 real / 49,152,000 imagined,
