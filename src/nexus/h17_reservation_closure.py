@@ -196,7 +196,17 @@ def review(root):
         file = Path(row['worktree'])/row['path']
         raw = file.read_bytes()
         require(hashlib.sha256(raw).hexdigest()==row['sha256'],'manual reservation changed: '+str(file))
-        manual.append(dict(path=row['path'],sha256=row['sha256'],status='observed_reserved_not_authorized'))
+        record = dict(path=row['path'],sha256=row['sha256'],status='observed_reserved_not_authorized')
+        if 'metadata' in row: record['reservation_metadata'] = row['metadata']
+        manual.append(record)
+    require(len(manual)==7,'expected seven manual-reservation files')
+    require(len({r['worktree'] for r in parent['unversioned_manual_files']})==1,
+            'manual reservation must bind one worktree')
+    manual_root = Path(parent['unversioned_manual_files'][0]['worktree'])
+    manual_source = (manual_root/'src/nexus/world/xenv_context_adaptation.py').read_text()
+    manual_config = (manual_root/'configs/xenv_context_adaptation.yaml').read_bytes()
+    manual_certificate = certify(manual_source,parse_config(manual_config.decode()),
+                                 old['conservative_seed_reservations'],'check_seeds')
     novel = sorted({tuple(r['physics']) for m in metadata for r in m['physics']} - excluded)
     # Do not turn incomplete static expression extraction or recognized-field
     # scanning into an unsupported global closure claim.
@@ -207,6 +217,15 @@ def review(root):
                 historical_seed_certificates=certificates,unsupported_seed_functions=failures,
                 artifact_metadata=metadata,artifact_parse_issues=issues,
                 novel_metadata_physics=[list(v) for v in novel],manual_reservation_files=manual,
+                manual_own_seed_certificate=manual_certificate,
+                scope='fixed parent reachable-history snapshot; recognized metadata and explicit registry expressions',
+                remaining_gaps=[
+                    'Unsupported function records are enumerated with historical blobs/configuration bindings; no fallback values are invented.',
+                    'Registry certificates do not certify that every historical RNG call is routed through its registry, including inherited older seed helpers.',
+                    'All artifact schemas are now inventoried, but unrecognized registration fields require semantic classification.',
+                    'Manual draft is portably recorded as reserved, not finalized or canceled; its owner/worktree remains unchanged.',
+                    'Deleted/unfetched branches and unpublished external registrations cannot be certified from the available object graph.'
+                ],
                 existing_exclusions_preserved=sorted(map(list,excluded)),
                 proposed_budget=validate_draft(json.loads((root/CONFIG).read_text())),
                 ledger_used_s=ledger['ledger_used_s'],ledger_remaining_s=ledger['ledger_remaining_s'],
