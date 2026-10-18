@@ -264,8 +264,8 @@ def test_import_does_not_load_scientific_stack():
 def test_source_contracts_have_no_dynamic_execution_or_io_imports():
     import ast
     root = Path(__file__).resolve().parents[1]/'src/nexus/evolution1'
-    allowed = {'dataclasses','enum','hashlib','itertools','json','math','hmac',
-               'catalogue','fixtures','promotion'}
+    allowed = {'dataclasses','enum','hashlib','itertools','json','math','hmac','random',
+               'catalogue','fixtures','promotion','resources'}
     for path in root.glob('*.py'):
         tree = ast.parse(path.read_text())
         for node in ast.walk(tree):
