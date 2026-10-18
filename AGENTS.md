@@ -85,13 +85,12 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-NEXUS E2.22 observation-conditioned memory
-(`docs/NEXUS_E2_22_OBSERVATION_MEMORY.md`): gated retrieve beats
-persist on the zero-obs first-free shift (0 vs 0.063) and ties
-familiar persist (0) by falling back. Inter-bundle stored-obs
-distance 1.216 misses the 0.491 source-NN gate. Shuffle harms.
-FakeStepModel proxy only. Not AGI. No collection. E2.17 stays
-inconclusive.
+NEXUS E2.23 cross-bundle memory
+(`docs/NEXUS_E2_23_CROSS_BUNDLE_MEMORY.md`): LOBO p95 gate 1.505
+retrieves familiar neighbors (recall 0.949) and loses first-free to
+persist (0.155 vs 0). Ungated still 0. Obstacle is planner-quality
+prediction, not the old 0.491 cutoff. Not AGI. No collection. E2.17
+stays inconclusive.
 
 The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`) and H16 `+0.023 [−0.014, +0.060]` (`h16_same_state_library_effect_not_established`). Evolution-2.8 persisted twelve family-default Pendulum/Acrobot train/val arrays at `env_cap=7680`. Evolution-2.9 timed six disposable residual fits at `env_cap=0` in 1.215 s. Evolution-2.10 binds all twelve catalogue variants for a development-only dry-run. Evolution-2.11 requests an n=3 persist-versus-reset screen and leaves it unauthorized. Evolution-2.12 makes that screen technically executable as a development-only dry-run (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_DRY_RUN.md`); `dispatch()` remains an unimplemented stub. An independent readiness audit sets the fresh new-physics first-screen cap at 17,280 steps and keeps science blocked (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_READINESS.md`). Evolution-2.13 locks that budget plus a 14,745,600 imagined upper bound and refuses a 7680 grant (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_BUDGET.md`). Evolution-2.14 recedes 800 stored-obs decisions in 2.305 s and leaves a 27.7 s planner-only 9600 prior (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_RECEDE.md`). Evolution-2.15 rejects vague authorization (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_APPROVAL.md`). Evolution-2.16 independently verifies the four locked unused roles and tests the gated executor without collecting (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_ROLES.md`, `docs/NEXUS_EVOLUTION2_PERSIST_RESET_EXECUTOR.md`). Evolution-2.17 consumed that one-run grant: 17,280 steps, six fits, persist-minus-reset 0.000 (inconclusive because hidden scores were method-independent). Evolution-2.18 diagnoses that persist and reset selected identical revealed sequences while evolution differed, and locks a method-sensitive hidden evaluator that passes synthetic causal-sensitivity tests. Evolution-2.19 shows retained 6-weight memory can change unconstrained and some hidden selections; forced anchors kept E2.17 training sequences identical (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md`). Evolution-2.20 locks the method-sensitive runner and refuses 7680, consumed 17280, continue, and E2.17 confirmation reuse (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md`). Evolution-2.21 connects method-selected hidden scoring to `decide()` with frozen revealed scale and provenance isolation (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_SCORING.md`). Do not retry E2.17. Do not start Evolution-3. A later method-sensitive n=10 screen needs a new grant and an 81,600-step upper cap; n=3 remains 24,480. The scientific ledger after E2.17 is 327.869 / 3272.131; the H16 file remains `ff4c51e2…`. The twenty-fit v2 clock remains unavailable. H17 remains blocked. Do not promote 7680 or six fits to n=10. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 

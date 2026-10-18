@@ -16,7 +16,9 @@ stopped. Residual *identity* selection with one revealed MAE ties
 persist-best and loses to default bundle 0; 8-step clone SGD hurts.
 E2.22 wraps AdaptiveProposer with a source-calibrated observation
 gate: exact-match zero-obs reuse beats persist first-free; familiar
-stored-obs fallbacks. Do not treat this as n=10 science or AGI.
+stored-obs fallbacks. E2.23’s leave-one-bundle-out p95 gate accepts
+those neighbors and then loses first-free to persist. Do not treat
+this as n=10 science or AGI.
 
 Authoritative snapshot for future agents. Not a scientific result.
 Generated from the research-tip merge and the consolidation review.

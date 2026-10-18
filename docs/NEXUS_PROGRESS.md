@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — E2.23 cross-bundle calibration, negative first-free
+
+LOBO gate 1.505 retrieves familiar neighbors and loses to persist
+(0.155 vs 0). Ungated remains 0. Report
+`NEXUS_E2_23_CROSS_BUNDLE_MEMORY.md`.
+
 ## Latest — E2.22 observation-conditioned memory, partial
 
 Gated retrieve wins the zero-obs first-free shift versus persist and

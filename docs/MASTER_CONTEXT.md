@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.23 cross-bundle gate retrieves familiar neighbors and loses, 2026-10-18
+
+LOBO p95 gate 1.505 raises source recall to 0.949 and accepts the
+1.216 familiar Acrobot neighbor. Hard NN retrieve then *hurts*
+familiar first-free versus persist (0.155 vs 0). Ungated still 0.
+Far still refused. Shuffle-false-accept 0.847. Not AGI. No
+collection. E2.17 unused. Report
+`NEXUS_E2_23_CROSS_BUNDLE_MEMORY.md`. Earlier entries remain history.
+
 ## Latest — E2.22 observation memory: exact-match reuse, familiar fallback, 2026-10-18
 
 Gated observation memory wrapping AdaptiveProposer beats persist on

@@ -23,6 +23,8 @@ FAMILIES = ("pendulum", "acrobot")
 CALIBRATE_BUNDLES = (0, 1)
 FAR_SIGMA = 4.0
 SOURCE_QUERY_PERCENTILE = 75.0
+CROSS_BUNDLE_PERCENTILE = 95.0
+CROSS_BUNDLE_BUNDLES = (0, 1)
 
 
 def refuse_science_path(path: Path) -> None:
@@ -103,6 +105,9 @@ class SourceCalibration:
     pairwise_median: float
     source_nn_p75: float
     n_obs: dict[str, int]
+    rule: str = "within_source_nn_p75"
+    frozen: bool = False
+    extra: dict = field(default_factory=dict)
 
 
 def calibrate_from_source(normalizers: dict[str, FamilyNormalizer], *, seed: int = 7, cap: int = 256) -> SourceCalibration:
@@ -125,7 +130,59 @@ def calibrate_from_source(normalizers: dict[str, FamilyNormalizer], *, seed: int
     pairwise = float(np.median(distances)) if distances else 1.0
     nn_p75 = float(np.percentile(nearest, SOURCE_QUERY_PERCENTILE)) if nearest else pairwise
     length = max(pairwise, 1e-3)
-    return SourceCalibration(length, max(nn_p75, 1e-3), pairwise, nn_p75, n_obs)
+    return SourceCalibration(length, max(nn_p75, 1e-3), pairwise, nn_p75, n_obs, "within_source_nn_p75", True)
+
+
+def _embed_bundle(family: str, bundle: int, norm: FamilyNormalizer, rng: np.random.Generator, cap: int) -> np.ndarray:
+    raw = load_source_train_obs(family, (bundle,))
+    idx = rng.choice(raw.shape[0], size=min(int(cap), raw.shape[0]), replace=False)
+    return np.stack([norm.embed(row) for row in raw[idx]])
+
+
+def calibrate_cross_bundle(normalizers: dict[str, FamilyNormalizer], *, seed: int = 7, cap: int = 256) -> SourceCalibration:
+    """Leave-one-bundle-out NN gate. Bundles 0↔1 only. No eval labels."""
+    rng = np.random.default_rng(int(seed))
+    pos = []
+    far = []
+    zero = []
+    shuffled = []
+    n_obs = {}
+    for family, norm in normalizers.items():
+        left = _embed_bundle(family, CROSS_BUNDLE_BUNDLES[0], norm, rng, cap)
+        right = _embed_bundle(family, CROSS_BUNDLE_BUNDLES[1], norm, rng, cap)
+        n_obs[family] = int(left.shape[0] + right.shape[0])
+        library = np.concatenate([left, right], axis=0)
+        for query, bank in ((left, right), (right, left)):
+            dmat = np.linalg.norm(query[:, None, :] - bank[None, :, :], axis=2)
+            pos.extend(float(x) for x in np.min(dmat, axis=1))
+            perm = rng.permutation(query.shape[1])
+            shuf = np.linalg.norm(query[:, perm][:, None, :] - bank[None, :, :], axis=2)
+            shuffled.extend(float(x) for x in np.min(shuf, axis=1))
+        far_emb = norm.embed(norm.far_observation())
+        far.append(float(np.min(np.linalg.norm(library - far_emb, axis=1))))
+        zero_emb = norm.embed(np.zeros(norm.obs_dim, dtype=np.float64))
+        zero.append(float(np.min(np.linalg.norm(library - zero_emb, axis=1))))
+    pos_nn = np.asarray(pos, dtype=np.float64)
+    threshold = float(max(np.percentile(pos_nn, CROSS_BUNDLE_PERCENTILE), 1e-3))
+    length = float(max(np.median(pos_nn), 1e-3))
+    within = calibrate_from_source(normalizers, seed=seed, cap=cap)
+    extra = {
+        "cross_nn_median": float(np.median(pos_nn)),
+        "cross_nn_p95": threshold,
+        "cross_nn_max": float(np.max(pos_nn)),
+        "n_lobo_queries": int(pos_nn.size),
+        "recall_at_cross_gate": float(np.mean(pos_nn <= threshold)),
+        "recall_at_within_gate": float(np.mean(pos_nn <= within.gate_threshold)),
+        "false_accept_far": float(np.mean(np.asarray(far) <= threshold)),
+        "false_accept_zero": float(np.mean(np.asarray(zero) <= threshold)),
+        "false_accept_shuffled": float(np.mean(np.asarray(shuffled) <= threshold)),
+        "far_nn": [float(x) for x in far],
+        "zero_nn": [float(x) for x in zero],
+        "within_gate_threshold": within.gate_threshold,
+        "percentile_rule": CROSS_BUNDLE_PERCENTILE,
+        "used_e222_shifted_outcomes": False,
+    }
+    return SourceCalibration(length, threshold, float(np.median(pos_nn)), within.source_nn_p75, n_obs, "cross_bundle_lobo_p95", True, extra)
 
 
 @dataclass
@@ -138,6 +195,8 @@ class ObservationAwareAdaptive:
     gated: bool = True
     shuffle: bool = False
     persist_memory: bool = True
+    reset_inner: bool = False
+    label: str | None = None
     inner: AdaptiveProposer = field(init=False)
     normalizers: dict[str, FamilyNormalizer] = field(default_factory=dict)
     calibration: SourceCalibration | None = None
@@ -154,11 +213,14 @@ class ObservationAwareAdaptive:
         if type(self.seed) is not int or not 0 <= self.seed <= 10**9:
             raise ContractError("invalid_observation_memory_seed")
         self.inner = AdaptiveProposer(seed=self.seed)
-        self.inner.name = self.name
-        if self.shuffle:
+        if self.label:
+            self.name = str(self.label)
+        elif self.shuffle:
             self.name = "observation_shuffled_memory"
         elif not self.gated:
             self.name = "observation_ungated_memory"
+        self.inner.name = self.name
+        self.resets = bool(self.reset_inner)
 
     def observe(self, family: str, obs, context: PublicFixtureContext, *, provenance: str, support_digest: str = "none") -> np.ndarray:
         if family not in self.normalizers:
@@ -184,6 +246,11 @@ class ObservationAwareAdaptive:
         }
 
     def reset_task(self):
+        if self.reset_inner:
+            tie = dict(self.inner._tie_rank)
+            self.inner = AdaptiveProposer(seed=self.seed)
+            self.inner.name = self.name
+            self.inner._tie_rank = tie
         if not self.persist_memory:
             self._store = []
             self.inner = AdaptiveProposer(seed=self.seed)
@@ -232,7 +299,14 @@ class ObservationAwareAdaptive:
             scores[fingerprint] = (float(np.sum(w * s)) + 0.5 * ridge) / (float(np.sum(w)) + ridge)
         confident = (not self.gated) or (nearest <= threshold and nearest is not math.inf)
         mass = 0.0 if nearest is math.inf else math.exp(-((nearest / length) ** 2))
-        confidence = 0.0 if not confident else float(mass)
+        # Source LOBO p95 ≫ median: soft mass at the acceptance radius is ~0.
+        # An open gate therefore uses the accepted neighbor (hard NN), not a
+        # vanished kernel weight.
+        hard_nn = bool(self.gated and self.calibration is not None and self.calibration.rule == "cross_bundle_lobo_p95")
+        if hard_nn:
+            confidence = 1.0 if confident else 0.0
+        else:
+            confidence = 0.0 if not confident else float(mass)
         return {
             "scores": scores,
             "nearest": None if nearest is math.inf else float(nearest),
@@ -255,7 +329,12 @@ class ObservationAwareAdaptive:
         retrieved = self.retrieve(self._family, self._embedding)
         if retrieved["fallback"]:
             choice = self.inner.choose(available, context)
-            self._last = {**retrieved, "action": "fallback", "choice": choice.fingerprint}
+            self._last = {
+                **retrieved,
+                "action": "fallback",
+                "choice": choice.fingerprint,
+                "fallback_kind": "current_task_only" if self.reset_inner else "persistent_proposer",
+            }
             return choice
         inner_raw = {variant.fingerprint: self._inner_score(variant, context) for variant in available}
         lo = min(inner_raw.values())
@@ -328,3 +407,24 @@ def make_observation_methods(seed: int, normalizers: dict[str, FamilyNormalizer]
         ungated.name: ungated,
         shuffled.name: shuffled,
     }
+
+
+def make_cross_bundle_methods(
+    seed: int,
+    normalizers: dict[str, FamilyNormalizer],
+    within: SourceCalibration,
+    cross: SourceCalibration,
+) -> dict[str, ObservationAwareAdaptive]:
+    rows = (
+        ObservationAwareAdaptive(seed=seed, gated=True, label="observation_fixed_gate"),
+        ObservationAwareAdaptive(seed=seed, gated=True, label="observation_cross_bundle"),
+        ObservationAwareAdaptive(seed=seed, gated=True, reset_inner=True, label="observation_cross_reset_fallback"),
+        ObservationAwareAdaptive(seed=seed, gated=False, label="observation_ungated_memory"),
+    )
+    rows[0].calibration = within
+    rows[1].calibration = cross
+    rows[2].calibration = cross
+    rows[3].calibration = cross
+    for method in rows:
+        method.normalizers = normalizers
+    return {method.name: method for method in rows}

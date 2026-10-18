@@ -1,0 +1,2312 @@
+{
+  "scientific": false,
+  "collection": false,
+  "gymnasium": false,
+  "env_steps": 0,
+  "claims_agi": false,
+  "claims_learning_to_learn": false,
+  "historical_e217_label": "inconclusive",
+  "grant_consumed": true,
+  "used_e217_science_arrays": false,
+  "used_e222_shifted_outcomes_for_calibration": false,
+  "score_source": "decide_fake_step_model_proxy",
+  "score_is_real_control": false,
+  "development_scenarios_are_confirmation": false,
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "base_sha": "cfc753a0cb86405e39033de067a950a2aeae7a32",
+  "seed": 7,
+  "matched_proposals": 6,
+  "free_slots": 4,
+  "anchors": 2,
+  "calibration_within": {
+    "rule": "within_source_nn_p75",
+    "kernel_length": 2.548738130630337,
+    "gate_threshold": 0.4912130264089363
+  },
+  "calibration_cross": {
+    "rule": "cross_bundle_lobo_p95",
+    "frozen": true,
+    "kernel_length": 0.3657802005410999,
+    "gate_threshold": 1.5051752264349445,
+    "cross_nn_median": 0.3657802005410999,
+    "cross_nn_p95": 1.5051752264349445,
+    "cross_nn_max": 4.936437823231305,
+    "n_lobo_queries": 1024,
+    "recall_at_cross_gate": 0.94921875,
+    "recall_at_within_gate": 0.6650390625,
+    "false_accept_far": 0.0,
+    "false_accept_zero": 0.5,
+    "false_accept_shuffled": 0.8466796875,
+    "far_nn": [
+      5.109323669788167,
+      8.452908015979828
+    ],
+    "zero_nn": [
+      1.3854461077694378,
+      4.41695340540747
+    ],
+    "within_gate_threshold": 0.4912130264089363,
+    "percentile_rule": 95.0,
+    "used_e222_shifted_outcomes": false
+  },
+  "lookups": {
+    "reset_adaptive": 60,
+    "persistent_adaptive": 60,
+    "observation_fixed_gate": 60,
+    "observation_cross_bundle": 60,
+    "observation_cross_reset_fallback": 60,
+    "observation_ungated_memory": 60
+  },
+  "summary": {
+    "reset_adaptive": {
+      "train_regret": 0.23494813519650545,
+      "dev_regret": 0.31142934817784196,
+      "shifted_regret": 0.2209328364731328,
+      "collision_regret": 0.0,
+      "dev_first_free_regret": 0.9152067903310155,
+      "shifted_first_free_regret": 0.6169946447982926,
+      "collision_first_free_regret": 0.10957678996573372,
+      "dev_free_regret_sum": 1.830413580662031,
+      "shifted_free_regret_sum": 1.8509839343948777,
+      "dev_retrieves": 0.0,
+      "dev_fallbacks": 0.0,
+      "shifted_retrieves": 0.0,
+      "shifted_fallbacks": 0.0
+    },
+    "persistent_adaptive": {
+      "train_regret": 0.0774905651433406,
+      "dev_regret": 0.0,
+      "shifted_regret": 0.033200440285449474,
+      "collision_regret": 0.0,
+      "dev_first_free_regret": 0.0,
+      "shifted_first_free_regret": 0.06274468348220108,
+      "collision_first_free_regret": 0.10957678996573372,
+      "dev_free_regret_sum": 0.0,
+      "shifted_free_regret_sum": 0.18823405044660324,
+      "dev_retrieves": 0.0,
+      "dev_fallbacks": 0.0,
+      "shifted_retrieves": 0.0,
+      "shifted_fallbacks": 0.0
+    },
+    "observation_fixed_gate": {
+      "train_regret": 0.0774905651433406,
+      "dev_regret": 0.0,
+      "shifted_regret": 0.0,
+      "collision_regret": 0.0,
+      "dev_first_free_regret": 0.0,
+      "shifted_first_free_regret": 0.0,
+      "collision_first_free_regret": 0.10957678996573372,
+      "dev_free_regret_sum": 0.0,
+      "shifted_free_regret_sum": 0.0,
+      "dev_retrieves": 0.0,
+      "dev_fallbacks": 4.0,
+      "shifted_retrieves": 1.3333333333333333,
+      "shifted_fallbacks": 2.6666666666666665
+    },
+    "observation_cross_bundle": {
+      "train_regret": 0.0774905651433406,
+      "dev_regret": 0.0,
+      "shifted_regret": 0.0,
+      "collision_regret": 0.0,
+      "dev_first_free_regret": 0.15489455120816992,
+      "shifted_first_free_regret": 0.0,
+      "collision_first_free_regret": 0.10957678996573372,
+      "dev_free_regret_sum": 0.30978910241633983,
+      "shifted_free_regret_sum": 0.0,
+      "dev_retrieves": 4.0,
+      "dev_fallbacks": 0.0,
+      "shifted_retrieves": 1.3333333333333333,
+      "shifted_fallbacks": 2.6666666666666665
+    },
+    "observation_cross_reset_fallback": {
+      "train_regret": 0.23494813519650545,
+      "dev_regret": 0.0,
+      "shifted_regret": 0.2209328364731328,
+      "collision_regret": 0.0,
+      "dev_first_free_regret": 0.31142934817784196,
+      "shifted_first_free_regret": 0.6169946447982926,
+      "collision_first_free_regret": 0.10957678996573372,
+      "dev_free_regret_sum": 0.6228586963556839,
+      "shifted_free_regret_sum": 1.8509839343948777,
+      "dev_retrieves": 4.0,
+      "dev_fallbacks": 0.0,
+      "shifted_retrieves": 1.3333333333333333,
+      "shifted_fallbacks": 2.6666666666666665
+    },
+    "observation_ungated_memory": {
+      "train_regret": 0.0774905651433406,
+      "dev_regret": 0.0,
+      "shifted_regret": 0.0,
+      "collision_regret": 0.0,
+      "dev_first_free_regret": 0.0,
+      "shifted_first_free_regret": 0.0,
+      "collision_first_free_regret": 0.10957678996573372,
+      "dev_free_regret_sum": 0.0,
+      "shifted_free_regret_sum": 0.0,
+      "dev_retrieves": 4.0,
+      "dev_fallbacks": 0.0,
+      "shifted_retrieves": 4.0,
+      "shifted_fallbacks": 0.0
+    }
+  },
+  "rows": {
+    "reset_adaptive": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6850689290823914,
+          "regret": 0.31493107091760864,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            0.044188996004362845,
+            0.6850689290823914,
+            0.6104138614731482
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6851007907049492,
+          "regret": 0.3148992092950508,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08400059532647854,
+          "first_free_regret": 0.9159994046735215,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            0.08400059532647854,
+            0.014660221529040411,
+            0.6851007907049492,
+            0.6042183906901947
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.302062559458527
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.6902108975836602,
+          "regret": 0.30978910241633983,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08673616247468005,
+          "first_free_regret": 0.9132638375253199,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            0.08673616247468005,
+            0.0,
+            0.6902108975836602,
+            0.6108778731672673
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.6869304060606559,
+          "regret": 0.3130695939393441,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08285025686328898,
+          "first_free_regret": 0.917149743136711,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            0.08285025686328898,
+            0.0,
+            0.6836408051560794,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            1.0,
+            0.8117659495533968,
+            0.37883379710268844,
+            0.278670713099786
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_far_2",
+          "family": "pendulum",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.6654140049535807,
+          "regret": 0.3345859950464193,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09606624400729445,
+          "first_free_regret": 0.9039337559927055,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09637471012905244,
+            0.0,
+            0.09606624400729445,
+            0.0009969005179013587,
+            0.6654140049535807,
+            0.568494498864478
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_far_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.6717874856270208,
+          "regret": 0.32821251437297916,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.05294982159782783,
+          "first_free_regret": 0.9470501784021722,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08225471758605242,
+            0.02395511039923901,
+            0.05294982159782783,
+            0.0,
+            0.6717874856270208,
+            0.6702466708238011
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.24086962014398383,
+            0.3010127602539036
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ]
+    },
+    "persistent_adaptive": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            1.0,
+            0.044188996004362845,
+            0.6850689290823914
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            0.6851007907049492,
+            0.08400059532647854,
+            0.9171895478176593
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.28999749935012503
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.6902108975836602,
+            0.08673616247468005,
+            0.9211895225798991
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.9197788612630478,
+            0.607227803217422,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.9003986791436516,
+          "regret": 0.09960132085634843,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.8117659495533968,
+          "first_free_regret": 0.18823405044660324,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            0.8117659495533968,
+            0.0,
+            0.278670713099786,
+            0.05578611553824843
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_far_2",
+          "family": "pendulum",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.09637471012905244,
+            0.0,
+            1.0,
+            0.6653667094824239,
+            0.09606624400729445,
+            0.9029930733173449
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_far_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.08225471758605242,
+            0.02395511039923901,
+            1.0,
+            0.9133778940356858,
+            0.5927880558363667,
+            0.6717874856270208
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.24086962014398383,
+            0.21079654156850744
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ]
+    },
+    "observation_fixed_gate": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            1.0,
+            0.044188996004362845,
+            0.6850689290823914
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            0.6851007907049492,
+            0.08400059532647854,
+            0.9171895478176593
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.28999749935012503
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.6902108975836602,
+            0.08673616247468005,
+            0.9211895225798991
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.9197788612630478,
+            0.607227803217422,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            1.0,
+            0.8117659495533968,
+            0.0,
+            0.05578611553824843
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_far_2",
+          "family": "pendulum",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.09637471012905244,
+            0.0,
+            1.0,
+            0.09606624400729445,
+            0.6654140049535807,
+            0.9029930733173449
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_far_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08225471758605242,
+            0.02395511039923901,
+            1.0,
+            0.6702466708238011,
+            0.9150699955084861,
+            0.5881558693771155
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.3010127602539036,
+            0.21079553809799867
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ]
+    },
+    "observation_cross_bundle": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            1.0,
+            0.044188996004362845,
+            0.6850689290823914
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            0.6851007907049492,
+            0.08400059532647854,
+            0.9171895478176593
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.28999749935012503
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.6902108975836602,
+          "first_free_regret": 0.30978910241633983,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            0.6902108975836602,
+            0.6108778731672673,
+            0.6128632567537454,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.6869304060606559,
+            0.6096712560853131,
+            0.607227803217422
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            1.0,
+            0.8117659495533968,
+            0.23410651908505295,
+            0.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_far_2",
+          "family": "pendulum",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.09637471012905244,
+            0.0,
+            1.0,
+            0.09606624400729445,
+            0.6654140049535807,
+            0.9029930733173449
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_far_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08225471758605242,
+            0.02395511039923901,
+            1.0,
+            0.6702466708238011,
+            0.9150699955084861,
+            0.5881558693771155
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.05022886597146224,
+            0.21079553809799867
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ]
+    },
+    "observation_cross_reset_fallback": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6850689290823914,
+          "regret": 0.31493107091760864,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            0.044188996004362845,
+            0.6850689290823914,
+            0.6104138614731482
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6851007907049492,
+          "regret": 0.3148992092950508,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08400059532647854,
+          "first_free_regret": 0.9159994046735215,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            0.08400059532647854,
+            0.014660221529040411,
+            0.6851007907049492,
+            0.6042183906901947
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.302062559458527
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.6902108975836602,
+          "first_free_regret": 0.30978910241633983,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            0.6902108975836602,
+            0.6108778731672673,
+            0.6128632567537454,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.6869304060606559,
+          "first_free_regret": 0.3130695939393441,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            0.6869304060606559,
+            0.607227803217422,
+            0.6096712560853131,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            1.0,
+            0.8117659495533968,
+            0.0,
+            0.278670713099786
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_far_2",
+          "family": "pendulum",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.6654140049535807,
+          "regret": 0.3345859950464193,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09606624400729445,
+          "first_free_regret": 0.9039337559927055,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09637471012905244,
+            0.0,
+            0.09606624400729445,
+            0.0009969005179013587,
+            0.6654140049535807,
+            0.568494498864478
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_far_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.6717874856270208,
+          "regret": 0.32821251437297916,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.05294982159782783,
+          "first_free_regret": 0.9470501784021722,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08225471758605242,
+            0.02395511039923901,
+            0.05294982159782783,
+            0.0,
+            0.6717874856270208,
+            0.6702466708238011
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.05022886597146224,
+            0.21079553809799867
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ]
+    },
+    "observation_ungated_memory": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            1.0,
+            0.044188996004362845,
+            0.6850689290823914
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 4,
+          "retrieves": 0,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            0.6851007907049492,
+            0.08400059532647854,
+            0.9171895478176593
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.28999749935012503
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.6902108975836602,
+            0.08673616247468005,
+            0.9211895225798991
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.9197788612630478,
+            0.607227803217422,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            1.0,
+            0.8117659495533968,
+            0.23410651908505295,
+            0.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "pend_far_2",
+          "family": "pendulum",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.09637471012905244,
+            0.0,
+            1.0,
+            0.09606624400729445,
+            0.6654140049535807,
+            0.9029930733173449
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        },
+        {
+          "task_id": "acro_far_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08225471758605242,
+            0.02395511039923901,
+            1.0,
+            0.6702466708238011,
+            0.9150699955084861,
+            0.5881558693771155
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.05022886597146224,
+            0.21079553809799867
+          ],
+          "physical": 6,
+          "charged": 6,
+          "fallbacks": 0,
+          "retrieves": 4,
+          "score_source": "decide_fake_step_model_proxy"
+        }
+      ]
+    }
+  },
+  "oracle_by_task": {
+    "pend_store_0": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+    "acro_store_0": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+    "pend_store_1": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+    "acro_zero_0": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+    "pend_store_2": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+    "acro_store_1": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+    "acro_zero_1": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+    "acro_zero_collision": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+    "pend_far_2": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+    "acro_far_1": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+  },
+  "causal_observation_only": {
+    "stored": {
+      "choice": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+      "action": "retrieve",
+      "confidence": 1.0,
+      "nearest": 1.2155083915459075,
+      "fallback": false
+    },
+    "zero": {
+      "choice": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+      "action": "retrieve",
+      "confidence": 1.0,
+      "nearest": 0.0,
+      "fallback": false
+    },
+    "far": {
+      "choice": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+      "action": "fallback",
+      "confidence": 0.0,
+      "nearest": 9.059199106014603,
+      "fallback": true
+    },
+    "changed_zero": true,
+    "changed_far": true,
+    "same_memory_records": true,
+    "same_weights": true
+  },
+  "decision": {
+    "cross_retrieves_familiar": true,
+    "preserves_familiar_vs_persist": false,
+    "beats_persist_familiar": false,
+    "beats_fixed_familiar_retrieve": true,
+    "beats_ungated_familiar": false,
+    "beats_ungated_shifted": false,
+    "beats_persist_shifted": true,
+    "reset_fallback_vs_persist_fallback_dev": 0.15653479696967204,
+    "causal_obs_changes": true,
+    "gating_adds_value_vs_ungated": false,
+    "development_success": false,
+    "vs_persist_dev": 0.15489455120816992,
+    "vs_ungated_dev": 0.15489455120816992,
+    "vs_reset_dev": -0.7603122391228456
+  },
+  "wall_s": 0.1880344589953893,
+  "cpu_s": 0.18775300000000006,
+  "note": "E2.23 development proxy screen, not a scientific result and not AGI."
+}

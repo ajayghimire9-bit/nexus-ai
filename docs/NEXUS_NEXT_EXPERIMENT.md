@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.23 retrieves cross-bundle neighbors and loses to persist
+
+LOBO calibration opened familiar retrieval. Hard NN first-free is
+worse than persist (0.155 vs 0). Ungated still ties persist.
+Recommended next *development* step: retrieve only when accepted
+neighbors agree on the planner, still source-only. Do not widen the
+gate. No collection. No E2.17 reuse. No n=10 science. Report
+`NEXUS_E2_23_CROSS_BUNDLE_MEMORY.md`.
+
 ## Current — E2.22 gate is tighter than inter-bundle stored-obs
 
 Gated observation memory reuses exact-match zero-obs and beats

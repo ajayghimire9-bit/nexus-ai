@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-E2.23 cross-bundle recall rises; first-free falls
+
+LOBO p95 accepts familiar neighbors the E2.22 gate refused. Hard NN
+retrieve loses familiar first-free to persist (0.155 vs 0) and does
+not beat ungated. Failure: planner-quality prediction. FakeStep
+proxy. Not science. Report `NEXUS_E2_23_CROSS_BUNDLE_MEMORY.md`.
+
 ## Latest — H-E2.22 observation gate reuses exact matches, not stored-obs neighbors
 
 Gated AdaptiveProposer memory changes the zero-obs first-free planner

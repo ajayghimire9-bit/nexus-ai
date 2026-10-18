@@ -29,6 +29,7 @@ instead of opening parallel packages.
 | Residual decide() memory bench | `nexus.core.strategy_memory_residual_bench`; reuses `persist_reset_path.disposable_model` and E2.8 arrays | E2.17 science fits/arrays, new collection, or more 12-arm FakeStep/E2.9 selection |
 | Residual identity / adapt bench | `nexus.core.residual_adapt` plus `residual_adapt_bench`; reuses `describe_support`, E2.9 `disposable_model`, `WorldModel.clone` | E2.17 science files, writing checkpoints, or replacing `WorldModel` |
 | Observation-conditioned E2.22 memory | `evolution2.observation_memory.ObservationAwareAdaptive` wrapping `AdaptiveProposer`; bench `observation_memory_bench` | A second evolution stack, replacing persist, or calibrating the gate on shifted tasks |
+| Cross-bundle E2.23 calibration | `calibrate_cross_bundle` plus `observation_memory_cross_bench`; reuses E2.22 wrapper and tasks | Tuning the p95 rule on E2.22 first-free, widening the gate again, or a new memory stack |
 | E2 persist/reset/evolution wrappers | `evolution2.methods` | A second method registry |
 | Pendulum/Acrobot proposer screen design | `evolution2.pendulum_acrobot_protocol_v2` (target) and `_v2_pilot` (reduced worksheet) | A third protocol that silently rewrites n, Bonferroni, or v2 hashes |
 | Explicit n=3 no-fit micro | `evolution2.pendulum_acrobot_protocol_n3_micro` | Treating n=3 unmatched residuals as a v2 pass or using the df=9 t crit |
