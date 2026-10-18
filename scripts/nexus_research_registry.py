@@ -663,7 +663,7 @@ EXPERIMENTS = [
             "src/nexus/evolution2/evaluator_readiness.py",
             "src/nexus/evolution2/evaluator_dry_run.py",
         ],
-        "commit": "incomplete",
+        "commit": "d2ca6818cace42ceac7b2ac7c28e319b89d84b31",
         "protocol": "docs/NEXUS_EVOLUTION2_EVALUATOR_READINESS.md",
         "results": "docs/NEXUS_EVOLUTION2_EVALUATOR_READINESS.md",
         "status": "development_only_science_blocked",
