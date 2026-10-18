@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — four-role instance rules locked, still unnamed
+
+Pendulum grid 6,069 cells; sequential assignment of four unused
+roles as digests only. `hold_named` false. H17 blocked. Ledger
+305.842 / 3294.158 unchanged. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_INSTANCE_RULES.md`.
+
 ## Latest — unused-instance naming review, still unnamed
 
 Verdict **NAMING_BLOCKED**. Occupied lists cover family literals.

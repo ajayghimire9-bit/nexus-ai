@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-pendulum-acrobot four-role rules are locked, unnamed
+
+A Pendulum unused-instance grid and four-role assignment exist as
+digests. No tuple is named. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_INSTANCE_RULES.md`.
+
 ## Latest — H-e2-pendulum-acrobot unused-instance naming is blocked
 
 The independent review does not name a holdout. Occupancy is

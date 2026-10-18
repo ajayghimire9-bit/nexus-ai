@@ -485,6 +485,19 @@ EXPERIMENTS = [
         "reuse": "Naming blocked. Do not persist a physics tuple. Do not collect.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2-pendulum-acrobot-instance-rules",
+        "title": "Four-role unused-instance rules, still unnamed",
+        "hypothesis": "A regular Pendulum grid plus sequential role assignment can lock four disjoint unused-instance digests without persisting tuples.",
+        "implementation": ["src/nexus/evolution2/pendulum_acrobot_instance_rules.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_INSTANCE_RULES.md",
+        "results": "artifacts/evolution2_pendulum_acrobot_instance_rules.json",
+        "status": "four_role_rules_locked_unnamed",
+        "artifacts": ["artifacts/evolution2_pendulum_acrobot_instance_rules.json"],
+        "reuse": "Rules locked. Do not persist tuples. Do not collect. Later naming must match the four digests.",
+        "coverage": "source_verified",
+    },
 ]
 
 

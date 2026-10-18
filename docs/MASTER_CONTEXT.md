@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — four-role instance rules locked, still unnamed, 2026-10-18
+
+On `cursor/evolution2-trusted-planner-adapter` from `80d93e6`.
+Regular Pendulum unused-instance grid plus sequential four-role
+assignment, recorded as digests only. Holdout unnamed. Collection
+unauthorized. H17 blocked. Ledger unchanged (305.842 / 3294.158).
+Report `NEXUS_EVOLUTION2_PENDULUM_ACROBOT_INSTANCE_RULES.md`.
+Earlier entries remain history.
+
 ## Latest — unused-instance naming BLOCKED, 2026-10-18
 
 On `cursor/evolution2-trusted-planner-adapter` from `2b52894`.

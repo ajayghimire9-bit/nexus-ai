@@ -53,6 +53,7 @@ def test_registry_forbids_science_and_keeps_h17_blocked():
         "E2-pendulum-acrobot-v2",
         "E2-pendulum-acrobot-v2-pilot",
         "E2-pendulum-acrobot-holdout-review",
+        "E2-pendulum-acrobot-instance-rules",
     } <= ids
     h17 = next(row for row in registry["experiments"] if row["id"] == "H17")
     assert h17["status"] == "blocked"

@@ -1,7 +1,7 @@
 # NEXUS full research registry
 
 Status: **documentation only**. Not a scientific result.
-HEAD: `e818baacfb82729d13dc680f352486c7bea01eff`. Ledger **305.842 / 3294.158**.
+HEAD: `80d93e60f5fd132b51d324ccadb3b1acceebf8d0`. Ledger **305.842 / 3294.158**.
 H17 remains **blocked**.
 
 Missing commits, protocols, or implementations are marked **incomplete**
@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 34
+- Curated rows: 35
 - Unindexed protocol/results docs: 93
-- Total rows: 127
+- Total rows: 128
 - Incomplete or partial: 120
-- Source-verified: 7
+- Source-verified: 8
 
 ## Closed primary labels that must not be retuned
 
@@ -73,6 +73,7 @@ or component.
 | `E2.1-planner-adapter` | engineering_only_unauthorized | docs/NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md / — | Fake-model adapter. Not a scientific result. Do not collect. | source_verified |
 | `E2-pendulum-acrobot-v2-pilot` | prospective_design_unauthorized | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md / — | Reduced worksheet only. Do not collect. Do not rewrite v2. Holdout unnamed. | source_verified |
 | `E2-pendulum-acrobot-holdout-review` | naming_blocked | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_HOLDOUT_REVIEW.md / artifacts/evolution2_pendulum_acrobot_holdout_review.json | Naming blocked. Do not persist a physics tuple. Do not collect. | source_verified |
+| `E2-pendulum-acrobot-instance-rules` | four_role_rules_locked_unnamed | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_INSTANCE_RULES.md / artifacts/evolution2_pendulum_acrobot_instance_rules.json | Rules locked. Do not persist tuples. Do not collect. Later naming must match the four digests. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

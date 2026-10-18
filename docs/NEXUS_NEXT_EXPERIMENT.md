@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — four-role instance rules locked, still unnamed
+
+A regular Pendulum grid (6,069 cells) and sequential four-role
+assignment exist as digests only. `hold_named` stays false. Do not
+persist tuples. Do not collect. Do not rewrite v2. Do not unlock
+H17. Next allowed step: a residual-MLP timing probe on existing
+checkpoints, or a later naming authorization that must match the
+four locked digests. Ledger 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_INSTANCE_RULES.md`.
+
 ## Current — unused-instance naming is BLOCKED
 
 Independent review: occupancy is complete and an unused Acrobot
