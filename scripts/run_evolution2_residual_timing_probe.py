@@ -6,10 +6,12 @@ import time
 from pathlib import Path
 
 import numpy as np
+import torch
 
 from nexus.evolution1.catalogue import Generator, Rule, Variant
 from nexus.evolution2 import residual_timing_probe as lock
 from nexus.evolution2.planner_adapter import decide
+from nexus.world.context_model import ContextWorldModel
 from nexus.world.dynamics import WorldModel
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,9 +19,32 @@ USAGE = ROOT / "artifacts" / "research_session_e2_residual_timing_probe_usage.js
 VARIANT = Variant(Rule.SUCCESSOR, Generator.IID, 16)
 
 
-def _probe_one(spec: dict, *, imagined_budget: int, time_budget_s: float) -> dict:
-    model = WorldModel.load(ROOT / spec["path"], device="cpu")
+def _load_model(spec: dict):
+    path = ROOT / spec["path"]
+    if spec["id"] == "pendulum_frozen_decoder":
+        model = ContextWorldModel.create(3, 3, seed=0)
+        blob = torch.load(path, map_location="cpu", weights_only=False)
+        model.encoder.load_state_dict(blob["encoder"])
+        model.net.load_state_dict(blob["net"])
+        model.obs_rms.load_state_dict(blob["obs_rms"])
+        model.clear_context()
+        return model
+    if spec["id"] == "pendulum_residual_mlp":
+        blob = torch.load(path, map_location="cpu", weights_only=False)
+        model = WorldModel.create(3, 3, kind="residual", hidden=(64, 64), seed=0, arch="mlp")
+        model.net.load_state_dict(blob["net"])
+        model.obs_rms.load_state_dict(blob["obs_rms"])
+        model.net.eval()
+        return model
+    model = WorldModel.load(path, device="cpu")
     model.net.eval()
+    return model
+
+
+def _probe_one(spec: dict, *, imagined_budget: int, time_budget_s: float) -> dict:
+    model = _load_model(spec)
+    if hasattr(model, "net"):
+        model.net.eval()
     rng = np.random.default_rng(0)
     obs = rng.standard_normal(model.net.obs_dim).astype(np.float32)
     decide(spec["family"], VARIANT, obs, model, seed=0)
@@ -44,7 +69,7 @@ def _probe_one(spec: dict, *, imagined_budget: int, time_budget_s: float) -> dic
         "path": spec["path"],
         "obs_dim": int(model.net.obs_dim),
         "n_actions": int(model.net.n_actions),
-        "kind": model.kind,
+        "kind": str(getattr(model, "kind", spec["id"])),
         "decisions": decisions,
         "imagined": imagined,
         "wall_s": wall,
@@ -97,10 +122,11 @@ def main() -> int:
         "authorized_time_cap_s": lock.AUTHORIZED_TIME_CAP_S,
         "authorized_env_cap": lock.AUTHORIZED_ENV_CAP,
         "authorized_imagined_cap": lock.AUTHORIZED_IMAGINED_CAP,
+        "failed_attempt_s": 0.33463058300549163,
         "session_ledger_used_before_s": lock.SESSION_LEDGER_USED_S,
         "session_ledger_remaining_before_s": lock.SESSION_LEDGER_REMAINING_S,
-        "session_ledger_used_after_s": lock.SESSION_LEDGER_USED_S + wall,
-        "session_ledger_remaining_after_s": lock.SESSION_LEDGER_REMAINING_S - wall,
+        "session_ledger_used_after_s": lock.SESSION_LEDGER_USED_S + 0.33463058300549163 + wall,
+        "session_ledger_remaining_after_s": lock.SESSION_LEDGER_REMAINING_S - 0.33463058300549163 - wall,
         "claims_learning_to_learn": False,
         "is_agi": False,
     }

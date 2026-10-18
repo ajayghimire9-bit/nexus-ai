@@ -1,0 +1,87 @@
+{
+  "scientific": false,
+  "collection": false,
+  "hold_named": false,
+  "outcome": "probe_complete",
+  "wall_s": 0.7769814999992377,
+  "env_steps": 0,
+  "checkpoint_writes": 0,
+  "models": [
+    {
+      "id": "pendulum_frozen_decoder",
+      "family": "pendulum",
+      "path": "artifacts/frozen_dynamics_checkpoints/seed0_history_u1000.pt",
+      "obs_dim": 3,
+      "n_actions": 3,
+      "kind": "pendulum_frozen_decoder",
+      "decisions": 45,
+      "imagined": 67095,
+      "wall_s": 0.20210866699926555,
+      "seconds_per_imagined": 3.012276130848283e-06,
+      "env_steps": 0,
+      "checkpoint_writes": 0,
+      "extrapolation": {
+        "historical_s": 5.529535864978903e-06,
+        "measured_s": 3.012276130848283e-06,
+        "v2_historical_s": 611.5224303797469,
+        "v2_measured_s": 333.13364186277335,
+        "pilot_historical_s": 271.78774683544304,
+        "pilot_measured_s": 148.0593963834548
+      }
+    },
+    {
+      "id": "pendulum_residual_mlp",
+      "family": "pendulum",
+      "path": "artifacts/context_optimization_checkpoints/seed0_mlp_u1000.pt",
+      "obs_dim": 3,
+      "n_actions": 3,
+      "kind": "residual",
+      "decisions": 45,
+      "imagined": 67095,
+      "wall_s": 0.19784341699414654,
+      "seconds_per_imagined": 2.9487058200185786e-06,
+      "env_steps": 0,
+      "checkpoint_writes": 0,
+      "extrapolation": {
+        "historical_s": 5.529535864978903e-06,
+        "measured_s": 2.9487058200185786e-06,
+        "v2_historical_s": 611.5224303797469,
+        "v2_measured_s": 326.10327404749466,
+        "pilot_historical_s": 271.78774683544304,
+        "pilot_measured_s": 144.93478846555317
+      }
+    },
+    {
+      "id": "acrobot_lookahead_seed0",
+      "family": "acrobot",
+      "path": "checkpoints/acrobot_lookahead_h16/seed0.pt",
+      "obs_dim": 6,
+      "n_actions": 3,
+      "kind": "residual",
+      "decisions": 45,
+      "imagined": 67095,
+      "wall_s": 0.3515990829982911,
+      "seconds_per_imagined": 5.240317206919906e-06,
+      "env_steps": 0,
+      "checkpoint_writes": 0,
+      "extrapolation": {
+        "historical_s": 5.529535864978903e-06,
+        "measured_s": 5.240317206919906e-06,
+        "v2_historical_s": 611.5224303797469,
+        "v2_measured_s": 579.5371605476863,
+        "pilot_historical_s": 271.78774683544304,
+        "pilot_measured_s": 257.5720713545272
+      }
+    }
+  ],
+  "authorized_time_cap_s": 60,
+  "authorized_env_cap": 0,
+  "authorized_imagined_cap": 200000,
+  "failed_attempt_s": 0.33463058300549164,
+  "session_ledger_used_before_s": 305.842,
+  "session_ledger_remaining_before_s": 3294.158,
+  "session_ledger_used_after_s": 306.9536120830047,
+  "session_ledger_remaining_after_s": 3293.046387916995,
+  "claims_learning_to_learn": false,
+  "is_agi": false
+}

@@ -21,7 +21,7 @@ collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
 
-Scientific ledger: **305.842 s used / 3294.158 s remaining.**
+Scientific ledger: **306.954 s used / 3293.046 s remaining.**
 H17 remains **BLOCKED**.
 
 ## Closed scientific labels that must not be retuned

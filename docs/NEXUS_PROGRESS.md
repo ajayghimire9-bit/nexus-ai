@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — residual-MLP timing probe, no env collection
+
+`probe_complete` on three frozen files. Acrobot 5.24 µs/state
+extrapolates to v2 580 s and v2-pilot 258 s. Failed attempts plus
+complete wall charged. Ledger 306.954 / 3293.046. Not a transfer
+result. Report `NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE_RESULTS.md`.
+
 ## Latest — four-role instance rules locked, still unnamed
 
 Pendulum grid 6,069 cells; sequential assignment of four unused

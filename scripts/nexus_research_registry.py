@@ -508,11 +508,12 @@ EXPERIMENTS = [
         ],
         "commit": "incomplete",
         "protocol": "docs/NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE.md",
-        "results": "artifacts/evolution2_residual_timing_probe.json",
-        "status": "bounded_inference_probe_authorized_60s",
+        "results": "docs/NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE_RESULTS.md",
+        "status": "probe_complete_not_a_transfer_result",
         "artifacts": [
             "configs/evolution2_residual_timing_probe.yaml",
             "configs/evolution2_residual_timing_probe_allocation.json",
+            "artifacts/evolution2_residual_timing_probe.json",
         ],
         "reuse": "Read-only inference. 0 env steps. Not a transfer result. Do not collect.",
         "coverage": "source_verified",
@@ -566,7 +567,7 @@ def build(head: str) -> dict:
         "mode": "documentation_registry",
         "scientific": False,
         "head": head,
-        "ledger_s": [305.842, 3294.158],
+        "ledger_s": [306.954, 3293.046],
         "h17": "blocked",
         "consult": CONSULT,
         "closed_primary_labels": [

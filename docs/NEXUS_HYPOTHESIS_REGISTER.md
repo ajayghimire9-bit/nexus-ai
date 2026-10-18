@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2 residual-MLP timing is measured, not a transfer result
+
+Frozen-file successor H=16 rates: Pendulum 2.95–3.01 µs, Acrobot
+5.24 µs. Full v2 still likely censors under 900 s after source
+fitting. Report `NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE_RESULTS.md`.
+
 ## Latest — H-e2-pendulum-acrobot four-role rules are locked, unnamed
 
 A Pendulum unused-instance grid and four-role assignment exist as

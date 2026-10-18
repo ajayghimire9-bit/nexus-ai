@@ -65,6 +65,16 @@ def test_checkpoint_list_is_identity_locked():
             assert row["matches"] is True
 
 
+def test_committed_probe_result_has_zero_env_steps():
+    payload = __import__("json").loads(m.RESULTS.read_text())
+    assert payload["outcome"] == "probe_complete"
+    assert payload["env_steps"] == 0
+    assert payload["checkpoint_writes"] == 0
+    assert payload["collection"] is False
+    assert payload["hold_named"] is False
+    assert len(payload["models"]) == 3
+
+
 def test_probe_source_stays_off_the_scientific_stack():
     imported = _imports(Path(m.__file__))
     assert "gymnasium" not in imported

@@ -38,7 +38,7 @@ def test_registry_forbids_science_and_keeps_h17_blocked():
     registry = json.loads(REGISTRY.read_text())
     assert registry["scientific"] is False
     assert registry["h17"] == "blocked"
-    assert registry["ledger_s"] == [305.842, 3294.158]
+    assert registry["ledger_s"] == [306.954, 3293.046]
     ids = {row["id"] for row in registry["experiments"]}
     assert {
         "V0.1",

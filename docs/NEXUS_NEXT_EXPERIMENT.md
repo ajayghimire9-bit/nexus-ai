@@ -1,12 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — residual-MLP timing probe authorized, 60 s / 0 env
+## Current — residual-MLP timing probe complete; v2 still risky
 
-Read-only inference on three frozen residual MLPs. No Gymnasium,
-no named holdout, no v2 rewrite. Execute the locked runner, then
-say whether v2-pilot planning still looks like `incomplete_budget`.
-Ledger 305.842 / 3294.158 before the run. Report
-`NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE.md`.
+Random-obs successor H=16 on frozen files: Pendulum 2.95–3.01 µs
+(v2 ~330 s, pilot ~146 s), Acrobot 5.24 µs (v2 580 s, pilot 258 s).
+Historical live rate remains 5.53 µs (v2 612 s, pilot 272 s).
+Source fitting of 20 models is still unmeasured, so full v2 is still
+likely `incomplete_budget` under 900 s. v2-pilot planning is more
+plausible. Do not collect. Do not name a holdout. Do not unlock H17.
+Ledger 306.954 / 3293.046. Report
+`NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE_RESULTS.md`.
 
 ## Current — four-role instance rules locked, still unnamed
 

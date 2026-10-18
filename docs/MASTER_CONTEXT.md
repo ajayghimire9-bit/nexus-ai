@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — residual-MLP timing probe complete, 2026-10-18
+
+On `cursor/evolution2-trusted-planner-adapter`. Read-only successor
+H=16 scoring on three frozen files, 0 env steps. Acrobot residual
+5.24 µs/state (v2 580 s, pilot 258 s). Pendulum files 2.95–3.01 µs.
+Source fitting still unmeasured. Full v2 still likely
+`incomplete_budget`. Holdout unnamed. H17 blocked. Ledger
+306.954 / 3293.046. Report
+`NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE_RESULTS.md`.
+Earlier entries remain history.
+
 ## Latest — four-role instance rules locked, still unnamed, 2026-10-18
 
 On `cursor/evolution2-trusted-planner-adapter` from `80d93e6`.
