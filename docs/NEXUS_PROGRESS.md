@@ -1,12 +1,23 @@
 # NEXUS progress log
 
+## Latest — research tip merged to GitHub main, no collection
+
+Human-authorized merge of integrity `f67b630` and reuse audit
+`760a91a` onto `main`. No branch deletions. No H17 unlock. No
+Pendulum/Acrobot collection: scientific dispatch remains blocked.
+Ledger 305.842 / 3294.158 unchanged.
+
+## Latest — full research reuse audit, documentation only
+
+Read-only consolidation documents on
+`cursor/nexus-research-reuse-audit` from `4a08b26`. 145 named
+branches inventoried. Report `NEXUS_FULL_RESEARCH_REUSE_AUDIT.md`.
+
 ## Latest — Evolution-2 runtime integrity repaired, science blocked
 
 Source-only audit on `cursor/evolution2-runtime-integrity` from
 `4a08b26`. H-R1/H-R2/H-R4/H-R5 were confirmed and repaired. H-R3
-remains measured-not-enforced. 9 integrity tests plus prior runtime
-and Evolution-1/2 regressions: 112 passed in the combined command.
-Ledger 305.842 / 3294.158 unchanged. Report
+remains measured-not-enforced. Report
 `NEXUS_EVOLUTION2_RUNTIME_INTEGRITY_AUDIT.md`. Not learning-to-learn
 or AGI.
 

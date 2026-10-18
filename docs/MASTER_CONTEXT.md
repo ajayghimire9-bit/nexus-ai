@@ -1,5 +1,21 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — research tip merged to main, science still BLOCKED, 2026-10-18
+
+Human-authorized merge of Evolution-2 integrity `f67b630` and the
+reuse audit `760a91a` onto `main`. No scientific collection. H17
+stays blocked. Ledger unchanged (305.842 / 3294.158). Consult
+`docs/NEXUS_CANONICAL_CURRENT_STATE.md` and
+`docs/NEXUS_FULL_RESEARCH_REUSE_AUDIT.md` before new work.
+
+## Latest — full research reuse audit, no experiment, 2026-10-18
+
+On `cursor/nexus-research-reuse-audit` from `4a08b26`. Read-only
+inventory of 145 branch names, overlap of meta/evolution/E1/E2/world/
+memory, and a canonical current-state plus reuse map. H17 blocked.
+Ledger unchanged (305.842 / 3294.158). Not a scientific result.
+Earlier entries remain history.
+
 ## Latest — Evolution-2 runtime integrity repaired, science BLOCKED, 2026-10-18
 
 On `cursor/evolution2-runtime-integrity` from `4a08b26`. Adversarial

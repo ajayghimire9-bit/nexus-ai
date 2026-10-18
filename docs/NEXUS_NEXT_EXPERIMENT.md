@@ -1,14 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — review repaired runtime integrity; do not collect
+## Current — Pendulum→Acrobot screen authorized as design only
 
-Request-binding, bounded IPC, and fail-closed settlement are now
-tested. Worker CPU enforcement, OS isolation, and scientific
-authorization remain **BLOCKED**. One next step: independent review
-of `NEXUS_EVOLUTION2_RUNTIME_INTEGRITY_AUDIT.md`. Do not select a
-holdout, allocate scientific time, or treat synthetic Evolution-2
-scores as LEVEL 2 evidence. H17 stays blocked. Ledger 305.842 /
-3294.158.
+Human authorization exists for a Pendulum→Acrobot catalogue-proposer
+screen. Collection is still **BLOCKED**: no scientific family
+adapters, no real planner metering, no locked protocol hash, and
+H17 remains closed. Do not collect. Do not use MCC holdouts. Ledger
+305.842 / 3294.158. Report `NEXUS_FULL_RESEARCH_REUSE_AUDIT.md`.
 
 ## Current — review runtime gates; do not collect or lock a protocol
 
