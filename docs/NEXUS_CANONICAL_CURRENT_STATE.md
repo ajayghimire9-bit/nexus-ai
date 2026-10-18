@@ -84,7 +84,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.14 receding stored-obs clock (800 decisions, 2.305 s, 27.7 s 9600 prior; science BLOCKED)
 - Evolution-2.15 approval-text gate (`continue` / `i authorised you` insufficient; science BLOCKED)
 - Evolution-2.16 four-role assignment verification + gated executor (17,280 plan, six planned fits, four methods; science BLOCKED)
-- Evolution-2.17 one-run persist-versus-reset science grant (17280/900s; unused; frozen request hashes unchanged; `dispatch()` still refused)
+- Evolution-2.17 n=3 persist-versus-reset science (17,280 steps; persist-minus-reset 0; inconclusive; grant consumed)
 
 ## Engineering that exists at HEAD 4a08b26
 
@@ -98,7 +98,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 ## Standing limits
 
 900 s / experiment, 100 k new real steps, local CPU, 3600 s session
-with 3294.158 s remaining. A prior budget does not authorize a new
+with 3272.131 s remaining after Evolution-2.17. A prior budget does not authorize a new
 experiment.
 
 ## Entry rule for future work

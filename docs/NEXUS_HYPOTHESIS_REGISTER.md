@@ -1,9 +1,9 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
-## Latest — H-e2.17 persist-versus-reset is granted once, not yet executed
+## Latest — H-e2.17 persist-versus-reset is inconclusive on n=3
 
-A separate unused grant authorizes one n=3 screen. Not a transfer
-result until the run completes. Report
+Persist-minus-reset was identically 0 because hidden scores were
+method-independent. Not a transfer result. Not n=10. Report
 `NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`.
 
 ## Latest — H-e2.16 four-role assignments validate; persist-versus-reset still unauthorized
