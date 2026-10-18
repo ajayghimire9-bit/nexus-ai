@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Pendulum→Acrobot protocol locked, collection BLOCKED, 2026-10-18
+
+On `cursor/evolution2-pendulum-acrobot-protocol` from `d36b49f`.
+Source-only lock of the Pendulum→Acrobot catalogue-proposer screen:
+persist versus reset/random/evolution/retrieval/fixed, n=10,
+occupied-physics exclusion, unused-instance rule unnamed.
+`authorized: false`, `runs: 0`. No collection. H17 stays blocked.
+Ledger unchanged (305.842 / 3294.158). Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL.md`. Earlier entries
+remain history.
+
 ## Latest — research tip merged to main, science still BLOCKED, 2026-10-18
 
 Human-authorized merge of Evolution-2 integrity `f67b630` and the

@@ -1,0 +1,33 @@
+experiment: evolution2_pendulum_acrobot
+status: design_locked_collection_unauthorized
+authorized: false
+runs: 0
+consumed: false
+closed: false
+hold_named: false
+hold_rule: e2_pendulum_acrobot_dev_v1
+train_family: pendulum
+eval_family: acrobot
+train_physics: [10.0, 1.0, 1.0]
+n_seeds: 10
+replication_unit: independent_source_training_seed
+interval: student_t_95
+df: 9
+primary: persist_minus_reset
+methods: [fixed, random, reset, persist, evolution, retrieval]
+forbidden_families: [mountaincar, mountaincar_continuous, cartpole]
+forbidden_hypotheses: [H12, H13, H14, H15, H16, H17]
+cross_family_weights: false
+claims_learning_to_learn: false
+is_agi: false
+proposed_time_cap_s: 300
+proposed_env_cap: 40000
+proposed_imagined_cap: 0
+authorized_time_cap_s: 0
+authorized_env_cap: 0
+standing_time_cap_s: 900
+standing_env_cap: 100000
+session_ledger_used_s: 305.842
+session_ledger_remaining_s: 3294.158
+label_blocked: persist_beats_reset_blocked
+collection: false

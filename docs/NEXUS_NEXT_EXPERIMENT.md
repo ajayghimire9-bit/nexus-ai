@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Pendulum→Acrobot protocol locked; collection still BLOCKED
+
+The catalogue-proposer screen is now a source-only design lock:
+methods A–F, n=10 seed-level Student-t intervals, occupied
+Pendulum/Acrobot exclusion, and a deterministic unused-instance
+rule that does **not** name a holdout. `authorized: false`,
+`runs: 0`. Do not collect. Do not name an unused Acrobot instance.
+Do not unlock H17 or use MCC. Next allowed step after this lock:
+trusted family adapters or an independent holdout-naming review.
+Ledger 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL.md`.
+
 ## Current — Pendulum→Acrobot screen authorized as design only
 
 Human authorization exists for a Pendulum→Acrobot catalogue-proposer

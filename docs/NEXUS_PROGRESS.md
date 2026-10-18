@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — Pendulum→Acrobot protocol locked, no collection
+
+Source-only design lock on
+`cursor/evolution2-pendulum-acrobot-protocol` from `d36b49f`.
+Methods A–F, n=10, occupied exclusion, unnamed holdout.
+`authorized: false`, `runs: 0`. H17 still blocked. Ledger
+305.842 / 3294.158 unchanged. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL.md`.
+
 ## Latest — research tip merged to GitHub main, no collection
 
 Human-authorized merge of integrity `f67b630` and reuse audit

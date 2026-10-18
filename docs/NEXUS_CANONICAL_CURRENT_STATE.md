@@ -11,9 +11,11 @@ improve their own learning and planning through measured experiments.
 Completing a roadmap item is not AGI. No profitable trading system exists.
 
 **`main` now carries the research tip** after the human-authorized
-merge of Evolution-2 integrity and the reuse audit. Closed H8–H16
-results remain historical artifacts. Topic branches are still the
-provenance record and must not be deleted.
+merge of Evolution-2 integrity and the reuse audit. The
+Pendulum→Acrobot catalogue-proposer screen is a design lock on
+`cursor/evolution2-pendulum-acrobot-protocol` and is not collection.
+Closed H8–H16 results remain historical artifacts. Topic branches
+are still the provenance record and must not be deleted.
 
 Scientific ledger: **305.842 s used / 3294.158 s remaining.**
 H17 remains **BLOCKED**.
@@ -41,6 +43,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 
 - Evolution-1 transferable proposal memory (real families)
 - Evolution-2 persistent vs reset (synthetic contracts only)
+- Evolution-2 Pendulum→Acrobot persist vs reset/random/evolution/retrieval/fixed (protocol locked; holdout unnamed; collection unauthorized)
 - H17 occupancy/library factorial
 - Runtime scientific dispatch (stub only)
 

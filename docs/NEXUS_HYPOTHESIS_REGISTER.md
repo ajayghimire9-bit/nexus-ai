@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-pendulum-acrobot-persistence is locked, not collected
+
+Question: after AdaptiveProposer training on default Pendulum
+`(10, 1, 1)`, does retained proposer state improve Acrobot
+discovery versus reset, random, evolution, retrieval, and a frozen
+catalogue index? Protocol locked. Holdout unnamed. Collection
+unauthorized. Not LEVEL 3/4, not H17, not learning-to-learn.
+Report `NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL.md`.
+
 ## Latest — H-e2-cross-task-persistence is designed, not tested scientifically
 
 Question: does retained proposal-policy state improve discovery on
