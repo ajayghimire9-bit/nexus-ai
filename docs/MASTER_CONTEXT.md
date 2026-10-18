@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.26 training-frozen feedback boundary, engineering only, 2026-10-18
+
+TrustedEvaluator now offers an opt-in immutable training-reference scale.
+Synthetic opposite query extremes preserve feedback[0.6,0.9], proposer
+weights and next choice; refit/missing/hidden references are refused.
+No old runner or outcome changes, no new real/imagined/model execution.
+Four existing linear feedback updates are synthetic tests, not evidence
+of learning-to-learn. Next: source-only integration in one prospective
+method-sensitive evaluator, not scientific collection. Ledger unchanged.
+Report `NEXUS_E2_26_FEEDBACK_BOUNDARY.md`. Earlier entries remain history.
+
 ## Latest — E2.25 candidate-conditioned quality loses to paired mean, 2026-10-18
 
 Source-only LOBO diagnostic: candidate/context ridge paired-advantage

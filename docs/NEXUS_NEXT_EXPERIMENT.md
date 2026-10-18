@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.26 repair tested; integrate prospective evaluator source-only
+
+Integrate the existing training-frozen normalization API into one
+prospective method-sensitive path, requiring a frozen reference manifest
+before query callbacks are accessible. Test end-to-end hidden-outcome
+independence without planner/model/environment execution. Historical
+scalers/outcomes remain closed; no grant, holdout or scientific run is
+created. The standalone synthetic path passes, but integration is not
+established. Report `NEXUS_E2_26_FEEDBACK_BOUNDARY.md`.
+
 ## Current — E2.25 negative: repair feedback-normalization isolation first
 
 Repair the future evaluator's normalization boundary using frozen

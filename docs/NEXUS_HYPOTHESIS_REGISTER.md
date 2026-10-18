@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E2.26 feedback-isolation contract, engineering pass only
+
+An opt-in frozen training-reference scale passes synthetic invariance
+under opposite unobserved query extrema. Feedback, proposer weights and
+choice stay equal; refitting and invalid references fail. No control,
+generalization, autonomy or learning-to-learn hypothesis was evaluated.
+Historical transductive fixtures remain unchanged. Report
+`NEXUS_E2_26_FEEDBACK_BOUNDARY.md`.
+
 ## Latest — H-E2.25 candidate-conditioned source quality prediction fails screen
 
 The fixed candidate/context ridge representation is worse than paired

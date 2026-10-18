@@ -143,3 +143,26 @@ def test_comparison_methods_share_identical_training_snapshot():
 
 def test_duplicate_reference_plan_is_rejected():
     with pytest.raises(ValueError):feedback_reference_digest("pendulum",0,(REFERENCE[0],REFERENCE[0]))
+
+
+def test_saved_capture_invariants_and_accounting():
+    import json,hashlib
+    from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import ROOT
+    path=ROOT/"artifacts/evolution2_26_feedback_boundary.json"
+    p=json.loads(path.read_text())
+    v=json.loads((ROOT/"artifacts/evolution2_26_feedback_boundary_validation.json").read_text())
+    assert hashlib.sha256(path.read_bytes()).hexdigest()==v["capture_sha256"]
+    assert sum(c["policy_state"]["updates"] for c in p["cases"])==v["proposer_feedback_updates"]==4
+    assert p["cases"][0]["public_feedback"]==p["cases"][1]["public_feedback"]==[0.6,0.9]
+    assert p["same_feedback_weights_choice"] and p["refit_blocked"]
+    assert p["resources"]["synthetic_raw_lookups"]==7
+
+
+def test_saved_execution_sources_and_history_verify():
+    import json,hashlib,subprocess
+    from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import ROOT,file_sha256
+    p=json.loads((ROOT/"artifacts/evolution2_26_feedback_boundary.json").read_text())
+    assert all(file_sha256(ROOT/path)==h for path,h in p["historical_artifacts_sha256"].items())
+    for path,h in p["source_sha256"].items():
+        raw=subprocess.check_output(["git","show",p["execution_sha"]+":"+path],cwd=ROOT)
+        assert hashlib.sha256(raw).hexdigest()==h

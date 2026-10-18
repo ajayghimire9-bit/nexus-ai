@@ -84,5 +84,71 @@ prove all existing evaluators or arbitrary producers leakage-free.
 
 ## Results
 
-Pending the committed synthetic audit. No scientific result or general
-learning capability follows from correct information isolation.
+**Synthetic boundary audit passed.** This is engineering evidence for
+the new opt-in path, not a learning-efficiency, control or general-AI
+result. The historical E2.25 fixture is still transductive and is not
+retroactively repaired or reinterpreted.
+
+Protocol/implementation execution revision:
+`57d5d189fcfad1c0f8179bed7ca9be4e89926baf`.
+Capture `artifacts/evolution2_26_feedback_boundary.json`, SHA256
+`ff58aac3f338ccfe49a0e16fa077a8451ad461145ecce0b3a17186803bf5b567`.
+Arithmetic clarification:
+`artifacts/evolution2_26_feedback_boundary_validation.json`.
+
+Both opposite-extreme cases expose the same feedback **[0.6,0.9]**,
+produce identical six linear proposer weights after two feedback
+updates, and select the same next planner `c01e7ee7…`. Each query
+requests exactly two raw values; neither requests the unobserved
+extreme. The reference snapshot remains byte-equivalent after the
+source cache grows; refit is refused. Saturated−20/+20 examples
+produce0/1 with explicit clipping flags. The zero-width refusal and
+foreign/missing/hidden-reference cases pass unit tests rather than
+being extra experimental queries.
+
+The shared-reference test also confirms that two comparison methods
+using the same evaluator-owned reference produce equal snapshots;
+cache hits remain charged. Payload round trips preserve predictions;
+altered payloads fail the expected snapshot digest. Freezing itself
+does not call a producer.
+
+Runtime **0.196636s wall /0.196626s CPU**, within10s. Seven synthetic
+raw lookups; **zero real/imagined transitions, zero model inference,
+zero neural fitting**. Existing linear `AdaptiveProposer` makes **four
+feedback SGD updates**, two per independent synthetic case. The original
+capture's generic `optimizer_steps=0` meant *neural* optimizer steps;
+that ambiguous label is clarified in the separate arithmetic record,
+without changing the capture. Future audit output explicitly separates
+`neural_optimizer_steps` from `proposer_feedback_updates`; this reporting
+correction does not change the mechanism or replay outcomes.
+
+All **306** pre-existing root JSON artifacts verify unchanged. No old
+checkpoint, split, configuration, allocation or outcome was modified.
+The scientific ledger remains327.869/3272.131. E2.17 remains consumed
+and inconclusive; H17 remains blocked. Python3.13.5/NumPy2.5.4, local CPU.
+
+Pre-audit focused tests: **21 passed in0.47s**. Regression tests cover
+the new boundary, original evaluator contracts, resource accounting,
+synthetic adaptive updates and hidden-return provenance. No historical
+benchmark writer or planner-scoring/collection suite is run here.
+The later capture checks independently recompute update accounting and
+verify source hashes against `git show` of the execution revision.
+
+Final selected command:
+`PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest tests/test_evolution2_feedback_normalization.py tests/test_evolution2_pendulum_acrobot_protocol_v2_pilot.py tests/test_evolution1_resources.py tests/test_evolution1_toy_loop.py tests/test_evolution2_cross_task_screen.py tests/test_evolution2_evolutionary_search.py tests/test_evolution2_persist_reset_scoring.py::test_hidden_isolation_allows_fingerprint_overlap_not_hidden_returns tests/test_evolution2_persist_reset_scoring.py::test_persist_reset_crn_and_separate_controls -p no:cacheprovider -o addopts='' -q`.
+**111 passed in0.85s**. No full scientific/collection suite was run.
+
+## Remaining limits and one next milestone
+
+The new transform is opt-in. Existing proxy/scientific paths have not
+been migrated, and no scientific entry gate is unlocked. The runner
+must supply raw permitted training returns, enforce reference provenance
+and family scope, use a common scale across methods, and report clipping.
+An untrusted producer could still leak information into its raw score;
+hashes and a frozen dataclass do not constitute a security sandbox.
+
+Next: integrate this opt-in boundary into **one prospective
+method-sensitive evaluator path** with end-to-end source-only tests,
+requiring a frozen training-reference manifest before query callbacks
+are accessible. Preserve closed runners and outcomes. Do not collect
+new control data or promote this engineering pass as self-evolution.

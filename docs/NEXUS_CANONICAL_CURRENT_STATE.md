@@ -1,5 +1,11 @@
 # NEXUS canonical current state
 
+E2.26 adds opt-in `TrustedEvaluator.freeze_feedback_scale` with an immutable
+training-reference snapshot. Synthetic query-extreme invariance passes;
+historical scalers/runners stay unchanged. No science or learning-to-learn
+claim. Next is source-only prospective evaluator integration before any
+new scientific execution. Report `NEXUS_E2_26_FEEDBACK_BOUNDARY.md`.
+
 E2.25 source-only candidate/context ridge does not improve paired planner
 quality prediction: MAE0.08141 versus paired mean0.01100. Both family
 screens fail. No promotion, new environment data or neural training.

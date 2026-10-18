@@ -8,6 +8,13 @@ instead of opening parallel packages.
 
 ## Canonical stacks (keep)
 
+For future feedback normalization use the existing `TrustedEvaluator`
+opt-in `freeze_feedback_scale` and `FrozenTrainingFeedbackScale` in
+`pendulum_acrobot_protocol_v2_pilot`. See
+`NEXUS_E2_26_FEEDBACK_BOUNDARY.md`. Do not normalize from a query's full
+catalogue or replace historical scalers/runners. This is a tested
+synthetic path, not an automatically authorized scientific evaluator.
+
 | Need | Use | Do not start |
 |---|---|---|
 | Discrete/continuous family env construction | `nexus.tasks.spec`, family modules, wrappers | A new env factory that guesses family from `obs_dim` |

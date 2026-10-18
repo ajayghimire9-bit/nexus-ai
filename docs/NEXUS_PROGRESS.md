@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — E2.26 opt-in normalization repair, synthetic pass
+
+Frozen training references prevent opposite hidden query extremes from
+changing public feedback, linear proposer weights or next choice.
+Exact-reference/refit/finite-value/clipping checks added to existing
+TrustedEvaluator; no new evaluator stack. No simulator/model execution,
+historical migration or scientific claim. Report
+`NEXUS_E2_26_FEEDBACK_BOUNDARY.md`; ledger unchanged.
+
 ## Latest — E2.25 source planner-quality representation, negative
 
 Candidate/context ridge MAE0.08141 loses to paired mean0.01100,
