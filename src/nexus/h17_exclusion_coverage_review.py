@@ -171,7 +171,7 @@ def review(root):
         worktree_status.append(dict(path=folder,status_porcelain=status))
         for line in status.splitlines():
             path = line[3:]
-            if 'xenv_context_adaptation' not in path or not path.endswith(('.yaml','.json','.md','.py')):
+            if 'xenv_context_adaptation' not in path.lower() or not path.endswith(('.yaml','.json','.md','.py')):
                 continue
             file = Path(folder)/path
             if not file.is_file(): continue

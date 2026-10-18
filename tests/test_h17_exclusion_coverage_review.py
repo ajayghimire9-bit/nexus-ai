@@ -84,3 +84,37 @@ def test_no_execution_import_or_selector():
     imports |= {a.name for n in ast.walk(tree) if isinstance(n,ast.Import) for a in n.names}
     assert not any(n.startswith(('numpy','torch','gym','nexus.world','nexus.tasks')) for n in imports)
     assert not {n.name for n in ast.walk(tree) if isinstance(n,ast.FunctionDef)} & {'holdout_from_rule','execute','train','make_env'}
+
+
+@pytest.mark.parametrize('manual_protocol',[False,True])
+def test_reachable_history_and_case_insensitive_manual_protocol(tmp_path,monkeypatch,manual_protocol):
+    # A branch-tip-only inventory would miss this old configuration entirely.
+    (tmp_path/'artifacts').mkdir()
+    (tmp_path/'configs').mkdir()
+    (tmp_path/m.REGISTRY).write_bytes((ROOT/m.REGISTRY).read_bytes())
+    (tmp_path/'configs/h17_occupancy_draft.json').write_bytes((ROOT/'configs/h17_occupancy_draft.json').read_bytes())
+    other = tmp_path/'other_worktree'
+    (other/'docs').mkdir(parents=True)
+    protocol = 'docs/NEXUS_XENV_CONTEXT_ADAPTATION_PROTOCOL.md'
+    (other/protocol).write_text('Existing manual reservation metadata')
+    monkeypatch.setattr(m,'verify_provenance',lambda root:dict(ledger_used_s=305.842,ledger_remaining_s=3294.158))
+    def git(args,cwd):
+        command = args[1]
+        if command == 'merge-base': return b''
+        if command == 'rev-parse': return b'false\n' if args[2] == '--is-shallow-repository' else b'tip\n'
+        if command == 'rev-list': return b'tip\nparent\n'
+        if command == 'ls-tree':
+            return b'100644 blob oldblob\tconfigs/mcc_removed.yaml\n' if args[3] == 'parent' else b''
+        if command == 'cat-file': return b'target_family: mountaincar_continuous\ntarget_physics: [[0.0041,0.0019,0.07]]'
+        if command == 'worktree': return f'worktree {other}\n'.encode() if manual_protocol else b''
+        if command == 'status': return f'?? {protocol}\n'.encode()
+        raise AssertionError(args)
+    monkeypatch.setattr(m.subprocess,'check_output',git)
+    out = m.review(tmp_path)
+    assert out['counts']['config'] == 1
+    assert out['historical_configs_absent_from_previous_tip_inventory'][0]['git_blob'] == 'oldblob'
+    assert out['literal_or_metadata_physics_not_in_registry'] == [[0.0041,0.0019,0.07]]
+    assert out['verdict'] == 'BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE'
+    assert len(out['unversioned_manual_files']) == int(manual_protocol)
+    if manual_protocol:
+        assert out['unversioned_manual_files'][0]['path'] == protocol
