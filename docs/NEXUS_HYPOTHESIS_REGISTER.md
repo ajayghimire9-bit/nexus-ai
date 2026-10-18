@@ -1,5 +1,10 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.8 7680 persist is a development pilot, not confirmation
+
+Cited config `325cd42b…` and `env_cap=7680`. Not v2. Report
+`NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md`.
+
 ## Latest — H-e2.7 source persist is requested, not collected
 
 A 7,680- or 25,600-step persist is specified and unauthorized. Not

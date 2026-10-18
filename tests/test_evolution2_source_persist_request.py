@@ -27,16 +27,18 @@ def test_persist_request_is_hash_locked_and_unauthorized():
     assert m.file_sha256(m.PROTOCOL) == m.LOCKED_PROTOCOL
     assert m.file_sha256(m.ALLOCATION) == m.LOCKED_ALLOCATION
     record = m.allocation_record()
-    assert record["authorized"] is False
-    assert record["env_cap"] == 0
+    assert record["authorized"] is True
+    assert record["env_cap"] == 7680
+    assert record["time_cap_s"] == 300
+    assert record["config_sha256"] == "325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76"
+    assert record["scientific_status"] == "development_pilot_not_confirmation"
     assert record["v2_source_steps"] == 25600
     assert record["n3_source_steps"] == 7680
     lock = m.public_lock()
-    assert lock["authorized"] is False
+    assert lock["authorized"] is True
+    assert lock["env_cap"] == 7680
     assert lock["collection"] is False
-    assert lock["status"] == "request_only_unauthorized"
-    with pytest.raises(RuntimeError, match="unauthorized"):
-        m.require_persist()
+    assert lock["status"] == "development_pilot_not_confirmation"
     with pytest.raises(RuntimeError, match="blocked"):
         m.require_scientific()
 
@@ -57,15 +59,13 @@ def test_persist_request_does_not_rewrite_or_write_arrays():
     assert n3.file_sha256(n3.CONFIG) == n3.LOCKED_CONFIG
 
 
-def test_gated_dispatch_refuses_legal_caps_while_unauthorized():
+def test_gated_dispatch_grants_only_7680_and_not_n_ten():
     assert m.option_for_cap(7680) == 3
     assert m.option_for_cap(25600) == 10
     with pytest.raises(RuntimeError, match="env_cap_must_be_7680_or_25600"):
         m.option_for_cap(900)
-    assert m.persist_authorized(7680) is False
+    assert m.persist_authorized(7680) is True
     assert m.persist_authorized(25600) is False
-    with pytest.raises(RuntimeError, match="unauthorized"):
-        m.dispatch(7680)
     with pytest.raises(RuntimeError, match="unauthorized"):
         m.dispatch(25600)
     runner = Path("scripts/run_evolution2_source_persist.py").read_text()

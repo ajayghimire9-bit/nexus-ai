@@ -1,7 +1,7 @@
 # NEXUS full research registry
 
 Status: **documentation only**. Not a scientific result.
-HEAD: `188db208cb6a4e780b5dd34bd06088b8b0dedd9a`. Ledger **306.954 / 3293.046**.
+HEAD: `6d8f31b47b3a76628ec323654144234b58e298d2`. Ledger **306.954 / 3293.046**.
 H17 remains **blocked**.
 
 Missing commits, protocols, or implementations are marked **incomplete**
@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 42
+- Curated rows: 43
 - Unindexed protocol/results docs: 93
-- Total rows: 135
+- Total rows: 136
 - Incomplete or partial: 120
-- Source-verified: 15
+- Source-verified: 16
 
 ## Closed primary labels that must not be retuned
 
@@ -81,6 +81,7 @@ or component.
 | `E2.5-n3-micro` | not_v2_not_ready_unauthorized | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md / docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md | Does not rewrite v2. recipe_matched is false. Do not collect. | source_verified |
 | `E2.6-execution-blockers` | e2_scientific_dispatch_blocked | docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md / docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md | Do not shrink another worksheet. Do not collect replacements. | source_verified |
 | `E2.7-source-persist-request` | request_only_unauthorized | docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md / docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md | Do not collect. Standing grant does not start persist. | source_verified |
+| `E2.8-source-persist-7680` | development_pilot_not_confirmation | docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md / docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md | Not v2. Do not promote 7680 to n=10. Do not name a holdout. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

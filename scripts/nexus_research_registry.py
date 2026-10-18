@@ -612,6 +612,25 @@ EXPERIMENTS = [
         "reuse": "Do not collect. Standing grant does not start persist.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.8-source-persist-7680",
+        "title": "7680-step matched source persist development pilot",
+        "hypothesis": "Family-default Pendulum/Acrobot source arrays can be persisted at 7680 steps without becoming v2 or n=10 confirmation.",
+        "implementation": [
+            "src/nexus/evolution2/source_persist_plan.py",
+            "src/nexus/evolution2/source_persist_collect.py",
+        ],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md",
+        "results": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md",
+        "status": "development_pilot_not_confirmation",
+        "artifacts": [
+            "configs/evolution2_source_persist_allocation.json",
+            "artifacts/evolution2_source_persist_7680.json",
+        ],
+        "reuse": "Not v2. Do not promote 7680 to n=10. Do not name a holdout.",
+        "coverage": "source_verified",
+    },
 ]
 
 

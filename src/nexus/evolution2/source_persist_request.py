@@ -28,7 +28,7 @@ N3_SOURCE_STEPS = n3.N_BUNDLES * 2 * (N_TRAIN + N_VAL)
 
 LOCKED_CONFIG = "325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76"
 LOCKED_PROTOCOL = "3ffb544dfcc75b294bb093bd3ad23175ce9312832e014bc5b1fd8600eed5f1a9"
-LOCKED_ALLOCATION = "be122e8fff80c3f26c426a083a75534653bc3d82ec8ea68f0ed0a302a85830ac"
+LOCKED_ALLOCATION = "24c5924fd28bd0814dd26442cd2c33b28a72eee6c0582ae8c222a4702251888b"
 LEGAL_CAPS = {N3_SOURCE_STEPS: n3.N_BUNDLES, V2_SOURCE_STEPS: v2.N_BUNDLES}
 FUTURE_SOURCE = {
     "pendulum": "nexus.tasks.pendulum_family.pendulum_default",
@@ -67,7 +67,12 @@ def dispatch(env_cap: int) -> None:
     option_for_cap(env_cap)
     if not persist_authorized(env_cap):
         require_persist()
-    raise RuntimeError("persist_path_not_opened")
+    if int(env_cap) != N3_SOURCE_STEPS:
+        raise RuntimeError("only_7680_is_granted")
+    collect = __import__(
+        "nexus.evolution2.source_persist_collect", fromlist=["run_persist"]
+    )
+    collect.run_persist(int(env_cap))
 
 
 def require_scientific() -> None:
@@ -120,20 +125,23 @@ def worksheet() -> dict:
         "n3_source_steps": N3_SOURCE_STEPS,
         "v2_files": len(planned_files(v2.N_BUNDLES)),
         "n3_files": len(planned_files(n3.N_BUNDLES)),
-        "authorized_env_cap": 0,
-        "authorized_time_cap_s": 0,
+        "authorized_env_cap": int(allocation_record().get("env_cap") or 0),
+        "authorized_time_cap_s": int(allocation_record().get("time_cap_s") or 0),
         "collection": False,
     }
 
 
 def public_lock() -> dict:
+    record = allocation_record()
     return {
         "version": VERSION,
-        "authorized": False,
-        "runs": 0,
+        "authorized": bool(record.get("authorized")),
+        "runs": int(record.get("runs") or 0),
         "hold_named": False,
         "collection": False,
-        "status": "request_only_unauthorized",
+        "status": record.get("scientific_status") or "request_only_unauthorized",
+        "env_cap": int(record.get("env_cap") or 0),
+        "config_sha256": LOCKED_CONFIG,
         "claims_learning_to_learn": False,
         "is_agi": False,
     }
@@ -147,16 +155,18 @@ def write_artifact() -> dict:
     payload = {
         "scientific": False,
         "collection": False,
-        "status": "request_only_unauthorized",
+        "status": public_lock()["status"],
         "target": target_status(),
         "worksheet": worksheet(),
         "blockers": [row["id"] for row in blockers.blocker_matrix()],
         "v2_n3_hashes_frozen": prior_hashes_frozen(),
         "ledger_debit_s": 0,
         "scientific_ledger_preserved": [305.842, 3294.158],
+        "cited_config_sha256": LOCKED_CONFIG,
+        "granted_env_cap": int(allocation_record().get("env_cap") or 0),
         "next_action": (
-            "Human approval must cite this configuration hash and set "
-            "env_cap to 7680 or 25600. Do not collect before that record."
+            "7680 is granted as a development pilot only. Do not promote it "
+            "to n=10 or v2 confirmation."
         ),
     }
     RESULTS.write_text(json.dumps(payload, indent=2) + "\n")
