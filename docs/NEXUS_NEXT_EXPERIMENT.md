@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — trusted adapters, meters, and isolated evaluator; do not collect
+
+Independent Evolution-2 readiness audit verdict: **BLOCKED**. The
+synthetic persistent-versus-reset contract is not a scientific
+screen and cannot be promoted. One next engineering milestone:
+implement trusted metadata-bound family adapters, pre-call
+real/imagined/CPU meters, and a process-isolated evaluator stub.
+Source-only. No scientific collection, holdout selection, protocol
+lock, or allocation. H17 stays blocked. Ledger 305.842 / 3294.158.
+Report `NEXUS_EVOLUTION2_INDEPENDENT_READINESS_AUDIT.md`.
+
 ## Current — independently review a real Evolution-2 screen; do not run it here
 
 The synthetic persistent-versus-reset contract is implemented.

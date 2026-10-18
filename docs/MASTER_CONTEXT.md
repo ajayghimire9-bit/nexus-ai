@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2 independent readiness audit BLOCKED, 2026-10-18
+
+On `cursor/evolution2-independent-readiness-audit` from verified
+Evolution-2 HEAD `03c776c` (local, Cursor Origin, and GitHub after a
+normal push of the previously missing GitHub ref). Source-only
+adversarial review. Synthetic contracts hold; they are not LEVEL 2
+evidence. Linear authored oracles sit in the proposer feature span.
+No trusted adapters, real meters, isolated evaluator, or fitting
+budget. Verdict **BLOCKED**. Ledger unchanged (305.842 / 3294.158).
+Not a scientific result. Not learning-to-learn or AGI. Report
+`NEXUS_EVOLUTION2_INDEPENDENT_READINESS_AUDIT.md`. Earlier entries
+remain history.
+
 ## Latest — Evolution-2 synthetic cross-task screen, 2026-10-18
 
 On `cursor/evolution2-cross-task-screen` from Evolution-1 results

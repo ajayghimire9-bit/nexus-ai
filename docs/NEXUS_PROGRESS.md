@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Latest — Evolution-2 independent readiness audit, BLOCKED
+
+Source-only review on `cursor/evolution2-independent-readiness-audit`
+from verified `03c776c`. Claims of feedback dependence, persistence,
+authored help/hurt, and zero scientific execution hold as contracts.
+The oracle is linear in the proposer's own features; development
+families are near-copies; only two proposals are free; Evolution-2
+does not meter or isolate like Evolution-1. A real family-level
+screen exceeds standing 100k/900s limits. Verdict **BLOCKED**.
+Ledger 305.842 / 3294.158 unchanged. Report
+`NEXUS_EVOLUTION2_INDEPENDENT_READINESS_AUDIT.md`. Not
+learning-to-learn or AGI.
+
 ## Latest — Evolution-2 synthetic cross-task screen, not a result
 
 Source-only persistent-versus-reset screen on authored families.
