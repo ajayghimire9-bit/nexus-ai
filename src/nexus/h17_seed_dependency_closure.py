@@ -30,6 +30,12 @@ class ModuleRef:
     path: str
 
 
+@dataclass(frozen=True)
+class SymbolRef:
+    path: str
+    name: str
+
+
 class Returned(Exception):
     def __init__(self,value): self.value=value
 
@@ -81,7 +87,9 @@ class Module:
         self.resolving=set()
 
     def lookup(self,name,env):
-        if name in env: return env[name]
+        if name in env:
+            value=env[name]
+            return self.history.module(value.path).lookup(value.name,{}) if isinstance(value,SymbolRef) else value
         if name in self.imports:
             path,symbol=self.imports[name]
             return ModuleRef(path) if symbol is None else self.history.module(path).lookup(symbol,{})
@@ -103,6 +111,9 @@ class Module:
         self.history.tick()
         def e(n): return self.expr(n,env)
         if isinstance(node,ast.Constant) and type(node.value) in (int,str,bool,type(None)): return node.value
+        if isinstance(node,ast.JoinedStr):
+            return ''.join(str(e(v.value)) if isinstance(v,ast.FormattedValue) and v.format_spec is None and v.conversion==-1
+                           else e(v) if isinstance(v,ast.Constant) else self._unsupported_format() for v in node.values)
         if isinstance(node,ast.Name): return self.lookup(node.id,env)
         if isinstance(node,ast.Attribute):
             base=e(node.value)
@@ -190,13 +201,24 @@ class Module:
                 if name=='int' and len(args)==1 and type(args[0]) is int:return args[0]
                 if name=='len' and len(args)==1:return len(args[0])
                 if name in ('max','min') and all(type(a) is int for a in args):return (max if name=='max' else min)(args)
+                if name in env and isinstance(env[name],SymbolRef):
+                    ref=env[name];return self.history.module(ref.path).call(ref.name,args)
                 return self.call(name,args)
         raise Unsupported('unsupported arithmetic: '+ast.dump(node)[:160])
+
+    def _unsupported_format(self):
+        raise Unsupported('formatted string conversion/specification')
 
     def statements(self,nodes,env):
         for n in nodes:
             self.history.tick()
-            if isinstance(n,ast.Return): raise Returned(self.expr(n.value,env))
+            if isinstance(n,ast.ImportFrom) and n.module and n.module.startswith('nexus.world.'):
+                # A local import becomes a source reference, never a Python import.
+                for a in n.names:
+                    if a.name=='*':raise Unsupported('star import')
+                    env[a.asname or a.name]=SymbolRef('src/'+n.module.replace('.','/')+'.py',a.name)
+                continue
+            elif isinstance(n,ast.Return): raise Returned(self.expr(n.value,env))
             if isinstance(n,(ast.Assign,ast.AnnAssign)):
                 if n.value is None: continue
                 value=self.expr(n.value,env)

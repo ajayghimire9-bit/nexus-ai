@@ -166,3 +166,19 @@ def test_design_path_is_bound_from_loader_literal_only():
     source="def load_design_config():\n return (ROOT/'configs/old_design.yaml').read_text()"
     assert m.config_path(history(source).module('src/nexus/world/own.py'))=='configs/old_design.yaml'
     with pytest.raises(m.Unsupported):m.config_path(history(source.replace("'configs/old_design.yaml'","runtime_name")).module('src/nexus/world/own.py'))
+
+
+def test_local_import_is_scoped_source_reference_and_not_runtime_import():
+    source='''
+def seed_groups(cfg):
+    from nexus.world.previous import old_seeds as imported
+    groups={}
+    for name in ('a','b'):
+        groups[f'prior_{name}']=imported(cfg)
+    return groups
+'''
+    old=b"raise RuntimeError('must never execute')\ndef old_seeds(cfg): return {cfg['base'],cfg['base']+1}"
+    h=history(source,{'src/nexus/world/previous.py':old})
+    assert m.flatten(h.module('src/nexus/world/own.py').own('seed_groups',{'base':75}))=={75,76}
+    with pytest.raises(m.Unsupported,match='unknown'):
+        h.module('src/nexus/world/own.py').call('imported',[{}])
