@@ -20,7 +20,8 @@ rules exist and still do not persist tuples. Evolution-2.2 keeps
 twelve-arm dispatch BLOCKED and full v2 NO-GO. Evolution-2.3 finds
 no stored source transitions (`SOURCE_FITTING_UNAVAILABLE`) and
 replaces caller-supplied RevealCache scores with TrustedEvaluator.
-None of these is collection.
+Evolution-2.4 finds no matched ten-bundle residual set
+(`NO_FIT_TEN_BUNDLE_UNAVAILABLE`). None of these is collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
 
@@ -55,6 +56,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Runtime scientific dispatch (stub only)
 - Evolution-2.1 catalogue-to-planner adapter (fake models; dispatch still blocked)
 - Evolution-2.3 source-fitting clock (unavailable; no stored transitions)
+- Evolution-2.4 no-fit residual inventory (Pendulum 3 / Acrobot 10 unmatched)
 
 ## Engineering that exists at HEAD 4a08b26
 

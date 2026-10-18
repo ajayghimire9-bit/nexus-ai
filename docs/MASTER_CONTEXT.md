@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.4 no-fit inventory unavailable, 2026-10-18
+
+On `cursor/evolution2.4-nofit-inventory` from `efd59b4`. Existing
+residuals are 3 Pendulum `mlp_u1000` files and 10 historical Acrobot
+lookahead development weights. That is not a matched ten-bundle
+recipe. Confirmation files stay excluded. `NO_FIT_TEN_BUNDLE_UNAVAILABLE`.
+Full v2 remains NO-GO. v2-pilot no-fit is BLOCKED. Holdout unnamed.
+H17 blocked. Scientific ledger preserved at 305.842 / 3294.158.
+Report `NEXUS_EVOLUTION2_NOFIT_INVENTORY.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.3 source-fitting unavailable, trusted cache PASS, 2026-10-18
 
 On `cursor/evolution2.3-source-fitting` from `869a9e5`. No stored

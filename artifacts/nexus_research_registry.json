@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "15f142ae84281b5fb52344c76b2f22bb95a58509",
+  "head": "efd59b45e07860b6a2fb6c017ecd4d6cff487e07",
   "ledger_s": [
     306.954,
     3293.046
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 38,
+    "curated": 39,
     "incomplete_unindexed_docs": 93,
-    "total": 131,
+    "total": 132,
     "incomplete": 120,
-    "source_verified": 11
+    "source_verified": 12
   },
   "experiments": [
     {
@@ -708,6 +708,23 @@
         "artifacts/evolution2_source_fitting_benchmark.json"
       ],
       "reuse": "Do not collect replacements. Do not invent a fit time. TrustedEvaluator owns scores.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2.4-nofit-inventory",
+      "title": "No-fit residual inventory for a ten-bundle screen",
+      "hypothesis": "Existing residual weights cannot assemble a matched 10x2 no-fit v2 or v2-pilot screen.",
+      "implementation": [
+        "src/nexus/evolution2/nofit_inventory.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_NOFIT_INVENTORY.md",
+      "results": "docs/NEXUS_EVOLUTION2_NOFIT_INVENTORY.md",
+      "status": "no_fit_ten_bundle_unavailable",
+      "artifacts": [
+        "artifacts/evolution2_nofit_inventory.json"
+      ],
+      "reuse": "Read-only hashes. Do not reuse confirmation weights. Do not collect.",
       "coverage": "source_verified"
     },
     {

@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.4 no-fit inventory, no collection
+
+`NO_FIT_TEN_BUNDLE_UNAVAILABLE`. Pendulum 3 / Acrobot 10 unmatched.
+v2 no-fit still NO-GO. Pilot no-fit BLOCKED. Ledger preserved
+305.842 / 3294.158. Report `NEXUS_EVOLUTION2_NOFIT_INVENTORY.md`.
+
 ## Latest — Evolution-2.3 source-fitting inventory, no collection
 
 `SOURCE_FITTING_UNAVAILABLE`. TrustedEvaluator owns scores. Full v2

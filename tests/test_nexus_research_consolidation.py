@@ -57,6 +57,7 @@ def test_registry_forbids_science_and_keeps_h17_blocked():
         "E2-residual-timing-probe",
         "E2.2-adapter-correctness",
         "E2.3-source-fitting",
+        "E2.4-nofit-inventory",
     } <= ids
     h17 = next(row for row in registry["experiments"] if row["id"] == "H17")
     assert h17["status"] == "blocked"

@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.4 no-fit ten-bundle unavailable; science still BLOCKED
+
+Pendulum has 3 residual MLPs; Acrobot has 10 historical lookahead
+weights. Recipes do not match. Confirmation files excluded. Do not
+collect replacements. Do not name a holdout. Do not unlock H17.
+Next: separately authorize matched source persist, or an explicit
+non-v2 n=3 lock. Report `NEXUS_EVOLUTION2_NOFIT_INVENTORY.md`.
+
 ## Current — Evolution-2.3 source fitting unavailable; science still BLOCKED
 
 No permitted Pendulum/Acrobot transition arrays exist. The residual

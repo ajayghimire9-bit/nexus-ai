@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.4 no-fit ten-bundle is unavailable, not collected
+
+Three Pendulum residual MLPs cannot fill n=10. Acrobot lookahead
+weights are a closed development set. Not a transfer result. Report
+`NEXUS_EVOLUTION2_NOFIT_INVENTORY.md`.
+
 ## Latest — H-e2.3 source fitting is unavailable, not collected
 
 No stored Pendulum/Acrobot train/val arrays. Trusted cache now

@@ -550,6 +550,19 @@ EXPERIMENTS = [
         "reuse": "Do not collect replacements. Do not invent a fit time. TrustedEvaluator owns scores.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.4-nofit-inventory",
+        "title": "No-fit residual inventory for a ten-bundle screen",
+        "hypothesis": "Existing residual weights cannot assemble a matched 10x2 no-fit v2 or v2-pilot screen.",
+        "implementation": ["src/nexus/evolution2/nofit_inventory.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_NOFIT_INVENTORY.md",
+        "results": "docs/NEXUS_EVOLUTION2_NOFIT_INVENTORY.md",
+        "status": "no_fit_ten_bundle_unavailable",
+        "artifacts": ["artifacts/evolution2_nofit_inventory.json"],
+        "reuse": "Read-only hashes. Do not reuse confirmation weights. Do not collect.",
+        "coverage": "source_verified",
+    },
 ]
 
 
