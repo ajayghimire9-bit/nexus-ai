@@ -83,6 +83,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.13 resource budget (17,280 real + 14,745,600 imagined; 7680 refused; real planner path PASS at env_cap=0; science BLOCKED)
 - Evolution-2.14 receding stored-obs clock (800 decisions, 2.305 s, 27.7 s 9600 prior; science BLOCKED)
 - Evolution-2.15 approval-text gate (`continue` / `i authorised you` insufficient; science BLOCKED)
+- Evolution-2.16 four-role assignment verification + gated executor (17,280 plan, six planned fits, four methods; science BLOCKED)
 
 ## Engineering that exists at HEAD 4a08b26
 

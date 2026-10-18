@@ -1,0 +1,483 @@
+{
+  "status": "DEVELOPMENT_PASS_SCIENCE_BLOCKED",
+  "scientific": false,
+  "collection": false,
+  "fitting": false,
+  "fits_executed": 0,
+  "env_steps": 0,
+  "env_cap": 0,
+  "granted_7680": false,
+  "hold_named": false,
+  "budget": {
+    "fresh_source": 7680,
+    "revealed": 7200,
+    "development": 2400,
+    "fresh_total": 17280,
+    "fits": 6,
+    "methods": [
+      "persist",
+      "reset",
+      "random",
+      "evolution"
+    ],
+    "equal_budget": true,
+    "occupied_default_credit": 0,
+    "authorized_env_cap": 0
+  },
+  "step_accounts": [
+    {
+      "key": "pendulum-b0-src",
+      "phase": "source",
+      "real_steps": 1280
+    },
+    {
+      "key": "pendulum-b0-rev",
+      "phase": "revealed",
+      "real_steps": 1200
+    },
+    {
+      "key": "pendulum-b0-dev",
+      "phase": "development",
+      "real_steps": 400
+    },
+    {
+      "key": "acrobot-b0-src",
+      "phase": "source",
+      "real_steps": 1280
+    },
+    {
+      "key": "acrobot-b0-rev",
+      "phase": "revealed",
+      "real_steps": 1200
+    },
+    {
+      "key": "acrobot-b0-dev",
+      "phase": "development",
+      "real_steps": 400
+    },
+    {
+      "key": "acrobot-b1-src",
+      "phase": "source",
+      "real_steps": 1280
+    },
+    {
+      "key": "acrobot-b1-rev",
+      "phase": "revealed",
+      "real_steps": 1200
+    },
+    {
+      "key": "acrobot-b1-dev",
+      "phase": "development",
+      "real_steps": 400
+    },
+    {
+      "key": "pendulum-b1-src",
+      "phase": "source",
+      "real_steps": 1280
+    },
+    {
+      "key": "pendulum-b1-rev",
+      "phase": "revealed",
+      "real_steps": 1200
+    },
+    {
+      "key": "pendulum-b1-dev",
+      "phase": "development",
+      "real_steps": 400
+    },
+    {
+      "key": "pendulum-b2-src",
+      "phase": "source",
+      "real_steps": 1280
+    },
+    {
+      "key": "pendulum-b2-rev",
+      "phase": "revealed",
+      "real_steps": 1200
+    },
+    {
+      "key": "pendulum-b2-dev",
+      "phase": "development",
+      "real_steps": 400
+    },
+    {
+      "key": "acrobot-b2-src",
+      "phase": "source",
+      "real_steps": 1280
+    },
+    {
+      "key": "acrobot-b2-rev",
+      "phase": "revealed",
+      "real_steps": 1200
+    },
+    {
+      "key": "acrobot-b2-dev",
+      "phase": "development",
+      "real_steps": 400
+    }
+  ],
+  "fits_planned": [
+    {
+      "family": "pendulum",
+      "bundle": 0,
+      "model_seed": 80000000,
+      "recipe": {
+        "module": "nexus.world.train.train_world_model",
+        "kind": "residual",
+        "hidden": [
+          64,
+          64
+        ],
+        "epochs": 20,
+        "batch_size": 128,
+        "n_train": 1024,
+        "n_val": 256,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "arch": "mlp"
+      },
+      "status": "planned_not_executed"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 0,
+      "model_seed": 80000000,
+      "recipe": {
+        "module": "nexus.world.train.train_world_model",
+        "kind": "residual",
+        "hidden": [
+          64,
+          64
+        ],
+        "epochs": 20,
+        "batch_size": 128,
+        "n_train": 1024,
+        "n_val": 256,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "arch": "mlp"
+      },
+      "status": "planned_not_executed"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 1,
+      "model_seed": 80000001,
+      "recipe": {
+        "module": "nexus.world.train.train_world_model",
+        "kind": "residual",
+        "hidden": [
+          64,
+          64
+        ],
+        "epochs": 20,
+        "batch_size": 128,
+        "n_train": 1024,
+        "n_val": 256,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "arch": "mlp"
+      },
+      "status": "planned_not_executed"
+    },
+    {
+      "family": "pendulum",
+      "bundle": 1,
+      "model_seed": 80000001,
+      "recipe": {
+        "module": "nexus.world.train.train_world_model",
+        "kind": "residual",
+        "hidden": [
+          64,
+          64
+        ],
+        "epochs": 20,
+        "batch_size": 128,
+        "n_train": 1024,
+        "n_val": 256,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "arch": "mlp"
+      },
+      "status": "planned_not_executed"
+    },
+    {
+      "family": "pendulum",
+      "bundle": 2,
+      "model_seed": 80000002,
+      "recipe": {
+        "module": "nexus.world.train.train_world_model",
+        "kind": "residual",
+        "hidden": [
+          64,
+          64
+        ],
+        "epochs": 20,
+        "batch_size": 128,
+        "n_train": 1024,
+        "n_val": 256,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "arch": "mlp"
+      },
+      "status": "planned_not_executed"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 2,
+      "model_seed": 80000002,
+      "recipe": {
+        "module": "nexus.world.train.train_world_model",
+        "kind": "residual",
+        "hidden": [
+          64,
+          64
+        ],
+        "epochs": 20,
+        "batch_size": 128,
+        "n_train": 1024,
+        "n_val": 256,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "arch": "mlp"
+      },
+      "status": "planned_not_executed"
+    }
+  ],
+  "methods": [
+    "persist",
+    "reset",
+    "random",
+    "evolution"
+  ],
+  "isolation": {
+    "evaluator": "TrustedEvaluator.hide_development",
+    "training_feedback_must_not_see_development": true,
+    "occupied_defaults_are_not_holdout": true,
+    "methods_share_equal_proposal_slots": true
+  },
+  "path": {
+    "status": "PASS",
+    "scientific": false,
+    "gymnasium": false,
+    "env_steps": 0,
+    "env_cap": 0,
+    "granted_7680": false,
+    "methods_exercised": [
+      "persist",
+      "reset",
+      "random",
+      "evolution"
+    ],
+    "lookups_per_method": {
+      "persist": 8,
+      "reset": 8,
+      "random": 8,
+      "evolution": 8
+    },
+    "persist_cross_family": true,
+    "reset_discarded": true,
+    "hidden_development_blocked": true,
+    "physical_planner_decisions": 24,
+    "twelve_arm_scientific": "BLOCKED",
+    "enabled_dispatch": false,
+    "training_feedback_unit_interval": true,
+    "note": "Disposable default residuals only. Not new-physics source fitting."
+  },
+  "interruption": {
+    "planned_real_steps": 17280,
+    "accounts": [
+      {
+        "key": "pendulum-b0-src",
+        "phase": "source",
+        "real_steps": 1280
+      },
+      {
+        "key": "pendulum-b0-rev",
+        "phase": "revealed",
+        "real_steps": 1200
+      },
+      {
+        "key": "pendulum-b0-dev",
+        "phase": "development",
+        "real_steps": 400
+      },
+      {
+        "key": "acrobot-b0-src",
+        "phase": "source",
+        "real_steps": 1280
+      },
+      {
+        "key": "acrobot-b0-rev",
+        "phase": "revealed",
+        "real_steps": 1200
+      },
+      {
+        "key": "acrobot-b0-dev",
+        "phase": "development",
+        "real_steps": 400
+      },
+      {
+        "key": "acrobot-b1-src",
+        "phase": "source",
+        "real_steps": 1280
+      },
+      {
+        "key": "acrobot-b1-rev",
+        "phase": "revealed",
+        "real_steps": 1200
+      },
+      {
+        "key": "acrobot-b1-dev",
+        "phase": "development",
+        "real_steps": 400
+      },
+      {
+        "key": "pendulum-b1-src",
+        "phase": "source",
+        "real_steps": 1280
+      },
+      {
+        "key": "pendulum-b1-rev",
+        "phase": "revealed",
+        "real_steps": 1200
+      },
+      {
+        "key": "pendulum-b1-dev",
+        "phase": "development",
+        "real_steps": 400
+      },
+      {
+        "key": "pendulum-b2-src",
+        "phase": "source",
+        "real_steps": 1280
+      },
+      {
+        "key": "pendulum-b2-rev",
+        "phase": "revealed",
+        "real_steps": 1200
+      },
+      {
+        "key": "pendulum-b2-dev",
+        "phase": "development",
+        "real_steps": 400
+      },
+      {
+        "key": "acrobot-b2-src",
+        "phase": "source",
+        "real_steps": 1280
+      },
+      {
+        "key": "acrobot-b2-rev",
+        "phase": "revealed",
+        "real_steps": 1200
+      },
+      {
+        "key": "acrobot-b2-dev",
+        "phase": "development",
+        "real_steps": 400
+      }
+    ],
+    "status": "incomplete_execution",
+    "reason": "interrupted",
+    "unresolved": [
+      "interrupt-src",
+      "interrupt-rev",
+      "never-started"
+    ],
+    "physical_completed": {
+      "real_steps": 0,
+      "imagined_transitions": 0,
+      "model_calls": 0,
+      "network_forwards": 0
+    },
+    "physical_unknown": {
+      "real_steps": 1,
+      "imagined_transitions": 0,
+      "model_calls": 0,
+      "network_forwards": 0
+    },
+    "logical_charged": {
+      "real_steps": 1,
+      "imagined_transitions": 0,
+      "model_calls": 0,
+      "network_forwards": 0
+    },
+    "probe": {
+      "status": "incomplete_execution",
+      "reason": "interrupted",
+      "unresolved": [
+        "interrupt-probe",
+        "never-started"
+      ],
+      "physical_completed": {
+        "real_steps": 0,
+        "imagined_transitions": 0,
+        "model_calls": 0,
+        "network_forwards": 0
+      },
+      "physical_unknown": {
+        "real_steps": 0,
+        "imagined_transitions": 1,
+        "model_calls": 1,
+        "network_forwards": 1
+      },
+      "logical_charged": {
+        "real_steps": 0,
+        "imagined_transitions": 1,
+        "model_calls": 1,
+        "network_forwards": 1
+      }
+    },
+    "env_steps_collected": 0
+  },
+  "roles": {
+    "status": "PASS",
+    "digests": {
+      "acrobot_development": "f63b54f2ed140915b4ac8b3fd924bc7ae0c5c754496e417784603a206ea72f19",
+      "acrobot_source": "e07be56987f4382bdd5087f34c3aa7ae86c79251f6cbebbdfd6f76d55b3402d3",
+      "pendulum_source": "31b0989af2faa99e865b48d7a2d11a71a077df37367ae2891e31ff38a5a26ad0",
+      "pendulum_development": "a9bd9aedf2a4f1e1bf0bdb3564d83ea789ccb15a1bc0d1dcf3873797aa7762c3"
+    },
+    "historical_exclusion_clean": true,
+    "hold_named": false
+  },
+  "readiness": {
+    "status": "BLOCKED",
+    "reason": "scientific_execution_blocked:holdout_unnamed,unauthorized,env_cap_not_17280_fresh,scientific_runner_refuses,twenty_fit_unmeasured_not_required_for_n3",
+    "blockers": [
+      "holdout_unnamed",
+      "unauthorized",
+      "env_cap_not_17280_fresh",
+      "scientific_runner_refuses",
+      "twenty_fit_unmeasured_not_required_for_n3"
+    ],
+    "gates": {
+      "locked_request_hashes": true,
+      "holdout_named": false,
+      "holdout_review": true,
+      "authorized": false,
+      "fresh_env_cap_17280": false,
+      "occupied_default_reuse_refused": true,
+      "source_persist_not_credited": true,
+      "twenty_fit_measured": false,
+      "h17": false,
+      "scientific_flags_unchanged": true,
+      "h16_untouched": true
+    },
+    "requested_env_cap": 0,
+    "required_env_cap": 17280,
+    "holdout_integrity": "BLOCKED",
+    "real_source_fitting_path": "BLOCKED",
+    "scientific_execution_readiness": "BLOCKED"
+  },
+  "runner_readiness": "DEVELOPMENT_READY_SCIENCE_BLOCKED",
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "h17": "blocked",
+  "scientific_ledger_preserved": [
+    305.842,
+    3294.158
+  ],
+  "claims_learning_to_learn": false,
+  "is_agi": false
+}

@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.16 four-role assignments validate; persist-versus-reset still unauthorized
+
+Locked unused source/development roles match existing SHA256 digests
+and stay off historical exclusion lists. The gated executor is
+development-ready. Not a transfer result. Science stays blocked.
+Reports `NEXUS_EVOLUTION2_PERSIST_RESET_ROLES.md` and
+`NEXUS_EVOLUTION2_PERSIST_RESET_EXECUTOR.md`.
+
 ## Latest — H-e2.15 persist-versus-reset remains unauthorized after vague approval
 
 The message did not cite the locked hash, name a holdout, or set

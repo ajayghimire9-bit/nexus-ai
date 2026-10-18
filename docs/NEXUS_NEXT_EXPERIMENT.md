@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.16 four-role executor; science BLOCKED
+
+Four locked unused roles are independently verified. Next scientific
+step still requires a reply that cites `8e90b74a…`, the four locked
+role digests, and `env_cap=17280`. The word `holdout` is not enough.
+Do not collect. Do not grant 7680. Reports
+`NEXUS_EVOLUTION2_PERSIST_RESET_ROLES.md` and
+`NEXUS_EVOLUTION2_PERSIST_RESET_EXECUTOR.md`.
+
 ## Current — Evolution-2.15 approval gate; science BLOCKED
 
 `continue` / `i authorised you` is not approval. Next scientific step

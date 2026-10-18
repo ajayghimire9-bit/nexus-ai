@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.16 four-role executor, science BLOCKED
+
+Four locked unused roles match existing digests. Generic holdout-word
+check replaced. Gated executor development-ready; science BLOCKED.
+H16 ledger preserved 305.842 / 3294.158. Reports
+`NEXUS_EVOLUTION2_PERSIST_RESET_ROLES.md` and
+`NEXUS_EVOLUTION2_PERSIST_RESET_EXECUTOR.md`.
+
 ## Latest — Evolution-2.15 vague authorization rejected
 
 `continue i authrosed you` parsed INSUFFICIENT. Science BLOCKED. H16

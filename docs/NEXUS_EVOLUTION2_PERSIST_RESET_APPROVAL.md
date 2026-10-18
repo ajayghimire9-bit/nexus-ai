@@ -15,7 +15,7 @@ H17 blocked. H16 ledger **305.842 / 3294.158**.
 A later reply must contain all three:
 
 1. `8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e`
-2. A named unused four-role holdout matching the locked digests
+2. The exact four locked role digests (the word `holdout` is not enough)
 3. `env_cap=17280`
 
 Even complete text does not flip the allocation. Occupied defaults

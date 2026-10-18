@@ -5,7 +5,6 @@ Gymnasium, collect transitions, fit models, or name a holdout.
 """
 from __future__ import annotations
 
-from nexus.evolution2 import persist_reset_readiness as ready
 from nexus.evolution2 import persist_reset_request as lock
 from nexus.evolution2 import pendulum_acrobot_protocol_v2 as v2
 
@@ -48,7 +47,7 @@ def run_scientific(*_args, **_kwargs) -> None:
 
 
 def dispatch(env_cap: int) -> None:
-    """Scientific entry. Holdout gate first; then 17280-step freshness; then refuse."""
-    lock.require_named_holdout()
-    ready.require_scientific_prerequisites(int(env_cap))
-    run_scientific(env_cap)
+    """Scientific entry. Holdout gate first; gated executor still refuses."""
+    from nexus.evolution2.persist_reset_executor import execute_scientific
+
+    execute_scientific(int(env_cap))

@@ -12,7 +12,9 @@ from pathlib import Path
 
 from nexus.evolution2 import persist_reset_budget as budget
 from nexus.evolution2 import persist_reset_request as lock
+from nexus.evolution2 import persist_reset_roles as roles
 from nexus.evolution2 import pendulum_acrobot_holdout_review as review
+from nexus.evolution2.pendulum_acrobot_instance_rules import ROLE_ORDER
 
 ROOT = Path(__file__).resolve().parents[3]
 RESULTS = ROOT / "artifacts" / "evolution2_persist_reset_approval.json"
@@ -36,30 +38,45 @@ def _norm(text: str) -> str:
     return " ".join(str(text).lower().split())
 
 
+ROLE_ASSIGN_RE = re.compile(
+    r"(acrobot_development|acrobot_source|pendulum_source|pendulum_development)"
+    r"\s*[=:]\s*"
+    r"(?:([0-9a-fA-F]{64})|\(\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*\))"
+)
+
+
+def extract_named_roles(text: str) -> dict[str, str | tuple[float, float, float]]:
+    found: dict[str, str | tuple[float, float, float]] = {}
+    for match in ROLE_ASSIGN_RE.finditer(str(text)):
+        role = match.group(1)
+        if match.group(2):
+            found[role] = match.group(2).lower()
+        else:
+            found[role] = (float(match.group(3)), float(match.group(4)), float(match.group(5)))
+    return found
+
+
 def parse_approval(text: str) -> dict:
     raw = str(text)
     norm = _norm(raw)
     hash_hit = REQUIRED_HASH in raw or REQUIRED_HASH[:8] in raw
     cap_hits = [int(x) for x in re.findall(r"env_cap\s*[=:]\s*(\d+)", norm)]
     env_cap = cap_hits[-1] if cap_hits else None
-    hold_named = bool(
-        re.search(r"holdout|pendulum_source|acrobot_source|four-role|four role", norm)
-    ) and not any(
-        phrase in norm
-        for phrase in (
-            "do not name a holdout",
-            "holdout unnamed",
-            "without naming",
-        )
-    )
+    named = extract_named_roles(raw)
+    four_role = roles.validate_named_roles(named) if named else {
+        "valid": False,
+        "reason": "missing_four_role_assignments",
+        "matched": {},
+    }
+    four_role_valid = bool(four_role.get("valid")) and set(named) == set(ROLE_ORDER)
     occupied = "(10,1,1)" in raw.replace(" ", "") or "(1,1,1)" in raw.replace(" ", "")
     if occupied:
-        hold_named = False
+        four_role_valid = False
     vague = any(phrase in norm for phrase in VAGUE)
     missing = []
     if not hash_hit:
         missing.append("config_hash_8e90b74a")
-    if not hold_named:
+    if not four_role_valid:
         missing.append("named_four_role_unused_holdout")
     if env_cap != REQUIRED_ENV_CAP:
         missing.append("env_cap_17280")
@@ -73,6 +90,8 @@ def parse_approval(text: str) -> dict:
         "collection": False,
         "hash_cited": hash_hit,
         "hold_named": False,
+        "four_role_valid": four_role_valid,
+        "four_role_reason": None if four_role_valid else four_role.get("reason"),
         "env_cap": env_cap,
         "required_env_cap": REQUIRED_ENV_CAP,
         "vague_authorization": vague,
@@ -82,9 +101,9 @@ def parse_approval(text: str) -> dict:
         "yaml_unchanged": lock.file_sha256(lock.CONFIG) == lock.LOCKED_CONFIG,
         "allocation_unchanged": lock.file_sha256(lock.ALLOCATION) == lock.LOCKED_ALLOCATION,
         "note": (
-            "Text completeness is not authorization. Allocation stays "
-            "unauthorized until a later recorded grant flips no frozen hashes "
-            "here. This parser does not name a holdout."
+            "Exact four-role digest or tuple match is required. The word "
+            "holdout is not enough. Text completeness is not authorization. "
+            "Allocation stays unauthorized. This parser does not name a holdout."
         ),
     }
 
@@ -115,8 +134,8 @@ def write_artifact(text: str) -> dict:
         "is_agi": False,
         "next_action": (
             "Reply with the config hash 8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e, "
-            "a named unused four-role holdout, and env_cap=17280. "
-            "continue / i authorised you is not approval."
+            "the four locked role digests, and env_cap=17280. "
+            "The word holdout is not enough. continue / i authorised you is not approval."
         ),
     }
     RESULTS.write_text(json.dumps(payload, indent=2) + "\n")

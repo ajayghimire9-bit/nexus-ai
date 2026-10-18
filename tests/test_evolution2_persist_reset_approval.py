@@ -9,6 +9,7 @@ import pytest
 from nexus.evolution2 import persist_reset_approval as gate
 from nexus.evolution2 import persist_reset_request as lock
 from nexus.evolution2 import persist_reset_runner as runner
+from nexus.evolution2.pendulum_acrobot_instance_rules import ROLE_DIGESTS, ROLE_ORDER
 
 
 def _imports(path: Path) -> set[str]:
@@ -50,3 +51,32 @@ def test_continue_i_authorised_you_is_insufficient():
     assert "gymnasium" not in imported
     assert lock.allocation_record()["authorized"] is False
     assert lock.file_sha256(lock.CONFIG) == lock.LOCKED_CONFIG
+
+
+def test_generic_holdout_word_is_not_four_role_validation():
+    parsed = gate.parse_approval(
+        f"cite {lock.LOCKED_CONFIG} env_cap=17280 named unused four-role holdout"
+    )
+    assert parsed["status"] == "INSUFFICIENT"
+    assert parsed["four_role_valid"] is False
+    assert "named_four_role_unused_holdout" in parsed["missing"]
+    assert parsed["authorized"] is False
+    assert parsed["hold_named"] is False
+
+
+def test_exact_four_role_digests_are_text_complete_but_still_unauthorized():
+    named = " ".join(f"{role}={digest}" for role, digest in ROLE_DIGESTS.items())
+    text = f"cite {lock.LOCKED_CONFIG} env_cap=17280 {named}"
+    parsed = gate.parse_approval(text)
+    assert set(gate.extract_named_roles(text)) == set(ROLE_ORDER)
+    assert parsed["status"] == "COMPLETE_TEXT_ONLY"
+    assert parsed["four_role_valid"] is True
+    assert parsed["authorized"] is False
+    assert parsed["hold_named"] is False
+    assert parsed["collection"] is False
+    with pytest.raises(RuntimeError, match="allocation_still_unauthorized"):
+        gate.refuse_vague_authorization(text)
+    with pytest.raises(Exception, match="unnamed|holdout"):
+        lock.dispatch(17280)
+    with pytest.raises(Exception, match="unnamed|holdout"):
+        runner.dispatch(17280)

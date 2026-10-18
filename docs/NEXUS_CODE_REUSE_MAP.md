@@ -35,6 +35,8 @@ instead of opening parallel packages.
 | Persist-versus-reset resource budget / real path | `evolution2.persist_reset_budget` plus `persist_reset_path`; reuses `decide`, disposable residuals, `TrustedEvaluator` | Granting 7680, collecting fresh physics, or treating the 27.3 s planner prior as a scientific clock |
 | Persist-versus-reset receding stored-obs clock | `evolution2.persist_reset_recede`; reuses locked train arrays and disposable residuals | Gymnasium rollouts, treating 27.7 s as new-physics screen time, or naming a holdout |
 | Persist-versus-reset approval-text gate | `evolution2.persist_reset_approval` | Treating continue / i authorised you as a 17280 grant, or flipping frozen yaml |
+| Four-role unused-instance verification | `evolution2.persist_reset_roles` plus locked `ROLE_DIGESTS` | New selection, outcome-based retuning, or treating verification as a named live holdout |
+| Gated persist-versus-reset executor | `evolution2.persist_reset_executor` behind `persist_reset_request` / `persist_reset_runner` | Collecting, executing six fits, granting 7680, or treating development verify as science |
 | Unused Pendulum/Acrobot instance naming | `evolution2.pendulum_acrobot_holdout_review` (NAMING_BLOCKED) plus `evolution2.pendulum_acrobot_instance_rules` (unnamed four-role digests) | Shopping a new tuple or treating one Acrobot key as four roles |
 | E2 public IPC / stub host | `evolution2.bindings` + `evolution2.host` | Importing `FAMILY_SPEC` into the worker |
 | PPO training | `nexus.rl.ppo` | A new on-policy trainer for CartPole-scale tasks |

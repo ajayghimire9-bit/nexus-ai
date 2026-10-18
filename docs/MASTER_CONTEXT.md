@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.16 four-role executor, science BLOCKED, 2026-10-18
+
+Independent four-role unused-instance verification PASSES against the
+locked SHA256 digests and historical exclusion lists. No new selection.
+The approval parser now requires exact four-role digest or tuple match;
+the word `holdout` is insufficient. The real persist-versus-reset
+executor is development-tested behind the existing gate: 17,280-step
+plan, six planned fits, four equal-budget methods, isolation, and
+interrupt accounting. No collection. Scientific dispatch stays
+BLOCKED. Config `8e90b74a…` unchanged. H17 blocked. H16 ledger
+preserved 305.842 / 3294.158. Reports
+`NEXUS_EVOLUTION2_PERSIST_RESET_ROLES.md` and
+`NEXUS_EVOLUTION2_PERSIST_RESET_EXECUTOR.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.15 vague authorization rejected, science BLOCKED, 2026-10-18
 
 `continue i authrosed you` is insufficient. Missing config hash,
