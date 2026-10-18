@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — v2 protocol contracts, still no collection
+
+Independent review: v1 is **NOT_READY** against Evolution-1
+feasibility (ordinary 95% vs reset only, one fixed index,
+mutation/crossover, occupied default Pendulum train, 40k/0 imagined).
+One next milestone: source-only v2 fairness/operator/resource
+contract tests. Do not collect. Do not name a holdout. Do not unlock
+H17. Ledger 305.842 / 3294.158. Reports
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_READINESS.md` and
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2.md`.
+
 ## Current — Pendulum→Acrobot protocol locked; collection still BLOCKED
 
 The catalogue-proposer screen is now a source-only design lock:

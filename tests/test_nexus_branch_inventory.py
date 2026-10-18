@@ -30,8 +30,9 @@ def test_generated_inventory_forbids_cleanup_actions():
     assert payload['cleanup_policy']['delete_now'] is False
     assert payload['cleanup_policy']['merge_main'] is False
     assert len(payload['head']) == 40
-    assert payload['main'].startswith('8d7f288')
+    assert payload['main'].startswith('d36b49f')
     assert payload['counts']['branches'] >= 100
+    assert payload['counts']['delete'] == 0
 
 
 def test_registry_and_ledger_are_unchanged_by_this_audit():

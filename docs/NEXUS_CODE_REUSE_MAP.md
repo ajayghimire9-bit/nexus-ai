@@ -1,7 +1,10 @@
 # NEXUS code-reuse map
 
-Source-verified at HEAD `4a08b26`. Future agents must reuse these
-surfaces instead of opening parallel packages.
+Source-verified at the research-tip merge, then extended by the
+consolidation review. Future agents must consult
+`docs/NEXUS_CANONICAL_CURRENT_STATE.md` and
+`docs/NEXUS_FULL_RESEARCH_REGISTRY.md`, then reuse these surfaces
+instead of opening parallel packages.
 
 ## Canonical stacks (keep)
 

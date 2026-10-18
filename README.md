@@ -4,6 +4,19 @@ Experimental research system for self-evolving neural intelligence. Long-term ai
 
 This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
+## Agent reuse (mandatory)
+
+Before implementing a new algorithm or component, read:
+
+1. `docs/MASTER_CONTEXT.md`
+2. `docs/NEXUS_CANONICAL_CURRENT_STATE.md`
+3. `docs/NEXUS_CODE_REUSE_MAP.md`
+4. `docs/NEXUS_FULL_RESEARCH_REGISTRY.md`
+
+Reuse the named stack. Do not add a fourth evolution package, a third
+memory, or a second meta-controller. Closed H8–H16 splits and H17
+exclusions are not training labels.
+
 ## Status
 
 **Current: action-conditioned first-action Q run incomplete.** The 240 s authorized execution saved 59/60 evaluation cells. No registered decoder-level interval. Report: `docs/NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`.
@@ -141,6 +154,9 @@ pytest
 | `src/nexus/eval/` | Independent policy evaluation + architecture transfer |
 | `src/nexus/meta/` | Schemas, research reward, LinUCB/ε-greedy/random, research loop |
 | `docs/MASTER_CONTEXT.md` | Full research context |
+| `docs/NEXUS_CANONICAL_CURRENT_STATE.md` | Current research tip and closed labels |
+| `docs/NEXUS_CODE_REUSE_MAP.md` | Which module to reuse |
+| `docs/NEXUS_FULL_RESEARCH_REGISTRY.md` | Recoverable experiment index |
 | `docs/NEXUS_PROGRESS.md` | Measured logs and incomplete items |
 
 ## What this is not

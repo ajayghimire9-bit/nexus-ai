@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-pendulum-acrobot-persistence v1 is not ready
+
+Independent review against Evolution-1 feasibility: statistical
+weakening, incomplete bundles, missing two-anchor fairness,
+undefined outcomes, illegal crossover language, and a 40k/0-imagined
+worksheet. v1 preserved. v2 is design-only and unauthorized.
+Report `NEXUS_EVOLUTION2_PENDULUM_ACROBOT_READINESS.md`.
+
 ## Latest — H-e2-pendulum-acrobot-persistence is locked, not collected
 
 Question: after AdaptiveProposer training on default Pendulum

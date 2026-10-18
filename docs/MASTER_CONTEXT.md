@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — research consolidation and protocol review, 2026-10-18
+
+Source-only registry, live ancestry of 146 branches, and an
+independent review of the Pendulum→Acrobot v1 lock against
+Evolution-1 feasibility. Verdict **NOT_READY**. v1 preserved; v2 is
+a superseding design only. No collection. H17 blocked. Ledger
+unchanged (305.842 / 3294.158). Consult
+`docs/NEXUS_FULL_RESEARCH_REGISTRY.md`,
+`docs/NEXUS_BRANCH_CLEANUP_PROPOSAL.md`, and
+`docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_READINESS.md`. Earlier
+entries remain history.
+
 ## Latest — Pendulum→Acrobot protocol locked, collection BLOCKED, 2026-10-18
 
 On `cursor/evolution2-pendulum-acrobot-protocol` from `d36b49f`.

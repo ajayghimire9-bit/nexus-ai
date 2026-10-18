@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — research consolidation and v1 protocol NOT_READY
+
+Source-only registry (123 rows, many incomplete), 146-branch
+ancestry, and Pendulum→Acrobot readiness review. v1 superseded as
+the executable design; v2 unauthorized. No collection. H17 blocked.
+Ledger 305.842 / 3294.158 unchanged.
+
 ## Latest — Pendulum→Acrobot protocol locked, no collection
 
 Source-only design lock on

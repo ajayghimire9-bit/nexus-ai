@@ -57,6 +57,42 @@ def _subject(sha):
     return _run(['git', 'log', '-1', '--format=%s', sha])
 
 
+def _int(args):
+    return int(_run(args) or '0')
+
+
+def ancestry(sha, main_sha):
+    """Read-only ahead/behind versus main. Does not checkout."""
+    if not sha or not main_sha:
+        return {'coverage': 'incomplete', 'reason': 'missing_sha'}
+    try:
+        merge_base = _run(['git', 'merge-base', main_sha, sha])
+        ahead = _int(['git', 'rev-list', '--count', f'{main_sha}..{sha}'])
+        behind = _int(['git', 'rev-list', '--count', f'{sha}..{main_sha}'])
+    except subprocess.CalledProcessError as exc:
+        return {
+            'coverage': 'incomplete',
+            'reason': 'merge_base_failed',
+            'detail': str(exc),
+        }
+    relationship = 'diverged'
+    if sha == main_sha:
+        relationship = 'is_main'
+    elif ahead == 0 and behind == 0:
+        relationship = 'same_as_main'
+    elif ahead == 0:
+        relationship = 'ancestor_of_main'
+    elif behind == 0:
+        relationship = 'ahead_of_main'
+    return {
+        'coverage': 'source_verified',
+        'merge_base': merge_base,
+        'ahead_of_main': ahead,
+        'behind_main': behind,
+        'relationship': relationship,
+    }
+
+
 def classify(name):
     for family, pattern in FAMILIES:
         if pattern.search(name):
@@ -112,6 +148,37 @@ def main():
     duplicates = {sha: names for sha, names in sha_groups.items() if len(names) > 1}
     head = _run(['git', 'rev-parse', 'HEAD'])
     main_sha = by_name.get('main', {}).get('sha')
+    remote_mismatch = []
+    for row in rows:
+        row['ancestry'] = ancestry(row['sha'], main_sha)
+        remotes = row.get('remote_sha') or {}
+        if remotes:
+            shas = set(remotes.values()) | {row['sha']}
+            if len(shas) > 1:
+                remote_mismatch.append({
+                    'name': row['name'],
+                    'local': row['sha'] if 'local' in row['presence'] else None,
+                    'remote_sha': remotes,
+                })
+        rel = row['ancestry'].get('relationship')
+        if row['name'] == 'main':
+            proposal = 'retain_mainline'
+        elif row['family'] == 'h17':
+            proposal = 'retain_blocked_h17'
+        elif row['role'] == 'results':
+            proposal = 'retain_results_provenance'
+        elif rel == 'ahead_of_main':
+            proposal = 'retain_active'
+        elif rel == 'diverged':
+            proposal = 'retain_diverged_unmerged'
+        elif len(sha_groups[row['sha']]) > 1:
+            proposal = 'retain_duplicate_tip_optional_alias_archive'
+        elif rel == 'ancestor_of_main':
+            proposal = 'retain_provenance_optional_remote_archive'
+        else:
+            proposal = 'retain'
+        row['cleanup_proposal'] = proposal
+        row['delete'] = False
     payload = {
         'mode': 'read_only_inventory',
         'scientific': False,
@@ -121,8 +188,13 @@ def main():
             'branches': len(rows),
             'families': {family: sum(1 for r in rows if r['family'] == family) for family, _ in FAMILIES + (('other', None),)},
             'shared_tips': len(duplicates),
+            'remote_sha_mismatch': len(remote_mismatch),
+            'optional_remote_archive': sum(1 for r in rows if 'optional' in r['cleanup_proposal']),
+            'retain_required': sum(1 for r in rows if 'optional' not in r['cleanup_proposal']),
+            'delete': 0,
         },
         'duplicate_tips': duplicates,
+        'remote_sha_mismatch': remote_mismatch,
         'branches': rows,
         'cleanup_policy': {
             'delete_now': False,

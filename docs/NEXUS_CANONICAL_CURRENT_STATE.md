@@ -1,8 +1,8 @@
 # NEXUS canonical current state
 
 Authoritative snapshot for future agents. Not a scientific result.
-Generated from HEAD `4a08b26f81cbe314ae475e71419344e688ab571a` plus the
-read-only branch inventory. Consult before proposing work.
+Generated from the research-tip merge and the consolidation review.
+Consult the registry and reuse map before proposing work.
 
 ## What NEXUS is now
 
@@ -12,8 +12,8 @@ Completing a roadmap item is not AGI. No profitable trading system exists.
 
 **`main` now carries the research tip** after the human-authorized
 merge of Evolution-2 integrity and the reuse audit. The
-Pendulum→Acrobot catalogue-proposer screen is a design lock on
-`cursor/evolution2-pendulum-acrobot-protocol` and is not collection.
+Pendulum→Acrobot v1 lock is **not ready** against Evolution-1
+feasibility. v2 is a superseding design only. Neither is collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
 
@@ -43,7 +43,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 
 - Evolution-1 transferable proposal memory (real families)
 - Evolution-2 persistent vs reset (synthetic contracts only)
-- Evolution-2 Pendulum→Acrobot persist vs reset/random/evolution/retrieval/fixed (protocol locked; holdout unnamed; collection unauthorized)
+- Evolution-2 Pendulum→Acrobot persist vs reset/random/evolution/retrieval/fixed (v1 locked and **not ready**; v2 design-only; holdout unnamed; collection unauthorized)
 - H17 occupancy/library factorial
 - Runtime scientific dispatch (stub only)
 
@@ -64,7 +64,8 @@ experiment.
 
 ## Entry rule for future work
 
-If a proposal rebuilds a planner, proposer, memory, meter, or
+Consult `docs/NEXUS_FULL_RESEARCH_REGISTRY.md` and
+`docs/NEXUS_CODE_REUSE_MAP.md` first. If a proposal rebuilds a planner, proposer, memory, meter, or
 cross-task screen, name the existing module it is not replacing.
 If it needs MCC physics, read the 29 H17 exclusions first. If it
 claims LEVEL 2 or learning-to-learn, it must beat reset, random,

@@ -2,6 +2,16 @@
 
 Read `docs/MASTER_CONTEXT.md` in full before any NEXUS work. Treat that document as the master context for this project.
 
+Before implementing a new algorithm, proposer, meter, memory, planner,
+adapter, or experiment runner, consult:
+
+1. `docs/NEXUS_CANONICAL_CURRENT_STATE.md`
+2. `docs/NEXUS_CODE_REUSE_MAP.md`
+3. `docs/NEXUS_FULL_RESEARCH_REGISTRY.md`
+
+Name the existing module that is not being replaced. Do not open a
+parallel evolution, memory, or meta-controller stack.
+
 You are Chief AI Research Scientist, AGI Research Architect, Reinforcement Learning Engineer, and Technical Co-Founder for **NEXUS AI**.
 
 Interpret future instructions within this project unless the user explicitly changes the subject.
@@ -75,7 +85,7 @@ Use the repository as persistent research context so the user does not need to e
 
 ## Latest evidence pointer
 
-The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`) and H16 `+0.023 [−0.014, +0.060]` (`h16_same_state_library_effect_not_established`). Evolution-2 has a synthetic LEVEL 2 contract (`docs/NEXUS_EVOLUTION2_CROSS_TASK_SCREEN.md`) and a locked, unauthorized Pendulum→Acrobot protocol (`docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL.md`); neither is a transfer result. H17 remains blocked. Do not collect on the unnamed Acrobot holdout. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
+The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`) and H16 `+0.023 [−0.014, +0.060]` (`h16_same_state_library_effect_not_established`). Evolution-2 has a synthetic LEVEL 2 contract (`docs/NEXUS_EVOLUTION2_CROSS_TASK_SCREEN.md`) and a locked, unauthorized Pendulum→Acrobot v1 protocol that an independent review judged **not ready** against Evolution-1 feasibility (`docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_READINESS.md`). v2 is a superseding design only. Neither is a transfer result. H17 remains blocked. Do not collect on the unnamed Acrobot holdout. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
 
 
 ## Standing Coding and Local Research Authority
