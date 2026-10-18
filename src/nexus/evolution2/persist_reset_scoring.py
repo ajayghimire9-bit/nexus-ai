@@ -65,6 +65,68 @@ def persist_reset_matched(seed: int = 7) -> dict:
     }
 
 
+def feedback_normalization_boundary_audit():
+    """Fixed synthetic integration audit: no planner, environment or model."""
+    import time
+    from nexus.evolution1.catalogue import digest
+    from nexus.evolution1.toy_loop import ANCHORS,AdaptiveProposer,VARIANTS
+    from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import TrustedEvaluator,feedback_reference_digest
+    t0,cpu0 = time.perf_counter(),time.process_time()
+    result_path = ROOT/"artifacts/evolution2_26_feedback_boundary.json"
+    historical = {str(p.relative_to(ROOT)):lock.file_sha256(p) for p in (ROOT/"artifacts").glob("*.json") if p!=result_path}
+    reference = tuple(ANCHORS)
+    expected = feedback_reference_digest("pendulum",0,reference) # before scores
+    calls = 0
+    def producer(table):
+        def get(variant):
+            nonlocal calls
+            calls += 1
+            return table[variant]
+        return get
+    source = TrustedEvaluator(VARIANTS,family="pendulum",bundle_id=0,
+               produce_score=producer({reference[0]:-10.,reference[1]:10.,VARIANTS[0]:999.}))
+    for v in reference:source.evaluate("persist",v)
+    snapshot = source.freeze_feedback_scale("persist",reference=reference,expected_reference_digest=expected)
+    snapshot_before = snapshot.payload()
+    outputs = []
+    for extreme in (-1e8,1e8):
+        q = TrustedEvaluator(VARIANTS,family="pendulum",bundle_id=1,
+              produce_score=producer({reference[0]:2.,reference[1]:8.,VARIANTS[0]:extreme}))
+        policy = AdaptiveProposer(seed=7)
+        normalized = []
+        for slot,v in enumerate(reference):
+            unit = snapshot.unit(q.evaluate("persist",v)); normalized.append(unit)
+            policy.update(TrainingFeedback(v.fingerprint,unit,False,digest(["boundary",slot])),science.family_context("pendulum"))
+        choice = policy.choose(tuple(v for v in VARIANTS if v not in reference),science.family_context("pendulum"))
+        outputs.append({"unobserved_extreme":extreme,"public_feedback":normalized,
+                        "policy_state":policy.learned_state(),"choice":choice.fingerprint,
+                        "query_raw_lookups":q.physical})
+    source.evaluate("persist",VARIANTS[0])
+    blocked = False
+    try:source.freeze_feedback_scale("persist",reference=reference,expected_reference_digest=expected)
+    except RuntimeError as e:blocked = "already_frozen" in str(e)
+    same = all(outputs[0][key]==outputs[1][key] for key in ("public_feedback","policy_state","choice"))
+    unchanged = snapshot_before==snapshot.payload()
+    preserved = all(lock.file_sha256(ROOT/p)==h for p,h in historical.items())
+    complete = same and unchanged and blocked and preserved and calls==7
+    if not complete or time.perf_counter()-t0 >= 10:
+        raise RuntimeError("feedback_boundary_audit_failed_or_capped")
+    return {"declared_complete":True,"scientific":False,"base_sha":"5b9a243cfb4aa348f52b7a60c091c59fd174f183",
+            "cases":outputs,"reference_snapshot":snapshot.payload(),"snapshot_digest":snapshot.snapshot_digest,
+            "same_feedback_weights_choice":same,"future_cache_growth_preserves_snapshot":unchanged,
+            "refit_blocked":blocked,"historical_artifacts_preserved":preserved,
+            "historical_artifacts_sha256":historical,
+            "clipping_examples":[snapshot.transform(-20.),snapshot.transform(20.)],
+            "resources":{"wall_s":time.perf_counter()-t0,"cpu_s":time.process_time()-cpu0,
+                         "synthetic_raw_lookups":calls,"real_interactions":0,"imagined_transitions":0,
+                         "model_inference":0,"neural_training":0,"optimizer_steps":0,"cap_s":10},
+            "scientific_ledger":{"used_s":327.869,"remaining_s":3272.131},
+            "limitations":["Only the opt-in path is tested; historical runners remain unchanged.",
+                           "Trusted raw producers and precommitted reference provenance remain necessary.",
+                           "Saturation loses ranking information outside training range; report raw returns and clipping.",
+                           "This is synthetic interface evidence, not control, generalization or learning-to-learn."]}
+
+
 def _synthetic_model(family: str):
     binding = reviewed_binding(family)
     return FakeStepModel(binding.obs_dim, binding.n_actions)
