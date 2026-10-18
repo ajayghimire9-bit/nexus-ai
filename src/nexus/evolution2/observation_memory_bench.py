@@ -93,7 +93,7 @@ def _observe(method, task: DecideTask) -> None:
         )
 
 
-def _run_task(method, task: DecideTask, *, unit: dict, update: bool):
+def _run_task(method, task: DecideTask, *, unit: dict, update: bool, include_traces: bool = False):
     _observe(method, task)
     if getattr(method, "resets", False):
         method.reset_task()
@@ -117,6 +117,11 @@ def _run_task(method, task: DecideTask, *, unit: dict, update: bool):
             if first_free is None:
                 first_free = variant
             traces.append(getattr(method, "last_decision", lambda: {"action": "proposer", "choice": variant.fingerprint})())
+            traces[-1] = {**traces[-1], "slot": slot}
+            if include_traces and "persistent_choice" in traces[-1]:
+                ref = traces[-1]["persistent_choice"]
+                unit_by_id = {v.fingerprint: s for v, s in unit.items()}
+                traces[-1]["posthoc_override_gain"] = unit_by_id[variant.fingerprint] - unit_by_id[ref]
         score = evaluator.evaluate(method.name, variant, family=task.family, bundle_id=task.bundle_id)
         if update:
             method.update(
@@ -131,6 +136,8 @@ def _run_task(method, task: DecideTask, *, unit: dict, update: bool):
     fallbacks = sum(1 for row in traces if row.get("action") == "fallback")
     retrieves = sum(1 for row in traces if row.get("action") == "retrieve")
     return {
+        **({"traces": traces, "cumulative_free_regret": float(sum(oracle - r[2] for r in records[SHARED_PROBES:]))}
+           if include_traces else {}),
         "task_id": task.task_id,
         "family": task.family,
         "phase": task.phase,

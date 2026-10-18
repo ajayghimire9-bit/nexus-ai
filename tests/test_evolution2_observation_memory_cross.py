@@ -75,7 +75,8 @@ def test_far_observation_still_abstains_after_cross_calibration():
     assert method.last_decision()["action"] == "fallback"
 
 
-def test_e223_bench_is_development_only_and_matched():
+def test_e223_bench_is_development_only_and_matched(monkeypatch, tmp_path):
+    monkeypatch.setattr("nexus.evolution2.observation_memory_cross_bench.RESULTS", tmp_path / "e223.json")
     payload = write_artifact(7)
     assert payload["scientific"] is False
     assert payload["collection"] is False

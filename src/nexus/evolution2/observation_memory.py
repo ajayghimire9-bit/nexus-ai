@@ -14,7 +14,7 @@ import numpy as np
 
 from nexus.evolution1.catalogue import ContractError, digest
 from nexus.evolution1.fixtures import PublicFixtureContext
-from nexus.evolution1.toy_loop import AdaptiveProposer, TrainingFeedback, VARIANTS, features
+from nexus.evolution1.toy_loop import ANCHORS, AdaptiveProposer, TrainingFeedback, VARIANTS, features
 from nexus.evolution2.bindings import reviewed_binding
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -197,6 +197,8 @@ class ObservationAwareAdaptive:
     persist_memory: bool = True
     reset_inner: bool = False
     label: str | None = None
+    arbitration: str = "legacy"
+    quality_error: float = 1.0
     inner: AdaptiveProposer = field(init=False)
     normalizers: dict[str, FamilyNormalizer] = field(default_factory=dict)
     calibration: SourceCalibration | None = None
@@ -208,8 +210,13 @@ class ObservationAwareAdaptive:
     _provenance: str = "unspecified"
     _last: dict = field(default_factory=dict)
     _feedback_seen: set[str] = field(default_factory=set)
+    _receipts: dict[str, float] = field(default_factory=dict)
 
     def __post_init__(self):
+        if self.arbitration not in ("legacy", "consensus", "evidence"):
+            raise ContractError("unknown_observation_arbitration")
+        if not math.isfinite(self.quality_error) or self.quality_error < 0:
+            raise ContractError("invalid_source_quality_error")
         if type(self.seed) is not int or not 0 <= self.seed <= 10**9:
             raise ContractError("invalid_observation_memory_seed")
         self.inner = AdaptiveProposer(seed=self.seed)
@@ -227,6 +234,8 @@ class ObservationAwareAdaptive:
             raise ContractError("unfitted_observation_family")
         if context.obs_dim != self.normalizers[family].obs_dim:
             raise ContractError("observation_schema_mismatch")
+        if str(provenance) != self._provenance:
+            self._receipts = {}
         self._family = family
         self._obs = np.asarray(obs, dtype=np.float64).reshape(-1)
         self._embedding = self.normalizers[family].embed(self._obs)
@@ -246,6 +255,7 @@ class ObservationAwareAdaptive:
         }
 
     def reset_task(self):
+        self._receipts = {}
         if self.reset_inner:
             tie = dict(self.inner._tie_rank)
             self.inner = AdaptiveProposer(seed=self.seed)
@@ -321,11 +331,92 @@ class ObservationAwareAdaptive:
     def _inner_score(self, variant, context: PublicFixtureContext) -> float:
         return float(sum(w * x for w, x in zip(self.inner._weights, features(variant, context))))
 
+    def task_evidence(self) -> list[dict]:
+        """One weight per observed support context, NOT per arm or receipt.
+
+        These are distinct observed contexts, not independent physics samples.
+        Unknown support identity is insufficient to certify distinct contexts.
+        """
+        groups = {}
+        for row in self._store:
+            if (row.family != self._family or row.provenance == self._provenance
+                    or row.support_digest == "none"
+                    or row.obs_dim != self.normalizers[self._family].obs_dim):
+                continue
+            key = (row.support_digest, row.embedding)
+            group = groups.setdefault(key, {"support_digest": row.support_digest,
+                                           "embedding": row.embedding, "scores": {}})
+            # Repeated rows/receipts cannot increase evidence or sample size.
+            group["scores"][row.fingerprint] = row.score
+        length = 1.0 if self.calibration is None else self.calibration.kernel_length
+        out = []
+        for group in groups.values():
+            dist = _distance(self._embedding, group["embedding"])
+            out.append({**group, "distance": dist, "weight": math.exp(-((dist / length) ** 2))})
+        return out
+
+    def _choose_evidence(self, available, context):
+        incumbent = self.inner.choose(available, context)
+        groups = self.task_evidence()
+        anchors = tuple(v.fingerprint for v in ANCHORS)
+        anchors_ready = all(a in self._receipts for a in anchors)
+        covered = {fp for g in groups for fp in g["scores"]}
+        coverage = sum(v.fingerprint in covered for v in available) / len(available)
+        comparisons = {}
+        for variant in available:
+            fp = variant.fingerprint
+            paired = [g for g in groups if fp in g["scores"] and incumbent.fingerprint in g["scores"]
+                      and all(a in g["scores"] for a in anchors)]
+            weights = np.asarray([g["weight"] for g in paired])
+            mass = float(weights.sum())
+            if mass <= 1e-300:
+                comparisons[fp] = {"paired_contexts": len(paired), "mass": mass, "ess": 0.0,
+                                   "advantage": None, "anchor_error": None, "accepted": False}
+                continue
+            w = weights / mass
+            deltas = np.asarray([g["scores"][fp] - g["scores"][incumbent.fingerprint] for g in paired])
+            advantage = float(w @ deltas)
+            ess = float(mass * mass / (weights @ weights))
+            agreement = float(w @ (deltas > 1e-12))
+            spread = float(np.sqrt(w @ ((deltas - advantage) ** 2)))
+            anchor_error = (float(w @ np.asarray([
+                sum(abs(g["scores"][a] - self._receipts[a]) for a in anchors) / len(anchors)
+                for g in paired])) if anchors_ready else None)
+            penalty = self.quality_error + (anchor_error if anchors_ready else 1.0) + spread / math.sqrt(ess)
+            lower_advantage = advantage - penalty
+            # Fixed evidence sufficiency rules, not fitted development thresholds.
+            if self.arbitration == "consensus":
+                accepted = len(paired) >= 2 and agreement >= 0.75 and advantage > 1e-12
+            else:
+                accepted = (anchors_ready and len(paired) >= 2 and mass >= 1.0 and ess >= 1.5
+                            and agreement >= 0.75 and lower_advantage > 1e-12)
+            confidence = (mass / (1 + mass)) * (ess / (1 + ess)) * agreement * coverage
+            comparisons[fp] = {"paired_contexts": len(paired), "mass": mass, "ess": ess,
+                               "advantage": advantage, "agreement": agreement,
+                               "spread": spread, "anchor_error": anchor_error,
+                               "quality_error": self.quality_error, "lower_advantage": lower_advantage,
+                               "confidence": confidence, "accepted": bool(accepted)}
+        eligible = [v for v in available if comparisons[v.fingerprint]["accepted"]]
+        choice = (max(eligible, key=lambda v: (
+            comparisons[v.fingerprint]["lower_advantage" if self.arbitration == "evidence" else "advantage"],
+            -self.inner._tie_rank[v.fingerprint])) if eligible else incumbent)
+        selected = comparisons[choice.fingerprint]
+        self._last = {"action": "retrieve" if eligible else "fallback", "choice": choice.fingerprint,
+                      "persistent_choice": incumbent.fingerprint, "override": choice != incumbent,
+                      "confidence": selected.get("confidence", 0.0) if eligible else 0.0,
+                      "fallback": not bool(eligible), "independent_contexts": len(groups),
+                      "coverage": coverage, "anchors_ready": anchors_ready,
+                      "anchor_receipts": dict(self._receipts), "comparisons": comparisons,
+                      "source_evidence": [{k: v for k, v in g.items() if k != "embedding"} for g in groups]}
+        return choice
+
     def choose(self, available, context):
         if type(context) is not PublicFixtureContext:
             raise ContractError("public_training_context_required")
         if self._family is None or self._embedding is None:
             raise ContractError("planning_observation_required")
+        if self.arbitration != "legacy":
+            return self._choose_evidence(available, context)
         retrieved = self.retrieve(self._family, self._embedding)
         if retrieved["fallback"]:
             choice = self.inner.choose(available, context)
@@ -346,7 +437,13 @@ class ObservationAwareAdaptive:
             retr = retrieved["scores"].get(variant.fingerprint, 0.5)
             return (1.0 - conf) * inner_n + conf * retr
         choice = max(available, key=lambda variant: (blended(variant), -self.inner._tie_rank[variant.fingerprint]))
-        self._last = {**retrieved, "action": "retrieve", "choice": choice.fingerprint, "blend_confidence": conf}
+        incumbent = self.inner.choose(available, context)
+        self._last = {**retrieved, "action": "retrieve", "choice": choice.fingerprint, "blend_confidence": conf,
+                      "persistent_choice": incumbent.fingerprint, "override": choice != incumbent,
+                      "inner_raw": inner_raw,
+                      "inner_normalized": {fp: 0.5 if span <= 1e-12 else (x-lo)/span for fp,x in inner_raw.items()},
+                      "blended_scores": {v.fingerprint: blended(v) for v in available},
+                      "missing_arms": [v.fingerprint for v in available if v.fingerprint not in retrieved["scores"]]}
         return choice
 
     def update(self, feedback, context):
@@ -358,12 +455,16 @@ class ObservationAwareAdaptive:
             raise ContractError("planning_observation_required")
         self.inner.update(feedback, context)
         self._feedback_seen.add(feedback.event_id)
+        if not feedback.failed:
+            self._receipts[feedback.variant_id] = float(feedback.score)
         if not self.persist_memory:
             return
         score = 0.0 if feedback.failed else float(feedback.score)
         key = (feedback.variant_id, tuple(float(x) for x in self._embedding), self._family)
         for row in self._store:
-            if (row.fingerprint, row.embedding, row.family) == key:
+            if ((row.fingerprint, row.embedding, row.family) == key
+                    and (self.arbitration == "legacy" or
+                         (row.provenance == self._provenance and row.support_digest == self._support_digest))):
                 row_score = (row.score * row.n + score) / (row.n + 1)
                 self._store.remove(row)
                 self._store.append(

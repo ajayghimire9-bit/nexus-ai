@@ -105,7 +105,8 @@ def test_records_store_provenance_not_hidden_labels():
     assert row.obs_dim == 3
 
 
-def test_e222_bench_is_development_only_and_matched():
+def test_e222_bench_is_development_only_and_matched(monkeypatch, tmp_path):
+    monkeypatch.setattr("nexus.evolution2.observation_memory_bench.RESULTS", tmp_path / "e222.json")
     payload = write_artifact(7)
     assert payload["scientific"] is False
     assert payload["collection"] is False
