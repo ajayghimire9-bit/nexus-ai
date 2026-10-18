@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.6 execution is blocked, not collected
+
+Bound residual checkpoints are weights-only. No source arrays can
+be recovered from them. Not a transfer result. Report
+`NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md`.
+
 ## Latest — H-e2.5 n=3 micro is designed, not collected
 
 df=2 Bonferroni cannot be swapped for the v2 df=9 constant.

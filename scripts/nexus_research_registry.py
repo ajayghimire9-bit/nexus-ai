@@ -579,6 +579,19 @@ EXPERIMENTS = [
         "reuse": "Does not rewrite v2. recipe_matched is false. Do not collect.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.6-execution-blockers",
+        "title": "Weights-only payload audit and execution-blocker matrix",
+        "hypothesis": "Existing residual checkpoints contain no train/val arrays, so Evolution-2 scientific dispatch stays blocked.",
+        "implementation": ["src/nexus/evolution2/execution_blockers.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md",
+        "results": "docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md",
+        "status": "e2_scientific_dispatch_blocked",
+        "artifacts": ["artifacts/evolution2_execution_blockers.json"],
+        "reuse": "Do not shrink another worksheet. Do not collect replacements.",
+        "coverage": "source_verified",
+    },
 ]
 
 

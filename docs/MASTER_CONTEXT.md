@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.6 execution blockers closed, 2026-10-18
+
+On `cursor/evolution2.6-execution-blockers` from `dc6420f`. Bound
+residual `.pt` files are weights-only zip payloads; they contain no
+train/val arrays. Evolution-2 scientific dispatch stays
+**BLOCKED**. Do not shrink the worksheet again. Holdout unnamed.
+H17 blocked. Scientific ledger preserved at 305.842 / 3294.158.
+Report `NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md`. Earlier entries
+remain history.
+
 ## Latest — Evolution-2.5 n=3 micro locked, still NOT_V2, 2026-10-18
 
 On `cursor/evolution2.5-n3-micro` from `5a3867b`. Explicit n=3 /

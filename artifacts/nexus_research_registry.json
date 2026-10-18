@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "2be3ab91a8f2744ac6f50ae57ef872439b9bef4d",
+  "head": "dc6420f23b27d5a6e47fab1478cada2e932a6ea1",
   "ledger_s": [
     306.954,
     3293.046
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 40,
+    "curated": 41,
     "incomplete_unindexed_docs": 93,
-    "total": 133,
+    "total": 134,
     "incomplete": 120,
-    "source_verified": 13
+    "source_verified": 14
   },
   "experiments": [
     {
@@ -743,6 +743,23 @@
         "configs/evolution2_pendulum_acrobot_allocation_n3_micro.json"
       ],
       "reuse": "Does not rewrite v2. recipe_matched is false. Do not collect.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2.6-execution-blockers",
+      "title": "Weights-only payload audit and execution-blocker matrix",
+      "hypothesis": "Existing residual checkpoints contain no train/val arrays, so Evolution-2 scientific dispatch stays blocked.",
+      "implementation": [
+        "src/nexus/evolution2/execution_blockers.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md",
+      "results": "docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md",
+      "status": "e2_scientific_dispatch_blocked",
+      "artifacts": [
+        "artifacts/evolution2_execution_blockers.json"
+      ],
+      "reuse": "Do not shrink another worksheet. Do not collect replacements.",
       "coverage": "source_verified"
     },
     {

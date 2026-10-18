@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.6 execution-blocker matrix, no collection
+
+`E2_SCIENTIFIC_DISPATCH_BLOCKED`. Checkpoint payloads are weights
+only. Ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md`.
+
 ## Latest — Evolution-2.5 n=3 micro locked, no collection
 
 NOT_V2 / NOT_READY. df=2 Bonferroni t=9.925. recipe_matched false.

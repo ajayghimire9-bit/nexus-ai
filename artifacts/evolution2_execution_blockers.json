@@ -1,0 +1,167 @@
+{
+  "scientific": false,
+  "collection": false,
+  "modifies_checkpoints": false,
+  "status": "E2_SCIENTIFIC_DISPATCH_BLOCKED",
+  "payloads": [
+    {
+      "id": "pendulum_mlp_u1000_seed0",
+      "path": "artifacts/context_optimization_checkpoints/seed0_mlp_u1000.pt",
+      "present": true,
+      "zip": true,
+      "members": 15,
+      "bytes": 23681,
+      "transition_members": [],
+      "weights_only": true
+    },
+    {
+      "id": "pendulum_mlp_u1000_seed1",
+      "path": "artifacts/context_optimization_checkpoints/seed1_mlp_u1000.pt",
+      "present": true,
+      "zip": true,
+      "members": 15,
+      "bytes": 23681,
+      "transition_members": [],
+      "weights_only": true
+    },
+    {
+      "id": "pendulum_mlp_u1000_seed2",
+      "path": "artifacts/context_optimization_checkpoints/seed2_mlp_u1000.pt",
+      "present": true,
+      "zip": true,
+      "members": 15,
+      "bytes": 23681,
+      "transition_members": [],
+      "weights_only": true
+    },
+    {
+      "id": "acrobot_lookahead_seed0",
+      "path": "checkpoints/acrobot_lookahead_h16/seed0.pt",
+      "present": true,
+      "zip": true,
+      "members": 15,
+      "bytes": 25131,
+      "transition_members": [],
+      "weights_only": true
+    },
+    {
+      "id": "acrobot_lookahead_seed1",
+      "path": "checkpoints/acrobot_lookahead_h16/seed1.pt",
+      "present": true,
+      "zip": true,
+      "members": 15,
+      "bytes": 25131,
+      "transition_members": [],
+      "weights_only": true
+    },
+    {
+      "id": "acrobot_lookahead_seed2",
+      "path": "checkpoints/acrobot_lookahead_h16/seed2.pt",
+      "present": true,
+      "zip": true,
+      "members": 15,
+      "bytes": 25131,
+      "transition_members": [],
+      "weights_only": true
+    },
+    {
+      "id": "pendulum_frozen_decoder",
+      "path": "artifacts/frozen_dynamics_checkpoints/seed0_history_u1000.pt",
+      "present": true,
+      "zip": true,
+      "members": 20,
+      "bytes": 23081,
+      "transition_members": [],
+      "weights_only": true
+    }
+  ],
+  "weights_only": true,
+  "blockers": [
+    {
+      "id": "SOURCE_FITTING_UNAVAILABLE",
+      "status": "SOURCE_FITTING_UNAVAILABLE",
+      "blocks": [
+        "v2",
+        "v2-pilot"
+      ]
+    },
+    {
+      "id": "WEIGHTS_ONLY_PAYLOAD",
+      "status": "confirmed",
+      "blocks": [
+        "source_fit_from_checkpoint"
+      ]
+    },
+    {
+      "id": "NO_FIT_TEN_BUNDLE_UNAVAILABLE",
+      "status": "NO_FIT_TEN_BUNDLE_UNAVAILABLE",
+      "blocks": [
+        "v2",
+        "v2-pilot"
+      ]
+    },
+    {
+      "id": "N3_NOT_READY_RECIPE_MISMATCH",
+      "status": "not_v2_not_ready",
+      "blocks": [
+        "n3-micro"
+      ]
+    },
+    {
+      "id": "HOLDOUT_UNNAMED",
+      "status": "unnamed",
+      "blocks": [
+        "v2",
+        "v2-pilot",
+        "n3-micro"
+      ]
+    },
+    {
+      "id": "TWELVE_ARM_DISPATCH_BLOCKED",
+      "status": "blocked",
+      "blocks": [
+        "scientific_dispatch"
+      ]
+    },
+    {
+      "id": "FULL_V2_NO_GO",
+      "status": "NO-GO",
+      "blocks": [
+        "v2"
+      ]
+    },
+    {
+      "id": "V2_PILOT_NOFIT_BLOCKED",
+      "status": "BLOCKED",
+      "blocks": [
+        "v2-pilot"
+      ]
+    },
+    {
+      "id": "SCIENTIFIC_DISPATCH_UNAUTHORIZED",
+      "status": "unauthorized",
+      "blocks": [
+        "v2",
+        "v2-pilot",
+        "n3-micro"
+      ]
+    },
+    {
+      "id": "H17_BLOCKED",
+      "status": "blocked",
+      "blocks": [
+        "h17"
+      ]
+    }
+  ],
+  "v2_hashes_frozen": true,
+  "n3_hashes_frozen": true,
+  "ledger_debit_s": 0,
+  "scientific_ledger_preserved": [
+    305.842,
+    3294.158
+  ],
+  "next_action": "Do not open another worksheet shrink. Do not collect replacements. Evolution-2 stays blocked until a separate authorization persists matched Pendulum/Acrobot source train/val arrays.",
+  "claims_learning_to_learn": false,
+  "is_agi": false
+}

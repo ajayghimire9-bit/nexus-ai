@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.6 dispatch blocked; stop shrinking worksheets
+
+Checkpoint payloads are weights only. Fitting remains unavailable.
+n=10 no-fit unavailable. n=3 unmatched and not v2. Do not collect
+replacements. Do not name a holdout. Do not unlock H17. Next:
+separately authorize matched Pendulum/Acrobot source persist. Report
+`NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md`.
+
 ## Current — Evolution-2.5 n=3 micro locked; science still BLOCKED
 
 n=3 / df=2 contracts exist and cannot inherit the v2 df=9 gate.
