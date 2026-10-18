@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — Evolution-1 feedback-driven toy loop works, science untested
+
+On `codex/evolution1-autonomous-loop-prototype`, implementation`f4de1e1`: four
+nonexhaustive proposals, adaptive/random/fixed policies, broker receipts, quota
+reservations, immutable histories and separate fixture development promotion/
+rollback. With feedback adaptive chooses`[2,8,11,10]`; withheld`[2,8,7,11]` with
+unchanged weights. Fixed wins the counterexample2.29 versus1.90; development
+reversal rejects all candidates.344 source-only checks passed and the saved
+raw toy example reproduced exactly. No model, simulator, scientific registration
+or experiment; no generalization/self-evolution claim. Ledger305.842/3294.158
+unchanged. Report `NEXUS_EVOLUTION1_AUTONOMOUS_LOOP_PROTOTYPE.md`.
+
 ## Latest — Evolution-1 pre-call ledger tested with synthetic work
 
 On `codex/evolution1-resource-ledger` from `d5339de`: added typed pre-call

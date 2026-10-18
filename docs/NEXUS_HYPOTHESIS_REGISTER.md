@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Evolution-1 functional intervention — synthetic evidence only
+
+The first toy loop's proposal weights and third choice change after permitted
+training feedback, while withheld feedback leaves weights unchanged. Altering
+development scores leaves training identical; the separate gate can reject
+the training winner. Fixed search beats the adaptive policy on a crafted
+counterexample. This verifies functional feedback use, not transferable
+algorithm improvement, scientific generalization or learning-to-learn. The
+central Evolution-1 hypothesis remains untested. No protocol, allocation,
+holdout or ledger change. See `NEXUS_EVOLUTION1_AUTONOMOUS_LOOP_PROTOTYPE.md`.
+
 ## Evolution-1 — transferable proposal memory, proposed and untested
 
 Hypothesis: permitted memory of algorithm-improvement attempts helps discover

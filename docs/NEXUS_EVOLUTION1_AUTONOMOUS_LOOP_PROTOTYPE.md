@@ -234,5 +234,50 @@ bounded **cross-task proposal-policy development screen** against memory-reset
 and equal-budget evolutionary search, resolving those runtime/coverage gates
 before any scientific collection. Do not execute that screen in this branch.
 
-Saved example results and reproduction commands will be recorded after the
-implementation commit; historical scientific artifacts remain unchanged.
+## Saved example and consistency review
+
+Implementation committed before saved CLI execution:
+`f4de1e135dd88ee18ef7a6b05a42c70df917d00e`.
+Artifact: `artifacts/evolution1_toy_loop.json`, SHA-256
+`f017e98dbff9a33cde38a5203d25c5bf6a14a39104e7fb9b3eea8c7428360df7`.
+It records Python3.13.5 and an empty relevant-source status. Full working-tree
+status honestly records the two preserved, untracked metadata prototypes; neither
+is imported by the loop or included in its committed source hashes.
+
+One saved demo's exact summaries (rounded for readability; raw floats retained):
+
+- `aligned_signal`: adaptive training total2.54, fixed2.06, random1.85. Adaptive
+  and fixed find training score0.84; random finds0.69. Fixture development gains
+  over the incumbent are0.60,0.60,0.50 respectively; all pass the toy gate.
+- `heuristic_counterexample`: adaptive total1.90 and best0.60, fixed2.29 and
+  best0.99, random1.40 and best0.60. Development gains0.30,0.85,0.30. The fixed
+  heuristic beats adaptive under the same four-proposal allowance.
+- `development_reversal`: training totals match the aligned fixture, but every
+  development gain is−0.35. All three gates reject; the incumbent is preserved.
+
+Adaptive trajectories are`[2,8,11,10]`; fixed`[2,8,5,11]`; random`[2,8,6,3]`.
+The withholding intervention is`[2,8,7,11]` and retains zero learned weights.
+These are one-seed, hand-constructed functional examples. No confidence interval,
+empirical generalization claim or real efficiency ranking is justified.
+
+Reproduction:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_evolution1_toy_loop.py --demo
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_evolution1_toy_loop.py --check
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/audit_evolution1_adapters.py --check
+```
+
+`--demo` prints JSON without writing or overwriting files. `--check` passed,
+matching the full saved payload and source hashes against both current bytes and
+the recorded implementation commit. The source-only adapter check also passed.
+The raw artifact retains every training attempt and journal, all typed budget
+charges, gate outcomes and incumbent/archive transitions, rather than summaries
+alone. The scalar-lookup counts40/18 include the withheld-feedback run.
+
+The consistency review checks expected proposal counts against the resource
+plan, immutable history bindings, development-counterfactual invariance, no
+assessment type in policy updates, failed/duplicate charges, negative gate
+outcomes and rollback tests. This was a source/reproduction audit in this task,
+not an external scientific evaluator or OS-isolation test. All scientific
+execution counters and the preserved session ledger remain unchanged.

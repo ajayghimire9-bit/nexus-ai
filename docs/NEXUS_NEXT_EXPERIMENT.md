@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — cross-task proposal-policy screen needs independent review
+
+The requested first feedback loop now works on authored toy fixtures; fixed
+can win and development rejection/rollback are implemented. One next
+scientifically necessary milestone: prepare an independently reviewed bounded
+cross-task development screen against memory-reset and equal-budget evolution,
+resolving real adapters, metering, isolation and exclusion/provenance gates
+before collection. The design in `NEXUS_EVOLUTION1_AUTONOMOUS_LOOP_PROTOTYPE.md`
+is prospective, not locked or authorized. Toy totals are not control or transfer
+evidence. No experiment here; H17 and closed outcomes remain unchanged;
+ledger305.842/3294.158 unchanged.
+
 ## Current — Evolution-1 explicit task-adapter metadata, source only
 
 The pre-call reservation ledger now passes synthetic failure, cache, timing and
