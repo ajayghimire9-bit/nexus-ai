@@ -11,6 +11,13 @@ historical Python: no module imports, config loaders, file-reading calls or
 scientific operations from the reviewed sources are allowed. Unsupported
 syntax, cycles, missing dependencies and operation limits fail closed.
 
+For an inherited `load_*config` reference, bind the module's explicit committed
+YAML path/default and parse that mapping directly. The historical loader is
+never invoked and its runtime validation/authorization is **not** certified.
+Record the YAML hash as a dependency. An unbound or non-config path is rejected.
+This distinguishes reconstructing historical registration arithmetic from
+executing the historical experimental entry points.
+
 Every source and imported dependency is read from the **same historical Git
 commit** as its configuration. Record dependency hashes and compare every
 resulting historical seed with the existing conservative windows. Preserve old

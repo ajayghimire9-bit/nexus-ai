@@ -41,6 +41,7 @@ class History:
         self.modules={}
         self.operations=0
         self.stack=[]
+        self.config_reads={}
 
     def tick(self):
         self.operations+=1
@@ -54,7 +55,9 @@ class History:
         return self.modules[path]
 
     def dependencies(self):
-        return [dict(path=p,sha256=hashlib.sha256(m.raw).hexdigest()) for p,m in sorted(self.modules.items())]
+        files={p:m.raw for p,m in self.modules.items()}
+        files.update(self.config_reads)
+        return [dict(path=p,sha256=hashlib.sha256(raw).hexdigest()) for p,raw in sorted(files.items())]
 
 
 class Module:
@@ -109,6 +112,10 @@ class Module:
             values=[e(n) for n in node.elts]
             return tuple(values) if isinstance(node,ast.Tuple) else set(values) if isinstance(node,ast.Set) else values
         if isinstance(node,ast.Dict): return {e(k):e(v) for k,v in zip(node.keys,node.values)}
+        if isinstance(node,ast.DictComp):
+            # Reuse bounded comprehension semantics for key/value pairs.
+            proxy=ast.ListComp(elt=ast.Tuple(elts=[node.key,node.value],ctx=ast.Load()),generators=node.generators)
+            return dict(e(proxy))
         if isinstance(node,ast.BinOp):
             left,right=e(node.left),e(node.right)
             if isinstance(node.op,ast.Add) and type(left) is type(right) and type(left) in (int,str,list,tuple): return left+right
@@ -178,6 +185,8 @@ class Module:
                 if name in ('set','list','tuple') and len(args)<=1:
                     return {'set':set,'list':list,'tuple':tuple}[name](*args)
                 if name=='dict' and not args:return {}
+                if name=='Path' and len(args)==1 and type(args[0]) is str and args[0].startswith('configs/') and '..' not in args[0]:
+                    return args[0]  # A path label, not a filesystem object.
                 if name=='int' and len(args)==1 and type(args[0]) is int:return args[0]
                 if name=='len' and len(args)==1:return len(args[0])
                 if name in ('max','min') and all(type(a) is int for a in args):return (max if name=='max' else min)(args)
@@ -198,6 +207,10 @@ class Module:
                 if n.orelse: raise Unsupported('for-else')
                 for value in self.expr(n.iter,env):
                     self.history.tick();self.bind(n.target,value,env);self.statements(n.body,env)
+            elif isinstance(n,ast.While):
+                if n.orelse: raise Unsupported('while-else')
+                while self.expr(n.test,env):
+                    self.history.tick();self.statements(n.body,env)
             elif isinstance(n,ast.If): self.statements(n.body if self.expr(n.test,env) else n.orelse,env)
             elif isinstance(n,ast.Expr) and isinstance(n.value,ast.Constant) and type(n.value.value) is str: continue
             elif isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and isinstance(n.value.func,ast.Attribute):
@@ -206,6 +219,8 @@ class Module:
                     value=self.expr(call.args[0],env)
                     if call.func.attr=='extend': obj.extend(value)
                     else: obj.append(value)
+                elif type(obj) is set and call.func.attr=='add' and len(call.args)==1 and not call.keywords:
+                    obj.add(self.expr(call.args[0],env))
                 else: raise Unsupported('unsupported mutable operation')
             elif isinstance(n,ast.Raise): raise Unsupported('historical arithmetic guard rejected its inputs')
             else: raise Unsupported('unsupported arithmetic statement: '+type(n).__name__)
@@ -217,12 +232,30 @@ class Module:
                 if symbol:return self.history.module(path).call(symbol,args)
             raise Unsupported('unknown arithmetic helper: '+name)
         fn=self.functions[name]
-        if fn.args.vararg or fn.args.kwarg or fn.args.kwonlyargs: raise Unsupported('complex function signature')
+        # A historical loader is NOT invoked. Read only its committed YAML
+        # mapping, bound through its default path or unique literal config.
+        # This does not certify the loader's runtime validation or authorization.
+        if name.startswith('load_') and 'config' in name:
+            path=args[0] if args else None
+            if path is None and fn.args.defaults:
+                try:path=self.expr(fn.args.defaults[0],{})
+                except Unsupported:pass
+            if path is None:path=config_path(self)
+            if type(path) is not str or not path.startswith('configs/') or '..' in path:
+                raise Unsupported('unbound metadata-only config loader')
+            raw=self.history.read(path);self.history.config_reads[path]=raw
+            cfg=parse_config(raw.decode())
+            if type(cfg) is not dict:raise Unsupported('config must be a mapping')
+            return cfg
+        if fn.args.vararg or fn.args.kwarg: raise Unsupported('complex function signature')
         params=fn.args.args
         if not len(params)-len(fn.args.defaults)<=len(args)<=len(params): raise Unsupported('argument count mismatch')
         env=dict(zip((a.arg for a in params),args))
         defaults=dict(zip((a.arg for a in params[-len(fn.args.defaults):]),fn.args.defaults)) if fn.args.defaults else {}
         for p in params[len(args):]:env[p.arg]=self.expr(defaults[p.arg],{})
+        for param,default in zip(fn.args.kwonlyargs,fn.args.kw_defaults):
+            if default is None:raise Unsupported('required keyword argument')
+            env[param.arg]=self.expr(default,{})
         key=(self.path,name)
         if key in self.history.stack: raise Unsupported('recursive arithmetic dependency')
         self.history.stack.append(key)
@@ -263,6 +296,12 @@ def config_path(module):
         if isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id=='Path' and len(node.args)==1:
             value=ast.literal_eval(node.args[0])
             if type(value) is str and value.startswith('configs/') and '..' not in value:return value
+    # The old design module has no CONFIG constant: its loader contains one
+    # explicit ROOT / 'configs/...' operand. Bind that literal without ROOT I/O.
+    fn=module.functions.get('load_design_config')
+    paths={n.value for n in ast.walk(fn) if isinstance(n,ast.Constant) and type(n.value) is str
+           and n.value.startswith('configs/') and n.value.endswith(('.yaml','.yml','.json'))} if fn else set()
+    if len(paths)==1:return paths.pop()
     raise Unsupported('no literal configuration path')
 
 
