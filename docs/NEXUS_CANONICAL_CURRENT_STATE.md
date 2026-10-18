@@ -80,6 +80,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.11 persist-versus-reset request (7,680-scale n=3 screen specified; unauthorized; holdout unnamed)
 - Evolution-2.12 persist-versus-reset development dry-run (four methods on synthetic fixtures; science BLOCKED; `dispatch()` still unimplemented)
 - Evolution-2.12 runner/resource readiness (fresh total 17,280; occupied 7,680 not credit; refuse-only runner; science BLOCKED)
+- Evolution-2.13 resource budget (17,280 real + 14,745,600 imagined; 7680 refused; real planner path PASS at env_cap=0; science BLOCKED)
 
 ## Engineering that exists at HEAD 4a08b26
 

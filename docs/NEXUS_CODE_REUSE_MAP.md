@@ -32,6 +32,7 @@ instead of opening parallel packages.
 | Persist-versus-reset request | `evolution2.persist_reset_request` plus `scripts/run_evolution2_persist_reset.py` | Collecting, naming a holdout, treating continue as approval, or treating `dispatch()` as a runner |
 | Persist-versus-reset development dry-run | `evolution2.persist_reset_dry_run` plus `scripts/run_evolution2_persist_reset_dry_run.py`; reuses `methods`, `screen` contracts, `TrustedEvaluator`, `ReservationLedger` | A parallel screen framework, calling `require_named_holdout`, or treating the dry-run as science |
 | Persist-versus-reset readiness / refuse-only runner | `evolution2.persist_reset_readiness`, `persist_reset_runner`, `persist_reset_planner_audit` | Treating 7680 or 9600 as the fresh total, enabling `run_scientific`, or naming a holdout |
+| Persist-versus-reset resource budget / real path | `evolution2.persist_reset_budget` plus `persist_reset_path`; reuses `decide`, disposable residuals, `TrustedEvaluator` | Granting 7680, collecting fresh physics, or treating the 27.3 s planner prior as a scientific clock |
 | Unused Pendulum/Acrobot instance naming | `evolution2.pendulum_acrobot_holdout_review` (NAMING_BLOCKED) plus `evolution2.pendulum_acrobot_instance_rules` (unnamed four-role digests) | Shopping a new tuple or treating one Acrobot key as four roles |
 | E2 public IPC / stub host | `evolution2.bindings` + `evolution2.host` | Importing `FAMILY_SPEC` into the worker |
 | PPO training | `nexus.rl.ppo` | A new on-policy trainer for CartPole-scale tasks |

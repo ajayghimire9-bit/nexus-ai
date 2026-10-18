@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.13 persist-versus-reset budget is locked, not executed
+
+17,280 fresh steps and 14,745,600 imagined are the locked first-screen
+budget. 7680 is not granted. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_BUDGET.md`.
+
 ## Latest — H-e2.12 persist-versus-reset science remains blocked after readiness audit
 
 17,280 fresh steps would be required for a new-physics n=3 first

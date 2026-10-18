@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.13 resource budget locked, 7680 not granted, 2026-10-18
+
+On `cursor/evolution2.13-resource-budget` from `bb15c2e`. Fresh
+new-physics first screen remains **17,280** real steps plus at most
+14,745,600 imagined. `env_cap=7680` is refused. Real planner path
+PASSES at `env_cap=0` (24 `decide()` calls, 0.068 s). Source-fitting,
+holdout, and persist-versus-reset science stay BLOCKED. H17 blocked.
+H16 ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_BUDGET.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.12 runner/resource readiness audit, science BLOCKED, 2026-10-18
 
 Independent audit of `9428e18`. GitHub provenance VERIFIED. Development

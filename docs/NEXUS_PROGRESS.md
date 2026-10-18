@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.13 resource budget locked, 7680 refused
+
+Fresh total 17,280. Imagined upper bound 14,745,600. Real planner path
+PASS at env_cap=0 (0.068 s / 24 decisions). Science BLOCKED. H16 ledger
+preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_BUDGET.md`.
+
 ## Latest — Evolution-2.12 scientific-runner and resource-readiness audit
 
 GitHub `9428e18` VERIFIED. Dry-run PASS. Real planner PASS. Fresh

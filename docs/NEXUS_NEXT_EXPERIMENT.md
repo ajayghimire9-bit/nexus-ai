@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.13 budget locked; 7680 not granted; science BLOCKED
+
+Cited config `8e90b74a…`. Required fresh cap is **17280**, imagined
+upper bound 14,745,600. Do not grant 7680. Do not collect. Do not name
+a holdout. Do not invent a twenty-fit cost. Do not unlock H17. Next: a
+separately authorized persist-versus-reset run that cites that hash,
+names a four-role unused holdout, and sets `env_cap=17280`. `continue`
+is not approval. Report `NEXUS_EVOLUTION2_PERSIST_RESET_BUDGET.md`.
+
 ## Current — Evolution-2.12 readiness audit complete; science BLOCKED
 
 Cited config `8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e`.
