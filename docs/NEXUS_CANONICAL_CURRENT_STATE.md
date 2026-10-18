@@ -85,6 +85,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.15 approval-text gate (`continue` / `i authorised you` insufficient; science BLOCKED)
 - Evolution-2.16 four-role assignment verification + gated executor (17,280 plan, six planned fits, four methods; science BLOCKED)
 - Evolution-2.17 n=3 persist-versus-reset science (17,280 steps; persist-minus-reset 0; inconclusive; grant consumed)
+- Evolution-2.18 causal-sensitivity repair (method-sensitive hidden eval tested on fixtures; science still refused)
 
 ## Engineering that exists at HEAD 4a08b26
 

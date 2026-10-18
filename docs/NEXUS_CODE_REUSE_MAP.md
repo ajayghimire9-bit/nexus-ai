@@ -38,6 +38,7 @@ instead of opening parallel packages.
 | Four-role unused-instance verification | `evolution2.persist_reset_roles` plus locked `ROLE_DIGESTS` | New selection, outcome-based retuning, or treating verification as a named live holdout |
 | Gated persist-versus-reset executor | `evolution2.persist_reset_executor` behind `persist_reset_request` / `persist_reset_runner` | Collecting, executing six fits, granting 7680, or treating development verify as science |
 | One-run persist-versus-reset science | `evolution2.persist_reset_grant` plus `persist_reset_science`; reuses `collect_transitions`, `train_world_model`, `decide`, `TrustedEvaluator`, `methods` | Rewriting frozen request hashes, retrying a consumed grant, promoting n=3 to n=10, or starting Evolution-3 |
+| E2.17 causal-sensitivity diagnosis | `evolution2.persist_reset_diagnosis` plus `persist_reset_science.MethodSensitiveHiddenEval` | Rewriting the inconclusive label, collecting, or treating E2.17 development as a new confirmation holdout |
 | Unused Pendulum/Acrobot instance naming | `evolution2.pendulum_acrobot_holdout_review` (NAMING_BLOCKED) plus `evolution2.pendulum_acrobot_instance_rules` (unnamed four-role digests) | Shopping a new tuple or treating one Acrobot key as four roles |
 | E2 public IPC / stub host | `evolution2.bindings` + `evolution2.host` | Importing `FAMILY_SPEC` into the worker |
 | PPO training | `nexus.rl.ppo` | A new on-policy trainer for CartPole-scale tasks |

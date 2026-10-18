@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.18 causal-sensitivity repair, science still refused, 2026-10-18
+
+E2.17 stays inconclusive. Hidden scores were method-independent. Persist
+and reset selected identical revealed sequences; evolution did not. A
+method-sensitive hidden evaluator now passes synthetic causal-sensitivity
+tests. No new collection. Grant remains consumed. Next independent n=3
+screen needs a new grant; fresh upper cap 24,480 if selections differ.
+H17 blocked. Report `NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`. Earlier
+entries remain history.
+
 ## Latest — Evolution-2.17 n=3 persist-versus-reset complete, inconclusive, 2026-10-18
 
 One authorized run used 17,280 real steps and six residuals in 22.027 s.

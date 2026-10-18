@@ -57,3 +57,29 @@ persist, reset, random, and evolution are interchangeable controllers.
 
 This is not n=10 confirmation, not a general control improvement, and
 not learning-to-learn. Do not start Evolution-3 from this result.
+
+## Methodological diagnosis (E2.18) — does not rewrite the label
+
+Root cause: `run_bundle` rolled out the same two locked hidden variants
+and appended that return to every method. Hidden outcome did not depend
+on the selected planner.
+
+Replayed proposer choices from recorded revealed returns and locked
+seeds (no new collection):
+
+- Persist and reset selected the **same** 4-slot sequences on every
+  family of every bundle.
+- Evolution differed from persist. Random differed on some families.
+- All methods shared persist's proposal seed.
+
+Causal-sensitivity tests on synthetic fixtures now PASS: different
+forced selections produce different hidden scores; swapped selections
+move the scores; identical selection and seed match; hidden outcomes
+cannot enter training. Equal logical hidden slots are 4 per method per
+bundle; physical episodes are cached by `(bundle, family, slot, variant)`.
+
+Completed E2.17 development outcomes are observed and cannot confirm a
+repaired hypothesis. Fresh upper budget for a later independent n=3
+screen: 7,680 + 7,200 + 9,600 = **24,480** real steps if every method
+selects a distinct hidden planner; 17,280 if they all collide. The
+E2.17 grant is consumed. `dispatch()` stays refused.

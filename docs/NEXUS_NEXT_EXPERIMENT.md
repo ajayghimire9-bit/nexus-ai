@@ -1,11 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — Evolution-2.17 n=3 persist-versus-reset complete; stop
+## Current — Evolution-2.18 causal repair complete; one recommended next screen
 
-The one-run grant is consumed. Primary label is inconclusive. Do not
-retry. Do not promote to n=10. Do not start Evolution-3. Report
-`NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`. A later experiment needs
-a new explicit grant.
+E2.17 remains inconclusive and is not a confirmation holdout. Recommended
+next scientific experiment: one new-physics n=3 persist-versus-reset
+screen whose hidden controller is the method-selected planner, with
+matched seeds, equal logical slots, and physical cache hits. Fresh
+upper `env_cap=24480` (7680+7200+9600) if selections differ; 17280 if
+they collide. New unused four-role holdout and a new grant are required.
+Do not reuse the consumed E2.17 grant. Do not start Evolution-3.
 
 ## Current — Evolution-2.16 four-role executor; science BLOCKED
 

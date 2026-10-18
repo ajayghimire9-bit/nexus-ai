@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.18 hidden evaluation was non-identifying; repair is untested scientifically
+
+The E2.17 zero contrast cannot identify persist versus reset. Synthetic
+causal-sensitivity tests now pass. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`.
+
 ## Latest — H-e2.17 persist-versus-reset is inconclusive on n=3
 
 Persist-minus-reset was identically 0 because hidden scores were

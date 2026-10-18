@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.18 causal-sensitivity repair, no new collection
+
+E2.17 label preserved. Persist=reset selections; evolution differed.
+Synthetic hidden-eval tests PASS. Grant consumed. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md`.
+
 ## Latest — Evolution-2.17 n=3 persist-versus-reset inconclusive
 
 17,280 steps, six fits, 22.027 s. Persist-minus-reset 0.000

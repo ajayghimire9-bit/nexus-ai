@@ -1,0 +1,331 @@
+{
+  "historical_label_preserved": "inconclusive",
+  "root_cause": "run_bundle scored the same locked hidden catalogue variants for every method and copied that return into each method's score. Proposer selections never entered hidden evaluation.",
+  "code": {
+    "hidden_loop": "src/nexus/evolution2/persist_reset_science.py:run_bundle",
+    "assignment": "for name in METHODS: hidden_raw[name].append(ret)",
+    "trusted_evaluator_unused_on_hidden": true
+  },
+  "proposer_choices": {
+    "revealed_order": [
+      {
+        "rule": "flat",
+        "generator": "iid",
+        "horizon": 16,
+        "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+      },
+      {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 16,
+        "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+      },
+      {
+        "rule": "flat",
+        "generator": "iid",
+        "horizon": 4,
+        "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+      },
+      {
+        "rule": "flat",
+        "generator": "iid",
+        "horizon": 8,
+        "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+      },
+      {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 4,
+        "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+      },
+      {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 8,
+        "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+      }
+    ],
+    "hidden_order": [
+      {
+        "rule": "flat",
+        "generator": "balanced_first_action",
+        "horizon": 16,
+        "fingerprint": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+      },
+      {
+        "rule": "successor",
+        "generator": "balanced_first_action",
+        "horizon": 16,
+        "fingerprint": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+      }
+    ],
+    "bundles": [
+      {
+        "bundle": 0,
+        "family_order": [
+          "pendulum",
+          "acrobot"
+        ],
+        "persist_reset_differ_anywhere": false,
+        "families": {
+          "pendulum": {
+            "persist": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "reset": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "random": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "evolution": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+              "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+            ],
+            "persist_equals_reset": true,
+            "random_equals_persist": true,
+            "evolution_equals_persist": false
+          },
+          "acrobot": {
+            "persist": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "reset": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "random": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+            ],
+            "evolution": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "persist_equals_reset": true,
+            "random_equals_persist": false,
+            "evolution_equals_persist": false
+          }
+        },
+        "shared_proposal_seed": true,
+        "note": "Historical runner passed persist proposal_seed to every method."
+      },
+      {
+        "bundle": 1,
+        "family_order": [
+          "acrobot",
+          "pendulum"
+        ],
+        "persist_reset_differ_anywhere": false,
+        "families": {
+          "acrobot": {
+            "persist": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "reset": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "random": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            ],
+            "evolution": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            ],
+            "persist_equals_reset": true,
+            "random_equals_persist": false,
+            "evolution_equals_persist": false
+          },
+          "pendulum": {
+            "persist": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "reset": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "random": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "evolution": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+            ],
+            "persist_equals_reset": true,
+            "random_equals_persist": false,
+            "evolution_equals_persist": false
+          }
+        },
+        "shared_proposal_seed": true,
+        "note": "Historical runner passed persist proposal_seed to every method."
+      },
+      {
+        "bundle": 2,
+        "family_order": [
+          "pendulum",
+          "acrobot"
+        ],
+        "persist_reset_differ_anywhere": false,
+        "families": {
+          "pendulum": {
+            "persist": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+            ],
+            "reset": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+            ],
+            "random": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+              "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+            ],
+            "evolution": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            ],
+            "persist_equals_reset": true,
+            "random_equals_persist": false,
+            "evolution_equals_persist": false
+          },
+          "acrobot": {
+            "persist": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "reset": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+            ],
+            "random": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            ],
+            "evolution": [
+              "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+              "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+              "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+              "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            ],
+            "persist_equals_reset": true,
+            "random_equals_persist": false,
+            "evolution_equals_persist": false
+          }
+        },
+        "shared_proposal_seed": true,
+        "note": "Historical runner passed persist proposal_seed to every method."
+      }
+    ],
+    "persist_reset_differed_in_any_bundle": false,
+    "evolution_differed_from_persist": true,
+    "random_differed_from_persist": true
+  },
+  "causal_sensitivity": {
+    "different_selections_differ": true,
+    "scores_follow_swapped_selections": true,
+    "identical_selection_and_seed_match": true,
+    "hidden_blocked_from_training": true,
+    "cache_hit_on_identical_seed": true,
+    "physical_unique_pairs": true,
+    "logical_persist_reset": {
+      "persist": 3,
+      "reset": 2
+    },
+    "before_historical_hidden_was_method_independent": true
+  },
+  "corrected_design": {
+    "hidden_controller": "method.choose from revealed after training; that variant is rolled out on hidden physics",
+    "matched_initial_states_and_seeds": "matched_hidden_seed(bundle, family, slot) shared across methods",
+    "equal_logical_slots": 12,
+    "physical_vs_logical": "physical episode once per (bundle, family, slot, variant); later identical selections are cache hits",
+    "proposal_seeds": "v2.paired_bundle_seeds(bundle)[method] after the repair; historical run shared persist seed",
+    "completed_e217_is_observed": true,
+    "cannot_confirm_on_e217_development": true,
+    "budget": {
+      "scientific": false,
+      "collection": false,
+      "cannot_reuse_e217_development_as_confirmation": true,
+      "fresh_source": 7680,
+      "revealed": 7200,
+      "hidden_logical_evaluations": 48,
+      "hidden_physical_steps_upper": 9600,
+      "hidden_physical_steps_if_all_cache": 2400,
+      "fresh_total_upper": 24480,
+      "fresh_total_if_identical_selections": 17280,
+      "fits": 6,
+      "time_cap_s": 900,
+      "n10_forbidden": true,
+      "occupied_default_credit": 0,
+      "justification": "A corrected n=3 screen still needs matched new-physics residuals (7680) and revealed training (7200). Hidden evaluation now charges one physical episode per unique selected planner and seed, with equal logical slots per method (3\u00d72\u00d72\u00d74=48). If every method selects a different planner the hidden physical cap is 9600; if they collide, cache hits reduce physical steps. Completed E2.17 development outcomes are observed and cannot confirm this repair."
+    },
+    "next_experiment": "One new-physics n=3 persist-versus-reset screen using method-sensitive hidden evaluation, env_cap equal to the fresh_total_upper unless a later grant names a smaller physical hidden cap. New unused holdout required. E2.17 grant is consumed."
+  },
+  "scientific": false,
+  "collection": false,
+  "fitting": false,
+  "grant_consumed": true,
+  "dispatch_refused": true,
+  "h17": "blocked",
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "scientific_ledger_session": [
+    327.869,
+    3272.131
+  ],
+  "claims_learning_to_learn": false,
+  "is_agi": false
+}

@@ -296,6 +296,7 @@ def _unit(raw: dict) -> dict:
 
 
 def run_bundle(bundle_id: int, models: dict, assigned: dict, meter: BudgetMeter) -> dict:
+    """Historical E2.17 loop. Hidden scores are method-independent. Do not reuse."""
     split = locked_split()
     methods = {short: make_methods(paired_bundle_seeds(bundle_id)["persist"]["proposal_seed"])[inner] for short, inner in METHOD_KEYS.items()}
     family_rows = []
@@ -477,6 +478,188 @@ def run_authorized(approval_text: str) -> dict:
         + "\n"
     )
     return payload
+
+
+HIDDEN_SLOTS_PER_FAMILY = DEVELOPMENT_CONDITIONS
+
+
+def family_context(family: str) -> PublicFixtureContext:
+    binding = reviewed_binding(family)
+    return PublicFixtureContext(binding.n_actions, binding.obs_dim, EPISODE_STEPS, 1536)
+
+
+def replay_training(bundle_id: int, family_returns: dict[str, list[float]], *, shared_persist_seed: bool):
+    """Replay proposer training from recorded revealed returns. No environment."""
+    split = locked_split()
+    seed_row = paired_bundle_seeds(bundle_id)
+    if shared_persist_seed:
+        methods = {short: make_methods(seed_row["persist"]["proposal_seed"])[inner] for short, inner in METHOD_KEYS.items()}
+    else:
+        methods = {short: make_methods(seed_row[short]["proposal_seed"])[inner] for short, inner in METHOD_KEYS.items()}
+    choices = {name: [] for name in METHODS}
+    for family in bundle_family_order(bundle_id):
+        raw = {variant: float(family_returns[family][index]) for index, variant in enumerate(split["revealed"])}
+        unit = _unit(raw)
+        evaluator = TrustedEvaluator(
+            split["revealed"],
+            family=family,
+            bundle_id=bundle_id,
+            produce_score=lambda variant, unit=unit: unit[variant],
+        )
+        context = family_context(family)
+        task = type("Task", (), {"task_id": f"{family}:{bundle_id}"})()
+        for name, method in methods.items():
+            if method.resets:
+                method.reset_task()
+            available = list(split["revealed"])
+            picked = []
+            for slot in range(PROPOSALS):
+                if slot < SHARED_PROBES and split["anchors"][slot] in available:
+                    variant = split["anchors"][slot]
+                else:
+                    variant = method.choose(tuple(available), context)
+                score = evaluator.evaluate(method.name, variant, family=family, bundle_id=bundle_id)
+                method.update(
+                    TrainingFeedback(variant.fingerprint, score, False, feedback_event(task, slot, variant.fingerprint)),
+                    context,
+                )
+                picked.append(
+                    {
+                        "slot": slot,
+                        "family": family,
+                        "rule": variant.rule.value,
+                        "generator": variant.generator.value,
+                        "horizon": variant.horizon,
+                        "fingerprint": variant.fingerprint,
+                    }
+                )
+                available.remove(variant)
+            choices[name].append({"family": family, "proposals": picked})
+    methods["persist"].freeze()
+    return {"methods": methods, "choices": choices, "split": split}
+
+
+def select_hidden_controllers(methods: dict, family: str) -> dict[str, tuple]:
+    split = locked_split()
+    context = family_context(family)
+    selected = {}
+    for name, method in methods.items():
+        available = list(split["revealed"])
+        picked = []
+        for _slot in range(HIDDEN_SLOTS_PER_FAMILY):
+            variant = method.choose(tuple(available), context)
+            if variant not in available:
+                raise RuntimeError("duplicate_or_invalid_hidden_selection")
+            picked.append(variant)
+            available.remove(variant)
+        selected[name] = tuple(picked)
+    return selected
+
+
+class MethodSensitiveHiddenEval:
+    """Hidden scores follow the selected planner. Logical charges stay equal."""
+
+    def __init__(self, produce_score):
+        self._produce = produce_score
+        self._cache: dict[tuple, float] = {}
+        self._hidden_fingerprints: set[str] = set()
+        self.physical = 0
+        self.logical = 0
+        self.cached = 0
+        self.per_method = {name: {"logical": 0, "physical": 0, "cached": 0} for name in METHODS}
+
+    def evaluate(self, method: str, variant, *, seed_key: tuple) -> float:
+        if method not in self.per_method:
+            raise RuntimeError("unknown_method")
+        key = seed_key + (variant.fingerprint,)
+        self.logical += 1
+        self.per_method[method]["logical"] += 1
+        self._hidden_fingerprints.add(variant.fingerprint)
+        if key in self._cache:
+            self.cached += 1
+            self.per_method[method]["cached"] += 1
+            return self._cache[key]
+        score = float(self._produce(variant, seed_key))
+        self._cache[key] = score
+        self.physical += 1
+        self.per_method[method]["physical"] += 1
+        return score
+
+    def training_must_not_see(self, method, evaluator: TrustedEvaluator) -> None:
+        leaked = [variant for variant in evaluator.training_feedback(method) if getattr(variant, "fingerprint", variant) in self._hidden_fingerprints]
+        if leaked:
+            raise RuntimeError("hidden_development_leaked_into_training")
+
+
+def matched_hidden_seed(bundle_id: int, family: str, slot: int) -> tuple:
+    return ("hidden", int(bundle_id), family, int(slot))
+
+
+def corrected_hidden_scores(methods: dict, bundle_id: int, produce_score) -> dict:
+    evaluator = MethodSensitiveHiddenEval(produce_score)
+    rows = {name: [] for name in METHODS}
+    selections = {name: [] for name in METHODS}
+    for family in ("pendulum", "acrobot"):
+        selected = select_hidden_controllers(methods, family)
+        for name in METHODS:
+            for slot, variant in enumerate(selected[name]):
+                score = evaluator.evaluate(name, variant, seed_key=matched_hidden_seed(bundle_id, family, slot))
+                rows[name].append(score)
+                selections[name].append(
+                    {
+                        "family": family,
+                        "slot": slot,
+                        "fingerprint": variant.fingerprint,
+                        "rule": variant.rule.value,
+                        "generator": variant.generator.value,
+                        "horizon": variant.horizon,
+                    }
+                )
+    logical = {name: evaluator.per_method[name]["logical"] for name in METHODS}
+    if len(set(logical.values())) != 1:
+        raise RuntimeError("unequal_hidden_evaluation_budget")
+    return {
+        "scores": {name: float(sum(rows[name]) / len(rows[name])) for name in METHODS},
+        "selections": selections,
+        "charges": {
+            "physical": evaluator.physical,
+            "logical": evaluator.logical,
+            "cached": evaluator.cached,
+            "per_method": evaluator.per_method,
+        },
+    }
+
+
+def fresh_budget_estimate() -> dict:
+    source = N_BUNDLES * 2 * (SOURCE_TRAIN_STEPS + SOURCE_VAL_STEPS)
+    revealed = N_BUNDLES * 2 * REVEALED_VARIANTS_PER_FAMILY * EPISODE_STEPS
+    logical_hidden = N_BUNDLES * 2 * HIDDEN_SLOTS_PER_FAMILY * len(METHODS)
+    physical_hidden_upper = logical_hidden * EPISODE_STEPS
+    return {
+        "scientific": False,
+        "collection": False,
+        "cannot_reuse_e217_development_as_confirmation": True,
+        "fresh_source": source,
+        "revealed": revealed,
+        "hidden_logical_evaluations": logical_hidden,
+        "hidden_physical_steps_upper": physical_hidden_upper,
+        "hidden_physical_steps_if_all_cache": N_BUNDLES * 2 * HIDDEN_SLOTS_PER_FAMILY * EPISODE_STEPS,
+        "fresh_total_upper": source + revealed + physical_hidden_upper,
+        "fresh_total_if_identical_selections": source + revealed + N_BUNDLES * 2 * HIDDEN_SLOTS_PER_FAMILY * EPISODE_STEPS,
+        "fits": 6,
+        "time_cap_s": 900,
+        "n10_forbidden": True,
+        "occupied_default_credit": 0,
+        "justification": (
+            "A corrected n=3 screen still needs matched new-physics residuals "
+            "(7680) and revealed training (7200). Hidden evaluation now charges "
+            "one physical episode per unique selected planner and seed, with "
+            "equal logical slots per method (3×2×2×4=48). If every method "
+            "selects a different planner the hidden physical cap is 9600; if "
+            "they collide, cache hits reduce physical steps. Completed E2.17 "
+            "development outcomes are observed and cannot confirm this repair."
+        ),
+    }
 
 
 def write_protocol_artifact(approval_text: str) -> dict:
