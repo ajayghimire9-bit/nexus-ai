@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.14 recede clock complete; science BLOCKED
+
+Cited config `8e90b74a…`. Receding planner prior is 27.7 s on stored
+default observations. Env-rollout time is still unknown. Do not grant
+7680. Do not collect. Do not name a holdout. Next: a separately
+authorized persist-versus-reset run that cites that hash, names a
+four-role unused holdout, and sets `env_cap=17280`. `continue` is not
+approval. Report `NEXUS_EVOLUTION2_PERSIST_RESET_RECEDE.md`. Protocol
+draft `NEXUS_EVOLUTION2_PERSIST_RESET_PROTOCOL.md`.
+
 ## Current — Evolution-2.13 budget locked; 7680 not granted; science BLOCKED
 
 Cited config `8e90b74a…`. Required fresh cap is **17280**, imagined

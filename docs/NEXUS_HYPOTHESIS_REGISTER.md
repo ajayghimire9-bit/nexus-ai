@@ -1,5 +1,10 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.14 receding planner cost is a default-obs prior, not a screen
+
+800 stored-state decisions took 2.305 s. Not new physics. Not a
+transfer result. Report `NEXUS_EVOLUTION2_PERSIST_RESET_RECEDE.md`.
+
 ## Latest — H-e2.13 persist-versus-reset budget is locked, not executed
 
 17,280 fresh steps and 14,745,600 imagined are the locked first-screen

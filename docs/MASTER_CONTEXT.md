@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.14 receding stored-obs clock, science BLOCKED, 2026-10-18
+
+On `cursor/evolution2.14-recede-clock` from `7699a35`. 800 receding
+`decide()` calls on locked default observations took 2.305 s (27.7 s
+planner-only prior for 9,600 decisions). No Gymnasium, no new steps.
+7680 not granted. Fresh total remains 17,280. Holdout unnamed. H17
+blocked. H16 ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_RECEDE.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.13 resource budget locked, 7680 not granted, 2026-10-18
 
 On `cursor/evolution2.13-resource-budget` from `bb15c2e`. Fresh

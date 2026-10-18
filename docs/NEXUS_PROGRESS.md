@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.14 receding stored-obs clock
+
+800 decisions, 2.305 s, 27.7 s planner-only 9600 prior. Science
+BLOCKED. 7680 not granted. H16 ledger preserved 305.842 / 3294.158.
+Report `NEXUS_EVOLUTION2_PERSIST_RESET_RECEDE.md`.
+
 ## Latest — Evolution-2.13 resource budget locked, 7680 refused
 
 Fresh total 17,280. Imagined upper bound 14,745,600. Real planner path

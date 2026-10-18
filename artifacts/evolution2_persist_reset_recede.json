@@ -1,0 +1,107 @@
+{
+  "scientific": false,
+  "collection": false,
+  "fitting": false,
+  "granted_7680": false,
+  "hold_named": false,
+  "budget": {
+    "scientific": false,
+    "authorized_env_cap": 0,
+    "authorized_time_cap_s": 0,
+    "do_not_grant_7680": true,
+    "real_environment": {
+      "fresh_source": 7680,
+      "revealed": 7200,
+      "development": 2400,
+      "screen": 9600,
+      "fresh_total": 17280,
+      "confirmation": 0,
+      "occupied_default_credit": 0
+    },
+    "imagined": {
+      "cap_per_decision": 1536,
+      "screen_decisions_upper": 9600,
+      "screen_upper_bound": 14745600,
+      "source_fitting": 0,
+      "assumption": "receding_decide_every_real_screen_step"
+    },
+    "fits": {
+      "n3_required": 6,
+      "v2_twenty": 20,
+      "twenty_measured": false,
+      "reuse_e29_defaults": false
+    },
+    "standing": {
+      "time_cap_s": 900,
+      "env_cap": 100000,
+      "fresh_total_fits_standing_env": true,
+      "v2_wall_clock_risk": "likely_incomplete_budget_under_900s"
+    },
+    "rejected_grants": {
+      "7680": "occupied_default_reuse_or_source_only",
+      "9600": "screen_without_fresh_residuals",
+      "25600": "v2_n10_source"
+    },
+    "justification": "A complete new-physics n=3 first screen needs a matched residual source (3\u00d72\u00d71280=7680) plus the locked revealed/development worksheet (7200+2400=9600). Those operations do not share steps. Existing 7680 default-family arrays cannot be credited. Exact fresh total is 17280. Confirmation and n=10 are extra and unauthorized."
+  },
+  "recede": {
+    "scientific": false,
+    "gymnasium": false,
+    "env_steps": 0,
+    "env_cap": 0,
+    "granted_7680": false,
+    "n_decisions": 800,
+    "n_episode_equivalents": 4,
+    "episode_steps": 200,
+    "imagined": 1210800,
+    "decoded": 800,
+    "wall_s": 2.3049581249943003,
+    "cpu_s": 2.464289,
+    "seconds_per_decision": 0.0028811976562428754,
+    "episode_prior_s": 0.5762395312485751,
+    "screen_9600_prior_s": 27.659497499931604,
+    "prior_label": "receding_on_stored_default_obs_not_new_physics",
+    "do_not_treat_as_scientific_clock": true,
+    "rows": [
+      {
+        "family": "pendulum",
+        "rule": "flat",
+        "generator": "iid",
+        "horizon": 16,
+        "steps": 200
+      },
+      {
+        "family": "pendulum",
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 16,
+        "steps": 200
+      },
+      {
+        "family": "acrobot",
+        "rule": "flat",
+        "generator": "iid",
+        "horizon": 16,
+        "steps": 200
+      },
+      {
+        "family": "acrobot",
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 16,
+        "steps": 200
+      }
+    ],
+    "twelve_arm_scientific": "BLOCKED",
+    "enabled_dispatch": false
+  },
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "h16_scientific_ledger_untouched": true,
+  "scientific_ledger_preserved": [
+    305.842,
+    3294.158
+  ],
+  "claims_learning_to_learn": false,
+  "is_agi": false,
+  "next_action": "Do not grant 7680. Do not collect. A later persist-versus-reset approval must cite 8e90b74a, name a four-role unused holdout, and set env_cap=17280. continue is not that approval."
+}
