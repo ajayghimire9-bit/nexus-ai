@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — H17 seed-ingress/dataflow coverage review, source only
+
+The historical registry arithmetic and root seed-field classification are now
+resolved for the fixed inventory:76 function/version certificates,299 artifact
+schemas, no unresolved records or out-of-window extracted values. H17 remains
+blocked because presence of a registry does not prove its use at every actual
+RNG call. One next action: classify and bind the recorded2253 candidate sites
+to their actual historical configurations and certified sets, preserving
+conservative reservations for unsupported cases. Do not select H17 targets or
+numerical seeds, lock a protocol or execute science. Design62,360/174,080/300s,
+all29 exclusions and ledger305.842/3294.158 unchanged. Report
+`NEXUS_H17_SEED_DEPENDENCY_CLOSURE.md`.
+
 ## Current — finish source-only closure before any H17 registration
 
 Final reservation review remains BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE.

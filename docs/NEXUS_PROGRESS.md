@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — H17 historical registry dependencies resolved; call-site coverage pending
+
+On `codex/h17-seed-dependency-closure`,76 historical function/version records
+(all67 from the prior review plus nine inherited records) now certify against
+the unchanged seed windows. Zero unresolved registry expressions;299 artifact
+root seed schemas classified with zero unknown root seed fields. A broad2253
+candidate call-site inventory still needs actual seed-ingress/dataflow review,
+so verdict remains BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE.171 source-only tests
+passed.29 exclusions, seven external manual files, H17 draft and ledger hashes
+unchanged. No physics/seed selection, lock, simulation, training or inference.
+Ledger305.842/3294.158 unchanged. See `NEXUS_H17_SEED_DEPENDENCY_CLOSURE.md`.
+
 ## Latest — H17 reservation closure reviewed, still blocked
 
 Source-only follow-through on `codex/h17-reservation-closure` parsed all299

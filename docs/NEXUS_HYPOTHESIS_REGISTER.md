@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H17 preparation — historical seed dependency arithmetic, no scientific test
+
+The source-only dependency review resolves76 historical registry-function/version
+records and classifies299 root artifact seed schemas without altering the
+preserved reservations.171 source-only tests passed. This supplies registration
+evidence, not evidence for H17's occupancy/library hypothesis. RNG-call-site
+dataflow remains unverified; H17 stays blocked, unlocked and unauthorized.
+No target or numerical H17 seeds selected; no scientific execution; H14–H16
+remain closed. See `NEXUS_H17_SEED_DEPENDENCY_CLOSURE.md`.
+
 ## Latest — H16 diagnosis separates ranking from the unresolved interaction
 
 Source-only reanalysis preserves the registered inconclusive H16 label.

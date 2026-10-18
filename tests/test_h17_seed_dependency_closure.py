@@ -261,3 +261,32 @@ def test_every_previously_listed_registry_function_now_has_a_certificate():
     assert len(expected)==67 and expected<=certified
     assert not new['unresolved']
     assert not any(r['outside_reservations'] for r in new['certificates'])
+
+
+def test_final_grid_comes_from_locked_source_inventory_not_produced_rows():
+    root=Path(__file__).resolve().parents[1]
+    parent=json.loads((root/m.PARENT).read_text())
+    result=json.loads((root/'artifacts/h17_seed_dependency_coverage_validated.json').read_text())
+    expected=set()
+    for row in parent['all_reachable_inputs']:
+        if row['path'].endswith('.py'):
+            raw=subprocess.check_output(['git','cat-file','blob',row['git_blob']],cwd=root)
+            for node in ast.parse(raw.decode()).body:
+                if isinstance(node,ast.FunctionDef) and node.name in m.OWN_FUNCTIONS:
+                    expected.add((row['path'],row['git_blob'],node.name))
+    key=lambda r:(r['path'],r['git_blob'],r['function'])
+    actual=[key(r) for r in result['certificates']]
+    assert len(actual)==len(set(actual)) and set(actual)==expected
+    assert not result['unresolved']
+    artifacts={(r['path'],r['git_blob']) for r in parent['all_reachable_inputs']
+               if r['path'].startswith('artifacts/') and r['path'].endswith('.json')}
+    assert {(r['path'],r['git_blob']) for r in result['artifact_seed_metadata']}==artifacts
+    assert not result['unclassified_artifact_seed_metadata']
+    checked=set()
+    for row in result['certificates']:
+        for dependency in row['dependencies']+[{'path':row['config_path'],'sha256':row['config_sha256']}]:
+            label=(row['commit'],dependency['path'],dependency['sha256'])
+            if label in checked:continue
+            raw=subprocess.check_output(['git','show',row['commit']+':'+dependency['path']],cwd=root)
+            assert hashlib.sha256(raw).hexdigest()==dependency['sha256']
+            checked.add(label)
