@@ -7,6 +7,26 @@ The next milestone is a source-only typed planner-catalogue and evaluation-broke
 harness with deterministic contract tests. No discovery engine or experiment
 is implemented by this document. No new scientific result is reported.
 
+### Mission clarification and continuation provenance
+
+The expanded human request names this direction **NEXUS Evolution**: a compact
+CPU-first system that improves how it learns and plans. Human-level AGI, a
+chatbot and a trading product are not this milestone's targets. The seven
+desired abilities (learn dynamics, predict/plan, detect weaknesses, propose,
+independently test, retain transferable changes and improve proposal strategy)
+are research objectives, not established present capabilities. AGENTS.md and
+MASTER_CONTEXT.md retain the historical vision and safeguards unchanged; this
+report does not silently rewrite those instructions.
+
+This clarification continues the already pushed feasibility revision
+`cea4beab1316e698ddfcce5203ef0ecc8c2092c3` on the same requested branch.
+Both remotes were refreshed. The reviewed older exclusion-audit revision
+`4a86031542229dbe738067c1d34532a553b1d69a` is followed by the dependency-closure
+work cited below. No restart from that older branch is needed. Uncommitted
+source-contract prototypes from a subsequent task are preserved locally and
+excluded from this feasibility commit; they are not reviewed executable
+components or evidence for the claims here.
+
 Branch: `codex/nexus-evolution1-feasibility`. Actual starting revision:
 `02243916dd8833690cd59f89c866551747b1293f`, matching the fetched GitHub
 `codex/h17-seed-dependency-closure` reference. Main was not used as the research
@@ -64,6 +84,40 @@ This inspection establishes reusable engineering components and gaps. It does
 not establish autonomous self-improvement, general control, learning-to-learn
 or AGI. No checkpoints were deserialized, retrained or replaced here.
 
+Capability classification, based on source inspection and repository-reported
+experiments, **not independent numerical reproduction in this task**:
+
+- **World-model learning — implemented with recorded verification.** Residual
+  models fit observed transitions; prediction confirmations exist. That is
+  learning model weights, not changing the learning algorithm.
+- **Action/outcome prediction — implemented with recorded verification for
+  specified state/action inputs.** Dynamics and reward rollouts predict
+  consequences of candidate actions. Predicting arbitrary optimal actions is
+  not established; actual decisions are selected by a planner.
+- **Planning — implemented with bounded multi-family evidence.** Lookahead
+  results use family-specific models. Universal reliable control is absent.
+- **Model transfer — implemented with mixed/negative evidence.** Fine-tuning,
+  snapshot retrieval and context inference exist; useful algorithm/weight
+  transfer across all families is not established.
+- **Experience memory — implemented, but the Evolution use is unverified.**
+  SQLite experiment history and bounded predictive snapshots exist. Memory
+  retention does not prove useful search-policy transfer or forgetting safety.
+- **Online adaptation — implemented in earlier bounded suites.** Drift and
+  update mechanisms were evaluated, with inconsistent control benefit.
+  The current frozen controllers do not update their networks online.
+- **Meta-controller behavior — implemented, scientific scope limited.**
+  Random, heuristic and LinUCB policies choose research actions. Their presence
+  or synthetic scores do not establish transferable meta-reinforcement learning.
+- **Algorithm selection — partly implemented, Evolution test unimplemented.**
+  Existing controllers select architecture/training configurations; the sealed
+  cross-family planner-discovery comparison proposed here has not run.
+- **Algorithm modification — bounded architecture/configuration mutation
+  implemented.** Autonomous discovery of a better learning update or safe
+  unrestricted source modification is neither demonstrated nor permitted.
+- **Continual learning — replay, memory and retention-oriented code exist;
+  general continual improvement remains unverified.** No claim of resistance
+  to catastrophic forgetting across arbitrary environments follows.
+
 ## 2. What “self-evolution” would mean
 
 Keep four claims separate:
@@ -117,6 +171,18 @@ Targeted primary-source review, not an exhaustive novelty or priority claim:
   axis. Neither makes raw forward-call counts interchangeable with CPU time.
   [Graves](https://arxiv.org/abs/1603.08983),
   [Li et al.](https://arxiv.org/abs/1603.06560).
+- **Learning to optimize:** learned recurrent optimizers can exploit structure
+  across training problems. Evolution-1 does not learn an optimizer or copy
+  that result by using a bandit. Its cheaper first target is a planning-strategy
+  selector. [Andrychowicz et al.](https://arxiv.org/abs/1606.04474).
+- **Automated algorithm configuration:** ParamILS searches parameterized
+  algorithm configurations over problem instances. A catalogue search or an
+  archive alone is therefore established methodology, not a novelty claim.
+  [Author-maintained project and paper](https://www.cs.ubc.ca/labs/algorithms/Projects/ParamILS/).
+- **Continual world-model learning:** Continual-Dreamer studies selective
+  experience replay, forgetting and transfer. Frozen family models in this
+  proposal do not implement continual world-model learning; retention must be
+  measured separately. [Kessler et al.](https://arxiv.org/abs/2211.15944).
 
 Potential differentiation is empirical: a compact memory-conditioned proposer
 that transfers a compute-limited planning decision rule across distinct dynamics,
@@ -127,6 +193,16 @@ nor this document establish novelty or a competitive advantage.
 ## 4. Proposed architecture and information boundaries
 
 The future system has five separate responsibilities:
+
+The requested functional components map to these responsibilities as follows:
+**Performance Monitor** computes permitted training-only failure/cost summaries;
+**Improvement Generator** proposes a catalogue configuration;
+**Experiment Evaluator** is the trusted broker and independent evaluator;
+**Evolution Memory** stores immutable success, rejection and failure records;
+**Meta-Learner** updates proposal statistics from permitted training feedback.
+The monitor cannot read held-out outcomes; the generator and meta-learner may
+share an implementation but have different responsibilities. No additional
+neural module is justified merely by naming these five components.
 
 1. **Verified training-memory view.** Append-only, content-addressed records of
    permitted training attempts: variant/parent/operator hashes, observation
@@ -168,6 +244,18 @@ These are future deployment requirements; no permissions are changed here.
 Do not claim that a same-process mock proves filesystem isolation.
 
 ## 5. Mutation space and scope
+
+**One first mutable mechanism: planning-strategy selection.** The selector
+chooses from vetted candidate-search/backup configurations while dynamics
+learning, data collection, replay and exploration remain fixed. The structural
+contrast is flat shooting versus successor backup; horizon and stratification
+are explicit configuration dimensions, not separately claimed inventions.
+Learning transferable proposal preferences across this library would improve
+the selection procedure only if the matched controls below are beaten.
+Changing a horizon alone is HPO. An aggregate win without structural attribution
+must be called configuration-selection improvement, not discovery of a new
+learning algorithm. The scalar-matched ablation below is required for a stronger
+algorithmic claim. This limitation is part of the design, not a success label.
 
 Initial library: two decision rules (flat shooting / one-step successor backup),
 two candidate distributions (IID / balanced first action) and three horizons
@@ -345,7 +433,18 @@ Planning worksheet (counts only, **not allocation or authorization**):
   "future_final_collection_steps": 12800,
   "future_final_evaluation_steps": 48000,
   "future_retention_steps_upper_bound": 48000,
-  "full_campaign_steps_upper_bound": 206400
+  "full_campaign_steps_upper_bound": 206400,
+  "plain_mlp_estimates": [
+    {"family": "pendulum", "obs_dim": 3, "n_actions": 3, "parameters": 4868},
+    {"family": "acrobot", "obs_dim": 6, "n_actions": 3, "parameters": 5255},
+    {"family": "proposed_navigation", "obs_dim": 4, "n_actions": 5, "parameters": 5125}
+  ],
+  "source_weight_bytes": 404920,
+  "future_navigation_weight_bytes": 205000,
+  "proposed_bandit_features": 8,
+  "proposed_bandit_matrix_vector_bytes": 6912,
+  "compact_source_row_bytes_upper_bound": 78,
+  "compact_source_payload_bytes_upper_bound": 1996800
 }
 ```
 
@@ -385,6 +484,49 @@ failed final family as new confirmation for a revised selector.
 
 ## 9. Reproducibility, costs and commercial possibilities
 
+### CPU-first parameter, memory and storage worksheet
+
+Analytic estimates only; no model was constructed or profiled. For a plain
+64×64 residual MLP with observation dimension O, A one-hot actions, and state
+plus termination heads, parameter count is
+`64*(O+A+1) + 64*65 + (O+1)*65` from `world/dynamics.py` and `nn/factory.py`.
+This gives **4,868** for Pendulum (O=3,A=3), **5,255** for Acrobot (O=6,A=3),
+and **5,125** for the proposed navigation interface (O=4,A=5). These are proposed
+plain-MLP sizes, not a recount of every historical FiLM checkpoint.
+
+Twenty A/B models total101,230 parameters, **404,920 bytes** of float32 weights.
+Ten later navigation models add205,000 weight bytes. A model under Adam needs
+roughly four times its weight bytes for weights, gradients and two moments,
+plus buffers, temporary tensors, Python/framework overhead and serialization.
+Train sequentially on one CPU worker; no GPU or external inference API is needed.
+Actual process peak RSS is unknown until a separately authorized profile.
+
+A proposed12-arm,8-feature linear bandit stores12 covariance matrices and12
+vectors: `12*(8*8+8)*8 = 6,912` float64 bytes, before inverses, metadata and
+archive storage. It is not a neural meta-RL agent. Its update cost is negligible
+relative to planning in this small design, but must still be metered.
+
+At O≤6, compact source rows with two float32 states, int64 action/seed/episode,
+float32 reward and two byte flags use at most78 bytes per row: **1,996,800
+bytes** for25,600 rows. Policy strings, task metadata, copies and actual NumPy
+layout add overhead; this is not the current dataset's measured memory.
+Allow roughly10–100 MB for logs and selected traces depending on serialization;
+full imagined trajectories and duplicate datasets may exceed this estimate.
+Parameter/optimizer payloads are small, but file headers and manifests mean
+checkpoint file sizes exceed raw weights. Keep checkpoint binaries outside Git,
+with paths, hashes, source/configuration and normalization metadata recorded.
+Do not estimate storage as zero because the neural networks are small.
+
+The earlier10–25 minute development estimate includes uncertain training/I/O
+overhead; planning alone extrapolates to about612 seconds. Source learning is
+suggested20 epochs on1,024 transitions per model (3,200 updates at batch128
+across20 models). Search variants must share these frozen learned models and
+data; random and evolutionary baselines receive the same feedback opportunity.
+Fixed planners avoid search overhead and may win on cost. If the full proposal
+cannot fit an approved cap, first complete the source-only broker/adapter tests;
+do not reduce scientific replication after inspecting outcomes or pretend a
+synthetic fixture test establishes cross-family transfer.
+
 Before any future run, independently verify checkpoint reconstruction/hashes,
 source/validation separation, full seed exclusions, reward semantics, budget
 meters and all expected cells. Save configuration/operator hashes, immutable
@@ -401,6 +543,12 @@ for an independently verified controller; reproducible evaluation tooling for
 small control teams. Each requires downstream safety validation, realistic
 latency/robustness tests and evidence of customer benefit. No real-money trading,
 paid services, deployments, performance guarantees or revenue claims follow.
+Adaptive software agents would additionally need a separately validated action
+and reward interface; no chatbot wrapper demonstrates that capability. Trading
+research would require leakage-safe market data, transaction/risk modeling and
+independent prospective evidence; simulation control findings do not imply
+profitability. No trading system, software-agent product or robotics deployment
+is implemented here.
 
 Major risks: decoder quality confounds, reward-scale artifacts, archive leakage,
 winner's curse from repeated testing, small family count, negative transfer,
@@ -453,3 +601,18 @@ Verification completed:
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest tests/test_evolution1_feasibility.py tests/test_h17_seed_dependency_closure.py tests/test_h17_reservation_closure.py tests/test_h17_exclusion_coverage_review.py tests/test_h17_exclusion_registry_audit.py tests/test_h17_protocol_readiness.py tests/test_h17_occupancy_feasibility.py tests/test_h16_selection_mechanism_diagnosis.py -p no:cacheprovider -o addopts='' -q
 ```
+
+Expanded-request review on2026-10-18: the same combined command now passes
+**196 tests in7.82s**, including two new source-only checks for the parameter/
+storage worksheet and extended primary-source references. The previous23/194
+counts above describe the original feasibility revision, not the updated run.
+The25 feasibility tests are included in the196; no separate new focused-only
+run is claimed. `git diff --check` passed. Protected instruction, ledger and
+H17 artifact hashes remain unchanged. The partial fixture-contract code from
+the intervening continuation was not imported by this review's test selection
+and is not staged or shipped as part of this feasibility update.
+
+Verdict remains **FEASIBLE_WITH_GATES — NOT_READY_FOR_SCIENTIFIC_EXECUTION**.
+One next engineering milestone remains the source-only typed catalogue and
+sealed-message broker contract with adversarial fixture tests. No seed, target,
+lock, permission record or resource allocation is created by this update.

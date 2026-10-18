@@ -92,3 +92,28 @@ def test_no_protocol_lock_authorization_or_numerical_holdout_registration():
     assert '<!-- protocol-lock' not in text
     for paper in ('2505.22954','1901.01753','1611.02779','1711.09846','1603.08983','1603.06560'):
         assert 'https://arxiv.org/abs/'+paper in text
+
+
+def test_proposed_parameter_and_memory_estimates_are_consistent():
+    d=worksheet()
+    models=d['plain_mlp_estimates']
+    assert [m['family'] for m in models]==['pendulum','acrobot','proposed_navigation']
+    for m in models:
+        o,a=m['obs_dim'],m['n_actions']
+        assert m['parameters']==64*(o+a+1)+64*65+(o+1)*65
+    n=d['independent_bundles']
+    assert n*sum(m['parameters'] for m in models[:2])*4==d['source_weight_bytes']
+    assert n*models[2]['parameters']*4==d['future_navigation_weight_bytes']
+    f=d['proposed_bandit_features']
+    assert d['variant_count']*(f*f+f)*8==d['proposed_bandit_matrix_vector_bytes']
+    # Compact proposed layout, excluding string/object storage and runtime overhead.
+    row=2*max(m['obs_dim'] for m in models)*4+3*8+4+2
+    assert row==d['compact_source_row_bytes_upper_bound']
+    assert row*d['source_collection_steps']==d['compact_source_payload_bytes_upper_bound']
+
+
+def test_literature_extensions_are_primary_source_links():
+    text=DOC.read_text()
+    for paper in ('1606.04474','2211.15944'):
+        assert 'https://arxiv.org/abs/'+paper in text
+    assert 'https://www.cs.ubc.ca/labs/algorithms/Projects/ParamILS/' in text
