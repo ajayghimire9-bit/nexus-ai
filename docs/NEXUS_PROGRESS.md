@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — full research reuse audit, documentation only
+
+Read-only consolidation documents on
+`cursor/nexus-research-reuse-audit` from `4a08b26`. 145 named
+branches inventoried; no deletions, merges, or science. Next
+scientific design (not authorized): Pendulum→Acrobot catalogue
+proposer vs reset/random/retrieval/weight-init. Ledger 305.842 /
+3294.158 unchanged. Report `NEXUS_FULL_RESEARCH_REUSE_AUDIT.md`.
+
 ## Latest — Evolution-2 runtime gates implemented, science blocked
 
 Source-only milestone on `cursor/evolution2-runtime-gates` from

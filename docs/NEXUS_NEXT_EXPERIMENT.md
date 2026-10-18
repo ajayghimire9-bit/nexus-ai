@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Pendulum→Acrobot catalogue transfer; do not collect
+
+Reuse audit: stop adding synthetic Evolution-2 infrastructure.
+The one scientific question that would advance learning-to-learn is
+whether a Pendulum-trained catalogue proposer beats reset, random,
+retrieval, and weight-init on unused Acrobot instances. Not locked,
+not authorized, not an MCC holdout, not H17. Adapters and real
+meters remain blockers. Ledger 305.842 / 3294.158. Report
+`NEXUS_FULL_RESEARCH_REUSE_AUDIT.md`.
+
 ## Current — review runtime gates; do not collect or lock a protocol
 
 Trusted metadata bindings, pre-call meters, and a process-separated
