@@ -67,8 +67,7 @@ def locked_split():
     variants = catalogue()
     hidden = (variants[5], variants[11])
     anchors = (variants[2], variants[8])
-    rest = tuple(v for v in variants if v not in hidden and v not in anchors)
-    revealed = anchors + rest[:4]
+    revealed = anchors + (variants[0], variants[1], variants[6], variants[7])
     if len(revealed) != REVEALED_VARIANTS_PER_FAMILY:
         raise RuntimeError("revealed_split_mismatch")
     if len(hidden) != DEVELOPMENT_CONDITIONS:

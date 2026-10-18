@@ -33,6 +33,7 @@ def test_locked_split_keeps_anchors_revealed_and_two_hidden():
     assert split["anchors"][0] in split["revealed"]
     assert split["anchors"][1] in split["revealed"]
     assert set(split["revealed"]).isdisjoint(split["hidden"])
+    assert {v.generator.value for v in split["revealed"]} == {"iid"}
 
 
 def test_occupied_defaults_are_refused_as_new_physics():
