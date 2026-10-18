@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.3 source-fitting unavailable, trusted cache PASS, 2026-10-18
+
+On `cursor/evolution2.3-source-fitting` from `869a9e5`. No stored
+Pendulum/Acrobot train/val arrays exist; lookahead recipes persist
+weights only. Fitting benchmark is `SOURCE_FITTING_UNAVAILABLE` (no
+collection). `TrustedEvaluator` now owns scores and cache identity.
+Full v2 remains **NO-GO**; v2-pilot remains **UNKNOWN**. Holdout
+unnamed. H17 blocked. Scientific ledger preserved at 305.842 /
+3294.158. Report `NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md`.
+Earlier entries remain history.
+
 ## Latest — Evolution-2.2 adapter correctness, science BLOCKED, 2026-10-18
 
 On `cursor/evolution2.2-adapter-correctness` from `9b6c6d0`.

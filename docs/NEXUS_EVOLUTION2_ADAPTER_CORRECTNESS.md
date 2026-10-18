@@ -51,7 +51,8 @@ unrelated `available[0]`. Cold start without feedback still returns
 
 ## 4. v2-pilot reveal/cache
 
-Methods share one `RevealCache`. Cache hits are still charged.
+Methods share one evaluator-owned cache. Cache hits are still charged.
+Caller-supplied scores are rejected; see Evolution-2.3 `TrustedEvaluator`.
 Unused catalogue variants cannot be revealed. Imagined charge is
 `decisions × 1536`. Locked v2/v2-pilot hashes are unchanged.
 

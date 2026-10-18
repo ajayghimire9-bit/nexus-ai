@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "93de317852d8899cc38af64ce779fcc7e3093ba1",
+  "head": "869a9e56be8405aa62aa3b5f04c66dc4879da1e9",
   "ledger_s": [
     306.954,
     3293.046
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 37,
+    "curated": 38,
     "incomplete_unindexed_docs": 93,
-    "total": 130,
+    "total": 131,
     "incomplete": 120,
-    "source_verified": 10
+    "source_verified": 11
   },
   "experiments": [
     {
@@ -690,6 +690,24 @@
         "artifacts/evolution2_planner_compatibility.json"
       ],
       "reuse": "Fixes adapter parity and evolution fairness. Does not enable dispatch or collect.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2.3-source-fitting",
+      "title": "Source-fitting inventory and trusted cache audit",
+      "hypothesis": "If no stored Pendulum/Acrobot train/val arrays exist, the residual fit clock stays SOURCE_FITTING_UNAVAILABLE and the evaluator must own scores.",
+      "implementation": [
+        "src/nexus/evolution2/source_fitting_benchmark.py",
+        "src/nexus/evolution2/pendulum_acrobot_protocol_v2_pilot.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md",
+      "results": "docs/NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md",
+      "status": "source_fitting_unavailable_cache_pass",
+      "artifacts": [
+        "artifacts/evolution2_source_fitting_benchmark.json"
+      ],
+      "reuse": "Do not collect replacements. Do not invent a fit time. TrustedEvaluator owns scores.",
       "coverage": "source_verified"
     },
     {

@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.3 source fitting unavailable; science still BLOCKED
+
+No permitted Pendulum/Acrobot transition arrays exist. The residual
+recipe is recorded; the fit clock is `SOURCE_FITTING_UNAVAILABLE`.
+Trusted evaluator owns scores. Full v2 **NO-GO**, v2-pilot
+**UNKNOWN**. Do not collect replacements. Do not name a holdout.
+Do not unlock H17. Next: separately authorize persisting source-only
+train/val arrays for a disposable fit clock, or shrink the worksheet.
+Report `NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md`.
+
 ## Current — Evolution-2.2 adapter audit; science still BLOCKED
 
 H=16 historical parity is no longer claimed at catalogue cap 1536.

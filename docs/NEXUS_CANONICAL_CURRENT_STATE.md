@@ -17,8 +17,10 @@ feasibility. v2 is a superseding design only. A prospective
 v2-pilot worksheet exists and is unauthorized. An independent
 unused-instance review is **NAMING_BLOCKED**. Four-role instance
 rules exist and still do not persist tuples. Evolution-2.2 keeps
-twelve-arm dispatch BLOCKED and full v2 NO-GO. None of these is
-collection.
+twelve-arm dispatch BLOCKED and full v2 NO-GO. Evolution-2.3 finds
+no stored source transitions (`SOURCE_FITTING_UNAVAILABLE`) and
+replaces caller-supplied RevealCache scores with TrustedEvaluator.
+None of these is collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
 
@@ -52,6 +54,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - H17 occupancy/library factorial
 - Runtime scientific dispatch (stub only)
 - Evolution-2.1 catalogue-to-planner adapter (fake models; dispatch still blocked)
+- Evolution-2.3 source-fitting clock (unavailable; no stored transitions)
 
 ## Engineering that exists at HEAD 4a08b26
 

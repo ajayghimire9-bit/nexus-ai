@@ -14,6 +14,8 @@ instead of opening parallel packages.
 | Residual world model | `nexus.world.dynamics`, `nexus.world.train` | A second dynamics MLP |
 | Random-shooting / successor planning | Family lookahead modules + `RandomShootingMPC._score_batch` via `evolution2.planner_adapter` | `planning.mpc_for_model`, or calling catalogue H=16 historical 16×16 |
 | Residual-MLP timing on frozen files | `evolution2.residual_timing_probe` plus `scripts/run_evolution2_residual_timing_probe.py` | A second probe that constructs envs or rewrites checkpoints |
+| Source-fitting inventory / v2 wall-clock combine | `evolution2.source_fitting_benchmark` | Collecting replacement transitions or inventing a fit time |
+| Equal-information evaluation cache | `evolution2.pendulum_acrobot_protocol_v2_pilot.TrustedEvaluator` | Letting a candidate supply or overwrite scores |
 | Analytic plan cost | `evolution1.catalogue.plan_bound` | Recoding H versus A+ANH |
 | Pre-call work reservation | `evolution1.resources.ReservationLedger` | A third meter class |
 | Synthetic training receipts | `evolution1.fixtures.FixtureBroker` | Ad-hoc lookup tables in proposers |

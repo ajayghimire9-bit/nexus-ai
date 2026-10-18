@@ -99,31 +99,69 @@ def allocation_record() -> dict:
     return json.loads(ALLOCATION.read_text())
 
 
-class RevealCache:
-    """Shared per-(bundle, family) evaluation cache. Hits are still charged."""
+class TrustedEvaluator:
+    """Evaluator-owned scores. Methods cannot supply or overwrite values."""
 
-    def __init__(self, allowed):
+    def __init__(self, allowed, *, family: str, bundle_id: int, produce_score):
         self.allowed = frozenset(allowed)
-        self.values: dict = {}
+        self.family = family
+        self.bundle_id = int(bundle_id)
+        self._produce = produce_score
+        self._training: dict = {}
+        self._development: dict = {}
+        self.physical = 0
+        self.cached = 0
         self.charged = 0
-        self.hits = 0
-        self.misses = 0
+        self.exposed: dict[str, list] = {row["name"]: [] for row in v2.METHODS}
 
-    def reveal(self, method: str, variant, score: float) -> float:
+    def evaluate(self, method: str, variant, *, family: str | None = None, bundle_id: int | None = None) -> float:
+        if family is not None and family != self.family:
+            raise RuntimeError("cross_family_contamination")
+        if bundle_id is not None and int(bundle_id) != self.bundle_id:
+            raise RuntimeError("cross_bundle_contamination")
         if variant not in self.allowed:
             raise RuntimeError("unused_variant_not_revealed")
+        if variant in self._development:
+            raise RuntimeError("hidden_development_outcome")
         self.charged += 1
-        if variant in self.values:
-            self.hits += 1
-            return self.values[variant]
-        self.misses += 1
-        self.values[variant] = float(score)
-        return float(score)
+        if variant in self._training:
+            self.cached += 1
+            score = self._training[variant]
+        else:
+            self.physical += 1
+            score = float(self._produce(variant))
+            self._training[variant] = score
+        self.exposed.setdefault(method, []).append(variant)
+        return score
+
+    def reveal(self, method: str, variant, score=None):
+        if score is not None:
+            raise RuntimeError("score_substitution_forbidden")
+        return self.evaluate(method, variant)
+
+    def hide_development(self, variant, score: float) -> None:
+        self._development[variant] = float(score)
+
+    def training_feedback(self, method: str) -> dict:
+        return {
+            variant: self._training[variant]
+            for variant in self.exposed.get(method, [])
+            if variant in self._training
+        }
 
 
-def equal_information_cache(revealed) -> dict[str, RevealCache]:
-    """Every method shares one cache object per family draw set."""
-    shared = RevealCache(revealed)
+def equal_information_cache(revealed, *, family="pendulum", bundle_id=0, produce_score=None):
+    scores = {variant: float(i + 1) for i, variant in enumerate(revealed)}
+
+    def _produce(variant):
+        return scores[variant]
+
+    shared = TrustedEvaluator(
+        revealed,
+        family=family,
+        bundle_id=bundle_id,
+        produce_score=produce_score or _produce,
+    )
     return {row["name"]: shared for row in v2.METHODS}
 
 

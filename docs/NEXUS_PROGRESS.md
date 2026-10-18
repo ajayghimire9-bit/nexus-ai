@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.3 source-fitting inventory, no collection
+
+`SOURCE_FITTING_UNAVAILABLE`. TrustedEvaluator owns scores. Full v2
+NO-GO, v2-pilot UNKNOWN. Scientific ledger preserved 305.842 /
+3294.158. Report `NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md`.
+
 ## Latest — Evolution-2.2 adapter correctness, no collection
 
 Historical H=16 parity no longer claimed at catalogue cap 1536.

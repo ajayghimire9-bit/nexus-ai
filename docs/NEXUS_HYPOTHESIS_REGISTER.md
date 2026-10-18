@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.3 source fitting is unavailable, not collected
+
+No stored Pendulum/Acrobot train/val arrays. Trusted cache now
+evaluator-owned. Not a transfer result. Report
+`NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md`.
+
 ## Latest — H-e2.2 adapter correctness is engineered, not collected
 
 Catalogue H=16 at cap 1536 is not historical 16×16. Balanced

@@ -534,6 +534,22 @@ EXPERIMENTS = [
         "reuse": "Fixes adapter parity and evolution fairness. Does not enable dispatch or collect.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.3-source-fitting",
+        "title": "Source-fitting inventory and trusted cache audit",
+        "hypothesis": "If no stored Pendulum/Acrobot train/val arrays exist, the residual fit clock stays SOURCE_FITTING_UNAVAILABLE and the evaluator must own scores.",
+        "implementation": [
+            "src/nexus/evolution2/source_fitting_benchmark.py",
+            "src/nexus/evolution2/pendulum_acrobot_protocol_v2_pilot.py",
+        ],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md",
+        "results": "docs/NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md",
+        "status": "source_fitting_unavailable_cache_pass",
+        "artifacts": ["artifacts/evolution2_source_fitting_benchmark.json"],
+        "reuse": "Do not collect replacements. Do not invent a fit time. TrustedEvaluator owns scores.",
+        "coverage": "source_verified",
+    },
 ]
 
 

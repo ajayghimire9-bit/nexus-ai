@@ -85,16 +85,18 @@ def test_revealed_cache_is_shared_and_hits_are_still_charged():
     names = [row["name"] for row in v2.METHODS]
     shared = caches[names[0]]
     assert all(caches[name] is shared for name in names)
-    first = shared.reveal("persist", revealed[0], 1.5)
-    second = shared.reveal("reset", revealed[0], 9.9)
-    assert first == second == 1.5
+    first = shared.evaluate("persist", revealed[0])
+    second = shared.evaluate("reset", revealed[0])
+    assert first == second == 1.0
     assert shared.charged == 2
-    assert shared.hits == 1
-    assert shared.misses == 1
+    assert shared.cached == 1
+    assert shared.physical == 1
+    with pytest.raises(RuntimeError, match="score_substitution_forbidden"):
+        shared.reveal("persist", revealed[0], 9.9)
     unused = next(v for v in v2.legal_mutants(revealed[0]) if v not in revealed)
     assert unused not in revealed
     with pytest.raises(RuntimeError, match="unused_variant_not_revealed"):
-        shared.reveal("persist", unused, 0.0)
+        shared.evaluate("persist", unused)
     assert m.charge_imagined(2) == 2 * v2.IMAGINED_CAP_PER_DECISION
 
 

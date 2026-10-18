@@ -1,0 +1,101 @@
+{
+  "scientific": false,
+  "collection": false,
+  "source_data": {
+    "status": "SOURCE_FITTING_UNAVAILABLE",
+    "found": [],
+    "searched": [
+      "artifacts/**/*.npz",
+      "artifacts/**/*.npy",
+      "data/**/*.npz",
+      "data/**/*.npy",
+      "datasets/**/*.npz",
+      "datasets/**/*.npy",
+      "runs/**/*.npz",
+      "runs/**/*.npy",
+      "checkpoints/**/*.npz",
+      "checkpoints/**/*.npy"
+    ],
+    "recipe": {
+      "module": "nexus.world.train.train_world_model",
+      "kind": "residual",
+      "hidden": [
+        64,
+        64
+      ],
+      "epochs": 20,
+      "n_train": 1024,
+      "n_val": 256,
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "recipe_file": "configs/acrobot_lookahead.yaml",
+      "persists_transitions": false,
+      "persists_weights_only": true,
+      "recipe_sha256": "3978b7e309f41339a56a2e6993bc48344f2bbf211baf88d3e86ce994ffa7122a"
+    },
+    "checkpoints": [
+      {
+        "id": "pendulum_frozen_decoder",
+        "family": "pendulum",
+        "path": "artifacts/frozen_dynamics_checkpoints/seed0_history_u1000.pt",
+        "expected_sha256": "83e90a9b187cdffe5e39d794ce86abf65ef891fde011daf8e55b7eee1f348959",
+        "present": true,
+        "matches": true
+      },
+      {
+        "id": "pendulum_residual_mlp",
+        "family": "pendulum",
+        "path": "artifacts/context_optimization_checkpoints/seed0_mlp_u1000.pt",
+        "expected_sha256": "4f4db2ca0ade8d2e19cb37971cf7343959edcdc17befe73e1aa9169e19c21cc2",
+        "present": true,
+        "matches": true
+      },
+      {
+        "id": "acrobot_lookahead_seed0",
+        "family": "acrobot",
+        "path": "checkpoints/acrobot_lookahead_h16/seed0.pt",
+        "expected_sha256": "bcd7fbb61231c314d83cf96d73e49e29f19d9dd10e299bc69b7fe3811ca05c2f",
+        "present": true,
+        "matches": true
+      }
+    ],
+    "collection": false,
+    "scientific": false,
+    "ledger_debit_s": 0,
+    "scientific_ledger_preserved": [
+      305.842,
+      3294.158
+    ],
+    "note": "Lookahead recipes collect 1024/256 transitions in memory and save only residual weights. No permitted Pendulum/Acrobot transition array remains. Closed confirmation/H17 files are not source data."
+  },
+  "feasibility": {
+    "fitting": "SOURCE_FITTING_UNAVAILABLE",
+    "inference": "MEASURED",
+    "v2_real_steps": 97600,
+    "v2_imagined": 110592000,
+    "pilot_real_steps": 57600,
+    "pilot_imagined": 49152000,
+    "v2_conservative_planning_s": 764.4030379746836,
+    "pilot_conservative_planning_s": 339.73468354430383,
+    "source_fitting_s": null,
+    "ten_bundle_two_family_expected_fitting_s": null,
+    "v2_feasibility": "NO-GO",
+    "pilot_feasibility": "UNKNOWN",
+    "reason": "conservative planning already exceeds 0.75 of 900 s for full v2; source fitting is unavailable so the remaining 20 residual fits cannot be added; v2-pilot planning is ~340 s with unknown fitting",
+    "blockers": [
+      "SOURCE_FITTING_UNAVAILABLE",
+      "holdout_unnamed",
+      "twelve_arm_scientific_dispatch_blocked",
+      "full_v2_no_go_under_900s",
+      "v2_pilot_unknown_without_fitting_cost",
+      "scientific_dispatch_unauthorized",
+      "h17_blocked"
+    ],
+    "scientific": false,
+    "new_ledger_debit": false,
+    "next_action": "Do not collect replacements. Keep dispatch blocked. Next allowed step is a separately authorized persist of source-only train/val arrays for a disposable residual-MLP fit clock, or a smaller worksheet that does not require twenty unmeasured fits."
+  },
+  "trusted_cache": "TrustedEvaluator",
+  "claims_learning_to_learn": false,
+  "is_agi": false
+}
