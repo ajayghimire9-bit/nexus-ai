@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-planner-adapter is engineered, not collected
+
+A catalogue-faithful fake-model adapter and population-4 evolution
+exist. Full v2 remains likely incomplete under 900 s at historical
+rates. Not a transfer result. Report
+`NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md`.
+
 ## Latest — H-e2-pendulum-acrobot-persistence v2 contracts exist, untested
 
 v2 locks paired bundles, two H=16 anchors, mutation-only evolution,

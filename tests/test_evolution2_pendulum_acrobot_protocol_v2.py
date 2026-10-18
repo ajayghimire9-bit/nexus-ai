@@ -54,7 +54,7 @@ def test_methods_include_two_anchors_and_no_crossover():
     assert m.SEARCH_SLOTS == 4
     assert m.EVOLUTION_POPULATION == 4
     assert m.EVOLUTION_TOURNAMENT == 2
-    assert m.existing_evolution_implements_population_tournament() is False
+    assert m.existing_evolution_implements_population_tournament() is True
     with pytest.raises(m.ContractError, match="crossover"):
         m.refuse_crossover()
 

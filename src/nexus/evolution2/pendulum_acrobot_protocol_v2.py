@@ -286,7 +286,11 @@ def wall_clock_risk() -> str:
 
 
 def existing_evolution_implements_population_tournament() -> bool:
-    return False
+    from nexus.evolution2.methods import EvolutionarySearch
+    return (
+        EvolutionarySearch.population_size == EVOLUTION_POPULATION
+        and EvolutionarySearch.tournament_size == EVOLUTION_TOURNAMENT
+    )
 
 
 def anchors() -> tuple[Variant, Variant]:

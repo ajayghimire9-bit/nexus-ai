@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — trusted planner adapter and evolution repair, no collection
+
+Fake-model catalogue adapter and population-4 evolutionary baseline
+are implemented. Historical CPU extrapolation: 611.6 s planning for
+the v2 imagined bound. Science still blocked. Ledger
+305.842 / 3294.158 unchanged.
+
 ## Latest — v2 source-only contracts locked, no collection
 
 Two H=16 anchors, mutation-only evolution, Bonferroni gate, paired

@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "1e3fc6e24e320ef8550cd441b2bb74ec55f33eb0",
+  "head": "1ccaec76afc508571a261200b56c3121dcd39323",
   "ledger_s": [
     305.842,
     3294.158
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 31,
+    "curated": 32,
     "incomplete_unindexed_docs": 93,
-    "total": 124,
+    "total": 125,
     "incomplete": 120,
-    "source_verified": 4
+    "source_verified": 5
   },
   "experiments": [
     {
@@ -582,6 +582,24 @@
         "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_READINESS.md"
       ],
       "reuse": "Superseding design. Do not collect. Do not name a holdout.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2.1-planner-adapter",
+      "title": "Trusted catalogue-to-planner adapter",
+      "hypothesis": "The 12-variant catalogue can be bound to existing family scoring rules without changing historical lookahead modules.",
+      "implementation": [
+        "src/nexus/evolution2/planner_adapter.py",
+        "src/nexus/evolution2/methods.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md",
+      "results": null,
+      "status": "engineering_only_unauthorized",
+      "artifacts": [
+        "artifacts/evolution2_planner_compatibility.json"
+      ],
+      "reuse": "Fake-model adapter. Not a scientific result. Do not collect.",
       "coverage": "source_verified"
     },
     {

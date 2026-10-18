@@ -1,7 +1,7 @@
 # NEXUS full research registry
 
 Status: **documentation only**. Not a scientific result.
-HEAD: `1e3fc6e24e320ef8550cd441b2bb74ec55f33eb0`. Ledger **305.842 / 3294.158**.
+HEAD: `1ccaec76afc508571a261200b56c3121dcd39323`. Ledger **305.842 / 3294.158**.
 H17 remains **blocked**.
 
 Missing commits, protocols, or implementations are marked **incomplete**
@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 31
+- Curated rows: 32
 - Unindexed protocol/results docs: 93
-- Total rows: 124
+- Total rows: 125
 - Incomplete or partial: 120
-- Source-verified: 4
+- Source-verified: 5
 
 ## Closed primary labels that must not be retuned
 
@@ -70,6 +70,7 @@ or component.
 | `E2-synthetic-screen` | synthetic_contract_only | docs/NEXUS_EVOLUTION2_CROSS_TASK_SCREEN.md / — | Authored hidden scores. Not LEVEL 2 evidence. Do not promote. | partial |
 | `E2-pendulum-acrobot-v1` | design_locked_unauthorized_superseded_by_v2 | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL.md / — | Historical v1 lock. Do not collect. Holdout unnamed. See readiness review. | source_verified |
 | `E2-pendulum-acrobot-v2` | design_only_unauthorized | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2.md / — | Superseding design. Do not collect. Do not name a holdout. | source_verified |
+| `E2.1-planner-adapter` | engineering_only_unauthorized | docs/NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md / — | Fake-model adapter. Not a scientific result. Do not collect. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

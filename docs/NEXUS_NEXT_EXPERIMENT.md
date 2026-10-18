@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — trusted planner adapter exists; full v2 likely incomplete
+
+Catalogue-faithful fake-model scoring and population-4 evolution
+are implemented. Historical residual-MLP rates extrapolate to
+**611.6 s** of planning alone for 110,592,000 imagined states, so
+the full v2 screen is likely `incomplete_budget` under 900 s. Do
+not collect. Do not rewrite v2. Next: a prospective v2-pilot
+worksheet, still unnamed holdout. Ledger 305.842 / 3294.158.
+Report `NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md`.
+
 ## Current — v2 contracts locked; collection still BLOCKED
 
 Source-only v2 tests now lock two H=16 anchors, mutation-only

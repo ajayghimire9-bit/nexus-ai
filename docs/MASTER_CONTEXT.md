@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.1 trusted planner adapter, science BLOCKED, 2026-10-18
+
+On `cursor/evolution2-trusted-planner-adapter` from `1ccaec7`.
+Catalogue-to-planner adapter reuses `RandomShootingMPC` scoring.
+Population-4 / tournament-2 evolution repaired. Full v2 likely
+`incomplete_budget` at historical rates (~611.6 s planning). No
+collection. H17 blocked. Ledger unchanged (305.842 / 3294.158).
+Report `NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md`. Earlier
+entries remain history.
+
 ## Latest — Pendulum/Acrobot v2 contracts locked, collection BLOCKED, 2026-10-18
 
 On `cursor/evolution2-pendulum-acrobot-protocol`. Source-only v2

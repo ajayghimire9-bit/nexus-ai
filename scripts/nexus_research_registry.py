@@ -443,6 +443,19 @@ EXPERIMENTS = [
         "reuse": "Superseding design. Do not collect. Do not name a holdout.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.1-planner-adapter",
+        "title": "Trusted catalogue-to-planner adapter",
+        "hypothesis": "The 12-variant catalogue can be bound to existing family scoring rules without changing historical lookahead modules.",
+        "implementation": ["src/nexus/evolution2/planner_adapter.py", "src/nexus/evolution2/methods.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_TRUSTED_PLANNER_ADAPTER.md",
+        "results": None,
+        "status": "engineering_only_unauthorized",
+        "artifacts": ["artifacts/evolution2_planner_compatibility.json"],
+        "reuse": "Fake-model adapter. Not a scientific result. Do not collect.",
+        "coverage": "source_verified",
+    },
 ]
 
 

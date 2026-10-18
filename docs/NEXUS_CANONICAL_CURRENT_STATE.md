@@ -46,6 +46,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2 Pendulum→Acrobot persist vs reset/random/evolution/retrieval/fixed (v1 locked and **not ready**; v2 design-only; holdout unnamed; collection unauthorized)
 - H17 occupancy/library factorial
 - Runtime scientific dispatch (stub only)
+- Evolution-2.1 catalogue-to-planner adapter (fake models; dispatch still blocked)
 
 ## Engineering that exists at HEAD 4a08b26
 

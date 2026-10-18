@@ -126,9 +126,14 @@ class StatelessWrapper:
 
 
 class EvolutionarySearch:
-    """Equal-budget within-task mutation. Does not persist fitness across tasks."""
+    """Equal-budget within-task mutation. Population 4, tournament 2.
+
+    Does not persist fitness across tasks. Crossover is forbidden.
+    """
     name = 'evolutionary'
     resets = True
+    population_size = 4
+    tournament_size = 2
 
     def __init__(self, seed=7):
         if type(seed) is not int or not 0 <= seed <= 10**9:
@@ -137,15 +142,18 @@ class EvolutionarySearch:
         self._feedback_seen = set()
         self.parent = None
         self.best_score = -1.0
+        self.population = []
 
     def learned_state(self):
         return {'parent': None if self.parent is None else self.parent.fingerprint,
-                'best_score': self.best_score, 'updates': len(self._feedback_seen)}
+                'best_score': self.best_score, 'updates': len(self._feedback_seen),
+                'population': len(self.population)}
 
     def reset_task(self):
         self.parent = None
         self.best_score = -1.0
         self._feedback_seen = set()
+        self.population = []
         return self.learned_state()
 
     def _mutate(self, variant):
@@ -159,16 +167,28 @@ class EvolutionarySearch:
         nxt = HORIZONS[(HORIZONS.index(variant.horizon) + 1) % len(HORIZONS)]
         return type(variant)(variant.rule, variant.generator, nxt)
 
+    def _crossover(self, *_args, **_kwargs):
+        raise MethodError('crossover_is_illegal')
+
+    def _tournament_parent(self):
+        if not self.population:
+            return None
+        k = min(self.tournament_size, len(self.population))
+        if k == 1:
+            return self.population[0][1]
+        contenders = self._rng.sample(self.population, k)
+        return max(contenders, key=lambda row: (row[0], row[1].fingerprint))[1]
+
     def choose(self, available, context):
         if type(context) is not PublicFixtureContext:
             raise MethodError('public_context_required')
-        if self.parent is None:
+        parent = self._tournament_parent()
+        if parent is None:
             return available[0]
-        mutant = self._mutate(self.parent)
-        for _ in range(8):
+        for _ in range(16):
+            mutant = self._mutate(parent)
             if mutant in available:
                 return mutant
-            mutant = self._mutate(self.parent)
         return available[0]
 
     def update(self, feedback, context):
@@ -179,13 +199,18 @@ class EvolutionarySearch:
         self._feedback_seen.add(feedback.event_id)
         variant = next(v for v in VARIANTS if v.fingerprint == feedback.variant_id)
         score = 0.0 if feedback.failed else float(feedback.score)
-        if score >= self.best_score:
-            self.best_score = score
-            self.parent = variant
+        self.population.append((score, variant))
+        self.population.sort(key=lambda row: (-row[0], row[1].fingerprint))
+        self.population = self.population[: self.population_size]
+        self.best_score = self.population[0][0]
+        self.parent = self.population[0][1]
 
     def eval_clone(self, *, local_updates):
         clone = EvolutionarySearch()
         clone._rng.setstate(self._rng.getstate())
+        clone.population = list(self.population)
+        clone.parent = self.parent
+        clone.best_score = self.best_score
         clone._allow_local = bool(local_updates)
         return clone
 
