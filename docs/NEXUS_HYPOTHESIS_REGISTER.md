@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.20 method-sensitive screen remains unauthorized
+
+The corrected hidden loop is locked and still ungranted. Not a
+transfer result. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md`.
+
 ## Latest — H-e2.19 retained proposer memory can change planner choice
 
 The 6-weight linear policy translates remembered feedback into a

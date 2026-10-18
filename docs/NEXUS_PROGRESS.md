@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.20 method-sensitive runner locked, science BLOCKED
+
+Future hidden loop is method-selected. 7680, 17280, continue, and
+E2.17 confirmation reuse are refused. No collection. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md`.
+
 ## Latest — Evolution-2.19 policy-state diagnostic, no new collection
 
 Retained memory changes unconstrained and some hidden selections.

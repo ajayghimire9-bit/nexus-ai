@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 47
+- Curated rows: 48
 - Unindexed protocol/results docs: 93
-- Total rows: 140
+- Total rows: 141
 - Incomplete or partial: 120
-- Source-verified: 20
+- Source-verified: 21
 
 ## Closed primary labels that must not be retuned
 
@@ -94,6 +94,7 @@ or component.
 | `E2.17-persist-reset-science` | complete_inconclusive | docs/NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md / docs/NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md | Persist-minus-reset 0. Grant consumed. Do not retry or promote to n=10. | source_verified |
 | `E2.18-persist-reset-diagnosis` | methodological_repair_science_refused | docs/NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md / docs/NEXUS_EVOLUTION2_PERSIST_RESET_SCIENCE.md | Do not rewrite E2.17. Do not collect. New grant required for a method-sensitive screen. | source_verified |
 | `E2.19-persist-reset-policy-state` | mechanism_functions_science_refused | docs/NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md / docs/NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md | Memory-to-choice functions. Do not collect yet. New grant required for a 24480 n=3 screen. | source_verified |
+| `E2.20-persist-reset-method-sensitive` | runner_locked_science_blocked | docs/NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md / docs/NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md | Do not reuse run_bundle or the consumed 17280 grant. New unused 24480 grant required. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

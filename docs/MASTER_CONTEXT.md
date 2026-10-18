@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.20 method-sensitive runner locked, science BLOCKED, 2026-10-18
+
+The future persist-versus-reset path uses method-selected hidden
+planners and refuses 7680, consumed 17280, continue, and E2.17
+development as confirmation. Fresh upper cap 24,480. No unused grant.
+No collection. E2.17 stays inconclusive. H17 blocked. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md`. Earlier entries
+remain history.
+
 ## Latest — Evolution-2.19 policy-state diagnostic, science still refused, 2026-10-18
 
 Retained adaptive weights change unconstrained and some hidden

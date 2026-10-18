@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.20 method-sensitive runner locked; science BLOCKED
+
+`continue` is not approval. Next scientific step requires a new unused
+grant that cites a new four-role unused holdout and `env_cap=24480`.
+Do not reuse the consumed E2.17 grant or its development. Do not
+collect. Do not start Evolution-3. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md`.
+
 ## Current — Evolution-2.19 memory-to-choice functions; one recommended next screen
 
 Source-only persist-versus-reset intervention: weights change;
