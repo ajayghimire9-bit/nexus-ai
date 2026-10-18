@@ -1,6 +1,9 @@
 """Arithmetic-only regression tests: never load experiments or environments."""
 import ast
+import hashlib
+import json
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -77,3 +80,16 @@ def test_config_binding_and_no_scientific_imports():
     imports|={a.name for n in ast.walk(tree) if isinstance(n,ast.Import) for a in n.names}
     assert not any(v.startswith(('torch','numpy','gym','nexus.world','nexus.tasks')) for v in imports)
     assert not any(isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id in {'eval','exec','compile'} for n in ast.walk(tree))
+
+
+def test_saved_certificates_reproduce_from_bound_historical_source_and_config():
+    root=Path(__file__).resolve().parents[1]
+    result=json.loads((root/'artifacts/h17_reservation_closure_validated.json').read_text())
+    registry=json.loads((root/m.REGISTRY).read_text())
+    for row in result['historical_seed_certificates']:
+        source=subprocess.check_output(['git','cat-file','blob',row['git_blob']],cwd=root).decode()
+        raw=subprocess.check_output(['git','show',row['commit']+':'+row['config_path']],cwd=root)
+        assert hashlib.sha256(raw).hexdigest()==row['config_sha256']
+        again=m.certify(source,m.parse_config(raw.decode()),registry['conservative_seed_reservations'],row['function'])
+        assert again=={key:row[key] for key in again}
+        assert not again['outside_reservations']

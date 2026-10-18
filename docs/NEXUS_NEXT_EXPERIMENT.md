@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — finish source-only closure before any H17 registration
+
+Final reservation review remains BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE.
+One next task: complete a hash-bound historical seed/metadata closure certificate,
+resolving the enumerated imported delegates, finite-product/loop expressions,
+older inherited seed helpers and unrecognized registration fields. Twenty-seven
+historical expressions already fit existing windows; all299 artifact schemas
+are recorded. Preserve the manual Cline reservation without treating it as
+authorized. No physics selection or numerical H17 seeds yet. Proposed
+five-source/t12 counts62,360/174,080/300s and ledger305.842/3294.158 unchanged.
+See `NEXUS_H17_RESERVATION_CLOSURE.md`. Do not run H17.
+
 ## Current — H17 numerical registration is blocked
 
 Verdict BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE, not a provenance mismatch.

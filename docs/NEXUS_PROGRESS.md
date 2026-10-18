@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — H17 reservation closure reviewed, still blocked
+
+Source-only follow-through on `codex/h17-reservation-closure` parsed all299
+historical artifact versions and certified27 historical own-seed expressions
+against existing windows; none was outside. Seven Cline draft hashes and its
+64M seed expression remain unchanged and are now portably recorded as reserved,
+not authorized. Forty unsupported function records (including duplicate guards)
+and unclassified registration schemas prevent a completeness claim. Preserve29
+physics exclusions, six ambiguous cases and the original windows. No target,
+H17 numerical registration, lock or experiment. Ledger305.842/3294.158 remains
+unchanged. See `NEXUS_H17_RESERVATION_CLOSURE.md` for exact evidence and gaps.
+
 ## Latest — H17 registration blocked by incomplete coverage evidence
 
 On `codex/h17-exclusion-coverage-review`: exact base4a860315 verified.

@@ -48,3 +48,80 @@ blocked verdict is a completed source review, not an incomplete experiment.
 No model, environment, historical holdout or scientific budget is accessed.
 
 Results and the minimum remaining corrective action are appended after capture.
+
+## Final result
+
+**BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE**. Provenance matches. Numerical H17
+registration remains unsafe; no readiness, lock or execution permission is
+inferred from this review.
+
+Implementation commits: `f97d45b8694727adfb53078eae3221fbf8ce0c2b` and
+`b7e6719a9f16d44ffa41febed1f0d318c51407ac`. The final capture records the
+latter source revision. The first capture is preserved separately. Final
+artifact: `artifacts/h17_reservation_closure_validated.json`, SHA256
+`aa8a3ce21bf1d6d5761a7ceef3f4b124b0ca9d9100b5ac55043a8b168257d95d`.
+
+- All **299** historical artifact JSON versions parsed without issues; root
+  schemas and recognized physics metadata are now recorded, rather than only
+  indexing 257 of those versions. No novel recognized physics tuple was found.
+- **27** own-seed expression certificates across historical versions reproduce
+  exactly from their bound source/configuration. Every extracted historical
+  value fits the preserved reservations. These are source records, not 27
+  independent experiments. Versions and overlapping stream values are not
+  summed as unique historical interactions or independent evidence.
+- **40** unsupported function records across **22** paths remain explicitly
+  listed. Several are collision-check wrappers of already certified own-seed
+  functions; they are not 40 distinct unexplained seed families. Remaining
+  substantive cases include `action_conditioned_q`, `capacity_matched_q`,
+  `decision_aware_world_model`, `horizon_alignment`, `receding_policy_consistency`,
+  `same_set_planning`, `planning_value`, `terminal_value`, the Cline parity
+  script, imported constants in two MCC confirmation modules and the H15
+  delegate to H14. No imported constant or delegate was silently guessed.
+- Seven external Cline draft hashes still match. Their portable registration
+  metadata is recorded as **observed reserved, not authorized**, without
+  editing the worktree or claiming owner finalization. Its own historical
+  expression certificate contains **7,860 unique values**, minimum 64,000,000,
+  maximum 64,030,399, all inside existing reservations. The count reflects
+  aliases in the existing formula, not newly generated experimental draws.
+- The original **29 physics exclusions**, including all six conservative
+  ambiguous tuples, and original seed windows remain unchanged.
+
+The initial and final source captures took 8.44 and 8.93 seconds respectively;
+these are metadata-processing times, not scientific execution. New real
+interactions, imagined transitions, model inference and training updates are
+all **zero**. All prior artifacts, the H17 draft and session ledger are unchanged.
+
+Final regression command and outcome:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest tests/test_h17_reservation_closure.py tests/test_h17_exclusion_coverage_review.py tests/test_h17_exclusion_registry_audit.py tests/test_h17_protocol_readiness.py tests/test_h17_occupancy_feasibility.py tests/test_h16_selection_mechanism_diagnosis.py -p no:cacheprovider -o addopts='' -q
+```
+
+**140 passed in 2.60 seconds**, including reproduction of all27 historical
+certificates directly from their recorded Git blobs and same-commit configs.
+`git diff --check` passed. No full scientific test suite was run: this task's
+tests deliberately exclude simulator, training and model-inference tests.
+
+## Exact remaining evidence and minimum corrective action
+
+One next source-only task: finish a **hash-bound historical seed and metadata
+closure certificate**. Resolve the listed imported/delegated and finite
+product/loop expressions using their actual historical modules and configs;
+include inherited older helpers such as `diagnostic_seed_groups`,
+`horizon_seed_groups`, `phase_seed_groups`, `design_seed_groups`,
+`proposed_seeds` and `assert_seeds` dependencies. Check actual RNG call sites
+against these registries, rather than equating a successful registry parse
+with complete call-site coverage. Classify registration-bearing fields outside
+the recognized schema (for example `registered_seed_block`) against historical
+configs/protocols. Unsupported cases must retain a blocker.
+
+The observed manual draft is now portable as a conservative exclusion. Its
+ownership/finalization remains unknown, so keep it excluded regardless; do not
+require its experiment to execute or remove its reservation. Deleted/unfetched
+refs and unpublished instructions elsewhere remain unavailable evidence. A
+future closure claim must specify its reachable/local evidence scope and any
+necessary owner attestation rather than claiming universal historical coverage.
+
+This is the final decision for this review, not an experimental failure or a
+scientific claim about H17. Do not select targets or numerical H17 seeds until
+the remaining source-only closure certificate passes a separate review.
