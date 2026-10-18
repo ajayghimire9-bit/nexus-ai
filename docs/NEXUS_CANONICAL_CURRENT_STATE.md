@@ -21,7 +21,8 @@ twelve-arm dispatch BLOCKED and full v2 NO-GO. Evolution-2.3 finds
 no stored source transitions (`SOURCE_FITTING_UNAVAILABLE`) and
 replaces caller-supplied RevealCache scores with TrustedEvaluator.
 Evolution-2.4 finds no matched ten-bundle residual set
-(`NO_FIT_TEN_BUNDLE_UNAVAILABLE`). None of these is collection.
+(`NO_FIT_TEN_BUNDLE_UNAVAILABLE`). An explicit n=3 micro exists
+and is **NOT_V2 / NOT_READY**. None of these is collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
 
@@ -57,6 +58,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.1 catalogue-to-planner adapter (fake models; dispatch still blocked)
 - Evolution-2.3 source-fitting clock (unavailable; no stored transitions)
 - Evolution-2.4 no-fit residual inventory (Pendulum 3 / Acrobot 10 unmatched)
+- Evolution-2.5 n=3 no-fit micro (NOT_V2, recipe unmatched, unauthorized)
 
 ## Engineering that exists at HEAD 4a08b26
 

@@ -1,7 +1,7 @@
 # NEXUS full research registry
 
 Status: **documentation only**. Not a scientific result.
-HEAD: `cc6ad766d7418faaabcf87b4375724496a007429`. Ledger **306.954 / 3293.046**.
+HEAD: `5a3867b403d642325a86325b9d0777aa45b77f36`. Ledger **306.954 / 3293.046**.
 H17 remains **blocked**.
 
 Missing commits, protocols, or implementations are marked **incomplete**
@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 39
+- Curated rows: 40
 - Unindexed protocol/results docs: 93
-- Total rows: 132
+- Total rows: 133
 - Incomplete or partial: 120
-- Source-verified: 12
+- Source-verified: 13
 
 ## Closed primary labels that must not be retuned
 
@@ -78,6 +78,7 @@ or component.
 | `E2.2-adapter-correctness` | engineering_audit_science_blocked | docs/NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md / docs/NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md | Fixes adapter parity and evolution fairness. Does not enable dispatch or collect. | source_verified |
 | `E2.3-source-fitting` | source_fitting_unavailable_cache_pass | docs/NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md / docs/NEXUS_EVOLUTION2_SOURCE_FITTING_BENCHMARK.md | Do not collect replacements. Do not invent a fit time. TrustedEvaluator owns scores. | source_verified |
 | `E2.4-nofit-inventory` | no_fit_ten_bundle_unavailable | docs/NEXUS_EVOLUTION2_NOFIT_INVENTORY.md / docs/NEXUS_EVOLUTION2_NOFIT_INVENTORY.md | Read-only hashes. Do not reuse confirmation weights. Do not collect. | source_verified |
+| `E2.5-n3-micro` | not_v2_not_ready_unauthorized | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md / docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md | Does not rewrite v2. recipe_matched is false. Do not collect. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

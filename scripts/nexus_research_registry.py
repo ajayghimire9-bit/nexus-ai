@@ -563,6 +563,22 @@ EXPERIMENTS = [
         "reuse": "Read-only hashes. Do not reuse confirmation weights. Do not collect.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.5-n3-micro",
+        "title": "Explicit n=3 no-fit micro, not v2",
+        "hypothesis": "A three-bundle no-fit worksheet must use df=2 Bonferroni and cannot inherit the v2 df=9 gate while residuals are unmatched.",
+        "implementation": ["src/nexus/evolution2/pendulum_acrobot_protocol_n3_micro.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md",
+        "results": "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md",
+        "status": "not_v2_not_ready_unauthorized",
+        "artifacts": [
+            "configs/evolution2_pendulum_acrobot_protocol_n3_micro.yaml",
+            "configs/evolution2_pendulum_acrobot_allocation_n3_micro.json",
+        ],
+        "reuse": "Does not rewrite v2. recipe_matched is false. Do not collect.",
+        "coverage": "source_verified",
+    },
 ]
 
 

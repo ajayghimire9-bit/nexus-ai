@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.5 n=3 micro locked; science still BLOCKED
+
+n=3 / df=2 contracts exist and cannot inherit the v2 df=9 gate.
+`recipe_matched` is false. Collection unauthorized. Do not collect
+replacements. Do not name a holdout. Do not unlock H17. Next:
+separately authorize matched Pendulum/Acrobot source persist. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md`.
+
 ## Current — Evolution-2.4 no-fit ten-bundle unavailable; science still BLOCKED
 
 Pendulum has 3 residual MLPs; Acrobot has 10 historical lookahead

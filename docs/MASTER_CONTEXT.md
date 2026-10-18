@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.5 n=3 micro locked, still NOT_V2, 2026-10-18
+
+On `cursor/evolution2.5-n3-micro` from `5a3867b`. Explicit n=3 /
+df=2 no-fit worksheet. Bound files are 3 Pendulum MLPs and 3
+historical Acrobot lookahead seeds. `recipe_matched` is false, so
+the primary gate is `not_ready_recipe_mismatch`. Does not rewrite
+v2 or v2-pilot. Holdout unnamed. H17 blocked. Scientific ledger
+preserved at 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md`. Earlier
+entries remain history.
+
 ## Latest — Evolution-2.4 no-fit inventory unavailable, 2026-10-18
 
 On `cursor/evolution2.4-nofit-inventory` from `efd59b4`. Existing

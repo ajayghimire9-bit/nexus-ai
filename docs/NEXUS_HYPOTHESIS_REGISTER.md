@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.5 n=3 micro is designed, not collected
+
+df=2 Bonferroni cannot be swapped for the v2 df=9 constant.
+Unmatched residuals keep the gate at `not_ready_recipe_mismatch`.
+Not a transfer result. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_N3_MICRO.md`.
+
 ## Latest — H-e2.4 no-fit ten-bundle is unavailable, not collected
 
 Three Pendulum residual MLPs cannot fill n=10. Acrobot lookahead
