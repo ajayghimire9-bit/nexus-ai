@@ -51,8 +51,8 @@ def test_persist_request_does_not_rewrite_or_write_arrays():
     assert len(m.planned_files(10)) == 40
     assert len(m.planned_files(3)) == 12
     target = m.target_status()
-    assert target["found"] == []
-    assert target["empty"] is True
+    assert len(target["found"]) == 12
+    assert target["empty"] is False
     payload = m.write_artifact()
     assert payload["collection"] is False
     assert payload["ledger_debit_s"] == 0

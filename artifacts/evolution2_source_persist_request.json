@@ -1,12 +1,25 @@
 {
   "scientific": false,
   "collection": false,
-  "status": "request_only_unauthorized",
+  "status": "development_pilot_not_confirmation",
   "target": {
     "target_dir": "artifacts/evolution2_source_arrays",
-    "exists": false,
-    "found": [],
-    "empty": true
+    "exists": true,
+    "found": [
+      "artifacts/evolution2_source_arrays/acrobot/bundle0_train.npz",
+      "artifacts/evolution2_source_arrays/acrobot/bundle0_val.npz",
+      "artifacts/evolution2_source_arrays/acrobot/bundle1_train.npz",
+      "artifacts/evolution2_source_arrays/acrobot/bundle1_val.npz",
+      "artifacts/evolution2_source_arrays/acrobot/bundle2_train.npz",
+      "artifacts/evolution2_source_arrays/acrobot/bundle2_val.npz",
+      "artifacts/evolution2_source_arrays/pendulum/bundle0_train.npz",
+      "artifacts/evolution2_source_arrays/pendulum/bundle0_val.npz",
+      "artifacts/evolution2_source_arrays/pendulum/bundle1_train.npz",
+      "artifacts/evolution2_source_arrays/pendulum/bundle1_val.npz",
+      "artifacts/evolution2_source_arrays/pendulum/bundle2_train.npz",
+      "artifacts/evolution2_source_arrays/pendulum/bundle2_val.npz"
+    ],
+    "empty": false
   },
   "worksheet": {
     "version": "source-persist-request",
@@ -28,8 +41,8 @@
     "n3_source_steps": 7680,
     "v2_files": 40,
     "n3_files": 12,
-    "authorized_env_cap": 0,
-    "authorized_time_cap_s": 0,
+    "authorized_env_cap": 7680,
+    "authorized_time_cap_s": 300,
     "collection": false
   },
   "blockers": [
@@ -50,5 +63,7 @@
     305.842,
     3294.158
   ],
-  "next_action": "Human approval must cite this configuration hash and set env_cap to 7680 or 25600. Do not collect before that record."
+  "cited_config_sha256": "325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76",
+  "granted_env_cap": 7680,
+  "next_action": "7680 arrays exist as a development pilot. Do not collect again. Do not promote them to n=10 or v2 confirmation. A residual fit clock still needs a separate grant."
 }

@@ -1,13 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
-## Latest — Evolution-2.8 7680 persist granted as development pilot, 2026-10-18
+## Latest — Evolution-2.8 7680 persist collected as development pilot, 2026-10-18
 
 Human-approved `env_cap=7680` citing frozen config
 `325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76`.
-Not inferred from continue. Purpose: matched family-default source
-arrays for a later disposable residual fit clock. Not v2, not n=10
-confirmation. Holdout unnamed. H17 blocked. H16 ledger preserved
-305.842 / 3294.158. Report
+Not inferred from continue. Twelve family-default Pendulum/Acrobot
+train/val arrays were written (7680 steps, 0.156 s wall, 0 models).
+Not v2, not n=10 confirmation. Holdout unnamed. H17 blocked. H16
+ledger preserved 305.842 / 3294.158. A later residual fit clock is
+still unauthorized. Report
 `NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md`. Earlier entries remain
 history.
 

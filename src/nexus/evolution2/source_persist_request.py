@@ -165,8 +165,9 @@ def write_artifact() -> dict:
         "cited_config_sha256": LOCKED_CONFIG,
         "granted_env_cap": int(allocation_record().get("env_cap") or 0),
         "next_action": (
-            "7680 is granted as a development pilot only. Do not promote it "
-            "to n=10 or v2 confirmation."
+            "7680 arrays exist as a development pilot. Do not collect again. "
+            "Do not promote them to n=10 or v2 confirmation. A residual fit "
+            "clock still needs a separate grant."
         ),
     }
     RESULTS.write_text(json.dumps(payload, indent=2) + "\n")

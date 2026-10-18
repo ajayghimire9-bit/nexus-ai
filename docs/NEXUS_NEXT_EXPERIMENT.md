@@ -1,10 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — Evolution-2.8 7680 persist granted; not v2 confirmation
+## Current — Evolution-2.8 7680 arrays persisted; fit clock still unauthorized
 
 Cited config `325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76`,
-`env_cap=7680`. Family defaults only. Do not name a holdout. Do not
-unlock H17. Do not promote to n=10. Report
+`env_cap=7680`. Twelve family-default files exist. Do not collect
+again. Do not promote to n=10. Do not name a holdout. Do not unlock
+H17. Next: a separately authorized disposable residual-MLP fit clock
+on these arrays. Report
 `NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md`.
 
 ## Current — Evolution-2.7 persist request locked; collection still BLOCKED

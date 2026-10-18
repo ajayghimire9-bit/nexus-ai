@@ -12,6 +12,11 @@ def test_collect_refuses_ungranted_ten_bundle_cap():
         c.run_persist(25600)
 
 
+def test_authorized_7680_refuses_a_second_write():
+    with pytest.raises(RuntimeError, match="duplicate_or_partial_persist"):
+        c.run_persist(7680)
+
+
 def test_source_spec_is_occupied_default_only():
     spec, key = c.source_spec("pendulum")
     assert spec.task_id == "pendulum_default"

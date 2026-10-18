@@ -2,7 +2,8 @@
 
 ## Latest — H-e2.8 7680 persist is a development pilot, not confirmation
 
-Cited config `325cd42b…` and `env_cap=7680`. Not v2. Report
+Cited config `325cd42b…` and `env_cap=7680`. Twelve source arrays
+exist. Not v2. Not a residual fit clock. Report
 `NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md`.
 
 ## Latest — H-e2.7 source persist is requested, not collected

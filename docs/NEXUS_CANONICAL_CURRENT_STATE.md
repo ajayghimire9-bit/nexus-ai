@@ -24,8 +24,10 @@ Evolution-2.4 finds no matched ten-bundle residual set
 (`NO_FIT_TEN_BUNDLE_UNAVAILABLE`). An explicit n=3 micro exists
 and is **NOT_V2 / NOT_READY**. Evolution-2.6 confirms checkpoint
 payloads are weights only and keeps scientific dispatch **BLOCKED**.
-A 7680-step source persist is granted as a development pilot citing
-config `325cd42b…`. It is not v2 confirmation.
+A 7680-step source persist collected twelve family-default
+Pendulum/Acrobot arrays as a development pilot citing config
+`325cd42b…`. It is not v2 confirmation. The residual fit clock
+remains unauthorized.
 None of these is n=10 collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
