@@ -1,7 +1,7 @@
 # NEXUS full research registry
 
 Status: **documentation only**. Not a scientific result.
-HEAD: `869a9e56be8405aa62aa3b5f04c66dc4879da1e9`. Ledger **306.954 / 3293.046**.
+HEAD: `15f142ae84281b5fb52344c76b2f22bb95a58509`. Ledger **306.954 / 3293.046**.
 H17 remains **blocked**.
 
 Missing commits, protocols, or implementations are marked **incomplete**
