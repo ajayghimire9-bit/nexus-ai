@@ -120,3 +120,15 @@ memory footprint. Previous results remain unchanged.
 ## Results
 
 Pending the committed implementation and source-only benchmark.
+
+### Execution instrumentation correction
+
+First attempt at `5604c98` reached JSON serialization but failed
+because raw kernel squares underflowed in ESS (0/0). No valid result
+was saved; its failure record is retained separately. Normalize
+weights before squaring to compute the same mathematical ESS
+stably. Add a tiny-positive-kernel regression and reject nonfinite
+trace fields. No scientific rule, threshold, calibration, seed or
+selection mechanism was tuned. Commit this correction before the
+recorded complete audit. Failed-attempt compute was not persisted;
+it must not be silently reported as zero.

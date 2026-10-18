@@ -52,6 +52,14 @@ def test_open_gate_negligible_kernel_cannot_force_confidence_one():
     assert all(c["mass"] == 0 for c in m.last_decision()["comparisons"].values())
 
 
+def test_subnormal_squared_kernels_have_finite_ess():
+    m,ctx,available,inc,candidate = fixture(length=1.0,distance=22.0)
+    assert m.choose(available,ctx) == inc
+    cell = m.last_decision()["comparisons"][candidate.fingerprint]
+    assert np.isfinite(cell["ess"]) and cell["ess"] == 2
+    assert 0 < cell["mass"] < 1e-200
+
+
 def test_multiple_arm_rows_and_duplicate_task_aliases_not_independent():
     m,ctx,available,inc,_ = fixture()
     # Alias every source with the same support and observation identity.

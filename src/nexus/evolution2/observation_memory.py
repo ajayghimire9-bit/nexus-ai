@@ -376,7 +376,8 @@ class ObservationAwareAdaptive:
             w = weights / mass
             deltas = np.asarray([g["scores"][fp] - g["scores"][incumbent.fingerprint] for g in paired])
             advantage = float(w @ deltas)
-            ess = float(mass * mass / (weights @ weights))
+            # Normalize first: squaring tiny raw kernels can underflow to 0/0.
+            ess = float(1.0 / (w @ w))
             agreement = float(w @ (deltas > 1e-12))
             spread = float(np.sqrt(w @ ((deltas - advantage) ** 2)))
             anchor_error = (float(w @ np.asarray([

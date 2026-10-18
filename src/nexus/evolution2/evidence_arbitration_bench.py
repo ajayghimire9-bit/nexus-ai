@@ -137,6 +137,16 @@ def methods_for(seed, normalizers, cross, quality_error):
 
 
 def validate_results(payload):
+    def finite_tree(value):
+        if isinstance(value, dict):
+            for child in value.values():
+                finite_tree(child)
+        elif isinstance(value, (list, tuple)):
+            for child in value:
+                finite_tree(child)
+        elif isinstance(value, float) and not math.isfinite(value):
+            raise ValueError("nonfinite_trace_metric")
+    finite_tree(payload)
     expected = {"train": {"pend_store_0","acro_store_0","pend_store_1","acro_zero_0"},
                 "development": {"pend_store_2","acro_store_1"},
                 "shifted": {"acro_zero_1","pend_far_2","acro_far_1"},
@@ -261,6 +271,14 @@ def write_artifact(path=RESULTS):
     path = Path(path)
     if path.exists():
         raise FileExistsError("preserve_previous_e224_result")
-    payload = run_benchmark()
-    path.write_text(json.dumps(payload,indent=2,allow_nan=False)+"\n")
+    started = time.perf_counter()
+    try:
+        payload = run_benchmark()
+        encoded = json.dumps(payload,indent=2,allow_nan=False)+"\n"
+    except Exception as exc:
+        path.write_text(json.dumps({"declared_complete":False,"env_steps":0,
+                                   "failure":f"{type(exc).__name__}: {exc}",
+                                   "wall_s":time.perf_counter()-started})+"\n")
+        raise
+    path.write_text(encoded)
     return payload
