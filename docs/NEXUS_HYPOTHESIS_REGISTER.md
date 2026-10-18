@@ -2,8 +2,9 @@
 
 ## Latest — H-e2.9 six disposable residual fits are a clock, not confirmation
 
-Cited config `277d7ba6…`, `env_cap=0`, `n_fits=6`. Not v2. Not a
-control result. Report `NEXUS_EVOLUTION2_FIT_CLOCK.md`.
+Cited config `277d7ba6…`, `env_cap=0`, `n_fits=6`. Wall 1.215 s. Not
+v2. Not a control result. Twenty-fit cost remains unmeasured. Report
+`NEXUS_EVOLUTION2_FIT_CLOCK_RESULTS.md`.
 
 ## Latest — H-e2.8 7680 persist is a development pilot, not confirmation
 

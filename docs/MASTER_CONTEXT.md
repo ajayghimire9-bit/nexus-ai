@@ -1,14 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
-## Latest — Evolution-2.9 fit clock granted, not yet a measured clock, 2026-10-18
+## Latest — Evolution-2.9 six-fit residual clock measured, 2026-10-18
 
 Human-approved `env_cap=0`, `time_cap_s=300`, `n_fits=6` citing frozen
 config
 `277d7ba628fcd4e528b27bf4407ed45f9e41ec9051bd9e26b4baef33c6df0ff0`.
-Not inferred from continue. Purpose: disposable residual-MLP wall-clock
-on the locked Evolution-2.8 arrays. Not v2, not n=10 confirmation.
-Holdout unnamed. H17 blocked. H16 ledger preserved 305.842 / 3294.158.
-Report `NEXUS_EVOLUTION2_FIT_CLOCK.md`. Earlier entries remain history.
+Six disposable residual fits ran in 1.215 s wall, 0 env steps. Not v2,
+not n=10 confirmation. Holdout unnamed. H17 blocked. H16 ledger
+preserved 305.842 / 3294.158. The twenty-fit v2 clock remains
+unavailable. Report `NEXUS_EVOLUTION2_FIT_CLOCK_RESULTS.md`. Earlier
+entries remain history.
 
 ## Latest — Evolution-2.8 7680 persist collected as development pilot, 2026-10-18
 

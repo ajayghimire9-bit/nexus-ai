@@ -1,0 +1,105 @@
+{
+  "scientific": false,
+  "scientific_status": "development_pilot_not_confirmation",
+  "collection": false,
+  "fitting": true,
+  "env_steps": 0,
+  "env_cap": 0,
+  "time_cap_s": 300.0,
+  "wall_s": 1.2151110839986359,
+  "cpu_s": 0.9736740000000002,
+  "n_fits": 6,
+  "fits": [
+    {
+      "family": "pendulum",
+      "bundle": 0,
+      "seed": 1000,
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle0.pt",
+      "sha256": "f72575a410bd14dd69a3bcecf22e842ca93580e1622bb35668889c8a88ed4bed",
+      "best_val": 0.00377616158220917,
+      "train_n": 1024,
+      "val_n": 256,
+      "disposable": true
+    },
+    {
+      "family": "pendulum",
+      "bundle": 1,
+      "seed": 1001,
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle1.pt",
+      "sha256": "76e87eb1501a069e066927cd93bc6b9b0f3f691198d60ba1c22b2cbf6ad15af0",
+      "best_val": 0.0025315135717391968,
+      "train_n": 1024,
+      "val_n": 256,
+      "disposable": true
+    },
+    {
+      "family": "pendulum",
+      "bundle": 2,
+      "seed": 1002,
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle2.pt",
+      "sha256": "0e76d076faee17fe6a76ea0f9eb2d12dbfe36cfb508c9c85bcae4d26f6966d8c",
+      "best_val": 0.0022612594184465706,
+      "train_n": 1024,
+      "val_n": 256,
+      "disposable": true
+    },
+    {
+      "family": "acrobot",
+      "bundle": 0,
+      "seed": 1010,
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle0.pt",
+      "sha256": "47d6a80ab3630590ed9c3b59c07fc59b9b85f88f515774b767c20897bf748c96",
+      "best_val": 0.011057816678658128,
+      "train_n": 1024,
+      "val_n": 256,
+      "disposable": true
+    },
+    {
+      "family": "acrobot",
+      "bundle": 1,
+      "seed": 1011,
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle1.pt",
+      "sha256": "787fcc29efae9f39d50df91f86184778e912f90186eea83459523322413d4508",
+      "best_val": 0.029124272987246513,
+      "train_n": 1024,
+      "val_n": 256,
+      "disposable": true
+    },
+    {
+      "family": "acrobot",
+      "bundle": 2,
+      "seed": 1012,
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle2.pt",
+      "sha256": "e8f97482656b119288c532e61012be0b8dee215e6348f3b38243c61bed7bdadc",
+      "best_val": 0.005977010820060968,
+      "train_n": 1024,
+      "val_n": 256,
+      "disposable": true
+    }
+  ],
+  "recipe": {
+    "module": "nexus.world.train.train_world_model",
+    "kind": "residual",
+    "hidden": [
+      64,
+      64
+    ],
+    "epochs": 20,
+    "batch_size": 128,
+    "n_train": 1024,
+    "n_val": 256,
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "arch": "mlp"
+  },
+  "config_sha256": "277d7ba628fcd4e528b27bf4407ed45f9e41ec9051bd9e26b4baef33c6df0ff0",
+  "allocation_sha256": "79e535928ea7a067602ddb49dd0482e50e00af7dd4868186947cc95153231616",
+  "hold_named": false,
+  "v2_confirmation": false,
+  "claims_learning_to_learn": false,
+  "is_agi": false,
+  "scientific_ledger_preserved": [
+    305.842,
+    3294.158
+  ]
+}

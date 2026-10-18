@@ -15,6 +15,11 @@ def test_run_refuses_ungranted_ten_bundle_or_env_steps():
         lock.dispatch(7680, 6)
 
 
+def test_authorized_six_fits_refuse_a_second_write():
+    with pytest.raises(RuntimeError, match="duplicate_or_partial_fit_clock"):
+        run.run_clock(0, 6)
+
+
 def test_recipe_and_source_are_locked_defaults():
     assert run.lock.RECIPE["module"] == "nexus.world.train.train_world_model"
     assert run.lock.RECIPE["kind"] == "residual"
