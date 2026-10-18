@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-pendulum-acrobot-persistence v2 contracts exist, untested
+
+v2 locks paired bundles, two H=16 anchors, mutation-only evolution,
+and Bonferroni-versus-all-five-controls. Collection unauthorized.
+Holdout unnamed. Not a scientific result. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2.md`.
+
 ## Latest — H-e2-pendulum-acrobot-persistence v1 is not ready
 
 Independent review against Evolution-1 feasibility: statistical

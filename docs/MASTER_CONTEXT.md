@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Pendulum/Acrobot v2 contracts locked, collection BLOCKED, 2026-10-18
+
+On `cursor/evolution2-pendulum-acrobot-protocol`. Source-only v2
+fairness, operator, Bonferroni, bundle, and resource contracts.
+Unauthorized. Holdout unnamed. v1 preserved. H17 blocked. Ledger
+unchanged (305.842 / 3294.158). Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2.md`. Earlier entries
+remain history.
+
 ## Latest — research consolidation and protocol review, 2026-10-18
 
 Source-only registry, live ancestry of 146 branches, and an

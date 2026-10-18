@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — v2 source-only contracts locked, no collection
+
+Two H=16 anchors, mutation-only evolution, Bonferroni gate, paired
+bundles, and the 97,600-step worksheet are now tested contracts.
+`authorized: false`. Holdout unnamed. H17 blocked. Ledger
+305.842 / 3294.158 unchanged.
+
 ## Latest — research consolidation and v1 protocol NOT_READY
 
 Source-only registry (123 rows, many incomplete), 146-branch

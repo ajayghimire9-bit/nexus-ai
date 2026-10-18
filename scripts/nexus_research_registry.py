@@ -431,7 +431,10 @@ EXPERIMENTS = [
         "id": "E2-pendulum-acrobot-v2",
         "title": "Pendulum/Acrobot catalogue-proposer screen v2",
         "hypothesis": "Retained proposer state across the first training family improves discovery on the second versus random, evolution, reset, and both H=16 anchors.",
-        "implementation": ["src/nexus/evolution1/catalogue.py", "src/nexus/evolution2/methods.py"],
+        "implementation": [
+            "src/nexus/evolution2/pendulum_acrobot_protocol_v2.py",
+            "src/nexus/evolution1/catalogue.py",
+        ],
         "commit": "incomplete",
         "protocol": "docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2.md",
         "results": None,

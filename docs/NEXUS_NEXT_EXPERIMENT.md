@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — v2 contracts locked; collection still BLOCKED
+
+Source-only v2 tests now lock two H=16 anchors, mutation-only
+evolution, Bonferroni labels, paired bundles, and the 97,600-step
+worksheet. `authorized: false`, holdout unnamed. Do not collect.
+Do not name a holdout. Do not unlock H17. Next allowed step after
+this lock: trusted family adapters or an independent holdout-naming
+review. Ledger 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2.md`.
+
 ## Current — v2 protocol contracts, still no collection
 
 Independent review: v1 is **NOT_READY** against Evolution-1
