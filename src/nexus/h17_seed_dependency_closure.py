@@ -32,7 +32,7 @@ DESCRIPTIVE_SEED_FIELDS={'per_seed','n_seeds','n_seeds_note','n_student_seeds_no
     'n_student_seeds','n_model_seeds','paired_seeds','positive_seeds','numerical_seeds_registered',
     'leave_one_seed_out_means','secondary_student_seed_interval','secondary_student_seed_note',
     'seed_score_action_identity','shared_step_seeds','student_seed_angvel','student_seed_interval',
-    'symbolic_seed_keys','unique_planner_seeds'}
+    'symbolic_seed_keys','unique_planner_seeds','per_seed_metrics','n_seeds_exploratory'}
 
 
 def registration_fields(data,ranges):

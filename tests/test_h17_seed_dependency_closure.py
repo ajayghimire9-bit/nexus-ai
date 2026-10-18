@@ -242,3 +242,22 @@ def run(cfg):
     assert len(rows)==4 and all(r['function']=='run' for r in rows)
     assert rows[2]['seed_expressions']==["seed=cfg['reset_base']"]
     assert not any('certified' in r for r in rows)
+
+
+def test_metric_and_replication_count_fields_are_not_registration_bases():
+    rows=m.registration_fields({'per_seed_metrics':{'never':'inspect performance'},'n_seeds_exploratory':3},[[0,100]])
+    assert len(rows)==2
+    assert all(r['classification']=='descriptive_count_statistic_or_status_values_not_inspected' for r in rows)
+    assert not any('points' in r for r in rows)
+
+
+def test_every_previously_listed_registry_function_now_has_a_certificate():
+    root=Path(__file__).resolve().parents[1]
+    old=json.loads((root/'artifacts/h17_reservation_closure_validated.json').read_text())
+    new=json.loads((root/'artifacts/h17_seed_dependency_coverage.json').read_text())
+    key=lambda r:(r['path'],r['git_blob'],r['function'])
+    expected={key(r) for r in old['historical_seed_certificates']+old['unsupported_seed_functions']}
+    certified={key(r) for r in new['certificates']}
+    assert len(expected)==67 and expected<=certified
+    assert not new['unresolved']
+    assert not any(r['outside_reservations'] for r in new['certificates'])
