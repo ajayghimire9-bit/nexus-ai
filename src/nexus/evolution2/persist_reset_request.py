@@ -31,6 +31,10 @@ PRIMARY = "persist_minus_reset"
 LOCKED_CONFIG = "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e"
 LOCKED_PROTOCOL = "2c0d54cfd61215dddcda2e21fc71b36856b1871b5ba4f8817daecceb609174c9"
 LOCKED_ALLOCATION = "ecb6b8c69932d8fe2bfc4c29870e9cf0ee4474a048338898c258d3689879da8f"
+SCIENCE_RUNNER = "unimplemented_stub"
+BONFERRONI_NOTE = (
+    "intentional_conservative_five_comparison_threshold_for_three_listed_controls"
+)
 
 
 def file_sha256(path: Path) -> str:
@@ -92,6 +96,7 @@ def public_lock() -> dict:
         "df": CI_DF,
         "methods": list(METHODS),
         "primary_comparison": PRIMARY,
+        "science_runner": SCIENCE_RUNNER,
         "twenty_fit_measured": False,
         "config_sha256": LOCKED_CONFIG,
         "claims_learning_to_learn": False,
@@ -110,6 +115,10 @@ def worksheet() -> dict:
         "primary_comparison": PRIMARY,
         "equal_budget": True,
         "bonferroni_t_crit": n3.BONFERRONI_T_CRIT_DF2,
+        "bonferroni_comparisons_locked": n3.BONFERRONI_COMPARISONS,
+        "listed_controls": 3,
+        "bonferroni_conservatism": BONFERRONI_NOTE,
+        "science_runner": SCIENCE_RUNNER,
         "practical_margin": n3.PRACTICAL_MARGIN,
         "hold_named": False,
         "locked_target": None,

@@ -1,0 +1,198 @@
+{
+  "scientific": false,
+  "collection": false,
+  "gymnasium": false,
+  "training": false,
+  "hold_named": false,
+  "status": "development_dry_run_pass",
+  "dry_run": "PASS",
+  "methods_exercised": [
+    "persist",
+    "reset",
+    "random",
+    "evolution"
+  ],
+  "all_four_methods_exercised": true,
+  "n_train_tasks": 3,
+  "n_development_tasks": 1,
+  "matched_proposals": 4,
+  "lookups_per_method": {
+    "persist": 16,
+    "reset": 16,
+    "random": 16,
+    "evolution": 16
+  },
+  "equal_budget": true,
+  "leakage_audit": "PASS",
+  "persist_cross_task": {
+    "updates": 12,
+    "weights_changed": true,
+    "frozen_updates": 12
+  },
+  "reset_genuine": {
+    "after_reset_updates": [
+      0,
+      0,
+      0
+    ],
+    "after_reset_zero_weights": true
+  },
+  "random_independent": true,
+  "evolution_legal": true,
+  "crossover_illegal": true,
+  "checkpoint_identity": {
+    "pendulum": "8ece726ac86ff3c38c3af0a7742a9931e7d050e6c550bdfa2a0b11fd56ba9f84",
+    "acrobot": "16ea800ba2b283c80bf6ef376bf458a3f2da0f7660be3b6d16b74eff5d05e80e"
+  },
+  "hidden_feedback_isolated": true,
+  "evaluator_physical": 48,
+  "evaluator_cached": 64,
+  "ledger": {
+    "status": "complete_execution",
+    "physical": {
+      "real_steps": 0,
+      "imagined_transitions": 48,
+      "model_calls": 48,
+      "network_forwards": 48
+    },
+    "logical": {
+      "real_steps": 0,
+      "imagined_transitions": 112,
+      "model_calls": 48,
+      "network_forwards": 48
+    },
+    "physical_unknown": {
+      "real_steps": 0,
+      "imagined_transitions": 0,
+      "model_calls": 0,
+      "network_forwards": 0
+    }
+  },
+  "interruption": {
+    "status": "incomplete_execution",
+    "reason": "interrupted",
+    "unresolved": [
+      "interrupt-probe",
+      "never-started"
+    ],
+    "physical_completed": {
+      "real_steps": 0,
+      "imagined_transitions": 0,
+      "model_calls": 0,
+      "network_forwards": 0
+    },
+    "physical_unknown": {
+      "real_steps": 0,
+      "imagined_transitions": 1,
+      "model_calls": 1,
+      "network_forwards": 1
+    },
+    "logical_charged": {
+      "real_steps": 0,
+      "imagined_transitions": 1,
+      "model_calls": 1,
+      "network_forwards": 1
+    }
+  },
+  "twelve_arm_dispatch": "PASS",
+  "twelve_arm_scientific": "BLOCKED",
+  "scientific_execution": "BLOCKED",
+  "science_runner": "unimplemented_stub",
+  "bonferroni_comparisons_locked": 5,
+  "listed_controls": 3,
+  "bonferroni_conservatism": "intentional_conservative_five_comparison_threshold_for_three_listed_controls",
+  "bonferroni_t_crit": 9.924843200918293,
+  "holdout_consumed": false,
+  "h16_scientific_ledger_untouched": true,
+  "scientific_ledger_preserved": [
+    305.842,
+    3294.158
+  ],
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "development_summaries": {
+    "persist": [
+      {
+        "task_id": "successor_dev:0",
+        "family": "successor_dev",
+        "role": "development",
+        "mode": "synthetic_only",
+        "scientific": false,
+        "n_proposals": 4,
+        "best": 0.7290000000000001,
+        "mean": 0.529,
+        "regret": 0.0,
+        "oracle": 0.7290000000000001,
+        "variants": [
+          "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ]
+      }
+    ],
+    "reset": [
+      {
+        "task_id": "successor_dev:0",
+        "family": "successor_dev",
+        "role": "development",
+        "mode": "synthetic_only",
+        "scientific": false,
+        "n_proposals": 4,
+        "best": 0.7290000000000001,
+        "mean": 0.58025,
+        "regret": 0.0,
+        "oracle": 0.7290000000000001,
+        "variants": [
+          "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ]
+      }
+    ],
+    "random": [
+      {
+        "task_id": "successor_dev:0",
+        "family": "successor_dev",
+        "role": "development",
+        "mode": "synthetic_only",
+        "scientific": false,
+        "n_proposals": 4,
+        "best": 0.659,
+        "mean": 0.4665,
+        "regret": 0.07000000000000006,
+        "oracle": 0.7290000000000001,
+        "variants": [
+          "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+          "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+        ]
+      }
+    ],
+    "evolution": [
+      {
+        "task_id": "successor_dev:0",
+        "family": "successor_dev",
+        "role": "development",
+        "mode": "synthetic_only",
+        "scientific": false,
+        "n_proposals": 4,
+        "best": 0.7290000000000001,
+        "mean": 0.529,
+        "regret": 0.0,
+        "oracle": 0.7290000000000001,
+        "variants": [
+          "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ]
+      }
+    ]
+  },
+  "claims_learning_to_learn": false,
+  "is_agi": false,
+  "enabled_dispatch": false,
+  "twenty_fit_measured": false
+}

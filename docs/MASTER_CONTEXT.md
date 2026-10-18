@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.12 persist-versus-reset development dry-run, science BLOCKED, 2026-10-18
+
+On `cursor/evolution2.12-persist-reset-dry-run` from `8404151`.
+The n=3 persist-versus-reset wiring is executable on synthetic
+development fixtures. `dispatch()` remains an unimplemented stub.
+Twelve-arm development binding PASSES. Scientific execution stays
+BLOCKED. Holdout unnamed. Bonferroni five-comparison threshold is
+intentional conservatism. No Gymnasium, no new fits, no ledger debit.
+H17 blocked. H16 ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_DRY_RUN.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.11 persist-versus-reset requested, still unauthorized, 2026-10-18
 
 On `cursor/evolution2.11-persist-reset-request` from `ea1b742`.

@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.12 persist-versus-reset dry-run is development only
+
+The n=3 persist/reset/random/evolution wiring runs on synthetic
+fixtures. Not a transfer result. Scientific dispatch stays blocked.
+Report `NEXUS_EVOLUTION2_PERSIST_RESET_DRY_RUN.md`.
+
 ## Latest — H-e2.11 persist-versus-reset is requested, not collected
 
 n=3 persist minus reset is specified and unauthorized. Not a transfer
