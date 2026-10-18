@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.15 vague authorization rejected, science BLOCKED, 2026-10-18
+
+`continue i authrosed you` is insufficient. Missing config hash,
+named unused holdout, and `env_cap=17280`. No collection. 7680 not
+granted. Allocation and yaml hashes unchanged. H17 blocked. H16 ledger
+preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_APPROVAL.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.14 receding stored-obs clock, science BLOCKED, 2026-10-18
 
 On `cursor/evolution2.14-recede-clock` from `7699a35`. 800 receding

@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.15 persist-versus-reset remains unauthorized after vague approval
+
+The message did not cite the locked hash, name a holdout, or set
+17280. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_APPROVAL.md`.
+
 ## Latest — H-e2.14 receding planner cost is a default-obs prior, not a screen
 
 800 stored-state decisions took 2.305 s. Not new physics. Not a

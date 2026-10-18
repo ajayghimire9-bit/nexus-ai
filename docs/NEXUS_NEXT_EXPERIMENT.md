@@ -1,5 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.15 approval gate; science BLOCKED
+
+`continue` / `i authorised you` is not approval. Next scientific step
+still requires a reply that cites `8e90b74a…`, names a four-role unused
+holdout, and sets `env_cap=17280`. Do not collect. Do not grant 7680.
+Report `NEXUS_EVOLUTION2_PERSIST_RESET_APPROVAL.md`.
+
 ## Current — Evolution-2.14 recede clock complete; science BLOCKED
 
 Cited config `8e90b74a…`. Receding planner prior is 27.7 s on stored

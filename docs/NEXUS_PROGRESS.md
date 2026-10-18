@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.15 vague authorization rejected
+
+`continue i authrosed you` parsed INSUFFICIENT. Science BLOCKED. H16
+ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_APPROVAL.md`.
+
 ## Latest — Evolution-2.14 receding stored-obs clock
 
 800 decisions, 2.305 s, 27.7 s planner-only 9600 prior. Science
