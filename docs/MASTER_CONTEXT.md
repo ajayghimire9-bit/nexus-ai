@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2 runtime gates, science still BLOCKED, 2026-10-18
+
+On `cursor/evolution2-runtime-gates` from audit `551de69`. Source-only
+trusted family bindings, reused pre-call `ReservationLedger`, measured
+parent/child CPU and wall, and a process-separated fixture stub.
+Adapter/host/stub gates **PASS**. Sandbox, real planner/checkpoint
+execution, and scientific authorization remain **BLOCKED**. Ledger
+unchanged (305.842 / 3294.158). Not a scientific result. Not
+learning-to-learn or AGI. Report `NEXUS_EVOLUTION2_RUNTIME_GATES.md`.
+Earlier entries remain history.
+
 ## Latest — Evolution-2 independent readiness audit BLOCKED, 2026-10-18
 
 On `cursor/evolution2-independent-readiness-audit` from verified

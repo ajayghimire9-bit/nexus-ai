@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — Evolution-2 runtime gates implemented, science blocked
+
+Source-only milestone on `cursor/evolution2-runtime-gates` from
+`551de69`. Explicit family bindings, reservation-before-dispatch, and
+a process-separated synthetic worker. 17 new tests plus 86 Evolution-1/2
+regressions passed (103 total in the combined command). Physical
+real steps remain 0. Process separation is not a sandbox. Ledger
+305.842 / 3294.158 unchanged. Report
+`NEXUS_EVOLUTION2_RUNTIME_GATES.md`. Not learning-to-learn or AGI.
+
 ## Latest — Evolution-2 independent readiness audit, BLOCKED
 
 Source-only review on `cursor/evolution2-independent-readiness-audit`

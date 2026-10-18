@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — review runtime gates; do not collect or lock a protocol
+
+Trusted metadata bindings, pre-call meters, and a process-separated
+fixture stub now exist as an engineering milestone. Scientific
+execution, hardened isolation, real planner/checkpoint dispatch, and
+experiment authorization remain **BLOCKED**. One next step:
+independent review of `NEXUS_EVOLUTION2_RUNTIME_GATES.md`. Do not
+select a holdout, allocate scientific time, or treat the synthetic
+Evolution-2 screen as LEVEL 2 evidence. H17 stays blocked. Ledger
+305.842 / 3294.158.
+
 ## Current — trusted adapters, meters, and isolated evaluator; do not collect
 
 Independent Evolution-2 readiness audit verdict: **BLOCKED**. The
