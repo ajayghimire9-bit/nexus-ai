@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2 synthetic cross-task screen, not a result
+
+Source-only persistent-versus-reset screen on authored families.
+LEVEL 2 design only. Ledger unchanged (305.842 / 3294.158). Report
+`NEXUS_EVOLUTION2_CROSS_TASK_SCREEN.md`. No learning-to-learn or AGI.
+
 ## Latest — Evolution-1 feedback-driven toy loop works, science untested
 
 On `codex/evolution1-autonomous-loop-prototype`, implementation`f4de1e1`: four

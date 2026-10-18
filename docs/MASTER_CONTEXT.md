@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2 synthetic cross-task screen, 2026-10-18
+
+On `cursor/evolution2-cross-task-screen` from Evolution-1 results
+`96c71ae`. Source-only LEVEL 2 contract: persistent versus
+memory-reset adaptive proposal on authored synthetic families.
+Deterministic illustrations show persistence can change later
+choices, help on a related family, and hurt on a shifted family.
+No real rollout, no H17, no ledger debit. Not a scientific result.
+Not learning-to-learn or AGI. Report
+`NEXUS_EVOLUTION2_CROSS_TASK_SCREEN.md`. Earlier entries remain
+history.
+
 ## Latest — H16 same-state library effect not established, 2026-10-17
 
 On `cursor/h16-same-state-library-execute`: unused MCC

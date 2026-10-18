@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2-cross-task-persistence is designed, not tested scientifically
+
+Question: does retained proposal-policy state improve discovery on
+new algorithm-improvement tasks versus memory reset? Synthetic
+contracts exist. No authorized scientific comparison. Not LEVEL 3/4.
+Report `NEXUS_EVOLUTION2_CROSS_TASK_SCREEN.md`.
+
 ## Evolution-1 functional intervention — synthetic evidence only
 
 The first toy loop's proposal weights and third choice change after permitted

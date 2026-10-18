@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — independently review a real Evolution-2 screen; do not run it here
+
+The synthetic persistent-versus-reset contract is implemented.
+The next scientific milestone is an independently reviewed, bounded
+cross-task proposal-policy screen on new tasks against memory-reset
+and equal-budget evolution. Adapters, meters, isolation and
+exclusion gates remain unresolved. Nothing is pre-authorized. H17
+stays blocked. Ledger 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_CROSS_TASK_SCREEN.md`.
+
 ## Current — cross-task proposal-policy screen needs independent review
 
 The requested first feedback loop now works on authored toy fixtures; fixed
