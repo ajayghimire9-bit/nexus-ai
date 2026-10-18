@@ -1,7 +1,7 @@
 # NEXUS full research registry
 
 Status: **documentation only**. Not a scientific result.
-HEAD: `5331e2bbba9fe50f052f1f85a019170a800e6685`. Ledger **305.842 / 3294.158**.
+HEAD: `1898d0c16349dd2a9aef9a01559a01926a67aab8`. Ledger **305.842 / 3294.158**.
 H17 remains **blocked**.
 
 Missing commits, protocols, or implementations are marked **incomplete**
@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 35
+- Curated rows: 36
 - Unindexed protocol/results docs: 93
-- Total rows: 128
+- Total rows: 129
 - Incomplete or partial: 120
-- Source-verified: 8
+- Source-verified: 9
 
 ## Closed primary labels that must not be retuned
 
@@ -74,6 +74,7 @@ or component.
 | `E2-pendulum-acrobot-v2-pilot` | prospective_design_unauthorized | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_PROTOCOL_V2_PILOT.md / — | Reduced worksheet only. Do not collect. Do not rewrite v2. Holdout unnamed. | source_verified |
 | `E2-pendulum-acrobot-holdout-review` | naming_blocked | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_HOLDOUT_REVIEW.md / artifacts/evolution2_pendulum_acrobot_holdout_review.json | Naming blocked. Do not persist a physics tuple. Do not collect. | source_verified |
 | `E2-pendulum-acrobot-instance-rules` | four_role_rules_locked_unnamed | docs/NEXUS_EVOLUTION2_PENDULUM_ACROBOT_INSTANCE_RULES.md / artifacts/evolution2_pendulum_acrobot_instance_rules.json | Rules locked. Do not persist tuples. Do not collect. Later naming must match the four digests. | source_verified |
+| `E2-residual-timing-probe` | bounded_inference_probe_authorized_60s | docs/NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE.md / artifacts/evolution2_residual_timing_probe.json | Read-only inference. 0 env steps. Not a transfer result. Do not collect. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

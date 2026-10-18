@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "5331e2bbba9fe50f052f1f85a019170a800e6685",
+  "head": "1898d0c16349dd2a9aef9a01559a01926a67aab8",
   "ledger_s": [
     305.842,
     3294.158
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 35,
+    "curated": 36,
     "incomplete_unindexed_docs": 93,
-    "total": 128,
+    "total": 129,
     "incomplete": 120,
-    "source_verified": 8
+    "source_verified": 9
   },
   "experiments": [
     {
@@ -652,6 +652,25 @@
         "artifacts/evolution2_pendulum_acrobot_instance_rules.json"
       ],
       "reuse": "Rules locked. Do not persist tuples. Do not collect. Later naming must match the four digests.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2-residual-timing-probe",
+      "title": "Residual-MLP timing probe on frozen files",
+      "hypothesis": "Residual-MLP inference cost on listed frozen files decides whether v2/v2-pilot imagined work fits 900 s.",
+      "implementation": [
+        "src/nexus/evolution2/residual_timing_probe.py",
+        "scripts/run_evolution2_residual_timing_probe.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE.md",
+      "results": "artifacts/evolution2_residual_timing_probe.json",
+      "status": "bounded_inference_probe_authorized_60s",
+      "artifacts": [
+        "configs/evolution2_residual_timing_probe.yaml",
+        "configs/evolution2_residual_timing_probe_allocation.json"
+      ],
+      "reuse": "Read-only inference. 0 env steps. Not a transfer result. Do not collect.",
       "coverage": "source_verified"
     },
     {

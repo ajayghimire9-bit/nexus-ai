@@ -498,6 +498,25 @@ EXPERIMENTS = [
         "reuse": "Rules locked. Do not persist tuples. Do not collect. Later naming must match the four digests.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2-residual-timing-probe",
+        "title": "Residual-MLP timing probe on frozen files",
+        "hypothesis": "Residual-MLP inference cost on listed frozen files decides whether v2/v2-pilot imagined work fits 900 s.",
+        "implementation": [
+            "src/nexus/evolution2/residual_timing_probe.py",
+            "scripts/run_evolution2_residual_timing_probe.py",
+        ],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE.md",
+        "results": "artifacts/evolution2_residual_timing_probe.json",
+        "status": "bounded_inference_probe_authorized_60s",
+        "artifacts": [
+            "configs/evolution2_residual_timing_probe.yaml",
+            "configs/evolution2_residual_timing_probe_allocation.json",
+        ],
+        "reuse": "Read-only inference. 0 env steps. Not a transfer result. Do not collect.",
+        "coverage": "source_verified",
+    },
 ]
 
 

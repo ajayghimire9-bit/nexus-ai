@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — residual-MLP timing probe authorized, 60 s / 0 env
+
+Read-only inference on three frozen residual MLPs. No Gymnasium,
+no named holdout, no v2 rewrite. Execute the locked runner, then
+say whether v2-pilot planning still looks like `incomplete_budget`.
+Ledger 305.842 / 3294.158 before the run. Report
+`NEXUS_EVOLUTION2_RESIDUAL_TIMING_PROBE.md`.
+
 ## Current — four-role instance rules locked, still unnamed
 
 A regular Pendulum grid (6,069 cells) and sequential four-role
