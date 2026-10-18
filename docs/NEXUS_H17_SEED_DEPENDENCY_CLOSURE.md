@@ -18,6 +18,13 @@ Record the YAML hash as a dependency. An unbound or non-config path is rejected.
 This distinguishes reconstructing historical registration arithmetic from
 executing the historical experimental entry points.
 
+Inventory candidate RNG calls (explicit seed keywords, default RNG and manual
+initialization calls) as AST text. This is a call-site inventory, not a verified
+dataflow proof. Separately classify explicit root artifact seed fields. Preserve
+registered block labels as labels/bases rather than inventing interval semantics;
+exclude descriptive counts/statistics from numerical registration evidence.
+Reject unclassified registration fields and malformed numeric seed metadata.
+
 Every source and imported dependency is read from the **same historical Git
 commit** as its configuration. Record dependency hashes and compare every
 resulting historical seed with the existing conservative windows. Preserve old

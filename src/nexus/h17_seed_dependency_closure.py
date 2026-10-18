@@ -24,6 +24,71 @@ OWN_FUNCTIONS = {'seed_groups','seed_streams','check_seeds','seed_sets',
                  'design_seed_groups','phase_seed_groups','horizon_seed_groups',
                  'diagnostic_seed_groups','proposed_seeds','replication_seed_groups'}
 
+REGISTRATION_FIELDS={'registered_seed_block','registered_audit_seeds','registered_seeds'}
+MODEL_ID_FIELDS={'original_seeds','new_seeds_trained','h11_negative_seeds'}
+PRIOR_AUDIT_FIELDS={'conservative_seed_reservations','seed_base_evidence','seed_evidence',
+                    'uncovered_seed_literals','unresolved_seed_registry_functions'}
+DESCRIPTIVE_SEED_FIELDS={'per_seed','n_seeds','n_seeds_note','n_student_seeds_note',
+    'n_student_seeds','n_model_seeds','paired_seeds','positive_seeds','numerical_seeds_registered',
+    'leave_one_seed_out_means','secondary_student_seed_interval','secondary_student_seed_note',
+    'seed_score_action_identity','shared_step_seeds','student_seed_angvel','student_seed_interval',
+    'symbolic_seed_keys','unique_planner_seeds'}
+
+
+def registration_fields(data,ranges):
+    """Classify root seed fields without reading performance values.
+
+    Registered blocks are recorded as labels/bases, NOT inferred inclusive
+    intervals. Point coverage does not certify offsets or block semantics.
+    """
+    records=[]
+    if type(data) is not dict:raise Unsupported('artifact root is not an object')
+    for key,value in data.items():
+        if 'seed' not in key.lower():continue
+        if key in REGISTRATION_FIELDS:
+            fields={'block_labels':value} if key=='registered_seed_block' else value
+            if type(fields) is not dict:raise Unsupported('malformed registration field '+key)
+            points=[];nonseed=[]
+            for field,entry in fields.items():
+                if field.endswith(('_base','_env0')) or field=='block_labels':
+                    numbers=entry if type(entry) is list else [entry]
+                    if not numbers or any(type(v) is not int or not 0<=v<2**32 for v in numbers):
+                        raise Unsupported('invalid seed registration '+key+'.'+field)
+                    points.extend(dict(field=field,value=v,inside_existing_window=contains(ranges,v)) for v in numbers)
+                elif field in {'note','query_episodes','query_transitions'}:nonseed.append(field)
+                else:raise Unsupported('unclassified registration child '+key+'.'+field)
+            records.append(dict(field=key,classification='registration_bases_or_labels',points=points,nonseed_fields=nonseed))
+        elif key in MODEL_ID_FIELDS:
+            if type(value) is not list or any(type(v) is not int for v in value):raise Unsupported('invalid model seed IDs')
+            records.append(dict(field=key,classification='historical_model_seed_identifiers',values=value))
+        elif key in PRIOR_AUDIT_FIELDS:
+            records.append(dict(field=key,classification='prior_audit_evidence_not_new_registration'))
+        elif key in DESCRIPTIVE_SEED_FIELDS:
+            records.append(dict(field=key,classification='descriptive_count_statistic_or_status_values_not_inspected'))
+        else:raise Unsupported('unclassified root seed field '+key)
+    return records
+
+
+def rng_call_sites(text):
+    """Inventory candidate RNG call sites, not a proof of seed dataflow."""
+    rows=[]
+    class Scan(ast.NodeVisitor):
+        owner='<module>'
+        def visit_FunctionDef(self,node):
+            prior=self.owner;self.owner=node.name;self.generic_visit(node);self.owner=prior
+        def visit_Call(self,node):
+            name=ast.unparse(node.func)
+            expressions=[]
+            if name.split('.')[-1] in {'default_rng','manual_seed','Random','RandomState'}:
+                expressions=[ast.unparse(n) for n in node.args] or ['<implicit or keyword>']
+            expressions += [kw.arg+'='+ast.unparse(kw.value) for kw in node.keywords
+                            if kw.arg and ('seed' in kw.arg or kw.arg=='env0')]
+            if expressions:
+                rows.append(dict(line=node.lineno,function=self.owner,callee=name,seed_expressions=expressions))
+            self.generic_visit(node)
+    Scan().visit(ast.parse(text))
+    return rows
+
 
 @dataclass(frozen=True)
 class ModuleRef:
@@ -243,7 +308,9 @@ class Module:
                     else: obj.append(value)
                 elif type(obj) is set and call.func.attr=='add' and len(call.args)==1 and not call.keywords:
                     obj.add(self.expr(call.args[0],env))
-                else: raise Unsupported('unsupported mutable operation')
+                elif type(obj) in (dict,set) and call.func.attr=='update' and len(call.args)==1 and not call.keywords:
+                    obj.update(self.expr(call.args[0],env))
+                else: raise Unsupported(f'unsupported mutable operation: {self.path}:{n.lineno}')
             elif isinstance(n,ast.Raise): raise Unsupported('historical arithmetic guard rejected its inputs')
             else: raise Unsupported('unsupported arithmetic statement: '+type(n).__name__)
 
@@ -343,10 +410,18 @@ def review(root):
     parent_raw=(root/PARENT).read_bytes();require(hashlib.sha256(parent_raw).hexdigest()==PARENT_SHA,'inventory drift')
     registry_raw=(root/REGISTRY).read_bytes();require(hashlib.sha256(registry_raw).hexdigest()==REGISTRY_SHA,'registry drift')
     parent=json.loads(parent_raw);registry=json.loads(registry_raw)
-    good,bad=[],[]
+    good,bad,sites,metadata,metadata_gaps=[],[],[],[],[]
     for row in parent['all_reachable_inputs']:
+        if row['path'].startswith('artifacts/') and row['path'].endswith('.json'):
+            raw=git('cat-file','blob',row['git_blob'])
+            record=dict(path=row['path'],git_blob=row['git_blob'],sha256=hashlib.sha256(raw).hexdigest())
+            try:
+                metadata.append(dict(**record,seed_fields=registration_fields(json.loads(raw),registry['conservative_seed_reservations'])))
+            except (Unsupported,ValueError,TypeError) as exc:metadata_gaps.append(dict(**record,error=str(exc)))
+            continue
         if not row['path'].endswith('.py'):continue
         raw=git('cat-file','blob',row['git_blob']);tree=ast.parse(raw.decode())
+        sites.extend(dict(path=row['path'],git_blob=row['git_blob'],**site) for site in rng_call_sites(raw.decode()))
         names={n.name for n in tree.body if isinstance(n,ast.FunctionDef)} & OWN_FUNCTIONS
         for name in sorted(names):
             record=dict(path=row['path'],git_blob=row['git_blob'],commit=row['reachable_commit'],function=name)
@@ -363,9 +438,12 @@ def review(root):
     return dict(verdict='BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE',starting_sha=BASE,
                 source_revision=git('rev-parse','HEAD').decode().strip(),parent_sha256=PARENT_SHA,
                 registry_sha256=REGISTRY_SHA,certificates=good,unresolved=bad,
+                artifact_seed_metadata=metadata,unclassified_artifact_seed_metadata=metadata_gaps,
+                rng_callsite_inventory=sites,rng_callsite_dataflow_certified=False,
                 proposed_budget=validate_draft(json.loads((root/CONFIG).read_text())),
-                remaining_gaps=['Any unresolved own-registry records are not certified.',
-                                'RNG call-site coverage and semantic artifact-field classification remain separate requirements.'],
+                remaining_gaps=['Any unresolved own-registry or root seed-metadata records are not certified.',
+                                'RNG call sites are inventoried but not connected by a verified interprocedural dataflow proof to every registry/configuration.',
+                                'Root seed-field classification does not certify arbitrary nested/external registration semantics or unavailable history.'],
                 ledger_used_s=ledger['ledger_used_s'],ledger_remaining_s=ledger['ledger_remaining_s'],
                 new_environment_steps=0,new_imagined_transitions=0,model_inference_calls=0,training_updates=0,
                 target_selected=False,numerical_seeds_registered=False,locked=False,authorized=False,

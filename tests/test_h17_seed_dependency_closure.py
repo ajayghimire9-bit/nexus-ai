@@ -1,7 +1,9 @@
 """Historical source is data. No models, task modules or simulators imported."""
 import ast
 import hashlib
+import json
 from pathlib import Path
+import subprocess
 
 import pytest
 from nexus import h17_seed_dependency_closure as m
@@ -182,3 +184,61 @@ def seed_groups(cfg):
     assert m.flatten(h.module('src/nexus/world/own.py').own('seed_groups',{'base':75}))=={75,76}
     with pytest.raises(m.Unsupported,match='unknown'):
         h.module('src/nexus/world/own.py').call('imported',[{}])
+
+
+def test_pure_dictionary_and_set_updates():
+    source='''
+def seed_groups(cfg):
+    groups={'a':{1,2}}
+    groups.update({'b':{3,4}})
+    groups['b'].update({5})
+    return groups
+'''
+    assert values(source)=={1,2,3,4,5}
+
+
+@pytest.mark.parametrize('path',['src/nexus/world/control_replication.py','src/nexus/world/prediction_control_gap.py'])
+def test_old_composite_registries_resolve_without_historical_imports(path):
+    root=Path(__file__).resolve().parents[1]
+    capture=json.loads((root/'artifacts/h17_seed_dependency_closure_validated.json').read_text())
+    row=next(r for r in capture['unresolved'] if r['path']==path)
+    h=m.History(lambda p:subprocess.check_output(['git','show',row['commit']+':'+p],cwd=root))
+    raw=subprocess.check_output(['git','show',row['commit']+':'+row['config_path']],cwd=root)
+    registry=json.loads((root/m.REGISTRY).read_text())
+    result=m.certificate(h,path,m.parse_config(raw.decode()),row['function'],registry['conservative_seed_reservations'])
+    assert result['count']>0
+    assert not result['outside_reservations']
+    assert len(result['dependencies'])>3
+
+
+def test_explicit_registration_metadata_separates_seed_bases_from_counts():
+    data={'registered_audit_seeds':{'support_env0':100,'query_base':200,'query_episodes':4},
+          'registered_seed_block':[1000,2000], 'positive_seeds':6, 'original_seeds':[0,1,2]}
+    rows=m.registration_fields(data,[[0,999],[1000,1000]])
+    points=[p for r in rows for p in r.get('points',[])]
+    assert {p['value'] for p in points}=={100,200,1000,2000}
+    assert [p['value'] for p in points if not p['inside_existing_window']]==[2000]
+    assert rows[0]['nonseed_fields']==['query_episodes']
+    assert 'interval' not in rows[1]  # Two base labels must not become a range.
+
+
+@pytest.mark.parametrize('data',[
+    {'registered_seeds':{'unexplained':100}}, {'future_seed_register':[100]},
+    {'registered_seed_block':['100',200]}, {'registered_audit_seeds':{'support_env0':True}},
+])
+def test_unknown_or_malformed_registration_metadata_fails_closed(data):
+    with pytest.raises(m.Unsupported):m.registration_fields(data,[[0,999]])
+
+
+def test_rng_callsite_inventory_does_not_certify_dataflow_or_run_calls():
+    source='''
+def run(cfg):
+    rng=np.random.default_rng(cfg['action_base']+3)
+    torch.manual_seed(7)
+    env.reset(seed=cfg['reset_base'])
+    collect(seed_base=cfg['source_base'],env_seed_base=cfg['source_env0'])
+'''
+    rows=m.rng_call_sites(source)
+    assert len(rows)==4 and all(r['function']=='run' for r in rows)
+    assert rows[2]['seed_expressions']==["seed=cfg['reset_base']"]
+    assert not any('certified' in r for r in rows)
