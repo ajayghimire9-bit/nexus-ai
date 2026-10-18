@@ -1,0 +1,117 @@
+{
+  "schema": "evolution1_adapter_source_review_v1",
+  "starting_revision": "3ac0c5f49bc67e5202f6836a9b688ed5cf301095",
+  "status": "blocked_runtime_gates",
+  "execution_authorized": false,
+  "source_inventory_complete_for_this_review": true,
+  "transitive_dependency_closure_proven": false,
+  "semantic_equivalence_proven": false,
+  "process_isolation_proven": false,
+  "scientific_execution_seconds": 0,
+  "real_interactions": 0,
+  "imagined_transitions": 0,
+  "sources": [
+    {
+      "path": "src/nexus/evolution1/catalogue.py",
+      "sha256": "410f101121f7370a91d1fab87439237193c08bd96a02e45792004ce57087a3c9",
+      "symbols": {"plan_bound": "a5bb942bafc7fd87f99bc85bb2203c2d5337a7644a1312f642f34d06b5c3fe1e"}
+    },
+    {
+      "path": "src/nexus/evolution1/fixtures.py",
+      "sha256": "b40f77c28bb21a06ae62ff78d77ec0748f2cbdd4f26e3f5847355836fc05969c",
+      "symbols": {"FixtureBroker.submit": "c6f8cdcd127e6e5904eab90b4ecf3e87cd6b6e3cb4101fa652a18eeb5ab802ff"}
+    },
+    {
+      "path": "src/nexus/evolution1/promotion.py",
+      "sha256": "a0287d8b837b0cd14f3250421678b46de92355768a7cff8cea67a06f909c7af3",
+      "symbols": {"FixturePromotionHarness.promote_for_test": "f0039f362fa289b9fe1177a06693830a8944ae435785188a45eb09fa0946bcd9"}
+    },
+    {
+      "path": "src/nexus/meta/schema.py",
+      "sha256": "e9125cae238803d7d38cbf1a001abb1e1b694a78bd23d057af4b72882e341989",
+      "symbols": {"ExperimentAction": "5b377f5354568037d9e31a211442ca2fd3816b54b3a18aceeadba89a01f30eba"}
+    },
+    {
+      "path": "src/nexus/tasks/spec.py",
+      "sha256": "0a7ba54373fe113e84429f3f7065f74f10be37393ee965878645170513bf68b6",
+      "symbols": {"make_task_env": "22523465f7b2d182e2e6d987ad828b824630704277d9c30e53d7bcc5582682d2"}
+    },
+    {
+      "path": "src/nexus/tasks/wrappers.py",
+      "sha256": "d63ed3623e7dc46d9690eeffd09f98f79833c94aae594c919b01bb5fa4867437",
+      "symbols": {
+        "DiscreteTorqueWrapper.action": "881a8ba6c89a37c4f230f10a5c2447bd6692b2af517da4b4e3183a5af9a790f6",
+        "AcrobotDenseRewardWrapper.step": "f1809477d768f403dfa986de6aa98dd9bdd548c96f8d56baa29bc3df8072f91a",
+        "MountainCarDenseRewardWrapper.step": "679c6c598ef9b56ad8f2a55d9d972bdd80552e59e7ac529f862d4bf6537c5241"
+      }
+    },
+    {
+      "path": "src/nexus/world/acrobot_lookahead.py",
+      "sha256": "ebc78fe5a8227536d1c4db6e5e795f1a6d3b623b7ea6494b09d7c938b2b7e131",
+      "symbols": {
+        "make_planner": "90e0d8963c2aa6621df7ffbd43d44c048850c238e4feae1322b404f4753753d9",
+        "lookahead_first_action": "0b43e761632fcffd9689a45c2c65a12b2c31c5defb352aa651fa756cb477d755"
+      }
+    },
+    {
+      "path": "src/nexus/world/bellman_backup_control.py",
+      "sha256": "03224a03f47eedac9cb21748142c1a179afe013a0a9d981867111385848d1ed0",
+      "symbols": {
+        "_score_open_loop": "e5fccd4a38b63dc79d3d5af8bd5e21a2077ce5af9ccaa3ce08201ca650c2ea34",
+        "lookahead_first_action": "3240d4e3bf95e652ad6136b36cdac859d68e1b7e77020b54baa59d8eedb4ff43",
+        "Meter.instrument_env": "1296953918659e683c520c4d4ea9007add70b885b69d8204bb5477c2b2d06acb",
+        "Meter.instrument_model": "96949b7764dbac0911eada910d74f26d9257299d28fcb28a49e6164bb0950a63"
+      }
+    },
+    {
+      "path": "src/nexus/world/confirm_guard.py",
+      "sha256": "1e5822c124bfd760eac21d2672733e5c34c62288e34988939b72a2e4b95901c2",
+      "symbols": {"assert_confirmation_allowed": "fbc93fc98e11f58498f3068fa021df405805d58bb2b27cef512a9989fb1b7f97"}
+    },
+    {
+      "path": "src/nexus/world/dynamics.py",
+      "sha256": "e99c4bf82985b6c55ec4f67271652901abd3a5c9fdde883075da72c37a07fb74",
+      "symbols": {"WorldModel.step": "2a07451c1e97016d67baf4e52bf139c89aaea608e68f9ca985f6214ed2e4360d"}
+    },
+    {
+      "path": "src/nexus/world/mountaincar_continuous_lookahead.py",
+      "sha256": "3be25695aee4203659f5446294bc098cdd6f77fdc6bec5013df6ad807824c12b",
+      "symbols": {
+        "make_planner": "ae5121a53f601586d965ff7b903e155ef954f33f6c55fc2d7655bc5fafa18189",
+        "lookahead_first_action": "13eec22e1c9e36e1a472da9abe828ff90b23cd515339d3003e4efbc782b65df9"
+      }
+    },
+    {
+      "path": "src/nexus/world/mountaincar_lookahead.py",
+      "sha256": "e89edd901bb6b6bacfcb0cf093d7d693bdc56259caa40efdc1adc834cd87d115",
+      "symbols": {
+        "make_planner": "ae5121a53f601586d965ff7b903e155ef954f33f6c55fc2d7655bc5fafa18189",
+        "lookahead_first_action": "626699d8862f3d730fa3013d1e3abe98e42d8ae1bb36f8e2500c042bcbc88f59"
+      }
+    },
+    {
+      "path": "src/nexus/world/planning.py",
+      "sha256": "b1146ba19c278afb41eb301abe3e7d442a142c2f90d2edd4703ac97f71b286d9",
+      "symbols": {
+        "InferenceCounter.step": "792bda5f1d110dc3d8296d611aa8e65a00c0b3f5d7dcfa4b30b6ca6cad447e3d",
+        "RandomShootingMPC._score_batch": "793906f95b3bdd44cbcecabfdbcf614003dffea6f5071c9cbfc3dd0fc60a79fa",
+        "RandomShootingMPC.act": "c2604a6ed47f0109349b6ce993dbdee467f163a15d0d6f5c58cb0c592fe79190",
+        "mpc_for_model": "1b5223f14370e3e025b06d8a92fe5102dd2ce06766887df2e8dc32d8bc175a3d"
+      }
+    },
+    {
+      "path": "src/nexus/world/prediction_control_gap.py",
+      "sha256": "06c64c1e13a118a8cf5cf42c5cdc71d23f9303f4ffccd996549f2621fcd3abc8",
+      "symbols": {"candidate_sequences": "6ba92c39a1cbfdcccd15e0a526c864e0634e7e6aecf211636c1a233f07ab66cf"}
+    },
+    {
+      "path": "src/nexus/world/rewards.py",
+      "sha256": "8c5a4925acf929e272aadb1f3f69f64a36aa021ccfb8c81c9446c91c5297772d",
+      "symbols": {
+        "pendulum_step_reward": "411dcb6077fb700893ae7659cb8d33d12f83f53e0e78be0b54afaccb2e519ac0",
+        "acrobot_step_reward": "0892530c41675ad02de814f0db3b2774ffa464338ba2e63c7ec6b5f0e2f675db",
+        "mountaincar_step_reward": "1996cd8aa38be092c5489736312a5632f4e7f7a728231630004e48bb63e4a3cb"
+      }
+    }
+  ]
+}

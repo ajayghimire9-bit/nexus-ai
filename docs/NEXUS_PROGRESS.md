@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — Evolution-1 source adapter review identifies runtime gates
+
+Source-only review on `codex/evolution1-adapter-boundary-review` from `3ac0c5f`:
+pinned15 source files and selected AST definitions without importing scientific
+modules. Findings include family guessing, differing root-survival/reward
+semantics, H+1 successor depth and post-call quota checks. Historical recipes
+and results are unchanged.16 focused provenance tests passed; no equivalence or
+process-isolation claim. Verdict BLOCKED_RUNTIME_GATES. No model/environment
+execution, targets, seeds, lock or allocation; ledger305.842/3294.158 unchanged.
+Report `NEXUS_EVOLUTION1_ADAPTER_REVIEW.md`; H17 remains separately blocked.
+
 ## Latest — Evolution-1 source contracts, no scientific execution
 
 On `codex/evolution1-contract-harness` from feasibility `aee1362`: implemented

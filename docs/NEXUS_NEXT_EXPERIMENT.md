@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-1 pre-call quota ledger, source only
+
+The adapter review identifies semantic differences and actual-meter gaps before
+any scientific integration. One next engineering milestone: implement a trusted
+pre-call reservation ledger with synthetic tests for observation-batch counts,
+charged failures, physical versus cached costs, interruption and honest
+completeness. No model/environment runner, seed registration, allocation or
+experiment. Family adapters and OS isolation remain additional gates. See
+`NEXUS_EVOLUTION1_ADAPTER_REVIEW.md`. All historical evidence, H17's blocked
+status and the305.842/3294.158 ledger remain unchanged.
+
 ## Current — Evolution-1 adapter and isolation design review, source only
 
 The fixture contracts now cover catalogue validation, declared budget charging,
