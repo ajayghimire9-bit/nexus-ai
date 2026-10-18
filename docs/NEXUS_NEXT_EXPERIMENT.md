@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-1 explicit task-adapter metadata, source only
+
+The pre-call reservation ledger now passes synthetic failure, cache, timing and
+completeness tests. One next milestone: implement a trusted metadata contract
+that binds family dimensions, action decoding, reward timing, root-survival rule
+and planner operator identity; test mismatches with analytic fixtures. Do not
+dispatch real planners or environments or select scientific seeds. Actual
+metering, isolation and independent scientific review remain required. See
+`NEXUS_EVOLUTION1_RESOURCE_LEDGER.md`. H17 and closed outcomes remain unchanged;
+no scientific execution or allocation; ledger305.842/3294.158 unchanged.
+
 ## Current — Evolution-1 pre-call quota ledger, source only
 
 The adapter review identifies semantic differences and actual-meter gaps before

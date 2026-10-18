@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — Evolution-1 pre-call ledger tested with synthetic work
+
+On `codex/evolution1-resource-ledger` from `d5339de`: added typed pre-call
+physical/logical work reservation, observation-row batch accounting, explicit
+cached-cost references, conservative failed/pending work and execution-only
+completion labels.320 source-only tests passed;15-file adapter snapshot matches.
+This is not an actual CPU meter, isolated evaluator or scientific result.
+No planner/model/environment execution, registration or allocation; historical
+evidence and ledger305.842/3294.158 unchanged. Runtime remains blocked. Report
+`NEXUS_EVOLUTION1_RESOURCE_LEDGER.md`.
+
 ## Latest — Evolution-1 source adapter review identifies runtime gates
 
 Source-only review on `codex/evolution1-adapter-boundary-review` from `3ac0c5f`:
