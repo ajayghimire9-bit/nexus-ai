@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-core-2 retrieval can harm decide() start-state transfer
+
+On FakeStepModel returns, memory ties persist on stored-obs
+development and has first-free regret 1.0 on zero-obs Acrobot versus
+persist 0.188. Retrieve-on/off did not change the development choice.
+Not a scientific result. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — H-core-1 task-conditioned memory can change planner choice
 
 Retrieval changes the first free catalogue choice under matched seed

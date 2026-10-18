@@ -1,12 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — decide() memory bench done; next is start-state descriptors
+
+Recommended next *development* experiment: add the planning
+observation (or a sketch of it) to the `ContextualStrategyMemory`
+descriptor and re-run the decide() FakeStepModel bench with four free
+slots. Keep `acro_zero_collision` as the expected failure. No
+collection. No n=10 scientific run. Do not reuse E2.17 development.
+Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Current — NEXUS Core strategy memory; next is decide()-owned scoring
 
-Recommended next *development* experiment: compare
-`ContextualStrategyMemory` with persist/reset/random/evolution/ablated
-on `decide()`-owned FakeStepModel returns and more than two free
-slots. Matched budgets. No collection. No n=10 scientific run. Do not
-reuse E2.17 development as confirmation. Report
+Completed. Memory tied persist on stored-obs development and lost
+first-free on the zero-obs shift. Report
 `NEXUS_CORE_STRATEGY_MEMORY.md`.
 
 ## Current — Evolution-2.21 scoring correction; recommend n=10 if granted

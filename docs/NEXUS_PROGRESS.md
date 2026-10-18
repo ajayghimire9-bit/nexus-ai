@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — decide()-owned strategy-memory bench, development only
+
+Four free slots. Memory ties persist on stored-obs development. Zero-obs
+first-free is worse for memory than persist. Collision first-free shows
+misleading support. No collection. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — NEXUS Core strategy memory, development only
 
 Implemented `ContextualStrategyMemory`. Causal retrieve-on/off changes

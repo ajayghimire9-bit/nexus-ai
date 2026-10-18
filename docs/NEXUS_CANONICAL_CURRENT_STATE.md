@@ -4,9 +4,10 @@
 
 `nexus.core.strategy_memory.ContextualStrategyMemory` is the
 task-conditioned memory controller. It reuses the catalogue,
-`TrustedEvaluator`, and Evolution-2 methods. Synthetic development
-shows a causal memory-to-choice effect and no equal-budget win over
-persist/reset. Do not treat this as n=10 science or AGI.
+`TrustedEvaluator`, and Evolution-2 methods. The decide() FakeStepModel
+bench with four free slots ties persist on stored-obs development and
+loses first-free on a zero-obs start-state shift. Do not treat this as
+n=10 science or AGI.
 
 Authoritative snapshot for future agents. Not a scientific result.
 Generated from the research-tip merge and the consolidation review.

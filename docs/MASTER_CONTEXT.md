@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — strategy memory on decide() scores, development only, 2026-10-18
+
+Four free slots, FakeStepModel returns, permitted source arrays.
+Memory ties persist on stored-obs development and is worse than
+persist on zero-obs first-free (1.0 vs 0.188). Retrieve-on/off did
+not change the development choice. No collection. E2.17 stays
+inconclusive. Not AGI. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+Earlier entries remain history.
+
 ## Latest — NEXUS Core strategy memory, development only, 2026-10-18
 
 `ContextualStrategyMemory` is implemented. Retrieval changes the first
