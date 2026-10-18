@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.12 readiness audit complete; science BLOCKED
+
+Cited config `8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e`.
+Fresh new-physics `env_cap` is 17280, not 7680 and not 9600. Holdout
+unnamed. Do not collect. Do not name a holdout here. Do not invent a
+twenty-fit cost. Do not unlock H17. Do not start Evolution-3. Next: a
+human approval that cites that hash, names a four-role unused holdout,
+and sets `env_cap=17280`. `continue` is not approval. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_READINESS.md`.
+
 ## Current — Evolution-2.12 development dry-run complete; science BLOCKED
 
 Cited config `8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e`.

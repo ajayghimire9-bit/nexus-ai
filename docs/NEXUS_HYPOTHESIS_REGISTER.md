@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.12 persist-versus-reset science remains blocked after readiness audit
+
+17,280 fresh steps would be required for a new-physics n=3 first
+screen. Holdout unnamed. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_READINESS.md`.
+
 ## Latest — H-e2.12 persist-versus-reset dry-run is development only
 
 The n=3 persist/reset/random/evolution wiring runs on synthetic

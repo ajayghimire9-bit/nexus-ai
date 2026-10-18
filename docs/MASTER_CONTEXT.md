@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.12 runner/resource readiness audit, science BLOCKED, 2026-10-18
+
+Independent audit of `9428e18`. GitHub provenance VERIFIED. Development
+dry-run PASS. Real planner binding PASS. Source-fitting BLOCKED.
+Fresh new-physics first screen is **17,280** environment steps
+(7,680 source + 9,600 revealed/development). Occupied-default 7,680
+is not credit. Bonferroni 9.924843 preserved and low-power. Scientific
+runner exists as refuse-only stages. Holdout unnamed. H17 blocked.
+H16 ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_READINESS.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.12 persist-versus-reset development dry-run, science BLOCKED, 2026-10-18
 
 On `cursor/evolution2.12-persist-reset-dry-run` from `8404151`.

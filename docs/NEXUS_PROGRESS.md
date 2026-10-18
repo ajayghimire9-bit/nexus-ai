@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.12 scientific-runner and resource-readiness audit
+
+GitHub `9428e18` VERIFIED. Dry-run PASS. Real planner PASS. Fresh
+total 17,280 steps. Source-fitting, holdout, and science BLOCKED.
+H16 ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_READINESS.md`.
+
 ## Latest — Evolution-2.12 persist-versus-reset development dry-run
 
 Four methods exercised on synthetic fixtures. Equal-budget and leakage

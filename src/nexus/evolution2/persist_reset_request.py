@@ -70,6 +70,9 @@ def dispatch(env_cap: int) -> None:
     require_named_holdout()
     if not persist_reset_authorized(env_cap):
         require_scientific()
+    from nexus.evolution2.persist_reset_readiness import require_scientific_prerequisites
+
+    require_scientific_prerequisites(int(env_cap))
     raise RuntimeError("persist_versus_reset_not_implemented_while_unauthorized")
 
 

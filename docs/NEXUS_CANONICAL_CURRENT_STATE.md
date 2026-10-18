@@ -30,7 +30,9 @@ Pendulum/Acrobot arrays as a development pilot citing config
 `env_cap=0` citing config `277d7ba6…`. Evolution-2.10 binds all
 twelve catalogue variants for a development dry-run. Evolution-2.12
 makes persist-versus-reset technically executable on synthetic
-fixtures; `dispatch()` remains an unimplemented stub. Scientific
+fixtures; `dispatch()` remains an unimplemented stub. The readiness
+audit requires 17,280 fresh new-physics steps and refuses occupied
+7,680 credit. Scientific
 dispatch stays BLOCKED. Neither is v2 confirmation. The twenty-fit
 v2 clock remains unavailable.
 None of these is n=10 collection.
@@ -77,6 +79,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.10 evaluator readiness (twelve-arm development dry-run; science BLOCKED)
 - Evolution-2.11 persist-versus-reset request (7,680-scale n=3 screen specified; unauthorized; holdout unnamed)
 - Evolution-2.12 persist-versus-reset development dry-run (four methods on synthetic fixtures; science BLOCKED; `dispatch()` still unimplemented)
+- Evolution-2.12 runner/resource readiness (fresh total 17,280; occupied 7,680 not credit; refuse-only runner; science BLOCKED)
 
 ## Engineering that exists at HEAD 4a08b26
 

@@ -1,0 +1,157 @@
+{
+  "scientific": false,
+  "collection": false,
+  "fitting": false,
+  "enabled_dispatch": false,
+  "github_commit": "9428e18345a44870838f9cefc6c144f549f7af35",
+  "worksheet": {
+    "n_bundles": 3,
+    "families": 2,
+    "source_train_val_per_family_bundle": 1280,
+    "occupied_default_persist_steps": 7680,
+    "fresh_source_steps_required": 7680,
+    "revealed_training_steps": 7200,
+    "development_evaluation_steps": 2400,
+    "n3_revealed_development_worksheet": 9600,
+    "fresh_total_environment_steps": 17280,
+    "occupied_defaults_are_not_credit": true,
+    "source_persist_authorization_is_not_reusable": true,
+    "do_not_silently_add": 17280,
+    "justification": "A complete new-physics n=3 first screen needs a matched residual source (3\u00d72\u00d71280=7680) plus the locked revealed/development worksheet (7200+2400=9600). Those operations do not share steps. Existing 7680 default-family arrays cannot be credited. Exact fresh total is 17280. Confirmation and n=10 are extra and unauthorized.",
+    "rejected_caps": {
+      "7680": "occupied_default_source_only_or_reuse_of_E2.8",
+      "9600": "screen_without_matched_fresh_residuals",
+      "25600": "v2_n10_source_not_this_request"
+    }
+  },
+  "bonferroni": {
+    "t_crit": 9.924843200918293,
+    "df": 2,
+    "comparisons_locked": 5,
+    "listed_controls": 3,
+    "conservatism": "intentional_conservative_five_comparison_threshold_for_three_listed_controls",
+    "low_power": "df=2 with the locked five-comparison threshold 9.924843 is intentionally low-power. A positive lower bound requires mean > 9.924843 * s / sqrt(3) \u2248 5.730 s. A 0.05 practical-margin effect would need bundle scatter below \u2248 0.0087. Inconclusive is the expected label unless the effect is enormous. This is not n=10 confirmation and must not inherit the v2 df=9 gate.",
+    "not_n10_confirmation": true,
+    "v2_df9_forbidden": true
+  },
+  "costs": {
+    "measured": {
+      "default_family_persist_7680_wall_s": 0.156,
+      "six_fit_clock_on_defaults_wall_s": 1.215,
+      "six_fit_clock_on_defaults_cpu_s": 0.974,
+      "six_fit_env_steps": 0,
+      "note": "Six fits equal 3 bundles \u00d7 2 families, but the clock used occupied-default arrays. New-physics fit time is unmeasured."
+    },
+    "unknown": {
+      "fresh_source_collection_wall_s": null,
+      "new_physics_six_fit_wall_s": null,
+      "revealed_development_screen_wall_s": null,
+      "twenty_fit_v2_wall_s": null,
+      "imagined_planning_wall_s": null
+    },
+    "do_not_invent_twenty_fit": true,
+    "do_not_extrapolate_6_times_20_over_6": true,
+    "standing_time_cap_s": 900,
+    "h16_scientific_ledger": [
+      305.842,
+      3294.158
+    ],
+    "debit": false
+  },
+  "dry_run": {
+    "status": "PASS",
+    "four_methods_exercised": true,
+    "persist_retained": true,
+    "reset_discarded": true,
+    "equal_budget": true,
+    "development_not_training_feedback": true,
+    "scientific": false
+  },
+  "design": {
+    "reuse": "evolution2.methods, TrustedEvaluator, ReservationLedger, planner_adapter.decide, v2.bundle_family_order, v2.paired_bundle_seeds, train_world_model recipe",
+    "model_fitting": {
+      "recipe": "residual_mlp_64x64_adam_1e-3_20_epochs_1024_256",
+      "n_fits_for_n3": 6,
+      "reuse_e29_default_weights": false,
+      "reuse_e28_default_arrays": false,
+      "status": "BLOCKED"
+    },
+    "permitted_source_feedback": {
+      "revealed_variants_per_family": 6,
+      "training_feedback_type": "evolution1.toy_loop.TrainingFeedback",
+      "caller_score_substitution": false
+    },
+    "persist_reset_boundaries": {
+      "persist": "PersistentAdaptive retains weights across train families; freeze before hidden eval",
+      "reset": "ResetAdaptive.reset_task discards weights between tasks",
+      "random": "StatelessWrapper independent seeds",
+      "evolution": "within-task one-coordinate mutation; crossover illegal"
+    },
+    "independent_bundle_seeds": {
+      "rule": "v2.paired_bundle_seeds(bundle_id) for bundle_id in (0,1,2)",
+      "model_seed_base": 80000000,
+      "planner_seed_base": 81000000,
+      "proposal_seed_base": 82000000,
+      "student_seeds_are_not_replications": true
+    },
+    "counterbalanced_family_order": {
+      "rule": "v2.bundle_family_order",
+      "bundle_0": [
+        "pendulum",
+        "acrobot"
+      ],
+      "bundle_1": [
+        "acrobot",
+        "pendulum"
+      ],
+      "bundle_2": [
+        "pendulum",
+        "acrobot"
+      ]
+    },
+    "hidden_development": {
+      "evaluator": "TrustedEvaluator.hide_development",
+      "training_feedback_must_not_see_development": true,
+      "dry_run_uses_eval_clone_without_global_update": true,
+      "scientific_path_must_hide_not_only_freeze": true
+    }
+  },
+  "readiness": {
+    "status": "BLOCKED",
+    "reason": "scientific_execution_blocked:holdout_unnamed,unauthorized,env_cap_not_17280_fresh,scientific_runner_refuses,twenty_fit_unmeasured_not_required_for_n3",
+    "blockers": [
+      "holdout_unnamed",
+      "unauthorized",
+      "env_cap_not_17280_fresh",
+      "scientific_runner_refuses",
+      "twenty_fit_unmeasured_not_required_for_n3"
+    ],
+    "gates": {
+      "locked_request_hashes": true,
+      "holdout_named": false,
+      "holdout_review": true,
+      "authorized": false,
+      "fresh_env_cap_17280": false,
+      "occupied_default_reuse_refused": true,
+      "source_persist_not_credited": true,
+      "twenty_fit_measured": false,
+      "h17": false,
+      "scientific_flags_unchanged": true,
+      "h16_untouched": true
+    },
+    "requested_env_cap": 0,
+    "required_env_cap": 17280,
+    "holdout_integrity": "BLOCKED",
+    "real_source_fitting_path": "BLOCKED",
+    "scientific_execution_readiness": "BLOCKED"
+  },
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "h16_scientific_ledger_untouched": true,
+  "scientific_ledger_preserved": [
+    305.842,
+    3294.158
+  ],
+  "claims_learning_to_learn": false,
+  "is_agi": false,
+  "next_action": "Do not collect. A later approval must cite 8e90b74a, name a four-role unused holdout, set env_cap=17280 for fresh physics, and accept the refuse-only runner until those gates pass. continue is not approval."
+}
