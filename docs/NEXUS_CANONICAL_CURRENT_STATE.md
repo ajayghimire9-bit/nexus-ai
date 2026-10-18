@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+E2.25 source-only candidate/context ridge does not improve paired planner
+quality prediction: MAE0.08141 versus paired mean0.01100. Both family
+screens fail. No promotion, new environment data or neural training.
+Audit finds query extrema influence the inherited public-anchor scale.
+Repair the future normalization boundary source-only before a real-control
+quality-label study; do not build another proxy predictor stack.
+Report `NEXUS_E2_25_PLANNER_QUALITY.md`; ledger unchanged.
+
 E2.24 extends `ObservationAwareAdaptive` with paired evidence arbitration;
 it does not replace the canonical memory/proposer/evaluator stack.
 Source-only development: abstains40/40, familiar0, shifted0.062745 versus

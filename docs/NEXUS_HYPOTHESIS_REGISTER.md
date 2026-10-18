@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-E2.25 candidate-conditioned source quality prediction fails screen
+
+The fixed candidate/context ridge representation is worse than paired
+mean, observation kernel and config-only ridge on both source families.
+Pooled paired-advantage MAE0.08141 versus0.01100/0.01229/0.06289.
+Identical six-receipt training information, held-bundle normalization,
+260 audited query pairs. Negative, inspected-source proxy evidence;
+no confidence interval, control claim, promotion or post-result tuning.
+Post-run audit also finds inherited oracle min/max scaling leaks query
+extrema into public anchors. Mechanical completion is not independent
+evaluation; fix future normalization before scientific use.
+Report `NEXUS_E2_25_PLANNER_QUALITY.md`.
+
 ## Latest — H-E2.24 evidence arbitration does not retain useful shift adaptation
 
 Precommitted source-only rule combines paired score evidence, ESS,

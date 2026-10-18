@@ -1,5 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.25 negative: repair feedback-normalization isolation first
+
+Repair the future evaluator's normalization boundary using frozen
+training/revealed statistics and source-only adversarial tests.
+Unobserved query outcomes must not alter public anchor feedback.
+The inherited proxy anchor scale depends on query extrema; interface
+tests alone do not establish independent evaluation. Preserve all
+historical outcomes and scalers; do not rerun closed evaluations.
+This repair is a prerequisite for a real-control planner-quality study,
+not another controller experiment. Nothing is allocated or run here.
+E2.25 candidate/context ridge loses to simple paired mean on source
+proxies, with a severe feature/feedback rank imbalance. Do not add another
+proxy feature or distance-threshold sweep. E2.17 and H17 remain closed/
+blocked. Report `NEXUS_E2_25_PLANNER_QUALITY.md`. Older recommendations
+are retained history rather than simultaneous tasks to execute.
+
 ## Current — E2.24 negative: change quality representation, not distance gate
 
 Prepare one source-only LOBO paired planner-advantage prediction test:

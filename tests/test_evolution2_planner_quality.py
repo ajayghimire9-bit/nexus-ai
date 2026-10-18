@@ -132,3 +132,48 @@ def test_source_result_is_never_overwritten(tmp_path):
 def test_source_episode_overlap_is_rejected():
     assert validate_source_separation({0:{10,11},1:{12,13}})
     with pytest.raises(ValueError):validate_source_separation({0:{10},1:{10}})
+
+
+def test_unused_full_training_table_cannot_change_fit():
+    bank,queries=toy_records("pendulum",0),toy_records("pendulum",1)
+    _,norm=context()
+    a,fa=evaluate_fold(bank,queries,norm,family="pendulum",held_bundle=1,deadline=float("inf"))
+    for r in bank: r["truth"]={fp:999. for fp in r["truth"]}
+    b,fb=evaluate_fold(bank,queries,norm,family="pendulum",held_bundle=1,deadline=float("inf"))
+    assert a==b and fa["model_hashes"]==fb["model_hashes"]
+
+
+def test_saved_aggregation_is_equal_context_not_pair_pooled():
+    import json
+    from nexus.evolution2.planner_quality_diagnostic import ROOT,METHODS
+    p=json.loads((ROOT/"artifacts/evolution2_25_planner_quality.json").read_text())
+    assert validate(p)
+    for family in ("pendulum","acrobot","pooled"):
+        for method in METHODS:
+            means=[]
+            for f in ("pendulum","acrobot"):
+                if family!="pooled" and f!=family:continue
+                for bundle in (0,1):
+                    for offset in OFFSETS:
+                        rows=[r for r in p["rows"] if (r["family"],r["held_bundle"],r["offset"])==(f,bundle,offset)]
+                        means.append(np.mean([abs(r["predictions"][method]-r["actual_delta"]) for r in rows]))
+            assert p["summary"][family][method]["mae"]==pytest.approx(np.mean(means),abs=1e-14)
+
+
+def test_saved_provenance_and_previous_artifacts_are_immutable():
+    import hashlib,json,subprocess
+    from nexus.evolution2.planner_quality_diagnostic import ROOT,sha
+    p=json.loads((ROOT/"artifacts/evolution2_25_planner_quality.json").read_text())
+    for path,h in p["historical_artifacts_sha256"].items(): assert sha(ROOT/path)==h
+    code=subprocess.check_output(["git","show",p["execution_sha"]+":src/nexus/evolution2/planner_quality_diagnostic.py"],cwd=ROOT)
+    protocol=subprocess.check_output(["git","show",p["execution_sha"]+":docs/NEXUS_E2_25_PLANNER_QUALITY.md"],cwd=ROOT)
+    assert hashlib.sha256(code).hexdigest()==p["implementation_sha256"]
+    assert hashlib.sha256(protocol).hexdigest()==p["protocol_sha256"]
+
+
+def test_inherited_oracle_scaling_exposes_indirect_query_information():
+    from nexus.evolution2.persist_reset_science import FrozenRevealedScale
+    # Raw anchors unchanged; an unobserved extreme changes scaled receipts.
+    a=FrozenRevealedScale({"anchor_a":1.,"anchor_b":2.,"unobserved":3.})
+    b=FrozenRevealedScale({"anchor_a":1.,"anchor_b":2.,"unobserved":5.})
+    assert a.unit(2.) != b.unit(2.)

@@ -1,0 +1,27 @@
+{
+  "analysis_only": true,
+  "mechanical_grid_complete": true,
+  "evaluation_independence": false,
+  "eligible_for_scientific_advancement": false,
+  "parent_result_sha256": "2e954a219cd5bfcc9e599393b7e6a00f0950c0dc48910c526d2697d67cea398c",
+  "new_proxy_states": 0,
+  "new_environment_interactions": 0,
+  "new_fits": 0,
+  "method": "Reconstruct training features from saved source receipts, original permitted arrays and candidate seeds; NumPy matrix_rank without refitting or scoring.",
+  "training_designs": [
+    {"family": "pendulum", "held_bundle": 0, "rows": 60, "config_columns": 126, "config_rank": 12, "candidate_columns": 294, "candidate_rank": 20},
+    {"family": "pendulum", "held_bundle": 1, "rows": 60, "config_columns": 126, "config_rank": 12, "candidate_columns": 294, "candidate_rank": 20},
+    {"family": "acrobot", "held_bundle": 0, "rows": 60, "config_columns": 126, "config_rank": 12, "candidate_columns": 294, "candidate_rank": 20},
+    {"family": "acrobot", "held_bundle": 1, "rows": 60, "config_columns": 126, "config_rank": 12, "candidate_columns": 294, "candidate_rank": 20}
+  ],
+  "scaling_audit": {
+    "inherited_oracle_normalization": true,
+    "raw_anchors": [1.0, 2.0],
+    "unobserved_max_first": 3.0,
+    "unobserved_max_second": 5.0,
+    "public_second_anchor_first": 0.5,
+    "public_second_anchor_second": 0.25,
+    "implication": "Truth dictionaries stay outside fitting, but their extrema indirectly influence public anchors. The fixture is transductive and cannot establish independently isolated real-control evaluation. No closed outcome was changed or rerun."
+  },
+  "limitation": "The 60 pair labels come from four sets of six scores, at most 20 independent within-context contrasts. Reversed training rows add no independent feedback. Rank deficiency is a diagnostic, not proof that it caused poor held-bundle prediction."
+}

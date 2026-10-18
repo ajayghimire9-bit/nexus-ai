@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — E2.25 source planner-quality representation, negative
+
+Candidate/context ridge MAE0.08141 loses to paired mean0.01100,
+observation kernel0.01229 and configuration ridge0.06289. Both source
+family screens fail. No controller change, collection or neural fit.
+Eight diagnostic linear fits; low effective source-label rank disclosed.
+An inherited oracle-scaling leak influences public query anchors;
+future normalization isolation must be repaired before scientific use.
+Historical artifacts and scientific ledger preserved. Report
+`NEXUS_E2_25_PLANNER_QUALITY.md`.
+
 ## Latest — E2.24 evidence arbitration, negative development result
 
 New rule abstains40/40; familiar first-free0 preserved, shifted0.062745

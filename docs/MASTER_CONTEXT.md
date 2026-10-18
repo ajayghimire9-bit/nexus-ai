@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.25 candidate-conditioned quality loses to paired mean, 2026-10-18
+
+Source-only LOBO diagnostic: candidate/context ridge paired-advantage
+MAE0.08141 versus paired mean0.01100 and observation kernel0.01229.
+Both family screens fail; no promotion or retuning. Sixty training pair
+rows contain at most20 independent contrasts, versus294 coefficients.
+This is a negative source-proxy result, not a control/generalization
+finding. No new real interactions/neural training; E2.17/H17 untouched.
+Ledger327.869/3272.131 unchanged. Audit finds an inherited leakage path:
+full-query min/max scaling influences public anchors. Next: repair the
+future evaluator's training-frozen normalization boundary, source-only,
+before any real-control study; preserve old results. No proxy feature
+sweep. Report `NEXUS_E2_25_PLANNER_QUALITY.md`.
+Older entries remain history.
+
 ## Latest — E2.24 arbitration abstains; shifted gain lost, 2026-10-18
 
 Source-only evidence arbitration preserves familiar first-free0 by
