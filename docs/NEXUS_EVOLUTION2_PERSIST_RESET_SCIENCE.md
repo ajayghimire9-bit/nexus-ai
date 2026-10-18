@@ -83,3 +83,12 @@ repaired hypothesis. Fresh upper budget for a later independent n=3
 screen: 7,680 + 7,200 + 9,600 = **24,480** real steps if every method
 selects a distinct hidden planner; 17,280 if they all collide. The
 E2.17 grant is consumed. `dispatch()` stays refused.
+
+## Policy-state diagnostic (E2.19) — does not rewrite the label
+
+Saved revealed feedback, same persist/reset seed and ties: weights
+change; unconstrained first choice differs on all three bundles;
+forced anchors restore identical training sequences; hidden order
+flips on bundle 1. Synthetic conflict fixtures change free-slot
+choices. That is a functioning memory-to-choice mechanism, not a
+transfer result. Report `NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md`.

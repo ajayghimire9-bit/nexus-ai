@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.19 policy-state diagnostic, science still refused, 2026-10-18
+
+Retained adaptive weights change unconstrained and some hidden
+selections. Forced anchors still made E2.17 training sequences
+identical. Synthetic conflict fixtures change free-slot choices.
+Corrected hidden evaluator follows the selected planner. E2.17 stays
+inconclusive; grant consumed. Next independent n=3 screen needs a new
+grant; fresh upper cap 24,480. H17 blocked. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md`. Earlier entries
+remain history.
+
 ## Latest — Evolution-2.18 causal-sensitivity repair, science still refused, 2026-10-18
 
 E2.17 stays inconclusive. Hidden scores were method-independent. Persist

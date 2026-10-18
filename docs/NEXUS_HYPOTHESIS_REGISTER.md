@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.19 retained proposer memory can change planner choice
+
+The 6-weight linear policy translates remembered feedback into a
+different unconstrained or hidden selection when only weights are
+cleared. Forced anchors often restore the same training argmax. Not a
+transfer result. Report `NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md`.
+
 ## Latest — H-e2.18 hidden evaluation was non-identifying; repair is untested scientifically
 
 The E2.17 zero contrast cannot identify persist versus reset. Synthetic

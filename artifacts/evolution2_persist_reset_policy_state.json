@@ -1,0 +1,2018 @@
+{
+  "scientific": false,
+  "collection": false,
+  "fitting": false,
+  "env_steps": 0,
+  "historical_label_preserved": "inconclusive",
+  "grant_consumed": true,
+  "dispatch_refused": true,
+  "h17": "blocked",
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "code_mechanism": {
+    "proposer": "nexus.evolution1.toy_loop.AdaptiveProposer",
+    "features": "(1, successor, balanced, h/16, successor*obs/16, h*n_actions/16)",
+    "update": "normalized linear SGD: scale=0.5*(y-w\u00b7x)/||x||^2; w += scale*x",
+    "choose": "argmax (w\u00b7x, -tie_rank); choose does not consume RNG",
+    "persist": "PersistentAdaptive keeps weights and updates across tasks",
+    "reset_task": "ResetAdaptive.reset_task rebuilds AdaptiveProposer then restores tie_rank and rng_state; weights, updates, and feedback_seen clear",
+    "forced_anchors": "slots 0-1 are locked flat-IID-16 then successor-IID-16",
+    "free_training_slots": "slots 2-3, after two current-task SGD updates",
+    "hidden_slots": "two choose() calls on the full revealed set after training",
+    "not_replaced": "AdaptiveProposer, PersistentAdaptive, ResetAdaptive, MethodSensitiveHiddenEval"
+  },
+  "outcomes": {
+    "weights_change_and_planner_selections_change": true,
+    "weights_change_but_rankings_selections_identical": true,
+    "weights_do_not_meaningfully_change": false,
+    "earlier_task_state_not_accessible_to_target_selection": false
+  },
+  "historical_counterfactual": {
+    "source": "saved E2.17 revealed_returns only",
+    "historical_label_preserved": "inconclusive",
+    "shared_persist_reset_rng": true,
+    "bundles": [
+      {
+        "bundle": 0,
+        "family_order": [
+          "pendulum",
+          "acrobot"
+        ],
+        "shared_seed": 82000000,
+        "ties_identical": true,
+        "first_family_picks_equal": true,
+        "first_family_weights_equal": true,
+        "persist_weights_after_first": [
+          0.13309158081482053,
+          0.003497874155622291,
+          0.0,
+          0.19606506626189346,
+          0.0006558514041791787,
+          0.03676219992410503
+        ],
+        "reset_weights_after_intervention": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pre_current_persist": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.3397933779946732,
+            "tie_rank": 1,
+            "margin_over_second": 0.0037438184321895163
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.33604955956248367,
+            "tie_rank": 8
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.2383143886208416,
+            "tie_rank": 9
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.2345705701886521,
+            "tie_rank": 2
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.1875748939339258,
+            "tie_rank": 11
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.18383107550173633,
+            "tie_rank": 0
+          }
+        ],
+        "pre_current_reset": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.0,
+            "tie_rank": 0,
+            "margin_over_second": 0.0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "tie_rank": 1
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.0,
+            "tie_rank": 2
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.0,
+            "tie_rank": 8
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.0,
+            "tie_rank": 9
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.0,
+            "tie_rank": 11
+          }
+        ],
+        "pre_current_choice_persist": {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+        },
+        "pre_current_choice_reset": {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 4,
+          "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        },
+        "pre_current_choice_differs": true,
+        "second_family_persist": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "slot": 0,
+            "forced": true,
+            "feedback": 1.0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "slot": 1,
+            "forced": true,
+            "feedback": 0.8389362207914494
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "slot": 2,
+            "forced": false,
+            "feedback": 0.20815099491800448
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "slot": 3,
+            "forced": false,
+            "feedback": 0.134643979179438
+          }
+        ],
+        "second_family_reset": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "slot": 0,
+            "forced": true,
+            "feedback": 1.0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "slot": 1,
+            "forced": true,
+            "feedback": 0.8389362207914494
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "slot": 2,
+            "forced": false,
+            "feedback": 0.20815099491800448
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "slot": 3,
+            "forced": false,
+            "feedback": 0.134643979179438
+          }
+        ],
+        "second_family_training_differs": false,
+        "second_family_slot2_rank_persist": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.5558237330314054,
+            "tie_rank": 9,
+            "margin_over_second": 0.03376408029736855
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.5220596527340369,
+            "tie_rank": 2
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.45605939479588803,
+            "tie_rank": 11
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.4222953144985194,
+            "tie_rank": 0
+          }
+        ],
+        "second_family_slot2_rank_reset": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.5146894598894534,
+            "tie_rank": 9,
+            "margin_over_second": 0.06086677519748046
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.4538226846919729,
+            "tie_rank": 2
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.43730013463631767,
+            "tie_rank": 11
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.37643335943883727,
+            "tie_rank": 0
+          }
+        ],
+        "weights_after_second_persist": [
+          0.13242195146486158,
+          -0.04263250046288891,
+          0.0,
+          0.2904499493110047,
+          -0.01664303907776252,
+          0.054459365495813386
+        ],
+        "weights_after_second_reset": [
+          0.14032508659572834,
+          -0.010515123134457703,
+          0.0,
+          0.21968456039071493,
+          -0.003943171175421641,
+          0.04119085507325905
+        ],
+        "weight_l2_after_second": 0.08024378950400947,
+        "hidden": {
+          "pendulum": {
+            "persist": [
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              },
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              }
+            ],
+            "reset": [
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              },
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              }
+            ]
+          },
+          "acrobot": {
+            "persist": [
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              },
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              }
+            ],
+            "reset": [
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              },
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              }
+            ]
+          }
+        },
+        "hidden_differs": false,
+        "labels": {
+          "unconstrained": "weights_change_and_planner_selections_change",
+          "protocol_training": "weights_change_but_rankings_selections_identical",
+          "hidden": "weights_change_but_rankings_selections_identical"
+        }
+      },
+      {
+        "bundle": 1,
+        "family_order": [
+          "acrobot",
+          "pendulum"
+        ],
+        "shared_seed": 82000001,
+        "ties_identical": true,
+        "first_family_picks_equal": true,
+        "first_family_weights_equal": true,
+        "persist_weights_after_first": [
+          0.2048390111278511,
+          0.03567514279341688,
+          0.0,
+          0.24834792409467554,
+          0.01337817854753133,
+          0.04656523576775167
+        ],
+        "reset_weights_after_intervention": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pre_current_persist": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.5001014682000591,
+            "tie_rank": 5,
+            "margin_over_second": 0.038183551271078975
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.4619179169289801,
+            "tie_rank": 1
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.3715620152994946,
+            "tie_rank": 3
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.3333784640284156,
+            "tie_rank": 7
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.30729228884921234,
+            "tie_rank": 4
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.26910873757813336,
+            "tie_rank": 9
+          }
+        ],
+        "pre_current_reset": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.0,
+            "tie_rank": 1,
+            "margin_over_second": 0.0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.0,
+            "tie_rank": 3
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.0,
+            "tie_rank": 4
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "tie_rank": 5
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.0,
+            "tie_rank": 7
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.0,
+            "tie_rank": 9
+          }
+        ],
+        "pre_current_choice_persist": {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+        },
+        "pre_current_choice_reset": {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+        },
+        "pre_current_choice_differs": true,
+        "second_family_persist": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "slot": 0,
+            "forced": true,
+            "feedback": 0.8644759660633297
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "slot": 1,
+            "forced": true,
+            "feedback": 0.562282324444375
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "slot": 2,
+            "forced": false,
+            "feedback": 0.28830703755347226
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "slot": 3,
+            "forced": false,
+            "feedback": 0.0
+          }
+        ],
+        "second_family_reset": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "slot": 0,
+            "forced": true,
+            "feedback": 0.8644759660633297
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "slot": 1,
+            "forced": true,
+            "feedback": 0.562282324444375
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "slot": 2,
+            "forced": false,
+            "feedback": 0.28830703755347226
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "slot": 3,
+            "forced": false,
+            "feedback": 0.0
+          }
+        ],
+        "second_family_training_differs": false,
+        "second_family_slot2_rank_persist": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.4638271936231837,
+            "tie_rank": 3,
+            "margin_over_second": 0.014735068697569076
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.4490921249256146,
+            "tie_rank": 7
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.3798250861318733,
+            "tie_rank": 4
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.3650900174343042,
+            "tie_rank": 9
+          }
+        ],
+        "second_family_slot2_rank_reset": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.37637287066495334,
+            "tie_rank": 3,
+            "margin_over_second": 0.021922233126188406
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.35445063753876493,
+            "tie_rank": 7
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.31592922912842003,
+            "tie_rank": 4
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.2940069960022316,
+            "tie_rank": 9
+          }
+        ],
+        "weights_after_second_persist": [
+          0.08357667916884493,
+          -0.025234243103790594,
+          0.0,
+          0.22584120752274386,
+          0.0019576686918049303,
+          0.04234522641051447
+        ],
+        "weights_after_second_reset": [
+          0.08317539272185312,
+          0.0019824270793174018,
+          0.0,
+          0.15836937359377573,
+          0.00037170507737201326,
+          0.029694257548832953
+        ],
+        "weight_l2_after_second": 0.07386419182616442,
+        "hidden": {
+          "pendulum": {
+            "persist": [
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              },
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              }
+            ],
+            "reset": [
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              },
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              }
+            ]
+          },
+          "acrobot": {
+            "persist": [
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              },
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              }
+            ],
+            "reset": [
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              },
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              }
+            ]
+          }
+        },
+        "hidden_differs": true,
+        "labels": {
+          "unconstrained": "weights_change_and_planner_selections_change",
+          "protocol_training": "weights_change_but_rankings_selections_identical",
+          "hidden": "weights_change_and_planner_selections_change"
+        }
+      },
+      {
+        "bundle": 2,
+        "family_order": [
+          "pendulum",
+          "acrobot"
+        ],
+        "shared_seed": 82000002,
+        "ties_identical": true,
+        "first_family_picks_equal": true,
+        "first_family_weights_equal": true,
+        "persist_weights_after_first": [
+          0.22454569295159776,
+          0.08269087941560563,
+          0.0,
+          0.24252269524448822,
+          0.015504539890426055,
+          0.04547300535834154
+        ],
+        "reset_weights_after_intervention": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pre_current_persist": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.5640996585752904,
+            "tie_rank": 11,
+            "margin_over_second": 0.08850508187451539
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.47559457670077504,
+            "tie_rank": 2
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.43857521670070176,
+            "tie_rank": 0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.3758129957634075,
+            "tie_rank": 1
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.3500701348261864,
+            "tie_rank": 9
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.2873079138888921,
+            "tie_rank": 3
+          }
+        ],
+        "pre_current_reset": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.0,
+            "tie_rank": 0,
+            "margin_over_second": 0.0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.0,
+            "tie_rank": 1
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.0,
+            "tie_rank": 2
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.0,
+            "tie_rank": 3
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.0,
+            "tie_rank": 9
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "tie_rank": 11
+          }
+        ],
+        "pre_current_choice_persist": {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+        },
+        "pre_current_choice_reset": {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+        },
+        "pre_current_choice_differs": true,
+        "second_family_persist": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "slot": 0,
+            "forced": true,
+            "feedback": 0.8281968807014111
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "slot": 1,
+            "forced": true,
+            "feedback": 1.0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "slot": 2,
+            "forced": false,
+            "feedback": 0.4159704533044436
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "slot": 3,
+            "forced": false,
+            "feedback": 0.3597013409966109
+          }
+        ],
+        "second_family_reset": [
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "slot": 0,
+            "forced": true,
+            "feedback": 0.8281968807014111
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 16,
+            "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "slot": 1,
+            "forced": true,
+            "feedback": 1.0
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "slot": 2,
+            "forced": false,
+            "feedback": 0.4159704533044436
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "slot": 3,
+            "forced": false,
+            "feedback": 0.3597013409966109
+          }
+        ],
+        "second_family_training_differs": false,
+        "second_family_slot2_rank_persist": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.6786849975860172,
+            "tie_rank": 0,
+            "margin_over_second": 0.09575770385089355
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.5829272937351236,
+            "tie_rank": 1
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.5435606270817833,
+            "tie_rank": 9
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.44780292323088977,
+            "tie_rank": 3
+          }
+        ],
+        "second_family_slot2_rank_reset": [
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "score": 0.5539921463086902,
+            "tie_rank": 0,
+            "margin_over_second": 0.07652853693333123
+          },
+          {
+            "rule": "successor",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.477463609375359,
+            "tie_rank": 1
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 8,
+            "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.4487748920543274,
+            "tie_rank": 9
+          },
+          {
+            "rule": "flat",
+            "generator": "iid",
+            "horizon": 4,
+            "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.37224635512099613,
+            "tie_rank": 3
+          }
+        ],
+        "weights_after_second_persist": [
+          0.2516422175146208,
+          0.06881702217449907,
+          0.0,
+          0.3198207207401989,
+          0.010301843425011094,
+          0.059966385138787284
+        ],
+        "weights_after_second_reset": [
+          0.24595639734321206,
+          0.0634837227672868,
+          0.0,
+          0.2708371077654385,
+          0.023806396037732554,
+          0.050781957706019724
+        ],
+        "weight_l2_after_second": 0.052219667005709826,
+        "hidden": {
+          "pendulum": {
+            "persist": [
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              },
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              }
+            ],
+            "reset": [
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              },
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              }
+            ]
+          },
+          "acrobot": {
+            "persist": [
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              },
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              }
+            ],
+            "reset": [
+              {
+                "rule": "successor",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+              },
+              {
+                "rule": "flat",
+                "generator": "iid",
+                "horizon": 16,
+                "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+              }
+            ]
+          }
+        },
+        "hidden_differs": false,
+        "labels": {
+          "unconstrained": "weights_change_and_planner_selections_change",
+          "protocol_training": "weights_change_but_rankings_selections_identical",
+          "hidden": "weights_change_but_rankings_selections_identical"
+        }
+      }
+    ],
+    "pre_current_choice_differs_any": true,
+    "protocol_training_differs_any": false,
+    "hidden_differs_any": true,
+    "weights_changed_any": true
+  },
+  "synthetic_mechanism_tests": {
+    "label": "mechanism_tests_not_transfer_evidence",
+    "transfer_evidence": false,
+    "successor_then_flat": {
+      "label": "mechanism_test_not_transfer_evidence",
+      "transfer_evidence": false,
+      "scientific": false,
+      "prior": "successor",
+      "current": "flat",
+      "shared_seed": 7,
+      "ties_identical": true,
+      "weights_persist": [
+        0.11102532879833646,
+        0.01918869351891902,
+        0.0,
+        0.08045168168649117,
+        -0.06193706666581594,
+        0.015084690316217102
+      ],
+      "weights_reset": [
+        0.6705773419819009,
+        -0.07635916359163591,
+        0.0,
+        0.36595583666864623,
+        -0.028634686346863468,
+        0.06861671937537117
+      ],
+      "weight_l2": 0.6385258002918688,
+      "pre_current_persist": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 16,
+        "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+      },
+      "pre_current_reset": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 8,
+        "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+      },
+      "pre_current_differs": true,
+      "current_persist": [
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "slot": 0,
+          "forced": true,
+          "feedback": 0.99
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "slot": 1,
+          "forced": true,
+          "feedback": 0.01
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "slot": 2,
+          "forced": false,
+          "feedback": 0.01
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 4,
+          "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+          "slot": 3,
+          "forced": false,
+          "feedback": 0.01
+        }
+      ],
+      "current_reset": [
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "slot": 0,
+          "forced": true,
+          "feedback": 0.99
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "slot": 1,
+          "forced": true,
+          "feedback": 0.01
+        },
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 8,
+          "fingerprint": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+          "slot": 2,
+          "forced": false,
+          "feedback": 0.99
+        },
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 4,
+          "fingerprint": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "slot": 3,
+          "forced": false,
+          "feedback": 0.99
+        }
+      ],
+      "training_differs": true,
+      "hidden": {
+        "pendulum": {
+          "persist": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "flat",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "flat",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            }
+          ]
+        },
+        "acrobot": {
+          "persist": [
+            {
+              "rule": "flat",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "flat",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            }
+          ]
+        }
+      },
+      "hidden_differs": true
+    },
+    "successor_then_neutral": {
+      "label": "mechanism_test_not_transfer_evidence",
+      "transfer_evidence": false,
+      "scientific": false,
+      "prior": "successor",
+      "current": "neutral",
+      "shared_seed": 7,
+      "ties_identical": true,
+      "weights_persist": [
+        0.2257842607970931,
+        0.2543315026769847,
+        0.0,
+        0.12466270617548675,
+        0.026241486768458694,
+        0.02337425740790378
+      ],
+      "weights_reset": [
+        0.24022487638067797,
+        0.11738418540179123,
+        0.0,
+        0.19259259291226705,
+        0.04401906952567171,
+        0.03611111117105008
+      ],
+      "weight_l2": 0.15509944710362608,
+      "pre_current_persist": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 16,
+        "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+      },
+      "pre_current_reset": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 8,
+        "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+      },
+      "pre_current_differs": true,
+      "current_persist": [
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "slot": 0,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "slot": 1,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "slot": 2,
+          "forced": false,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 4,
+          "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+          "slot": 3,
+          "forced": false,
+          "feedback": 0.5
+        }
+      ],
+      "current_reset": [
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "slot": 0,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "slot": 1,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "slot": 2,
+          "forced": false,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 4,
+          "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+          "slot": 3,
+          "forced": false,
+          "feedback": 0.5
+        }
+      ],
+      "training_differs": false,
+      "hidden": {
+        "pendulum": {
+          "persist": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ]
+        },
+        "acrobot": {
+          "persist": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ]
+        }
+      },
+      "hidden_differs": false
+    },
+    "prior_only": {
+      "label": "mechanism_test_not_transfer_evidence",
+      "transfer_evidence": false,
+      "scientific": false,
+      "prior": "successor",
+      "current": null,
+      "shared_seed": 7,
+      "ties_identical": true,
+      "weights_persist": [
+        0.37116522307510086,
+        0.3687084092555231,
+        0.0,
+        0.24636954313819331,
+        0.06913282673541059,
+        0.04619428933841125
+      ],
+      "weights_reset": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "weight_l2": 0.5842266048051552,
+      "pre_current_persist": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 16,
+        "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+      },
+      "pre_current_reset": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 8,
+        "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+      },
+      "pre_current_differs": true,
+      "current_persist": null,
+      "current_reset": null,
+      "training_differs": false,
+      "hidden": {
+        "pendulum": {
+          "persist": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            }
+          ]
+        },
+        "acrobot": {
+          "persist": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            }
+          ]
+        }
+      },
+      "hidden_differs": true
+    },
+    "zero_prior_control": {
+      "label": "mechanism_test_not_transfer_evidence",
+      "transfer_evidence": false,
+      "scientific": false,
+      "prior": "neutral",
+      "current": "neutral",
+      "shared_seed": 7,
+      "ties_identical": true,
+      "weights_persist": [
+        0.2683023757197968,
+        0.13270663786047468,
+        0.0,
+        0.20068786752724835,
+        0.02672955632786742,
+        0.03762897516135906
+      ],
+      "weights_reset": [
+        0.24022487638067797,
+        0.11738418540179123,
+        0.0,
+        0.19259259291226705,
+        0.04401906952567171,
+        0.03611111117105008
+      ],
+      "weight_l2": 0.037281203940979696,
+      "pre_current_persist": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 16,
+        "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+      },
+      "pre_current_reset": {
+        "rule": "successor",
+        "generator": "iid",
+        "horizon": 8,
+        "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+      },
+      "pre_current_differs": true,
+      "current_persist": [
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "slot": 0,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "slot": 1,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "slot": 2,
+          "forced": false,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 4,
+          "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+          "slot": 3,
+          "forced": false,
+          "feedback": 0.5
+        }
+      ],
+      "current_reset": [
+        {
+          "rule": "flat",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+          "slot": 0,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "slot": 1,
+          "forced": true,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "slot": 2,
+          "forced": false,
+          "feedback": 0.5
+        },
+        {
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 4,
+          "fingerprint": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+          "slot": 3,
+          "forced": false,
+          "feedback": 0.5
+        }
+      ],
+      "training_differs": false,
+      "hidden": {
+        "pendulum": {
+          "persist": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ]
+        },
+        "acrobot": {
+          "persist": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ],
+          "reset": [
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 16,
+              "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4"
+            },
+            {
+              "rule": "successor",
+              "generator": "iid",
+              "horizon": 8,
+              "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+            }
+          ]
+        }
+      },
+      "hidden_differs": false
+    },
+    "control_training_identical": true,
+    "policy_can_translate_memory_into_choice": true
+  },
+  "evaluator_sensitivity": {
+    "fixture": "successor prior, no current-task updates",
+    "selections_differ": true,
+    "scores_follow_selected_planner": true,
+    "identical_selection_would_cache": true,
+    "logical_equal": {
+      "persist": 4,
+      "reset": 4,
+      "random": 4,
+      "evolution": 4
+    },
+    "physical": 8,
+    "cached": 8,
+    "logical": 16,
+    "hidden_blocked_from_training": true,
+    "common_random_numbers": true,
+    "hidden_development_excluded": true,
+    "selections": {
+      "persist": [
+        {
+          "family": "pendulum",
+          "slot": 0,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        },
+        {
+          "family": "pendulum",
+          "slot": 1,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        },
+        {
+          "family": "acrobot",
+          "slot": 0,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        },
+        {
+          "family": "acrobot",
+          "slot": 1,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        }
+      ],
+      "reset": [
+        {
+          "family": "pendulum",
+          "slot": 0,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        },
+        {
+          "family": "pendulum",
+          "slot": 1,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        },
+        {
+          "family": "acrobot",
+          "slot": 0,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        },
+        {
+          "family": "acrobot",
+          "slot": 1,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        }
+      ],
+      "random": [
+        {
+          "family": "pendulum",
+          "slot": 0,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        },
+        {
+          "family": "pendulum",
+          "slot": 1,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        },
+        {
+          "family": "acrobot",
+          "slot": 0,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        },
+        {
+          "family": "acrobot",
+          "slot": 1,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        }
+      ],
+      "evolution": [
+        {
+          "family": "pendulum",
+          "slot": 0,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        },
+        {
+          "family": "pendulum",
+          "slot": 1,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        },
+        {
+          "family": "acrobot",
+          "slot": 0,
+          "fingerprint": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 16
+        },
+        {
+          "family": "acrobot",
+          "slot": 1,
+          "fingerprint": "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+          "rule": "successor",
+          "generator": "iid",
+          "horizon": 8
+        }
+      ]
+    },
+    "scores": {
+      "persist": 16.0,
+      "reset": 20.0,
+      "random": 16.0,
+      "evolution": 16.0
+    },
+    "charges": {
+      "physical": 8,
+      "logical": 16,
+      "cached": 8,
+      "per_method": {
+        "persist": {
+          "logical": 4,
+          "physical": 4,
+          "cached": 0
+        },
+        "reset": {
+          "logical": 4,
+          "physical": 4,
+          "cached": 0
+        },
+        "random": {
+          "logical": 4,
+          "physical": 0,
+          "cached": 4
+        },
+        "evolution": {
+          "logical": 4,
+          "physical": 0,
+          "cached": 4
+        }
+      }
+    }
+  },
+  "decision": {
+    "verdict": "GO",
+    "mechanism_functions": true,
+    "historical_training_identical": true,
+    "historical_hidden_can_differ": true,
+    "historical_unconstrained_differs": true,
+    "next_action": "One prospectively locked new-physics n=3 persist-versus-reset screen with method-sensitive hidden evaluation, matched persist/reset RNG, equal logical hidden slots, physical cache hits, and a fresh unused four-role holdout. Fresh upper env_cap=24480 (7680+7200+9600). New grant required. Do not reuse the consumed E2.17 grant or its development outcomes.",
+    "fresh_budget_upper": 24480,
+    "reuse_e217_grant": false,
+    "reuse_e217_holdout_as_confirmation": false,
+    "h17": "blocked",
+    "evolution_3": false
+  },
+  "scientific_ledger_session": [
+    327.869,
+    3272.131
+  ],
+  "claims_learning_to_learn": false,
+  "is_agi": false
+}

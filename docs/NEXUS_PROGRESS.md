@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.19 policy-state diagnostic, no new collection
+
+Retained memory changes unconstrained and some hidden selections.
+E2.17 training sequences stayed identical after forced anchors.
+Mechanism tests PASS; grant consumed. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md`.
+
 ## Latest — Evolution-2.18 causal-sensitivity repair, no new collection
 
 E2.17 label preserved. Persist=reset selections; evolution differed.

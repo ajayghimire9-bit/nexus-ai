@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.19 memory-to-choice functions; one recommended next screen
+
+Source-only persist-versus-reset intervention: weights change;
+unconstrained first choice differs; E2.17 training slots stayed
+identical after forced anchors; hidden order flipped on bundle 1.
+Synthetic conflict fixtures change free-slot selections. Recommended
+next scientific experiment: one new-physics n=3 persist-versus-reset
+screen whose hidden controller is the method-selected planner, with
+matched persist/reset seeds, equal logical slots, and physical cache
+hits. Fresh upper `env_cap=24480` (7680+7200+9600). New unused
+four-role holdout and a new grant are required. Do not reuse the
+consumed E2.17 grant or its development as confirmation. Do not start
+Evolution-3. Report `NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md`.
+
 ## Current — Evolution-2.18 causal repair complete; one recommended next screen
 
 E2.17 remains inconclusive and is not a confirmation holdout. Recommended
