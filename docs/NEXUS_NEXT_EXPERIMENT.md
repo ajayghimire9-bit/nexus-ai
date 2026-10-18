@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.2 adapter audit; science still BLOCKED
+
+H=16 historical parity is no longer claimed at catalogue cap 1536.
+Evolution no longer falls back to an unrelated `available[0]`.
+Twelve-arm dispatch stays BLOCKED on balanced generators. Existing
+residual-MLP timing was reused (no new ledger debit): v2 **NO-GO**,
+v2-pilot **UNKNOWN**. Do not collect. Do not name a holdout. Next:
+time source fitting on stored transitions only. Report
+`NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md`.
+
 ## Current — residual-MLP timing probe complete; v2 still risky
 
 Random-obs successor H=16 on frozen files: Pendulum 2.95–3.01 µs

@@ -75,6 +75,17 @@ def test_committed_probe_result_has_zero_env_steps():
     assert len(payload["models"]) == 3
 
 
+def test_feasibility_uses_measured_rates_not_fake_model():
+    report = m.feasibility_from_measured()
+    assert report["status"] == "MEASURED"
+    assert report["fake_model_not_used"] is True
+    assert report["new_ledger_debit"] is False
+    assert report["source_fitting"] == "unmeasured"
+    assert report["v2_feasibility"] == "NO-GO"
+    assert report["pilot_feasibility"] == "UNKNOWN"
+    assert report["v2_conservative_planning_s"] > 600
+
+
 def test_probe_source_stays_off_the_scientific_stack():
     imported = _imports(Path(m.__file__))
     assert "gymnasium" not in imported

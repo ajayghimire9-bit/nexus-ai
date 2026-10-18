@@ -111,6 +111,42 @@ def extrapolate(seconds_per_imagined: float) -> dict[str, float]:
     }
 
 
+def feasibility_from_measured() -> dict:
+    """Compare existing residual-MLP rates to v2 / v2-pilot. No new run."""
+    if not RESULTS.is_file():
+        return {"status": "UNAVAILABLE", "reason": "timing_results_missing"}
+    payload = json.loads(RESULTS.read_text())
+    rates = [
+        float(row["seconds_per_imagined"])
+        for row in payload.get("models", [])
+        if row.get("seconds_per_imagined") is not None
+    ]
+    if not rates:
+        return {"status": "UNAVAILABLE", "reason": "no_measured_rates"}
+    measured_min = min(rates)
+    measured_max = max(rates)
+    conservative = max(measured_max, HISTORICAL_SECONDS_PER_IMAGINED) * 1.25
+    v2_s = conservative * V2_IMAGINED
+    pilot_s = conservative * PILOT_IMAGINED
+    return {
+        "status": "MEASURED",
+        "n_models": len(rates),
+        "measured_min_s": measured_min,
+        "measured_max_s": measured_max,
+        "historical_s": HISTORICAL_SECONDS_PER_IMAGINED,
+        "conservative_factor": 1.25,
+        "conservative_s": conservative,
+        "v2_conservative_planning_s": v2_s,
+        "pilot_conservative_planning_s": pilot_s,
+        "v2_feasibility": "NO-GO" if v2_s > 0.75 * 900 else "UNKNOWN",
+        "pilot_feasibility": "UNKNOWN",
+        "source_fitting": "unmeasured",
+        "fake_model_not_used": True,
+        "new_ledger_debit": False,
+        "env_steps": payload.get("env_steps", None),
+    }
+
+
 def allocation_record() -> dict:
     return json.loads(ALLOCATION.read_text())
 

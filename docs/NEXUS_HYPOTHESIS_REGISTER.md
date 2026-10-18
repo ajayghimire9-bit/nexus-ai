@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.2 adapter correctness is engineered, not collected
+
+Catalogue H=16 at cap 1536 is not historical 16×16. Balanced
+dispatch keeps the 12-arm screen blocked. Not a transfer result.
+Report `NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md`.
+
 ## Latest — H-e2 residual-MLP timing is measured, not a transfer result
 
 Frozen-file successor H=16 rates: Pendulum 2.95–3.01 µs, Acrobot

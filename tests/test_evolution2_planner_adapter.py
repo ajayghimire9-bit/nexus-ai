@@ -32,7 +32,8 @@ def test_adapter_does_not_use_mpc_for_model_or_gymnasium():
     assert "nexus.tasks.spec" not in imported
     assert "nexus.evolution1.adapters" not in imported
     assert "make_task_env" not in source
-    assert "from nexus.world.planning import" not in source
+    assert "mpc_for_model(" not in source
+    assert "from nexus.world.planning import mpc_for_model" not in source
 
 
 def test_iid_matches_historical_candidate_draw():
@@ -67,9 +68,13 @@ def test_compatibility_matrix_covers_twelve_variants_per_family():
                 assert row["status"] == "IMPLEMENTED_adapter_DISPATCH_BLOCKED"
             else:
                 assert row["status"] == "IMPLEMENTED_catalogue_faithful"
+            bound = plan_bound(variant, 3, 1536)
             assert row["historical_parity"] is (
-                variant.generator is Generator.IID and variant.horizon == 16
+                variant.generator is Generator.IID
+                and variant.horizon == 16
+                and bound.candidates_per_root == 16
             )
+            assert row["historical_parity"] is False
             assert row["scientific"] is False
 
 
@@ -138,9 +143,35 @@ def test_historical_rate_makes_full_v2_likely_incomplete_under_900s():
     assert bench["imagined"] > 0
 
 
-def test_does_not_construct_random_shooting_via_family_inference():
+def test_reuses_planning_counter_and_score_batch_not_mpc_for_model():
     source = Path(a.__file__).read_text()
-    assert "from nexus.world.planning import" not in source
-    assert "RandomShootingMPC(" not in source
     imported = _imports(Path(a.__file__))
-    assert "nexus.world.planning" not in imported
+    assert "nexus.world.planning" in imported
+    assert "mpc_for_model(" not in source
+    assert "class InferenceCounter" not in source
+    assert "for t in range(horizon):" not in source
+    from nexus.world.planning import InferenceCounter as Historical
+    assert a.InferenceCounter is Historical
+
+
+def test_twelve_arm_scientific_dispatch_is_blocked_by_balanced_host():
+    report = a.twelve_arm_scientific_dispatch()
+    assert report["ready"] is False
+    assert report["status"] == "BLOCKED"
+    assert report["blocked_variants"] == 6
+    assert report["enabled_dispatch"] is False
+    from nexus.evolution2.bindings import bind_evaluation
+    from nexus.evolution1.catalogue import ContractError
+    binding = reviewed_binding("pendulum")
+    for variant in catalogue():
+        if variant.generator is Generator.BALANCED:
+            with pytest.raises(ContractError, match="unsupported_balanced_generator"):
+                bind_evaluation(
+                    "pendulum",
+                    variant,
+                    checkpoint_id=binding.checkpoint_id,
+                    world_model_id=binding.world_model_id,
+                    model_obs_dim=binding.obs_dim,
+                    model_n_actions=binding.n_actions,
+                )
+    assert a.SCIENTIFIC is False

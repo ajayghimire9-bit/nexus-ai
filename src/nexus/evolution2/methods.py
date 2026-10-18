@@ -179,17 +179,32 @@ class EvolutionarySearch:
         contenders = self._rng.sample(self.population, k)
         return max(contenders, key=lambda row: (row[0], row[1].fingerprint))[1]
 
+    def _legal_available(self, parent, available):
+        legal = []
+        for variant in available:
+            changed = (
+                int(variant.rule is not parent.rule)
+                + int(variant.generator is not parent.generator)
+                + int(variant.horizon != parent.horizon)
+            )
+            if changed == 1:
+                legal.append(variant)
+        return tuple(legal)
+
     def choose(self, available, context):
         if type(context) is not PublicFixtureContext:
             raise MethodError('public_context_required')
         parent = self._tournament_parent()
         if parent is None:
             return available[0]
+        legal = self._legal_available(parent, available)
+        if not legal:
+            raise MethodError('no_legal_mutant_in_available')
         for _ in range(16):
             mutant = self._mutate(parent)
             if mutant in available:
                 return mutant
-        return available[0]
+        return self._rng.choice(legal)
 
     def update(self, feedback, context):
         if type(feedback) is not TrainingFeedback:

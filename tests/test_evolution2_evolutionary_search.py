@@ -49,8 +49,47 @@ def test_tournament_parent_changes_later_choices_and_forbids_crossover():
         + int(chosen.generator is not parent.generator)
         + int(chosen.horizon != parent.horizon)
     )
-    if chosen is not available[0]:
-        assert changed == 1
+    assert changed == 1
+
+
+def test_unsuccessful_mutation_does_not_silently_return_unrelated_available():
+    evo = m.EvolutionarySearch(seed=0)
+    parent = VARIANTS[0]
+    evo.population = [(1.0, parent)]
+    evo.parent = parent
+    evo.best_score = 1.0
+    illegal = [
+        v
+        for v in VARIANTS
+        if (
+            int(v.rule is not parent.rule)
+            + int(v.generator is not parent.generator)
+            + int(v.horizon != parent.horizon)
+        )
+        != 1
+    ]
+    with pytest.raises(m.MethodError, match="no_legal_mutant_in_available"):
+        evo.choose(tuple(illegal), make_task("horizon_scale", 0).context)
+
+
+def test_mutation_search_fallback_stays_inside_legal_available():
+    evo = m.EvolutionarySearch(seed=1)
+    parent = VARIANTS[0]
+    evo.population = [(1.0, parent)]
+    evo.parent = parent
+    legal = [
+        v
+        for v in VARIANTS
+        if (
+            int(v.rule is not parent.rule)
+            + int(v.generator is not parent.generator)
+            + int(v.horizon != parent.horizon)
+        )
+        == 1
+    ]
+    chosen = evo.choose(tuple(legal), make_task("horizon_scale", 0).context)
+    assert chosen in legal
+    assert chosen is not parent
     with pytest.raises(m.MethodError, match="crossover"):
         evo._crossover()
 

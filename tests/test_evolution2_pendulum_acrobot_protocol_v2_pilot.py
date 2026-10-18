@@ -79,6 +79,25 @@ def test_pilot_worksheet_charges_six_revealed_rows_and_two_conditions():
     assert m.wall_clock_risk() == "more_plausible_than_v2_still_unproven"
 
 
+def test_revealed_cache_is_shared_and_hits_are_still_charged():
+    revealed = v2.anchors()
+    caches = m.equal_information_cache(revealed)
+    names = [row["name"] for row in v2.METHODS]
+    shared = caches[names[0]]
+    assert all(caches[name] is shared for name in names)
+    first = shared.reveal("persist", revealed[0], 1.5)
+    second = shared.reveal("reset", revealed[0], 9.9)
+    assert first == second == 1.5
+    assert shared.charged == 2
+    assert shared.hits == 1
+    assert shared.misses == 1
+    unused = next(v for v in v2.legal_mutants(revealed[0]) if v not in revealed)
+    assert unused not in revealed
+    with pytest.raises(RuntimeError, match="unused_variant_not_revealed"):
+        shared.reveal("persist", unused, 0.0)
+    assert m.charge_imagined(2) == 2 * v2.IMAGINED_CAP_PER_DECISION
+
+
 def test_pilot_source_stays_off_the_scientific_stack():
     imported = _imports(Path(m.__file__))
     assert "gymnasium" not in imported

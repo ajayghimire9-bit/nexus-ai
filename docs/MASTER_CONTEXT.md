@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.2 adapter correctness, science BLOCKED, 2026-10-18
+
+On `cursor/evolution2.2-adapter-correctness` from `9b6c6d0`.
+Catalogue H=16 at cap 1536 is not historical 16×16. Scoring reuses
+`RandomShootingMPC._score_batch`. Evolution mutations stay legal.
+Twelve-arm dispatch BLOCKED. Timing reused, not re-run. v2 NO-GO;
+v2-pilot UNKNOWN. Holdout unnamed. H17 blocked. Ledger unchanged
+at 306.954 / 3293.046. Report
+`NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md`. Earlier entries remain
+history.
+
 ## Latest — residual-MLP timing probe complete, 2026-10-18
 
 On `cursor/evolution2-trusted-planner-adapter`. Read-only successor

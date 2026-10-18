@@ -518,6 +518,22 @@ EXPERIMENTS = [
         "reuse": "Read-only inference. 0 env steps. Not a transfer result. Do not collect.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.2-adapter-correctness",
+        "title": "Independent adapter correctness and real-model feasibility",
+        "hypothesis": "Catalogue H=16 at cap 1536 is not historical 16x16; balanced dispatch blocks the 12-arm screen; legal evolution cannot fall back to available[0].",
+        "implementation": [
+            "src/nexus/evolution2/planner_adapter.py",
+            "src/nexus/evolution2/methods.py",
+        ],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md",
+        "results": "docs/NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md",
+        "status": "engineering_audit_science_blocked",
+        "artifacts": ["artifacts/evolution2_planner_compatibility.json"],
+        "reuse": "Fixes adapter parity and evolution fairness. Does not enable dispatch or collect.",
+        "coverage": "source_verified",
+    },
 ]
 
 

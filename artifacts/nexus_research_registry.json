@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "e00fe64882b14462493f907dd1803e167e2ef2a6",
+  "head": "9b6c6d0f435ba0d6d78aa4957e342a919c72fb95",
   "ledger_s": [
     306.954,
     3293.046
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 36,
+    "curated": 37,
     "incomplete_unindexed_docs": 93,
-    "total": 129,
+    "total": 130,
     "incomplete": 120,
-    "source_verified": 9
+    "source_verified": 10
   },
   "experiments": [
     {
@@ -672,6 +672,24 @@
         "artifacts/evolution2_residual_timing_probe.json"
       ],
       "reuse": "Read-only inference. 0 env steps. Not a transfer result. Do not collect.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2.2-adapter-correctness",
+      "title": "Independent adapter correctness and real-model feasibility",
+      "hypothesis": "Catalogue H=16 at cap 1536 is not historical 16x16; balanced dispatch blocks the 12-arm screen; legal evolution cannot fall back to available[0].",
+      "implementation": [
+        "src/nexus/evolution2/planner_adapter.py",
+        "src/nexus/evolution2/methods.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md",
+      "results": "docs/NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md",
+      "status": "engineering_audit_science_blocked",
+      "artifacts": [
+        "artifacts/evolution2_planner_compatibility.json"
+      ],
+      "reuse": "Fixes adapter parity and evolution fairness. Does not enable dispatch or collect.",
       "coverage": "source_verified"
     },
     {

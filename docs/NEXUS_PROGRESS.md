@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.2 adapter correctness, no collection
+
+Historical H=16 parity no longer claimed at catalogue cap 1536.
+Evolution cannot fall back to an unrelated `available[0]`.
+Twelve-arm dispatch BLOCKED. Timing reused (no new debit). v2
+NO-GO, v2-pilot UNKNOWN. Ledger 306.954 / 3293.046. Report
+`NEXUS_EVOLUTION2_ADAPTER_CORRECTNESS.md`.
+
 ## Latest — residual-MLP timing probe, no env collection
 
 `probe_complete` on three frozen files. Acrobot 5.24 µs/state

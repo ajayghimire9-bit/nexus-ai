@@ -97,3 +97,35 @@ def public_lock() -> dict:
 
 def allocation_record() -> dict:
     return json.loads(ALLOCATION.read_text())
+
+
+class RevealCache:
+    """Shared per-(bundle, family) evaluation cache. Hits are still charged."""
+
+    def __init__(self, allowed):
+        self.allowed = frozenset(allowed)
+        self.values: dict = {}
+        self.charged = 0
+        self.hits = 0
+        self.misses = 0
+
+    def reveal(self, method: str, variant, score: float) -> float:
+        if variant not in self.allowed:
+            raise RuntimeError("unused_variant_not_revealed")
+        self.charged += 1
+        if variant in self.values:
+            self.hits += 1
+            return self.values[variant]
+        self.misses += 1
+        self.values[variant] = float(score)
+        return float(score)
+
+
+def equal_information_cache(revealed) -> dict[str, RevealCache]:
+    """Every method shares one cache object per family draw set."""
+    shared = RevealCache(revealed)
+    return {row["name"]: shared for row in v2.METHODS}
+
+
+def charge_imagined(decisions: int) -> int:
+    return int(decisions) * v2.IMAGINED_CAP_PER_DECISION

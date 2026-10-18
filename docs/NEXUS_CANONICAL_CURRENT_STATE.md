@@ -16,7 +16,8 @@ Pendulum→Acrobot v1 lock is **not ready** against Evolution-1
 feasibility. v2 is a superseding design only. A prospective
 v2-pilot worksheet exists and is unauthorized. An independent
 unused-instance review is **NAMING_BLOCKED**. Four-role instance
-rules exist and still do not persist tuples. None of these is
+rules exist and still do not persist tuples. Evolution-2.2 keeps
+twelve-arm dispatch BLOCKED and full v2 NO-GO. None of these is
 collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.

@@ -12,7 +12,7 @@ instead of opening parallel packages.
 |---|---|---|
 | Discrete/continuous family env construction | `nexus.tasks.spec`, family modules, wrappers | A new env factory that guesses family from `obs_dim` |
 | Residual world model | `nexus.world.dynamics`, `nexus.world.train` | A second dynamics MLP |
-| Random-shooting / successor planning | Family lookahead modules + `RandomShootingMPC` constructed **explicitly**, or `evolution2.planner_adapter` for catalogue scoring | `planning.mpc_for_model` as a generic dispatcher |
+| Random-shooting / successor planning | Family lookahead modules + `RandomShootingMPC._score_batch` via `evolution2.planner_adapter` | `planning.mpc_for_model`, or calling catalogue H=16 historical 16×16 |
 | Residual-MLP timing on frozen files | `evolution2.residual_timing_probe` plus `scripts/run_evolution2_residual_timing_probe.py` | A second probe that constructs envs or rewrites checkpoints |
 | Analytic plan cost | `evolution1.catalogue.plan_bound` | Recoding H versus A+ANH |
 | Pre-call work reservation | `evolution1.resources.ReservationLedger` | A third meter class |

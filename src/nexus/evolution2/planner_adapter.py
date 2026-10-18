@@ -1,8 +1,8 @@
 """Trusted catalogue-to-planner adapter.
 
-Reuses ``RandomShootingMPC._score_batch``, family rewards, and the
-Evolution-1 catalogue. Does not use ``mpc_for_model``. Does not change
-historical lookahead modules. Not scientific dispatch.
+Reuses ``planning.InferenceCounter`` and ``RandomShootingMPC._score_batch``.
+Does not use ``mpc_for_model``. Does not change historical lookahead
+modules. Not scientific dispatch.
 """
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ import numpy as np
 
 from nexus.evolution1.catalogue import Generator, Rule, Variant, catalogue, plan_bound
 from nexus.evolution2.bindings import reviewed_binding
+from nexus.world.planning import InferenceCounter, RandomShootingMPC
 from nexus.world.rewards import (
     acrobot_step_reward,
     mountaincar_step_reward,
@@ -31,22 +32,6 @@ REWARDS = {
 
 class AdapterError(ValueError):
     pass
-
-
-class InferenceCounter:
-    """Counts batched imagined states. Copied from ``planning.InferenceCounter``."""
-
-    def __init__(self, model):
-        self.model = model
-        self.calls = 0
-        self.states = 0
-
-    def step(self, obs, action):
-        arr = np.asarray(obs, dtype=np.float32)
-        rows = arr.reshape(1, -1) if arr.ndim == 1 else arr.reshape(-1, arr.shape[-1])
-        self.calls += 1
-        self.states += int(rows.shape[0])
-        return self.model.step(obs, action)
 
 
 class FakeStepModel:
@@ -105,23 +90,21 @@ def _reward(binding):
 
 
 def score_open_loop(model, obs, sequences, reward_fn) -> np.ndarray:
-    """Cumulative-survival open-loop score. Same rule as ``RandomShootingMPC._score_batch``."""
+    """Delegates to ``RandomShootingMPC._score_batch``. No local scoring loop."""
     sequences = np.asarray(sequences, dtype=np.int64)
     n, horizon = sequences.shape
-    state = np.repeat(np.asarray(obs, dtype=np.float32).reshape(1, -1), n, axis=0)
-    alive = np.ones(n, dtype=np.float64)
-    score = np.zeros(n, dtype=np.float64)
-    begin = getattr(model, "begin_rollout", None) or getattr(getattr(model, "model", None), "begin_rollout", None)
-    if begin is not None:
-        begin(n)
-    for t in range(horizon):
-        nxt, p = model.step(state, sequences[:, t])
-        p = np.clip(np.asarray(p, dtype=np.float64).reshape(n), 0.0, 1.0)
-        reward = np.asarray(reward_fn(state, sequences[:, t], nxt), dtype=np.float64).reshape(n)
-        score += alive * reward
-        alive = alive * (1.0 - p)
-        state = nxt
-    return score
+    inner = getattr(model, "model", model)
+    inference = model if isinstance(model, InferenceCounter) else None
+    mpc = RandomShootingMPC(
+        model=inner,
+        n_actions=max(1, int(sequences.max()) + 1) if n else 1,
+        horizon=horizon,
+        n_candidates=n,
+        enforce_time_budget=False,
+        step_reward=reward_fn,
+        inference=inference,
+    )
+    return mpc._score_batch(obs, sequences)
 
 
 def successor_values(binding, model, obs, sequences, reward_fn):
@@ -161,11 +144,30 @@ def variant_status(family: str, variant: Variant) -> str:
 
 
 def historical_semantics_match(variant: Variant, n_candidates: int) -> bool:
+    """True only for the historical 16-candidate × H=16 IID controllers.
+
+    Catalogue scoring at cap 1536 uses 96 flat / 31 successor candidates at
+    H=16. Those are catalogue-faithful, not historical 16×16 parity.
+    """
     return (
         variant.generator is Generator.IID
         and variant.horizon == HISTORICAL_HORIZON
         and int(n_candidates) == HISTORICAL_CANDIDATES
     )
+
+
+def twelve_arm_scientific_dispatch() -> dict:
+    """Host ``operator_fingerprint`` / ``bind_evaluation`` reject balanced."""
+    blocked = [v for v in catalogue() if v.generator is Generator.BALANCED]
+    return {
+        "ready": False,
+        "status": "BLOCKED",
+        "catalogue_size": len(catalogue()),
+        "blocked_variants": len(blocked),
+        "reason": "host_operator_fingerprint_rejects_balanced_generator",
+        "scientific": False,
+        "enabled_dispatch": False,
+    }
 
 
 def decide(family: str, variant: Variant, obs, model, *, seed: int, imagined_cap: int = 1536):
@@ -210,7 +212,7 @@ def compatibility_matrix(imagined_cap: int = 1536) -> list[dict]:
                     "declared_imagined": bound.imagined_per_decision,
                     "status": variant_status(family, variant),
                     "historical_parity": historical_semantics_match(
-                        variant, HISTORICAL_CANDIDATES
+                        variant, bound.candidates_per_root
                     ),
                     "root_survival": binding.root_survival,
                     "reward": binding.reward_symbol,
