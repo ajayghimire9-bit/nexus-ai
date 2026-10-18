@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-1 adapter and isolation design review, source only
+
+The fixture contracts now cover catalogue validation, declared budget charging,
+journal integrity and test promotion/rollback. They do not execute planners or
+establish an isolated scientific evaluator. One next milestone: review the
+trusted existing planner adapters, restricted evaluator IPC and actual resource
+meters against these contracts, without inference or environments. Document
+unresolved runtime gates; do not create an allocation or select holdout seeds.
+See `NEXUS_EVOLUTION1_SOURCE_CONTRACTS.md`. H17's exclusion/dataflow blockers and
+all closed results remain unchanged. Ledger305.842/3294.158 unchanged.
+
 ## Current — H17 seed-ingress/dataflow coverage review, source only
 
 The historical registry arithmetic and root seed-field classification are now

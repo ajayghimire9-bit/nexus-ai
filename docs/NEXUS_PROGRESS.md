@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — Evolution-1 source contracts, no scientific execution
+
+On `codex/evolution1-contract-harness` from feasibility `aee1362`: implemented
+a twelve-configuration typed catalogue, analytic cost bounds, a synthetic
+training-feedback broker with reservation accounting, hash-chained event
+verification and fixture-only audited promotion/rollback. No planner operators,
+proposer learning, OS isolation or scientific evaluator are claimed.70 focused
+tests passed; combined source-only regressions are recorded in
+`NEXUS_EVOLUTION1_SOURCE_CONTRACTS.md`. No model, environment, physics/seed
+registration, allocation or experiment. Historical evidence and ledger
+305.842/3294.158 unchanged. H17 remains blocked independently of this work.
+
 ## Latest — H17 historical registry dependencies resolved; call-site coverage pending
 
 On `codex/h17-seed-dependency-closure`,76 historical function/version records

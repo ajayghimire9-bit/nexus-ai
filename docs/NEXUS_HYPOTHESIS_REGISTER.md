@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Evolution-1 — transferable proposal memory, proposed and untested
+
+Hypothesis: permitted memory of algorithm-improvement attempts helps discover
+planning configurations that transfer better than random, fixed and equal-budget
+evolutionary baselines. The feasibility comparison remains prospective; no
+scientific protocol is locked or authorized. Source-only catalogue/broker fixture
+tests check engineering contracts, not this hypothesis or learning-to-learn.
+See `NEXUS_EVOLUTION1_FEASIBILITY.md` and
+`NEXUS_EVOLUTION1_SOURCE_CONTRACTS.md`. H12–H17 evidence is unchanged.
+
 ## H17 preparation — historical seed dependency arithmetic, no scientific test
 
 The source-only dependency review resolves76 historical registry-function/version
