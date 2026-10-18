@@ -57,6 +57,23 @@ def test_persist_request_does_not_rewrite_or_write_arrays():
     assert n3.file_sha256(n3.CONFIG) == n3.LOCKED_CONFIG
 
 
+def test_gated_dispatch_refuses_legal_caps_while_unauthorized():
+    assert m.option_for_cap(7680) == 3
+    assert m.option_for_cap(25600) == 10
+    with pytest.raises(RuntimeError, match="env_cap_must_be_7680_or_25600"):
+        m.option_for_cap(900)
+    assert m.persist_authorized(7680) is False
+    assert m.persist_authorized(25600) is False
+    with pytest.raises(RuntimeError, match="unauthorized"):
+        m.dispatch(7680)
+    with pytest.raises(RuntimeError, match="unauthorized"):
+        m.dispatch(25600)
+    runner = Path("scripts/run_evolution2_source_persist.py").read_text()
+    assert "lock.dispatch" in runner
+    assert "collect_transitions" not in runner
+    assert "import gymnasium" not in runner
+
+
 def test_persist_request_stays_off_the_scientific_stack():
     imported = _imports(Path(m.__file__))
     assert "gymnasium" not in imported

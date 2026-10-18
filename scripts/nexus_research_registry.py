@@ -596,7 +596,10 @@ EXPERIMENTS = [
         "id": "E2.7-source-persist-request",
         "title": "Matched source-array persist authorization request",
         "hypothesis": "A later persist of 7680 or 25600 family-default source steps can unblock a disposable residual fit clock if separately authorized.",
-        "implementation": ["src/nexus/evolution2/source_persist_request.py"],
+        "implementation": [
+            "src/nexus/evolution2/source_persist_request.py",
+            "scripts/run_evolution2_source_persist.py",
+        ],
         "commit": "incomplete",
         "protocol": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md",
         "results": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md",

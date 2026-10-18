@@ -29,6 +29,11 @@ N3_SOURCE_STEPS = n3.N_BUNDLES * 2 * (N_TRAIN + N_VAL)
 LOCKED_CONFIG = "325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76"
 LOCKED_PROTOCOL = "3ffb544dfcc75b294bb093bd3ad23175ce9312832e014bc5b1fd8600eed5f1a9"
 LOCKED_ALLOCATION = "be122e8fff80c3f26c426a083a75534653bc3d82ec8ea68f0ed0a302a85830ac"
+LEGAL_CAPS = {N3_SOURCE_STEPS: n3.N_BUNDLES, V2_SOURCE_STEPS: v2.N_BUNDLES}
+FUTURE_SOURCE = {
+    "pendulum": "nexus.tasks.pendulum_family.pendulum_default",
+    "acrobot": "nexus.tasks.acrobot_family.acrobot_default",
+}
 
 
 def file_sha256(path: Path) -> str:
@@ -40,6 +45,29 @@ def require_persist() -> None:
         "source persist unauthorized: authorized=false, env_cap=0, "
         "standing grant does not start collection"
     )
+
+
+def option_for_cap(env_cap: int) -> int:
+    try:
+        return LEGAL_CAPS[int(env_cap)]
+    except (KeyError, TypeError, ValueError) as exc:
+        raise RuntimeError("env_cap_must_be_7680_or_25600") from exc
+
+
+def persist_authorized(env_cap: int) -> bool:
+    record = allocation_record()
+    return (
+        record.get("authorized") is True
+        and int(record.get("env_cap", 0)) == int(env_cap)
+        and int(env_cap) in LEGAL_CAPS
+    )
+
+
+def dispatch(env_cap: int) -> None:
+    option_for_cap(env_cap)
+    if not persist_authorized(env_cap):
+        require_persist()
+    raise RuntimeError("persist_path_not_opened")
 
 
 def require_scientific() -> None:
