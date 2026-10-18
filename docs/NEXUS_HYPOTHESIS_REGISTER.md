@@ -1,5 +1,10 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.11 persist-versus-reset is requested, not collected
+
+n=3 persist minus reset is specified and unauthorized. Not a transfer
+result. Report `NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md`.
+
 ## Latest — H-e2.10 twelve-arm development scores are not a scientific screen
 
 All twelve catalogue variants bind and produce development scores.

@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 45
+- Curated rows: 46
 - Unindexed protocol/results docs: 93
-- Total rows: 138
+- Total rows: 139
 - Incomplete or partial: 120
-- Source-verified: 18
+- Source-verified: 19
 
 ## Closed primary labels that must not be retuned
 
@@ -84,6 +84,7 @@ or component.
 | `E2.8-source-persist-7680` | development_pilot_not_confirmation | docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md / docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md | Not v2. Do not promote 7680 to n=10. Do not name a holdout. Do not collect again. | source_verified |
 | `E2.9-fit-clock` | development_pilot_not_confirmation | docs/NEXUS_EVOLUTION2_FIT_CLOCK.md / docs/NEXUS_EVOLUTION2_FIT_CLOCK_RESULTS.md | Not v2. Do not promote six fits to n=10. Do not invent a twenty-fit cost. Do not debit H16. | source_verified |
 | `E2.10-evaluator-readiness` | development_only_science_blocked | docs/NEXUS_EVOLUTION2_EVALUATOR_READINESS.md / docs/NEXUS_EVOLUTION2_EVALUATOR_READINESS.md | Not v2. Do not enable scientific dispatch. Do not invent a twenty-fit cost. Do not name a holdout. | source_verified |
+| `E2.11-persist-reset-request` | request_only_unauthorized | docs/NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md / docs/NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md | Do not collect. continue is not approval. Do not name a holdout here. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

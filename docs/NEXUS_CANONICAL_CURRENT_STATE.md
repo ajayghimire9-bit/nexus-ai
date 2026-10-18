@@ -73,6 +73,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.8 7680-step source persist (development pilot; not v2)
 - Evolution-2.9 six-fit residual clock (1.215 s; not v2; twenty-fit still unavailable)
 - Evolution-2.10 evaluator readiness (twelve-arm development dry-run; science BLOCKED)
+- Evolution-2.11 persist-versus-reset request (7,680-scale n=3 screen specified; unauthorized; holdout unnamed)
 
 ## Engineering that exists at HEAD 4a08b26
 

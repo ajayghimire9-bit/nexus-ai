@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.11 persist-versus-reset request, unauthorized
+
+Cited config `8e90b74a…`. `authorized: false`. Holdout unnamed.
+H16 ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md`.
+
 ## Latest — Evolution-2.10 evaluator readiness, development only
 
 Twelve-arm development binding PASS. Scientific authorization BLOCKED.

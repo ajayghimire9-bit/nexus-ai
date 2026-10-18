@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.11 persist-versus-reset requested; science BLOCKED
+
+Cited config `8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e`.
+`authorized: false`, `env_cap: 0`, holdout unnamed. Do not collect.
+Do not name a holdout here. Do not invent a twenty-fit cost. Do not
+unlock H17. Next: a human approval that cites that hash, names a
+four-role unused holdout, and sets `env_cap`. `continue` is not
+approval. Report `NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md`.
+
 ## Current — Evolution-2.10 development dry-run complete; science BLOCKED
 
 Twelve-arm development binding PASSES. Scientific dispatch remains

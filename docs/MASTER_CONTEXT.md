@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.11 persist-versus-reset requested, still unauthorized, 2026-10-18
+
+On `cursor/evolution2.11-persist-reset-request` from `ea1b742`.
+n=3 persist minus reset with equal-budget random and evolution is
+specified and unauthorized. Holdout unnamed. `continue` is not
+approval. No collection. H17 blocked. H16 ledger preserved
+305.842 / 3294.158. Twenty-fit v2 clock remains unavailable. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.10 evaluator readiness, science still BLOCKED, 2026-10-18
 
 On `cursor/evolution2.10-evaluator-readiness` from `b9d0b2e`. All

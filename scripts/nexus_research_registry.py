@@ -674,6 +674,25 @@ EXPERIMENTS = [
         "reuse": "Not v2. Do not enable scientific dispatch. Do not invent a twenty-fit cost. Do not name a holdout.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.11-persist-reset-request",
+        "title": "Persist-versus-reset request, science unauthorized",
+        "hypothesis": "A later n=3 persist-versus-reset screen can be specified without naming a holdout or starting collection.",
+        "implementation": [
+            "src/nexus/evolution2/persist_reset_request.py",
+            "scripts/run_evolution2_persist_reset.py",
+        ],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md",
+        "results": "docs/NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md",
+        "status": "request_only_unauthorized",
+        "artifacts": [
+            "configs/evolution2_persist_reset_request.yaml",
+            "configs/evolution2_persist_reset_allocation.json",
+        ],
+        "reuse": "Do not collect. continue is not approval. Do not name a holdout here.",
+        "coverage": "source_verified",
+    },
 ]
 
 
