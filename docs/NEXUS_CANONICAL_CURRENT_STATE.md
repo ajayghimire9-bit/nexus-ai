@@ -9,7 +9,9 @@ bench with four free slots ties persist on stored-obs development and
 loses first-free on a zero-obs start-state shift. An observation sketch
 separates those embeddings. A retrieved-mean selector now changes the
 zero-obs choice and beats LinUCB on that shift, but persist remains
-better. Do not treat this as n=10 science or AGI.
+better. Adding the observation sketch to persist does not change
+locked FakeStepModel first-free. That line is stopped. Do not treat
+this as n=10 science or AGI.
 
 Authoritative snapshot for future agents. Not a scientific result.
 Generated from the research-tip merge and the consolidation review.

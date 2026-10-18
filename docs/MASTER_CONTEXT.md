@@ -1,5 +1,14 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — persist+obs does not help; stop FakeStepModel line, 2026-10-18
+
+Adding the planning-obs sketch to a persist wrapper leaves locked
+first-free identical to historical persist (shift 0.188). Causal
+obs changes do not change persist+obs choice. Retrieved-mean still
+loses the shift (0.755). Stop this FakeStepModel line. Not AGI. No
+collection. E2.17 stays inconclusive. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`. Earlier entries remain history.
+
 ## Latest — retrieved-mean selector, still below persist, 2026-10-18
 
 Following ridge-shrunk retrieved values changes the zero-obs choice

@@ -148,6 +148,8 @@ def raw_catalogue_scores(task: DecideTask, seed: int) -> dict:
 def _observe(method, task: DecideTask):
     if isinstance(method, ContextualStrategyMemory):
         method.observe_support(task.support, task.context, planning_obs=task.obs)
+    elif hasattr(method, "observe_planning_obs"):
+        method.observe_planning_obs(task.obs, task.context)
 
 
 def _run_task(method, task: DecideTask, *, unit: dict, update: bool):

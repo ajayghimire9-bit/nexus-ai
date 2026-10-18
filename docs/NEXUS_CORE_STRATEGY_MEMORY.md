@@ -152,11 +152,31 @@ and is not a locked-split claim.
 and fixable; kernel memory of four train tasks is still a weaker
 transfer rule than the linear persist proposer on this landscape.
 
+## Persist + observation features
+
+`PersistentAdaptiveObs` keeps the historical 6-weight persist
+proposer untouched and adds 16 rule/horizon × sketch interactions
+(22 weights). Same eight decide() tasks.
+
+| Config | Dev first-free | Shifted first-free | Collision first-free | Causal change / better |
+|---|---:|---:|---:|---|
+| persist | 0.000 | **0.188** | **0.110** | no / no |
+| persist+obs | 0.000 | 0.188 | 0.110 | no / no |
+| retrieved-mean | 0.000 | 0.755 | 0.279 | yes / yes |
+
+Locked-split first-free fingerprints are identical for persist and
+persist+obs. Changing only the planning observation does not change
+the persist+obs choice. Held-out first-free is slightly worse
+(0.405 vs persist 0.395).
+
+**Development success: false. Stop the FakeStepModel line.** The
+linear proposer cannot use start-state information to improve this
+landscape. Kernel memory can, but not enough to beat persist.
+
 ## Next research experiment
 
-Development-only: add the same 8-d planning-observation sketch to
-`PersistentAdaptive` features and compare persist, persist+obs, and
-retrieved-mean memory on the locked eight tasks. If the winning
-linear proposer cannot use the start state, stop this FakeStepModel
-line and move to permitted residual-model `decide()` scores. No
-collection. No n=10 science. Do not reuse E2.17 development.
+Development-only: score persist vs retrieved-mean on permitted
+residual-model `decide()` returns (not E2.17 science arrays). If
+those scores are unavailable without collection or grant reuse, stop
+and leave the protocol ready. No n=10 science. Do not reuse E2.17
+development.

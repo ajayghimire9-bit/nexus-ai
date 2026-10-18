@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-core-5 persist+obs cannot use start state on FakeStepModel
+
+A 22-weight persist wrapper with rule/horizon × observation
+interactions does not change locked first-free versus 6-weight
+persist and does not change choice when only the planning obs
+changes. Stop this FakeStepModel line. Not science. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — H-core-4 retrieved-mean follows memory but loses to persist
 
 Ridge-shrunk retrieved means change the zero-obs planner and beat

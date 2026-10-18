@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — persist+obs negative; FakeStepModel line stopped
+
+Persist+obs first-free matches persist on the locked eight tasks.
+Causal obs intervention does not change persist+obs choice. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — retrieved-mean selector, below persist
 
 Retrieved-mean fixes the LinUCB memory-to-choice failure and reduces

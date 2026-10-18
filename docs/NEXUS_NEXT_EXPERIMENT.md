@@ -1,11 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — FakeStepModel line stopped; next is residual decide() scores
+
+Recommended next *development* experiment: compare persist vs
+retrieved-mean on permitted residual-model `decide()` returns. Do not
+load E2.17 science arrays. If no permitted residual checkpoint can
+be used, leave the protocol ready and do not collect. No n=10
+science. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Current — retrieved-mean works; next is persist+obs features
 
-Recommended next *development* experiment: add the 8-d planning-obs
-sketch to `PersistentAdaptive` and compare persist, persist+obs, and
-retrieved-mean memory on the locked eight decide() tasks. No
-collection. No n=10 scientific run. Do not reuse E2.17 development.
+Completed. Persist+obs matches persist on the locked split and does
+not change choice with planning obs. FakeStepModel line stopped.
 Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
 
 ## Current — observation sketch separates; next is retrieved-mean selection
