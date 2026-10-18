@@ -1,5 +1,6 @@
 """Synthetic arbitration checks only; no development scoring or collection."""
 import copy
+import json
 
 import numpy as np
 import pytest
@@ -154,3 +155,86 @@ def test_input_feedback_is_typed_and_replay_rejected():
     m.update(f,ctx)
     with pytest.raises(ContractError):
         m.update(f,ctx)
+
+
+@pytest.mark.parametrize("kind", ["method","task","phase","proposal","nan","inf","string","bool","trace_nan"])
+def test_complete_grid_rejects_missing_and_invalid_cells(kind):
+    from nexus.evolution2.evidence_arbitration_bench import ROOT, validate_results
+    p = json.loads((ROOT/"artifacts/evolution2_24_evidence_arbitration.json").read_text())
+    block = p["rows"]["evidence_arbitration"]
+    r = block["development"][0]
+    if kind == "method": del p["rows"]["reset_adaptive"]
+    elif kind == "task": block["development"].pop()
+    elif kind == "phase": del block["collision"]
+    elif kind == "proposal": r["variants"].pop()
+    elif kind == "trace_nan": r["traces"][2]["confidence"] = float("nan")
+    else: r["scores"][0] = {"nan":float("nan"),"inf":float("inf"),"string":"0.1","bool":True}[kind]
+    with pytest.raises(ValueError): validate_results(p)
+
+
+def test_previous_e223_choices_and_scores_reproduced_without_rewriting_artifact():
+    from nexus.evolution2.evidence_arbitration_bench import ROOT, sha, validate_results
+    p = json.loads((ROOT/"artifacts/evolution2_24_evidence_arbitration.json").read_text())
+    old = json.loads((ROOT/"artifacts/evolution2_23_cross_bundle_memory.json").read_text())
+    assert validate_results(p)
+    for method in ("persistent_adaptive","reset_adaptive","observation_cross_bundle","observation_ungated_memory"):
+        for phase in old["rows"][method]:
+            for a,b in zip(old["rows"][method][phase],p["rows"][method][phase]):
+                assert a["task_id"] == b["task_id"]
+                assert a["variants"] == b["variants"]
+                assert a["scores"] == b["scores"]
+                assert a["first_free_regret"] == b["first_free_regret"]
+    for path, h in p["historical_artifacts_sha256"].items():
+        assert sha(ROOT/path) == h
+
+
+def test_free_regret_recomputed_from_all_four_slots_and_accounting():
+    from nexus.evolution2.evidence_arbitration_bench import ROOT, METHODS
+    p = json.loads((ROOT/"artifacts/evolution2_24_evidence_arbitration.json").read_text())
+    for method in METHODS:
+        for rows in p["rows"][method].values():
+            for row in rows:
+                assert len(row["traces"]) == 6
+                assert row["cumulative_free_regret"] == pytest.approx(sum(row["oracle"]-s for s in row["scores"][2:]))
+                assert row["charged"] == row["physical"] == 6
+    assert p["resources"]["logical_lookups_each"] == 60
+    assert p["resources"]["actual_proxy_catalogue_evaluations"] == 312
+
+
+def test_audit_result_is_not_silently_overwritten(tmp_path):
+    from nexus.evolution2.evidence_arbitration_bench import write_artifact
+    path = tmp_path/"existing.json"
+    path.write_text("immutable")
+    with pytest.raises(FileExistsError): write_artifact(path)
+    assert path.read_text() == "immutable"
+
+
+def test_failed_benchmark_persists_honest_failure(tmp_path, monkeypatch):
+    from nexus.evolution2 import evidence_arbitration_bench as bench
+    def failure(): raise RuntimeError("test_failure")
+    monkeypatch.setattr(bench,"run_benchmark",failure)
+    path = tmp_path/"failed.json"
+    with pytest.raises(RuntimeError): bench.write_artifact(path)
+    assert json.loads(path.read_text())["declared_complete"] is False
+
+
+def test_source_calibration_reproduces_without_development_tasks(monkeypatch):
+    from nexus.evolution2 import evidence_arbitration_bench as b
+    from nexus.evolution2.observation_memory import calibrate_cross_bundle,fit_family_normalizers
+    def forbidden(*args,**kwargs): raise AssertionError("development_access")
+    monkeypatch.setattr(b,"make_e222_tasks",forbidden)
+    norms = fit_family_normalizers()
+    actual = b.source_quality_calibration(norms,calibrate_cross_bundle(norms,seed=7),seed=7)
+    saved = json.loads((b.ROOT/"artifacts/evolution2_24_evidence_arbitration.json").read_text())["calibration"]
+    assert actual == saved
+
+
+def test_saved_audit_is_arithmetic_only(monkeypatch):
+    from nexus.evolution2 import evidence_arbitration_bench as b
+    def forbidden(*args,**kwargs): raise AssertionError("unexpected_scoring")
+    monkeypatch.setattr(b,"score_table",forbidden)
+    p = json.loads((b.ROOT/"artifacts/evolution2_24_evidence_arbitration.json").read_text())
+    audit = b.audit_saved_results(p)
+    assert audit["arithmetic_grid_valid"] and audit["historical_artifacts_preserved"]
+    assert audit["decision_counts"]["evidence_arbitration"]["overrides"] == 0
+    assert len(audit["same_zero_observation_ranking_reversals"][0]["reversals"]) == 2

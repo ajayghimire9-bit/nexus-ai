@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.24 arbitration abstains; shifted gain lost, 2026-10-18
+
+Source-only evidence arbitration preserves familiar first-free0 by
+abstaining40/40, but shifted regret0.062745 matches persist instead
+of ungated/consensus0. This is a negative arbitration result, not
+an adaptive improvement. Hard E2.23 confidence turns tiny marginal
+score differences into harmful overrides; paired coverage is sparse.
+Same zero observations also have candidate-seed-dependent rank
+reversals. Next is a source-only candidate-conditioned planner-quality
+representation test, not another distance gate. No collection,
+training, E2.17 reuse or H17 work. Ledger327.869/3272.131 unchanged.
+Report `NEXUS_E2_24_EVIDENCE_ARBITRATION.md`. Earlier entries remain history.
+
 ## Latest — E2.23 cross-bundle gate retrieves familiar neighbors and loses, 2026-10-18
 
 LOBO p95 gate 1.505 raises source recall to 0.949 and accepts the

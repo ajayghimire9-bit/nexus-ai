@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+E2.24 extends `ObservationAwareAdaptive` with paired evidence arbitration;
+it does not replace the canonical memory/proposer/evaluator stack.
+Source-only development: abstains40/40, familiar0, shifted0.062745 versus
+ungated/consensus0. Negative result. No collection or ledger change.
+See `NEXUS_E2_24_EVIDENCE_ARBITRATION.md`; next is candidate-conditioned
+planner-quality representation, not another distance threshold.
+
 ## Latest — NEXUS Core strategy memory exists and does not replace Evolution-2
 
 `nexus.core.strategy_memory.ContextualStrategyMemory` is the

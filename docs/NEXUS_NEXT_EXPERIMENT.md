@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.24 negative: change quality representation, not distance gate
+
+Prepare one source-only LOBO paired planner-advantage prediction test:
+condition on permitted candidate/search descriptors, support transition
+statistics and existing anchor residuals rather than observation distance
+alone. Compare held-bundle advantage-sign error against observation-only
+retrieval before promotion. Current evidence arbitration abstains40/40,
+preserves familiar0, and loses shifted benefit (0.062745 versus ungated0).
+Identical zero observations have candidate-seed-dependent ranking reversals.
+No new collection, E2.17 grant reuse, H17 work or scientific run follows.
+Report `NEXUS_E2_24_EVIDENCE_ARBITRATION.md`. Older recommendations below
+are retained history, not simultaneous experiments to execute.
+
 ## Current — E2.23 retrieves cross-bundle neighbors and loses to persist
 
 LOBO calibration opened familiar retrieval. Hard NN first-free is

@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest — E2.24 evidence arbitration, negative development result
+
+New rule abstains40/40; familiar first-free0 preserved, shifted0.062745
+loses to ungated/consensus0. Consensus has three helpful proxy overrides;
+new rule has none. Complete source-only audit, no real interactions or
+neural fits. Failed ESS-underflow attempt preserved. Historical JSON
+and scientific ledger unchanged. Report `NEXUS_E2_24_EVIDENCE_ARBITRATION.md`.
+
 ## Latest — E2.23 cross-bundle calibration, negative first-free
 
 LOBO gate 1.505 retrieves familiar neighbors and loses to persist

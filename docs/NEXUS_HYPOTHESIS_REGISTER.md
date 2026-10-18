@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-E2.24 evidence arbitration does not retain useful shift adaptation
+
+Precommitted source-only rule combines paired score evidence, ESS,
+context agreement, anchor residuals and source LOBO error allowance.
+It preserves familiar first-free0 only by abstaining40/40 and loses
+the shifted gain (0.062745 versus ungated/consensus0). No genuine
+development overrides. Negative outcome; synthetic functional tests
+are not adaptive-improvement evidence. FakeStep proxies, no scientific
+replications or real control. Report `NEXUS_E2_24_EVIDENCE_ARBITRATION.md`.
+
 ## Latest — H-E2.23 cross-bundle recall rises; first-free falls
 
 LOBO p95 accepts familiar neighbors the E2.22 gate refused. Hard NN

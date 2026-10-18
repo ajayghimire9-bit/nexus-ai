@@ -282,3 +282,70 @@ def write_artifact(path=RESULTS):
         raise
     path.write_text(encoded)
     return payload
+
+
+def audit_saved_results(payload):
+    """Arithmetic-only audit. No planning, calibration, fits, or collection.
+
+    This helper is separate from the precommitted evaluation so the original
+    execution capture and its hashes stay immutable.
+    """
+    import itertools
+    import platform
+    import sys
+    validate_results(payload)
+    tables = {}
+    for phases in payload["rows"].values():
+        for block in phases.values():
+            for r in block:
+                table = tables.setdefault(r["task_id"], {})
+                for fp,s in zip(r["variants"],r["scores"]):
+                    if fp in table and table[fp] != s:
+                        raise ValueError("unpaired_score_table")
+                    table[fp] = s
+                if not math.isclose(sum(r["oracle"]-s for s in r["scores"][2:]),
+                                    r["cumulative_free_regret"],abs_tol=1e-12):
+                    raise ValueError("wrong_free_regret_sum")
+    traces = {}
+    for method in ("observation_cross_bundle","observation_ungated_memory"):
+        t = next(r for r in payload["rows"][method]["development"] if r["task_id"]=="pend_store_2")["traces"][2]
+        fps = (t["persistent_choice"],payload["rows"]["observation_cross_bundle"]["development"][0]["first_free"])
+        traces[method] = {"confidence":t["confidence"],"distance":t["nearest"],
+                          "missing_arms":t["missing_arms"],"selected":t["choice"],
+                          "posthoc_gain":t["posthoc_override_gain"],
+                          "scores":{fp:{"persistent_raw":t["inner_raw"][fp],
+                                        "persistent_normalized":t["inner_normalized"][fp],
+                                        "retrieved":t["scores"].get(fp),"blended":t["blended_scores"][fp]}
+                                    for fp in fps}}
+    flips = []
+    for a,b in itertools.combinations(("acro_zero_0","acro_zero_1","acro_zero_collision"),2):
+        common = sorted(tables[a].keys() & tables[b].keys())
+        reversals = []
+        for x,y in itertools.combinations(common,2):
+            da,db = tables[a][x]-tables[a][y],tables[b][x]-tables[b][y]
+            if da*db < 0:
+                reversals.append({"arms":[x,y],"first_delta":da,"second_delta":db})
+        flips.append({"tasks":[a,b],"common_evaluated_arms":len(common),"reversals":reversals})
+    evaluation = {}
+    for method in METHODS:
+        ts = [t for block in payload["rows"][method].values() for r in block for t in r["traces"][2:]]
+        evaluation[method] = {
+            "accepts":sum(t.get("action")=="retrieve" for t in ts),
+            "abstentions":sum(t.get("action")=="fallback" for t in ts),
+            "overrides":sum(bool(t.get("override")) for t in ts),
+            "correct":sum(t.get("override",False) and t["posthoc_override_gain"]>1e-12 for t in ts),
+            "harmful":sum(t.get("override",False) and t["posthoc_override_gain"]<-1e-12 for t in ts),
+            "contexts_measured":any("independent_contexts" in t for t in ts),
+            "context_metric_note":"Legacy summary mean_contexts=0 is an uninstrumented default, not zero source contexts.",
+        }
+    preserved = all(sha(ROOT/p)==h for p,h in payload["historical_artifacts_sha256"].items())
+    if not preserved:
+        raise ValueError("historical_artifact_changed")
+    return {"analysis_only":True,"new_env_steps":0,"new_imagined_transitions":0,
+            "parent_result_sha256":sha(RESULTS),"historical_artifacts_preserved":preserved,
+            "arithmetic_grid_valid":True,"pend_store_2_trace":traces,
+            "same_zero_observation_ranking_reversals":flips,"decision_counts":evaluation,
+            "identifiability_limit":"All three zero-observation tasks use the same family FakeStepModel; task-hashed planner RNG differs. Reversals demonstrate that observation alone cannot specify these realized candidate-search scores. Anchor feedback also differs; this does not prove the full permitted input is observationally identical.",
+            "versions":{"python":sys.version.split()[0],"numpy":np.__version__,"platform":platform.platform()},
+            "outcome":"negative_arbitration_abstains_loses_shift_benefit",
+            "next_experiment":"Source-only LOBO test of candidate-conditioned paired planner-advantage prediction, conditioning on permitted candidate/search descriptors, support transition statistics and existing anchor residuals; compare against observation-only quality retrieval without another distance-threshold search."}
