@@ -14,7 +14,9 @@ locked FakeStepModel first-free. E2.9 residual `decide()` scores also
 keep flat H=4 as the only oracle. Both 12-arm catalogue lines are
 stopped. Residual *identity* selection with one revealed MAE ties
 persist-best and loses to default bundle 0; 8-step clone SGD hurts.
-Do not treat this as n=10 science or AGI.
+E2.22 wraps AdaptiveProposer with a source-calibrated observation
+gate: exact-match zero-obs reuse beats persist first-free; familiar
+stored-obs fallbacks. Do not treat this as n=10 science or AGI.
 
 Authoritative snapshot for future agents. Not a scientific result.
 Generated from the research-tip merge and the consolidation review.

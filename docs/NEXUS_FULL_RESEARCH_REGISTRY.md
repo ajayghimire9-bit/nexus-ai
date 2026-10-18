@@ -39,6 +39,7 @@ or component.
 
 | ID | Status | Protocol / results | Reuse | Coverage |
 |---|---|---|---|---|
+| `H-E2.22` | development_only_obs_gate_exact_match_not_neighbors | docs/NEXUS_E2_22_OBSERVATION_MEMORY.md / docs/NEXUS_E2_22_OBSERVATION_MEMORY.md | Reuse `ObservationAwareAdaptive`. Recalibrate from inter-bundle source obs, not shifts. | partial |
 | `H-core-7` | development_only_residual_identity_loses_to_default | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Reuse `residual_adapt`. Do not repeat 8-step clone SGD. Do not load E2.17. | partial |
 | `H-core-6` | development_only_residual_oracles_all_flat_h4 | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Stop 12-arm selection on E2.9 residuals. Do not load E2.17 fits. | partial |
 | `H-core-5` | development_only_persist_obs_no_fakestep_gain | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Stop FakeStepModel line. Do not edit historical persist. | partial |

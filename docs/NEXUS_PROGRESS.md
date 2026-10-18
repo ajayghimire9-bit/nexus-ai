@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — E2.22 observation-conditioned memory, partial
+
+Gated retrieve wins the zero-obs first-free shift versus persist and
+falls back on familiar stored-obs. Shuffle harms. Report
+`NEXUS_E2_22_OBSERVATION_MEMORY.md`.
+
 ## Latest — residual identity selection; default bundle 0 wins
 
 E2.9 residuals, one revealed MAE, no E2.17 files. Memory ties

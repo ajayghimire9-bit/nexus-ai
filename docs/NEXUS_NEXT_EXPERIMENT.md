@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.22 gate is tighter than inter-bundle stored-obs
+
+Gated observation memory reuses exact-match zero-obs and beats
+persist first-free on that shift. Familiar stored-obs fallbacks
+(distance 1.216 > 0.491). Recommended next *development* experiment:
+recalibrate the gate from inter-bundle source planning observations
+(bundle 0 vs 1), not from shifted outcomes. No collection. No E2.17
+reuse. No n=10 science. Report `NEXUS_E2_22_OBSERVATION_MEMORY.md`.
+
 ## Current — residual identity selection loses to default bundle 0
 
 One revealed MAE, E2.9 residuals, no E2.17 files. Memory ties

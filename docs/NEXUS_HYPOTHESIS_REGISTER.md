@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-E2.22 observation gate reuses exact matches, not stored-obs neighbors
+
+Gated AdaptiveProposer memory changes the zero-obs first-free planner
+to the shifted oracle and beats persist (0 vs 0.063). Familiar
+development first-free 0 is proposer fallback, not retrieval
+(inter-bundle 1.216 > gate 0.491). Shuffle harms. FakeStep proxy.
+Not science. Report `NEXUS_E2_22_OBSERVATION_MEMORY.md`.
+
 ## Latest — H-core-7 residual identity memory loses to default bundle 0
 
 One revealed MAE on E2.9 residuals. Memory matches persist-best

@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.22 observation memory: exact-match reuse, familiar fallback, 2026-10-18
+
+Gated observation memory wrapping AdaptiveProposer beats persist on
+the zero-obs first-free shift (0 vs 0.063 pooled) and ties persist on
+stored-obs development (0). Familiar tasks fallback because
+inter-bundle distance 1.216 exceeds the source-NN gate 0.491. Far +4σ
+does not change FakeStepModel planner identity. Shuffle harms.
+Proxy `decide()` scores only. Not AGI. No collection. E2.17 unused.
+Report `NEXUS_E2_22_OBSERVATION_MEMORY.md`. Earlier entries remain
+history.
+
 ## Latest — residual identity selection loses to default bundle 0, 2026-10-18
 
 One revealed MAE per task on E2.9 residuals. Memory ties persist-best
