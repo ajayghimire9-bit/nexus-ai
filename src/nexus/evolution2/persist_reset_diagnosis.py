@@ -137,13 +137,25 @@ def causal_sensitivity_tests() -> dict:
     persist_high_again = evaluator.evaluate("persist", high, seed_key=seed)
     identical = evaluator.evaluate("random", high, seed_key=seed)
     training = TrustedEvaluator(variants, family="pendulum", bundle_id=0, produce_score=lambda variant: 0.5)
-    training.hide_development(high, persist_high)
-    training.hide_development(low, reset_low)
+    revealed_score = training.evaluate("persist", high, family="pendulum", bundle_id=0)
+    evaluator.training_must_not_see(
+        [{"fingerprint": high.fingerprint, "score": revealed_score, "provenance": "revealed"}]
+    )
     hidden_blocked = False
+    hidden = evaluator._hidden_outcomes[0]
     try:
-        training.evaluate("persist", high, family="pendulum", bundle_id=0)
+        evaluator.training_must_not_see(
+            [
+                {
+                    "fingerprint": high.fingerprint,
+                    "score": persist_high,
+                    "provenance": science.HIDDEN_PROVENANCE,
+                    "outcome_id": hidden["outcome_id"],
+                }
+            ]
+        )
     except RuntimeError as exc:
-        hidden_blocked = "hidden_development_outcome" in str(exc)
+        hidden_blocked = "hidden_development_leaked_into_training" in str(exc)
     logical = {name: evaluator.per_method[name]["logical"] for name in ("persist", "reset")}
     return {
         "different_selections_differ": persist_high != reset_low and persist_high == known[high] and reset_low == known[low],

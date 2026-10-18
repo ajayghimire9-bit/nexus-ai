@@ -41,6 +41,7 @@ instead of opening parallel packages.
 | E2.17 causal-sensitivity diagnosis | `evolution2.persist_reset_diagnosis` plus `persist_reset_science.MethodSensitiveHiddenEval` | Rewriting the inconclusive label, collecting, or treating E2.17 development as a new confirmation holdout |
 | E2.19 persist/reset policy-state | `evolution2.persist_reset_policy_state`; reuses `AdaptiveProposer`, `PersistentAdaptive`, `ResetAdaptive`, `MethodSensitiveHiddenEval` | A second proposer, different persist/reset seeds to manufacture a contrast, or collecting new physics |
 | E2.20 method-sensitive next screen | `evolution2.persist_reset_method_sensitive`; reuses `MethodSensitiveHiddenEval`, consumed `persist_reset_grant` | Reusing `run_bundle`, retrying 17280, treating continue as a 24480 grant, or naming E2.17 roles as confirmation |
+| E2.21 executable scoring | `evolution2.persist_reset_scoring` plus `persist_reset_science.FrozenRevealedScale` / `fixture_hidden_return`; reuses `decide`, `FakeStepModel` | Treating fingerprint overlap as a leak, collecting, or rewriting E2.17/E2.20 locks |
 | Unused Pendulum/Acrobot instance naming | `evolution2.pendulum_acrobot_holdout_review` (NAMING_BLOCKED) plus `evolution2.pendulum_acrobot_instance_rules` (unnamed four-role digests) | Shopping a new tuple or treating one Acrobot key as four roles |
 | E2 public IPC / stub host | `evolution2.bindings` + `evolution2.host` | Importing `FAMILY_SPEC` into the worker |
 | PPO training | `nexus.rl.ppo` | A new on-policy trainer for CartPole-scale tasks |

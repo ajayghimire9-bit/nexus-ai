@@ -539,7 +539,39 @@ def replay_training(bundle_id: int, family_returns: dict[str, list[float]], *, s
     return {"methods": methods, "choices": choices, "split": split}
 
 
-def select_hidden_controllers(methods: dict, family: str) -> dict[str, tuple]:
+HIDDEN_PROVENANCE = "hidden_physics"
+
+
+class FrozenRevealedScale:
+    """Unit scale frozen from revealed returns before any hidden rollout."""
+
+    def __init__(self, revealed_raw: dict):
+        values = [float(value) for value in revealed_raw.values()]
+        if not values:
+            raise RuntimeError("empty_revealed_scale")
+        self.lo = min(values)
+        self.hi = max(values)
+        self.frozen_before_hidden = True
+
+    def unit(self, raw: float) -> float:
+        if self.hi == self.lo:
+            return 0.5
+        return (float(raw) - self.lo) / (self.hi - self.lo)
+
+
+def hidden_rollout_seed(bundle_id: int, family: str, slot: int) -> int:
+    return 210_000 + 1_000 * int(bundle_id) + (0 if family == "pendulum" else 100) + int(slot)
+
+
+def fixture_hidden_return(family: str, variant, model, obs, *, seed: int) -> float:
+    """Score the method-selected planner with decide(). No Gymnasium."""
+    decision = decide(family, variant, obs, model, seed=int(seed))
+    return float(max(decision.scores)) if decision.scores else 0.0
+
+
+def select_hidden_controllers(methods: dict, family: str, *, forced: dict | None = None) -> dict[str, tuple]:
+    if forced is not None:
+        return {name: tuple(forced[name]) for name in METHODS}
     split = locked_split()
     context = family_context(family)
     selected = {}
@@ -557,16 +589,24 @@ def select_hidden_controllers(methods: dict, family: str) -> dict[str, tuple]:
 
 
 class MethodSensitiveHiddenEval:
-    """Hidden scores follow the selected planner. Logical charges stay equal."""
+    """Hidden scores follow the selected planner. Logical charges stay equal.
 
-    def __init__(self, produce_score):
+    Isolation tracks hidden-return provenance, not variant fingerprints.
+    A planner may appear in both training and hidden phases.
+    """
+
+    def __init__(self, produce_score, *, scale: FrozenRevealedScale | None = None):
         self._produce = produce_score
+        self._scale = scale
         self._cache: dict[tuple, float] = {}
-        self._hidden_fingerprints: set[str] = set()
+        self._hidden_outcomes: list[dict] = []
         self.physical = 0
         self.logical = 0
         self.cached = 0
         self.per_method = {name: {"logical": 0, "physical": 0, "cached": 0} for name in METHODS}
+
+    def outcome_ids(self) -> set[tuple]:
+        return {row["outcome_id"] for row in self._hidden_outcomes}
 
     def evaluate(self, method: str, variant, *, seed_key: tuple) -> float:
         if method not in self.per_method:
@@ -574,33 +614,74 @@ class MethodSensitiveHiddenEval:
         key = seed_key + (variant.fingerprint,)
         self.logical += 1
         self.per_method[method]["logical"] += 1
-        self._hidden_fingerprints.add(variant.fingerprint)
         if key in self._cache:
             self.cached += 1
             self.per_method[method]["cached"] += 1
             return self._cache[key]
-        score = float(self._produce(variant, seed_key))
+        raw = float(self._produce(variant, seed_key))
+        score = raw if self._scale is None else self._scale.unit(raw)
+        outcome = {
+            "outcome_id": (HIDDEN_PROVENANCE, seed_key, variant.fingerprint),
+            "provenance": HIDDEN_PROVENANCE,
+            "fingerprint": variant.fingerprint,
+            "raw": raw,
+            "unit": score,
+            "method": method,
+        }
+        self._hidden_outcomes.append(outcome)
         self._cache[key] = score
         self.physical += 1
         self.per_method[method]["physical"] += 1
         return score
 
-    def training_must_not_see(self, method, evaluator: TrustedEvaluator) -> None:
-        leaked = [variant for variant in evaluator.training_feedback(method) if getattr(variant, "fingerprint", variant) in self._hidden_fingerprints]
-        if leaked:
-            raise RuntimeError("hidden_development_leaked_into_training")
+    def training_must_not_see(self, receipts, evaluator: TrustedEvaluator | None = None) -> None:
+        """Hidden-physics returns must not become training feedback.
+
+        The same variant fingerprint may appear in training. Provenance,
+        not fingerprint membership, is the leak signal.
+        """
+        rows = _training_receipts(receipts, evaluator)
+        hidden_ids = self.outcome_ids()
+        for row in rows:
+            if row.get("provenance") == HIDDEN_PROVENANCE or row.get("outcome_id") in hidden_ids:
+                raise RuntimeError("hidden_development_leaked_into_training")
+
+
+def _training_receipts(receipts, evaluator: TrustedEvaluator | None) -> list[dict]:
+    if evaluator is not None and not isinstance(receipts, (list, tuple)):
+        feedback = evaluator.training_feedback(receipts)
+        return [
+            {"fingerprint": getattr(variant, "fingerprint", variant), "score": score, "provenance": "revealed"}
+            for variant, score in feedback.items()
+        ]
+    if isinstance(receipts, dict):
+        return [
+            value
+            if isinstance(value, dict)
+            else {"fingerprint": getattr(key, "fingerprint", key), "score": value, "provenance": "revealed"}
+            for key, value in receipts.items()
+        ]
+    return list(receipts)
 
 
 def matched_hidden_seed(bundle_id: int, family: str, slot: int) -> tuple:
     return ("hidden", int(bundle_id), family, int(slot))
 
 
-def corrected_hidden_scores(methods: dict, bundle_id: int, produce_score) -> dict:
-    evaluator = MethodSensitiveHiddenEval(produce_score)
+def corrected_hidden_scores(
+    methods: dict,
+    bundle_id: int,
+    produce_score,
+    *,
+    scale: FrozenRevealedScale | None = None,
+    forced_selections: dict | None = None,
+) -> dict:
+    evaluator = MethodSensitiveHiddenEval(produce_score, scale=scale)
     rows = {name: [] for name in METHODS}
     selections = {name: [] for name in METHODS}
     for family in ("pendulum", "acrobot"):
-        selected = select_hidden_controllers(methods, family)
+        forced = None if forced_selections is None else forced_selections[family]
+        selected = select_hidden_controllers(methods, family, forced=forced)
         for name in METHODS:
             for slot, variant in enumerate(selected[name]):
                 score = evaluator.evaluate(name, variant, seed_key=matched_hidden_seed(bundle_id, family, slot))
@@ -613,6 +694,7 @@ def corrected_hidden_scores(methods: dict, bundle_id: int, produce_score) -> dic
                         "rule": variant.rule.value,
                         "generator": variant.generator.value,
                         "horizon": variant.horizon,
+                        "controller": variant.fingerprint,
                     }
                 )
     logical = {name: evaluator.per_method[name]["logical"] for name in METHODS}
@@ -627,6 +709,9 @@ def corrected_hidden_scores(methods: dict, bundle_id: int, produce_score) -> dic
             "cached": evaluator.cached,
             "per_method": evaluator.per_method,
         },
+        "scale_frozen_before_hidden": None if scale is None else True,
+        "hidden_outcomes": list(evaluator._hidden_outcomes),
+        "evaluator": evaluator,
     }
 
 

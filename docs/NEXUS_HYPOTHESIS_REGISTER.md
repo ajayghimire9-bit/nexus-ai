@@ -1,5 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.21 hidden scores must follow the selected planner
+
+Fixture `decide()` scores change when the selected planner changes.
+Isolation is hidden-return provenance. Not a transfer result. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_SCORING.md`.
+
 ## Latest — H-e2.20 method-sensitive screen remains unauthorized
 
 The corrected hidden loop is locked and still ungranted. Not a

@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.21 scoring correction; recommend n=10 if granted
+
+Recommended next scientific experiment: one new-physics n=10
+persist-versus-reset screen with method-sensitive hidden evaluation,
+matched persist/reset RNG, twenty residual fits, fresh unused
+four-role physics, and `env_cap=81600`. New grant required. Twenty-fit
+wall unmeasured; E2.17/E2.9 times are planning only. Do not rewrite
+E2.17 or E2.20. Do not reuse the consumed grant. `continue` is not
+approval. Report `NEXUS_EVOLUTION2_PERSIST_RESET_SCORING.md`.
+
 ## Current — Evolution-2.20 method-sensitive runner locked; science BLOCKED
 
 `continue` is not approval. Next scientific step requires a new unused

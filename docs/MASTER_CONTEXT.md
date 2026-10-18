@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.21 executable scoring, science still refused, 2026-10-18
+
+Hidden isolation is provenance, not fingerprint. Method-selected
+planners are scored by `decide()` with a revealed scale frozen before
+hidden evaluation. n=10 (81,600) fits standing numeric caps under
+linear planning; twenty-fit wall is unmeasured. E2.17 stays
+inconclusive. No collection. H17 blocked. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_SCORING.md`. Earlier entries remain
+history.
+
 ## Latest — Evolution-2.20 method-sensitive runner locked, science BLOCKED, 2026-10-18
 
 The future persist-versus-reset path uses method-selected hidden

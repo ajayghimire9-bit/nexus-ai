@@ -367,13 +367,28 @@ def evaluator_sensitivity() -> dict:
     reset_sel = [item["fingerprint"] for item in report["selections"]["reset"]]
     revealed = science.locked_split()["revealed"]
     training = TrustedEvaluator(revealed, family="pendulum", bundle_id=0, produce_score=lambda variant: 0.5)
-    hidden_standin = revealed[0]
-    training.hide_development(hidden_standin, 0.9)
+    overlap = revealed[0]
+    revealed_score = training.evaluate("persist", overlap, family="pendulum", bundle_id=0)
+    hidden_eval = science.MethodSensitiveHiddenEval(produce)
+    hidden_eval.evaluate("persist", overlap, seed_key=science.matched_hidden_seed(0, "pendulum", 0))
+    hidden_eval.training_must_not_see(
+        [{"fingerprint": overlap.fingerprint, "score": revealed_score, "provenance": "revealed"}]
+    )
     hidden_blocked = False
+    hidden = hidden_eval._hidden_outcomes[0]
     try:
-        training.evaluate("persist", hidden_standin, family="pendulum", bundle_id=0)
+        hidden_eval.training_must_not_see(
+            [
+                {
+                    "fingerprint": overlap.fingerprint,
+                    "score": hidden["unit"],
+                    "provenance": science.HIDDEN_PROVENANCE,
+                    "outcome_id": hidden["outcome_id"],
+                }
+            ]
+        )
     except RuntimeError as exc:
-        hidden_blocked = "hidden_development_outcome" in str(exc)
+        hidden_blocked = "hidden_development_leaked_into_training" in str(exc)
     logical = {name: report["charges"]["per_method"][name]["logical"] for name in science.METHODS}
     return {
         "fixture": "successor prior, no current-task updates",

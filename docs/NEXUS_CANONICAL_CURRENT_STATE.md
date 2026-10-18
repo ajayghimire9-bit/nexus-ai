@@ -88,6 +88,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.18 causal-sensitivity repair (method-sensitive hidden eval tested on fixtures; science still refused)
 - Evolution-2.19 persist-versus-reset policy-state diagnostic (memory-to-choice functions on source-only fixtures; science still refused)
 - Evolution-2.20 method-sensitive next-screen lock (24480 upper; consumed 17280 refused; science BLOCKED)
+- Evolution-2.21 executable scoring (provenance isolation; decide() on selected planner; n=10 recommended, unauthorized)
 
 ## Engineering that exists at HEAD 4a08b26
 

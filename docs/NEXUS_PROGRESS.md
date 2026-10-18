@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.21 executable scoring, no collection
+
+Provenance isolation PASS. Fixture `decide()` path PASS. n=10
+recommended as a prospective grant, not a run. Report
+`NEXUS_EVOLUTION2_PERSIST_RESET_SCORING.md`.
+
 ## Latest — Evolution-2.20 method-sensitive runner locked, science BLOCKED
 
 Future hidden loop is method-selected. 7680, 17280, continue, and
