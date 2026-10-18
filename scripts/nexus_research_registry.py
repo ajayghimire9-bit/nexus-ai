@@ -682,7 +682,7 @@ EXPERIMENTS = [
             "src/nexus/evolution2/persist_reset_request.py",
             "scripts/run_evolution2_persist_reset.py",
         ],
-        "commit": "incomplete",
+        "commit": "fbd98fd5fe34f5ac185b3ea6d4013e15e80aae5b",
         "protocol": "docs/NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md",
         "results": "docs/NEXUS_EVOLUTION2_PERSIST_RESET_REQUEST.md",
         "status": "request_only_unauthorized",
