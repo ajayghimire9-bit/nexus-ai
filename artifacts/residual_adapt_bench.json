@@ -1,0 +1,713 @@
+{
+  "scientific": false,
+  "collection": false,
+  "env_steps": 0,
+  "claims_agi": false,
+  "claims_learning_to_learn": false,
+  "historical_e217_label": "inconclusive",
+  "grant_consumed": true,
+  "used_e217_science_arrays": false,
+  "used_e217_science_fits": false,
+  "source": "evolution2_fit_clock_disposable",
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "seed": 7,
+  "revealed_evals": {
+    "default": 6,
+    "random": 6,
+    "persist": 6,
+    "persist_best": 6,
+    "memory": 6
+  },
+  "adapt_steps": 8,
+  "hidden_oracles": {
+    "pendulum:0": {
+      "oracle": 2,
+      "mae": {
+        "0": 0.027850452517507545,
+        "1": 0.05039560229644735,
+        "2": 0.02707907307146229
+      }
+    },
+    "acrobot:0": {
+      "oracle": 1,
+      "mae": {
+        "0": 0.021013640130907636,
+        "1": 0.020281355245804395,
+        "2": 0.028532399697113558
+      }
+    },
+    "pendulum:1": {
+      "oracle": 1,
+      "mae": {
+        "0": 0.05588774226392464,
+        "1": 0.04070469046079476,
+        "2": 0.04277505733080034
+      }
+    },
+    "acrobot:1": {
+      "oracle": 1,
+      "mae": {
+        "0": 0.043456727434532404,
+        "1": 0.03943646297827463,
+        "2": 0.043476641690214514
+      }
+    },
+    "pendulum:2": {
+      "oracle": 0,
+      "mae": {
+        "0": 0.02218765238785636,
+        "1": 0.07195081278784225,
+        "2": 0.026019938796404556
+      }
+    },
+    "acrobot:2": {
+      "oracle": 0,
+      "mae": {
+        "0": 0.021178848101859177,
+        "1": 0.022396680234938533,
+        "2": 0.023322554342807205
+      }
+    }
+  },
+  "summary": {
+    "default": {
+      "train": {
+        "regret": 0.005176745147634038,
+        "mae": 0.03705214058671806,
+        "arms": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.0,
+        "mae": 0.021683250244857767,
+        "arms": [
+          0,
+          0
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "random": {
+      "train": {
+        "regret": 0.0,
+        "mae": 0.03187539543908402,
+        "arms": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.025490496266532624,
+        "mae": 0.04717374651139039,
+        "arms": [
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "persist": {
+      "train": {
+        "regret": 0.00037591608278712395,
+        "mae": 0.03225131152187114,
+        "arms": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.025490496266532624,
+        "mae": 0.04717374651139039,
+        "arms": [
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "persist_best": {
+      "train": {
+        "regret": 0.00037591608278712395,
+        "mae": 0.03225131152187114,
+        "arms": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.0006089160665396776,
+        "mae": 0.022292166311397445,
+        "arms": [
+          0,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "memory": {
+      "train": {
+        "regret": 0.00037591608278712395,
+        "mae": 0.03225131152187114,
+        "arms": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.0006089160665396776,
+        "mae": 0.022292166311397445,
+        "arms": [
+          0,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    }
+  },
+  "adapted": {
+    "default": {
+      "train": {
+        "regret": 0.015196526259212492,
+        "mae": 0.047071921698296514,
+        "arms": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.022550473152572678,
+        "mae": 0.044233723397430445,
+        "arms": [
+          0,
+          0
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "random": {
+      "train": {
+        "regret": 0.01065848279587156,
+        "mae": 0.04253387823495558,
+        "arms": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.06880458319081854,
+        "mae": 0.0904878334356763,
+        "arms": [
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "persist": {
+      "train": {
+        "regret": 0.012185539098946338,
+        "mae": 0.04406093453803036,
+        "arms": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.06880458319081854,
+        "mae": 0.0904878334356763,
+        "arms": [
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "persist_best": {
+      "train": {
+        "regret": 0.012185539098946338,
+        "mae": 0.04406093453803036,
+        "arms": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.022822402804121737,
+        "mae": 0.04450565304897951,
+        "arms": [
+          0,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    },
+    "memory": {
+      "train": {
+        "regret": 0.012185539098946338,
+        "mae": 0.04406093453803036,
+        "arms": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "tasks": [
+          "pendulum:0",
+          "acrobot:0",
+          "pendulum:1",
+          "acrobot:1"
+        ]
+      },
+      "development": {
+        "regret": 0.022822402804121737,
+        "mae": 0.04450565304897951,
+        "arms": [
+          0,
+          1
+        ],
+        "tasks": [
+          "pendulum:2",
+          "acrobot:2"
+        ]
+      }
+    }
+  },
+  "rows": {
+    "default": [
+      {
+        "task": "pendulum:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.046976975392984364,
+        "query_mae": 0.027850452517507545,
+        "regret": 0.0007713794460452554,
+        "oracle": 2
+      },
+      {
+        "task": "acrobot:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.02681618864517077,
+        "query_mae": 0.021013640130907636,
+        "regret": 0.0007322848851032404,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:1",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.06206997221064133,
+        "query_mae": 0.05588774226392464,
+        "regret": 0.015183051803129885,
+        "oracle": 1
+      },
+      {
+        "task": "acrobot:1",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.015764816956467104,
+        "query_mae": 0.043456727434532404,
+        "regret": 0.00402026445625777,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:2",
+        "phase": "development",
+        "arm": 0,
+        "revealed_mae": 0.06371553194185253,
+        "query_mae": 0.02218765238785636,
+        "regret": 0.0,
+        "oracle": 0
+      },
+      {
+        "task": "acrobot:2",
+        "phase": "development",
+        "arm": 0,
+        "revealed_mae": 0.0295608861282138,
+        "query_mae": 0.021178848101859177,
+        "regret": 0.0,
+        "oracle": 0
+      }
+    ],
+    "random": [
+      {
+        "task": "pendulum:0",
+        "phase": "train",
+        "arm": 2,
+        "revealed_mae": 0.02973079435469117,
+        "query_mae": 0.02707907307146229,
+        "regret": 0.0,
+        "oracle": 2
+      },
+      {
+        "task": "acrobot:0",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.026640215182851534,
+        "query_mae": 0.020281355245804395,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.04947336484474363,
+        "query_mae": 0.04070469046079476,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "acrobot:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.01631820777832142,
+        "query_mae": 0.03943646297827463,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:2",
+        "phase": "development",
+        "arm": 1,
+        "revealed_mae": 0.042215002787997946,
+        "query_mae": 0.07195081278784225,
+        "regret": 0.04976316039998589,
+        "oracle": 0
+      },
+      {
+        "task": "acrobot:2",
+        "phase": "development",
+        "arm": 1,
+        "revealed_mae": 0.0335482736039315,
+        "query_mae": 0.022396680234938533,
+        "regret": 0.0012178321330793551,
+        "oracle": 0
+      }
+    ],
+    "persist": [
+      {
+        "task": "pendulum:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.046976975392984364,
+        "query_mae": 0.027850452517507545,
+        "regret": 0.0007713794460452554,
+        "oracle": 2
+      },
+      {
+        "task": "acrobot:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.02681618864517077,
+        "query_mae": 0.021013640130907636,
+        "regret": 0.0007322848851032404,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.04947336484474363,
+        "query_mae": 0.04070469046079476,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "acrobot:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.01631820777832142,
+        "query_mae": 0.03943646297827463,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:2",
+        "phase": "development",
+        "arm": 1,
+        "revealed_mae": 0.042215002787997946,
+        "query_mae": 0.07195081278784225,
+        "regret": 0.04976316039998589,
+        "oracle": 0
+      },
+      {
+        "task": "acrobot:2",
+        "phase": "development",
+        "arm": 1,
+        "revealed_mae": 0.0335482736039315,
+        "query_mae": 0.022396680234938533,
+        "regret": 0.0012178321330793551,
+        "oracle": 0
+      }
+    ],
+    "persist_best": [
+      {
+        "task": "pendulum:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.046976975392984364,
+        "query_mae": 0.027850452517507545,
+        "regret": 0.0007713794460452554,
+        "oracle": 2
+      },
+      {
+        "task": "acrobot:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.02681618864517077,
+        "query_mae": 0.021013640130907636,
+        "regret": 0.0007322848851032404,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.04947336484474363,
+        "query_mae": 0.04070469046079476,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "acrobot:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.01631820777832142,
+        "query_mae": 0.03943646297827463,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:2",
+        "phase": "development",
+        "arm": 0,
+        "revealed_mae": 0.06371553194185253,
+        "query_mae": 0.02218765238785636,
+        "regret": 0.0,
+        "oracle": 0
+      },
+      {
+        "task": "acrobot:2",
+        "phase": "development",
+        "arm": 1,
+        "revealed_mae": 0.0335482736039315,
+        "query_mae": 0.022396680234938533,
+        "regret": 0.0012178321330793551,
+        "oracle": 0
+      }
+    ],
+    "memory": [
+      {
+        "task": "pendulum:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.046976975392984364,
+        "query_mae": 0.027850452517507545,
+        "regret": 0.0007713794460452554,
+        "oracle": 2
+      },
+      {
+        "task": "acrobot:0",
+        "phase": "train",
+        "arm": 0,
+        "revealed_mae": 0.02681618864517077,
+        "query_mae": 0.021013640130907636,
+        "regret": 0.0007322848851032404,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.04947336484474363,
+        "query_mae": 0.04070469046079476,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "acrobot:1",
+        "phase": "train",
+        "arm": 1,
+        "revealed_mae": 0.01631820777832142,
+        "query_mae": 0.03943646297827463,
+        "regret": 0.0,
+        "oracle": 1
+      },
+      {
+        "task": "pendulum:2",
+        "phase": "development",
+        "arm": 0,
+        "revealed_mae": 0.06371553194185253,
+        "query_mae": 0.02218765238785636,
+        "regret": 0.0,
+        "oracle": 0
+      },
+      {
+        "task": "acrobot:2",
+        "phase": "development",
+        "arm": 1,
+        "revealed_mae": 0.0335482736039315,
+        "query_mae": 0.022396680234938533,
+        "regret": 0.0012178321330793551,
+        "oracle": 0
+      }
+    ]
+  },
+  "causal": {
+    "pend0": 0,
+    "pend2": 0,
+    "acro0": 1,
+    "acro2": 1,
+    "pend_descriptor_distance": 5.034671023592008,
+    "acro_descriptor_distance": 0.1283868148093552,
+    "retrieved": {
+      "pend2": {
+        "0": {
+          "shrunk": 0.5000000408043844,
+          "mass": 9.007133386017092e-08,
+          "min_dist": 5.034671023592008
+        },
+        "1": {
+          "shrunk": 0.5000008420325311,
+          "mass": 1.8689996088547923e-06,
+          "min_dist": 4.5397734041007185
+        },
+        "2": {
+          "shrunk": 0.5,
+          "mass": 0.0,
+          "min_dist": null
+        }
+      },
+      "acro2": {
+        "0": {
+          "shrunk": 0.7353439858585553,
+          "mass": 0.9895062164946059,
+          "min_dist": 0.1283868148093552
+        },
+        "1": {
+          "shrunk": 0.7414254440545802,
+          "mass": 0.9965701451425131,
+          "min_dist": 0.07326909194288143
+        },
+        "2": {
+          "shrunk": 0.5,
+          "mass": 0.0,
+          "min_dist": null
+        }
+      }
+    },
+    "changed": false
+  },
+  "decision": {
+    "memory_beats_persist_dev": true,
+    "memory_beats_persist_best_dev": false,
+    "memory_beats_default_dev": false,
+    "causal_choice_changes": false,
+    "development_success": false
+  },
+  "wall_s": 0.7550892920044134,
+  "cpu_s": 0.601245,
+  "note": "Residual-selection development bench, not a scientific result and not AGI."
+}

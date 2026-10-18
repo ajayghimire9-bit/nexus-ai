@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — residual identity selection; default bundle 0 wins
+
+E2.9 residuals, one revealed MAE, no E2.17 files. Memory ties
+persist-best (0.00061) and loses to default (0). 8-step adapt hurts.
+Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — residual decide() bench; catalogue line stopped
 
 E2.9 residuals, no E2.17 files. All oracles flat H=4. Persist and

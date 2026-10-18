@@ -196,11 +196,42 @@ these models.** Permitted residuals do not create a planner-identity
 problem. FakeStepModel and disposable-residual 12-arm lines are both
 closed.
 
+## Residual identity selection (one revealed MAE)
+
+E2.9 residuals, E2.8 source arrays, no E2.17 files. Arms are residual
+identities 0/1/2 per family, not catalogue planners. Descriptor is
+`describe_support` on train[0:32]. One revealed MAE on train[32:96].
+Hidden regret is chosen-minus-best val MAE. Unused-first only during
+train; development is exploit-only. Seed 7. Wall 0.76 s.
+
+Val oracles: pendulum 2/1/0, acrobot 1/1/0. Bundle 0 is optimal on
+both development tasks.
+
+| Method | Train regret | Dev regret | Dev arms |
+|---|---:|---:|---|
+| default | 0.00518 | 0.00000 | 0, 0 |
+| random | 0.00000 | 0.02549 | 1, 1 |
+| persist-last | 0.00038 | 0.02549 | 1, 1 |
+| persist-best | 0.00038 | 0.00061 | 0, 1 |
+| memory | 0.00038 | 0.00061 | 0, 1 |
+
+Memory beats persist-last and ties persist-best. Default wins.
+Causal retrieve-on frozen train memory does **not** change pend0/pend2
+(both 0) or acro0/acro2 (both 1). Pendulum descriptors are distant
+(5.035 ≫ kernel 1.25); Acrobot neighbors are close (0.128) and both
+pick the better revealed arm. Eight-step clone SGD **raises** default
+development regret from 0 to 0.023. Checkpoints were not written.
+
+**Development success: false.** Revealed MAE and 12-d support
+descriptors do not beat always-trusting bundle 0 on these six source
+tasks. Local 8-step adaptation is harmful here.
+
 ## Next research experiment
 
-Do not continue 12-arm catalogue selection on FakeStepModel or E2.9
-residuals. Next *development* step, if any, is a different target:
-task-conditioned residual-model adaptation on permitted source arrays
-(which dynamics to trust / how to update them), not which of 12
-planners to pick. No collection. No E2.17 reuse. No n=10 science. A
+Do not continue 12-arm catalogue selection. Do not treat this residual
+chooser as science. Next *development* step, if any: a support-probe
+chooser that scores all three residuals on the 32-step support (no
+train[32:96] proxy, still hidden val), or a descriptor that can place
+pendulum bundle 2 near a useful neighbor. Do not repeat the 8-step
+clone recipe. No collection. No E2.17 reuse. No n=10 science. A
 new-physics persist-versus-reset screen still needs a new grant.

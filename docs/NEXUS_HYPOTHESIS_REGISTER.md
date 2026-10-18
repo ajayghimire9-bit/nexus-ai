@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-core-7 residual identity memory loses to default bundle 0
+
+One revealed MAE on E2.9 residuals. Memory matches persist-best
+(dev regret 0.00061, arms 0/1) and loses to always-bundle-0 (0).
+Causal pend0/pend2 and acro0/acro2 choices do not change. 8-step
+clone SGD raises val MAE. Not science. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — H-core-6 disposable residuals do not change the winning planner
 
 E2.9 residual `decide()` scores pick flat H=4 on every locked task.

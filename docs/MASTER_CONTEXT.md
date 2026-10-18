@@ -1,5 +1,13 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — residual identity selection loses to default bundle 0, 2026-10-18
+
+One revealed MAE per task on E2.9 residuals. Memory ties persist-best
+(dev regret 0.00061) and loses to always-bundle-0 (0). Causal
+descriptor swap does not change the frozen-train choice. 8-step clone
+SGD raises default val regret. Not AGI. No collection. E2.17 unused.
+Report `NEXUS_CORE_STRATEGY_MEMORY.md`. Earlier entries remain history.
+
 ## Latest — residual decide() scores: no planner-identity shift, 2026-10-18
 
 E2.9 disposable residuals score every locked task as flat H=4.

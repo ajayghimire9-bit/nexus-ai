@@ -1,13 +1,20 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — residual identity selection loses to default bundle 0
+
+One revealed MAE, E2.9 residuals, no E2.17 files. Memory ties
+persist-best and loses to always-bundle-0. 8-step clone SGD hurts.
+Recommended next *development* experiment, if pursued: score all
+three residuals on the 32-step support (hidden val still unused for
+selection). No collection. No E2.17 reuse. No n=10 science. A
+persist-versus-reset scientific screen still needs a new grant.
+Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Current — catalogue selection closed on FakeStep/E2.9 residuals
 
-Do not continue 12-arm planner selection on FakeStepModel or E2.9
-disposable residuals. Recommended next *development* experiment, if
-pursued: task-conditioned residual-model adaptation on permitted
-source arrays, not catalogue first-free. No collection. No E2.17
-reuse. No n=10 science. A persist-versus-reset scientific screen
-still needs a new grant. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+Completed. Residual oracles are all flat H=4 for planner identity.
+Residual *model* selection is a different target and is now measured.
+Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
 
 ## Current — FakeStepModel line stopped; next is residual decide() scores
 
