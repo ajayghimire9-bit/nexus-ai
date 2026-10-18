@@ -1,5 +1,13 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — retrieved-mean selector, still below persist, 2026-10-18
+
+Following ridge-shrunk retrieved values changes the zero-obs choice
+and beats combined LinUCB on the locked shift (first-free 0.755 vs
+1.0). Persist remains better (0.188). Stored-obs development stays
+at 0. Not AGI. No collection. E2.17 stays inconclusive. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`. Earlier entries remain history.
+
 ## Latest — observation-aware memory, negative development result, 2026-10-18
 
 An 8-d planning-observation sketch separates stored-obs from zero-obs

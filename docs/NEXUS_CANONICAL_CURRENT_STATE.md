@@ -7,8 +7,9 @@ task-conditioned memory controller. It reuses the catalogue,
 `TrustedEvaluator`, and Evolution-2 methods. The decide() FakeStepModel
 bench with four free slots ties persist on stored-obs development and
 loses first-free on a zero-obs start-state shift. An observation sketch
-separates those embeddings; LinUCB still does not change the first free
-choice. Do not treat this as n=10 science or AGI.
+separates those embeddings. A retrieved-mean selector now changes the
+zero-obs choice and beats LinUCB on that shift, but persist remains
+better. Do not treat this as n=10 science or AGI.
 
 Authoritative snapshot for future agents. Not a scientific result.
 Generated from the research-tip merge and the consolidation review.

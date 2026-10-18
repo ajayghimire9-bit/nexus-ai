@@ -24,6 +24,7 @@ instead of opening parallel packages.
 | Task-conditioned strategy memory | `nexus.core.strategy_memory.ContextualStrategyMemory` | Replacing AdaptiveProposer or a second Evolution-2 method stack |
 | Decide()-owned memory bench | `nexus.core.strategy_memory_decide_bench`; reuses `FakeStepModel`, `fixture_hidden_return`, `TrustedEvaluator`, E2.8 source arrays | Scoring with authored `hidden_score`, loading E2.17 science arrays, or collecting |
 | Observation-aware memory bench | `nexus.core.strategy_memory_obs_bench`; reuses `ContextualStrategyMemory` modes and the locked eight tasks | A second memory stack or tuning `acro_zero_collision` after seeing results |
+| Retrieved-mean / gated selector | `nexus.core.strategy_memory` selectors plus `strategy_memory_selector_bench` | A new proposer stack or changing persist features without a matched comparison |
 | E2 persist/reset/evolution wrappers | `evolution2.methods` | A second method registry |
 | Pendulum/Acrobot proposer screen design | `evolution2.pendulum_acrobot_protocol_v2` (target) and `_v2_pilot` (reduced worksheet) | A third protocol that silently rewrites n, Bonferroni, or v2 hashes |
 | Explicit n=3 no-fit micro | `evolution2.pendulum_acrobot_protocol_n3_micro` | Treating n=3 unmatched residuals as a v2 pass or using the df=9 t crit |

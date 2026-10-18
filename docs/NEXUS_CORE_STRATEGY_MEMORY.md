@@ -128,9 +128,35 @@ Held-out val/synthetic fixtures stayed separate. Combined first-free
 tasks and retrieval neighbors move; LinUCB does not follow the
 retrieved values. Persist remains better on the genuine shift.
 
+## Retrieved-mean / gated selector
+
+Same eight decide() tasks, combined 20-d descriptor, persist baseline.
+`retrieved_mean` uses a ridge-shrunk kernel mean. `gated` uses that
+mean only when nearest neighbor distance ≤ 1.25 and conflict is 0.
+
+| Config | Dev first-free | Shifted first-free | Collision first-free | Causal change / better |
+|---|---:|---:|---:|---|
+| persist | 0.000 | **0.188** | **0.110** | — |
+| combined UCB | 0.000 | 1.000 | 1.000 | no / no |
+| retrieved-mean | 0.000 | 0.755 | 0.279 | **yes / yes** |
+| gated | 0.000 | 0.721 | 0.950 | yes / no |
+
+Retrieved-mean fixes the memory-to-choice failure: a zero-obs query
+selects `2261a02b…` (zero-landscape unit 0.70) instead of the stored
+winner (unit 0.00). It beats UCB on the shift (0.755 vs 1.000) and
+does **not** beat persist (0.188). Stored-obs development stays at 0.
+Held-out val/synthetic first-free ties UCB at 0.178 vs persist 0.395
+and is not a locked-split claim.
+
+**Development success: false.** The diagnosed LinUCB failure is real
+and fixable; kernel memory of four train tasks is still a weaker
+transfer rule than the linear persist proposer on this landscape.
+
 ## Next research experiment
 
-Development-only: keep the observation-aware descriptor and replace
-the LinUCB argmax with a retrieved-mean / gated selector when
-neighbor mass is high. Same eight tasks, persist baseline, no
-collection, no n=10 science. Do not reuse E2.17 development.
+Development-only: add the same 8-d planning-observation sketch to
+`PersistentAdaptive` features and compare persist, persist+obs, and
+retrieved-mean memory on the locked eight tasks. If the winning
+linear proposer cannot use the start state, stop this FakeStepModel
+line and move to permitted residual-model `decide()` scores. No
+collection. No n=10 science. Do not reuse E2.17 development.

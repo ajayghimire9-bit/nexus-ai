@@ -146,7 +146,7 @@ def _unit_table(task: DecideTask, seed: int) -> dict:
     return {variant: scale.unit(raw[variant]) for variant in VARIANTS}
 
 
-def causal_observation_intervention(tasks, scores, seed: int = 7) -> dict:
+def causal_observation_intervention(tasks, scores, seed: int = 7, *, modes=("support", "obs", "combined"), selector: str = "ucb") -> dict:
     """Change only the planning observation. Support, weights, store, RNG stay fixed."""
     stored = next(task for task in tasks if task.task_id == "acro_store_0")
     zero_obs = np.zeros(stored.context.obs_dim, dtype=np.float32)
@@ -197,7 +197,7 @@ def causal_observation_intervention(tasks, scores, seed: int = 7) -> dict:
 
     payload = {}
     for mode in ("support", "obs", "combined"):
-        memory = ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True, mode=mode)
+        memory = ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True, mode=mode, selector=selector)
         _train(memory, tasks, scores)
         stored_q = _select(memory, stored.obs, f"{mode}_stored")
         zero_q = _select(memory, zero_obs, f"{mode}_zero")

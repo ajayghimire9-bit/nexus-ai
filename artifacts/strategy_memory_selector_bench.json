@@ -1,0 +1,4462 @@
+{
+  "scientific": false,
+  "collection": false,
+  "gymnasium": false,
+  "env_steps": 0,
+  "claims_agi": false,
+  "claims_learning_to_learn": false,
+  "historical_e217_label": "inconclusive",
+  "grant_consumed": true,
+  "used_e217_science_arrays": false,
+  "score_source": "decide_fake_step_model",
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "seed": 7,
+  "matched_proposals": 6,
+  "free_slots": 4,
+  "gate": {
+    "min_dist": 1.25,
+    "conflict_blocks": true
+  },
+  "lookups": {
+    "random": 48,
+    "fixed": 48,
+    "reset_adaptive": 48,
+    "persistent_adaptive": 48,
+    "evolutionary": 48,
+    "memory_combined_ucb": 48,
+    "memory_combined_retrieved": 48,
+    "memory_combined_gated": 48
+  },
+  "summary": {
+    "random": {
+      "train": {
+        "best_regret": 0.039027520454570835,
+        "first_free_regret": 0.46493050328086016,
+        "evals_to_strong": 4.25,
+        "first_free": [
+          "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.04011056936847612,
+        "first_free_regret": 0.6548945512081699,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.7892034584314925,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    },
+    "fixed": {
+      "train": {
+        "best_regret": 0.23494813519650545,
+        "first_free_regret": 0.714776668552789,
+        "evals_to_strong": 5.5,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.3114139307422018,
+        "first_free_regret": 0.9152067903310155,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.18823405044660324,
+        "evals_to_strong": 4.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.2790754722326073,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    },
+    "reset_adaptive": {
+      "train": {
+        "best_regret": 0.23494813519650545,
+        "first_free_regret": 0.6787614793110146,
+        "evals_to_strong": 5.25,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.31142934817784196,
+        "first_free_regret": 0.9152067903310155,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.10957678996573372,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    },
+    "persistent_adaptive": {
+      "train": {
+        "best_regret": 0.0774905651433406,
+        "first_free_regret": 0.4497616281426342,
+        "evals_to_strong": 4.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.09960132085634843,
+        "first_free_regret": 0.18823405044660324,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.10957678996573372,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    },
+    "evolutionary": {
+      "train": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.6997616281426342,
+        "evals_to_strong": 4.5,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.4585748715683555,
+        "evals_to_strong": 3.5,
+        "first_free": [
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.09960132085634843,
+        "first_free_regret": 0.18823405044660324,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.10957678996573372,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    },
+    "memory_combined_ucb": {
+      "train": {
+        "best_regret": 0.03601518924177438,
+        "first_free_regret": 0.25,
+        "evals_to_strong": 3.75,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.09960132085634843,
+        "first_free_regret": 1.0,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 1.0,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    },
+    "memory_combined_retrieved": {
+      "train": {
+        "best_regret": 0.039027520454570835,
+        "first_free_regret": 0.40622333287274276,
+        "evals_to_strong": 5.25,
+        "first_free": [
+          "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.09960132085634843,
+        "first_free_regret": 0.754742967044328,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.2790754722326073,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    },
+    "memory_combined_gated": {
+      "train": {
+        "best_regret": 0.03601518924177438,
+        "first_free_regret": 0.25,
+        "evals_to_strong": 3.75,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "pend_store_0",
+          "acro_store_0",
+          "pend_store_1",
+          "acro_zero_0"
+        ]
+      },
+      "development": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "pend_store_2",
+          "acro_store_1"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.7213292869002139,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+        ],
+        "task_ids": [
+          "acro_zero_1"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.9497711340285377,
+        "evals_to_strong": 2.0,
+        "first_free": [
+          "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+        ],
+        "task_ids": [
+          "acro_zero_collision"
+        ]
+      }
+    }
+  },
+  "rows": {
+    "random": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+          "first_free_score": 0.9201457084001762,
+          "first_free_regret": 0.07985429159982382,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.9201457084001762,
+            1.0,
+            0.610276887060452,
+            0.9201457084001762
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            1.0,
+            1.0,
+            0.6850689290823914,
+            0.9191022289185216
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.014660221529040411,
+          "first_free_regret": 0.9853397784709595,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            0.014660221529040411,
+            1.0,
+            0.08400059532647854,
+            0.6848553752385171
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.8438899181817167,
+          "regret": 0.15611008181828334,
+          "oracle": 1.0,
+          "first_free": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+          "first_free_score": 0.20547205694734286,
+          "first_free_regret": 0.7945279430526572,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            0.20547205694734286,
+            0.06047029703576809,
+            0.32619267967805726,
+            0.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.6902108975836602,
+          "first_free_regret": 0.30978910241633983,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            0.6902108975836602,
+            0.6902417324549405,
+            0.6108778731672673,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.9197788612630478,
+          "regret": 0.08022113873695225,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.0,
+          "first_free_regret": 1.0,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            0.0,
+            0.6836408051560794,
+            0.08285025686328898,
+            0.9197788612630478
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            1.0,
+            0.0,
+            0.05578611553824843,
+            0.245257032955672
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.21079654156850744,
+          "first_free_regret": 0.7892034584314925,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.21079654156850744,
+            0.0,
+            0.7209245277673927,
+            0.05022886597146224
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "fixed": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.687484324220499,
+            0.6900377394266376
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6850689290823914,
+          "regret": 0.31493107091760864,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            0.044188996004362845,
+            0.6833856060621958,
+            0.6850689290823914
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6851007907049492,
+          "regret": 0.3148992092950508,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08400059532647854,
+          "first_free_regret": 0.9159994046735215,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            0.08400059532647854,
+            0.014660221529040411,
+            0.6848553752385171,
+            0.6851007907049492
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.8559392430329025,
+          "first_free_regret": 0.14406075696709753,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            0.8559392430329025,
+            1.0,
+            0.20547205694734286,
+            0.28999749935012503
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.6902417324549405,
+          "regret": 0.30975826754505953,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08673616247468005,
+          "first_free_regret": 0.9132638375253199,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            0.08673616247468005,
+            0.0,
+            0.6902417324549405,
+            0.6902108975836602
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.6869304060606559,
+          "regret": 0.3130695939393441,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08285025686328898,
+          "first_free_regret": 0.917149743136711,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            0.08285025686328898,
+            0.0,
+            0.6836408051560794,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.8117659495533968,
+          "first_free_regret": 0.18823405044660324,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            0.8117659495533968,
+            1.0,
+            0.245257032955672,
+            0.278670713099786
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.7209245277673927,
+          "first_free_regret": 0.2790754722326073,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.7209245277673927,
+            0.8904232100342663,
+            0.21079553809799867,
+            0.21079654156850744
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "reset_adaptive": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6850689290823914,
+          "regret": 0.31493107091760864,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            0.044188996004362845,
+            0.6850689290823914,
+            0.6104138614731482
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6851007907049492,
+          "regret": 0.3148992092950508,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08400059532647854,
+          "first_free_regret": 0.9159994046735215,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            0.08400059532647854,
+            0.014660221529040411,
+            0.6851007907049492,
+            0.6042183906901947
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.302062559458527
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.6902108975836602,
+          "regret": 0.30978910241633983,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08673616247468005,
+          "first_free_regret": 0.9132638375253199,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            0.08673616247468005,
+            0.0,
+            0.6902108975836602,
+            0.6108778731672673
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.6869304060606559,
+          "regret": 0.3130695939393441,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08285025686328898,
+          "first_free_regret": 0.917149743136711,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            0.08285025686328898,
+            0.0,
+            0.6836408051560794,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            1.0,
+            0.8117659495533968,
+            0.37883379710268844,
+            0.278670713099786
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.24086962014398383,
+            0.3010127602539036
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "persistent_adaptive": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6900377394266376,
+          "regret": 0.3099622605733624,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            0.0,
+            0.6900377394266376,
+            0.610276887060452
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            1.0,
+            0.044188996004362845,
+            0.6850689290823914
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            0.6851007907049492,
+            0.08400059532647854,
+            0.9171895478176593
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            1.0,
+            0.8559392430329025,
+            0.32619267967805726,
+            0.28999749935012503
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.6902108975836602,
+            0.08673616247468005,
+            0.9211895225798991
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.9197788612630478,
+            0.607227803217422,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.9003986791436516,
+          "regret": 0.09960132085634843,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.8117659495533968,
+          "first_free_regret": 0.18823405044660324,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            0.8117659495533968,
+            0.0,
+            0.278670713099786,
+            0.05578611553824843
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.7209245277673927,
+            0.24086962014398383,
+            0.21079654156850744
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "evolutionary": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09342556824288627,
+          "first_free_regret": 0.9065744317571137,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.09342556824288627,
+            1.0,
+            0.687484324220499,
+            0.9201457084001762
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.10752791918657692,
+          "first_free_regret": 0.8924720808134231,
+          "evals_to_strong": 5,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.10752791918657692,
+            0.044188996004362845,
+            1.0,
+            0.6850689290823914
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            1.0,
+            0.9171895478176593,
+            0.6042183906901947
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 0.0,
+          "first_free_regret": 1.0,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            0.0,
+            0.8559392430329025,
+            0.0,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.08673616247468005,
+            0.6902417324549405,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.08285025686328898,
+          "first_free_regret": 0.917149743136711,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            0.08285025686328898,
+            1.0,
+            0.6836408051560794,
+            0.6869304060606559
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.9003986791436516,
+          "regret": 0.09960132085634843,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.8117659495533968,
+          "first_free_regret": 0.18823405044660324,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            0.8117659495533968,
+            0.0,
+            0.05578611553824843,
+            0.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+          "first_free_score": 0.8904232100342663,
+          "first_free_regret": 0.10957678996573372,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.8904232100342663,
+            0.05022886597146224,
+            0.3010127602539036,
+            0.7209245277673927
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "memory_combined_ucb": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            1.0,
+            0.0,
+            1.0,
+            0.9201457084001762
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            1.0,
+            0.6850689290823914,
+            0.9191022289185216,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            1.0,
+            0.9171895478176593,
+            0.9171895478176593
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.8559392430329025,
+          "regret": 0.14406075696709753,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 0.0,
+          "first_free_regret": 1.0,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            0.0,
+            0.06047029703576809,
+            0.8559392430329025,
+            0.20547205694734286
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.9211895225798991,
+            1.0,
+            0.9211895225798991
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.6869304060606559,
+            0.9197788612630478,
+            0.607227803217422
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.9003986791436516,
+          "regret": 0.09960132085634843,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 0.0,
+          "first_free_regret": 1.0,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            0.0,
+            0.8117659495533968,
+            0.278670713099786,
+            0.05578611553824843
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 0.0,
+          "first_free_regret": 1.0,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.0,
+            0.0,
+            0.7209245277673927,
+            0.21079654156850744
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "memory_combined_retrieved": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.6900377394266376,
+          "first_free_regret": 0.3099622605733624,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            0.6900377394266376,
+            0.9201457084001762,
+            0.610276887060452,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.6850689290823914,
+          "first_free_regret": 0.31493107091760864,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            0.6850689290823914,
+            0.9191022289185216,
+            0.6104138614731482,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            0.9171895478176593,
+            0.6851007907049492,
+            0.6042183906901947
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.8438899181817167,
+          "regret": 0.15611008181828334,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 0.0,
+          "first_free_regret": 1.0,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            0.0,
+            0.06047029703576809,
+            0.28999749935012503,
+            0.32619267967805726
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.9211895225798991,
+            0.6902108975836602,
+            0.6108778731672673
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.9197788612630478,
+            0.6869304060606559,
+            0.607227803217422
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.9003986791436516,
+          "regret": 0.09960132085634843,
+          "oracle": 1.0,
+          "first_free": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+          "first_free_score": 0.245257032955672,
+          "first_free_regret": 0.754742967044328,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "db1b294eb23afddbab5dc261a0dea16c0df233a6833ed4ac721db66c2dbe73cb",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            0.245257032955672,
+            0.0,
+            0.23410651908505295,
+            0.8117659495533968
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.7209245277673927,
+          "first_free_regret": 0.2790754722326073,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.7209245277673927,
+            0.0,
+            0.05022886597146224,
+            0.21079654156850744
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "memory_combined_gated": {
+      "train": [
+        {
+          "task_id": "pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.09570341664964033,
+            0.002900015185784343,
+            1.0,
+            0.0,
+            1.0,
+            0.9201457084001762
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.08873844889676273,
+            0.0,
+            1.0,
+            0.6850689290823914,
+            0.9191022289185216,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.08548731074358991,
+            0.0,
+            1.0,
+            1.0,
+            0.9171895478176593,
+            0.9171895478176593
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_zero_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.8559392430329025,
+          "regret": 0.14406075696709753,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 0.0,
+          "first_free_regret": 1.0,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.8438899181817167,
+            0.8078428908569882,
+            0.0,
+            0.06047029703576809,
+            0.8559392430329025,
+            0.20547205694734286
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b"
+          ],
+          "scores": [
+            0.08183101229399052,
+            0.006908794290442511,
+            1.0,
+            0.9211895225798991,
+            1.0,
+            0.9211895225798991
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "acro_store_1",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+          ],
+          "scores": [
+            0.09504532073947176,
+            0.032458554399403663,
+            1.0,
+            0.9197788612630478,
+            0.607227803217422,
+            0.6836408051560794
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "acro_zero_1",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.278670713099786,
+          "first_free_regret": 0.7213292869002139,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+          ],
+          "scores": [
+            0.9003986791436516,
+            0.5455083007567605,
+            0.278670713099786,
+            0.0,
+            0.8117659495533968,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "acro_zero_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+          "first_free_score": 0.05022886597146224,
+          "first_free_regret": 0.9497711340285377,
+          "evals_to_strong": 2,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+          ],
+          "scores": [
+            0.83067687370491,
+            1.0,
+            0.05022886597146224,
+            0.24086962014398383,
+            0.8904232100342663,
+            0.7209245277673927
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    }
+  },
+  "retrieval_traces": {
+    "memory_combined_ucb": {
+      "pend_store_2": {
+        "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "first_free_regret": 0.0,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08183101229399052,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.006908794290442511,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9211895225798991,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "ucb"
+      },
+      "acro_store_1": {
+        "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "first_free_regret": 0.0,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.09504532073947176,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.032458554399403663,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6869304060606559,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "ucb"
+      },
+      "acro_zero_1": {
+        "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "first_free_regret": 1.0,
+        "regret": 0.09960132085634843,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.9003986791436516,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.5455083007567605,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "score": 0.8117659495533968,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "ucb"
+      },
+      "acro_zero_collision": {
+        "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "first_free_regret": 1.0,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.83067687370491,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "ucb"
+      }
+    },
+    "memory_combined_retrieved": {
+      "pend_store_2": {
+        "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "first_free_regret": 0.0,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08183101229399052,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.006908794290442511,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.9211895225798991,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "retrieved_mean"
+      },
+      "acro_store_1": {
+        "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "first_free_regret": 0.0,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.09504532073947176,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.032458554399403663,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.9197788612630478,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "retrieved_mean"
+      },
+      "acro_zero_1": {
+        "first_free": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+        "first_free_regret": 0.754742967044328,
+        "regret": 0.09960132085634843,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.9003986791436516,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.5455083007567605,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.245257032955672,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "retrieved_mean"
+      },
+      "acro_zero_collision": {
+        "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+        "first_free_regret": 0.2790754722326073,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.83067687370491,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "score": 0.7209245277673927,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "retrieved_mean"
+      }
+    },
+    "memory_combined_gated": {
+      "pend_store_2": {
+        "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "first_free_regret": 0.0,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08183101229399052,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.006908794290442511,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9211895225798991,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "gated"
+      },
+      "acro_store_1": {
+        "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "first_free_regret": 0.0,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.09504532073947176,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.032458554399403663,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.9197788612630478,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "gated"
+      },
+      "acro_zero_1": {
+        "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+        "first_free_regret": 0.7213292869002139,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.9003986791436516,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.5455083007567605,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.278670713099786,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "gated"
+      },
+      "acro_zero_collision": {
+        "first_free": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+        "first_free_regret": 0.9497711340285377,
+        "regret": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.83067687370491,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.05022886597146224,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.24086962014398383,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "selector": "gated"
+      }
+    }
+  },
+  "causal_observation_intervention": {
+    "ucb": {
+      "stored_obs": {
+        "task_id": "causal_combined_stored",
+        "choice": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "obs_norm": 1.5629979372024536,
+        "stored_landscape_unit": 1.0,
+        "zero_landscape_unit": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.9859808986918355,
+            "ucb": 0.9859808986918355,
+            "retrieved_mean": 0.8619485042430312,
+            "retrieved_shrunk": 0.6943923279393701,
+            "retrieved_std": 0.34495402632268624,
+            "mass": 0.3867207051145925,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.9063763119728072,
+            "ucb": 0.9063763119728072,
+            "retrieved_mean": 0.6850689290823914,
+            "retrieved_shrunk": 0.5925344645411956,
+            "retrieved_std": 0.0001,
+            "mass": 0.3333333333333333,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.8937583555417385,
+            "ucb": 0.8937583555417385,
+            "retrieved_mean": 0.9191022289185216,
+            "retrieved_shrunk": 0.7095511144592608,
+            "retrieved_std": 0.0001,
+            "mass": 0.3333333333333333,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.8778363828112339,
+            "ucb": 0.8778363828112339,
+            "retrieved_mean": 1.0,
+            "retrieved_shrunk": 0.75,
+            "retrieved_std": 0.0001,
+            "mass": 0.3333333333333333,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "zero_obs": {
+        "task_id": "causal_combined_zero",
+        "choice": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "obs_norm": 0.0,
+        "stored_landscape_unit": 1.0,
+        "zero_landscape_unit": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.8438899181817167,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.8078428908569882,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.06047029703576809,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "score": 0.8559392430329025,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.20547205694734286,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.9122709434689306,
+            "ucb": 0.9122709434689306,
+            "retrieved_mean": 0.30513224492110724,
+            "retrieved_shrunk": 0.40938810178234974,
+            "retrieved_std": 0.46046341660387385,
+            "mass": 0.2897100170856541,
+            "conflict": 0.0,
+            "min_dist": 0.8876727302660091,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.8057336404898758,
+            "ucb": 0.8057336404898758,
+            "retrieved_mean": 0.6850689290823914,
+            "retrieved_shrunk": 0.5387924612857008,
+            "retrieved_std": 0.0001,
+            "mass": 0.08839986788947796,
+            "conflict": 0.0,
+            "min_dist": 1.4400914224095642,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.78508669128038,
+            "ucb": 0.78508669128038,
+            "retrieved_mean": 0.9191022289185216,
+            "retrieved_shrunk": 0.5878483874666757,
+            "retrieved_std": 0.0001,
+            "mass": 0.08839986788947796,
+            "conflict": 0.0,
+            "min_dist": 1.4400914224095642,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.7612508409951269,
+            "ucb": 0.7612508409951269,
+            "retrieved_mean": 1.0,
+            "retrieved_shrunk": 0.6048054405405638,
+            "retrieved_std": 0.0001,
+            "mass": 0.08839986788947796,
+            "conflict": 0.0,
+            "min_dist": 1.4400914224095642,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "shuffled_obs": {
+        "task_id": "causal_combined_shuffle",
+        "choice": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "obs_norm": 1.5629979192414465,
+        "stored_landscape_unit": 1.0,
+        "zero_landscape_unit": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.1250009121936686,
+            "ucb": 1.1250009121936686,
+            "retrieved_mean": 0.742843374566652,
+            "retrieved_shrunk": 0.5932004838684882,
+            "retrieved_std": 0.43706646568809276,
+            "mass": 0.2076064409823911,
+            "conflict": 0.0,
+            "min_dist": 1.0974180432480913,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 1.0487832256732537,
+            "ucb": 1.0487832256732537,
+            "retrieved_mean": 0.6850689290823914,
+            "retrieved_shrunk": 0.5585396725208818,
+            "retrieved_std": 0.0001,
+            "mass": 0.15421906920113185,
+            "conflict": 0.0,
+            "min_dist": 1.0974180432480913,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 1.0259986998040715,
+            "ucb": 1.0259986998040715,
+            "retrieved_mean": 0.9191022289185216,
+            "retrieved_shrunk": 0.6325674026175374,
+            "retrieved_std": 0.0001,
+            "mass": 0.15421906920113185,
+            "conflict": 0.0,
+            "min_dist": 1.0974180432480913,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 1.0070945369872235,
+            "ucb": 1.0070945369872235,
+            "retrieved_mean": 0.5,
+            "retrieved_shrunk": 0.5,
+            "retrieved_std": 1.0,
+            "mass": 0.0,
+            "conflict": 0.0,
+            "min_dist": Infinity,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "replaced_obs": {
+        "task_id": "causal_combined_replace",
+        "choice": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "obs_norm": 1.0948289632797241,
+        "stored_landscape_unit": 1.0,
+        "zero_landscape_unit": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.9835373839650214,
+            "ucb": 0.9835373839650214,
+            "retrieved_mean": 0.6501769492883445,
+            "retrieved_shrunk": 0.5655237213898875,
+            "retrieved_std": 0.4769139166583903,
+            "mass": 0.2580083595807446,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.9121565230528594,
+            "ucb": 0.9121565230528594,
+            "retrieved_mean": 0.6850689290823914,
+            "retrieved_shrunk": 0.5619566542123023,
+            "retrieved_std": 0.0001,
+            "mass": 0.16775108812309872,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.8905314713512698,
+            "ucb": 0.8905314713512698,
+            "retrieved_mean": 0.9191022289185216,
+            "retrieved_shrunk": 0.6403054094788114,
+            "retrieved_std": 0.0001,
+            "mass": 0.16775108812309872,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.8738151401224719,
+            "ucb": 0.8738151401224719,
+            "retrieved_mean": 1.0,
+            "retrieved_shrunk": 0.6673880497377269,
+            "retrieved_std": 0.0001,
+            "mass": 0.16775108812309872,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "choice_changes_with_zero_obs": false,
+      "neighbors_change_with_zero_obs": true,
+      "zero_query_better_on_zero_landscape": false,
+      "stored_query_not_worse_on_stored_landscape": true,
+      "shuffle_worse_or_equal_zero_landscape": true
+    },
+    "retrieved_mean": {
+      "stored_obs": {
+        "task_id": "causal_combined_stored",
+        "choice": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "obs_norm": 1.5629979372024536,
+        "stored_landscape_unit": 1.0,
+        "zero_landscape_unit": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.6104138614731482,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.6943923279393701,
+            "ucb": 0.9016543761070157,
+            "retrieved_mean": 0.8619485042430312,
+            "retrieved_shrunk": 0.6943923279393701,
+            "retrieved_std": 0.34495402632268624,
+            "mass": 0.3867207051145925,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.6614259501444192,
+            "ucb": 0.8484882669950551,
+            "retrieved_mean": 0.8005668064174116,
+            "retrieved_shrunk": 0.6614259501444192,
+            "retrieved_std": 0.29618854203218226,
+            "mass": 0.3867207051145925,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.5701032960791114,
+            "ucb": 0.8166493978316569,
+            "retrieved_mean": 0.6305287272770078,
+            "retrieved_shrunk": 0.5701032960791114,
+            "retrieved_std": 0.13628148037120547,
+            "mass": 0.3867207051145925,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.5382269982431437,
+            "ucb": 0.7672940897839811,
+            "retrieved_mean": 0.5711767022005225,
+            "retrieved_shrunk": 0.5382269982431437,
+            "retrieved_std": 0.0980432410264088,
+            "mass": 0.3867207051145925,
+            "conflict": 0.0,
+            "min_dist": 0.0,
+            "uses_retrieved_mean": true
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "zero_obs": {
+        "task_id": "causal_combined_zero",
+        "choice": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+        "obs_norm": 0.0,
+        "stored_landscape_unit": 0.08873844889676273,
+        "zero_landscape_unit": 0.6998701396953242,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.8438899181817167,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.8078428908569882,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.06047029703576809,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.28999749935012503,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.32619267967805726,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.5527620813681224,
+            "ucb": 0.5445440591229178,
+            "retrieved_mean": 0.6134688551033262,
+            "retrieved_shrunk": 0.5527620813681224,
+            "retrieved_std": 0.34771962560038516,
+            "mass": 0.2897100170856541,
+            "conflict": 0.0,
+            "min_dist": 0.8876727302660091,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.5285244426904037,
+            "ucb": 0.4982022921387632,
+            "retrieved_mean": 0.5613439760262384,
+            "retrieved_shrunk": 0.5285244426904037,
+            "retrieved_std": 0.37198209760315915,
+            "mass": 0.2897100170856541,
+            "conflict": 0.0,
+            "min_dist": 0.8876727302660091,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.5,
+            "ucb": 0.8081201320108358,
+            "retrieved_mean": 0.5,
+            "retrieved_shrunk": 0.5,
+            "retrieved_std": 1.0,
+            "mass": 0.0,
+            "conflict": 0.0,
+            "min_dist": Infinity,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.5,
+            "ucb": 0.7603678887508426,
+            "retrieved_mean": 0.5,
+            "retrieved_shrunk": 0.5,
+            "retrieved_std": 1.0,
+            "mass": 0.0,
+            "conflict": 0.0,
+            "min_dist": Infinity,
+            "uses_retrieved_mean": true
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "shuffled_obs": {
+        "task_id": "causal_combined_shuffle",
+        "choice": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "obs_norm": 1.5629979192414465,
+        "stored_landscape_unit": 1.0,
+        "zero_landscape_unit": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.6104138614731482,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.5932004838684882,
+            "ucb": 1.031239041628898,
+            "retrieved_mean": 0.742843374566652,
+            "retrieved_shrunk": 0.5932004838684882,
+            "retrieved_std": 0.43706646568809276,
+            "mass": 0.2076064409823911,
+            "conflict": 0.0,
+            "min_dist": 1.0974180432480913,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.5761049971504739,
+            "ucb": 0.9766884489434162,
+            "retrieved_mean": 0.6982993388262363,
+            "retrieved_shrunk": 0.5761049971504739,
+            "retrieved_std": 0.3752792237949343,
+            "mass": 0.2076064409823911,
+            "conflict": 0.0,
+            "min_dist": 1.0974180432480913,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.5320362399416262,
+            "ucb": 0.9395212900928813,
+            "retrieved_mean": 0.5834736934073137,
+            "retrieved_shrunk": 0.5320362399416262,
+            "retrieved_std": 0.17267247348742334,
+            "mass": 0.2076064409823911,
+            "conflict": 0.0,
+            "min_dist": 1.0974180432480913,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.5143247128107038,
+            "ucb": 0.8887139589947963,
+            "retrieved_mean": 0.5373245014860446,
+            "retrieved_shrunk": 0.5143247128107038,
+            "retrieved_std": 0.12422354740087331,
+            "mass": 0.2076064409823911,
+            "conflict": 0.0,
+            "min_dist": 1.0974180432480913,
+            "uses_retrieved_mean": true
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "replaced_obs": {
+        "task_id": "causal_combined_replace",
+        "choice": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "obs_norm": 1.0948289632797241,
+        "stored_landscape_unit": 1.0,
+        "zero_landscape_unit": 0.0,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.6104138614731482,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.5655237213898875,
+            "ucb": 0.8837806238159311,
+            "retrieved_mean": 0.6501769492883445,
+            "retrieved_shrunk": 0.5655237213898875,
+            "retrieved_std": 0.4769139166583903,
+            "mass": 0.2580083595807446,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.551804402748595,
+            "ucb": 0.8324036968576473,
+            "retrieved_mean": 0.6187329870688543,
+            "retrieved_shrunk": 0.551804402748595,
+            "retrieved_std": 0.4094935176021641,
+            "mass": 0.2580083595807446,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.5204471656037356,
+            "ucb": 0.8111882451567382,
+            "retrieved_mean": 0.5468638362844345,
+            "retrieved_shrunk": 0.5204471656037356,
+            "retrieved_std": 0.18841506291344515,
+            "mass": 0.2580083595807446,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": true
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.5047936260005634,
+            "ucb": 0.7647319815732683,
+            "retrieved_mean": 0.5109867405807175,
+            "retrieved_shrunk": 0.5047936260005634,
+            "retrieved_std": 0.13554903700717322,
+            "mass": 0.2580083595807446,
+            "conflict": 0.0,
+            "min_dist": 1.0358131828932045,
+            "uses_retrieved_mean": true
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "choice_changes_with_zero_obs": true,
+      "neighbors_change_with_zero_obs": true,
+      "zero_query_better_on_zero_landscape": true,
+      "stored_query_not_worse_on_stored_landscape": true,
+      "shuffle_worse_or_equal_zero_landscape": true
+    },
+    "gated": {
+      "stored_obs": {
+        "task_id": "causal_combined_stored",
+        "choice": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+        "obs_norm": 1.5629979372024536,
+        "stored_landscape_unit": 0.6104138614731482,
+        "zero_landscape_unit": 0.3343338710504527,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 0.0,
+            "weight": 1.0
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.8598026190684813,
+            "ucb": 0.8598026190684813,
+            "retrieved_mean": 0.5,
+            "retrieved_shrunk": 0.5,
+            "retrieved_std": 1.0,
+            "mass": 0.0,
+            "conflict": 0.0,
+            "min_dist": Infinity,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "score": 0.8015538072081277,
+            "ucb": 0.8015538072081277,
+            "retrieved_mean": 0.8559392430329026,
+            "retrieved_shrunk": 0.5491379448992955,
+            "retrieved_std": 0.0001,
+            "mass": 0.053387371781259185,
+            "conflict": 0.0,
+            "min_dist": 1.691693288086086,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.7897671258860995,
+            "ucb": 0.7897671258860995,
+            "retrieved_mean": 0.06047029703576809,
+            "retrieved_shrunk": 0.43932226707617156,
+            "retrieved_std": 0.0001,
+            "mass": 0.053387371781259185,
+            "conflict": 0.0,
+            "min_dist": 1.691693288086086,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.7719873817206186,
+            "ucb": 0.7719873817206186,
+            "retrieved_mean": 0.20547205694734288,
+            "retrieved_shrunk": 0.4593399769193573,
+            "retrieved_std": 0.0001,
+            "mass": 0.053387371781259185,
+            "conflict": 0.0,
+            "min_dist": 1.691693288086086,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "zero_obs": {
+        "task_id": "causal_combined_zero",
+        "choice": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+        "obs_norm": 0.0,
+        "stored_landscape_unit": 0.6850689290823914,
+        "zero_landscape_unit": 0.23736714861371427,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.8438899181817167,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.8078428908569882,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 0.0,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.06047029703576809,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "score": 0.8559392430329025,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          },
+          {
+            "variant_id": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.20547205694734286,
+            "n": 1,
+            "distance": 0.8876727302660091,
+            "weight": 0.6039304475885283
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.8057336404898758,
+            "ucb": 0.8057336404898758,
+            "retrieved_mean": 0.6850689290823914,
+            "retrieved_shrunk": 0.5387924612857008,
+            "retrieved_std": 0.0001,
+            "mass": 0.08839986788947796,
+            "conflict": 0.0,
+            "min_dist": 1.4400914224095642,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.78508669128038,
+            "ucb": 0.78508669128038,
+            "retrieved_mean": 0.9191022289185216,
+            "retrieved_shrunk": 0.5878483874666757,
+            "retrieved_std": 0.0001,
+            "mass": 0.08839986788947796,
+            "conflict": 0.0,
+            "min_dist": 1.4400914224095642,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 0.7612508409951269,
+            "ucb": 0.7612508409951269,
+            "retrieved_mean": 1.0,
+            "retrieved_shrunk": 0.6048054405405638,
+            "retrieved_std": 0.0001,
+            "mass": 0.08839986788947796,
+            "conflict": 0.0,
+            "min_dist": 1.4400914224095642,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.74818643234389,
+            "ucb": 0.74818643234389,
+            "retrieved_mean": 0.5,
+            "retrieved_shrunk": 0.5,
+            "retrieved_std": 1.0,
+            "mass": 0.0,
+            "conflict": 0.0,
+            "min_dist": Infinity,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "shuffled_obs": {
+        "task_id": "causal_combined_shuffle",
+        "choice": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+        "obs_norm": 1.5629979192414465,
+        "stored_landscape_unit": 0.6104138614731482,
+        "zero_landscape_unit": 0.3343338710504527,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0974180432480913,
+            "weight": 0.46265720760339557
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 1.0070945369872235,
+            "ucb": 1.0070945369872235,
+            "retrieved_mean": 0.5,
+            "retrieved_shrunk": 0.5,
+            "retrieved_std": 1.0,
+            "mass": 0.0,
+            "conflict": 0.0,
+            "min_dist": Infinity,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "score": 0.9489501593691223,
+            "ucb": 0.9489501593691223,
+            "retrieved_mean": 0.8559392430329025,
+            "retrieved_shrunk": 0.5491379448992955,
+            "retrieved_std": 0.0001,
+            "mass": 0.05338737178125922,
+            "conflict": 0.0,
+            "min_dist": 1.6916932880860858,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.9346767409811858,
+            "ucb": 0.9346767409811858,
+            "retrieved_mean": 0.20547205694734286,
+            "retrieved_shrunk": 0.45933997691935724,
+            "retrieved_std": 0.0001,
+            "mass": 0.05338737178125922,
+            "conflict": 0.0,
+            "min_dist": 1.6916932880860858,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.928706651978028,
+            "ucb": 0.928706651978028,
+            "retrieved_mean": 0.060470297035768096,
+            "retrieved_shrunk": 0.43932226707617145,
+            "retrieved_std": 0.0001,
+            "mass": 0.05338737178125922,
+            "conflict": 0.0,
+            "min_dist": 1.6916932880860858,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "replaced_obs": {
+        "task_id": "causal_combined_replace",
+        "choice": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+        "obs_norm": 1.0948289632797241,
+        "stored_landscape_unit": 0.6104138614731482,
+        "zero_landscape_unit": 0.3343338710504527,
+        "neighbors": [
+          {
+            "variant_id": "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "score": 0.08873844889676273,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "score": 0.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "score": 0.6850689290823914,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "score": 0.9191022289185216,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          },
+          {
+            "variant_id": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "score": 1.0,
+            "n": 1,
+            "distance": 1.0358131828932045,
+            "weight": 0.5032532643692962
+          }
+        ],
+        "ranks": [
+          {
+            "variant_id": "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "score": 0.8425592800988191,
+            "ucb": 0.8425592800988191,
+            "retrieved_mean": 0.5,
+            "retrieved_shrunk": 0.5,
+            "retrieved_std": 1.0,
+            "mass": 0.0,
+            "conflict": 0.0,
+            "min_dist": Infinity,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "score": 0.8158103365846083,
+            "ucb": 0.8158103365846083,
+            "retrieved_mean": 0.8559392430329025,
+            "retrieved_shrunk": 0.5758423452208113,
+            "retrieved_std": 0.0001,
+            "mass": 0.0902572714576459,
+            "conflict": 0.0,
+            "min_dist": 1.4287663090598133,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "score": 0.8015337032118013,
+            "ucb": 0.8015337032118013,
+            "retrieved_mean": 0.20547205694734286,
+            "retrieved_shrunk": 0.4372429694915371,
+            "retrieved_std": 0.0001,
+            "mass": 0.0902572714576459,
+            "conflict": 0.0,
+            "min_dist": 1.4287663090598133,
+            "uses_retrieved_mean": false
+          },
+          {
+            "variant_id": "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "score": 0.8013617404523816,
+            "ucb": 0.8013617404523816,
+            "retrieved_mean": 0.060470297035768096,
+            "retrieved_shrunk": 0.4063464787333594,
+            "retrieved_std": 0.0001,
+            "mass": 0.0902572714576459,
+            "conflict": 0.0,
+            "min_dist": 1.4287663090598133,
+            "uses_retrieved_mean": false
+          }
+        ],
+        "descriptor_dim": 20
+      },
+      "choice_changes_with_zero_obs": true,
+      "neighbors_change_with_zero_obs": true,
+      "zero_query_better_on_zero_landscape": false,
+      "stored_query_not_worse_on_stored_landscape": false,
+      "shuffle_worse_or_equal_zero_landscape": false
+    }
+  },
+  "heldout_separate": true,
+  "heldout": {
+    "random": {
+      "best_regret": 0.0,
+      "first_free_regret": 0.5574292601341031,
+      "evals_to_strong": 5.0,
+      "first_free": [
+        "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+        "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+        "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+        "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    },
+    "fixed": {
+      "best_regret": 0.15820857604922126,
+      "first_free_regret": 0.6326480178145445,
+      "evals_to_strong": 5.25,
+      "first_free": [
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    },
+    "reset_adaptive": {
+      "best_regret": 0.0,
+      "first_free_regret": 0.75,
+      "evals_to_strong": 5.25,
+      "first_free": [
+        "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+        "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+        "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+        "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    },
+    "persistent_adaptive": {
+      "best_regret": 0.06707522167797392,
+      "first_free_regret": 0.3948331417138925,
+      "evals_to_strong": 4.75,
+      "first_free": [
+        "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+        "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+        "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+        "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    },
+    "evolutionary": {
+      "best_regret": 0.09174662336778222,
+      "first_free_regret": 0.25,
+      "evals_to_strong": 3.75,
+      "first_free": [
+        "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    },
+    "memory_combined_ucb": {
+      "best_regret": 0.0,
+      "first_free_regret": 0.17830053605388158,
+      "evals_to_strong": 4.0,
+      "first_free": [
+        "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    },
+    "memory_combined_retrieved": {
+      "best_regret": 0.0,
+      "first_free_regret": 0.17830053605388158,
+      "evals_to_strong": 4.25,
+      "first_free": [
+        "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+        "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    },
+    "memory_combined_gated": {
+      "best_regret": 0.0,
+      "first_free_regret": 0.25,
+      "evals_to_strong": 3.25,
+      "first_free": [
+        "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+        "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+        "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+      ],
+      "task_ids": [
+        "hold_pend_val0",
+        "hold_acro_val0",
+        "hold_acro_small",
+        "hold_pend_zero"
+      ]
+    }
+  },
+  "heldout_task_ids": [
+    "hold_pend_val0",
+    "hold_acro_val0",
+    "hold_acro_small",
+    "hold_pend_zero"
+  ],
+  "checks": {
+    "memory_combined_ucb": {
+      "beats_persist_shifted_first_free": false,
+      "not_worse_stored_dev_first_free": true,
+      "beats_ucb_shifted_first_free": false,
+      "causal_choice_changes": false,
+      "causal_better_on_zero": false
+    },
+    "memory_combined_retrieved": {
+      "beats_persist_shifted_first_free": false,
+      "not_worse_stored_dev_first_free": true,
+      "beats_ucb_shifted_first_free": true,
+      "causal_choice_changes": true,
+      "causal_better_on_zero": true
+    },
+    "memory_combined_gated": {
+      "beats_persist_shifted_first_free": false,
+      "not_worse_stored_dev_first_free": true,
+      "beats_ucb_shifted_first_free": true,
+      "causal_choice_changes": true,
+      "causal_better_on_zero": false
+    }
+  },
+  "development_success": false,
+  "successful_selector": null,
+  "wall_s": 0.23846804200002225,
+  "cpu_s": 0.238066,
+  "memory_records": {
+    "records": 48,
+    "retrieve": true,
+    "persist": true,
+    "mode": "combined",
+    "selector": "retrieved_mean",
+    "descriptor_dim": 20
+  },
+  "note": "Selector development bench, not a scientific result and not AGI."
+}

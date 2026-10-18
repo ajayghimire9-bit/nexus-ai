@@ -27,6 +27,7 @@ UCB_ALPHA = 0.35
 KERNEL_LENGTH = 1.25
 MAX_MEMORY = 256
 DESCRIPTOR_MODES = ("support", "obs", "combined")
+SELECTORS = ("ucb", "retrieved_mean", "gated")
 
 
 def _phi_dim(descriptor_dim: int) -> int:
@@ -184,15 +185,19 @@ class ContextualStrategyMemory:
         retrieve: bool = True,
         persist_memory: bool = True,
         mode: str = "support",
+        selector: str = "ucb",
     ):
         if type(seed) is not int or not 0 <= seed <= 10**9:
             raise ContractError("invalid_strategy_seed")
         if mode not in DESCRIPTOR_MODES:
             raise ContractError("unknown_descriptor_mode")
+        if selector not in SELECTORS:
+            raise ContractError("unknown_selector")
         self.seed = int(seed)
         self.retrieve = bool(retrieve)
         self.persist_memory = bool(persist_memory)
         self.mode = str(mode)
+        self.selector = str(selector)
         self.descriptor_dim = {"support": SUPPORT_DIM, "obs": OBS_SKETCH_DIM, "combined": SUPPORT_DIM + OBS_SKETCH_DIM}[self.mode]
         self.phi_dim = _phi_dim(self.descriptor_dim)
         self._rng = np.random.default_rng(self.seed)
@@ -227,6 +232,7 @@ class ContextualStrategyMemory:
             "retrieve": self.retrieve,
             "persist": self.persist_memory,
             "mode": self.mode,
+            "selector": self.selector,
             "descriptor_dim": self.descriptor_dim,
         }
 
@@ -245,6 +251,7 @@ class ContextualStrategyMemory:
             retrieve=self.retrieve,
             persist_memory=self.persist_memory,
             mode=self.mode,
+            selector=self.selector,
         )
         clone._A = self._A.copy()
         clone._b = self._b.copy()
@@ -261,12 +268,13 @@ class ContextualStrategyMemory:
         if self._allow_local:
             self.update(feedback, context)
 
-    def _retrieve(self, variant_id: str) -> tuple[float, float, float, float]:
+    def _retrieve(self, variant_id: str) -> tuple[float, float, float, float, float, float]:
         if not self.retrieve or self._descriptor is None or not self._store:
-            return 0.5, 1.0, 0.0, 0.0
+            return 0.5, 1.0, 0.0, 0.0, math.inf, 0.5
         desc = self._descriptor
         weights = []
         scores = []
+        nearest = math.inf
         for row in self._store:
             if row.variant_id != variant_id:
                 continue
@@ -274,18 +282,38 @@ class ContextualStrategyMemory:
             w = math.exp(-((dist / KERNEL_LENGTH) ** 2))
             weights.append(w)
             scores.append(row.score)
+            nearest = min(nearest, dist)
         if not weights:
-            return 0.5, 1.0, 0.0, 0.0
+            return 0.5, 1.0, 0.0, 0.0, math.inf, 0.5
         w = np.asarray(weights, dtype=np.float64)
         s = np.asarray(scores, dtype=np.float64)
-        mass = float(np.sum(w))
-        mean = float(np.sum(w * s) / mass)
-        var = float(np.sum(w * (s - mean) ** 2) / mass)
+        raw_mass = float(np.sum(w))
+        mean = float(np.sum(w * s) / raw_mass)
+        shrunk = (float(np.sum(w * s)) + 0.5 * RIDGE) / (raw_mass + RIDGE)
+        var = float(np.sum(w * (s - mean) ** 2) / raw_mass)
+        mass = min(1.0, raw_mass / 3.0)
         conflict = 1.0 if var > 0.04 and mass > 0.4 else 0.0
-        return mean, math.sqrt(max(var, 1e-8)), min(1.0, mass / 3.0), conflict
+        return mean, math.sqrt(max(var, 1e-8)), mass, conflict, nearest, shrunk
+
+    def _uses_retrieved_mean(self, mass: float, conflict: float, min_dist: float) -> bool:
+        if not self.retrieve:
+            return False
+        if self.selector == "retrieved_mean":
+            return True
+        if mass <= 0:
+            return False
+        if self.selector == "gated":
+            return min_dist <= KERNEL_LENGTH and conflict < 1.0
+        return False
+
+    def _arm_score(self, variant, context: PublicFixtureContext) -> float:
+        _mean, _std, mass, conflict, min_dist, shrunk = self._retrieve(variant.fingerprint)
+        if self._uses_retrieved_mean(mass, conflict, min_dist):
+            return shrunk
+        return self._ucb(variant, context)
 
     def _ucb(self, variant, context: PublicFixtureContext) -> float:
-        mean, std, mass, conflict = self._retrieve(variant.fingerprint)
+        mean, std, mass, conflict, _min_dist, _shrunk = self._retrieve(variant.fingerprint)
         # High neighbor conflict downweights the retrieved mean and raises exploration.
         retrieved = (mean * (1.0 - 0.5 * conflict), std, mass)
         phi = _phi(self._descriptor, variant, context, retrieved)
@@ -307,7 +335,7 @@ class ContextualStrategyMemory:
         if retrieve is not None:
             self.retrieve = bool(retrieve)
         try:
-            return max(available, key=lambda v: (self._ucb(v, context), -self._tie_rank[v.fingerprint]))
+            return max(available, key=lambda v: (self._arm_score(v, context), -self._tie_rank[v.fingerprint]))
         finally:
             self.retrieve = previous
 
@@ -366,18 +394,22 @@ class ContextualStrategyMemory:
     def rank_table(self, available, context: PublicFixtureContext) -> list[dict]:
         rows = []
         for variant in available:
-            mean, std, mass, conflict = self._retrieve(variant.fingerprint)
+            mean, std, mass, conflict, min_dist, shrunk = self._retrieve(variant.fingerprint)
             rows.append(
                 {
                     "variant_id": variant.fingerprint,
+                    "score": float(self._arm_score(variant, context)),
                     "ucb": float(self._ucb(variant, context)),
                     "retrieved_mean": mean,
+                    "retrieved_shrunk": shrunk,
                     "retrieved_std": std,
                     "mass": mass,
                     "conflict": conflict,
+                    "min_dist": min_dist,
+                    "uses_retrieved_mean": self._uses_retrieved_mean(mass, conflict, min_dist),
                 }
             )
-        rows.sort(key=lambda item: (-item["ucb"], item["variant_id"]))
+        rows.sort(key=lambda item: (-item["score"], item["variant_id"]))
         return rows
 
 
@@ -396,5 +428,20 @@ def make_descriptor_configs(seed: int = 7) -> dict[str, ContextualStrategyMemory
         "memory_combined": ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True, mode="combined"),
         "memory_combined_noretrieve": ContextualStrategyMemory(
             seed=seed, retrieve=False, persist_memory=True, mode="combined"
+        ),
+    }
+
+
+def make_selector_configs(seed: int = 7) -> dict[str, ContextualStrategyMemory]:
+    """Combined-descriptor selectors. Persist stays an external baseline."""
+    return {
+        "memory_combined_ucb": ContextualStrategyMemory(
+            seed=seed, retrieve=True, persist_memory=True, mode="combined", selector="ucb"
+        ),
+        "memory_combined_retrieved": ContextualStrategyMemory(
+            seed=seed, retrieve=True, persist_memory=True, mode="combined", selector="retrieved_mean"
+        ),
+        "memory_combined_gated": ContextualStrategyMemory(
+            seed=seed, retrieve=True, persist_memory=True, mode="combined", selector="gated"
         ),
     }

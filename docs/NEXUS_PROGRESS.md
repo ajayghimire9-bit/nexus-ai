@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — retrieved-mean selector, below persist
+
+Retrieved-mean fixes the LinUCB memory-to-choice failure and reduces
+shift first-free from 1.0 to 0.755. Persist remains 0.188. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — observation-aware strategy memory, negative result
 
 8-d planning-obs sketch added. Embeddings and neighbors move; first-free

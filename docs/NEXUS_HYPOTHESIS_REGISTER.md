@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-core-4 retrieved-mean follows memory but loses to persist
+
+Ridge-shrunk retrieved means change the zero-obs planner and beat
+combined LinUCB on the locked shift (0.755 vs 1.0 first-free). Persist
+stays better (0.188). Stored-obs development remains 0. Not science.
+Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — H-core-3 observation sketch is not enough to change choose()
 
 Planning-observation features separate stored-obs from zero-obs
