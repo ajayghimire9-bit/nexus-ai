@@ -26,6 +26,10 @@ SEARCHED = (
     "checkpoints/**/*.npz",
     "checkpoints/**/*.npy",
 )
+EXCLUDED_PREFIXES = (
+    "artifacts/evolution2_source_arrays/",
+    "artifacts/evolution2_fit_clock_disposable/",
+)
 CLOSED_TOKENS = (
     "confirm",
     "confirmation",
@@ -57,6 +61,9 @@ def file_sha256(path: Path) -> str:
 
 
 def _is_permitted_source_file(path: Path) -> bool:
+    rel = str(path.relative_to(ROOT)).replace("\\", "/")
+    if any(rel.startswith(prefix) for prefix in EXCLUDED_PREFIXES):
+        return False
     name = path.name.lower()
     if any(token in name for token in CLOSED_TOKENS):
         return False
@@ -93,8 +100,9 @@ def source_data_status() -> dict:
         "scientific_ledger_preserved": [305.842, 3294.158],
         "note": (
             "Lookahead recipes collect 1024/256 transitions in memory and save "
-            "only residual weights. No permitted Pendulum/Acrobot transition "
-            "array remains. Closed confirmation/H17 files are not source data."
+            "only residual weights. E2.8 persist arrays are excluded from this "
+            "historical inventory; they do not close the twenty-fit v2 clock. "
+            "Closed confirmation/H17 files are not source data."
         ),
     }
 

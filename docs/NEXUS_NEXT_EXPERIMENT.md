@@ -1,5 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.9 six-fit clock granted at env_cap=0
+
+Cited config `277d7ba628fcd4e528b27bf4407ed45f9e41ec9051bd9e26b4baef33c6df0ff0`,
+`env_cap=0`, `time_cap_s=300`, `n_fits=6`. Reuse the locked E2.8
+arrays. Do not collect. Do not promote to n=10. Do not name a holdout.
+Do not unlock H17. Report `NEXUS_EVOLUTION2_FIT_CLOCK.md`.
+
 ## Current — Evolution-2.8 7680 arrays persisted; fit clock still unauthorized
 
 Cited config `325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76`,

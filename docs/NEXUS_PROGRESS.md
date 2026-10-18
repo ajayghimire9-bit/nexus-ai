@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.9 fit clock granted, development pilot
+
+Cited config `277d7ba6…`, `env_cap=0`, `n_fits=6`, `time_cap_s=300`.
+Not n=10 confirmation. H16 ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_FIT_CLOCK.md`.
+
 ## Latest — Evolution-2.8 7680 persist collected, development pilot
 
 Cited config `325cd42b…`, `env_cap=7680`. Twelve files, 0.156 s wall,

@@ -15,11 +15,11 @@ or component.
 
 ## Coverage
 
-- Curated rows: 43
+- Curated rows: 44
 - Unindexed protocol/results docs: 93
-- Total rows: 136
+- Total rows: 137
 - Incomplete or partial: 120
-- Source-verified: 16
+- Source-verified: 17
 
 ## Closed primary labels that must not be retuned
 
@@ -82,6 +82,7 @@ or component.
 | `E2.6-execution-blockers` | e2_scientific_dispatch_blocked | docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md / docs/NEXUS_EVOLUTION2_EXECUTION_BLOCKERS.md | Do not shrink another worksheet. Do not collect replacements. | source_verified |
 | `E2.7-source-persist-request` | request_only_unauthorized | docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md / docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md | Do not collect. Standing grant does not start persist. | source_verified |
 | `E2.8-source-persist-7680` | development_pilot_not_confirmation | docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md / docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md | Not v2. Do not promote 7680 to n=10. Do not name a holdout. Do not collect again. | source_verified |
+| `E2.9-fit-clock` | development_pilot_not_confirmation | docs/NEXUS_EVOLUTION2_FIT_CLOCK.md / docs/NEXUS_EVOLUTION2_FIT_CLOCK.md | Not v2. Do not promote six fits to n=10. Do not collect. Do not debit H16. | source_verified |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_COMPUTE_MATCHED_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS` | incomplete_unindexed_document | — / docs/NEXUS_ACROBOT_COMPUTE_MATCHED_RESULTS.md | Consult the document before reuse. Do not invent a label. | incomplete |
 | `NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL` | incomplete_unindexed_document | docs/NEXUS_ACROBOT_LOOKAHEAD_CONFIRM_PROTOCOL.md / — | Consult the document before reuse. Do not invent a label. | incomplete |

@@ -633,6 +633,25 @@ EXPERIMENTS = [
         "reuse": "Not v2. Do not promote 7680 to n=10. Do not name a holdout. Do not collect again.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.9-fit-clock",
+        "title": "Disposable residual-MLP fit clock on locked 7680 arrays",
+        "hypothesis": "Six residual 64x64 fits on the E2.8 family-default arrays can be timed without becoming v2 or n=10 confirmation.",
+        "implementation": [
+            "src/nexus/evolution2/fit_clock.py",
+            "src/nexus/evolution2/fit_clock_run.py",
+        ],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_FIT_CLOCK.md",
+        "results": "docs/NEXUS_EVOLUTION2_FIT_CLOCK.md",
+        "status": "development_pilot_not_confirmation",
+        "artifacts": [
+            "configs/evolution2_fit_clock.yaml",
+            "configs/evolution2_fit_clock_allocation.json",
+        ],
+        "reuse": "Not v2. Do not promote six fits to n=10. Do not collect. Do not debit H16.",
+        "coverage": "source_verified",
+    },
 ]
 
 

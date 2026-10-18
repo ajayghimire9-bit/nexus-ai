@@ -1,0 +1,35 @@
+experiment: evolution2_pendulum_acrobot
+version: fit-clock-request
+does_not_rewrite: [v2, v2-pilot, n3-micro]
+status: request_only_fit_unauthorized
+authorized: false
+runs: 0
+consumed: false
+hold_named: false
+hold_rule: e2_pendulum_acrobot_dev_v1
+source_dir: artifacts/evolution2_source_arrays
+target_dir: artifacts/evolution2_fit_clock_disposable
+families: [pendulum, acrobot]
+n_bundles: 3
+n_fits: 6
+n_train: 1024
+n_val: 256
+epochs: 20
+batch_size: 128
+kind: residual
+hidden: [64, 64]
+optimizer: Adam
+lr: 0.001
+arch: mlp
+module: nexus.world.train.train_world_model
+persist_config_sha256: 325cd42b99bd4ff03d7a993bda71272933bd9ed0644103cd55274ab2303a9c76
+persist_allocation_sha256: 24c5924fd28bd0814dd26442cd2c33b28a72eee6c0582ae8c222a4702251888b
+authorized_time_cap_s: 0
+authorized_env_cap: 0
+standing_time_cap_s: 900
+standing_env_cap: 100000
+session_ledger_used_s: 305.842
+session_ledger_remaining_s: 3294.158
+collection: false
+claims_learning_to_learn: false
+is_agi: false

@@ -1,0 +1,203 @@
+{
+  "scientific": false,
+  "collection": false,
+  "fitting": false,
+  "status": "development_pilot_not_confirmation",
+  "recipe": {
+    "module": "nexus.world.train.train_world_model",
+    "kind": "residual",
+    "hidden": [
+      64,
+      64
+    ],
+    "epochs": 20,
+    "batch_size": 128,
+    "n_train": 1024,
+    "n_val": 256,
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "arch": "mlp"
+  },
+  "source": {
+    "source_dir": "artifacts/evolution2_source_arrays",
+    "n_files": 12,
+    "all_match": true,
+    "files": [
+      {
+        "family": "pendulum",
+        "bundle": 0,
+        "split": "train",
+        "n": 1024,
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle0_train.npz",
+        "sha256": "c80901186c47247809a695c665525026994668dd96c396b68511412d50cc4a84",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "pendulum",
+        "bundle": 0,
+        "split": "val",
+        "n": 256,
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle0_val.npz",
+        "sha256": "11745f3db32bc1c9841e24b316718c5a15337fd12cfd6439596ac8a56c3b847d",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "pendulum",
+        "bundle": 1,
+        "split": "train",
+        "n": 1024,
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle1_train.npz",
+        "sha256": "6fbb1a6898ba292e068536ed3e8b656b3d2bf886d5948d45691abd6bbe3abd1a",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "pendulum",
+        "bundle": 1,
+        "split": "val",
+        "n": 256,
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle1_val.npz",
+        "sha256": "d1a7eb68270ad1831c2c5262ac24fdc3f7f771e2b4fe4eafd910e9d5d006e4ed",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "pendulum",
+        "bundle": 2,
+        "split": "train",
+        "n": 1024,
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle2_train.npz",
+        "sha256": "82464b7bbd807e83a3a8bd29da18333939d72f14d07f05cc14e57b6404a5c3f2",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "pendulum",
+        "bundle": 2,
+        "split": "val",
+        "n": 256,
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle2_val.npz",
+        "sha256": "701a42ea78b9dabc0f6ef8d7841ef61f73ab29af0fb9c55d70febbca6d3e5b7a",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "acrobot",
+        "bundle": 0,
+        "split": "train",
+        "n": 1024,
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle0_train.npz",
+        "sha256": "b904e52cb76398e279d2ed9d9b8c68a6250501f28cc65f3bb012b1330651a2ee",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "acrobot",
+        "bundle": 0,
+        "split": "val",
+        "n": 256,
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle0_val.npz",
+        "sha256": "bbfdd62430e706485e95264cf7a79bde1ed82ce1185cf6154e788e52b1b8105e",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "acrobot",
+        "bundle": 1,
+        "split": "train",
+        "n": 1024,
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle1_train.npz",
+        "sha256": "9a158288f0cbbb9cda9a7784f38eea7608398db0ac759f0bb8a0d48649451a71",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "acrobot",
+        "bundle": 1,
+        "split": "val",
+        "n": 256,
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle1_val.npz",
+        "sha256": "45fd547868312ce4c7a5ce7786af3954198735fe16f966382801574d8d63421c",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "acrobot",
+        "bundle": 2,
+        "split": "train",
+        "n": 1024,
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle2_train.npz",
+        "sha256": "f923bca054b0dd15f6e6195db3500d2e4c978a279cb58ca00b422471df73d070",
+        "present": true,
+        "matches": true
+      },
+      {
+        "family": "acrobot",
+        "bundle": 2,
+        "split": "val",
+        "n": 256,
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle2_val.npz",
+        "sha256": "4a6c5540b4db7e32154702eb5838260f6f459462326fb12864df110deb5631aa",
+        "present": true,
+        "matches": true
+      }
+    ]
+  },
+  "planned_fits": [
+    {
+      "family": "pendulum",
+      "bundle": 0,
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle0.pt"
+    },
+    {
+      "family": "pendulum",
+      "bundle": 1,
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle1.pt"
+    },
+    {
+      "family": "pendulum",
+      "bundle": 2,
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle2.pt"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 0,
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle0.pt"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 1,
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle1.pt"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 2,
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle2.pt"
+    }
+  ],
+  "blockers": [
+    "SOURCE_FITTING_UNAVAILABLE",
+    "WEIGHTS_ONLY_PAYLOAD",
+    "NO_FIT_TEN_BUNDLE_UNAVAILABLE",
+    "N3_NOT_READY_RECIPE_MISMATCH",
+    "HOLDOUT_UNNAMED",
+    "TWELVE_ARM_DISPATCH_BLOCKED",
+    "FULL_V2_NO_GO",
+    "V2_PILOT_NOFIT_BLOCKED",
+    "SCIENTIFIC_DISPATCH_UNAUTHORIZED",
+    "H17_BLOCKED"
+  ],
+  "v2_n3_hashes_frozen": true,
+  "ledger_debit_s": 0,
+  "scientific_ledger_preserved": [
+    305.842,
+    3294.158
+  ],
+  "cited_config_sha256": "277d7ba628fcd4e528b27bf4407ed45f9e41ec9051bd9e26b4baef33c6df0ff0",
+  "granted_env_cap": 0,
+  "granted_time_cap_s": 300,
+  "granted_n_fits": 6,
+  "next_action": "Six disposable residual fits are granted at env_cap=0. Do not promote them to n=10 or v2 confirmation."
+}

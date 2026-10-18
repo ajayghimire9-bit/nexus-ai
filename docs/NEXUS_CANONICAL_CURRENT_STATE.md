@@ -26,8 +26,8 @@ and is **NOT_V2 / NOT_READY**. Evolution-2.6 confirms checkpoint
 payloads are weights only and keeps scientific dispatch **BLOCKED**.
 A 7680-step source persist collected twelve family-default
 Pendulum/Acrobot arrays as a development pilot citing config
-`325cd42b…`. It is not v2 confirmation. The residual fit clock
-remains unauthorized.
+`325cd42b…`. A six-fit residual clock is granted at `env_cap=0`
+citing config `277d7ba6…`. Neither is v2 confirmation.
 None of these is n=10 collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
@@ -67,6 +67,8 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.5 n=3 no-fit micro (NOT_V2, recipe unmatched, unauthorized)
 - Evolution-2.6 execution-blocker matrix (`E2_SCIENTIFIC_DISPATCH_BLOCKED`)
 - Evolution-2.7 source-persist request (7,680 or 25,600 steps; unauthorized)
+- Evolution-2.8 7680-step source persist (development pilot; not v2)
+- Evolution-2.9 six-fit residual clock (granted at env_cap=0; not v2)
 
 ## Engineering that exists at HEAD 4a08b26
 
