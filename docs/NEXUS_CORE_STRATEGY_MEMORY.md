@@ -94,10 +94,43 @@ anchor is a zero-obs winner. First-free is the valid contrast.
 - **Collision first-free is worse for memory than persist** (1.0 vs
   0.1096). Misleading support pulled the stored-obs winner.
 
+## Observation-aware descriptor (same eight tasks)
+
+8-d `tanh` sketch of the `decide()` observation is concatenated onto
+the 12-d support vector (`mode=combined`, dim 20). Write and query
+use the same construction. No hidden returns enter the descriptor.
+
+Support-only collision vs stored-Acrobot: distance 0.128, kernel
+weight 0.990. Observation sketch: 1.440 / 0.265. Combined: 1.446 /
+0.262. The missing information was the planning observation; adding
+it separates the embeddings.
+
+| Config | Dev best / first-free | Shifted first-free | Collision first-free |
+|---|---:|---:|---:|
+| persist | 0.000 / 0.000 | **0.188** | **0.110** |
+| support memory | 0.000 / 0.000 | 1.000 | 1.000 |
+| obs-only memory | 0.000 / 0.039 | 0.944 | 1.000 |
+| combined memory | 0.000 / 0.000 | 1.000 | 1.000 |
+| combined, no retrieve | 0.000 / 0.000 | 1.000 | 1.000 |
+
+Causal (same support, store, RNG; only planning obs changes):
+support-only choice stays `fde871fd…`. Combined neighbors move
+(distance 0 → 0.888) but the selected planner does not. Zero-obs
+query still picks the stored-obs winner (zero-landscape unit 0).
+Shuffle/replace do not produce a better zero-landscape choice for
+combined.
+
+Held-out val/synthetic fixtures stayed separate. Combined first-free
+0.178 vs persist 0.395 there is not a locked-split transfer claim.
+
+**Development success: false.** Failure source:
+`strategy_value_prediction`. Observation information now separates
+tasks and retrieval neighbors move; LinUCB does not follow the
+retrieved values. Persist remains better on the genuine shift.
+
 ## Next research experiment
 
-Development-only: put the planning observation (or a sketch of it)
-into the task descriptor and re-run this same decide() bench. The
-current 12-d vector ignores the start state that `decide()` scores.
-Keep the collision task as the expected failure. No collection. No
-n=10 scientific run. Do not reuse E2.17 development as confirmation.
+Development-only: keep the observation-aware descriptor and replace
+the LinUCB argmax with a retrieved-mean / gated selector when
+neighbor mass is high. Same eight tasks, persist baseline, no
+collection, no n=10 science. Do not reuse E2.17 development.

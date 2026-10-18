@@ -15,13 +15,25 @@ from nexus.evolution1.catalogue import ContractError
 from nexus.evolution1.fixtures import PublicFixtureContext
 from nexus.evolution1.toy_loop import VARIANTS, TrainingFeedback, features
 
-DESCRIPTOR_DIM = 12
+SUPPORT_DIM = 12
+DESCRIPTOR_DIM = SUPPORT_DIM
+OBS_SKETCH_DIM = 8
+MAX_OBS = 6
+OBS_SCALE = 1.0
 VARIANT_DIM = 6
-PHI_DIM = DESCRIPTOR_DIM + VARIANT_DIM + VARIANT_DIM + 3
+RETRIEVED_DIM = 3
 RIDGE = 1.0
 UCB_ALPHA = 0.35
 KERNEL_LENGTH = 1.25
 MAX_MEMORY = 256
+DESCRIPTOR_MODES = ("support", "obs", "combined")
+
+
+def _phi_dim(descriptor_dim: int) -> int:
+    return int(descriptor_dim) + VARIANT_DIM + VARIANT_DIM + RETRIEVED_DIM
+
+
+PHI_DIM = _phi_dim(SUPPORT_DIM)
 
 
 @dataclass(frozen=True)
@@ -98,14 +110,63 @@ def describe_support(support: SupportBatch, context: PublicFixtureContext) -> np
         ],
         dtype=np.float64,
     )
-    if desc.shape[0] != DESCRIPTOR_DIM:
+    if desc.shape[0] != SUPPORT_DIM:
         raise ContractError("descriptor_dim_mismatch")
     return desc
 
 
+def describe_planning_obs(obs, context: PublicFixtureContext) -> np.ndarray:
+    """Fixed-length sketch of the observation that will be passed to decide().
+
+    Uses only the current public observation. No returns, labels, or scores.
+    Pendulum (3) and Acrobot (6) are padded to the same 8-d vector.
+    """
+    if type(context) is not PublicFixtureContext:
+        raise ContractError("public_training_context_required")
+    arr = np.asarray(obs, dtype=np.float64).reshape(-1)
+    if arr.size != context.obs_dim or not np.all(np.isfinite(arr)):
+        raise ContractError("invalid_planning_observation")
+    padded = np.zeros(MAX_OBS, dtype=np.float64)
+    padded[: context.obs_dim] = np.tanh(arr / OBS_SCALE)
+    mean_abs = float(np.mean(np.abs(arr)))
+    rms = float(np.linalg.norm(arr) / math.sqrt(max(context.obs_dim, 1)))
+    sketch = np.concatenate(
+        [padded, np.array([math.tanh(mean_abs / OBS_SCALE), math.tanh(rms / OBS_SCALE)], dtype=np.float64)]
+    )
+    if sketch.shape[0] != OBS_SKETCH_DIM:
+        raise ContractError("obs_sketch_dim_mismatch")
+    return sketch
+
+
+def compose_descriptor(
+    support: SupportBatch,
+    context: PublicFixtureContext,
+    planning_obs=None,
+    *,
+    mode: str = "support",
+) -> np.ndarray:
+    if mode not in DESCRIPTOR_MODES:
+        raise ContractError("unknown_descriptor_mode")
+    support_desc = describe_support(support, context)
+    if planning_obs is None:
+        if mode != "support":
+            raise ContractError("planning_observation_required")
+        sketch = np.zeros(OBS_SKETCH_DIM, dtype=np.float64)
+    else:
+        sketch = describe_planning_obs(planning_obs, context)
+    if mode == "support":
+        return support_desc
+    if mode == "obs":
+        return sketch
+    return np.concatenate([support_desc, sketch])
+
+
 def _phi(descriptor: np.ndarray, variant, context: PublicFixtureContext, retrieved: tuple[float, float, float]) -> np.ndarray:
     vf = np.asarray(features(variant, context), dtype=np.float64)
-    inter = descriptor[:VARIANT_DIM] * vf
+    head = np.asarray(descriptor[:VARIANT_DIM], dtype=np.float64)
+    if head.shape[0] < VARIANT_DIM:
+        head = np.pad(head, (0, VARIANT_DIM - int(head.shape[0])))
+    inter = head * vf
     extra = np.asarray(retrieved, dtype=np.float64)
     return np.concatenate([descriptor, vf, inter, extra])
 
@@ -116,15 +177,27 @@ class ContextualStrategyMemory:
     name = "contextual_strategy_memory"
     resets = False
 
-    def __init__(self, seed: int = 7, *, retrieve: bool = True, persist_memory: bool = True):
+    def __init__(
+        self,
+        seed: int = 7,
+        *,
+        retrieve: bool = True,
+        persist_memory: bool = True,
+        mode: str = "support",
+    ):
         if type(seed) is not int or not 0 <= seed <= 10**9:
             raise ContractError("invalid_strategy_seed")
+        if mode not in DESCRIPTOR_MODES:
+            raise ContractError("unknown_descriptor_mode")
         self.seed = int(seed)
         self.retrieve = bool(retrieve)
         self.persist_memory = bool(persist_memory)
+        self.mode = str(mode)
+        self.descriptor_dim = {"support": SUPPORT_DIM, "obs": OBS_SKETCH_DIM, "combined": SUPPORT_DIM + OBS_SKETCH_DIM}[self.mode]
+        self.phi_dim = _phi_dim(self.descriptor_dim)
         self._rng = np.random.default_rng(self.seed)
-        self._A = np.eye(PHI_DIM, dtype=np.float64) * RIDGE
-        self._b = np.zeros(PHI_DIM, dtype=np.float64)
+        self._A = np.eye(self.phi_dim, dtype=np.float64) * RIDGE
+        self._b = np.zeros(self.phi_dim, dtype=np.float64)
         self._store: list[MemoryRecord] = []
         self._descriptor: np.ndarray | None = None
         self._context: PublicFixtureContext | None = None
@@ -135,9 +208,9 @@ class ContextualStrategyMemory:
         self._rng.shuffle(order)
         self._tie_rank = {v.fingerprint: i for i, v in enumerate(order)}
 
-    def observe_support(self, support: SupportBatch, context: PublicFixtureContext) -> np.ndarray:
+    def observe_support(self, support: SupportBatch, context: PublicFixtureContext, planning_obs=None) -> np.ndarray:
         self._context = context
-        self._descriptor = describe_support(support, context)
+        self._descriptor = compose_descriptor(support, context, planning_obs, mode=self.mode)
         return self._descriptor
 
     def learned_state(self):
@@ -149,19 +222,30 @@ class ContextualStrategyMemory:
         }
 
     def memory_state(self):
-        return {"records": len(self._store), "retrieve": self.retrieve, "persist": self.persist_memory}
+        return {
+            "records": len(self._store),
+            "retrieve": self.retrieve,
+            "persist": self.persist_memory,
+            "mode": self.mode,
+            "descriptor_dim": self.descriptor_dim,
+        }
 
     def reset_task(self):
         if not self.persist_memory:
             self._store = []
-            self._A = np.eye(PHI_DIM, dtype=np.float64) * RIDGE
-            self._b = np.zeros(PHI_DIM, dtype=np.float64)
+            self._A = np.eye(self.phi_dim, dtype=np.float64) * RIDGE
+            self._b = np.zeros(self.phi_dim, dtype=np.float64)
             self._updates = 0
         self._feedback_seen = set()
         return self.learned_state()
 
     def eval_clone(self, *, local_updates: bool):
-        clone = ContextualStrategyMemory(seed=self.seed, retrieve=self.retrieve, persist_memory=self.persist_memory)
+        clone = ContextualStrategyMemory(
+            seed=self.seed,
+            retrieve=self.retrieve,
+            persist_memory=self.persist_memory,
+            mode=self.mode,
+        )
         clone._A = self._A.copy()
         clone._b = self._b.copy()
         clone._store = [MemoryRecord(r.descriptor, r.variant_id, r.score, r.n) for r in self._store]
@@ -257,9 +341,60 @@ class ContextualStrategyMemory:
     def retrieval_conflict(self, variant) -> float:
         return self._retrieve(variant.fingerprint)[3]
 
+    def retrieval_trace(self, variant_id: str | None = None, *, k: int = 4) -> list[dict]:
+        if self._descriptor is None or not self._store:
+            return []
+        desc = self._descriptor
+        rows = []
+        for row in self._store:
+            if variant_id is not None and row.variant_id != variant_id:
+                continue
+            dist = float(np.linalg.norm(desc - np.asarray(row.descriptor, dtype=np.float64)))
+            weight = math.exp(-((dist / KERNEL_LENGTH) ** 2))
+            rows.append(
+                {
+                    "variant_id": row.variant_id,
+                    "score": float(row.score),
+                    "n": int(row.n),
+                    "distance": dist,
+                    "weight": weight,
+                }
+            )
+        rows.sort(key=lambda item: (item["distance"], -item["weight"]))
+        return rows[:k]
+
+    def rank_table(self, available, context: PublicFixtureContext) -> list[dict]:
+        rows = []
+        for variant in available:
+            mean, std, mass, conflict = self._retrieve(variant.fingerprint)
+            rows.append(
+                {
+                    "variant_id": variant.fingerprint,
+                    "ucb": float(self._ucb(variant, context)),
+                    "retrieved_mean": mean,
+                    "retrieved_std": std,
+                    "mass": mass,
+                    "conflict": conflict,
+                }
+            )
+        rows.sort(key=lambda item: (-item["ucb"], item["variant_id"]))
+        return rows
+
 
 def make_memory_pair(seed: int = 7) -> dict[str, ContextualStrategyMemory]:
     return {
-        "memory": ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True),
-        "memory_ablated": ContextualStrategyMemory(seed=seed, retrieve=False, persist_memory=False),
+        "memory": ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True, mode="support"),
+        "memory_ablated": ContextualStrategyMemory(seed=seed, retrieve=False, persist_memory=False, mode="support"),
+    }
+
+
+def make_descriptor_configs(seed: int = 7) -> dict[str, ContextualStrategyMemory]:
+    """Four matched memory configurations. Persist stays an external baseline."""
+    return {
+        "memory_support": ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True, mode="support"),
+        "memory_obs": ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True, mode="obs"),
+        "memory_combined": ContextualStrategyMemory(seed=seed, retrieve=True, persist_memory=True, mode="combined"),
+        "memory_combined_noretrieve": ContextualStrategyMemory(
+            seed=seed, retrieve=False, persist_memory=True, mode="combined"
+        ),
     }

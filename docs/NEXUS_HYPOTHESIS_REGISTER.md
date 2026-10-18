@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-core-3 observation sketch is not enough to change choose()
+
+Planning-observation features separate stored-obs from zero-obs
+descriptors and move retrieved neighbors. Combined LinUCB still
+selects the stored-obs winner on a zero-obs query. Persist remains
+better on the locked shift. Failure: strategy-value prediction. Not
+science. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — H-core-2 retrieval can harm decide() start-state transfer
 
 On FakeStepModel returns, memory ties persist on stored-obs

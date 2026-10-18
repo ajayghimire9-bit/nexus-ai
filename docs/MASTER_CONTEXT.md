@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — observation-aware memory, negative development result, 2026-10-18
+
+An 8-d planning-observation sketch separates stored-obs from zero-obs
+embeddings (combined collision-vs-stored distance 1.446 vs support
+0.128). Retrieval neighbors move; LinUCB selection does not. Combined
+memory does not beat persist on the zero-obs shift (first-free 1.0 vs
+0.188). Failure: strategy-value prediction. Not AGI. No collection.
+E2.17 stays inconclusive. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+Earlier entries remain history.
+
 ## Latest — strategy memory on decide() scores, development only, 2026-10-18
 
 Four free slots, FakeStepModel returns, permitted source arrays.

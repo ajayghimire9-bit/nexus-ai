@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — observation-aware strategy memory, negative result
+
+8-d planning-obs sketch added. Embeddings and neighbors move; first-free
+selection does not beat persist on the zero-obs shift. Failure:
+strategy-value prediction. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — decide()-owned strategy-memory bench, development only
 
 Four free slots. Memory ties persist on stored-obs development. Zero-obs

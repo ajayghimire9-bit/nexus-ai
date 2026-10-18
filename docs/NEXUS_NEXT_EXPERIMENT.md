@@ -1,13 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — observation sketch separates; next is retrieved-mean selection
+
+Recommended next *development* experiment: keep the observation-aware
+descriptor and replace the LinUCB argmax with a retrieved-mean or
+gated selector when neighbor mass is high. Same eight decide() tasks
+and persist baseline. No collection. No n=10 scientific run. Do not
+reuse E2.17 development. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Current — decide() memory bench done; next is start-state descriptors
 
-Recommended next *development* experiment: add the planning
-observation (or a sketch of it) to the `ContextualStrategyMemory`
-descriptor and re-run the decide() FakeStepModel bench with four free
-slots. Keep `acro_zero_collision` as the expected failure. No
-collection. No n=10 scientific run. Do not reuse E2.17 development.
-Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+Completed. The sketch separates embeddings; selection still follows
+LinUCB and loses the zero-obs shift to persist. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
 
 ## Current — NEXUS Core strategy memory; next is decide()-owned scoring
 
