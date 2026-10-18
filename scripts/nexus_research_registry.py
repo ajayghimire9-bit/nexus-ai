@@ -620,7 +620,7 @@ EXPERIMENTS = [
             "src/nexus/evolution2/source_persist_plan.py",
             "src/nexus/evolution2/source_persist_collect.py",
         ],
-        "commit": "incomplete",
+        "commit": "e65b06e6cb60dfc6d902027c80dfcc99f1aa3db2",
         "protocol": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md",
         "results": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_7680.md",
         "status": "development_pilot_not_confirmation",
