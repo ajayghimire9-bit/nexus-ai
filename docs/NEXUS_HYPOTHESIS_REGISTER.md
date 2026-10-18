@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-core-6 disposable residuals do not change the winning planner
+
+E2.9 residual `decide()` scores pick flat H=4 on every locked task.
+Persist and retrieved-mean both reach first-free regret 0. Not a
+memory result. Stop this catalogue line. Not science. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — H-core-5 persist+obs cannot use start state on FakeStepModel
 
 A 22-weight persist wrapper with rule/horizon × observation

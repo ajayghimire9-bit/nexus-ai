@@ -1,12 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — catalogue selection closed on FakeStep/E2.9 residuals
+
+Do not continue 12-arm planner selection on FakeStepModel or E2.9
+disposable residuals. Recommended next *development* experiment, if
+pursued: task-conditioned residual-model adaptation on permitted
+source arrays, not catalogue first-free. No collection. No E2.17
+reuse. No n=10 science. A persist-versus-reset scientific screen
+still needs a new grant. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Current — FakeStepModel line stopped; next is residual decide() scores
 
-Recommended next *development* experiment: compare persist vs
-retrieved-mean on permitted residual-model `decide()` returns. Do not
-load E2.17 science arrays. If no permitted residual checkpoint can
-be used, leave the protocol ready and do not collect. No n=10
-science. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+Completed. Residual oracles are all flat H=4. Persist and
+retrieved-mean tie at first-free 0. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
 
 ## Current — retrieved-mean works; next is persist+obs features
 

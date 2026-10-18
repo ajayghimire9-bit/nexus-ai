@@ -1,5 +1,13 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — residual decide() scores: no planner-identity shift, 2026-10-18
+
+E2.9 disposable residuals score every locked task as flat H=4.
+Persist and retrieved-mean both get first-free regret 0. Reset fails.
+E2.17 unused. Stop 12-arm catalogue selection on these residuals and
+on FakeStepModel. Not AGI. No collection. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`. Earlier entries remain history.
+
 ## Latest — persist+obs does not help; stop FakeStepModel line, 2026-10-18
 
 Adding the planning-obs sketch to a persist wrapper leaves locked

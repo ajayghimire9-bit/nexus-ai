@@ -39,6 +39,7 @@ or component.
 
 | ID | Status | Protocol / results | Reuse | Coverage |
 |---|---|---|---|---|
+| `H-core-6` | development_only_residual_oracles_all_flat_h4 | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Stop 12-arm selection on E2.9 residuals. Do not load E2.17 fits. | partial |
 | `H-core-5` | development_only_persist_obs_no_fakestep_gain | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Stop FakeStepModel line. Do not edit historical persist. | partial |
 | `H-core-4` | development_only_retrieved_mean_beats_ucb_loses_persist | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Reuse `selector=retrieved_mean`. Do not claim persist is beaten. | partial |
 | `H-core-3` | development_only_obs_sketch_does_not_fix_linucb | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Reuse observation-aware modes. Failure is strategy-value prediction. | partial |

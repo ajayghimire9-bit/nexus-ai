@@ -173,10 +173,34 @@ the persist+obs choice. Held-out first-free is slightly worse
 linear proposer cannot use start-state information to improve this
 landscape. Kernel memory can, but not enough to beat persist.
 
+## Disposable residual decide() scores
+
+E2.9 fit-clock residuals and E2.8 source arrays only. E2.17 science
+arrays and fits were not loaded. Same six proposals / four free slots.
+
+Every one of the eight residual tasks has the same oracle: flat H=4
+(`4e697425…`). Planner ranking does not shift with family, bundle, or
+start state.
+
+| Config | Dev first-free | Shifted first-free | Collision first-free |
+|---|---:|---:|---:|
+| persist | 0.000 | 0.000 | 0.000 |
+| retrieved-mean | 0.000 | 0.000 | 0.000 |
+| reset | 0.883 | 0.931 | 0.924 |
+
+Persist and retrieved-mean both pick a tied flat-H=4 winner. That is
+not a memory transfer result. Reset fails. Wall 0.26 s. 48 lookups.
+
+**Development success: false. Stop residual catalogue selection on
+these models.** Permitted residuals do not create a planner-identity
+problem. FakeStepModel and disposable-residual 12-arm lines are both
+closed.
+
 ## Next research experiment
 
-Development-only: score persist vs retrieved-mean on permitted
-residual-model `decide()` returns (not E2.17 science arrays). If
-those scores are unavailable without collection or grant reuse, stop
-and leave the protocol ready. No n=10 science. Do not reuse E2.17
-development.
+Do not continue 12-arm catalogue selection on FakeStepModel or E2.9
+residuals. Next *development* step, if any, is a different target:
+task-conditioned residual-model adaptation on permitted source arrays
+(which dynamics to trust / how to update them), not which of 12
+planners to pick. No collection. No E2.17 reuse. No n=10 science. A
+new-physics persist-versus-reset screen still needs a new grant.

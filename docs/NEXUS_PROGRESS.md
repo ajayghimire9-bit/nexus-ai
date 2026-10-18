@@ -1,5 +1,10 @@
 # NEXUS progress log
 
+## Latest — residual decide() bench; catalogue line stopped
+
+E2.9 residuals, no E2.17 files. All oracles flat H=4. Persist and
+retrieved-mean first-free 0. Report `NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — persist+obs negative; FakeStepModel line stopped
 
 Persist+obs first-free matches persist on the locked eight tasks.

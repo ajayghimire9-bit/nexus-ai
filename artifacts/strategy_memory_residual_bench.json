@@ -1,0 +1,1044 @@
+{
+  "scientific": false,
+  "collection": false,
+  "gymnasium": false,
+  "env_steps": 0,
+  "claims_agi": false,
+  "claims_learning_to_learn": false,
+  "historical_e217_label": "inconclusive",
+  "grant_consumed": true,
+  "score_source": "decide_disposable_residual",
+  "cited_config_sha256": "8e90b74ad3f406509051025160799c13d9a28bbb7e16c11a77808653bb43827e",
+  "seed": 7,
+  "matched_proposals": 6,
+  "free_slots": 4,
+  "lookups": {
+    "random": 48,
+    "fixed": 48,
+    "reset_adaptive": 48,
+    "persistent_adaptive": 48,
+    "evolutionary": 48,
+    "memory_combined_retrieved": 48
+  },
+  "oracles": {
+    "res_pend_store_0": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    },
+    "res_acro_store_0": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    },
+    "res_pend_store_1": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    },
+    "res_acro_store_1": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    },
+    "res_pend_store_2": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    },
+    "res_acro_store_2": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    },
+    "res_acro_zero": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    },
+    "res_acro_collision": {
+      "variant": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+      "rule": "flat",
+      "horizon": 4
+    }
+  },
+  "summary": {
+    "persistent_adaptive": {
+      "train": {
+        "best_regret": 0.020223396619013095,
+        "first_free_regret": 0.43946201109288086,
+        "evals_to_strong": 4.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "res_pend_store_0",
+          "res_acro_store_0",
+          "res_pend_store_1",
+          "res_acro_store_1"
+        ]
+      },
+      "development": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "res_pend_store_2",
+          "res_acro_store_2"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "res_acro_zero"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f"
+        ],
+        "task_ids": [
+          "res_acro_collision"
+        ]
+      }
+    },
+    "memory_combined_retrieved": {
+      "train": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.10076023620764582,
+        "evals_to_strong": 4.0,
+        "first_free": [
+          "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "res_pend_store_0",
+          "res_acro_store_0",
+          "res_pend_store_1",
+          "res_acro_store_1"
+        ]
+      },
+      "development": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "res_pend_store_2",
+          "res_acro_store_2"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "res_acro_zero"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.0,
+        "first_free_regret": 0.0,
+        "evals_to_strong": 3.0,
+        "first_free": [
+          "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+        ],
+        "task_ids": [
+          "res_acro_collision"
+        ]
+      }
+    },
+    "reset_adaptive": {
+      "train": {
+        "best_regret": 0.2225849913963358,
+        "first_free_regret": 0.8979509087822235,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "res_pend_store_0",
+          "res_acro_store_0",
+          "res_pend_store_1",
+          "res_acro_store_1"
+        ]
+      },
+      "development": {
+        "best_regret": 0.23149064964465277,
+        "first_free_regret": 0.8831732274493437,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "res_pend_store_2",
+          "res_acro_store_2"
+        ]
+      },
+      "shifted": {
+        "best_regret": 0.2818897033778054,
+        "first_free_regret": 0.9304968448952007,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "res_acro_zero"
+        ]
+      },
+      "collision": {
+        "best_regret": 0.28075952850299435,
+        "first_free_regret": 0.923672229713576,
+        "evals_to_strong": 6.0,
+        "first_free": [
+          "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742"
+        ],
+        "task_ids": [
+          "res_acro_collision"
+        ]
+      }
+    }
+  },
+  "rows": {
+    "persistent_adaptive": {
+      "train": [
+        {
+          "task_id": "res_pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.9191064135239476,
+          "regret": 0.08089358647605238,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.16305845846471967,
+          "first_free_regret": 0.8369415415352803,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.28453546209616776,
+            0.0,
+            0.16305845846471967,
+            0.02094347794810866,
+            0.9191064135239476,
+            0.8886848807485597
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.07909349716375697,
+          "first_free_regret": 0.9209065028362431,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33"
+          ],
+          "scores": [
+            0.07730340108709824,
+            0.012556948447035771,
+            0.07909349716375697,
+            1.0,
+            0.6778526416454691,
+            0.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.11937044555232688,
+            0.03422193050162944,
+            1.0,
+            0.8275456516034553,
+            0.09717445451422722,
+            0.9735102280386322
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_1",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.07813305553733285,
+            0.0,
+            1.0,
+            0.6684907316426281,
+            0.9147948537865678,
+            0.588605842078276
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "res_pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.0017680210321738851,
+            0.0,
+            1.0,
+            0.8572843684740687,
+            0.5362918701279054,
+            0.43461473042738086
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_2",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.06987971083504693,
+            0.0,
+            1.0,
+            0.6797343322366257,
+            0.9194685208638697,
+            0.6002057078323579
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "res_acro_zero",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08986538341175374,
+            0.003410523456499151,
+            1.0,
+            0.7181102966221946,
+            0.9424606067931235,
+            0.6325164018710534
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "res_acro_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "fde871fdbcc6eb62ab1e7f73c8e6c022628f4318cb435024546a3826b59c557f",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.06726185482416973,
+            0.0,
+            1.0,
+            0.7192404714970057,
+            0.9424551693952149,
+            0.6330743915788035
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "memory_combined_retrieved": {
+      "train": [
+        {
+          "task_id": "res_pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.9191064135239476,
+          "first_free_regret": 0.08089358647605238,
+          "evals_to_strong": 4,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.28453546209616776,
+            0.0,
+            0.9191064135239476,
+            0.9762816999222493,
+            0.8886848807485597,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+          "first_free_score": 0.6778526416454691,
+          "first_free_regret": 0.3221473583545309,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd"
+          ],
+          "scores": [
+            0.07730340108709824,
+            0.012556948447035771,
+            0.6778526416454691,
+            0.9214451911434007,
+            0.6014825637828031,
+            1.0
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.11937044555232688,
+            0.03422193050162944,
+            1.0,
+            0.9735102280386322,
+            0.8275456516034553,
+            0.7517586552645988
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_1",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.07813305553733285,
+            0.0,
+            1.0,
+            0.9147948537865678,
+            0.6684907316426281,
+            0.588605842078276
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "res_pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.0017680210321738851,
+            0.0,
+            1.0,
+            0.8572843684740687,
+            0.5362918701279054,
+            0.43461473042738086
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_2",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.06987971083504693,
+            0.0,
+            1.0,
+            0.9194685208638697,
+            0.6797343322366257,
+            0.6002057078323579
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "res_acro_zero",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08986538341175374,
+            0.003410523456499151,
+            1.0,
+            0.9425058135925231,
+            0.7181102966221946,
+            0.6325164018710534
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "res_acro_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 1.0,
+          "regret": 0.0,
+          "oracle": 1.0,
+          "first_free": "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+          "first_free_score": 1.0,
+          "first_free_regret": 0.0,
+          "evals_to_strong": 3,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "4e697425a6961bc7e44049c3beedb876e3acff4e1ff2ecc2e8bbc0961584cebd",
+            "5aee8137fad95634b2f80b79d13c41afe24423dcdea55059f12f3c690422d76b",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.06726185482416973,
+            0.0,
+            1.0,
+            0.9424551693952149,
+            0.7192404714970057,
+            0.6330743915788035
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    },
+    "reset_adaptive": {
+      "train": [
+        {
+          "task_id": "res_pend_store_0",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.9191064135239476,
+          "regret": 0.08089358647605238,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.16305845846471967,
+          "first_free_regret": 0.8369415415352803,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.28453546209616776,
+            0.0,
+            0.16305845846471967,
+            0.02094347794810866,
+            0.9191064135239476,
+            0.8886848807485597
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_0",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6778526416454691,
+          "regret": 0.3221473583545309,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.07909349716375697,
+          "first_free_regret": 0.9209065028362431,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.07730340108709824,
+            0.012556948447035771,
+            0.07909349716375697,
+            0.0,
+            0.6778526416454691,
+            0.6014825637828031
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_pend_store_1",
+          "family": "pendulum",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.844210247602612,
+          "regret": 0.15578975239738801,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.09717445451422722,
+          "first_free_regret": 0.9028255454857728,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "5ea0dbe7dd706c7f684cea5afb907c1f5dd9a419fea1be66de807d176e256212",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f"
+          ],
+          "scores": [
+            0.11937044555232688,
+            0.03422193050162944,
+            0.09717445451422722,
+            0.0,
+            0.844210247602612,
+            0.8275456516034553
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_1",
+          "family": "acrobot",
+          "phase": "train",
+          "expected_failure": false,
+          "best": 0.6684907316426281,
+          "regret": 0.33150926835737193,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.06886995472840216,
+          "first_free_regret": 0.9311300452715978,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.07813305553733285,
+            0.0,
+            0.06886995472840216,
+            0.014782372248978807,
+            0.6684907316426281,
+            0.588605842078276
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "development": [
+        {
+          "task_id": "res_pend_store_2",
+          "family": "pendulum",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.8572843684740687,
+          "regret": 0.14271563152593125,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.15373034851220768,
+          "first_free_regret": 0.8462696514877923,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770",
+            "11e1b6fd0c54363b8813455738b18bb2b6e386897ef5cda65b6adbaaeb793a0a"
+          ],
+          "scores": [
+            0.0017680210321738851,
+            0.0,
+            0.15373034851220768,
+            0.13886499502875593,
+            0.43461473042738086,
+            0.8572843684740687
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        },
+        {
+          "task_id": "res_acro_store_2",
+          "family": "acrobot",
+          "phase": "development",
+          "expected_failure": false,
+          "best": 0.6797343322366257,
+          "regret": 0.3202656677633743,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.0799231965891049,
+          "first_free_regret": 0.920076803410895,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.06987971083504693,
+            0.0,
+            0.0799231965891049,
+            0.0036591310084341426,
+            0.6797343322366257,
+            0.6002057078323579
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "shifted": [
+        {
+          "task_id": "res_acro_zero",
+          "family": "acrobot",
+          "phase": "shifted",
+          "expected_failure": false,
+          "best": 0.7181102966221946,
+          "regret": 0.2818897033778054,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.0695031551047993,
+          "first_free_regret": 0.9304968448952007,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.08986538341175374,
+            0.003410523456499151,
+            0.0695031551047993,
+            0.0,
+            0.7181102966221946,
+            0.6325164018710534
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ],
+      "collision": [
+        {
+          "task_id": "res_acro_collision",
+          "family": "acrobot",
+          "phase": "collision",
+          "expected_failure": true,
+          "best": 0.7192404714970057,
+          "regret": 0.28075952850299435,
+          "oracle": 1.0,
+          "first_free": "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+          "first_free_score": 0.07632777028642398,
+          "first_free_regret": 0.923672229713576,
+          "evals_to_strong": 6,
+          "variants": [
+            "2261a02b8f6d6aa495869f93a5a969cdf6eb8d2ac2f8d99141aaee4d30d39123",
+            "e04f4ef2636ce053b83f36a6104b5d82bb8b25b22295982a49bc244f3772c1e4",
+            "ffdb8f5fb47dcb3df8474c6abe8565e87fe18ec605aae0b93376ff5422822742",
+            "c01e7ee72fcb577daffe47277713da85f2638109ae96ee3587812d9640eeab33",
+            "977fff8a87f0178dc2c8eee9c88bc7197cd1a988bdaa6df8f2be962cc149244f",
+            "8b9d187b313214c07196bae5e4f0fd74ea12801f52a87c4564f92bf7dddb5770"
+          ],
+          "scores": [
+            0.06726185482416973,
+            0.0,
+            0.07632777028642398,
+            0.00708413247059812,
+            0.7192404714970057,
+            0.6330743915788035
+          ],
+          "physical": 6,
+          "charged": 6,
+          "score_source": "decide_fake_step_model"
+        }
+      ]
+    }
+  },
+  "decision": {
+    "residual_scores_available": true,
+    "used_e217_science_arrays": false,
+    "used_e217_science_fits": false,
+    "source": "evolution2_fit_clock_disposable",
+    "planner_ranking_shifts_across_tasks": false,
+    "memory_beats_persist_shifted_first_free": false,
+    "memory_not_worse_stored_dev": true,
+    "memory_beats_persist_dev": false,
+    "development_success": false,
+    "stop_residual_catalogue_line": true
+  },
+  "wall_s": 0.2627127500018105,
+  "cpu_s": 0.274027,
+  "note": "Disposable residual decide() bench, not a scientific result and not AGI."
+}

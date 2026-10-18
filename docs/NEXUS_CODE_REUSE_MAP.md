@@ -26,6 +26,7 @@ instead of opening parallel packages.
 | Observation-aware memory bench | `nexus.core.strategy_memory_obs_bench`; reuses `ContextualStrategyMemory` modes and the locked eight tasks | A second memory stack or tuning `acro_zero_collision` after seeing results |
 | Retrieved-mean / gated selector | `nexus.core.strategy_memory` selectors plus `strategy_memory_selector_bench` | A new proposer stack or changing persist features without a matched comparison |
 | Persist + planning-obs features | `nexus.core.persist_obs.PersistentAdaptiveObs`; historical `PersistentAdaptive` stays 6-weight | Editing AdaptiveProposer in place or claiming FakeStepModel transfer |
+| Residual decide() memory bench | `nexus.core.strategy_memory_residual_bench`; reuses `persist_reset_path.disposable_model` and E2.8 arrays | E2.17 science fits/arrays, new collection, or more 12-arm FakeStep/E2.9 selection |
 | E2 persist/reset/evolution wrappers | `evolution2.methods` | A second method registry |
 | Pendulum/Acrobot proposer screen design | `evolution2.pendulum_acrobot_protocol_v2` (target) and `_v2_pilot` (reduced worksheet) | A third protocol that silently rewrites n, Bonferroni, or v2 hashes |
 | Explicit n=3 no-fit micro | `evolution2.pendulum_acrobot_protocol_n3_micro` | Treating n=3 unmatched residuals as a v2 pass or using the df=9 t crit |

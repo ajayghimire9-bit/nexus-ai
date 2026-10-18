@@ -10,8 +10,9 @@ loses first-free on a zero-obs start-state shift. An observation sketch
 separates those embeddings. A retrieved-mean selector now changes the
 zero-obs choice and beats LinUCB on that shift, but persist remains
 better. Adding the observation sketch to persist does not change
-locked FakeStepModel first-free. That line is stopped. Do not treat
-this as n=10 science or AGI.
+locked FakeStepModel first-free. E2.9 residual `decide()` scores also
+keep flat H=4 as the only oracle. Both 12-arm catalogue lines are
+stopped. Do not treat this as n=10 science or AGI.
 
 Authoritative snapshot for future agents. Not a scientific result.
 Generated from the research-tip merge and the consolidation review.
