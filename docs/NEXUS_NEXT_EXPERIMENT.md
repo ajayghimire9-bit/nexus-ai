@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — H17 numerical registration is blocked
+
+Verdict BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE, not a provenance mismatch.
+One next action: an additive reviewed reservation closure manifest for
+historical seed-function bounds, the observed uncommitted Cline reservation
+and remaining metadata-family classifications. Preserve29 exclusions and
+six conservative ambiguous cases. No target or numerical seeds selected;
+no lock/allocation/execution. Five-source/t12 proposal remains
+62,360 real /174,080 imagined /300s, ledger305.842/3294.158 unchanged.
+Report `NEXUS_H17_EXCLUSION_COVERAGE_REVIEW.md`.
+
 ## Current — H17 exclusion snapshot needs coverage acceptance before registration
 
 The source-only cross-branch inventory now records explicit and ambiguous

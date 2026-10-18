@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Latest — H17 registration blocked by incomplete coverage evidence
+
+On `codex/h17-exclusion-coverage-review`: exact base4a860315 verified.
+Full reachable-history review covers302 commits and208 config versions,
+including43 absent from the old tip inventory. No additional tuple outside
+the preserved29 exclusions was identified. Seven uncommitted Cline draft
+files were inspected read-only; their known target/bases are already covered.
+Verdict BLOCKED_INCOMPLETE_EXCLUSION_COVERAGE: generated-seed bounds,
+portable manual-reservation status and metadata closure remain unverified.
+128 source-only tests passed. Design62,360/174,080/300s unchanged; actual
+new scientific counts zero; ledger305.842/3294.158 unchanged. Report
+`NEXUS_H17_EXCLUSION_COVERAGE_REVIEW.md`.
+
 ## Latest — H17 cross-branch exclusion metadata audited, no experiment
 
 On `codex/h17-exclusion-registry-audit`:348 refs/127 unique tips,
