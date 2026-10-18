@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — NEXUS Core strategy memory; next is decide()-owned scoring
+
+Recommended next *development* experiment: compare
+`ContextualStrategyMemory` with persist/reset/random/evolution/ablated
+on `decide()`-owned FakeStepModel returns and more than two free
+slots. Matched budgets. No collection. No n=10 scientific run. Do not
+reuse E2.17 development as confirmation. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Current — Evolution-2.21 scoring correction; recommend n=10 if granted
 
 Recommended next scientific experiment: one new-physics n=10

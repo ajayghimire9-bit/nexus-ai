@@ -21,6 +21,7 @@ instead of opening parallel packages.
 | Pre-call work reservation | `evolution1.resources.ReservationLedger` | A third meter class |
 | Synthetic training receipts | `evolution1.fixtures.FixtureBroker` | Ad-hoc lookup tables in proposers |
 | Linear catalogue proposer | `evolution1.toy_loop.AdaptiveProposer` | A new SGD bandit for the same 12 arms |
+| Task-conditioned strategy memory | `nexus.core.strategy_memory.ContextualStrategyMemory` | Replacing AdaptiveProposer or a second Evolution-2 method stack |
 | E2 persist/reset/evolution wrappers | `evolution2.methods` | A second method registry |
 | Pendulum/Acrobot proposer screen design | `evolution2.pendulum_acrobot_protocol_v2` (target) and `_v2_pilot` (reduced worksheet) | A third protocol that silently rewrites n, Bonferroni, or v2 hashes |
 | Explicit n=3 no-fit micro | `evolution2.pendulum_acrobot_protocol_n3_micro` | Treating n=3 unmatched residuals as a v2 pass or using the df=9 t crit |

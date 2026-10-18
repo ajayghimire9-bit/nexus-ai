@@ -39,6 +39,7 @@ or component.
 
 | ID | Status | Protocol / results | Reuse | Coverage |
 |---|---|---|---|---|
+| `H-core-1` | development_only_no_equal_budget_win | docs/NEXUS_CORE_STRATEGY_MEMORY.md / docs/NEXUS_CORE_STRATEGY_MEMORY.md | Reuse `ContextualStrategyMemory`. Do not replace AdaptiveProposer. Not science. | partial |
 | `V0.1` | historical_implemented | — / README.md | Not LEVEL 2 transfer. Do not treat architecture search as learning-to-learn. | partial |
 | `V0.4` | historical_measured | — / README.md | Historical PPO evidence only. CartPole ceiling confounds evolution ranking. | partial |
 | `H-V05` | synthetic_supported_real_not_established | — / docs/NEXUS_HYPOTHESIS_REGISTER.md | Keep as a cheap scheduler. Not a path to learning-to-learn. | partial |

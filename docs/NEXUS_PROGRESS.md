@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — NEXUS Core strategy memory, development only
+
+Implemented `ContextualStrategyMemory`. Causal retrieve-on/off changes
+choice. Equal-budget synthetic regret does not beat persist/reset.
+Inverted-successor fails as expected. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`.
+
 ## Latest — Evolution-2.21 executable scoring, no collection
 
 Provenance isolation PASS. Fixture `decide()` path PASS. n=10

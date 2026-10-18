@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+## Latest — NEXUS Core strategy memory exists and does not replace Evolution-2
+
+`nexus.core.strategy_memory.ContextualStrategyMemory` is the
+task-conditioned memory controller. It reuses the catalogue,
+`TrustedEvaluator`, and Evolution-2 methods. Synthetic development
+shows a causal memory-to-choice effect and no equal-budget win over
+persist/reset. Do not treat this as n=10 science or AGI.
+
 Authoritative snapshot for future agents. Not a scientific result.
 Generated from the research-tip merge and the consolidation review.
 Consult the registry and reuse map before proposing work.

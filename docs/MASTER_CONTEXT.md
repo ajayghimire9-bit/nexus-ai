@@ -1,5 +1,13 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — NEXUS Core strategy memory, development only, 2026-10-18
+
+`ContextualStrategyMemory` is implemented. Retrieval changes the first
+free choice under matched RNG. It does not beat persist/reset on
+synthetic development regret and fails on inverted-successor negative
+transfer. No collection. E2.17 stays inconclusive. Not AGI. Report
+`NEXUS_CORE_STRATEGY_MEMORY.md`. Earlier entries remain history.
+
 ## Latest — Evolution-2.21 executable scoring, science still refused, 2026-10-18
 
 Hidden isolation is provenance, not fingerprint. Method-selected
