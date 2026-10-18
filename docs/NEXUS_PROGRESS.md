@@ -1,5 +1,11 @@
 # NEXUS progress log
 
+## Latest — Evolution-2.7 source persist request, no collection
+
+Request-only lock. 7,680 or 25,600 steps if later approved.
+`authorized: false`. Ledger preserved 305.842 / 3294.158. Report
+`NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md`.
+
 ## Latest — Evolution-2.6 execution-blocker matrix, no collection
 
 `E2_SCIENTIFIC_DISPATCH_BLOCKED`. Checkpoint payloads are weights

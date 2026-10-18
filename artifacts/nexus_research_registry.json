@@ -1,7 +1,7 @@
 {
   "mode": "documentation_registry",
   "scientific": false,
-  "head": "d5f92ef0b28be081eef71a4ac1e5c2c7ffc5dbed",
+  "head": "92d703594bed63abe6abeb792fb975527c47299e",
   "ledger_s": [
     306.954,
     3293.046
@@ -78,11 +78,11 @@
     "Default Pendulum (10, 1, 1) as a new holdout"
   ],
   "coverage": {
-    "curated": 41,
+    "curated": 42,
     "incomplete_unindexed_docs": 93,
-    "total": 134,
+    "total": 135,
     "incomplete": 120,
-    "source_verified": 14
+    "source_verified": 15
   },
   "experiments": [
     {
@@ -760,6 +760,25 @@
         "artifacts/evolution2_execution_blockers.json"
       ],
       "reuse": "Do not shrink another worksheet. Do not collect replacements.",
+      "coverage": "source_verified"
+    },
+    {
+      "id": "E2.7-source-persist-request",
+      "title": "Matched source-array persist authorization request",
+      "hypothesis": "A later persist of 7680 or 25600 family-default source steps can unblock a disposable residual fit clock if separately authorized.",
+      "implementation": [
+        "src/nexus/evolution2/source_persist_request.py"
+      ],
+      "commit": "incomplete",
+      "protocol": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md",
+      "results": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md",
+      "status": "request_only_unauthorized",
+      "artifacts": [
+        "configs/evolution2_source_persist_request.yaml",
+        "configs/evolution2_source_persist_allocation.json",
+        "artifacts/evolution2_source_persist_request.json"
+      ],
+      "reuse": "Do not collect. Standing grant does not start persist.",
       "coverage": "source_verified"
     },
     {

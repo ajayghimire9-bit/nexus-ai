@@ -1,5 +1,15 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — Evolution-2.7 source persist requested, still unauthorized, 2026-10-18
+
+On `cursor/evolution2.7-source-persist-request` from `92d7035`.
+A later persist of matched 1024/256 Pendulum/Acrobot arrays is
+specified at 7,680 or 25,600 real steps. `authorized: false`,
+`env_cap: 0`. No arrays were written. v2/n=3 hashes frozen. Holdout
+unnamed. H17 blocked. Scientific ledger preserved at 305.842 /
+3294.158. Report `NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md`.
+Earlier entries remain history.
+
 ## Latest — Evolution-2.6 execution blockers closed, 2026-10-18
 
 On `cursor/evolution2.6-execution-blockers` from `dc6420f`. Bound

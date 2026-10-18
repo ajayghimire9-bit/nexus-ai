@@ -1,5 +1,10 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-e2.7 source persist is requested, not collected
+
+A 7,680- or 25,600-step persist is specified and unauthorized. Not
+a transfer result. Report `NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md`.
+
 ## Latest — H-e2.6 execution is blocked, not collected
 
 Bound residual checkpoints are weights-only. No source arrays can

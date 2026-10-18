@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — Evolution-2.7 persist request locked; collection still BLOCKED
+
+The next collection, if approved, is 7,680 (n=3) or 25,600 (n=10)
+family-default source steps written as npz. This lock authorizes 0.
+Do not collect. Do not name a holdout. Do not unlock H17. Next:
+human approval that cites the persist-request config hash and sets
+`env_cap`. Report `NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md`.
+
 ## Current — Evolution-2.6 dispatch blocked; stop shrinking worksheets
 
 Checkpoint payloads are weights only. Fitting remains unavailable.

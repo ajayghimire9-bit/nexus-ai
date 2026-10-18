@@ -592,6 +592,23 @@ EXPERIMENTS = [
         "reuse": "Do not shrink another worksheet. Do not collect replacements.",
         "coverage": "source_verified",
     },
+    {
+        "id": "E2.7-source-persist-request",
+        "title": "Matched source-array persist authorization request",
+        "hypothesis": "A later persist of 7680 or 25600 family-default source steps can unblock a disposable residual fit clock if separately authorized.",
+        "implementation": ["src/nexus/evolution2/source_persist_request.py"],
+        "commit": "incomplete",
+        "protocol": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md",
+        "results": "docs/NEXUS_EVOLUTION2_SOURCE_PERSIST_REQUEST.md",
+        "status": "request_only_unauthorized",
+        "artifacts": [
+            "configs/evolution2_source_persist_request.yaml",
+            "configs/evolution2_source_persist_allocation.json",
+            "artifacts/evolution2_source_persist_request.json",
+        ],
+        "reuse": "Do not collect. Standing grant does not start persist.",
+        "coverage": "source_verified",
+    },
 ]
 
 

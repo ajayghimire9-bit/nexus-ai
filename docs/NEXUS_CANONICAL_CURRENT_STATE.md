@@ -24,6 +24,7 @@ Evolution-2.4 finds no matched ten-bundle residual set
 (`NO_FIT_TEN_BUNDLE_UNAVAILABLE`). An explicit n=3 micro exists
 and is **NOT_V2 / NOT_READY**. Evolution-2.6 confirms checkpoint
 payloads are weights only and keeps scientific dispatch **BLOCKED**.
+A source-persist request exists and still authorizes 0 steps.
 None of these is collection.
 Closed H8–H16 results remain historical artifacts. Topic branches
 are still the provenance record and must not be deleted.
@@ -62,6 +63,7 @@ H14/H15 are LEVEL 1 ranking/reuse findings. They are not learning-to-learn.
 - Evolution-2.4 no-fit residual inventory (Pendulum 3 / Acrobot 10 unmatched)
 - Evolution-2.5 n=3 no-fit micro (NOT_V2, recipe unmatched, unauthorized)
 - Evolution-2.6 execution-blocker matrix (`E2_SCIENTIFIC_DISPATCH_BLOCKED`)
+- Evolution-2.7 source-persist request (7,680 or 25,600 steps; unauthorized)
 
 ## Engineering that exists at HEAD 4a08b26
 

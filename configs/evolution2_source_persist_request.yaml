@@ -1,0 +1,26 @@
+experiment: evolution2_pendulum_acrobot
+version: source-persist-request
+does_not_rewrite: [v2, v2-pilot, n3-micro]
+status: request_only_collection_unauthorized
+authorized: false
+runs: 0
+consumed: false
+hold_named: false
+hold_rule: e2_pendulum_acrobot_dev_v1
+target_dir: artifacts/evolution2_source_arrays
+families: [pendulum, acrobot]
+n_train: 1024
+n_val: 256
+required_keys: [obs, action, next_obs, terminated, env_seeds]
+source_physics: family_default_occupied
+v2_source_steps: 25600
+n3_source_steps: 7680
+authorized_time_cap_s: 0
+authorized_env_cap: 0
+standing_time_cap_s: 900
+standing_env_cap: 100000
+session_ledger_used_s: 305.842
+session_ledger_remaining_s: 3294.158
+collection: false
+claims_learning_to_learn: false
+is_agi: false
