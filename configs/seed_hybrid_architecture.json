@@ -1,0 +1,22 @@
+{
+  "schema": "seed_hybrid_architecture_v1",
+  "kind": "authored_engineering_development_not_confirmation",
+  "seeds": [101, 102, 103],
+  "deployment_seed": 101,
+  "hidden_size": 16,
+  "updates": 120,
+  "learning_rate": 0.03,
+  "train_templates": ["move {ref} {hint}", "shift {ref} towards {hint}", "please push the {ref} to the {hint}", "take {ref} to {hint}"],
+  "evaluation_templates": ["please take the {ref} towards {hint}", "please shift the {ref} to the {hint}"],
+  "train_references": ["o1", "wug"],
+  "evaluation_references": ["o4", "zim"],
+  "direction_labels": {"left": ["left", "west"], "right": ["right", "east"], "up": ["up", "north"], "down": ["down", "south"]},
+  "max_wall_s": 30,
+  "minimum_all_seed_accuracy": 0.95,
+  "minimum_logit_margin": 0.5,
+  "torch_export_tolerance": 0.00001,
+  "session_used_before_s": 1845.6321034559958,
+  "session_remaining_before_s": 1754.3678965440042,
+  "real_environment_interactions": 0,
+  "allowed_scope": "New tiny language MLP on authored command labels only; no historical weights, scientific environments, reserved splits or old comparison reruns"
+}

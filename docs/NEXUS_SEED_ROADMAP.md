@@ -12,9 +12,12 @@ These are staged research goals, not already demonstrated capabilities.
 - **S3 — Representation transfer:** independent object/property schemas and held-out
   semantic templates; measure systematic transfer. Not implemented.
 - **S4 — Compact neural guidance:** optional small learned parser/search guidance
-  only after collecting permitted labels and beating simpler baselines. Not implemented.
+  now has an initial optional tiny command-encoder engineering implementation.
+  Its authored pilot is separately locked in NEXUS_SEED_HYBRID_PROTOCOL.md.
+  This does not establish broad parsing or a benefit over simple lookup baselines.
 - **S5 — Learning-rule selection:** compare question/search update rules under
-  equal teaching budgets using existing meta-controller contracts. Not implemented.
+  equal teaching budgets using existing meta-controller contracts. A functional
+  question-policy adapter exists; useful learning-rule improvement is not demonstrated.
 - **S6 — Continual cross-domain learning:** durable streams, forgetting and transfer
   tests against reset controls; independent evaluation. Not implemented.
 - **S7 — Bounded autonomous assistance:** vetted tools and user-approved actions,

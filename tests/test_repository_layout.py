@@ -25,7 +25,8 @@ def small_tree(tmp_path):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT/name, target)
     # Narrow to an isolated copied file. Full preservation is tested at ROOT.
-    record['protected_sha256'] = {'src/nexus/seed/core.py': record['protected_sha256']['src/nexus/seed/core.py']}
+    import hashlib
+    record['protected_sha256'] = {'src/nexus/seed/core.py': hashlib.sha256((ROOT/'src/nexus/seed/core.py').read_bytes()).hexdigest()}
     (tmp_path/'artifacts/seed_repository_refresh.json').write_text(json.dumps(record))
     return module
 

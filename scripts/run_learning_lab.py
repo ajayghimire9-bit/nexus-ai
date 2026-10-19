@@ -85,14 +85,22 @@ class LabHandler(BaseHTTPRequestHandler):
 
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--allow-seed',action='store_true');parser.add_argument('--seed-directory',type=Path,default=ROOT/'runs/seed-sessions');parser.add_argument('--max-runtime-s',type=int,default=900);parser.add_argument('--fixture-worker',action='store_true',help=argparse.SUPPRESS);args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--allow-seed',action='store_true');parser.add_argument('--seed-directory',type=Path,default=ROOT/'runs/seed-sessions');parser.add_argument('--max-runtime-s',type=int,default=900);parser.add_argument('--fixture-worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--seed-encoder',type=Path);parser.add_argument('--seed-encoder-sha256');parser.add_argument('--seed-meta-questions',action='store_true');args=parser.parse_args()
     if args.fixture_worker:
         print(json.dumps(run_fixture_request(json.loads(sys.stdin.read(4097))),allow_nan=False));return
     if not 1024<=args.port<=65535 or not 1<=args.max_runtime_s<=900:raise ValueError('local_server_limits')
+    if bool(args.seed_encoder)!=bool(args.seed_encoder_sha256) or not args.allow_seed and (args.seed_encoder or args.seed_meta_questions):raise ValueError('explicit_seed_model_path_hash_and_opt_in_required')
+    encoder=None
+    if args.seed_encoder:
+        from nexus.seed.perception import TinyCommandEncoder
+        encoder=TinyCommandEncoder.load(args.seed_encoder,args.seed_encoder_sha256)
+    if args.seed_meta_questions:
+        from nexus.seed.question_policy import choose
+        choose(())  # Optional dependency startup, not a measured question/request.
     with ThreadingHTTPServer(('127.0.0.1',args.port),LabHandler) as server:
         if args.allow_seed:
             from nexus.seed.lab import SeedWorkspace
-            server.seed_workspace=SeedWorkspace(args.seed_directory)
+            server.seed_workspace=SeedWorkspace(args.seed_directory,language_encoder=encoder,meta_questions=args.seed_meta_questions)
         server.fixture_lock=threading.Lock()
         server.fixtures_enabled=args.allow_fixtures;server.requests_remaining=10;server.timeout=.5
         end=time.monotonic()+args.max_runtime_s

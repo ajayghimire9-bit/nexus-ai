@@ -6,11 +6,13 @@ from .storage import load, save
 
 
 class SeedWorkspace:
-    def __init__(self, directory):
+    def __init__(self, directory, *, language_encoder=None, meta_questions=False):
         self.directory = directory
         self.sessions = {}
         self.lock = threading.RLock()
         self.requests = 0
+        self.language_encoder = language_encoder
+        self.meta_questions = meta_questions
 
     def dispatch(self, wire):
         if type(wire) is not dict or set(wire) != {'session_id','request'} or type(wire['request']) is not dict:
@@ -26,13 +28,17 @@ class SeedWorkspace:
             if op == 'new' and set(request) == {'op'} and sid is None:
                 if len(self.sessions) >= 16:
                     raise ValueError('server_session_cap')
-                sid = uuid.uuid4().hex; self.sessions[sid] = Session()
+                sid = uuid.uuid4().hex; self.sessions[sid] = Session(language_encoder=self.language_encoder,meta_questions=self.meta_questions)
                 response = self.sessions[sid].request(dict(op='inspect'))
             elif op == 'load' and set(request) == {'op','saved_id','expected_hash'}:
                 if len(self.sessions) >= 16 and request['saved_id'] not in self.sessions:
                     raise ValueError('server_session_cap')
                 sid = request['saved_id']
                 self.sessions[sid] = load(self.directory, sid, request['expected_hash'])
+                # Runtime capabilities are owner-selected CLI settings, never
+                # granted by saved evidence or a client payload.
+                self.sessions[sid].language_encoder=self.language_encoder
+                self.sessions[sid].meta_questions=self.meta_questions
                 response = self.sessions[sid].request(dict(op='inspect'))
             elif sid not in self.sessions:
                 raise ValueError('active_session_required')

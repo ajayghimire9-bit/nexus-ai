@@ -12,6 +12,7 @@ import time
 
 from nexus.evolution1.catalogue import digest
 from nexus.evolution1.fixtures import Event, Journal, verify_journal
+from .working import current as working_state, resolve_pronouns
 
 PROPERTIES = {'color': ('red', 'blue', 'green'),
               'shape': ('circle', 'square', 'triangle'), 'size': ('small', 'large')}
@@ -98,7 +99,7 @@ def parse(text):
 
 class Session:
     """JSON-replayable evidence. Cancellation is cooperative and request bounded."""
-    def __init__(self):
+    def __init__(self, *, language_encoder=None, meta_questions=False):
         self.journal = Journal()
         self.world = scene()
         self.evidence = []
@@ -109,6 +110,8 @@ class Session:
                            predicate_tests=0, program_evaluations=0, sandbox_actions=0, generated_examples=0)
         self._deadline = float('inf')
         self.cost_guard = None
+        self.language_encoder = language_encoder
+        self.meta_questions = meta_questions
 
     def charge(self, key, amount=1):
         if self.cost_guard is not None:
@@ -157,13 +160,33 @@ class Session:
             prior = next((e for e in self.evidence if e['ref'] == supersedes), None)
             if prior is None or prior['word'] != word or prior['object'] != obj or any(e['supersedes'] == supersedes for e in self.evidence):
                 raise ValueError('current_evidence_reference_required')
+        from .question_policy import pending
+        previous_question = pending(self.journal.snapshot()) if self.meta_questions else None
         self.charge('teacher_answers')
         payload = dict(word=word, object=obj, positive=positive, supersedes=supersedes)
         ref = self.event('seed_teaching', payload)
         self.evidence.append(dict(payload, ref=ref))
+        if (previous_question and previous_question['word']==word and
+                previous_question['object']==obj and supersedes is None):
+            before=previous_question['remaining']
+            after=len(self.candidates(word))
+            # Contradiction is not credited as successful information gain.
+            reduction=(before-after)/before if 0<after<=before else 0.
+            self.event('seed_question_feedback', dict(policy=previous_question['policy'],
+                reduction=reduction,label_ref=ref,before=before,after=after))
         return ref
 
-    def question(self, word, random_seed=None):
+    def question(self, word, random_seed=None, mode='balanced'):
+        if mode not in ('balanced','random','meta'):
+            raise ValueError('question_policy')
+        statistics=None
+        if mode=='meta':
+            if not self.meta_questions:
+                raise ValueError('meta_questions_not_enabled_by_local_owner')
+            from .question_policy import choose
+            mode,statistics=choose(self.journal.snapshot())
+        if mode=='random' and random_seed is None:
+            random_seed=len(self.journal.snapshot())
         pool = self.candidates(word)
         if not pool:
             return dict(status='contradiction', text='No grammar predicate fits. Correct evidence or expand in a later experiment.')
@@ -177,8 +200,11 @@ class Session:
         if not ranked:
             return dict(status='no_distinguishing_example', text='No permitted example distinguishes the remaining meanings.')
         obj = min(ranked)[2] if random_seed is None else random.Random(random_seed).choice(ranked)[2]
+        if self.meta_questions:
+            self.event('seed_question_choice',dict(word=word,object=obj,policy=mode,remaining=len(pool)))
         return dict(status='question', word=word, object=obj,
                     text=f"Is this {obj['size']} {obj['color']} {obj['shape']} a {word}?",
+                    policy=mode,meta_statistics=statistics,
                     alternatives=[p.description for p in pool])
 
     def resolve(self, reference):
@@ -241,6 +267,7 @@ class Session:
         start = time.perf_counter()
         self._deadline = time.monotonic()+2
         before = dict(self.counts)
+        neural_calls_before=getattr(self.language_encoder,'forward_calls',0)
         result = dict(type='unsupported', text='Supported: move WORD right [N] then move WORD down; inspect, look, help, stop.')
         try:
             if type(payload) is not dict or 'op' not in payload:
@@ -250,7 +277,8 @@ class Session:
                       'correct': {'op','word','object','positive','supersedes'}, 'inspect': {'op'},
                       'question': {'op','word'}, 'scene': {'op','number'}, 'stop': {'op'},
                       'resume': {'op'}, 'define': {'op','word','predicate'}}
-            if op not in fields or set(payload) != fields[op]:
+            fields['plan']={'op','reference','x','y'}
+            if op not in fields or (set(payload) != fields[op] and not (op=='question' and set(payload)=={'op','word','mode'})):
                 raise ValueError('request_schema')
             if op == 'stop' or op == 'message' and payload['text'] == 'stop':
                 self.cancelled.set(); self.stopped = True
@@ -269,7 +297,7 @@ class Session:
                     text=f"Evidence saved. {len(pool)} consistent grammar meanings.", alternatives=[p.description for p in pool],
                     question=self.question(payload['word']))
             elif op == 'question':
-                result = dict(type='clarification', **self.question(payload['word']))
+                result = dict(type='clarification', **self.question(payload['word'],mode=payload.get('mode','balanced')))
             elif op == 'define':
                 word = payload['word']; index = payload['predicate']
                 if not concept_word(word) or type(index) is not int or not 0 <= index < len(GRAMMAR):
@@ -283,10 +311,37 @@ class Session:
                 result = dict(type='scene', text='Different authored scene loaded; learned evidence retained.')
             elif op == 'inspect':
                 result = dict(type='knowledge', text='Evidence and current finite-grammar alternatives.')
+            elif op=='plan':
+                from .planning import to_cell, compact
+                ids,issue=self.resolve(payload['reference'])
+                if issue or len(ids)!=1:
+                    result=dict(type=issue or 'ambiguous_reference',text='Clarify the goal object before planning.',matches=ids,trace=[])
+                else:
+                    obj=next(o for o in self.world if o['id']==ids[0])
+                    program,cost=to_cell(obj,payload['x'],payload['y'],self.check)
+                    result=(dict(self.execute(compact(program)),interpretation=[asdict(m) for m in compact(program)]) if program else
+                            dict(type='already_at_goal',text='The object is already at the requested cell.',trace=[]))
+                    result['symbolic_search']=cost
             else:
-                parsed = parse(payload['text'])
+                state=working_state(self.journal.snapshot())
+                taught={e['word'] for e in self.evidence}|set(self.definitions)
+                text,used_memory=resolve_pronouns(payload['text'],state,taught)
+                if text is None:
+                    result=dict(type='clarification',text='No unambiguous last executed object. Use an object ID instead of it/that.')
+                    parsed=None
+                else:
+                    parsed = parse(text)
+                perception='symbolic_parser'
+                proposal=None
+                if parsed is None and text is not None and self.language_encoder is not None:
+                    proposal=self.language_encoder.propose(text)
+                    if proposal:
+                        parsed=(Move(proposal['reference'],proposal['direction'],proposal['steps']),)
+                        perception='trained_tiny_mlp'
                 if type(parsed) is tuple:
-                    result = dict(self.execute(parsed), interpretation=[asdict(m) for m in parsed])
+                    result = dict(self.execute(parsed), interpretation=[asdict(m) for m in parsed],
+                        perception=perception,working_reference=state.payload() if used_memory else None,
+                        neural_proposal=proposal)
                 elif parsed in ('inspect', 'look', 'help'):
                     result = dict(type=parsed, text='Authored 6×6 world; teach invented words using labeled examples. Grammar: properties, negations and two-property conjunctions.')
         except (ValueError, TypeError, KeyError) as exc:
@@ -296,12 +351,18 @@ class Session:
         # Inspect itself is bounded; count its real predicate work in this request.
         try:
             state = self.inspect() if not self.stopped else dict(world=self.world, stopped=True, costs=dict(self.counts), evidence=self.evidence, concepts=[])
+            state['working_memory']=working_state(self.journal.snapshot()).payload()
+            state['architecture']=dict(language='optional_tiny_mlp' if self.language_encoder else 'symbolic_parser',
+                concept_learning='version_space',reasoning='bounded_typed_programs',
+                questions='experimental_existing_meta_controller' if self.meta_questions else 'active_disagreement',
+                generation='templates',learned_recurrent_memory=False,learning_to_learn_demonstrated=False)
         except TimeoutError:
             state = dict(world=self.world, costs=dict(self.counts), incomplete=True)
         return dict(text=result.pop('text'), response_type=result.pop('type'),
                     interpretation=result.pop('interpretation', None), evidence_refs=result.pop('evidence_refs', []),
                     uncertainty=result.pop('alternatives', []), result=result, state=state,
                     resources=dict(wall_ms=(time.perf_counter()-start)*1000,
+                                   neural_forward_calls=getattr(self.language_encoder,'forward_calls',0)-neural_calls_before,
                                    **{k:self.counts[k]-before[k] for k in before}))
 
     def snapshot(self):
@@ -338,6 +399,25 @@ class Session:
                     raise ValueError('saved_program_replay_mismatch')
             elif event.kind in ('seed_stop','seed_resume'):
                 s.stopped = event.kind == 'seed_stop'; s.event(event.kind, p)
+            elif event.kind=='seed_question_choice':
+                if set(p)!={'word','object','policy','remaining'} or p['policy'] not in ('balanced','random') or type(p['remaining']) is not int or not 1<=p['remaining']<=len(GRAMMAR):
+                    raise ValueError('saved_question_schema')
+                valid_object(p['object'])
+                if len(s.candidates(p['word']))!=p['remaining']:
+                    raise ValueError('saved_question_version_mismatch')
+                s.event(event.kind,p)
+            elif event.kind=='seed_question_feedback':
+                events_so_far=s.journal.snapshot()
+                choice=next((json.loads(e.payload_json) for e in reversed(events_so_far) if e.kind=='seed_question_choice'),None)
+                last=s.evidence[-1] if s.evidence else None
+                if set(p)!={'policy','reduction','label_ref','before','after'} or type(p['before']) is not int or type(p['after']) is not int or not choice or not last or p['label_ref']!=last['ref'] or choice['word']!=last['word'] or choice['object']!=last['object'] or last['supersedes'] is not None:
+                    raise ValueError('saved_feedback_evidence')
+                after=len(s.candidates(last['word']));before=choice['remaining']
+                reduction=(before-after)/before if 0<after<=before else 0.
+                if (p['policy']!=choice['policy'] or p['before']!=before or p['after']!=after or
+                        type(p['reduction']) not in (int,float) or p['reduction']!=reduction):
+                    raise ValueError('saved_feedback_not_reproduced')
+                s.event(event.kind,p)
             else:
                 raise ValueError('unknown_saved_event')
         if s.world != data['world'] or s.stopped != data['stopped']:

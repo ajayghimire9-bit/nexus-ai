@@ -56,16 +56,29 @@ def check(root=ROOT):
     protected = record['protected_sha256']
     if type(protected) is not dict or not protected:
         raise ValueError('preservation_manifest_required')
+    # A new, committed engineering task can evolve runtime code without
+    # retroactively rewriting the historical preservation receipt.
+    overrides={}
+    change_path=root/'artifacts/seed_hybrid_code_changes.json'
+    if change_path.exists():
+        change=json.loads(change_path.read_text())
+        baseline=hashlib.sha256((root/'artifacts/seed_repository_refresh.json').read_bytes()).hexdigest()
+        if change.get('schema')!='seed_explicit_code_evolution_v1' or change.get('baseline_manifest_sha256')!=baseline or type(change.get('changes')) is not dict:
+            raise ValueError('invalid_code_evolution_record')
+        for name,row in change['changes'].items():
+            if name not in protected or set(row)!={'before','after'} or row['before']!=protected[name] or type(row['after']) is not str or not re.fullmatch('[0-9a-f]{64}',row['after']):
+                raise ValueError('unlisted_or_unanchored_code_change')
+            overrides[name]=row['after']
     for name, expected in protected.items():
         path = (root/name).resolve()
         if (not path.is_relative_to(root) or not path.is_file() or
-                hashlib.sha256(path.read_bytes()).hexdigest() != expected):
+                hashlib.sha256(path.read_bytes()).hexdigest() != overrides.get(name,expected)):
             raise ValueError('preserved_file_changed: '+name)
     archived = (root/'docs/history/README_BEFORE_SEED_REFRESH.md').read_bytes()
     if hashlib.sha256(archived).hexdigest() != record['previous_readme_sha256']:
         raise ValueError('historical_readme_changed')
     return dict(valid=True,active_documents=len(DOCUMENTS),local_links=count,
-                preserved_files=len(protected),
+                preserved_files=len(protected)-len(overrides),explicit_code_changes=len(overrides),
                 external_links_checked=False,fragment_ids_checked=False,
                 scientific_execution=False,checkpoint_files_required=False)
 

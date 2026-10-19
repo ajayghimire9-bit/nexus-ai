@@ -45,6 +45,13 @@ are supplied by code. Seed does not learn visual perception, arbitrary language,
 new action primitives, or physical dynamics. Explicit definitions are visibly
 distinguished from inferred meanings.
 
+The [hybrid architecture](docs/seed/ARCHITECTURE.md) adds optional tiny neural
+command perception, journal-derived working references, bounded grid-goal search,
+and an experimental adapter to the existing meta-controller. Default Seed stays
+stdlib-only. These are separate from a GRU, neural concept induction or trained
+text generation, which remain future work. The authored neural engineering pilot
+has its own [locked protocol](docs/NEXUS_SEED_HYBRID_PROTOCOL.md).
+
 ## Evidence, including limitations
 
 The S0–S1 delivery passed **220 relevant tests** and real headless Chrome checks
