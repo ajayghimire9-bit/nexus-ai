@@ -1,5 +1,13 @@
 # NEXUS Seed S0–S1 — implementation and local use
 
+## Optional grounded extension delivered
+
+The newer eight-component prototype is implemented and trained in one bounded
+authored pilot. Start with [grounded quickstart](seed/GROUNDED_QUICKSTART.md) and
+[honest grounded results](NEXUS_SEED_GROUNDED_RESULTS.md). It requires PyTorch and
+NumPy; the original stdlib-only mode described below remains unchanged. Trained
+planning/language/concept quality is mixed or negative, not general intelligence.
+
 New direction from verified fbee981, separate branch/worktree. Historical research
 is preserved, including the negative five-family PPO screen. See charter, roadmap
 and locked protocol. Results are recorded separately after the authored comparison.

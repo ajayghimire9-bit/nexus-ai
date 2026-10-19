@@ -274,6 +274,7 @@ class Session:
         self._deadline = time.monotonic()+2
         before = dict(self.counts)
         neural_calls_before=getattr(self.language_encoder,'forward_calls',0)
+        grounded_before=dict(self.grounded_agent.model.work) if self.grounded_agent else {}
         result = dict(type='unsupported', text='Supported: move WORD right [N] then move WORD down; inspect, look, help, stop.')
         try:
             if type(payload) is not dict or 'op' not in payload:
@@ -368,6 +369,10 @@ class Session:
                 questions='experimental_existing_meta_controller' if self.meta_questions else 'active_disagreement',
                 generation='templates',learned_recurrent_memory=False,learning_to_learn_demonstrated=False)
             if self.grounded_agent is not None:
+                state['architecture'].update(perception='shared_multimodal_GRU',
+                    working_memory='RSSM_h32_z8',concept_learning='neural_top8_with_finite_development_checker',
+                    reasoning='existing_MPC_with_learned_value_pruning',
+                    generation='local_trace_GRU_with_factual_gate',learned_recurrent_memory=True)
                 state['grounded']=dict(enabled=True,model_hash=self.grounded_agent.model_hash,
                     architecture='shared_multimodal_GRU_RSSM',h_size=32,z_size=8,
                     approved_concepts=list(self.grounded_agent.approved(self)),
@@ -380,6 +385,7 @@ class Session:
                     uncertainty=result.pop('alternatives', []), result=result, state=state,
                     resources=dict(wall_ms=(time.perf_counter()-start)*1000,
                                    neural_forward_calls=getattr(self.language_encoder,'forward_calls',0)-neural_calls_before,
+                                   grounded_model_work={k:self.grounded_agent.model.work[k]-v for k,v in grounded_before.items()},
                                    **{k:self.counts[k]-before[k] for k in before}))
 
     def snapshot(self):

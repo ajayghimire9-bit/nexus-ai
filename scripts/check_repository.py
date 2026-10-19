@@ -17,6 +17,8 @@ DOCUMENTS = (
     'docs/history/README.md', 'docs/NEXUS_REPOSITORY_STRUCTURE.md',
     'docs/NEXUS_SEED_CHARTER.md', 'docs/NEXUS_SEED_ROADMAP.md',
     'docs/NEXUS_SEED_STATUS.md', 'docs/NEXUS_SEED_RESULTS.md',
+    'docs/seed/GROUNDED_QUICKSTART.md', 'docs/NEXUS_SEED_GROUNDED_PROTOCOL.md',
+    'docs/NEXUS_SEED_GROUNDED_RESULTS.md',
 )
 REQUIRED = (
     'AGENTS.md', 'pyproject.toml', 'Makefile', '.gitignore',

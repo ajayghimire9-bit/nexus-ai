@@ -7,10 +7,11 @@ RSSM-inspired h/z model, learned prototype retrieval, bounded neural program
 proposals, value-pruned planning, information actions, an existing-controller
 outer adapter and a local trace decoder. The finite engine and historical
 research remain preserved. This is an authored prototype, not general language
-understanding or demonstrated AGI. See NEXUS_SEED_GROUNDED_PROTOCOL.md. Its single
-bounded pilot is pending at protocol commit. The earlier command-MLP scaffold
-was preserved without running its proposed pilot. Carried ledger remains
-1845.6321034559958 / 1754.3678965440042 until new execution is recorded.
+understanding or demonstrated AGI. See NEXUS_SEED_GROUNDED_RESULTS.md. The single
+pilot completed from fd957655:626 authored steps,4080 imagined,4.325s. Tanh0/4
+goals,ReLU3/4,greedy4/4; trace accuracy2–7%; trained GUI concept proposal rejected.
+The earlier command-MLP pilot was never run. Current carried ledger after
+conservative fixture/pilot/audit debits:1860.6321034559958 / 1739.3678965440042.
 
 ## Current presentation and direction — Seed first
 

@@ -51,14 +51,21 @@ are supplied by code. Seed does not learn visual perception, arbitrary language,
 new action primitives, or physical dynamics. Explicit definitions are visibly
 distinguished from inferred meanings.
 
-The [hybrid architecture](docs/seed/ARCHITECTURE.md) adds optional tiny neural
-command perception, journal-derived working references, bounded grid-goal search,
-and an experimental adapter to the existing meta-controller. Default Seed stays
-stdlib-only. These are separate from a GRU, neural concept induction or trained
-text generation, which remain future work. The authored neural engineering pilot
-has its own [locked protocol](docs/NEXUS_SEED_HYBRID_PROTOCOL.md).
+The [grounded architecture](docs/seed/ARCHITECTURE.md) now adds a trained shared
+multimodal GRU, recurrent world model, learned retrieval and program proposals,
+value-pruned latent planning, outer meta-control adapter, and local trace
+generation. Default S0–S1 stays stdlib-only; neural mode requires PyTorch/NumPy.
+Use `python3 scripts/run_seed_grounded_gui.py` after installing those dependencies.
+The GUI labels predictions, actual outcomes and rejected proposals separately.
 
 ## Evidence, including limitations
+
+The [new grounded pilot](docs/NEXUS_SEED_GROUNDED_RESULTS.md) completed once:
+626 authored steps, two small models, one seed per configuration. The fixed GUI
+model reached 0/4 goals; the other reached 3/4; simple greedy movement reached
+4/4. Generated trace accuracy was 2–7%, requiring factual fallback. The trained
+neural concept proposer failed its GUI adoption check. All component paths run,
+but reliable learned reasoning and language are not established.
 
 The S0–S1 delivery passed **220 relevant tests** and real headless Chrome checks
 for teaching, cross-scene actions, correction, and process restart.
@@ -70,6 +77,7 @@ negative results remain published. See the [results report](docs/NEXUS_SEED_RESU
 and [raw capture](artifacts/seed_s0_s1_dev.json).
 
 <details><summary>View the tested mobile workspace</summary>
+<p><img src="artifacts/seed_grounded_mobile.png" width="280" alt="Actual trained grounded-agent GUI with authored sensor canvas, recurrent-state inspector and neural action controls"></p>
 <p><img src="artifacts/seed_s0_s1_mobile.png" width="280" alt="Actual Seed mobile interface showing conversation, teaching controls, object grid and evidence inspector"></p>
 <p>Actual local browser QA capture, not a generated mockup.</p>
 </details>

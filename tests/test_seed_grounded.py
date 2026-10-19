@@ -93,6 +93,8 @@ def test_rejected_storage_is_not_reported_as_success_and_runtime_state_restores(
     out=s.request(dict(op='grounded',action='store',reference='o1',x=3,y=3,word='dax'))
     assert out['response_type']=='acted' and out['text']=='blocked'
     assert out['result']['result']['concept']['status']=='needs_evidence'
+    assert out['resources']['grounded_model_work']['encoder_rows']>0
+    assert out['state']['architecture']['learned_recurrent_memory'] is True
     restored=Session.restore(s.snapshot());assert restored.grounded_agent is None
     restored.grounded_agent=GroundedAgent(m,'a'*64);restored.grounded_agent.restore_state(restored)
     assert torch.equal(restored.grounded_agent.h,s.grounded_agent.h)
@@ -142,6 +144,20 @@ def test_config_split_and_budget_rejection():
     with pytest.raises(ValueError):validate_config(bad)
 
 
+@pytest.mark.parametrize('action',[7,8])
+def test_runtime_macro_boundary_semantics_match_training_world(monkeypatch,action):
+    import nexus.seed.grounded_agent as module
+    s=Session();s.world[0].update(x=5 if action==7 else 0,y=2)
+    world=AuthoredWorld(4);world.obj=dict(s.world[0]);world.goal=(3,3)
+    _,reward,done,_=world.step(action)
+    s.grounded_agent=GroundedAgent(model(),'a'*64)
+    monkeypatch.setattr(module,'plan',lambda *a,**k:(action,{}))
+    out=s.request(dict(op='grounded',action='decide',reference='o1',x=3,y=3,word='dax'))
+    assert s.world[0]==world.obj
+    assert out['result']['actual_reward']==pytest.approx(reward)
+    assert out['text']=='blocked' and out['result']['done']==done
+
+
 def test_local_language_is_bounded_and_actual_trace_teacher_forcing_has_gradients():
     m=model();h,z=m.initial();memory=torch.zeros(1,16)
     logits=m.language_logits(h,z,memory,torch.tensor([[1,3,5]]))
@@ -168,6 +184,8 @@ def test_grounded_question_requires_actual_matching_feedback():
     s.request(dict(op='teach',word='dax',object=q['object'],positive=True))
     events=[e for e in s.journal.snapshot() if e.kind=='seed_grounded_information']
     assert len(events)==1
+    feedback=json.loads(events[0].payload_json)
+    assert feedback['task_reward']==0 and feedback['mixed_reward']==.05*feedback['information_gain']
     assert Session.restore(s.snapshot()).snapshot()==s.snapshot()
 
 
@@ -193,3 +211,24 @@ def test_complete_grid_rejects_missing_cells_and_nonfinite():
     for mutate in [lambda r:r['models'].pop(),lambda r:r['source_episodes'].pop(),lambda r:r['models'][0]['control'].pop('random'),lambda r:r['models'][0]['control']['greedy'].pop(),lambda r:r['models'][0]['training']['losses'].pop(),lambda r:r['models'][0]['prediction'].update(state_mae=float('nan')),lambda r:r['models'][0]['prediction'].update(state_mae=True)]:
         bad=copy.deepcopy(result);mutate(bad)
         with pytest.raises(ValueError):validate(bad)
+
+
+def test_invalid_grounded_requests_cannot_spend_model_work():
+    s=Session();s.grounded_agent=GroundedAgent(model(),'a'*64)
+    before=dict(s.grounded_agent.model.work)
+    for key,value in [('action','shell'),('word',[]),('reference',None),('x',True)]:
+        req=dict(op='grounded',action='decide',reference='o1',x=3,y=3,word='dax');req[key]=value
+        assert s.request(req)['response_type']=='error'
+    assert s.grounded_agent.model.work==before
+
+
+def test_packaged_model_receipt_when_present():
+    root=Path(__file__).resolve().parents[1];receipt=root/'artifacts/seed_grounded_pilot.json'
+    # Before the committed single run, the ordinary architecture tests apply.
+    # The explicit read-only audit CLI always fails on missing/incomplete output.
+    if not receipt.exists():return
+    from nexus.seed.grounded_audit import validate
+    r=json.loads(receipt.read_text());assert r['declared_complete'] is True
+    assert validate(r,root)['complete_grid']
+    bad=copy.deepcopy(r);bad['execution_sha']='0'*40
+    with pytest.raises(ValueError,match='provenance'):validate(bad,root)

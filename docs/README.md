@@ -6,6 +6,10 @@ intelligence mission remains a research ambition.
 
 ## Use and understand Seed
 
+- [Grounded neural-agent quickstart](seed/GROUNDED_QUICKSTART.md)
+- [Grounded pilot: actual results and limitations](NEXUS_SEED_GROUNDED_RESULTS.md)
+- [Grounded locked protocol](NEXUS_SEED_GROUNDED_PROTOCOL.md)
+
 - [Quickstart and teaching walkthrough](seed/QUICKSTART.md)
 - [Architecture and code ownership](seed/ARCHITECTURE.md)
 - [Charter and boundaries](NEXUS_SEED_CHARTER.md)

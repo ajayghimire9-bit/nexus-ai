@@ -12,9 +12,10 @@ These are staged research goals, not already demonstrated capabilities.
 - **S3 — Representation transfer:** independent object/property schemas and held-out
   semantic templates; measure systematic transfer. Not implemented.
 - **S4 — Compact neural guidance:** optional small learned parser/search guidance
-  now has an initial optional tiny command-encoder engineering implementation.
-  Its authored pilot is separately locked in NEXUS_SEED_HYBRID_PROTOCOL.md.
-  This does not establish broad parsing or a benefit over simple lookup baselines.
+  now includes an authored multimodal GRU/RSSM, neural program proposal, learned
+  retrieval, value-pruned MPC and local trace decoder. The command-MLP pilot was
+  superseded without execution. See NEXUS_SEED_GROUNDED_RESULTS.md: connected
+  paths, mixed/weak planning and language; no broad parsing or transfer claim.
 - **S5 — Learning-rule selection:** compare question/search update rules under
   equal teaching budgets using existing meta-controller contracts. A functional
   question-policy adapter exists; useful learning-rule improvement is not demonstrated.

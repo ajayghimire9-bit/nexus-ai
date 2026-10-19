@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Seed grounded authored pilot COMPLETE from fd957655: 626 authored interactions,
+4080 imagined states, two120-update new models,4.325s. Precommitted protocol
+NEXUS_SEED_GROUNDED_PROTOCOL; raw seed_grounded_pilot.json and bounded JSON
+weights. Eight component paths functional; planning/language usefulness mixed,
+not general learning. Real Chrome neural/stdlib checks pass. Historical results,
+E2.17 consumed status, H17 block and closed evaluations remain unchanged.
+
 Seed recorded outcome: functional teaching verified; comparison INCOMPLETE at
 10000predicate tests.14/16cells,44charged labels, no rerun. Partial arithmetic
 audit preserves648previous artifacts; no active-learning success claim. Protocol

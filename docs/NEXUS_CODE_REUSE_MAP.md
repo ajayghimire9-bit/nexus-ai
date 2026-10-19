@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+Grounded Seed extends nexus.world with SeedRSSM using SAME nn.factory; its
+explicit-state adapter subclasses SAME RandomShootingMPC and InferenceCounter.
+Program margins execute SAME nn.expr trees. OuterSeedMeta wraps SAME existing
+EpsilonGreedyController; no old environment schemas are widened. Named prototypes
+and recurrent snapshots are domain records in SAME Session/E1 Journal, not a
+second generic memory. SAME Lab server/UI serves optional owner-hash-verified
+models. Training is a new authored domain objective, not historical checkpoint
+retraining or a replacement generic PPO/meta-learning framework.
+
 E4 measured scratch pilot: tasks.ppo_benchmark is experiment glue over SAME
 tasks.benchmark/TaskSpec/wrappers/PPOTrainer.collect/update/GAE; SAME Host and
 ReservationLedger reserve real steps; SAME DecisionJournal persists raw data.

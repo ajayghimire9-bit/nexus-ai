@@ -1,0 +1,76 @@
+{
+  "schema": "seed_grounded_delivery_v1",
+  "execution_sha": "fd957655ae1acde41d55d05e10e9b5c3dcfbf3cf",
+  "pilot_complete": true,
+  "source_sha256": {
+    "src/nexus/seed/__init__.py": "336f260662d5682da5341acd51f081c455627fc6e015574c0e56642232b4318b",
+    "src/nexus/seed/comparison.py": "1f1165b7717490624741ec11f7495d62e6262e5ebfc3e7d84243ab4e6e4b313e",
+    "src/nexus/seed/core.py": "dba3dcf95e259e92b379a5e60a6f3d5420b5295b70486ab204aff1b9d4130aa5",
+    "src/nexus/seed/grounded_agent.py": "80eee17159bb04dec8d47ee4ad09bfd443293acfe523bb0a78d2b806d24a63e9",
+    "src/nexus/seed/grounded_audit.py": "b284c122340c58ac22e99496f721928e2b8870fb6ed795058411af4fa8d5670c",
+    "src/nexus/seed/grounded_meta.py": "156cbbac8cdc1ebf3ec32d59dbf56f0085564a86ae24028597c8972853ad8961",
+    "src/nexus/seed/grounded_records.py": "07db19590513e96e3e4893121f802f6c2b8af26cbc81c1ec005535e6e0489c17",
+    "src/nexus/seed/grounded_training.py": "ec5bdfc7935d2a889c1a1de669506e8d1f1c295e332b020a7529ed9bc78f558d",
+    "src/nexus/seed/grounded_world.py": "4510fcccbca5bb53ec64d3778e4bec15988ff66348c22182ff0ac8340ea1133a",
+    "src/nexus/seed/lab.py": "9dd2789cee516032e6e43c03fe1b28f8a2cdf656bd11ced562adf6ebd20c3404",
+    "src/nexus/seed/latent_planner.py": "2e658794d4d174f65fb829fffafa118133426f9a3217d787b77b450ec982c45d",
+    "src/nexus/seed/perception.py": "d03ae1ce83468e683e2a336f376ce1357505fa6aaa63af77c0bee321a384ad1d",
+    "src/nexus/seed/planning.py": "289970816ba9405357fde8e57da837caf1219ca576a9a3c6d937340b11334c66",
+    "src/nexus/seed/question_policy.py": "c6e28d9c25f1e3e000849f46b50f934afb1b98a4d8342abf9ea92022e8b6c529",
+    "src/nexus/seed/storage.py": "16db1c709bc5314b01fd2b25330eca0da89bec462f53be6f7b245136d1dfbd59",
+    "src/nexus/seed/working.py": "4bdefcf84ddd4e20af0a369a6c7b593ae76b9d699ca29019d733aedc31a8e46a",
+    "src/nexus/world/seed_rssm.py": "eb59837fd33ea93cfd398e818b75fae62254f4a5843a3b20499211f727dba9de",
+    "scripts/run_learning_lab.py": "042f0126b9a9c3b1eddd518ee114773aab135f9b635d621dbaa8204a544953e6",
+    "scripts/run_seed_grounded_pilot.py": "25e84fa9d6237633ff4a07d7f64e90f155f8bf484fb33567a59a1e492abfddb5",
+    "scripts/check_seed_grounded_browser.cjs": "c0f325da8832e4708d41b637f4deb69b8a625c1ccc4f29ac65645703b9a6ef23",
+    "scripts/verify_seed_grounded.py": "9e9a236f7c517cd245ac04afc6d3970c3b9b35d2393647d4493efbaad539a2bd",
+    "tests/test_seed_grounded.py": "c2f91c91f15b0d17bf2f64462f98c98d43b04a61cb042f0d7f2b181e022ba6a0"
+  },
+  "tests": {
+    "command": "python3 -m pytest -o addopts='' -q tests/test_seed_grounded.py tests/test_seed_architecture.py tests/test_seed.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py",
+    "passed": 88,
+    "legacy_dependency_failure": {
+      "file": "tests/test_expr_checkpoint.py",
+      "reason": "child PYTHONPATH=src:.deps could not locate torch",
+      "passed_in_broader_command": 84,
+      "failed": 1,
+      "cartpole_fixture_steps": 8,
+      "rerun": false
+    }
+  },
+  "resources": {
+    "pilot_wall_s": 4.3252979579992825,
+    "authored_steps": 626,
+    "imagined": 4080,
+    "conservative_pilot_audit_debit_s": 6,
+    "conservative_legacy_fixture_debit_s": 9,
+    "session_used_s": 1860.6321034559958,
+    "session_remaining_s": 1739.3678965440042
+  },
+  "frozen_evaluation": true,
+  "historical_results_modified": false,
+  "main_merged": false,
+  "browser_qa": {
+    "kind": "trained_grounded_real_chrome_qa",
+    "browser": "155.0.8059.84",
+    "checks": [
+      "verified_trained_model_connected",
+      "real_multimodal_observation_and_canvas",
+      "insufficient_concept_evidence_rejected_honestly",
+      "neural_action_question_and_real_human_label_path",
+      "trained_neural_program_gate_rejected",
+      "actual_local_decoder_candidate_and_factual_template",
+      "real_latent_mpc_scoring_and_action",
+      "python_restart_restores_h_z_and_evidence",
+      "stop_blocks_neural_planning",
+      "mobile_gui"
+    ],
+    "authored_requests": 6,
+    "teacher_answers": 13,
+    "page_errors": [],
+    "external_requests": [],
+    "checkpoint_sha256": "934b4f51a9cf3788e28ae06693b3aaf39f8e8a9e4882ac7d47fff622ddf545ef",
+    "scientific_environment_steps": 0,
+    "last_gui_source_changes": "No model retraining or comparative rerun; runtime fixes regression-tested"
+  }
+}

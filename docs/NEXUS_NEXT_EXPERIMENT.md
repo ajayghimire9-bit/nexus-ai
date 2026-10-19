@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## After grounded Seed pilot — action-ranking correctness proposed
+
+Freeze both new JSON models. Separately register a small authored state/action
+set and compare predicted nine-action rankings against exact world outcomes,
+including boundary/macro and information actions. This asks whether control
+failure is action discrimination rather than architecture availability. One
+seed/config stays descriptive; do not treat states as model replications.
+No run, new registration or training follows from this proposal. Older proposals
+below remain preserved alternatives; the current architecture task is completed.
+
 ## After Seed S0–S1 — new authored label-budget comparison proposed
 
 Keep the finite encoder-free symbolic architecture. Separately preregister new

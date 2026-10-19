@@ -3,8 +3,9 @@
 Active extension: optional Seed grounded GRU/RSSM runtime. Reuse: existing world
 package, RandomShootingMPC, neural factory, expression evaluator, existing
 EpsilonGreedyController and Session/E1 Journal. The finite engine remains.
-See NEXUS_SEED_GROUNDED_PROTOCOL.md; one pilot is pending at protocol commit.
-Architecture functionality is not evidence of control or general learning.
+See NEXUS_SEED_GROUNDED_RESULTS.md: single pilot complete,626 authored steps,
+4080 imagined; tanh0/4 goals,ReLU3/4,greedy4/4. Real Chrome checks pass; language
+and neural induction remain weak. Architecture is not general learning evidence.
 
 Seed is the current front-door research direction. docs/README.md separates
 current teaching/architecture/evidence from retained historical tracks. Repository

@@ -28,7 +28,17 @@ async function stop(){if(child){const p=child;child=null;await new Promise(r=>{p
   await click('grounded-store');authoredRequests++;x=await last();
   if(x.text!=='blocked'||x.result.result.concept.status!=='needs_evidence')throw Error('False storage claim');checks.push('insufficient_concept_evidence_rejected_honestly');
   await click('grounded-ask');authoredRequests++;x=await last();if(!x.result.question?.object)throw Error('No question card');
-  await click('answerYes');if(!(await last()).state.evidence.length)throw Error('No actual label');checks.push('neural_action_question_and_real_human_label_path');
+  await click(x.result.question.object.color==='red'?'answerYes':'answerNo');if(!(await last()).state.evidence.length)throw Error('No actual label');checks.push('neural_action_question_and_real_human_label_path');
+  for(const scene of [0,1]){
+   await click('scene'+scene);const objects=(await last()).state.world;
+   for(const o of objects){await page.selectOption('#example',o.id);await click(o.color==='red'?'positive':'negative');}
+  }
+  await click('grounded-store');authoredRequests++;x=await last();const induction=x.result.result.concept;
+  if(!['rejected','adopted_development'].includes(induction.status))throw Error('Neural concept gate not exercised');
+  checks.push('trained_neural_program_gate_'+induction.status);
+  if(induction.status==='adopted_development'){
+   await click('grounded-retrieve');authoredRequests++;if(!(await last()).result.retrieval.names.includes('dax'))throw Error('Named retrieval missing');checks.push('trained_key_retrieves_named_executable_concept');
+  }
   await click('grounded-speak');authoredRequests++;x=await last();if(typeof x.result.generated_candidate!=='string'||x.result.candidate_verified!==false)throw Error('Language candidate hidden');checks.push('actual_local_decoder_candidate_and_factual_template');
   await click('grounded-decide');authoredRequests++;x=await last();if(x.response_type!=='acted'||x.result.planning.value_pruned!==8)throw Error('Latent MPC did not run');checks.push('real_latent_mpc_scoring_and_action');
   await click('save');const before=(await last()).state.grounded;
@@ -38,6 +48,6 @@ async function stop(){if(child){const p=child;child=null;await new Promise(r=>{p
   await page.setViewportSize({width:390,height:844});if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))throw Error('Mobile overflow');
   await page.screenshot({path:path.join(root,'runs/seed-grounded-mobile.png'),fullPage:true});checks.push('mobile_gui');
   if(errors.length||external.length)throw Error(JSON.stringify({errors,external}));
-  console.log(JSON.stringify({kind:'trained_grounded_real_chrome_qa',browser:browser.version(),checks,authored_requests:authoredRequests,page_errors:errors,external_requests:external,checkpoint_sha256:model.sha256,scientific_environment_steps:0},null,2));
+  console.log(JSON.stringify({kind:'trained_grounded_real_chrome_qa',browser:browser.version(),checks,authored_requests:authoredRequests,teacher_answers:(await last()).state.costs.teacher_answers,page_errors:errors,external_requests:external,checkpoint_sha256:model.sha256,scientific_environment_steps:0},null,2));
  }finally{await stop();await browser.close();await fs.rm(directory,{recursive:true,force:true});}
 })().catch(e=>{console.error(e);process.exitCode=1;});

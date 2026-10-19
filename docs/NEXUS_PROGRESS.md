@@ -1,5 +1,19 @@
 # NEXUS progress log
 
+## Seed grounded architecture — connected prototype, useful learning mixed
+
+Eight requested component paths implemented; existing world/MPC/factory/
+controller/expressions/Journal reused. Locked execution fd957655: two new
+small models, 120 updates each, 4.325s, 626 authored steps / 4080 imagined.
+Tanh GUI model: 0/4 goals, mean return .010; ReLU 3/4, 1.115; greedy 4/4,
+1.765. Language exact 2.27% / 6.82%, so factual gate remains essential.
+Real Chrome neural and stdlib GUI/restart/stop checks pass. Neural concept
+proposal rejected the red-label GUI gate; functional fixture is not learned
+concept success. No general-learning/transfer/AGI finding. Prior artifacts
+and frozen checkpoints preserved. See NEXUS_SEED_GROUNDED_RESULTS.md.
+Carried ledger after conservative pilot/audit debit:1860.6321034559958 /
+1739.3678965440042. No additional experiment follows automatically.
+
 ## Seed S0–S1 — functional teaching delivered, development comparison incomplete
 
 Precommit0b9ae69, same Lab/E1 Journal with domain-specific finite concepts and

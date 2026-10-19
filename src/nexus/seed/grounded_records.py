@@ -34,4 +34,4 @@ def validate_record(kind,p,session):
         expected=['x'] if len(predicate.literals)==1 else ['binary','add',['x'],['x']]
         if p['expression_tree']!=expected:raise ValueError('concept_expression_schema')
     elif kind=='seed_grounded_information':
-        if set(p)!={'label_ref','information_gain','task_reward','mixed_reward'} or p['label_ref'] not in [e['ref'] for e in session.evidence] or type(p['information_gain']) not in (int,float) or not 0<=p['information_gain']<=1 or p['task_reward']!=-.02 or p['mixed_reward']!=-.02+.05*p['information_gain']:raise ValueError('grounded_feedback_schema')
+        if set(p)!={'label_ref','information_gain','task_reward','mixed_reward'} or p['label_ref'] not in [e['ref'] for e in session.evidence] or type(p['information_gain']) not in (int,float) or not 0<=p['information_gain']<=1 or p['task_reward']!=0. or p['mixed_reward']!=.05*p['information_gain']:raise ValueError('grounded_feedback_schema')

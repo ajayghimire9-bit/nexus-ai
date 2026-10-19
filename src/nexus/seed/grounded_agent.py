@@ -8,7 +8,7 @@ import time
 import torch
 from nexus.evolution1.catalogue import digest
 from nexus.world.seed_rssm import ACTION_NAMES
-from .core import GRAMMAR,Move
+from .core import GRAMMAR,Move,concept_word
 from .grounded_world import observation,tensors,trace_for
 from .grounded_meta import program_truth,expression_for,OuterSeedMeta
 from .latent_planner import plan
@@ -35,7 +35,7 @@ class GroundedAgent:
         after=len(session.candidates(word));before=p['before']
         gain=(before-after)/before if 0<after<=before else 0.
         session.event('seed_grounded_information',dict(label_ref=ref,information_gain=gain,
-            task_reward=-.02,mixed_reward=-.02+.05*gain))
+            task_reward=0.,mixed_reward=.05*gain))
 
     def approved(self,session):
         latest={}
@@ -48,7 +48,11 @@ class GroundedAgent:
         p=self.approved(session).get(word)
         if p is None:return None
         predicate=GRAMMAR[p['program_index']]
-        return [o['id'] for o in session.world if program_truth(predicate,o)]
+        result=[]
+        for o in session.world:
+            session.check();session.charge('predicate_tests')
+            if program_truth(predicate,o):result.append(o['id'])
+        return result
 
     def memory(self,session,encoded):
         records=self.approved(session)
@@ -87,8 +91,15 @@ class GroundedAgent:
         baseline=min(sum(e['positive'] for e in validation),sum(not e['positive'] for e in validation))/len(validation)
         scored=[]
         for i in indices:
-            error=sum(program_truth(GRAMMAR[i],e['object'])!=e['positive'] for e in validation)/len(validation)
+            def wrong(e):
+                session.check();session.charge('predicate_tests')
+                return program_truth(GRAMMAR[i],e['object'])!=e['positive']
+            # Version-space checks proposed programs; it does not enumerate them.
+            if any(wrong(e) for e in train):continue
+            error=sum(wrong(e) for e in validation)/len(validation)
             scored.append((error,i))
+        if not scored:
+            return dict(status='rejected',text='No neural proposal survived the training evidence checker.',candidates=[])
         error,i=min(scored)
         if error>=baseline or error>.2:
             return dict(status='rejected',text='Neural program proposals did not beat the constant development checker.',candidates=scored,baseline_error=baseline)
@@ -101,6 +112,8 @@ class GroundedAgent:
 
     def request(self,session,action,reference,x,y,word):
         started=time.perf_counter()
+        if type(action) is not str or action not in ('induce','meta','observe','speak','decide','ask','store','retrieve') or type(reference) is not str or not 1<=len(reference)<=24 or not concept_word(word):
+            raise ValueError('grounded_request_schema')
         if action=='induce':
             with torch.no_grad():result=self.induce(session,word)
             return result
@@ -136,11 +149,16 @@ class GroundedAgent:
             choice={'ask':4,'store':5,'retrieve':6}.get(action)
             planning=None
             if choice is None:choice,planning=plan(self.model,self.h,self.z,memory,seed=len(session.journal.snapshot()))
-            before_distance=abs(obj['x']-x)+abs(obj['y']-y);trace=[];result={}
+            before_distance=abs(obj['x']-x)+abs(obj['y']-y);trace=[];result={};move_blocked=False
             if choice<4 or choice>=7:
                 names=[ACTION_NAMES[choice]] if choice<4 else (['right','down'] if choice==7 else ['left','up'])
-                actual=session.execute(tuple(Move(ids[0],name) for name in names));trace=actual.get('trace',[])
-                result['execution']=actual
+                # Vetted macros use the same per-primitive boundary handling as
+                # the collected authored world, while each Session call is atomic.
+                executions=[]
+                for name in names:
+                    actual=session.execute((Move(ids[0],name),));executions.append(actual)
+                    trace.extend(actual.get('trace',[]));move_blocked|=actual.get('type')=='blocked'
+                result['execution']=executions
             elif choice==4:
                 result['question']=session.question(word);self.flags[0]=1
                 if result['question'].get('object'):
@@ -155,7 +173,7 @@ class GroundedAgent:
             reward=.2*(before_distance-after_distance)-.02+(1. if done else 0.)
             encoded,memory,retrieval=self.assimilate(session,obj,goal,choice)
             generated=self.model.generate(self.h,self.z,memory)
-            blocked=(choice<4 and not trace) or (choice==5 and not self.flags[1]) or (choice==6 and not self.flags[2]) or (choice==4 and not result['question'].get('object'))
+            blocked=move_blocked or (choice==5 and not self.flags[1]) or (choice==6 and not self.flags[2]) or (choice==4 and not result['question'].get('object'))
             actual_text=trace_for(choice,done,blocked=blocked)
             source='trained_trace_decoder' if generated==actual_text else 'grounded_template_fallback'
             self.context=dict(reference=ids[0],goal=list(goal),world=digest(session.world),done=done)

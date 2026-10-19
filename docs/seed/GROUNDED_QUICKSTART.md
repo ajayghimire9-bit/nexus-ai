@@ -1,5 +1,14 @@
 # Try the grounded Seed agent
 
+The simplest launcher reads the fixed model and verifies its hash for you:
+
+```sh
+python3 scripts/run_seed_grounded_gui.py
+```
+
+Then open `http://127.0.0.1:8774/seed`. It never starts training. If dependencies
+are not installed, use the project installation below; do not disable checks.
+
 Use Python 3.11+, PyTorch and NumPy (`python3 -m pip install -e .` installs the
 declared dependencies). After the pilot produces its JSON model, run:
 
@@ -18,7 +27,8 @@ after 900 seconds. Choose another port if this port is occupied.
 2. Set object `o1` and a goal. **Imagine and act once** may move, ask, store or
    retrieve. Inspect predictions, actual reward and language. Plans can be poor.
 3. Teach an invented word with YES/NO examples. Neural storage requires eight
-   distinct property combinations and enough positive/negative examples. It can
+   distinct property combinations and enough positive/negative examples (teach
+   objects in both scenes). It can
    honestly reject. The finite checker and symbolic planner remain available.
 4. **Ask as action**, then answer its card. Actual information feedback occurs
    only when the requested human label arrives.

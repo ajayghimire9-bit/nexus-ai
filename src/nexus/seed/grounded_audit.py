@@ -60,6 +60,9 @@ def validate(result,root=None):
         if root is not None:
             path=Path(root)/row['checkpoint']
             if path.parent.resolve()!=(Path(root)/'artifacts').resolve() or hashlib.sha256(path.read_bytes()).hexdigest()!=row['sha256']:raise ValueError('checkpoint_integrity')
+            model=json.loads(path.read_text())
+            expected=dict(execution_sha=result['execution_sha'],config_sha256=result['config_sha256'],source_data_sha256=result['source_data_sha256'],recipe=row['recipe'])
+            if model.get('schema')!='seed_rssm_v1' or model.get('provenance')!=expected:raise ValueError('checkpoint_provenance')
     if real!=result['authored_world_steps'] or imagined!=result['imagined_transitions']:raise ValueError('resource_accounting')
     if real>c['max_authored_steps'] or imagined>c['max_imagined_transitions'] or not finite(result['wall_s']) or result['wall_s']>c['max_wall_s']:raise ValueError('resource_cap')
     return dict(authored_world_steps=real,imagined_transitions=imagined,complete_grid=True)

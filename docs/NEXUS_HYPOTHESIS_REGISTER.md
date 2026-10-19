@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed grounded H-engineering / H-development
+
+One locked authored pilot from fd957655ae1acde41d55d05e10e9b5c3dcfbf3cf.
+Functional multimodal/RSSM/retrieval/proposal/planning/question/meta/language
+paths verified. Learned capability remains mixed: tanh MPC 0/4 goals, ReLU3/4,
+greedy4/4; one seed/config, no inferential superiority claim. Trace accuracy
+1/44 and3/44, trained GUI concept proposal rejected. Lower loss/gradients do
+not prove useful memory, meta-learning or AGI. Raw results finite/complete,
+old incomplete Seed comparison unchanged. See SEED_GROUNDED_RESULTS.
+
 ## Seed H-teach / H-question — INCOMPLETE, not established
 
 Locked0b9ae69: finite-grammar teaching versus memorization, disagreement versus
