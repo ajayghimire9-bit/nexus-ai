@@ -56,6 +56,7 @@ def controllers():
 
 def seeds(config,family,bundle,episode):
     f=config["families"].index(family)
+    if config['version']=='crossed_reset_v1':bundle=0
     return (config["env_seed_base"]+f*10000+bundle*100+episode,
             config["planner_seed_base"]+f*10000+bundle*1000+episode*200)
 
@@ -66,6 +67,7 @@ def requested_seeds(c):
         reset,base=seeds(c,f,b,e); env.add(reset)
         planner.update(range(base,base+c["episode_steps"]))
     units=len(c['families'])*len(c['model_bundles'])*len(c['episodes'])
+    if c['version']=='crossed_reset_v1':units//=len(c['model_bundles'])
     if env & planner or len(env)!=units or len(planner)!=units*c['episode_steps']: raise ValueError("seed_schedule_collision")
     return env|planner
 
@@ -120,16 +122,28 @@ def validate_config(c):
     replication={**expected,"version":"full_policy_replication_v1","episodes":[0,1,2,3],
         "controllers":["flat_anchor","successor_anchor","rank_blend"],"env_seed_base":2105000000,
         "planner_seed_base":2106000000,"env_cap":9600,"imagined_cap":14745600}
-    if json.dumps(c,sort_keys=True) not in [json.dumps(x,sort_keys=True) for x in (expected,replication)]:
+    crossed={**replication,'version':'crossed_reset_v1','families':['pendulum'],
+        'controllers':['successor_anchor','rank_blend'],'env_seed_base':2107000000,
+        'planner_seed_base':2108000000,'env_cap':3200,'imagined_cap':4915200,'time_cap_s':90}
+    if json.dumps(c,sort_keys=True) not in [json.dumps(x,sort_keys=True) for x in (expected,replication,crossed)]:
         raise ValueError("locked_configuration_mismatch")
 
 
 def run_paths(c):
-    """Only two explicitly locked profiles, not an arbitrary experiment launcher."""
+    """Explicit locked profiles only, not an arbitrary experiment launcher."""
     validate_config(c)
     if c['version']=='full_policy_source_v1':
         return dict(config=CONFIG,allocation=ALLOCATION,protocol=PROTOCOL,result=RESULT,
                     journal=JOURNAL,usage=USAGE,previous=ROOT/'artifacts/unified_headroom_audit.json')
+    if c['version']=='crossed_reset_v1':
+        return {**{k:ROOT/p for k,p in {
+            'config':'configs/unified_crossed_reset.json',
+            'allocation':'configs/unified_crossed_reset_allocation.json',
+            'protocol':'docs/NEXUS_UNIFIED_CROSSED_RESET_PROTOCOL.md',
+            'result':'artifacts/unified_crossed_reset.json',
+            'journal':'artifacts/unified_crossed_reset_resources.jsonl.gz',
+            'usage':'artifacts/unified_crossed_reset_usage.json'}.items()},
+            'previous':ROOT/'artifacts/unified_full_policy_replication_validation.json'}
     return {**{key:ROOT/path for key,path in {
         'config':'configs/unified_full_policy_replication.json',
         'allocation':'configs/unified_full_policy_replication_allocation.json',
@@ -169,16 +183,21 @@ def validate_result(p,c):
         group=[r for r in rows if (r["family"],r["model_bundle"],r["episode"])==(f,b,e)]
         if len({r["initial_obs_hash"] for r in group})!=1 or len({r["reset_seed"] for r in group})!=1:
             raise ValueError("unpaired_reset")
+    if c['version']=='crossed_reset_v1':
+        for e in c['episodes']:
+            group=[r for r in rows if r['episode']==e]
+            if len({r['initial_obs_hash'] for r in group})!=1:raise ValueError('uncrossed_initial_states')
     return True
 
 
 def analyze(rows,c):
     contrasts={}
+    anchors=[a for a in ('flat_anchor','successor_anchor') if a in c['controllers']]
     for f in c["families"]:
         family={}
         for generated in (g for g in c['controllers'] if g not in ('flat_anchor','successor_anchor')):
             checks={}
-            for anchor in ("flat_anchor","successor_anchor"):
+            for anchor in anchors:
                 pairs=[]
                 for b in c["model_bundles"]:
                     diffs=[]
@@ -191,7 +210,7 @@ def analyze(rows,c):
             family[generated]=checks
         contrasts[f]=family
     generated=[g for g in c['controllers'] if g not in ('flat_anchor','successor_anchor')]
-    passed={g:all(contrasts[f][g][a]["point_screen"] for f in c["families"] for a in ("flat_anchor","successor_anchor")) for g in generated}
+    passed={g:all(contrasts[f][g][a]["point_screen"] for f in c["families"] for a in anchors) for g in generated}
     return {"paired_contrasts":contrasts,"point_screen_by_generated":passed,
             "scientific_control_success":False,"independent_model_count_per_family":2,
             "intervals":"Not reported: exploratory n=2 source-model pairs per family; no ten-decoder inference."}
@@ -219,7 +238,7 @@ def run(c):
        "config":c,"historical_artifacts_sha256":old,"authorization":allocation}
     clock=lambda:Clock(int((time.process_time()-cpu0)*1e9),int((time.perf_counter()-t0)*1e9))
     try:
-        if c['version']=='full_policy_replication_v1':
+        if c['version']!='full_policy_source_v1':
             for name,expected in allocation['parent_artifacts_sha256'].items():verify_file(ROOT/name,expected)
         previous=json.loads(paths['previous'].read_text())
         if previous['session_ledger']['used_after_s']!=allocation['session_used_before_s']:
@@ -235,9 +254,9 @@ def run(c):
             "conservative_h17_ranges_disjoint":True,"planned_unique_seed_count":len(candidates),
             "scope":"Reachable-tree seed metadata and preserved historical registry, not unavailable external runs."}
         manifest=json.loads((ROOT/"artifacts/evolution2_fit_clock_run.json").read_text())
-        selected=[r for r in manifest["fits"] if r["bundle"] in c["model_bundles"]]
+        selected=[r for r in manifest["fits"] if r["bundle"] in c["model_bundles"] and r['family'] in c['families']]
         verify_checkpoints(selected,c)
-        p["source_arrays"]=[r for r in LOCKED_ARRAYS if r["bundle"] in c["model_bundles"]]
+        p["source_arrays"]=[r for r in LOCKED_ARRAYS if r["bundle"] in c["model_bundles"] and r['family'] in c['families']]
         for r in p["source_arrays"]:
             verify_file(ROOT/r["path"],r["sha256"])
             with np.load(ROOT/r["path"]) as source:
@@ -254,7 +273,7 @@ def run(c):
                 model.net.eval()
                 for param in model.net.parameters():param.requires_grad_(False)
                 fingerprint=state_hash(model)
-                if c['version']=='full_policy_replication_v1':
+                if c['version']!='full_policy_source_v1':
                     parent=json.loads(RESULT.read_text())
                     original=next(x for x in parent['models'] if (x['family'],x['bundle'])==(f,b))
                     if fingerprint!=original['before']:raise ValueError('parent_frozen_state_mismatch')

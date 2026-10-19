@@ -60,7 +60,7 @@ def verify(p, journal_path=None):
     if h.analyze(p['episodes'],c)!=p['analysis']:raise ValueError('analysis_reproduction')
     return dict(valid=True,decision_journals=len(seen),hash_chained_events=events,completed=work.payload(),
                 by_controller={k:v.payload() for k,v in by_controller.items()},
-                historical_json_preserved=len(p['historical_artifacts_sha256']),frozen_models=4,
+                historical_json_preserved=len(p['historical_artifacts_sha256']),frozen_models=len(p['models']),
                 max_published_reward_error=max_reward_error,new_real_steps=0,neural_inference=0)
 
 

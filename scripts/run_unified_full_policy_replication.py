@@ -19,6 +19,7 @@ VALIDATION=h.ROOT/'artifacts/unified_full_policy_replication_validation.json'
 def directional_screen(p):
     """Descriptive replication of fixed prior directions; no model-count inflation."""
     h.validate_result(p,p['config'])
+    if p['config']['version']=='crossed_reset_v1':return crossed_screen(p)
     a=h.analyze(p['episodes'],p['config'])
     acro=a['paired_contrasts']['acrobot']['rank_blend']
     pend=a['paired_contrasts']['pendulum']['rank_blend']['successor_anchor']
@@ -27,8 +28,26 @@ def directional_screen(p):
         independent_models_per_family=2,new_independent_models=0,scientific_control_success=False)
 
 
-def audit(paths):
-    if VALIDATION.exists():raise FileExistsError('preserve_audit')
+def crossed_screen(p):
+    h.validate_result(p,p['config'])
+    differences={b:[] for b in p['config']['model_bundles']}
+    for b in differences:
+        for e in p['config']['episodes']:
+            rows={r['controller']:r['return'] for r in p['episodes'] if (r['model_bundle'],r['episode'])==(b,e)}
+            differences[b].append(rows['rank_blend']-rows['successor_anchor'])
+    means={b:float(np.mean(v)) for b,v in differences.items()}
+    interactions=[a-b for a,b in zip(differences[0],differences[1])]
+    split=(means[0]>=1. and means[1]<=-1. and sum(v>0 for v in differences[0])>=3
+           and sum(v<0 for v in differences[1])>=3)
+    return dict(per_model_episode_differences={str(b):v for b,v in differences.items()},
+        per_model_means={str(b):v for b,v in means.items()},paired_reset_interactions=interactions,
+        mean_interaction=float(np.mean(interactions)),
+        label='model_preference_split_descriptive' if split else 'model_preference_split_not_established',
+        independent_models=2,new_independent_models=0,scientific_control_success=False)
+
+
+def audit(paths,validation_path=VALIDATION):
+    if validation_path.exists():raise FileExistsError('preserve_audit')
     start=time.perf_counter()
     spec=importlib.util.spec_from_file_location('full_policy_verifier',h.ROOT/'scripts/verify_unified_full_policy_source.py')
     verifier=importlib.util.module_from_spec(spec);spec.loader.exec_module(verifier)
@@ -38,15 +57,18 @@ def audit(paths):
     result.update(capture_sha256=h.sha(paths['result']),audit_wall_s=time.perf_counter()-start)
     used=p['session_ledger']['used_after_s']+result['audit_wall_s']
     result['session_ledger']=dict(used_before_s=p['session_ledger']['used_after_s'],used_after_s=used,remaining_after_s=3600-used)
-    with VALIDATION.open('x') as out:json.dump(result,out,indent=2);out.write('\n')
+    with validation_path.open('x') as out:json.dump(result,out,indent=2);out.write('\n')
     return result
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--audit',action='store_true');args=parser.parse_args()
-    c=json.loads(CONFIG.read_text());paths=h.run_paths(c)
+    parser=argparse.ArgumentParser();parser.add_argument('--audit',action='store_true')
+    parser.add_argument('--crossed-reset',action='store_true');args=parser.parse_args()
+    config_path=h.ROOT/'configs/unified_crossed_reset.json' if args.crossed_reset else CONFIG
+    validation_path=h.ROOT/'artifacts/unified_crossed_reset_validation.json' if args.crossed_reset else VALIDATION
+    c=json.loads(config_path.read_text());paths=h.run_paths(c)
     if args.audit:
-        print(json.dumps(audit(paths)));raise SystemExit(0)
+        print(json.dumps(audit(paths,validation_path)));raise SystemExit(0)
     if paths['result'].exists():raise FileExistsError('preserve_closed_capture')
     if subprocess.check_output(['git','diff','HEAD','--name-only'],cwd=h.ROOT,text=True).strip():
         raise RuntimeError('commit_implementation_protocol_first')
@@ -55,6 +77,7 @@ if __name__=='__main__':
            'src/nexus/evolution2/full_policy_source.py','src/nexus/evolution2/generated_strategies.py',
            'src/nexus/evolution2/planner_adapter.py','src/nexus/world/dynamics.py','src/nexus/world/rewards.py',
            'src/nexus/tasks/spec.py','src/nexus/tasks/wrappers.py','tests/test_unified_full_policy_replication.py']
+    if args.crossed_reset:names.append('tests/test_unified_crossed_reset.py')
     names += [str(paths[k].relative_to(h.ROOT)) for k in ('config','allocation','protocol')]
     tracked=set(subprocess.check_output(['git','ls-files'],cwd=h.ROOT,text=True).splitlines())
     if not set(names)<=tracked:raise RuntimeError('uncommitted_implementation')
