@@ -4,6 +4,7 @@ import itertools
 import json
 import subprocess
 import time
+from contextlib import ExitStack
 
 import numpy as np
 
@@ -21,7 +22,15 @@ def verify(p, journal_path=None):
         if hashlib.sha256(raw).hexdigest()!=expected:raise ValueError('execution_code_hash')
     for name,expected in p['historical_artifacts_sha256'].items():h.verify_file(h.ROOT/name,expected)
     journal_path=journal_path or h.JOURNAL
-    h.verify_file(journal_path,p['resource_journal_sha256'])
+    if c.get('journal_chunk_decisions'):
+        parts=p['resource_journal_parts'];base=h.run_paths(c)['journal']
+        expected_parts=[str(base.with_name(base.name.replace('.jsonl.gz',f'.part{i:02}.jsonl.gz')).relative_to(h.ROOT))
+            for i in range((c['env_cap']+c['journal_chunk_decisions']-1)//c['journal_chunk_decisions'])]
+        if [x['path'] for x in parts]!=expected_parts:raise ValueError('journal_part_grid')
+        journal_paths=[h.ROOT/x['path'] for x in parts]
+        for path,part in zip(journal_paths,parts):h.verify_file(path,part['sha256'])
+    else:
+        h.verify_file(journal_path,p['resource_journal_sha256']);journal_paths=[journal_path]
     h.verify_checkpoints(p['models'],c)
     if any(r['before']!=r['after'] for r in p['models']):raise ValueError('frozen_state_mismatch')
     for r in p['source_arrays']:h.verify_file(h.ROOT/r['path'],r['sha256'])
@@ -35,8 +44,9 @@ def verify(p, journal_path=None):
             error=abs(float(reward_fn(np.asarray(step['obs']),step['action'],np.asarray(step['next_obs']))[0])-step['reward'])
             max_reward_error=max(max_reward_error,error)
             if error>1e-5:raise ValueError('published_reward_mismatch')
-    with gzip.open(journal_path,'rt') as src:
-        for line in src:
+    with ExitStack() as stack:
+        streams=[stack.enter_context(gzip.open(path,'rt')) for path in journal_paths]
+        for line in itertools.chain.from_iterable(streams):
             record=json.loads(line)
             ident=(record['family'],record['model'],record['episode'],record['controller'],record['tick'])
             if ident not in expected or ident in seen or record['status']!='complete_execution':raise ValueError('journal_grid')

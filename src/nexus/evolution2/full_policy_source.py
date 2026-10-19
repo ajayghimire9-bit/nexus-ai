@@ -57,7 +57,7 @@ def controllers():
 def seeds(config,family,bundle,episode):
     f=config["families"].index(family)
     if config['version']=='crossed_reset_v1':bundle=0
-    stride=2000 if config['version']=='return_feedback_v1' else 1000
+    stride=4000 if config['version']=='coverage_feedback_v1' else (2000 if config['version']=='return_feedback_v1' else 1000)
     return (config["env_seed_base"]+f*10000+bundle*100+episode,
             config["planner_seed_base"]+f*10000+bundle*stride+episode*200)
 
@@ -129,7 +129,10 @@ def validate_config(c):
     feedback={**replication,'version':'return_feedback_v1','episodes':list(range(7)),
         'controllers':['successor_anchor','rank_blend'],'env_seed_base':2111000000,
         'planner_seed_base':2112000000,'env_cap':11200,'imagined_cap':17203200}
-    if json.dumps(c,sort_keys=True) not in [json.dumps(x,sort_keys=True) for x in (expected,replication,crossed,feedback)]:
+    coverage={**feedback,'version':'coverage_feedback_v1','episodes':list(range(13)),
+        'env_seed_base':2113000000,'planner_seed_base':2114000000,'env_cap':20800,
+        'imagined_cap':31948800,'time_cap_s':240,'training_budgets':[3,6,9],'journal_chunk_decisions':4000}
+    if json.dumps(c,sort_keys=True) not in [json.dumps(x,sort_keys=True) for x in (expected,replication,crossed,feedback,coverage)]:
         raise ValueError("locked_configuration_mismatch")
 
 
@@ -154,6 +157,12 @@ def run_paths(c):
             'protocol':'docs/NEXUS_E3_2_RETURN_FEEDBACK_PROTOCOL.md','result':'artifacts/e3_2_return_feedback.json',
             'journal':'artifacts/e3_2_return_feedback_resources.jsonl.gz','usage':'artifacts/e3_2_return_feedback_usage.json'}.items()},
             'previous':ROOT/'artifacts/e3_1_learned_model_validation.json'}
+    if c['version']=='coverage_feedback_v1':
+        return {**{k:ROOT/p for k,p in {
+            'config':'configs/e3_4_feedback_coverage.json','allocation':'configs/e3_4_feedback_coverage_allocation.json',
+            'protocol':'docs/NEXUS_E3_4_FEEDBACK_COVERAGE_PROTOCOL.md','result':'artifacts/e3_4_feedback_coverage.json',
+            'journal':'artifacts/e3_4_feedback_coverage_resources.jsonl.gz','usage':'artifacts/e3_4_feedback_coverage_usage.json'}.items()},
+            'previous':ROOT/'artifacts/e3_3_training_feedback_validation.json'}
     return {**{key:ROOT/path for key,path in {
         'config':'configs/unified_full_policy_replication.json',
         'allocation':'configs/unified_full_policy_replication_allocation.json',
@@ -226,14 +235,35 @@ def analyze(rows,c):
             "intervals":"Not reported: exploratory n=2 source-model pairs per family; no ten-decoder inference."}
 
 
+def training_episodes(c):return tuple(range(9 if c['version']=='coverage_feedback_v1' else 3))
+
+
+def evaluation_episodes(c):return tuple(range(9,13) if c['version']=='coverage_feedback_v1' else range(3,7))
+
+
 def model_jobs(c,selected):
-    stages=[('training',[0,1,2]),('evaluation',[3,4,5,6])] if c['version']=='return_feedback_v1' else [('evaluation',c['episodes'])]
+    stages=[('training',training_episodes(c)),('evaluation',evaluation_episodes(c))] if c['version'] in ('return_feedback_v1','coverage_feedback_v1') else [('evaluation',c['episodes'])]
     return [(r,stage,episodes) for stage,episodes in stages for r in selected]
+
+
+class DecisionJournal:
+    """Lossless physical journal rotation; no resource-meter changes."""
+    def __init__(self,path,chunk_decisions=None):
+        self.path=path;self.chunk=chunk_decisions;self.paths=[];self.stream=None;self.n=0
+    def __enter__(self):return self
+    def write(self,data):
+        if self.stream is None or (self.chunk and self.n%self.chunk==0):
+            if self.stream:self.stream.close()
+            p=self.path if not self.chunk else self.path.with_name(self.path.name.replace('.jsonl.gz',f'.part{len(self.paths):02}.jsonl.gz'))
+            self.stream=gzip.open(p,'xb');self.paths.append(p)
+        self.stream.write(data);self.n+=1
+    def __exit__(self,*args):
+        if self.stream:self.stream.close()
 
 
 def run(c, *, on_training=None, on_decision=None):
     validate_config(c)
-    feedback=c['version']=='return_feedback_v1'
+    feedback=c['version'] in ('return_feedback_v1','coverage_feedback_v1')
     if feedback and (on_training is None or on_decision is None):raise ValueError('feedback_hooks_required')
     if not feedback and (on_training is not None or on_decision is not None):raise ValueError('unexpected_hooks')
     paths=run_paths(c)
@@ -247,7 +277,8 @@ def run(c, *, on_training=None, on_decision=None):
         raise ValueError("allocation_integrity")
     if allocation["time_cap_s"]!=c["time_cap_s"] or allocation["env_cap"]!=c["env_cap"] or allocation["imagined_cap"]!=c["imagined_cap"]:
         raise ValueError("allocation_cap_mismatch")
-    if usage_path.exists() or journal_path.exists() or result_path.exists(): raise FileExistsError("one_run_already_started")
+    if usage_path.exists() or journal_path.exists() or result_path.exists() or (c.get('journal_chunk_decisions') and list(journal_path.parent.glob(journal_path.name.replace('.jsonl.gz','.part*.jsonl.gz')))):
+        raise FileExistsError("one_run_already_started")
     with usage_path.open("x") as use:
         use.write(json.dumps({"consumed":True,"allocation_sha256":sha(allocation_path),"automatic_retry":False})+"\n")
     state={"reserved":Work(),"completed":Work(),"unknown_upper":Work()}
@@ -255,6 +286,7 @@ def run(c, *, on_training=None, on_decision=None):
     p={"declared_complete":False,"development_only":True,"episodes":[],"models":[],"resources":{},
        "config":c,"historical_artifacts_sha256":old,"authorization":allocation}
     clock=lambda:Clock(int((time.process_time()-cpu0)*1e9),int((time.perf_counter()-t0)*1e9))
+    journal=None
     try:
         if c['version']!='full_policy_source_v1':
             for name,expected in allocation['parent_artifacts_sha256'].items():verify_file(ROOT/name,expected)
@@ -282,7 +314,7 @@ def run(c, *, on_training=None, on_decision=None):
         p["fit_manifest_sha256"]=sha(ROOT/"artifacts/evolution2_fit_clock_run.json")
         jobs=model_jobs(c,selected)
         fitted=False;decisions={}
-        with gzip.open(journal_path,"xb") as journal:
+        with DecisionJournal(journal_path,c.get('journal_chunk_decisions')) as journal:
             for r,stage,episodes in jobs:
                 if time.perf_counter()>=deadline:raise TimeoutError("time_cap")
                 if feedback and stage=='evaluation' and not fitted:
@@ -378,7 +410,9 @@ def run(c, *, on_training=None, on_decision=None):
         p["declared_complete"]=True
     except (Exception,KeyboardInterrupt) as exc:p["failure"]=f"{type(exc).__name__}: {exc}"
     p["resources"]={**{k:v.payload() for k,v in state.items()},"wall_s":time.perf_counter()-t0,"cpu_s":time.process_time()-cpu0}
-    if journal_path.exists():p["resource_journal_sha256"]=sha(journal_path)
+    if c.get('journal_chunk_decisions'):
+        p['resource_journal_parts']=[dict(path=str(path.relative_to(ROOT)),sha256=sha(path)) for path in (journal.paths if journal else [])]
+    elif journal_path.exists():p["resource_journal_sha256"]=sha(journal_path)
     start=allocation['session_used_before_s']
     p["session_ledger"]={"used_before_s":start,"used_after_s":start+p["resources"]["wall_s"],"remaining_after_s":3600-start-p["resources"]["wall_s"]}
     return p

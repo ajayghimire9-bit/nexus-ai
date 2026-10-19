@@ -22,10 +22,16 @@ METHODS=('quality_predictor','shuffled_pair_labels','model_mean','family_mean','
 ESTIMATES=METHODS[:5]
 
 
-def paired_training(rows,c):
-    expected=set(itertools.product(c['families'],c['model_bundles'],range(3),c['controllers']))
+def paired_training(rows,c,budget=None):
+    if c['version']=='coverage_feedback_v1':
+        if type(budget) is not int or budget not in (3,6,9):raise ValueError('locked_training_budget')
+        episodes=range(budget)
+    else:
+        if budget is not None:raise ValueError('unexpected_training_budget')
+        episodes=range(3)
+    expected=set(itertools.product(c['families'],c['model_bundles'],episodes,c['controllers']))
     ids=[(r['family'],r['model_bundle'],r['episode'],r['controller']) for r in rows]
-    if len(ids)!=24 or set(ids)!=expected:raise ValueError('training_grid_only')
+    if len(ids)!=len(expected) or set(ids)!=expected:raise ValueError('training_grid_only')
     for r in rows:
         if type(r['model_bundle']) is not int or type(r['episode']) is not int:raise ValueError('training_identity_type')
         if r.get('split')!='training':raise ValueError('evaluation_feedback_forbidden')
@@ -35,7 +41,7 @@ def paired_training(rows,c):
         seed,base=h.seeds(c,r['family'],r['model_bundle'],r['episode'])
         if r['reset_seed']!=seed or r['planner_base']!=base:raise ValueError('closed_or_wrong_seed_feedback')
     paired=[]
-    for f,b,e in itertools.product(c['families'],c['model_bundles'],range(3)):
+    for f,b,e in itertools.product(c['families'],c['model_bundles'],episodes):
         group={r['controller']:r for r in rows if (r['family'],r['model_bundle'],r['episode'])==(f,b,e)}
         if len({r['initial_obs_hash'] for r in group.values()})!=1:raise ValueError('unpaired_training_reset')
         public=dict(family=f,model_bundle=b,episode=e,initial_obs=group['successor_anchor']['steps'][0]['obs'])
@@ -50,8 +56,11 @@ def choose(advantage):return 'rank_blend' if advantage>0 else 'successor_anchor'
 
 class FrozenReturnSelector:
     """Trusted host hooks. Updates accept newly collected training rows only."""
-    def __init__(self,c,persist=True):
+    def __init__(self,c,persist=True,budget=None,manifest_path=None,predictions_path=None):
+        if c['version']=='coverage_feedback_v1' and (type(budget) is not int or budget not in (3,6,9)):raise ValueError('locked_training_budget')
         self.c=c;self.persist=persist;self.ready=False;self.records=[];self.predictors={}
+        self.budget=budget;self.manifest_path=manifest_path or MANIFEST;self.predictions_path=predictions_path or PREDICTIONS
+        if c['version']=='coverage_feedback_v1' and persist and (manifest_path is None or predictions_path is None):raise ValueError('separate_coverage_paths_required')
 
     def features(self,public):
         if set(public)-{'family','model_bundle','episode','initial_obs','completed_real_steps'}:raise ValueError('nonpublic_features')
@@ -65,7 +74,7 @@ class FrozenReturnSelector:
 
     def fit(self,rows):
         if self.ready:raise RuntimeError('frozen_predictor_no_updates')
-        start=time.perf_counter();bank=paired_training(rows,self.c)
+        start=time.perf_counter();bank=paired_training(rows,self.c,self.budget)
         self.norms={f:FamilyNormalizer.fit(f,load_source_train_obs(f,(0,1))) for f in self.c['families']}
         self.supports={f'{f}:{b}':support_from_source(f,b,start=0,n=32) for f,b in itertools.product(self.c['families'],self.c['model_bundles'])}
         self.anchor_means={f'{f}:{b}':{k:float(np.mean([x['returns'][k] for x in bank if (x['public']['family'],x['public']['model_bundle'])==(f,b)]))
@@ -73,7 +82,7 @@ class FrozenReturnSelector:
         self.family_means={f:float(np.mean([x['advantage'] for x in bank if x['public']['family']==f])) for f in self.c['families']}
         self.global_mean=float(np.mean([x['advantage'] for x in bank]))
         x=[self.features(r['public']) for r in bank];y=[r['advantage'] for r in bank]
-        permutation=np.random.default_rng(31).permutation(12).tolist()
+        permutation=np.random.default_rng(31).permutation(len(bank)).tolist()
         for mode in ('quality_predictor','shuffled_pair_labels'):
             predictor=AdvantagePredictor()
             for i,r in enumerate(bank):
@@ -83,17 +92,18 @@ class FrozenReturnSelector:
         self.manifest=dict(training_pairs=bank,feature_rows=[v.tolist() for v in x],feature_dimension=len(x[0]),
             models={k:dict(scale=m.model[0].tolist(),beta=m.model[1].tolist(),fit_calls=m.fit_calls) for k,m in self.predictors.items()},
             anchor_means=self.anchor_means,family_means=self.family_means,global_mean=self.global_mean,shuffle_permutation=permutation,
-            learned_hash=self.frozen_hash,training_real_steps=4800,fit_wall_s=time.perf_counter()-start,
+            learned_hash=self.frozen_hash,training_real_steps=len(bank)*400,fit_wall_s=time.perf_counter()-start,
             normalizers={f:dict(mean=n.mean.tolist(),std=n.std.tolist(),source_n=n.n) for f,n in self.norms.items()},
             support_sha256={k:digest(dict(obs=s.obs.tolist(),action=s.action.tolist(),next_obs=s.next_obs.tolist())) for k,s in self.supports.items()})
+        if self.budget is not None:self.manifest['training_budget']=self.budget
         if self.persist:
-            with MANIFEST.open('x') as out:json.dump(self.manifest,out,allow_nan=False);out.write('\n');out.flush()
-            with PREDICTIONS.open('x'):pass
+            with self.manifest_path.open('x') as out:json.dump(self.manifest,out,allow_nan=False);out.write('\n');out.flush()
+            with self.predictions_path.open('x'):pass
 
     @classmethod
     def restore(cls,c,manifest):
         """Verification only: restore frozen coefficients, no feedback updates/fits."""
-        obj=cls(c,persist=False);obj.manifest=manifest
+        obj=cls(c,persist=False,budget=manifest.get('training_budget'));obj.manifest=manifest
         obj.norms={f:FamilyNormalizer(f,np.asarray(n['mean']),np.asarray(n['std']),len(n['mean']),n['source_n']) for f,n in manifest['normalizers'].items()}
         obj.supports={f'{f}:{b}':support_from_source(f,b,start=0,n=32) for f,b in itertools.product(c['families'],c['model_bundles'])}
         obj.anchor_means=manifest['anchor_means'];obj.family_means=manifest['family_means'];obj.global_mean=manifest['global_mean']
@@ -107,10 +117,10 @@ class FrozenReturnSelector:
 
     def decide(self,public):
         if not self.ready:raise RuntimeError('training_manifest_required')
-        if public['episode'] not in (3,4,5,6):raise ValueError('evaluation_reset_required')
+        if public['episode'] not in h.evaluation_episodes(self.c):raise ValueError('evaluation_reset_required')
         key=(public['family'],public['model_bundle'],public['episode'])
         if any((r['family'],r['model_bundle'],r['episode'])==key for r in self.records):raise ValueError('duplicate_decision')
-        if self.persist and h.sha(MANIFEST)!=self.manifest_sha:raise ValueError('manifest_changed')
+        if self.persist and h.sha(self.manifest_path)!=self.manifest_sha:raise ValueError('manifest_changed')
         x=self.features(public);f,b=key[:2]
         estimates={k:m.predict(x) for k,m in self.predictors.items()}
         estimates.update(model_mean=self.anchor_means[f'{f}:{b}']['rank_blend']-self.anchor_means[f'{f}:{b}']['successor_anchor'],
@@ -121,7 +131,7 @@ class FrozenReturnSelector:
         if self.learned_hash()!=self.frozen_hash:raise ValueError('evaluation_updated_predictor')
         record={**public,'estimates':estimates,'choices':choices,'feature_sha256':digest(x.tolist()),'learned_hash':self.frozen_hash}
         if self.persist:
-            with PREDICTIONS.open('a') as out:out.write(json.dumps(record,allow_nan=False)+'\n');out.flush()
+            with self.predictions_path.open('a') as out:out.write(json.dumps(record,allow_nan=False)+'\n');out.flush()
         self.records.append(record);return record
 
     @property
@@ -131,15 +141,16 @@ class FrozenReturnSelector:
         return hashlib.sha256((json.dumps(self.manifest,allow_nan=False)+'\n').encode()).hexdigest()
 
 
-def analyze_selection(p,c):
+def analyze_selection(p,c,records=None):
     h.validate_result(p,c)
-    if any(r.get('split')!=('training' if r['episode']<3 else 'evaluation') for r in p['episodes']):raise ValueError('phase_identity')
-    records=p['selection_decisions'];expected=set(itertools.product(c['families'],c['model_bundles'],range(3,7)))
+    if any(r.get('split')!=('training' if r['episode'] in h.training_episodes(c) else 'evaluation') for r in p['episodes']):raise ValueError('phase_identity')
+    records=p['selection_decisions'] if records is None else records
+    expected=set(itertools.product(c['families'],c['model_bundles'],h.evaluation_episodes(c)))
     ids=[(r['family'],r['model_bundle'],r['episode']) for r in records]
     if len(ids)!=16 or set(ids)!=expected:raise ValueError('prediction_grid')
     outcomes=[]
     for i,r in enumerate(records):
-        if r['completed_real_steps']!=4800+i*400 or set(r['choices'])!=set(METHODS):raise ValueError('predecision_or_method_grid')
+        if r['completed_real_steps']!=len(h.training_episodes(c))*1600+i*400 or set(r['choices'])!=set(METHODS):raise ValueError('predecision_or_method_grid')
         if set(r['estimates'])!=set(ESTIMATES) or any(type(v) not in (int,float) or not math.isfinite(v) for v in r['estimates'].values()):raise ValueError('invalid_estimate')
         f,b,e=ids[i]
         episodes={x['controller']:x for x in p['episodes'] if (x['family'],x['model_bundle'],x['episode'])==(f,b,e)}
