@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — training-only blocked-reset feature sufficiency audit
+
+E3.2 completed and failed: predictor versus model means Pendulum−31.912,
+Acrobot+0.317. Next proposal: three-fold leave-one-training-episode-index-out
+across four models, using ONLY twelve fresh legitimate TRAINING pairs in
+e3_2_frozen_predictor.json. Fixed existing192 features/ridge=1, no tuning;
+compare held-out regret/advantage error with same-fold model means. Average
+within model; folds are not independent model replicates. All sixteen E3.2
+evaluation contexts stay closed, as do earlier control captures. Proposed15s
+local CPU,0 real/imagined transitions,0 learned-model inference; not executed
+or allocated. Register/test/commit separately before fitting. This checks
+whether descriptors add signal before collecting more feedback. No larger
+model, new memory or planner stack. Report `NEXUS_E3_2_RETURN_FEEDBACK_RESULTS.md`.
+
 ## Current — existing predictor on fresh paired source-return feedback
 
 One next proposal: existing planner-advantage prediction on newly collected

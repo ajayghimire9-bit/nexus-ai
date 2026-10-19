@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Supplemental E3.2 fresh-return study: `codex/e3-2-return-feedback-predictor`,
+execution6381882b42e01860bf9779d905bed2017e854345.11200 new source steps,
+2 existing ridge fits; zero neural fitting. Predictor-minus-model-mean
+Pendulum−31.912/Acrobot+0.317, registered screen failed both families.
+81.445068s execution/18.648715s audit; four frozen files/eight arrays/329 old
+JSON verify. Ledger588.722984459/3011.277015541. Report
+`NEXUS_E3_2_RETURN_FEEDBACK_RESULTS.md`; artifacts `e3_2_*`. No new confirmation,
+L2L or autonomous-discovery success. Historical curated records unchanged.
+
 Supplemental E3.1 source-only audit: `codex/e3-1-learned-model-headroom-audit`,
 protocol7e417307f6d4693971af521719ceff713aaa9762. Verifies earlier headroom/control
 evidence without repeats; adds6400 frozen one-step rows on3200 recorded queries.

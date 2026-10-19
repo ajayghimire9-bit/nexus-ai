@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.2 quality learning on fresh full-return feedback: screen failed
+
+Existing ridge/descriptor predictor does not beat model means meaningfully on
+both known source families: Pendulum−31.912, Acrobot+0.317. It beats shuffled
+labels but loses to stronger simple baselines. No overall quality-learning or
+generalization success; no inference across only two pretrained models/family.
+Twelve training pairs fit two predictors before sixteen evaluation choices.
+Both complete fixed controller trajectories were collected per reset; no
+bandit-efficiency claim. Report `NEXUS_E3_2_RETURN_FEEDBACK_RESULTS.md`.
+Next hypothesis: existing features add predictive signal under training-only
+blocked-reset cross-validation; not executed and no closed evaluation reuse.
+
 ## Latest — E3.1 evaluator sufficiency separated from learner quality
 
 Old frozen-model neutral-tail headroom remains0/16, with342 strategies collapsing

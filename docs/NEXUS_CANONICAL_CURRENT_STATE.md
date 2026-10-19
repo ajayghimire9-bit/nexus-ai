@@ -1,5 +1,15 @@
 # NEXUS canonical current state
 
+Latest E3.2 fresh-return predictor screen failed: predictor minus model mean
+Pendulum−31.912, Acrobot+0.317; stronger simple baselines win. Existing ridge,
+fixed controllers and four unchanged source models reused.11200 new steps,
+16699200 imagined rows,81.445068s; offline audit18.648715s reconciles11200
+journals and16 frozen pre-outcome choices;329 prior JSON preserved.
+Ledger588.722984459/3011.277015541. Report `NEXUS_E3_2_RETURN_FEEDBACK_RESULTS.md`.
+Next proposed task: training-feedback-only blocked-reset feature sufficiency
+audit,0 interactions/proposed15s; keep completed evaluation closed. No new
+scientific confirmation or general intelligence established.
+
 Latest E3.1 source-only audit separates proxy saturation from learning quality:
 reverified0/16 headroom on the neutral-tail proxy versus discriminative prior
 full-policy source returns. No old study rerun or collection. New3200-row shared

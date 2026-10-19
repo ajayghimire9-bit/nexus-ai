@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — E3.2 valid fresh-return predictor screen failed
+
+Execution6381882b42e01860bf9779d905bed2017e854345 preceded all collection.
+Existing predictor versus model means: Pendulum−31.912/Acrobot+0.317; both
+registered screens fail.11200 steps,16699200 imagined,660800 forwards,
+81.445068s plus18.648715s offline audit. Four frozen models/eight arrays,
+all16 pre-outcome choices and329 historical JSON verify. No neural fitting.
+128 tests before execution; final297 relevant regressions passed in5.04s.
+Ledger588.722984459/3011.277015541. Report `NEXUS_E3_2_RETURN_FEEDBACK_RESULTS.md`.
+Next: training-only blocked-reset feature sufficiency audit; evaluation closed.
+
 ## Latest — E3.1 source-only audit distinguishes saturated proxy and return labels
 
 Protocol7e417307f6d4693971af521719ceff713aaa9762 preceded6400 one-step rows,

@@ -1,5 +1,21 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.2 fresh full-return feedback, 2026-10-19
+
+Committed execution6381882b42e01860bf9779d905bed2017e854345 collected11200
+fresh source steps (4800 training/6400 evaluation),16699200 imagined rows,
+81.445068s; no neural/world-model updates. Existing192-feature ridge predictor
+fails registered screen: versus model training means, Pendulum−31.912,
+Acrobot+0.317. Shuffled-label baseline loses, but simple baselines remain
+stronger. n=2 frozen models/family, no significance/generalization claim.
+All16 choices persisted before outcomes,2 ridge fits finished before evaluation;
+offline audit18.648715s verifies four frozen files/eight arrays,11200 journals,
+unchanged coefficients and329 prior JSON. Ledger588.722984459/3011.277015541.
+Report `NEXUS_E3_2_RETURN_FEEDBACK_RESULTS.md`. Keep this evaluation closed;
+next proposal is a training-feedback-only leave-one-reset-block-out audit,
+fixed existing features/ridge versus model means;0 interactions/proposed15s.
+No new grant consumption for E2.17, H17 remains blocked; no AGI/L2L claim.
+
 ## Latest — E3.1 learned-model evidence and calibration audit, 2026-10-19
 
 E3.1 reverified (not reran) the16-cell342-strategy frozen-model headroom capture

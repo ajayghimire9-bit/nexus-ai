@@ -68,6 +68,10 @@ def test_manifest_saved_before_choices_and_tamper_rejected(mocked_source,monkeyp
     monkeypatch.setattr(r,'MANIFEST',tmp_path/'weights.json');monkeypatch.setattr(r,'PREDICTIONS',tmp_path/'choices.jsonl')
     c,p=capture();a=r.FrozenReturnSelector(c);a.fit([x for x in p['episodes'] if x['split']=='training'])
     assert h.sha(r.MANIFEST)==a.manifest_sha and not r.PREDICTIONS.read_text()
+    original=r.MANIFEST.read_text();r.MANIFEST.write_text(original+' ')
+    with pytest.raises(ValueError,match='manifest_changed'):
+        a.decide(dict(family='pendulum',model_bundle=0,episode=3,initial_obs=[0,0,0],completed_real_steps=4800))
+    r.MANIFEST.write_text(original)
     decisions(a,p,c);assert len(r.PREDICTIONS.read_text().splitlines())==16
     with pytest.raises(ValueError):a.decide({k:a.records[0][k] for k in ('family','model_bundle','episode','initial_obs','completed_real_steps')})
     with pytest.raises(ValueError):a.features(dict(family='pendulum',model_bundle=0,initial_obs=[0,0,0],return_=1))
@@ -122,3 +126,30 @@ def test_missing_or_invalid_primary_cells_rejected(mocked_source,bad):
     if bad=='nan':p['selection_decisions'][0]['estimates']['model_mean']=float('nan')
     if bad=='phase':p['episodes'][0]['split']='evaluation'
     with pytest.raises(ValueError):r.analyze_selection(p,c)
+
+
+def test_saved_capture_reconciles_repository_only():
+    p=json.loads((h.ROOT/'artifacts/e3_2_return_feedback.json').read_text())
+    assert r.analyze_selection(p,p['config'])==p['selection_analysis']
+    assert p['resources']['completed']==dict(real_steps=11200,imagined_transitions=16699200,model_calls=660800,network_forwards=660800)
+    assert all(m['before']==m['after'] for m in p['models']) and len(p['models'])==4
+    assert h.sha(r.MANIFEST)==p['predictor_manifest_sha256']
+    assert h.sha(r.PREDICTIONS)==p['predecision_file_sha256']
+    assert [json.loads(line) for line in r.PREDICTIONS.read_text().splitlines()]==p['selection_decisions']
+
+
+def test_saved_training_provenance_and_previous_artifacts_immutable():
+    p=json.loads((h.ROOT/'artifacts/e3_2_return_feedback.json').read_text());m=json.loads(r.MANIFEST.read_text())
+    assert r.paired_training([x for x in p['episodes'] if x['split']=='training'],p['config'])==m['training_pairs']
+    for name,expected in p['historical_artifacts_sha256'].items():assert h.sha(h.ROOT/name)==expected
+    validation=json.loads((h.ROOT/'artifacts/e3_2_return_feedback_validation.json').read_text())
+    assert validation['capture_sha256']==h.sha(h.run_paths(p['config'])['result'])
+
+
+def test_saved_primary_negative_is_not_incomplete_or_positive():
+    p=json.loads((h.ROOT/'artifacts/e3_2_return_feedback.json').read_text());a=r.analyze_selection(p,p['config'])
+    gains=[a['by_family'][f]['predictor_minus_baselines']['model_mean'] for f in ('pendulum','acrobot')]
+    assert gains==pytest.approx([-31.91222501167988,0.3171733015456084])
+    assert p['declared_complete'] and not a['point_screen']
+    for f in ('pendulum','acrobot'):
+        assert len(a['by_family'][f]['per_model_returns'])==2

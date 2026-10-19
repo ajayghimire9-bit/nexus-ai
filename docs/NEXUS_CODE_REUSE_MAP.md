@@ -1,5 +1,15 @@
 # NEXUS code-reuse map
 
+E3.2 `return_feedback.FrozenReturnSelector` is a phase/feedback adapter around
+existing `generated_strategies.AdvantagePredictor` and `advantage_features`.
+It does not replace the learner, proposer, memory, planner or resource meter.
+The existing full_policy_source host adds exact return_feedback_v1 staging:
+all training first, frozen manifest, choices saved before evaluation rewards.
+Use scripts/run_e3_2_return_feedback.py (--audit for offline verification).
+One-run allocation is consumed. Result screen failed; no retry/retuning.
+Repository-only tests use synthetic source features and tracked captures;
+explicit audit additionally requires original checkpoint/source files.
+
 `scripts/audit_e3_1_learned_model.py` is a recorded-data audit, not a new learner
 or collector. Reuses headroom summarizer, full_policy_source grid/hash helpers,
 fit-clock inventory/disposable_model loader and ReservationLedger; metric cells
