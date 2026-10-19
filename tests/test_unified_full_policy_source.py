@@ -110,3 +110,24 @@ def test_failed_step_is_not_free_and_gzip_journal_roundtrip(tmp_path):
 def test_locked_config_rejects_quiet_reduction():
     c,_=fixture();c['episode_steps']=50
     with pytest.raises(ValueError):h.validate_config(c)
+
+
+def test_committed_capture_reconciles_without_local_checkpoints():
+    """Repository-only evidence check; deliberately does not call WorldModel.load."""
+    p=json.loads(h.RESULT.read_text())
+    v=json.loads((h.ROOT/'artifacts/unified_full_policy_validation.json').read_text())
+    assert v['capture_sha256']==h.sha(h.RESULT)
+    assert h.validate_result(p,p['config'])
+    assert h.analyze(p['episodes'],p['config'])==p['analysis']
+    assert v['decision_journals']==6400 and v['completed']==p['resources']['completed']
+    assert all(m['before']==m['after'] for m in p['models'])
+
+
+def test_offline_audit_rejects_partial_before_checkpoint_io(monkeypatch):
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('source_verifier',h.ROOT/'scripts/verify_unified_full_policy_source.py')
+    verifier=importlib.util.module_from_spec(spec);spec.loader.exec_module(verifier)
+    c,p=fixture();p['declared_complete']=False;p['config']=c
+    def forbidden(*args):raise AssertionError('checkpoint IO before completeness rejection')
+    monkeypatch.setattr(h,'verify_checkpoints',forbidden)
+    with pytest.raises(ValueError,match='incomplete_capture'):verifier.verify(p)

@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+`evolution2.full_policy_source` is the one-run bounded source-physics host for
+four fixed generated/anchor controllers, using existing TaskSpec/wrappers,
+`generated_strategies.execute`, frozen WorldModel and ReservationLedger.
+`scripts/verify_unified_full_policy_source.py` is its no-inference offline
+grid/reward/journal verifier. No extra memory, proposer, meter or planner stack;
+the consumed allocation cannot authorize retries or the old scientific runner.
+Results are mixed; see `NEXUS_UNIFIED_FULL_POLICY_RESULTS.md`.
+
 Source-verified at the research-tip merge, then extended by the
 consolidation review. Future agents must consult
 `docs/NEXUS_CANONICAL_CURRENT_STATE.md` and

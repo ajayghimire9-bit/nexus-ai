@@ -1,5 +1,19 @@
 # NEXUS progress log
 
+## Latest — bounded full-policy source execution completed, cross-family screen fails
+
+Protocol/implementation1d78d2965e04175824f53355ed2253e33bcba260 preceded
+32 paired200-step episodes on four frozen E2.9 models. Acrobot rank-blend
+gains+27.204/+28.647 versus flat/successor; Pendulum successor comparison
+−203.758. Switch is not robust against both anchors. Two model replicates per
+family, descriptive evidence only. No fitting, model replacement, confirmation
+or proposal-policy learning. 6400 real steps/9,617,100 imagined/293,900 forwards,
+39.333486s; independent9.206182s offline audit reconciles6400 decision journals,
+613400 events, all317 old JSON and all four frozen fingerprints. Final186
+selected regressions passed2.32s. Ledger383.939872001/3216.060127999.
+See `NEXUS_UNIFIED_FULL_POLICY_RESULTS.md`. Fresh-episode rank-blend replication
+is proposed separately; no second experiment ran. H17/old science gates unchanged.
+
 ## Latest — learned-model source-headroom screen fails
 
 Source audit completed once: four frozen hash-verified E2.9 residuals,16

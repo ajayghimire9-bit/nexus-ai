@@ -1,5 +1,16 @@
 # NEXUS canonical current state
 
+Latest: separate standing-grant full-policy source screen completed, with
+mixed results and no cross-family point-screen pass. Rank blend beats both
+Acrobot anchors (+27.204/+28.647), loses to Pendulum successor (−203.758).
+n=2 independent models/family,2 episodes/model; no confirmation or useful
+self-improvement claim. Frozen models/RMS and317 prior JSON unchanged.
+6400 real steps/39.333486s plus9.206182s offline audit; ledger383.939872001 /
+3216.060127999. Reuse `evolution2.full_policy_source` only as the specific locked
+one-run host, not a reopened scientific dispatcher. Report
+`NEXUS_UNIFIED_FULL_POLICY_RESULTS.md`; next proposal is fixed-policy fresh
+episode replication. Earlier preparation-only instructions below are history.
+
 Latest source-headroom audit: four frozen E2.9 learned models also leave zero
 grammar-over-anchor headroom on16 opposite-bundle states under the locked
 neutral-continuation label. No fitting/real steps; weights and RMS unchanged.

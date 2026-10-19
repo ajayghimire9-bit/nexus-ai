@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — full-policy composition source headroom is family/model dependent
+
+Registered exploratory screen (>=1 point, both models positive versus both
+anchors in both families) fails for switch and rank blend. Rank blend exceeds
+both anchors on Acrobot and loses to successor on Pendulum. Full repeated
+execution reveals return variation absent from the previous neutral-tail proxy;
+it does not establish general improvement or useful feedback learning. All eight
+contrasts reported in `NEXUS_UNIFIED_FULL_POLICY_RESULTS.md`. n=2 models/family,
+no confidence or transfer claim. Closed episode seeds retained, no retuning.
+
 ## Latest — H-source-headroom not supported
 
 Preregistered1.0-unit/4-state/2-per-family screen fails:0/16 states have

@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — independently replicate the family-specific rank-blend signal
+
+One next proposal: rank blend versus both unchanged anchors, four fresh paired
+source resets per existing frozen model in both families. Keep policy rules,
+models and1536-state ceilings fixed. Estimated60–90s; proposed180s/9600 real
+steps/14,745,600 imagined ceiling. Register new seeds, independent branch and
+protocol before collection; the full-policy allocation is consumed. Not executed.
+This addresses episode uncertainty before using any favorable source result
+as training feedback. The completed screen is mixed, not cross-family success:
+Acrobot rank gains27–29 points; Pendulum rank-minus-successor−203.758.
+Report `NEXUS_UNIFIED_FULL_POLICY_RESULTS.md`; all older proposals below are history.
+
 ## Current — prepare full-policy source return protocol
 
 One next step: design a locked full-policy source-physics return comparison

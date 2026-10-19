@@ -1,5 +1,23 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — full-policy source screen executed, mixed, 2026-10-19
+
+Human-requested bounded source-physics comparison completed32×200-step episodes
+on four frozen E2.9 models. No fitting or confirmation data. Neither fixed
+composition passes the cross-family point screen: rank blend beats both anchors
+on Acrobot (+27.204 versus flat,+28.647 versus successor) but loses to successor
+on Pendulum (−203.758); switch-minus-successor Pendulum+0.768 is mixed by model.
+Only two independent models/family; no inferential/general-control claim.
+This supplies full-policy reward variation, not evidence of useful autonomous
+proposal learning. All317 earlier JSON and four model/RMS hashes preserved.
+6400 real steps,9,617,100 imagined states,39.333486s experiment plus9.206182s
+offline audit. Carried ledger383.939872001/3216.060127999. 186 selected tests pass.
+Protocol1d78d2965e04175824f53355ed2253e33bcba260; report
+`NEXUS_UNIFIED_FULL_POLICY_RESULTS.md`. One next proposal: independent fresh
+source-episode replication of rank blend versus both anchors, not deployment or
+more tuning on these closed episodes. Previous pending entries below are history;
+H17 and the old scientific dispatcher remain blocked.
+
 ## Latest — frozen learned-source headroom audit, 2026-10-19
 
 Four hash-matching E2.9 residual models evaluated the existing342-policy

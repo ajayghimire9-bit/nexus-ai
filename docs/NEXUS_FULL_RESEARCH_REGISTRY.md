@@ -1,5 +1,15 @@
 # NEXUS full research registry
 
+Supplemental completed exploratory entry: `codex/unified-full-policy-source-screen`,
+protocol1d78d2965e04175824f53355ed2253e33bcba260. Four fixed policies across
+four frozen source models,32 full episodes,6400 actual environment steps.
+Neither generated policy passes the cross-family point screen. Acrobot rank
+blend beats both anchors; Pendulum rank blend loses to successor. No training,
+confirmation or new independent-decoder scientific claim. Report
+`NEXUS_UNIFIED_FULL_POLICY_RESULTS.md`, raw `unified_full_policy_source.json`,
+offline `unified_full_policy_validation.json`; ledger383.939872001/3216.060127999.
+Historical curated counts below are unchanged.
+
 Latest supplemental development entry (not included in historical curated
 counts below): unified E2.25/E3.0, branch `codex/nexus-e225-e30-unified-learning`,
 report `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`. Source-proxy verified: only
