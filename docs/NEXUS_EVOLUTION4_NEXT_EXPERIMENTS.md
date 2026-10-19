@@ -1,5 +1,11 @@
 # Evolution-4 next work and explicit execution gates
 
+UPDATE: user subsequently authorized this exact scratch pilot for ONE run
+within300s/84840 interactions. Registration, executable config and final rules
+are in NEXUS_E4_PPO_BENCHMARK_PROTOCOL.md/configs/e4_ppo_benchmark.json, not the
+broader unregistered seven-method manifest.973 pre-execution tests pass;
+outcomes pending. Prior proposal text below remains preparation history.
+
 Current task authorizes foundation code and a tiny engineering smoke only.
 It does not replace F's missing registration or reopen any closed split.
 

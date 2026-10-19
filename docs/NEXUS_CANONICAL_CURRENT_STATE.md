@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+E4 scratch pilot now separately authorized/registered, outcomes pending:
+five known default/source tasks,3 PPO seeds each,final4096-step fits,90 paired
+evaluation episodes versus random/fixed; one300s/84840-step grant. Reuses
+PPOTrainer/GAE/TaskSpec/Host/ReservationLedger, no parallel learner or planner.
+Protocol NEXUS_E4_PPO_BENCHMARK_PROTOCOL.md;973 pre-execution tests. All prior
+results/holdouts preserved. F remains unregistered and unexecuted.
+
 E4 delivery complete:945 relevant tests; single80-step engineering smoke passes
 five families with identical paired replays. No training or model inference.
 432 old JSON/12 listed frozen files preserved. Ledger conservative command

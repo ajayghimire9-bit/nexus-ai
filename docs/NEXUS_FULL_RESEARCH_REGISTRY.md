@@ -1,5 +1,11 @@
 # NEXUS full research registry
 
+E4 scratch pilot locked fromb2ae7ac oncodex/e4-five-family-ppo-benchmark.
+Explicit one-run300s/84840-step authorization,15 scratch fits/90 paired
+episodes, known default/source physics only; n3 learner seeds/family, not
+ten-decoder transfer inference.973 pre-execution tests and source-only seed
+audit pass. No outcomes yet; no F/confirmation/MPC run is authorized here.
+
 E4 general-learning foundation, basefa7d3b4: implementation/fixture tests plus
 registered engineering-only80-step smoke. Five family contracts/PPO bindings,
 resource reuse, prospective schema, TaskStream bridge and bounded opt-in

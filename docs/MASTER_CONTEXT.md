@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## E4 scratch PPO benchmark — newly authorized one-run lock, outcomes pending
+
+Explicit human request authorizes one300s/84840-real-step five-family pilot.
+New source-only registration and protocol NEXUS_E4_PPO_BENCHMARK_PROTOCOL.md:
+3 independent scratch PPO seeds/family,4096 training steps/model,2 paired
+episodes/method versus random/fixed. Same existing trainer/wrappers/meter;
+no world-model retraining, transfer, MPC or F execution.973 relevant tests
+pass before collection. Carried ledger1809.6321034559958/1790.3678965440042.
+Results will be committed separately. Earlier unregistered statuses below
+refer to preparation before this explicit authorization, not new outcomes.
+
 ## Evolution-4 foundation engineering — no learning study
 
 DELIVERED:945 relevant tests pass; one80-real-step smoke completed across all

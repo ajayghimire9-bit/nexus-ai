@@ -1,0 +1,174 @@
+{
+  "version": "e4_five_family_ppo_v1",
+  "base_revision": "b2ae7ac9da70ee8aff2a54f65f039181fa33e4ac",
+  "families": [
+    "cartpole",
+    "mountaincar",
+    "mountaincar_continuous",
+    "pendulum",
+    "acrobot"
+  ],
+  "replicates": [
+    "learner_0",
+    "learner_1",
+    "learner_2"
+  ],
+  "methods": [
+    "ppo_scratch",
+    "random",
+    "fixed"
+  ],
+  "cases": [
+    "source_new_reset"
+  ],
+  "required_metrics": [
+    "raw_return",
+    "wall_s",
+    "cpu_s",
+    "real_steps",
+    "imagined_transitions",
+    "model_calls",
+    "network_forwards"
+  ],
+  "seed_base": 2125000000,
+  "training_interactions": 4096,
+  "evaluation_episodes": 2,
+  "allocation_runs": 1,
+  "time_cap_s": 300,
+  "active_stop_s": 290,
+  "real_cap": 84840,
+  "imagined_cap": 0,
+  "model_call_cap": 0,
+  "network_forward_cap": 0,
+  "autoreset": "SameStep",
+  "policy_evaluation": "categorical_argmax",
+  "ppo": {
+    "num_envs": 1,
+    "total_timesteps": 4096,
+    "num_steps": 128,
+    "update_epochs": 4,
+    "num_minibatches": 4,
+    "learning_rate": 0.0003,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_coef": 0.2,
+    "ent_coef": 0.01,
+    "vf_coef": 0.5,
+    "max_grad_norm": 0.5,
+    "device": "cpu",
+    "normalize_advantages": true,
+    "normalize_obs": false,
+    "anneal_lr": false,
+    "clip_vloss": false,
+    "log_interval": 20,
+    "checkpoint_dir": "checkpoints"
+  },
+  "architecture": {
+    "hidden_sizes": [
+      64,
+      64
+    ],
+    "activation": "tanh",
+    "use_residual": false,
+    "dropout": 0.0,
+    "layer_norm": false,
+    "shared_backbone": true,
+    "init": "orthogonal"
+  },
+  "margins": {
+    "cartpole": 25.0,
+    "mountaincar": 5.0,
+    "mountaincar_continuous": 5.0,
+    "pendulum": 25.0,
+    "acrobot": 5.0
+  },
+  "tasks": {
+    "cartpole": {
+      "task_id": "e4_source_cartpole",
+      "family": "cartpole",
+      "gym_id": "CartPole-v1",
+      "obs_dim": 4,
+      "n_actions": 2,
+      "params": {
+        "gravity": 9.8,
+        "masspole": 0.1,
+        "masscart": 1.0,
+        "length": 0.5
+      },
+      "reward_scale": 1.0,
+      "reward_offset": 0.0,
+      "train_split": "train",
+      "notes": ""
+    },
+    "mountaincar": {
+      "task_id": "e4_source_mountaincar",
+      "family": "mountaincar",
+      "gym_id": "MountainCar-v0",
+      "obs_dim": 2,
+      "n_actions": 3,
+      "params": {
+        "force": 0.001,
+        "gravity": 0.0025
+      },
+      "reward_scale": 1.0,
+      "reward_offset": 0.0,
+      "train_split": "train",
+      "notes": ""
+    },
+    "mountaincar_continuous": {
+      "task_id": "e4_source_mountaincar_continuous",
+      "family": "mountaincar_continuous",
+      "gym_id": "MountainCarContinuous-v0",
+      "obs_dim": 2,
+      "n_actions": 3,
+      "params": {
+        "power": 0.0015,
+        "gravity": 0.0025
+      },
+      "reward_scale": 1.0,
+      "reward_offset": 0.0,
+      "train_split": "train",
+      "notes": ""
+    },
+    "pendulum": {
+      "task_id": "e4_source_pendulum",
+      "family": "pendulum",
+      "gym_id": "Pendulum-v1",
+      "obs_dim": 3,
+      "n_actions": 3,
+      "params": {
+        "g": 10.0,
+        "m": 1.0,
+        "l": 1.0
+      },
+      "reward_scale": 1.0,
+      "reward_offset": 0.0,
+      "train_split": "train",
+      "notes": ""
+    },
+    "acrobot": {
+      "task_id": "e4_source_acrobot",
+      "family": "acrobot",
+      "gym_id": "Acrobot-v1",
+      "obs_dim": 6,
+      "n_actions": 3,
+      "params": {
+        "LINK_MASS_1": 1.0,
+        "LINK_MASS_2": 1.0,
+        "LINK_LENGTH_1": 1.0
+      },
+      "reward_scale": 1.0,
+      "reward_offset": 0.0,
+      "train_split": "train",
+      "notes": ""
+    }
+  },
+  "contract_hashes": {
+    "cartpole": "885e272905664b17c7df73bf5a11bb0183caf2598834c4b7924820b8720a5d1a",
+    "mountaincar": "22d1ffa5ece4077866cccf83d25eab7e789e9e96ef4ad3f95511bcd887f62c75",
+    "mountaincar_continuous": "720da12e504c80e27c1f82341eb5f1fab4b3408bb40b601636262bf8290eca1b",
+    "pendulum": "2e3913e60655bfa9608c93a8b9633cc3934d6499c3c46e3546915a1d2a67fd3b",
+    "acrobot": "0ef4ea15992160047a9a2897e8b7bf2fc539cb01f1d6d2f6ca5e1de1b67159b8"
+  },
+  "scope": "Development scratch-learning only on known public default/source physics. No transfer, selection, changed dynamics, MPC or historical checkpoint fitting."
+}

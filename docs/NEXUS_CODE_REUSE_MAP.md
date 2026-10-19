@@ -1,5 +1,11 @@
 # NEXUS code-reuse map
 
+E4 measured scratch pilot: tasks.ppo_benchmark is experiment glue over SAME
+tasks.benchmark/TaskSpec/wrappers/PPOTrainer.collect/update/GAE; SAME Host and
+ReservationLedger reserve real steps; SAME DecisionJournal persists raw data.
+Policy-specific forward hooks count actor/critic work separately from imagined
+world-model transitions. No replacement optimizer, memory or learning stack.
+
 E4: tasks.benchmark -> TaskSpec/make_task_env/existing wrappers + PPOTrainer
 constructor kwargs + post_probe.Host/ReservationLedger. Family compatibility
 does not authorize weight transfer. tasks.learning_stream -> TaskStream and
