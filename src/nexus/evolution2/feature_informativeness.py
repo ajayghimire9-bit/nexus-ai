@@ -25,6 +25,7 @@ MODELS = tuple(itertools.product(base.FAMILIES, base.BUNDLES))
 def groups(profile='e3_6'):
     if profile=='e3_6':return GROUP_ROWS
     if profile=='e3_7':return {'original':tuple(range(12)),'transition':tuple(range(12,24))}
+    if profile=='e3_8':return {'additive':tuple(range(384,393)),'interaction':tuple(range(393,414))}
     raise ValueError('locked_feature_profile')
 
 
@@ -34,10 +35,17 @@ def modes(profile='e3_6'):
 
 
 def columns(group,profile='e3_6'):
+    if profile=='e3_8':return list(groups(profile)[group])
     return [16*r+j for r in groups(profile)[group] for j in range(16)]
 
 
 def validate_bank(bank, features, profile='e3_6'):
+    if profile=='e3_8':
+        from nexus.evolution2.compact_interactions import augment
+        if len(features)!=36 or any(len(v)!=414 or not all(base.number(x) for x in v) for v in features):raise ValueError('compact_paired_layout')
+        paired=[v[:384] for v in features];validate_bank(bank,paired,'e3_7')
+        if features!=augment(paired):raise ValueError('versioned_compact_builder')
+        return True
     if profile=='e3_7':
         if len(features)!=36 or any(len(v)!=384 or not all(base.number(x) for x in v) for v in features):raise ValueError('paired_feature_layout')
         validate_bank(bank,[v[:192] for v in features])
@@ -75,6 +83,7 @@ def layout(bank, features, held, profile='e3_6'):
         return v['rank_blend']-v['successor_anchor']
     def phi(i):
         f, b, _ = base.identity(bank[i])
+        if profile=='e3_8':return np.r_[base.fold_features(features[i][:192],means[f'{f}:{b}']),base.fold_features(features[i][192:384],means[f'{f}:{b}']),features[i][384:]]
         if profile=='e3_7':return np.r_[base.fold_features(features[i][:192],means[f'{f}:{b}']),base.fold_features(features[i][192:],means[f'{f}:{b}'])]
         return base.fold_features(features[i], means[f'{f}:{b}'])
     x = np.asarray([phi(i) for i in train]); q = np.asarray([phi(i) for i in query])
@@ -150,6 +159,7 @@ def score_predictions(folds, bank, profile='e3_6'):
                 squared_error={m:(pred['estimates'][m]-truth)**2 for m in methods},
                 sign_correct={m:(pred['estimates'][m]>0)==(truth>0) for m in methods},
                 regret={m:max(row['returns'].values())-row['returns'][pred['choices'][m]] for m in methods}))
+            if profile=='e3_8':raw[-1]['choices']=pred['choices'].copy()
     per_model={}; passed={g:True for g in names}
     for f,b in MODELS:
         rows=[r for r in raw if base.identity(r)[:2]==(f,b)]
@@ -172,14 +182,27 @@ def score_predictions(folds, bank, profile='e3_6'):
                 checks[g]['passes']=checks[g]['passes'] and actual<metrics['original']['mae'] and checks[g]['return_gain']>=0
                 passed[g]=passed[g] and checks[g]['passes']
         per_model[f'{f}:{b}']=dict(metrics=metrics,checks=checks)
+        if profile=='e3_8':
+            for g in names:
+                delta=[r['returns'][g]-r['returns']['model_mean'] for r in rows]
+                checks[g]['overrides']=dict(changed=sum(r['choices'][g]!=r['choices']['model_mean'] for r in rows),
+                    helpful=sum(v>0 for v in delta),harmful=sum(v<0 for v in delta),
+                    helpful_return_sum=sum(max(v,0) for v in delta),harmful_return_sum=sum(min(v,0) for v in delta))
+                checks[g]['mae_permutation_diagnostic_passes']=checks[g].pop('passes')
     by_family={f:{m:{metric:float(np.mean([per_model[f'{f}:{b}']['metrics'][m][metric] for b in base.BUNDLES]))
                          for metric in ('mae','rmse','selected_return','sign_accuracy','regret')} for m in methods} for f in base.FAMILIES}
     success=passed['transition'] if profile=='e3_7' else any(passed.values())
+    if profile=='e3_8':
+        family_screen={f:(by_family[f]['interaction']['selected_return']-by_family[f]['model_mean']['selected_return']>=1. and
+                         by_family[f]['interaction']['selected_return']>=by_family[f]['additive']['selected_return'] and
+                         all(per_model[f'{f}:{b}']['checks']['interaction']['return_gain']>0 for b in base.BUNDLES)) for f in base.FAMILIES}
+        passed={'interaction_'+f:v for f,v in family_screen.items()};success=all(family_screen.values())
     return dict(raw=raw,per_model=per_model,by_family=by_family,group_screen=passed,point_screen=success,
-                label=(('transition_evidence_screen_passed' if success else 'transition_evidence_not_established') if profile=='e3_7' else
+                label=(('compact_interaction_selection_passed' if success else 'compact_interaction_selection_not_established') if profile=='e3_8' else
+                       ('transition_evidence_screen_passed' if success else 'transition_evidence_not_established') if profile=='e3_7' else
                        ('feature_signal_screen_passed' if success else 'feature_signal_not_established')),
                 independent_models_per_family=2,folds_are_independent_models=False,
-                support_transition_features_available=profile=='e3_7',permutation_ranks_are_not_p_values=True)
+                support_transition_features_available=profile in ('e3_7','e3_8'),permutation_ranks_are_not_p_values=True)
 
 
 def verify_frozen_folds(folds, bank, features, profile='e3_6'):
