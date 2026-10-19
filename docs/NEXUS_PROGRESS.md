@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Latest — E3.4 more feedback does not establish reliable selection
+
+Execution ea9a9a8a584c8b93fd9109686123d46e65427d0a preceded all20800 new
+source steps. Primary9-reset predictor−model means Pendulum−111.942/Acrobot
++3.498; both screens fail, Acrobot model0−0.090/model1+7.086. Secondary9−3
+return0.000/+5.164. No posthoc budget selection or world-model change.
+31012800 imagined,1227200 forwards;148.174886s plus35.543887s audit; four
+files/eight arrays,48 pre-outcome choices,six coefficient fits and339 prior
+JSON verify.350 relevant tests before execution; final353 passed in7.98s.
+Ledger772.868865293/2827.131134707. Report
+`NEXUS_E3_4_FEEDBACK_COVERAGE_RESULTS.md`; next source-only proposal tests
+baseline-anchored residual prediction, no more collection here.
+
 ## Latest — E3.3 training-only fold audit completed, mixed signal and failed screen
 
 Execution d9c196cad2afa7c6d59a43ce34b0a4e46bbd1b65 preceded six ridge fits.

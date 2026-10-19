@@ -1,5 +1,15 @@
 # NEXUS full research registry
 
+Supplemental E3.4 feedback-coverage study: codex/e3-4-feedback-coverage,
+execution ea9a9a8a584c8b93fd9109686123d46e65427d0a.20800 fresh source
+steps, fixed3/6/9 predictor budgets;9 versus mean Pendulum−111.942/Acrobot
++3.498, one Acrobot model negative. Primary/broad screens fail.31012800
+imagined,148.174886s execution/35.543887s audit; six ridge fits/no neural
+training, four frozen models/eight arrays/339 prior JSON preserved. All
+20800 decision receipts retained in six hashed chunks. Ledger772.868865293/
+2827.131134707. Report `NEXUS_E3_4_FEEDBACK_COVERAGE_RESULTS.md`, artifacts
+e3_4_*. Historical records/counts/closed evaluation evidence unchanged.
+
 Supplemental E3.3 training-only feature audit: codex/e3-3-training-feedback-audit,
 execution d9c196cad2afa7c6d59a43ce34b0a4e46bbd1b65. Six ridge fits, three
 reset-block folds on12 permitted training pairs;0 new real/imagined/neural work.

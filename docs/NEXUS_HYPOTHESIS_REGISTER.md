@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.4 feedback-coverage primary and broad screens fail
+
+Fresh nested feedback3/6/9 with unchanged features/ridge/controllers. Primary9
+return gain versus model means: Pendulum−111.942, Acrobot+3.498 (models
+−0.090/+7.086), so neither family passes the full point rule. More feedback
+improves Acrobot return9−3 by5.164, leaves Pendulum predictor return unchanged
+and improves its mean baseline. No general learning success, budget6 promotion,
+or inference across only2 source models/family. Report
+`NEXUS_E3_4_FEEDBACK_COVERAGE_RESULTS.md`; evaluation is closed. Next hypothesis:
+a fixed residual correction can retain useful model-mean priors; training-only
+blocked-reset test proposed, not executed. No bigger model justified here.
+
 ## Latest — E3.3 feature-signal intersection screen not established
 
 Training-only three-fold audit, eight fit pairs/four query pairs per fold:

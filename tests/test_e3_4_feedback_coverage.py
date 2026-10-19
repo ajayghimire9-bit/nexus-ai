@@ -190,3 +190,34 @@ def test_full_prefix_coefficient_replay_uses_no_fitting(source,tmp_path,monkeypa
     def forbidden(*args,**kwargs):raise AssertionError('no_refitting')
     monkeypatch.setattr(r.AdvantagePredictor,'observe',forbidden)
     assert q.verify_selectors(p,c)==q.analyze(p,c)
+
+
+def test_saved_complete_result_reproduces_without_model_binaries():
+    p=json.loads((h.ROOT/'artifacts/e3_4_feedback_coverage.json').read_text())
+    a=q.analyze(p,p['config']);assert p['declared_complete'] and a==p['coverage_analysis']
+    assert not a['primary_point_screen'] and not a['broad_baseline_screen']
+    assert [a['by_budget']['9']['by_family'][f]['predictor_minus_baselines']['model_mean'] for f in p['config']['families']]==pytest.approx([-111.94209030820423,3.4980402527388037])
+    assert p['resources']['completed']==dict(real_steps=20800,imagined_transitions=31012800,model_calls=1227200,network_forwards=1227200)
+    assert len(p['models'])==4 and all(row['before']==row['after'] for row in p['models'])
+
+
+def test_saved_prefix_provenance_and_predictions_are_exact():
+    p=json.loads((h.ROOT/'artifacts/e3_4_feedback_coverage.json').read_text())
+    train=[row for row in p['episodes'] if row['split']=='training']
+    for b in q.BUDGETS:
+        mp,pp=q.paths(b);m=json.loads(mp.read_text());meta=p['predictor_files'][str(b)]
+        assert h.sha(mp)==meta['manifest_sha256'] and h.sha(pp)==meta['predictions_sha256']
+        assert m['training_pairs']==r.paired_training([row for row in train if row['episode']<b],p['config'],b)
+        assert [json.loads(line) for line in pp.read_text().splitlines()]==[row['budgets'][str(b)] for row in p['selection_decisions']]
+        state={name:[weights['scale'],weights['beta'],len(m['training_pairs']),weights['fit_calls']] for name,weights in m['models'].items()}
+        assert digest(state)==m['learned_hash']
+
+
+def test_saved_part_manifest_history_and_audit_hashes():
+    p=json.loads((h.ROOT/'artifacts/e3_4_feedback_coverage.json').read_text())
+    v=json.loads((h.ROOT/'artifacts/e3_4_feedback_coverage_validation.json').read_text())
+    assert v['capture_sha256']==h.sha(h.ROOT/'artifacts/e3_4_feedback_coverage.json')
+    assert v['decision_journals']==20800 and v['ridge_fits']==0
+    assert len(p['resource_journal_parts'])==6
+    for row in p['resource_journal_parts']:assert h.sha(h.ROOT/row['path'])==row['sha256']
+    for name,expected in p['historical_artifacts_sha256'].items():assert h.sha(h.ROOT/name)==expected

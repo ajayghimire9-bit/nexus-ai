@@ -1,5 +1,16 @@
 # NEXUS code-reuse map
 
+E3.4 reuses the SAME FrozenReturnSelector with explicit budget/path parameters.
+feedback_coverage only coordinates snapshots3/6/9 and paired metrics; no new
+learner/proposer/memory/controller. Existing runner --coverage (and --audit)
+uses the exact coverage_feedback_v1 profile. DecisionJournal losslessly rotates
+the existing ledger JSONL after4000 decisions; full verifier requires six
+ordered hashes and complete20800-decision reconciliation. This is storage,
+not approximate compute reduction or a new resource meter. Allocation consumed;
+no retries. Source candidate counts are cap-derived31/root successor and
+48 flat/15/root successor under blend, not historical16×16. Report
+`NEXUS_E3_4_FEEDBACK_COVERAGE_RESULTS.md`. Primary/broad screens failed.
+
 E3.3 `training_feedback_audit` is an offline fold/metrics adapter over existing
 AdvantagePredictor/ridge and return_feedback selection semantics. It uses
 saved training features only, replaces the two anchor-mean blocks with

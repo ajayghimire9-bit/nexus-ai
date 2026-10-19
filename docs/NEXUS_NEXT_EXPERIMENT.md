@@ -1,5 +1,20 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — baseline-anchored residual advantage, training-only
+
+E3.4 coverage screen failed:9-reset predictor−model mean Pendulum−111.942,
+Acrobot+3.498 with one model negative. Do not extend data or select budget6
+posthoc. One next experiment: same ridge/features fit deviations from fold-
+training model-mean advantage, adding that known prior back at prediction.
+Compare direct ridge and equally informed means under blocked reset folds
+using only36 new TRAINING pairs. Recompute anchors, residual labels and RMS
+inside each fit fold; never use the16 closed E3.4 evaluation contexts for fit,
+tuning or a fresh confirmation claim. No feature/regularization search or
+architecture change. Proposed15s CPU,0 real/imagined transitions/inference;
+not implemented, allocated or executed. This tests a minimal use of a strong
+learned prior before more collection. Report `NEXUS_E3_4_FEEDBACK_COVERAGE_RESULTS.md`.
+Older proposals below remain preparation history.
+
 ## Current — feedback coverage at fixed quality predictor
 
 E3.3 training-only audit completed: Pendulum−0.833/Acrobot+11.569 selection

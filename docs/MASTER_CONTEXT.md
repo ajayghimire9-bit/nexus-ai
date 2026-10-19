@@ -1,5 +1,23 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.4 fresh feedback coverage, 2026-10-19
+
+Committed ea9a9a8a584c8b93fd9109686123d46e65427d0a before20800 source
+interactions, fixed predictors at3/6/9 training resets/model. Primary9-minus-
+model-means: Pendulum−111.942, Acrobot+3.498; Acrobot models−0.090/+7.086.
+Both primary and broad-baseline screens fail.9−3 predictor returns0.000/
++5.164; more feedback helps Acrobot locally but does not fix selection.
+No budget6 posthoc promotion. Same frozen four models, six ridge fits, no
+neural retraining/new physics. Actual source candidate counts31/root successor,
+rank blend48 flat/15 per successor root; old16-candidate prose corrected only
+in new protocol, no controller change.31012800 imagined,1227200 forwards,
+148.174886s execution plus35.543887s zero-inference/zero-fit audit. Six lossless
+journal parts;339 old JSON preserved. Ledger772.868865293/2827.131134707.
+Report `NEXUS_E3_4_FEEDBACK_COVERAGE_RESULTS.md`. Keep16 evaluation contexts
+closed. One next proposal: training-only baseline-anchored residual ridge
+versus direct ridge/model means on36 TRAINING pairs,0 interactions/proposed15s;
+not implemented/allocated/executed. No AGI, L2L or control-transfer claim.
+
 ## Latest — E3.3 training-feedback-only audit, 2026-10-19
 
 Committed d9c196cad2afa7c6d59a43ce34b0a4e46bbd1b65 before six fixed ridge

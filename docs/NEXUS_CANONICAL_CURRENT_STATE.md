@@ -1,5 +1,16 @@
 # NEXUS canonical current state
 
+Latest E3.4 fresh coverage study completed:3/6/9 training resets/model,
+fixed ridge and four frozen source models. Primary9 versus model means
+Pendulum−111.942, Acrobot+3.498 with one Acrobot model negative. Primary and
+broad-baseline screens fail.9−3 return0.000/+5.164, no reliable cross-family
+fix.20800 real steps/31012800 imagined/148.174886s plus35.543887s offline audit;
+339 old JSON preserved; ledger772.868865293/2827.131134707. Same source
+candidate allocation31/root successor and48 flat/15 successor-root blend,
+not historical16×16; no planner changes. Report
+`NEXUS_E3_4_FEEDBACK_COVERAGE_RESULTS.md`. Next proposed15s/zero-interaction
+training-only residual-around-model-mean audit; all new evaluation stays closed.
+
 Latest E3.3 training-only reset-block audit: predictor−model means Pendulum
 −0.833, Acrobot+11.569; advantage MAE worsens both. Registered intersection
 screen fails, with Acrobot selection signal still descriptive. Fold-only anchor
