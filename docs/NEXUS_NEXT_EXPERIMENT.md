@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — actual transition evidence at fixed representation size
+
+E3.6 is complete; all groups fail, and both varying groups have worse MAE than
+means in every model. The current code's support_stats[:3] are only schema;
+no dynamics transition evidence entered those slots. One next experiment:
+replace only those three slots with prespecified genuine source-support
+transition statistics, preserving192 dimensions/ridge1 and blocked-reset
+isolation against model means. First verify variation and distinguish static
+support between-model context from within-model observation interactions.
+No closed evaluation reuse or new collection, no strategy expansion. Lock
+summaries/screen/cap separately before fitting. Not implemented, allocated or
+executed. See NEXUS_E3_6_FEATURE_INFORMATIVENESS_RESULTS.md. Older proposals
+below are history, not concurrent tasks.
+
 ## Current — test within-model feature informativeness, source-only
 
 E3.5 is now executed: residual-versus-mean return−8.479216 Pendulum/+0.514255

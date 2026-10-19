@@ -1,5 +1,15 @@
 # NEXUS full research registry
 
+Supplemental E3.6: codex/e3-6-feature-informativeness, execution
+ ebdeddc9914eed84f4bcba7f21321600d7f7fb9c. Four feature groups and19 within-model
+permutations under9 blocked reset folds.720 ridge fits/36 training contexts,
+zero new real/imagined/neural execution. Full/observation MAE worse than means
+in all four models; schema/anchor duplicate means; no group passes. Source
+support slots contain only schema.0.510763583s+0.314667167s audit,351 prior
+JSON unchanged. Ledger774.1890710430174/2825.8109289569825. Report
+NEXUS_E3_6_FEATURE_INFORMATIVENESS_RESULTS.md, artifacts e3_6_*. Historic records
+and closed evaluations preserved.
+
 Supplemental E3.5: codex/e3-5-baseline-anchored-residual, clean execution
 f128c29a8b116886dd20dd42cc025436d5421386. Source-training-only residual
 ridge audit,27fits/36queries/9resetfolds,0real/imagined/neural. Model-mean

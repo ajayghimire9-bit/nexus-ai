@@ -1,5 +1,22 @@
 # NEXUS progress log
 
+## Latest — E3.6 source feature audit failed its signal screen
+
+E3.6 training-only feature audit completed: full and observation-only MAE
+worse than model means in all four existing pretrained models. No feature
+group clears >=5% reduction/all-model and18/19 permutation screen. Existing
+support_stats[:3] are schema (obs dim/action count/episode length), NOT
+transition evidence; support_schema/anchor groups have zero within-model
+variation and reproduce means. Full MAE202.678→267.827 Pendulum,16.111→18.327
+Acrobot; observation240.075/19.645.720 ridge fits,0 real/imagined/neural work;
+0.510764s plus0.314667s zero-fit audit;351 prior JSON unchanged. Execution
+ebdeddc9914eed84f4bcba7f21321600d7f7fb9c. Ledger774.1890710430174 used/
+2825.8109289569825 remaining. No proof of information-theoretic absence.
+One next proposal: fixed-dimension true-transition-statistic representation
+ablation with the same learner/training boundary, not implemented/allocated/
+executed. No new strategies, model or regularization changes. Closed E3.4,
+consumed E2.17 and blocked H17 unchanged. Report NEXUS_E3_6_FEATURE_INFORMATIVENESS_RESULTS.md.
+
 ## Latest — E3.5 anchored residual does not beat strong means reliably
 
 Protocol/implementation committed f128c29a8b116886dd20dd42cc025436d5421386

@@ -2,6 +2,7 @@
 import copy
 import importlib.util
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -162,3 +163,35 @@ def test_runner_config_is_executable_locked_and_one_run(tmp_path,monkeypatch):
     with pytest.raises(FileExistsError):m.run(c)
     m.USAGE.unlink();monkeypatch.delenv('OPENBLAS_NUM_THREADS',raising=False)
     with pytest.raises(ValueError,match='thread'):m.run(c)
+
+
+def test_saved_run_replay_without_fitting_and_historical_preservation(monkeypatch):
+    m=runner();c=json.loads(m.CONFIG.read_text());bank,x=m.load_training(c)
+    result=json.loads(m.RESULT.read_text());frozen=json.loads(m.FROZEN.read_text())
+    def forbidden(*args,**kwargs):raise AssertionError('no saved-data refit')
+    monkeypatch.setattr(AdvantagePredictor,'observe',forbidden)
+    assert a.verify_frozen_folds(frozen['folds'],bank,x)==result['analysis']
+    assert result['declared_complete'] and result['ridge_fits_completed']==720
+    assert result['real_steps']==result['imagined_transitions']==result['neural_inference']==0
+    assert a.variability(bank,x)==result['feature_variability']
+    m.verify_file(m.FROZEN,result['frozen_fold_sha256'])
+    for path,expected in result['historical_artifacts_sha256'].items():m.verify_file(ROOT/path,expected)
+
+
+def test_full_saved_predictions_reproduce_e3_5_without_new_fit():
+    new=json.loads((ROOT/'artifacts/e3_6_frozen_fold_predictions.json').read_text())
+    old=json.loads((ROOT/'artifacts/e3_5_frozen_fold_predictions.json').read_text())
+    for first,second in zip(new['folds'],old['folds']):
+        assert first['held_out']==second['held_out']
+        for a_pred,b_pred in zip(first['predictions'],second['predictions']):
+            assert a_pred['public']==b_pred['public']
+            assert a_pred['estimates']['full']==pytest.approx(b_pred['estimates']['residual_predictor'],abs=1e-10,rel=1e-12)
+
+
+def test_input_parser_cannot_open_closed_evaluation(monkeypatch):
+    m=runner();c=json.loads(m.CONFIG.read_text());reads=[];original=Path.read_text
+    def tracked(path,*args,**kwargs):
+        reads.append(path);return original(path,*args,**kwargs)
+    monkeypatch.setattr(Path,'read_text',tracked)
+    bank,x=m.load_training(c)
+    assert reads==[ROOT/c['input']] and len(bank)==len(x)==36

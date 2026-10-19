@@ -1,0 +1,47 @@
+{
+  "execution_sha": "ebdeddc9914eed84f4bcba7f21321600d7f7fb9c",
+  "base_sha": "b9aa1e2e2ad1815a41bafd7d8bbd9da067f9c3f2",
+  "suite_scope": "17 relevant regression modules; not entire historical repository suite",
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest -o addopts='' -q tests/test_e3_6_feature_informativeness.py tests/test_e3_5_residual_advantage.py tests/test_e3_4_feedback_coverage.py tests/test_e3_3_training_feedback_audit.py tests/test_e3_2_return_feedback.py tests/test_unified_e225_e30.py tests/test_unified_headroom.py tests/test_unified_full_policy_source.py tests/test_unified_full_policy_replication.py tests/test_unified_crossed_reset.py tests/test_e3_1_learned_model_audit.py tests/test_evolution2_planner_quality.py tests/test_evolution1_resources.py tests/test_evolution1_source_contracts.py tests/test_evolution1_toy_loop.py tests/test_evolution2_observation_memory.py tests/test_evolution2_observation_memory_cross.py",
+  "pre_execution": {
+    "passed": 418,
+    "wall_s": 8.5
+  },
+  "post_execution": {
+    "passed": 421,
+    "wall_s": 8.84,
+    "new_saved_evidence_tests": 3
+  },
+  "initial_pre_execution_test_failure": {
+    "passed": 97,
+    "failed": 1,
+    "reason": "New config wrote integer1 instead of the exact float1.0 required by the locked existing-host schema",
+    "resolved_before_protocol_commit": true,
+    "scientific_execution": false
+  },
+  "scientific_cost": {
+    "new_real_steps": 0,
+    "new_imagined_transitions": 0,
+    "neural_inference": 0,
+    "execution_ridge_fits": 720,
+    "audit_ridge_fits": 0,
+    "execution_wall_s": 0.5107635830063373,
+    "audit_wall_s": 0.31466716701106634,
+    "note": "Unit tests use authored synthetic ridge fixtures and no-fit saved-evidence replay; no new real-data fitting after execution"
+  },
+  "independent_audit": {
+    "valid": true,
+    "coefficient_models_verified": 720,
+    "historical_json_preserved": 351,
+    "maximum_e3_5_full_prediction_difference": 0,
+    "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_e3_3_training_feedback_audit.py --features --verify"
+  },
+  "boundaries": [
+    "Only E3.4 training_pairs and feature_rows are projected as research input",
+    "No closed E3.4 evaluation scoring",
+    "No checkpoint or NPZ loading",
+    "Historical source support statistics are absent from existing three schema slots",
+    "Unrelated untracked evolution1 adapters excluded",
+    "Main unchanged; no merge"
+  ]
+}

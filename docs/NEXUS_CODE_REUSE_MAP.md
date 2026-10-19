@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+E3.6 feature_informativeness is a slice/permutation/fold adapter over the SAME
+AdvantagePredictor, base training_feedback_audit anchor/identity functions and
+ridge; no second learner/proposer/memory/planner/meter. Existing audit host
+adds exact --features/--verify profile. Source discovery: advantage_features
+uses describe_support[:3] schema only; no true transitions reach this feature
+bank. Four locked groups/19 within-model maps each;720 fits, no inference.
+Allocation consumed; no reruns. Report NEXUS_E3_6_FEATURE_INFORMATIVENESS_RESULTS.md.
+
 E3.5 extends SAME AdvantagePredictor with observed-baseline targets/prediction;
 baseline0 preserves direct behavior. SAME training_feedback_audit and existing
 runner gain explicit --residual profile for9 training reset folds/27fits.
