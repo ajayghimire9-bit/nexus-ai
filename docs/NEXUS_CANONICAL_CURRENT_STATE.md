@@ -1,5 +1,16 @@
 # NEXUS canonical current state
 
+Latest crossed-reset source diagnostic passes its descriptive preference-split
+screen: Pendulum rank−successor+392.654 on model0,−130.778 on model1 with shared
+initial states/search streams. This removes different reset blocks as a sufficient
+explanation on the finite suite, not every state or a model-weight-only cause.
+Two existing bundles only, no fitting/generalization/L2L claim.3200 real steps,
+26.554137s plus5.424127s offline audit; ledger487.392307668/3112.607692332.
+Both model/RMS and323 old JSON hashes unchanged. Report
+`NEXUS_UNIFIED_CROSSED_RESET_RESULTS.md`. Reuse the host's third exact profile
+and consumed allocation only for provenance. Next proposed audit evaluates both
+models on identical saved transitions, no collection or training; unexecuted.
+
 Latest fixed-policy source replication completed48 episodes. Acrobot rank-blend
 gain repeats (+15.317/+19.298 versus flat/successor), but Pendulum successor
 contrast reverses aggregate sign (+87.762) with two opposing model-block means.

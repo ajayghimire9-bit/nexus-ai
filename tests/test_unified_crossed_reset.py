@@ -103,3 +103,24 @@ def test_exact_allocation_and_parent_integrity():
     assert a['session_used_before_s']==455.41404345900935
     assert a['runs']==1 and not a['automatic_retry'] and a['env_cap']==3200 and a['time_cap_s']==90
     for path,expected in a['parent_artifacts_sha256'].items():h.verify_file(h.ROOT/path,expected)
+
+
+def test_saved_crossed_capture_is_complete_without_local_models():
+    c=json.loads(CONFIG.read_text());paths=h.run_paths(c)
+    p=json.loads(paths['result'].read_text())
+    v=json.loads((h.ROOT/'artifacts/unified_crossed_reset_validation.json').read_text())
+    assert v['capture_sha256']==h.sha(paths['result'])
+    assert h.validate_result(p,c) and p['declared_complete']
+    assert r.directional_screen(p)==p['directional_screen']
+    assert v['decision_journals']==3200 and v['frozen_models']==2
+    assert v['completed']==p['resources']['completed']
+
+
+def test_saved_model_lineage_preserved():
+    c=json.loads(CONFIG.read_text());p=json.loads(h.run_paths(c)['result'].read_text())
+    parent=json.loads(h.RESULT.read_text())
+    original={x['bundle']:x for x in parent['models'] if x['family']=='pendulum'}
+    assert {(x['family'],x['bundle']) for x in p['models']}=={('pendulum',0),('pendulum',1)}
+    for m in p['models']:
+        assert m['before']==m['after']==original[m['bundle']]['before']
+        assert m['sha256']==original[m['bundle']]['sha256']

@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — crossed-reset planner preference split, 2026-10-19
+
+Same four fresh resets/planner streams crossed over two frozen Pendulum source
+models and successor/rank-blend controllers. Registered descriptive split passes:
+rank−successor model0+392.654 (3/4 resets positive), model1−130.778 (4/4 negative);
+paired interaction+523.431. Different reset blocks cannot fully explain the
+split on these tested conditions. This is a frozen model-bundle×planner effect,
+not isolation of neural weights from normalization/data, model generalization,
+useful learning or general control improvement. Later trajectories still diverge.
+3200 real steps/4,771,200 imagined/26.554137s; offline audit5.424127s. Both
+model/RMS fingerprints and323 old JSON preserved. Protocol
+9e88043832812431104db4ca68c43eb3116e7784; ledger487.392307668/3112.607692332.
+Report `NEXUS_UNIFIED_CROSSED_RESET_RESULTS.md`. One next proposal: replay both
+frozen models on identical recorded transitions to audit state/termination
+calibration,0 new real steps, proposed30s cap; not executed. No historical
+checkpoints/gates/main changed. Older latest entries below are retained history.
+
 ## Latest — fixed-policy fresh-episode replication, 2026-10-19
 
 Registered source replication completed48×200-step episodes on the same four

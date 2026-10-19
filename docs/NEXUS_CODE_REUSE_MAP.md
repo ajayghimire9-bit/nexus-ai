@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+The same host now has a third exact `crossed_reset_v1` profile with shared
+model-independent reset/search streams. Invoke the existing replication runner
+with `--crossed-reset` (and `--audit` for saved-data verification); do not create
+another controller or meter. `crossed_screen` reports paired model interactions
+and the preregistered descriptive sign screen. Its one-run allocation is consumed.
+Old profiles/result arithmetic remain regression-tested and unchanged. Report
+`NEXUS_UNIFIED_CROSSED_RESET_RESULTS.md`.
+
 The same `evolution2.full_policy_source` host now supports exactly two locked
 profiles: original screen and fresh-episode replication. `run_paths` keeps their
 configuration/allocation/usage/result/journal files separate; old evidence is

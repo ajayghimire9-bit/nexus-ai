@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Supplemental completed source diagnostic: `codex/unified-crossed-reset-diagnostic`,
+protocol9e88043832812431104db4ca68c43eb3116e7784. Shared four reset/search
+streams, two frozen models, two policies,16×200 steps. Descriptive preference
+split passes (model0+392.654, model1−130.778). Not model generalization or
+learning. Report `NEXUS_UNIFIED_CROSSED_RESET_RESULTS.md`; artifacts
+`unified_crossed_reset*.json`. All323 prior JSON/model fingerprints preserved.
+Ledger487.392307668/3112.607692332. Historical curated counts remain unchanged.
+
 Supplemental completed source episode replication:
 `codex/unified-full-policy-replication`, protocol
 0179cb7073cca09e4f263414e97502543766465c.48×200 steps, same four frozen models.

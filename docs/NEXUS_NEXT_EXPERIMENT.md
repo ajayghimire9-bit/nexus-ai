@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — source-only cross-model calibration on identical recorded transitions
+
+One next proposal: evaluate both unchanged Pendulum models on all3200 recorded
+crossed-reset transitions, identical observations/actions/next-state/termination
+targets for both. Report state error and termination calibration by visitor
+model/policy; no optimizer or threshold tuning.0 new real interactions, at
+most6400 one-step rows, proposed30-second cap. Register a separate protocol and
+allocation before inference. Not executed. These familiar recorded data cannot
+be treated as untouched confirmation or independent model replications.
+The crossed-reset split is now supported descriptively, so reset-block mismatch
+alone is insufficient; audit an available model-quality signal before a new
+planner-quality predictor. Correlation cannot prove the cause of return gaps.
+Report `NEXUS_UNIFIED_CROSSED_RESET_RESULTS.md`. Older next entries are history.
+
 ## Current — cross frozen Pendulum models over identical reset/search streams
 
 One next proposal: rank blend versus successor, both unchanged Pendulum models

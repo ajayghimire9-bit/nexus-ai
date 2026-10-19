@@ -1,5 +1,20 @@
 # NEXUS progress log
 
+## Latest — model-bundle preference split survives crossed resets descriptively
+
+Protocol9e88043832812431104db4ca68c43eb3116e7784 preceded16 complete200-step
+episodes. Shared resets/search streams across two models: rank−successor
+model0+392.654, model1−130.778; primary3/4-sign screen passes. Finite source
+model-bundle×planner interaction, not general control or learned selection.
+No fitting/new source physics/confirmation.3200 real steps,4,771,200 imagined,
+188800 calls,26.554137s; offline audit5.424127s reconciles3200 journals/390400
+events and323 previous JSON. Both model/RMS states unchanged. Ledger
+487.392307668/3112.607692332.216 selected tests passed before outcomes; final218
+passed in2.76s with repository-only capture checks added afterward. See
+`NEXUS_UNIFIED_CROSSED_RESET_RESULTS.md`.
+Next proposal: same-transition cross-model prediction/termination audit, zero
+new environment collection. No second experiment executed.
+
 ## Latest — Acrobot episode gain repeats; Pendulum aggregate sign unstable
 
 Protocol0179cb7073cca09e4f263414e97502543766465c preceded48 complete200-step

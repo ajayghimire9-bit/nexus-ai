@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-model crossed-reset descriptive split supported on finite source set
+
+Two unchanged Pendulum bundles face the same four new resets and planner streams.
+Rank−successor+392.654 on model0 (3/4 positive),−130.778 on model1 (4/4 negative);
+registered1-point/sign split screen passes, paired interaction+523.431. Thus
+different reset blocks are insufficient to explain the split on these tested
+conditions. Does not isolate weights from RMS/training data, remove later path
+divergence or establish generalization. No new independent models or formal CI.
+Report `NEXUS_UNIFIED_CROSSED_RESET_RESULTS.md`; all previous results unchanged.
+
 ## Latest — H-repeat source episode screen partly supported
 
 Same frozen policies/models, fresh episodes: Acrobot rank blend beats both
