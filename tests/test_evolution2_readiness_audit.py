@@ -2,6 +2,7 @@
 import copy
 import importlib.util
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -20,12 +21,18 @@ def test_existing_evidence_has_exact_raw_and_unit_grid():
     audit.validate_historical_grid(evidence())
 
 
-def test_prior_integration_manifest_and_execution_python_unchanged():
+def test_prior_integration_manifest_and_execution_python_unchanged(tmp_path):
     p = json.loads((ROOT / "artifacts/evolution2_27_feedback_integration.json").read_text())
-    audit.validate_integration_provenance(ROOT, p)
+    # Authenticate historical execution, not today's deliberately evolving code.
+    for name in p["source_sha256"]:
+        if name.endswith(".py"):
+            path = tmp_path / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(subprocess.check_output(["git", "show", p["execution_sha"] + ":" + name], cwd=ROOT))
+    audit.validate_integration_provenance(tmp_path, p)
     p["manifest"]["query_slots"].append(999)
     with pytest.raises(ValueError, match="manifest_digest"):
-        audit.validate_integration_provenance(ROOT, p)
+        audit.validate_integration_provenance(tmp_path, p)
 
 
 @pytest.mark.parametrize("mutation", ["bundle", "duplicate", "family", "method", "array", "fit"])

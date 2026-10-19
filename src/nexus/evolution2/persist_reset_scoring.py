@@ -47,6 +47,154 @@ N10_BUNDLES = 10
 N10_FITS = 20
 
 
+def freeze_shared_reference(evaluator, *, method_names, reference,
+                            expected_reference_digest):
+    """Freeze identical exposed source anchors before any adaptive proposal.
+
+    A trusted host collects these once and exposes them equally; this helper
+    neither collects them nor establishes their scientific provenance.
+    """
+    if (type(method_names) is not tuple or len(method_names) != 4
+            or len(set(method_names)) != 4 or set(method_names) != set(science.METHODS)):
+        raise ValueError("four_registered_methods_required")
+    if any(set(evaluator.exposed.get(m, ())) != set(reference)
+           or m in evaluator._feedback_scales for m in method_names):
+        raise ValueError("shared_reference_must_precede_adaptive_exposure")
+    snapshots = [evaluator.freeze_feedback_scale(m, reference=reference,
+                    expected_reference_digest=expected_reference_digest)
+                 for m in method_names]
+    if len({s.snapshot_digest for s in snapshots}) != 1:
+        raise ValueError("method_specific_reference_forbidden")
+    return snapshots[0]
+
+
+def analyze_return_grid(rows, *, bundle_ids, families, slots, scales,
+                        raw_spans, execution_report):
+    """Opt-in ten-bundle receipt contract; no execution or promotion authority.
+
+    Raw returns are the measurements; clipped unit scores are diagnostics.
+    Expected IDs and family spans must come from a future committed protocol,
+    never inferred from produced rows. Labels cannot authenticate a producer.
+    """
+    import math
+    from nexus.evolution1.resources import ExecutionReport, Work
+    from nexus.evolution2.pendulum_acrobot_protocol_v2 import student_t_interval
+    from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import FrozenTrainingFeedbackScale
+
+    def ids(value, size=None):
+        return (type(value) is tuple and bool(value) and (size is None or len(value) == size)
+                and all(type(v) is int and v >= 0 for v in value)
+                and len(set(value)) == len(value))
+
+    if not ids(bundle_ids, 10) or not ids(slots, 2):
+        raise ValueError("locked_ten_bundle_two_slot_grid_required")
+    if families != ("pendulum", "acrobot") or type(families) is not tuple:
+        raise ValueError("locked_family_order_required")
+    if (type(raw_spans) is not dict or set(raw_spans) != set(families)
+            or any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0
+                   for v in raw_spans.values())):
+        raise ValueError("predeclared_positive_raw_spans_required")
+    expected_scales = {(b, f) for b in bundle_ids for f in families}
+    if type(scales) is not dict or set(scales) != expected_scales:
+        raise ValueError("incomplete_reference_grid")
+    for (b, f), scale in scales.items():
+        if type(scale) is not FrozenTrainingFeedbackScale or (scale.bundle_id, scale.family) != (b, f):
+            raise ValueError("reference_scope_mismatch")
+    if (type(execution_report) is not ExecutionReport
+            or execution_report.status != "complete_execution"
+            or execution_report.unresolved_keys or execution_report.pending_key is not None
+            or execution_report.physical_unknown_upper_bound != Work()):
+        raise ValueError("incomplete_or_invalid_execution")
+    expected = {(b, f, s, m) for b in bundle_ids for f in families
+                for s in slots for m in science.METHODS}
+    fields = {"bundle", "family", "slot", "method", "variant_id", "episode_id",
+              "raw", "unit", "clipped", "snapshot_digest", "cached", "steps",
+              "physical_receipt", "measurement"}
+    from nexus.evolution1.toy_loop import VARIANTS
+    variants = {v.fingerprint for v in VARIANTS}
+    cells, physical, paired_episodes = {}, {}, {}
+    if type(rows) is not list or len(rows) != len(expected):
+        raise ValueError("incomplete_return_grid")
+    for r in rows:
+        if type(r) is not dict or set(r) != fields:
+            raise ValueError("return_receipt_schema")
+        if (type(r["bundle"]) is not int or type(r["slot"]) is not int
+                or any(type(r[k]) is not str for k in ("family", "method"))):
+            raise ValueError("invalid_cell_identity")
+        key = (r["bundle"], r["family"], r["slot"], r["method"])
+        if key not in expected or key in cells:
+            raise ValueError("unexpected_or_duplicate_cell")
+        if (r["measurement"] != "environment_return"
+                or type(r["variant_id"]) is not str or r["variant_id"] not in variants
+                or type(r["episode_id"]) is not str or not r["episode_id"]
+                or type(r["physical_receipt"]) is not str or not r["physical_receipt"]
+                or type(r["steps"]) is not int or not 1 <= r["steps"] <= EPISODE_STEPS
+                or type(r["cached"]) is not bool or type(r["clipped"]) is not bool
+                or any(type(r[k]) not in (int, float) or not math.isfinite(r[k])
+                       for k in ("raw", "unit"))):
+            raise ValueError("invalid_return_receipt")
+        scope = key[:3]
+        if paired_episodes.setdefault(scope, r["episode_id"]) != r["episode_id"]:
+            raise ValueError("unpaired_episode")
+        scale = scales[key[:2]]
+        mapped = scale.transform(r["raw"])
+        if (r["snapshot_digest"] != mapped["snapshot_digest"]
+                or r["clipped"] != mapped["clipped"] or r["unit"] != mapped["unit"]):
+            raise ValueError("feedback_transform_mismatch")
+        cache_key = (*scope, r["variant_id"])
+        prior = physical.setdefault(r["physical_receipt"], [])
+        if prior and any((p["bundle"], p["family"], p["slot"], p["variant_id"]) != cache_key
+                         or any(p[k] != r[k] for k in ("raw", "steps", "episode_id")) for p in prior):
+            raise ValueError("cache_receipt_mismatch")
+        prior.append(r)
+        cells[key] = r
+    # Every physical episode has one origin and any number of cached receipts.
+    for b in bundle_ids:
+        for f in families:
+            if len({paired_episodes[b, f, s] for s in slots}) != len(slots):
+                raise ValueError("reused_episode_across_slots")
+    cache_sources = set()
+    for group in physical.values():
+        origins = [r for r in group if not r["cached"]]
+        if len(origins) != 1:
+            raise ValueError("missing_or_duplicate_physical_origin")
+        r = origins[0]
+        key = (r["bundle"], r["family"], r["slot"], r["variant_id"])
+        if key in cache_sources:
+            raise ValueError("duplicate_physical_evaluation")
+        cache_sources.add(key)
+    steps = sum(group[0]["steps"] for group in physical.values())
+    if execution_report.physical_completed_reported.real_steps != steps:
+        raise ValueError("physical_step_accounting_mismatch")
+    # Equal slots within family, equal family weights within independent bundle.
+    family_raw = {f: {m: [sum(cells[b, f, s, m]["raw"] for s in slots) / len(slots)
+                         for b in bundle_ids] for m in science.METHODS} for f in families}
+    contrasts = {}
+    for control in ("reset", "random", "evolution"):
+        per_family = {f: [p - c for p, c in zip(family_raw[f]["persist"], family_raw[f][control])]
+                      for f in families}
+        normalized = [sum(per_family[f][i] / raw_spans[f] for f in families) / len(families)
+                      for i in range(len(bundle_ids))]
+        if any(not math.isfinite(x) for xs in (*per_family.values(), normalized) for x in xs):
+            raise ValueError("nonfinite_derived_metric")
+        try:
+            interval = student_t_interval(normalized, BONFERRONI_T_CRIT_DF9)
+        except OverflowError as exc:
+            raise ValueError("nonfinite_derived_interval") from exc
+        if not all(math.isfinite(v) for v in interval):
+            raise ValueError("nonfinite_derived_interval")
+        contrasts[control] = {"raw_by_family": per_family, "per_bundle": normalized,
+                              "interval": interval}
+    return {"complete_grid": True, "n": 10, "df": 9, "contrasts": contrasts,
+            "raw_family_means_per_bundle": family_raw,
+            "primary_units": "raw_return_difference_divided_by_predeclared_family_span",
+            "critical_value": BONFERRONI_T_CRIT_DF9,
+            "multiplicity": "existing_conservative_five_comparison_critical_value_for_three_contrasts",
+            "practical_threshold": None, "promotion_authorized": False,
+            "logical_receipts": len(rows), "physical_episodes": len(physical), "real_steps_reported": steps,
+            "clipped_by_method": {m: sum(r["clipped"] for r in rows if r["method"] == m) for m in science.METHODS}}
+
+
 def prospective_hidden_evaluator(manifest_path, *, expected_manifest_sha256,
                                  expected_reference_digest, produce_score):
     """Opt-in E2.27 path: validate saved reference before attaching queries.
