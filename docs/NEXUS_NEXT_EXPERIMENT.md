@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — balanced paired-operator headroom audit, proposed only
+
+E3.12 now actually ran on fresh source-control episodes. Measured feedback
+shifts probabilities modestly, but0/48 sampled choices change and both query
+contrasts versus random are0. Before changing the learner, ask whether switch
+and rank_blend have stable paired return differences when BOTH are evaluated
+at every fresh reset. A separate training/query headroom audit removes missing
+counterfactuals and stochastic threshold insensitivity. Keep four frozen source
+models, exact physical/imagined accounting and independent-model statistics.
+No registration, allocation or execution for this next proposal yet; preserve
+closed E3.12 seeds. Ledger1276.541573125001/2323.458426874999. See E3.12 report.
+Older next entries below are retained preparation history.
+
 ## Current — measure mutation learning against actual paired outcomes
 
 Bounded cycle/UI integration is implemented but all authored-fixture utility

@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Latest — measured E3.12 mutation feedback runs; useful gain unestablished
+
+Precommitted629c8d2cbb30632acab2d3e633b64fc19cccf46a, branch
+codex/e3-12-measured-mutation-credit.160 physical200-step episodes complete.
+Learned probabilities change all32 training updates, but learned/random choose
+identical variants all48 contexts and identical held-out returns (both families
+0 paired gain). No evidence of useful generation. Acrobot parent difference
+−3.407 [−4.356,−2.459], exploratory secondary df1. Fixed blend also reported.
+Actual32k real/48.057m imagined/1.588m forwards,246.475s wall; immutable models,
+402 old JSON retained.707 relevant regression+30 focused tests pass. New raw
+capture, lossless receipts, validation, independent arithmetic/CSV and report.
+Ledger1276.541573125001/2323.458426874999. No extra experiment launched.
+
 ## Latest — bounded mutation/rule/stream integration and Learning Lab
 
 Implemented a cycle over existing generator, TaskStream, controller and E1

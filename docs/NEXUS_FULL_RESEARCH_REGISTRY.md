@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Supplemental codex/e3-12-measured-mutation-credit, precommitted source/protocol
+629c8d2cbb30632acab2d3e633b64fc19cccf46a. Complete160 real200-step paths across
+four frozen source models. Actual feedback changes32 probability updates but
+0/48 sampled choices; query learned-minus-random0 in both families. Both screens
+fail.32000 real/48057060 imagined/1587620 forwards,246.474762s+5.341058s audit
++.052217s export.402 prior JSON preserved;707 relevant+30 focused tests pass.
+Ledger1276.541573125001/2323.458426874999. Artifacts e3_12_mutation*, report
+NEXUS_E3_12_MUTATION_CONTROL_RESULTS.md. No neural training/confirmation.
+
 Supplemental codex/bounded-learning-cycle-and-lab, precommitted source/protocol
 03a34156bf040e088834fa08199b00ffe245e20f.132 authored-fixture runs: all five
 utility screens fail; working integration is not real-world learning evidence.

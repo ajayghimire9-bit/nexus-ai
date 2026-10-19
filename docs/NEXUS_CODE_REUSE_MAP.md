@@ -8,7 +8,9 @@ label route without changing defaults. StrategyGenerator.paired_child fixes
 leaves and external uniform to isolate existing structural credit. No new
 learner/memory/meter. measured_mutation verifies actual completed paths;
 episode receipts are summary references, not duplicated physical accounting.
-Protocol NEXUS_E3_12_MUTATION_CONTROL_PROTOCOL.md; outcomes not yet collected.
+Protocol NEXUS_E3_12_MUTATION_CONTROL_PROTOCOL.md; complete real run now fails
+utility screen (same sampled choices as random). Separate stdlib exporter
+recomputes contrasts/accounting from sealed capture; no planner/model calls.
 
 Bounded learning-cycle integration uses SAME StrategyGenerator mutation credit,
 TaskStream, EpsilonGreedyController, FixtureCost/Journal and E1 promotion harness.

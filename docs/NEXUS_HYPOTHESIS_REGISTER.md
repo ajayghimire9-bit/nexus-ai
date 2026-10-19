@@ -1,5 +1,19 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.12 useful mutation learning not established
+
+H: measured parent–child return credit improves fresh-episode structural
+proposals versus uniform choice. Precommitted629c8d2cbb30632acab2d3e633b64fc19cccf46a;
+two independently pretrained models/family; train8/query4 contexts each.
+Both families fail mean>=1/both-model-positive/CI-lower>0 screen:0 [0,0].
+All48 sampled choices unchanged despite32 preference updates. Mechanism
+connected, utility unresolved; empirical zero interval does not establish
+population equality. Acrobot sampled mixtures underperform parent by−3.407,
+exploratory df1. No general learning or new-physics claim. Complete finite
+grid and exact meter/frozen checks pass. Closed outcomes must not be retuned.
+See NEXUS_E3_12_MUTATION_CONTROL_RESULTS.md; next balanced operator audit only
+proposed, not executed or allocated.
+
 ## Latest — bounded cycle mechanics demonstrated; utility unestablished
 
 Authored-fixture E3.12/E3.13/E3.14/E4.0/E4.1 screens all fail in132 paired

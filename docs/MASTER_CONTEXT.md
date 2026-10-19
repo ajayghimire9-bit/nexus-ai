@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.12 real mutation-credit screen fails
+
+Execution629c8d2cbb30632acab2d3e633b64fc19cccf46a precommitted protocol/code.
+Actual source-control returns now update existing structural mutation credit;
+32 training updates change probabilities, but0/48 sampled choices differ from
+uniform random (including0/16 queries). Both family primary gains0 [0,0]; this
+degenerate empirical interval is not equality of future expected performance.
+Pendulum learned/random−277.963, parent−288.630, fixed blend−304.838; Acrobot
+−297.219, parent−293.811, blend−286.761. useful_mutation_learning_not_established.
+Four frozen models,2/family; no unseen-physics/L2L claim.32000 real/48057060
+imagined/1587620 forwards,246.474762s+5.341058s verification+.052217s export.
+402 old JSON and all frozen inputs preserved.707 relevant tests plus30 focused
+exporter/contracts pass. Ledger1276.541573125001/2323.458426874999. Next proposed
+balanced paired-operator headroom audit; no extra run. See E3.12 results.
+
 ## Latest — bounded learning-cycle integration, fixture screens fail
 
 Execution03a34156bf040e088834fa08199b00ffe245e20f precommitted protocol/code.

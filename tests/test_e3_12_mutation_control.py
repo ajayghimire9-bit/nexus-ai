@@ -151,3 +151,26 @@ def test_modified_configuration_is_not_authorized(tmp_path):
     api=runner();c=config();c['training_episodes'].append(99)
     api.CONFIG=tmp_path/'changed.json';api.CONFIG.write_text(json.dumps(c))
     with pytest.raises(ValueError,match='locked_one_run_allocation'):api.run()
+
+
+def summary_api():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('mutation_summary',ROOT/'scripts/summarize_e3_12_mutation_control.py')
+    api=importlib.util.module_from_spec(spec);spec.loader.exec_module(api);return api
+
+
+def test_independent_summary_uses_models_and_counts_physical_paths_once():
+    p,c=fixture();p['analysis']=m.analyze(p['rows'],c)
+    s=summary_api().summarize(p,c)
+    assert s['identical_learned_random_paths']==48
+    assert s['phase_accounting']['training']['real_steps']==19200
+    assert s['phase_accounting']['evaluation']['real_steps']==12800
+    assert s['families']['pendulum']['contrasts']['random']['mean']==0.
+
+
+@pytest.mark.parametrize('fault',['missing','arithmetic'])
+def test_independent_summary_rejects_incomplete_or_changed_contrasts(fault):
+    p,c=fixture();p['analysis']=m.analyze(p['rows'],c)
+    if fault=='missing':p['rows'].pop()
+    else:p['analysis']['families']['pendulum']['contrasts']['random']['mean']=1.
+    with pytest.raises(ValueError):summary_api().summarize(p,c)

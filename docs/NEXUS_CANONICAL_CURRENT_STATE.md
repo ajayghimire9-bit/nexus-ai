@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Latest E3.12 real measured parent–child run complete/valid, utility screen fails.
+32 feedback probability updates,0 sampled proposal changes, exact tie with
+random on16 queries. Both family primary differences0 [0,0], conditionally
+degenerate; no proven expected-policy equivalence. Acrobot learned−297.219
+below parent−293.811/fixed-blend−286.761. Four frozen source models; no neural
+fitting, new physics or confirmation.32000 real/48057060 imagined/1587620
+forwards;402 old JSON preserved.707 relevant+30 focused tests pass. Ledger
+1276.541573125001/2323.458426874999. NEXUS_E3_12_MUTATION_CONTROL_RESULTS.md.
+
 Latest bounded-cycle integration: working source-only fixture loop and local
 Learning Lab, not proven continual/self-improving learning. All five fixture
 performance screens fail across132 runs.0 new real/imagined/neural work;
