@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Seed S0–S1 — finite teachable-agent vertical slice
+
+Separate codex/nexus-seed-s0-s1 worktree from verified fbee981. Same Learning
+Lab server and E1 Journal/canonical JSON; domain-specific finite concept evidence,
+disagreement questions, typed movement execution and private append-only snapshots.
+No parallel evolution/memory/meta-controller, no model download or neural training.
+Authored development protocol NEXUS_SEED_PROTOCOL.md committed before comparison;
+results and tests belong in NEXUS_SEED_RESULTS.md when recorded. Charter is derived
+from supplied task (separate charter attachment unavailable). Long-term compact
+adaptive intelligence vision remains; finite symbolic learning is not general
+language understanding, learning-to-learn or AGI. Historical artifacts/closed
+splits preserved; E2.17 consumed, H17 blocked, F unrun. No old benchmark rerun.
+
 ## E4 scratch PPO pilot COMPLETE — overall learning screen failed
 
 Precommitted54c915f7603665cbb2fab2feeebbe22e3455ea91. Fifteen new independent

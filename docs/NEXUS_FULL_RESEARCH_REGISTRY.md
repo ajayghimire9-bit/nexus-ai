@@ -1,5 +1,11 @@
 # NEXUS full research registry
 
+Seed S0–S1: separate authored-development vertical slice from fbee981. Protocol
+NEXUS_SEED_PROTOCOL.md; executable config configs/seed_s0_s1.json. Finite grammar
+teaching, not neural training or general language learning. Four semantic tasks,
+four methods, paired held-out layouts; one capped development capture. Its result
+must not replace old artifacts or reopen E2.17/H17/F/closed control evaluations.
+
 Completed E4 scratch benchmark from precommit54c915f:15 independent new PPO
 fits,90 full paired evaluations,76133 real/0 imagined/7680 optimizer steps.
 Complete valid execution; overall registered screen fails(0/5 families).

@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Seed S0–S1 is a separate finite symbolic teaching direction, not a replacement
+evolution/memory stack. Same Lab server/E1 Journal, typed sandbox programs,
+version-space predicates, clarification and correction/persistence. See
+NEXUS_SEED_STATUS, CHARTER and PROTOCOL; results recorded separately. No neural
+training, Gym, closed evaluations or scientific world-model inference. Historical
+research below is retained; finite authored development is not general learning.
+
 E4 scratch pilot COMPLETE/VALID, five_family_scratch_learning_not_established:
 15 new PPO fits/90 paired episodes; no family passes BOTH-baseline screen.
 MCC improves over random but not fixed; Acrobot loses to random.76133 real,

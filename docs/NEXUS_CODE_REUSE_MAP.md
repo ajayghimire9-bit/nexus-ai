@@ -400,3 +400,10 @@ splits, any result whose protocol says “closes only this configuration.”
 
 Reading a checkpoint to verify a hash is allowed. Training on its
 holdout labels is not.
+# Seed S0–S1 reuse addendum
+
+Same scripts/run_learning_lab.py and web/learning-lab frontend; existing
+evolution1.fixtures.Journal/verify_journal and catalogue.canonical/digest.
+seed/core, storage and lab are domain-specific concept/program/JSON bindings;
+they do not replace evolution2 memory, TaskStream or meta-controller.
+Scientific Work counters stay unchanged; symbolic costs are labeled separately.

@@ -9,9 +9,9 @@ import sys
 import threading
 import time
 from urllib.parse import urlparse,parse_qs
-from nexus.evolution2.learning_lab import load_control_replay,load_operator_replay,load_training_audit,load_preparation
-
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'src'))
+from nexus.evolution2.learning_lab import load_control_replay,load_operator_replay,load_training_audit,load_preparation
 
 
 def run_fixture_request(payload):
@@ -36,6 +36,11 @@ class LabHandler(BaseHTTPRequestHandler):
         if not self.local_request():return self.send_json(403,{'error':'local_origin_required'})
         parsed=urlparse(self.path)
         try:
+            if parsed.path=='/seed' and not parsed.query:
+                body=(ROOT/'web/learning-lab/seed.html').read_bytes();self.send_response(200)
+                self.send_header('Content-Type','text/html; charset=utf-8')
+                self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
+                self.end_headers();return self.wfile.write(body)
             if parsed.path=='/' and not parsed.query:
                 body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')
                 self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
@@ -53,6 +58,13 @@ class LabHandler(BaseHTTPRequestHandler):
         except (ValueError,KeyError,FileNotFoundError) as e:return self.send_json(400,{'error':str(e)})
     def do_POST(self):
         if not self.local_request() or self.headers.get('X-Nexus-Request')!='local-fixture':return self.send_json(403,{'error':'local_fixture_header_required'})
+        if self.path=='/api/seed':
+            if not getattr(self.server,'seed_workspace',None):return self.send_json(403,{'error':'seed_not_enabled'})
+            try:
+                length=int(self.headers.get('Content-Length','0'))
+                if not 0<length<=16384 or self.headers.get('Content-Type')!='application/json':raise ValueError('small_json_body_required')
+                return self.send_json(200,self.server.seed_workspace.dispatch(json.loads(self.rfile.read(length))))
+            except (ValueError,TypeError,KeyError,OSError) as e:return self.send_json(400,{'error':str(e)})
         if self.path!='/api/fixture':return self.send_json(404,{'error':'unknown_route'})
         if not self.server.fixtures_enabled:return self.send_json(403,{'error':'fixtures_not_enabled'})
         with getattr(self.server,'fixture_lock',nullcontext()):
@@ -73,11 +85,14 @@ class LabHandler(BaseHTTPRequestHandler):
 
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--max-runtime-s',type=int,default=900);parser.add_argument('--fixture-worker',action='store_true',help=argparse.SUPPRESS);args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--allow-seed',action='store_true');parser.add_argument('--seed-directory',type=Path,default=ROOT/'runs/seed-sessions');parser.add_argument('--max-runtime-s',type=int,default=900);parser.add_argument('--fixture-worker',action='store_true',help=argparse.SUPPRESS);args=parser.parse_args()
     if args.fixture_worker:
         print(json.dumps(run_fixture_request(json.loads(sys.stdin.read(4097))),allow_nan=False));return
     if not 1024<=args.port<=65535 or not 1<=args.max_runtime_s<=900:raise ValueError('local_server_limits')
     with ThreadingHTTPServer(('127.0.0.1',args.port),LabHandler) as server:
+        if args.allow_seed:
+            from nexus.seed.lab import SeedWorkspace
+            server.seed_workspace=SeedWorkspace(args.seed_directory)
         server.fixture_lock=threading.Lock()
         server.fixtures_enabled=args.allow_fixtures;server.requests_remaining=10;server.timeout=.5
         end=time.monotonic()+args.max_runtime_s

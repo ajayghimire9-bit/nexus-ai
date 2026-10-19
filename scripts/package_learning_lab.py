@@ -18,7 +18,7 @@ def payload(root=ROOT):
     root=Path(root)
     files=subprocess.check_output(['git','ls-files','src/nexus'],cwd=root,text=True).splitlines()
     files=[p for p in files if p.endswith('.py')]
-    files+=['scripts/nexus_lab.py','scripts/run_learning_lab.py','scripts/run_learning_lab_session.py','scripts/verify_demo.py','web/learning-lab/index.html']
+    files+=['scripts/nexus_lab.py','scripts/run_learning_lab.py','scripts/run_learning_lab_session.py','scripts/verify_demo.py','web/learning-lab/index.html','web/learning-lab/seed.html']
     files+=['artifacts/'+name+'.json' for name in (
         'e3_11b_forecast_calibration','e3_11b_forecast_calibration_validation',
         'e3_11d_horizon_calibration','e3_11d_horizon_validation',

@@ -4,6 +4,19 @@ Experimental research system for self-evolving neural intelligence. Long-term ai
 
 This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
+## NEXUS Seed — talk, teach, remember, act
+
+New local S0–S1 research direction: teach invented words through labeled object
+examples, answer clarifying questions, execute bounded movement programs, and
+save/resume evidence. A real finite-grammar learner in an authored world;
+not general language understanding or AGI. No cloud, model download or GPU.
+
+Run `python3 -I -S scripts/run_learning_lab.py --allow-seed --port 8766`, then
+open **http://127.0.0.1:8766/seed**. The historical Lab at `/` stays read-only.
+See [local teaching workflow](docs/NEXUS_SEED_STATUS.md),
+[charter](docs/NEXUS_SEED_CHARTER.md), [S0–S7 roadmap](docs/NEXUS_SEED_ROADMAP.md)
+and [authored development protocol](docs/NEXUS_SEED_PROTOCOL.md).
+
 ## Local Learning Lab
 
 Open verified recorded experiments without third-party packages or model files:
@@ -28,7 +41,7 @@ Reuse the named stack. Do not add a fourth evolution package, a third
 memory, or a second meta-controller. Closed H8–H16 splits and H17
 exclusions are not training labels.
 
-## Status
+## Historical status (retained; current status is in the canonical document)
 
 **Current: action-conditioned first-action Q run incomplete.** The 240 s authorized execution saved 59/60 evaluation cells. No registered decoder-level interval. Report: `docs/NEXUS_ACTION_CONDITIONED_Q_RESULTS.md`.
 
