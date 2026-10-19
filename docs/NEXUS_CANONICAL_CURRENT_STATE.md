@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Latest E3.12E complete training-only audit: sourceae57289a, zero new real/
+imagined/neural/query work. Raw choices stable under all registered deletions;
+Pendulum raw/matched signs disagree due observed reset-group parent offsets.
+No policy-utility or selected-rule claim.423 old JSON preserved. Ledger
+1808.9990201649957/1791.0009798350043. See E3.12E results; D remains a failed
+screen. Actual continual/E4/transfer studies remain designed, not executed.
+
 Latest E3.12D COMPLETE/VALID, parent_retention_not_established. Sourcea5d13d768.
 Parent retained0/4; same choices as two-child mean and credit; primary0 [0,0].
 Uniform gains+175.087 [−412.671,762.845] Pendulum/+4.794 [−71.914,81.502]

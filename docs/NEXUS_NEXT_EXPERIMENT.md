@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Next recommendation after E3.12E — reset-blocked exploration
+
+Training-only audit completed: raw choices survive registered deletions, yet
+pooled and matched parent comparisons disagree on Pendulum. Prepare a fresh
+comparison that forms training reset blocks from permitted initial observations,
+never measured returns, to test whether reducing group offsets improves
+held-out strategy choice with unchanged feedback budget/rules. No query-based
+retuning and no such simulation started. Continual/E4/transfer designs are
+separate in NEXUS_MEASURED_LEARNING_FOLLOWUPS.md, not executed or allocated.
+Ledger1808.9990201649957/1791.0009798350043. No new grant is implied.
+
 ## Next recommendation — training-only reset-balance and selection stability
 
 E3.12D is now complete and closed: parent_retention_not_established, primary0

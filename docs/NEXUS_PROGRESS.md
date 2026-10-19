@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — training-only reset/stability audit completed
+
+E3.12E (sourceae57289a) uses only32 D training rows; query rows/analysis skipped.
+Raw choices stay unchanged under8 single/16 balanced-pair deletions/model,
+but both selected Pendulum arms reverse sign against matched versus pooled
+parent. This does not establish a better rule or explain query failures causally.
+No new simulations/model inference.423 prior JSON preserved; ledger
+1808.9990201649957/1791.0009798350043. Local replay/session engineering proceeds
+separately; actual continual, learning-rule utility and model transfer are unrun.
+See NEXUS_E3_12E_TRAINING_STABILITY_RESULTS.md.
+
 ## Latest — fresh parent-aware comparison completed; screen failed
 
 Protocol/codea5d13d768 before outcomes. Parent-aware selector retains parent

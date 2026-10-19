@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Completed E3.12E exploratory training audit, sourceae57289a4023b01fd5da4f38d0ae4df5298c9cee.
+32 revealed rows only,16 query rows not decoded;4 models,32 single deletions/
+64 balanced deletions/280 dependent partitions. Raw choices all stable;
+Pendulum pooled/matched sign reversals; no performance promotion. Wall1.5103445s
+plus1.1929567s replay, zero new environment/model work,423 previous JSON preserved.
+Ledger1808.9990201649957/1791.0009798350043. Artifacts e3_12e_training*;
+NEXUS_E3_12E_TRAINING_STABILITY_RESULTS.md. Parallel engineering not new science.
+
 Completed E3.12D sourcea5d13d768ae3caefe33a7e25ef959bb5bad05447, exact one-run
 grant consumed.112 paths/22400 real,33662865 imagined,1039105 forwards,
 159.001242s+3.579782s audit+.087132s export. parent_retention_not_established:

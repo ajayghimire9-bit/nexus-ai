@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## E3.12E — exploratory training-estimate diagnosis, not policy validation
+
+Observed pooled-versus-matched comparison offsets can reverse parent-advantage
+signs (both selected Pendulum arms do). Raw choices are nevertheless stable
+under every registered deletion, so a single removed observation does not
+explain their ordering in this sample. This is not systematic-bias proof or
+query-performance attribution. Existing credit rules differ on two Acrobot0
+balanced-deletion cases but no fresh-task utility is scored. No learner or
+rule promoted. See E3.12E protocol/results; D's screen remains failed/closed.
+
 ## Completed — E3.12D parent-aware screen failed
 
 H: adding parent to raw-mean selection avoids harmful changes while preserving

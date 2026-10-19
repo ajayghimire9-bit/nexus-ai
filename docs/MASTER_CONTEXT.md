@@ -1,5 +1,19 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Completed E3.12E — training-only imbalance/stability audit
+
+Precommittedae57289a4023b01fd5da4f38d0ae4df5298c9cee. Only32 D training rows
+decoded,16 query rows skipped. Parent-aware raw choices change0/8 single-
+reset and0/16 balanced-pair deletions per model. Both Pendulum selected arms
+reverse raw-versus-matched parent-advantage sign; finite parent-group offsets
+explain the algebraic discrepancy, not query causation or systematic bias.
+Mean/recent/conservative agree full-fit4/4; two Acrobot0 pair-deletion cases
+disagree, with no utility evaluated. No new model, simulator, query evaluation
+or rule promotion.423 earlier JSON preserved. Wall1.5103445s+1.1929567s replay;
+ledger1808.9990201649957/1791.0009798350043. Results
+NEXUS_E3_12E_TRAINING_STABILITY_RESULTS.md. Parallel local Lab/session engineering
+and separate future-study designs do not establish continual learning or transfer.
+
 ## Completed E3.12D — parent retention not established
 
 Locked sourcea5d13d768ae3caefe33a7e25ef959bb5bad05447, one valid complete run.
