@@ -1,0 +1,223 @@
+{
+  "kind": "e4_engineering_foundation_delivery_not_scientific_learning",
+  "branch": "codex/e4-general-learning-foundation",
+  "base_revision": "fa7d3b4ff27ce6494ce0867366f2e84b5f9e540d",
+  "protocol_revision": "c05330134318bad74b1d1f6a7c2e1d45c327e555",
+  "execution_revision": "b79c3c591502c469e51a972c37993fbf3be03752",
+  "source_sha256": {
+    "configs/e4_foundation_smoke.json": "97e09acbe0a0386165f997561c724a5830d110ba6ee997cd1d8d11e018941c2a",
+    "configs/e4_general_learning_benchmark.json": "f6da7882df7d3e63b202b9049485b84cee682209195e4d7473d4ee57624b1b2a",
+    "schemas/e4_general_learning_result.schema.json": "e94b7cffa9e25f7538744933c1e9283196f281ef661d368d231afe09d8f9259b",
+    "scripts/run_e4_foundation_smoke.py": "03846d72cf5478a30987840f8db69c02f1e42eed8f91c207d31d4829d98f21e8",
+    "src/nexus/tasks/benchmark.py": "95731ca1cb49efb2c2963cca374ba3a8e5ff02e200d48a4d9a839d0bf9d32183",
+    "src/nexus/tasks/learning_stream.py": "670e2f6a8c299ec5f9a39125b56c1f656667d031303f06f5d13a751dd317cccf",
+    "src/nexus/nn/expr.py": "1b3122a1175f014919246a928a1d1cc8da47d3096af19cc760602fad7753fadf",
+    "src/nexus/nn/bounds.py": "be3932413f269e9aa76707d3ebefa222ac65531a2392ce29d3d82e394368f49b",
+    "tests/test_e4_general_learning.py": "30b81756fefc01d9ef518d357e82e459f53c0614e99d94362e99c11b51153193"
+  },
+  "smoke_artifact_sha256": "50cf589f97da42e5e765a63ccfd75ac21f6fc5e3c63826d94030ca2fcafba170",
+  "tests": {
+    "relevant_final": {
+      "passed": 945,
+      "wall_s": 57.53,
+      "modules": [
+        "tests/test_bounded_learning_cycle.py",
+        "tests/test_e3_11d_horizon_calibration.py",
+        "tests/test_e3_11b_calibration_execution.py",
+        "tests/test_e3_11b_forecast_calibration.py",
+        "tests/test_e3_11a_rollout_headroom.py",
+        "tests/test_e3_11_post_probe.py",
+        "tests/test_e3_10_metered_model.py",
+        "tests/test_e3_9_evidence_readiness.py",
+        "tests/test_e3_8_learning_interfaces.py",
+        "tests/test_e3_7_transition_evidence.py",
+        "tests/test_e3_6_feature_informativeness.py",
+        "tests/test_e3_5_residual_advantage.py",
+        "tests/test_e3_4_feedback_coverage.py",
+        "tests/test_e3_3_training_feedback_audit.py",
+        "tests/test_e3_2_return_feedback.py",
+        "tests/test_unified_e225_e30.py",
+        "tests/test_unified_headroom.py",
+        "tests/test_unified_full_policy_source.py",
+        "tests/test_unified_full_policy_replication.py",
+        "tests/test_unified_crossed_reset.py",
+        "tests/test_e3_1_learned_model_audit.py",
+        "tests/test_evolution2_planner_quality.py",
+        "tests/test_evolution1_resources.py",
+        "tests/test_evolution1_source_contracts.py",
+        "tests/test_evolution1_toy_loop.py",
+        "tests/test_evolution2_observation_memory.py",
+        "tests/test_evolution2_observation_memory_cross.py",
+        "tests/test_strategy_memory.py",
+        "tests/test_strategy_memory_obs.py",
+        "tests/test_strategy_memory_selector.py",
+        "tests/test_strategy_memory_decide.py",
+        "tests/test_strategy_memory_persist_obs.py",
+        "tests/test_evolution2_fit_clock.py",
+        "tests/test_evolution2_fit_clock_run.py",
+        "tests/test_e3_12_mutation_control.py",
+        "tests/test_e3_12b_operator_headroom.py",
+        "tests/test_e3_12c_partial_feedback.py",
+        "tests/test_parent_retention_and_resume.py",
+        "tests/test_e3_12d_parent_retention.py",
+        "tests/test_e3_12e_training_stability.py",
+        "tests/test_learning_lab_sessions.py",
+        "tests/test_e3_12f_reset_blocks.py",
+        "tests/test_e3_12f_runner_integration.py",
+        "tests/test_e3_12f_resource_review.py",
+        "tests/test_learning_lab_release.py",
+        "tests/test_e4_general_learning.py",
+        "tests/test_expr.py",
+        "tests/test_expr_checkpoint.py",
+        "tests/test_factory.py",
+        "tests/test_activations.py",
+        "tests/test_activation_validate.py"
+      ],
+      "command": "python3 -m pytest -o addopts= -q <modules>",
+      "environment": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps"
+    },
+    "focused_numeric_compatibility": {
+      "passed": 94,
+      "wall_s": 1.98
+    },
+    "earlier_relevant": {
+      "passed": 943,
+      "wall_s": 57.85
+    },
+    "initial_vector_fixture_failures": {
+      "failed": 5,
+      "reason": "SyncVectorEnv has no context manager; corrected test with contextlib.closing"
+    },
+    "entire_historical_suite": false
+  },
+  "engineering_smoke": {
+    "status": "complete",
+    "runs": 1,
+    "paired_paths": 10,
+    "replays_per_path": 2,
+    "maximum_steps_per_replay": 4,
+    "resources": {
+      "reserved": {
+        "real_steps": 80,
+        "imagined_transitions": 0,
+        "model_calls": 0,
+        "network_forwards": 0
+      },
+      "completed": {
+        "real_steps": 80,
+        "imagined_transitions": 0,
+        "model_calls": 0,
+        "network_forwards": 0
+      },
+      "unknown_upper": {
+        "real_steps": 0,
+        "imagined_transitions": 0,
+        "model_calls": 0,
+        "network_forwards": 0
+      }
+    },
+    "host_wall_s": 0.013773875,
+    "host_cpu_s": 0.012755,
+    "command_wall_s": 0.633083291,
+    "model_training": false,
+    "learned_model_inference": false,
+    "new_scientific_execution": false
+  },
+  "session_ledger": {
+    "prior_used_s": 1808.9990201649957,
+    "prior_remaining_s": 1791.0009798350043,
+    "charged_s": 0.633083291,
+    "used_s": 1809.6321034559958,
+    "remaining_s": 1790.3678965440042,
+    "note": "Conservatively charge entire runner command, including startup; raw smoke artifact preserves Host-only tally."
+  },
+  "historical_preservation": {
+    "base_revision": "fa7d3b4ff27ce6494ce0867366f2e84b5f9e540d",
+    "json_count": 432,
+    "sorted_hash_map_sha256": "4bc4a57743a952592e7101cd27f94085b17c09f0ee5814a2349ae84222791da6",
+    "all_byte_identical": true,
+    "frozen_files": [
+      {
+        "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle0.pt",
+        "sha256": "f72575a410bd14dd69a3bcecf22e842ca93580e1622bb35668889c8a88ed4bed"
+      },
+      {
+        "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle1.pt",
+        "sha256": "76e87eb1501a069e066927cd93bc6b9b0f3f691198d60ba1c22b2cbf6ad15af0"
+      },
+      {
+        "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle0.pt",
+        "sha256": "47d6a80ab3630590ed9c3b59c07fc59b9b85f88f515774b767c20897bf748c96"
+      },
+      {
+        "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle1.pt",
+        "sha256": "787fcc29efae9f39d50df91f86184778e912f90186eea83459523322413d4508"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle0_train.npz",
+        "sha256": "c80901186c47247809a695c665525026994668dd96c396b68511412d50cc4a84"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle0_val.npz",
+        "sha256": "11745f3db32bc1c9841e24b316718c5a15337fd12cfd6439596ac8a56c3b847d"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle1_train.npz",
+        "sha256": "6fbb1a6898ba292e068536ed3e8b656b3d2bf886d5948d45691abd6bbe3abd1a"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/pendulum/bundle1_val.npz",
+        "sha256": "d1a7eb68270ad1831c2c5262ac24fdc3f7f771e2b4fe4eafd910e9d5d006e4ed"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle0_train.npz",
+        "sha256": "b904e52cb76398e279d2ed9d9b8c68a6250501f28cc65f3bb012b1330651a2ee"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle0_val.npz",
+        "sha256": "bbfdd62430e706485e95264cf7a79bde1ed82ce1185cf6154e788e52b1b8105e"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle1_train.npz",
+        "sha256": "9a158288f0cbbb9cda9a7784f38eea7608398db0ac759f0bb8a0d48649451a71"
+      },
+      {
+        "path": "artifacts/evolution2_source_arrays/acrobot/bundle1_val.npz",
+        "sha256": "45fd547868312ce4c7a5ce7786af3954198735fe16f966382801574d8d63421c"
+      }
+    ],
+    "all_listed_frozen_hashes_match": true,
+    "unrelated_user_files_excluded": [
+      "src/nexus/evolution1/adapters.py",
+      "tests/test_evolution1_adapters.py"
+    ]
+  },
+  "completed": [
+    "five-family TaskSpec/Host environment contract",
+    "common existing PPO constructor binding and fixture vector/gradient checks",
+    "strict prospective benchmark schema and per-family seed intervals",
+    "existing TaskStream family-context bridge",
+    "bounded opt-in softsign and existing-factory complexity probes"
+  ],
+  "not_demonstrated": [
+    "five-family learning performance",
+    "knowledge transfer",
+    "real neural continual learning",
+    "learning-to-learn",
+    "self-improvement",
+    "AGI"
+  ],
+  "unfinished": [
+    "scientific benchmark registration and trusted raw-episode learner runner",
+    "durable neural learner plus non-refundable Host restoration",
+    "typed experiment dispatch for architecture/rule/revisit operations",
+    "expanded MiniGrid/procedural/Crafter interfaces"
+  ],
+  "next_proposed_study": "Separately registered small five-family PPO scratch benchmark versus random/fixed; prospective 84840-step/300s outline is not authorized or locked.",
+  "dependencies": {
+    "python": "3.13.5",
+    "gymnasium": "1.4.0",
+    "numpy": "2.5.4",
+    "torch": "2.14.1"
+  }
+}

@@ -3,12 +3,21 @@
 Current task authorizes foundation code and a tiny engineering smoke only.
 It does not replace F's missing registration or reopen any closed split.
 
-The single next scientific priority remains the prepared **E3.12F v2 assignment
-comparison**, including its secondary paired-parent-gain estimator, before
-choosing a new architecture. Use the existing exact bound and independent
-exporter; finish fresh seed/split exclusion review and exact collection allocation
-before execution. Proposed300s/28800 real/44236800 imagined/1622400 forwards.
-These are unallocated ceilings, not an executed grant or a new outcome. Separate
+Under the user's new general-learning priority, the single next proposed
+scientific study is a small **same-algorithm five-family PPO scratch benchmark**
+against random and fixed policies, before architecture changes or transfer
+claims. A prospective three-seed,4096-training-step/family recipe plus two
+evaluation episodes/condition would have an84840-real-step upper bound using
+the present500-step CartPole and200-step other limits. This is a cost outline,
+not a locked protocol, numerical registration, convergence claim or allocation.
+CPU/forward/optimizer bounds, training/evaluation seeds, exclusion checks and
+practical thresholds still need registration; propose at most300s for an initial
+pilot and save incomplete if exceeded. No run is started on this outline.
+
+E3.12F v2 remains separately prepared and unexecuted, with its unchanged raw
+primary and paired-parent-gain secondary: proposed300s/28800 real/44236800
+imagined/1622400 forwards. Its missing registration/allocation is not supplied
+by this foundation task. Neither study grants execution to the other. Later
 repeatability requires independent complete procedures, not more query episodes
 counted as independent pretrained models.
 

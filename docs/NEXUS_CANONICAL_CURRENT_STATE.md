@@ -1,5 +1,11 @@
 # NEXUS canonical current state
 
+E4 delivery complete:945 relevant tests; single80-step engineering smoke passes
+five families with identical paired replays. No training or model inference.
+432 old JSON/12 listed frozen files preserved. Ledger conservative command
+charge gives1809.6321034559958 used/1790.3678965440042 remaining. Scientific
+benchmark/real continual learning remain unrun. No new learner/controller stack.
+
 Evolution-4 foundation: tasks.benchmark binds SAME TaskSpec/wrappers/Host/PPO
 across five families; tasks.learning_stream wraps SAME TaskStream. No alternate
 planner, memory, learner or controller. nn.bounds probes SAME factory; softsign

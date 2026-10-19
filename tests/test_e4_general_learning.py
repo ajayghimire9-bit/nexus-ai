@@ -253,3 +253,28 @@ def test_existing_residual_normalization_variants_numeric_bounds_and_rng(residua
     assert torch.equal(before, torch.random.get_rng_state())
     assert a == probe_architecture(4, spec) and a["parameter_gradient_norm"] > 0
     assert a["dense_macs_per_row"] == 320
+
+
+def test_saved_engineering_smoke_is_complete_without_new_environment_steps():
+    path = ROOT / "artifacts/e4_foundation_smoke.json"
+    if not path.exists():
+        # Before first execution there must be no requirement to generate data
+        # merely to run the source-only suite.
+        return
+    record = json.loads(path.read_text())
+    config = json.loads((ROOT / "configs/e4_foundation_smoke.json").read_text())
+    expected = set(itertools.product(config["families"], config["policies"]))
+    ids = [(r["family"], r["policy"]) for r in record["paths"]]
+    assert len(ids) == len(expected) and set(ids) == expected
+    total = 0
+    for row in record["paths"]:
+        assert len(row["replays"]) == 2 and row["replays"][0] == row["replays"][1]
+        for replay in row["replays"]:
+            assert 1 <= len(replay["steps"]) <= 4
+            assert replay["raw_return"] == sum(s["reward"] for s in replay["steps"])
+            assert all(np.isfinite(s["observation"]).all() and np.isfinite(s["next_observation"]).all() for s in replay["steps"])
+            total += len(replay["steps"])
+    assert record["status"] == "complete" and record["scientific_claims"] is False
+    assert record["resources"]["completed"] == dict(real_steps=total, imagined_transitions=0, model_calls=0, network_forwards=0)
+    assert len(record["receipts"]) == total <= config["real_cap"]
+    assert not any(record["resources"]["unknown_upper"].values())

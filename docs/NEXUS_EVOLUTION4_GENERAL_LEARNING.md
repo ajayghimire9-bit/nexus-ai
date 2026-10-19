@@ -174,3 +174,38 @@ Initial vector fixture tests exposed an unsupported context-manager use in the
 test harness; replacing it with explicit closing fixed all five failures.
 Passing tests cannot establish transfer, continual
 learning, learning-to-learn, self-improvement or AGI.
+
+### Completed delivery
+
+Protocol/implementation `c05330134318bad74b1d1f6a7c2e1d45c327e555`;
+pre-execution numeric-scalar compatibility fix
+`b79c3c591502c469e51a972c37993fbf3be03752` (94 focused tests passed in1.98s).
+The smoke executed ONCE from the latter clean tracked revision and completed
+all10 family/policy pairs with two identical four-step replays: **80 real
+steps**,0 imagined transitions,0 learned-model calls/forwards,0 fits. Host
+wall0.013773875s, CPU0.012755s; total command wall0.633083291s including startup.
+Raw trajectories and80 reservation receipts are in `e4_foundation_smoke.json`,
+SHA256 `50cf589f97da42e5e765a63ccfd75ac21f6fc5e3c63826d94030ca2fcafba170`.
+No random-versus-fixed performance inference is made from these short traces.
+
+Final relevant suite: **945 passed in57.53s**, same51-module selection as above
+including new numeric-reward compatibility and saved-smoke accounting checks.
+This remains a curated suite, not all historical model/simulator tests. The
+full five-family PPO trainer was not fitted: vector APIs, actor–critic shape
+and gradients are tested on authored fixtures/untrained tensors. The existing
+factory's update rules and real training performance were not improved here.
+
+All432 JSON artifacts tracked at the starting revision are byte-identical;
+12 prior manifest-listed checkpoint/source files retain their expected hashes.
+No historical checkpoints were loaded for inference or replaced. Unrelated
+untracked adapter files remain excluded. `AGENTS.md` is unchanged.
+
+The smoke artifact carries the Host-only tally. Conservatively charge the
+larger entire command wall to the session: **1809.6321034559958 used /
+1790.3678965440042 remaining**. The extra startup charge is in the delivery
+record, not a rewrite of the raw smoke artifact. Unit/regression fixtures are
+engineering verification rather than scientific execution. No additional
+research allocation, holdout registration, architecture search or F collection.
+See `artifacts/e4_foundation_delivery.json` for commands, hashes and unfinished
+work. Next proposed study is the separately registered small five-family
+scratch-learning benchmark in `NEXUS_EVOLUTION4_NEXT_EXPERIMENTS.md`; not run.

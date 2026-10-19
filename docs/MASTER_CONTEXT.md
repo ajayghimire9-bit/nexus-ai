@@ -2,6 +2,15 @@
 
 ## Evolution-4 foundation engineering — no learning study
 
+DELIVERED:945 relevant tests pass; one80-real-step smoke completed across all
+five public-default families, paired replays identical,0 learned-model calls,
+0 training/imagined transitions. Sourceb79c3c591502c469e51a972c37993fbf3be03752.
+432 old JSON and12 listed checkpoint/source hashes preserved. Conservatively
+charged command0.633083291s: ledger1809.6321034559958/1790.3678965440042.
+No learning/transfer/continual evidence. See delivery record and E4_NEXT_EXPERIMENTS;
+small five-family PPO scratch study is proposed, not registered or executed.
+Earlier preparation text below is chronological history.
+
 From verified fa7d3b4, shared five-family TaskSpec/Host/PPO bindings, stricter
 semantic compatibility, prospective benchmark schema, existing TaskStream bridge
 and opt-in bounded softsign expression are implemented. Relevant source/fixture

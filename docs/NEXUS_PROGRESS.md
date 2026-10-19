@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## E4 foundation delivered — engineering, not a learning result
+
+Five-family TaskSpec/Host/PPO constructor contracts, semantic compatibility,
+strict prospective result grid, existing TaskStream bridge and bounded opt-in
+softsign extension.945 relevant tests pass; one80-step public-default smoke
+has identical paired replays,0 training/model calls/imagined transitions.
+Sourceb79c3c591502c469e51a972c37993fbf3be03752; protocolc053301.432 old JSON and12
+listed frozen files preserved. Command0.633083291s; conservative carried ledger
+1809.6321034559958/1790.3678965440042. E4 benchmark/real neural persistence and
+F collection remain unrun. See NEXUS_EVOLUTION4_GENERAL_LEARNING.md.
+
 ## F v2 delivery verified —888 relevant tests, zero scientific execution
 
 Implementation/protocol7eb7e53445c381fecd8407707cd150826efd5f75. Clean-venv

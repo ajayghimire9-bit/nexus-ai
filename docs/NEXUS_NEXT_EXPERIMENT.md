@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## New E4 foundation priority — proposed, not executed
+
+The user's broadened scope now has tested five-family bindings and an80-step
+engineering smoke, not learning evidence. Next prepare a small SAME-PPO
+scratch benchmark versus random/fixed with full rollout/forward/CPU accounting,
+fresh reviewed registrations and per-family independent-seed intervals. A
+prospective84840-step/300s outline is not an allocation. No training is started.
+See NEXUS_EVOLUTION4_NEXT_EXPERIMENTS.md. F v2 remains independently prepared,
+unregistered and unexecuted; the earlier next-step entries below are history.
+
 ## F v2 — finish this comparison before another mechanism
 
 Use FINAL_PREPARATION and runtime_v2: source-derived1622400-call ceiling,

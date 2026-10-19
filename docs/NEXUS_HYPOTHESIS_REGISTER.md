@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## E4 foundation — technical contracts passed, scientific hypothesis untested
+
+Shared five-family algorithm bindings and bounded modifications are engineering
+capabilities.945 tests and80 smoke steps establish API compatibility/replay and
+budget accounting only. No scratch-learning, transfer, architecture advantage,
+continual-learning or self-improvement hypothesis was evaluated. Proposed
+five-family PPO scratch comparison requires separate full registration and
+allocation; F v2 and all closed negative outcomes remain unchanged.
+
 ## F v2 — assignment primary, estimation secondary; both untested
 
 Primary remains blocked-minus-random raw-average selection,1-point BOTH-family
