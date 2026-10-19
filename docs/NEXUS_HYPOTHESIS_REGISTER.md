@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed H-teach / H-question — INCOMPLETE, not established
+
+Locked0b9ae69: finite-grammar teaching versus memorization, disagreement versus
+random questions,3labels per semantic task/condition. Single authored development
+capture hit10000predicate-test cap,14/16cells retained. Three complete paired
+tasks:1/6correct disagreement programs,0/6random/memorization,6/6privileged oracle.
+These descriptive prefix counts cannot establish sample efficiency; negation
+disagreement/oracle cells missing,2interrupted labels charged without full records.
+Functional full-evidence teaching/correction/restart tests pass independently.
+No general-language, cross-domain, neural, control or learning-to-learn claim.
+
 ## E4 short-budget same-PPO learning — registered screen failed
 
 Three independent scratch learner seeds/family; compare new-reset episode

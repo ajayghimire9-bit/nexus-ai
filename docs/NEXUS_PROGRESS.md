@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Seed S0–S1 — functional teaching delivered, development comparison incomplete
+
+Precommit0b9ae69, same Lab/E1 Journal with domain-specific finite concepts and
+typed object programs.220tests and actual headless Chrome teaching/new scene/
+restart/correction pass. One authored capture stops at10000predicate tests,
+14/16complete cells,44teacher labels charged;2partial labels not retained in full.
+No rerun or cap extension. Comparative sample efficiency unestablished;648old
+artifacts preserved. Zero neural or scientific simulator work. See SEED_RESULTS.
+Conservative10s debit gives1845.6321034559958used/1754.3678965440042remaining.
+
 ## E4 scratch benchmark complete — same recipe did not clear all-family screen
 
 Protocol/execution54c915f7603665cbb2fab2feeebbe22e3455ea91; all15 models fit

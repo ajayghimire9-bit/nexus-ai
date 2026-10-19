@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## After Seed S0–S1 — new authored label-budget comparison proposed
+
+Keep the finite encoder-free symbolic architecture. Separately preregister new
+authored semantic tasks with a label-budget curve, worst-case per-cell predicate
+reservations, and incremental persistence of each charged label. Compare random
+and disagreement questions against memorization/oracle at matched labels. This
+distinguishes insufficient information from question quality; it does not assume
+larger networks are needed. The14/16-cell Seed comparison remains incomplete and
+consumed; do not resume/relabel it. Functional teaching/restart success is separate.
+No new follow-up is executed or automatically authorized by this entry. Older
+proposals below remain historical alternatives, not competing automatic actions.
+
 ## After E4 failed scratch screen — frozen-policy readout diagnostic proposed
 
 Keep all15 new PPO checkpoints fixed. Compare categorical sampling with greedy

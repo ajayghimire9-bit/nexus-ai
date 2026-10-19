@@ -203,3 +203,17 @@ def test_seed_http_origin_and_opt_in(tmp_path):
         sock=Sock(raw+b'\r\n'+body)
         module.LabHandler(sock,('127.0.0.1',1),SimpleNamespace(server_port=8765,seed_workspace=workspace))
         assert sock.output.startswith(f'HTTP/1.0 {status}'.encode())
+
+
+def test_recorded_partial_cannot_be_promoted_or_rerun():
+    root=Path(__file__).resolve().parents[1]
+    # Repository-only post-capture guard; no checkpoint or simulation required.
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('seed_saved_audit',root/'scripts/verify_seed_comparison.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    with pytest.raises(ValueError,match='complete_locked_capture_required'):module.verify()
+    receipt=module.verify(allow_partial=True)
+    assert receipt['valid_saved_prefix'] and not receipt['complete_grid']
+    assert receipt['unretained_partial_work']['teacher_answers']==2
+    done=subprocess.run([sys.executable,'-I','-S',str(root/'scripts/run_seed_comparison.py')],capture_output=True,text=True)
+    assert done.returncode!=0 and 'must_not_be_reexecuted' in done.stderr

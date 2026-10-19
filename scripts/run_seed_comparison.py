@@ -24,6 +24,8 @@ def main():
         result=json.loads(path.read_text());analysis=validate(c,result['rows'])
         if result['analysis']!=analysis or result['config_sha256']!=hashlib.sha256(raw).hexdigest():raise ValueError('saved_arithmetic_mismatch')
         print(json.dumps(dict(valid=True,analysis=analysis),indent=2));return
+    if path.exists():
+        raise FileExistsError('captured_comparison_must_not_be_reexecuted')
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():
         raise ValueError('clean_precommitted_protocol_required')
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()

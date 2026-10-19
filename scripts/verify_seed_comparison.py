@@ -1,5 +1,6 @@
 """Independent stdlib arithmetic/truth check; never imports Seed's learner."""
 import hashlib
+import argparse
 import json
 import math
 from pathlib import Path
@@ -7,14 +8,15 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def verify():
+def verify(allow_partial=False):
     raw=(ROOT/'configs/seed_s0_s1.json').read_bytes();c=json.loads(raw)
     p=json.loads((ROOT/'artifacts/seed_s0_s1_dev.json').read_text())
-    if p['declared_complete'] is not True or p['config_sha256']!=hashlib.sha256(raw).hexdigest():raise ValueError('complete_locked_capture_required')
+    if (p['declared_complete'] is not True and not allow_partial) or p['config_sha256']!=hashlib.sha256(raw).hexdigest():raise ValueError('complete_locked_capture_required')
     tasks={t['id']:t for t in c['semantic_tasks']}
     expected={(t,m) for t in tasks for m in c['methods']}
     keys=[(r['task_id'],r['method']) for r in p['rows']]
-    if set(keys)!=expected or len(keys)!=len(expected):raise ValueError('independent_complete_grid')
+    complete=set(keys)==expected and len(keys)==len(expected)
+    if len(keys)!=len(set(keys)) or not set(keys)<=expected or not complete and not allow_partial:raise ValueError('independent_complete_grid')
     counts={m:0 for m in c['methods']};costs={};truth_checks=0;action_checks=0
     for r in p['rows']:
         target=tasks[r['task_id']]['literals']
@@ -42,14 +44,21 @@ def verify():
                 if t['after']!=after or any(not 0<=v<6 for v in after):raise ValueError('trace_after')
                 positions[t['object']]=after;action_checks+=1
             counts[r['method']]+=correct
-    if costs!=p['analysis']['costs'] or costs!=p['reserved_fixture_costs']:raise ValueError('independent_cost_arithmetic')
-    for m in counts:
-        if counts[m]!=p['analysis']['methods'][m]['correct']:raise ValueError('independent_accuracy')
+    if complete and (costs!=p['analysis']['costs'] or costs!=p['reserved_fixture_costs']):raise ValueError('independent_cost_arithmetic')
+    if not complete and any(v>p['reserved_fixture_costs'][k] for k,v in costs.items()):raise ValueError('partial_cost_underreport')
+    if complete:
+        for m in counts:
+            if counts[m]!=p['analysis']['methods'][m]['correct']:raise ValueError('independent_accuracy')
     for k,v in p['previous_artifact_hashes'].items():
         if hashlib.sha256((ROOT/k).read_bytes()).hexdigest()!=v:raise ValueError('prior_artifact_changed')
-    return dict(valid=True,correct_programs=counts,teacher_truth_checks=truth_checks,
+    return dict(valid_saved_prefix=True,complete_grid=complete,declared_complete=p['declared_complete'],
+                missing_cells=sorted(expected-set(keys)),correct_programs=counts,teacher_truth_checks=truth_checks,
                 action_endpoint_checks=action_checks,costs=costs,
+                reserved_costs=p['reserved_fixture_costs'],
+                unretained_partial_work={k:p['reserved_fixture_costs'][k]-v for k,v in costs.items()},
                 previous_artifacts_preserved=len(p['previous_artifact_hashes']))
 
 
-if __name__=='__main__':print(json.dumps(verify(),indent=2))
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--allow-partial',action='store_true')
+    print(json.dumps(verify(parser.parse_args().allow_partial),indent=2))

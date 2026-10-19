@@ -4,6 +4,11 @@ New direction from verified fbee981, separate branch/worktree. Historical resear
 is preserved, including the negative five-family PPO screen. See charter, roadmap
 and locked protocol. Results are recorded separately after the authored comparison.
 
+Delivery:220relevant tests pass; real Chrome GUI/restart checks pass. The one
+authored development comparison is **incomplete** at its fixed predicate-test
+cap. Teaching functionality works; comparative sample efficiency is unestablished.
+See [honest results](NEXUS_SEED_RESULTS.md). Do not rerun the captured comparison.
+
 ## Start locally (no installation or download)
 
 Python3.11+ and a browser:
@@ -71,3 +76,5 @@ developer tooling only; ordinary use needs none of these packages.
 One precommitted authored comparison: `python3 -I -S scripts/run_seed_comparison.py`;
 it requires a clean tree and exclusive claim and must not be rerun after capture.
 Independent arithmetic: `python3 -I -S scripts/verify_seed_comparison.py`.
+The default verifier refuses this incomplete capture; use **--allow-partial**
+to audit only its retained prefix without promoting completeness.

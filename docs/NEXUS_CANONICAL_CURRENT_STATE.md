@@ -1,5 +1,11 @@
 # NEXUS canonical current state
 
+Seed delivery:220relevant tests, real Chrome GUI/process restart/correction pass.
+Authored comparison INCOMPLETE at registered10000predicate-test cap;14/16cells,
+44charged labels,2interrupted labels not retained in full. No rerun, no sample-
+efficiency success claim. Independent partial audit and648old artifact hashes
+verified. See NEXUS_SEED_RESULTS; ledger1845.6321034559958/1754.3678965440042.
+
 Seed S0–S1 is a separate finite symbolic teaching direction, not a replacement
 evolution/memory stack. Same Lab server/E1 Journal, typed sandbox programs,
 version-space predicates, clarification and correction/persistence. See

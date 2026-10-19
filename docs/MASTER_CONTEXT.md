@@ -2,6 +2,15 @@
 
 ## Seed S0–S1 — finite teachable-agent vertical slice
 
+Delivered:220relevant tests and real Chrome teaching/new-scene execution/
+Python-restart/correction QA pass. One precommitted authored comparison from
+0b9ae69hit its10000predicate-test cap:14/16cells retained,44labels charged,
+28query programs. No rerun; active-versus-random sample efficiency unestablished.
+Independent audit verifies42retained labels/11action endpoints and all648old
+artifact files;2interrupted-cell labels lack full records, costs preserved.
+No neural/Gym work. See NEXUS_SEED_RESULTS and seed_s0_s1_delivery.json.
+Conservative10s debit:1845.6321034559958used/1754.3678965440042remaining.
+
 Separate codex/nexus-seed-s0-s1 worktree from verified fbee981. Same Learning
 Lab server and E1 Journal/canonical JSON; domain-specific finite concept evidence,
 disagreement questions, typed movement execution and private append-only snapshots.

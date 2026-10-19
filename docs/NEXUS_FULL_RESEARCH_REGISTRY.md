@@ -1,5 +1,10 @@
 # NEXUS full research registry
 
+Seed recorded outcome: functional teaching verified; comparison INCOMPLETE at
+10000predicate tests.14/16cells,44charged labels, no rerun. Partial arithmetic
+audit preserves648previous artifacts; no active-learning success claim. Protocol
+precommit0b9ae69, report NEXUS_SEED_RESULTS.md and artifact seed_s0_s1_dev.json.
+
 Seed S0–S1: separate authored-development vertical slice from fbee981. Protocol
 NEXUS_SEED_PROTOCOL.md; executable config configs/seed_s0_s1.json. Finite grammar
 teaching, not neural training or general language learning. Four semantic tasks,
