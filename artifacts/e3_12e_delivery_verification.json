@@ -1,0 +1,68 @@
+{
+  "branch": "codex/e3-12e-training-stability-and-lab",
+  "starting_commit": "72789256c0b9a7689f7cffbfb1183e01f336c188",
+  "audit_implementation_commit": "ae57289a4023b01fd5da4f38d0ae4df5298c9cee",
+  "audit_results_commit": "2fd9da9e40093e5ca6f7a6a8582903685fd1f685",
+  "lab_engineering_commit": "f3783107332f609106b3d36775a2dcced3e19265",
+  "tests": {
+    "initial_audit_contracts": {"passed": 65, "wall_s": 6.08},
+    "expanded_focused": {"passed": 97, "wall_s": 8.79},
+    "final_session_contracts": {"passed": 9, "wall_s": 1.78},
+    "final_relevant_regression": {"passed": 832, "wall_s": 39.69},
+    "module_list_source": "artifacts/bounded_learning_cycle_test_report.json:tests.modules",
+    "additional_modules": ["tests/test_e3_12_mutation_control.py", "tests/test_e3_12b_operator_headroom.py", "tests/test_e3_12c_partial_feedback.py", "tests/test_parent_retention_and_resume.py", "tests/test_e3_12d_parent_retention.py", "tests/test_e3_12e_training_stability.py", "tests/test_learning_lab_sessions.py"],
+    "environment": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps",
+    "scope": "Curated deterministic source/fixture regressions, not every historical experiment test; no scientific simulations through tests",
+    "isolated_stdlib_launcher_test": "Python -I -S served status and recorded training audit without third-party site packages",
+    "durable_fixture_restart_test": "Persistent and reset controls match uninterrupted learner state and host calls after actual Python process restart"
+  },
+  "audit": {
+    "raw_sha256": "361f4ee8ea25b0d96a33876f9e16eb415876e91da89b1719cea4cfa542b4236a",
+    "projection_sha256": "f112ac1d634ec6bf6a5c732957e071307c1c8e7ae22254484ae6ad07a16e9f9f",
+    "training_rows_decoded": 32,
+    "query_rows_skipped": 16,
+    "query_outcomes_decoded_or_scored": 0,
+    "previous_artifact_json_preserved": 423,
+    "execution_wall_s": 1.5103444999986095,
+    "verification_wall_s": 1.1929567079932895,
+    "new_environment_interactions": 0,
+    "new_imagined_transitions": 0,
+    "research_model_inference": 0,
+    "neural_or_ridge_fits": 0,
+    "raw_choice_flips_single_deletion": [0, 0, 0, 0],
+    "raw_choice_flips_balanced_pair_deletion": [0, 0, 0, 0],
+    "raw_paired_parent_sign_disagreement_models": ["pendulum:0", "pendulum:1", "acrobot:0"],
+    "rule_disagreement_cases": "Two Acrobot0 balanced-pair deletions; no utility assessed and no rule promoted",
+    "scientific_label": "exploratory_training_diagnostic_not_policy_evaluation"
+  },
+  "browser": {
+    "browser": "Chrome 155.0.8059.84",
+    "checks_passed": ["both_verified_captures_loaded", "control_filter_and_trajectory_scrub", "operator_filter_training_choice_parent_comparison_and_trajectory", "recorded_harmful_change_disclosed", "training_audit_is_labeled_as_diagnostic", "browser_notebook_survives_reload", "notebook_export_import_and_invalid_stale_rejection", "live_execution_disabled"],
+    "page_errors": [],
+    "offline_file_replay_and_notebook_restore_passed": true,
+    "screenshot": "artifacts/nexus_learning_lab_sessions.png",
+    "screenshot_sha256": "ca8522a048ce73191244b88fb300a0f06c18a8b1a43dfac6d143afb2119d7747",
+    "offline_html": "artifacts/nexus_learning_lab_sessions.html",
+    "offline_html_sha256": "36edea67ed6018f3636d0bcb1929073b0690e5fa96bcca40703a5e85e5dc997e",
+    "public_deployment": false,
+    "live_scientific_backend": false,
+    "verification_commands": ["python3 -I -S scripts/nexus_lab.py --port 8766 --max-runtime-s 600", "NEXUS_PLAYWRIGHT_MODULE=/path/to/playwright node scripts/check_learning_lab_browser.cjs http://127.0.0.1:8766"]
+  },
+  "requested_followups": {
+    "limited_feedback_comparison": "Already measured in D; balanced raw mean and mutation credit tied, no superiority established",
+    "actual_continual_learning": "Designed, no simulator-return experiment run; fixture restart is functional evidence only",
+    "evolution4_new_task_rule_utility": "Designed, not evaluated; current replay has no held-out policy utility",
+    "unfamiliar_models_and_dynamics": "Designed with unmet independent-checkpoint and frozen-recipe prerequisites, not evaluated",
+    "local_learning_lab": "Implemented local stdlib replay, portable browser notebooks, durable authored fixture sessions and documented boundaries",
+    "followup_allocations_created": false,
+    "new_physics_or_seed_registration": false
+  },
+  "session_ledger": {
+    "used_before_s": 1806.2957189570038,
+    "used_after_s": 1808.9990201649957,
+    "remaining_after_s": 1791.0009798350043,
+    "reset": false
+  },
+  "unrelated_untracked_files_excluded": ["src/nexus/evolution1/adapters.py", "tests/test_evolution1_adapters.py"],
+  "next_recommendation": "Fresh reset-blocked exploration comparison using permitted initial observations, unchanged rules and a separately locked budget; not executed"
+}

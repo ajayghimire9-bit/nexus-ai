@@ -128,6 +128,15 @@ regression before the last orphan-snapshot guard: **831 passed in39.49s**;
 final source-only regression/QA details are in the delivery verification record.
 Not a claim to have run every historical experimental test.
 
+Final relevant regression: **832 passed in39.69s**. Final durable-session
+contracts: **9 passed in1.78s**, including refusal of an orphaned snapshot before
+another evaluation. Real Chrome155.0.8059.84 passed eight local browser checks
+with zero page errors, including notebook reload/export/import/stale rejection;
+an offline-file replay/restore check also passed. Lab engineering source
+`f3783107332f609106b3d36775a2dcced3e19265`; delivery details and artifact hashes:
+artifacts/e3_12e_delivery_verification.json. No public deployment or scientific
+simulation was involved in those checks.
+
 Audit wall **1.5103445s**, deterministic saved-data verification **1.1929567s**,
 both under the60-second allocation. New real/imagined transitions, model
 inference, neural/ridge fits and query-outcome use: **all zero**. Scalar credit
