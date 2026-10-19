@@ -1,5 +1,20 @@
 # NEXUS progress log
 
+## Latest — unified E2.25/E3.0 implemented, negative source improvement result
+
+Human-requested predictor/generator integration completed and tested. Original
+E2.25 negative finding preserved. First attempt failed0.826593s on duplicate
+parent mutation exhaustion; preserved and fixed before recovery. Recovery
+completed5.271231s with528 traces/16,416 predictions. Grammar342 policies has
+4 action patterns beyond fixed catalogue; quality, useful feedback, combined
+and held-bundle improvement screens fail. Unified regret0.000224160 versus
+nearest0.000150806; anchors already attain best in528/528 traces. All313 prior
+JSON verified; zero real/neural work. Ledger333.966824/3266.033176.
+Final relevant regression208 passed in2.95s,17 unified tests. Post-run parameter
+count metadata corrected separately, no outcome rewrite or experiment rerun.
+Report `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`. Next is source evaluator headroom
+and provenance review before further selection/generation research.
+
 ## Latest — E2.29 return receipt contract, authored integration passes
 
 Shared references, complete paired raw-return grid, df9 intervals, clipping

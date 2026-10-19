@@ -276,7 +276,7 @@ def run(config):
                                 "best_observed": max(t["observed"] for t in trace),
                                 "mean_prediction_error": sum(abs(t["prediction"] - (t["observed"] - anchors[0])) for t in trace[2:]) / 4,
                                 "generation_gain": sum(t["observed"] for t in trace[4:]) / 2 - sum(t["observed"] for t in trace[2:4]) / 2})
-                            payload["rows"][-1]["predictor_parameters"] = 0 if pred.model is None else len(pred.model[1])
+                            payload["rows"][-1]["predictor_parameters"] = pred.parameter_count
                             payload["rows"][-1]["memory_records"] = len(mem._store)
                             payload["rows"][-1]["proposal_attempts"] = gen.proposal_attempts
                             payload["rows"][-1]["duplicate_rejections"] = gen.duplicate_rejections

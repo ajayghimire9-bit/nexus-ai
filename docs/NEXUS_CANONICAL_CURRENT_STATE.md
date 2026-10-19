@@ -1,5 +1,16 @@
 # NEXUS canonical current state
 
+Latest explicitly authorized source development: unified predictor/generator
+is implemented in `evolution2.generated_strategies` and `unified_source_bench`,
+reusing canonical modules below. Typed342-policy grammar has4 novel action
+patterns, but A/C/D/E improvement screens fail; B only passes finite-source
+behavior witness. No scientific promotion. Unified proxy regret0.000224160
+loses to nearest0.000150806; all methods' best scores are reached by anchors.
+Recovery and initial failure preserved; ledger333.966824/3266.033176.
+Next: evaluator headroom/provenance audit, not a new learner or collection.
+Report `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`. Previous readiness instructions
+below describe earlier tasks; scientific dispatch remains blocked.
+
 E2.29 extends `persist_reset_scoring` with shared source-anchor freezing and
 strict ten-bundle return-grid analysis, reusing the existing evaluator and
 ReservationLedger. Authored160-cell integration reconciles80 synthetic query

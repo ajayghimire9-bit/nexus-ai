@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — authorized unified E2.25/E3.0 source development, 2026-10-19
+
+The human explicitly requested bounded E3 strategy generation, superseding
+earlier no-E3 scope for this development task only. Existing catalogue,
+proposer, memory, ridge and adapters are reused; no scientific gate opens.
+Grammar342 strategies yields4 source action patterns beyond fixed catalogue.
+However quality prediction loses to paired mean/zero and feedback generation
+loses to random. Unified cumulative proxy regret0.000224160 loses to nearest
+0.000150806. A/C/D/E screens fail; only finite-source executable noveltyB
+passes. No useful self-improvement, real control or learning-to-learn claim.
+All528 traces already attain their best score in forced anchors: source
+evaluator headroom is the next question, not another feature/grammar sweep.
+Preserved initial incomplete capture; recovery complete, combined6.097824s,
+zero real interactions/neural work. Ledger333.966824/3266.033176. Scientific
+E2.17 remains closed/consumed and H17 blocked. See
+`NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`. Earlier pointers remain history.
+
 ## Latest — E2.29 authored return contract, 2026-10-19
 
 Existing scoring module now enforces shared source references, complete

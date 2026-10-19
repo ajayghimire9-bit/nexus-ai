@@ -121,6 +121,10 @@ class AdvantagePredictor:
         self.x, self.y, self.model, self.events = [], [], None, set()
         self.fit_calls = 0
 
+    @property
+    def parameter_count(self):
+        return 0 if not self.x else len(self.x[0])
+
     def observe(self, x, advantage, *, event, provenance):
         if provenance != "revealed_source" or event in self.events:
             raise ValueError("unique_revealed_source_receipt_required")

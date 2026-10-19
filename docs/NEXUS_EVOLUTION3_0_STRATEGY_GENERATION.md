@@ -49,3 +49,11 @@ the ridge ranking on even-numbered free slots and explores the first candidate
 on the others. This bounded composition reuses the existing memory and
 evaluator contracts; it is not evidence of useful autonomous continual learning.
 See the unified protocol for exact budgets, controls and separate A–E screens.
+
+Completed recovery: four action-vector patterns beyond the fixed catalogue on
+registered source contexts, but feedback generation regret0.000228159 loses
+to random0.000164918. Unified0.000224160 loses to nearest0.000150806.
+No useful-feedback/discovery/held-bundle improvement screen passes. Only the
+bounded executable-novelty capability is supported on this fixture. All methods
+already find the same best score in the forced anchors. The initial exhausted
+parent-mutation attempt is preserved separately and included in total cost.

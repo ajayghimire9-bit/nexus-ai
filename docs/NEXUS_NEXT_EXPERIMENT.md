@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — audit decision/discovery headroom before expanding learning
+
+One next question: do permitted frozen learned-dynamics source evaluations
+provide useful planning-quality variation beyond forced anchors? First verify
+checkpoint/source provenance and evaluator headroom source-only, without fitting,
+new worlds, holdout registration or another grammar/feature sweep. The unified
+source loop is working mechanically, but its predictor and feedback generator
+lose; anchors already reach best found in528/528 FakeStepModel traces. More
+proxy learning on this fixture is not evidence of autonomous improvement.
+Report `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`. Any later scientific execution
+requires its own valid protocol/preconditions; E2.17/H17 remain closed/blocked.
+
 ## Current — E2.29 contract tested; inspect trusted-worker integration
 
 One next source-only milestone: map method-selected variants to trusted actual

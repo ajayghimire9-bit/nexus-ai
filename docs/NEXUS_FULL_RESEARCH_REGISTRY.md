@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Latest supplemental development entry (not included in historical curated
+counts below): unified E2.25/E3.0, branch `codex/nexus-e225-e30-unified-learning`,
+report `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`. Source-proxy verified: only
+finite-suite executable novelty B passes; A/C/D/E fail. Original E2.25 and
+incomplete first unified attempt preserved. No scientific collection; ledger
+333.966824/3266.033176 after both bounded attempts. This is not learning-to-learn.
+
 Status: **documentation only**. Not a scientific result.
 HEAD: `fbd98fd5fe34f5ac185b3ea6d4013e15e80aae5b`. Ledger **306.954 / 3293.046**.
 H17 remains **blocked**.

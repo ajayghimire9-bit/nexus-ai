@@ -1,0 +1,161 @@
+{
+  "audit_complete": true,
+  "scientific": false,
+  "source_result_sha256": "5e3cf22d21957bbc6700df5632d6e6d0e75cf50a1144ccba2f1eaa21a8778561",
+  "capabilities": {
+    "A_quality_generalization": false,
+    "B_source_behavioral_novelty": true,
+    "C_useful_feedback_generation": false,
+    "D_unified_strongest_baseline": false,
+    "E_held_bundle_advantage": false
+  },
+  "strongest_baseline": "nearest",
+  "summary": {
+    "persistent": {
+      "cumulative_regret": 0.00015625528152679938,
+      "first_free_regret": 0.0
+    },
+    "quality_catalogue": {
+      "cumulative_regret": 0.00015625528152679938,
+      "first_free_regret": 0.0
+    },
+    "random_generation": {
+      "cumulative_regret": 0.00016491809682293626,
+      "first_free_regret": 6.386555237346617e-05
+    },
+    "feedback_generation": {
+      "cumulative_regret": 0.00022815904327759076,
+      "first_free_regret": 7.395096668671765e-05
+    },
+    "unified": {
+      "cumulative_regret": 0.0002241599367382915,
+      "first_free_regret": 0.00010671583475813211
+    },
+    "shuffled": {
+      "cumulative_regret": 0.0004051396675545614,
+      "first_free_regret": 0.00012164479697298013
+    },
+    "withheld": {
+      "cumulative_regret": 0.0003243242501534971,
+      "first_free_regret": 6.386555237346617e-05
+    },
+    "ungated": {
+      "cumulative_regret": 0.00015625528152679938,
+      "first_free_regret": 0.0
+    },
+    "nearest": {
+      "cumulative_regret": 0.00015080563386489151,
+      "first_free_regret": 5.02685446216305e-05
+    },
+    "consensus": {
+      "cumulative_regret": 0.00015625528152679938,
+      "first_free_regret": 0.0
+    },
+    "evidence": {
+      "cumulative_regret": 0.00015625528152679938,
+      "first_free_regret": 0.0
+    }
+  },
+  "folds": [
+    {
+      "family": "pendulum",
+      "held_bundle": 0,
+      "regret": {
+        "persistent": 0.0,
+        "quality_catalogue": 0.0,
+        "random_generation": 0.0003227205094777826,
+        "feedback_generation": 0.0007924969173984201,
+        "unified": 0.000896639746953166,
+        "shuffled": 0.0007638882048063474,
+        "withheld": 0.0006025279500674561,
+        "ungated": 0.0,
+        "nearest": 0.0,
+        "consensus": 0.0,
+        "evidence": 0.0
+      },
+      "unified_minus_persistent": 0.000896639746953166
+    },
+    {
+      "family": "pendulum",
+      "held_bundle": 1,
+      "regret": {
+        "persistent": 0.0,
+        "quality_catalogue": 0.0,
+        "random_generation": 0.0003369518778139624,
+        "feedback_generation": 0.00012013925571194295,
+        "unified": 0.0,
+        "shuffled": 0.0006504378663060584,
+        "withheld": 0.0004936948720600104,
+        "ungated": 0.0,
+        "nearest": 0.0,
+        "consensus": 0.0,
+        "evidence": 0.0
+      },
+      "unified_minus_persistent": 0.0
+    },
+    {
+      "family": "acrobot",
+      "held_bundle": 0,
+      "regret": {
+        "persistent": 0.00031497461627102985,
+        "quality_catalogue": 0.00031497461627102985,
+        "random_generation": 0.0,
+        "feedback_generation": 0.0,
+        "unified": 0.0,
+        "shuffled": 0.0,
+        "withheld": 9.79578789336022e-05,
+        "ungated": 0.00031497461627102985,
+        "nearest": 0.0002938736368008066,
+        "consensus": 0.00031497461627102985,
+        "evidence": 0.00031497461627102985
+      },
+      "unified_minus_persistent": -0.00031497461627102985
+    },
+    {
+      "family": "acrobot",
+      "held_bundle": 1,
+      "regret": {
+        "persistent": 0.00031004650983616766,
+        "quality_catalogue": 0.00031004650983616766,
+        "random_generation": 0.0,
+        "feedback_generation": 0.0,
+        "unified": 0.0,
+        "shuffled": 0.00020623259910583966,
+        "withheld": 0.00010311629955291983,
+        "ungated": 0.00031004650983616766,
+        "nearest": 0.0003093488986587595,
+        "consensus": 0.00031004650983616766,
+        "evidence": 0.00031004650983616766
+      },
+      "unified_minus_persistent": -0.00031004650983616766
+    }
+  ],
+  "family_screen_D": {
+    "pendulum": false,
+    "acrobot": false
+  },
+  "held_fold_wins": 2,
+  "all_best_values_tied": true,
+  "anchor_already_best_traces": 528,
+  "total_traces": 528,
+  "historical_artifacts_verified": 313,
+  "lineage_journals_verified": 528,
+  "parameter_reporting_correction": {
+    "raw_field": "predictor_parameters",
+    "issue": "Raw capture reports0 after final observe invalidates cached fit; this is not coefficient capacity.",
+    "fitted_coefficients_per_nonwithheld_model": 192,
+    "withheld_model_coefficients": 0,
+    "derivation": "12 public task features x16 operator descriptors; no new fit performed."
+  },
+  "resources": {
+    "real_interactions": 0,
+    "model_inference": 0,
+    "fits": 0
+  },
+  "limitations": [
+    "Inspected reverse source folds and shared proposer seeds are not independent scientific replications.",
+    "FakeStepModel/common-neutral-continuation action values are proxies, not environment/control returns.",
+    "Initial incomplete attempt remains preserved; recovery is not independent confirmation."
+  ],
+  "audit_sha": "e01a5020b10e4b52053feb0f9f2135e6992d717d"
+}

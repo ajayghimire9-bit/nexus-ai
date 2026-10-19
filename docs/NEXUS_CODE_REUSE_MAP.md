@@ -8,6 +8,14 @@ instead of opening parallel packages.
 
 ## Canonical stacks (keep)
 
+Bounded executable compositions now use `evolution2.generated_strategies`
+(Strategy/StrategyGenerator/AdvantagePredictor) and `unified_source_bench`.
+They wrap existing catalogue operators, AdaptiveProposer, E2.25 ridge,
+ObservationAwareAdaptive, TrustedEvaluator and ReservationLedger. Do not
+create an independent E3 memory/proposer/planner stack. Development is negative
+for useful learning/selection; only finite-source behavioral novelty passes.
+See `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`; no scientific dispatcher enabled.
+
 `persist_reset_scoring.freeze_shared_reference` and `analyze_return_grid`
 provide opt-in shared-source reference and complete ten-bundle raw-return
 receipt analysis. Reuse them with the existing manifest evaluator and

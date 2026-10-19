@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — unified source-only A–E screen, only novelty B supported
+
+A quality generalization fails: fixed MAE0.000685291 versus zero0.000314323;
+common ridge0.000702215 versus paired mean0.000382788. B finite-source
+behavioral novelty passes:4 action patterns beyond catalogue. C useful
+feedback fails (feedback generation regret0.000228159 versus random0.000164918).
+D unified strongest-baseline fails (0.000224160 versus nearest0.000150806).
+E held-bundle screen fails,2/4 strict wins versus strongest pooled baseline.
+All methods already find their best during anchors. Inspected source bundles,
+three shared-data proposer seeds, no scientific CIs or new environment data.
+No learning-to-learn or general control result. Original incomplete attempt
+and all historic artifacts preserved. See `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`.
+
 ## Latest — E2.29 receipt-contract correctness, engineering evidence only
 
 Complete-grid, shared-reference, raw-versus-clipped and independent-bundle

@@ -98,6 +98,7 @@ def test_pair_predictor_generalizes_on_informative_descriptor_fixture():
     before = copy.deepcopy(p.y)
     with pytest.raises(ValueError): p.observe([1., 0.], 1., event="hidden", provenance="held_out_truth")
     assert p.y == before
+    assert p.parameter_count == 2
     with pytest.raises(ValueError): p.observe([1., 0.], float("nan"), event="invalid", provenance="revealed_source")
 
 
@@ -138,3 +139,32 @@ def test_config_cannot_silently_disconnect_yaml_or_change_budget():
 def test_missing_whole_method_grid_fails():
     with pytest.raises(ValueError, match="incomplete_method_grid"):
         validate({"rows": []}, json.loads(CONFIG.read_text()))
+
+
+@pytest.fixture(scope="module")
+def saved():
+    from nexus.evolution2.unified_source_bench import RESULT
+    return json.loads(RESULT.read_text())
+
+
+def test_saved_capture_grid_and_feedback_boundaries(saved):
+    assert validate(saved, json.loads(CONFIG.read_text()))
+    assert len(saved["rows"]) == 528 and len(saved["predictions"]) == 16416
+    for row in saved["rows"]:
+        if row["method"] == "withheld":
+            assert all(t["policy_before"] == t["policy_after"] for t in row["trace"])
+    assert any(t["policy_before"] != t["policy_after"] for r in saved["rows"]
+               if r["method"] == "feedback_generation" for t in r["trace"])
+    assert saved["resources"]["real_interactions"] == saved["resources"]["neural_forwards"] == 0
+
+
+@pytest.mark.parametrize("missing", ["method", "bundle", "prediction", "nonfinite_prediction"])
+def test_saved_capture_rejects_removed_whole_scopes(saved, missing):
+    p = dict(saved)
+    if missing == "method": p["rows"] = [r for r in saved["rows"] if r["method"] != "unified"]
+    if missing == "bundle": p["rows"] = [r for r in saved["rows"] if r["held_bundle"] != 0]
+    if missing == "prediction": p["predictions"] = saved["predictions"][:-1]
+    if missing == "nonfinite_prediction":
+        p["predictions"] = list(saved["predictions"])
+        p["predictions"][0] = dict(p["predictions"][0], predicted=float("nan"))
+    with pytest.raises(ValueError): validate(p, json.loads(CONFIG.read_text()))

@@ -35,3 +35,9 @@ first-action probe and uses a fixed analytic feedback transform. It is not
 a rerun, replication or repair of the closed original E2.25 metric. Complete
 protocol and results are in `NEXUS_UNIFIED_AUTONOMOUS_LEARNING.md`. A failed
 predictor will be retained but not called useful or promoted.
+
+Completed: fixed-domain MAE0.000685291 versus zero0.000314323; common-support
+ridge0.000702215 versus paired mean0.000382788/kernel0.000506623. Novel
+descriptor MAE0.000687918 versus zero0.000303970. The new predictor also fails
+its source screen. The optional ranker works mechanically; useful quality
+generalization is not established. No original E2.25 result was changed.
