@@ -65,7 +65,8 @@ def requested_seeds(c):
     for f,b,e in itertools.product(c["families"],c["model_bundles"],c["episodes"]):
         reset,base=seeds(c,f,b,e); env.add(reset)
         planner.update(range(base,base+c["episode_steps"]))
-    if env & planner or len(env)!=8 or len(planner)!=1600: raise ValueError("seed_schedule_collision")
+    units=len(c['families'])*len(c['model_bundles'])*len(c['episodes'])
+    if env & planner or len(env)!=units or len(planner)!=units*c['episode_steps']: raise ValueError("seed_schedule_collision")
     return env|planner
 
 
@@ -116,7 +117,27 @@ def validate_config(c):
       "episodes":[0,1],"controllers":["flat_anchor","successor_anchor","switch","rank_blend"],"episode_steps":200,
       "env_seed_base":2103000000,"planner_seed_base":2104000000,"imagined_per_decision":1536,
       "env_cap":6400,"imagined_cap":9830400,"time_cap_s":180,"practical_margin":1.0}
-    if json.dumps(c,sort_keys=True)!=json.dumps(expected,sort_keys=True): raise ValueError("locked_configuration_mismatch")
+    replication={**expected,"version":"full_policy_replication_v1","episodes":[0,1,2,3],
+        "controllers":["flat_anchor","successor_anchor","rank_blend"],"env_seed_base":2105000000,
+        "planner_seed_base":2106000000,"env_cap":9600,"imagined_cap":14745600}
+    if json.dumps(c,sort_keys=True) not in [json.dumps(x,sort_keys=True) for x in (expected,replication)]:
+        raise ValueError("locked_configuration_mismatch")
+
+
+def run_paths(c):
+    """Only two explicitly locked profiles, not an arbitrary experiment launcher."""
+    validate_config(c)
+    if c['version']=='full_policy_source_v1':
+        return dict(config=CONFIG,allocation=ALLOCATION,protocol=PROTOCOL,result=RESULT,
+                    journal=JOURNAL,usage=USAGE,previous=ROOT/'artifacts/unified_headroom_audit.json')
+    return {**{key:ROOT/path for key,path in {
+        'config':'configs/unified_full_policy_replication.json',
+        'allocation':'configs/unified_full_policy_replication_allocation.json',
+        'protocol':'docs/NEXUS_UNIFIED_FULL_POLICY_REPLICATION_PROTOCOL.md',
+        'result':'artifacts/unified_full_policy_replication.json',
+        'journal':'artifacts/unified_full_policy_replication_resources.jsonl.gz',
+        'usage':'artifacts/unified_full_policy_replication_usage.json'}.items()},
+        'previous':ROOT/'artifacts/unified_full_policy_validation.json'}
 
 
 def validate_result(p,c):
@@ -142,7 +163,7 @@ def validate_result(p,c):
             if i and s["obs"]!=r["steps"][i-1]["next_obs"]:raise ValueError("transition_continuity")
             if s["terminated"] is not False or s["truncated"] is not (i==199):raise ValueError("termination_schedule")
         if digest(r["steps"][0]["obs"])!=r["initial_obs_hash"]:raise ValueError("initial_state_hash")
-    if p["resources"]["completed"]["real_steps"]!=6400 or p["resources"]["unknown_upper"]!={k:0 for k in Work().payload()}:
+    if p["resources"]["completed"]["real_steps"]!=c['env_cap'] or p["resources"]["unknown_upper"]!={k:0 for k in Work().payload()}:
         raise ValueError("incomplete_resource_work")
     for f,b,e in itertools.product(c["families"],c["model_bundles"],c["episodes"]):
         group=[r for r in rows if (r["family"],r["model_bundle"],r["episode"])==(f,b,e)]
@@ -155,7 +176,7 @@ def analyze(rows,c):
     contrasts={}
     for f in c["families"]:
         family={}
-        for generated in ("switch","rank_blend"):
+        for generated in (g for g in c['controllers'] if g not in ('flat_anchor','successor_anchor')):
             checks={}
             for anchor in ("flat_anchor","successor_anchor"):
                 pairs=[]
@@ -164,12 +185,13 @@ def analyze(rows,c):
                     for e in c["episodes"]:
                         values={r["controller"]:r["return"] for r in rows if (r["family"],r["model_bundle"],r["episode"])==(f,b,e)}
                         diffs.append(values[generated]-values[anchor])
-                    pairs.append(sum(diffs)/2)
-                checks[anchor]={"per_model":pairs,"mean":sum(pairs)/2,
-                    "point_screen":sum(pairs)/2>=c["practical_margin"] and all(x>0 for x in pairs)}
+                    pairs.append(sum(diffs)/len(diffs))
+                checks[anchor]={"per_model":pairs,"mean":sum(pairs)/len(pairs),
+                    "point_screen":sum(pairs)/len(pairs)>=c["practical_margin"] and all(x>0 for x in pairs)}
             family[generated]=checks
         contrasts[f]=family
-    passed={g:all(contrasts[f][g][a]["point_screen"] for f in c["families"] for a in ("flat_anchor","successor_anchor")) for g in ("switch","rank_blend")}
+    generated=[g for g in c['controllers'] if g not in ('flat_anchor','successor_anchor')]
+    passed={g:all(contrasts[f][g][a]["point_screen"] for f in c["families"] for a in ("flat_anchor","successor_anchor")) for g in generated}
     return {"paired_contrasts":contrasts,"point_screen_by_generated":passed,
             "scientific_control_success":False,"independent_model_count_per_family":2,
             "intervals":"Not reported: exploratory n=2 source-model pairs per family; no ten-decoder inference."}
@@ -177,23 +199,32 @@ def analyze(rows,c):
 
 def run(c):
     validate_config(c)
+    paths=run_paths(c)
+    config_path,allocation_path,protocol_path=paths['config'],paths['allocation'],paths['protocol']
+    result_path,journal_path,usage_path=paths['result'],paths['journal'],paths['usage']
     t0,cpu0=time.perf_counter(),time.process_time()
     deadline=t0+c["time_cap_s"]
-    old={str(p.relative_to(ROOT)):sha(p) for p in (ROOT/"artifacts").rglob("*.json") if p not in (RESULT,USAGE)}
-    allocation=json.loads(ALLOCATION.read_text())
-    if allocation["config_sha256"]!=sha(CONFIG) or allocation["protocol_sha256"]!=sha(PROTOCOL) or not allocation["authorized"]:
+    old={str(p.relative_to(ROOT)):sha(p) for p in (ROOT/"artifacts").rglob("*.json") if p not in (result_path,usage_path)}
+    allocation=json.loads(allocation_path.read_text())
+    if allocation["config_sha256"]!=sha(config_path) or allocation["protocol_sha256"]!=sha(protocol_path) or not allocation["authorized"]:
         raise ValueError("allocation_integrity")
     if allocation["time_cap_s"]!=c["time_cap_s"] or allocation["env_cap"]!=c["env_cap"] or allocation["imagined_cap"]!=c["imagined_cap"]:
         raise ValueError("allocation_cap_mismatch")
-    if USAGE.exists() or JOURNAL.exists(): raise FileExistsError("one_run_already_started")
-    with USAGE.open("x") as use:
-        use.write(json.dumps({"consumed":True,"allocation_sha256":sha(ALLOCATION),"automatic_retry":False})+"\n")
+    if usage_path.exists() or journal_path.exists() or result_path.exists(): raise FileExistsError("one_run_already_started")
+    with usage_path.open("x") as use:
+        use.write(json.dumps({"consumed":True,"allocation_sha256":sha(allocation_path),"automatic_retry":False})+"\n")
     state={"reserved":Work(),"completed":Work(),"unknown_upper":Work()}
-    limits=Work(real_steps=c["env_cap"],imagined_transitions=c["imagined_cap"],model_calls=428800,network_forwards=428800)
+    limits=Work(real_steps=c["env_cap"],imagined_transitions=c["imagined_cap"],model_calls=c['env_cap']*67,network_forwards=c['env_cap']*67)
     p={"declared_complete":False,"development_only":True,"episodes":[],"models":[],"resources":{},
        "config":c,"historical_artifacts_sha256":old,"authorization":allocation}
     clock=lambda:Clock(int((time.process_time()-cpu0)*1e9),int((time.perf_counter()-t0)*1e9))
     try:
+        if c['version']=='full_policy_replication_v1':
+            for name,expected in allocation['parent_artifacts_sha256'].items():verify_file(ROOT/name,expected)
+        previous=json.loads(paths['previous'].read_text())
+        if previous['session_ledger']['used_after_s']!=allocation['session_used_before_s']:
+            raise ValueError('session_ledger_mismatch')
+        if previous['session_ledger']['used_after_s']+c['time_cap_s']>3600:raise ValueError('session_budget')
         candidates=requested_seeds(c)
         collisions={name:sorted(seed_collisions(json.loads((ROOT/name).read_text()),candidates)) for name in old}
         collisions={k:v for k,v in collisions.items() if v}
@@ -212,7 +243,7 @@ def run(c):
             with np.load(ROOT/r["path"]) as source:
                 if set(source["env_seeds"].reshape(-1).tolist()) & candidates:raise ValueError("source_episode_seed_collision")
         p["fit_manifest_sha256"]=sha(ROOT/"artifacts/evolution2_fit_clock_run.json")
-        with gzip.open(JOURNAL,"xb") as journal:
+        with gzip.open(journal_path,"xb") as journal:
             for r in selected:
                 if time.perf_counter()>=deadline:raise TimeoutError("time_cap")
                 f,b=r["family"],r["bundle"]
@@ -223,9 +254,14 @@ def run(c):
                 model.net.eval()
                 for param in model.net.parameters():param.requires_grad_(False)
                 fingerprint=state_hash(model)
+                if c['version']=='full_policy_replication_v1':
+                    parent=json.loads(RESULT.read_text())
+                    original=next(x for x in parent['models'] if (x['family'],x['bundle'])==(f,b))
+                    if fingerprint!=original['before']:raise ValueError('parent_frozen_state_mismatch')
                 for e in c["episodes"]:
                     reset,planner=seeds(c,f,b,e)
-                    for label,strategy in controllers().items():
+                    for label in c['controllers']:
+                        strategy=controllers()[label]
                         if time.perf_counter()>=deadline:raise TimeoutError("time_cap")
                         env=make_task_env(task_spec(f),seed=reset)
                         obs,_=env.reset(seed=reset)
@@ -291,7 +327,7 @@ def run(c):
         p["declared_complete"]=True
     except Exception as exc:p["failure"]=f"{type(exc).__name__}: {exc}"
     p["resources"]={**{k:v.payload() for k,v in state.items()},"wall_s":time.perf_counter()-t0,"cpu_s":time.process_time()-cpu0}
-    if JOURNAL.exists():p["resource_journal_sha256"]=sha(JOURNAL)
-    start=json.loads((ROOT/"artifacts/unified_headroom_audit.json").read_text())["session_ledger"]["used_after_s"]
+    if journal_path.exists():p["resource_journal_sha256"]=sha(journal_path)
+    start=allocation['session_used_before_s']
     p["session_ledger"]={"used_before_s":start,"used_after_s":start+p["resources"]["wall_s"],"remaining_after_s":3600-start-p["resources"]["wall_s"]}
     return p

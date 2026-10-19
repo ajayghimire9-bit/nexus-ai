@@ -12,7 +12,7 @@ from nexus.evolution1.resources import Work
 from nexus.evolution2 import full_policy_source as h
 
 
-def verify(p):
+def verify(p, journal_path=None):
     c=p['config'];h.validate_result(p,c)
     if not p['declared_complete']:raise ValueError('incomplete_capture')
     for name,expected in p['code_sha256'].items():
@@ -20,7 +20,8 @@ def verify(p):
         import hashlib
         if hashlib.sha256(raw).hexdigest()!=expected:raise ValueError('execution_code_hash')
     for name,expected in p['historical_artifacts_sha256'].items():h.verify_file(h.ROOT/name,expected)
-    h.verify_file(h.JOURNAL,p['resource_journal_sha256'])
+    journal_path=journal_path or h.JOURNAL
+    h.verify_file(journal_path,p['resource_journal_sha256'])
     h.verify_checkpoints(p['models'],c)
     if any(r['before']!=r['after'] for r in p['models']):raise ValueError('frozen_state_mismatch')
     for r in p['source_arrays']:h.verify_file(h.ROOT/r['path'],r['sha256'])
@@ -34,7 +35,7 @@ def verify(p):
             error=abs(float(reward_fn(np.asarray(step['obs']),step['action'],np.asarray(step['next_obs']))[0])-step['reward'])
             max_reward_error=max(max_reward_error,error)
             if error>1e-5:raise ValueError('published_reward_mismatch')
-    with gzip.open(h.JOURNAL,'rt') as src:
+    with gzip.open(journal_path,'rt') as src:
         for line in src:
             record=json.loads(line)
             ident=(record['family'],record['model'],record['episode'],record['controller'],record['tick'])
