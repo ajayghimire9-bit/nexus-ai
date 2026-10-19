@@ -1,5 +1,26 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.8 and seven learning interfaces, 2026-10-19
+
+E3.8 compact interaction failed its registered source-training selection screen.
+Native additive9/interaction21 coefficients reuse SAME ridge1; compression
+changes effective penalty versus historical192. Interaction-minus-model-mean
+cached returns Pendulum−10.617369/Acrobot+0.465807; inconsistent model gains,
+no promotion or more36-pair feature sweeps. Additive+13.742529/+0.871291 is
+retained as exploratory, not selected after the fact.360 ridge fits/4 source
+LS;0.408135s+0.385981s audit,0 new scientific real/imagined/neural work.
+Execution21ba36cdda5133bb29c7d955b0db151300834aad;362 prior JSON preserved.
+Ledger786.2472080430296/2813.75279195697. EpisodeContext, common-scoring
+budgeted planner evidence, gated staged study, opt-in parent-child mutation
+credit in StrategyGenerator, bounded TaskStream reusing existing meta controller,
+and offline Learning Lab are implemented/fixture-tested. They are engineering
+interfaces, not environment-learning successes. Fresh collection remains
+unregistered/unauthorized; reviewed worker binding and independent protocol
+missing. Synthetic fixtures are labeled, including fixed beating adaptive.
+One next milestone: register/audit budget-matched fresh-feedback planner-
+evidence study, not more selection on inspected36 pairs. Report
+NEXUS_LEARNING_MILESTONES_IMPLEMENTATION.md. Closed splits/H17/main unchanged.
+
 ## Latest — E3.7 transition summary screen fails, 2026-10-19
 
 E3.7 actual transition-evidence ablation completed; no improvement established.

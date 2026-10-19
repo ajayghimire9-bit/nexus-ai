@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — fresh-feedback planner-evidence study readiness
+
+E3.8 interaction fails:−10.617369/+0.465807 versus means, with three negative
+model gains. No more representation rounds on36 inspected pairs. One next
+milestone: register and audit a budget-matched fresh-feedback study of fixed
+candidate-specific planner evidence. Bind/review trusted metered host, probe
+and reset/seed rules, complete grid, family/model baselines and prior handling
+before collecting. Known-model fresh episodes first; unfamiliar models/dynamics
+separately, without oracle target means. Fresh-study config remains false/empty;
+no new allocation or data. Current interfaces are tested contracts, not proven
+continual learning. See NEXUS_LEARNING_MILESTONES_IMPLEMENTATION.md. Older
+proposals below are historical.
+
 ## Current — observation×support conditioning, separate design
 
 E3.7 replaces schema with genuine static source-transition summaries but fails

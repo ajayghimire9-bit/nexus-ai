@@ -38,6 +38,7 @@ def render(data,*,engineering_events=()):
 body{font:15px system-ui;margin:32px auto;max-width:1100px;padding:0 20px;color:#202124;background:#fafafa}h1{font-size:24px}h2{font-size:18px}p{max-width:85ch;line-height:1.5}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:9px;border-bottom:1px solid #ddd}th{position:sticky;top:0;background:#eee}label{margin-right:20px}select{padding:6px}pre{white-space:pre-wrap}small{color:#555}</style>
 <h1>NEXUS Learning Lab</h1><p><strong>Historical training-feedback replay. No live execution.</strong>
 Cached returns are observations; predicted advantages are forecasts. This page does not train, select experiments, or call an environment.</p>
+<p>Advantage means rank-blend return minus successor-controller return. A positive prediction selects rank blend. Each reset was withheld while fitting its prediction. Family return scales differ.</p>
 <p id="decision"></p><small id="source"></small><p><label>Family <select id="family"><option value="">All</option><option>pendulum</option><option>acrobot</option></select></label>
 <label>Method <select id="method"><option value="">All</option><option>model_mean</option><option>additive</option><option>interaction</option></select></label></p>
 <table><thead><tr><th>Family/model/reset</th><th>Method</th><th>Predicted advantage (return)</th><th>Observed advantage (return)</th><th>Chosen controller</th><th>Cached chosen return</th><th>In-set regret (return)</th></tr></thead><tbody id="rows"></tbody></table>

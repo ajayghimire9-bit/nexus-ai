@@ -1,0 +1,74 @@
+{
+  "execution_sha": "21ba36cdda5133bb29c7d955b0db151300834aad",
+  "base_sha": "4c31881209467cafb1ecc92b182702b366f4f854",
+  "scope": "26 relevant source-only regression modules, not full historical repository suite",
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest -o addopts='' -q tests/test_e3_8_learning_interfaces.py tests/test_e3_7_transition_evidence.py tests/test_e3_6_feature_informativeness.py tests/test_e3_5_residual_advantage.py tests/test_e3_4_feedback_coverage.py tests/test_e3_3_training_feedback_audit.py tests/test_e3_2_return_feedback.py tests/test_unified_e225_e30.py tests/test_unified_headroom.py tests/test_unified_full_policy_source.py tests/test_unified_full_policy_replication.py tests/test_unified_crossed_reset.py tests/test_e3_1_learned_model_audit.py tests/test_evolution2_planner_quality.py tests/test_evolution1_resources.py tests/test_evolution1_source_contracts.py tests/test_evolution1_toy_loop.py tests/test_evolution2_observation_memory.py tests/test_evolution2_observation_memory_cross.py tests/test_strategy_memory.py tests/test_strategy_memory_obs.py tests/test_strategy_memory_selector.py tests/test_strategy_memory_decide.py tests/test_strategy_memory_persist_obs.py tests/test_evolution2_fit_clock.py tests/test_evolution2_fit_clock_run.py",
+  "pre_execution": {
+    "passed": 476,
+    "wall_s": 10.27
+  },
+  "post_execution": {
+    "passed": 478,
+    "wall_s": 10.65
+  },
+  "focused_prechecks": {
+    "passed": 53,
+    "wall_s": 2.01
+  },
+  "scientific_run": {
+    "ridge_fits": 360,
+    "descriptor_lstsq_calls": 4,
+    "wall_s": 0.40813541700481437,
+    "cpu_s": 0.4051100000000001,
+    "new_environment_steps": 0,
+    "new_imagined_transitions": 0,
+    "neural_inference": 0,
+    "label": "compact_interaction_selection_not_established"
+  },
+  "independent_audit": {
+    "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_e3_3_training_feedback_audit.py --compact --verify",
+    "ridge_fits": 0,
+    "descriptor_lstsq_calls": 4,
+    "coefficient_models_verified": 360,
+    "wall_s": 0.385980582999764,
+    "historical_json_preserved": 362,
+    "valid": true
+  },
+  "fresh_collection_gate": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_fresh_contextual_study.py",
+    "expected_exit_code": 2,
+    "observed_exit_code": 2,
+    "status": "BLOCKED",
+    "collection": false
+  },
+  "viewer": {
+    "build_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/build_learning_lab_replay.py",
+    "path": "artifacts/nexus_learning_lab.html",
+    "read_only": true,
+    "live": false,
+    "node_syntax_exit": 0,
+    "mocked_dom_rows_initial": 108,
+    "mocked_dom_pendulum_rows": 54,
+    "mocked_dom_pendulum_interaction_rows": 18,
+    "real_browser_visual_audit": false
+  },
+  "interfaces": {
+    "example_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/demo_learning_interfaces.py",
+    "kind": "synthetic_contract",
+    "scientific": false,
+    "real_environment_learning_tested": false,
+    "note": "Authored rewards/costs and FakeStepModel tests establish contracts only; no synthetic receipt is counted as a real environment interaction."
+  },
+  "limitations": [
+    "No fresh episode or unfamiliar-model validation",
+    "Trusted production worker binding and CPU interruption settlement remain prerequisites",
+    "Mutation and continual-learning environmental utility untested",
+    "Compression changes effective ridge penalty",
+    "Two existing pretrained models per family; no fold-based independent replication claim",
+    "Later engineering fixes to staged interruption snapshots/viewer text do not alter scientific fits or protocol"
+  ],
+  "session_ledger": {
+    "used_after_s": 786.2472080430296,
+    "remaining_after_s": 2813.75279195697
+  }
+}

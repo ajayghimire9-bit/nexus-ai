@@ -1,5 +1,15 @@
 # NEXUS full research registry
 
+Supplemental E3.8 codex/e3-8-interactions-and-learning-interfaces, execution
+21ba36cdda5133bb29c7d955b0db151300834aad. Compact additive9/interaction21,
+360 source-only ridge fits/4 descriptor LS. Interaction−means−10.617369/
++0.465807; screen fails, no posthoc additive promotion.362 prior JSON verified;
+0.408135s run/0.385981s audit,0 new scientific real/imagined/neural execution.
+Ledger786.2472080430296/2813.75279195697. Later milestone APIs and offline
+viewer implemented with deterministic authored tests only; fresh collection
+blocked and performance untested. Report NEXUS_LEARNING_MILESTONES_IMPLEMENTATION.md,
+artifacts e3_8_*, nexus_learning_lab.html. Historical findings unchanged.
+
 Supplemental E3.7 codex/e3-7-transition-evidence-ablation, execution
 95c206d87aaa60696e1774e899fcebe10c74e253. Fixed192-coordinate genuine source
 transition summaries versus original/means,360 ridge fits/4 descriptor LS;

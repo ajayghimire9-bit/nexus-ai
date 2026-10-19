@@ -1,5 +1,16 @@
 # NEXUS code-reuse map
 
+E3.8 compact_interactions builds ONE versioned9/21-coordinate representation;
+SAME AdvantagePredictor/ridge and feature audit host --compact. EpisodeContext
+is episode evidence beside existing source memory, not another memory stack.
+planner_evidence uses existing score_open_loop/ReservationLedger. StagedStudy
+only coordinates trusted metered host phases; production worker remains unbound.
+StrategyGenerator opt-in paired mutation credit changes structural-kind proposal
+preferences without leaf credit; default preserved. TaskStream reuses that
+same generator/Journal and existing meta.controller.EpsilonGreedyController
+statistics, not another RL engine. learning_lab is offline artifact display,
+separate from evaluators. See NEXUS_LEARNING_MILESTONES_IMPLEMENTATION.md.
+
 E3.7 uses SAME AdvantagePredictor/ridge, feature_informativeness fold/permutation
 adapter and existing audit host (--transitions/--verify). transition_evidence
 is pinned TRAIN-prefix preprocessing only. describe_support's require_fit=True

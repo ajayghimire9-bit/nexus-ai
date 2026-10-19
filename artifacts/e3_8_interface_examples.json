@@ -1,0 +1,533 @@
+{
+  "kind": "synthetic_contract",
+  "scientific": false,
+  "new_environment_steps": 0,
+  "neural_inference": 0,
+  "note": "Returns and costs are authored fixtures, not measured environment performance or actual CPU cost.",
+  "events": [
+    {
+      "kind": "synthetic_mutation_illustration",
+      "probabilities_before": {
+        "switch": 0.5,
+        "rank_blend": 0.5
+      },
+      "probabilities_after": {
+        "switch": 0.6535457576181213,
+        "rank_blend": 0.3464542423818788
+      },
+      "lineage": [
+        {
+          "sequence": 0,
+          "kind": "paired_mutation_feedback",
+          "payload_json": "{\"child\":{\"kind\":\"switch\",\"left\":{\"catalogue\":\"f41bef6d0f83084cbe4910cb190b0d0d9dcbbf03d311a83b81aeedf881d6121d\",\"generator\":\"iid\",\"horizon\":4,\"rule\":\"flat\"},\"right\":{\"catalogue\":\"f41bef6d0f83084cbe4910cb190b0d0d9dcbbf03d311a83b81aeedf881d6121d\",\"generator\":\"balanced_first_action\",\"horizon\":16,\"rule\":\"successor\"},\"threshold\":0.25,\"version\":\"bounded_strategy_v1\"},\"child_result\":{\"context_hash\":\"b086de7b32510701e873f3d4ae742917ca1cc1141ffe4a8387d604ef474ef9e4\",\"cpu_s\":0.1,\"event\":\"fixture_child\",\"horizon\":200,\"kind\":\"observed_full_policy_return\",\"pair_id\":\"AUTHORED_FIXTURE\",\"phase\":\"training\",\"planner_seed\":2,\"planning_cap\":1536,\"reset_seed\":1,\"return\":100.0,\"strategy\":\"364254fdf3f8d96667b1ee2e76a6cc7d33888b049fc5941dcbb8657da8f93af0\"},\"context_hash\":\"b086de7b32510701e873f3d4ae742917ca1cc1141ffe4a8387d604ef474ef9e4\",\"cpu_s\":0.2,\"credit\":0.634661796629804,\"event\":\"9a51f89b48696d4b83b9cbed7761732ed6ad2befcf2f10a71a928f4622f9bcb6\",\"mutation\":\"switch\",\"observed_gain\":100.0,\"parent\":{\"kind\":\"leaf\",\"left\":{\"catalogue\":\"f41bef6d0f83084cbe4910cb190b0d0d9dcbbf03d311a83b81aeedf881d6121d\",\"generator\":\"iid\",\"horizon\":4,\"rule\":\"flat\"},\"right\":null,\"threshold\":0.0,\"version\":\"bounded_strategy_v1\"},\"parent_result\":{\"context_hash\":\"b086de7b32510701e873f3d4ae742917ca1cc1141ffe4a8387d604ef474ef9e4\",\"cpu_s\":0.1,\"event\":\"fixture_parent\",\"horizon\":200,\"kind\":\"observed_full_policy_return\",\"pair_id\":\"AUTHORED_FIXTURE\",\"phase\":\"training\",\"planner_seed\":2,\"planning_cap\":1536,\"reset_seed\":1,\"return\":0.0,\"strategy\":\"ef54a122f0a3fb938923d2cc7858bc99b9d3ed0cb8770a29da2f8f73afb8f13b\"},\"probabilities\":{\"rank_blend\":0.3464542423818788,\"switch\":0.6535457576181213}}",
+          "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+          "fingerprint": "3334d3597d13c16ec67aa51516a0062b095227a2f4e0a213c500eab10b74a3c3"
+        }
+      ]
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "persistent",
+      "schedule": "adaptive",
+      "trace": [
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "refine_strategy",
+          "authored_gain": -3.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 6.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "persistent",
+      "schedule": "random",
+      "trace": [
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "refine_strategy",
+          "authored_gain": -3.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 2.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "persistent",
+      "schedule": "fixed",
+      "trace": [
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "gather_evidence",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 7.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "reset",
+      "schedule": "adaptive",
+      "trace": [
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "gather_evidence",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 4.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "reset",
+      "schedule": "random",
+      "trace": [
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "refine_strategy",
+          "authored_gain": -3.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 2.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "reset",
+      "schedule": "fixed",
+      "trace": [
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "gather_evidence",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 7.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "shuffled",
+      "schedule": "adaptive",
+      "trace": [
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "refine_strategy",
+          "authored_gain": -3.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "gather_evidence",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 8.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "shuffled",
+      "schedule": "random",
+      "trace": [
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "refine_strategy",
+          "authored_gain": -3.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 3.0
+    },
+    {
+      "kind": "synthetic_task_stream",
+      "control": "shuffled",
+      "schedule": "fixed",
+      "trace": [
+        {
+          "task": "A",
+          "action": "test_challenger",
+          "authored_gain": 1.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "B",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "gather_evidence",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "A",
+          "action": "refine_strategy",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "test_challenger",
+          "authored_gain": 0.0,
+          "authored_cost": 0.1
+        },
+        {
+          "task": "C",
+          "action": "gather_evidence",
+          "authored_gain": 2.0,
+          "authored_cost": 0.1
+        }
+      ],
+      "authored_gain_sum": 7.0
+    }
+  ]
+}

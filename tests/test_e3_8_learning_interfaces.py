@@ -17,7 +17,7 @@ from nexus.evolution2.planner_adapter import FakeStepModel
 from nexus.evolution2.planner_evidence import planner_evidence,evidence_operations
 from nexus.evolution2.continual_state import TaskStream
 from nexus.evolution2.staged_study import StagedStudy,SourcePrior
-from nexus.evolution2.learning_lab import render
+from nexus.evolution2.learning_lab import render,load_replay
 from nexus.evolution2.full_policy_source import ROOT
 from test_e3_7_transition_evidence import toy as paired_toy
 
@@ -187,3 +187,36 @@ def test_random_fixed_and_shuffled_stream_controls_are_reproducible():
         assert s.remaining>=0 and verify_journal(s.journal.snapshot());return out
     for mode in ('persistent','reset','shuffled'):
         for schedule in ('adaptive','random','fixed'):assert trace(mode,schedule)==trace(mode,schedule)
+
+
+def test_saved_compact_replay_without_source_loading_or_fitting(monkeypatch):
+    from nexus.evolution2.transition_evidence import augment as support_augment
+    m=runner();c=json.loads(m.CONFIG.read_text());saved=json.loads((ROOT/c['input']).read_text())
+    result=json.loads(m.RESULT.read_text());frozen=json.loads(m.FROZEN.read_text())
+    x=augment(support_augment(saved['training_pairs'],saved['feature_rows'],{k:v['statistics'] for k,v in result['source_support'].items()}))
+    def forbidden(*args,**kwargs):raise AssertionError('no files or fitting during coefficient replay')
+    monkeypatch.setattr(np,'load',forbidden);monkeypatch.setattr(AdvantagePredictor,'observe',forbidden)
+    assert a.verify_frozen_folds(frozen['folds'],saved['training_pairs'],x,'e3_8')==result['analysis']
+    assert result['declared_complete'] and result['ridge_fits_completed']==360
+    for path,expected in result['historical_artifacts_sha256'].items():m.verify_file(ROOT/path,expected)
+    data=load_replay(ROOT);assert len(data['rows'])==108 and not data['live']
+
+
+def test_primary_return_screen_rejects_one_bad_model():
+    bank,x=toy()
+    # Authored score table with mean selector wrong on every reset.
+    for row in bank:
+        d=10. if row['public']['episode']%2==0 else -10.
+        row['advantage']=d;row['returns']={'successor_anchor':0.,'rank_blend':d}
+    folds=[]
+    for held in range(9):
+        train,query,means,xx,q,y,maps,priors=a.layout(bank,x,held,'e3_8');pred=[]
+        for j,i in enumerate(query):
+            estimates={m:priors[j] for m in ('model_mean',)+a.modes('e3_8')};estimates['interaction']=bank[i]['advantage']
+            pred.append(dict(public=bank[i]['public'],prior_mean=priors[j],estimates=estimates,choices={m:a.choose(v) for m,v in estimates.items()}))
+        folds.append(dict(held_out=held,train_ids=[list(a.base.identity(bank[i])) for i in train],query_ids=[list(a.base.identity(bank[i])) for i in query],predictions=pred))
+    assert a.score_predictions(folds,bank,'e3_8')['point_screen']
+    for fold in folds:
+        p=next(p for p in fold['predictions'] if a.base.identity(p)[:2]==('acrobot',1))
+        p['estimates']['interaction']=p['prior_mean'];p['choices']['interaction']=a.choose(p['prior_mean'])
+    assert not a.score_predictions(folds,bank,'e3_8')['point_screen']

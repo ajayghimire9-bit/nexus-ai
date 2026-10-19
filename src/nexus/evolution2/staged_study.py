@@ -34,6 +34,7 @@ class StagedStudy:
             raise ValueError('fresh_collection_not_registered_or_authorized')
         if manifest.get('kind') not in ('synthetic_contract','registered_fresh_study'):raise ValueError('study_kind')
         self.manifest=deepcopy(manifest);self.closed=set(closed_seeds);self.policy=None;self.frozen=None;self.contexts={};self.prefixes={};self.probe_real=0;self.probe_imagined=0;self.consumed=False
+        self.partial_rows=[];self.pending_case=None;self.complete=False
         cases=manifest['cases'];keys=[(c['task'],c['condition'],c['episode']) for c in cases]
         if not cases or len(set(keys))!=len(keys):raise ValueError('complete_unique_case_plan')
         by_pair={}
@@ -79,6 +80,7 @@ class StagedStudy:
         for case in self.manifest['cases']:
             if self.fingerprint(self.policy)!=self.frozen:raise ValueError('recipe_changed')
             key=(case['task'],case['episode']);context_hash=digest(self.contexts[key])
+            self.pending_case=deepcopy(case)
             safe_case=deepcopy(case);row,report=host(safe_case,self.policy,self.contexts[key])
             if safe_case!=case:raise ValueError('host_changed_case_protocol')
             if digest(self.contexts[key])!=context_hash:raise ValueError('evaluation_updated_context')
@@ -92,6 +94,12 @@ class StagedStudy:
             if total_real>self.manifest['total_real_cap'] or total_imagined>self.manifest['total_imagined_cap']:raise ValueError('study_resource_cap')
             rows.append(dict(case=case,probe_return=sum(probe),remaining_return=sum(rewards),full_accounted_return=sum(probe)+sum(rewards),
                              host_metrics=row.get('metrics',{}),resource_receipt=asdict(report)))
+            self.partial_rows=deepcopy(rows);self.pending_case=None
         if self.fingerprint(self.policy)!=self.frozen:raise ValueError('evaluation_changed_policy')
+        self.complete=True
         return dict(kind=self.manifest['kind'],complete=True,manifest_sha256=digest(self.manifest),rows=rows,
                     real_steps=total_real,imagined_transitions=total_imagined,recipe_hash=self.frozen)
+
+    def snapshot(self):
+        return dict(complete=self.complete,consumed=self.consumed,rows=deepcopy(self.partial_rows),pending_case=deepcopy(self.pending_case),
+                    warning='On host failure, physical work for pending case is unknown until its trusted ledger is settled.')
