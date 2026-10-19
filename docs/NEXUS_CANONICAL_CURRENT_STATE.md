@@ -1,5 +1,11 @@
 # NEXUS canonical current state
 
+Delivery verification:888 relevant tests; Lab0.2.0 deterministic ZIP with315
+hash-listed files, clean stdlib replay and supplied-dependency authored restart;
+real Chrome initial online/offline renders. No scientific execution. Exact
+code7eb7e53445c381fecd8407707cd150826efd5f75; see F_DELIVERY_VERIFICATION.
+No measured continual-learning or F performance claim.
+
 Latest F v2 preparation corrects unsafe50-call estimate using SAME actual
 operation_plan metadata: parent51, blend67; whole-study upper1622400 forwards,
 43372800 rows,28800 real. New runtime_v2 unregistered/unauthorized; no grant

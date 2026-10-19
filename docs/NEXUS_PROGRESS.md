@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## F v2 delivery verified —888 relevant tests, zero scientific execution
+
+Implementation/protocol7eb7e53445c381fecd8407707cd150826efd5f75. Clean-venv
+stdlib demo acceptance and supplied-dependency authored restart pass; real
+Chrome initial renders online/offline pass. Versioned9.05MB ZIP315 hashed
+files excludes checkpoints/user work. Resource bounds and paired secondary
+are tested, not measured learning gains. See NEXUS_E3_12F_DELIVERY_VERIFICATION.md.
+F remains unregistered; ledger unchanged, no new collection or allocation.
+
 ## F v2 preparation and local demonstration packaging
 
 Source-only worst-case check found50 calls/step unsafe: parent51 and blend67.
