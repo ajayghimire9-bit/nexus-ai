@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — E2.29 return receipt contract, authored integration passes
+
+Shared references, complete paired raw-return grid, df9 intervals, clipping
+diagnostics and interrupted-work rejection added to existing scoring surfaces.
+Authored160-cell capture0.2350s,80 synthetic query callbacks, zero scientific
+work and311 historical JSON unchanged. Thirty-one focused tests passed before
+capture; final combined regression **184 passed in1.49s**, including32 focused
+return-contract tests and independent saved-capture arithmetic/provenance. No real
+control/learning claim; scientific runtime remains blocked. Report
+`NEXUS_E2_29_RETURN_CONTRACT.md`. Ledger unchanged.
+
 ## Latest — E2.28 targeted readiness review, science blocked
 
 Audited actual scientific/fixture paths, baseline information, statistics,

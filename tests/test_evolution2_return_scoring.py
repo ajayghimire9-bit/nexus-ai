@@ -181,3 +181,32 @@ def test_family_spans_are_applied_before_equal_family_aggregation():
     result = analyze_return_grid(rows, **args)
     expected = [((10 + b) / 100 + (10 + b) / 200) / 2 for b in range(10)]
     assert result["contrasts"]["reset"]["per_bundle"] == pytest.approx(expected)
+
+
+def test_saved_authored_capture_and_execution_provenance():
+    import hashlib
+    import json
+    from pathlib import Path
+    import subprocess
+    root = Path(__file__).resolve().parents[1]
+    path = root / "artifacts/evolution2_29_return_contract.json"
+    p = json.loads(path.read_text())
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == "27a11f181476498ecc5f0502a968a139cbcc8233a13ca7dd359c71da7e4c003d"
+    assert p["fixture_only"] and not p["scientific_execution_ready"]
+    assert p["resources"]["real_interactions"] == p["resources"]["model_inference"] == 0
+    assert len(p["rows"]) == 160 and len(p["manifests"]) == 20
+    # Independent raw arithmetic: cache-origin duplication is not replication.
+    means = []
+    for b in range(10):
+        paired = []
+        for f in FAMILIES:
+            for s in (0, 1):
+                cell = {r["method"]: r["raw"] for r in p["rows"]
+                        if (r["bundle"], r["family"], r["slot"]) == (b, f, s)}
+                paired.append((cell["persist"] - cell["reset"]) / 100.)
+        means.append(sum(paired) / 4)
+    assert p["summary"]["contrasts"]["reset"]["per_bundle"] == pytest.approx(means)
+    for name, h in p["historical_artifacts_sha256"].items():
+        assert hashlib.sha256((root / name).read_bytes()).hexdigest() == h
+    for name, h in p["source_sha256"].items():
+        assert hashlib.sha256(subprocess.check_output(["git", "show", p["execution_sha"] + ":" + name], cwd=root)).hexdigest() == h

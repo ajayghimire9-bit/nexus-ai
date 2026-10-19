@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E2.29 receipt-contract correctness, engineering evidence only
+
+Complete-grid, shared-reference, raw-versus-clipped and independent-bundle
+arithmetic checks pass on authored fixtures. Outcomes are prescribed and no
+proposer/model learns; no scientific improvement hypothesis was evaluated.
+E2.17 stays inconclusive, H17 blocked and all closed outcomes unchanged.
+Report `NEXUS_E2_29_RETURN_CONTRACT.md`. Next is worker integration review.
+
 ## Latest — E2.28 readiness review, no scientific hypothesis evaluated
 
 Verdict BLOCKED_SCIENTIFIC_RUNNER_AND_PROTOCOL_GAPS. E2.27 establishes

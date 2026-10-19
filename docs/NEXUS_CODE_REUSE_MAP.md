@@ -8,6 +8,13 @@ instead of opening parallel packages.
 
 ## Canonical stacks (keep)
 
+`persist_reset_scoring.freeze_shared_reference` and `analyze_return_grid`
+provide opt-in shared-source reference and complete ten-bundle raw-return
+receipt analysis. Reuse them with the existing manifest evaluator and
+ReservationLedger; do not create another scorer or meter. E2.29 is authored
+fixture evidence only; no trusted real-return worker or scientific gate is
+enabled. See `NEXUS_E2_29_RETURN_CONTRACT.md`.
+
 Prospective method-sensitive hidden evaluation can use
 `persist_reset_scoring.prospective_hidden_evaluator` with its saved,
 hash-verified training-scale manifest. It reuses `MethodSensitiveHiddenEval`

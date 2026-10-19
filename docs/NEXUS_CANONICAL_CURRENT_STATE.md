@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+E2.29 extends `persist_reset_scoring` with shared source-anchor freezing and
+strict ten-bundle return-grid analysis, reusing the existing evaluator and
+ReservationLedger. Authored160-cell integration reconciles80 synthetic query
+callbacks and preserves raw/clipping distinctions. No real returns, models
+or scientific execution; all311 previous JSON preserved. Next: trusted-worker
+receipt/reservation integration review, dispatch disabled. Report
+`NEXUS_E2_29_RETURN_CONTRACT.md`. This does not resolve E2.28's science blockers.
+
 E2.28 source-only audit: scientific execution remains blocked. The actual
 runner still uses E2.17's method-independent loop; the corrected helper is
 not wired to the manifest factory; fixture scores are forecasts, not real

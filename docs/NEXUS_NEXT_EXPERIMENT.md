@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.29 contract tested; inspect trusted-worker integration
+
+One next source-only milestone: map method-selected variants to trusted actual
+reward receipts and each planner/environment call to pre-call ReservationLedger
+operations. Check worker/host clocks, receipt lineage, cache costs and failure
+settlement with authored records while keeping dispatch disabled. Reuse the
+new `analyze_return_grid`, shared reference helper and manifest evaluator.
+Do not run models/worlds, select seeds/physics, allocate science or add a new
+stack. E2.29's160-cell fixture passes, but actual real-return integration and
+matched-model provenance remain unverified. Report `NEXUS_E2_29_RETURN_CONTRACT.md`.
+
 ## Current — E2.28 blocked: implement real-return scoring contract source-only
 
 One next milestone: connect the existing prospective evaluator contract to

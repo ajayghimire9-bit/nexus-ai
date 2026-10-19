@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.29 authored return contract, 2026-10-19
+
+Existing scoring module now enforces shared source references, complete
+ten-bundle raw return cells, pairing, clipping/cache consistency and completed
+ledger work before inference. Existing v2 df9 statistics and ReservationLedger
+are reused. Authored160-cell integration passes; zero environment/model work,
+all311 previous JSON preserved, ledger327.869/3272.131 unchanged. This is
+engineering evidence, not measured return improvement or learning-to-learn.
+Scientific dispatch remains blocked. Next: source-only trusted-worker receipt
+and reservation integration review, not collection. Report
+`NEXUS_E2_29_RETURN_CONTRACT.md`; earlier entries remain history.
+
 ## Latest — E2.28 source-only readiness audit, 2026-10-19
 
 Scientific study remains blocked: E2.27's synthetic manifest integration

@@ -108,3 +108,44 @@ to pre-call reservation, while leaving dispatch disabled. This must verify the
 boundaries and identify whether existing runtime code can meet them; it must
 not open another evaluator stack or collect new outcomes. This branch establishes
 receipt-contract correctness only, not improved learning/control or AGI.
+
+## Completed authored capture
+
+Execution SHA `131f46d3702ae5506b1fe4053665443e368f6c52`; capture SHA256
+`27a11f181476498ecc5f0502a968a139cbcc8233a13ca7dd359c71da7e4c003d`.
+All160 logical cells and20 saved fixture manifests completed. There were80
+synthetic query callbacks and40 synthetic source callbacks. Each of the two
+authored higher-score methods has36 clipped logical receipts; raw differences
+remain available. These choices/returns were specified by the fixture, not
+learned or independently measured performance.
+
+Capture wall0.2350s / CPU0.2348s; zero new environment steps, imagined states,
+model inference, fitting, proposer updates or allocations. All311 previous JSON
+files stayed byte-identical. Scientific ledger remains327.869/3272.131.
+
+Before capture,31 focused and183 combined relevant tests passed in1.35s.
+The final selection adds an independent saved-capture arithmetic/provenance
+test: **184 passed in1.49s**, including32 focused return-contract tests.
+No full historical suite was run: its model/planner execution and artifact
+writers are outside this task. The E2.28 test was corrected to authenticate
+historical source at its recorded Git revision, without altering any artifact.
+
+Commands:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/audit_evolution2_29_return_contract.py
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest \
+ tests/test_evolution2_return_scoring.py tests/test_evolution2_readiness_audit.py \
+ tests/test_evolution2_feedback_integration.py tests/test_evolution2_feedback_normalization.py \
+ tests/test_evolution2_pendulum_acrobot_protocol_v2_pilot.py \
+ tests/test_evolution1_resources.py tests/test_evolution1_toy_loop.py \
+ tests/test_evolution2_cross_task_screen.py tests/test_evolution2_evolutionary_search.py \
+ tests/test_evolution2_persist_reset_scoring.py::test_hidden_isolation_allows_fingerprint_overlap_not_hidden_returns \
+ tests/test_evolution2_persist_reset_scoring.py::test_persist_reset_crn_and_separate_controls \
+ -p no:cacheprovider -o addopts='' -q
+```
+
+The capture command refuses to overwrite a saved result. Final test outcome
+is recorded in the progress document. Readiness remains blocked for the runtime
+integration/provenance requirements above; no scientific grant is requested or
+created by these deterministic engineering results.
