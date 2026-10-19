@@ -57,8 +57,9 @@ def controllers():
 def seeds(config,family,bundle,episode):
     f=config["families"].index(family)
     if config['version']=='crossed_reset_v1':bundle=0
+    stride=2000 if config['version']=='return_feedback_v1' else 1000
     return (config["env_seed_base"]+f*10000+bundle*100+episode,
-            config["planner_seed_base"]+f*10000+bundle*1000+episode*200)
+            config["planner_seed_base"]+f*10000+bundle*stride+episode*200)
 
 
 def requested_seeds(c):
@@ -125,7 +126,10 @@ def validate_config(c):
     crossed={**replication,'version':'crossed_reset_v1','families':['pendulum'],
         'controllers':['successor_anchor','rank_blend'],'env_seed_base':2107000000,
         'planner_seed_base':2108000000,'env_cap':3200,'imagined_cap':4915200,'time_cap_s':90}
-    if json.dumps(c,sort_keys=True) not in [json.dumps(x,sort_keys=True) for x in (expected,replication,crossed)]:
+    feedback={**replication,'version':'return_feedback_v1','episodes':list(range(7)),
+        'controllers':['successor_anchor','rank_blend'],'env_seed_base':2111000000,
+        'planner_seed_base':2112000000,'env_cap':11200,'imagined_cap':17203200}
+    if json.dumps(c,sort_keys=True) not in [json.dumps(x,sort_keys=True) for x in (expected,replication,crossed,feedback)]:
         raise ValueError("locked_configuration_mismatch")
 
 
@@ -144,6 +148,12 @@ def run_paths(c):
             'journal':'artifacts/unified_crossed_reset_resources.jsonl.gz',
             'usage':'artifacts/unified_crossed_reset_usage.json'}.items()},
             'previous':ROOT/'artifacts/unified_full_policy_replication_validation.json'}
+    if c['version']=='return_feedback_v1':
+        return {**{k:ROOT/p for k,p in {
+            'config':'configs/e3_2_return_feedback.json','allocation':'configs/e3_2_return_feedback_allocation.json',
+            'protocol':'docs/NEXUS_E3_2_RETURN_FEEDBACK_PROTOCOL.md','result':'artifacts/e3_2_return_feedback.json',
+            'journal':'artifacts/e3_2_return_feedback_resources.jsonl.gz','usage':'artifacts/e3_2_return_feedback_usage.json'}.items()},
+            'previous':ROOT/'artifacts/e3_1_learned_model_validation.json'}
     return {**{key:ROOT/path for key,path in {
         'config':'configs/unified_full_policy_replication.json',
         'allocation':'configs/unified_full_policy_replication_allocation.json',
@@ -216,8 +226,16 @@ def analyze(rows,c):
             "intervals":"Not reported: exploratory n=2 source-model pairs per family; no ten-decoder inference."}
 
 
-def run(c):
+def model_jobs(c,selected):
+    stages=[('training',[0,1,2]),('evaluation',[3,4,5,6])] if c['version']=='return_feedback_v1' else [('evaluation',c['episodes'])]
+    return [(r,stage,episodes) for stage,episodes in stages for r in selected]
+
+
+def run(c, *, on_training=None, on_decision=None):
     validate_config(c)
+    feedback=c['version']=='return_feedback_v1'
+    if feedback and (on_training is None or on_decision is None):raise ValueError('feedback_hooks_required')
+    if not feedback and (on_training is not None or on_decision is not None):raise ValueError('unexpected_hooks')
     paths=run_paths(c)
     config_path,allocation_path,protocol_path=paths['config'],paths['allocation'],paths['protocol']
     result_path,journal_path,usage_path=paths['result'],paths['journal'],paths['usage']
@@ -262,9 +280,14 @@ def run(c):
             with np.load(ROOT/r["path"]) as source:
                 if set(source["env_seeds"].reshape(-1).tolist()) & candidates:raise ValueError("source_episode_seed_collision")
         p["fit_manifest_sha256"]=sha(ROOT/"artifacts/evolution2_fit_clock_run.json")
+        jobs=model_jobs(c,selected)
+        fitted=False;decisions={}
         with gzip.open(journal_path,"xb") as journal:
-            for r in selected:
+            for r,stage,episodes in jobs:
                 if time.perf_counter()>=deadline:raise TimeoutError("time_cap")
+                if feedback and stage=='evaluation' and not fitted:
+                    on_training(tuple(p['episodes']));fitted=True
+                    if time.perf_counter()>=deadline:raise TimeoutError('time_cap')
                 f,b=r["family"],r["bundle"]
                 model=disposable_model(f,b)
                 if (str(model.device)!="cpu" or model.net.arch!="mlp" or model.kind!="residual"
@@ -277,16 +300,23 @@ def run(c):
                     parent=json.loads(RESULT.read_text())
                     original=next(x for x in parent['models'] if (x['family'],x['bundle'])==(f,b))
                     if fingerprint!=original['before']:raise ValueError('parent_frozen_state_mismatch')
-                for e in c["episodes"]:
+                for e in episodes:
                     reset,planner=seeds(c,f,b,e)
                     for label in c['controllers']:
                         strategy=controllers()[label]
                         if time.perf_counter()>=deadline:raise TimeoutError("time_cap")
                         env=make_task_env(task_spec(f),seed=reset)
                         obs,_=env.reset(seed=reset)
+                        if feedback and stage=='evaluation':
+                            key=(f,b,e)
+                            if key not in decisions:
+                                decisions[key]=on_decision(dict(family=f,model_bundle=b,episode=e,initial_obs=np.asarray(obs).tolist(),
+                                    completed_real_steps=state['completed'].real_steps))
+                                p.setdefault('selection_decisions',[]).append(decisions[key])
                         episode={"family":f,"model_bundle":b,"episode":e,"controller":label,"reset_seed":reset,
                                  "planner_base":planner,"initial_obs_hash":digest(np.asarray(obs).tolist()),"steps":[],"return":0.}
                         p["episodes"].append(episode)
+                        if feedback:episode['split']=stage
                         try:
                             for tick in range(c["episode_steps"]):
                                 ops=operation_plan(strategy,obs,3)
@@ -337,14 +367,16 @@ def run(c):
                         finally:env.close()
                 after=state_hash(model)
                 if after!=fingerprint or sha(ROOT/r["path"])!=r["sha256"]:raise ValueError("frozen_model_changed")
-                p["models"].append({**r,"before":fingerprint,"after":after})
+                known=next((x for x in p['models'] if (x['family'],x['bundle'])==(f,b)),None)
+                if known is None:p['models'].append({**r,"before":fingerprint,"after":after})
+                elif known['before']!=fingerprint or known['after']!=after:raise ValueError('phase_model_state_changed')
         p["resources"]={k:v.payload() for k,v in state.items()}
         validate_result(p,c)
         p["analysis"]=analyze(p["episodes"],c)
         if any(sha(ROOT/n)!=h for n,h in old.items()):raise ValueError("history_changed")
         if time.perf_counter()>=deadline:raise TimeoutError("time_cap")
         p["declared_complete"]=True
-    except Exception as exc:p["failure"]=f"{type(exc).__name__}: {exc}"
+    except (Exception,KeyboardInterrupt) as exc:p["failure"]=f"{type(exc).__name__}: {exc}"
     p["resources"]={**{k:v.payload() for k,v in state.items()},"wall_s":time.perf_counter()-t0,"cpu_s":time.process_time()-cpu0}
     if journal_path.exists():p["resource_journal_sha256"]=sha(journal_path)
     start=allocation['session_used_before_s']
