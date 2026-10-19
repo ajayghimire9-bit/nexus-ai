@@ -1,5 +1,25 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-transition not established (E3.7)
+
+E3.7 actual transition-evidence ablation completed; no improvement established.
+Original32-row source support yields normalized delta/linear residual/action
+coverage in place of schema slots, same192 coefficients/ridge1. Transition
+MAE269.204 versus mean202.678 Pendulum,20.212 versus16.111 Acrobot; worse
+than means all four models. Cached return gain−17.757927/−0.531026. All
+model screens fail. Static support adds no within-model variation; no proof
+of feature impossibility.360 ridge fits+4 descriptor LS,0 new real/imagined/
+neural work in registered run;0.493148s+0.330873s audit (4 LS/0 ridge fits).
+Execution95c206d87aaa60696e1774e899fcebe10c74e253;357 pre-existing JSON
+verified. Before lock, legacy regressions wrote six historical paths and ran
+one unmetered learned-inference benchmark; archived outputs/restored originals,
+isolated seven writer tests, excluded inference test from source-only suite,
+charged10.44s. See e3_7_preflight_recovery.json, not scientific evidence.
+Ledger785.453092043025 used/2814.546907956975 remaining. Closed E3.4/E2.17/
+H17 boundaries unchanged. One next question: prespecified observation×support
+interaction under fixed learner/budget; proposed only, not implemented or
+allocated. Report NEXUS_E3_7_TRANSITION_EVIDENCE_RESULTS.md.
+
 ## Latest — E3.6 H-feature not established
 
 E3.6 training-only feature audit completed: full and observation-only MAE

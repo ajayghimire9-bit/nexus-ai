@@ -1,5 +1,16 @@
 # NEXUS full research registry
 
+Supplemental E3.7 codex/e3-7-transition-evidence-ablation, execution
+95c206d87aaa60696e1774e899fcebe10c74e253. Fixed192-coordinate genuine source
+transition summaries versus original/means,360 ridge fits/4 descriptor LS;
+MAE worse than means all models, return−17.757927/−0.531026. Valid negative
+screen. Registered0real/imagined/neural execution;0.493148s+0.330873s audit.
+Preprotocol legacy regression incident separately disclosed/archived,10.44s
+charged; exact old bytes restored and writers isolated.357 pre-existing JSON
+verified at audit; ledger785.453092043025/2814.546907956975. No historical
+scientific finding replaced. Report NEXUS_E3_7_TRANSITION_EVIDENCE_RESULTS.md,
+artifacts e3_7_*. Unmetered preflight inference is not silently counted as0.
+
 Supplemental E3.6: codex/e3-6-feature-informativeness, execution
  ebdeddc9914eed84f4bcba7f21321600d7f7fb9c. Four feature groups and19 within-model
 permutations under9 blocked reset folds.720 ridge fits/36 training contexts,

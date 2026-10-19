@@ -1,0 +1,61 @@
+{
+  "execution_sha": "95c206d87aaa60696e1774e899fcebe10c74e253",
+  "base_sha": "ad8afce400adb12abb2d1bf4854741d02c7774f9",
+  "suite_scope": "25 relevant source-only regression modules, not full repository historical suite",
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest -o addopts='' -q tests/test_e3_7_transition_evidence.py tests/test_e3_6_feature_informativeness.py tests/test_e3_5_residual_advantage.py tests/test_e3_4_feedback_coverage.py tests/test_e3_3_training_feedback_audit.py tests/test_e3_2_return_feedback.py tests/test_unified_e225_e30.py tests/test_unified_headroom.py tests/test_unified_full_policy_source.py tests/test_unified_full_policy_replication.py tests/test_unified_crossed_reset.py tests/test_e3_1_learned_model_audit.py tests/test_evolution2_planner_quality.py tests/test_evolution1_resources.py tests/test_evolution1_source_contracts.py tests/test_evolution1_toy_loop.py tests/test_evolution2_observation_memory.py tests/test_evolution2_observation_memory_cross.py tests/test_strategy_memory.py tests/test_strategy_memory_obs.py tests/test_strategy_memory_selector.py tests/test_strategy_memory_decide.py tests/test_strategy_memory_persist_obs.py tests/test_evolution2_fit_clock.py tests/test_evolution2_fit_clock_run.py",
+  "pre_execution_corrected": {
+    "passed": 462,
+    "wall_s": 9.93
+  },
+  "post_execution_final": {
+    "passed": 465,
+    "wall_s": 10.11
+  },
+  "intermediate_post_execution": {
+    "passed": 464,
+    "wall_s": 10.26
+  },
+  "focused_prechecks": {
+    "passed": 89,
+    "wall_s": 1.83
+  },
+  "preprotocol_incident": {
+    "record": "artifacts/e3_7_preflight_recovery.json",
+    "initial_suite_passed": 462,
+    "wall_s_charged": 10.44,
+    "neural_inference_occurred": true,
+    "neural_forward_count": null,
+    "imagined_transition_count": null,
+    "historical_artifact_bytes_restored": true,
+    "legacy_artifact_writers_isolated": 7,
+    "excluded_test": "tests/test_strategy_memory_residual.py",
+    "note": "Learned inference in initial legacy regression was not metered. Do not claim zero. Initial outputs archived separately, never used for E3.7 fitting/analysis."
+  },
+  "registered_experiment": {
+    "ridge_fits": 360,
+    "support_descriptor_lstsq_calls": 4,
+    "wall_s": 0.4931475409975974,
+    "cpu_s": 0.491835,
+    "new_environment_steps": 0,
+    "new_imagined_transitions": 0,
+    "neural_inference": 0
+  },
+  "independent_audit": {
+    "valid": true,
+    "coefficient_models_verified": 360,
+    "ridge_fits": 0,
+    "support_descriptor_lstsq_calls": 4,
+    "wall_s": 0.33087345901003573,
+    "preexisting_json_preserved": 357,
+    "source_train_arrays_verified": 4,
+    "maximum_original_prediction_difference": 0,
+    "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_e3_3_training_feedback_audit.py --transitions --verify"
+  },
+  "boundaries": [
+    "Only original TRAIN support rows0:32; no closed E3.4 evaluation parsed",
+    "No checkpoint/network updates",
+    "No new collection, source validation or reserved physics access in registered E3.7",
+    "No change to main; no merge",
+    "Unrelated untracked evolution1 adapters preserved"
+  ]
+}

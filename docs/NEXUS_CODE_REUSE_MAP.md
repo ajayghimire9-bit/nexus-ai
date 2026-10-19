@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+E3.7 uses SAME AdvantagePredictor/ridge, feature_informativeness fold/permutation
+adapter and existing audit host (--transitions/--verify). transition_evidence
+is pinned TRAIN-prefix preprocessing only. describe_support's require_fit=True
+opt-in refuses numerical fallback; historical default remains unchanged. Two
+192-coordinate views, not a384-parameter model. Four descriptor LS calls per
+run/audit; audit performs0 ridge fits. Seven legacy artifact-writer tests now
+redirect to tmp paths; earlier side effects archived/restored/disclosed. No
+new learning/memory/planner stack; negative screen, allocation consumed.
+
 E3.6 feature_informativeness is a slice/permutation/fold adapter over the SAME
 AdvantagePredictor, base training_feedback_audit anchor/identity functions and
 ridge; no second learner/proposer/memory/planner/meter. Existing audit host

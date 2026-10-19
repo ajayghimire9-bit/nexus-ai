@@ -158,3 +158,50 @@ def test_legacy_artifacts_restored_and_incident_budget_not_hidden():
     assert record['neural_inference_occurred'] and record['neural_forward_count'] is None
     ledger=record['session_ledger']
     assert ledger['used_after_s']-ledger['used_before_s']==pytest.approx(10.44)
+
+
+def test_repository_only_saved_replay_needs_no_source_binaries_or_ridge_fit(monkeypatch):
+    m=runner();c=json.loads(m.CONFIG.read_text())
+    saved=json.loads((ROOT/c['input']).read_text());m.verify_file(ROOT/c['input'],c['input_sha256'])
+    result=json.loads(m.RESULT.read_text());frozen=json.loads(m.FROZEN.read_text())
+    bank=saved['training_pairs'];x=t.augment(bank,saved['feature_rows'],{k:v['statistics'] for k,v in result['source_support'].items()})
+    def forbidden(*args,**kwargs):raise AssertionError('no source file loading or regression fitting')
+    monkeypatch.setattr(np,'load',forbidden);monkeypatch.setattr(AdvantagePredictor,'observe',forbidden)
+    assert a.verify_frozen_folds(frozen['folds'],bank,x,'e3_7')==result['analysis']
+    assert result['declared_complete'] and result['ridge_fits_completed']==360
+    assert result['support_descriptor_lstsq_calls']==4
+    assert result['real_steps']==result['imagined_transitions']==result['neural_inference']==0
+    m.verify_file(m.FROZEN,result['frozen_fold_sha256'])
+    for path,expected in result['historical_artifacts_sha256'].items():m.verify_file(ROOT/path,expected)
+
+
+def test_original_condition_exact_saved_reproduction():
+    current=json.loads((ROOT/'artifacts/e3_7_frozen_fold_predictions.json').read_text())
+    previous=json.loads((ROOT/'artifacts/e3_6_frozen_fold_predictions.json').read_text())
+    for first,second in zip(current['folds'],previous['folds']):
+        assert first['held_out']==second['held_out']
+        for x,y in zip(first['predictions'],second['predictions']):
+            assert x['public']==y['public']
+            assert x['estimates']['original']==pytest.approx(y['estimates']['full'],abs=1e-10,rel=1e-12)
+
+
+def test_primary_screen_accepts_consistent_toy_signal_but_rejects_one_failed_model():
+    # Authored scoring oracle only: no predictor is fit to query outcomes.
+    bank,x=toy();folds=[]
+    for held in range(9):
+        train,query,means,xx,q,y,maps,priors=a.layout(bank,x,held,'e3_7');predictions=[]
+        for j,i in enumerate(query):
+            estimates={m:priors[j] for m in ('model_mean',)+a.modes('e3_7')}
+            estimates['transition']=bank[i]['advantage']
+            for p in a.PERMUTATIONS:estimates[f'transition_perm_{p}']=priors[j]+1000.
+            predictions.append(dict(public=bank[i]['public'],prior_mean=priors[j],estimates=estimates,
+                                    choices={m:a.choose(v) for m,v in estimates.items()}))
+        folds.append(dict(held_out=held,train_ids=[list(a.base.identity(bank[i])) for i in train],
+                          query_ids=[list(a.base.identity(bank[i])) for i in query],predictions=predictions))
+    assert a.score_predictions(folds,bank,'e3_7')['point_screen']
+    for fold in folds:
+        pred=next(p for p in fold['predictions'] if a.base.identity(p)[:2]==('acrobot',1))
+        pred['estimates']['transition']=pred['prior_mean'];pred['choices']['transition']=a.choose(pred['prior_mean'])
+    result=a.score_predictions(folds,bank,'e3_7')
+    assert not result['point_screen']
+    assert not result['per_model']['acrobot:1']['checks']['transition']['passes']

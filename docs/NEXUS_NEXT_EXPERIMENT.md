@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — observation×support conditioning, separate design
+
+E3.7 replaces schema with genuine static source-transition summaries but fails
+all four model screens. MAE remains worse than means; no within-model feature
+variation is added. One next question: can a prespecified small interaction
+between current observation and support statistics represent model-dependent
+planner-advantage slopes better than additive pooling? Lock a small fixed-
+budget comparison against means/additive features, account capacity explicitly,
+and preserve blocked-reset negative controls. This is a proposed research
+question, not implementation/allocation/execution or a reason for large neural
+capacity. Any source-bank improvement would remain exploratory, not untouched
+confirmation. Report NEXUS_E3_7_TRANSITION_EVIDENCE_RESULTS.md. Older entries
+below retain historical proposals.
+
 ## Current — actual transition evidence at fixed representation size
 
 E3.6 is complete; all groups fail, and both varying groups have worse MAE than
