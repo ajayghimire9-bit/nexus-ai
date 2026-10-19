@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Latest source-headroom audit: four frozen E2.9 learned models also leave zero
+grammar-over-anchor headroom on16 opposite-bundle states under the locked
+neutral-continuation label. No fitting/real steps; weights and RMS unchanged.
+This is a negative evaluator-headroom result, not a failed control experiment.
+Report `NEXUS_UNIFIED_HEADROOM_AUDIT.md`; ledger335.400204625/3264.599795375.
+Prepare full-policy return protocol before further quality/generator training;
+new environment collection still needs separate authorization.
+
 Latest explicitly authorized source development: unified predictor/generator
 is implemented in `evolution2.generated_strategies` and `unified_source_bench`,
 reusing canonical modules below. Typed342-policy grammar has4 novel action

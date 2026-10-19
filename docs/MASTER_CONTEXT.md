@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — frozen learned-source headroom audit, 2026-10-19
+
+Four hash-matching E2.9 residual models evaluated the existing342-policy
+grammar on opposite-bundle source observations, no fitting/collection.
+Common-neutral-continuation label still has **zero headroom in16/16 states**:
+anchors attain grammar best throughout; screen0/16. All weights/RMS unchanged,
+316 prior JSON preserved. Cost1.433380s,438,336 neural input rows,8,000 calls,
+zero real steps/updates. Ledger335.400204625/3264.599795375. No useful learning
+or control claim. Next: prepare a separately authorized full-policy return
+protocol, not another selector trained on this saturated label. Source-only
+self-evaluation is not real control evidence. See `NEXUS_UNIFIED_HEADROOM_AUDIT.md`.
+Older recommendations below remain history; scientific gates stay closed.
+
 ## Latest — authorized unified E2.25/E3.0 source development, 2026-10-19
 
 The human explicitly requested bounded E3 strategy generation, superseding

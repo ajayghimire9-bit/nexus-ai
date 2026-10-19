@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — prepare full-policy source return protocol
+
+One next step: design a locked full-policy source-physics return comparison
+where generated strategies control repeated actions, instead of a first action
+followed by neutral continuation. Existing frozen learned-model headroom audit
+finds0/16 improvements beyond anchors. Do not train more on that saturated
+label. Proposed small design upper1,600 new real steps/2,457,600 imagined,
+180-second cap, still unallocated/unexecuted. No new policies/seeds/holdouts
+selected; separate collection authorization is required. Report
+`NEXUS_UNIFIED_HEADROOM_AUDIT.md`. Scientific dispatch remains blocked.
+
 ## Current — audit decision/discovery headroom before expanding learning
 
 One next question: do permitted frozen learned-dynamics source evaluations

@@ -42,6 +42,8 @@ def tensor_hash(model):
 
 def summarize(rows, config):
     import math
+    if any(type(r[k]) is not int for r in rows for k in ("model_bundle","query_bundle","offset")):
+        raise ValueError("invalid_cell_identifier")
     expected = set(itertools.product(config["families"], config["model_bundles"], config["offsets"]))
     keys = [(r["family"],r["model_bundle"],r["offset"]) for r in rows]
     if len(keys) != len(expected) or set(keys) != expected: raise ValueError("incomplete_headroom_grid")

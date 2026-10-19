@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — learned-model source-headroom screen fails
+
+Source audit completed once: four frozen hash-verified E2.9 residuals,16
+opposite-bundle context cells,342 policies. All cells have zero improvement
+headroom beyond anchors under the common-neutral probe. Nine cells have
+action-score variation; no discovery gain is available past anchors. No
+training/real interactions,438,336 neural rows/8,000 calls,1.433380s wall.
+All four weight/RMS fingerprints and316 historical JSON unchanged; ledger
+335.400204625/3264.599795375. Final157 relevant tests passed in2.00s.
+Report `NEXUS_UNIFIED_HEADROOM_AUDIT.md`. Next: design full-policy return
+comparison with separate collection approval; do not expand this proxy learner.
+
 ## Latest — unified E2.25/E3.0 implemented, negative source improvement result
 
 Human-requested predictor/generator integration completed and tested. Original

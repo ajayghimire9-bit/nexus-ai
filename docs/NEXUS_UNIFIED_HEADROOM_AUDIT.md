@@ -82,3 +82,66 @@ resource journals, runtime and prior JSON hashes. Preserve all prior outcomes.
 If headroom fails, do not train another selector/generator on this label.
 If it passes, establish independent label validity before claiming useful
 learning. Choose one next step from actual evidence, not an architecture sweep.
+
+## Completed result: no headroom
+
+Execution `d1f8c3063592d9f8620ad388ea1d57575f0d956b`. Capture SHA256
+`1fe3a89c736cec3c3cc8276a04e4afbbfe61bc57f258e5978ddef77a106b079c`.
+All sixteen cells completed. The source-headroom screen failed: **0/16**
+eligible states, **0/8 Pendulum**, **0/8 Acrobot**. Mean and maximum positive
+grammar-minus-anchor headroom are exactly0.0 in both families. This is not
+an improvement result or a failed learner: no learner was trained here.
+
+The labels are not constant everywhere. Nine states have multiple selected
+actions with different predicted probe values; seven states have only one
+selected action across the grammar. Nevertheless the anchors already attain
+the best grammar probe value in every state. The largest within-state spread
+between strategies is14.7341 predicted units; that is worse-strategy variation,
+not available improvement beyond the anchors. Per-policy raw values and first
+actions are saved for every state. No model was tuned from these outcomes.
+
+All four local checkpoint hashes match the E2.9 manifest. Eight locked source
+file hashes match; the four model/RMS fingerprints remain exactly unchanged.
+Only model bundles0/1 were loaded, with opposite-bundle query episodes. These
+are inspected default source physics; no reserved confirmation was accessed.
+The manifest's lack of original execution revision remains a provenance
+limitation. Historical residual max-score catalogue results remain closed;
+this audit used the separately declared common-continuation action label.
+
+Cost: **1.433380s wall /1.5245s CPU**, **8,000 neural model calls**,
+**438,336 imagined neural input rows**, zero real interactions, fits or
+optimizer updates. All sixteen reservation plans completed. All316 previous
+JSON artifacts verified unchanged. Ledger now **335.400204625 used /
+3264.599795375 remaining**; the earlier incomplete unified attempt remains
+included in the starting ledger. Local CPU only, no new binaries written.
+Checkpoint binaries remain local dependencies rather than newly tracked files;
+the explicit runner fails clearly if missing or mismatched.
+
+Pre-execution selected regressions155 passed in1.84s; final **157 passed
+in2.00s**. Final tests add saved-data arithmetic/provenance and boolean-ID
+rejection. The latter is validator hardening after capture, not a rerun or
+metric change. No full training/simulator suite was invoked. Tests verify
+JSON and executed source via Git without requiring local checkpoint binaries;
+the explicit audit command still requires those exact binaries.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest \
+ tests/test_unified_headroom.py tests/test_unified_e225_e30.py \
+ tests/test_evolution2_return_scoring.py tests/test_evolution2_feedback_integration.py \
+ tests/test_evolution2_feedback_normalization.py tests/test_evolution1_resources.py \
+ tests/test_evolution2_planner_adapter.py -p no:cacheprovider -o addopts='' -q
+```
+
+## One next step
+
+Prepare a **full-policy source-physics return protocol** comparing a small,
+frozen subset of generated policies with the anchors, so the generated rule
+affects repeated decisions rather than only the first action before a neutral
+continuation. Estimated planning upper: two families ×two existing models
+×two episodes ×four controllers ×50 steps =1,600 new environment steps and
+at most2,457,600 imagined transitions. Full runtime is unmeasured; a proposed
+180-second cap is a planning estimate, not an allocation or authorization.
+No seeds, policies or holdouts are selected here; no environment constructed.
+Separate collection authorization and a locked fair protocol are required
+before executing. Do not fit another predictor/generator to the saturated
+label or claim that self-evaluation establishes actual control quality.

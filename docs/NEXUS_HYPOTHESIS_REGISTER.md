@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-source-headroom not supported
+
+Preregistered1.0-unit/4-state/2-per-family screen fails:0/16 states have
+positive headroom of any size beyond forced anchors under frozen learned
+model/common-neutral-continuation self-evaluation. Zero fitting/real steps;
+not a control or learning hypothesis. No existing scientific outcome changed.
+Report `NEXUS_UNIFIED_HEADROOM_AUDIT.md`. Need a full-policy quality target
+before training another strategy selector on this source label.
+
 ## Latest — unified source-only A–E screen, only novelty B supported
 
 A quality generalization fails: fixed MAE0.000685291 versus zero0.000314323;
