@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Evolution-4 foundation engineering — no learning study
+
+From verified fa7d3b4, shared five-family TaskSpec/Host/PPO bindings, stricter
+semantic compatibility, prospective benchmark schema, existing TaskStream bridge
+and opt-in bounded softsign expression are implemented. Relevant source/fixture
+suite943 passes. Protocol permits only80-step/30s public-default engineering
+smoke, zero trained-model inference or fitting. Delivery outcomes are recorded
+separately in NEXUS_EVOLUTION4_GENERAL_LEARNING.md. Prospective scientific
+benchmark remains unregistered; F v2 is still unexecuted. No generality, transfer,
+continual-learning or self-improvement result is inferred from these interfaces.
+
 ## E3.12F v2 — corrected source bounds and separate estimation secondary
 
 Source operation plans require51 calls/parent step and up to67/blend step;

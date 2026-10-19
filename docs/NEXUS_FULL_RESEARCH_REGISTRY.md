@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+E4 general-learning foundation, basefa7d3b4: implementation/fixture tests plus
+registered engineering-only80-step smoke. Five family contracts/PPO bindings,
+resource reuse, prospective schema, TaskStream bridge and bounded opt-in
+activation. Not a scientific learning/transfer study; no new held-out physics,
+training, architecture search or F execution. See
+NEXUS_EVOLUTION4_GENERAL_LEARNING.md and its separate delivery record.
+
 F v2 engineering review from5952529770bd90f21c155ede81aca36433c75295:
 unsafe50-call estimate corrected to source-derived worst bound1622400 calls/
 forwards; real28800/time300 unchanged, rowbound43372800 below44236800 ceiling.

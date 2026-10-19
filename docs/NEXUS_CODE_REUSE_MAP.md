@@ -1,5 +1,12 @@
 # NEXUS code-reuse map
 
+E4: tasks.benchmark -> TaskSpec/make_task_env/existing wrappers + PPOTrainer
+constructor kwargs + post_probe.Host/ReservationLedger. Family compatibility
+does not authorize weight transfer. tasks.learning_stream -> TaskStream and
+EpisodeContext, not new memory. nn.bounds -> existing factory/ArchitectureSpec;
+nn.expr adds opt-in softsign and bounded structural validation. Existing planner
+bindings and scientific allowlists are not widened. No neural stream executor.
+
 F v2 reset_blocks derives Work envelopes from SAME full_policy_source.
 operation_plan/catalogue.plan_bound. verified_physical_work replaces unsafe
 50-call estimates for the F runtime; old estimate retained only for history.

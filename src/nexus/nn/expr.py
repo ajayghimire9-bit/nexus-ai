@@ -17,6 +17,25 @@ BINARY = ("add", "mul", "pdiv")
 MAX_NODES = 12
 
 
+def validate_tree(node: Expr) -> int:
+    """Bounded typed grammar; new opt-in softsign leaves legacy sampling fixed."""
+    def visit(value, depth):
+        if depth > MAX_NODES or type(value) is not tuple or not value:
+            raise ValueError("invalid_expression_tree")
+        if value == ("x",):
+            return 1
+        if len(value) == 3 and value[0] == "unary" and value[1] in (*UNARY, "softsign"):
+            count = 1 + visit(value[2], depth + 1)
+        elif len(value) == 4 and value[0] == "binary" and value[1] in BINARY:
+            count = 1 + visit(value[2], depth + 1) + visit(value[3], depth + 1)
+        else:
+            raise ValueError("invalid_expression_tree")
+        if count > MAX_NODES:
+            raise ValueError("expression_complexity_cap")
+        return count
+    return visit(node, 1)
+
+
 def _unary(name: str, x: torch.Tensor) -> torch.Tensor:
     if name == "id":
         return x
@@ -28,6 +47,8 @@ def _unary(name: str, x: torch.Tensor) -> torch.Tensor:
         return torch.nn.functional.softplus(x)
     if name == "sin":
         return torch.sin(x)
+    if name == "softsign":
+        return torch.nn.functional.softsign(x)
     raise ValueError(name)
 
 
@@ -153,6 +174,7 @@ class ExprActivation(nn.Module):
 
     def __init__(self, node: Expr) -> None:
         super().__init__()
+        validate_tree(node)
         self.node = node
         self.scale = nn.Parameter(torch.ones(()))
         self.shift = nn.Parameter(torch.zeros(()))
@@ -177,6 +199,7 @@ def expr_from_jsonable(obj: Any) -> Expr:
 
 
 def register_expr(node: Expr) -> str:
+    validate_tree(node)
     node = _canonicalize(node)
     name = expr_key(node)
     EXPR_TREES[name] = node

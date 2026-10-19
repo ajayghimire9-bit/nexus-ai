@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Evolution-4 foundation: tasks.benchmark binds SAME TaskSpec/wrappers/Host/PPO
+across five families; tasks.learning_stream wraps SAME TaskStream. No alternate
+planner, memory, learner or controller. nn.bounds probes SAME factory; softsign
+is opt-in, old random grammar unchanged.943 relevant engineering tests pass.
+Only tiny explicitly authorized engineering smoke is planned; no learning study
+or F collection. See NEXUS_EVOLUTION4_GENERAL_LEARNING.md for delivery status.
+
 Delivery verification:888 relevant tests; Lab0.2.0 deterministic ZIP with315
 hash-listed files, clean stdlib replay and supplied-dependency authored restart;
 real Chrome initial online/offline renders. No scientific execution. Exact

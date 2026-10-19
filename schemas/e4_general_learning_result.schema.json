@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "E4 prospective per-family learning results",
+  "description": "Structural companion only. nexus.tasks.benchmark.validate_results must additionally enforce the exact locked grid and finite numbers.",
+  "type": "object",
+  "required": ["manifest_hash", "execution_sha", "status", "rows", "summaries"],
+  "properties": {
+    "manifest_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "execution_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "status": {"enum": ["complete", "incomplete", "invalid"]},
+    "summaries": {"type": "object"},
+    "rows": {"type": "array", "items": {
+      "type": "object", "required": ["family", "replicate", "method", "case", "metrics"],
+      "properties": {
+        "family": {"enum": ["cartpole", "mountaincar", "mountaincar_continuous", "pendulum", "acrobot"]},
+        "replicate": {"type": "string"}, "method": {"type": "string"}, "case": {"type": "string"},
+        "metrics": {"type": "object", "required": ["raw_return", "wall_s", "cpu_s", "real_steps", "imagined_transitions", "model_calls", "network_forwards"],
+          "properties": {
+            "raw_return": {"type": "number"}, "wall_s": {"type": "number", "minimum": 0}, "cpu_s": {"type": "number", "minimum": 0},
+            "real_steps": {"type": "integer", "minimum": 0}, "imagined_transitions": {"type": "integer", "minimum": 0},
+            "model_calls": {"type": "integer", "minimum": 0}, "network_forwards": {"type": "integer", "minimum": 0}
+          }}
+      }
+    }}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "execution_authorized": false,
+  "kind": "prospective_benchmark_not_registered_science",
+  "families": ["cartpole", "mountaincar", "mountaincar_continuous", "pendulum", "acrobot"],
+  "replicates": ["independent_learner_0", "independent_learner_1", "independent_learner_2"],
+  "methods": ["random", "fixed", "ppo_scratch", "ppo_prior", "ppo_reset", "ppo_persistent", "ppo_shuffled"],
+  "cases": ["source", "new_reset", "changed_dynamics", "retention_A"],
+  "required_metrics": ["raw_return", "wall_s", "cpu_s", "real_steps", "imagined_transitions", "model_calls", "network_forwards"],
+  "training_seeds": null,
+  "evaluation_seeds": null,
+  "registered_tasks": null,
+  "resource_allocation": null,
+  "stream": ["A", "B", "A", "C"],
+  "memory_controls": ["persistent", "reset", "shuffled"],
+  "selection_schedules": ["adaptive", "random", "fixed"],
+  "update_rules": ["mean", "recent", "conservative"],
+  "planner_readiness": {
+    "cartpole": "no reviewed Evolution-2 planner binding; PPO/random/fixed only",
+    "mountaincar": "existing binding; requires compatible separately verified checkpoint",
+    "mountaincar_continuous": "existing binding; requires compatible separately verified checkpoint",
+    "pendulum": "existing binding; requires compatible separately verified checkpoint",
+    "acrobot": "existing binding; requires compatible separately verified checkpoint"
+  }
+}
