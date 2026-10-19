@@ -1,5 +1,10 @@
 # NEXUS canonical current state
 
+Seed is the current front-door research direction. docs/README.md separates
+current teaching/architecture/evidence from retained historical tracks. Repository
+refresh is documentation/developer tooling only: no runtime engine/model,
+scientific result, closed split, allocation or ledger changes; no main merge.
+
 Seed delivery:220relevant tests, real Chrome GUI/process restart/correction pass.
 Authored comparison INCOMPLETE at registered10000predicate-test cap;14/16cells,
 44charged labels,2interrupted labels not retained in full. No rerun, no sample-

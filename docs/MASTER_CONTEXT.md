@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Current presentation and direction — Seed first
+
+The repository front door now focuses on NEXUS Seed: local, teachable finite
+concept learning. Start with docs/README.md and docs/seed/QUICKSTART.md. The
+historical README is preserved verbatim under docs/history/. Earlier research,
+frozen evidence and closed splits remain at original paths; this presentation
+cleanup executes no experiment and changes no scientific ledger or runtime model.
+AGENTS/Cursor addenda mark older neural/control roadmaps as retained context,
+not instructions to restart them in place of the approved Seed task. See
+NEXUS_REPOSITORY_STRUCTURE.md for the preservation and verification boundaries.
+
 ## Seed S0–S1 — finite teachable-agent vertical slice
 
 Delivered:220relevant tests and real Chrome teaching/new-scene execution/

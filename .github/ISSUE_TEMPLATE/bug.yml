@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a reproducible local Seed or documentation problem.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "Use authored examples only. Do not upload private sessions, credentials, or vulnerability details."
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps and exact command
+      description: Include branch/commit, Python version, browser, and a minimal example.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Sanitized error output

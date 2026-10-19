@@ -1,5 +1,22 @@
 # NEXUS AI — Agent Instructions
 
+## Current direction — NEXUS Seed
+
+Seed is now the active user-facing research direction: compact local intelligence
+that can be taught finite meanings, clarify ambiguity, retain evidence and act
+in a bounded authored world. Start with `docs/README.md`, Seed's charter/status/
+results and roadmap, then the required master/canonical/reuse/registry context.
+S0–S1 is symbolic; do not add a neural dependency to imply unmeasured intelligence.
+Its incomplete teaching comparison does not establish active-learning superiority.
+The long-term adaptive, cross-environment intelligence mission remains unchanged.
+
+Earlier milestone descriptions, neural/control roadmaps and evidence pointers
+below are retained history, not instructions to restart those tracks instead of
+the current approved task. Their research safeguards and closed-split restrictions
+remain fully applicable. Reuse the existing Lab and journal; do not create another
+general memory, evolution or meta-controller stack. Repository presentation work
+does not authorize experiments, main merges, history deletion or new permissions.
+
 Read `docs/MASTER_CONTEXT.md` in full before any NEXUS work. Treat that document as the master context for this project.
 
 Before implementing a new algorithm, proposer, meter, memory, planner,
