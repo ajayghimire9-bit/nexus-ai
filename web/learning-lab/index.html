@@ -11,7 +11,15 @@
 <label>Procedure <select id="method"><option value="unified">Integrated adaptive cycle</option><option value="random_generation">Random generation</option><option value="fixed_generation">Fixed strategy</option><option value="reset_memory">Reset memory</option><option value="shuffled_memory">Shuffled memory</option></select></label>
 <label>Fixture seed <input id="seed" type="number" min="0" max="99" value="7"></label><button id="run" disabled>Run bounded fixture</button>
 <p>At most 8 choices/request, 10 requests/server, 2-second request cap. Same seed permits reproducible baseline comparisons. Real experimentation backend: unavailable.</p>
-<output id="fixtureStatus" role="status"></output><pre id="fixture"></pre></section></main>
+<output id="fixtureStatus" role="status"></output><pre id="fixture"></pre></section>
+<section><h2>Measured strategy learning · E3.12B</h2><p>Recorded simulator returns, not the authored fixture above. The overall selection screen failed. Both children were observed on every training reset; this does not establish limited-feedback learning or transfer to new physics.</p>
+<label>Family <select id="operatorFamily"><option value="pendulum">Pendulum</option><option value="acrobot">Acrobot</option></select></label>
+<label>Model / query episode <select id="operatorCase"></select></label><p id="operatorStatus" role="status">Loading verified learning record…</p>
+<div class="grid"><div><h3>What was learned and chosen</h3><pre id="operatorDecision"></pre><details><summary>Revealed training feedback</summary><pre id="operatorTraining"></pre></details></div>
+<div><h3>Measured query outcomes</h3><pre id="operatorReturns"></pre><p id="operatorFailure"></p></div></div>
+<label>Recorded trajectory step <input id="operatorTick" type="range" min="0" max="199" value="0"></label><pre id="operatorStep"></pre>
+<small>Parent, switch and rank blend share each reset and planner seeds. Parent was an evaluated baseline, not an available choice for the recorded two-child selector. No new parent-inclusive policy is evaluated here.</small></section></main>
+<style>pre{max-height:360px;overflow:auto}details pre{max-height:260px}</style>
 <script>
 'use strict';let capture=null;
 const el=id=>document.getElementById(id);
@@ -25,4 +33,19 @@ async function load(){try{el('recordStatus').textContent='Verifying recorded cap
 el('study').onchange=load;el('family').onchange=chooseCases;el('case').onchange=draw;el('tick').oninput=draw;
 el('run').onclick=async()=>{el('run').disabled=true;try{el('fixtureStatus').textContent='Running authored fixture…';const r=await json('/api/fixture',{method:'POST',headers:{'Content-Type':'application/json','X-Nexus-Request':'local-fixture'},body:JSON.stringify({seed:Number(el('seed').value),method:el('method').value})});el('fixtureStatus').textContent='Fixture complete. Not scientific control evidence.';el('fixture').textContent=JSON.stringify({gain:r.result.gain,cost_units:r.result.declared_training_cost_units,policy:r.result.policy,probes:r.result.probes,trace:r.result.trace},null,2)}catch(e){el('fixtureStatus').textContent=e.message}finally{const s=await json('/api/status');el('run').disabled=!s.fixtures_enabled||s.requests_remaining<=0}};
 json('/api/status').then(s=>{el('run').disabled=!s.fixtures_enabled||s.requests_remaining<=0;el('fixtureStatus').textContent=s.fixtures_enabled?'Local authored fixtures enabled.':'Fixtures disabled. Restart with --allow-fixtures to enable.'}).catch(e=>el('fixtureStatus').textContent=e.message);load();
+</script>
+<script>
+'use strict';let operatorCapture=null;
+const op=id=>document.getElementById(id);
+function operatorCases(){return operatorCapture?operatorCapture.cases.filter(c=>c.family===op('operatorFamily').value):[];}
+function drawOperator(){const c=operatorCases()[Number(op('operatorCase').value)];if(!c)return;
+ op('operatorDecision').textContent=JSON.stringify(c.decision,null,2);
+ op('operatorTraining').textContent='Recorded reset: parent | switch | rank_blend returns\n'+operatorCapture.training.filter(r=>r.family===c.family&&r.bundle===c.bundle).map(r=>'Reset '+r.episode+': '+['parent','switch','rank_blend'].map(k=>r.returns[k].toFixed(3)).join(' | ')+'\n  Updated credit probabilities: '+JSON.stringify(r.after.learned)).join('\n');
+ op('operatorReturns').textContent=Object.entries(c.returns).map(([k,v])=>k+': '+v.toFixed(3)).join('\n')+'\nSelected minus parent: '+c.selected_minus_parent.toFixed(3);
+ op('operatorFailure').textContent=c.harmful_change?'Failure on this query: selected modification returned less than parent.':'Selected modification matched or exceeded parent on this query.';
+ op('operatorFailure').className=c.harmful_change?'error':'badge';
+ const tick=Number(op('operatorTick').value);op('operatorStep').textContent=JSON.stringify({episode_step:tick,...Object.fromEntries(Object.entries(c.paths).map(([k,v])=>[k,v.steps[tick]]))},null,2);}
+function chooseOperator(){op('operatorCase').replaceChildren();operatorCases().forEach((c,i)=>{const option=document.createElement('option');option.value=i;option.textContent='Model '+c.bundle+' / Episode '+c.episode;op('operatorCase').appendChild(option)});drawOperator();}
+op('operatorFamily').onchange=chooseOperator;op('operatorCase').onchange=drawOperator;op('operatorTick').oninput=drawOperator;
+fetch('/api/operators').then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.error||'Capture unavailable');return data;}).then(data=>{operatorCapture=data;op('operatorStatus').textContent=data.label+' · execution '+data.execution_sha;chooseOperator();}).catch(error=>{op('operatorStatus').textContent=error.message;op('operatorStatus').className='error';});
 </script></body></html>

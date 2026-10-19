@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — requested engineering implemented; fresh study not run
+
+Three-way raw mean keeps parent on ties; two-child comparator unchanged.
+Existing learned cycle supports hash/provenance-anchored JSON save/resume,
+including actual process-restart deterministic tests. Opt-in training-incumbent
+progress gives no repeated discovery reward and retains failed costs; hidden
+assessment is separate. B's actual training choices/query returns/parent losses
+now visible in existing Learning Lab; installed Chrome QA passes, no deployment.
+No new science or claimed retention benefit. E3.12D costed proposal prepared
+without seeds or allocation. See NEXUS_PARENT_RETENTION_DEVELOPMENT.md.
+
 ## Latest — E3.12C limited-feedback result preserved
 
 Source/protocol9ae94386a84ae5863776cba20f0420679711e051 before outcomes. Both

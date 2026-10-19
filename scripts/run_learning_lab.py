@@ -1,12 +1,15 @@
 """Loopback-only recorded replay and opt-in bounded authored fixture playground."""
 import argparse
-from http.server import BaseHTTPRequestHandler,HTTPServer
+from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
+from contextlib import nullcontext
 import json
 from pathlib import Path
-import signal
+import subprocess
+import sys
+import threading
 import time
 from urllib.parse import urlparse,parse_qs
-from nexus.evolution2.learning_lab import load_control_replay
+from nexus.evolution2.learning_lab import load_control_replay,load_operator_replay
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -38,6 +41,7 @@ class LabHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
                 self.end_headers();return self.wfile.write(body)
             if parsed.path=='/api/status':return self.send_json(200,dict(live_environment=False,fixtures_enabled=self.server.fixtures_enabled,requests_remaining=self.server.requests_remaining))
+            if parsed.path=='/api/operators' and not parsed.query:return self.send_json(200,load_operator_replay(ROOT))
             if parsed.path=='/api/replay':
                 query=parse_qs(parsed.query)
                 if set(query)!={'study'} or len(query['study'])!=1:raise ValueError('single_study_required')
@@ -48,24 +52,30 @@ class LabHandler(BaseHTTPRequestHandler):
         if not self.local_request() or self.headers.get('X-Nexus-Request')!='local-fixture':return self.send_json(403,{'error':'local_fixture_header_required'})
         if self.path!='/api/fixture':return self.send_json(404,{'error':'unknown_route'})
         if not self.server.fixtures_enabled:return self.send_json(403,{'error':'fixtures_not_enabled'})
-        if self.server.requests_remaining<=0:return self.send_json(429,{'error':'process_fixture_request_cap'})
-        self.server.requests_remaining-=1
+        with getattr(self.server,'fixture_lock',nullcontext()):
+            if self.server.requests_remaining<=0:return self.send_json(429,{'error':'process_fixture_request_cap'})
+            self.server.requests_remaining-=1
         try:
             length=int(self.headers.get('Content-Length','0'))
             if not 0<length<=4096 or self.headers.get('Content-Type')!='application/json':raise ValueError('small_json_body_required')
             payload=json.loads(self.rfile.read(length))
-            old=signal.signal(signal.SIGALRM,lambda *args:(_ for _ in ()).throw(TimeoutError('fixture_timeout')))
-            signal.setitimer(signal.ITIMER_REAL,2.)
-            try:result=run_fixture_request(payload)
-            finally:signal.setitimer(signal.ITIMER_REAL,0);signal.signal(signal.SIGALRM,old)
+            # Fixed child command, not user code. A killable process preserves
+            # the request cap when HTTP handlers use separate threads.
+            worker=subprocess.run([sys.executable,__file__,'--fixture-worker'],input=json.dumps(payload),
+                text=True,capture_output=True,timeout=2.,cwd=ROOT)
+            if worker.returncode:raise ValueError('invalid_fixture_request')
+            result=json.loads(worker.stdout)
             return self.send_json(200,result)
-        except (ValueError,TypeError,KeyError,TimeoutError) as e:return self.send_json(400,{'error':str(e)})
+        except (ValueError,TypeError,KeyError,TimeoutError,subprocess.TimeoutExpired) as e:return self.send_json(400,{'error':str(e)})
 
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--max-runtime-s',type=int,default=900);args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--max-runtime-s',type=int,default=900);parser.add_argument('--fixture-worker',action='store_true',help=argparse.SUPPRESS);args=parser.parse_args()
+    if args.fixture_worker:
+        print(json.dumps(run_fixture_request(json.loads(sys.stdin.read(4097))),allow_nan=False));return
     if not 1024<=args.port<=65535 or not 1<=args.max_runtime_s<=900:raise ValueError('local_server_limits')
-    with HTTPServer(('127.0.0.1',args.port),LabHandler) as server:
+    with ThreadingHTTPServer(('127.0.0.1',args.port),LabHandler) as server:
+        server.fixture_lock=threading.Lock()
         server.fixtures_enabled=args.allow_fixtures;server.requests_remaining=10;server.timeout=.5
         end=time.monotonic()+args.max_runtime_s
         print(f'NEXUS Learning Lab: http://127.0.0.1:{args.port} (recorded replay; authored fixtures={args.allow_fixtures})',flush=True)

@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Latest engineering: parent-inclusive raw mean implemented separately from
+closed C's two-child choice/gain guard. Durable existing-cycle JSON with exact
+RNG/preferences/counts/rollback state; repeat discovery credit fixed in opt-in
+training-incumbent objective, hidden gate feedback still excluded. Learning Lab
+verified B data and real-browser interactions pass. No new scientific run or
+generalization/retention claim. D proposal22400 real/300s not registered or
+allocated. Ledger unchanged1643.627562957004/1956.372437042996. See
+NEXUS_PARENT_RETENTION_DEVELOPMENT.md; source base67a0a9d6.
+
 Latest E3.12C complete/valid, partial_feedback_selection_not_established.
 Primary+87.562 [−392.932,568.056] /+8.283 [−123.217,139.783]. Credit fails badly
 on Pendulum0; paired-gain guard never retains parent.22400 real/33666645 imagined/

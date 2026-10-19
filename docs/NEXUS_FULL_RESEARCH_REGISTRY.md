@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Engineering codex/parent-retention-and-durable-learning from C result
+67a0a9d6a945d4adc86f4ff30b6aadef810c5da6: three-way raw mean, existing-cycle
+durable JSON, versioned training-incumbent discovery credit and actual B replay
+viewer. Functional Python restart/feedback-boundary/browser tests, not a new
+scientific experiment. E3.12D22400-step/300s proposal unregistered/unallocated,
+no new simulator/model work. Ledger1643.627562957004/1956.372437042996 unchanged.
+NEXUS_PARENT_RETENTION_DEVELOPMENT.md; historical artifacts preserved.
+
 Supplemental codex/e3-12c-limited-feedback-selection; precommitted source/protocol
 9ae94386a84ae5863776cba20f0420679711e051.112 full actual paths,22400 real/
 33666645 imagined/1036165 forwards,154.395255s+3.527063s audit+.054751s export

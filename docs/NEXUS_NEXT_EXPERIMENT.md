@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Next — fresh parent-inclusive limited-feedback comparison, await registration
+
+Implementation and costed proposal now in NEXUS_PARENT_RETENTION_DEVELOPMENT.md
+and configs/e3_12d_parent_retention_proposal.json. Parent-inclusive raw mean
+versus two-child mean, existing credit, uniform and fixed parent; identical
+balanced single-child exploration, frozen query choices. Proposed22400 real/
+34406400 imagined/1120000 forwards/300s. No numerical seeds/allocation or new
+simulation. Next action: authorize this concrete scope, bind/test its separate
+runner/replay profile and commit exact fresh registration before collection.
+Persistent retention/generalization and E4 rule usefulness remain later,
+separate studies. Ledger1643.627562957004/1956.372437042996 unchanged.
+
 ## Current — parent-inclusive limited-feedback comparison, preparation only
 
 Latest attached user request: implement simple average selector over parent/

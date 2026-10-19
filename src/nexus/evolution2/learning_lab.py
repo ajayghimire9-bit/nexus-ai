@@ -62,6 +62,39 @@ def load_control_replay(root,study):
         capture_sha256=v['capture_sha256'],label=p['analysis']['label'],cases=cases,analysis=p['analysis'])
 
 
+def load_operator_replay(root):
+    """E3.12B recorded choices, never retrospective fitting of a new selector."""
+    root=Path(root);folder=root/'artifacts'
+    raw=(folder/'e3_12b_operator_headroom.json').read_bytes();p=json.loads(raw)
+    v=json.loads((folder/'e3_12b_operator_validation.json').read_text())
+    config_raw=(root/'configs/e3_12b_operator_headroom.json').read_bytes();c=json.loads(config_raw)
+    if (v.get('valid') is not True or p.get('declared_complete') is not True
+        or hashlib.sha256(raw).hexdigest()!=v['result_sha256']
+        or hashlib.sha256(config_raw).hexdigest()!=p['provenance']['config_sha256']):raise ValueError('verified_operator_capture_required')
+    expected={(f,b,e) for f in c['families'] for b in c['model_bundles'] for e in c['training_episodes']+c['evaluation_episodes']}
+    keys=[(r['family'],r['bundle'],r['episode']) for r in p['rows']]
+    if len(keys)!=len(expected) or set(keys)!=expected:raise ValueError('complete_operator_replay_grid')
+    cases=[];training=[]
+    for r in p['rows']:
+        if set(r['paths'])!={'parent','switch','rank_blend'}:raise ValueError('recorded_operator_paths')
+        returns={}
+        for kind,path in r['paths'].items():
+            if len(path['steps'])!=200:raise ValueError('complete_operator_trajectory')
+            total=sum(s['reward'] for s in path['steps'])
+            if not abs(total-path['return'])<1e-8:raise ValueError('recorded_reward_accounting')
+            returns[kind]=total
+        base=dict(family=r['family'],bundle=r['bundle'],episode=r['episode'],returns=returns)
+        if r['role']=='training':training.append({**base,'before':r['before'],'after':r['after']})
+        else:
+            choice=r['decision']['training_mean_kind']
+            cases.append({**base,'decision':r['decision'],'paths':r['paths'],
+                'selected_minus_parent':returns[choice]-returns['parent'],'harmful_change':returns[choice]<returns['parent']})
+    return dict(kind='verified_operator_control_replay',live=False,scientific=True,
+        execution_sha=p['provenance']['source_commit'],capture_sha256=v['result_sha256'],label=p['analysis']['label'],
+        training=training,cases=cases,analysis=p['analysis'],
+        caveat='Closed full-information source diagnostic; no new parent-inclusive selector scored. Not generalization or proven self-improvement.')
+
+
 def render(data,*,engineering_events=(),integration=None):
     if data.get('kind')!='historical_training_replay' or data.get('live') is not False or not data.get('rows'):raise ValueError('historical_data_required')
     encoded=json.dumps(data,allow_nan=False).replace('&','\\u0026').replace('<','\\u003c').replace('>','\\u003e')

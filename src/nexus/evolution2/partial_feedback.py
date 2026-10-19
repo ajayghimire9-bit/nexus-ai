@@ -28,7 +28,8 @@ def labels(row,c):
     return {'parent',*KINDS}
 
 
-def decide(rows,c,f,b,g):
+def training_statistics(rows,c,f,b):
+    """Only registered revealed training paths; query outcomes are never read."""
     train=[r for r in rows if (r['family'],r['bundle'],r['role'])==(f,b,'training')]
     ids=[r['episode'] for r in train]
     if len(ids)!=8 or set(ids)!=set(c['training_episodes']):raise ValueError('complete_partial_training')
@@ -43,6 +44,46 @@ def decide(rows,c,f,b,g):
         if counts[k]!=4:raise ValueError('four_observed_returns_per_operator')
         means[k]=float(np.mean([number(r['paths'][k]['return']) for r in selected]))
         gains[k]=float(np.mean([number(r['paths'][k]['return'])-number(r['paths']['parent']['return']) for r in selected]))
+    return train,means,gains,counts
+
+
+def parent_inclusive_decision(rows,c,f,b):
+    """New, unscored three-way raw-average rule. Ties retain the parent.
+
+    Eight parent returns versus four returns per child: equal opportunity for
+    children does not imply equal estimator variance or reset difficulty.
+    This is intentionally not the historical paired-gain guard.
+    """
+    train,means,_,counts=training_statistics(rows,c,f,b)
+    means={'parent':float(np.mean([number(r['paths']['parent']['return']) for r in train])),**means}
+    counts={'parent':len(train),**counts}
+    order=('parent',*KINDS)
+    return dict(version='parent_inclusive_raw_mean_v1',choice=max(order,key=lambda k:means[k]),
+        two_child_choice=max(KINDS,key=lambda k:means[k]),training_means=means,observed_counts=counts,
+        training_hash=digest([dict(episode=r['episode'],operator=r['training_operator'],
+            returns={k:number(v['return']) for k,v in r['paths'].items()}) for r in sorted(train,key=lambda r:r['episode'])]))
+
+
+def validate_parent_retention_proposal(c):
+    """Validate a costed proposal, never grant permission or register seeds."""
+    if (c.get('version')!='e3_12d_parent_retention_proposal_v1' or c.get('status')!='proposed_not_registered'
+        or c.get('execution_authorized') is not False or c.get('numerical_environment_seeds') is not None
+        or c.get('allocation') is not None):raise ValueError('unregistered_proposal_only')
+    if (c['families']!=['pendulum','acrobot'] or c['model_bundles']!=[0,1]
+        or c['query_paths']!=['parent',*KINDS] or c['tie_order']!=['parent',*KINDS]
+        or c['primary_selector']!='parent_inclusive_raw_mean_v1'
+        or c['comparators']!=['two_child_raw_mean','mutation_credit_argmax','uniform_children_expected','fixed_parent']):raise ValueError('declared_proposal_methods')
+    fixed={'training_resets_per_model':8,'revealed_children_per_training_reset':1,'balanced_observations_per_child':4,
+        'query_resets_per_model':4,'steps_per_path':200,'proposed_time_cap_s':300,
+        'proposed_real_cap':22400,'proposed_imagined_cap':34406400,'proposed_forward_cap':1120000}
+    if any(type(c[k]) is not int or c[k]!=v for k,v in fixed.items()):raise ValueError('declared_proposal_budget')
+    steps=len(c['families'])*len(c['model_bundles'])*(2*c['training_resets_per_model']+3*c['query_resets_per_model'])*c['steps_per_path']
+    if c['proposed_real_cap']!=steps:raise ValueError('physical_proposal_grid')
+    return {'status':'valid_unregistered_proposal','execution_allowed':False,'proposed_real_steps':steps}
+
+
+def decide(rows,c,f,b,g):
+    train,means,gains,counts=training_statistics(rows,c,f,b)
     pick=lambda values:max(KINDS,key=lambda k:values[k])
     best=pick(gains);probs=g.mutation_probabilities()
     return dict(training_mean_kind=pick(means),credit_kind=pick(probs),paired_gain_kind=best,

@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Proposed — parent-inclusive limited-feedback selection, untested
+
+H: the raw-mean choice over parent/switch/rank_blend reduces harmful changes
+while retaining useful fresh-query gains versus a forced two-child choice.
+Implemented, deterministic tests pass; no new scientific evidence. D proposal
+requires fresh seeds/commit/allocation before execution; never score the new
+rule on closed C queries. Durable persistence and training-incumbent progress
+are functional capabilities, not established retention or learning-to-learn.
+See NEXUS_PARENT_RETENTION_DEVELOPMENT.md for proposed thresholds and costs.
+
 ## Latest — E3.12C partial feedback selection unestablished
 
 H: eight single-child exploration trials permit useful frozen selection.

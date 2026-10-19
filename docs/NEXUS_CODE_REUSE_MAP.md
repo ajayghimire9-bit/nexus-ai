@@ -1,5 +1,16 @@
 # NEXUS code-reuse map
 
+Parent-retention engineering extends SAME partial_feedback.py training
+statistics, leaving C decide/guard unchanged; no new selection learner.
+cycle_checkpoint.py is a JSON codec over SAME LearningCycle/TaskStream/
+StrategyGenerator/AdaptiveProposer/EpsilonGreedyController/Journal/E1 gate,
+not a new memory framework or evaluator. Opt-in objective uses training-only
+incumbent progress; assessment remains independent. SAME learning_lab.py,
+server/client/builder add verified B replay and bounded concurrent HTTP serving;
+fixture POSTs remain fixed-command authored-only children. New checks validate
+real browser interactions and idle-preconnect launch. No new scientific runner
+or grant for D. Protocol/report NEXUS_PARENT_RETENTION_DEVELOPMENT.md.
+
 E3.12C partial_feedback is schedule/selection/replay glue over SAME balanced
 operator contracts, StrategyGenerator credit, measured_mutation bridge, Host,
 Dispatch, ReservationLedger and forward checks. SAME runner adds --partial-

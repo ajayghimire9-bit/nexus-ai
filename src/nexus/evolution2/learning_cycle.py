@@ -57,14 +57,17 @@ class LearningCycle:
     This is an adapter, not a second learner or memory database. Independent
     assessment stays in the trusted host and never updates proposal statistics.
     """
-    def __init__(self,seed=7,method='unified',max_choices=16):
+    def __init__(self,seed=7,method='unified',max_choices=16,*,objective='historical_pair_gain'):
         if method not in METHODS or type(max_choices) is not int or not 1<=max_choices<=32:raise ValueError('bounded_cycle_settings')
+        if objective not in ('historical_pair_gain','training_incumbent_progress_v1'):raise ValueError('versioned_fixture_objective')
+        self.objective=objective;self.training_incumbents={};self.discovery_seen=set()
         self.seed=seed;self.method=method;self.rng=random.Random(seed)
         self.stream=TaskStream(seed,max_choices=max_choices,control={'reset_memory':'reset','shuffled_memory':'shuffled'}.get(method,'persistent'),schedule={'random_schedule':'random','fixed_schedule':'fixed','generation_only':'fixed','random_generation':'fixed','fixed_generation':'fixed'}.get(method,'adaptive'))
         self.stream.generator.adaptive=method!='random_generation'
         self.rules=EpsilonGreedyController(epsilon=0.);self.journal=Journal();self.trace=[]
         self.rule_frozen=False;self.charged=FixtureCost(0,0,0);self.cap=FixtureCost(0,0,2*max_choices)
         self.incumbent=leaf(VARIANTS[2]);self.training_parent=self.incumbent;self.archive={};self.rule_history=[]
+        if objective=='training_incumbent_progress_v1':self.cap=FixtureCost(0,0,3*max_choices)
         initial=self.snapshot(self.incumbent);self.gate=FixturePromotionHarness(initial,TEST_KEY);self.archive[initial.fingerprint]=self.incumbent
 
     def snapshot(self,strategy):
@@ -94,7 +97,7 @@ class LearningCycle:
 
     def transfer_copy(self):
         clone=deepcopy(self);clone.freeze_rule();clone.stream.remaining=12;clone.stream.choices=0
-        clone.trace=[];clone.rule_history=[];clone.charged=FixtureCost(0,0,0);clone.cap=FixtureCost(0,0,24)
+        clone.trace=[];clone.rule_history=[];clone.charged=FixtureCost(0,0,0);clone.cap=FixtureCost(0,0,36 if self.objective=='training_incumbent_progress_v1' else 24)
         return clone
 
     def accept_training_pair(self,parent,child,p,c):
@@ -121,10 +124,12 @@ class LearningCycle:
     def step(self,host,task):
         action=self.stream.choose_experiment()
         if action=='stop':return None
-        cost=FixtureCost(0,0,2)
+        cost_units=3 if self.objective=='training_incumbent_progress_v1' else 2
+        cost=FixtureCost(0,0,cost_units)
         if not self.charged.plus(cost).fits(self.cap):raise ValueError('fixture_cost_cap')
         self.charged=self.charged.plus(cost)
-        event=f'{len(self.trace)}:{task}';g=self.stream.generator
+        # Failed attempts consume choices too; resume must not replay their IDs.
+        event=f'{self.stream.choices-1}:{task}';g=self.stream.generator
         before=dict(g.mutation_probabilities())
         try:
             if action=='gather_evidence':
@@ -138,6 +143,20 @@ class LearningCycle:
                 child=g.propose(CONTEXT);parent=leaf(child.left)
             parent_value=host.evaluate(parent,task,'training');child_value=host.evaluate(child,task,'training')
             gain=child_value-parent_value
+            progress=None
+            if self.objective=='training_incumbent_progress_v1':
+                # Training incumbent is separate from independently gated deployment.
+                # No development/audit values OR gate outcomes enter this objective.
+                accepted=self.training_incumbents.get(task,leaf(VARIANTS[2]))
+                accepted_value=(parent_value if accepted==parent else child_value if accepted==child
+                    else host.evaluate(accepted,task,'training'))
+                key=(task,child.fingerprint);novel=key not in self.discovery_seen
+                improved=action!='gather_evidence' and child_value>accepted_value
+                self.discovery_seen.add(key)
+                if improved:self.training_incumbents[task]=child
+                progress=dict(previous=accepted.fingerprint,accepted=(child if improved else accepted).fingerprint,
+                    previous_training_utility=accepted_value,accepted_training_utility=max(accepted_value,child_value) if improved else accepted_value,
+                    novel=novel,discovery_gain=child_value-accepted_value if improved and novel else 0.)
             if action!='gather_evidence' and gain>0:self.training_parent=child
             if action!='gather_evidence':
                 common=dict(kind='synthetic_fixture_utility',phase='training',pair_id=event,context_hash=digest(task),reset_seed=self.seed,planner_seed=self.seed+len(self.trace),horizon=1,planning_cap=1536,cpu_s=1.)
@@ -148,18 +167,20 @@ class LearningCycle:
             # Evidence measures incumbent-vs-anchor utility, never invents a
             # counterfactual strategy improvement for a passive measurement.
             effective_gain=gain if action!='gather_evidence' else 0.
-            self.stream.reveal(event=event,observed_return_gain=effective_gain,cpu_s=2.,domain='synthetic_fixture')
-            if not self.rule_frozen:self.rules.update((),g.mutation_rule,effective_gain/2.)
+            if progress is not None:effective_gain=progress['discovery_gain']
+            self.stream.reveal(event=event,observed_return_gain=effective_gain,cpu_s=float(cost_units),domain='synthetic_fixture')
+            if not self.rule_frozen:self.rules.update((),g.mutation_rule,effective_gain/cost_units)
             self.journal.append('training_attempt',dict(task=task,action=action,parent=parent.payload(),child=child.payload(),
-                parent_utility=parent_value,child_utility=child_value,domain='synthetic_fixture',cost_units=2))
+                parent_utility=parent_value,child_utility=child_value,domain='synthetic_fixture',cost_units=cost_units))
             proposal_after=dict(g.mutation_probabilities())
             gate=self.assess(child,host,task) if action!='gather_evidence' else dict(promoted=False,rolled_back=False)
             row=dict(event=event,task=task,action=action,rule=g.mutation_rule,gain=gain,effective_gain=effective_gain,
                 parent=parent.fingerprint,child=child.fingerprint,before=before,after=proposal_after,**gate)
+            if progress is not None:row['training_progress']=progress;row['objective']=self.objective
             self.trace.append(row);return row
         except BaseException:
-            if self.stream.pending is not None:self.stream.reveal(event=event,observed_return_gain=0.,cpu_s=2.,failed=True,domain='synthetic_fixture')
-            self.journal.append('failed_attempt',dict(event=event,charged_units=2));raise
+            if self.stream.pending is not None:self.stream.reveal(event=event,observed_return_gain=0.,cpu_s=float(cost_units),failed=True,domain='synthetic_fixture')
+            self.journal.append('failed_attempt',dict(event=event,charged_units=cost_units));raise
 
     def probe(self,host,task,count=8):
         """Frozen proposal assessment; even RNG changes stay outside learner."""

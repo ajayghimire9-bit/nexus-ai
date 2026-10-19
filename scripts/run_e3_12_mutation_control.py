@@ -206,7 +206,14 @@ def run():
             [('real_steps','real_cap'),('imagined_transitions','imagined_cap'),('model_calls','model_call_cap'),('network_forwards','network_forward_cap')]}
     p['session_used_after_s']=a['session_used_before_s']+p['wall_s'];p['session_remaining_after_s']=3600-p['session_used_after_s'];write(RESULT,p)
     print(json.dumps({k:p.get(k) for k in ('status','wall_s','resources','analysis','error')}))
-    if code:raise SystemExit(1)
+    if completion_exit_code(code,p):raise SystemExit(1)
+
+
+def completion_exit_code(worker_code,result):
+    """A zero worker exit cannot excuse incomplete or changed-input results."""
+    return int(bool(worker_code or result.get('declared_complete') is not True
+        or result.get('status')!='complete_valid' or result.get('historical_preserved') is not True
+        or result.get('inputs_preserved') is not True))
 
 
 def verify():

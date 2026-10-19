@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest engineering — parent retention and durable state, no new collection
+
+Separate codex/parent-retention-and-durable-learning starts at C result
+67a0a9d6a945d4adc86f4ff30b6aadef810c5da6. Simple three-way training mean now
+implemented; old two-child/gain-guard semantics preserved. No new selector is
+scored on closed query outcomes. E3.12D proposal:22400 real/300s maximum,
+no registered seeds/allocation and no execution. Versioned JSON saves existing
+cycle/proposer/RNG/count/gate state across Python restart; opt-in training-
+incumbent discovery objective prevents repeat-gain credit without using hidden
+assessment. These are functional engineering checks, not useful learning claims.
+Existing Learning Lab displays verified B choices/returns/parent failures and
+passes real Chrome filtering/trajectory checks. Prior results remain closed;
+ledger unchanged1643.627562957004/1956.372437042996. Details and limitations:
+docs/NEXUS_PARENT_RETENTION_DEVELOPMENT.md.
+
 ## Latest — E3.12C single-child feedback screen fails
 
 Precommitted9ae94386a84ae5863776cba20f0420679711e051, complete112 actual paths.
