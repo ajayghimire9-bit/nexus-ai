@@ -28,16 +28,24 @@ def labels(row,c):
     return {'parent',*KINDS}
 
 
-def training_statistics(rows,c,f,b):
+def training_statistics(rows,c,f,b,*,schedule=None):
     """Only registered revealed training paths; query outcomes are never read."""
     train=[r for r in rows if (r['family'],r['bundle'],r['role'])==(f,b,'training')]
     ids=[r['episode'] for r in train]
     if len(ids)!=8 or set(ids)!=set(c['training_episodes']):raise ValueError('complete_partial_training')
+    if schedule is not None:
+        if (set(schedule)!=set(map(str,ids)) or any(type(v) is not str or v not in KINDS for v in schedule.values())
+            or any(list(schedule.values()).count(k)!=4 for k in KINDS)):
+            raise ValueError('complete_balanced_external_schedule')
     means={};gains={};counts={}
     for k in KINDS:
         selected=[]
         for r in train:
-            wanted=labels(r,c)
+            if schedule is None:wanted=labels(r,c)
+            else:
+                expected=schedule[str(r['episode'])]
+                if r.get('training_operator')!=expected:raise ValueError('external_training_operator')
+                wanted={'parent',expected}
             if set(r['paths'])!=wanted:raise ValueError('unrevealed_training_operator')
             if k in wanted:selected.append(r)
         counts[k]=len(selected)
@@ -47,14 +55,14 @@ def training_statistics(rows,c,f,b):
     return train,means,gains,counts
 
 
-def parent_inclusive_decision(rows,c,f,b):
+def parent_inclusive_decision(rows,c,f,b,*,schedule=None):
     """New, unscored three-way raw-average rule. Ties retain the parent.
 
     Eight parent returns versus four returns per child: equal opportunity for
     children does not imply equal estimator variance or reset difficulty.
     This is intentionally not the historical paired-gain guard.
     """
-    train,means,_,counts=training_statistics(rows,c,f,b)
+    train,means,_,counts=training_statistics(rows,c,f,b,schedule=schedule)
     means={'parent':float(np.mean([number(r['paths']['parent']['return']) for r in train])),**means}
     counts={'parent':len(train),**counts}
     order=('parent',*KINDS)

@@ -1,5 +1,12 @@
 # NEXUS code-reuse map
 
+E3.12F reset_blocks is pure public-observation matching/schedule/masking glue,
+not a new exploration learner. SAME partial_feedback training_statistics and
+parent_inclusive_decision accept an explicit optional balanced schedule;
+historical default dispatch remains unchanged. SAME E1 Work/digest represent
+proposed costs/provenance; future scientific binding must use SAME measured
+mutation runner/Host/ReservationLedger. No duplicate memory/planner/meter.
+
 Local Lab delivery adds a stdlib-only launcher over SAME run_learning_lab/
 learning_lab viewer. Browser notebooks save view/notes/hash references only,
 not another learned-memory database or execution authority. Durable authored

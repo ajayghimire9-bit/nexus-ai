@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## E3.12F preparation completed — registration/host binding still required
+
+Deterministic minimum-distance public-reset pairing, balanced schedules and
+strict feedback projection now feed the existing parent-inclusive selector.
+No simulation executed. The comparison would reveal16 training returns/model/
+method, with a shared physical union upper bound28800 real steps/300s.
+See NEXUS_E3_12F_RESET_BLOCKED_PREPARATION.md and exact proposal config.
+Next: authorize this collection scope, register fresh seeds and bind/test the
+SAME trusted scientific host before locking any run. No allocation or seed
+registration here; the latest no-simulation instruction remains respected.
+This supersedes the older preparation recommendations below without changing
+their historical results. Continual/E4/transfer utility remains unmeasured.
+
 ## Next recommendation after E3.12E — reset-blocked exploration
 
 Training-only audit completed: raw choices survive registered deletions, yet

@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## E3.12F — public reset blocking, proposed and untested
+
+Hypothesis: pre-feedback observation-based pairing improves held-out raw
+parent-inclusive selection versus random balanced exploration at equal revealed
+feedback budgets. Null: public proximity does not remove relevant offsets or
+the selector remains unreliable. Primary proposed blocked-minus-random query
+return; n2 pretrained models/family, df1 exploratory intervals, >=1-point gain
+and positive lower bound in both families. Shared physical panels are not
+independent replications or demonstrated online interaction savings. Pure
+adapter/tests complete; no scientific protocol lock/registration/execution.
+E3.12E's algebraic sign discrepancy motivates this question, not a proven
+causal mechanism. See NEXUS_E3_12F_RESET_BLOCKED_PREPARATION.md.
+
 ## E3.12E — exploratory training-estimate diagnosis, not policy validation
 
 Observed pooled-versus-matched comparison offsets can reverse parent-advantage

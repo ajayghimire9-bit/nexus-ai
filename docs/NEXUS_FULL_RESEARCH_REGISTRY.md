@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Prepared E3.12F public reset-blocking adapter on base015d5fcfb13a1d5ca86197d7a41727cafde4db70.
+Authored source-only tests and unregistered proposal only; no fresh physics,
+numerical seeds, allocations, model calls or environment execution. Raw
+parent-inclusive selector unchanged; proposed balanced-random versus blocked
+masked-feedback comparison22400–28800 real/300s. Not an improvement result.
+NEXUS_E3_12F_RESET_BLOCKED_PREPARATION.md. Ledger unchanged
+1808.9990201649957/1791.0009798350043.
+
 Completed E3.12E exploratory training audit, sourceae57289a4023b01fd5da4f38d0ae4df5298c9cee.
 32 revealed rows only,16 query rows not decoded;4 models,32 single deletions/
 64 balanced deletions/280 dependent partitions. Raw choices all stable;

@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Latest engineering: E3.12F public-reset blocking and strict masked-feedback
+adapter, exact proposal config and authored tests. Reuses SAME parent-inclusive
+selector; no simulation runner, model inference, seed registration or grant.
+Proposed22400–28800 real/300s comparison remains unregistered/unexecuted.
+See NEXUS_E3_12F_RESET_BLOCKED_PREPARATION.md. No new scientific finding;
+ledger1808.9990201649957/1791.0009798350043 unchanged.
+
 Local engineering: stdlib replay launcher, portable browser notebooks, existing
 cycle/host durable fixture sessions and explicit replay/fixture/live boundaries.
 832 relevant tests and real Chrome online/offline checks pass. Functional

@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## E3.12F — reset-blocked exploration engineering prepared, not executed
+
+Pure public-observation matching/schedule/masked-feedback adapter now reuses
+partial_feedback's parent-inclusive selector and E1 Work. No new learner,
+planner or scientific runner. Proposal compares random balanced versus
+observation-blocked exploration with16 revealed training returns/model/method;
+shared physical union costs22400–28800 steps, proposed cap300s. No numerical
+seeds, allocation, protocol lock or scientific execution. E3.12D/E remain
+closed. Ledger unchanged1808.9990201649957/1791.0009798350043. See
+NEXUS_E3_12F_RESET_BLOCKED_PREPARATION.md; fresh registration and existing-host
+binding remain prerequisites. No learning/control improvement demonstrated.
+
 ## Completed E3.12E — training-only imbalance/stability audit
 
 Precommittedae57289a4023b01fd5da4f38d0ae4df5298c9cee. Only32 D training rows

@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## E3.12F — reset-blocked preparation, zero scientific execution
+
+Implemented exact eight-reset public-distance pairing, isolated random versus
+blocked schedules, complete union validation and one-child feedback projection
+into the existing parent-inclusive selector. Added authored regression tests
+and explicit unregistered config/protocol. Proposed physical upper28800 real/
+44236800 imagined/1440000 forwards/300s; no allocation, seeds or model work.
+No evidence yet that reset blocking improves decisions. Ledger unchanged;
+see NEXUS_E3_12F_RESET_BLOCKED_PREPARATION.md.
+
 ## Parallel engineering — usable local notebooks and durable fixture sessions
 
 Stdlib-only isolated replay startup passes without third-party packages;
