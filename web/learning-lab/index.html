@@ -19,7 +19,11 @@
 <div><h3>Measured query outcomes</h3><pre id="operatorReturns"></pre><p id="operatorFailure"></p></div></div>
 <label>Recorded trajectory step <input id="operatorTick" type="range" min="0" max="199" value="0"></label><pre id="operatorStep"></pre>
 <small>Parent, switch and rank blend share each reset and planner seeds. Parent was an evaluated baseline, not an available choice for the recorded two-child selector. No new parent-inclusive policy is evaluated here.</small></section>
-<section><h2>Persistent research notebook</h2><p>Save your filters, inspected steps and notes across browser restarts. Export/import a hash-referenced JSON notebook. This does not save model weights, grant execution permission or change experimental outcomes.</p>
+<section><h2>Parent retention · E3.12D</h2><p>Recorded limited-feedback experiment: the parent-inclusive selector retained the parent in 0 of 4 models. Its improvement screen failed. This does not prove that learning is impossible.</p>
+<label>Recorded query <select id="parentCase"></select></label><p id="parentStatus" role="status">Loading verified record…</p>
+<div class="grid"><div><h3>What the selector observed</h3><pre id="parentTraining"></pre></div><div><h3>Frozen choice and measured outcome</h3><pre id="parentOutcome"></pre></div></div></section>
+<section><h2>F preparation · no measured result</h2><p id="preparationStatus" role="status">Loading preparation status…</p><pre id="preparationCaps"></pre><p>No live scientific execution backend is provided.</p></section>
+<section><h2>Persistent research notebook</h2><p>Save your filters, inspected steps and notes across browser restarts. Export/import a hash-referenced JSON notebook. This does not save model weights, grant execution permission or change experimental outcomes. The separate D query selector is not stored in the v1 notebook.</p>
 <label>Session title <input id="sessionTitle" maxlength="80" value="Research review"></label>
 <label style="display:block;width:100%">Notes <textarea id="sessionNote" maxlength="4000" rows="3" style="display:block;width:100%;box-sizing:border-box;background:#102031;color:#e6edf5;font:inherit"></textarea></label><br>
 <button id="sessionSave">Save in this browser</button> <button id="sessionRestore">Restore browser session</button> <button id="sessionExport">Export notebook</button>
@@ -77,4 +81,12 @@ nb('sessionImport').onchange=async()=>{try{const file=nb('sessionImport').files[
 </script>
 <script>
 fetch('/api/training-audit').then(async r=>{const p=await r.json();if(!r.ok)throw Error(p.error||'Audit unavailable');return p;}).then(p=>{document.getElementById('auditStatus').textContent=p.caveat+' · execution '+p.execution_sha;document.getElementById('auditResult').textContent=p.models.map(m=>m.family+' / model '+m.bundle+'\nChoices: '+JSON.stringify(m.full.choices)+'\nRaw-versus-paired sign disagreement: '+JSON.stringify(m.raw_paired_sign_disagreements)+'\nChoice flips: '+JSON.stringify(m.choice_flip_counts)).join('\n\n');}).catch(e=>document.getElementById('auditStatus').textContent=e.message);
+</script>
+<script>
+let parentCapture=null;
+function drawParent(){const c=parentCapture.cases[Number(document.getElementById('parentCase').value)];if(!c)return;const d=c.decision.parent_inclusive;
+document.getElementById('parentTraining').textContent=parentCapture.training.filter(r=>r.family===c.family&&r.bundle===c.bundle).map(r=>'Reset '+r.episode+': '+Object.entries(r.returns).map(([k,v])=>k+' '+v.toFixed(3)).join(' | ')).join('\n');
+document.getElementById('parentOutcome').textContent='Choice: '+d.choice+'\nTraining averages: '+JSON.stringify(d.training_means)+'\nObserved query returns: '+JSON.stringify(c.returns)+'\nSelected minus parent: '+c.selected_minus_parent.toFixed(3)+'\n'+(c.harmful_change?'Failure on this query: selected child lost to parent.':'No loss to parent on this recorded query.');}
+fetch('/api/parent-retention').then(async r=>{const p=await r.json();if(!r.ok)throw Error(p.error);return p;}).then(p=>{parentCapture=p;const s=document.getElementById('parentCase');p.cases.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=c.family+' / model '+c.bundle+' / query '+c.episode;s.appendChild(o)});s.onchange=drawParent;document.getElementById('parentStatus').textContent=p.caveat+' · execution '+p.execution_sha;drawParent();}).catch(e=>document.getElementById('parentStatus').textContent=e.message);
+fetch('/api/preparation').then(async r=>{const p=await r.json();if(!r.ok)throw Error(p.error);return p;}).then(p=>{document.getElementById('preparationStatus').textContent=p.status+' · '+p.caveat;document.getElementById('preparationCaps').textContent=JSON.stringify(p.caps,null,2);}).catch(e=>document.getElementById('preparationStatus').textContent=e.message);
 </script></body></html>

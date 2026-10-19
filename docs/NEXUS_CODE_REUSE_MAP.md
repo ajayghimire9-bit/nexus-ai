@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+F v2 reset_blocks derives Work envelopes from SAME full_policy_source.
+operation_plan/catalogue.plan_bound. verified_physical_work replaces unsafe
+50-call estimates for the F runtime; old estimate retained only for history.
+Paired secondary reuses SAME partial_feedback.training_statistics, not a new
+learner. SAME analyzer/exporter seal/replay raw and paired choices.
+Lab packaging reuses SAME learning_lab/server/offline builder/durable session
+CLI; ZIP/checksum/clean-venv helpers are packaging, not a new dashboard or
+memory framework. No live scientific backend introduced.
+
 E3.12F reset_blocked_study is a profile adapter over SAME reset_blocks,
 partial_feedback raw selector and operator_headroom validator/paired intervals.
 SAME run_e3_12_mutation_control adds --reset-blocked and existing Host/Dispatch/

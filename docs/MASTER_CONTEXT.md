@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## E3.12F v2 — corrected source bounds and separate estimation secondary
+
+Source operation plans require51 calls/parent step and up to67/blend step;
+the v1 50-call estimate is unsafe. New unregistered runtime_v2 reserves
+1622400 calls/forwards; maximum source-row bound43372800 fits44236800 cap.
+Real cap28800/time300s unchanged, no allocation/grant/collection. Same raw
+primary; same-feedback paired-parent-gain secondary sealed before queries,
+with parent imbalance/choice/harm diagnostics. See NEXUS_E3_12F_FINAL_PREPARATION.md.
+Versioned local Lab packaging adds D/E and explicit unrun F; durable sessions
+remain authored, not continual-learning evidence. Repeatability and later
+adaptive allocation/task-stream/E4 studies remain gated design only. Ledger
+unchanged1808.9990201649957/1791.0009798350043. Historical evidence preserved.
+
 ## E3.12F trusted-runner integration — engineering only
 
 SAME mutation-control runner now has --reset-blocked, exact unregistered

@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+F v2 engineering review from5952529770bd90f21c155ede81aca36433c75295:
+unsafe50-call estimate corrected to source-derived worst bound1622400 calls/
+forwards; real28800/time300 unchanged, rowbound43372800 below44236800 ceiling.
+New unregistered runtime_v2, raw primary preserved; paired-gain secondary
+and mechanism diagnostics before outcomes. No numerical registration,
+allocation or science execution. Ledger unchanged. See FINAL_PREPARATION;
+historical v1 records retained. Lab demo0.2.0 is local packaging/recorded QA,
+not new simulator evidence or established continual learning.
+
 E3.12F runner integration (basee13c863ce221f6fbe9d60ebae918844fdf279a24):
 existing metered worker/exporter bound through a separate gated profile;
 authored-host orchestration, strict grids, exclusive seals and receipt linkage

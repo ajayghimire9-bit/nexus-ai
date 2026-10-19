@@ -10,5 +10,8 @@ sys.path.insert(0,str(ROOT/'src'))
 sys.path.insert(0,str(ROOT/'scripts'))
 
 if __name__=='__main__':
+    if (ROOT/'DEMO_MANIFEST.json').exists():
+        from verify_demo import verify
+        verify(ROOT)
     from run_learning_lab import main
     main()

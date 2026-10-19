@@ -102,16 +102,71 @@ def required_paths(plan):
 
 
 def physical_work(plan, query_resets=4):
-    """Prospective reservation ceiling, NOT observed execution or FLOPs.
+    """Historical v1 estimate ONLY; unsafe call cap, NOT an allocation bound.
 
     Reuses D's 1536 rows/decision and 50-call per-step reservation ratio.
-    Binding the future runner must enforce these ceilings before calls.
+    Retained for old preparation replay. Use verified_physical_work instead.
     """
     if query_resets != 4 or type(query_resets) is not int:
         raise ValueError('four_query_resets_fixed')
     paths = sum(map(len, required_paths(plan).values())) + query_resets*3
     return Work(real_steps=paths*200, imagined_transitions=paths*200*1536,
                 model_calls=paths*200*50, network_forwards=paths*200*50)
+
+
+def operation_envelopes():
+    """Source-only bounds, not model inference or imagined execution.
+
+    Only switch branches on abs(obs[0])>.25; endpoints and equality cover
+    every possible active component. Sum the SAME actual reservation plan.
+    """
+    from nexus.evolution2.full_policy_source import controllers,operation_plan
+    from nexus.evolution2.operator_headroom import operators
+    strategies={'parent':controllers()['successor_anchor'],**operators()}
+    envelopes={}
+    for name,strategy in strategies.items():
+        costs=[]
+        for dim in (3,6):
+            for first in (-1.,-.25,0.,.25,1.):
+                obs=[first]+[0.]*(dim-1)
+                work=Work()
+                for op in operation_plan(strategy,obs,3):work=work.plus(op.cost)
+                costs.append(work)
+        envelopes[name]=Work(*(max(w.values()[i] for w in costs) for i in range(4)))
+    return envelopes
+
+
+def verified_physical_work(plan):
+    """Exact union path count and conservative branch-wise operation bounds."""
+    kinds=required_paths(plan);bounds=operation_envelopes();total=Work()
+    for name,work in bounds.items():
+        paths=sum(name in selected for selected in kinds.values())+4
+        total=total.plus(Work(*(v*paths*200 for v in work.values())))
+    return total
+
+
+def maximum_experiment_work():
+    """Four models; at most 12 paths/kind/model including shared queries."""
+    total=Work()
+    for work in operation_envelopes().values():
+        total=total.plus(Work(*(v*12*200*4 for v in work.values())))
+    return total
+
+
+def select_paired_parent_gain(plan,panel,condition,bundle):
+    """Prespecified secondary: parent=0, children=matched observed gains.
+
+    Reuses the existing training_statistics; identical feedback as raw choice.
+    Exact ties retain parent, then switch, then rank blend. No new learner.
+    """
+    from nexus.evolution2.partial_feedback import training_statistics
+    p=validate_plan(plan);rows=revealed_rows(p,panel,condition,bundle)
+    c={'training_episodes':[r['episode'] for r in rows]}
+    _,_,gains,counts=training_statistics(rows,c,p['family'],bundle,schedule=p['schedules'][condition])
+    values={'parent':0.,**gains}
+    return dict(version='paired_parent_gain_v1',choice=max(values,key=values.get),
+                matched_advantages=values,observed_counts={'parent':8,**counts},
+                training_hash=digest(rows))
 
 
 def revealed_rows(plan, panel, condition, bundle):
@@ -176,7 +231,8 @@ def validate_proposal(c):
     if (any(type(c[k]) is not type(v) or c[k] != v for k, v in expected.items())
             or digest(c) != digest(expected)):
         raise ValueError('proposal_settings_or_execution_boundary')
-    return {'status': 'prepared_not_registered', 'execution_allowed': False,
+    return {'status': 'superseded_unsafe_call_estimate', 'execution_allowed': False,
+            'resource_estimate_safe_for_allocation':False,
             'logical_revealed_training_returns_per_method_per_model': 16,
             'physical_real_step_range': [22400, 28800],
             'new_environment_steps': 0, 'new_model_inference': 0}

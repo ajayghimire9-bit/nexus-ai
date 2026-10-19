@@ -83,8 +83,8 @@ def configure_retention():
 def configure_reset_blocked():
     global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,RESET_BLOCKED_PROFILE
     configure_operator();RESET_BLOCKED_PROFILE=True
-    CONFIG=ROOT/'configs/e3_12f_reset_blocked_runtime.json'
-    PROTOCOL=ROOT/'docs/NEXUS_E3_12F_RUNNER_INTEGRATION.md'
+    CONFIG=ROOT/'configs/e3_12f_reset_blocked_runtime_v2.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_12F_FINAL_PREPARATION.md'
     ALLOCATION=ROOT/'configs/e3_12f_reset_blocked_allocation.json'
     RESULT=ROOT/'artifacts/e3_12f_reset_blocked.json'
     USAGE=ROOT/'artifacts/e3_12f_reset_blocked_usage.json'

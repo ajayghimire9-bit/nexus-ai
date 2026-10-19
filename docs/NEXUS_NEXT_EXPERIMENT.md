@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## F v2 — finish this comparison before another mechanism
+
+Use FINAL_PREPARATION and runtime_v2: source-derived1622400-call ceiling,
+same raw assignment primary, paired-parent-gain secondary on identical masked
+feedback. Report observed parent-return imbalance, changed choices and fresh
+query returns separately. No inference from observation distance alone.
+Fresh numerical registration and exact collection authorization/allocation
+remain absent; no simulator starts. Only after this, consider separately
+registered complete-procedure repeatability on known models (four proposed
+batches,89600 real/900s), not more query paths counted as independent models.
+See NEXUS_LEARNING_REPEATABILITY_PLAN.md. Later allocation/continual/E4 work
+is gated, unrun and unallocated. Ledger unchanged.
+
 ## E3.12F runner ready for separate fresh registration, not a live run
 
 Existing metered worker and independent exporter now implement dynamic shared

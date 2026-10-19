@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## F v2 — assignment primary, estimation secondary; both untested
+
+Primary remains blocked-minus-random raw-average selection,1-point BOTH-family
+screen across2 models/family. New prespecified paired-parent-gain secondary
+tests estimation separately on the same observed feedback, with parent score0
+and parent-first ties. Unadjusted secondary intervals cannot upgrade primary.
+Observe parent-return group offsets and changed choices; neither matching nor
+training gains prove fresh-return improvement. Corrected source-only budget
+bound is1622400 calls/forwards, not the unsafe1440000 estimate. No allocation,
+scientific registration or run. Repeatability/transfer remain future questions.
+
 ## E3.12F engineering update — hypothesis remains untested
 
 Runtime binding and independent arithmetic export now exist on the same

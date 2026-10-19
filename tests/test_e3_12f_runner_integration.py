@@ -18,7 +18,7 @@ def load(path,name):
 
 
 def config():
-    c=json.loads((ROOT/'configs/e3_12f_reset_blocked_runtime.json').read_text())
+    c=json.loads((ROOT/'configs/e3_12f_reset_blocked_runtime_v2.json').read_text())
     # Authored unit-test IDs only; these are NOT scientific registrations.
     c.update(status='registered',execution_authorized=True,env_seed_base=1000000,planner_seed_base=2000000,
              schedule_seeds={f'{f}:{b}':5000+i for i,(f,b) in enumerate(itertools.product(c['families'],c['model_bundles']))})

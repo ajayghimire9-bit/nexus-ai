@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## F v2 preparation and local demonstration packaging
+
+Source-only worst-case check found50 calls/step unsafe: parent51 and blend67.
+Versioned unregistered recipe corrects calls to1622400 without changing real/
+time caps or any granted allocation. Same raw primary, matched-parent-gain
+secondary and reset-imbalance/choice/harm outputs; same permitted feedback,
+no extra physical paths. Lab now shows closed D failures, E training audit and
+unexecuted F; deterministic ZIP/manifest and clean-venv acceptance added.
+See NEXUS_E3_12F_FINAL_PREPARATION.md, NEXUS_LEARNING_LAB_DEMO_RELEASE.md
+and NEXUS_LEARNING_REPEATABILITY_PLAN.md. No scientific execution.
+
 ## E3.12F — shared runner and independent export integrated
 
 Bound public reset blocking to SAME mutation-control worker/Host path. Runtime

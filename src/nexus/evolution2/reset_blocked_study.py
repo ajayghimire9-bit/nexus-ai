@@ -20,17 +20,20 @@ def validate_config(c, *, registered=False):
     fields = {'version', 'status', 'execution_authorized', 'families', 'model_bundles',
               'training_episodes', 'evaluation_episodes', 'env_seed_base', 'planner_seed_base',
               'schedule_seeds', 'practical_margin', 'time_cap_s', 'real_cap', 'imagined_cap',
-              'model_call_cap', 'network_forward_cap', 'checkpoint_inventory', 'checkpoint_inventory_sha256'}
+              'model_call_cap', 'network_forward_cap', 'checkpoint_inventory', 'checkpoint_inventory_sha256','secondary_selector'}
     if type(c) is not dict or set(c) != fields:
         raise ValueError('reset_blocked_config_schema')
-    fixed = dict(version='e3_12f_reset_blocked_runtime_v1', families=['pendulum', 'acrobot'],
+    fixed = dict(version='e3_12f_reset_blocked_runtime_v2', families=['pendulum', 'acrobot'],
         model_bundles=[0, 1], training_episodes=list(range(8)), evaluation_episodes=list(range(8, 12)),
         practical_margin=1., time_cap_s=300, real_cap=28800, imagined_cap=44236800,
-        model_call_cap=1440000, network_forward_cap=1440000,
+        model_call_cap=1622400, network_forward_cap=1622400,secondary_selector='paired_parent_gain_v1',
         checkpoint_inventory='artifacts/e3_9_planner_evidence_readiness.json',
         checkpoint_inventory_sha256='58a9c11758e0a13d09f68c35697374ecbad1b19c9755780436fae897a931c0f9')
     if digest({k:c[k] for k in fixed}) != digest(fixed):
         raise ValueError('reset_blocked_fixed_recipe')
+    bound=blocks.maximum_experiment_work()
+    for key,cap in [('real_steps','real_cap'),('imagined_transitions','imagined_cap'),('model_calls','model_call_cap'),('network_forwards','network_forward_cap')]:
+        if bound.payload()[key]>c[cap]:raise ValueError('source_operation_bound_exceeds_cap')
     if c['status'] == 'prepared_not_registered':
         if c['execution_authorized'] is not False or any(c[k] is not None for k in ('env_seed_base','planner_seed_base','schedule_seeds')):
             raise ValueError('unregistered_template_only')
@@ -85,11 +88,13 @@ def decide(rows,c,f,b,plan):
     training = [r for r in rows if (r['family'],r['bundle'],r['role']) == (f,b,'training')]
     projection = [dict(reset_id=r['episode'],paths={k:{'return':v['return'],'cpu_s':v['cpu_s']}
                    for k,v in r['paths'].items()}) for r in training]
-    return {condition: blocks.select_parent_inclusive(plan,projection,condition,b) for condition in CONDITIONS}
+    choices={condition: blocks.select_parent_inclusive(plan,projection,condition,b) for condition in CONDITIONS}
+    choices['paired_secondary']={condition:blocks.select_paired_parent_gain(plan,projection,condition,b) for condition in CONDITIONS}
+    return choices
 
 
 def planned_real_steps(p,c):
-    return sum(blocks.physical_work(plan_for(p,c,f,b)).real_steps
+    return sum(blocks.verified_physical_work(plan_for(p,c,f,b)).real_steps
                for f,b in itertools.product(c['families'],c['model_bundles']))
 
 
@@ -145,15 +150,37 @@ def analyze(p,c):
                 values={k:panel.number(v['return']) for k,v in r['paths'].items()}
                 cases.append(dict(episode=r['episode'],returns={
                     **{k:values[choices[k]['choice']] for k in CONDITIONS},
+                    **{k+'_paired':values[choices['paired_secondary'][k]['choice']] for k in CONDITIONS},
                     'parent':values['parent'],'fixed_switch':values['switch'],'fixed_blend':values['rank_blend'],
                     'uniform_expected':(values['switch']+values['rank_blend'])/2}))
             means={k:sum(x['returns'][k] for x in cases)/4 for k in cases[0]['returns']}
-            models.append(dict(bundle=b,mean_returns=means,choices=deepcopy(choices),query_cases=cases))
+            train=[r for r in p['rows'] if (r['family'],r['bundle'],r['role'])==(f,b,'training')]
+            plan=plan_for(p,c,f,b);diagnostics={}
+            for condition in CONDITIONS:
+                schedule=plan['schedules'][condition];groups={}
+                pooled=sum(r['paths']['parent']['return'] for r in train)/8
+                for kind in KINDS:
+                    selected=[r for r in train if schedule[str(r['episode'])]==kind]
+                    groups[kind]=sum(r['paths']['parent']['return'] for r in selected)/4
+                diagnostics[condition]=dict(parent_group_means=groups,parent_pooled_mean=pooled,
+                    parent_group_offsets={k:v-pooled for k,v in groups.items()},
+                    absolute_parent_group_gap=abs(groups['switch']-groups['rank_blend']),
+                    paired_choice=choices['paired_secondary'][condition]['choice'],raw_choice=choices[condition]['choice'],
+                    harmful_raw_query_count=sum(x['returns'][condition]<x['returns']['parent'] for x in cases),
+                    harmful_paired_query_count=sum(x['returns'][condition+'_paired']<x['returns']['parent'] for x in cases))
+            models.append(dict(bundle=b,mean_returns=means,choices=deepcopy(choices),query_cases=cases,training_diagnostics=diagnostics,
+                mean_squared_within_block_observation_distance=plan['squared_distance']/4,
+                assignment_changes_raw_choice=choices['public_blocked']['choice']!=choices['random_balanced']['choice'],
+                blocked_minus_random_parent_imbalance=diagnostics['public_blocked']['absolute_parent_group_gap']-diagnostics['random_balanced']['absolute_parent_group_gap']))
         contrasts={name:panel.paired_contrast(models,'public_blocked',name)
                    for name in ('random_balanced','parent','fixed_switch','fixed_blend','uniform_expected')}
         primary=contrasts['random_balanced']
         passed=primary['mean']>=c['practical_margin'] and primary['ci95'][0]>0 and all(v>0 for v in primary['per_model'])
-        families[f]=dict(models=models,contrasts=contrasts,screen_passed=bool(passed))
+        secondary={}
+        for a,z in [('public_blocked_paired','random_balanced_paired'),('public_blocked_paired','public_blocked'),('random_balanced_paired','random_balanced'),('public_blocked_paired','parent'),('random_balanced_paired','parent')]:
+            secondary[a+'-minus-'+z]=panel.paired_contrast(models,a,z)
+        families[f]=dict(models=models,contrasts=contrasts,secondary_contrasts=secondary,
+            secondary_interpretation='Unadjusted exploratory estimation/assignment contrasts; cannot upgrade the raw primary screen.',screen_passed=bool(passed))
     return dict(families=families,
         label='exploratory_reset_blocking_screen_passed' if all(x['screen_passed'] for x in families.values()) else 'reset_blocking_not_established',
         statistical_unit='two pretrained models per family; df1 paired t intervals; episodes are not model replications',

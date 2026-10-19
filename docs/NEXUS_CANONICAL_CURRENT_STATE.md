@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Latest F v2 preparation corrects unsafe50-call estimate using SAME actual
+operation_plan metadata: parent51, blend67; whole-study upper1622400 forwards,
+43372800 rows,28800 real. New runtime_v2 unregistered/unauthorized; no grant
+increased and no collection. Raw primary unchanged, paired-gain estimation
+secondary and imbalance/choice diagnostics added before outcomes. See
+NEXUS_E3_12F_FINAL_PREPARATION.md. Old v1 artifacts retained as history.
+Local Lab0.2.0 packaging uses existing server/sessions and recorded D/E;
+repeatability, allocation, persistence and E4 benefits remain untested.
+
 Latest E3.12F engineering integrates the existing metered runner and stdlib
 exporter, not a parallel stack. Exclusive schedules before training and choices
 before queries; complete dynamic union/receipt validation. Runtime template

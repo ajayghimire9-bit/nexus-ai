@@ -31,7 +31,7 @@ def summarize_blocked(p,c):
                 if set(schedule)!=set(map(str,range(8))) or sorted(schedule.values())!=['rank_blend']*4+['switch']*4:raise ValueError('balanced_export_schedules')
             rows=[r for r in p['rows'] if (r['family'],r['bundle'])==(f,b)]
             train=[r for r in rows if r['role']=='training'];query=[r for r in rows if r['role']=='evaluation']
-            choices={}
+            choices={};paired_choices={};training_diagnostics={}
             for condition in conditions:
                 means={'parent':statistics.mean(finite(r['paths']['parent']['return']) for r in train)}
                 for kind in ('switch','rank_blend'):
@@ -40,6 +40,20 @@ def summarize_blocked(p,c):
                 sealed=p['sealed_decisions'][key][condition]
                 if sealed['choice']!=choice or sealed['observed_counts']!={'parent':8,'switch':4,'rank_blend':4}:raise ValueError('independent_blocked_choice')
                 if set(sealed['training_means'])!=set(means) or any(abs(finite(sealed['training_means'][k])-v)>1e-9 for k,v in means.items()):raise ValueError('independent_blocked_means')
+                gains={'parent':0.}
+                for kind in ('switch','rank_blend'):
+                    gains[kind]=statistics.mean(finite(r['paths'][kind]['return'])-finite(r['paths']['parent']['return'])
+                        for r in train if schedules[condition][str(r['episode'])]==kind)
+                paired_choices[condition]=max(gains,key=gains.get)
+                groups={kind:statistics.mean(finite(r['paths']['parent']['return']) for r in train if schedules[condition][str(r['episode'])]==kind) for kind in ('switch','rank_blend')}
+                training_diagnostics[condition]=dict(parent_group_means=groups,parent_pooled_mean=means['parent'],
+                    parent_group_offsets={k:v-means['parent'] for k,v in groups.items()},
+                    absolute_parent_group_gap=abs(groups['switch']-groups['rank_blend']),
+                    raw_choice=choice,paired_choice=paired_choices[condition])
+                sealed_paired=p['sealed_decisions'][key]['paired_secondary'][condition]
+                if (sealed_paired['choice']!=paired_choices[condition] or set(sealed_paired['matched_advantages'])!=set(gains)
+                    or any(abs(finite(sealed_paired['matched_advantages'][k])-v)>1e-9 for k,v in gains.items())
+                    or sealed_paired['observed_counts']!={'parent':8,'switch':4,'rank_blend':4}):raise ValueError('independent_paired_gain_choice')
             for row in rows:
                 wanted={'parent',*(s[str(row['episode'])] for s in schedules.values())} if row['role']=='training' else {'parent','switch','rank_blend'}
                 if set(row['paths'])!=wanted:raise ValueError('independent_union_conditions')
@@ -52,8 +66,10 @@ def summarize_blocked(p,c):
             for row in query:
                 returns={k:finite(v['return']) for k,v in row['paths'].items()}
                 values.append({**{k:returns[v] for k,v in choices.items()},'parent':returns['parent'],
+                    **{k+'_paired':returns[v] for k,v in paired_choices.items()},
                     'fixed_switch':returns['switch'],'fixed_blend':returns['rank_blend'],'uniform_expected':(returns['switch']+returns['rank_blend'])/2})
-            models.append(dict(bundle=b,means={k:statistics.mean(v[k] for v in values) for k in values[0]},choices=choices))
+            models.append(dict(bundle=b,means={k:statistics.mean(v[k] for v in values) for k in values[0]},choices=choices,
+                paired_choices=paired_choices,training_diagnostics=training_diagnostics))
         baseline_names=('random_balanced','parent','fixed_switch','fixed_blend','uniform_expected')
         prior=p['analysis']['families'][f]
         if set(prior['contrasts'])!=set(baseline_names):raise ValueError('complete_blocked_contrasts')
@@ -70,7 +86,19 @@ def summarize_blocked(p,c):
             contrasts[baseline]=values
         primary=contrasts['random_balanced'];passed=primary['mean']>=1. and primary['ci95'][0]>0 and all(v>0 for v in primary['per_model'])
         if prior['screen_passed'] is not passed:raise ValueError('independent_blocked_screen')
-        result[f]=dict(models=models,contrasts=contrasts,screen_passed=passed)
+        pairs=[('public_blocked_paired','random_balanced_paired'),('public_blocked_paired','public_blocked'),
+               ('random_balanced_paired','random_balanced'),('public_blocked_paired','parent'),('random_balanced_paired','parent')]
+        secondary={}
+        if set(prior['secondary_contrasts'])!={a+'-minus-'+z for a,z in pairs}:raise ValueError('complete_secondary_contrasts')
+        for a,z in pairs:
+            x=[m['means'][a]-m['means'][z] for m in models];mean=statistics.mean(x);half=12.7062047364*statistics.stdev(x)/math.sqrt(2)
+            values=dict(mean=mean,ci95=[mean-half,mean+half],per_model=x);old=prior['secondary_contrasts'][a+'-minus-'+z]
+            if set(old)!=set(values):raise ValueError('secondary_interval_fields')
+            for k in values:
+                left=old[k] if type(old[k]) is list else [old[k]];right=values[k] if type(values[k]) is list else [values[k]]
+                if len(left)!=len(right) or any(abs(finite(i)-j)>1e-8 for i,j in zip(left,right)):raise ValueError('independent_secondary_interval')
+            secondary[a+'-minus-'+z]=values
+        result[f]=dict(models=models,contrasts=contrasts,secondary_contrasts=secondary,screen_passed=passed)
     actual=sum(v['real_steps'] for v in phase.values())
     if actual!=p['resources']['completed']['real_steps'] or not 22400<=actual<=28800:raise ValueError('independent_union_resource_sum')
     label='exploratory_reset_blocking_screen_passed' if all(f['screen_passed'] for f in result.values()) else 'reset_blocking_not_established'
@@ -190,7 +218,7 @@ def summarize(p,c):
 def main(operator=False,partial=False,retention=False,blocked=False):
     prefix='e3_12f_reset_blocked' if blocked else 'e3_12d_parent' if retention else 'e3_12c_partial' if partial else 'e3_12b_operator' if operator else 'e3_12_mutation'
     capture='e3_12f_reset_blocked' if blocked else 'e3_12d_parent_retention' if retention else 'e3_12c_partial_feedback' if partial else 'e3_12b_operator_headroom' if operator else 'e3_12_mutation_control'
-    config_name='e3_12f_reset_blocked_runtime' if blocked else capture
+    config_name='e3_12f_reset_blocked_runtime_v2' if blocked else capture
     raw=ROOT/('artifacts/'+capture+'.json');p=json.loads(raw.read_text());c=json.loads((ROOT/('configs/'+config_name+'.json')).read_text());v=json.loads((ROOT/('artifacts/'+prefix+'_validation.json')).read_text())
     if not p['declared_complete'] or v['valid'] is not True or v['result_sha256']!=hashlib.sha256(raw.read_bytes()).hexdigest():raise ValueError('sealed_complete_capture_required')
     s=summarize_blocked(p,c) if blocked else summarize_operator(p,c,partial=partial or retention,retention=retention) if operator or partial or retention else summarize(p,c)
