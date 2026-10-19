@@ -1,0 +1,85 @@
+{
+  "kind": "engineering_verification_not_scientific_experiment",
+  "branch": "codex/parent-retention-and-durable-learning",
+  "starting_commit": "67a0a9d6a945d4adc86f4ff30b6aadef810c5da6",
+  "implementation_commit": "e0eadea685540fce64543f094f4f8101ca63b7da",
+  "historical_c_execution_commit": "9ae94386a84ae5863776cba20f0420679711e051",
+  "tests": {
+    "initial_focused_passed": 91,
+    "expanded_focused": {"passed": 99, "wall_s": 11.48},
+    "last_focused": {"passed": 27, "wall_s": 3.89},
+    "final_relevant_regression": {"passed": 791, "wall_s": 33.09},
+    "module_list_source": "artifacts/bounded_learning_cycle_test_report.json:tests.modules",
+    "additional_modules": ["tests/test_e3_12_mutation_control.py", "tests/test_e3_12b_operator_headroom.py", "tests/test_e3_12c_partial_feedback.py", "tests/test_parent_retention_and_resume.py"],
+    "command": "python3 -c 'import json,subprocess,sys; p=json.load(open(\"artifacts/bounded_learning_cycle_test_report.json\")); sys.exit(subprocess.call([sys.executable,\"-m\",\"pytest\",\"-o\",\"addopts=\",\"-q\",*p[\"tests\"][\"modules\"],\"tests/test_e3_12_mutation_control.py\",\"tests/test_e3_12b_operator_headroom.py\",\"tests/test_e3_12c_partial_feedback.py\",\"tests/test_parent_retention_and_resume.py\"]))'",
+    "environment": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps",
+    "scope": "Curated deterministic source/fixture regressions, not every historical experiment test; no scientific execution"
+  },
+  "browser": {
+    "kind": "real_browser_recorded_replay_qa",
+    "browser": "Chrome 155.0.8059.84",
+    "checks": ["both_verified_captures_loaded", "control_filter_and_trajectory_scrub", "operator_filter_training_choice_parent_comparison_and_trajectory", "recorded_harmful_change_disclosed", "live_execution_disabled"],
+    "page_errors": [],
+    "launch_check": "scripts/check_learning_lab_launch.py passed; idle preconnection did not block status or verified operator replay",
+    "command": "NEXUS_PLAYWRIGHT_MODULE=/path/to/playwright node scripts/check_learning_lab_browser.cjs http://127.0.0.1:8766",
+    "screenshot": "artifacts/nexus_learning_lab_parent_replay.png",
+    "screenshot_sha256": "a22b4c86cf48586b328aa7aed47f298be863f8acc122a529a95fe2a47e7aaeb2",
+    "offline_html": "artifacts/nexus_learning_lab_parent_replay.html",
+    "offline_html_sha256": "ab550db63026114f6f98f02ccd07bdeac6226cf06a6f6eb1d52e9b509aac0d72",
+    "public_deployment": false
+  },
+  "preservation": {
+    "previous_tracked_artifact_json_count": 417,
+    "previous_artifact_json_changed": [],
+    "sha256_of_sorted_path_to_sha256_json": "8decf3947b9dab554e3fb4b927d973fa0ffabd4abb6ce049204c18b44f304343",
+    "frozen_input_inventory": "artifacts/e3_9_planner_evidence_readiness.json",
+    "frozen_input_inventory_sha256": "58a9c11758e0a13d09f68c35697374ecbad1b19c9755780436fae897a931c0f9",
+    "checkpoint_hashes_checked": 4,
+    "source_array_hashes_checked": 8,
+    "all_frozen_input_hashes_match": true,
+    "unrelated_untracked_files_excluded": ["src/nexus/evolution1/adapters.py", "tests/test_evolution1_adapters.py"],
+    "closed_query_outcomes_used_to_score_new_selector": false
+  },
+  "reviewed_source_sha256": {
+    "src/nexus/evolution2/partial_feedback.py": "d0d117804190d97534cfbf34f0c530d328a677cacf8f4d27b9a5dd57759a964e",
+    "src/nexus/evolution2/cycle_checkpoint.py": "21d14a23b1085516408db17ca0170842c84a33a13f484821bd1b06c85f4931f5",
+    "src/nexus/evolution2/learning_cycle.py": "4f5b777d534489276e60ad8b7a1377e6867d2b0b8755ea58c62895faefefcd75",
+    "src/nexus/evolution2/learning_lab.py": "633235cb5dfff786e5673d42aec16fb6bcfbf3160b2fb4c0c7dea03e27938646",
+    "scripts/run_learning_lab.py": "44a6199a5946b377a8fa7b16d7a5e37bf64db58eb105e4a7e3274fdb0983b5e6",
+    "scripts/run_e3_12_mutation_control.py": "cf781f969919faad3a72666a205b32e2a73b1d47c952d01919fbc9c3a7992648",
+    "scripts/check_learning_lab_browser.cjs": "5a16fcddd755992b8386d50edd297a267d3ba0f5ae4f3b589e8f3346ad184e43",
+    "scripts/check_learning_lab_launch.py": "4469bcc3a09e87ac6730820f5d7d592d2adf5a8927c4a318e439a59883fcce29",
+    "tests/test_parent_retention_and_resume.py": "14610e1d61b190a69557684e64e072b283e28817b396efe04c1f0627b18edbfc"
+  },
+  "fresh_comparison": {
+    "status": "proposed_not_registered",
+    "config": "configs/e3_12d_parent_retention_proposal.json",
+    "config_sha256": "4d6a91833fffa8a7bcac7a07525711b3e4a23304aee17d5bd0471c5e9a330806",
+    "new_selector_scientifically_evaluated": false,
+    "execution_authorized": false,
+    "numerical_environment_seeds": null,
+    "allocation": null,
+    "proposed_real_steps": 22400,
+    "proposed_maximum_wall_s": 300
+  },
+  "limitations": [
+    "Parent raw mean has eight observations; each child has four, with unequal uncertainty and possible reset-difficulty imbalance",
+    "Durable fixture state is tested; useful cross-session retention is not demonstrated",
+    "Checkpoint codec is hash/provenance anchored, not a production security or authorization boundary",
+    "Fixture evaluator accounting remains separate from learned state; a future budgeted retention study must persist it too",
+    "Training-incumbent progress and independently assessed deployed-incumbent progress are distinct; hidden assessment is not training feedback",
+    "Fresh profile binding, replay/export tests, seed registration and exact allocation are still required before E3.12D collection",
+    "Neither useful self-improvement nor learning-to-learn is established by passing engineering tests"
+  ],
+  "resources": {
+    "new_scientific_environment_interactions": 0,
+    "new_scientific_imagined_transitions": 0,
+    "research_model_inference": 0,
+    "neural_training": 0,
+    "authored_fixture_contracts_executed": true,
+    "session_experiment_used_s": 1643.627562957004,
+    "session_experiment_remaining_s": 1956.372437042996,
+    "ledger_changed_by_engineering": false,
+    "main_merged_or_modified": false
+  }
+}

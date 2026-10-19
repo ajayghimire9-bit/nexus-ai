@@ -211,3 +211,10 @@ Actual Chrome 155.0.8059.84 passed all five recorded-view interaction checks
 with zero page errors. A repeated local launch check also passed with an idle
 preconnected socket. No new scientific model inference, training or simulator
 work was authorized by those UI/fixture checks.
+
+Final implementation `e0eadea685540fce64543f094f4f8101ca63b7da` passed the same
+expanded relevant regression: **791 passed in 33.09 seconds**. The last focused
+run passed 27 tests in 3.89 seconds. Byte comparison against starting commit
+67a0a9d6 verified all 417 previously tracked artifact JSON files unchanged;
+all four decoder checkpoint and eight source-array hashes matched the pinned
+inventory. Unrelated untracked adapter files were excluded from commits.
