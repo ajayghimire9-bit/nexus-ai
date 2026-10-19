@@ -1,0 +1,29 @@
+{
+  "version": "e3_9_readiness_v1",
+  "kind": "source_only_engineering_audit",
+  "families": ["pendulum", "acrobot"],
+  "model_bundles": [0, 1],
+  "source_splits": ["train", "val"],
+  "fit_manifest": "artifacts/evolution2_fit_clock_run.json",
+  "fit_manifest_sha256": "f71ee99f1d1817fe5bcf77ccca8a871249faa0cef718a2f5bc8790b6d6169b23",
+  "source_inventory": "src/nexus/evolution2/fit_clock.py",
+  "source_inventory_sha256": "113c9acb7c7646890017cf16d26e2e294da2135af7d3ca2d3b06bb8bfcde16ef",
+  "draft_manifest": "configs/fresh_contextual_selection_design.json",
+  "draft_manifest_sha256": "2b8862de23af3f453d5fda14afaa3135532a70b8bc55ebc468c4cff550d2d6c0",
+  "budget_illustration": {
+    "model_count": 4,
+    "training_episodes_per_model": 3,
+    "evaluation_episodes_per_model": 4,
+    "conditions": 5,
+    "probe_steps": 8,
+    "remaining_steps": 192,
+    "planning_imagined_per_decision": 1536,
+    "evidence_sets": 2,
+    "evidence_candidates": 16,
+    "evidence_horizon": 16,
+    "evidence_frequency": "per_remaining_decision_upper_bound"
+  },
+  "session_used_s": 786.2472080430296,
+  "session_remaining_s": 2813.75279195697,
+  "scientific_execution_authorized_by_this_file": false
+}

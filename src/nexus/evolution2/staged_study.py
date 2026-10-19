@@ -5,7 +5,9 @@ case manifest, authorization and a reviewed host implementation.
 """
 from dataclasses import asdict
 from copy import deepcopy
+import itertools
 import math
+import re
 from nexus.core.episode_context import EpisodeContext
 from nexus.evolution1.catalogue import digest
 from nexus.evolution1.resources import ExecutionReport
@@ -30,9 +32,21 @@ class SourcePrior:
 
 class StagedStudy:
     def __init__(self,manifest,*,closed_seeds=()):
-        if not manifest.get('registered') or not manifest.get('authorized') or not manifest.get('protocol_commit'):
+        if manifest.get('registered') is not True or manifest.get('authorized') is not True or not manifest.get('protocol_commit'):
             raise ValueError('fresh_collection_not_registered_or_authorized')
         if manifest.get('kind') not in ('synthetic_contract','registered_fresh_study'):raise ValueError('study_kind')
+        conditions=manifest['conditions']
+        if type(conditions) is not list or not conditions or any(type(c) is not str or not c.isidentifier() for c in conditions) or len(set(conditions))!=len(conditions):raise ValueError('unique_planned_conditions')
+        # Real studies must supply independent locked axes. Deriving expected
+        # tasks/episodes from produced cases would accept a missing whole group.
+        if manifest['kind']=='registered_fresh_study':
+            if type(manifest['protocol_commit']) is not str or not re.fullmatch('[0-9a-f]{40}',manifest['protocol_commit']):raise ValueError('recorded_protocol_revision')
+            tasks=manifest.get('planned_tasks');episodes=manifest.get('planned_episodes')
+            if type(tasks) is not list or not tasks or any(type(t) is not str or not t for t in tasks) or len(set(tasks))!=len(tasks):raise ValueError('locked_task_axis')
+            if type(episodes) is not list or not episodes or any(type(e) is not int or e<0 for e in episodes) or len(set(episodes))!=len(episodes):raise ValueError('locked_episode_axis')
+            expected=set(itertools.product(tasks,conditions,episodes))
+            actual=[(c['task'],c['condition'],c['episode']) for c in manifest['cases']]
+            if len(actual)!=len(expected) or set(actual)!=expected:raise ValueError('independent_complete_case_grid')
         self.manifest=deepcopy(manifest);self.closed=set(closed_seeds);self.policy=None;self.frozen=None;self.contexts={};self.prefixes={};self.probe_real=0;self.probe_imagined=0;self.consumed=False
         self.partial_rows=[];self.pending_case=None;self.complete=False
         cases=manifest['cases'];keys=[(c['task'],c['condition'],c['episode']) for c in cases]
@@ -82,6 +96,7 @@ class StagedStudy:
             key=(case['task'],case['episode']);context_hash=digest(self.contexts[key])
             self.pending_case=deepcopy(case)
             safe_case=deepcopy(case);row,report=host(safe_case,self.policy,self.contexts[key])
+            if self.fingerprint(self.policy)!=self.frozen:raise ValueError('evaluation_changed_policy')
             if safe_case!=case:raise ValueError('host_changed_case_protocol')
             if digest(self.contexts[key])!=context_hash:raise ValueError('evaluation_updated_context')
             if type(report) is not ExecutionReport or report.status!='complete_execution':raise ValueError('trusted_completed_resource_receipt')

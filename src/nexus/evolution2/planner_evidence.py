@@ -5,7 +5,8 @@ from nexus.evolution2.planner_adapter import score_open_loop
 
 
 def validate_plans(plans,n_actions):
-    if len(plans)!=2 or any(type(k) is not str or not k.isidentifier() for k in plans):raise ValueError('paired_evidence_only')
+    if type(n_actions) is not int or n_actions<1:raise ValueError('action_count')
+    if type(plans) is not dict or len(plans)!=2 or any(type(k) is not str or not 1<=len(k)<=32 or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789_' for c in k) for k in plans):raise ValueError('paired_evidence_only')
     shape=None
     for value in plans.values():
         x=np.asarray(value)
@@ -31,6 +32,11 @@ def planner_evidence(plans,observation,model,reward_fn,*,n_actions,ledger,clock,
     n,h=validate_plans(plans,n_actions)
     if np.asarray(observation).ndim!=1 or not np.isfinite(np.asarray(observation,dtype=float)).all():raise ValueError('finite_decision_observation')
     if getattr(model,'uses_simulator',False):raise ValueError('frozen_model_only')
+    # Caller-owned arrays must not be changed by model/reward callbacks, nor
+    # may callbacks change the other condition's candidates during scoring.
+    plans={name:np.array(value,copy=True) for name,value in plans.items()}
+    for value in plans.values():value.flags.writeable=False
+    observation=np.array(observation,dtype=np.float32,copy=True)
     original=fingerprint();out={}
     for name,sequences in plans.items():
         history=[];terminations=[]
@@ -38,7 +44,10 @@ def planner_evidence(plans,observation,model,reward_fn,*,n_actions,ledger,clock,
             def step(self,obs,action):
                 ticket=ledger.reserve(f'evidence_{name}_{len(history)}',clock())
                 try:
-                    nxt,p=model.step(obs,action);nxt=np.asarray(nxt);p=np.asarray(p).reshape(-1)
+                    if ticket.operation.kind!='model' or ticket.operation.cost.imagined_transitions!=n:raise ValueError('evidence_reservation_shape')
+                    safe_obs=np.array(obs,copy=True);safe_action=np.array(action,copy=True)
+                    safe_obs.flags.writeable=False;safe_action.flags.writeable=False
+                    nxt,p=model.step(safe_obs,safe_action);nxt=np.array(nxt,copy=True);p=np.array(p,copy=True).reshape(-1)
                     if nxt.shape!=np.asarray(obs).shape or p.shape!=(n,) or not np.isfinite(nxt).all() or not np.isfinite(p).all() or np.any(p<0) or np.any(p>1):raise ValueError('finite_forecast')
                     history.append(nxt.copy().tolist());terminations.append(p.copy().tolist())
                 except BaseException:
