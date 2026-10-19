@@ -164,7 +164,8 @@ class FrozenTrainingFeedbackScale:
 
     @classmethod
     def from_payload(cls, payload, *, expected_snapshot_digest):
-        if (set(payload)!={"version","family","bundle_id","reference_digest","reference_scores"}
+        if (type(payload) is not dict
+                or set(payload)!={"version","family","bundle_id","reference_digest","reference_scores"}
                 or payload["version"]!="training_feedback_scale_v1"
                 or digest(payload)!=expected_snapshot_digest):
             raise ValueError("feedback_snapshot_integrity_failure")

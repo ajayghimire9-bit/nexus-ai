@@ -39,7 +39,7 @@ from nexus.evolution2.pendulum_acrobot_protocol_v2 import (
     bundle_family_order,
     paired_bundle_seeds,
 )
-from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import TrustedEvaluator
+from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import FrozenTrainingFeedbackScale, TrustedEvaluator
 from nexus.evolution2.planner_adapter import decide
 from nexus.evolution2.screen import SHARED_PROBES, feedback_event
 from nexus.evolution2.source_persist_plan import atomic_write_npz
@@ -595,9 +595,10 @@ class MethodSensitiveHiddenEval:
     A planner may appear in both training and hidden phases.
     """
 
-    def __init__(self, produce_score, *, scale: FrozenRevealedScale | None = None):
+    def __init__(self, produce_score, *, scale: FrozenRevealedScale | FrozenTrainingFeedbackScale | None = None, query_guard=None):
         self._produce = produce_score
         self._scale = scale
+        self._query_guard = query_guard
         self._cache: dict[tuple, float] = {}
         self._hidden_outcomes: list[dict] = []
         self.physical = 0
@@ -611,6 +612,8 @@ class MethodSensitiveHiddenEval:
     def evaluate(self, method: str, variant, *, seed_key: tuple) -> float:
         if method not in self.per_method:
             raise RuntimeError("unknown_method")
+        if self._query_guard is not None:
+            self._query_guard(variant,seed_key)
         key = seed_key + (variant.fingerprint,)
         self.logical += 1
         self.per_method[method]["logical"] += 1
@@ -619,7 +622,13 @@ class MethodSensitiveHiddenEval:
             self.per_method[method]["cached"] += 1
             return self._cache[key]
         raw = float(self._produce(variant, seed_key))
-        score = raw if self._scale is None else self._scale.unit(raw)
+        metadata = {}
+        if type(self._scale) is FrozenTrainingFeedbackScale:
+            mapped = self._scale.transform(raw)
+            score = mapped["unit"]
+            metadata = {"clipped":mapped["clipped"],"feedback_snapshot_digest":mapped["snapshot_digest"]}
+        else:
+            score = raw if self._scale is None else self._scale.unit(raw)
         outcome = {
             "outcome_id": (HIDDEN_PROVENANCE, seed_key, variant.fingerprint),
             "provenance": HIDDEN_PROVENANCE,
@@ -627,6 +636,7 @@ class MethodSensitiveHiddenEval:
             "raw": raw,
             "unit": score,
             "method": method,
+            **metadata,
         }
         self._hidden_outcomes.append(outcome)
         self._cache[key] = score

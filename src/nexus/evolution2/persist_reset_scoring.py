@@ -47,6 +47,122 @@ N10_BUNDLES = 10
 N10_FITS = 20
 
 
+def prospective_hidden_evaluator(manifest_path, *, expected_manifest_sha256,
+                                 expected_reference_digest, produce_score):
+    """Opt-in E2.27 path: validate saved reference before attaching queries.
+
+    Uses the existing MethodSensitiveHiddenEval and its provenance/cache
+    accounting. A trusted runner must obtain expected digests from its
+    committed protocol. This is not a scientific authorization or sandbox.
+    """
+    import hashlib
+    from nexus.evolution1.catalogue import Variant
+    from nexus.evolution1.toy_loop import VARIANTS
+    from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import FrozenTrainingFeedbackScale
+    encoded = Path(manifest_path).read_bytes()
+    if hashlib.sha256(encoded).hexdigest() != expected_manifest_sha256:
+        raise ValueError("feedback_manifest_digest_mismatch")
+    manifest = json.loads(encoded)
+    fields = {"version","scale","snapshot_digest","reference_digest","query_family",
+              "query_bundle_id","query_slots","allowed_variant_ids"}
+    if type(manifest) is not dict or set(manifest)!=fields or manifest["version"]!="prospective_feedback_manifest_v1":
+        raise ValueError("feedback_manifest_schema_mismatch")
+    scale = FrozenTrainingFeedbackScale.from_payload(manifest["scale"],
+                  expected_snapshot_digest=manifest["snapshot_digest"])
+    if (manifest["reference_digest"]!=expected_reference_digest
+            or scale.reference_digest!=expected_reference_digest):
+        raise ValueError("training_reference_digest_mismatch")
+    family = manifest["query_family"]
+    bundle = manifest["query_bundle_id"]
+    slots = manifest["query_slots"]
+    variant_ids = manifest["allowed_variant_ids"]
+    known = {v.fingerprint for v in VARIANTS}
+    if (family!=scale.family or type(bundle) is not int or bundle<0
+            or type(slots) is not list or not slots
+            or any(type(s) is not int or s<0 for s in slots) or len(slots)!=len(set(slots))
+            or type(variant_ids) is not list or not variant_ids
+            or any(type(v) is not str or v not in known for v in variant_ids)
+            or len(variant_ids)!=len(set(variant_ids)) or not callable(produce_score)):
+        raise ValueError("invalid_query_manifest_scope")
+    # Copy validated immutable scope; later file/dict mutations cannot widen it.
+    slots,variant_ids = frozenset(slots),frozenset(variant_ids)
+    def guard(variant, seed_key):
+        if (type(seed_key) is not tuple or len(seed_key)!=4 or seed_key[0]!="hidden"
+                or type(seed_key[1]) is not int or seed_key[1]!=bundle or seed_key[2]!=family
+                or type(seed_key[3]) is not int or seed_key[3] not in slots
+                or type(variant) is not Variant
+                or variant.fingerprint not in variant_ids):
+            raise ValueError("query_outside_frozen_manifest")
+    def produce(variant, seed_key):
+        return scale._finite(produce_score(variant,seed_key))
+    evaluator = science.MethodSensitiveHiddenEval(produce,scale=scale,query_guard=guard)
+    evaluator.feedback_manifest_sha256 = expected_manifest_sha256
+    evaluator.feedback_snapshot_digest = scale.snapshot_digest
+    return evaluator
+
+
+def prospective_feedback_integration_audit():
+    """Fixed synthetic end-to-end audit, no planner/model/environment calls."""
+    import hashlib
+    import tempfile
+    import time
+    from nexus.evolution1.toy_loop import ANCHORS
+    from nexus.evolution2.pendulum_acrobot_protocol_v2_pilot import TrustedEvaluator,feedback_reference_digest
+    t0,cpu0 = time.perf_counter(),time.process_time()
+    output = ROOT/"artifacts/evolution2_27_feedback_integration.json"
+    old = {str(p.relative_to(ROOT)):lock.file_sha256(p) for p in (ROOT/"artifacts").glob("*.json") if p!=output}
+    reference = tuple(ANCHORS)
+    ref_digest = feedback_reference_digest("pendulum",0,reference)
+    reference_values = {reference[0]:-10.,reference[1]:10.}
+    source = TrustedEvaluator(reference,family="pendulum",bundle_id=0,produce_score=lambda v:reference_values[v])
+    for v in reference:source.evaluate("persist",v)
+    scale = source.freeze_feedback_scale("persist",reference=reference,expected_reference_digest=ref_digest)
+    manifest = {"version":"prospective_feedback_manifest_v1","scale":scale.payload(),
+                "snapshot_digest":scale.snapshot_digest,"reference_digest":ref_digest,
+                "query_family":"pendulum","query_bundle_id":1,"query_slots":[0,1],
+                "allowed_variant_ids":[v.fingerprint for v in reference]}
+    encoded = json.dumps(manifest,sort_keys=True).encode()
+    manifest_digest = hashlib.sha256(encoded).hexdigest()
+    calls = 0
+    cases = []
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp)/"frozen_manifest.json";path.write_bytes(encoded)
+        for extreme in (-1e8,1e8):
+            def produce(v,seed):
+                nonlocal calls
+                calls += 1
+                return {reference[0]:2.,reference[1]:8.}.get(v,extreme)
+            evaluator = prospective_hidden_evaluator(path,expected_manifest_sha256=manifest_digest,
+                             expected_reference_digest=ref_digest,produce_score=produce)
+            seed = science.matched_hidden_seed(1,"pendulum",0)
+            units = {"persist":evaluator.evaluate("persist",reference[0],seed_key=seed),
+                     "reset":evaluator.evaluate("reset",reference[1],seed_key=seed),
+                     "random":evaluator.evaluate("random",reference[0],seed_key=seed),
+                     "evolution":evaluator.evaluate("evolution",reference[1],seed_key=seed)}
+            blocked = False
+            try:evaluator.training_must_not_see(evaluator._hidden_outcomes)
+            except RuntimeError:blocked = True
+            cases.append({"unobserved_extreme":extreme,"units":units,"hidden_feedback_blocked":blocked,
+                          "physical":evaluator.physical,"cached":evaluator.cached,"logical":evaluator.logical,
+                          "outcomes":evaluator._hidden_outcomes})
+    preserved = all(lock.file_sha256(ROOT/p)==h for p,h in old.items())
+    valid = (cases[0]["units"]==cases[1]["units"] and calls==4 and preserved
+             and all(c["units"]["persist"]!=c["units"]["reset"] and c["hidden_feedback_blocked"]
+                     and (c["physical"],c["cached"],c["logical"])==(2,2,4) for c in cases))
+    if not valid or time.perf_counter()-t0>=10:raise RuntimeError("prospective_integration_audit_failed_or_capped")
+    return {"declared_complete":True,"scientific":False,"manifest":manifest,"manifest_sha256":manifest_digest,
+            "cases":cases,"historical_artifacts_sha256":old,"historical_artifacts_preserved":preserved,
+            "resources":{"wall_s":time.perf_counter()-t0,"cpu_s":time.process_time()-cpu0,
+                         "reference_raw_lookups":2,"query_raw_lookups":calls,"query_logical_receipts":8,
+                         "real_interactions":0,"imagined_transitions":0,"model_inference":0,
+                         "neural_training":0,"proposer_feedback_updates":0,"cap_s":10},
+            "scientific_ledger":{"used_s":327.869,"remaining_s":3272.131},
+            "limitations":["Synthetic trusted-process integration, not an authorization or security sandbox.",
+                           "Expected manifest/reference digests must come from a committed trusted protocol.",
+                           "Historical paths are unchanged; no scientific runner was enabled or rerun.",
+                           "No learning, control improvement or learning-to-learn hypothesis was evaluated."]}
+
+
 def persist_reset_matched(seed: int = 7) -> dict:
     persist = PersistentAdaptive(seed=int(seed))
     reset = ResetAdaptive(seed=int(seed))
