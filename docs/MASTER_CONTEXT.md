@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Current implementation — Seed grounded architecture
+
+The active request extends the finite Seed engine with a shared multimodal GRU,
+RSSM-inspired h/z model, learned prototype retrieval, bounded neural program
+proposals, value-pruned planning, information actions, an existing-controller
+outer adapter and a local trace decoder. The finite engine and historical
+research remain preserved. This is an authored prototype, not general language
+understanding or demonstrated AGI. See NEXUS_SEED_GROUNDED_PROTOCOL.md. Its single
+bounded pilot is pending at protocol commit. The earlier command-MLP scaffold
+was preserved without running its proposed pilot. Carried ledger remains
+1845.6321034559958 / 1754.3678965440042 until new execution is recorded.
+
 ## Current presentation and direction — Seed first
 
 The repository front door now focuses on NEXUS Seed: local, teachable finite

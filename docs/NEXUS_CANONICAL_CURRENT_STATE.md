@@ -1,5 +1,11 @@
 # NEXUS canonical current state
 
+Active extension: optional Seed grounded GRU/RSSM runtime. Reuse: existing world
+package, RandomShootingMPC, neural factory, expression evaluator, existing
+EpsilonGreedyController and Session/E1 Journal. The finite engine remains.
+See NEXUS_SEED_GROUNDED_PROTOCOL.md; one pilot is pending at protocol commit.
+Architecture functionality is not evidence of control or general learning.
+
 Seed is the current front-door research direction. docs/README.md separates
 current teaching/architecture/evidence from retained historical tracks. Repository
 refresh is documentation/developer tooling only: no runtime engine/model,

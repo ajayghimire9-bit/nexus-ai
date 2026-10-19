@@ -112,6 +112,7 @@ class Session:
         self.cost_guard = None
         self.language_encoder = language_encoder
         self.meta_questions = meta_questions
+        self.grounded_agent = None
 
     def charge(self, key, amount=1):
         if self.cost_guard is not None:
@@ -166,6 +167,8 @@ class Session:
         payload = dict(word=word, object=obj, positive=positive, supersedes=supersedes)
         ref = self.event('seed_teaching', payload)
         self.evidence.append(dict(payload, ref=ref))
+        if self.grounded_agent is not None:
+            self.grounded_agent.teaching_observed(self,word,obj,positive,supersedes,ref)
         if (previous_question and previous_question['word']==word and
                 previous_question['object']==obj and supersedes is None):
             before=previous_question['remaining']
@@ -208,6 +211,9 @@ class Session:
                     alternatives=[p.description for p in pool])
 
     def resolve(self, reference):
+        if self.grounded_agent is not None:
+            approved=self.grounded_agent.resolve_concept(self,reference)
+            if approved is not None:return approved,None
         direct = [o['id'] for o in self.world if o['id'] == reference]
         if direct:
             return direct, None
@@ -278,6 +284,7 @@ class Session:
                       'question': {'op','word'}, 'scene': {'op','number'}, 'stop': {'op'},
                       'resume': {'op'}, 'define': {'op','word','predicate'}}
             fields['plan']={'op','reference','x','y'}
+            fields['grounded']={'op','action','reference','x','y','word'}
             if op not in fields or (set(payload) != fields[op] and not (op=='question' and set(payload)=={'op','word','mode'})):
                 raise ValueError('request_schema')
             if op == 'stop' or op == 'message' and payload['text'] == 'stop':
@@ -290,6 +297,10 @@ class Session:
                 result = dict(type='resumed', text='Session resumed.')
             elif self.stopped:
                 result = dict(type='stopped', text='Resume explicitly first.')
+            elif op=='grounded':
+                if self.grounded_agent is None:raise ValueError('grounded_model_not_enabled_by_local_owner')
+                response=self.grounded_agent.request(self,payload['action'],payload['reference'],payload['x'],payload['y'],payload['word'])
+                result=dict(response,type=response['status'])
             elif op in ('teach', 'correct'):
                 ref = self.teach(payload['word'], payload['object'], payload['positive'], payload.get('supersedes'))
                 pool = self.candidates(payload['word'])
@@ -356,6 +367,12 @@ class Session:
                 concept_learning='version_space',reasoning='bounded_typed_programs',
                 questions='experimental_existing_meta_controller' if self.meta_questions else 'active_disagreement',
                 generation='templates',learned_recurrent_memory=False,learning_to_learn_demonstrated=False)
+            if self.grounded_agent is not None:
+                state['grounded']=dict(enabled=True,model_hash=self.grounded_agent.model_hash,
+                    architecture='shared_multimodal_GRU_RSSM',h_size=32,z_size=8,
+                    approved_concepts=list(self.grounded_agent.approved(self)),
+                    h_norm=float(self.grounded_agent.h.norm()),z_norm=float(self.grounded_agent.z.norm()),
+                    language='trained_trace_decoder_with_factual_template_gate',claim='authored_development_prototype')
         except TimeoutError:
             state = dict(world=self.world, costs=dict(self.counts), incomplete=True)
         return dict(text=result.pop('text'), response_type=result.pop('type'),
@@ -417,6 +434,10 @@ class Session:
                 if (p['policy']!=choice['policy'] or p['before']!=before or p['after']!=after or
                         type(p['reduction']) not in (int,float) or p['reduction']!=reduction):
                     raise ValueError('saved_feedback_not_reproduced')
+                s.event(event.kind,p)
+            elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information'):
+                from .grounded_records import validate_record
+                validate_record(event.kind,p,s)
                 s.event(event.kind,p)
             else:
                 raise ValueError('unknown_saved_event')

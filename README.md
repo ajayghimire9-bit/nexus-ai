@@ -6,6 +6,12 @@
 
 ## What is NEXUS?
 
+**New optional grounded prototype:** shared text/pixel/proprioceptive GRU,
+recurrent h/z world model, concept programs, latent planning and local trace
+decoder. [Try it](docs/seed/GROUNDED_QUICKSTART.md) ·
+[Locked pilot protocol](docs/NEXUS_SEED_GROUNDED_PROTOCOL.md).
+Architecture functionality is distinct from measured learning or generalization.
+
 NEXUS investigates compact, adaptive intelligence that can learn from experience,
 plan, transfer knowledge, and eventually improve how it learns. **NEXUS Seed is
 the current development direction:** a small agent you can teach through a real
