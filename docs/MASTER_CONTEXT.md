@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.28 source-only readiness audit, 2026-10-19
+
+Scientific study remains blocked: E2.27's synthetic manifest integration
+does not replace the historical method-independent scientific loop.
+Fixture max predicted scores are not observed control returns. Prospective
+shared-reference fairness, exact n=10 raw-cell analysis and interrupted-work
+settlement remain unresolved. Twelve source-array hashes match; six local
+fit files lack original checkpoint digests. No collection/model execution,
+new allocation or hypothesis test; ledger327.869/3272.131 unchanged.
+Next is a source-only real-return scoring contract using existing evaluator
+and ledger modules. See `NEXUS_E2_28_METHOD_SENSITIVE_READINESS.md`.
+Earlier recommendations remain history, not simultaneous execution tasks.
+
 ## Latest — E2.27 prospective frozen-feedback integration, 2026-10-19
 
 The existing method-sensitive evaluator now has an opt-in manifest-gated

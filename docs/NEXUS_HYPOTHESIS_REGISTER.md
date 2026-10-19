@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E2.28 readiness review, no scientific hypothesis evaluated
+
+Verdict BLOCKED_SCIENTIFIC_RUNNER_AND_PROTOCOL_GAPS. E2.27 establishes
+synthetic boundary correctness, not real-return labels or a complete n=10
+comparison. Forecast fixtures cannot establish useful learned proposal
+transfer. No existing hypothesis is reopened, promoted or retested. Source
+and artifact integrity checks are engineering evidence only. Report
+`NEXUS_E2_28_METHOD_SENSITIVE_READINESS.md`; ledger unchanged.
+
 ## Latest — E2.27 prospective evaluation contract, engineering pass only
 
 Manifest-gated frozen feedback preserves selected-planner sensitivity,

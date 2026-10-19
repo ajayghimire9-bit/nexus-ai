@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.28 blocked: implement real-return scoring contract source-only
+
+One next milestone: connect the existing prospective evaluator contract to
+authored real-return-shaped receipts, with a shared source-reference rule,
+complete raw family/slot grid, clipping sensitivity, ten-bundle statistics
+and reservation-ledger failure settlement. Test without environments,
+models, proposer learning, new seeds/physics or allocations. Existing fixture
+scores are forecasts; the scientific loop remains method-independent.
+Do not start a new predictor/memory stack or scientific screen. Only after
+this contract is auditable should a real study be proposed. Report
+`NEXUS_E2_28_METHOD_SENSITIVE_READINESS.md`. Older entries are history.
+
 ## Current — E2.27 integrated; audit existing scientific-study readiness
 
 Perform one source-only readiness audit of the existing method-sensitive

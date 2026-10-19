@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+E2.28 source-only audit: scientific execution remains blocked. The actual
+runner still uses E2.17's method-independent loop; the corrected helper is
+not wired to the manifest factory; fixture scores are forecasts, not real
+returns. n=10 analysis, reference fairness and interrupted-work accounting
+remain gaps. Twelve source-array hashes verify; six local fit files have no
+original recorded digest. No collection, model execution or ledger change.
+Next: one source-only real-return scoring contract in existing modules.
+See `NEXUS_E2_28_METHOD_SENSITIVE_READINESS.md`.
+
 E2.27 integrates the training-frozen scale via the existing method-sensitive
 evaluator's opt-in `prospective_hidden_evaluator` factory. Saved manifests
 gate callbacks; guards precede cache hits; raw outcomes and clipping are

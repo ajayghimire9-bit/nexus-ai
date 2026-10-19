@@ -142,3 +142,48 @@ This addresses the specific forecast-versus-real-quality gap; do not start
 another proxy predictor, allocate science, register holdouts or train models.
 Only after this contract is auditable should a separate real study be proposed.
 No learning-to-learn or general control improvement is demonstrated here.
+
+## Completed source-only capture
+
+Execution commit `3ef36da48711d4519d9aaafeef8a0aa714b7ff22`.
+Artifact `artifacts/evolution2_28_method_sensitive_readiness.json`, SHA256
+`1f500d6e8e06d3fb9cc85d98330d073a7a3617a05e7ce4b1742e8027bb094d91`.
+All 310 existing JSON files remained byte-identical; all twelve recorded
+E2.17 source-array hashes matched. All six fit files are locally present;
+their original expected checkpoint hashes are missing, explicitly null in
+this inventory. E2.27's saved manifest and executed Python hashes verify.
+No claim of independently authenticated historical fit provenance is made.
+
+Audit wall time 0.2383 seconds, CPU 0.2345 seconds. Zero environment steps,
+imagined transitions, model inference, training, allocations or scientific
+ledger debit. The artifact's `review_complete` describes this source review;
+`scientific_execution_ready` remains false. E2.17 stays inconclusive and H17
+blocked.
+
+Focused evidence tests: 16 passed. Combined relevant regression selection:
+152 passed (final command below). No full historical suite was run: historical
+artifact writers and model/planner execution are outside this source-only
+scope. First regression selection, before the additional provenance test,
+passed 151; no failed test run was hidden.
+
+Reproduce the tests without creating scientific outcomes:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest \
+  tests/test_evolution2_readiness_audit.py \
+  tests/test_evolution2_feedback_integration.py \
+  tests/test_evolution2_feedback_normalization.py \
+  tests/test_evolution2_pendulum_acrobot_protocol_v2_pilot.py \
+  tests/test_evolution1_resources.py tests/test_evolution1_toy_loop.py \
+  tests/test_evolution2_cross_task_screen.py \
+  tests/test_evolution2_evolutionary_search.py \
+  tests/test_evolution2_persist_reset_scoring.py::test_hidden_isolation_allows_fingerprint_overlap_not_hidden_returns \
+  tests/test_evolution2_persist_reset_scoring.py::test_persist_reset_crn_and_separate_controls \
+  -p no:cacheprovider -o addopts='' -q
+```
+
+Original audit command: `PYTHONDONTWRITEBYTECODE=1 python3
+scripts/audit_evolution2_28_readiness.py`. It refuses to overwrite its saved
+capture. `collect()` can inspect files read-only; do not rerun a historical
+writer. The artifact records source hashes and current fit hashes, not a
+new authorization. The single next milestone above remains unexecuted.

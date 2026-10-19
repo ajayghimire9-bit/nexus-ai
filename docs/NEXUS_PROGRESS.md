@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — E2.28 targeted readiness review, science blocked
+
+Audited actual scientific/fixture paths, baseline information, statistics,
+provenance and accounting. The manifest factory is not wired to a prospective
+real-return study; n=10 is not implemented by the old n=3 analyzer. Existing
+source-array hashes verify, but original fit digests are absent. Source-only
+audit captured in0.2383s with zero scientific work;152 relevant tests pass.
+Prior JSON/checkpoints and ledger preserved. Report
+`NEXUS_E2_28_METHOD_SENSITIVE_READINESS.md`. No learning-to-learn claim.
+
 ## Latest — E2.27 manifest-gated evaluator integration, synthetic pass
 
 Training-frozen scaling is integrated into the existing method-sensitive
