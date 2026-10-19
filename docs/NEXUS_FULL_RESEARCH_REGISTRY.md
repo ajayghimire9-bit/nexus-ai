@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Supplemental E3.11 codex/e3-11-fresh-post-probe, protocol/execution
+048d06cb3d779ccba0668f4d327aca4701673480.12 training/16 evaluation pairs,
+complete56 actual192-step continuations; contextual-minus-mean0 both families,
+same choices16/16. Screen fails.15/16 first-action forecast collapse; no sole
+causal attribution.10976 real/16129288 imagined/638596 forwards,2 ridge fits,
+0 neural updates. Wall91.809703s+audit5.068857s; ledger884.5235102100257/
+2715.476489789974.539 relevant tests;375 prior JSON/frozen files preserved.
+Raw artifacts e3_11_*, six lossless journals; report NEXUS_E3_11_POST_PROBE_RESULTS.md.
+
 Supplemental E3.10 codex/e3-10-metered-model-integration. Protocol/execution
 dc52c849c7de7f35affcb57d081e3f0d441a407f. Eight frozen-model evidence/direct
 cells match scores/states/rankings exactly, resource hooks reconcile512 calls/

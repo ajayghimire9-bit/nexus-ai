@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Latest E3.11: registered fresh post-probe comparison complete but no gain;
+contextual=model mean in all16 choices, primary family differences0. First
+actions agree15/16, collapsing common-tail forecasts.10976 real/16129288
+imagined/638596 observed forwards,0 neural training.539 relevant tests; frozen
+files/375 prior JSON unchanged. Wall91.809703s+audit5.068857s; ledger
+884.5235102100257/2715.476489789974. No general-control or L2L claim. Next
+source-only controller-specific rollout headroom question, not more E3.11
+evaluation fitting. Report NEXUS_E3_11_POST_PROBE_RESULTS.md.
+
 Latest E3.10: actual four frozen source residual MLPs pass metered/direct
 inference equality in8 cells.8192 imagined/512 observed forwards,0 real
 steps or training;521 relevant tests. Frozen files/buffers/RMS and370 prior

@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — E3.11 complete, no selection gain
+
+All28 contexts/56 control continuations completed on fresh source seeds;
+contextual equals mean choices16/16, both family gains0, registered screen
+fails. Common-tail evidence identical when first actions agree15/16; no useful
+return-selection improvement demonstrated.10976 real/16129288 imagined/
+638596 forwards;91.809703s plus5.068857s saved-data audit,0 neural fitting.
+539 relevant tests,375 historical JSON and frozen files unchanged. Ledger
+884.5235102100257/2715.476489789974. Code/protocol048d06cb3d779ccba0668f4d327aca4701673480.
+Next source-only controller-specific rollout headroom audit; not executed.
+Report NEXUS_E3_11_POST_PROBE_RESULTS.md.
+
 ## Latest — E3.10 metered actual-model integration passes
 
 Actual frozen four-source-model evidence matches direct scoring in8 cells,

@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.11 fresh post-probe selection fails, 2026-10-19
+
+Protocol/execution048d06cb3d779ccba0668f4d327aca4701673480 committed first.
+12 fresh training pairs/16 evaluation pairs on4 frozen source models; all56
+paired192-step paths complete after shared8-step probes. Contextual selector
+matches model-mean choices16/16: gain0 in both families, screen fails. Zero
+intervals follow identical cached paths, not population equivalence. Pendulum
+returns contextual/mean−206.396 vs successor−134.126; Acrobot−283.153 vs
+successor−288.206. First proposals agree15/16 evaluation cases, so common-tail
+forecasts collapse by construction despite different future control policies.
+10976 real steps/16129288 imagined/638596 observed forwards,2 fixed ridge
+fits/0 neural updates. Wall91.809703s+offline audit5.068857s,375 prior JSON
+and all frozen files unchanged.539 relevant tests pass. Ledger884.5235102100257/
+2715.476489789974. Next: separately registered source-only controller-specific
+rollout headroom audit, not more fitting on closed E3.11 evaluation or E3.12
+execution. No generalization/L2L claim. Report NEXUS_E3_11_POST_PROBE_RESULTS.md.
+
 ## Latest — E3.10 frozen-model inference path verified, 2026-10-19
 
 Committed dc52c849c7de7f35affcb57d081e3f0d441a407f before one engineering

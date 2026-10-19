@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — controller-specific rollout evidence headroom audit
+
+E3.11 complete/failed:0 contextual-minus-mean return in both families, identical
+choices16/16. First-action agreement15/16 makes common-tail forecasts identical
+in those cases; three models have no varying reward/survival-gap feature on
+evaluation. Next single question: can source-only imagined rollouts that follow
+each controller's repeated decision rule distinguish its behavior when first
+actions agree? Lock a small inference cap and criteria on original permitted
+source observations; do not fit/select on now-closed E3.11 evaluations. This
+is a proposed headroom audit, not executed/allocated or a reason for larger
+networks/mutation search. Ledger884.5235102100257/2715.476489789974.
+Report NEXUS_E3_11_POST_PROBE_RESULTS.md. Earlier entries remain history.
+
 ## Current — E3.11 fresh post-probe actual-return comparison
 
 E3.10 verifies actual frozen-model path:8 cells identical to direct scorer,

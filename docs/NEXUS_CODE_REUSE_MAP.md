@@ -1,5 +1,16 @@
 # NEXUS code-reuse map
 
+E3.11 post_probe is a phase/host adapter over SAME StagedStudy, EpisodeContext,
+AdvantagePredictor, generated_strategies.execute, planner_evidence and ledger.
+Host binds actual frozen models/TaskSpec wrappers; deepcopy restores complete
+post-probe simulator/RNG/time-limit state, never learner input. ProbeSelector
+fits2 existing ridge models, not another learner. Existing DecisionJournal
+stores per-call receipts once; StagedStudy receives explicitly labeled path
+summaries. Cached selector returns do not reexecute/count physical episodes.
+scripts/run_e3_11_post_probe.py allocation consumed; --verify replays saved
+data only. summarize_e3_11_post_probe.py exports verified CSV/JSON without
+runtime imports. Screen fails,539 tests. See E3.11 results; no E3.12 promotion.
+
 E3.10 ForwardCheckedStep extends SAME planner_evidence and uses existing
 ReservationLedger tickets to bound/observe one top-level net call per step.
 Host scripts/run_e3_10_metered_model.py binds exact CPU WorldModel residual

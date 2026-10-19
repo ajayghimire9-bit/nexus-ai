@@ -3,6 +3,7 @@ from copy import deepcopy
 import importlib.util
 import itertools
 import json
+import hashlib
 from pathlib import Path
 import numpy as np
 import pytest
@@ -140,3 +141,25 @@ def test_budget_and_shared_probe_difference_identity():
     c=config();assert c['real_cap']==28*(8+2*192)==10976
     assert c['imagined_cap']==28*(2*192*1536+2*1536+512+8)
     for probe,a,b in [(-5.,-20.,-30.),(1.,2.,-3.)]:assert (probe+a)-(probe+b)==a-b
+
+
+def test_saved_result_replay_without_local_checkpoints_or_models():
+    path=ROOT/'artifacts/e3_11_post_probe.json';raw=path.read_bytes();p=json.loads(raw)
+    v=json.loads((ROOT/'artifacts/e3_11_post_probe_validation.json').read_text())
+    assert v['valid'] and v['capture_sha256']==hashlib.sha256(raw).hexdigest()
+    assert h.validate(p,config()) and h.analyze(p['pairs'],config())==p['analysis']
+    rows=[r for r in p['pairs'] if r['role']=='evaluation']
+    same=[r for r in rows if r['proposed_actions']['rank_blend']==r['proposed_actions']['successor_anchor']]
+    assert len(same)==15
+    assert all(r['evidence']['rank_blend']['scores']==r['evidence']['successor_anchor']['scores'] for r in same)
+    assert all(r['decision']['choices']['contextual_selector']==r['decision']['choices']['model_mean'] for r in rows)
+
+
+def test_exporter_rejects_unverified_capture_without_writing_outputs(tmp_path,monkeypatch):
+    path=ROOT/'scripts/summarize_e3_11_post_probe.py'
+    spec=importlib.util.spec_from_file_location('summary_e311',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    monkeypatch.setattr(m,'ROOT',tmp_path);folder=tmp_path/'artifacts';folder.mkdir()
+    (folder/'e3_11_post_probe.json').write_text(json.dumps(dict(declared_complete=True)))
+    (folder/'e3_11_post_probe_validation.json').write_text(json.dumps(dict(valid=False)))
+    with pytest.raises(ValueError,match='verified_capture'):m.main()
+    assert not (folder/'e3_11_summary.json').exists()

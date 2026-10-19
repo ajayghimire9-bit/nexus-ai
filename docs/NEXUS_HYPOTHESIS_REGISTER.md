@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-evidence post-probe selection not established (E3.11)
+
+Precommitted fresh-source comparison complete: contextual-minus-model-mean
+return0 for both families and all4 models, identical choices16/16. Registered
+>=1 family/all-model-positive screen fails. Zero-width paired intervals are
+structural cached-path identity, not proof of population equivalence. Two
+models/family only. First-action/common-tail evidence collapses15/16 held-out
+contexts; normalized probe residuals vary. No causal proof of sole failure
+mechanism. Next separately lock a controller-specific imagined-rollout headroom
+audit on permitted source observations; no fitting on these closed evaluation
+episodes. See NEXUS_E3_11_POST_PROBE_RESULTS.md. Historical hypotheses unchanged.
+
 ## Latest — E3.10 engineering equivalence verified; utility untested
 
 Metered evidence equals direct existing scoring on four frozen source MLPs,
