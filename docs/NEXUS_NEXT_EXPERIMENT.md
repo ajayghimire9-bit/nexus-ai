@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — cross frozen Pendulum models over identical reset/search streams
+
+One next proposal: rank blend versus successor, both unchanged Pendulum models
+each receiving the same four new reset seeds and per-step planner streams.
+This crosses the model factor with initial-state/search draws, unlike the
+previous model-index seed blocks.3200 real steps,4,915,200 imagined ceiling,
+estimated20–30s CPU, proposed90s cap. Register new seeds and a separate protocol/
+branch before collection. Not executed or allocated in this branch.
+The repeated Acrobot gain is descriptive; Pendulum mean sign reversed while
+model-block signs disagree, so first separate that confound before training a
+quality selector. Report `NEXUS_UNIFIED_FULL_POLICY_REPLICATION_RESULTS.md`.
+All older next-step entries below are retained history, not active allocations.
+
 ## Current — independently replicate the family-specific rank-blend signal
 
 One next proposal: rank blend versus both unchanged anchors, four fresh paired

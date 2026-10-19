@@ -93,3 +93,25 @@ def test_new_exact_allocation_and_parent_hashes_are_separate():
     assert allocation['env_cap']==9600 and allocation['runs']==1 and not allocation['automatic_retry']
     for name,expected in allocation['parent_artifacts_sha256'].items():h.verify_file(h.ROOT/name,expected)
     assert paths['usage']!=h.USAGE
+
+
+def test_saved_replication_grid_without_checkpoint_binaries():
+    c=json.loads(r.CONFIG.read_text());p=json.loads(h.run_paths(c)['result'].read_text())
+    validation=json.loads(r.VALIDATION.read_text())
+    assert validation['capture_sha256']==h.sha(h.run_paths(c)['result'])
+    assert h.validate_result(p,c) and p['declared_complete']
+    assert h.analyze(p['episodes'],c)==p['analysis']
+    assert r.directional_screen(p)==p['directional_screen']
+    assert validation['decision_journals']==9600
+    assert validation['completed']==p['resources']['completed']
+
+
+def test_recorded_frozen_states_match_parent_models_exactly():
+    c=json.loads(r.CONFIG.read_text());p=json.loads(h.run_paths(c)['result'].read_text())
+    old=json.loads(h.RESULT.read_text())
+    original={(x['family'],x['bundle']):x for x in old['models']}
+    assert len(p['models'])==4
+    for model in p['models']:
+        parent=original[(model['family'],model['bundle'])]
+        assert model['before']==model['after']==parent['before']==parent['after']
+        assert model['sha256']==parent['sha256']

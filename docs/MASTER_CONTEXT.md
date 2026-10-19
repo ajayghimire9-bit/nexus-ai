@@ -1,5 +1,23 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — fixed-policy fresh-episode replication, 2026-10-19
+
+Registered source replication completed48×200-step episodes on the same four
+frozen E2.9 models; no fitting or confirmation. Acrobot rank blend repeats its
+descriptive gain against flat/successor (+15.317/+19.298), both models positive.
+Pendulum mean versus successor reverses to+87.762, but model blocks+245.452
+and−69.928 disagree; neither consistent benefit nor harm is established there.
+Cross-family point screen still fails. Model-specific reset blocks confound
+attribution of that disagreement to model quality rather than state/search draws.
+No new independent models, n=2/family; no inference/general-control/L2L claim.
+All320 previous JSON and four parameter/RMS fingerprints preserved.9600 real
+steps,14,457,600 imagined,58.675150s experiment plus12.799022s offline audit.
+Ledger455.414043459/3144.585956541. Protocol0179cb7073cca09e4f263414e97502543766465c;
+report `NEXUS_UNIFIED_FULL_POLICY_REPLICATION_RESULTS.md`. One next proposal:
+cross both Pendulum models over identical new reset/planner streams, rank blend
+versus successor;3200 real steps,90s proposed cap, not executed. Older pending
+entries below are history. No checkpoint, main or historical gate changed.
+
 ## Latest — full-policy source screen executed, mixed, 2026-10-19
 
 Human-requested bounded source-physics comparison completed32×200-step episodes

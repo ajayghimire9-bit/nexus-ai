@@ -1,5 +1,16 @@
 # NEXUS canonical current state
 
+Latest fixed-policy source replication completed48 episodes. Acrobot rank-blend
+gain repeats (+15.317/+19.298 versus flat/successor), but Pendulum successor
+contrast reverses aggregate sign (+87.762) with two opposing model-block means.
+Same four models, no new independent-model or generalization claim. Model-index
+seed blocks prevent causal attribution of disagreement to weights alone. No
+cross-family point-screen pass, fitting, confirmation or useful learning claim.
+Frozen fingerprints/320 old JSON preserved; ledger455.414043459/3144.585956541.
+Report `NEXUS_UNIFIED_FULL_POLICY_REPLICATION_RESULTS.md`; reuse the host's
+second exact locked profile, not its consumed allocation. Next proposal crosses
+identical Pendulum resets/planner streams across both models, unexecuted.
+
 Latest: separate standing-grant full-policy source screen completed, with
 mixed results and no cross-family point-screen pass. Rank blend beats both
 Acrobot anchors (+27.204/+28.647), loses to Pendulum successor (−203.758).

@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-repeat source episode screen partly supported
+
+Same frozen policies/models, fresh episodes: Acrobot rank blend beats both
+anchors by>=1 point, each model positive (+15.317/+19.298 means). Descriptive
+episode-direction replication passes. Pendulum harm versus successor does not
+repeat as an aggregate directional screen: mean+87.762, model blocks+245.452 /
+−69.928. Cross-family advantage still fails. No new model/generalization claim.
+Different model reset blocks confound a causal model-quality explanation.
+All contrasts retained in `NEXUS_UNIFIED_FULL_POLICY_REPLICATION_RESULTS.md`;
+n=2/family, no inferential CI or learning-to-learn claim. Closed seeds preserved.
+
 ## Latest — full-policy composition source headroom is family/model dependent
 
 Registered exploratory screen (>=1 point, both models positive versus both

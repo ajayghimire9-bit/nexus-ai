@@ -1,5 +1,21 @@
 # NEXUS progress log
 
+## Latest — Acrobot episode gain repeats; Pendulum aggregate sign unstable
+
+Protocol0179cb7073cca09e4f263414e97502543766465c preceded48 complete200-step
+episodes. Rank blend−flat/successor: Acrobot+15.317/+19.298, both source models
+positive; Pendulum+145.686/+87.762, opposing model-block means. Acrobot's
+descriptive replication screen passes; Pendulum harm and cross-family advantage
+screens fail. Not a new model replication or useful strategy learning result.
+Model-index reset blocks leave weight-versus-reset/search effects confounded.
+9600 real steps,14,457,600 imagined,428800 calls,58.675150s; independent offline
+audit12.799022s reconciles9600 journals/896000 events, four frozen models and320
+historical JSON. Ledger455.414043459/3144.585956541.200 selected tests passed
+before collection; final selected regression202 passed in2.52s after adding
+repository-only result checks. Report
+`NEXUS_UNIFIED_FULL_POLICY_REPLICATION_RESULTS.md`. One next proposal: crossed
+same-reset Pendulum rank-blend/successor comparison. No second experiment ran.
+
 ## Latest — bounded full-policy source execution completed, cross-family screen fails
 
 Protocol/implementation1d78d2965e04175824f53355ed2253e33bcba260 preceded

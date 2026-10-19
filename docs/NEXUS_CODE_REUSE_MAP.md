@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+The same `evolution2.full_policy_source` host now supports exactly two locked
+profiles: original screen and fresh-episode replication. `run_paths` keeps their
+configuration/allocation/usage/result/journal files separate; old evidence is
+preserved. `scripts/run_unified_full_policy_replication.py --audit` reuses the
+existing no-inference verifier with an explicit journal path. No second planner,
+resource ledger, memory or proposer. Both allocations are consumed. See
+`NEXUS_UNIFIED_FULL_POLICY_REPLICATION_RESULTS.md` for the mixed outcome.
+
 `evolution2.full_policy_source` is the one-run bounded source-physics host for
 four fixed generated/anchor controllers, using existing TaskSpec/wrappers,
 `generated_strategies.execute`, frozen WorldModel and ReservationLedger.

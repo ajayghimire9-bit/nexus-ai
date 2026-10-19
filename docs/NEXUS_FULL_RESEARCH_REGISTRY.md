@@ -1,5 +1,15 @@
 # NEXUS full research registry
 
+Supplemental completed source episode replication:
+`codex/unified-full-policy-replication`, protocol
+0179cb7073cca09e4f263414e97502543766465c.48×200 steps, same four frozen models.
+Acrobot rank-blend gain versus both anchors repeats descriptively; Pendulum
+mean versus successor changes sign, model-block means remain opposed. No new
+independent model replicates, cross-family success, fitting or confirmation.
+Report `NEXUS_UNIFIED_FULL_POLICY_REPLICATION_RESULTS.md`; capture and validation
+`artifacts/unified_full_policy_replication*.json`. Ledger455.414043459 /
+3144.585956541; previous curated rows/counts/outcomes remain unchanged.
+
 Supplemental completed exploratory entry: `codex/unified-full-policy-source-screen`,
 protocol1d78d2965e04175824f53355ed2253e33bcba260. Four fixed policies across
 four frozen source models,32 full episodes,6400 actual environment steps.
