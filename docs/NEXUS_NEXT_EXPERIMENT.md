@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — measure mutation learning against actual paired outcomes
+
+Bounded cycle/UI integration is implemented but all authored-fixture utility
+screens fail. Prefer one registered E3.12 real parent–child credit comparison
+against random generation on fresh source episodes, using existing trusted
+host and new complete-reward/receipt bridge. Equal trials and resource caps,
+training/selection/query separation, immutable models and independent model
+aggregation are required. No new real study has run; do not treat toy utilities,
+responsive weights or rolled-back fixture promotions as general learning.
+Ledger1024.6735364600015/2575.3264635399983. See bounded-cycle report; older
+action-matched replay proposal remains recorded history, not another executed
+experiment. No repeat of closed forecast/confirmation results.
+
 ## Current — action-matched rollout calibration, source-only proposal
 
 E3.11D64-versus16 forecast screen fails both families; extending outer forecast

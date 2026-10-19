@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — bounded learning-cycle integration, fixture screens fail
+
+Execution03a34156bf040e088834fa08199b00ffe245e20f precommitted protocol/code.
+Existing generator/TaskStream/meta-controller/promotion harness now connect
+mutation credit, vetted mean/recent/conservative updates, frozen-rule transfer,
+and audit rollback. Measured-path bridge rejects incomplete/unmatched receipts.
+132 authored-fixture runs complete; all E3.12–14/E4.0–4.1 fixture screens fail.
+Mutation-vs-random utility−.0164, persistent-vs-reset return-A−.0479; no real
+capability established.33824 fixture calls,0 real/imagined/neural work,4.239550s
++verification.316735s.398 previous JSON preserved; ledger1024.6735364600015/
+2575.3264635399983. Local Learning Lab adds verified control replay and capped
+fixture playground, plus offline interactive replay; real simulator backend
+disabled.680 relevant tests pass; localhost preview timed out, no browser visual
+QA claim. See NEXUS_BOUNDED_LEARNING_CYCLE.md. E3.11D negative remains closed.
+
 ## Latest — E3.11D longer-horizon calibration fails, 2026-10-19
 
 Execution4e6be2f2b36a21843ed8804a8018046ab0133bf8 precommitted;16 fresh paired

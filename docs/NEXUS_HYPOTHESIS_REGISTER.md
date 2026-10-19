@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — bounded cycle mechanics demonstrated; utility unestablished
+
+Authored-fixture E3.12/E3.13/E3.14/E4.0/E4.1 screens all fail in132 paired
+method/bank runs. Actual feedback changes proposal preferences but mutation
+transfer gain−.0164 and memory return-A gain−.0479 versus controls; intervals
+include0. No real-environment learning claim. Existing E3.11D failed longer
+forecast test is not rerun as E3.11C. Next one proposed real measured parent–child
+credit comparison, not a new success label. See NEXUS_BOUNDED_LEARNING_CYCLE.md.
+
 ## Latest — E3.11D longer forecast usefulness not established
 
 64 versus16-prefix forecast comparison fails both family practical screens.

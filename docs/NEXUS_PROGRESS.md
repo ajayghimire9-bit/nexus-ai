@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — bounded mutation/rule/stream integration and Learning Lab
+
+Implemented a cycle over existing generator, TaskStream, controller and E1
+promotion gate; added actual-path receipt bridge and local/offline application.
+132 authored utility-bank runs complete, all five fixture utility screens fail;
+1583 responsive preference updates/110 rollbacks are functionality, not useful
+self-improvement.33824 fixture calls,0 new real/imagined/neural work.398 old
+JSON preserved.4.239550s+audit.316735s; ledger1024.6735364600015/2575.3264635399983.
+680 relevant tests; mocked HTTP/client QA passed, real localhost preview failed.
+No model, planner, historical result or main merge. See bounded-cycle report.
+
 ## Latest — E3.11D longer horizon complete, utility screen fails
 
 Compared64-step imagined forecasts with cached16-prefix and training means on

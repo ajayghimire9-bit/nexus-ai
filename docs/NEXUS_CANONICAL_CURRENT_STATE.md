@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Latest bounded-cycle integration: working source-only fixture loop and local
+Learning Lab, not proven continual/self-improving learning. All five fixture
+performance screens fail across132 runs.0 new real/imagined/neural work;
+398 prior JSON preserved,680 relevant tests. Ledger1024.6735364600015/
+2575.3264635399983. Offline recorded-decision app works without a server;
+local-server visual QA remains blocked by loopback timeout. See bounded-cycle
+report. Actual measured parent–child learning study remains proposed.
+
 Latest E3.11D: longer_horizon_utility_not_established.64-step forecast accuracy
 62.5%/37.5% versus16-step62.5%/62.5%; selected-return differences−13.777/−6.953
 with both model-level intervals including0.16 fresh paired source cases,0 fits.

@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Supplemental codex/bounded-learning-cycle-and-lab, precommitted source/protocol
+03a34156bf040e088834fa08199b00ffe245e20f.132 authored-fixture runs: all five
+utility screens fail; working integration is not real-world learning evidence.
+33824 utility calls,0 real/imagined/neural work,4.239550s+audit.316735s.
+398 old JSON preserved; ledger1024.6735364600015/2575.3264635399983.680 relevant
+tests. New offline/local Learning Lab; actual browser QA blocked. Artifacts
+bounded_learning_cycle*, nexus_learning_lab_app.html; report/protocol separate.
+
 Supplemental E3.11D codex/e3-11d-longer-horizon-calibration, precommitted source
 4e6be2f2b36a21843ed8804a8018046ab0133bf8.16 fresh paired cases, four frozen
 source models.64-step vs16-prefix/mean utility screen fails both families;

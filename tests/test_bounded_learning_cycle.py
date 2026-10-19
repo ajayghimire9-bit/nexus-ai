@@ -220,3 +220,18 @@ console.log('client interactions verified with mocked DOM; not browser visual QA
 '''
     result=subprocess.run(['/opt/homebrew/bin/node','-e',script],input=json.dumps(payload),text=True,capture_output=True,cwd=ROOT)
     assert result.returncode==0,result.stderr
+
+
+def test_offline_app_embeds_verified_replays_and_disables_live_execution():
+    m=load_script('build_learning_lab_app');page=m.build()
+    assert 'offlineData=' in page and 'Offline replay only' in page
+    assert 'fixtures_enabled": false' in page
+    result=subprocess.run(['/opt/homebrew/bin/node','-e',r"const fs=require('fs'),vm=require('vm');let html='';process.stdin.on('data',s=>html+=s);process.stdin.on('end',()=>{for(const s of html.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(s[1]);});"],input=page,text=True,capture_output=True)
+    assert result.returncode==0,result.stderr
+
+
+def test_saved_fixture_benchmark_validates_without_recomputing_utilities(monkeypatch):
+    m=load_script('run_bounded_learning_cycle');p=json.loads(m.RESULT.read_text());c=m.settings()
+    monkeypatch.setattr(FixtureHost,'evaluate',lambda *args:(_ for _ in ()).throw(AssertionError('no rescore')))
+    assert p['declared_complete'] and m.analyze(p,c)==p['analysis'] and len(p['rows'])==132
+    assert p['scientific'] is False and p['new_real_steps']==p['new_imagined_transitions']==p['neural_inference']==0
