@@ -1,6 +1,7 @@
 """Bounded offline training-feedback audit. No collection/model execution."""
 import argparse
 import json
+import os
 import platform
 import signal
 import subprocess
@@ -20,6 +21,21 @@ FROZEN=ROOT/'artifacts/e3_3_frozen_fold_predictions.json'
 USAGE=ROOT/'artifacts/e3_3_training_feedback_usage.json'
 VALIDATION=ROOT/'artifacts/e3_3_training_feedback_validation.json'
 PREVIOUS=ROOT/'artifacts/e3_2_return_feedback_validation.json'
+PROFILE='e3_3'
+
+
+def configure_residual():
+    """Exact second profile; no arbitrary input or target registration."""
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,FROZEN,USAGE,VALIDATION,PREVIOUS,PROFILE
+    PROFILE='e3_5'
+    CONFIG=ROOT/'configs/e3_5_residual_advantage.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_5_RESIDUAL_ADVANTAGE_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_5_residual_advantage_allocation.json'
+    RESULT=ROOT/'artifacts/e3_5_residual_advantage.json'
+    FROZEN=ROOT/'artifacts/e3_5_frozen_fold_predictions.json'
+    USAGE=ROOT/'artifacts/e3_5_residual_advantage_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_5_residual_advantage_validation.json'
+    PREVIOUS=ROOT/'artifacts/e3_4_feedback_coverage_validation.json'
 
 
 def validate_config(c):
@@ -28,6 +44,10 @@ def validate_config(c):
         families=['pendulum','acrobot'],model_bundles=[0,1],training_episode_ids=[0,1,2],held_out_blocks=[0,1,2],
         feature_dimension=192,ridge=1.0,shuffle_seed_base=31,practical_return_margin=1.0,
         time_cap_s=15,env_cap=0,imagined_cap=0,neural_inference_cap=0,ridge_fit_cap=6)
+    if PROFILE=='e3_5':
+        expected.update(version='e3_5_training_residual_v1',input='artifacts/e3_4_predictor_b9.json',
+            input_sha256='5bc051a2effe1fb2c9220393881fe4a1f8ec77f08c28f9660d5d6cb8418c743a',
+            training_episode_ids=list(range(9)),held_out_blocks=list(range(9)),ridge_fit_cap=27)
     if json.dumps(c,sort_keys=True)!=json.dumps(expected,sort_keys=True):raise ValueError('locked_config')
 
 
@@ -35,7 +55,7 @@ def load_training(c):
     validate_config(c);path=ROOT/c['input'];verify_file(path,c['input_sha256'])
     saved=json.loads(path.read_text())
     bank,features=saved['training_pairs'],saved['feature_rows']
-    a.validate_bank(bank,features)
+    a.validate_bank(bank,features,PROFILE)
     return bank,features
 
 
@@ -50,16 +70,16 @@ def verify(c):
     bank,features=load_training(c);verify_file(FROZEN,p['frozen_fold_sha256'])
     frozen=json.loads(FROZEN.read_text())
     if frozen['training_projection_sha256']!=digest([bank,features]):raise ValueError('training_projection')
-    analysis=a.verify_frozen_folds(frozen['folds'],bank,features)
-    if analysis!=p['analysis'] or p['ridge_fits_completed']!=6:raise ValueError('analysis_or_fit_count')
+    analysis=a.verify_frozen_folds(frozen['folds'],bank,features,PROFILE)
+    if analysis!=p['analysis'] or p['ridge_fits_completed']!=c['ridge_fit_cap']:raise ValueError('analysis_or_fit_count')
     for name,expected in p['historical_artifacts_sha256'].items():verify_file(ROOT/name,expected)
     import hashlib
     for name,expected in p['code_sha256'].items():
         raw=subprocess.check_output(['git','show',f'{p["execution_sha"]}:{name}'],cwd=ROOT)
         if hashlib.sha256(raw).hexdigest()!=expected:raise ValueError('execution_source_hash')
     wall=time.perf_counter()-start;used=p['session_ledger']['used_after_s']+wall
-    out=dict(valid=True,capture_sha256=sha(RESULT),frozen_fold_sha256=sha(FROZEN),folds=3,predictions=12,
-        coefficient_models_verified=6,ridge_fits=0,new_real_steps=0,new_imagined_transitions=0,neural_inference=0,
+    out=dict(valid=True,capture_sha256=sha(RESULT),frozen_fold_sha256=sha(FROZEN),folds=len(c['held_out_blocks']),predictions=len(bank),
+        coefficient_models_verified=c['ridge_fit_cap'],ridge_fits=0,new_real_steps=0,new_imagined_transitions=0,neural_inference=0,
         historical_json_preserved=len(p['historical_artifacts_sha256']),wall_s=wall,
         session_ledger=dict(used_before_s=p['session_ledger']['used_after_s'],used_after_s=used,remaining_after_s=3600-used))
     write_new(VALIDATION,out);return out
@@ -68,18 +88,21 @@ def verify(c):
 def run(c):
     validate_config(c)
     if any(x.exists() for x in (RESULT,FROZEN,USAGE)):raise FileExistsError('one_run_only')
+    thread_env={key:os.environ.get(key) for key in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','VECLIB_MAXIMUM_THREADS')}
+    if PROFILE=='e3_5' and any(v!='1' for v in thread_env.values()):raise ValueError('single_cpu_thread_environment_required')
     if subprocess.check_output(['git','diff','HEAD','--name-only'],cwd=ROOT,text=True).strip():raise RuntimeError('commit_first')
     names=['scripts/run_e3_3_training_feedback_audit.py','src/nexus/evolution2/training_feedback_audit.py',
         'src/nexus/evolution2/generated_strategies.py','src/nexus/evolution2/planner_quality_diagnostic.py',
         'src/nexus/evolution2/return_feedback.py','tests/test_e3_3_training_feedback_audit.py']
     names += [str(p.relative_to(ROOT)) for p in (CONFIG,PROTOCOL,ALLOCATION)]
+    if PROFILE=='e3_5':names.append('tests/test_e3_5_residual_advantage.py')
     tracked=set(subprocess.check_output(['git','ls-files'],cwd=ROOT,text=True).splitlines())
     if not set(names)<=tracked:raise RuntimeError('tracked_implementation_required')
     allocation=json.loads(ALLOCATION.read_text());prior=json.loads(PREVIOUS.read_text())
     verify_file(PREVIOUS,allocation['previous_validation_sha256'])
     if not allocation['authorized'] or allocation['runs']!=1 or allocation['automatic_retry'] is not False:raise ValueError('one_run_authority')
     if allocation['config_sha256']!=sha(CONFIG) or allocation['protocol_sha256']!=sha(PROTOCOL):raise ValueError('allocation_hash')
-    if allocation['env_cap']!=0 or allocation['imagined_cap']!=0 or allocation['ridge_fit_cap']!=6:raise ValueError('allocation_caps')
+    if allocation['env_cap']!=0 or allocation['imagined_cap']!=0 or allocation['ridge_fit_cap']!=c['ridge_fit_cap']:raise ValueError('allocation_caps')
     used=prior['session_ledger']['used_after_s']
     if used!=allocation['session_used_before_s'] or allocation['time_cap_s']!=c['time_cap_s'] or used+c['time_cap_s']>3600:raise ValueError('budget')
     revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
@@ -88,10 +111,11 @@ def run(c):
     p=dict(declared_complete=False,config=c,execution_sha=revision,code_sha256={n:sha(ROOT/n) for n in names},
         dependencies=dict(python=platform.python_version(),numpy=np.__version__),ridge_fits_reserved=0,ridge_fits_completed=0,
         real_steps=0,imagined_transitions=0,neural_inference=0,folds_completed=0)
+    if PROFILE=='e3_5':p['dependencies']['thread_env']=thread_env
     def guard(stage):
         if time.perf_counter()>=deadline:raise TimeoutError('time_cap')
         if stage=='reserve':
-            if p['ridge_fits_reserved']>=6:raise ValueError('fit_cap')
+            if p['ridge_fits_reserved']>=c['ridge_fit_cap']:raise ValueError('fit_cap')
             p['ridge_fits_reserved']+=1
         elif stage=='complete':p['ridge_fits_completed']+=1
     def alarm(signum,frame):raise TimeoutError('time_cap_alarm')
@@ -101,10 +125,10 @@ def run(c):
         p['historical_artifacts_sha256']={str(f.relative_to(ROOT)):sha(f) for f in (ROOT/'artifacts').rglob('*.json') if f not in (RESULT,FROZEN,USAGE,VALIDATION)}
         bank,features=load_training(c)
         for held in c['held_out_blocks']:
-            guard('check');folds.append(a.predict_fold(bank,features,held,fit_guard=guard));p['folds_completed']+=1
+            guard('check');folds.append(a.predict_fold(bank,features,held,fit_guard=guard,profile=PROFILE));p['folds_completed']+=1
         write_new(FROZEN,dict(training_projection_sha256=digest([bank,features]),execution_sha=revision,folds=folds))
         p['frozen_fold_sha256']=sha(FROZEN);guard('check')
-        p['analysis']=a.verify_frozen_folds(folds,bank,features)
+        p['analysis']=a.verify_frozen_folds(folds,bank,features,PROFILE)
         for name,expected in p['historical_artifacts_sha256'].items():verify_file(ROOT/name,expected)
         guard('check');p['declared_complete']=True
     except (Exception,KeyboardInterrupt) as exc:
@@ -118,5 +142,6 @@ def run(c):
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--verify',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--verify',action='store_true');parser.add_argument('--residual',action='store_true');args=parser.parse_args()
+    if args.residual:configure_residual()
     c=json.loads(CONFIG.read_text());print(json.dumps(verify(c) if args.verify else run(c)))

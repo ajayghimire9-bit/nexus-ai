@@ -125,22 +125,33 @@ class AdvantagePredictor:
     def parameter_count(self):
         return 0 if not self.x else len(self.x[0])
 
-    def observe(self, x, advantage, *, event, provenance):
+    def observe(self, x, advantage, *, event, provenance, baseline=0.):
         if provenance != "revealed_source" or event in self.events:
             raise ValueError("unique_revealed_source_receipt_required")
         x = np.asarray(x, float)
-        if x.ndim != 1 or not np.isfinite(x).all() or type(advantage) not in (int, float) or not math.isfinite(advantage):
+        if (x.ndim != 1 or not np.isfinite(x).all() or type(advantage) not in (int, float) or not math.isfinite(advantage)
+            or type(baseline) not in (int,float) or not math.isfinite(baseline)):
             raise ValueError("finite_observation_required")
         if self.x and x.shape != self.x[0].shape: raise ValueError("feature_schema_mismatch")
-        self.x.append(x.copy()); self.y.append(advantage); self.events.add(event)
+        target=advantage-baseline
+        if not math.isfinite(target):raise ValueError('finite_residual_target_required')
+        self.x.append(x.copy()); self.y.append(target); self.events.add(event)
         self.model = None
 
-    def predict(self, x):
-        if not self.x: return 0.
+    def predict(self, x, *, baseline=0.):
+        """A permitted training-only mean can anchor the learned correction.
+
+        Zero baseline preserves the original direct predictor. The caller owns
+        provenance and must not supply query-conditioned or predicted rewards.
+        """
+        if type(baseline) not in (int,float) or not math.isfinite(baseline):raise ValueError('finite_baseline_required')
+        if not self.x: return baseline
         if self.model is None:
             self.model = fit_ridge(self.x, self.y)
             self.fit_calls += 1
-        return predict_ridge(self.model, x)
+        prediction=baseline+predict_ridge(self.model, x)
+        if not math.isfinite(prediction):raise ValueError('finite_prediction_required')
+        return prediction
 
 
 class StrategyGenerator:
