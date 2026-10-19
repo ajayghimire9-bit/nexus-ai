@@ -21,6 +21,19 @@ VALIDATION=ROOT/'artifacts/e3_11_post_probe_validation.json'
 PREDICTIONS=ROOT/'artifacts/e3_11_predecision.jsonl'
 FROZEN=ROOT/'artifacts/e3_11_frozen_selector.json'
 JOURNAL=ROOT/'artifacts/e3_11_resources.jsonl.gz'
+ROLLOUT_PROFILE=False
+
+
+def configure_rollout():
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,ROLLOUT_PROFILE
+    ROLLOUT_PROFILE=True
+    CONFIG=ROOT/'configs/e3_11a_rollout_headroom.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_11A_ROLLOUT_HEADROOM_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_11a_rollout_headroom_allocation.json'
+    RESULT=ROOT/'artifacts/e3_11a_rollout_headroom.json'
+    USAGE=ROOT/'artifacts/e3_11a_rollout_headroom_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_11a_rollout_headroom_validation.json'
+    JOURNAL=ROOT/'artifacts/e3_11a_rollout_resources.jsonl.gz'
 
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -212,16 +225,17 @@ def run():
         if sha(ROOT/c[key])!=c[key+'_sha256']:raise ValueError('parent_provenance')
     ledger=json.loads((ROOT/c['previous_validation']).read_text())['session_ledger']
     if ledger['used_after_s']!=c['session_used_before_s'] or c['time_cap_s']>c['session_remaining_before_s']:raise ValueError('carried_session_allowance')
-    if any(x.exists() for x in (RESULT,FROZEN,PREDICTIONS)):raise ValueError('one_run_only')
+    if any(x.exists() for x in ((RESULT,) if ROLLOUT_PROFILE else (RESULT,FROZEN,PREDICTIONS))):raise ValueError('one_run_only')
     old={str(p.relative_to(ROOT)):sha(p) for p in sorted((ROOT/'artifacts').rglob('*.json'))}
     revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip();start=time.perf_counter()
     with USAGE.open('x') as handle:json.dump(dict(consumed=True,parent_pid=os.getpid(),start_monotonic=start,execution_sha=revision,allocation_sha256=sha(ALLOCATION)),handle)
     paths=['scripts/run_e3_11_post_probe.py','src/nexus/evolution2/post_probe.py','src/nexus/evolution2/staged_study.py','src/nexus/evolution2/planner_evidence.py','src/nexus/evolution2/full_policy_source.py','src/nexus/evolution2/generated_strategies.py','src/nexus/evolution2/planner_adapter.py','src/nexus/evolution1/resources.py','src/nexus/world/dynamics.py','src/nexus/world/rewards.py','src/nexus/tasks/spec.py','src/nexus/tasks/wrappers.py']
+    if ROLLOUT_PROFILE:paths.append('src/nexus/evolution2/rollout_headroom.py')
     save(dict(execution_sha=revision,config_sha256=sha(CONFIG),protocol_sha256=sha(PROTOCOL),code_sha256={n:sha(ROOT/n) for n in paths},historical_json_sha256=old,declared_complete=False,pairs=[],models=[],active_work=None))
     env=dict(os.environ,NEXUS_E311_PARENT=str(os.getpid()),PYTHONPATH=str(ROOT/'src')+os.pathsep+str(ROOT/'.deps'),PYTHONDONTWRITEBYTECODE='1',OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',VECLIB_MAXIMUM_THREADS='1')
     error=None
     try:
-        proc=subprocess.run([sys.executable,__file__,'--worker'],env=env,cwd=ROOT,timeout=c['time_cap_s']-(time.perf_counter()-start),capture_output=True,text=True)
+        proc=subprocess.run([sys.executable,__file__,'--worker']+(['--rollout-audit'] if ROLLOUT_PROFILE else []),env=env,cwd=ROOT,timeout=c['time_cap_s']-(time.perf_counter()-start),capture_output=True,text=True)
         if proc.returncode:error=proc.stderr[-4000:]
     except subprocess.TimeoutExpired:error='time_cap'
     wall=time.perf_counter()-start;p=json.loads(RESULT.read_text())
@@ -283,6 +297,14 @@ def verify():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--verify',action='store_true');args=parser.parse_args()
-    if args.worker:worker()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--verify',action='store_true');parser.add_argument('--rollout-audit',action='store_true');args=parser.parse_args()
+    if args.rollout_audit:
+        configure_rollout()
+        if args.worker or args.verify:
+            from nexus.evolution2 import rollout_headroom
+            api=sys.modules[__name__]
+            if args.worker:rollout_headroom.worker(api)
+            else:raise SystemExit(rollout_headroom.verify(api))
+        else:raise SystemExit(run())
+    elif args.worker:worker()
     else:raise SystemExit(verify() if args.verify else run())
