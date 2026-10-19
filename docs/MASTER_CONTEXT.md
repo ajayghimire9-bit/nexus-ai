@@ -1,5 +1,25 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.1 learned-model evidence and calibration audit, 2026-10-19
+
+E3.1 reverified (not reran) the16-cell342-strategy frozen-model headroom capture
+and three source-control captures. Old neutral-tail label collapses strategies
+to1–3 first actions and has0/16 beyond-anchor headroom. Full-policy returns do
+discriminate: repeated Acrobot rank gain and crossed Pendulum bundle preferences
+remain closed evidence, not autonomous discovery success. Existing learner
+failures are not revoked. No new environment collection or planner search.
+New same-record inference on3200 transitions: model0 angular MAE0.047316 versus
+model1 0.070345, but overall MAE0.050533 versus0.034716. Recorded-state termination
+probabilities~0.0053/~0.0052, no positives or>=0.5 predictions; no causal mechanism
+established. These future-trajectory diagnostics are not pre-decision features.
+Four checkpoint/eight source-array hashes verify, two inferred models/RMS and326
+old JSON unchanged.0.669058s/6400 one-step rows; saved-data audit0.567836s; ledger
+488.629201251/3111.370798749. Protocol7e417307f6d4693971af521719ceff713aaa9762;
+report `NEXUS_E3_1_LEARNED_MODEL_HEADROOM.md`. One next proposed source-only
+experiment: existing predictor on fresh paired source-return feedback versus
+training-mean/family priors, separately registered new data only. Never fit on
+these closed control captures or future-trajectory error inputs. Not run.
+
 ## Latest — crossed-reset planner preference split, 2026-10-19
 
 Same four fresh resets/planner streams crossed over two frozen Pendulum source

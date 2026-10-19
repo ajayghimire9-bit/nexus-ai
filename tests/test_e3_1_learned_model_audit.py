@@ -103,3 +103,25 @@ def test_allocation_bound_to_protocol_and_zero_collection():
     assert allocation['protocol_sha256']==a.h.sha(a.PROTOCOL)
     assert allocation['real_interaction_cap']==0 and allocation['neural_row_cap']==6400
     assert allocation['session_used_before_s']==487.3923076680088
+
+
+def test_saved_metrics_reproduce_without_local_checkpoints():
+    p=json.loads(a.OUTPUT.read_text());v=json.loads(a.VALIDATION.read_text());c=a.config()
+    assert v['capture_sha256']==a.h.sha(a.OUTPUT) and p['declared_complete']
+    rows,slices=a.recorded_rows(c,json.loads((ROOT/'artifacts/unified_crossed_reset.json').read_text()))
+    cells=a.metric_cells(c,rows,slices,p['predictions'])
+    assert cells==p['metric_cells'] and a.summarize(c,cells)==p['summary']
+    assert a.query_hash(a.query_arrays(rows))==p['query_sha256']
+    assert p['resources']['completed']==a.Work(imagined_transitions=6400,model_calls=26,network_forwards=26).payload()
+
+
+def test_saved_headroom_and_frozen_lineage_are_not_learning_success():
+    p=json.loads(a.OUTPUT.read_text())
+    assert p['evidence']['previous_headroom']['no_positive_headroom_states']==16
+    assert p['evidence']['historical_control_steps_reused_not_new']==19200
+    assert len(p['evidence']['checkpoint_files'])==4 and len(p['evidence']['source_arrays'])==8
+    assert len(p['metric_cells'])==32 and len(p['models'])==2
+    for m in p['models']:
+        assert m['audit_before']==m['audit_after']==m['before']
+        assert m['query_sha256']==p['query_sha256']
+    assert not p['summary']['learning_to_learn_established']

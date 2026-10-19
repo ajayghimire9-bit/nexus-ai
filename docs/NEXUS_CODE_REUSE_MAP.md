@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+`scripts/audit_e3_1_learned_model.py` is a recorded-data audit, not a new learner
+or collector. Reuses headroom summarizer, full_policy_source grid/hash helpers,
+fit-clock inventory/disposable_model loader and ReservationLedger; metric cells
+cross both frozen models over the same recorded queries. No new proposer,
+memory, controller or hidden evaluator. Its source-only allocation is consumed.
+Raw predictions allow no-inference `--verify`; model binaries are required for
+explicit integrity checks, but repository-only regression reads tracked JSON.
+
 The same host now has a third exact `crossed_reset_v1` profile with shared
 model-independent reset/search streams. Invoke the existing replication runner
 with `--crossed-reset` (and `--audit` for saved-data verification); do not create

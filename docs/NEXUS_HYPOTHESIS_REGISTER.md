@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.1 evaluator sufficiency separated from learner quality
+
+Old frozen-model neutral-tail headroom remains0/16, with342 strategies collapsing
+to1–3 first-action labels per state. Existing full-policy returns discriminate
+fixed compositions on familiar source models, but no autonomous discovery is
+demonstrated. Old A/C/D/E learning failures remain unchanged. New calibration
+H-state direction fails descriptively: model0 angular error is lower, while raw
+overall/cosine/sine errors are higher. H-stop has a small aggregate Brier
+difference with visitor-stratum sign reversals, no causal inference or positive
+class calibration. Recorded future-query errors must not be predictor features.
+Report `NEXUS_E3_1_LEARNED_MODEL_HEADROOM.md`; no new collection or fitting.
+
 ## Latest — H-model crossed-reset descriptive split supported on finite source set
 
 Two unchanged Pendulum bundles face the same four new resets and planner streams.

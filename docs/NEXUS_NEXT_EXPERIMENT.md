@@ -1,5 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — existing predictor on fresh paired source-return feedback
+
+One next proposal: existing planner-advantage prediction on newly collected
+rank-blend-minus-successor episode returns, with fresh training/evaluation reset
+blocks registered before collection. Strong baselines are per-model training
+means and simple family priors fit only on permitted training feedback. Do not
+fit or tune on any closed control capture audited in E3.1; do not use future
+trajectory errors or test returns as inputs. Four frozen source models×seven
+new resets (three training/four evaluation)×two controllers×200=11200 real steps,
+imagined ceiling17,203,200, estimated90–120s/proposed180s CPU cap. Separate branch,
+protocol/allocation and entry tests required. Not executed or allocated. No
+neural/world-model retraining, new physics/model confirmation or general L2L
+claim. This asks whether existing learning exploits discriminative rewards
+before expanding architecture. Report
+`NEXUS_E3_1_LEARNED_MODEL_HEADROOM.md`; older proposals below remain history.
+
 ## Current — source-only cross-model calibration on identical recorded transitions
 
 One next proposal: evaluate both unchanged Pendulum models on all3200 recorded

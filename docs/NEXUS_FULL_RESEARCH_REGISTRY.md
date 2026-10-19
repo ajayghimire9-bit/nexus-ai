@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Supplemental E3.1 source-only audit: `codex/e3-1-learned-model-headroom-audit`,
+protocol7e417307f6d4693971af521719ceff713aaa9762. Verifies earlier headroom/control
+evidence without repeats; adds6400 frozen one-step rows on3200 recorded queries.
+Proxy saturated but full-policy labels discriminate locally; useful learning
+unestablished. Model error dimensions disagree, no causal mechanism.0 new real
+steps/fits, four checkpoint/eight source hashes verified,326 old JSON unchanged.
+Report `NEXUS_E3_1_LEARNED_MODEL_HEADROOM.md`; artifacts `e3_1_learned_model*.json`.
+Ledger488.629201251/3111.370798749. Historical curated counts/results unchanged.
+
 Supplemental completed source diagnostic: `codex/unified-crossed-reset-diagnostic`,
 protocol9e88043832812431104db4ca68c43eb3116e7784. Shared four reset/search
 streams, two frozen models, two policies,16×200 steps. Descriptive preference

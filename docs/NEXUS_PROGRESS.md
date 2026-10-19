@@ -1,5 +1,21 @@
 # NEXUS progress log
 
+## Latest — E3.1 source-only audit distinguishes saturated proxy and return labels
+
+Protocol7e417307f6d4693971af521719ceff713aaa9762 preceded6400 one-step rows,
+26 neural calls,0 new real interactions/fits/MPC. Reverified old16-cell grammar
+maxima, four checkpoint/eight source hashes and three return grids;19200 old
+steps cited only, not rerun. Model0 angular MAE0.047316 versus0.070345, but overall
+MAE0.050533 versus0.034716; termination risk close and only negative labels.
+Both inferred model/RMS states and326 old JSON unchanged.0.669058s execution /
+0.567836s offline verification; ledger488.629201251/3111.370798749.239 selected
+tests passed before data; final241 passed in3.22s with repository-only
+saved-result checks added afterward.
+Report `NEXUS_E3_1_LEARNED_MODEL_HEADROOM.md`. No useful learning claim; next
+proposal tests existing predictor on separately registered fresh paired source
+returns; closed evaluation rewards and future-query errors cannot enter fitting.
+No new collection was executed in this audit.
+
 ## Latest — model-bundle preference split survives crossed resets descriptively
 
 Protocol9e88043832812431104db4ca68c43eb3116e7784 preceded16 complete200-step

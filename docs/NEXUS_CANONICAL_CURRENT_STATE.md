@@ -1,5 +1,17 @@
 # NEXUS canonical current state
 
+Latest E3.1 source-only audit separates proxy saturation from learning quality:
+reverified0/16 headroom on the neutral-tail proxy versus discriminative prior
+full-policy source returns. No old study rerun or collection. New3200-row shared
+query replay makes model0 better in angular MAE but worse in overall/sine/cosine
+MAE than model1; termination metrics are negative-class only. No causal or
+learning-success conclusion. Four files/eight source arrays verify; two model/RMS
+states and326 prior JSON preserved. Ledger488.629201251/3111.370798749.
+Report `NEXUS_E3_1_LEARNED_MODEL_HEADROOM.md`; reusable helpers stay unchanged.
+Next proposal: existing advantage predictor on separately registered fresh
+source-return feedback against training-mean/family priors. Do not train on
+closed control captures or future-query metrics. No collection in this audit.
+
 Latest crossed-reset source diagnostic passes its descriptive preference-split
 screen: Pendulum rank−successor+392.654 on model0,−130.778 on model1 with shared
 initial states/search streams. This removes different reset blocks as a sufficient
