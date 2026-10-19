@@ -77,6 +77,18 @@ def test_random_generator_does_not_learn_even_when_feedback_is_recorded():
     assert a.propose(family_context("pendulum")) == b.propose(family_context("pendulum"))
 
 
+def test_repeated_parent_cannot_exhaust_a_six_receipt_episode():
+    for seed in (7, 17, 27):
+        g = StrategyGenerator(seed)
+        used = set()
+        for i in range(16):
+            s = g.propose(family_context("pendulum"), excluded=used)
+            assert s.fingerprint not in used
+            used.add(s.fingerprint)
+            g.update(s, .75, np.zeros(3), family_context("pendulum"), event=str(i))
+        assert len(used) == 16
+
+
 def test_pair_predictor_generalizes_on_informative_descriptor_fixture():
     p = AdvantagePredictor()
     for i, x in enumerate((-.8, -.3, .3, .8)):

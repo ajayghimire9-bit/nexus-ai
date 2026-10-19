@@ -142,3 +142,23 @@ arithmetic without another model run. Commit results separately and push.
 
 The next experiment must follow the actual failed/passed capability; do not
 automatically collect environments, promote a strategy or launch another run.
+
+## Correctness recovery v1.1, before recovery scoring
+
+First execution `17536fed4e66ef6bd59eb99b8ac1c5d95230e30f` stopped incomplete:
+`generation_budget_exhausted`,0.826593417s,438,336 fake imagined rows,8,000 fake
+calls,72 logical receipts. Preserve `artifacts/unified_e225_e30.json` unchanged.
+No aggregate screen was produced. Parent inheritance collapsed proposals to
+only three forms once a favored leaf and complementary child stayed fixed.
+This is an implementation defect, not a failed scientific improvement screen.
+
+Repair: retain a parent's complementary child with probability0.5, otherwise
+mutate that child from the existing catalogue; after32 rejected proposals use
+one bounded uniform grammar fallback. Log all attempts/rejections/fallbacks.
+The fallback has no claimed genetic parent. Added a three-seed, sixteen-update
+deduplication regression. Keep all physics, labels, metrics, thresholds,
+budgets, train/query splits and prediction rules unchanged. No extra feature
+or hyperparameter search. Source-only recovery repeats inspected fixtures,
+not independent confirmation. Commit this correction before its execution.
+Write `artifacts/unified_e225_e30_recovery.json`, preserving the original
+failure and adding both attempt costs to the session ledger. No old grant used.

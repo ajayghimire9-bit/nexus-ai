@@ -154,19 +154,30 @@ class StrategyGenerator:
         self.parent_strategy = None
         self.best = -1.
         self.seen = set()
+        self.proposal_attempts = self.duplicate_rejections = self.fallbacks = 0
 
     def propose(self, context, excluded=()):
         for _ in range(32):
+            self.proposal_attempts += 1
             a = self.inner.choose(VARIANTS, context) if self.adaptive else self.rng.choice(VARIANTS)
             inherited = () if self.parent_strategy is None else tuple(v for v in (self.parent_strategy.left, self.parent_strategy.right) if v is not None and v != a)
-            b = self.rng.choice(inherited or tuple(v for v in VARIANTS if v != a))
+            b = self.rng.choice(inherited if inherited and self.rng.random() < .5
+                                else tuple(v for v in VARIANTS if v != a))
             kind = self.rng.choice(("switch", "rank_blend"))
             child = compose(kind, a, b, self.rng.choice((.25, 1.)))
-            if child.fingerprint in excluded: continue
+            if child.fingerprint in excluded:
+                self.duplicate_rejections += 1
+                continue
             self.journal.append("generated", {"child": child.fingerprint, "parent": self.parent,
                 "strategy": child.payload(), "policy": self.inner.learned_state()})
             return child
-        raise ValueError("generation_budget_exhausted")
+        self.fallbacks += 1
+        remaining = [s for s in universe() if s.kind != "leaf" and s.fingerprint not in excluded]
+        if not remaining: raise ValueError("generation_budget_exhausted")
+        child = self.rng.choice(remaining)
+        self.journal.append("generated", {"child": child.fingerprint, "parent": None,
+            "strategy": child.payload(), "fallback": True, "policy": self.inner.learned_state()})
+        return child
 
     def update(self, strategy, score, obs, context, *, event, withheld=False, provenance="revealed_source"):
         if provenance != "revealed_source": raise ValueError("permitted_feedback_only")

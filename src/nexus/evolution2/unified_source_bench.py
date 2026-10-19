@@ -30,7 +30,7 @@ from nexus.evolution2.bindings import reviewed_binding
 
 ROOT = Path(__file__).resolve().parents[3]
 CONFIG = ROOT / "configs/unified_e225_e30.json"
-RESULT = ROOT / "artifacts/unified_e225_e30.json"
+RESULT = ROOT / "artifacts/unified_e225_e30_recovery.json"
 METHODS = ("persistent", "quality_catalogue", "random_generation", "feedback_generation", "unified",
            "shuffled", "withheld", "ungated", "nearest", "consensus", "evidence")
 
@@ -278,6 +278,9 @@ def run(config):
                                 "generation_gain": sum(t["observed"] for t in trace[4:]) / 2 - sum(t["observed"] for t in trace[2:4]) / 2})
                             payload["rows"][-1]["predictor_parameters"] = 0 if pred.model is None else len(pred.model[1])
                             payload["rows"][-1]["memory_records"] = len(mem._store)
+                            payload["rows"][-1]["proposal_attempts"] = gen.proposal_attempts
+                            payload["rows"][-1]["duplicate_rejections"] = gen.duplicate_rejections
+                            payload["rows"][-1]["fallbacks"] = gen.fallbacks
                             payload["rows"][-1]["predictor_memory_bytes"] = sum(x.nbytes for x in pred.x) + 8*len(pred.y)
                             payload["rows"][-1]["memory_serialized_bytes"] = len(json.dumps([asdict(r) for r in mem._store]).encode())
                             payload["histories"].append({"method": method, "key": list(key), "seed": seed,
@@ -322,8 +325,12 @@ def run(config):
     except Exception as exc:
         payload["failure"] = f"{type(exc).__name__}: {exc}"
     resources.update(wall_s=time.perf_counter() - t0, cpu_s=time.process_time() - c0)
-    payload["session_ledger"] = {"used_before_s": 327.869, "remaining_before_s": 3272.131,
-        "used_after_s": 327.869 + resources["wall_s"], "remaining_after_s": 3272.131 - resources["wall_s"]}
+    prior = json.loads((ROOT / "artifacts/unified_e225_e30.json").read_text())
+    prior_s = prior["resources"]["wall_s"]
+    payload["prior_incomplete_attempt"] = {"path": "artifacts/unified_e225_e30.json",
+        "sha256": sha(ROOT / "artifacts/unified_e225_e30.json"), "wall_s": prior_s}
+    payload["session_ledger"] = {"used_before_s": 327.869 + prior_s, "remaining_before_s": 3272.131 - prior_s,
+        "used_after_s": 327.869 + prior_s + resources["wall_s"], "remaining_after_s": 3272.131 - prior_s - resources["wall_s"]}
     return payload
 
 
