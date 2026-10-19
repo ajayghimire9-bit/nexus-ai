@@ -1,5 +1,15 @@
 # NEXUS code-reuse map
 
+E3.3 `training_feedback_audit` is an offline fold/metrics adapter over existing
+AdvantagePredictor/ridge and return_feedback selection semantics. It uses
+saved training features only, replaces the two anchor-mean blocks with
+fold-training means, and never reads closed evaluation outcomes. No new memory,
+proposer, planner, meter or learner stack. Runner
+scripts/run_e3_3_training_feedback_audit.py (--verify for zero-fit coefficient
+replay). One-run allocation consumed; no source .pt/.npz needed. Screen failed
+with descriptive Acrobot selection gain. Reuse these fold-only transforms when
+auditing this exact feature layout; do not reuse all-training anchor rows.
+
 E3.2 `return_feedback.FrozenReturnSelector` is a phase/feedback adapter around
 existing `generated_strategies.AdvantagePredictor` and `advantage_features`.
 It does not replace the learner, proposer, memory, planner or resource meter.

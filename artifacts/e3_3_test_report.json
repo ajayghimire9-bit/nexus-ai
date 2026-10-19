@@ -1,0 +1,10 @@
+{
+  "scope": "Relevant source regression selection, not all historical repository tests; synthetic-only fitting tests and repository-only saved-data verification",
+  "focused_pre_execution": {"passed": 30, "wall_s": 0.52},
+  "relevant_pre_execution": {"passed": 327, "wall_s": 5.08},
+  "final": {"passed": 330, "wall_s": 5.16},
+  "final_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest -o addopts='' -q tests/test_e3_3_training_feedback_audit.py tests/test_e3_2_return_feedback.py tests/test_unified_e225_e30.py tests/test_unified_headroom.py tests/test_unified_full_policy_source.py tests/test_unified_full_policy_replication.py tests/test_unified_crossed_reset.py tests/test_e3_1_learned_model_audit.py tests/test_evolution2_planner_quality.py tests/test_evolution1_resources.py tests/test_evolution1_source_contracts.py tests/test_evolution1_toy_loop.py tests/test_evolution2_observation_memory.py tests/test_evolution2_observation_memory_cross.py",
+  "offline_verification_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_e3_3_training_feedback_audit.py --verify",
+  "offline_verification_passed": true,
+  "no_new_environment_or_neural_execution": true
+}

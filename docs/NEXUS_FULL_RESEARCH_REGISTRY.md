@@ -1,5 +1,15 @@
 # NEXUS full research registry
 
+Supplemental E3.3 training-only feature audit: codex/e3-3-training-feedback-audit,
+execution d9c196cad2afa7c6d59a43ce34b0a4e46bbd1b65. Six ridge fits, three
+reset-block folds on12 permitted training pairs;0 new real/imagined/neural work.
+Pendulum−0.833/Acrobot+11.569 return versus model means, MAE worse both;
+intersection screen fails. Positive Acrobot signal is descriptive only.334 old
+JSON preserved; E3.2 evaluation unparsed/closed.0.244354s execution/0.182754s
+audit; ledger589.150092501/3010.849907499. Report
+`NEXUS_E3_3_TRAINING_FEEDBACK_RESULTS.md`; artifacts e3_3_*. Historical records
+and curated counts remain unchanged.
+
 Supplemental E3.2 fresh-return study: `codex/e3-2-return-feedback-predictor`,
 execution6381882b42e01860bf9779d905bed2017e854345.11200 new source steps,
 2 existing ridge fits; zero neural fitting. Predictor-minus-model-mean

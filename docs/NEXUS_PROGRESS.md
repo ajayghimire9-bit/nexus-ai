@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — E3.3 training-only fold audit completed, mixed signal and failed screen
+
+Execution d9c196cad2afa7c6d59a43ce34b0a4e46bbd1b65 preceded six ridge fits.
+Twelve permitted training pairs/three folds: Pendulum−0.833, Acrobot+11.569
+selection return versus model means. MAE worse both, so screen fails. Existing
+features reconstructed with fold-only anchors, RMS fit on fold training rows.
+30 focused/327 relevant regressions before execution; final330 regressions
+passed in5.16s.0 new interactions/imagined/neural work;0.244354s+
+0.182754s audit;334 old JSON preserved. Ledger589.150092501/3010.849907499.
+Report `NEXUS_E3_3_TRAINING_FEEDBACK_RESULTS.md`; no closed evaluation rescoring.
+
 ## Latest — E3.2 valid fresh-return predictor screen failed
 
 Execution6381882b42e01860bf9779d905bed2017e854345 preceded all collection.

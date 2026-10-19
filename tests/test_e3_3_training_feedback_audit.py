@@ -142,3 +142,38 @@ def test_scoring_averages_resets_inside_models():
         by=result['by_family'][family]
         for m in a.METHODS:
             assert by['mean_returns'][m]==pytest.approx(np.mean([by['per_model_returns'][str(b)][m] for b in a.BUNDLES]))
+
+
+def test_recorded_outcomes_reproduce_without_local_models_or_refitting(monkeypatch):
+    saved=json.loads((ROOT/'artifacts/e3_2_frozen_predictor.json').read_text())
+    frozen=json.loads((ROOT/'artifacts/e3_3_frozen_fold_predictions.json').read_text())
+    result=json.loads((ROOT/'artifacts/e3_3_training_feedback_audit.json').read_text())
+    def forbidden(*args,**kwargs):raise AssertionError('refitting_forbidden')
+    monkeypatch.setattr(a.AdvantagePredictor,'observe',forbidden)
+    actual=a.verify_frozen_folds(frozen['folds'],saved['training_pairs'],saved['feature_rows'])
+    assert result['declared_complete'] and actual==result['analysis']
+    assert [actual['by_family'][f]['predictor_minus_baselines']['model_mean'] for f in a.FAMILIES]==pytest.approx([-.8329293523528918,11.568545969054071])
+    assert not actual['point_screen'] and result['ridge_fits_completed']==6
+
+
+def test_saved_provenance_and_historical_artifacts_preserved():
+    from nexus.evolution2.full_policy_source import sha
+    p=json.loads((ROOT/'artifacts/e3_3_training_feedback_audit.json').read_text())
+    v=json.loads((ROOT/'artifacts/e3_3_training_feedback_validation.json').read_text())
+    assert v['capture_sha256']==sha(ROOT/'artifacts/e3_3_training_feedback_audit.json')
+    assert p['frozen_fold_sha256']==sha(ROOT/'artifacts/e3_3_frozen_fold_predictions.json')
+    assert p['real_steps']==p['imagined_transitions']==p['neural_inference']==0
+    for name,expected in p['historical_artifacts_sha256'].items():assert sha(ROOT/name)==expected
+
+
+def test_no_json_outcome_reads_outside_training_input(monkeypatch):
+    from pathlib import Path
+    spec=importlib.util.spec_from_file_location('e3_3_input_boundary',ROOT/'scripts/run_e3_3_training_feedback_audit.py')
+    runner=importlib.util.module_from_spec(spec);spec.loader.exec_module(runner)
+    c=json.loads(runner.CONFIG.read_text());original=Path.read_text;opened=[]
+    def guarded(path,*args,**kwargs):
+        if path!=ROOT/c['input']:raise AssertionError('nontraining_json_read')
+        opened.append(path);return original(path,*args,**kwargs)
+    monkeypatch.setattr(Path,'read_text',guarded)
+    bank,x=runner.load_training(c)
+    assert len(bank)==len(x)==12 and opened==[ROOT/c['input']]

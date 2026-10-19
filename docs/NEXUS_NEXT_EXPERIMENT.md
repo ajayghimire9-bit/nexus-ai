@@ -1,5 +1,20 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — feedback coverage at fixed quality predictor
+
+E3.3 training-only audit completed: Pendulum−0.833/Acrobot+11.569 selection
+gain versus model means, but magnitude MAE worse both; intersection screen
+failed. One next proposal: collect fresh source training-feedback reset pairs
+at nested3/6/9 budgets per existing model, then4 common fresh evaluation pairs.
+Keep existing features/ridge=1/controllers/models; compare equally informed
+means. Primary budget9 return gain;3/6 secondary learning-curve diagnostics,
+not tuned checkpoint selection. No existing evaluation outcome used for fitting.
+20800 real interactions,31948800 imagined upper bound, estimated151s from
+E3.2/proposed240s CPU cap. Not allocated, seed-registered or executed; requires
+separate protocol/tests/commit under standing authority. No new physics,
+architecture, main merge or frozen-checkpoint retraining. Report
+`NEXUS_E3_3_TRAINING_FEEDBACK_RESULTS.md`; older proposals below are history.
+
 ## Current — training-only blocked-reset feature sufficiency audit
 
 E3.2 completed and failed: predictor versus model means Pendulum−31.912,

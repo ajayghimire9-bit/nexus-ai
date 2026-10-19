@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.3 feature-signal intersection screen not established
+
+Training-only three-fold audit, eight fit pairs/four query pairs per fold:
+predictor minus model-mean return Pendulum−0.833, Acrobot+11.569. Both Acrobot
+models gain, but magnitude MAE worsens both families; preregistered screen
+fails. Do not infer no information or promote source selection to confirmation.
+Fold-only anchor means/RMS prevent held-out label leakage; all E3.2 evaluation
+stays closed. n=2 existing models/family; folds are dependent, no p-values.
+Report `NEXUS_E3_3_TRAINING_FEEDBACK_RESULTS.md`. Next proposed hypothesis is
+feedback-coverage scaling at fixed representation/regularization, not executed.
+
 ## Latest — E3.2 quality learning on fresh full-return feedback: screen failed
 
 Existing ridge/descriptor predictor does not beat model means meaningfully on

@@ -1,5 +1,15 @@
 # NEXUS canonical current state
 
+Latest E3.3 training-only reset-block audit: predictor−model means Pendulum
+−0.833, Acrobot+11.569; advantage MAE worsens both. Registered intersection
+screen fails, with Acrobot selection signal still descriptive. Fold-only anchor
+means and scaling avoid cross-validation leakage. Six existing-ridge fits,
+zero real/imagined/neural execution;0.244354s plus0.182754s offline audit.
+334 prior JSON preserved; ledger589.150092501/3010.849907499. All E3.2
+evaluation contexts remain closed. Report `NEXUS_E3_3_TRAINING_FEEDBACK_RESULTS.md`.
+Next proposal expands only fresh training-feedback coverage with fixed features;
+20800 interactions/proposed240s cap, not allocated/registered/executed.
+
 Latest E3.2 fresh-return predictor screen failed: predictor minus model mean
 Pendulum−31.912, Acrobot+0.317; stronger simple baselines win. Existing ridge,
 fixed controllers and four unchanged source models reused.11200 new steps,
