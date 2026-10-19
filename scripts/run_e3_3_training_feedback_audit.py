@@ -24,6 +24,21 @@ PREVIOUS=ROOT/'artifacts/e3_2_return_feedback_validation.json'
 PROFILE='e3_3'
 
 
+def configure_stability():
+    """Recorded-feedback profile: reuse this offline host, not a new evaluator."""
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,FROZEN,USAGE,VALIDATION,PREVIOUS,PROFILE,a
+    from nexus.evolution2 import selection_stability
+    a=selection_stability;PROFILE='e3_12e'
+    CONFIG=ROOT/'configs/e3_12e_training_stability.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_12E_TRAINING_STABILITY_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_12e_training_stability_allocation.json'
+    RESULT=ROOT/'artifacts/e3_12e_training_stability.json'
+    FROZEN=ROOT/'artifacts/e3_12e_training_projection.json'
+    USAGE=ROOT/'artifacts/e3_12e_training_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_12e_training_validation.json'
+    PREVIOUS=ROOT/'artifacts/e3_12d_parent_test_report.json'
+
+
 def configure_residual():
     """Exact second profile; no arbitrary input or target registration."""
     global CONFIG,PROTOCOL,ALLOCATION,RESULT,FROZEN,USAGE,VALIDATION,PREVIOUS,PROFILE
@@ -80,6 +95,10 @@ def configure_compact():
 
 
 def validate_config(c):
+    if PROFILE=='e3_12e':
+        if c['version']!='e3_12e_training_stability_v1' or any(type(c[k]) is not int or c[k]!=v for k,v in dict(time_cap_s=60,env_cap=0,imagined_cap=0,neural_inference_cap=0,ridge_fit_cap=0).items()):raise ValueError('source_only_stability_config')
+        if c['rules']!=['mean','recent','conservative'] or c['input']!='artifacts/e3_12d_parent_retention.json':raise ValueError('locked_stability_scope')
+        return
     expected=dict(version='e3_3_training_only_v1',input='artifacts/e3_2_frozen_predictor.json',
         input_sha256='e84d55ce4b8f3bd6dbc4cda1edcbecfe411e808ed91c63a16504b52fb3453b83',
         families=['pendulum','acrobot'],model_bundles=[0,1],training_episode_ids=[0,1,2],held_out_blocks=[0,1,2],
@@ -125,6 +144,7 @@ def write_new(path,data):
 
 
 def verify(c):
+    if PROFILE=='e3_12e':return stability(c,verify_only=True)
     if VALIDATION.exists():raise FileExistsError('preserve_validation')
     start=time.perf_counter();p=json.loads(RESULT.read_text());validate_config(c)
     if not p['declared_complete'] or p['config']!=c:raise ValueError('complete_locked_run_required')
@@ -150,6 +170,7 @@ def verify(c):
 
 
 def run(c):
+    if PROFILE=='e3_12e':return stability(c)
     validate_config(c)
     if any(x.exists() for x in (RESULT,FROZEN,USAGE)):raise FileExistsError('one_run_only')
     thread_env={key:os.environ.get(key) for key in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','VECLIB_MAXIMUM_THREADS')}
@@ -215,11 +236,57 @@ def run(c):
     return {k:p.get(k) for k in ('declared_complete','failure','analysis','ridge_fits_completed','wall_s','session_ledger')}
 
 
+def stability(c,verify_only=False):
+    """No fitting/collection; only an allowlisted training projection and replay."""
+    validate_config(c);verify_file(ROOT/c['source_config'],c['source_config_sha256'])
+    source=json.loads((ROOT/c['source_config']).read_text());verify_file(ROOT/c['input'],c['input_sha256'])
+    if verify_only:
+        if VALIDATION.exists():raise FileExistsError('preserve_validation')
+        start=time.perf_counter();p=json.loads(RESULT.read_text());projection=json.loads(FROZEN.read_text())
+        if not p['declared_complete'] or p['config']!=c or sha(FROZEN)!=p['projection_sha256']:raise ValueError('complete_stability_required')
+        again=a.project_training((ROOT/c['input']).read_text(),source)
+        if again!=projection or a.analyze(again,source)!=p['analysis']:raise ValueError('stability_replay')
+        for name,h in p['historical_artifacts_sha256'].items():verify_file(ROOT/name,h)
+        elapsed=time.perf_counter()-start;used=p['session_ledger']['used_after_s']+elapsed
+        out=dict(valid=True,capture_sha256=sha(RESULT),projection_sha256=sha(FROZEN),wall_s=elapsed,
+            new_real_steps=0,new_imagined_transitions=0,neural_inference=0,query_outcomes_used=0,
+            session_ledger=dict(used_after_s=used,remaining_after_s=3600-used))
+        write_new(VALIDATION,out);return out
+    if any(x.exists() for x in (RESULT,FROZEN,USAGE)):raise FileExistsError('one_run_only')
+    if subprocess.check_output(['git','diff','HEAD','--name-only'],cwd=ROOT,text=True).strip():raise RuntimeError('commit_first')
+    allocation=json.loads(ALLOCATION.read_text());verify_file(PREVIOUS,allocation['previous_report_sha256'])
+    used=json.loads(PREVIOUS.read_text())['session_used_after_s']
+    if allocation.get('authorized') is not True or allocation['runs']!=1 or allocation['automatic_retry'] is not False or allocation['session_used_before_s']!=used:raise ValueError('one_run_stability_authority')
+    if allocation['config_sha256']!=sha(CONFIG) or allocation['protocol_sha256']!=sha(PROTOCOL) or allocation['time_cap_s']!=60 or used+60>3600:raise ValueError('stability_allocation')
+    revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    write_new(USAGE,dict(consumed=True,execution_sha=revision,allocation_sha256=sha(ALLOCATION),automatic_retry=False))
+    start=time.perf_counter();cpu=time.process_time();p=dict(declared_complete=False,config=c,execution_sha=revision,
+        config_sha256=sha(CONFIG),protocol_sha256=sha(PROTOCOL),allocation_sha256=sha(ALLOCATION),
+        dependencies=dict(python=platform.python_version(),numpy=np.__version__))
+    p['historical_artifacts_sha256']={str(f.relative_to(ROOT)):sha(f) for f in (ROOT/'artifacts').rglob('*.json') if f not in (RESULT,FROZEN,USAGE,VALIDATION)}
+    def alarm(*unused):raise TimeoutError('stability_time_cap')
+    old=signal.signal(signal.SIGALRM,alarm);signal.setitimer(signal.ITIMER_REAL,60)
+    try:
+        projection=a.project_training((ROOT/c['input']).read_text(),source)
+        write_new(FROZEN,projection);p['projection_sha256']=sha(FROZEN)
+        p['analysis']=a.analyze(projection,source)
+        for name,h in p['historical_artifacts_sha256'].items():verify_file(ROOT/name,h)
+        p['declared_complete']=True
+    except (Exception,KeyboardInterrupt) as exc:p['failure']=repr(exc)
+    finally:signal.setitimer(signal.ITIMER_REAL,0);signal.signal(signal.SIGALRM,old)
+    elapsed=time.perf_counter()-start;p.update(wall_s=elapsed,cpu_s=time.process_time()-cpu)
+    p['session_ledger']=dict(used_before_s=used,used_after_s=used+elapsed,remaining_after_s=3600-used-elapsed)
+    write_new(RESULT,p)
+    if not p['declared_complete']:raise RuntimeError(p['failure'])
+    return dict(declared_complete=True,wall_s=elapsed,models=len(p['analysis']['models']),session_ledger=p['session_ledger'])
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--verify',action='store_true')
-    group=parser.add_mutually_exclusive_group();group.add_argument('--residual',action='store_true');group.add_argument('--features',action='store_true');group.add_argument('--transitions',action='store_true');group.add_argument('--compact',action='store_true');args=parser.parse_args()
+    group=parser.add_mutually_exclusive_group();group.add_argument('--residual',action='store_true');group.add_argument('--features',action='store_true');group.add_argument('--transitions',action='store_true');group.add_argument('--compact',action='store_true');group.add_argument('--stability',action='store_true');args=parser.parse_args()
     if args.residual:configure_residual()
     if args.features:configure_features()
     if args.transitions:configure_transitions()
     if args.compact:configure_compact()
+    if args.stability:configure_stability()
     c=json.loads(CONFIG.read_text());print(json.dumps(verify(c) if args.verify else run(c)))

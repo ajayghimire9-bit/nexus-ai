@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+E3.12E selection_stability is training-projection/deletion diagnostic glue over
+SAME StrategyGenerator mean/recent/conservative rules, panel.replay_feedback,
+catalogue digest and numeric contracts. SAME offline run_e3_3_training_feedback_
+audit adds --stability and uses its existing exclusive record/hash/timer helpers.
+No scientific host, model, environment, new memory or update-rule framework.
+Query row bodies are span-skipped, never deserialized/scored. Parallel Learning
+Lab uses existing server/viewer and cycle_checkpoint, not a new research stack.
+
 E3.12D parent_retention is thin pure replay/statistics glue over SAME
 partial_feedback parent-inclusive function, schedule and credit replay,
 operator_headroom validation/paired intervals, StrategyGenerator and actual
