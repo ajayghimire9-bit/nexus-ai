@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Latest E3.11B complete/valid, forecast_utility_not_established. Accuracy75%/62.5%
+versus TRAIN-mean87.5%/62.5%; return difference−1.558/+1.570 with both intervals
+including0.16 fresh cases,4 existing models,0 fits.6272 real/9932800 imagined/
+393728 forwards;387 prior JSON preserved. Ledger948.6320812930051/2651.3679187069947.
+Next separate horizon-calibration question, not another static-feature sweep
+or larger learner. Report NEXUS_E3_11B_FORECAST_CALIBRATION_RESULTS.md.
+Preparation status below is history; final approved execution lock supersedes it.
+
 Latest E3.11B: preparation only, execution explicitly not authorized. Pure
 capture/analysis contracts and proposed protocol reuse existing metered host
 and rollout helper; no bound production worker, numerical seeds or allocation.

@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — horizon calibration before forecasting efficiency
+
+E3.11B completed and failed its utility screen: direction accuracy75%/62.5%
+versus training-mean87.5%/62.5%, selected-return differences−1.558/+1.570 with
+both intervals including0. Expensive numerical distinguishability is not useful
+selection. One next scientific question: does a longer explicitly matched
+forecast horizon predict later controller advantage better than the frozen
+training-mean prior? Prepare a separate fresh-data comparison, unchanged models
+and planners; current first16/192 sign reversals motivate but do not prove a
+horizon mechanism. Not allocated/registered/executed here. No E3.11 retuning,
+architecture expansion or automatic E3.11C–E4.0 execution. Final ledger
+948.6320812930051/2651.3679187069947. See E3.11B results. Earlier entries history.
+
 ## Current — E3.11B preparation; explicit execution approval pending
 
 Protocol and source-only capture/statistics contracts prepared on

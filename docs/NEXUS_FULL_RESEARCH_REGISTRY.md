@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Supplemental E3.11B codex/e3-11b-forecast-calibration, source/execution
+2cfd99232f01d1103d5abbb2a328c5056bb4f5fc committed first.16 fresh paired cases,
+four frozen source models. Forecast_utility_not_established; both practical
+screens fail. Accuracy75%/62.5% vs means87.5%/62.5%, return−1.558/+1.570
+with intervals including0.6272 real/9932800 imagined/393728 observed forwards,
+0 fits. Wall55.861822s+audit3.004718s;387 old JSON/frozen files unchanged.
+Ledger948.6320812930051/2651.3679187069947. Raw e3_11b_forecast_*; final
+report NEXUS_E3_11B_FORECAST_CALIBRATION_RESULTS.md. Preparation below preserved.
+
 Supplemental E3.11B codex/e3-11b-forecast-calibration-preparation: proposed
 16-context fresh forecast-versus-return calibration; implementation contracts
 only, not scientific registration/authorization/execution. Exact fresh seeds,

@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.11B forecast usefulness not established
+
+Complete precommitted fresh calibration fails both family intersection screens.
+Direction accuracy versus means:75% vs87.5% Pendulum,62.5% vs62.5% Acrobot.
+Return contrasts−1.558/+1.570, both exploratory paired model intervals include0.
+Numerical headroom is not enough; lower magnitude error can leave decisions
+unimproved. n=2 pretrained models/family. Next proposed horizon-calibration
+question, not executed; no generalization/L2L claim. Ledger948.6320812930051/
+2651.3679187069947. Report NEXUS_E3_11B_FORECAST_CALIBRATION_RESULTS.md.
+
 ## Latest — proposed E3.11B actual-return calibration, not executed
 
 Fixed controller-specific16-step forecasts predict the direction of192-step

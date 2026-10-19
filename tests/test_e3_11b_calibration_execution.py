@@ -112,3 +112,17 @@ def test_worker_cannot_launch_without_consumed_parent_receipt(tmp_path):
 def test_preflight_refuses_reused_consumed_paths(tmp_path):
     host=api();host.USAGE=tmp_path/'used.json';host.USAGE.write_text('{}')
     with pytest.raises(ValueError,match='one_run_only'):x.preflight(host)
+
+
+def test_saved_complete_capture_replays_without_checkpoint_deserialization():
+    host=api();p=json.loads(host.RESULT.read_text());c,config=x.settings(host)
+    validation=json.loads(host.VALIDATION.read_text())
+    assert p['declared_complete'] and validation['valid']
+    assert validation['capture_sha256']==host.sha(host.RESULT)
+    means=a.training_means(host.ROOT/config['training_prior'],config['training_prior_sha256'],config)
+    assert x.validate(p,c,config,means)
+    expected=a.analyze(p['rows'],config);expected['label']='development_forecast_point_screen_passed_not_confirmed' if expected['point_screen'] else 'forecast_utility_not_established'
+    assert expected==p['analysis']
+    assert validation['resources_verified']==p['resources']['completed']
+    assert validation['new_real_steps']==validation['new_imagined_transitions']==0
+    assert validation['model_inference'] is False

@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — E3.11B calibration complete, usefulness not established
+
+16 fresh paired192-step continuations after shared8-step probes; four frozen
+models, no fitting. Forecast accuracy75% Pendulum/62.5% Acrobot versus prior
+87.5%/62.5%. Selected-return gain−1.558/+1.570; df1 intervals both include0;
+registered practical screen fails both.6272 real/9932800 imagined/393728
+forwards.55.861822s+3.004718s saved-data audit;387 old JSON and frozen files
+unchanged. Ledger948.6320812930051/2651.3679187069947. Next one question:
+whether a longer matched forecast horizon improves later-advantage calibration.
+No next experiment run. See NEXUS_E3_11B_FORECAST_CALIBRATION_RESULTS.md.
+
 ## Latest — E3.11B preparation, no new scientific result
 
 Prepared forecast-before-outcome capture and strict paired model-level analysis

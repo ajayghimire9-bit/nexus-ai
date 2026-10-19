@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.11B fresh forecast calibration fails, 2026-10-19
+
+Precommitted execution2cfd99232f01d1103d5abbb2a328c5056bb4f5fc completed16
+fresh paired cases/4 frozen source models. Forecast direction accuracy75%/62.5%
+Pendulum/Acrobot versus TRAIN mean87.5%/62.5%. Selected-return difference
+−1.558 [−21.356,+18.239] /+1.570 [−17.204,+20.344]; both family screens fail.
+E3.11A distinguishability does not establish useful selection. Short/long
+advantage sign reversals motivate separate horizon-calibration question, not
+architecture expansion or automatic efficiency/continual-learning execution.
+6272 real/9932800 imagined/393728 observed forwards,0 fits. Wall55.861822s
++audit3.004718s,387 previous JSON/frozen files preserved. Ledger948.6320812930051/
+2651.3679187069947. Report NEXUS_E3_11B_FORECAST_CALIBRATION_RESULTS.md.
+Older preparation/unauthorized entries below are historical, superseded by
+the later human continue request and committed final execution lock.
+
 ## Latest — E3.11B calibration preparation, no execution
 
 Roadmap prioritizes whether controller-specific16-step forecast direction

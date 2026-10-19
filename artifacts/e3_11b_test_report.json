@@ -1,0 +1,91 @@
+{
+  "execution_sha": "2cfd99232f01d1103d5abbb2a328c5056bb4f5fc",
+  "branch": "codex/e3-11b-forecast-calibration",
+  "tests": {
+    "focused_pre_run": {
+      "passed": 108,
+      "seconds": 3.23
+    },
+    "regression_pre_run": {
+      "passed": 611,
+      "seconds": 13.45
+    },
+    "regression_final": {
+      "passed": 612,
+      "seconds": 13.61
+    },
+    "modules": [
+      "tests/test_e3_11b_calibration_execution.py",
+      "tests/test_e3_11b_forecast_calibration.py",
+      "tests/test_e3_11a_rollout_headroom.py",
+      "tests/test_e3_11_post_probe.py",
+      "tests/test_e3_10_metered_model.py",
+      "tests/test_e3_9_evidence_readiness.py",
+      "tests/test_e3_8_learning_interfaces.py",
+      "tests/test_e3_7_transition_evidence.py",
+      "tests/test_e3_6_feature_informativeness.py",
+      "tests/test_e3_5_residual_advantage.py",
+      "tests/test_e3_4_feedback_coverage.py",
+      "tests/test_e3_3_training_feedback_audit.py",
+      "tests/test_e3_2_return_feedback.py",
+      "tests/test_unified_e225_e30.py",
+      "tests/test_unified_headroom.py",
+      "tests/test_unified_full_policy_source.py",
+      "tests/test_unified_full_policy_replication.py",
+      "tests/test_unified_crossed_reset.py",
+      "tests/test_e3_1_learned_model_audit.py",
+      "tests/test_evolution2_planner_quality.py",
+      "tests/test_evolution1_resources.py",
+      "tests/test_evolution1_source_contracts.py",
+      "tests/test_evolution1_toy_loop.py",
+      "tests/test_evolution2_observation_memory.py",
+      "tests/test_evolution2_observation_memory_cross.py",
+      "tests/test_strategy_memory.py",
+      "tests/test_strategy_memory_obs.py",
+      "tests/test_strategy_memory_selector.py",
+      "tests/test_strategy_memory_decide.py",
+      "tests/test_strategy_memory_persist_obs.py",
+      "tests/test_evolution2_fit_clock.py",
+      "tests/test_evolution2_fit_clock_run.py"
+    ],
+    "command": "python3 -m pytest -q -o addopts='' tests/test_e3_11b_calibration_execution.py tests/test_e3_11b_forecast_calibration.py tests/test_e3_11a_rollout_headroom.py tests/test_e3_11_post_probe.py tests/test_e3_10_metered_model.py tests/test_e3_9_evidence_readiness.py tests/test_e3_8_learning_interfaces.py tests/test_e3_7_transition_evidence.py tests/test_e3_6_feature_informativeness.py tests/test_e3_5_residual_advantage.py tests/test_e3_4_feedback_coverage.py tests/test_e3_3_training_feedback_audit.py tests/test_e3_2_return_feedback.py tests/test_unified_e225_e30.py tests/test_unified_headroom.py tests/test_unified_full_policy_source.py tests/test_unified_full_policy_replication.py tests/test_unified_crossed_reset.py tests/test_e3_1_learned_model_audit.py tests/test_evolution2_planner_quality.py tests/test_evolution1_resources.py tests/test_evolution1_source_contracts.py tests/test_evolution1_toy_loop.py tests/test_evolution2_observation_memory.py tests/test_evolution2_observation_memory_cross.py tests/test_strategy_memory.py tests/test_strategy_memory_obs.py tests/test_strategy_memory_selector.py tests/test_strategy_memory_decide.py tests/test_strategy_memory_persist_obs.py tests/test_evolution2_fit_clock.py tests/test_evolution2_fit_clock_run.py",
+    "environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONPATH": "src:.deps"
+    },
+    "entire_historical_suite": false
+  },
+  "historical_json_preserved": 387,
+  "file_sha256": {
+    "artifacts/e3_11b_forecast_calibration.json": "d1c1297518b56dfdb28107c29a0aabe5b8c768068d01becfbf62f50d9746b56b",
+    "artifacts/e3_11b_forecast_calibration_validation.json": "a9ec3210d35c961821b6c466d2dff79d4428b01ae250d2fa8fa055f10728c5b2",
+    "artifacts/e3_11b_forecast_predecision.jsonl": "124bc9550902a97698f20ed4af3a746142d04df855085f195eb47774e2207cf3",
+    "artifacts/e3_11b_forecast_summary.json": "56fcf30411fe8ee1d6d93203985d65d92a4f3c327e4ef5167704a8421a2b6894",
+    "artifacts/e3_11b_forecast_returns.csv": "674ccb1e93a767506e39b1f7e3c2190345274b77c0f4c407e682c7ed8f4f013d",
+    "configs/e3_11b_forecast_calibration_execution.json": "306214267a0f524b522835f0a2586b529d234be2508ac7d93ba309a435d13163",
+    "docs/NEXUS_E3_11B_FORECAST_CALIBRATION_EXECUTION.md": "226b968fbff6ac03b998ca6971ed610f8d8da9b1e7dfb405f136994e14313bea",
+    "scripts/summarize_e3_11_post_probe.py": "498a88c7b6ab2de236daeb9b799328108615c8d9996bb5582646ab45532951ae",
+    "tests/test_e3_11b_calibration_execution.py": "953b5457e353800cccbf93e4cddf6bbb102af74fa70f891729087083808bff7a"
+  },
+  "session_ledger": {
+    "used_before_s": 945.627363626,
+    "used_after_s": 948.6320812930051,
+    "remaining_after_s": 2651.3679187069947
+  },
+  "scientific_label": "forecast_utility_not_established",
+  "reporting_changes_after_collection": [
+    "saved-data export option",
+    "saved-capture regression",
+    "results and research status documents"
+  ],
+  "remaining_limitations": [
+    "two pretrained models per family",
+    "known source physics only",
+    "single planner stream per context",
+    "forecast16 versus primary return192 horizon mismatch",
+    "unadjusted exploratory df1 intervals"
+  ]
+}
