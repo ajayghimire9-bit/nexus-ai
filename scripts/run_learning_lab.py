@@ -9,7 +9,7 @@ import sys
 import threading
 import time
 from urllib.parse import urlparse,parse_qs
-from nexus.evolution2.learning_lab import load_control_replay,load_operator_replay
+from nexus.evolution2.learning_lab import load_control_replay,load_operator_replay,load_training_audit
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -42,6 +42,7 @@ class LabHandler(BaseHTTPRequestHandler):
                 self.end_headers();return self.wfile.write(body)
             if parsed.path=='/api/status':return self.send_json(200,dict(live_environment=False,fixtures_enabled=self.server.fixtures_enabled,requests_remaining=self.server.requests_remaining))
             if parsed.path=='/api/operators' and not parsed.query:return self.send_json(200,load_operator_replay(ROOT))
+            if parsed.path=='/api/training-audit' and not parsed.query:return self.send_json(200,load_training_audit(ROOT))
             if parsed.path=='/api/replay':
                 query=parse_qs(parsed.query)
                 if set(query)!={'study'} or len(query['study'])!=1:raise ValueError('single_study_required')

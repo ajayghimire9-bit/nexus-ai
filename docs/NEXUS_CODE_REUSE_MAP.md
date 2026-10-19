@@ -1,5 +1,12 @@
 # NEXUS code-reuse map
 
+Local Lab delivery adds a stdlib-only launcher over SAME run_learning_lab/
+learning_lab viewer. Browser notebooks save view/notes/hash references only,
+not another learned-memory database or execution authority. Durable authored
+session CLI uses SAME cycle_checkpoint/LearningCycle/FixtureHost and persists
+host call counters alongside learner state. Existing measured_mutation/Host
+remain the future scientific route; no live scientific backend is added.
+
 E3.12E selection_stability is training-projection/deletion diagnostic glue over
 SAME StrategyGenerator mean/recent/conservative rules, panel.replay_feedback,
 catalogue digest and numeric contracts. SAME offline run_e3_3_training_feedback_

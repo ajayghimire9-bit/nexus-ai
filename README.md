@@ -4,6 +4,17 @@ Experimental research system for self-evolving neural intelligence. Long-term ai
 
 This is **not** a chatbot wrapper. Completing the roadmap is **not** AGI.
 
+## Local Learning Lab
+
+Open verified recorded experiments without third-party packages or model files:
+`python3 -I -S scripts/nexus_lab.py --port 8766` then visit
+`http://127.0.0.1:8766`. Replay is read-only; browser notebooks support local
+save/restore and JSON export/import. Authored fixture sessions and unavailable
+live environments are explicitly separate. See
+[local installation and session workflow](docs/NEXUS_LEARNING_LAB_LOCAL.md).
+For the latest scientific status use
+[canonical current state](docs/NEXUS_CANONICAL_CURRENT_STATE.md).
+
 ## Agent reuse (mandatory)
 
 Before implementing a new algorithm or component, read:

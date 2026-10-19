@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Local engineering: stdlib replay launcher, portable browser notebooks, existing
+cycle/host durable fixture sessions and explicit replay/fixture/live boundaries.
+832 relevant tests and real Chrome online/offline checks pass. Functional
+persistence is not measured continual-learning benefit; real continual/E4/
+unfamiliar-model studies remain designed and unrun. See local Lab and measured
+followup docs. No public deployment or live scientific execution backend.
+
 Latest E3.12E complete training-only audit: sourceae57289a, zero new real/
 imagined/neural/query work. Raw choices stable under all registered deletions;
 Pendulum raw/matched signs disagree due observed reset-group parent offsets.

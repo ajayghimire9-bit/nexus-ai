@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Parallel engineering — usable local notebooks and durable fixture sessions
+
+Stdlib-only isolated replay startup passes without third-party packages;
+browser notebooks save/reload/restore/export/import with capture-hash checks.
+Existing learner/fixture host counters resume exactly across a Python restart;
+orphan snapshots and concurrent writers fail before another evaluation. Real
+Chrome online/offline QA passes, live environments unavailable.832 relevant
+source/fixture tests pass. Actual continual/E4/transfer studies are designed
+separately, not run. See NEXUS_LEARNING_LAB_LOCAL.md and
+NEXUS_MEASURED_LEARNING_FOLLOWUPS.md. No additional scientific budget consumed.
+
 ## Latest — training-only reset/stability audit completed
 
 E3.12E (sourceae57289a) uses only32 D training rows; query rows/analysis skipped.

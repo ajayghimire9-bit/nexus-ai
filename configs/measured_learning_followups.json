@@ -1,0 +1,43 @@
+{
+  "version": "measured_learning_followups_design_v1",
+  "status": "design_only_not_registered",
+  "execution_authorized": false,
+  "numerical_task_seeds": null,
+  "physics_tuples": null,
+  "allocation": null,
+  "continual": {
+    "model_units": 4,
+    "stream": ["A", "B", "A", "C"],
+    "training_resets_per_block": 4,
+    "training_paths_per_reset": 2,
+    "query_resets_per_block": 2,
+    "query_paths_per_reset": 3,
+    "retention_A_probe_resets": 2,
+    "steps_per_path": 200,
+    "conditions": ["persistent", "reset"],
+    "shared_physical_training_and_query_panels": true,
+    "proposed_real_steps": 49600,
+    "proposed_time_cap_s": 600
+  },
+  "learning_rules": {
+    "model_units": 4,
+    "source_blocks": 3,
+    "development_blocks": 1,
+    "untouched_blocks": 2,
+    "training_resets_per_block": 4,
+    "training_paths_per_reset": 2,
+    "query_resets_per_block": 2,
+    "query_paths_per_reset": 3,
+    "steps_per_path": 200,
+    "rules": ["mean", "recent", "conservative"],
+    "shared_physical_training_and_query_panels": true,
+    "proposed_real_steps": 67200,
+    "proposed_time_cap_s": 850
+  },
+  "transfer": {
+    "status": "blocked_until_recipe_and_independent_checkpoints_exist",
+    "tracks": ["new_initializations_familiar_dynamics", "changed_dynamics_frozen_models"],
+    "new_checkpoint_training_authorized": false,
+    "exact_compute_budget": null
+  }
+}

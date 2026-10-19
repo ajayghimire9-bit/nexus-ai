@@ -95,6 +95,17 @@ def load_operator_replay(root):
         caveat='Closed full-information source diagnostic; no new parent-inclusive selector scored. Not generalization or proven self-improvement.')
 
 
+def load_training_audit(root):
+    """Already recorded training-only evidence, not policy-return validation."""
+    folder=Path(root)/'artifacts';raw=(folder/'e3_12e_training_stability.json').read_bytes();p=json.loads(raw)
+    v=json.loads((folder/'e3_12e_training_validation.json').read_text())
+    if p.get('declared_complete') is not True or v.get('valid') is not True or hashlib.sha256(raw).hexdigest()!=v['capture_sha256']:raise ValueError('verified_training_audit_required')
+    return dict(kind='recorded_training_estimate_diagnostic',live=False,query_outcomes_used=0,
+        execution_sha=p['execution_sha'],capture_sha256=v['capture_sha256'],
+        models=[{k:m[k] for k in ('family','bundle','full','choice_flip_counts','raw_paired_sign_disagreements')} for m in p['analysis']['models']],
+        caveat='Training sensitivity only; no new policy-value, continual-learning or transfer evidence.')
+
+
 def render(data,*,engineering_events=(),integration=None):
     if data.get('kind')!='historical_training_replay' or data.get('live') is not False or not data.get('rows'):raise ValueError('historical_data_required')
     encoded=json.dumps(data,allow_nan=False).replace('&','\\u0026').replace('<','\\u003c').replace('>','\\u003e')

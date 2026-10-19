@@ -18,7 +18,14 @@
 <div class="grid"><div><h3>What was learned and chosen</h3><pre id="operatorDecision"></pre><details><summary>Revealed training feedback</summary><pre id="operatorTraining"></pre></details></div>
 <div><h3>Measured query outcomes</h3><pre id="operatorReturns"></pre><p id="operatorFailure"></p></div></div>
 <label>Recorded trajectory step <input id="operatorTick" type="range" min="0" max="199" value="0"></label><pre id="operatorStep"></pre>
-<small>Parent, switch and rank blend share each reset and planner seeds. Parent was an evaluated baseline, not an available choice for the recorded two-child selector. No new parent-inclusive policy is evaluated here.</small></section></main>
+<small>Parent, switch and rank blend share each reset and planner seeds. Parent was an evaluated baseline, not an available choice for the recorded two-child selector. No new parent-inclusive policy is evaluated here.</small></section>
+<section><h2>Persistent research notebook</h2><p>Save your filters, inspected steps and notes across browser restarts. Export/import a hash-referenced JSON notebook. This does not save model weights, grant execution permission or change experimental outcomes.</p>
+<label>Session title <input id="sessionTitle" maxlength="80" value="Research review"></label>
+<label style="display:block;width:100%">Notes <textarea id="sessionNote" maxlength="4000" rows="3" style="display:block;width:100%;box-sizing:border-box;background:#102031;color:#e6edf5;font:inherit"></textarea></label><br>
+<button id="sessionSave">Save in this browser</button> <button id="sessionRestore">Restore browser session</button> <button id="sessionExport">Export notebook</button>
+<label>Import notebook <input id="sessionImport" type="file" accept="application/json"></label><output id="sessionStatus" role="status"></output>
+<p class="muted">Modes: recorded replay is read-only; authored fixtures are optional and synthetic; live scientific environments are unavailable. Durable learned fixture sessions use the separate local CLI documented in docs/NEXUS_LEARNING_LAB_LOCAL.md.</p></section></main>
+<section style="max-width:1110px;margin:20px auto;padding:20px"><h2>Training estimate audit · E3.12E</h2><p>Existing training feedback only. This diagnoses comparison offsets and deletion sensitivity; it does not establish better control or select a new learning rule.</p><p id="auditStatus" role="status">Loading recorded training audit…</p><pre id="auditResult"></pre></section>
 <style>pre{max-height:360px;overflow:auto}details pre{max-height:260px}</style>
 <script>
 'use strict';let capture=null;
@@ -48,4 +55,26 @@ function drawOperator(){const c=operatorCases()[Number(op('operatorCase').value)
 function chooseOperator(){op('operatorCase').replaceChildren();operatorCases().forEach((c,i)=>{const option=document.createElement('option');option.value=i;option.textContent='Model '+c.bundle+' / Episode '+c.episode;op('operatorCase').appendChild(option)});drawOperator();}
 op('operatorFamily').onchange=chooseOperator;op('operatorCase').onchange=drawOperator;op('operatorTick').oninput=drawOperator;
 fetch('/api/operators').then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.error||'Capture unavailable');return data;}).then(data=>{operatorCapture=data;op('operatorStatus').textContent=data.label+' · execution '+data.execution_sha;chooseOperator();}).catch(error=>{op('operatorStatus').textContent=error.message;op('operatorStatus').className='error';});
+</script>
+<script>
+'use strict';const notebookKey='nexus.learning-lab.notebook.v1';const nb=id=>document.getElementById(id);
+function notebookKeys(value,keys){return value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).sort().join('|')===keys.slice().sort().join('|');}
+function validateNotebook(s){if(!notebookKeys(s,['version','title','note','view','references'])||s.version!=='nexus_lab_notebook_v1'||typeof s.title!=='string'||!s.title.length||s.title.length>80||typeof s.note!=='string'||s.note.length>4000)throw Error('Invalid notebook schema');
+ const v=s.view;if(!notebookKeys(v,['study','family','case','tick','operatorFamily','operatorCase','operatorTick'])||!['forecast16','horizon64'].includes(v.study)||!['pendulum','acrobot'].includes(v.family)||!['pendulum','acrobot'].includes(v.operatorFamily))throw Error('Invalid notebook view');
+ for(const [k,max] of Object.entries({case:7,tick:191,operatorCase:7,operatorTick:199}))if(!Number.isInteger(v[k])||v[k]<0||v[k]>max)throw Error('Invalid notebook index');
+ if(!notebookKeys(s.references,['control','operator'])||!Object.values(s.references).every(x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x)))throw Error('Invalid capture references');return s;}
+function currentNotebook(){if(!capture||!operatorCapture)throw Error('Wait for verified captures');return validateNotebook({version:'nexus_lab_notebook_v1',title:nb('sessionTitle').value,note:nb('sessionNote').value,
+ view:{study:el('study').value,family:el('family').value,case:Number(el('case').value),tick:Number(el('tick').value),operatorFamily:op('operatorFamily').value,operatorCase:Number(op('operatorCase').value),operatorTick:Number(op('operatorTick').value)},references:{control:capture.capture_sha256,operator:operatorCapture.capture_sha256}});}
+async function restoreNotebook(s){validateNotebook(s);const control=await json('/api/replay?study='+s.view.study),operators=await json('/api/operators');if(control.capture_sha256!==s.references.control||operators.capture_sha256!==s.references.operator)throw Error('Notebook capture hash mismatch');
+ capture=control;operatorCapture=operators;el('study').value=s.view.study;el('family').value=s.view.family;chooseCases();el('case').value=String(s.view.case);el('tick').value=String(s.view.tick);draw();
+ op('operatorFamily').value=s.view.operatorFamily;chooseOperator();op('operatorCase').value=String(s.view.operatorCase);op('operatorTick').value=String(s.view.operatorTick);drawOperator();
+ el('recordStatus').textContent=control.label+' · execution '+control.execution_sha;op('operatorStatus').textContent=operators.label+' · execution '+operators.execution_sha;
+ nb('sessionTitle').value=s.title;nb('sessionNote').value=s.note;nb('sessionStatus').textContent='Notebook restored; verified capture hashes match. No learning or simulation ran.';}
+nb('sessionSave').onclick=()=>{try{localStorage.setItem(notebookKey,JSON.stringify(currentNotebook()));nb('sessionStatus').textContent='Saved locally in this browser. Export for a portable backup.';}catch(e){nb('sessionStatus').textContent=e.message;}};
+nb('sessionRestore').onclick=async()=>{try{const raw=localStorage.getItem(notebookKey);if(!raw)throw Error('No saved browser notebook');await restoreNotebook(JSON.parse(raw));}catch(e){nb('sessionStatus').textContent=e.message;}};
+nb('sessionExport').onclick=()=>{try{const raw=JSON.stringify(currentNotebook(),null,2),url=URL.createObjectURL(new Blob([raw],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='nexus-research-notebook.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);nb('sessionStatus').textContent='Exported notebook. Contains notes and replay references, not learned weights.';}catch(e){nb('sessionStatus').textContent=e.message;}};
+nb('sessionImport').onchange=async()=>{try{const file=nb('sessionImport').files[0];if(!file||file.size>32768)throw Error('Notebook must be at most 32 KiB');await restoreNotebook(JSON.parse(await file.text()));}catch(e){nb('sessionStatus').textContent=e.message;}};
+</script>
+<script>
+fetch('/api/training-audit').then(async r=>{const p=await r.json();if(!r.ok)throw Error(p.error||'Audit unavailable');return p;}).then(p=>{document.getElementById('auditStatus').textContent=p.caveat+' · execution '+p.execution_sha;document.getElementById('auditResult').textContent=p.models.map(m=>m.family+' / model '+m.bundle+'\nChoices: '+JSON.stringify(m.full.choices)+'\nRaw-versus-paired sign disagreement: '+JSON.stringify(m.raw_paired_sign_disagreements)+'\nChoice flips: '+JSON.stringify(m.choice_flip_counts)).join('\n\n');}).catch(e=>document.getElementById('auditStatus').textContent=e.message);
 </script></body></html>
