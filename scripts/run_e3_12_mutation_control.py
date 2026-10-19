@@ -20,6 +20,28 @@ RESULT=ROOT/'artifacts/e3_12_mutation_control.json'
 USAGE=ROOT/'artifacts/e3_12_mutation_usage.json'
 VALIDATION=ROOT/'artifacts/e3_12_mutation_validation.json'
 JOURNAL=ROOT/'artifacts/e3_12_mutation_resources.jsonl.gz'
+OPERATOR_PROFILE=False
+
+
+def configure_operator():
+    """Separate balanced-panel study; original one-run outputs stay immutable."""
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,OPERATOR_PROFILE
+    OPERATOR_PROFILE=True
+    CONFIG=ROOT/'configs/e3_12b_operator_headroom.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_12B_OPERATOR_HEADROOM_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_12b_operator_headroom_allocation.json'
+    RESULT=ROOT/'artifacts/e3_12b_operator_headroom.json'
+    USAGE=ROOT/'artifacts/e3_12b_operator_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_12b_operator_validation.json'
+    JOURNAL=ROOT/'artifacts/e3_12b_operator_resources.jsonl.gz'
+
+
+def study_module():
+    if OPERATOR_PROFILE:
+        from nexus.evolution2 import operator_headroom
+        return operator_headroom
+    from nexus.evolution2 import mutation_control
+    return mutation_control
 
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -50,7 +72,7 @@ def worker():
     from nexus.evolution1.resources import Clock,Operation,Work
     from nexus.evolution1.catalogue import digest
     from nexus.evolution2 import post_probe as hostapi
-    from nexus.evolution2 import mutation_control as study
+    study=study_module()
     from nexus.evolution2.full_policy_source import DecisionJournal,controllers,operation_plan,state_hash,task_spec
     from nexus.evolution2.generated_strategies import StrategyGenerator
     from nexus.evolution2.measured_mutation import observe_measured_pair
@@ -76,10 +98,13 @@ def worker():
                     protocol=dict(phase=role,pair_id=f'{f}:{b}:{e}',context_hash=digest(row['initial_observation']),reset_seed=reset,
                         planner_seed=planner,horizon=200,planning_cap=1536,checkpoint_sha256=item['sha256'],reward_sha256=p['reward_sha256'])
                     row['protocol']=protocol;p['rows'].append(row)
-                    children={m:g.paired_child(parent,partner,study.proposal_uniform(c,f,b,e)) for m,g in generators.items()}
+                    children=(study.operators() if OPERATOR_PROFILE else
+                        {m:g.paired_child(parent,partner,study.proposal_uniform(c,f,b,e)) for m,g in generators.items()})
+                    if OPERATOR_PROFILE and role=='evaluation':
+                        row['decision']=study.decide(p['rows'][:-1],c,f,b,generators['learned'])
                     row['strategies']={m:s.payload() for m,s in children.items()}
                     strategies=dict(parent=parent,**children)
-                    if role=='evaluation':strategies['fixed_blend']=controllers()['rank_blend']
+                    if role=='evaluation' and not OPERATOR_PROFILE:strategies['fixed_blend']=controllers()['rank_blend']
                     receipts={}
                     try:
                         for name,strategy in strategies.items():
@@ -106,12 +131,14 @@ def worker():
                                 receipts[name]=replace(receipt,physical_reserved=total,physical_completed_reported=total,logical_charged=total,events=())
                             finally:copy.close()
                         if role=='training':
-                            for m,g in generators.items():
+                            updates=([(kind,generators['learned']) for kind in children] if OPERATOR_PROFILE else list(generators.items()))
+                            for m,g in updates:
+                                feedback_protocol=(dict(protocol,pair_id=protocol['pair_id']+':'+m) if OPERATOR_PROFILE else protocol)
                                 paths={}
                                 for label,strategy in [('parent',parent),('child',children[m])]:
                                     path=row['paths']['parent' if label=='parent' else m]
-                                    paths[label]=dict(**protocol,strategy=strategy.fingerprint,rewards=[s['reward'] for s in path['steps']],cpu_s=path['cpu_s'])
-                                observe_measured_pair(g,parent,children[m],paths,dict(parent=receipts['parent'],child=receipts[m]),protocol,return_scale=c['return_scale'])
+                                    paths[label]=dict(**feedback_protocol,strategy=strategy.fingerprint,rewards=[s['reward'] for s in path['steps']],cpu_s=path['cpu_s'])
+                                observe_measured_pair(g,parent,children[m],paths,dict(parent=receipts['parent'],child=receipts[m]),feedback_protocol,return_scale=c['return_scale'])
                         row['after']={m:g.mutation_probabilities() for m,g in generators.items()};p['active_work']=None;persist()
                     finally:env.close()
                 p['final_policies'][f'{f}:{b}']={m:g.mutation_probabilities() for m,g in generators.items()}
@@ -126,7 +153,8 @@ def worker():
     finally:
         p['cpu_s']=(time.process_time_ns()-cpu)/1e9;p['max_rss_bytes']=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
         p['journals']=[dict(path=str(x.relative_to(ROOT)),sha256=sha(x)) for x in journal.paths]
-        p['dependencies']=dict(python=sys.version,numpy=np.__version__,torch=torch.__version__);persist()
+        import gymnasium
+        p['dependencies']=dict(python=sys.version,numpy=np.__version__,torch=torch.__version__,gymnasium=gymnasium.__version__);persist()
 
 
 def run():
@@ -135,7 +163,7 @@ def run():
     if c['time_cap_s']>min(900,a['session_remaining_before_s']) or c['real_cap']>100000:raise ValueError('standing_caps')
     if any(c[k]!=a[k] for k in ('time_cap_s','real_cap','imagined_cap','model_call_cap','network_forward_cap')):raise ValueError('allocation_caps')
     if git('status','--porcelain','--untracked-files=no'):raise ValueError('clean_committed_implementation_required')
-    if any(p.exists() for p in (RESULT,USAGE,VALIDATION)) or list(JOURNAL.parent.glob('e3_12_mutation_resources*')):raise ValueError('one_run_consumed')
+    if any(p.exists() for p in (RESULT,USAGE,VALIDATION)) or list(JOURNAL.parent.glob(JOURNAL.name.replace('.jsonl.gz','*'))):raise ValueError('one_run_consumed')
     old,audit,inventory=preflight(c);start=time.perf_counter()
     use=dict(start_monotonic=start,parent_pid=os.getpid(),source_commit=git('rev-parse','HEAD'),config_sha256=sha(CONFIG),protocol_sha256=sha(PROTOCOL),allocation_sha256=sha(ALLOCATION))
     with USAGE.open('x') as f:f.write(json.dumps(use)+'\n')
@@ -143,7 +171,7 @@ def run():
         rows=[],models=[],final_policies={},learning_journals={},observed=dict(model_calls=0,network_forwards=0,imagined_transitions=0),
         inputs=inventory['checkpoints']+inventory['source_arrays'],reward_sha256=sha(ROOT/'src/nexus/world/rewards.py')))
     env={**os.environ,'NEXUS_MUTATION_PARENT':str(os.getpid()),'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','VECLIB_MAXIMUM_THREADS':'1'}
-    child=subprocess.Popen([sys.executable,__file__,'--worker'],cwd=ROOT,env=env)
+    child=subprocess.Popen([sys.executable,__file__,'--worker',*(['--operator-headroom'] if OPERATOR_PROFILE else [])],cwd=ROOT,env=env)
     try:code=child.wait(timeout=c['time_cap_s'])
     except subprocess.TimeoutExpired:child.kill();child.wait();code=-9
     p=read(RESULT);p['wall_s']=time.perf_counter()-start;p['exit_code']=code
@@ -162,7 +190,7 @@ def run():
 
 
 def verify():
-    from nexus.evolution2 import mutation_control as study
+    study=study_module()
     start=time.perf_counter();p=read(RESULT);c=read(CONFIG)
     if not p['declared_complete'] or p['status']!='complete_valid':raise ValueError('execution_not_complete')
     if sha(CONFIG)!=p['provenance']['config_sha256'] or sha(PROTOCOL)!=p['provenance']['protocol_sha256']:raise ValueError('locked_provenance')
@@ -188,7 +216,8 @@ def verify():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--worker',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--preflight',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--worker',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--preflight',action='store_true');parser.add_argument('--operator-headroom',action='store_true');args=parser.parse_args()
+    if args.operator_headroom:configure_operator()
     if args.worker:worker()
     elif args.verify:verify()
     elif args.preflight:print(json.dumps(preflight(read(CONFIG))[1]))

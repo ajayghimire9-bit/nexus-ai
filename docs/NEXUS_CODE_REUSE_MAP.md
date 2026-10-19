@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+E3.12B operator_headroom is a pure balanced-panel selector/replay/statistics
+adapter over SAME StrategyGenerator mean credit and measured_mutation bridge.
+SAME run_e3_12_mutation_control adds --operator-headroom, separate immutable
+config/grant/results and original Host/Dispatch/ledger/forward instrumentation.
+Only fixed parent and two existing composed operators execute; raw training
+means are a simple baseline, no new predictor/memory/planner. Query selection
+sealed before paths; both operators evaluated at every reset. Protocol
+NEXUS_E3_12B_OPERATOR_HEADROOM_PROTOCOL.md; no outcomes yet at implementation.
+
 E3.12 measured-mutation binding: mutation_control provides pure replay/grid/
 statistics helpers. run_e3_12_mutation_control binds SAME post_probe.Host,
 Dispatch, ForwardCheckedStep, ReservationLedger and DecisionJournal to SAME
