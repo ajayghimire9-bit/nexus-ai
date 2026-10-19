@@ -56,31 +56,35 @@ def analyze(rows,c):
     return dict(label=label,families=families,measured_environment_returns=False,scope='Forecast distinguishability only; no accuracy or control claim.')
 
 
+def validate_forecasts(r,controllers):
+    if set(r['paths'])!=set(controllers) or set(r['common'])!=set(controllers):raise ValueError('complete_controller_conditions')
+    reward=pendulum_step_reward if r['family']=='pendulum' else acrobot_step_reward
+    for path in r['paths'].values():
+        steps=path['steps']
+        if len(steps)!=16:raise ValueError('complete_rollout_steps')
+        replay=walk(r['initial_observation'],lambda obs,t:(steps[t]['action'],steps[t]['next_obs'],steps[t]['termination_probability']),reward)
+        if replay!=path:raise ValueError('reward_survival_or_continuity_replay')
+    for label,forecast in r['common'].items():
+        actions=np.asarray(forecast['actions']);states=np.asarray(forecast['states']);probabilities=np.asarray(forecast['termination_estimates'])
+        dim=len(r['initial_observation'])
+        if actions.shape!=(16,16) or actions.dtype.kind not in 'iu' or states.shape!=(16,16,dim) or probabilities.shape!=(16,16):raise ValueError('complete_common_forecasts')
+        if not np.isfinite(states).all() or not np.isfinite(probabilities).all() or np.any(probabilities<0) or np.any(probabilities>1) or np.any(actions<0) or np.any(actions>2):raise ValueError('finite_common_forecasts')
+        if not np.all(actions[:,0]==r['paths'][label]['steps'][0]['action']):raise ValueError('cached_first_action_pairing')
+        state=np.repeat(np.asarray(r['initial_observation'],dtype=np.float32)[None,:],16,axis=0);alive=np.ones(16);scores=np.zeros(16)
+        for t in range(16):
+            nxt=states[t].astype(np.float32);scores+=alive*reward(state,actions[:,t],nxt);alive*=1-probabilities[t];state=nxt
+        values=np.asarray(forecast['scores'])
+        if values.shape!=(16,) or not np.isfinite(values).all() or not np.allclose(scores,values,rtol=0,atol=1e-9):raise ValueError('common_score_replay')
+    a,b=(r['paths'][k]['steps'][0]['action'] for k in controllers)
+    if a==b and r['common']['successor_anchor']['scores']!=r['common']['rank_blend']['scores']:raise ValueError('same_action_common_tail_identity')
+
+
 def validate(p,c):
     expected=set(itertools.product(c['families'],c['model_bundles'],c['source_offsets']))
     keys=[(r['family'],r['bundle'],r['offset']) for r in p['rows']]
     if len(keys)!=len(expected) or set(keys)!=expected:raise ValueError('complete_fixed_source_grid')
     for r in p['rows']:
-        if set(r['paths'])!=set(c['controllers']) or set(r['common'])!=set(c['controllers']):raise ValueError('complete_controller_conditions')
-        reward=pendulum_step_reward if r['family']=='pendulum' else acrobot_step_reward
-        for path in r['paths'].values():
-            steps=path['steps']
-            if len(steps)!=16:raise ValueError('complete_rollout_steps')
-            replay=walk(r['initial_observation'],lambda obs,t:(steps[t]['action'],steps[t]['next_obs'],steps[t]['termination_probability']),reward)
-            if replay!=path:raise ValueError('reward_survival_or_continuity_replay')
-        for label,forecast in r['common'].items():
-            actions=np.asarray(forecast['actions']);states=np.asarray(forecast['states']);probabilities=np.asarray(forecast['termination_estimates'])
-            dim=len(r['initial_observation'])
-            if actions.shape!=(16,16) or actions.dtype.kind not in 'iu' or states.shape!=(16,16,dim) or probabilities.shape!=(16,16):raise ValueError('complete_common_forecasts')
-            if not np.isfinite(states).all() or not np.isfinite(probabilities).all() or np.any(probabilities<0) or np.any(probabilities>1) or np.any(actions<0) or np.any(actions>2):raise ValueError('finite_common_forecasts')
-            if not np.all(actions[:,0]==r['paths'][label]['steps'][0]['action']):raise ValueError('cached_first_action_pairing')
-            state=np.repeat(np.asarray(r['initial_observation'],dtype=np.float32)[None,:],16,axis=0);alive=np.ones(16);scores=np.zeros(16)
-            for t in range(16):
-                nxt=states[t].astype(np.float32);scores+=alive*reward(state,actions[:,t],nxt);alive*=1-probabilities[t];state=nxt
-            values=np.asarray(forecast['scores'])
-            if values.shape!=(16,) or not np.isfinite(values).all() or not np.allclose(scores,values,rtol=0,atol=1e-9):raise ValueError('common_score_replay')
-        a,b=(r['paths'][k]['steps'][0]['action'] for k in c['controllers'])
-        if a==b and r['common']['successor_anchor']['scores']!=r['common']['rank_blend']['scores']:raise ValueError('same_action_common_tail_identity')
+        validate_forecasts(r,c['controllers'])
     target=dict(real_steps=0,imagined_transitions=772096,model_calls=31232,network_forwards=31232)
     if p['resources']['completed']!=target or any(p['resources']['unknown_upper'].values()) or p['observed_calls']!=31232 or p['observed_forwards']!=31232:raise ValueError('metered_counts')
     expected_models=set(itertools.product(c['families'],c['model_bundles']))

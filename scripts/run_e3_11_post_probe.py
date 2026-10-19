@@ -22,6 +22,21 @@ PREDICTIONS=ROOT/'artifacts/e3_11_predecision.jsonl'
 FROZEN=ROOT/'artifacts/e3_11_frozen_selector.json'
 JOURNAL=ROOT/'artifacts/e3_11_resources.jsonl.gz'
 ROLLOUT_PROFILE=False
+CALIBRATION_PROFILE=False
+
+
+def configure_calibration():
+    """Fresh E3.11B profile; original captures and preparation stay immutable."""
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,PREDICTIONS,ROLLOUT_PROFILE,CALIBRATION_PROFILE
+    CALIBRATION_PROFILE=True;ROLLOUT_PROFILE=True
+    CONFIG=ROOT/'configs/e3_11b_forecast_calibration_execution.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_11B_FORECAST_CALIBRATION_EXECUTION.md'
+    ALLOCATION=ROOT/'configs/e3_11b_forecast_calibration_allocation.json'
+    RESULT=ROOT/'artifacts/e3_11b_forecast_calibration.json'
+    USAGE=ROOT/'artifacts/e3_11b_forecast_calibration_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_11b_forecast_calibration_validation.json'
+    JOURNAL=ROOT/'artifacts/e3_11b_forecast_resources.jsonl.gz'
+    PREDICTIONS=ROOT/'artifacts/e3_11b_forecast_predecision.jsonl'
 
 
 def configure_rollout():
@@ -231,11 +246,13 @@ def run():
     with USAGE.open('x') as handle:json.dump(dict(consumed=True,parent_pid=os.getpid(),start_monotonic=start,execution_sha=revision,allocation_sha256=sha(ALLOCATION)),handle)
     paths=['scripts/run_e3_11_post_probe.py','src/nexus/evolution2/post_probe.py','src/nexus/evolution2/staged_study.py','src/nexus/evolution2/planner_evidence.py','src/nexus/evolution2/full_policy_source.py','src/nexus/evolution2/generated_strategies.py','src/nexus/evolution2/planner_adapter.py','src/nexus/evolution1/resources.py','src/nexus/world/dynamics.py','src/nexus/world/rewards.py','src/nexus/tasks/spec.py','src/nexus/tasks/wrappers.py']
     if ROLLOUT_PROFILE:paths.append('src/nexus/evolution2/rollout_headroom.py')
+    if CALIBRATION_PROFILE:paths.extend(['src/nexus/evolution2/calibration_execution.py','src/nexus/evolution2/forecast_calibration.py'])
     save(dict(execution_sha=revision,config_sha256=sha(CONFIG),protocol_sha256=sha(PROTOCOL),code_sha256={n:sha(ROOT/n) for n in paths},historical_json_sha256=old,declared_complete=False,pairs=[],models=[],active_work=None))
     env=dict(os.environ,NEXUS_E311_PARENT=str(os.getpid()),PYTHONPATH=str(ROOT/'src')+os.pathsep+str(ROOT/'.deps'),PYTHONDONTWRITEBYTECODE='1',OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',VECLIB_MAXIMUM_THREADS='1')
     error=None
     try:
-        proc=subprocess.run([sys.executable,__file__,'--worker']+(['--rollout-audit'] if ROLLOUT_PROFILE else []),env=env,cwd=ROOT,timeout=c['time_cap_s']-(time.perf_counter()-start),capture_output=True,text=True)
+        profile=['--calibration'] if CALIBRATION_PROFILE else (['--rollout-audit'] if ROLLOUT_PROFILE else [])
+        proc=subprocess.run([sys.executable,__file__,'--worker']+profile,env=env,cwd=ROOT,timeout=c['time_cap_s']-(time.perf_counter()-start),capture_output=True,text=True)
         if proc.returncode:error=proc.stderr[-4000:]
     except subprocess.TimeoutExpired:error='time_cap'
     wall=time.perf_counter()-start;p=json.loads(RESULT.read_text())
@@ -297,8 +314,17 @@ def verify():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--verify',action='store_true');parser.add_argument('--rollout-audit',action='store_true');args=parser.parse_args()
-    if args.rollout_audit:
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--verify',action='store_true');group=parser.add_mutually_exclusive_group();group.add_argument('--rollout-audit',action='store_true');group.add_argument('--calibration',action='store_true');args=parser.parse_args()
+    if args.calibration:
+        configure_calibration()
+        from nexus.evolution2 import calibration_execution
+        api=sys.modules[__name__]
+        if args.worker:calibration_execution.worker(api)
+        elif args.verify:raise SystemExit(calibration_execution.verify(api))
+        else:
+            calibration_execution.preflight(api)
+            raise SystemExit(run())
+    elif args.rollout_audit:
         configure_rollout()
         if args.worker or args.verify:
             from nexus.evolution2 import rollout_headroom

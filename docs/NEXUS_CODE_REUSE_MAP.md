@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+E3.11B execution extends SAME run_e3_11_post_probe.py with --calibration;
+calibration_execution binds existing Host/Dispatch, restoration, walk, planners,
+evidence and ReservationLedger to the preparation capture/analysis functions.
+rollout_headroom.validate_forecasts is extracted unchanged for shared replay.
+No new learner/meter/controller or changes to historical profiles/artifacts.
+Separate execution config/protocol/allocation and output paths; preparation
+checker remains blocked. See NEXUS_E3_11B_FORECAST_CALIBRATION_EXECUTION.md.
+
 E3.11B forecast_calibration is pure preparation/statistics glue; does not
 replace post_probe.Host/Dispatch, rollout_headroom.walk, planners, memory or
 ReservationLedger. Source-only prepare_e3_11b_forecast_calibration.py checks
