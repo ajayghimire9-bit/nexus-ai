@@ -1,5 +1,19 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.11A source forecast headroom visible, 2026-10-19
+
+Precommittedcaeae5f7875459e60690bf74e2270bab526885bd source-only audit:
+16 original source observations,4 frozen MLPs,0 environments/fits. Among12
+equal-first-action cases,16-decision controller-specific forecasts differ in
+later actions and score in11: Pendulum6/7, Acrobot5/5. Common-tail scores stay
+identical. This is distinguishability, not accuracy or control improvement;
+E3.11 zero-gain result unchanged. Cost772096 imagined/31232 observed forwards,
+4.818614s run+0.423418s verification;381 prior JSON/frozen files preserved.
+555 relevant tests pass. Ledger889.765542043008/2710.2344579569917. Policy
+forecasts cost93.25× common-tail rows, not an efficiency result. Next proposal:
+fresh paired-return calibration of fixed forecasts vs common-tail/mean priors,
+not allocated/registered/executed. Report NEXUS_E3_11A_ROLLOUT_HEADROOM_RESULTS.md.
+
 ## Latest — E3.11 fresh post-probe selection fails, 2026-10-19
 
 Protocol/execution048d06cb3d779ccba0668f4d327aca4701673480 committed first.

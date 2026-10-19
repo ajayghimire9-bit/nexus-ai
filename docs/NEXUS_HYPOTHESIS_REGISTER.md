@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — H-headroom visible, utility unknown (E3.11A)
+
+Registered source-only forecast screen passes: different later actions/scores
+in6/7 Pendulum and5/5 Acrobot equal-first-action contexts. Common-tail scores
+identical. All16 source contexts retained,0 real outcomes or learning updates.
+This tests expressive headroom, not accuracy, strategy ranking or return gain.
+No independent context replications or generalization inference. Next separately
+lock fresh paired-return forecast calibration; do not fit on closed E3.11 data.
+Report NEXUS_E3_11A_ROLLOUT_HEADROOM_RESULTS.md.
+
 ## Latest — H-evidence post-probe selection not established (E3.11)
 
 Precommitted fresh-source comparison complete: contextual-minus-model-mean

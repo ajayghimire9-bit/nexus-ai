@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — E3.11A policy-forecast distinguishability verified
+
+Source-only registered16-context audit complete. Equal-first-action headroom
+Pendulum6/7 and Acrobot5/5;1 identical negative case retained. No accuracy or
+actual-return measurement.0 real steps/fits,772096 imagined/31232 forwards;
+4.818614s+0.423418s audit.555 relevant tests;381 old JSON and frozen states
+unchanged. Ledger889.765542043008/2710.2344579569917. Next calibrate fixed
+forecasts against fresh actual returns under separately locked protocol.
+Report NEXUS_E3_11A_ROLLOUT_HEADROOM_RESULTS.md. E3.11 failure stays closed.
+
 ## Latest — E3.11 complete, no selection gain
 
 All28 contexts/56 control continuations completed on fresh source seeds;

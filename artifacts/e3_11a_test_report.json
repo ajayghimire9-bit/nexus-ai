@@ -1,0 +1,29 @@
+{
+  "kind": "source_only_fixture_and_saved_forecast_tests",
+  "execution_sha": "caeae5f7875459e60690bf74e2270bab526885bd",
+  "command_prefix": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest -o addopts='' -q",
+  "modules": [
+    "tests/test_e3_11a_rollout_headroom.py", "tests/test_e3_11_post_probe.py",
+    "tests/test_e3_10_metered_model.py", "tests/test_e3_9_evidence_readiness.py",
+    "tests/test_e3_8_learning_interfaces.py", "tests/test_e3_7_transition_evidence.py",
+    "tests/test_e3_6_feature_informativeness.py", "tests/test_e3_5_residual_advantage.py",
+    "tests/test_e3_4_feedback_coverage.py", "tests/test_e3_3_training_feedback_audit.py",
+    "tests/test_e3_2_return_feedback.py", "tests/test_unified_e225_e30.py",
+    "tests/test_unified_headroom.py", "tests/test_unified_full_policy_source.py",
+    "tests/test_unified_full_policy_replication.py", "tests/test_unified_crossed_reset.py",
+    "tests/test_e3_1_learned_model_audit.py", "tests/test_evolution2_planner_quality.py",
+    "tests/test_evolution1_resources.py", "tests/test_evolution1_source_contracts.py",
+    "tests/test_evolution1_toy_loop.py", "tests/test_evolution2_observation_memory.py",
+    "tests/test_evolution2_observation_memory_cross.py", "tests/test_strategy_memory.py",
+    "tests/test_strategy_memory_obs.py", "tests/test_strategy_memory_selector.py",
+    "tests/test_strategy_memory_decide.py", "tests/test_strategy_memory_persist_obs.py",
+    "tests/test_evolution2_fit_clock.py", "tests/test_evolution2_fit_clock_run.py"
+  ],
+  "focused_before_run": {"passed": 75, "duration_s": 1.83},
+  "regressions_before_run": {"passed": 554, "duration_s": 11.76},
+  "regressions_after_run": {"passed": 555, "duration_s": 11.50},
+  "new_real_steps_in_tests": 0,
+  "learned_model_inference_in_tests": false,
+  "entire_historical_suite": false,
+  "separate_registered_inference_capture": "artifacts/e3_11a_rollout_headroom.json"
+}

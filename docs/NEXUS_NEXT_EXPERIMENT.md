@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — fresh calibration of fixed controller-specific forecasts
+
+E3.11A source-only headroom passes6/7 Pendulum and5/5 Acrobot same-first cases,
+but accuracy is unknown and policy forecasts cost93.25× common-tail rows.
+Next single experiment: freeze those forecasts and compare their predicted
+strategy advantage with fresh paired192-step actual continuations after shared
+8-step probes, alongside common-tail and legitimate model-training mean priors.
+Report first16 separately to distinguish short-horizon calibration from the
+192-step target. No feature/neural fitting or E3.11 evaluation reuse. Proposed
+16 contexts/6272 real steps/~9.93m imagined, estimated1–2min/cap180s. Not yet
+registered/allocated/executed. Ledger889.765542043008/2710.2344579569917.
+Report NEXUS_E3_11A_ROLLOUT_HEADROOM_RESULTS.md. Older entries are history.
+
 ## Current — controller-specific rollout evidence headroom audit
 
 E3.11 complete/failed:0 contextual-minus-mean return in both families, identical

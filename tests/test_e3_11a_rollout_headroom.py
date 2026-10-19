@@ -2,6 +2,7 @@
 from copy import deepcopy
 import importlib.util
 import itertools
+import hashlib
 import json
 from pathlib import Path
 import numpy as np
@@ -89,3 +90,13 @@ def test_runtime_config_cannot_silently_ignore_changed_settings():
     for key,value in [('rollout_steps',8),('source_offsets',[0,1,2,3]),('real_cap',1),('forecast_difference_threshold',.1)]:
         bad=deepcopy(c);bad[key]=value
         with pytest.raises(ValueError,match='locked_rollout'):h.validate_config(bad)
+
+
+def test_saved_headroom_is_forecast_only_and_replays_without_checkpoints():
+    path=ROOT/'artifacts/e3_11a_rollout_headroom.json';raw=path.read_bytes();p=json.loads(raw)
+    v=json.loads((ROOT/'artifacts/e3_11a_rollout_headroom_validation.json').read_text())
+    assert p['declared_complete'] and v['valid']
+    assert v['capture_sha256']==hashlib.sha256(raw).hexdigest()
+    assert h.validate(p,config()) and h.analyze(p['rows'],config())==p['analysis']
+    assert p['analysis']['measured_environment_returns'] is False
+    assert p['resources']['completed']['real_steps']==0

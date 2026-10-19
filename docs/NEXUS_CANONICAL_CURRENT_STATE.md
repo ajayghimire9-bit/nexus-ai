@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Latest E3.11A: source-only controller-specific forecast headroom visible11/12
+equal-first cases (Pendulum6/7, Acrobot5/5); no real-return accuracy result.
+0 real steps/fits,772096 imagined/31232 observed forwards.555 relevant tests,
+381 old JSON/frozen files unchanged; ledger889.765542043008/2710.2344579569917.
+Cost93.25× common-tail rows. E3.11 remains no selection gain. Next proposed
+fresh paired-return calibration, not another feature sweep or architecture
+expansion. Report NEXUS_E3_11A_ROLLOUT_HEADROOM_RESULTS.md.
+
 Latest E3.11: registered fresh post-probe comparison complete but no gain;
 contextual=model mean in all16 choices, primary family differences0. First
 actions agree15/16, collapsing common-tail forecasts.10976 real/16129288

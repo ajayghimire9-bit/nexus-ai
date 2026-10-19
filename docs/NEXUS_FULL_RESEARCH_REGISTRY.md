@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Supplemental E3.11A codex/e3-11a-controller-rollout-headroom, precommitted
+executioncaeae5f7875459e60690bf74e2270bab526885bd.16 source contexts/4 frozen
+models;same-first forecast headroom6/7 Pendulum,5/5 Acrobot. Representational
+screen only,0 measured returns/fits.772096 imagined/31232 forwards,4.818614s
++0.423418s verification;381 old JSON preserved,555 relevant tests. Ledger
+889.765542043008/2710.2344579569917. Raw artifacts e3_11a_*; report
+NEXUS_E3_11A_ROLLOUT_HEADROOM_RESULTS.md. No utility/control/L2L claim.
+
 Supplemental E3.11 codex/e3-11-fresh-post-probe, protocol/execution
 048d06cb3d779ccba0668f4d327aca4701673480.12 training/16 evaluation pairs,
 complete56 actual192-step continuations; contextual-minus-mean0 both families,

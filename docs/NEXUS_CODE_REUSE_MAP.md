@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+E3.11A extends SAME run_e3_11_post_probe.py with --rollout-audit/--verify and
+separate config, grant, result, usage and journal paths. rollout_headroom wraps
+post_probe.Host/Dispatch, planning_ops, existing planners/rewards/model/ledger;
+no new meter, learner or controller. Policy advances use charged model calls,
+no environments. First actions reused only within the same execution context.
+555 relevant tests; numerical headroom passes, accuracy untested. See E3.11A
+results. Original E3.11 profile and historical result remain unchanged.
+
 E3.11 post_probe is a phase/host adapter over SAME StagedStudy, EpisodeContext,
 AdvantagePredictor, generated_strategies.execute, planner_evidence and ledger.
 Host binds actual frozen models/TaskSpec wrappers; deepcopy restores complete
