@@ -23,6 +23,20 @@ FROZEN=ROOT/'artifacts/e3_11_frozen_selector.json'
 JOURNAL=ROOT/'artifacts/e3_11_resources.jsonl.gz'
 ROLLOUT_PROFILE=False
 CALIBRATION_PROFILE=False
+HORIZON_PROFILE=False
+
+
+def configure_horizon():
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,PREDICTIONS,HORIZON_PROFILE
+    configure_calibration();HORIZON_PROFILE=True
+    CONFIG=ROOT/'configs/e3_11d_horizon_calibration.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_11D_HORIZON_CALIBRATION_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_11d_horizon_calibration_allocation.json'
+    RESULT=ROOT/'artifacts/e3_11d_horizon_calibration.json'
+    USAGE=ROOT/'artifacts/e3_11d_horizon_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_11d_horizon_validation.json'
+    JOURNAL=ROOT/'artifacts/e3_11d_horizon_resources.jsonl.gz'
+    PREDICTIONS=ROOT/'artifacts/e3_11d_horizon_predecision.jsonl'
 
 
 def configure_calibration():
@@ -247,11 +261,12 @@ def run():
     paths=['scripts/run_e3_11_post_probe.py','src/nexus/evolution2/post_probe.py','src/nexus/evolution2/staged_study.py','src/nexus/evolution2/planner_evidence.py','src/nexus/evolution2/full_policy_source.py','src/nexus/evolution2/generated_strategies.py','src/nexus/evolution2/planner_adapter.py','src/nexus/evolution1/resources.py','src/nexus/world/dynamics.py','src/nexus/world/rewards.py','src/nexus/tasks/spec.py','src/nexus/tasks/wrappers.py']
     if ROLLOUT_PROFILE:paths.append('src/nexus/evolution2/rollout_headroom.py')
     if CALIBRATION_PROFILE:paths.extend(['src/nexus/evolution2/calibration_execution.py','src/nexus/evolution2/forecast_calibration.py'])
+    if HORIZON_PROFILE:paths.append('src/nexus/evolution2/horizon_calibration.py')
     save(dict(execution_sha=revision,config_sha256=sha(CONFIG),protocol_sha256=sha(PROTOCOL),code_sha256={n:sha(ROOT/n) for n in paths},historical_json_sha256=old,declared_complete=False,pairs=[],models=[],active_work=None))
     env=dict(os.environ,NEXUS_E311_PARENT=str(os.getpid()),PYTHONPATH=str(ROOT/'src')+os.pathsep+str(ROOT/'.deps'),PYTHONDONTWRITEBYTECODE='1',OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',VECLIB_MAXIMUM_THREADS='1')
     error=None
     try:
-        profile=['--calibration'] if CALIBRATION_PROFILE else (['--rollout-audit'] if ROLLOUT_PROFILE else [])
+        profile=['--horizon-calibration'] if HORIZON_PROFILE else (['--calibration'] if CALIBRATION_PROFILE else (['--rollout-audit'] if ROLLOUT_PROFILE else []))
         proc=subprocess.run([sys.executable,__file__,'--worker']+profile,env=env,cwd=ROOT,timeout=c['time_cap_s']-(time.perf_counter()-start),capture_output=True,text=True)
         if proc.returncode:error=proc.stderr[-4000:]
     except subprocess.TimeoutExpired:error='time_cap'
@@ -314,9 +329,9 @@ def verify():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--verify',action='store_true');group=parser.add_mutually_exclusive_group();group.add_argument('--rollout-audit',action='store_true');group.add_argument('--calibration',action='store_true');args=parser.parse_args()
-    if args.calibration:
-        configure_calibration()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--verify',action='store_true');group=parser.add_mutually_exclusive_group();group.add_argument('--rollout-audit',action='store_true');group.add_argument('--calibration',action='store_true');group.add_argument('--horizon-calibration',action='store_true');args=parser.parse_args()
+    if args.calibration or args.horizon_calibration:
+        configure_horizon() if args.horizon_calibration else configure_calibration()
         from nexus.evolution2 import calibration_execution
         api=sys.modules[__name__]
         if args.worker:calibration_execution.worker(api)

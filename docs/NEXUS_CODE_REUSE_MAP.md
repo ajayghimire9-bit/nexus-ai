@@ -1,5 +1,12 @@
 # NEXUS code-reuse map
 
+E3.11D adds --horizon-calibration to SAME runner/worker. horizon_calibration
+locks64-step outer forecasts and analyzes their cached16-step prefixes; it
+does not replace planners, models, memory, learner or meter. Existing replay
+and journal checks accept registered duration, old profiles default16 unchanged.
+Forecast_calibration.summarize shares arithmetic after profile-specific strict
+validation. See NEXUS_E3_11D_HORIZON_CALIBRATION_PROTOCOL.md.
+
 E3.11B execution extends SAME run_e3_11_post_probe.py with --calibration;
 calibration_execution binds existing Host/Dispatch, restoration, walk, planners,
 evidence and ReservationLedger to the preparation capture/analysis functions.

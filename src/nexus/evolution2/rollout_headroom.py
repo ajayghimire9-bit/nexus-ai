@@ -56,13 +56,13 @@ def analyze(rows,c):
     return dict(label=label,families=families,measured_environment_returns=False,scope='Forecast distinguishability only; no accuracy or control claim.')
 
 
-def validate_forecasts(r,controllers):
+def validate_forecasts(r,controllers,steps_count=16):
     if set(r['paths'])!=set(controllers) or set(r['common'])!=set(controllers):raise ValueError('complete_controller_conditions')
     reward=pendulum_step_reward if r['family']=='pendulum' else acrobot_step_reward
     for path in r['paths'].values():
         steps=path['steps']
-        if len(steps)!=16:raise ValueError('complete_rollout_steps')
-        replay=walk(r['initial_observation'],lambda obs,t:(steps[t]['action'],steps[t]['next_obs'],steps[t]['termination_probability']),reward)
+        if len(steps)!=steps_count:raise ValueError('complete_rollout_steps')
+        replay=walk(r['initial_observation'],lambda obs,t:(steps[t]['action'],steps[t]['next_obs'],steps[t]['termination_probability']),reward,steps=steps_count)
         if replay!=path:raise ValueError('reward_survival_or_continuity_replay')
     for label,forecast in r['common'].items():
         actions=np.asarray(forecast['actions']);states=np.asarray(forecast['states']);probabilities=np.asarray(forecast['termination_estimates'])

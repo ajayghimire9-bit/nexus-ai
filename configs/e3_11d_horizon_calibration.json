@@ -1,0 +1,42 @@
+{
+  "version": "e3_11d_horizon_v1",
+  "families": [
+    "pendulum",
+    "acrobot"
+  ],
+  "model_bundles": [
+    0,
+    1
+  ],
+  "training_episodes": [],
+  "evaluation_episodes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "controllers": [
+    "successor_anchor",
+    "rank_blend"
+  ],
+  "env_seed_base": 2141000000,
+  "planner_seed_base": 2142000000,
+  "probe_seed_base": 2143000000,
+  "evidence_seed_base": 2144000000,
+  "time_cap_s": 180,
+  "real_cap": 6272,
+  "imagined_cap": 12224512,
+  "model_call_cap": 485888,
+  "network_forward_cap": 485888,
+  "journal_chunk_decisions": 1500,
+  "analysis_config": "configs/e3_11b_forecast_calibration.json",
+  "analysis_config_sha256": "cf1b734a01b58e1e58c2fbeacc45b4614650d640b353ab1d4330c6a4a176f0fb",
+  "previous_validation": "artifacts/e3_11b_forecast_calibration_validation.json",
+  "previous_validation_sha256": "a9ec3210d35c961821b6c466d2dff79d4428b01ae250d2fa8fa055f10728c5b2",
+  "checkpoint_inventory": "artifacts/e3_9_planner_evidence_readiness.json",
+  "checkpoint_inventory_sha256": "58a9c11758e0a13d09f68c35697374ecbad1b19c9755780436fae897a931c0f9",
+  "session_used_before_s": 948.6320812930051,
+  "session_remaining_before_s": 2651.3679187069947,
+  "authority": "Explicit human request: continue longer-horizon test, lock protocol, run within approved budget and push; standing local CPU grant2026-10-16",
+  "forecast_steps": 64
+}

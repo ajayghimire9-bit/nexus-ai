@@ -133,6 +133,11 @@ def interval(values):
 
 def analyze(rows, c):
     validate_rows(rows, c)
+    return summarize(rows,c)
+
+
+def summarize(rows,c):
+    """Shared arithmetic only. Caller must validate its own locked capture."""
     tol = c['numerical_tie_tolerance']
     out = {}
     for family in c['families']:
@@ -160,7 +165,7 @@ def analyze(rows, c):
                 methods[method] = {k: mean(r[k] for r in records) for k in records[0]}
             models.append(dict(bundle=bundle, methods=methods))
         comparisons = {}
-        for baseline in ('common_tail', 'training_mean'):
+        for baseline in c.get('comparison_baselines',('common_tail', 'training_mean')):
             comparisons[baseline] = {metric: interval([
                 m['methods']['policy_forecast'][metric]-m['methods'][baseline][metric]
                 for m in models]) for metric in ('accuracy', 'selected_return', 'regret')}

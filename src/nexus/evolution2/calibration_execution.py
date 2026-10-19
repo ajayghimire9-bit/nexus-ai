@@ -21,6 +21,9 @@ from nexus.world.rewards import pendulum_step_reward, acrobot_step_reward
 
 
 def settings(api):
+    if getattr(api,'HORIZON_PROFILE',False):
+        from nexus.evolution2.horizon_calibration import settings as horizon_settings
+        return horizon_settings(api)
     c=json.loads(api.CONFIG.read_text())
     expected=dict(version='e3_11b_execution_v1',families=['pendulum','acrobot'],model_bundles=[0,1],
         training_episodes=[],evaluation_episodes=[0,1,2,3],controllers=['successor_anchor','rank_blend'],
@@ -81,8 +84,9 @@ def validate(p,c,a,means):
         for tick,step in enumerate(prefix):
             check_real_step(step,previous,tick,s['probe'],f);previous=step['next_obs']
         if previous!=r['initial_observation']:raise ValueError('forecast_initial_observation')
-        validate_forecasts(r,c['controllers'])
-        if r['forecast_planner_seeds']!=[s['planner']+i for i in range(8,24)]:raise ValueError('forecast_planner_pairing')
+        length=c.get('forecast_steps',16)
+        validate_forecasts(r,c['controllers'],length)
+        if r['forecast_planner_seeds']!=[s['planner']+i for i in range(8,8+length)]:raise ValueError('forecast_planner_pairing')
         for label,path in r['paths'].items():
             if path['steps'][0]['action']!=r['actual'][label]['steps'][0]['action']:raise ValueError('first_forecast_action_reproduction')
         from nexus.evolution2.planner_adapter import iid_sequences
@@ -101,10 +105,19 @@ def validate(p,c,a,means):
             if [x['reward'] for x in path['steps']]!=row['rewards'][label]:raise ValueError('actual_rewards_replay')
     target=dict(real_steps=c['real_cap'],imagined_transitions=c['imagined_cap'],model_calls=c['model_call_cap'],network_forwards=c['network_forward_cap'])
     if p['resources']['completed']!=target or p['resources']['reserved']!=target or any(p['resources']['unknown_upper'].values()):raise ValueError('metered_resource_counts')
-    if p['observed_calls']!=393728 or p['observed_forwards']!=393728:raise ValueError('forward_hook_counts')
+    if p['observed_calls']!=c['model_call_cap'] or p['observed_forwards']!=c['network_forward_cap']:raise ValueError('forward_hook_counts')
     expected=set(itertools.product(c['families'],c['model_bundles']))
     if len(p['models'])!=4 or {(r['family'],r['bundle']) for r in p['models']}!=expected or any(r['before']!=r['after'] for r in p['models']):raise ValueError('frozen_model_grid')
     return True
+
+
+def analyze_capture(p,c,a):
+    if c.get('forecast_steps')==64:
+        from nexus.evolution2.horizon_calibration import analyze
+        return analyze(p,c,a)
+    result=analysis.analyze(p['rows'],a)
+    result['label']='development_forecast_point_screen_passed_not_confirmed' if result['point_screen'] else 'forecast_utility_not_established'
+    return result
 
 
 def worker(api):
@@ -131,7 +144,7 @@ def worker(api):
                 for e in c['evaluation_episodes']:
                     s=h.seeds(c,f,e);env=make_task_env(task_spec(f),seed=s['env']);obs,_=env.reset(seed=s['env'])
                     record=dict(family=f,bundle=b,episode=e,prefix=[],paths={},common={},actual={})
-                    p['records'].append(record);p['active_work']=dict(stage='case',family=f,bundle=b,episode=e,unsettled_case_upper=dict(real_steps=392,imagined_transitions=620800,model_calls=24608,network_forwards=24608));persist()
+                    p['records'].append(record);p['active_work']=dict(stage='case',family=f,bundle=b,episode=e,unsettled_case_upper=dict(real_steps=c['real_cap']//16,imagined_transitions=c['imagined_cap']//16,model_calls=c['model_call_cap']//16,network_forwards=c['network_forward_cap']//16));persist()
                     try:
                         acts=np.random.default_rng(s['probe']).integers(0,3,size=8)
                         def probe_body(d):
@@ -148,15 +161,21 @@ def worker(api):
                                 def body(d):
                                     action=d.action(label,f,o,s['planner']+8+t,'');nxt,prob=d.model('advance',o[None,:],np.array([action]));return action,nxt[0],float(prob[0])
                                 value,_=host.perform(ops,body,dict(stage='forecast',family=f,bundle=b,episode=e,controller=label,tick=t));return value
-                            path=walk(initial,evaluate,reward)
+                            path=walk(initial,evaluate,reward,steps=c.get('forecast_steps',16))
                             record['paths'][label]=path
-                        record['forecast_planner_seeds']=[s['planner']+8+t for t in range(16)]
+                        record['forecast_planner_seeds']=[s['planner']+8+t for t in range(c.get('forecast_steps',16))]
                         tails=iid_sequences(s['evidence']+1,16,15,3)
                         plans={label:np.column_stack((np.full(16,record['paths'][label]['steps'][0]['action']),tails)) for label in c['controllers']}
                         def common_body(d):return planner_evidence(plans,initial,host.instrument,reward,n_actions=3,ledger=d.ledger,clock=clock,fingerprint=lambda:state_hash(wm))
                         record['common'],_=host.perform(evidence_operations(plans,3),common_body,dict(stage='common_tail',family=f,bundle=b,episode=e))
                         guesses=dict(policy_forecast=record['paths']['rank_blend']['predicted_score']-record['paths']['successor_anchor']['predicted_score'],common_tail=max(record['common']['rank_blend']['scores'])-max(record['common']['successor_anchor']['scores']),training_mean=means[f'{f}:{b}'])
                         def persist_forecast(receipt):
+                            if c.get('forecast_steps')==64:
+                                from nexus.evolution2.horizon_calibration import short_advantage
+                                receipt['policy_16']=short_advantage(record)
+                                # Additional forecast data, sealed separately from
+                                # the original three-predictor receipt contract.
+                                receipt['extended_sha256']=analysis.digest(receipt)
                             predictions_file.write(json.dumps(receipt,allow_nan=False)+'\n');predictions_file.flush();os.fsync(predictions_file.fileno())
                             record['forecast_sha256']=receipt['forecast_sha256'];persist();return receipt['forecast_sha256']
                         def continuation(label):
@@ -181,8 +200,7 @@ def worker(api):
                     finally:env.close()
                 p['observed_calls']+=host.instrument.calls;p['observed_forwards']+=host.instrument.network_forwards
                 p['models'].append({**item,'before':before,'after':state_hash(wm)})
-            p['resources']=host.resources();validate(p,c,a,means);p['analysis']=analysis.analyze(p['rows'],a)
-            p['analysis']['label']='development_forecast_point_screen_passed_not_confirmed' if p['analysis']['point_screen'] else 'forecast_utility_not_established'
+            p['resources']=host.resources();validate(p,c,a,means);p['analysis']=analyze_capture(p,c,a)
             if any(api.sha(api.ROOT/r['path'])!=r['sha256'] for r in files):raise ValueError('frozen_files_changed')
             p['declared_complete']=True
     finally:
@@ -199,11 +217,15 @@ def verify(api):
     if not p['declared_complete'] or p['config_sha256']!=api.sha(api.CONFIG) or p['protocol_sha256']!=api.sha(api.PROTOCOL):raise ValueError('complete_locked_capture')
     means=analysis.training_means(api.ROOT/a['training_prior'],a['training_prior_sha256'],a)
     validate(p,c,a,means)
-    result=analysis.analyze(p['rows'],a);result['label']='development_forecast_point_screen_passed_not_confirmed' if result['point_screen'] else 'forecast_utility_not_established'
+    result=analyze_capture(p,c,a)
     if result!=p['analysis']:raise ValueError('analysis_replay')
     if api.sha(api.PREDICTIONS)!=p['predecision_sha256']:raise ValueError('immutable_predecision_file')
     predictions=[json.loads(line) for line in api.PREDICTIONS.read_text().splitlines()]
     expected=[{k:r[k] for k in ('family','bundle','episode','predictions','forecast_sha256')} for r in p['rows']]
+    if c.get('forecast_steps')==64:
+        from nexus.evolution2.horizon_calibration import short_advantage
+        for receipt,record in zip(expected,p['records']):
+            receipt['policy_16']=short_advantage(record);receipt['extended_sha256']=analysis.digest(receipt)
     if predictions!=expected:raise ValueError('predecision_receipts_replay')
     receipts={(r['family'],r['bundle'],r['episode']):r['forecast_sha256'] for r in predictions}
     inventory=json.loads((api.ROOT/c['checkpoint_inventory']).read_text())['integrity']
@@ -235,9 +257,16 @@ def verify(api):
                 stages.setdefault(stage,{k:0 for k in totals})
                 for op in settled:
                     for k,value in reserved[op].items():totals[k]+=value;stages[stage][k]+=value
-    if records!=6688 or totals!=p['resources']['completed']:raise ValueError('journal_count_replay')
+    length=c.get('forecast_steps',16)
+    expected_ids=set()
+    for key in receipts:
+        expected_ids.update({key+('probe',None,None),key+('common_tail',None,None)})
+        for label in c['controllers']:
+            expected_ids.update(key+('forecast',label,t) for t in range(length))
+            expected_ids.update(key+('continuation',label,t) for t in range(8,200))
+    if identifiers!=expected_ids or records!=16*(386+2*length) or totals!=p['resources']['completed']:raise ValueError('journal_count_replay')
     expected_stages=dict(probe=dict(real_steps=128,imagined_transitions=0,model_calls=0,network_forwards=0),
-        forecast=dict(real_steps=0,imagined_transitions=763904,model_calls=30720,network_forwards=30720),
+        forecast=dict(real_steps=0,imagined_transitions=16*length*2984,model_calls=16*length*120,network_forwards=16*length*120),
         common_tail=dict(real_steps=0,imagined_transitions=8192,model_calls=512,network_forwards=512),
         continuation=dict(real_steps=6144,imagined_transitions=9160704,model_calls=362496,network_forwards=362496))
     if stages!=expected_stages:raise ValueError('separate_stage_costs')
