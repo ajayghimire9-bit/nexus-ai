@@ -4,6 +4,38 @@ from nexus.evolution1.resources import Operation,Work
 from nexus.evolution2.planner_adapter import score_open_loop
 
 
+class ForwardCheckedStep:
+    """Trusted step-model instrumentation, using an existing ledger ticket.
+
+    One top-level network invocation per step is the only supported profile.
+    Hooks count invocations, not internal Linear layers/FLOPs. The production
+    host must bind a verified WorldModel MLP; this is not a hostile-code sandbox.
+    """
+    uses_simulator=False
+
+    def __init__(self,world_model):
+        self._wm=world_model
+        self.calls=0;self.rows=0;self.network_forwards=0;self.denied_forwards=0
+
+    def step_reserved(self,obs,action,ticket):
+        op=ticket.operation
+        if op.kind!='model' or op.cost.network_forwards!=1 or op.cost.imagined_transitions!=len(obs):
+            raise ValueError('verified_forward_reservation')
+        self.calls+=1;self.rows+=len(obs);observed=0
+        def before(module,args):
+            nonlocal observed
+            if observed>=1:
+                self.denied_forwards+=1
+                raise ValueError('extra_network_forward_blocked')
+            observed+=1;self.network_forwards+=1
+        hook=self._wm.net.register_forward_pre_hook(before)
+        try:
+            result=self._wm.step(np.array(obs,copy=True),np.array(action,copy=True))
+            if observed!=1:raise ValueError('missing_network_forward')
+            return result
+        finally:hook.remove()
+
+
 def validate_plans(plans,n_actions):
     if type(n_actions) is not int or n_actions<1:raise ValueError('action_count')
     if type(plans) is not dict or len(plans)!=2 or any(type(k) is not str or not 1<=len(k)<=32 or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789_' for c in k) for k in plans):raise ValueError('paired_evidence_only')
@@ -47,7 +79,9 @@ def planner_evidence(plans,observation,model,reward_fn,*,n_actions,ledger,clock,
                     if ticket.operation.kind!='model' or ticket.operation.cost.imagined_transitions!=n:raise ValueError('evidence_reservation_shape')
                     safe_obs=np.array(obs,copy=True);safe_action=np.array(action,copy=True)
                     safe_obs.flags.writeable=False;safe_action.flags.writeable=False
-                    nxt,p=model.step(safe_obs,safe_action);nxt=np.array(nxt,copy=True);p=np.array(p,copy=True).reshape(-1)
+                    reserved=getattr(model,'step_reserved',None)
+                    nxt,p=reserved(safe_obs,safe_action,ticket) if reserved else model.step(safe_obs,safe_action)
+                    nxt=np.array(nxt,copy=True);p=np.array(p,copy=True).reshape(-1)
                     if nxt.shape!=np.asarray(obs).shape or p.shape!=(n,) or not np.isfinite(nxt).all() or not np.isfinite(p).all() or np.any(p<0) or np.any(p>1):raise ValueError('finite_forecast')
                     history.append(nxt.copy().tolist());terminations.append(p.copy().tolist())
                 except BaseException:

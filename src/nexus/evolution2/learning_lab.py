@@ -29,10 +29,25 @@ def load_replay(root):
                 decision=result['analysis']['label'],rows=rows)
 
 
-def render(data,*,engineering_events=()):
+def load_integration(root):
+    """A verified engineering status, never a newly observed control return."""
+    folder=Path(root)/'artifacts';raw=(folder/'e3_10_metered_model.json').read_bytes()
+    result=json.loads(raw);verified=json.loads((folder/'e3_10_metered_model_validation.json').read_text())
+    if verified.get('valid') is not True or verified['capture_sha256']!=hashlib.sha256(raw).hexdigest() or result.get('declared_complete') is not True or result.get('outcome')!='metered_inference_equivalence_verified':raise ValueError('verified_integration_required')
+    if verified['resources_verified']!=result['resources'] or result['resources']['real_steps']!=0:raise ValueError('engineering_resource_provenance')
+    return dict(kind='verified_engineering_inference',execution_sha=result['execution_sha'],
+        model_observation_cells=len(result['rows']),resources=result['resources'],wall_s=result['wall_s'],
+        claim='Inference correctness only; no new environment returns or demonstrated learning improvement.')
+
+
+def render(data,*,engineering_events=(),integration=None):
     if data.get('kind')!='historical_training_replay' or data.get('live') is not False or not data.get('rows'):raise ValueError('historical_data_required')
     encoded=json.dumps(data,allow_nan=False).replace('&','\\u0026').replace('<','\\u003c').replace('>','\\u003e')
     events=html.escape(json.dumps(list(engineering_events),indent=2,allow_nan=False))
+    panel=''
+    if integration is not None:
+        if integration.get('kind')!='verified_engineering_inference':raise ValueError('verified_engineering_status_only')
+        panel='<h2>Frozen-model integration check</h2><p>Separate from the historical return replay: this checks inference and metering, not control improvement.</p><pre>'+html.escape(json.dumps(integration,indent=2,allow_nan=False))+'</pre>'
     return '''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NEXUS Learning Lab — historical replay</title><style>
 body{font:15px system-ui;margin:32px auto;max-width:1100px;padding:0 20px;color:#202124;background:#fafafa}h1{font-size:24px}h2{font-size:18px}p{max-width:85ch;line-height:1.5}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:9px;border-bottom:1px solid #ddd}th{position:sticky;top:0;background:#eee}label{margin-right:20px}select{padding:6px}pre{white-space:pre-wrap}small{color:#555}</style>
@@ -42,7 +57,7 @@ Cached returns are observations; predicted advantages are forecasts. This page d
 <p id="decision"></p><small id="source"></small><p><label>Family <select id="family"><option value="">All</option><option>pendulum</option><option>acrobot</option></select></label>
 <label>Method <select id="method"><option value="">All</option><option>model_mean</option><option>additive</option><option>interaction</option></select></label></p>
 <table><thead><tr><th>Family/model/reset</th><th>Method</th><th>Predicted advantage (return)</th><th>Observed advantage (return)</th><th>Chosen controller</th><th>Cached chosen return</th><th>In-set regret (return)</th></tr></thead><tbody id="rows"></tbody></table>
-<h2>Engineering-only lineage and memory illustrations</h2><p>These contract events are synthetic, not environment-learning evidence. Their absence does not imply learning occurred.</p><pre>'''+events+'''</pre>
+'''+panel+'''<h2>Engineering-only lineage and memory illustrations</h2><p>These contract events are synthetic, not environment-learning evidence. Their absence does not imply learning occurred.</p><pre>'''+events+'''</pre>
 <script>const data='''+encoded+''';document.getElementById('decision').textContent='Recorded outcome: '+data.decision;
 document.getElementById('source').textContent='Source: '+data.source+' | Execution '+data.execution_sha+' | fixed source training resets 0–8';
 function draw(){const body=document.getElementById('rows');body.replaceChildren();for(const r of data.rows){if(document.getElementById('family').value&&r.family!==document.getElementById('family').value)continue;if(document.getElementById('method').value&&r.method!==document.getElementById('method').value)continue;const tr=document.createElement('tr');for(const v of [r.family+'/'+r.model+'/'+r.episode,r.method,r.predicted_advantage.toFixed(3),r.observed_advantage.toFixed(3),r.choice,r.selected_return.toFixed(3),r.regret.toFixed(3)]){const td=document.createElement('td');td.textContent=v;tr.appendChild(td)}body.appendChild(tr)}}
