@@ -1,5 +1,20 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.10 frozen-model inference path verified, 2026-10-19
+
+Committed dc52c849c7de7f35affcb57d081e3f0d441a407f before one engineering
+check:4 frozen E2.9 residual MLPs×2 original source observations, two16×H16
+candidate sets, evidence/direct paths. All scores/states/probabilities/rankings/
+indices match exactly; reward/survival replay passes.8192 imagined rows/512
+model calls/512 observed top-level net forwards,0 real steps/updates. Frozen
+weights/RMS/buffers and370 historical JSON unchanged. Wall0.818302s,
+zero-inference audit0.579440s; ledger787.6449502930179/2812.355049706982.
+521 relevant tests pass. Separate offline Learning Lab page includes verified
+engineering status; old replay unchanged. This is inference correctness, not
+learning or control improvement. E3.11 real worker/registration/fair-compute
+protocol still missing; next lock fresh post-probe comparison, not more static
+feature sweeps. E3.12–14 remain later hypotheses. Report NEXUS_E3_10_METERED_MODEL_RESULTS.md.
+
 ## Latest — E3.9 source-only readiness audit, 2026-10-19
 
 Four frozen checkpoint and eight source-array byte hashes verified; 368 prior

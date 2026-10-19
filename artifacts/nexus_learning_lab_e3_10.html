@@ -1,0 +1,551 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXUS Learning Lab — historical replay</title><style>
+body{font:15px system-ui;margin:32px auto;max-width:1100px;padding:0 20px;color:#202124;background:#fafafa}h1{font-size:24px}h2{font-size:18px}p{max-width:85ch;line-height:1.5}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:9px;border-bottom:1px solid #ddd}th{position:sticky;top:0;background:#eee}label{margin-right:20px}select{padding:6px}pre{white-space:pre-wrap}small{color:#555}</style>
+<h1>NEXUS Learning Lab</h1><p><strong>Historical training-feedback replay. No live execution.</strong>
+Cached returns are observations; predicted advantages are forecasts. This page does not train, select experiments, or call an environment.</p>
+<p>Advantage means rank-blend return minus successor-controller return. A positive prediction selects rank blend. Each reset was withheld while fitting its prediction. Family return scales differ.</p>
+<p id="decision"></p><small id="source"></small><p><label>Family <select id="family"><option value="">All</option><option>pendulum</option><option>acrobot</option></select></label>
+<label>Method <select id="method"><option value="">All</option><option>model_mean</option><option>additive</option><option>interaction</option></select></label></p>
+<table><thead><tr><th>Family/model/reset</th><th>Method</th><th>Predicted advantage (return)</th><th>Observed advantage (return)</th><th>Chosen controller</th><th>Cached chosen return</th><th>In-set regret (return)</th></tr></thead><tbody id="rows"></tbody></table>
+<h2>Frozen-model integration check</h2><p>Separate from the historical return replay: this checks inference and metering, not control improvement.</p><pre>{
+  &quot;kind&quot;: &quot;verified_engineering_inference&quot;,
+  &quot;execution_sha&quot;: &quot;dc52c849c7de7f35affcb57d081e3f0d441a407f&quot;,
+  &quot;model_observation_cells&quot;: 8,
+  &quot;resources&quot;: {
+    &quot;real_steps&quot;: 0,
+    &quot;imagined_transitions&quot;: 8192,
+    &quot;model_calls&quot;: 512,
+    &quot;network_forwards&quot;: 512
+  },
+  &quot;wall_s&quot;: 0.8183019579882966,
+  &quot;claim&quot;: &quot;Inference correctness only; no new environment returns or demonstrated learning improvement.&quot;
+}</pre><h2>Engineering-only lineage and memory illustrations</h2><p>These contract events are synthetic, not environment-learning evidence. Their absence does not imply learning occurred.</p><pre>[
+  {
+    &quot;kind&quot;: &quot;synthetic_mutation_illustration&quot;,
+    &quot;probabilities_before&quot;: {
+      &quot;switch&quot;: 0.5,
+      &quot;rank_blend&quot;: 0.5
+    },
+    &quot;probabilities_after&quot;: {
+      &quot;switch&quot;: 0.6535457576181213,
+      &quot;rank_blend&quot;: 0.3464542423818788
+    },
+    &quot;lineage&quot;: [
+      {
+        &quot;sequence&quot;: 0,
+        &quot;kind&quot;: &quot;paired_mutation_feedback&quot;,
+        &quot;payload_json&quot;: &quot;{\&quot;child\&quot;:{\&quot;kind\&quot;:\&quot;switch\&quot;,\&quot;left\&quot;:{\&quot;catalogue\&quot;:\&quot;f41bef6d0f83084cbe4910cb190b0d0d9dcbbf03d311a83b81aeedf881d6121d\&quot;,\&quot;generator\&quot;:\&quot;iid\&quot;,\&quot;horizon\&quot;:4,\&quot;rule\&quot;:\&quot;flat\&quot;},\&quot;right\&quot;:{\&quot;catalogue\&quot;:\&quot;f41bef6d0f83084cbe4910cb190b0d0d9dcbbf03d311a83b81aeedf881d6121d\&quot;,\&quot;generator\&quot;:\&quot;balanced_first_action\&quot;,\&quot;horizon\&quot;:16,\&quot;rule\&quot;:\&quot;successor\&quot;},\&quot;threshold\&quot;:0.25,\&quot;version\&quot;:\&quot;bounded_strategy_v1\&quot;},\&quot;child_result\&quot;:{\&quot;context_hash\&quot;:\&quot;b086de7b32510701e873f3d4ae742917ca1cc1141ffe4a8387d604ef474ef9e4\&quot;,\&quot;cpu_s\&quot;:0.1,\&quot;event\&quot;:\&quot;fixture_child\&quot;,\&quot;horizon\&quot;:200,\&quot;kind\&quot;:\&quot;observed_full_policy_return\&quot;,\&quot;pair_id\&quot;:\&quot;AUTHORED_FIXTURE\&quot;,\&quot;phase\&quot;:\&quot;training\&quot;,\&quot;planner_seed\&quot;:2,\&quot;planning_cap\&quot;:1536,\&quot;reset_seed\&quot;:1,\&quot;return\&quot;:100.0,\&quot;strategy\&quot;:\&quot;364254fdf3f8d96667b1ee2e76a6cc7d33888b049fc5941dcbb8657da8f93af0\&quot;},\&quot;context_hash\&quot;:\&quot;b086de7b32510701e873f3d4ae742917ca1cc1141ffe4a8387d604ef474ef9e4\&quot;,\&quot;cpu_s\&quot;:0.2,\&quot;credit\&quot;:0.634661796629804,\&quot;event\&quot;:\&quot;9a51f89b48696d4b83b9cbed7761732ed6ad2befcf2f10a71a928f4622f9bcb6\&quot;,\&quot;mutation\&quot;:\&quot;switch\&quot;,\&quot;observed_gain\&quot;:100.0,\&quot;parent\&quot;:{\&quot;kind\&quot;:\&quot;leaf\&quot;,\&quot;left\&quot;:{\&quot;catalogue\&quot;:\&quot;f41bef6d0f83084cbe4910cb190b0d0d9dcbbf03d311a83b81aeedf881d6121d\&quot;,\&quot;generator\&quot;:\&quot;iid\&quot;,\&quot;horizon\&quot;:4,\&quot;rule\&quot;:\&quot;flat\&quot;},\&quot;right\&quot;:null,\&quot;threshold\&quot;:0.0,\&quot;version\&quot;:\&quot;bounded_strategy_v1\&quot;},\&quot;parent_result\&quot;:{\&quot;context_hash\&quot;:\&quot;b086de7b32510701e873f3d4ae742917ca1cc1141ffe4a8387d604ef474ef9e4\&quot;,\&quot;cpu_s\&quot;:0.1,\&quot;event\&quot;:\&quot;fixture_parent\&quot;,\&quot;horizon\&quot;:200,\&quot;kind\&quot;:\&quot;observed_full_policy_return\&quot;,\&quot;pair_id\&quot;:\&quot;AUTHORED_FIXTURE\&quot;,\&quot;phase\&quot;:\&quot;training\&quot;,\&quot;planner_seed\&quot;:2,\&quot;planning_cap\&quot;:1536,\&quot;reset_seed\&quot;:1,\&quot;return\&quot;:0.0,\&quot;strategy\&quot;:\&quot;ef54a122f0a3fb938923d2cc7858bc99b9d3ed0cb8770a29da2f8f73afb8f13b\&quot;},\&quot;probabilities\&quot;:{\&quot;rank_blend\&quot;:0.3464542423818788,\&quot;switch\&quot;:0.6535457576181213}}&quot;,
+        &quot;previous&quot;: &quot;0000000000000000000000000000000000000000000000000000000000000000&quot;,
+        &quot;fingerprint&quot;: &quot;3334d3597d13c16ec67aa51516a0062b095227a2f4e0a213c500eab10b74a3c3&quot;
+      }
+    ]
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;persistent&quot;,
+    &quot;schedule&quot;: &quot;adaptive&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: -3.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 6.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;persistent&quot;,
+    &quot;schedule&quot;: &quot;random&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: -3.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 2.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;persistent&quot;,
+    &quot;schedule&quot;: &quot;fixed&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 7.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;reset&quot;,
+    &quot;schedule&quot;: &quot;adaptive&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 4.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;reset&quot;,
+    &quot;schedule&quot;: &quot;random&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: -3.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 2.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;reset&quot;,
+    &quot;schedule&quot;: &quot;fixed&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 7.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;shuffled&quot;,
+    &quot;schedule&quot;: &quot;adaptive&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: -3.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 8.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;shuffled&quot;,
+    &quot;schedule&quot;: &quot;random&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: -3.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 3.0
+  },
+  {
+    &quot;kind&quot;: &quot;synthetic_task_stream&quot;,
+    &quot;control&quot;: &quot;shuffled&quot;,
+    &quot;schedule&quot;: &quot;fixed&quot;,
+    &quot;trace&quot;: [
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 1.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;B&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;A&quot;,
+        &quot;action&quot;: &quot;refine_strategy&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;test_challenger&quot;,
+        &quot;authored_gain&quot;: 0.0,
+        &quot;authored_cost&quot;: 0.1
+      },
+      {
+        &quot;task&quot;: &quot;C&quot;,
+        &quot;action&quot;: &quot;gather_evidence&quot;,
+        &quot;authored_gain&quot;: 2.0,
+        &quot;authored_cost&quot;: 0.1
+      }
+    ],
+    &quot;authored_gain_sum&quot;: 7.0
+  }
+]</pre>
+<script>const data={"kind": "historical_training_replay", "live": false, "source": "/Users/ajayghimire/Projects/nexus-ai/artifacts/e3_8_compact_interactions.json", "execution_sha": "21ba36cdda5133bb29c7d955b0db151300834aad", "decision": "compact_interaction_selection_not_established", "rows": [{"family": "pendulum", "model": 0, "episode": 0, "method": "model_mean", "predicted_advantage": 48.7251917738385, "observed_advantage": -0.11555393135418601, "selected_return": -7.600277847392235, "regret": 0.11555393135418601, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 0, "method": "additive", "predicted_advantage": -8.969468300775922, "observed_advantage": -0.11555393135418601, "selected_return": -7.484723916038049, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 0, "episode": 0, "method": "interaction", "predicted_advantage": 81.3068667335711, "observed_advantage": -0.11555393135418601, "selected_return": -7.600277847392235, "regret": 0.11555393135418601, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 0, "method": "model_mean", "predicted_advantage": -2.3933599087184803, "observed_advantage": -167.01680546888088, "selected_return": -1493.5027572686433, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 0, "method": "additive", "predicted_advantage": -4.827847838613948, "observed_advantage": -167.01680546888088, "selected_return": -1493.5027572686433, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 0, "method": "interaction", "predicted_advantage": 76.66042914972888, "observed_advantage": -167.01680546888088, "selected_return": -1660.5195627375242, "regret": 167.01680546888088, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 0, "method": "model_mean", "predicted_advantage": 1.2775617352739346, "observed_advantage": -1.851798981483853, "selected_return": -303.51822655209304, "regret": 1.851798981483853, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 0, "method": "additive", "predicted_advantage": 14.641281306107501, "observed_advantage": -1.851798981483853, "selected_return": -303.51822655209304, "regret": 1.851798981483853, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 0, "method": "interaction", "predicted_advantage": -3.1998557852289196, "observed_advantage": -1.851798981483853, "selected_return": -301.6664275706092, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 0, "method": "model_mean", "predicted_advantage": -1.5941024464447082, "observed_advantage": -50.71323897424281, "selected_return": -247.6458002737432, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 0, "method": "additive", "predicted_advantage": 25.55871056374285, "observed_advantage": -50.71323897424281, "selected_return": -298.359039247986, "regret": 50.71323897424281, "choice": "rank_blend"}, {"family": "acrobot", "model": 1, "episode": 0, "method": "interaction", "predicted_advantage": 21.748415010463304, "observed_advantage": -50.71323897424281, "selected_return": -298.359039247986, "regret": 50.71323897424281, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 1, "method": "model_mean", "predicted_advantage": 48.57825122252103, "observed_advantage": 1.059970479185509, "selected_return": -127.84463131620653, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 1, "method": "additive", "predicted_advantage": -104.22924610332794, "observed_advantage": 1.059970479185509, "selected_return": -128.90460179539204, "regret": 1.059970479185509, "choice": "successor_anchor"}, {"family": "pendulum", "model": 0, "episode": 1, "method": "interaction", "predicted_advantage": -194.16848755840502, "observed_advantage": 1.059970479185509, "selected_return": -128.90460179539204, "regret": 1.059970479185509, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 1, "method": "model_mean", "predicted_advantage": -149.72194896517476, "observed_advantage": 1011.6119069827694, "selected_return": -1493.9432739463866, "regret": 1011.6119069827694, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 1, "method": "additive", "predicted_advantage": -322.22224664162445, "observed_advantage": 1011.6119069827694, "selected_return": -1493.9432739463866, "regret": 1011.6119069827694, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 1, "method": "interaction", "predicted_advantage": -356.4064246262123, "observed_advantage": 1011.6119069827694, "selected_return": -1493.9432739463866, "regret": 1011.6119069827694, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 1, "method": "model_mean", "predicted_advantage": 1.142093992906041, "observed_advantage": -0.7680570425407041, "selected_return": -300.7225217619657, "regret": 0.7680570425407041, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 1, "method": "additive", "predicted_advantage": 1.2585019919158356, "observed_advantage": -0.7680570425407041, "selected_return": -300.7225217619657, "regret": 0.7680570425407041, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 1, "method": "interaction", "predicted_advantage": 18.118454542520794, "observed_advantage": -0.7680570425407041, "selected_return": -300.7225217619657, "regret": 0.7680570425407041, "choice": "rank_blend"}, {"family": "acrobot", "model": 1, "episode": 1, "method": "model_mean", "predicted_advantage": -9.467294211094952, "observed_advantage": 12.272295142959877, "selected_return": -302.4987562477429, "regret": 12.272295142959877, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 1, "method": "additive", "predicted_advantage": -15.226923673262611, "observed_advantage": 12.272295142959877, "selected_return": -302.4987562477429, "regret": 12.272295142959877, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 1, "method": "interaction", "predicted_advantage": -0.5242168541106196, "observed_advantage": 12.272295142959877, "selected_return": -302.4987562477429, "regret": 12.272295142959877, "choice": "successor_anchor"}, {"family": "pendulum", "model": 0, "episode": 2, "method": "model_mean", "predicted_advantage": 48.068600004228585, "observed_advantage": 5.137180225524986, "selected_return": -248.26124166995052, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 2, "method": "additive", "predicted_advantage": 119.69659129235235, "observed_advantage": 5.137180225524986, "selected_return": -248.26124166995052, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 2, "method": "interaction", "predicted_advantage": 58.02849980235152, "observed_advantage": 5.137180225524986, "selected_return": -248.26124166995052, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 2, "method": "model_mean", "predicted_advantage": -6.9508652880196, "observed_advantage": -130.55676243447195, "selected_return": -117.70548990432448, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 2, "method": "additive", "predicted_advantage": -67.79309335262754, "observed_advantage": -130.55676243447195, "selected_return": -117.70548990432448, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 2, "method": "interaction", "predicted_advantage": -73.05147556895639, "observed_advantage": -130.55676243447195, "selected_return": -117.70548990432448, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 2, "method": "model_mean", "predicted_advantage": -1.9725727042219887, "observed_advantage": 24.149276534483647, "selected_return": -303.6376231052901, "regret": 24.149276534483647, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 2, "method": "additive", "predicted_advantage": 53.444998477142406, "observed_advantage": 24.149276534483647, "selected_return": -279.48834657080647, "regret": 0.0, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 2, "method": "interaction", "predicted_advantage": -14.166149013263109, "observed_advantage": 24.149276534483647, "selected_return": -303.6376231052901, "regret": 24.149276534483647, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 2, "method": "model_mean", "predicted_advantage": -9.957657217479436, "observed_advantage": 16.195199194035865, "selected_return": -303.4573417031078, "regret": 16.195199194035865, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 2, "method": "additive", "predicted_advantage": 10.438764993984304, "observed_advantage": 16.195199194035865, "selected_return": -287.2621425090719, "regret": 0.0, "choice": "rank_blend"}, {"family": "acrobot", "model": 1, "episode": 2, "method": "interaction", "predicted_advantage": 28.898725597519018, "observed_advantage": 16.195199194035865, "selected_return": -287.2621425090719, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 3, "method": "model_mean", "predicted_advantage": 48.61260052954674, "observed_advantage": 0.7851760229796696, "selected_return": -254.25734327546644, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 3, "method": "additive", "predicted_advantage": 117.49914134595484, "observed_advantage": 0.7851760229796696, "selected_return": -254.25734327546644, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 3, "method": "interaction", "predicted_advantage": 100.79792884569292, "observed_advantage": 0.7851760229796696, "selected_return": -254.25734327546644, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 3, "method": "model_mean", "predicted_advantage": -7.1897607221671365, "observed_advantage": -128.64559896129182, "selected_return": -132.4552464868086, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 3, "method": "additive", "predicted_advantage": -57.58039446695396, "observed_advantage": -128.64559896129182, "selected_return": -132.4552464868086, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 3, "method": "interaction", "predicted_advantage": -75.6932350641411, "observed_advantage": -128.64559896129182, "selected_return": -132.4552464868086, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 3, "method": "model_mean", "predicted_advantage": 1.1262249864003024, "observed_advantage": -0.6411049904950232, "selected_return": -300.3818517575422, "regret": 0.6411049904950232, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 3, "method": "additive", "predicted_advantage": -1.2153903220764946, "observed_advantage": -0.6411049904950232, "selected_return": -299.7407467670472, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 3, "method": "interaction", "predicted_advantage": -26.329152601255657, "observed_advantage": -0.6411049904950232, "selected_return": -299.7407467670472, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 3, "method": "model_mean", "predicted_advantage": -6.234068415867, "observed_advantage": -13.593511218864194, "selected_return": -292.75011749157386, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 3, "method": "additive", "predicted_advantage": -2.758631893841482, "observed_advantage": -13.593511218864194, "selected_return": -292.75011749157386, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 3, "method": "interaction", "predicted_advantage": 13.439188323785828, "observed_advantage": -13.593511218864194, "selected_return": -306.34362871043805, "regret": 13.593511218864194, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 4, "method": "model_mean", "predicted_advantage": 49.09340943059658, "observed_advantage": -3.061295185418828, "selected_return": -262.7944819787901, "regret": 3.061295185418828, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 4, "method": "additive", "predicted_advantage": 109.46214486270833, "observed_advantage": -3.061295185418828, "selected_return": -262.7944819787901, "regret": 3.061295185418828, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 4, "method": "interaction", "predicted_advantage": 44.56487511825708, "observed_advantage": -3.061295185418828, "selected_return": -262.7944819787901, "regret": 3.061295185418828, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 4, "method": "model_mean", "predicted_advantage": -8.241009074484793, "observed_advantage": -120.23561214275074, "selected_return": -3.330457092271539, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 4, "method": "additive", "predicted_advantage": -58.01543826310238, "observed_advantage": -120.23561214275074, "selected_return": -3.330457092271539, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 4, "method": "interaction", "predicted_advantage": -148.70819992791888, "observed_advantage": -120.23561214275074, "selected_return": -3.330457092271539, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 4, "method": "model_mean", "predicted_advantage": -0.8150996648296882, "observed_advantage": 14.8894922193453, "selected_return": -304.453314122016, "regret": 14.8894922193453, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 4, "method": "additive", "predicted_advantage": -12.73670838670834, "observed_advantage": 14.8894922193453, "selected_return": -304.453314122016, "regret": 14.8894922193453, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 4, "method": "interaction", "predicted_advantage": -12.747094577093009, "observed_advantage": 14.8894922193453, "selected_return": -304.453314122016, "regret": 14.8894922193453, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 4, "method": "model_mean", "predicted_advantage": -7.063239886257463, "observed_advantage": -6.960139455740659, "selected_return": -309.00563452409585, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 4, "method": "additive", "predicted_advantage": 29.8670861796367, "observed_advantage": -6.960139455740659, "selected_return": -315.9657739798365, "regret": 6.960139455740659, "choice": "rank_blend"}, {"family": "acrobot", "model": 1, "episode": 4, "method": "interaction", "predicted_advantage": 49.46655064671117, "observed_advantage": -6.960139455740659, "selected_return": -315.9657739798365, "regret": 6.960139455740659, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 5, "method": "model_mean", "predicted_advantage": -30.342660976996513, "observed_advantage": 632.4272680753259, "selected_return": -887.0065118482172, "regret": 632.4272680753259, "choice": "successor_anchor"}, {"family": "pendulum", "model": 0, "episode": 5, "method": "additive", "predicted_advantage": -174.3942880595534, "observed_advantage": 632.4272680753259, "selected_return": -887.0065118482172, "regret": 632.4272680753259, "choice": "successor_anchor"}, {"family": "pendulum", "model": 0, "episode": 5, "method": "interaction", "predicted_advantage": -202.41307010326142, "observed_advantage": 632.4272680753259, "selected_return": -887.0065118482172, "regret": 632.4272680753259, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 5, "method": "model_mean", "predicted_advantage": -6.625534552459669, "observed_advantage": -133.15940831895153, "selected_return": -2.2740650168850305, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 5, "method": "additive", "predicted_advantage": -48.96689464958271, "observed_advantage": -133.15940831895153, "selected_return": -2.2740650168850305, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 5, "method": "interaction", "predicted_advantage": 106.6439335104422, "observed_advantage": -133.15940831895153, "selected_return": -135.43347333583657, "regret": 133.15940831895153, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 5, "method": "model_mean", "predicted_advantage": 2.323725224089287, "observed_advantage": -10.221106892006446, "selected_return": -308.9831169443462, "regret": 10.221106892006446, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 5, "method": "additive", "predicted_advantage": 26.376423428684177, "observed_advantage": -10.221106892006446, "selected_return": -308.9831169443462, "regret": 10.221106892006446, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 5, "method": "interaction", "predicted_advantage": -58.35592758616079, "observed_advantage": -10.221106892006446, "selected_return": -298.76201005233975, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 5, "method": "model_mean", "predicted_advantage": -6.876826729057029, "observed_advantage": -8.451444713344415, "selected_return": -267.2381583560403, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 5, "method": "additive", "predicted_advantage": -15.612044101174774, "observed_advantage": -8.451444713344415, "selected_return": -267.2381583560403, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 5, "method": "interaction", "predicted_advantage": 32.605942863826954, "observed_advantage": -8.451444713344415, "selected_return": -275.6896030693847, "regret": 8.451444713344415, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 6, "method": "model_mean", "predicted_advantage": 47.387116336850454, "observed_advantage": 10.589049564549839, "selected_return": -253.35402047038224, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 6, "method": "additive", "predicted_advantage": 85.27778699712593, "observed_advantage": 10.589049564549839, "selected_return": -253.35402047038224, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 6, "method": "interaction", "predicted_advantage": 114.40212693680488, "observed_advantage": 10.589049564549839, "selected_return": -253.35402047038224, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 6, "method": "model_mean", "predicted_advantage": 7.7682815966755925, "observed_advantage": -248.30993751203363, "selected_return": -365.41322147989666, "regret": 248.30993751203363, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 6, "method": "additive", "predicted_advantage": -54.96132758191467, "observed_advantage": -248.30993751203363, "selected_return": -117.10328396786302, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 6, "method": "interaction", "predicted_advantage": -81.93022715913168, "observed_advantage": -248.30993751203363, "selected_return": -117.10328396786302, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 6, "method": "model_mean", "predicted_advantage": 1.4137380999106313, "observed_advantage": -2.9412098985773127, "selected_return": -286.8944017519793, "regret": 2.9412098985773127, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 6, "method": "additive", "predicted_advantage": 17.655240583369345, "observed_advantage": -2.9412098985773127, "selected_return": -286.8944017519793, "regret": 2.9412098985773127, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 6, "method": "interaction", "predicted_advantage": 12.627209421764405, "observed_advantage": -2.9412098985773127, "selected_return": -286.8944017519793, "regret": 2.9412098985773127, "choice": "rank_blend"}, {"family": "acrobot", "model": 1, "episode": 6, "method": "model_mean", "predicted_advantage": -11.97963583704734, "observed_advantage": 32.371028150578866, "selected_return": -318.3683548157031, "regret": 32.371028150578866, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 6, "method": "additive", "predicted_advantage": 16.937396957916086, "observed_advantage": 32.371028150578866, "selected_return": -285.99732666512426, "regret": 0.0, "choice": "rank_blend"}, {"family": "acrobot", "model": 1, "episode": 6, "method": "interaction", "predicted_advantage": 0.016691962923431447, "observed_advantage": 32.371028150578866, "selected_return": -285.99732666512426, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 7, "method": "model_mean", "predicted_advantage": 48.64238501439672, "observed_advantage": 0.546900144179916, "selected_return": -5.445754971944434, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 7, "method": "additive", "predicted_advantage": 63.00363281681253, "observed_advantage": 0.546900144179916, "selected_return": -5.445754971944434, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 7, "method": "interaction", "predicted_advantage": 272.8442980931568, "observed_advantage": 0.546900144179916, "selected_return": -5.445754971944434, "regret": 0.0, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 7, "method": "model_mean", "predicted_advantage": -6.812327544738821, "observed_advantage": -131.66506438071815, "selected_return": -129.19260091938634, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 7, "method": "additive", "predicted_advantage": -90.35921730003501, "observed_advantage": -131.66506438071815, "selected_return": -129.19260091938634, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 7, "method": "interaction", "predicted_advantage": -204.99038673940476, "observed_advantage": -131.66506438071815, "selected_return": -129.19260091938634, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 7, "method": "model_mean", "predicted_advantage": 3.961652324897841, "observed_advantage": -23.32452369847516, "selected_return": -299.6747180918377, "regret": 23.32452369847516, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 7, "method": "additive", "predicted_advantage": 6.842761310333842, "observed_advantage": -23.32452369847516, "selected_return": -299.6747180918377, "regret": 23.32452369847516, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 7, "method": "interaction", "predicted_advantage": -15.431499802760726, "observed_advantage": -23.32452369847516, "selected_return": -276.35019439336253, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 7, "method": "model_mean", "predicted_advantage": -7.23580392855888, "observed_advantage": -5.57962711732921, "selected_return": -288.3570887347871, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 7, "method": "additive", "predicted_advantage": -7.297183620735893, "observed_advantage": -5.57962711732921, "selected_return": -288.3570887347871, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 7, "method": "interaction", "predicted_advantage": 21.527704986198046, "observed_advantage": -5.57962711732921, "selected_return": -293.9367158521163, "regret": 5.57962711732921, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 8, "method": "model_mean", "predicted_advantage": 80.92108692437154, "observed_advantage": -257.6827151356189, "selected_return": -500.33511454046527, "regret": 257.6827151356189, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 8, "method": "additive", "predicted_advantage": 175.72912451474028, "observed_advantage": -257.6827151356189, "selected_return": -500.33511454046527, "regret": 257.6827151356189, "choice": "rank_blend"}, {"family": "pendulum", "model": 0, "episode": 8, "method": "interaction", "predicted_advantage": 98.73356156254641, "observed_advantage": -257.6827151356189, "selected_return": -500.33511454046527, "regret": 257.6827151356189, "choice": "rank_blend"}, {"family": "pendulum", "model": 1, "episode": 8, "method": "model_mean", "predicted_advantage": -5.9971602795412196, "observed_advantage": -138.18640250229925, "selected_return": -125.63582256378241, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 8, "method": "additive", "predicted_advantage": -6.531422592246798, "observed_advantage": -138.18640250229925, "selected_return": -125.63582256378241, "regret": 0.0, "choice": "successor_anchor"}, {"family": "pendulum", "model": 1, "episode": 8, "method": "interaction", "predicted_advantage": 24.826480051934197, "observed_advantage": -138.18640250229925, "selected_return": -263.82222506608167, "regret": 138.18640250229925, "choice": "rank_blend"}, {"family": "acrobot", "model": 0, "episode": 8, "method": "model_mean", "predicted_advantage": -0.08862909371868, "observed_advantage": 9.077727650457007, "selected_return": -296.8817468704827, "regret": 9.077727650457007, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 8, "method": "additive", "predicted_advantage": -0.3663400923153475, "observed_advantage": 9.077727650457007, "selected_return": -296.8817468704827, "regret": 9.077727650457007, "choice": "successor_anchor"}, {"family": "acrobot", "model": 0, "episode": 8, "method": "interaction", "predicted_advantage": 1.8524888118896712, "observed_advantage": 9.077727650457007, "selected_return": -287.8040192200257, "regret": 0.0, "choice": "rank_blend"}, {"family": "acrobot", "model": 1, "episode": 8, "method": "model_mean", "predicted_advantage": -3.0574298739933283, "observed_advantage": -39.0066195538534, "selected_return": -257.22583433086356, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 8, "method": "additive", "predicted_advantage": -6.047040516174214, "observed_advantage": -39.0066195538534, "selected_return": -257.22583433086356, "regret": 0.0, "choice": "successor_anchor"}, {"family": "acrobot", "model": 1, "episode": 8, "method": "interaction", "predicted_advantage": -8.714139540690724, "observed_advantage": -39.0066195538534, "selected_return": -257.22583433086356, "regret": 0.0, "choice": "successor_anchor"}]};document.getElementById('decision').textContent='Recorded outcome: '+data.decision;
+document.getElementById('source').textContent='Source: '+data.source+' | Execution '+data.execution_sha+' | fixed source training resets 0–8';
+function draw(){const body=document.getElementById('rows');body.replaceChildren();for(const r of data.rows){if(document.getElementById('family').value&&r.family!==document.getElementById('family').value)continue;if(document.getElementById('method').value&&r.method!==document.getElementById('method').value)continue;const tr=document.createElement('tr');for(const v of [r.family+'/'+r.model+'/'+r.episode,r.method,r.predicted_advantage.toFixed(3),r.observed_advantage.toFixed(3),r.choice,r.selected_return.toFixed(3),r.regret.toFixed(3)]){const td=document.createElement('td');td.textContent=v;tr.appendChild(td)}body.appendChild(tr)}}
+document.getElementById('family').onchange=draw;document.getElementById('method').onchange=draw;draw();</script></html>

@@ -1,5 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E3.11 fresh post-probe actual-return comparison
+
+E3.10 verifies actual frozen-model path:8 cells identical to direct scorer,
+8192 imagined rows/512 observed forwards/0 real steps. Do not infer utility
+from equality tests. Next lock/implement one post-probe comparison: fixed
+candidate-specific evidence versus model means/fixed planners on fresh source
+training/evaluation reset blocks, same8-step shared prefix and192-step actual
+continuation. No more static feature sweeps on36 pairs. Bind/review real host,
+restoration and interrupted-work accounting; register independent case axes,
+seed exclusions, fit/evaluation roles, baselines, statistical criteria and
+total proposal/evidence/controller budget before collection. Decide one-time
+selection vs per-step switching in protocol. No E3.11 allocation/registration
+or real episodes yet. E3.12 mutation credit, E3.13 task stream and E3.14 test
+selection follow separately. Ledger787.6449502930179/2812.355049706982.
+Report NEXUS_E3_10_METERED_MODEL_RESULTS.md. Older entries are history.
+
 ## Current — bind the trusted metered post-probe evidence host
 
 E3.9 verified4 frozen checkpoint/8 source hashes and fixed independent-grid,

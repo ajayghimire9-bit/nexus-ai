@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — E3.10 metered actual-model integration passes
+
+Actual frozen four-source-model evidence matches direct scoring in8 cells,
+max score difference0; complete ranking/action/state/probability agreement.
+Observed512 top-level network forwards reconcile8192 imagined rows, no real
+steps or training. Runtime0.818302s, saved-data audit0.579440s.521 relevant
+tests;370 historical JSON preserved; separate Learning Lab page. Ledger
+787.6449502930179/2812.355049706982. No useful-learning claim. Next E3.11
+fresh post-probe protocol/host; not run/registered. Report NEXUS_E3_10_METERED_MODEL_RESULTS.md.
+
 ## Latest — E3.9 integrity verified, fresh study still blocked
 
 Source-only review completed at implementation6c440ab36aea703802c5d40650697579a5dc8379.

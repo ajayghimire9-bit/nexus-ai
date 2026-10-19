@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Latest E3.10: actual four frozen source residual MLPs pass metered/direct
+inference equality in8 cells.8192 imagined/512 observed forwards,0 real
+steps or training;521 relevant tests. Frozen files/buffers/RMS and370 prior
+JSON unchanged. Separate verified-status Learning Lab page. Ledger now
+787.6449502930179/2812.355049706982. Inference correctness is not learned
+selection utility; E3.11 fresh study needs real worker/locked fair protocol.
+No E3.12–14 scientific capability demonstrated. Report NEXUS_E3_10_METERED_MODEL_RESULTS.md.
+
 Latest E3.9: integrity hashes match4 frozen files/8 source arrays; no inference
 or collection.503 relevant tests. Existing evidence/coordinator boundaries
 hardened; fresh study remains BLOCKED_FRESH_STUDY_NOT_READY until real metered

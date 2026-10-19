@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+E3.10 ForwardCheckedStep extends SAME planner_evidence and uses existing
+ReservationLedger tickets to bound/observe one top-level net call per step.
+Host scripts/run_e3_10_metered_model.py binds exact CPU WorldModel residual
+MLP only, reuses score_open_loop/state_hash/rewards and original source files.
+No new learner, planner or meter.521 relevant tests; registered actual-model
+equivalence verified. Learning Lab optional load_integration verifies capture
+digest and labels engineering separately; --integration writes a new page.
+Real-environment StagedStudy host remains unbound. Report E3.10 results.
+
 E3.9 hardens SAME StagedStudy and planner_evidence; no new meter/learner/planner.
 Registered grids have independent locked task/episode axes; evidence batch rows
 must match reserved operations. scripts/audit_e3_9_planner_evidence_readiness.py

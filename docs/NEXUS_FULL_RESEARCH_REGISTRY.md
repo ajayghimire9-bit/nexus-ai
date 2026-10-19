@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Supplemental E3.10 codex/e3-10-metered-model-integration. Protocol/execution
+dc52c849c7de7f35affcb57d081e3f0d441a407f. Eight frozen-model evidence/direct
+cells match scores/states/rankings exactly, resource hooks reconcile512 calls/
+8192 imagined/0 real steps.370 prior JSON preserved;521 relevant tests.
+Wall0.818302s+0.579440s saved-data audit; ledger787.6449502930179/
+2812.355049706982. Engineering equivalence only; no return-selection study.
+Report NEXUS_E3_10_METERED_MODEL_RESULTS.md; artifacts e3_10_* and separate
+nexus_learning_lab_e3_10.html. All previous scientific outcomes preserved.
+
 Supplemental E3.9 codex/e3-9-planner-evidence-readiness, implementation
 6c440ab36aea703802c5d40650697579a5dc8379. Source-only integrity/readiness:
 4 checkpoint/8 source hashes match,368 prior JSON unchanged,503 relevant tests.

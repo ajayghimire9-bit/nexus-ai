@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.10 engineering equivalence verified; utility untested
+
+Metered evidence equals direct existing scoring on four frozen source MLPs,
+two original observations each.512 observed forwards/8192 imagined rows,
+0 real steps or optimization. No difference in scores/rankings/selected
+candidate/states/termination. Reward replay and frozen-file checks pass.
+This validates the inference instrumentation only. H-planner-evidence useful
+return selection remains unregistered/untested; E3.8 negative result preserved.
+Next E3.11 fresh post-probe comparison, not E3.12–14 simultaneous claims.
+
 ## Latest — E3.9 readiness is engineering evidence only
 
 No new scientific hypothesis tested. H-planner-evidence selection utility
