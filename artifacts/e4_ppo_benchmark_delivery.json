@@ -1,0 +1,195 @@
+{
+  "kind": "e4_five_family_scratch_pilot_delivery",
+  "branch": "codex/e4-five-family-ppo-benchmark",
+  "base_revision": "b2ae7ac9da70ee8aff2a54f65f039181fa33e4ac",
+  "protocol_and_execution_revision": "54c915f7603665cbb2fab2feeebbe22e3455ea91",
+  "scientific_runs": 1,
+  "declared_complete": true,
+  "decision": "five_family_scratch_learning_not_established",
+  "family_screens": {
+    "cartpole": false,
+    "mountaincar": false,
+    "mountaincar_continuous": false,
+    "pendulum": false,
+    "acrobot": false
+  },
+  "result_sha256": "67d5959f1fdae31569d03e1d4474b76acb8129f284c3f0a85fa78c7ea775c67f",
+  "protocol_sha256": "709d7559a344f15461503fdc7f33a8898cae531c6186397ecc9f8d18e5e08457",
+  "config_sha256": "08e3c1d3734c9831d00ed15a1765320086be4c0a2505f8d4864b1413efc35af0",
+  "allocation_sha256": "5ad1eb6a9c60fe3c6ec05238700aa87658e01d8d13597f5aaa121e264ddaafd4",
+  "tests": {
+    "pre_collection_focused": {
+      "passed": 69,
+      "wall_s": 1.1
+    },
+    "pre_collection_relevant": {
+      "passed": 973,
+      "wall_s": 55.87
+    },
+    "post_collection_focused": {
+      "passed": 75,
+      "wall_s": 0.99
+    },
+    "final_relevant": {
+      "passed": 982,
+      "wall_s": 57.62,
+      "modules": [
+        "tests/test_bounded_learning_cycle.py",
+        "tests/test_e3_11d_horizon_calibration.py",
+        "tests/test_e3_11b_calibration_execution.py",
+        "tests/test_e3_11b_forecast_calibration.py",
+        "tests/test_e3_11a_rollout_headroom.py",
+        "tests/test_e3_11_post_probe.py",
+        "tests/test_e3_10_metered_model.py",
+        "tests/test_e3_9_evidence_readiness.py",
+        "tests/test_e3_8_learning_interfaces.py",
+        "tests/test_e3_7_transition_evidence.py",
+        "tests/test_e3_6_feature_informativeness.py",
+        "tests/test_e3_5_residual_advantage.py",
+        "tests/test_e3_4_feedback_coverage.py",
+        "tests/test_e3_3_training_feedback_audit.py",
+        "tests/test_e3_2_return_feedback.py",
+        "tests/test_unified_e225_e30.py",
+        "tests/test_unified_headroom.py",
+        "tests/test_unified_full_policy_source.py",
+        "tests/test_unified_full_policy_replication.py",
+        "tests/test_unified_crossed_reset.py",
+        "tests/test_e3_1_learned_model_audit.py",
+        "tests/test_evolution2_planner_quality.py",
+        "tests/test_evolution1_resources.py",
+        "tests/test_evolution1_source_contracts.py",
+        "tests/test_evolution1_toy_loop.py",
+        "tests/test_evolution2_observation_memory.py",
+        "tests/test_evolution2_observation_memory_cross.py",
+        "tests/test_strategy_memory.py",
+        "tests/test_strategy_memory_obs.py",
+        "tests/test_strategy_memory_selector.py",
+        "tests/test_strategy_memory_decide.py",
+        "tests/test_strategy_memory_persist_obs.py",
+        "tests/test_evolution2_fit_clock.py",
+        "tests/test_evolution2_fit_clock_run.py",
+        "tests/test_e3_12_mutation_control.py",
+        "tests/test_e3_12b_operator_headroom.py",
+        "tests/test_e3_12c_partial_feedback.py",
+        "tests/test_parent_retention_and_resume.py",
+        "tests/test_e3_12d_parent_retention.py",
+        "tests/test_e3_12e_training_stability.py",
+        "tests/test_learning_lab_sessions.py",
+        "tests/test_e3_12f_reset_blocks.py",
+        "tests/test_e3_12f_runner_integration.py",
+        "tests/test_e3_12f_resource_review.py",
+        "tests/test_learning_lab_release.py",
+        "tests/test_e4_general_learning.py",
+        "tests/test_expr.py",
+        "tests/test_expr_checkpoint.py",
+        "tests/test_factory.py",
+        "tests/test_activations.py",
+        "tests/test_activation_validate.py",
+        "tests/test_e4_ppo_benchmark.py",
+        "tests/test_e4_ppo_results.py",
+        "tests/test_gae.py"
+      ],
+      "command": "python3 -m pytest -o addopts= -q <modules>",
+      "environment": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps"
+    },
+    "entire_historical_suite": false
+  },
+  "real_interactions": {
+    "training": 61440,
+    "evaluation": 14693,
+    "total": 76133,
+    "cap": 84840
+  },
+  "world_model_inference": 0,
+  "imagined_transitions": 0,
+  "policy_compute": {
+    "counts": {
+      "trunk_calls": 135728,
+      "trunk_rows": 373808,
+      "policy_head_calls": 74048,
+      "value_head_calls": 130800,
+      "optimizer_steps": 7680
+    },
+    "phases": {
+      "training": {
+        "trunk_calls": 130800,
+        "trunk_rows": 368880
+      },
+      "evaluation": {
+        "trunk_calls": 4928,
+        "trunk_rows": 4928
+      }
+    },
+    "bounds": {
+      "training_real": 61440,
+      "evaluation_real_upper": 23400,
+      "real_upper": 84840,
+      "optimizer_steps": 7680,
+      "policy_trunk_calls_upper": 199800,
+      "policy_trunk_rows_upper": 437880
+    }
+  },
+  "runtime": {
+    "execution_wall_s": 21.04413466701226,
+    "execution_cpu_s": 21.005993,
+    "independent_raw_audit_wall_s": 4.091239541987306,
+    "independent_raw_audit_cpu_s": 4.089467,
+    "posthoc_summary_wall_s": 0.22059195798647124,
+    "measured_total_s": 25.355966166986036,
+    "cap_s": 300,
+    "peak_rss_bytes": 438534144
+  },
+  "session_ledger": {
+    "used_before_s": 1809.6321034559958,
+    "remaining_before_s": 1790.3678965440042,
+    "conservative_charge_s": 26,
+    "rounding_allowance_s": 0.6440338330139639,
+    "used_after_s": 1835.6321034559958,
+    "remaining_after_s": 1764.3678965440042,
+    "note": "Conservative26s debit includes startup/save rounding. Measured phase ledgers retained unchanged in original artifacts."
+  },
+  "integrity": {
+    "locked_source_files_verified": 297,
+    "historical_snapshot": {
+      "count": 434,
+      "sorted_hash_map_sha256": "43548b527477496a87bb44536322e998ca26d327422b36822a630c3f81fc61ce"
+    },
+    "historical_frozen_files_verified": 12,
+    "historical_files_unchanged": true,
+    "new_checkpoints_verified": 15,
+    "raw_journal_parts_verified": 16,
+    "locked_execution_source_not_changed_after_outcomes": true
+  },
+  "checkpoint_storage": {
+    "local_only": true,
+    "path": "runs/e4_ppo_benchmark",
+    "total_bytes": 1233523,
+    "uploaded_to_git": false
+  },
+  "raw_journal_bytes": 17369365,
+  "additional_verification_source_sha256": {
+    "scripts/summarize_e4_ppo_benchmark.py": "ea2aebb5cf4996a5780e4ffa27fc41a3ffa3e7d721f659de3a981df752c46255",
+    "scripts/verify_e4_ppo_checkpoints.py": "ed9321fdeadef4b8220a251d76785b00e5a5673fccc841bc3f97379c8d8902e6",
+    "tests/test_e4_ppo_results.py": "ac93c111e51a31745b4fc663efe8ec0d19749cbed157d644efe4cb565397f1cb"
+  },
+  "unrelated_files_preserved_excluded": [
+    "src/nexus/evolution1/adapters.py",
+    "tests/test_evolution1_adapters.py"
+  ],
+  "limitations": [
+    "Three independent learner seeds per family and two evaluation episodes; not ten-decoder replication.",
+    "Known default/source physics, dense reward wrappers and discretized actions; no transfer or independent-physics claim.",
+    "One4096-step training budget, no convergence, memory or learning-to-learn claim.",
+    "Random/fixed have zero training cost; not equal total compute across learning algorithms.",
+    "Thirteen of15 greedy policies use one action in the recorded evaluation; posthoc descriptive, not causal.",
+    "Local binaries required only for explicitly requested checkpoint verification; repo-only arithmetic works without them."
+  ],
+  "next_proposed_experiment": {
+    "question": "Does categorical sampling of these frozen PPO policies improve fresh paired returns over greedy argmax and existing controls?",
+    "training": false,
+    "proposed_real_upper": 31200,
+    "proposed_time_cap_s": 90,
+    "registered": false,
+    "executed": false
+  }
+}

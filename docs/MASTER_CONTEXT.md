@@ -1,5 +1,21 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## E4 scratch PPO pilot COMPLETE — overall learning screen failed
+
+Precommitted54c915f7603665cbb2fab2feeebbe22e3455ea91. Fifteen new independent
+scratch fits,3 seeds/family,4096 training interactions each;90 paired full
+evaluation episodes. All five BOTH-baseline screens fail. Continuous MC beats
+random+62.360 [42.668,82.052] but not fixed+9.299 [−30.716,49.315]; Acrobot
+loses to random−15.904 [−29.285,−2.523]. Other family contrasts are inconclusive
+or below practical margins. No transfer/continual/self-improvement claim.
+76133 real steps(61440 train/14693 evaluation),0 imagined,7680 Adam steps;
+execution+audit+descriptive replay25.355966s, one run only. Conservatively
+charged26s: ledger1835.6321034559958/1764.3678965440042. All434 old JSON and12
+listed frozen files preserved;297 source hashes unchanged. Source benchmarks
+and closed confirmation outcomes remain distinct. See NEXUS_E4_PPO_BENCHMARK_RESULTS.md.
+Next proposed frozen-policy greedy-versus-stochastic readout diagnostic is
+unregistered/unrun; no additional experiment follows automatically.
+
 ## E4 scratch PPO benchmark — newly authorized one-run lock, outcomes pending
 
 Explicit human request authorizes one300s/84840-real-step five-family pilot.

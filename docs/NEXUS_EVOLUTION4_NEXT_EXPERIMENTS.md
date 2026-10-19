@@ -1,5 +1,11 @@
 # Evolution-4 next work and explicit execution gates
 
+RESULT: the authorized one-run scratch pilot is complete and valid, but all
+five family screens failed. Exact report NEXUS_E4_PPO_BENCHMARK_RESULTS.md.
+No more runs use that grant. Next proposed work is a frozen-checkpoint
+greedy-versus-stochastic readout diagnostic,31200 real/90s upper, unregistered
+and unexecuted. Preserve the earlier proposal/lock text below as history.
+
 UPDATE: user subsequently authorized this exact scratch pilot for ONE run
 within300s/84840 interactions. Registration, executable config and final rules
 are in NEXUS_E4_PPO_BENCHMARK_PROTOCOL.md/configs/e4_ppo_benchmark.json, not the

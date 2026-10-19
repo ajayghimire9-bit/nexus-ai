@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+E4 scratch pilot COMPLETE/VALID, five_family_scratch_learning_not_established:
+15 new PPO fits/90 paired episodes; no family passes BOTH-baseline screen.
+MCC improves over random but not fixed; Acrobot loses to random.76133 real,
+0 imagined,25.355966s measured total; conservative ledger1835.6321034559958/
+1764.3678965440042.297 locked source/434 old JSON/12 listed frozen hashes
+preserved. See E4_PPO_BENCHMARK_RESULTS; no transfer or meta-learning finding.
+
 E4 scratch pilot now separately authorized/registered, outcomes pending:
 five known default/source tasks,3 PPO seeds each,final4096-step fits,90 paired
 evaluation episodes versus random/fixed; one300s/84840-step grant. Reuses

@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## After E4 failed scratch screen — frozen-policy readout diagnostic proposed
+
+Keep all15 new PPO checkpoints fixed. Compare categorical sampling with greedy
+argmax on fresh paired resets, plus the same random/fixed controls. Saved data
+show13/15 argmax policies used one action throughout two evaluation episodes,
+but sampled training entropy can remain high; neither observation proves the
+cause of failure. Proposed31200-real-step/90s upper,0 training, three learner
+seeds/family with episode aggregation inside seeds. Register fresh seeds and
+decision criteria separately; no new run here. Do not retune the consumed E4
+sample, automatically enlarge networks or interpret its MCC-random contrast
+as a five-family pass. F v2 remains separately unregistered and unexecuted.
+
 ## New E4 foundation priority — proposed, not executed
 
 The user's broadened scope now has tested five-family bindings and an80-step

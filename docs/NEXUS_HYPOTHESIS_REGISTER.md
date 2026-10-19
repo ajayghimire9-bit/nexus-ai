@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## E4 short-budget same-PPO learning — registered screen failed
+
+Three independent scratch learner seeds/family; compare new-reset episode
+means with random and fixed, family-native units. Both paired95% lower bounds
+must exceed0 and mean margins25(CartPole/Pendulum)/5(others); all five required.
+Complete run passes0/5 family screens. MCC-vs-random positive but fixed remains
+inconclusive; Acrobot-vs-random negative. Not invalid/incomplete and not proof
+PPO cannot learn. No generality, transfer, continual-learning or L2L claim.
+Posthoc13/15 greedy policies use a single action on recorded evaluation; this
+does not identify a cause. See E4_PPO_BENCHMARK_RESULTS and raw artifacts.
+
 ## E4 foundation — technical contracts passed, scientific hypothesis untested
 
 Shared five-family algorithm bindings and bounded modifications are engineering

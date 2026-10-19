@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Completed E4 scratch benchmark from precommit54c915f:15 independent new PPO
+fits,90 full paired evaluations,76133 real/0 imagined/7680 optimizer steps.
+Complete valid execution; overall registered screen fails(0/5 families).
+MCC over random is positive, fixed comparison inconclusive; Acrobot over random
+negative. No successful transfer/continual/meta-learning inference. One-run
+grant consumed, old434 JSON/12 listed frozen files preserved. See E4 results.
+
 E4 scratch pilot locked fromb2ae7ac oncodex/e4-five-family-ppo-benchmark.
 Explicit one-run300s/84840-step authorization,15 scratch fits/90 paired
 episodes, known default/source physics only; n3 learner seeds/family, not

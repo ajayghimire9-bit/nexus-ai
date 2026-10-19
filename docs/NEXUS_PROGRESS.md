@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## E4 scratch benchmark complete — same recipe did not clear all-family screen
+
+Protocol/execution54c915f7603665cbb2fab2feeebbe22e3455ea91; all15 models fit
+4096 real transitions,90 paired full evaluation episodes. Complete valid result,
+0/5 family screens pass. MCC beats random but not fixed; Acrobot loses to random.
+76133 real/0 imagined/7680 Adam steps,25.355966s including independent audit
+and descriptive saved-action replay.26s conservative debit gives ledger
+1835.6321034559958/1764.3678965440042. No old checkpoint retraining or F/MPC/
+confirmation work. Report NEXUS_E4_PPO_BENCHMARK_RESULTS.md preserves raw
+negative results; next frozen-policy readout comparison proposed, not run.
+
 ## E4 foundation delivered — engineering, not a learning result
 
 Five-family TaskSpec/Host/PPO constructor contracts, semantic compatibility,
