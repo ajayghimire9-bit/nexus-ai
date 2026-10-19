@@ -40,6 +40,28 @@ def load_integration(root):
         claim='Inference correctness only; no new environment returns or demonstrated learning improvement.')
 
 
+def load_control_replay(root,study):
+    """Small allowlist over verified, closed captures; never a live evaluator."""
+    names={'forecast16':('e3_11b_forecast_calibration','e3_11b_forecast_calibration_validation','e3_11b_forecast_predecision'),
+           'horizon64':('e3_11d_horizon_calibration','e3_11d_horizon_validation','e3_11d_horizon_predecision')}
+    if study not in names:raise ValueError('supported_recorded_study_required')
+    result_name,validation_name,prediction_name=names[study];folder=Path(root)/'artifacts'
+    raw=(folder/(result_name+'.json')).read_bytes();p=json.loads(raw);v=json.loads((folder/(validation_name+'.json')).read_text())
+    if p.get('declared_complete') is not True or v.get('valid') is not True or hashlib.sha256(raw).hexdigest()!=v['capture_sha256']:raise ValueError('verified_complete_capture_required')
+    raw_predictions=(folder/(prediction_name+'.jsonl')).read_bytes()
+    if hashlib.sha256(raw_predictions).hexdigest()!=p['predecision_sha256']:raise ValueError('verified_predecision_required')
+    predictions={(r['family'],r['bundle'],r['episode']):r for r in map(json.loads,raw_predictions.splitlines())}
+    paths={(r['family'],r['bundle'],r['episode']):r for r in p['records']};cases=[]
+    if len(paths)!=16 or len(p['rows'])!=16 or len(predictions)!=16:raise ValueError('complete_recorded_grid')
+    for row in p['rows']:
+        key=row['family'],row['bundle'],row['episode'];r=paths[key];forecasts=dict(row['predictions'])
+        if study=='horizon64':forecasts['policy_16']=predictions[key]['policy_16']
+        cases.append(dict(family=key[0],bundle=key[1],episode=key[2],forecasts=forecasts,
+            returns={label:sum(values) for label,values in row['rewards'].items()},paths=r['actual']))
+    return dict(kind='verified_recorded_control_replay',live=False,study=study,execution_sha=p['execution_sha'],
+        capture_sha256=v['capture_sha256'],label=p['analysis']['label'],cases=cases,analysis=p['analysis'])
+
+
 def render(data,*,engineering_events=(),integration=None):
     if data.get('kind')!='historical_training_replay' or data.get('live') is not False or not data.get('rows'):raise ValueError('historical_data_required')
     encoded=json.dumps(data,allow_nan=False).replace('&','\\u0026').replace('<','\\u003c').replace('>','\\u003e')

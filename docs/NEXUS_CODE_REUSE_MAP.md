@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+Bounded learning-cycle integration uses SAME StrategyGenerator mutation credit,
+TaskStream, EpsilonGreedyController, FixtureCost/Journal and E1 promotion harness.
+Mean update/default RNG behavior preserved; new rules are opt-in. measured_mutation
+checks trusted charged actual paths without collecting data. learning_lab gains
+allowlisted verified control replay; run_learning_lab serves loopback only plus
+an opt-in authored fixture playground. No duplicate contextual-memory, RL or
+scientific metering stack; real usefulness remains separately unverified.
+
 E3.11D adds --horizon-calibration to SAME runner/worker. horizon_calibration
 locks64-step outer forecasts and analyzes their cached16-step prefixes; it
 does not replace planners, models, memory, learner or meter. Existing replay

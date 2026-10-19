@@ -160,7 +160,9 @@ class StrategyGenerator:
     Credit is assigned to the active leaf of a switch, and equally to both
     leaves for a rank composition. This is a deliberately coarse credit rule.
     """
-    def __init__(self, seed, adaptive=True, *, mutation_credit=False):
+    def __init__(self, seed, adaptive=True, *, mutation_credit=False, mutation_rule='mean', mutation_exploration=0.):
+        if mutation_rule not in ('mean','recent','conservative') or type(mutation_exploration) not in (int,float) or not math.isfinite(mutation_exploration) or not 0<=mutation_exploration<=.25:raise ValueError('bounded_mutation_update_rule')
+        self.mutation_rule=mutation_rule;self.mutation_exploration=float(mutation_exploration)
         self.inner = AdaptiveProposer(seed)
         self.rng = random.Random(seed)
         self.adaptive = adaptive
@@ -179,18 +181,20 @@ class StrategyGenerator:
         values=np.array([self.mutation_stats[k][0]/max(1,self.mutation_stats[k][1]) for k in keys])
         weights=np.exp(values-values.max());return dict(zip(keys,(weights/weights.sum()).tolist()))
 
-    def observe_mutation(self,parent,child,parent_result,child_result,*,return_scale=100.):
+    def observe_mutation(self,parent,child,parent_result,child_result,*,return_scale=100.,domain='real_environment'):
         """Trusted host records matched full-policy outcomes, never forecasts.
 
         Does not credit child leaves. Existing coarse update remains unchanged
         for historical callers; callers choose exactly one credit path.
         """
+        if domain not in ('real_environment','synthetic_fixture'):raise ValueError('mutation_feedback_domain')
+        required_kind='observed_full_policy_return' if domain=='real_environment' else 'synthetic_fixture_utility'
         if not self.mutation_credit or type(parent) is not Strategy or type(child) is not Strategy or child.kind not in self.mutation_stats:
             raise ValueError('mutation_credit_contract')
         if parent.kind!='leaf' or parent.left not in (child.left,child.right):raise ValueError('single_structural_mutation_required')
         required={'kind','phase','strategy','pair_id','context_hash','reset_seed','planner_seed','horizon','planning_cap','return','cpu_s','event'}
         for strategy,row in ((parent,parent_result),(child,child_result)):
-            if set(row)!=required or row['kind']!='observed_full_policy_return' or row['phase']!='training' or row['strategy']!=strategy.fingerprint:
+            if set(row)!=required or row['kind']!=required_kind or row['phase']!='training' or row['strategy']!=strategy.fingerprint:
                 raise ValueError('observed_training_return_required')
             if type(row['return']) not in (int,float) or not math.isfinite(row['return']) or type(row['cpu_s']) not in (int,float) or not math.isfinite(row['cpu_s']) or row['cpu_s']<=0:raise ValueError('finite_measured_cost_and_return')
             for key in ('reset_seed','planner_seed','horizon','planning_cap'):
@@ -203,11 +207,15 @@ class StrategyGenerator:
         if not math.isfinite(gain) or not math.isfinite(cost):raise ValueError('finite_paired_difference')
         credit=float(np.tanh(gain/return_scale)/(1.+cost))
         if self.adaptive:
-            self.mutation_stats[child.kind][0]+=credit;self.mutation_stats[child.kind][1]+=1
+            if self.mutation_rule=='recent':
+                self.mutation_stats[child.kind]=[.75*self.mutation_stats[child.kind][0]+.25*credit,.75*self.mutation_stats[child.kind][1]+.25]
+            else:
+                adjusted=max(-.1,min(.1,credit)) if self.mutation_rule=='conservative' else credit
+                self.mutation_stats[child.kind][0]+=adjusted;self.mutation_stats[child.kind][1]+=1
         self.mutation_events.update((event,parent_result['event'],child_result['event']))
         self.journal.append('paired_mutation_feedback',dict(event=event,parent=parent.payload(),child=child.payload(),
             mutation=child.kind,context_hash=parent_result['context_hash'],observed_gain=gain,cpu_s=cost,
-            parent_result=parent_result,child_result=child_result,credit=credit,probabilities=self.mutation_probabilities()))
+            parent_result=parent_result,child_result=child_result,credit=credit,probabilities=self.mutation_probabilities(),domain=domain,update_rule=self.mutation_rule))
         return credit
 
     def propose(self, context, excluded=()):
@@ -219,6 +227,7 @@ class StrategyGenerator:
                                 else tuple(v for v in VARIANTS if v != a))
             kind = (self.rng.choices(tuple(self.mutation_stats),weights=tuple(self.mutation_probabilities().values()))[0]
                     if self.mutation_credit and self.adaptive else self.rng.choice(("switch", "rank_blend")))
+            if self.mutation_exploration and self.rng.random()<self.mutation_exploration:kind=self.rng.choice(tuple(self.mutation_stats))
             child = compose(kind, a, b, self.rng.choice((.25, 1.)))
             if child.fingerprint in excluded:
                 self.duplicate_rejections += 1

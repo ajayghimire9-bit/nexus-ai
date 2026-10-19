@@ -1,0 +1,75 @@
+"""Loopback-only recorded replay and opt-in bounded authored fixture playground."""
+import argparse
+from http.server import BaseHTTPRequestHandler,HTTPServer
+import json
+from pathlib import Path
+import signal
+import time
+from urllib.parse import urlparse,parse_qs
+from nexus.evolution2.learning_lab import load_control_replay
+
+ROOT=Path(__file__).resolve().parents[1]
+
+
+def run_fixture_request(payload):
+    from nexus.evolution2.learning_cycle import LearningCycle,FixtureHost
+    if type(payload) is not dict or set(payload)!={'seed','method'}:raise ValueError('fixture_options_only')
+    if type(payload['seed']) is not int or not 0<=payload['seed']<=99 or payload['method'] not in ('unified','random_generation','fixed_generation','reset_memory','shuffled_memory'):raise ValueError('bounded_fixture_options')
+    result=LearningCycle(payload['seed'],payload['method'],max_choices=8).run(FixtureHost(payload['seed']),steps_per_task=2)
+    return dict(scientific=False,live_environment=False,result=result)
+
+
+class LabHandler(BaseHTTPRequestHandler):
+    def log_message(self,*unused):pass
+    def send_json(self,status,value):
+        body=json.dumps(value,allow_nan=False).encode();self.send_response(status)
+        self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(body)))
+        self.send_header('Cache-Control','no-store');self.end_headers();self.wfile.write(body)
+    def local_request(self):
+        hosts={f'127.0.0.1:{self.server.server_port}',f'localhost:{self.server.server_port}'}
+        if self.headers.get('Host') not in hosts:return False
+        return self.headers.get('Origin') in (None,)+tuple('http://'+h for h in hosts)
+    def do_GET(self):
+        if not self.local_request():return self.send_json(403,{'error':'local_origin_required'})
+        parsed=urlparse(self.path)
+        try:
+            if parsed.path=='/' and not parsed.query:
+                body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')
+                self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
+                self.end_headers();return self.wfile.write(body)
+            if parsed.path=='/api/status':return self.send_json(200,dict(live_environment=False,fixtures_enabled=self.server.fixtures_enabled,requests_remaining=self.server.requests_remaining))
+            if parsed.path=='/api/replay':
+                query=parse_qs(parsed.query)
+                if set(query)!={'study'} or len(query['study'])!=1:raise ValueError('single_study_required')
+                return self.send_json(200,load_control_replay(ROOT,query['study'][0]))
+            return self.send_json(404,{'error':'unknown_route'})
+        except (ValueError,KeyError,FileNotFoundError) as e:return self.send_json(400,{'error':str(e)})
+    def do_POST(self):
+        if not self.local_request() or self.headers.get('X-Nexus-Request')!='local-fixture':return self.send_json(403,{'error':'local_fixture_header_required'})
+        if self.path!='/api/fixture':return self.send_json(404,{'error':'unknown_route'})
+        if not self.server.fixtures_enabled:return self.send_json(403,{'error':'fixtures_not_enabled'})
+        if self.server.requests_remaining<=0:return self.send_json(429,{'error':'process_fixture_request_cap'})
+        self.server.requests_remaining-=1
+        try:
+            length=int(self.headers.get('Content-Length','0'))
+            if not 0<length<=4096 or self.headers.get('Content-Type')!='application/json':raise ValueError('small_json_body_required')
+            payload=json.loads(self.rfile.read(length))
+            old=signal.signal(signal.SIGALRM,lambda *args:(_ for _ in ()).throw(TimeoutError('fixture_timeout')))
+            signal.setitimer(signal.ITIMER_REAL,2.)
+            try:result=run_fixture_request(payload)
+            finally:signal.setitimer(signal.ITIMER_REAL,0);signal.signal(signal.SIGALRM,old)
+            return self.send_json(200,result)
+        except (ValueError,TypeError,KeyError,TimeoutError) as e:return self.send_json(400,{'error':str(e)})
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--max-runtime-s',type=int,default=900);args=parser.parse_args()
+    if not 1024<=args.port<=65535 or not 1<=args.max_runtime_s<=900:raise ValueError('local_server_limits')
+    with HTTPServer(('127.0.0.1',args.port),LabHandler) as server:
+        server.fixtures_enabled=args.allow_fixtures;server.requests_remaining=10;server.timeout=.5
+        end=time.monotonic()+args.max_runtime_s
+        print(f'NEXUS Learning Lab: http://127.0.0.1:{args.port} (recorded replay; authored fixtures={args.allow_fixtures})',flush=True)
+        while time.monotonic()<end:server.handle_request()
+
+
+if __name__=='__main__':main()
