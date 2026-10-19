@@ -21,12 +21,13 @@ USAGE=ROOT/'artifacts/e3_12_mutation_usage.json'
 VALIDATION=ROOT/'artifacts/e3_12_mutation_validation.json'
 JOURNAL=ROOT/'artifacts/e3_12_mutation_resources.jsonl.gz'
 OPERATOR_PROFILE=False
+PARTIAL_PROFILE=False
 
 
 def configure_operator():
     """Separate balanced-panel study; original one-run outputs stay immutable."""
-    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,OPERATOR_PROFILE
-    OPERATOR_PROFILE=True
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,OPERATOR_PROFILE,PARTIAL_PROFILE
+    OPERATOR_PROFILE=True;PARTIAL_PROFILE=False
     CONFIG=ROOT/'configs/e3_12b_operator_headroom.json'
     PROTOCOL=ROOT/'docs/NEXUS_E3_12B_OPERATOR_HEADROOM_PROTOCOL.md'
     ALLOCATION=ROOT/'configs/e3_12b_operator_headroom_allocation.json'
@@ -36,7 +37,22 @@ def configure_operator():
     JOURNAL=ROOT/'artifacts/e3_12b_operator_resources.jsonl.gz'
 
 
+def configure_partial():
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,PARTIAL_PROFILE
+    configure_operator();PARTIAL_PROFILE=True
+    CONFIG=ROOT/'configs/e3_12c_partial_feedback.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_12C_PARTIAL_FEEDBACK_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_12c_partial_feedback_allocation.json'
+    RESULT=ROOT/'artifacts/e3_12c_partial_feedback.json'
+    USAGE=ROOT/'artifacts/e3_12c_partial_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_12c_partial_validation.json'
+    JOURNAL=ROOT/'artifacts/e3_12c_partial_resources.jsonl.gz'
+
+
 def study_module():
+    if PARTIAL_PROFILE:
+        from nexus.evolution2 import partial_feedback
+        return partial_feedback
     if OPERATOR_PROFILE:
         from nexus.evolution2 import operator_headroom
         return operator_headroom
@@ -100,6 +116,9 @@ def worker():
                     row['protocol']=protocol;p['rows'].append(row)
                     children=(study.operators() if OPERATOR_PROFILE else
                         {m:g.paired_child(parent,partner,study.proposal_uniform(c,f,b,e)) for m,g in generators.items()})
+                    if PARTIAL_PROFILE and role=='training':
+                        row['training_operator']=study.training_operator(c,f,b,e)
+                        children={row['training_operator']:children[row['training_operator']]}
                     if OPERATOR_PROFILE and role=='evaluation':
                         row['decision']=study.decide(p['rows'][:-1],c,f,b,generators['learned'])
                     row['strategies']={m:s.payload() for m,s in children.items()}
@@ -171,7 +190,8 @@ def run():
         rows=[],models=[],final_policies={},learning_journals={},observed=dict(model_calls=0,network_forwards=0,imagined_transitions=0),
         inputs=inventory['checkpoints']+inventory['source_arrays'],reward_sha256=sha(ROOT/'src/nexus/world/rewards.py')))
     env={**os.environ,'NEXUS_MUTATION_PARENT':str(os.getpid()),'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','VECLIB_MAXIMUM_THREADS':'1'}
-    child=subprocess.Popen([sys.executable,__file__,'--worker',*(['--operator-headroom'] if OPERATOR_PROFILE else [])],cwd=ROOT,env=env)
+    profile=['--partial-feedback'] if PARTIAL_PROFILE else ['--operator-headroom'] if OPERATOR_PROFILE else []
+    child=subprocess.Popen([sys.executable,__file__,'--worker',*profile],cwd=ROOT,env=env)
     try:code=child.wait(timeout=c['time_cap_s'])
     except subprocess.TimeoutExpired:child.kill();child.wait();code=-9
     p=read(RESULT);p['wall_s']=time.perf_counter()-start;p['exit_code']=code
@@ -216,8 +236,9 @@ def verify():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--worker',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--preflight',action='store_true');parser.add_argument('--operator-headroom',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--worker',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--preflight',action='store_true');profiles=parser.add_mutually_exclusive_group();profiles.add_argument('--operator-headroom',action='store_true');profiles.add_argument('--partial-feedback',action='store_true');args=parser.parse_args()
     if args.operator_headroom:configure_operator()
+    if args.partial_feedback:configure_partial()
     if args.worker:worker()
     elif args.verify:verify()
     elif args.preflight:print(json.dumps(preflight(read(CONFIG))[1]))

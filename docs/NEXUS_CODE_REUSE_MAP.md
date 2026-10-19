@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+E3.12C partial_feedback is schedule/selection/replay glue over SAME balanced
+operator contracts, StrategyGenerator credit, measured_mutation bridge, Host,
+Dispatch, ReservationLedger and forward checks. SAME runner adds --partial-
+feedback with isolated config/grant/artifact paths. Fixed balanced exploration
+reveals one child/reset; selectors are frozen before complete query panels.
+Raw-return, paired-gain and incumbent-guard baselines share identical revealed
+data; no parallel learner/planner/memory stack. Shared paired interval helper
+preserves B's defaults. Protocol NEXUS_E3_12C_PARTIAL_FEEDBACK_PROTOCOL.md.
+
 E3.12B operator_headroom is a pure balanced-panel selector/replay/statistics
 adapter over SAME StrategyGenerator mean credit and measured_mutation bridge.
 SAME run_e3_12_mutation_control adds --operator-headroom, separate immutable

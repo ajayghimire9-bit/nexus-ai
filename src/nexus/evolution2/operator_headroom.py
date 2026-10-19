@@ -32,9 +32,10 @@ def decide(rows,c,f,b,g):
             for r in sorted(train,key=lambda r:r['episode'])]))
 
 
-def replay_feedback(g,row,c):
+def replay_feedback(g,row,c,kinds=KINDS):
     parent=controllers()['successor_anchor']
     for kind,child in operators().items():
+        if kind not in kinds:continue
         q=row['protocol'];pair=[]
         for label,strategy in [('parent',parent),(kind,child)]:
             path=row['paths'][label]
@@ -61,11 +62,12 @@ def replay_learning(rows,c):
     return final
 
 
-def validate(p,c):
+def validate(p,c,*,labels=None,replay=None):
     ids=[(r['family'],r['bundle'],r['episode'],r['role']) for r in p['rows']]
     if len(ids)!=len(expected(c)) or set(ids)!=expected(c):raise ValueError('complete_registered_panel_grid')
     for row in p['rows']:
-        if set(row['paths'])!={'parent',*KINDS} or row['strategies']!={k:s.payload() for k,s in operators().items()}:raise ValueError('complete_operator_grid')
+        required={'parent',*KINDS} if labels is None else labels(row,c)
+        if set(row['paths'])!=required or row['strategies']!={k:s.payload() for k,s in operators().items() if k in required}:raise ValueError('complete_operator_grid')
         reset,planner=seed_pair(c,row['family'],row['bundle'],row['episode'])
         q=row['protocol']
         if q['phase']!=row['role'] or q['reset_seed']!=reset or q['planner_seed']!=planner or q['context_hash']!=digest(row['initial_observation']) or q['horizon']!=200 or q['planning_cap']!=1536:raise ValueError('registered_panel_provenance')
@@ -75,7 +77,8 @@ def validate(p,c):
             for tick,step in enumerate(path['steps']):
                 check_real_step(step,prev,tick,planner+tick,row['family']);prev=step['next_obs']
             if not math.isclose(number(path['return']),sum(s['reward'] for s in path['steps']),rel_tol=0,abs_tol=1e-8):raise ValueError('actual_reward_sum')
-    if replay_learning(p['rows'],c)!=p['final_policies']:raise ValueError('sealed_final_policy')
+    replay=replay_learning if replay is None else replay
+    if replay(p['rows'],c)!=p['final_policies']:raise ValueError('sealed_final_policy')
     actual=p['resources']['completed']
     if actual!=p['resources']['reserved'] or type(actual['real_steps']) is not int or actual['real_steps']!=c['real_cap'] or any(p['resources']['unknown_upper'].values()):raise ValueError('complete_metered_panel')
     for key,cap in [('model_calls','model_call_cap'),('network_forwards','network_forward_cap'),('imagined_transitions','imagined_cap')]:
@@ -94,6 +97,12 @@ def values(row):
         retrospective_best=max(r['switch'],r['rank_blend']))
 
 
+def paired_contrast(models,a,b):
+    x=[m['mean_returns'][a]-m['mean_returns'][b] for m in models]
+    mean=float(np.mean(x));half=12.7062047364*float(np.std(x,ddof=1))/math.sqrt(2)
+    return dict(mean=mean,ci95=[mean-half,mean+half],per_model=x)
+
+
 def analyze(rows,c):
     out={};learned_screen=True;headroom_screen=True
     for f in c['families']:
@@ -109,8 +118,7 @@ def analyze(rows,c):
         contrasts={}
         for a,b in [('training_mean','uniform_expected'),('credit_argmax','uniform_expected'),('credit_argmax','training_mean'),
                     ('training_mean','parent'),('training_mean','fixed_switch'),('training_mean','fixed_blend'),('retrospective_best','uniform_expected')]:
-            x=[m['mean_returns'][a]-m['mean_returns'][b] for m in models];mean=float(np.mean(x));half=12.7062047364*float(np.std(x,ddof=1))/math.sqrt(2)
-            contrasts[a+'-minus-'+b]=dict(mean=mean,ci95=[mean-half,mean+half],per_model=x)
+            contrasts[a+'-minus-'+b]=paired_contrast(models,a,b)
         primary=contrasts['training_mean-minus-uniform_expected'];available=contrasts['retrospective_best-minus-uniform_expected']
         passed=primary['mean']>=c['practical_margin'] and primary['ci95'][0]>0 and all(x>0 for x in primary['per_model'])
         headroom=available['mean']>=c['headroom_margin'];learned_screen &= passed;headroom_screen &= headroom
