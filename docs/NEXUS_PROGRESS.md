@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — E3.12C limited-feedback result preserved
+
+Source/protocol9ae94386a84ae5863776cba20f0420679711e051 before outcomes. Both
+primary family screens fail; credit/paired-gain/guard pick switch all4 models,
+and guard never retains parent. Full112 paths/22400 real steps complete;
+33666645 imagined/1036165 forwards;154.395255s wall.764 relevant tests pass,
+412 historical JSON/frozen inputs preserved; ledger1643.627562957004/
+1956.372437042996. First export ran before validation completed and failed
+closed; only saved-data export retried. Latest request prioritizes three-way
+parent-inclusive training mean and fresh protocol, not another automatic run.
+See NEXUS_E3_12C_PARTIAL_FEEDBACK_RESULTS.md.
+
 ## Latest — E3.12B balanced operator panel completed
 
 Source/protocol570d10184354901291f2903eb4e8de20203e9839 committed before data.

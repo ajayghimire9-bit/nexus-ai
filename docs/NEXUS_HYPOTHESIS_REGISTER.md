@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.12C partial feedback selection unestablished
+
+H: eight single-child exploration trials permit useful frozen selection.
+Precommitted9ae94386a84ae5863776cba20f0420679711e051; four observed outcomes/
+operator/model. Primary raw mean versus uniform+87.562 [−392.932,568.056]
+Pendulum,+8.283 [−123.217,139.783] Acrobot; both interval screens fail. Credit
+vs uniform−37.816/+10.349; no superiority over simple means. Parent-relative
+and absolute training estimates disagree for Pendulum0; four-point groups have
+different parent means. Descriptive imbalance, not isolated causation. Paired-
+gain guard retains parent0/4; a simple three-way raw-average rule was not tested.
+Complete valid grid/frozen/meter checks pass;764 tests. Closed C cannot be
+relabeled as the new parent-inclusive experiment requested afterward.
+
 ## Latest — E3.12B operator headroom visible, overall selection unestablished
 
 H-stable: source-training operator preference transfers to fresh episode

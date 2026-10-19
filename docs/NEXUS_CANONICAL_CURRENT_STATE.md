@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Latest E3.12C complete/valid, partial_feedback_selection_not_established.
+Primary+87.562 [−392.932,568.056] /+8.283 [−123.217,139.783]. Credit fails badly
+on Pendulum0; paired-gain guard never retains parent.22400 real/33666645 imagined/
+1036165 forwards,764 relevant tests;412 old JSON/frozen inputs unchanged.
+Ledger1643.627562957004/1956.372437042996. New user request is parent-inclusive
+average selector plus fresh preparation only, durable-state/viewer/net-progress
+engineering. No automatic new collection. See E3.12C report; prior results closed.
+
 Latest E3.12B complete/valid, headroom_visible_selection_not_established. Raw
 training means and existing credit argmax agree all4 models. Versus analytic
 uniform mixture: Pendulum+119.727 [3.139,236.315], Acrobot+7.298 [−34.703,49.298].

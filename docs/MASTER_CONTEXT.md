@@ -1,5 +1,21 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.12C single-child feedback screen fails
+
+Precommitted9ae94386a84ae5863776cba20f0420679711e051, complete112 actual paths.
+Primary raw-mean minus uniform: Pendulum+87.562 [−392.932,568.056], Acrobot
++8.283 [−123.217,139.783]. Both screens fail. Credit vs uniform−37.816/+10.349;
+credit/paired-gain/guard choose switch all4 models, guard never keeps parent.
+Pendulum0 credit loses250.756 versus raw mean; no credit superiority established.
+22400 real/33666645 imagined/1036165 forwards,154.395255s+3.527063s audit+
+.054751s export attempts,412 old JSON/frozen inputs preserved;764 tests pass.
+Ledger1643.627562957004/1956.372437042996. Latest attached user request: implement
+simple parent-inclusive training average, preserve two-child comparator, prepare
+fresh protocol WITHOUT automatic simulator launch. Parallel durable save/resume,
+net-accepted-progress objective and recorded Learning Lab viewer improvements;
+no new scientific evidence may be claimed from engineering alone. C stays closed.
+See NEXUS_E3_12C_PARTIAL_FEEDBACK_RESULTS.md.
+
 ## Latest — E3.12B paired operator headroom, mixed selection evidence
 
 Precommitted570d10184354901291f2903eb4e8de20203e9839. Complete balanced parent/

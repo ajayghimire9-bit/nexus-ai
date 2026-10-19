@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — parent-inclusive limited-feedback comparison, preparation only
+
+Latest attached user request: implement simple average selector over parent/
+switch/rank_blend, preserve current two-child comparator; combine with fresh
+limited-feedback explore-then-commit comparison. Do NOT launch new simulator
+runs automatically. Parent-gain guard tested in C is a different rule and
+retained parent0/4. Both C primary screens failed, despite positive raw-mean
+points. Preserve all closed C outcomes and prepare a separate protocol, with
+no retrospective scoring of the new selector on C query data. Parallel durable
+existing-state persistence, accepted-progress reward and recorded viewer work
+are engineering only. Ledger1643.627562957004/1956.372437042996. See C report.
+
 ## Current — budget-matched partial-feedback explore-then-commit, proposed
 
 E3.12B finds real operator headroom. Training means and credit argmax agree

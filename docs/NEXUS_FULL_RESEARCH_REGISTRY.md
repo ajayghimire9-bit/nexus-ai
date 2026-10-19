@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Supplemental codex/e3-12c-limited-feedback-selection; precommitted source/protocol
+9ae94386a84ae5863776cba20f0420679711e051.112 full actual paths,22400 real/
+33666645 imagined/1036165 forwards,154.395255s+3.527063s audit+.054751s export
+attempts. Both primary screens fail; credit selects harmful Pendulum0 switch;
+parent-gain guard never retains parent.412 old JSON/frozen inputs preserved,
+764 relevant tests; ledger1643.627562957004/1956.372437042996. Artifacts
+e3_12c_partial*, report/protocol separate. New parent-inclusive request is
+subsequent engineering/fresh preparation, not a revision of these results.
+
 Supplemental codex/e3-12b-paired-operator-headroom, precommitted protocol/source
 570d10184354901291f2903eb4e8de20203e9839.48 fresh paired full-information source
 contexts/144 actual paths. Primary gains+119.727 [3.139,236.315] Pendulum and
