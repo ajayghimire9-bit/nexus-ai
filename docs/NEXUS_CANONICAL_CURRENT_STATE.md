@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Latest E3.12F engineering integrates the existing metered runner and stdlib
+exporter, not a parallel stack. Exclusive schedules before training and choices
+before queries; complete dynamic union/receipt validation. Runtime template
+rejects run/worker/preflight before host access. No registered seeds/allocation
+or scientific run. See NEXUS_E3_12F_RUNNER_INTEGRATION.md; ledger unchanged.
+Earlier "no simulation runner" preparation entries below are historical.
+
 Latest engineering: E3.12F public-reset blocking and strict masked-feedback
 adapter, exact proposal config and authored tests. Reuses SAME parent-inclusive
 selector; no simulation runner, model inference, seed registration or grant.

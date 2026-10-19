@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## E3.12F — shared runner and independent export integrated
+
+Bound public reset blocking to SAME mutation-control worker/Host path. Runtime
+template denies execution before missing registration; exclusive pre-feedback
+schedules and pre-query choices anchor receipt hashes. Validator derives exact
+union counts instead of requiring unused maximum capacity. Independent stdlib
+export checks masked means, full query grids and paired intervals. Production
+orchestration tested with authored callbacks replacing ALL model/world calls.
+No scientific execution or superiority result; no seeds/allocation. See
+NEXUS_E3_12F_RUNNER_INTEGRATION.md. Ledger unchanged.
+
 ## E3.12F — reset-blocked preparation, zero scientific execution
 
 Implemented exact eight-reset public-distance pairing, isolated random versus

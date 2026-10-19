@@ -62,7 +62,7 @@ def replay_learning(rows,c):
     return final
 
 
-def validate(p,c,*,labels=None,replay=None):
+def validate(p,c,*,labels=None,replay=None,planned_real_steps=None):
     ids=[(r['family'],r['bundle'],r['episode'],r['role']) for r in p['rows']]
     if len(ids)!=len(expected(c)) or set(ids)!=expected(c):raise ValueError('complete_registered_panel_grid')
     for row in p['rows']:
@@ -80,7 +80,9 @@ def validate(p,c,*,labels=None,replay=None):
     replay=replay_learning if replay is None else replay
     if replay(p['rows'],c)!=p['final_policies']:raise ValueError('sealed_final_policy')
     actual=p['resources']['completed']
-    if actual!=p['resources']['reserved'] or type(actual['real_steps']) is not int or actual['real_steps']!=c['real_cap'] or any(p['resources']['unknown_upper'].values()):raise ValueError('complete_metered_panel')
+    wanted_steps=c['real_cap'] if planned_real_steps is None else planned_real_steps
+    if type(wanted_steps) is not int or not 0<wanted_steps<=c['real_cap']:raise ValueError('planned_physical_panel_cap')
+    if actual!=p['resources']['reserved'] or type(actual['real_steps']) is not int or actual['real_steps']!=wanted_steps or any(p['resources']['unknown_upper'].values()):raise ValueError('complete_metered_panel')
     for key,cap in [('model_calls','model_call_cap'),('network_forwards','network_forward_cap'),('imagined_transitions','imagined_cap')]:
         if type(actual[key]) is not int or not 0<actual[key]<=c[cap] or p['observed'][key]!=actual[key]:raise ValueError('observed_neural_work')
     mids=[(r['family'],r['bundle']) for r in p['models']]

@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## E3.12F engineering update — hypothesis remains untested
+
+Runtime binding and independent arithmetic export now exist on the same
+scientific stack. Authored fixture callbacks verify ordering, feedback
+isolation, masks, resource receipts and model-level aggregation only.
+No new scientific outcome or protocol lock. The original reset-blocking
+hypothesis/one-point BOTH-family screen remain unchanged. Numerical fresh
+registration and collection authorization are still absent; see
+NEXUS_E3_12F_RUNNER_INTEGRATION.md.
+
 ## E3.12F — public reset blocking, proposed and untested
 
 Hypothesis: pre-feedback observation-based pairing improves held-out raw

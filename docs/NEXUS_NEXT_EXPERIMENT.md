@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## E3.12F runner ready for separate fresh registration, not a live run
+
+Existing metered worker and independent exporter now implement dynamic shared
+panels, strict masking, sealed schedules/choices and complete physical receipts.
+See NEXUS_E3_12F_RUNNER_INTEGRATION.md. Authored-host tests are not simulator
+evidence. Next scientific action: register/authorize exact fresh source-model
+reset-blocked versus balanced-random comparison (maximum28800 real/300s), then
+commit its final protocol/config/allocation before collection. No such seeds,
+allocation or collection are created here; current no-simulation limit stands.
+
 ## E3.12F preparation completed — registration/host binding still required
 
 Deterministic minimum-distance public-reset pairing, balanced schedules and

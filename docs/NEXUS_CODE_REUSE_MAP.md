@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+E3.12F reset_blocked_study is a profile adapter over SAME reset_blocks,
+partial_feedback raw selector and operator_headroom validator/paired intervals.
+SAME run_e3_12_mutation_control adds --reset-blocked and existing Host/Dispatch/
+ReservationLedger instrumentation; no union feedback is sent to credit.
+SAME stdlib summarize_e3_12_mutation_control exports independent arithmetic.
+Optional planned_real_steps changes only F's exact dynamic-union validation;
+old profiles retain their original fixed count requirement. No new framework.
+
 E3.12F reset_blocks is pure public-observation matching/schedule/masking glue,
 not a new exploration learner. SAME partial_feedback training_statistics and
 parent_inclusive_decision accept an explicit optional balanced schedule;

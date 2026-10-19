@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## E3.12F trusted-runner integration — engineering only
+
+SAME mutation-control runner now has --reset-blocked, exact unregistered
+runtime template, exclusive pre-training schedule/pre-query decision seals,
+masked raw selector, schedule-derived physical counts and seal-linked receipt
+grid verification. SAME stdlib exporter independently replays means/intervals.
+Authored worker callbacks replace ALL models/worlds; no scientific execution,
+new seeds or allocation. See NEXUS_E3_12F_RUNNER_INTEGRATION.md. Original
+E3.12D/E and F preparation evidence unchanged. Ledger remains
+1808.9990201649957/1791.0009798350043; current no-simulation scope respected.
+
 ## E3.12F — reset-blocked exploration engineering prepared, not executed
 
 Pure public-observation matching/schedule/masked-feedback adapter now reuses

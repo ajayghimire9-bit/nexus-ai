@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+E3.12F runner integration (basee13c863ce221f6fbe9d60ebae918844fdf279a24):
+existing metered worker/exporter bound through a separate gated profile;
+authored-host orchestration, strict grids, exclusive seals and receipt linkage
+tested. No scientific allocation/registration/collection/inference; proposal
+remains28800 real maximum/300s, not spent. Ledger unchanged. See
+NEXUS_E3_12F_RUNNER_INTEGRATION.md; historical artifacts preserved.
+
 Prepared E3.12F public reset-blocking adapter on base015d5fcfb13a1d5ca86197d7a41727cafde4db70.
 Authored source-only tests and unregistered proposal only; no fresh physics,
 numerical seeds, allocations, model calls or environment execution. Raw
