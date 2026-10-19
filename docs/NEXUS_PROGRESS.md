@@ -1,5 +1,19 @@
 # NEXUS progress log
 
+## Latest — E3.12B balanced operator panel completed
+
+Source/protocol570d10184354901291f2903eb4e8de20203e9839 committed before data.
+144 actual200-step paths; both operators evaluated at all48 registered contexts.
+Training preference ordering persists in model-level means for all4 models;
+credit argmax equals simple training-mean baseline. Pendulum gain+119.727
+[3.139,236.315] versus uniform expected; Acrobot+7.298 [−34.703,49.298]. Overall
+selection screen does not pass; no general control or sample-efficiency claim.
+28800 real/43340130 imagined/1311810 forwards;204.640469s,737 tests passed,
+407 old JSON and all frozen inputs retained. Ledger1485.650493707012/
+2114.349506292988. Full raw paths, sealed selectors,64 credit events, journal
+checks and independent arithmetic/CSV saved. Next partial-feedback study only
+proposed. See NEXUS_E3_12B_OPERATOR_HEADROOM_RESULTS.md.
+
 ## Latest — measured E3.12 mutation feedback runs; useful gain unestablished
 
 Precommitted629c8d2cbb30632acab2d3e633b64fc19cccf46a, branch

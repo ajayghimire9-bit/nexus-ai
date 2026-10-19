@@ -1,5 +1,15 @@
 # NEXUS full research registry
 
+Supplemental codex/e3-12b-paired-operator-headroom, precommitted protocol/source
+570d10184354901291f2903eb4e8de20203e9839.48 fresh paired full-information source
+contexts/144 actual paths. Primary gains+119.727 [3.139,236.315] Pendulum and
++7.298 [−34.703,49.298] Acrobot. Overall screen fails, finite-suite headroom
+visible; credit equals training mean, no L2L/general control claim.28800 real/
+43340130 imagined/1311810 forwards,204.640469s+4.425602s audit+.042849s export.
+407 old JSON/frozen inputs preserved;737 relevant tests. Ledger1485.650493707012/
+2114.349506292988. Artifacts e3_12b_operator*, separate report/protocol. No neural
+fitting or confirmation. Partial-feedback selection only proposed next.
+
 Supplemental codex/e3-12-measured-mutation-credit, precommitted source/protocol
 629c8d2cbb30632acab2d3e633b64fc19cccf46a. Complete160 real200-step paths across
 four frozen source models. Actual feedback changes32 probability updates but

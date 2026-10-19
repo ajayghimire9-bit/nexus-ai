@@ -1,5 +1,20 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — budget-matched partial-feedback explore-then-commit, proposed
+
+E3.12B finds real operator headroom. Training means and credit argmax agree
+all4 models; Pendulum gain+119.727 [3.139,236.315], Acrobot+7.298 [−34.703,49.298]
+versus uniform expected. Overall interval screen fails; full-information access
+does not establish efficient discovery. Next single question: does deterministic
+exploitation retain gains when each training reset reveals only ONE child?
+Compare existing credit argmax, observed-return means and uniform generation
+under matched feedback/compute, retaining fixed parent/operator controls.
+Fresh source episodes, frozen existing models; suggested8 training parent/child
+pairs plus4 query panels/model:22400 real steps,120–180s estimate, proposed300s
+cap. No numerical registration, allocation or execution yet. Ledger1485.650493707012/
+2114.349506292988. Prior E3.12/B cases stay closed; no architecture expansion.
+Older next entries are retained proposal history. See E3.12B results.
+
 ## Current — balanced paired-operator headroom audit, proposed only
 
 E3.12 now actually ran on fresh source-control episodes. Measured feedback

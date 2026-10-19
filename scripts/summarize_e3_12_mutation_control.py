@@ -9,6 +9,47 @@ import statistics
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def summarize_operator(p,c):
+    """Independent stdlib checks of balanced-panel selection and contrasts."""
+    expected={(f,b,e,role) for role in ('training','evaluation') for f in c['families'] for b in c['model_bundles'] for e in c[role+'_episodes']}
+    ids=[(r['family'],r['bundle'],r['episode'],r['role']) for r in p['rows']]
+    if len(ids)!=len(expected) or set(ids)!=expected:raise ValueError('complete_operator_panel')
+    kinds=('switch','rank_blend');families={};phase={k:dict(physical_episodes=0,real_steps=0,path_cpu_s=0.) for k in ('training','evaluation')};error=0.
+    for r in p['rows']:
+        if set(r['paths'])!={'parent',*kinds}:raise ValueError('balanced_operator_conditions')
+        for v in r['paths'].values():
+            rewards=[s['reward'] for s in v['steps']]
+            if len(rewards)!=200 or any(type(x) not in (int,float) or not math.isfinite(x) for x in rewards):raise ValueError('finite_complete_paths')
+            error=max(error,abs(math.fsum(rewards)-v['return']))
+            phase[r['role']]['physical_episodes']+=1;phase[r['role']]['real_steps']+=len(rewards);phase[r['role']]['path_cpu_s']+=v['cpu_s']
+    if error>1e-8:raise ValueError('independent_reward_sum')
+    for f in c['families']:
+        models=[]
+        for b in c['model_bundles']:
+            train=[r for r in p['rows'] if (r['family'],r['bundle'],r['role'])==(f,b,'training')]
+            query=[r for r in p['rows'] if (r['family'],r['bundle'],r['role'])==(f,b,'evaluation')]
+            training_means={k:statistics.mean(r['paths'][k]['return'] for r in train) for k in kinds}
+            choice=max(kinds,key=training_means.get);values=[]
+            for r in query:
+                if r['decision']['training_mean_kind']!=choice or any(abs(r['decision']['training_means'][k]-training_means[k])>1e-10 for k in kinds):raise ValueError('training_only_choice_replay')
+                a,z=(r['paths'][k]['return'] for k in kinds);credit=r['decision']['credit_kind']
+                values.append(dict(parent=r['paths']['parent']['return'],fixed_switch=a,fixed_blend=z,uniform_expected=(a+z)/2,
+                    training_mean=r['paths'][choice]['return'],credit_argmax=r['paths'][credit]['return'],retrospective_best=max(a,z)))
+            means={k:statistics.mean(v[k] for v in values) for k in values[0]}
+            models.append(dict(bundle=b,means=means,training_choice=choice,credit_choice=query[0]['decision']['credit_kind'],
+                training_gap=training_means['switch']-training_means['rank_blend'],query_gap=means['fixed_switch']-means['fixed_blend'],
+                query_wins=sum(v['training_mean']==v['retrospective_best'] for v in values)))
+        contrasts={}
+        for name,prior in p['analysis']['families'][f]['contrasts'].items():
+            a,z=name.split('-minus-');x=[r['means'][a]-r['means'][z] for r in models];mean=statistics.mean(x);half=12.7062047364*statistics.stdev(x)/math.sqrt(2)
+            result=dict(mean=mean,ci95=[mean-half,mean+half],per_model=x)
+            if abs(mean-prior['mean'])>1e-9 or any(abs(a-b)>1e-8 for a,b in zip(result['ci95'],prior['ci95'])):raise ValueError('independent_interval_replay')
+            contrasts[name]=result
+        families[f]=dict(models=models,contrasts=contrasts)
+    return dict(families=families,phase_accounting=phase,max_independent_reward_sum_error=error,label=p['analysis']['label'],
+        limitations='Two models/family; diagnostic full-information panel; expected uniform and retrospective best reuse executed paths; not extra controller replications.')
+
+
 def summarize(p,c):
     expected={(f,b,e,role) for role in ('training','evaluation') for f in c['families'] for b in c['model_bundles'] for e in c[role+'_episodes']}
     ids=[(r['family'],r['bundle'],r['episode'],r['role']) for r in p['rows']]
@@ -46,19 +87,24 @@ def summarize(p,c):
         label=p['analysis']['label'])
 
 
-def main():
-    raw=ROOT/'artifacts/e3_12_mutation_control.json';p=json.loads(raw.read_text());c=json.loads((ROOT/'configs/e3_12_mutation_control.json').read_text());v=json.loads((ROOT/'artifacts/e3_12_mutation_validation.json').read_text())
+def main(operator=False):
+    prefix='e3_12b_operator' if operator else 'e3_12_mutation'
+    capture='e3_12b_operator_headroom' if operator else 'e3_12_mutation_control'
+    raw=ROOT/('artifacts/'+capture+'.json');p=json.loads(raw.read_text());c=json.loads((ROOT/('configs/'+capture+'.json')).read_text());v=json.loads((ROOT/('artifacts/'+prefix+'_validation.json')).read_text())
     if not p['declared_complete'] or v['valid'] is not True or v['result_sha256']!=hashlib.sha256(raw.read_bytes()).hexdigest():raise ValueError('sealed_complete_capture_required')
-    s=summarize(p,c);s.update(result_sha256=v['result_sha256'],source_commit=p['provenance']['source_commit'],session_used_after_s=v['session_used_after_s'],session_remaining_after_s=v['session_remaining_after_s'])
-    target=ROOT/'artifacts/e3_12_mutation_summary.json'
+    s=(summarize_operator if operator else summarize)(p,c);s.update(result_sha256=v['result_sha256'],source_commit=p['provenance']['source_commit'],session_used_after_s=v['session_used_after_s'],session_remaining_after_s=v['session_remaining_after_s'])
+    target=ROOT/('artifacts/'+prefix+'_summary.json')
     with target.open('x') as stream:stream.write(json.dumps(s,indent=2,allow_nan=False)+'\n')
-    with (ROOT/'artifacts/e3_12_mutation_returns.csv').open('x') as stream:
-        writer=csv.writer(stream);writer.writerow(['family','bundle','episode','role','condition','strategy_kind','actual_return','parent_difference','path_cpu_s'])
+    with (ROOT/('artifacts/'+prefix+'_returns.csv')).open('x') as stream:
+        writer=csv.writer(stream,lineterminator='\n');writer.writerow(['family','bundle','episode','role','condition','strategy_kind','actual_return','parent_difference','path_cpu_s'])
         for row in p['rows']:
             for name,path in row['paths'].items():
-                kind=row['strategies'][name]['kind'] if name in ('learned','random') else ('leaf' if name=='parent' else 'rank_blend')
+                kind=row['strategies'][name]['kind'] if name in row['strategies'] else ('leaf' if name=='parent' else 'rank_blend')
                 writer.writerow([row['family'],row['bundle'],row['episode'],row['role'],name,kind,path['return'],path['return']-row['paths']['parent']['return'],path['cpu_s']])
     print(json.dumps(s,indent=2))
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--operator-headroom',action='store_true');args=parser.parse_args()
+    main(args.operator_headroom)

@@ -140,3 +140,24 @@ def test_protocol_and_allocation_hashes_are_pinned():
     grant=json.loads((ROOT/'configs/e3_12b_operator_headroom_allocation.json').read_text())
     for name,path in [('config','configs/e3_12b_operator_headroom.json'),('protocol','docs/NEXUS_E3_12B_OPERATOR_HEADROOM_PROTOCOL.md')]:
         assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==grant[name+'_sha256']
+
+
+def summary_api():
+    spec=importlib.util.spec_from_file_location('operator_summary',ROOT/'scripts/summarize_e3_12_mutation_control.py')
+    api=importlib.util.module_from_spec(spec);spec.loader.exec_module(api);return api
+
+
+def test_independent_arithmetic_counts_only_three_physical_paths_per_case():
+    p,c=fixture();p['analysis']=h.analyze(p['rows'],c)
+    s=summary_api().summarize_operator(p,c)
+    assert s['phase_accounting']['training']['real_steps']==19200
+    assert s['phase_accounting']['evaluation']['real_steps']==9600
+    assert s['families']['pendulum']['models'][0]['query_wins']==4
+
+
+@pytest.mark.parametrize('fault',['missing','wrong_contrast'])
+def test_independent_export_rejects_incomplete_or_altered_statistics(fault):
+    p,c=fixture();p['analysis']=h.analyze(p['rows'],c)
+    if fault=='missing':p['rows'].pop()
+    else:p['analysis']['families']['pendulum']['contrasts']['training_mean-minus-uniform_expected']['mean']=9.
+    with pytest.raises(ValueError):summary_api().summarize_operator(p,c)

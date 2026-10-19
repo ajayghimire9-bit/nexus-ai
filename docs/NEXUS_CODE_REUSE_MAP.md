@@ -7,7 +7,10 @@ config/grant/results and original Host/Dispatch/ledger/forward instrumentation.
 Only fixed parent and two existing composed operators execute; raw training
 means are a simple baseline, no new predictor/memory/planner. Query selection
 sealed before paths; both operators evaluated at every reset. Protocol
-NEXUS_E3_12B_OPERATOR_HEADROOM_PROTOCOL.md; no outcomes yet at implementation.
+NEXUS_E3_12B_OPERATOR_HEADROOM_PROTOCOL.md. Now complete: both-family selection
+screen fails (Acrobot interval includes0); operator headroom visible. SAME stdlib
+exporter adds --operator-headroom for independent arithmetic/CSV; original
+capture/profile unchanged. No further learner, memory or execution framework.
 
 E3.12 measured-mutation binding: mutation_control provides pure replay/grid/
 statistics helpers. run_e3_12_mutation_control binds SAME post_probe.Host,

@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.12B paired operator headroom, mixed selection evidence
+
+Precommitted570d10184354901291f2903eb4e8de20203e9839. Complete balanced parent/
+switch/rank_blend panels on48 fresh source contexts, four frozen models. Both
+operators at every reset. Training-mean and existing credit argmax choose the
+same operator in all four models. Query gain versus uniform expected return:
+Pendulum+119.727 [3.139,236.315], Acrobot+7.298 [−34.703,49.298]. Overall BOTH-
+family selection screen fails; finite-suite hindsight headroom passes both.
+Label headroom_visible_selection_not_established. No superiority over simple
+means, fixed parent, or unfamiliar-physics/control-generalization claim. Two
+models/family; hindsight/uniform metrics reuse same physical paths.28800 real/
+43340130 imagined/1311810 forwards,204.640469s+4.425602s audit+.042849s export.
+407 prior JSON and frozen inputs preserved.737 relevant tests pass. Ledger
+1485.650493707012/2114.349506292988. One next proposal: budget-matched partial-
+feedback explore-then-commit selection, not executed/registered. E3.12 stays
+closed. See NEXUS_E3_12B_OPERATOR_HEADROOM_RESULTS.md.
+
 ## Latest — E3.12 real mutation-credit screen fails
 
 Execution629c8d2cbb30632acab2d3e633b64fc19cccf46a precommitted protocol/code.

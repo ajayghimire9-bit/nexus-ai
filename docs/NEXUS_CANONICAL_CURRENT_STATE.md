@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Latest E3.12B complete/valid, headroom_visible_selection_not_established. Raw
+training means and existing credit argmax agree all4 models. Versus analytic
+uniform mixture: Pendulum+119.727 [3.139,236.315], Acrobot+7.298 [−34.703,49.298].
+Both finite-suite hindsight headroom screens pass; overall selection rule fails
+because Acrobot uncertain. Full-information source diagnostic, no new-physics
+or learning-rule superiority claim.28800 real/43340130 imagined/1311810 forwards,
+407 old JSON/frozen inputs unchanged;737 relevant tests. Ledger1485.650493707012/
+2114.349506292988. See NEXUS_E3_12B_OPERATOR_HEADROOM_RESULTS.md.
+
 Latest E3.12 real measured parent–child run complete/valid, utility screen fails.
 32 feedback probability updates,0 sampled proposal changes, exact tie with
 random on16 queries. Both family primary differences0 [0,0], conditionally

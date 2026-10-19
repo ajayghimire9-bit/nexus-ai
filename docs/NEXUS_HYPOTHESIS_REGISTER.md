@@ -1,5 +1,21 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.12B operator headroom visible, overall selection unestablished
+
+H-stable: source-training operator preference transfers to fresh episode
+returns. Precommitted570d10184354901291f2903eb4e8de20203e9839, full paired
+feedback, two independent models/family. Primary training-mean minus uniform
+expected: Pendulum+119.727 [3.139,236.315], Acrobot+7.298 [−34.703,49.298].
+Both-family interval rule fails. Finite-suite hindsight headroom>=5 both
+families, not proof of learnability. H-credit: existing cost/tanh credit offers
+no advantage over raw means; identical selected operators all4 models. Oracle,
+uniform/regret/winner metrics derive from same paired paths, not independent
+evidence. Query ordering differs between models and sometimes between resets;
+observed means preserve training sign in all4. No causal attribution of E3.12's
+failure to one change: feedback coverage and exploitation rule both differ.
+No new-physics/continual learning/L2L claim; see E3.12B report. Closed seeds stay
+closed. Next partial-feedback explore-then-commit study is a separate proposal.
+
 ## Latest — E3.12 useful mutation learning not established
 
 H: measured parent–child return credit improves fresh-episode structural
