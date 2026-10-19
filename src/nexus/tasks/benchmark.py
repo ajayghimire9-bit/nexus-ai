@@ -171,11 +171,11 @@ class MeteredTaskEnv(gym.Wrapper):
             result = dispatch.environment(key, self.env, action)
             obs, reward, terminated, truncated, _ = result
             self._observation(obs)
-            if type(reward) not in (float, int) or not math.isfinite(reward):
+            if (type(reward) not in (float, int) and not isinstance(reward, np.floating)) or not math.isfinite(reward):
                 raise ValueError("finite_reward_required")
             if type(terminated) is not bool or type(truncated) is not bool:
                 raise ValueError("boolean_episode_flags")
-            return result
+            return obs, float(reward), terminated, truncated, result[4]
         try:
             result, _ = self.host.perform((Operation(key, "environment", Work(real_steps=1)),), execute,
                 dict(task=self.task_spec.task_id, split=self.task_spec.train_split, family=self.task_spec.family))

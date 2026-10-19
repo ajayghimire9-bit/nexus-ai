@@ -126,6 +126,17 @@ def test_failure_consumes_registered_work():
     assert h.resources()["unknown_upper"]["real_steps"] == 1
 
 
+def test_gym_numpy_reward_scalars_preserve_value_and_json_numeric_type():
+    class NumpyReward(FixtureEnv):
+        def step(self, action):
+            obs, _, term, trunc, info = super().step(action)
+            return obs, np.float64(-.125), term, trunc, info
+    with MeteredTaskEnv(FAMILIES["pendulum"].spec(), host(), factory=NumpyReward) as env:
+        env.reset(seed=0)
+        result = env.step(np.int64(0))
+        assert type(result[1]) is float and result[1] == -.125
+
+
 def test_compatibility_checks_semantics_not_just_dimensions():
     mc, continuous = FAMILIES["mountaincar"], FAMILIES["mountaincar_continuous"]
     assert mc.obs_dim == continuous.obs_dim
