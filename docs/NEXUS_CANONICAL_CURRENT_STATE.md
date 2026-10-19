@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Latest E3.11D: longer_horizon_utility_not_established.64-step forecast accuracy
+62.5%/37.5% versus16-step62.5%/62.5%; selected-return differences−13.777/−6.953
+with both model-level intervals including0.16 fresh paired source cases,0 fits.
+6272 real/12224512 imagined/485888 forwards;393 historical JSON preserved.
+Ledger1020.1172516680078/2579.882748331992. Next source-only recorded-action
+replay question, not more horizon/architecture search. See E3.11D results.
+
 Latest E3.11B complete/valid, forecast_utility_not_established. Accuracy75%/62.5%
 versus TRAIN-mean87.5%/62.5%; return difference−1.558/+1.570 with both intervals
 including0.16 fresh cases,4 existing models,0 fits.6272 real/9932800 imagined/

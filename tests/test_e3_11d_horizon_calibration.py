@@ -97,3 +97,13 @@ def test_model_units_and_practical_screen_are_retained():
         assert family['paired']['policy_16']['accuracy']['n_models']==2
         assert family['paired']['policy_16']['accuracy']['df']==1
         assert family['point_screen'] is False
+
+
+def test_saved_capture_replays_without_checkpoint_deserialization():
+    m=api();c,config=x.settings(m);p=json.loads(m.RESULT.read_text());verification=json.loads(m.VALIDATION.read_text())
+    assert p['declared_complete'] and verification['valid']
+    assert verification['capture_sha256']==m.sha(m.RESULT)
+    means=a.training_means(m.ROOT/config['training_prior'],config['training_prior_sha256'],config)
+    assert x.validate(p,c,config,means) and h.analyze(p,c,config)==p['analysis']
+    assert verification['resources_verified']==p['resources']['completed']
+    assert verification['resource_records']==8224 and verification['model_inference'] is False

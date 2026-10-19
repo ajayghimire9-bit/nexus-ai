@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.11D longer-horizon calibration fails, 2026-10-19
+
+Execution4e6be2f2b36a21843ed8804a8018046ab0133bf8 precommitted;16 fresh paired
+cases, four frozen source models, same192-step actual paths scored by64-step
+forecast and its exact16-prefix. Accuracy64/16/mean Pendulum62.5/62.5/75%,
+Acrobot37.5/62.5/62.5%. Return64-minus16−13.777/−6.953, both paired df1
+intervals include0. Both registered screens fail; no horizon extension success.
+6272 real/12224512 imagined/485888 observed forwards,0 fits;67.857999s+
+verification3.627171s,393 old JSON/frozen files preserved. Ledger1020.1172516680078/
+2579.882748331992. Next proposed source-only action-matched replay to distinguish
+model rollout error from imagined-action divergence; not executed. Report
+NEXUS_E3_11D_HORIZON_CALIBRATION_RESULTS.md. Older negative results remain closed.
+
 ## Latest — E3.11B fresh forecast calibration fails, 2026-10-19
 
 Precommitted execution2cfd99232f01d1103d5abbb2a328c5056bb4f5fc completed16

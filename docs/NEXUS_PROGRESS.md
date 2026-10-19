@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — E3.11D longer horizon complete, utility screen fails
+
+Compared64-step imagined forecasts with cached16-prefix and training means on
+16 fresh paired192-step returns. Same frozen models/controllers. Accuracy64/16:
+62.5/62.5% Pendulum,37.5/62.5% Acrobot. Return differences−13.777/−6.953,
+intervals include0. No general control or self-improvement established.
+6272 real/12224512 imagined/485888 forwards,0 fits,67.857999s+3.627171s audit.
+393 old JSON unchanged; ledger1020.1172516680078/2579.882748331992. Next proposed
+source-only action-matched replay, not executed. Report E3.11D results.
+
 ## Latest — E3.11B calibration complete, usefulness not established
 
 16 fresh paired192-step continuations after shared8-step probes; four frozen

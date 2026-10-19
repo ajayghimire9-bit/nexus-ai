@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Supplemental E3.11D codex/e3-11d-longer-horizon-calibration, precommitted source
+4e6be2f2b36a21843ed8804a8018046ab0133bf8.16 fresh paired cases, four frozen
+source models.64-step vs16-prefix/mean utility screen fails both families;
+return64-minus16−13.777/−6.953, intervals include0.6272 real/12224512 imagined/
+485888 observed forwards,0 fits,67.857999s+3.627171s audit.393 old JSON/frozen
+files preserved; ledger1020.1172516680078/2579.882748331992. Raw e3_11d_horizon_*,
+report NEXUS_E3_11D_HORIZON_CALIBRATION_RESULTS.md. E3.11C remains deferred.
+
 Supplemental E3.11B codex/e3-11b-forecast-calibration, source/execution
 2cfd99232f01d1103d5abbb2a328c5056bb4f5fc committed first.16 fresh paired cases,
 four frozen source models. Forecast_utility_not_established; both practical

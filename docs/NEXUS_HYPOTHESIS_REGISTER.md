@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.11D longer forecast usefulness not established
+
+64 versus16-prefix forecast comparison fails both family practical screens.
+Primary192-step direction accuracy unchanged Pendulum, lower Acrobot; selected
+return−13.777/−6.953 with exploratory df1 intervals including0. n=2 existing
+pretrained models/family, no extra episode replications. Extending forecasts
+does not establish a remedy. Model compounding versus imagined-action divergence
+remains unresolved; next proposed source-only action-matched replay, not run.
+See NEXUS_E3_11D_HORIZON_CALIBRATION_RESULTS.md. No prior results reinterpreted.
+
 ## Latest — E3.11B forecast usefulness not established
 
 Complete precommitted fresh calibration fails both family intersection screens.

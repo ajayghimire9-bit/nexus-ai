@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — action-matched rollout calibration, source-only proposal
+
+E3.11D64-versus16 forecast screen fails both families; extending outer forecast
+does not establish useful selection. Primary return−13.777/−6.953, intervals
+include0. One next question: do compounding dynamics/reward errors persist
+when frozen models follow the exact recorded actual actions? Propose a separate
+saved-trajectory replay comparing teacher-forced one-step and open-loop reward
+errors;0 new environment interactions, no fitting. Register inference budget
+and provenance before execution; no inference/extra experiment has run here.
+This isolates model error more directly than comparing paths with different
+actions. Do not extend horizons/architectures/feature sweeps on these now-closed
+cases. Ledger1020.1172516680078/2579.882748331992. See E3.11D results.
+
 ## Current — horizon calibration before forecasting efficiency
 
 E3.11B completed and failed its utility screen: direction accuracy75%/62.5%
