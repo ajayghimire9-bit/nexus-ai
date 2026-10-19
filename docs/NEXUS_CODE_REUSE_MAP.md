@@ -1,5 +1,12 @@
 # NEXUS code-reuse map
 
+E3.9 hardens SAME StagedStudy and planner_evidence; no new meter/learner/planner.
+Registered grids have independent locked task/episode axes; evidence batch rows
+must match reserved operations. scripts/audit_e3_9_planner_evidence_readiness.py
+uses only stdlib byte hashes/AST literals, never imports NEXUS model runtimes.
+4 local checkpoints/8 source arrays match; production metered host remains
+unbound.503 relevant tests; no scientific execution. See E3.9 readiness report.
+
 E3.8 compact_interactions builds ONE versioned9/21-coordinate representation;
 SAME AdvantagePredictor/ridge and feature audit host --compact. EpisodeContext
 is episode evidence beside existing source memory, not another memory stack.

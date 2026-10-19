@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.9 readiness is engineering evidence only
+
+No new scientific hypothesis tested. H-planner-evidence selection utility
+remains untested/unregistered. Four checkpoint/eight source file hashes match,
+but fresh study blocked pending metered host, independent grid/seed rules,
+compute fairness and allocation.503 relevant tests establish boundary behavior
+only. Existing E3.8 negative result remains unchanged; no more36-pair tuning.
+Report NEXUS_E3_9_PLANNER_EVIDENCE_READINESS.md. Ledger unchanged.
+
 ## Latest — H-compact-interaction selection not established
 
 E3.8 compact interaction failed its registered source-training selection screen.

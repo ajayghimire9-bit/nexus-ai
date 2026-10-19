@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — E3.9 integrity verified, fresh study still blocked
+
+Source-only review completed at implementation6c440ab36aea703802c5d40650697579a5dc8379.
+4 checkpoint/8 source hashes match;368 historical JSON unchanged;503 relevant
+tests passed. Fixed missing-whole-grid detection for registered studies,
+per-host-call policy checks, input mutation and underdeclared evidence batches.
+No scientific execution or ledger change. Additional evidence costs must be
+included; no fresh registration/allocation. Next: trusted metered post-probe
+worker binding and review. See NEXUS_E3_9_PLANNER_EVIDENCE_READINESS.md.
+
 ## Latest — E3.8 negative selection result; later interfaces implemented
 
 E3.8 compact interaction failed its registered source-training selection screen.

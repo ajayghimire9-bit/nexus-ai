@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.9 source-only readiness audit, 2026-10-19
+
+Four frozen checkpoint and eight source-array byte hashes verified; 368 prior
+JSON unchanged. No inference, training, new real or imagined transitions.
+503 relevant tests pass. StagedStudy now requires independent locked real
+task/episode axes and checks frozen policy after each host call; evidence
+inputs are copied/read-only and reserved rows must match actual batch size.
+These are engineering corrections, not useful-learning evidence. Fresh study
+remains BLOCKED_FRESH_STUDY_NOT_READY: real worker, registration, evidence
+frequency/comparator budgets and exact allocation are missing. Illustrative
+per-decision evidence adds512 rows above1536 controller rows; do not reuse the
+draft294912 per-case cap as a combined cap. No study allocated/locked or seeds
+chosen. Execution6c440ab36aea703802c5d40650697579a5dc8379; scientific ledger
+786.2472080430296/2813.75279195697 unchanged. Next: bind/review the trusted
+metered post-probe host before any fresh collection. Report
+NEXUS_E3_9_PLANNER_EVIDENCE_READINESS.md. E3.8 negative result stays closed.
+
 ## Latest — E3.8 and seven learning interfaces, 2026-10-19
 
 E3.8 compact interaction failed its registered source-training selection screen.

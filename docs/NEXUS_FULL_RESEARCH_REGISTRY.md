@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Supplemental E3.9 codex/e3-9-planner-evidence-readiness, implementation
+6c440ab36aea703802c5d40650697579a5dc8379. Source-only integrity/readiness:
+4 checkpoint/8 source hashes match,368 prior JSON unchanged,503 relevant tests.
+No inference/training/new real or imagined transitions; ledger unchanged.
+Fresh collection blocked; no scientific result or registration. Artifact
+e3_9_planner_evidence_readiness.json; report NEXUS_E3_9_PLANNER_EVIDENCE_READINESS.md.
+
 Supplemental E3.8 codex/e3-8-interactions-and-learning-interfaces, execution
 21ba36cdda5133bb29c7d955b0db151300834aad. Compact additive9/interaction21,
 360 source-only ridge fits/4 descriptor LS. Interaction−means−10.617369/

@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — bind the trusted metered post-probe evidence host
+
+E3.9 verified4 frozen checkpoint/8 source hashes and fixed independent-grid,
+mutation and evidence reservation issues.503 relevant tests pass; no scientific
+execution. Next single milestone: bind/review a fail-closed post-probe evidence
+host using the existing scorer, EpisodeContext and ReservationLedger, including
+separately committed small checkpoint-inference correctness scope and explicit
+proposal/evidence costs. Then register fit/evaluation roles, seed exclusions,
+baselines and outcome rules before fresh collection. No feature retuning on36
+inspected pairs. Per-decision evidence could add512 rows above1536, so existing
+draft294912 casecap does not cover that combined path. No new allocation or
+seed registration here; readiness BLOCKED_FRESH_STUDY_NOT_READY. Report
+NEXUS_E3_9_PLANNER_EVIDENCE_READINESS.md. Older entries below are history.
+
 ## Current — fresh-feedback planner-evidence study readiness
 
 E3.8 interaction fails:−10.617369/+0.465807 versus means, with three negative

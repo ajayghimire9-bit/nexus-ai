@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+Latest E3.9: integrity hashes match4 frozen files/8 source arrays; no inference
+or collection.503 relevant tests. Existing evidence/coordinator boundaries
+hardened; fresh study remains BLOCKED_FRESH_STUDY_NOT_READY until real metered
+host, independent registration and fair total-compute protocol/allocation exist.
+No new seed selection or scientific lock. Ledger unchanged786.2472080430296/
+2813.75279195697. E3.8 failure unchanged. Report NEXUS_E3_9_PLANNER_EVIDENCE_READINESS.md.
+
 Latest — E3.8 compact interaction failed its registered source-training selection screen.
 Native additive9/interaction21 coefficients reuse SAME ridge1; compression
 changes effective penalty versus historical192. Interaction-minus-model-mean

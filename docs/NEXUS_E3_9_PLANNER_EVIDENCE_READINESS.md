@@ -121,4 +121,26 @@ readiness review or passing engineering tests.
 
 ## Recorded outcome
 
-To be filled only after the committed source-only integrity audit and tests.
+Committed implementation/protocol: `6c440ab36aea703802c5d40650697579a5dc8379`.
+Explicit `--require-checkpoints` audit exited 0: all **four checkpoint files
+and eight source arrays** match. No checkpoint load or inference occurred.
+All **368 prior research JSON files** retained their hashes; a separate
+checksum replay reconfirmed them after writing the audit artifact. Verdict
+remains **BLOCKED_FRESH_STUDY_NOT_READY** for the reasons above.
+
+Artifact: `artifacts/e3_9_planner_evidence_readiness.json`, SHA256
+`58a9c11758e0a13d09f68c35697374ecbad1b19c9755780436fae897a931c0f9`.
+Configuration SHA256:
+`cac784caee641719aa64ae542ce17ede04e9eb6b081356248434e8f97fc3fb21`.
+The audit command took approximately 0.254 seconds as observed by the process
+tool; this is engineering file inspection, not a scientific execution clock.
+New scientific real/imagined transitions, neural inference and model training:
+all zero. Carried scientific ledger unchanged.
+
+Tests: the two-module focused run initially passed 37 tests in 1.33 seconds.
+After adding the underdeclared-reservation check, the **27-module relevant
+regression suite passed 503 tests in 10.72 seconds**. Exact module list and
+invocation are recorded in `artifacts/e3_9_test_report.json`. This is not the
+entire historical suite: the known legacy learned-inference benchmark was
+excluded from this source-only task. No historical outcome was recomputed.
+No new allocation, model/architecture change or success claim follows.
