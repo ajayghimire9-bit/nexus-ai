@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — E3.11B preparation, no new scientific result
+
+Prepared forecast-before-outcome capture and strict paired model-level analysis
+for fresh192-step calibration. Pinned prior comes only from E3.11 TRAIN pairs.
+Separate proposed config/protocol, no allocation or registered seeds; production
+worker not yet bound. Explicit user execution restriction preserved. No models
+loaded, simulators constructed or outcomes collected. Ledger unchanged
+889.765542043008/2710.2344579569917. See E3.11B protocol.
+
 ## Latest — E3.11A policy-forecast distinguishability verified
 
 Source-only registered16-context audit complete. Equal-first-action headroom

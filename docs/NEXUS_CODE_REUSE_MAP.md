@@ -1,5 +1,11 @@
 # NEXUS code-reuse map
 
+E3.11B forecast_calibration is pure preparation/statistics glue; does not
+replace post_probe.Host/Dispatch, rollout_headroom.walk, planners, memory or
+ReservationLedger. Source-only prepare_e3_11b_forecast_calibration.py checks
+pinned TRAIN metadata and refuses --execute. Real host binding, seed audit and
+allocation remain prerequisites. No new learner/parallel execution framework.
+
 E3.11A extends SAME run_e3_11_post_probe.py with --rollout-audit/--verify and
 separate config, grant, result, usage and journal paths. rollout_headroom wraps
 post_probe.Host/Dispatch, planning_ops, existing planners/rewards/model/ledger;

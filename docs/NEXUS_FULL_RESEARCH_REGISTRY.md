@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Supplemental E3.11B codex/e3-11b-forecast-calibration-preparation: proposed
+16-context fresh forecast-versus-return calibration; implementation contracts
+only, not scientific registration/authorization/execution. Exact fresh seeds,
+allocation and bound worker absent. Proposed6272 real/9932800 imagined/393728
+forwards;180s cap. Session ledger unchanged889.765542043008/2710.2344579569917.
+Historical E3.11/E3.11A results unchanged. See E3.11B protocol.
+
 Supplemental E3.11A codex/e3-11a-controller-rollout-headroom, precommitted
 executioncaeae5f7875459e60690bf74e2270bab526885bd.16 source contexts/4 frozen
 models;same-first forecast headroom6/7 Pendulum,5/5 Acrobot. Representational

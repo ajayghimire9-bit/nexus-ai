@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.11B calibration preparation, no execution
+
+Roadmap prioritizes whether controller-specific16-step forecast direction
+predicts fresh paired192-step actual returns, against common-tail and pinned
+TRAIN-only means. Protocol/settings, callback-only durable capture and strict
+model-level analysis prepared; production metered worker remains unbound.
+Explicit execution restriction retained: no allocation/seeds/collection or
+inference. Proposed6272 real/9932800 imagined/393728 forwards,180s cap, not
+spent. Ledger889.765542043008/2710.2344579569917 unchanged. E3.11A establishes
+distinguishability only; E3.11 failure stays closed. E3.11C–E4.0 remain later
+separate proposals. See NEXUS_E3_11B_FORECAST_CALIBRATION_PROTOCOL.md.
+
 ## Latest — E3.11A source forecast headroom visible, 2026-10-19
 
 Precommittedcaeae5f7875459e60690bf74e2270bab526885bd source-only audit:

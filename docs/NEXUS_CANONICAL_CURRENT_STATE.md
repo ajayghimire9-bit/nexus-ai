@@ -1,5 +1,11 @@
 # NEXUS canonical current state
 
+Latest E3.11B: preparation only, execution explicitly not authorized. Pure
+capture/analysis contracts and proposed protocol reuse existing metered host
+and rollout helper; no bound production worker, numerical seeds or allocation.
+Proposed6272 real/9932800 imagined/393728 forwards,180s cap; nothing executed.
+Ledger889.765542043008/2710.2344579569917 unchanged. See E3.11B protocol.
+
 Latest E3.11A: source-only controller-specific forecast headroom visible11/12
 equal-first cases (Pendulum6/7, Acrobot5/5); no real-return accuracy result.
 0 real steps/fits,772096 imagined/31232 observed forwards.555 relevant tests,

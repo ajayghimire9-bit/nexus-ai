@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E3.11B preparation; explicit execution approval pending
+
+Protocol and source-only capture/statistics contracts prepared on
+codex/e3-11b-forecast-calibration-preparation. Test forecast direction against
+fresh paired192-step actual returns, not numerical distinguishability alone.
+Compare common-tail and pinned TRAIN-only model means; no new fitting.
+Practical point screen: >=0.125 accuracy gain versus both, positive selected-
+return gain in both families, no negative model-level gain; exploratory df1
+intervals reported separately. Proposed6272 real/9932800 imagined/393728
+forwards,180s cap; no allocation, numerical seeds or bound worker yet. Latest
+user explicitly says not authorized. No experiment executed; ledger unchanged
+889.765542043008/2710.2344579569917. See
+NEXUS_E3_11B_FORECAST_CALIBRATION_PROTOCOL.md. E3.11C–E4.0 conditional only.
+
 ## Current — fresh calibration of fixed controller-specific forecasts
 
 E3.11A source-only headroom passes6/7 Pendulum and5/5 Acrobot same-first cases,

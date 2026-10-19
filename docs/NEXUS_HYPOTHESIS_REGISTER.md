@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — proposed E3.11B actual-return calibration, not executed
+
+Fixed controller-specific16-step forecasts predict the direction of192-step
+actual strategy advantage better than common-tail and legitimate training-model
+means. Proposed practical point screen>=0.125 accuracy gain versus both and
+positive selected-return gain per family without negative model gains. n=2
+models/family, exploratory paired intervals; no confirmation claim. No numerical
+seed registration, allocation or execution; real metered worker pending. See
+NEXUS_E3_11B_FORECAST_CALIBRATION_PROTOCOL.md. Later E3.11C–E4.0 conditional.
+
 ## Latest — H-headroom visible, utility unknown (E3.11A)
 
 Registered source-only forecast screen passes: different later actions/scores
