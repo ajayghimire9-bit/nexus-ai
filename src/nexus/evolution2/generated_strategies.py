@@ -181,6 +181,22 @@ class StrategyGenerator:
         values=np.array([self.mutation_stats[k][0]/max(1,self.mutation_stats[k][1]) for k in keys])
         weights=np.exp(values-values.max());return dict(zip(keys,(weights/weights.sum()).tolist()))
 
+    def paired_child(self,parent,partner,uniform,*,threshold=.25):
+        """One structural proposal with fixed leaves and external paired randomness.
+
+        Isolates mutation-kind credit from leaf-search differences. No outcomes
+        enter this path; uniform is precomputed independently of feedback.
+        """
+        if type(parent) is not Strategy or parent.kind!='leaf' or partner==parent.left:
+            raise ValueError('fixed_distinct_parent_partner')
+        if type(uniform) not in (float,int) or not math.isfinite(uniform) or not 0<=uniform<1:
+            raise ValueError('proposal_uniform')
+        probs=self.mutation_probabilities() if self.adaptive else dict(switch=.5,rank_blend=.5)
+        kind='switch' if uniform<probs['switch'] else 'rank_blend'
+        child=compose(kind,parent.left,partner,threshold)
+        self.journal.append('paired_structural_proposal',dict(parent=parent.fingerprint,child=child.payload(),uniform=uniform,probabilities=probs))
+        return child
+
     def observe_mutation(self,parent,child,parent_result,child_result,*,return_scale=100.,domain='real_environment'):
         """Trusted host records matched full-policy outcomes, never forecasts.
 

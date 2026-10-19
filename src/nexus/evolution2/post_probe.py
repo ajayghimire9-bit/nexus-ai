@@ -106,7 +106,10 @@ class Dispatch:
         self.ledger.settle(ticket,'success',self.host.clock());return value
 
     def action(self,label,family,obs,seed,prefix):
-        strategy=controllers()[label];keys=[prefix+o.key for o in operation_plan(strategy,obs,3) if o.kind=='model'];cursor=[0]
+        return self.action_strategy(controllers()[label],family,obs,seed,prefix)
+
+    def action_strategy(self,strategy,family,obs,seed,prefix):
+        keys=[prefix+o.key for o in operation_plan(strategy,obs,3) if o.kind=='model'];cursor=[0]
         outer=self
         class Model:
             def step(self,o,a):

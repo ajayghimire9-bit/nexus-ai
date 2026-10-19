@@ -1,5 +1,15 @@
 # NEXUS code-reuse map
 
+E3.12 measured-mutation binding: mutation_control provides pure replay/grid/
+statistics helpers. run_e3_12_mutation_control binds SAME post_probe.Host,
+Dispatch, ForwardCheckedStep, ReservationLedger and DecisionJournal to SAME
+generated_strategies.execute. Dispatch.action_strategy generalizes the existing
+label route without changing defaults. StrategyGenerator.paired_child fixes
+leaves and external uniform to isolate existing structural credit. No new
+learner/memory/meter. measured_mutation verifies actual completed paths;
+episode receipts are summary references, not duplicated physical accounting.
+Protocol NEXUS_E3_12_MUTATION_CONTROL_PROTOCOL.md; outcomes not yet collected.
+
 Bounded learning-cycle integration uses SAME StrategyGenerator mutation credit,
 TaskStream, EpsilonGreedyController, FixtureCost/Journal and E1 promotion harness.
 Mean update/default RNG behavior preserved; new rules are opt-in. measured_mutation

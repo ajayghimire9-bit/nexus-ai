@@ -70,12 +70,12 @@ def save(p):
     tmp=RESULT.with_suffix('.tmp');tmp.write_text(json.dumps(p,allow_nan=False,separators=(',',':'))+'\n');tmp.replace(RESULT)
 
 
-def seed_audit(c,old):
+def seed_audit(c,old,requested=None):
     import numpy as np
     from nexus.evolution2.post_probe import registered_seeds
     from nexus.evolution2.full_policy_source import seed_collisions
     from nexus.evolution2.fit_clock import LOCKED_ARRAYS
-    proposed=registered_seeds(c);collisions={}
+    proposed=registered_seeds(c) if requested is None else set(requested);collisions={}
     for n in old:
         hit=seed_collisions(json.loads((ROOT/n).read_text()),proposed)
         if hit:collisions[n]=sorted(hit)
