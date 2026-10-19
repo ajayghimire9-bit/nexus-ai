@@ -9,7 +9,7 @@ import statistics
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def summarize_operator(p,c,partial=False):
+def summarize_operator(p,c,partial=False,retention=False):
     """Independent stdlib checks of balanced-panel selection and contrasts."""
     expected={(f,b,e,role) for role in ('training','evaluation') for f in c['families'] for b in c['model_bundles'] for e in c[role+'_episodes']}
     ids=[(r['family'],r['bundle'],r['episode'],r['role']) for r in p['rows']]
@@ -37,6 +37,8 @@ def summarize_operator(p,c,partial=False):
             gains={k:statistics.mean(r['paths'][k]['return']-r['paths']['parent']['return'] for r in train if k in r['paths']) for k in kinds}
             counts={k:sum(k in r['paths'] for r in train) for k in kinds}
             gain_kind=max(kinds,key=gains.get);guard=gain_kind if gains[gain_kind]>0 else 'parent'
+            parent_means={'parent':statistics.mean(r['paths']['parent']['return'] for r in train),**training_means}
+            parent_choice=max(('parent',*kinds),key=parent_means.get)
             choice=max(kinds,key=training_means.get);values=[]
             for r in query:
                 if r['decision']['training_mean_kind']!=choice or any(abs(r['decision']['training_means'][k]-training_means[k])>1e-10 for k in kinds):raise ValueError('training_only_choice_replay')
@@ -48,18 +50,32 @@ def summarize_operator(p,c,partial=False):
                     if counts!={'switch':4,'rank_blend':4} or d['observed_counts']!=counts or d['paired_gain_kind']!=gain_kind or d['guarded_kind']!=guard:raise ValueError('partial_baseline_choice_replay')
                     if any(abs(d['training_gains'][k]-gains[k])>1e-10 for k in kinds):raise ValueError('paired_gain_training_replay')
                     entry.update(paired_gain=r['paths'][gain_kind]['return'],guarded=r['paths'][guard]['return'])
+                if retention:
+                    d=r['decision']['parent_inclusive']
+                    if d['choice']!=parent_choice or d['two_child_choice']!=choice or d['observed_counts']!={'parent':8,'switch':4,'rank_blend':4}:raise ValueError('independent_parent_choice')
+                    if any(abs(d['training_means'][k]-parent_means[k])>1e-10 for k in parent_means):raise ValueError('independent_parent_means')
+                    entry['parent_inclusive']=r['paths'][parent_choice]['return']
                 values.append(entry)
             means={k:statistics.mean(v[k] for v in values) for k in values[0]}
             models.append(dict(bundle=b,means=means,training_choice=choice,credit_choice=query[0]['decision']['credit_kind'],
                 training_gap=training_means['switch']-training_means['rank_blend'],query_gap=means['fixed_switch']-means['fixed_blend'],
                 query_wins=sum(v['training_mean']==v['retrospective_best'] for v in values)))
         contrasts={}
+        if retention and not {'parent_inclusive-minus-'+k for k in ('training_mean','uniform_expected','parent','credit_argmax','fixed_switch','fixed_blend')}<=set(p['analysis']['families'][f]['contrasts']):raise ValueError('required_parent_contrasts')
         for name,prior in p['analysis']['families'][f]['contrasts'].items():
             a,z=name.split('-minus-');x=[r['means'][a]-r['means'][z] for r in models];mean=statistics.mean(x);half=12.7062047364*statistics.stdev(x)/math.sqrt(2)
             result=dict(mean=mean,ci95=[mean-half,mean+half],per_model=x)
             if abs(mean-prior['mean'])>1e-9 or any(abs(a-b)>1e-8 for a,b in zip(result['ci95'],prior['ci95'])):raise ValueError('independent_interval_replay')
             contrasts[name]=result
         families[f]=dict(models=models,contrasts=contrasts)
+        if retention:
+            a=contrasts['parent_inclusive-minus-training_mean'];u=contrasts['parent_inclusive-minus-uniform_expected'];v=contrasts['parent_inclusive-minus-parent']
+            passed=a['mean']>=c['practical_margin'] and a['ci95'][0]>0 and u['mean']>=c['uniform_margin'] and u['ci95'][0]>0 and v['ci95'][0]>-c['parent_noninferiority_margin']
+            families[f]['parent_retention_screen']=passed
+            if p['analysis']['families'][f]['parent_retention_screen'] is not passed:raise ValueError('independent_parent_screen')
+    if retention:
+        label='exploratory_parent_retention_screen_passed' if all(x['parent_retention_screen'] for x in families.values()) else 'parent_retention_not_established'
+        if p['analysis']['label']!=label:raise ValueError('independent_parent_label')
     return dict(families=families,phase_accounting=phase,max_independent_reward_sum_error=error,label=p['analysis']['label'],
         limitations=('Two models/family; single-child training feedback, complete query panels.' if partial else 'Two models/family; diagnostic full-information panel.')+' Expected uniform and retrospective best reuse executed paths; not extra controller replications.')
 
@@ -101,12 +117,12 @@ def summarize(p,c):
         label=p['analysis']['label'])
 
 
-def main(operator=False,partial=False):
-    prefix='e3_12c_partial' if partial else 'e3_12b_operator' if operator else 'e3_12_mutation'
-    capture='e3_12c_partial_feedback' if partial else 'e3_12b_operator_headroom' if operator else 'e3_12_mutation_control'
+def main(operator=False,partial=False,retention=False):
+    prefix='e3_12d_parent' if retention else 'e3_12c_partial' if partial else 'e3_12b_operator' if operator else 'e3_12_mutation'
+    capture='e3_12d_parent_retention' if retention else 'e3_12c_partial_feedback' if partial else 'e3_12b_operator_headroom' if operator else 'e3_12_mutation_control'
     raw=ROOT/('artifacts/'+capture+'.json');p=json.loads(raw.read_text());c=json.loads((ROOT/('configs/'+capture+'.json')).read_text());v=json.loads((ROOT/('artifacts/'+prefix+'_validation.json')).read_text())
     if not p['declared_complete'] or v['valid'] is not True or v['result_sha256']!=hashlib.sha256(raw.read_bytes()).hexdigest():raise ValueError('sealed_complete_capture_required')
-    s=summarize_operator(p,c,partial=partial) if operator or partial else summarize(p,c)
+    s=summarize_operator(p,c,partial=partial or retention,retention=retention) if operator or partial or retention else summarize(p,c)
     s.update(result_sha256=v['result_sha256'],source_commit=p['provenance']['source_commit'],session_used_after_s=v['session_used_after_s'],session_remaining_after_s=v['session_remaining_after_s'])
     target=ROOT/('artifacts/'+prefix+'_summary.json')
     with target.open('x') as stream:stream.write(json.dumps(s,indent=2,allow_nan=False)+'\n')
@@ -121,5 +137,5 @@ def main(operator=False,partial=False):
 
 if __name__=='__main__':
     import argparse
-    parser=argparse.ArgumentParser();profiles=parser.add_mutually_exclusive_group();profiles.add_argument('--operator-headroom',action='store_true');profiles.add_argument('--partial-feedback',action='store_true');args=parser.parse_args()
-    main(args.operator_headroom,args.partial_feedback)
+    parser=argparse.ArgumentParser();profiles=parser.add_mutually_exclusive_group();profiles.add_argument('--operator-headroom',action='store_true');profiles.add_argument('--partial-feedback',action='store_true');profiles.add_argument('--parent-retention',action='store_true');args=parser.parse_args()
+    main(args.operator_headroom,args.partial_feedback,args.parent_retention)

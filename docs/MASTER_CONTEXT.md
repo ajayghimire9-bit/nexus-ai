@@ -1,5 +1,16 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## E3.12D execution lock — fresh parent-aware comparison
+
+Explicit human authorization: one run within300s/22400 interactions. Separate
+codex/e3-12d-parent-retention-comparison from32f7088824d829d36c33f41f1f8c7d3e78f8ffa9.
+Same frozen four source models and metered runner, balanced one-child feedback,
+new registered seeds and parent-inclusive raw mean; unchanged old comparators.
+No experiment outcome yet. Protocol NEXUS_E3_12D_PARENT_RETENTION_PROTOCOL.md;
+allocation/config pins committed before collection. Carry ledger
+1643.627562957004/1956.372437042996. Earlier results/closed seeds unchanged;
+no continual/E4/transfer run under this grant.
+
 ## Latest engineering — parent retention and durable state, no new collection
 
 Separate codex/parent-retention-and-durable-learning starts at C result

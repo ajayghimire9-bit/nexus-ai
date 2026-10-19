@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Registered E3.12D, codex/e3-12d-parent-retention-comparison from32f7088824d829d36c33f41f1f8c7d3e78f8ffa9.
+One explicitly authorized fresh source-model study,300s/22400 real cap;
+new seeds2181000000/2182000000 bases and balanced schedule73524. Four frozen
+models, two independent models/family; no new physics or neural fits. Protocol
+NEXUS_E3_12D_PARENT_RETENTION_PROTOCOL.md. No outcomes before implementation
+commit. Session carried1643.627562957004/1956.372437042996.
+
 Engineering codex/parent-retention-and-durable-learning from C result
 67a0a9d6a945d4adc86f4ff30b6aadef810c5da6: three-way raw mean, existing-cycle
 durable JSON, versioned training-incumbent discovery credit and actual B replay

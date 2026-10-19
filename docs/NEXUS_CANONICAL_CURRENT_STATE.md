@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+E3.12D now explicitly authorized/locked for ONE fresh parent-retention run,
+300s/22400 real. New seeds checked9648, zero current metadata/reservation
+collisions. Same partial-feedback/Host/meter/planners and four frozen models;
+no outcomes yet. Protocol NEXUS_E3_12D_PARENT_RETENTION_PROTOCOL.md. Earlier
+preparation status is history; ledger1643.627562957004/1956.372437042996 before
+this run. No parallel experiment authorization.
+
 Latest engineering: parent-inclusive raw mean implemented separately from
 closed C's two-child choice/gain guard. Durable existing-cycle JSON with exact
 RNG/preferences/counts/rollback state; repeat discovery credit fixed in opt-in

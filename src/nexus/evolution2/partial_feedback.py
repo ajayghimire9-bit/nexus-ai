@@ -93,7 +93,8 @@ def decide(rows,c,f,b,g):
             for r in sorted(train,key=lambda r:r['episode'])]))
 
 
-def replay_learning(rows,c):
+def replay_learning(rows,c,*,decision=None):
+    decision=decide if decision is None else decision
     final={}
     for f,b in itertools.product(c['families'],c['model_bundles']):
         g=StrategyGenerator(c['proposal_seed'],mutation_credit=True)
@@ -102,7 +103,7 @@ def replay_learning(rows,c):
             if row['before']!={'learned':g.mutation_probabilities()}:raise ValueError('partial_training_probability_replay')
             if row['role']=='training':
                 labels(row,c);panel.replay_feedback(g,row,c,kinds=(row['training_operator'],))
-            elif row['decision']!=decide(rows,c,f,b,g):raise ValueError('training_only_partial_decision')
+            elif row['decision']!=decision(rows,c,f,b,g):raise ValueError('training_only_partial_decision')
             if row['after']!={'learned':g.mutation_probabilities()}:raise ValueError('query_must_not_update')
         final[f'{f}:{b}']={'learned':g.mutation_probabilities()}
     return final

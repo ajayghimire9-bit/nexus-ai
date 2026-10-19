@@ -1,5 +1,12 @@
 # NEXUS code-reuse map
 
+E3.12D parent_retention is thin pure replay/statistics glue over SAME
+partial_feedback parent-inclusive function, schedule and credit replay,
+operator_headroom validation/paired intervals, StrategyGenerator and actual
+measured_mutation. SAME runner adds --parent-retention with isolated paths and
+same Host/Dispatch/ledger/forward checks. SAME stdlib exporter independently
+checks parent means/choices/contrasts/screen. No new memory/learner/planner.
+
 Parent-retention engineering extends SAME partial_feedback.py training
 statistics, leaving C decide/guard unchanged; no new selection learner.
 cycle_checkpoint.py is a JSON codec over SAME LearningCycle/TaskStream/

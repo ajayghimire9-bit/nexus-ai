@@ -22,12 +22,13 @@ VALIDATION=ROOT/'artifacts/e3_12_mutation_validation.json'
 JOURNAL=ROOT/'artifacts/e3_12_mutation_resources.jsonl.gz'
 OPERATOR_PROFILE=False
 PARTIAL_PROFILE=False
+RETENTION_PROFILE=False
 
 
 def configure_operator():
     """Separate balanced-panel study; original one-run outputs stay immutable."""
-    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,OPERATOR_PROFILE,PARTIAL_PROFILE
-    OPERATOR_PROFILE=True;PARTIAL_PROFILE=False
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,OPERATOR_PROFILE,PARTIAL_PROFILE,RETENTION_PROFILE
+    OPERATOR_PROFILE=True;PARTIAL_PROFILE=False;RETENTION_PROFILE=False
     CONFIG=ROOT/'configs/e3_12b_operator_headroom.json'
     PROTOCOL=ROOT/'docs/NEXUS_E3_12B_OPERATOR_HEADROOM_PROTOCOL.md'
     ALLOCATION=ROOT/'configs/e3_12b_operator_headroom_allocation.json'
@@ -50,6 +51,9 @@ def configure_partial():
 
 
 def study_module():
+    if RETENTION_PROFILE:
+        from nexus.evolution2 import parent_retention
+        return parent_retention
     if PARTIAL_PROFILE:
         from nexus.evolution2 import partial_feedback
         return partial_feedback
@@ -60,6 +64,18 @@ def study_module():
     return mutation_control
 
 
+def configure_retention():
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,USAGE,VALIDATION,JOURNAL,RETENTION_PROFILE
+    configure_partial();RETENTION_PROFILE=True
+    CONFIG=ROOT/'configs/e3_12d_parent_retention.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_12D_PARENT_RETENTION_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_12d_parent_retention_allocation.json'
+    RESULT=ROOT/'artifacts/e3_12d_parent_retention.json'
+    USAGE=ROOT/'artifacts/e3_12d_parent_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_12d_parent_validation.json'
+    JOURNAL=ROOT/'artifacts/e3_12d_parent_resources.jsonl.gz'
+
+
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def read(p):return json.loads(Path(p).read_text())
 def write(p,data):
@@ -68,6 +84,7 @@ def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).
 
 
 def preflight(c):
+    if RETENTION_PROFILE:study_module().validate_config(c)
     from nexus.evolution2.mutation_control import requested_seeds
     import run_e3_11_post_probe as previous
     previous.CONFIG=CONFIG;previous.ALLOCATION=ALLOCATION
@@ -190,7 +207,7 @@ def run():
         rows=[],models=[],final_policies={},learning_journals={},observed=dict(model_calls=0,network_forwards=0,imagined_transitions=0),
         inputs=inventory['checkpoints']+inventory['source_arrays'],reward_sha256=sha(ROOT/'src/nexus/world/rewards.py')))
     env={**os.environ,'NEXUS_MUTATION_PARENT':str(os.getpid()),'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','VECLIB_MAXIMUM_THREADS':'1'}
-    profile=['--partial-feedback'] if PARTIAL_PROFILE else ['--operator-headroom'] if OPERATOR_PROFILE else []
+    profile=['--parent-retention'] if RETENTION_PROFILE else ['--partial-feedback'] if PARTIAL_PROFILE else ['--operator-headroom'] if OPERATOR_PROFILE else []
     child=subprocess.Popen([sys.executable,__file__,'--worker',*profile],cwd=ROOT,env=env)
     try:code=child.wait(timeout=c['time_cap_s'])
     except subprocess.TimeoutExpired:child.kill();child.wait();code=-9
@@ -243,9 +260,10 @@ def verify():
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--worker',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--preflight',action='store_true');profiles=parser.add_mutually_exclusive_group();profiles.add_argument('--operator-headroom',action='store_true');profiles.add_argument('--partial-feedback',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--worker',action='store_true');parser.add_argument('--verify',action='store_true');parser.add_argument('--preflight',action='store_true');profiles=parser.add_mutually_exclusive_group();profiles.add_argument('--operator-headroom',action='store_true');profiles.add_argument('--partial-feedback',action='store_true');profiles.add_argument('--parent-retention',action='store_true');args=parser.parse_args()
     if args.operator_headroom:configure_operator()
     if args.partial_feedback:configure_partial()
+    if args.parent_retention:configure_retention()
     if args.worker:worker()
     elif args.verify:verify()
     elif args.preflight:print(json.dumps(preflight(read(CONFIG))[1]))
