@@ -56,7 +56,8 @@ def feedback_unit(raw):
     return .5 + .5 * math.tanh(raw / 100.)
 
 
-def proxy_table(task, seed, deadline, resources):
+def proxy_table(task, seed, deadline, resources, *, frozen_model=None,
+                counter_names=("fake_calls", "fake_imagined_transitions")):
     """Evaluator-only full finite grammar; immutable source state, common probe.
 
     Reserve every fake step against its exact batch shape before dispatch.
@@ -76,7 +77,8 @@ def proxy_table(task, seed, deadline, resources):
     ledger = ReservationLedger(ops, Limits(cap, cap, 180_000_000_000, 180_000_000_000))
     t0, c0 = time.perf_counter_ns(), time.process_time_ns()
     clock = lambda: Clock(time.process_time_ns() - c0, time.perf_counter_ns() - t0)
-    fake = FakeStepModel(task.context.obs_dim, task.context.n_actions)
+    fake = FakeStepModel(task.context.obs_dim, task.context.n_actions) if frozen_model is None else frozen_model
+    if getattr(fake, "uses_simulator", False): raise ValueError("simulator_model_forbidden")
     cursor = [0]
 
     class ReservedFake:
@@ -93,8 +95,8 @@ def proxy_table(task, seed, deadline, resources):
                 ledger.settle(ticket, "interrupted", clock()); raise
             ledger.settle(ticket, "success", clock())
             cursor[0] += 1
-            resources["fake_calls"] += 1
-            resources["fake_imagined_transitions"] += shape[0]
+            resources[counter_names[0]] += 1
+            resources[counter_names[1]] += shape[0]
             return result
 
     model = ReservedFake()
