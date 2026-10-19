@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — E3.5 anchored residual does not beat strong means reliably
+
+Protocol/implementation committed f128c29a8b116886dd20dd42cc025436d5421386
+before27 source-only ridge fits. Nine blocked reset folds,36 out-of-fold
+training-context predictions. Mean-relative return−8.479216 Pendulum/+0.514255
+Acrobot; both screens fail; one Acrobot model negative. Valid complete run,
+0.287328s plus0.207447s zero-fit audit;0real/imagined/neural execution.
+346 old JSON preserved. Ledger773.363640293/2826.636359707. No rerun or
+architecture expansion. Results: NEXUS_E3_5_RESIDUAL_ADVANTAGE_RESULTS.md.
+
 ## Latest — E3.4 more feedback does not establish reliable selection
 
 Execution ea9a9a8a584c8b93fd9109686123d46e65427d0a preceded all20800 new

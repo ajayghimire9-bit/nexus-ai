@@ -1,5 +1,13 @@
 # NEXUS code-reuse map
 
+E3.5 extends SAME AdvantagePredictor with observed-baseline targets/prediction;
+baseline0 preserves direct behavior. SAME training_feedback_audit and existing
+runner gain explicit --residual profile for9 training reset folds/27fits.
+No replacement learner, memory, proposer, planner or meter. Anchors/targets/
+RMS exclude withheld resets; independent verify uses saved coefficients only.
+No simulator/world-model calls. Both screens fail; report
+NEXUS_E3_5_RESIDUAL_ADVANTAGE_RESULTS.md. Allocation consumed, no retries.
+
 E3.4 reuses the SAME FrozenReturnSelector with explicit budget/path parameters.
 feedback_coverage only coordinates snapshots3/6/9 and paired metrics; no new
 learner/proposer/memory/controller. Existing runner --coverage (and --audit)

@@ -177,3 +177,27 @@ def test_zero_residual_and_means_are_dependent_controls():
     result=a.score_predictions(folds(bank,x),bank,'e3_5')
     assert not result['point_screen']
     for row in result['raw']:assert row['returns']['residual_predictor']==row['returns']['model_mean']
+
+
+def test_saved_run_independent_replay_without_fitting(monkeypatch):
+    m=runner();c=json.loads(m.CONFIG.read_text());bank,x=m.load_training(c)
+    result=json.loads(m.RESULT.read_text());frozen=json.loads(m.FROZEN.read_text())
+    def forbidden(*args,**kwargs):raise AssertionError('audit must not fit')
+    monkeypatch.setattr(AdvantagePredictor,'observe',forbidden)
+    assert a.verify_frozen_folds(frozen['folds'],bank,x,'e3_5')==result['analysis']
+    assert result['declared_complete'] and result['ridge_fits_completed']==27
+    assert result['real_steps']==result['imagined_transitions']==result['neural_inference']==0
+    assert len(result['analysis']['raw'])==36
+    m.verify_file(m.FROZEN,result['frozen_fold_sha256'])
+    for path,expected in result['historical_artifacts_sha256'].items():m.verify_file(ROOT/path,expected)
+
+
+def test_real_input_loader_parses_only_permitted_training_manifest(monkeypatch):
+    m=runner();c=json.loads(m.CONFIG.read_text());reads=[];original=Path.read_text
+    def tracked(path,*args,**kwargs):
+        reads.append(path)
+        return original(path,*args,**kwargs)
+    monkeypatch.setattr(Path,'read_text',tracked)
+    bank,x=m.load_training(c)
+    assert reads==[ROOT/c['input']]
+    assert len(bank)==len(x)==36

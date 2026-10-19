@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Supplemental E3.5: codex/e3-5-baseline-anchored-residual, clean execution
+f128c29a8b116886dd20dd42cc025436d5421386. Source-training-only residual
+ridge audit,27fits/36queries/9resetfolds,0real/imagined/neural. Model-mean
+return contrast−8.479216 Pendulum/+0.514255 Acrobot; both screens fail.
+0.287327500s execution/0.207447500s audit;346 prior JSON unchanged.
+Ledger773.363640293/2826.636359707. Artifacts e3_5_*, report
+NEXUS_E3_5_RESIDUAL_ADVANTAGE_RESULTS.md. Historical evidence unchanged.
+
 Supplemental E3.4 feedback-coverage study: codex/e3-4-feedback-coverage,
 execution ea9a9a8a584c8b93fd9109686123d46e65427d0a.20800 fresh source
 steps, fixed3/6/9 predictor budgets;9 versus mean Pendulum−111.942/Acrobot

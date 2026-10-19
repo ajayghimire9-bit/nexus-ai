@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — test within-model feature informativeness, source-only
+
+E3.5 is now executed: residual-versus-mean return−8.479216 Pendulum/+0.514255
+Acrobot; neither family passes, and MAE is worse than means both. Do not
+repeat residual tuning or expand generation. One next experiment should ask
+whether the current predecision features predict within-model strategy
+advantage beyond model means and within-model context permutations, preserving
+family scales and blocked-reset isolation. Use only permitted training rows;
+E3.4 evaluation stays closed. Separately predeclare metrics/thresholds and
+small CPU cap before any fitting; no collection or feature/hyperparameter
+search. This proposal is not allocated/executed. See
+NEXUS_E3_5_RESIDUAL_ADVANTAGE_RESULTS.md. The older proposal below is history,
+not current execution status.
+
 ## Current — baseline-anchored residual advantage, training-only
 
 E3.4 coverage screen failed:9-reset predictor−model mean Pendulum−111.942,

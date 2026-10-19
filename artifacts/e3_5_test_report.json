@@ -1,0 +1,33 @@
+{
+  "execution_sha": "f128c29a8b116886dd20dd42cc025436d5421386",
+  "suite_scope": "Relevant regression modules, not the entire historical repository suite",
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest -o addopts='' -q tests/test_e3_5_residual_advantage.py tests/test_e3_4_feedback_coverage.py tests/test_e3_3_training_feedback_audit.py tests/test_e3_2_return_feedback.py tests/test_unified_e225_e30.py tests/test_unified_headroom.py tests/test_unified_full_policy_source.py tests/test_unified_full_policy_replication.py tests/test_unified_crossed_reset.py tests/test_e3_1_learned_model_audit.py tests/test_evolution2_planner_quality.py tests/test_evolution1_resources.py tests/test_evolution1_source_contracts.py tests/test_evolution1_toy_loop.py tests/test_evolution2_observation_memory.py tests/test_evolution2_observation_memory_cross.py",
+  "pre_execution": {
+    "passed": 389,
+    "wall_s": 7.94
+  },
+  "post_execution": {
+    "passed": 391,
+    "wall_s": 8.07,
+    "new_saved_evidence_tests": 2
+  },
+  "scientific_execution_during_tests": {
+    "real_steps": 0,
+    "imagined_transitions": 0,
+    "neural_inference": 0,
+    "note": "Synthetic ridge correctness fits and no-fit saved evidence replay; not new scientific model fitting"
+  },
+  "audit": {
+    "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 scripts/run_e3_3_training_feedback_audit.py --residual --verify",
+    "valid": true,
+    "coefficient_models_verified": 27,
+    "ridge_fits": 0,
+    "historical_json_preserved": 346
+  },
+  "notes": [
+    "No checkpoint binaries loaded for this fixed-feature audit",
+    "Unrelated untracked evolution1 adapter files excluded",
+    "No closed evaluation outcomes used for fitting or scoring",
+    "Frozen execution source hashes remain verifiable at the recorded execution commit"
+  ]
+}

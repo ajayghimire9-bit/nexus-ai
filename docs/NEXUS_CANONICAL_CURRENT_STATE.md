@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Latest E3.5 completed: baseline-anchored residual ridge fails its selection
+screen on36 permitted training pairs. Pendulum−8.479216/Acrobot+0.514255
+versus model means; neither family passes. Same AdvantagePredictor/audit stack,
+27 fits/9 blocked reset folds, no new collection or model inference. Execution
+f128c29a8b116886dd20dd42cc025436d5421386,346 previous JSON preserved.
+Ledger773.363640293/2826.636359707. Two models/family, no fold-level inference.
+Next feature-informativeness audit is proposed only; do not expand Evolution-3.
+See NEXUS_E3_5_RESIDUAL_ADVANTAGE_RESULTS.md.
+
 Latest E3.4 fresh coverage study completed:3/6/9 training resets/model,
 fixed ridge and four frozen source models. Primary9 versus model means
 Pendulum−111.942, Acrobot+3.498 with one Acrobot model negative. Primary and

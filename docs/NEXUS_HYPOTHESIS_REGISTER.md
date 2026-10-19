@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E3.5 H-residual not established
+
+Predeclared model-mean-plus-context correction fails both family screens:
+return gain−8.479216 Pendulum/+0.514255 Acrobot; model gains−0.104935/
+−16.853497 and+5.637196/−4.608687. Magnitude MAE worse than model means
+both. Valid blocked-reset training-only result, not independent confirmation.
+Do not infer feature impossibility or general learning. Next hypothesis:
+current predecision features contain reproducible within-model advantage
+signal; proposed source-only audit, no execution. Report
+NEXUS_E3_5_RESIDUAL_ADVANTAGE_RESULTS.md. Earlier entries remain historical.
+
 ## Latest — E3.4 feedback-coverage primary and broad screens fail
 
 Fresh nested feedback3/6/9 with unchanged features/ridge/controllers. Primary9

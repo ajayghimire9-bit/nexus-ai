@@ -1,5 +1,18 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E3.5 residual advantage, 2026-10-19
+
+Training-only blocked-reset validation on36 E3.4 permitted training pairs:
+residual-minus-model-mean selection return Pendulum−8.479216/Acrobot+0.514255;
+individual models−0.104935/−16.853497 and+5.637196/−4.608687. Both registered
+family screens fail. Direct-relative gain+9.278711/−2.366230 is not reliable
+selection improvement. No collection/inference/neural training;27 ridge fits.
+Execution f128c29a8b116886dd20dd42cc025436d5421386, separate zero-fit audit,
+346 historical JSON unchanged. Ledger773.363640293/2826.636359707.
+Next: source-only within-model feature-informativeness audit, not allocated
+or executed. E3.4 evaluation remains closed. Report NEXUS_E3_5_RESIDUAL_ADVANTAGE_RESULTS.md.
+No control/generalization/learning-to-learn claim; project ambition unchanged.
+
 ## Latest — E3.4 fresh feedback coverage, 2026-10-19
 
 Committed ea9a9a8a584c8b93fd9109686123d46e65427d0a before20800 source
