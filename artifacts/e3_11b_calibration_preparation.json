@@ -1,0 +1,94 @@
+{
+  "status": "PREPARATION_ONLY_NOT_AUTHORIZED_NOT_RUNTIME_BOUND",
+  "base_sha": "4b8c305562e9c9b30e074d3bff2ecd5ec6cf18ea",
+  "implementation_sha": "02909732859265b0e83340105fd32e12975f806d",
+  "branch": "codex/e3-11b-forecast-calibration-preparation",
+  "files_sha256": {
+    "configs/e3_11b_forecast_calibration.json": "cf1b734a01b58e1e58c2fbeacc45b4614650d640b353ab1d4330c6a4a176f0fb",
+    "src/nexus/evolution2/forecast_calibration.py": "8ecc4191daaffdf5ae55392a2ac914abc0c3bfe0188a808d6010fc0e6b3ef31d",
+    "scripts/prepare_e3_11b_forecast_calibration.py": "d68a0458837f2acec2db6aca751fba876e43f5fcc58932bcc8b7b4b8ba9ad272",
+    "tests/test_e3_11b_forecast_calibration.py": "aefbf6f86a3e99bf70be355b2f748bc814606d184b7c2f36cfc8478f5354015b",
+    "docs/NEXUS_E3_11B_FORECAST_CALIBRATION_PROTOCOL.md": "a6f3344eb954df55a5b562bde49189d28492d9e47566b6cdb9cdcaecee66f691"
+  },
+  "verified_checkpoint_and_source_files": [
+    {
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle0.pt",
+      "sha256": "f72575a410bd14dd69a3bcecf22e842ca93580e1622bb35668889c8a88ed4bed"
+    },
+    {
+      "path": "artifacts/evolution2_fit_clock_disposable/pendulum/bundle1.pt",
+      "sha256": "76e87eb1501a069e066927cd93bc6b9b0f3f691198d60ba1c22b2cbf6ad15af0"
+    },
+    {
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle0.pt",
+      "sha256": "47d6a80ab3630590ed9c3b59c07fc59b9b85f88f515774b767c20897bf748c96"
+    },
+    {
+      "path": "artifacts/evolution2_fit_clock_disposable/acrobot/bundle1.pt",
+      "sha256": "787fcc29efae9f39d50df91f86184778e912f90186eea83459523322413d4508"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/pendulum/bundle0_train.npz",
+      "sha256": "c80901186c47247809a695c665525026994668dd96c396b68511412d50cc4a84"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/pendulum/bundle0_val.npz",
+      "sha256": "11745f3db32bc1c9841e24b316718c5a15337fd12cfd6439596ac8a56c3b847d"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/pendulum/bundle1_train.npz",
+      "sha256": "6fbb1a6898ba292e068536ed3e8b656b3d2bf886d5948d45691abd6bbe3abd1a"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/pendulum/bundle1_val.npz",
+      "sha256": "d1a7eb68270ad1831c2c5262ac24fdc3f7f771e2b4fe4eafd910e9d5d006e4ed"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/acrobot/bundle0_train.npz",
+      "sha256": "b904e52cb76398e279d2ed9d9b8c68a6250501f28cc65f3bb012b1330651a2ee"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/acrobot/bundle0_val.npz",
+      "sha256": "bbfdd62430e706485e95264cf7a79bde1ed82ce1185cf6154e788e52b1b8105e"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/acrobot/bundle1_train.npz",
+      "sha256": "9a158288f0cbbb9cda9a7784f38eea7608398db0ac759f0bb8a0d48649451a71"
+    },
+    {
+      "path": "artifacts/evolution2_source_arrays/acrobot/bundle1_val.npz",
+      "sha256": "45fd547868312ce4c7a5ce7786af3954198735fe16f966382801574d8d63421c"
+    }
+  ],
+  "tests": {
+    "focused_initial_passed": 79,
+    "relevant_regression_passed": 585,
+    "new_tests": 30,
+    "regression_modules": 31,
+    "entire_historical_suite": false,
+    "command_environment": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps",
+    "command": "python3 -m pytest -q <31 modules listed in NEXUS_E3_11B_FORECAST_CALIBRATION_PREPARATION.md> -rA"
+  },
+  "executed": {
+    "new_real_steps": 0,
+    "imagined_transitions": 0,
+    "model_inference": 0,
+    "model_training": 0,
+    "scientific_execution_s": 0
+  },
+  "ledger": {
+    "used_s": 889.765542043008,
+    "remaining_s": 2710.2344579569917
+  },
+  "unrelated_untracked_preserved": [
+    "src/nexus/evolution1/adapters.py",
+    "tests/test_evolution1_adapters.py"
+  ],
+  "remaining_prerequisites": [
+    "explicit execution authorization",
+    "fresh numerical seed/exclusion registration",
+    "exact-config allocation",
+    "reviewed existing metered-host worker binding",
+    "one-run journal and timeout audit"
+  ]
+}
