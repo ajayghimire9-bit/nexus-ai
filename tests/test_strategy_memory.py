@@ -45,7 +45,8 @@ def test_memory_can_change_choice_under_matched_rng():
     assert with_mem in available and without in available
 
 
-def test_benchmark_stays_development_only_and_equal_budget():
+def test_benchmark_stays_development_only_and_equal_budget(tmp_path,monkeypatch):
+    monkeypatch.setattr(f'{write_artifact.__module__}.RESULTS',tmp_path/'fixture.json')
     payload = write_artifact(7)
     assert payload["scientific"] is False
     assert payload["collection"] is False

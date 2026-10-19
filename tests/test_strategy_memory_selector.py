@@ -37,7 +37,8 @@ def test_retrieved_mean_follows_neighbors_not_linucb():
     assert ranks[0]["min_dist"] <= KERNEL_LENGTH
 
 
-def test_selector_bench_is_development_only_and_equal_budget():
+def test_selector_bench_is_development_only_and_equal_budget(tmp_path,monkeypatch):
+    monkeypatch.setattr(f'{write_artifact.__module__}.RESULTS',tmp_path/'fixture.json')
     payload = write_artifact(7)
     assert payload["scientific"] is False
     assert payload["collection"] is False

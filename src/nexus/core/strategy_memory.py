@@ -81,7 +81,7 @@ def support_from_arrays(obs, action, next_obs, reward=None, n: int = 32) -> Supp
     return SupportBatch(obs, action, next_obs, reward)
 
 
-def describe_support(support: SupportBatch, context: PublicFixtureContext) -> np.ndarray:
+def describe_support(support: SupportBatch, context: PublicFixtureContext, *, require_fit: bool = False) -> np.ndarray:
     """Fixed-length public descriptor. Works for different obs/action sizes."""
     obs = support.obs
     nxt = support.next_obs
@@ -93,6 +93,8 @@ def describe_support(support: SupportBatch, context: PublicFixtureContext) -> np
         pred = cols @ coef
         err = nxt - pred
     except np.linalg.LinAlgError:
+        if require_fit:
+            raise
         err = nxt - obs
     desc = np.array(
         [

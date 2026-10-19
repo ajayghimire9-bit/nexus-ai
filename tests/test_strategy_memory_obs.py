@@ -39,7 +39,8 @@ def test_support_collides_and_combined_separates_zero_obs():
     assert np.allclose(write, query)
 
 
-def test_obs_bench_stays_development_only_and_equal_budget():
+def test_obs_bench_stays_development_only_and_equal_budget(tmp_path,monkeypatch):
+    monkeypatch.setattr(f'{write_artifact.__module__}.RESULTS',tmp_path/'fixture.json')
     payload = write_artifact(7)
     assert payload["scientific"] is False
     assert payload["collection"] is False

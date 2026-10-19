@@ -33,7 +33,8 @@ def test_persist_obs_features_are_variant_dependent():
     assert succ != succ_zero
 
 
-def test_persist_obs_bench_is_development_only():
+def test_persist_obs_bench_is_development_only(tmp_path,monkeypatch):
+    monkeypatch.setattr(f'{write_artifact.__module__}.RESULTS',tmp_path/'fixture.json')
     payload = write_artifact(7)
     assert payload["scientific"] is False
     assert payload["collection"] is False

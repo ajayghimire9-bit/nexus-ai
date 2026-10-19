@@ -44,7 +44,8 @@ def test_fit_clock_is_hash_locked_and_zero_step():
         m.require_scientific()
 
 
-def test_fit_clock_does_not_rewrite_or_collect():
+def test_fit_clock_does_not_rewrite_or_collect(tmp_path,monkeypatch):
+    monkeypatch.setattr(m,'RESULTS',tmp_path/'fixture.json')
     assert m.prior_hashes_frozen() is True
     assert persist.file_sha256(persist.CONFIG) == persist.LOCKED_CONFIG
     assert v2.worksheet()["source_collection_steps"] == 25600

@@ -1,0 +1,139 @@
+{
+  "version": "e3_7_transition_evidence_v1",
+  "input": "artifacts/e3_4_predictor_b9.json",
+  "input_sha256": "5bc051a2effe1fb2c9220393881fe4a1f8ec77f08c28f9660d5d6cb8418c743a",
+  "families": [
+    "pendulum",
+    "acrobot"
+  ],
+  "model_bundles": [
+    0,
+    1
+  ],
+  "training_episode_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "held_out_blocks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "feature_dimension": 192,
+  "ridge": 1.0,
+  "shuffle_seed_base": 31,
+  "practical_return_margin": 1.0,
+  "time_cap_s": 30,
+  "env_cap": 0,
+  "imagined_cap": 0,
+  "neural_inference_cap": 0,
+  "ridge_fit_cap": 360,
+  "feature_groups": {
+    "original": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "transition": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ]
+  },
+  "permutation_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "permutation_seed_base": 613000,
+  "minimum_mae_reduction": 0.05,
+  "minimum_permutation_wins": 18,
+  "support_rows": 32,
+  "support_statistics": [
+    "normalized_mean_absolute_delta",
+    "normalized_linear_residual_mae",
+    "action_coverage"
+  ],
+  "source_arrays": [
+    {
+      "family": "pendulum",
+      "bundle": 0,
+      "split": "train",
+      "n": 1024,
+      "path": "artifacts/evolution2_source_arrays/pendulum/bundle0_train.npz",
+      "sha256": "c80901186c47247809a695c665525026994668dd96c396b68511412d50cc4a84"
+    },
+    {
+      "family": "pendulum",
+      "bundle": 1,
+      "split": "train",
+      "n": 1024,
+      "path": "artifacts/evolution2_source_arrays/pendulum/bundle1_train.npz",
+      "sha256": "6fbb1a6898ba292e068536ed3e8b656b3d2bf886d5948d45691abd6bbe3abd1a"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 0,
+      "split": "train",
+      "n": 1024,
+      "path": "artifacts/evolution2_source_arrays/acrobot/bundle0_train.npz",
+      "sha256": "b904e52cb76398e279d2ed9d9b8c68a6250501f28cc65f3bb012b1330651a2ee"
+    },
+    {
+      "family": "acrobot",
+      "bundle": 1,
+      "split": "train",
+      "n": 1024,
+      "path": "artifacts/evolution2_source_arrays/acrobot/bundle1_train.npz",
+      "sha256": "9a158288f0cbbb9cda9a7784f38eea7608398db0ac759f0bb8a0d48649451a71"
+    }
+  ],
+  "descriptor_lstsq_calls": 4
+}

@@ -7,7 +7,8 @@ from nexus.core.strategy_memory_decide_bench import FREE_SLOTS, PROPOSALS, write
 from nexus.evolution2 import persist_reset_grant as grant
 
 
-def test_decide_benchmark_is_development_only_with_four_free_slots():
+def test_decide_benchmark_is_development_only_with_four_free_slots(tmp_path,monkeypatch):
+    monkeypatch.setattr(f'{write_artifact.__module__}.RESULTS',tmp_path/'fixture.json')
     payload = write_artifact(7)
     assert FREE_SLOTS == 4
     assert payload["free_slots"] == 4

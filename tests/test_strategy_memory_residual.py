@@ -8,7 +8,8 @@ from nexus.core.strategy_memory_residual_bench import DISPOSABLE, SCIENCE_FITS, 
 from nexus.evolution2 import persist_reset_grant as grant
 
 
-def test_residual_bench_uses_disposable_fits_not_e217():
+def test_residual_bench_uses_disposable_fits_not_e217(tmp_path,monkeypatch):
+    monkeypatch.setattr(f'{write_artifact.__module__}.RESULTS',tmp_path/'fixture.json')
     payload = write_artifact(7)
     assert payload["scientific"] is False
     assert payload["collection"] is False

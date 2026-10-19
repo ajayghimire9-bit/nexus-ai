@@ -53,27 +53,52 @@ def configure_features():
     PREVIOUS=ROOT/'artifacts/e3_5_residual_advantage_validation.json'
 
 
+def configure_transitions():
+    global CONFIG,PROTOCOL,ALLOCATION,RESULT,FROZEN,USAGE,VALIDATION,PREVIOUS,PROFILE
+    configure_features();PROFILE='e3_7'
+    CONFIG=ROOT/'configs/e3_7_transition_evidence.json'
+    PROTOCOL=ROOT/'docs/NEXUS_E3_7_TRANSITION_EVIDENCE_PROTOCOL.md'
+    ALLOCATION=ROOT/'configs/e3_7_transition_evidence_allocation.json'
+    RESULT=ROOT/'artifacts/e3_7_transition_evidence.json'
+    FROZEN=ROOT/'artifacts/e3_7_frozen_fold_predictions.json'
+    USAGE=ROOT/'artifacts/e3_7_transition_evidence_usage.json'
+    VALIDATION=ROOT/'artifacts/e3_7_transition_evidence_validation.json'
+    PREVIOUS=ROOT/'artifacts/e3_7_preflight_recovery.json'
+
+
 def validate_config(c):
     expected=dict(version='e3_3_training_only_v1',input='artifacts/e3_2_frozen_predictor.json',
         input_sha256='e84d55ce4b8f3bd6dbc4cda1edcbecfe411e808ed91c63a16504b52fb3453b83',
         families=['pendulum','acrobot'],model_bundles=[0,1],training_episode_ids=[0,1,2],held_out_blocks=[0,1,2],
         feature_dimension=192,ridge=1.0,shuffle_seed_base=31,practical_return_margin=1.0,
         time_cap_s=15,env_cap=0,imagined_cap=0,neural_inference_cap=0,ridge_fit_cap=6)
-    if PROFILE in ('e3_5','e3_6'):
+    if PROFILE in ('e3_5','e3_6','e3_7'):
         expected.update(version='e3_5_training_residual_v1',input='artifacts/e3_4_predictor_b9.json',
             input_sha256='5bc051a2effe1fb2c9220393881fe4a1f8ec77f08c28f9660d5d6cb8418c743a',
             training_episode_ids=list(range(9)),held_out_blocks=list(range(9)),ridge_fit_cap=27)
-    if PROFILE=='e3_6':
+    if PROFILE in ('e3_6','e3_7'):
         expected.update(version='e3_6_within_model_features_v1',time_cap_s=30,ridge_fit_cap=720,
-            feature_groups={k:list(v) for k,v in a.GROUP_ROWS.items()},permutation_ids=list(a.PERMUTATIONS),
+            feature_groups={k:list(v) for k,v in a.groups(PROFILE).items()},permutation_ids=list(a.PERMUTATIONS),
             permutation_seed_base=613000,minimum_mae_reduction=.05,minimum_permutation_wins=18)
+    if PROFILE=='e3_7':
+        from nexus.evolution2.transition_evidence import SOURCES
+        expected.update(version='e3_7_transition_evidence_v1',ridge_fit_cap=360,support_rows=32,
+            support_statistics=['normalized_mean_absolute_delta','normalized_linear_residual_mae','action_coverage'],
+            source_arrays=list(SOURCES),descriptor_lstsq_calls=4)
     if json.dumps(c,sort_keys=True)!=json.dumps(expected,sort_keys=True):raise ValueError('locked_config')
 
 
-def load_training(c):
+def load_training(c,provenance=None):
     validate_config(c);path=ROOT/c['input'];verify_file(path,c['input_sha256'])
     saved=json.loads(path.read_text())
     bank,features=saved['training_pairs'],saved['feature_rows']
+    if PROFILE=='e3_7':
+        from nexus.evolution2.transition_evidence import prepare
+        if provenance is not None:provenance['support_descriptor_lstsq_calls']=0
+        def count_descriptor():
+            if provenance is not None:provenance['support_descriptor_lstsq_calls']+=1
+        features,records=prepare(saved,bank,features,on_descriptor=count_descriptor)
+        if provenance is not None:provenance['source_support']=records
     a.validate_bank(bank,features,PROFILE)
     return bank,features
 
@@ -86,12 +111,13 @@ def verify(c):
     if VALIDATION.exists():raise FileExistsError('preserve_validation')
     start=time.perf_counter();p=json.loads(RESULT.read_text());validate_config(c)
     if not p['declared_complete'] or p['config']!=c:raise ValueError('complete_locked_run_required')
-    bank,features=load_training(c);verify_file(FROZEN,p['frozen_fold_sha256'])
+    provenance={};bank,features=load_training(c,provenance);verify_file(FROZEN,p['frozen_fold_sha256'])
+    if PROFILE=='e3_7' and provenance.get('source_support')!=p['source_support']:raise ValueError('source_support_provenance')
     frozen=json.loads(FROZEN.read_text())
     if frozen['training_projection_sha256']!=digest([bank,features]):raise ValueError('training_projection')
     analysis=a.verify_frozen_folds(frozen['folds'],bank,features,PROFILE)
     if analysis!=p['analysis'] or p['ridge_fits_completed']!=c['ridge_fit_cap']:raise ValueError('analysis_or_fit_count')
-    if PROFILE=='e3_6' and p['feature_variability']!=a.variability(bank,features):raise ValueError('feature_variability')
+    if PROFILE in ('e3_6','e3_7') and p['feature_variability']!=a.variability(bank,features,PROFILE):raise ValueError('feature_variability')
     for name,expected in p['historical_artifacts_sha256'].items():verify_file(ROOT/name,expected)
     import hashlib
     for name,expected in p['code_sha256'].items():
@@ -102,6 +128,7 @@ def verify(c):
         coefficient_models_verified=c['ridge_fit_cap'],ridge_fits=0,new_real_steps=0,new_imagined_transitions=0,neural_inference=0,
         historical_json_preserved=len(p['historical_artifacts_sha256']),wall_s=wall,
         session_ledger=dict(used_before_s=p['session_ledger']['used_after_s'],used_after_s=used,remaining_after_s=3600-used))
+    if PROFILE=='e3_7':out['support_descriptor_lstsq_calls']=4
     write_new(VALIDATION,out);return out
 
 
@@ -109,7 +136,7 @@ def run(c):
     validate_config(c)
     if any(x.exists() for x in (RESULT,FROZEN,USAGE)):raise FileExistsError('one_run_only')
     thread_env={key:os.environ.get(key) for key in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','VECLIB_MAXIMUM_THREADS')}
-    if PROFILE in ('e3_5','e3_6') and any(v!='1' for v in thread_env.values()):raise ValueError('single_cpu_thread_environment_required')
+    if PROFILE in ('e3_5','e3_6','e3_7') and any(v!='1' for v in thread_env.values()):raise ValueError('single_cpu_thread_environment_required')
     if subprocess.check_output(['git','diff','HEAD','--name-only'],cwd=ROOT,text=True).strip():raise RuntimeError('commit_first')
     names=['scripts/run_e3_3_training_feedback_audit.py','src/nexus/evolution2/training_feedback_audit.py',
         'src/nexus/evolution2/generated_strategies.py','src/nexus/evolution2/planner_quality_diagnostic.py',
@@ -118,6 +145,8 @@ def run(c):
     if PROFILE=='e3_5':names.append('tests/test_e3_5_residual_advantage.py')
     if PROFILE=='e3_6':names+=['src/nexus/evolution2/feature_informativeness.py','tests/test_e3_6_feature_informativeness.py',
         'src/nexus/core/strategy_memory.py']
+    if PROFILE=='e3_7':names+=['src/nexus/evolution2/feature_informativeness.py','src/nexus/evolution2/transition_evidence.py',
+        'src/nexus/evolution2/fit_clock.py','src/nexus/core/strategy_memory.py','tests/test_e3_7_transition_evidence.py']
     tracked=set(subprocess.check_output(['git','ls-files'],cwd=ROOT,text=True).splitlines())
     if not set(names)<=tracked:raise RuntimeError('tracked_implementation_required')
     allocation=json.loads(ALLOCATION.read_text());prior=json.loads(PREVIOUS.read_text())
@@ -133,7 +162,7 @@ def run(c):
     p=dict(declared_complete=False,config=c,execution_sha=revision,code_sha256={n:sha(ROOT/n) for n in names},
         dependencies=dict(python=platform.python_version(),numpy=np.__version__),ridge_fits_reserved=0,ridge_fits_completed=0,
         real_steps=0,imagined_transitions=0,neural_inference=0,folds_completed=0)
-    if PROFILE in ('e3_5','e3_6'):p['dependencies']['thread_env']=thread_env
+    if PROFILE in ('e3_5','e3_6','e3_7'):p['dependencies']['thread_env']=thread_env
     def guard(stage):
         if time.perf_counter()>=deadline:raise TimeoutError('time_cap')
         if stage=='reserve':
@@ -145,13 +174,13 @@ def run(c):
     folds=[]
     try:
         p['historical_artifacts_sha256']={str(f.relative_to(ROOT)):sha(f) for f in (ROOT/'artifacts').rglob('*.json') if f not in (RESULT,FROZEN,USAGE,VALIDATION)}
-        bank,features=load_training(c)
+        bank,features=load_training(c,provenance=p)
         for held in c['held_out_blocks']:
             guard('check');folds.append(a.predict_fold(bank,features,held,fit_guard=guard,profile=PROFILE));p['folds_completed']+=1
         write_new(FROZEN,dict(training_projection_sha256=digest([bank,features]),execution_sha=revision,folds=folds))
         p['frozen_fold_sha256']=sha(FROZEN);guard('check')
         p['analysis']=a.verify_frozen_folds(folds,bank,features,PROFILE)
-        if PROFILE=='e3_6':p['feature_variability']=a.variability(bank,features)
+        if PROFILE in ('e3_6','e3_7'):p['feature_variability']=a.variability(bank,features,PROFILE)
         for name,expected in p['historical_artifacts_sha256'].items():verify_file(ROOT/name,expected)
         guard('check');p['declared_complete']=True
     except (Exception,KeyboardInterrupt) as exc:
@@ -166,7 +195,8 @@ def run(c):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--verify',action='store_true')
-    group=parser.add_mutually_exclusive_group();group.add_argument('--residual',action='store_true');group.add_argument('--features',action='store_true');args=parser.parse_args()
+    group=parser.add_mutually_exclusive_group();group.add_argument('--residual',action='store_true');group.add_argument('--features',action='store_true');group.add_argument('--transitions',action='store_true');args=parser.parse_args()
     if args.residual:configure_residual()
     if args.features:configure_features()
+    if args.transitions:configure_transitions()
     c=json.loads(CONFIG.read_text());print(json.dumps(verify(c) if args.verify else run(c)))

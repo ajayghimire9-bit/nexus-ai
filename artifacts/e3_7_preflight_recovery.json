@@ -1,0 +1,68 @@
+{
+  "kind": "preprotocol_regression_side_effect_recovery",
+  "scientific_result": false,
+  "parent_commit": "ad8afce400adb12abb2d1bf4854741d02c7774f9",
+  "tracked_tree_dirty_during_regression": true,
+  "reason": "Six legacy benchmark tests wrote historical artifact paths; one also ran disposable learned-model inference. Local archive preserves these engineering outputs. They are excluded from E3.7 learning and scientific comparisons.",
+  "regression_command_scope": "26 relevant modules;462 passed in10.44s; before E3.7 protocol commit",
+  "execution_wall_s_charged_conservatively": 10.44,
+  "new_real_steps": 0,
+  "neural_inference_occurred": true,
+  "neural_forward_count": null,
+  "imagined_transition_count": null,
+  "unknown_counts_reason": "Legacy residual regression did not meter these calls; do not claim zero or invent counts.",
+  "recovery": "Restore exact HEAD bytes from clean tracked starting originals, redirect six writer tests to temporary paths; exclude learned residual benchmark from the source-only final suite.",
+  "evidence": {
+    "captures": {
+      "artifacts/strategy_memory_bench.json": {
+        "original_sha256": "8272d5648877e06e636474fffd52e92ef43cc7fabbe38f3adaab47281edade83",
+        "test_written_sha256": "5c617b05b4de055ef3abf85bc8edb624724813f65c032c3a6d8ada1677c60342",
+        "wall_s": 0.030681667005410418,
+        "scientific": false,
+        "env_steps": 0
+      },
+      "artifacts/strategy_memory_decide_bench.json": {
+        "original_sha256": "6fc904b3ab325f90bd77c9a6203719f82fdacbf17fc6b3884695e983c439ce72",
+        "test_written_sha256": "3151808d9cd4b2c7cea9234e5818c06d8441fcb33097cbfb1e1782120a12d51c",
+        "wall_s": 0.06104720899020322,
+        "scientific": false,
+        "env_steps": 0
+      },
+      "artifacts/strategy_memory_obs_bench.json": {
+        "original_sha256": "b5c8c30d18b12f216b84f9ea4c970534d356502b715335b73f70cc8766768a87",
+        "test_written_sha256": "f91804e3ffd8c342dbfea9ecf04ea629c00b82ece92525e4ce1ab9d5f2c5a8dc",
+        "wall_s": 0.26097041700268164,
+        "scientific": false,
+        "env_steps": 0
+      },
+      "artifacts/strategy_memory_persist_obs_bench.json": {
+        "original_sha256": "9c0b0002cd9786347f334204797a4ab87486e830bf23a5243e76daa7364ad931",
+        "test_written_sha256": "30c1e83c7097515f4547b40f5ee922b6a9735b6a64c7328ffe239aa233b61877",
+        "wall_s": 0.09094779200677294,
+        "scientific": false,
+        "env_steps": 0
+      },
+      "artifacts/strategy_memory_residual_bench.json": {
+        "original_sha256": "d1a9594ffabe130bdef4f3051f1377703ca3cc74cf96a6a044120e831b1302c0",
+        "test_written_sha256": "28eb021df5ced738a85a4790c82c10f6dcebc93366eaf8011b046c653dfc798f",
+        "wall_s": 0.27396791698993184,
+        "scientific": false,
+        "env_steps": 0
+      },
+      "artifacts/strategy_memory_selector_bench.json": {
+        "original_sha256": "801121d89ab25f05cefaf15972ee11ae1386957c3602a556050c9cb7fd7cb1db",
+        "test_written_sha256": "81e1c16c8f1e81c605f7e27f956ee926d234b16a761654202f087f4cc39e1451",
+        "wall_s": 0.22865175000333693,
+        "scientific": false,
+        "env_steps": 0
+      }
+    },
+    "archive_path": "artifacts/e3_7_regression_side_effects.tar.gz",
+    "archive_sha256": "cc739f3aa6dfb0245a839c6e3ceb6e3195fdf906573ef616aeca74e66849396c"
+  },
+  "session_ledger": {
+    "used_before_s": 774.1890710430174,
+    "used_after_s": 784.6290710430173,
+    "remaining_after_s": 2815.3709289569824
+  }
+}
