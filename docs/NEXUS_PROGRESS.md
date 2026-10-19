@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — fresh parent-aware comparison completed; screen failed
+
+Protocol/codea5d13d768 before outcomes. Parent-aware selector retains parent
+0/4 and ties two-child mean/credit exactly; required primary gain0 both families.
+Uniform positive points but CIs cross0; parent noninferiority fails. Pendulum0
+loses117.996 to parent; training raw-versus-paired estimates differ due observed
+reset-group offsets. No causal interpretation or query-based retuning. One run
+159.001s/22400 real/33662865 imagined/1039105 forwards;811 tests.418 old JSON
+and frozen inputs unchanged. Ledger1806.2957189570038/1793.7042810429962.
+See NEXUS_E3_12D_PARENT_RETENTION_RESULTS.md. No additional experiment begun.
+
 ## Latest — requested engineering implemented; fresh study not run
 
 Three-way raw mean keeps parent on ties; two-child comparator unchanged.

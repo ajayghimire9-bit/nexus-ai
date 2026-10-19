@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Latest E3.12D COMPLETE/VALID, parent_retention_not_established. Sourcea5d13d768.
+Parent retained0/4; same choices as two-child mean and credit; primary0 [0,0].
+Uniform gains+175.087 [−412.671,762.845] Pendulum/+4.794 [−71.914,81.502]
+Acrobot; both screens fail.22400 real/33662865 imagined/1039105 forwards,
+159.001s live;811 tests;418 prior JSON/frozen inputs preserved. Ledger
+1806.2957189570038/1793.7042810429962. See D results report. Next training-only
+reset-balance/stability question, not more rule variants or automatic collection.
+
 E3.12D now explicitly authorized/locked for ONE fresh parent-retention run,
 300s/22400 real. New seeds checked9648, zero current metadata/reservation
 collisions. Same partial-feedback/Host/meter/planners and four frozen models;

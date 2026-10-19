@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Next recommendation — training-only reset-balance and selection stability
+
+E3.12D is now complete and closed: parent_retention_not_established, primary0
+and no parent choices. Do not rerun or tune against its queries. The next
+smallest useful question is whether revealed-training strategy estimates are
+stable to reset-group offsets and individual feedback observations. Prepare a
+separate recorded-data-only protocol using training rows; no new simulator
+collection, neural fit or evaluation on closed queries. No such analysis has
+run yet. This measured estimator question precedes adding more E4 rules,
+continual-learning collection or unfamiliar-model transfer. See D report.
+Session1806.2957189570038 used/1793.7042810429962 remaining. No new grant created.
+
 ## Next — fresh parent-inclusive limited-feedback comparison, await registration
 
 Implementation and costed proposal now in NEXUS_PARENT_RETENTION_DEVELOPMENT.md

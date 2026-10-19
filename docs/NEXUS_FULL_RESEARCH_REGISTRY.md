@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+Completed E3.12D sourcea5d13d768ae3caefe33a7e25ef959bb5bad05447, exact one-run
+grant consumed.112 paths/22400 real,33662865 imagined,1039105 forwards,
+159.001242s+3.579782s audit+.087132s export. parent_retention_not_established:
+0/4 parent choices, primary0 [0,0] both families; other CI screens fail.
+418 prior JSON/frozen inputs preserved;811 relevant tests. Results
+NEXUS_E3_12D_PARENT_RETENTION_RESULTS.md, artifacts/e3_12d_parent*.
+Ledger1806.2957189570038/1793.7042810429962. No resimulation or E4/transfer run.
+
 Registered E3.12D, codex/e3-12d-parent-retention-comparison from32f7088824d829d36c33f41f1f8c7d3e78f8ffa9.
 One explicitly authorized fresh source-model study,300s/22400 real cap;
 new seeds2181000000/2182000000 bases and balanced schedule73524. Four frozen

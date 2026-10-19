@@ -1,5 +1,21 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Completed E3.12D — parent retention not established
+
+Locked sourcea5d13d768ae3caefe33a7e25ef959bb5bad05447, one valid complete run.
+Parent-aware raw mean retains parent0/4 and ties two-child mean and credit on
+all four model choices; primary0 [0,0] in both families. Versus uniform:
+Pendulum+175.087 [−412.671,+762.845], Acrobot+4.794 [−71.914,+81.502]. Versus
+parent+130.255/+17.625 with both CIs including0. Both family screens fail;
+Pendulum0 loses117.996 to parent. Raw pooled parent comparison differs from
+matched gains due training reset-group offsets; descriptive, not causal proof.
+22400 real/33662865 imagined/1039105 forwards,159.001242s plus3.579782s audit
+and.087132s export;418 old JSON and frozen inputs unchanged.811 relevant tests.
+Ledger1806.2957189570038/1793.7042810429962. Results report
+NEXUS_E3_12D_PARENT_RETENTION_RESULTS.md. Next recommendation: training-only
+reset-balance/selection-stability audit, not executed; no E4/continual/transfer
+or further simulator run under this grant. Earlier lock/preparation text is history.
+
 ## E3.12D execution lock — fresh parent-aware comparison
 
 Explicit human authorization: one run within300s/22400 interactions. Separate

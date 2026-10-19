@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Completed — E3.12D parent-aware screen failed
+
+H: adding parent to raw-mean selection avoids harmful changes while preserving
+fresh-query improvement. Locked a5d13d768; complete valid grid, no parent
+choices0/4. Primary versus two-child0 [0,0] both families; equal credit choices.
+Uniform+175.087 [−412.671,762.845] Pendulum/+4.794 [−71.914,81.502] Acrobot.
+Both screens and parent noninferiority fail. This configuration does not
+establish useful parent retention. Parent availability alone does not resolve
+reset-difficulty confounding of unpaired raw means. Four observations/child,
+two models/family; no generalization claim. No new rule fitted to D queries.
+Report NEXUS_E3_12D_PARENT_RETENTION_RESULTS.md; all earlier results preserved.
+
 ## Proposed — parent-inclusive limited-feedback selection, untested
 
 H: the raw-mean choice over parent/switch/rank_blend reduces harmful changes

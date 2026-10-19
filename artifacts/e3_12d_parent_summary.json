@@ -1,0 +1,513 @@
+{
+  "families": {
+    "pendulum": {
+      "models": [
+        {
+          "bundle": 0,
+          "means": {
+            "parent": -162.01043074795132,
+            "fixed_switch": -537.665106213278,
+            "fixed_blend": -280.0064679979,
+            "uniform_expected": -408.835787105589,
+            "training_mean": -280.0064679979,
+            "credit_argmax": -280.0064679979,
+            "retrospective_best": -219.2985685207923,
+            "paired_gain": -280.0064679979,
+            "guarded": -162.01043074795132,
+            "parent_inclusive": -280.0064679979
+          },
+          "training_choice": "rank_blend",
+          "credit_choice": "rank_blend",
+          "training_gap": -445.46861195162893,
+          "query_gap": -257.658638215378,
+          "query_wins": 3
+        },
+        {
+          "bundle": 1,
+          "means": {
+            "parent": -581.5739735136867,
+            "fixed_switch": -203.06867693177855,
+            "fixed_blend": -645.7576179892133,
+            "uniform_expected": -424.4131474604959,
+            "training_mean": -203.06867693177855,
+            "credit_argmax": -203.06867693177855,
+            "retrospective_best": -203.06867693177855,
+            "paired_gain": -203.06867693177855,
+            "guarded": -581.5739735136867,
+            "parent_inclusive": -203.06867693177855
+          },
+          "training_choice": "switch",
+          "credit_choice": "switch",
+          "training_gap": 471.05276084629355,
+          "query_gap": 442.6889410574347,
+          "query_wins": 4
+        }
+      ],
+      "contrasts": {
+        "training_mean-minus-uniform_expected": {
+          "mean": 175.08689481820318,
+          "ci95": [
+            -412.67133276911375,
+            762.8451224055201
+          ],
+          "per_model": [
+            128.829319107689,
+            221.34447052871735
+          ]
+        },
+        "credit_argmax-minus-uniform_expected": {
+          "mean": 175.08689481820318,
+          "ci95": [
+            -412.67133276911375,
+            762.8451224055201
+          ],
+          "per_model": [
+            128.829319107689,
+            221.34447052871735
+          ]
+        },
+        "credit_argmax-minus-training_mean": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "training_mean-minus-parent": {
+          "mean": 130.25462966597973,
+          "ci95": [
+            -3024.0691701156484,
+            3284.578429447608
+          ],
+          "per_model": [
+            -117.9960372499487,
+            378.50529658190817
+          ]
+        },
+        "training_mean-minus-fixed_switch": {
+          "mean": 128.829319107689,
+          "ci95": [
+            -1508.1023855256162,
+            1765.761023740994
+          ],
+          "per_model": [
+            257.658638215378,
+            0.0
+          ]
+        },
+        "training_mean-minus-fixed_blend": {
+          "mean": 221.34447052871735,
+          "ci95": [
+            -2591.103689279221,
+            3033.7926303366557
+          ],
+          "per_model": [
+            0.0,
+            442.6889410574347
+          ]
+        },
+        "retrospective_best-minus-uniform_expected": {
+          "mean": 205.44084455675704,
+          "ci95": [
+            3.3661169059008955,
+            407.5155722076132
+          ],
+          "per_model": [
+            189.53721858479673,
+            221.34447052871735
+          ]
+        },
+        "paired_gain-minus-uniform_expected": {
+          "mean": 175.08689481820318,
+          "ci95": [
+            -412.67133276911375,
+            762.8451224055201
+          ],
+          "per_model": [
+            128.829319107689,
+            221.34447052871735
+          ]
+        },
+        "guarded-minus-uniform_expected": {
+          "mean": 44.83226515222344,
+          "ci95": [
+            -2521.733307042088,
+            2611.397837346535
+          ],
+          "per_model": [
+            246.8253563576377,
+            -157.16082605319082
+          ]
+        },
+        "credit_argmax-minus-paired_gain": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "credit_argmax-minus-guarded": {
+          "mean": 130.25462966597973,
+          "ci95": [
+            -3024.0691701156484,
+            3284.578429447608
+          ],
+          "per_model": [
+            -117.9960372499487,
+            378.50529658190817
+          ]
+        },
+        "training_mean-minus-guarded": {
+          "mean": 130.25462966597973,
+          "ci95": [
+            -3024.0691701156484,
+            3284.578429447608
+          ],
+          "per_model": [
+            -117.9960372499487,
+            378.50529658190817
+          ]
+        },
+        "parent_inclusive-minus-training_mean": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "parent_inclusive-minus-uniform_expected": {
+          "mean": 175.08689481820318,
+          "ci95": [
+            -412.67133276911375,
+            762.8451224055201
+          ],
+          "per_model": [
+            128.829319107689,
+            221.34447052871735
+          ]
+        },
+        "parent_inclusive-minus-parent": {
+          "mean": 130.25462966597973,
+          "ci95": [
+            -3024.0691701156484,
+            3284.578429447608
+          ],
+          "per_model": [
+            -117.9960372499487,
+            378.50529658190817
+          ]
+        },
+        "parent_inclusive-minus-credit_argmax": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "parent_inclusive-minus-fixed_switch": {
+          "mean": 128.829319107689,
+          "ci95": [
+            -1508.1023855256162,
+            1765.761023740994
+          ],
+          "per_model": [
+            257.658638215378,
+            0.0
+          ]
+        },
+        "parent_inclusive-minus-fixed_blend": {
+          "mean": 221.34447052871735,
+          "ci95": [
+            -2591.103689279221,
+            3033.7926303366557
+          ],
+          "per_model": [
+            0.0,
+            442.6889410574347
+          ]
+        }
+      },
+      "parent_retention_screen": false
+    },
+    "acrobot": {
+      "models": [
+        {
+          "bundle": 0,
+          "means": {
+            "parent": -303.76687449043675,
+            "fixed_switch": -283.5289075840868,
+            "fixed_blend": -305.1909869746393,
+            "uniform_expected": -294.35994727936304,
+            "training_mean": -283.5289075840868,
+            "credit_argmax": -283.5289075840868,
+            "retrospective_best": -283.5289075840868,
+            "paired_gain": -283.5289075840868,
+            "guarded": -283.5289075840868,
+            "parent_inclusive": -283.5289075840868
+          },
+          "training_choice": "switch",
+          "credit_choice": "switch",
+          "training_gap": 21.32230127812744,
+          "query_gap": 21.662079390552492,
+          "query_wins": 4
+        },
+        {
+          "bundle": 1,
+          "means": {
+            "parent": -307.4676640194408,
+            "fixed_switch": -289.9700374295002,
+            "fixed_blend": -292.45612373379583,
+            "uniform_expected": -291.213080581648,
+            "training_mean": -292.45612373379583,
+            "credit_argmax": -292.45612373379583,
+            "retrospective_best": -274.48020408902346,
+            "paired_gain": -292.45612373379583,
+            "guarded": -292.45612373379583,
+            "parent_inclusive": -292.45612373379583
+          },
+          "training_choice": "rank_blend",
+          "credit_choice": "rank_blend",
+          "training_gap": -25.710006081028382,
+          "query_gap": 2.486086304295611,
+          "query_wins": 3
+        }
+      ],
+      "contrasts": {
+        "training_mean-minus-uniform_expected": {
+          "mean": 4.793998271564192,
+          "ci95": [
+            -71.91388606024854,
+            81.50188260337693
+          ],
+          "per_model": [
+            10.831039695276218,
+            -1.243043152147834
+          ]
+        },
+        "credit_argmax-minus-uniform_expected": {
+          "mean": 4.793998271564192,
+          "ci95": [
+            -71.91388606024854,
+            81.50188260337693
+          ],
+          "per_model": [
+            10.831039695276218,
+            -1.243043152147834
+          ]
+        },
+        "credit_argmax-minus-training_mean": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "training_mean-minus-parent": {
+          "mean": 17.624753595997447,
+          "ci95": [
+            -15.579269745226732,
+            50.828776937221626
+          ],
+          "per_model": [
+            20.237966906349925,
+            15.01154028564497
+          ]
+        },
+        "training_mean-minus-fixed_switch": {
+          "mean": -1.2430431521478056,
+          "ci95": [
+            -17.037403939517837,
+            14.551317635222228
+          ],
+          "per_model": [
+            0.0,
+            -2.486086304295611
+          ]
+        },
+        "training_mean-minus-fixed_blend": {
+          "mean": 10.831039695276246,
+          "ci95": [
+            -126.79036818097919,
+            148.45244757153168
+          ],
+          "per_model": [
+            21.662079390552492,
+            0.0
+          ]
+        },
+        "retrospective_best-minus-uniform_expected": {
+          "mean": 13.78195809395038,
+          "ci95": [
+            -23.713015240013156,
+            51.276931427913915
+          ],
+          "per_model": [
+            10.831039695276218,
+            16.73287649262454
+          ]
+        },
+        "paired_gain-minus-uniform_expected": {
+          "mean": 4.793998271564192,
+          "ci95": [
+            -71.91388606024854,
+            81.50188260337693
+          ],
+          "per_model": [
+            10.831039695276218,
+            -1.243043152147834
+          ]
+        },
+        "guarded-minus-uniform_expected": {
+          "mean": 4.793998271564192,
+          "ci95": [
+            -71.91388606024854,
+            81.50188260337693
+          ],
+          "per_model": [
+            10.831039695276218,
+            -1.243043152147834
+          ]
+        },
+        "credit_argmax-minus-paired_gain": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "credit_argmax-minus-guarded": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "training_mean-minus-guarded": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "parent_inclusive-minus-training_mean": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "parent_inclusive-minus-uniform_expected": {
+          "mean": 4.793998271564192,
+          "ci95": [
+            -71.91388606024854,
+            81.50188260337693
+          ],
+          "per_model": [
+            10.831039695276218,
+            -1.243043152147834
+          ]
+        },
+        "parent_inclusive-minus-parent": {
+          "mean": 17.624753595997447,
+          "ci95": [
+            -15.579269745226732,
+            50.828776937221626
+          ],
+          "per_model": [
+            20.237966906349925,
+            15.01154028564497
+          ]
+        },
+        "parent_inclusive-minus-credit_argmax": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "per_model": [
+            0.0,
+            0.0
+          ]
+        },
+        "parent_inclusive-minus-fixed_switch": {
+          "mean": -1.2430431521478056,
+          "ci95": [
+            -17.037403939517837,
+            14.551317635222228
+          ],
+          "per_model": [
+            0.0,
+            -2.486086304295611
+          ]
+        },
+        "parent_inclusive-minus-fixed_blend": {
+          "mean": 10.831039695276246,
+          "ci95": [
+            -126.79036818097919,
+            148.45244757153168
+          ],
+          "per_model": [
+            21.662079390552492,
+            0.0
+          ]
+        }
+      },
+      "parent_retention_screen": false
+    }
+  },
+  "phase_accounting": {
+    "training": {
+      "physical_episodes": 64,
+      "real_steps": 12800,
+      "path_cpu_s": 88.34424999999992
+    },
+    "evaluation": {
+      "physical_episodes": 48,
+      "real_steps": 9600,
+      "path_cpu_s": 66.83763000000005
+    }
+  },
+  "max_independent_reward_sum_error": 0.0,
+  "label": "parent_retention_not_established",
+  "limitations": "Two models/family; single-child training feedback, complete query panels. Expected uniform and retrospective best reuse executed paths; not extra controller replications.",
+  "result_sha256": "df2892f6f70bbca3670ba4639afc97fe54f5e2a3205f1bcc0cdd61efeaa88882",
+  "source_commit": "a5d13d768ae3caefe33a7e25ef959bb5bad05447",
+  "session_used_after_s": 1806.2085873740175,
+  "session_remaining_after_s": 1793.7914126259825
+}
