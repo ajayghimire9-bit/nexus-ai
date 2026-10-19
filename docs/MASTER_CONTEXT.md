@@ -1,5 +1,17 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — E2.27 prospective frozen-feedback integration, 2026-10-19
+
+The existing method-sensitive evaluator now has an opt-in manifest-gated
+factory. Synthetic selected-planner scores0.6/0.9 remain invariant under
+opposite unobserved extrema; shared cache charges and hidden-training
+provenance checks pass. Scope checks precede cache lookup, including
+boolean integer aliases. No model/planner/environment execution or
+proposer updates; no scientific gate unlocked. Next is a source-only
+readiness audit of the existing study, not a new framework or collection.
+Ledger327.869/3272.131 unchanged. Report
+`NEXUS_E2_27_FEEDBACK_INTEGRATION.md`. Earlier entries remain history.
+
 ## Latest — E2.26 training-frozen feedback boundary, engineering only, 2026-10-18
 
 TrustedEvaluator now offers an opt-in immutable training-reference scale.

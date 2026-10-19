@@ -113,3 +113,29 @@ def test_clipping_record_preserves_raw_primary_measurement(manifest):
     assert e._hidden_outcomes[0]["raw"]==1000.
     assert e._hidden_outcomes[0]["clipped"] is True
     assert e._hidden_outcomes[0]["feedback_snapshot_digest"]==manifest[3]["snapshot_digest"]
+
+
+def test_saved_integration_grid_and_manifest_reconstruct():
+    from nexus.evolution2.persist_reset_scoring import ROOT
+    path=ROOT/"artifacts/evolution2_27_feedback_integration.json"
+    p=json.loads(path.read_text())
+    assert hashlib.sha256(path.read_bytes()).hexdigest()=="b4a46b9a16391102ac6ceb83f311fd29de9126058d6ffc5d6cfd22e319a14518"
+    assert hashlib.sha256(json.dumps(p["manifest"],sort_keys=True).encode()).hexdigest()==p["manifest_sha256"]
+    assert [c["unobserved_extreme"] for c in p["cases"]]==[-1e8,1e8]
+    for c in p["cases"]:
+        assert set(c["units"])=={"persist","reset","random","evolution"}
+        assert c["units"]=={"persist":0.6,"reset":0.9,"random":0.6,"evolution":0.9}
+        assert (c["physical"],c["cached"],c["logical"])==(2,2,4)
+        assert c["hidden_feedback_blocked"] and len(c["outcomes"])==2
+        assert {r["raw"] for r in c["outcomes"]}=={2.,8.}
+        assert all(r["provenance"]==science.HIDDEN_PROVENANCE and not r["clipped"] for r in c["outcomes"])
+
+
+def test_saved_sources_and_historical_artifacts_verify():
+    import subprocess
+    from nexus.evolution2.persist_reset_scoring import ROOT
+    from nexus.evolution2.persist_reset_request import file_sha256
+    p=json.loads((ROOT/"artifacts/evolution2_27_feedback_integration.json").read_text())
+    assert all(file_sha256(ROOT/f)==h for f,h in p["historical_artifacts_sha256"].items())
+    for f,h in p["source_sha256"].items():
+        assert hashlib.sha256(subprocess.check_output(["git","show",p["execution_sha"]+":"+f],cwd=ROOT)).hexdigest()==h

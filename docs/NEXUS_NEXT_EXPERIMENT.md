@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — E2.27 integrated; audit existing scientific-study readiness
+
+Perform one source-only readiness audit of the existing method-sensitive
+persist/reset study with manifest-gated frozen feedback. Check raw primary
+metrics, reference-selection fairness, clipping, model provenance,
+missing-result rules and resource preconditions. No new allocation,
+holdout/seed registration, collection, retraining or scientific dispatch.
+The synthetic evaluator path passes; real learning-to-learn evidence
+remains absent. Report `NEXUS_E2_27_FEEDBACK_INTEGRATION.md`.
+
 ## Current — E2.26 repair tested; integrate prospective evaluator source-only
 
 Integrate the existing training-frozen normalization API into one

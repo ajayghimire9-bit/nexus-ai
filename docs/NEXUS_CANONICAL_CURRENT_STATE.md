@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+E2.27 integrates the training-frozen scale via the existing method-sensitive
+evaluator's opt-in `prospective_hidden_evaluator` factory. Saved manifests
+gate callbacks; guards precede cache hits; raw outcomes and clipping are
+retained. Synthetic integration passes, no scientific gate opens. Next is
+source-only study readiness, not collection. See
+`NEXUS_E2_27_FEEDBACK_INTEGRATION.md`.
+
 E2.26 adds opt-in `TrustedEvaluator.freeze_feedback_scale` with an immutable
 training-reference snapshot. Synthetic query-extreme invariance passes;
 historical scalers/runners stay unchanged. No science or learning-to-learn

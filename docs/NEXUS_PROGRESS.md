@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Latest — E2.27 manifest-gated evaluator integration, synthetic pass
+
+Training-frozen scaling is integrated into the existing method-sensitive
+evaluator through an opt-in factory. Different/identical selections have
+different/equal scores and correctly shared cache charges; hidden outcomes
+remain blocked from training. Zero model/planner/environment execution.
+Scope and clipping tests pass, no science unlocked. Report
+`NEXUS_E2_27_FEEDBACK_INTEGRATION.md`; ledger unchanged.
+
 ## Latest — E2.26 opt-in normalization repair, synthetic pass
 
 Frozen training references prevent opposite hidden query extremes from

@@ -83,5 +83,71 @@ Artifact `artifacts/evolution2_27_feedback_integration.json`.
 
 ## Results
 
-Pending the committed synthetic audit. A functional pass is not evidence
+**Synthetic integration passed.** A functional pass is not evidence
 of autonomous improvement, better control, learning-to-learn or AGI.
+The method selections are authored interventions, not learned winners.
+
+Execution/protocol commit:
+`850da761feb356132fd69eebb50a8f1edafdf9f8`.
+Artifact `artifacts/evolution2_27_feedback_integration.json`, SHA256
+`b4a46b9a16391102ac6ceb83f311fd29de9126058d6ffc5d6cfd22e319a14518`.
+The saved manifest is embedded in the artifact and reconstructs its
+original bytes with `json.dumps(manifest,sort_keys=True).encode()`;
+SHA256 `a52656455c2a55b2bd5341b4fa8e8b975d949c5988f2c72e917f808204ab0f02`.
+The audit saved that file before query attachment; temporary fixture
+paths are not required to reproduce the manifest.
+
+Both opposite-extreme cases return persist/random0.6 and
+reset/evolution0.9, from raw values2/8. This demonstrates sensitivity
+to the selected planner and equality for identical selections, not
+performance superiority of reset. Per case: two physical callback
+results, two cache hits and four logical receipts; hidden outcomes
+are blocked from training. All outcomes retain raw values, clip flags
+and the training snapshot digest. Query extremes never enter scaling.
+
+The strict scope guard runs before cache lookup and refuses boolean
+aliases, wrong families/bundles/slots and unregistered planners before
+query production. Missing or inconsistent manifests fail before
+callback attachment. File mutation after construction cannot expand
+the copied scope. Numeric strings, booleans, NaN and infinity from
+callbacks fail before cache insertion. A separate clipping test
+preserves raw1000 while reporting unit1 and `clipped=true`; it is
+not part of the two-case integration capture.
+
+Runtime **0.200632s wall /0.200407s CPU**, within10s. Two training
+reference lookups plus four query callbacks, eight logical query
+receipts; zero real/imagined transitions, model inference, neural
+training or proposer updates. All **308** pre-existing root JSON
+artifacts verify unchanged. Original scientific configurations,
+checkpoints and allocations remain unchanged. Ledger327.869/3272.131
+preserved; no E2.17 or H17 execution.
+
+Pre-execution focused tests: **46 passed in0.75s**. Initial selected
+regressions: **134 passed in0.89s**, before two additional saved-capture
+checks. Tests deliberately exclude scientific execution, planner/model
+scoring and historical benchmark writers. Saved-capture checks validate
+the exact case/method grid, raw/unit values, cache identity, manifest,
+historical hashes and sources against the original execution commit.
+No audit replay is required for those checks.
+
+Final selected command:
+`PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:.deps python3 -m pytest tests/test_evolution2_feedback_integration.py tests/test_evolution2_feedback_normalization.py tests/test_evolution2_pendulum_acrobot_protocol_v2_pilot.py tests/test_evolution1_resources.py tests/test_evolution1_toy_loop.py tests/test_evolution2_cross_task_screen.py tests/test_evolution2_evolutionary_search.py tests/test_evolution2_persist_reset_scoring.py::test_hidden_isolation_allows_fingerprint_overlap_not_hidden_returns tests/test_evolution2_persist_reset_scoring.py::test_persist_reset_crn_and_separate_controls -p no:cacheprovider -o addopts='' -q`.
+**136 passed in1.05s**. This is the relevant synthetic regression set,
+not the full repository scientific/collection suite.
+
+## Remaining scientific entry conditions and one next milestone
+
+Only this prospective factory is integrated; historical callers stay
+unchanged. There is no model-training replication, new scientific task
+registration, real-controller budget allocation, promotion or completed
+learning-to-learn evaluation. A callback must still be trusted to return
+raw permitted outcomes, and expected hashes must have independent
+protocol provenance. The API cannot establish dataset disjointness or
+scientific approval by itself.
+
+Next: perform one **source-only readiness audit** of the existing
+method-sensitive persist-versus-reset study under this corrected
+feedback path, checking raw primary metrics, reference-selection
+fairness, clipping, model provenance, missing-result rules and resource
+preconditions. Do not collect outcomes, retrain, create an allocation,
+register a holdout or unlock scientific dispatch during that audit.

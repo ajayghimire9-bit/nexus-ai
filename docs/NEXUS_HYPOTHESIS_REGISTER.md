@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — E2.27 prospective evaluation contract, engineering pass only
+
+Manifest-gated frozen feedback preserves selected-planner sensitivity,
+query-extreme invariance, raw/unit separation, cache fairness and hidden
+training isolation in synthetic fixtures. Guarded cache hits reject bool
+aliases. No learning, transfer or control hypothesis was tested. No
+scientific gate is unlocked. Report `NEXUS_E2_27_FEEDBACK_INTEGRATION.md`.
+
 ## Latest — E2.26 feedback-isolation contract, engineering pass only
 
 An opt-in frozen training-reference scale passes synthetic invariance

@@ -8,6 +8,12 @@ instead of opening parallel packages.
 
 ## Canonical stacks (keep)
 
+Prospective method-sensitive hidden evaluation can use
+`persist_reset_scoring.prospective_hidden_evaluator` with its saved,
+hash-verified training-scale manifest. It reuses `MethodSensitiveHiddenEval`
+and checks scope before cache access. See `NEXUS_E2_27_FEEDBACK_INTEGRATION.md`.
+This is synthetic integration evidence, not a scientific run authorization.
+
 For future feedback normalization use the existing `TrustedEvaluator`
 opt-in `freeze_feedback_scale` and `FrozenTrainingFeedbackScale` in
 `pendulum_acrobot_protocol_v2_pilot`. See
