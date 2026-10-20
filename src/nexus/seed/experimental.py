@@ -255,7 +255,28 @@ class Sandbox:
             raise ValueError('session_budget_exhausted')
         inputs = {}
         dataset_hashes = {}
-        if mode == 'exploration':
+        study = type(spec['recipe']) is dict and spec['recipe'].get('adapter')=='seed_nonlinear_learning_v1'
+        if study:
+            if mode!='exploration' or any(spec[k] is not None for k in ('train','development','model_run','assessment','protocol','gate')):
+                raise ValueError('registered_seed_development_study_only')
+            item=spec['recipe']
+            if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or item['config_path']!='configs/seed_nonlinear_learning.json' or item['protocol_path']!='docs/NEXUS_SEED_NONLINEAR_LEARNING_PROTOCOL.md':
+                raise ValueError('vetted_study_manifest_required')
+            for path,key in ((item['config_path'],'config_sha256'),(item['protocol_path'],'protocol_sha256')):
+                if hashlib.sha256((self.repository/path).read_bytes()).hexdigest()!=item[key]:raise ValueError('study_registration_hash')
+            if subprocess.check_output(['git','status','--porcelain'],cwd=self.repository).strip():
+                raise ValueError('study_requires_clean_precommitted_code')
+            if any(r['spec'].get('recipe',{}).get('config_sha256')==item['config_sha256'] for r in self.records('reserved') if type(r['spec'].get('recipe')) is dict):
+                raise ValueError('study_configuration_consumed')
+            c=read(self.repository/item['config_path'])
+            from .nonlinear_learning_audit import config_check
+            bounds=config_check(c)
+            if (bounds['real_steps']>caps['real_steps'] or bounds['imagined_transitions']>caps['imagined_transitions'] or
+                bounds['outer_updates']>caps['updates'] or c['max_wall_s']>min(caps['wall_s'],remaining) or c['max_wall_s']>caps['cpu_s']):
+                raise ValueError('study_grant_insufficient_for_locked_plan')
+            inputs=dict(study_config=c,repository=str(self.repository))
+            dataset_hashes=dict(registered_tasks=digest(c['tasks']),config=item['config_sha256'],protocol=item['protocol_sha256'])
+        elif mode == 'exploration':
             recipe(spec['recipe'])
             if any(spec[k] is not None for k in ('model_run', 'assessment', 'protocol', 'gate')):
                 raise ValueError('exploration_cannot_access_assessment')
@@ -304,9 +325,17 @@ class Sandbox:
         sources = {p: hashlib.sha256((self.repository/p).read_bytes()).hexdigest() for p in (
             'src/nexus/seed/experimental.py', 'src/nexus/seed/experimental_worker.py',
             'src/nexus/nn/factory.py', 'src/nexus/nn/activations.py')}
+        if study:
+            for p in ('src/nexus/seed/nonlinear_learning.py','src/nexus/seed/nonlinear_learning_audit.py',
+                      'src/nexus/seed/learning_benchmark.py','src/nexus/seed/plasticity.py',
+                      'src/nexus/seed/action_readout.py','src/nexus/seed/state_contract.py',
+                      'src/nexus/seed/grounded_world.py','src/nexus/seed/latent_planner.py',
+                      'src/nexus/world/seed_rssm.py','src/nexus/world/planning.py'):
+                sources[p]=hashlib.sha256((self.repository/p).read_bytes()).hexdigest()
         wall_cap = min(caps['wall_s'], remaining)
         request = dict(mode=mode, recipe=spec['recipe'], inputs=inputs, caps=caps,
                        memory_policy=grant['memory_policy'])
+        if study:request['adapter']='seed_nonlinear_learning_v1'
         write_new(directory/'input.json', request)
         self.append('reserved', dict(run_id=run_id, mode=mode, spec=spec, spec_sha256=digest(spec),
                     grant=grant_id, dataset_hashes=dataset_hashes, wall_cap_s=wall_cap,
@@ -341,7 +370,10 @@ class Sandbox:
                 reason = 'worker_failed_or_cpu_limit'
             if reason is None:
                 output = read(directory/'output.json')
-                validate_output(output, spec, caps, inputs)
+                if study:
+                    from .nonlinear_learning_audit import validate_output as study_validate
+                    study_validate(output,inputs['study_config'],caps)
+                else:validate_output(output, spec, caps, inputs)
                 if mode != 'exploration' and digest(output['model']) != digest(inputs['model']):
                     raise ValueError('assessment_changed_frozen_model')
                 if any(hashlib.sha256((self.repository/p).read_bytes()).hexdigest() != h for p,h in sources.items()):
@@ -361,7 +393,8 @@ class Sandbox:
                       charged_wall_s=elapsed, grant=grant_id, spec_sha256=digest(spec), revision=revision,
                       dataset_hashes=dataset_hashes, worker=output,
                       baseline_run=inputs.get('baseline_run'), memory_policy=grant['memory_policy'],
-                      resource_upper_bounds=caps)
+                      resource_upper_bounds=caps,
+                      adapter='seed_nonlinear_learning_v1' if study else 'numeric_mlp')
         write_new(directory/'result.json', result)
         self.append('settled', dict(run_id=run_id, charged_wall_s=elapsed,
                     result_sha256=digest(result), status=result['status']))
@@ -418,7 +451,8 @@ class Sandbox:
                 rows.append(dict(id=row['id'], mode=row['mode'], status=row['status'], failure=row['failure'],
                     wall_s=row['wall_s'], memory_mb=row['peak_sampled_rss_mb'], revision=row['revision'],
                     metrics=worker.get('metrics'), curve=worker.get('curve', []),
-                    resources=worker.get('resources'), model_sha256=digest(worker['model']) if 'model' in worker else None))
+                    resources=worker.get('resources'), model_sha256=digest(worker['model']) if 'model' in worker else None,
+                    study=worker['study']['analysis'] if worker.get('adapter')=='seed_nonlinear_learning_v1' else None))
             except FileNotFoundError:
                 rows.append(dict(id=reserved['run_id'],mode=reserved['mode'],status='reserved_or_interrupted',
                                  wall_s=reserved['wall_cap_s'],curve=[]))
