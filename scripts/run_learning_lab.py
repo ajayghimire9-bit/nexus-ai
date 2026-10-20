@@ -88,6 +88,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--allow-seed',action='store_true');parser.add_argument('--seed-directory',type=Path,default=ROOT/'runs/seed-sessions');parser.add_argument('--max-runtime-s',type=int,default=900);parser.add_argument('--fixture-worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--seed-encoder',type=Path);parser.add_argument('--seed-encoder-sha256');parser.add_argument('--seed-meta-questions',action='store_true')
     parser.add_argument('--seed-grounded-model',type=Path);parser.add_argument('--seed-grounded-sha256')
     parser.add_argument('--seed-action-readout',type=Path);parser.add_argument('--seed-action-readout-sha256')
+    parser.add_argument('--seed-surprise-study',type=Path);parser.add_argument('--seed-surprise-sha256')
     parser.add_argument('--seed-plasticity-controller',type=Path);parser.add_argument('--seed-plasticity-sha256');args=parser.parse_args()
     if bool(args.seed_plasticity_controller)!=bool(args.seed_plasticity_sha256) or args.seed_plasticity_controller and not args.seed_grounded_model:raise ValueError('plasticity_requires_owner_verified_core')
     if args.fixture_worker:
@@ -95,9 +96,10 @@ def main():
     if not 1024<=args.port<=65535 or not 1<=args.max_runtime_s<=900:raise ValueError('local_server_limits')
     if bool(args.seed_encoder)!=bool(args.seed_encoder_sha256) or not args.allow_seed and (args.seed_encoder or args.seed_meta_questions):raise ValueError('explicit_seed_model_path_hash_and_opt_in_required')
     encoder=None
-    grounded=None;plasticity=None
+    grounded=None;plasticity=None;surprise=None
     readout=None
     if bool(args.seed_action_readout)!=bool(args.seed_action_readout_sha256) or args.seed_action_readout and not args.seed_grounded_model:raise ValueError('readout_requires_verified_parent')
+    if bool(args.seed_surprise_study)!=bool(args.seed_surprise_sha256) or args.seed_surprise_study and not args.seed_grounded_model:raise ValueError('surprise_requires_verified_core')
     if bool(args.seed_grounded_model)!=bool(args.seed_grounded_sha256) or (args.seed_grounded_model and not args.allow_seed):
         raise ValueError('explicit_grounded_path_hash_and_opt_in_required')
     if args.seed_grounded_model:
@@ -105,6 +107,9 @@ def main():
         torch.set_num_threads(1)
         from nexus.world.seed_rssm import SeedRSSM
         grounded,_=SeedRSSM.load(args.seed_grounded_model,args.seed_grounded_sha256)
+        if args.seed_surprise_study:
+            from nexus.seed.surprise import load_calibration
+            surprise=load_calibration(args.seed_surprise_study,args.seed_surprise_sha256,args.seed_grounded_sha256)
         if args.seed_plasticity_controller:
             from nexus.seed.plasticity import PlasticityController
             plasticity=PlasticityController.load(args.seed_plasticity_controller,args.seed_plasticity_sha256)
@@ -120,7 +125,7 @@ def main():
     with ThreadingHTTPServer(('127.0.0.1',args.port),LabHandler) as server:
         if args.allow_seed:
             from nexus.seed.lab import SeedWorkspace
-            server.seed_workspace=SeedWorkspace(args.seed_directory,language_encoder=encoder,meta_questions=args.seed_meta_questions,grounded_model=grounded,grounded_hash=args.seed_grounded_sha256,action_readout=readout,plasticity_controller=plasticity,plasticity_hash=args.seed_plasticity_sha256)
+            server.seed_workspace=SeedWorkspace(args.seed_directory,language_encoder=encoder,meta_questions=args.seed_meta_questions,grounded_model=grounded,grounded_hash=args.seed_grounded_sha256,action_readout=readout,plasticity_controller=plasticity,plasticity_hash=args.seed_plasticity_sha256,surprise_gate=surprise)
         server.fixture_lock=threading.Lock()
         server.fixtures_enabled=args.allow_fixtures;server.requests_remaining=10;server.timeout=.5
         end=time.monotonic()+args.max_runtime_s

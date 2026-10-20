@@ -17,7 +17,7 @@ from .state_contract import Belief,world_memory
 
 
 class GroundedAgent:
-    def __init__(self,model,model_hash,action_readout=None,adaptive=None,controller_hash=None):
+    def __init__(self,model,model_hash,action_readout=None,adaptive=None,controller_hash=None,surprise_gate=None):
         self.model=model;self.model_hash=model_hash
         self.h,self.z=model.initial();self.context=None;self.flags=[0,0,0]
         self._belief=Belief(model)
@@ -25,9 +25,12 @@ class GroundedAgent:
         self.pending_question=None
         self.action_readout=action_readout
         self.adaptive=adaptive;self.controller_hash=controller_hash
+        self.surprise_gate=surprise_gate
         if action_readout is not None and action_readout.parent_hash!=model_hash:raise ValueError('readout_parent_hash')
 
     def restore_state(self,session):
+        if self.surprise_gate is not None:
+            self.surprise_gate.seen.update(json.loads(e.payload_json)['actual_ref'] for e in session.journal.snapshot() if e.kind=='seed_surprise')
         if self.adaptive is not None:
             for event in reversed(session.journal.snapshot()):
                 if event.kind=='seed_adaptive_state':
@@ -237,7 +240,7 @@ class GroundedAgent:
             choice={'ask':4,'adaptive_ask':4,'store':5,'retrieve':6}.get(action)
             planning=None
             rx=None;base=None
-            if self.adaptive is not None:
+            if self.adaptive is not None or self.surprise_gate is not None:
                 from .adaptive_state import reward_features
                 prop=tensors([observation(obj,goal,self.flags)])[2]
                 rx=reward_features(self.h,self.z,prop)
@@ -285,6 +288,10 @@ class GroundedAgent:
             if self.adaptive is not None:
                 receipt=self.adaptive.learn('reward',rx[choice],reward-float(base[choice]),actual_ref,key=digest((ids[0],goal)))
                 self.save_adaptive(session,actual_ref,receipt);result['adaptation']=receipt
+            if self.surprise_gate is not None:
+                surprise=self.surprise_gate.observe(actual_reward=reward,predicted_reward=float(base[choice]),receipt_id=actual_ref,phase='actual_experience')
+                session.event('seed_surprise',dict(actual_ref=actual_ref,model_hash=self.model_hash,**surprise))
+                result['surprise']=surprise
             if done:
                 from .grounded_meta import RECIPES
                 # Only source/training receipt API is accepted by the adapter;

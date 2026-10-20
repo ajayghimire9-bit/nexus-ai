@@ -93,6 +93,19 @@ def test_manifest_cannot_be_skipped(tmp_path):
     with pytest.raises(ValueError,match='saved_manifest'):require_manifest({},tmp_path)
 
 
+def test_actual_session_emits_surprise_without_modifying_core_or_granting_edit():
+    from nexus.seed.grounded_agent import GroundedAgent
+    from nexus.seed.core import Session
+    m=SeedRSSM();g=SurpriseGate([.01],development_hash='a'*64);s=Session()
+    s.grounded_agent=GroundedAgent(m,'b'*64,surprise_gate=g);weights=copy.deepcopy(m.state_dict())
+    out=s.request(dict(op='grounded',action='decide',reference='o1',x=5,y=5,word='dax'))
+    assert out['result']['result']['surprise']['modified'] is False
+    assert len([e for e in s.journal.snapshot() if e.kind=='seed_surprise'])==1
+    assert all(torch.equal(v,m.state_dict()[k]) for k,v in weights.items())
+    size=len(g.seen);s.request(dict(op='inspect'));assert len(g.seen)==size
+    restored=Session.restore(s.snapshot());assert restored.snapshot()==s.snapshot()
+
+
 def test_credit_audit_uses_real_fits_and_no_heldout_updates():
     from nexus.seed.edit_credit_audit import evaluate
     torch.manual_seed(49);x=torch.randn(360,34);base=torch.zeros(360);y=x[:,0]*.2

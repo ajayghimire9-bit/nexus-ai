@@ -9,6 +9,20 @@ def vector(v,n):
 
 
 def validate_record(kind,p,session):
+    if kind=='seed_surprise':
+        import json
+        fields={'actual_ref','model_hash','surprise','investigate','modified','development_hash','scale','threshold','epsilon','actual_reward','predicted_reward'}
+        if type(p) is not dict or set(p)!=fields or p['modified'] is not False or type(p['investigate']) is not bool:raise ValueError('surprise_record_schema')
+        for k in ('model_hash','development_hash'):
+            if type(p[k]) is not str or len(p[k])!=64 or any(c not in '0123456789abcdef' for c in p[k]):raise ValueError('surprise_provenance_hash')
+        for k in ('surprise','scale','threshold','epsilon','actual_reward','predicted_reward'):
+            if type(p[k]) not in (int,float) or not math.isfinite(p[k]):raise ValueError('surprise_finite')
+        if p['scale']<0 or p['epsilon']<=0 or p['threshold']<=0:raise ValueError('surprise_fixed_scale')
+        events=session.journal.snapshot();actual=next((json.loads(e.payload_json) for e in events if e.kind=='seed_grounded_state' and e.fingerprint==p['actual_ref']),None)
+        if actual is None or actual['model_hash']!=p['model_hash'] or actual['actual_reward']!=p['actual_reward'] or any(json.loads(e.payload_json)['actual_ref']==p['actual_ref'] for e in events if e.kind=='seed_surprise'):raise ValueError('surprise_actual_receipt')
+        expected=abs(p['actual_reward']-p['predicted_reward'])/(p['scale']+p['epsilon'])
+        if abs(p['surprise']-expected)>1e-8 or p['investigate']!=(expected>p['threshold']):raise ValueError('surprise_arithmetic')
+        return
     if kind=='seed_adaptive_state':
         from .adaptive_records import validate_state
         if type(p) is not dict or set(p)!={'model_hash','controller_hash','source_ref','state','receipt'}:raise ValueError('adaptive_record')

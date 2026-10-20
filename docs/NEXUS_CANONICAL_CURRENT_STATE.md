@@ -1,5 +1,12 @@
 # NEXUS canonical current state
 
+## Latest Seed action study
+
+Read `NEXUS_SEED_SURPRISE_READOUT_RESULTS.md` first. Existing nonlinear readout
+passed a fresh authored action/control development screen; still loses to greedy.
+Frozen core unchanged. One-use assessments and surprise receipts implemented.
+Rank4 disabled; edit-credit selector ties historical-best. No general L2L claim.
+
 Latest Seed validation COMPLETE; learning/action/selector success not established.
 Distinct reversible repair/add/merge, cached reviews, legacy state compatibility.
 Fresh MSE learned.181507 versus stable replay.165435; action goals9.375% versus

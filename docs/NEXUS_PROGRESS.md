@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Latest Seed progress
+
+Fresh action readout: complete4773authored-step study,2.411152s,42798imagined
+rows; one frozen core unchanged. Passed registered action/control development
+screen but lost to greedy. GUI first registered6301 head,actual surprise and
+one-use assessment/replay semantics tested. Future-edit selector ties strongest
+simple baseline; rank4 remains disabled. Results:NEXUS_SEED_SURPRISE_READOUT_RESULTS.md.
+
 ## Isolated mechanisms and fresh validation completed
 
 Repair/add/merge distinct; finite retention checks, rollback, repeat-review

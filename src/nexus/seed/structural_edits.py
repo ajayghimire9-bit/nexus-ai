@@ -112,9 +112,23 @@ def review(state,channel,key):
             known_prediction_drift=p['known_prediction_drift'],training_updates=p['training_updates'],
             description_bytes=p['description_bytes'],bytes_added=p['description_bytes']-len(json.dumps(parameters(state),sort_keys=True,separators=(',',':')).encode())))
         proposals[kind]=p
-    keep=rows[0];eligible=[r for r in rows if r['eligible'] and (r['edit']=='keep' or
-        r['query_error']<=keep['query_error']-(0. if r['edit']=='merge' else .01))]
-    winner=max(eligible,key=lambda r:r['score']);adopted=winner['edit']
+    keep=rows[0]
+    from .surprise import promotion_gain
+    guard=[r for r in state.anchors[channel] if r['key']!=key]
+    original=parameters(state)
+    def old_loss(params):
+        return sum((float(value(params,channel,torch.tensor(r['x']),r['key']))-r['y'])**2 for r in guard)/len(guard) if guard else 0.
+    old=old_loss(original);eligible=[keep]
+    for row in rows:
+        if not row['eligible'] or row['edit']=='keep':continue
+        forgetting=max(0.,old_loss(proposals[row['edit']]['parameters'])-old)
+        # Logical fit/storage proxy,not FLOPs. No candidate receives credit for
+        # merely passing. Algebraic merge must meet the same positive margin.
+        cost=row['training_updates']+max(0,row['bytes_added'])/100
+        decision=promotion_gain(keep_loss=keep['query_error'],candidate_loss=row['query_error'],forgetting=forgetting,cost=cost)
+        row.update(decision,forgetting=forgetting)
+        if decision['accept']:eligible.append(row)
+    winner=max(eligible,key=lambda r:r.get('gain',0.));adopted=winner['edit']
     edit_id=commit(state,proposals[adopted])
     result=dict(status='development_only_edit_check',adopted=adopted,candidates=rows,edit_id=edit_id,cached_review=False)
     # Cache under post-promotion parameters: another identical review cannot

@@ -9,7 +9,7 @@ async function stop(){if(child){const p=child;child=null;await new Promise(r=>{p
  const corePath=path.join(root,study.config.parent_model);
  const hash=async()=>crypto.createHash('sha256').update(await fs.readFile(corePath)).digest('hex');const beforeHash=await hash();
  async function start(){await new Promise((resolve,reject)=>{
-  child=spawn(process.env.PYTHON||'python3',[path.join(root,'scripts/run_seed_adaptive_gui.py'),'--seed-directory',dir,'--port',String(port),'--max-runtime-s','120'],{cwd:root,env:process.env});
+  child=spawn(process.env.PYTHON||'python3',[path.join(root,'scripts/run_seed_adaptive_gui.py'),'--seed-directory',dir,'--port',String(port),'--max-runtime-s','120',...(process.env.NEXUS_QA_READOUT==='1'?['--with-readout']:[])],{cwd:root,env:process.env});
   let text='';child.stdout.on('data',d=>{text+=d;if(text.includes('NEXUS Learning Lab:'))resolve();});child.stderr.on('data',d=>text+=d);child.once('error',reject);child.once('exit',c=>{if(!text.includes('NEXUS Learning Lab:'))reject(Error(text+' exit '+c));});
  });}
  const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:1280,height:1000}});
@@ -51,6 +51,15 @@ async function stop(){if(child){const p=child;child=null;await new Promise(r=>{p
   await click('grounded-adaptive_rollback');if((await last()).result.status!=='nothing_to_rollback')throw Error('Unexpected rollback state');
   if(JSON.stringify(adaptive(await snapshot()))!==undoBefore)throw Error('Empty undo altered learning state');
   checks.push('checked_rollback_button_preserves_state_when_no_edit_exists');
+  if(process.env.NEXUS_QA_READOUT==='1'){
+   await page.fill('#goalX','5');await page.fill('#goalY','5');
+   if(await page.locator('#grounded-ranked_decide').isDisabled())throw Error('Readout not loaded');
+   await click('grounded-ranked_decide');const ranked=await last();
+   if(ranked.result.planning?.kind!=='learned_one_step_residual_reward_not_MPC'||ranked.result.result?.surprise?.modified!==false)throw Error('Readout/surprise path missing');
+   const fixed=JSON.stringify(adaptive(await snapshot()));await click('inspect');await click('grounded-observe');
+   if(JSON.stringify(adaptive(await snapshot()))!==fixed)throw Error('Readout inspection learned');
+   checks.push('verified_first_registered_readout_and_actual_surprise_without_auto_promotion');
+  }
   await click('correct');after=adaptive(await snapshot());if(after.blocks.meaning.some(v=>v!==0)||after.anchors.meaning.length)throw Error('Corrected meaning not invalidated');
   checks.push('correction_invalidates_stale_meaning_not_reward');
   await click('stop');await click('grounded-adaptive_decide');if((await last()).response_type!=='stopped')throw Error('Stop bypass');

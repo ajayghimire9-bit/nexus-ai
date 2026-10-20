@@ -1,5 +1,21 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — nonlinear action readout passes fresh authored development screen
+
+Source4d8b22161d530a6b35a2225847f98e88b9c224bd. Same frozen core/bank and
+Belief; reuse existing2209-parameter ActionReadout,three seeds800updates on128
+balanced source states. Fresh64-state regret .105208 vs frozen .78125. Full
+episodes meanreturn1.182917 vs frozen−.19625,random−.005,MPC−.025625,greedy1.7425.
+Readout-minus-frozen1.379167[1.174923,1.583411]; loses to greedy. Eight paired
+reset streams conditional on ONE core,not independent neural replications.
+Surprise calibrates source-development RMS and never auto-promotes. Statev3
+consumes assessment labels; legacy labels retired. Rank4 implemented/tests only,
+not enabled. Future-learning edit credit ties historical-best on source-bank
+diagnostic; no learning-to-learn established. Prior failures remain closed.
+4773authored steps,42798imagined+2981posterior rows,2.411152s.
+Ledger1905.6321034559958used/1694.3678965440042remaining.
+See NEXUS_SEED_SURPRISE_READOUT_RESULTS.md. No transfer or confirmation run.
+
 ## Latest — fresh Seed learning/action validation failed; edits isolated
 
 Source39dd835154c1ccd3fd5dcad4c2cb71098757bba3. Repair/shared fitting, scoped

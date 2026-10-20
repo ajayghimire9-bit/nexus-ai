@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## After nonlinear readout improvement — transfer of decision quality
+
+Freeze the source-trained readout rule and assess new goal/layout distributions
+with matched recurrent histories and independently trained core replications.
+Do not optimize the now-closed64-state or32-reset samples. Existing positive
+authored result does not imply broad control or learned-learning benefit.
+No additional run initiated; register scope and budget before collection.
+
 ## After fresh failure — action-conditioned residual representation
 
 One question:does a bounded action-by-observation interaction residual improve

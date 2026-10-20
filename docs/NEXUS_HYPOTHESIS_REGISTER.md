@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest Seed hypotheses
+
+H-action-nonlinear: passed fresh authored development screen,not general
+control. Meanregret .105208 vs .78125; goals64.58% vs12.5%; greedy100%.
+H-future-edit-credit: no strongest-baseline gain; adaptive .006917 ties
+historical-best on the held-out source bank. No general L2L established.
+Rank4: implementation/tests only,no efficacy result. Historical failures closed.
+
 ## Seed fresh learning and actions — both registered gates FAILED
 
 H-learning required10%curve-MSE gain versus fixed/scaled replay/none/neutral,

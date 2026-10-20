@@ -6,6 +6,12 @@
 
 ## What is NEXUS?
 
+**Latest action test:** the existing nonlinear readout now improves fresh action
+ranking and goal completion over frozen ranking, random and latent MPC in the
+authored grid. Known-grid greedy remains stronger. Surprise flags investigate;
+one-use assessments protect edit decisions. [Results](docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md).
+Run `PYTHONPATH=src:.deps python3 scripts/run_seed_adaptive_gui.py --with-readout`.
+
 **Fresh validation:** repair, merge and scoped addition now have distinct,
 reversible contracts. Stable replay beat learned plasticity; neural action and
 selector improvement were not established. Transfer remained gated off.

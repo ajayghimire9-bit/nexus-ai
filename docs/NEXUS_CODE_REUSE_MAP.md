@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+## Latest Seed reuse
+
+`action_readout.py` is reused,not replaced. `readout_validation.py` validates
+fresh source/dev/audit/control grids; `surprise.py` owns pure gain and one-use
+assessment helpers. SAME AdaptiveState/structural_edits/OuterSeedMeta and
+Session journal retain learning,rollback and source-feedback ownership.
+`hidden_residual.py` is a256-parameter optional readout adapter,not recurrent
+state replacement,and is NOT enabled or scientifically evaluated.
+
 structural_edits operates on SAME AdaptiveState/Session journal: distinct pure
 proposal/apply/rollback, no duplicate memory. learning_benchmark reuses SAME
 SeedRSSM/Belief/correction; stable replay is a comparison update, not another

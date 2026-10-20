@@ -1,5 +1,13 @@
 # NEXUS full research registry
 
+## Latest registered Seed study
+
+Seed surprise/readout,source4d8b22161d530a6b35a2225847f98e88b9c224bd:
+complete,development action screen passed; greedy remains stronger. Preserved
+`artifacts/seed_surprise_readout.json`,manifest andthreeJSON heads. No reserved
+physics or prior64-state audit used. Optionalrank4 notrun. See
+`NEXUS_SEED_SURPRISE_READOUT_PROTOCOL.md` and `NEXUS_SEED_SURPRISE_READOUT_RESULTS.md`.
+
 Seed fresh learning validation39dd835: complete, both primary object gatesFAIL.
 Three new64-update plasticity fits, one frozen core/eight new assessment streams.
 Stable replay beats learned MSE; learned/fixed action trajectories identical,

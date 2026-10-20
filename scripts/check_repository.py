@@ -23,6 +23,7 @@ DOCUMENTS = (
     'docs/seed/ADAPTIVE_QUICKSTART.md','docs/NEXUS_SEED_MEMORY_AWARE_PROTOCOL.md',
     'docs/NEXUS_SEED_MEMORY_AWARE_RESULTS.md',
     'docs/NEXUS_SEED_LEARNING_VALIDATION_PROTOCOL.md','docs/NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md',
+    'docs/NEXUS_SEED_SURPRISE_READOUT_PROTOCOL.md','docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md',
 )
 REQUIRED = (
     'AGENTS.md', 'pyproject.toml', 'Makefile', '.gitignore',
@@ -65,7 +66,7 @@ def check(root=ROOT):
     # A new, committed engineering task can evolve runtime code without
     # retroactively rewriting the historical preservation receipt.
     overrides={}
-    for change_path in (root/'artifacts/seed_hybrid_code_changes.json',root/'artifacts/seed_action_code_changes.json',root/'artifacts/seed_contract_code_changes.json',root/'artifacts/seed_contract_document_changes.json',root/'artifacts/seed_plasticity_code_changes.json',root/'artifacts/seed_plasticity_document_changes.json',root/'artifacts/seed_validation_code_changes.json',root/'artifacts/seed_validation_document_changes.json'):
+    for change_path in (root/'artifacts/seed_hybrid_code_changes.json',root/'artifacts/seed_action_code_changes.json',root/'artifacts/seed_contract_code_changes.json',root/'artifacts/seed_contract_document_changes.json',root/'artifacts/seed_plasticity_code_changes.json',root/'artifacts/seed_plasticity_document_changes.json',root/'artifacts/seed_validation_code_changes.json',root/'artifacts/seed_validation_document_changes.json',root/'artifacts/seed_readout_changes.json'):
         if not change_path.exists():continue
         change=json.loads(change_path.read_text())
         baseline=hashlib.sha256((root/'artifacts/seed_repository_refresh.json').read_bytes()).hexdigest()

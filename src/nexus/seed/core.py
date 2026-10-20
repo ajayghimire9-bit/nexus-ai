@@ -454,7 +454,7 @@ class Session:
                         type(p['reduction']) not in (int,float) or p['reduction']!=reduction):
                     raise ValueError('saved_feedback_not_reproduced')
                 s.event(event.kind,p)
-            elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information','seed_grounded_action_rank','seed_adaptive_state'):
+            elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information','seed_grounded_action_rank','seed_adaptive_state','seed_surprise'):
                 from .grounded_records import validate_record
                 validate_record(event.kind,p,s)
                 s.event(event.kind,p)
