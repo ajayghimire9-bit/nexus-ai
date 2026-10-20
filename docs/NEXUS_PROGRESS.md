@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Seed contract correction — implementation fixed, learned control not improved
+
+d4e6ff3 matched study:12 scratch fits/6 untrained, same30278/28870 parameter
+counts.4208 authored steps,208912 imagined,27.0816s. Exact expected grid and18
+local checkpoint hashes pass. New fixed GUI model is tanh/aligned5511. Actual
+Chrome validates nonmutating inspection/speech, recurrent restore, pruning modes,
+questions and stop. Both recipe practical screens fail; no robust ranking or
+return gain. Neural language parsing unavailable; grammar remains37. Separate
+frozen audit recovers raw prediction vectors with1152 metric matches and no
+simulation. Final ledger1893.6321034559958/1706.3678965440042. No further learning.
+
 ## Seed grounded architecture — connected prototype, useful learning mixed
 
 Eight requested component paths implemented; existing world/MPC/factory/

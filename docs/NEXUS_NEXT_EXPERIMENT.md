@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## After corrected-contract failure — balanced immediate reward learning proposed
+
+Hold shared Belief, source-bank, task reward and existing frozen weights fixed.
+Ask whether the small preserved observed-state residual reward head can learn
+useful nine-action ranking from balanced new source transitions and improve
+fresh control. The old readout prototype/protocol is UNRUN and must be revised
+to the corrected contract/reward before collection. No automatic run or training
+extension here. Do not grow37-way concept grammar or increase model capacity to
+avoid the negative result. Inspect decision-quality signal before library growth.
+
 ## After grounded Seed pilot — action-ranking correctness proposed
 
 Freeze both new JSON models. Separately register a small authored state/action

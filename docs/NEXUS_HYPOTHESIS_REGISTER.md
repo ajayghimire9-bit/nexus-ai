@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed H-contract — correctness passed; practical improvement screen FAILED
+
+Precommit d4e6ff3;3 paired scratch seeds per original recipe,legacy vs aligned
+plus untrained,pruning on/off. Regret reduction tanh+.00521[-.01720,.02762],
+ReLU-.00104[-.00552,.00344]. All control-gain/pruning CIs include0. Source memory,
+V3 semantics and GUI mutation corrected; no reliable decision gain established.
+Separate pixel/structured ablation is weak; parser8/24. Neural known37-grammar
+proposal helps over8-candidate symbolic cap, loses to full37 reference; not new
+concept-language learning. Preserve old outcomes and unrun residual head.
+
 ## Seed grounded H-engineering / H-development
 
 One locked authored pilot from fd957655ae1acde41d55d05e10e9b5c3dcfbf3cf.

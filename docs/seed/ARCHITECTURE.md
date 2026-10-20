@@ -1,5 +1,12 @@
 # Seed grounded architecture
 
+Current contract: [shared-state results](../NEXUS_SEED_CONTRACT_RESULTS.md).
+Read-only inspection does not commit h/z. World conditioning uses a fixed
+source-only bank in training/control/GUI; user concept prototypes are retrieved
+read-only and cannot substitute an unseen bank. V3 is current-state behavior
+value. Both pruning modes are available. The matched practical screen failed;
+these correctness improvements do not establish better control.
+
 All eight requested components have connected implementation paths. Their
 presence is distinct from demonstrated usefulness. The finite S0–S1 engine
 remains available. The earlier command-MLP pilot was never executed.

@@ -1,5 +1,23 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — shared Seed state/memory/value contract; decision screen failed
+
+Source d4e6ff3,12 new scratch fits+6 untrained controls, same parameter counts.
+One posterior/observed time; read-only GUI does not advance h/z. Fixed source
+bank shared across phases; current-state behavior V3 targets, terminal-aware
+pruning; GUI/source task reward aligned. 121 relevant tests, actual Chrome
+read-only/restart/pruning/teaching/stop QA pass. Model/seed-averaged action
+regret remains~.42. Both recipe practical screens FAIL; all control-gain and
+pruning intervals include0. Random/greedy and some untrained controls stronger.
+Perception ablation weak; parser8/24; neural known-grammar proposals outperform
+equal8-candidate symbolic search but trail full37 symbolic reference. No neural
+instruction decoder, new abstractions, control/AGI or learning-to-learn claim.
+4208 authored steps/208912 imagined/27.0816s. Separate frozen replay recovers1152
+omitted prediction vectors,0 real/10368 imagined/1.1326s; original unchanged.
+Final carried ledger1893.6321034559958 /1706.3678965440042. See
+NEXUS_SEED_CONTRACT_RESULTS.md. Earlier residual readout prototype remains UNRUN;
+do not execute its old reward/contract protocol unchanged. No grammar growth.
+
 ## Current implementation — Seed grounded architecture
 
 The active request extends the finite Seed engine with a shared multimodal GRU,

@@ -1,5 +1,12 @@
 # NEXUS code-reuse map
 
+Seed state_contract.Belief is the shared posterior-time contract over SAME
+SeedRSSM, not another world-model stack. coherent trainer, controller evaluation
+and existing GroundedAgent use it. v2 checkpoint adds fixed source bank metadata
+without parameters; v1 remains loadable. SAME RandomShootingMPC adapter gets an
+explicit pruning toggle and terminal-aware V3 probe. Capability audit reuses
+SAME parser/Predicate consistency checks. No parallel memory/evolution/meta stack.
+
 Grounded Seed extends nexus.world with SeedRSSM using SAME nn.factory; its
 explicit-state adapter subclasses SAME RandomShootingMPC and InferenceCounter.
 Program margins execute SAME nn.expr trees. OuterSeedMeta wraps SAME existing

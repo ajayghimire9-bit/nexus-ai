@@ -1,0 +1,67 @@
+{
+  "schema": "seed_contract_delivery_v1",
+  "execution_sha": "d4e6ff3883a044d507d2e98e0af6418c880a4db8",
+  "prediction_recovery_protocol_commit": "a618b59",
+  "hashes": {
+    "configs/seed_contract_study.json": "6df3c51cc40251abcb49b0b474aa8683e8ed8f962c96cadd42e3453d861e49f0",
+    "artifacts/seed_contract_study.json": "ea4c714f0e92d4b5781f6e5abeb0c13b5a95523280d498abaeae1a7da372cc2a",
+    "artifacts/seed_contract_prediction_replay.json": "aa975a17c5a215808e3c6c7115ee14c83cd5cc8e1b8ca79d9ad83a570ba2eb55",
+    "artifacts/seed_contract_gui.json": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b",
+    "scripts/check_seed_contract_browser.cjs": "157c38e7968ed5a0922d56b7cb5a34efc8748d4d7bbd9f650506b75657b11ce3",
+    "src/nexus/seed/state_contract.py": "896982d3f9a05f6e86b52deeaea62882d79cce61a383906112c4f45fd81d5730"
+  },
+  "decision": "complete_valid_practical_improvement_screen_failed",
+  "tests": {
+    "command": "python3 -m pytest -o addopts='' -q tests/test_seed_state_contract.py tests/test_seed_action_readout.py tests/test_seed_action_ranking.py tests/test_seed_grounded.py tests/test_seed_architecture.py tests/test_seed.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py",
+    "passed": 121,
+    "seconds": 9.01,
+    "scope": "relevant regression suite, not entire historical repository suite"
+  },
+  "audits": {
+    "repository_results": "passed",
+    "all_18_local_checkpoints": "passed",
+    "independent_prediction_records": 1152,
+    "maximum_arithmetic_difference": 5.551115123125783e-17,
+    "historical_artifacts_byte_identical": 699,
+    "historical_artifact_reference": "108af151eb93b03cc23f5e0fcc843310faaf9bd4",
+    "repository_links": "passed"
+  },
+  "gui": {
+    "browser": "Chrome 155.0.8059.85",
+    "checks": [
+      "source_bank_and_V3_installed",
+      "readonly_before_and_after_action",
+      "process_restart_restore",
+      "pruned_and_unpruned_actions",
+      "question_and_label",
+      "stop_enforced",
+      "mobile_layout"
+    ],
+    "page_errors": 0,
+    "external_requests": 0,
+    "model_selection": "preregistered aligned/tanh/5511, not outcome-selected",
+    "screenshot": "artifacts/seed_contract_mobile.png"
+  },
+  "resources": {
+    "study_cpu_wall_seconds": 27.081597875003354,
+    "study_authored_steps": 4208,
+    "study_imagined_candidate_states": 208912,
+    "study_optimizer_updates": 1440,
+    "recovery_real_steps": 0,
+    "recovery_imagined_candidate_states": 10368,
+    "recovery_posterior_prior_rows": 1152,
+    "session_execution_debit_seconds": 33,
+    "carried_session_used_seconds": 1893.6321034559958,
+    "carried_session_remaining_seconds": 1706.3678965440042,
+    "engineering_gui_checks": "separate authored engineering checks, not scientific replications"
+  },
+  "limits": [
+    "n=3 independent training seeds per recipe; architectures not pooled",
+    "authored grid only; no cross-environment claim",
+    "raw prediction recovery is not independent confirmation",
+    "18 full checkpoints remain local; fixed GUI checkpoint tracked",
+    "language parser 8/24; neural semantic decoder absent",
+    "residual reward-readout experiment remains unrun",
+    "no architecture growth or general learning claim"
+  ]
+}

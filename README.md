@@ -6,6 +6,11 @@
 
 ## What is NEXUS?
 
+**Latest: corrected state/memory/value contracts, tested without increasing
+parameter count.** [Run the current GUI](docs/seed/CONTRACT_QUICKSTART.md) ·
+[Matched results](docs/NEXUS_SEED_CONTRACT_RESULTS.md). Read-only inspection is
+stable, but the experiment did **not** establish better learned control.
+
 **New optional grounded prototype:** shared text/pixel/proprioceptive GRU,
 recurrent h/z world model, concept programs, latent planning and local trace
 decoder. [Try it](docs/seed/GROUNDED_QUICKSTART.md) ·

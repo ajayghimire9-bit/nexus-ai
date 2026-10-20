@@ -6,6 +6,10 @@ intelligence mission remains a research ambition.
 
 ## Use and understand Seed
 
+- [Current shared-contract GUI](seed/CONTRACT_QUICKSTART.md)
+- [Contract, ranking and capability results](NEXUS_SEED_CONTRACT_RESULTS.md)
+- [Precommitted matched contract protocol](NEXUS_SEED_CONTRACT_PROTOCOL.md)
+
 - [Grounded neural-agent quickstart](seed/GROUNDED_QUICKSTART.md)
 - [Grounded pilot: actual results and limitations](NEXUS_SEED_GROUNDED_RESULTS.md)
 - [Grounded locked protocol](NEXUS_SEED_GROUNDED_PROTOCOL.md)

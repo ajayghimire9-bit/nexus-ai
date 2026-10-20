@@ -77,6 +77,8 @@ inside EACH architecture, after averaging states/episodes. They are conditional
 on this finite authored suite. No episode/state/candidate pseudoreplication.
 All per-seed/per-state/per-episode measurements remain in the raw artifact.
 
+![Control returns and per-seed means](assets/seed-contract-control.svg)
+
 ## Separate capabilities
 
 **Perception:** aligned next non-goal sensor MAE pixels/structured is .4252/.4248
@@ -128,10 +130,14 @@ Explicit `verify_seed_contract_study.py --checkpoints` requires all18 and fails
 clearly on missing/mismatched files; it never silently skips requested auditing.
 
 The original capture omitted nine predicted reward vectors while retaining
-metrics and true outcomes. A separate committed recovery protocol/runner will
-reconstruct them from frozen saved weights, verify1e−7 metric equality, and save
-a child artifact without changing the original or collecting new transitions.
-This is audit replay, not independent confirmation. No further learning follows.
+metrics and true outcomes. Separate committed audit a618b59 reconstructed all
+1152 model/state vectors in1.132617seconds,10368 imagined candidate transitions,
+0 real steps, and verified1e−7 metric equality. Original result is unchanged;
+raw vectors are in seed_contract_prediction_replay.json. Independent stdlib
+selected-index/regret/ranking arithmetic also verifies them. This is audit replay,
+not independent confirmation. Conservative4s recovery/audit debit gives final
+ledger **1893.6321034559958used /1706.3678965440042remaining**. No further learning
+follows. The earlier residual readout study remains unrun.
 
 ## One next scientific question
 

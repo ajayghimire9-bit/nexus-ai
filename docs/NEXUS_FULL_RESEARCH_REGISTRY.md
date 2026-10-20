@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Seed contract study fromd4e6ff3: complete, practical screen failed.12 paired
+scratch fits+6 untrained; fixed architecture; shared belief/source-bank/V3/GUI
+task reward.4208 authored/208912 imagined/27.0816s. Actual Chrome contract QA.
+Separate a618b59 frozen prediction replay0 real/10368 imagined, original raw
+unchanged. Repository-only audit and explicit18-local-file audit separated.
+See NEXUS_SEED_CONTRACT_RESULTS.md; no old result edits or concept grammar growth.
+
 Seed grounded authored pilot COMPLETE from fd957655: 626 authored interactions,
 4080 imagined states, two120-update new models,4.325s. Precommitted protocol
 NEXUS_SEED_GROUNDED_PROTOCOL; raw seed_grounded_pilot.json and bounded JSON

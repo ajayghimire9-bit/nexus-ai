@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Current Seed contract study COMPLETE/FAILED practical improvement. New matched
+legacy/aligned scratch fits plus untrained/random/greedy controls; no parameter
+increase. Shared Belief, fixed source memory bank, V3 current-state targets and
+read-only GUI verified. Rank regret stays~.42; all control/pruning CIs include0.
+Parser8/24; known-grammar neural search beats equal8 candidates but loses to
+larger37-candidate symbolic baseline. Source d4e6ff3; preserved original and
+separate deterministic prediction replay. See NEXUS_SEED_CONTRACT_RESULTS.md.
+Residual reward-readout work is preserved/unrun; old closed science unchanged.
+
 Active extension: optional Seed grounded GRU/RSSM runtime. Reuse: existing world
 package, RandomShootingMPC, neural factory, expression evaluator, existing
 EpsilonGreedyController and Session/E1 Journal. The finite engine remains.
