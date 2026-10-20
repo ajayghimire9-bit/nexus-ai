@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Seed user-supplied adaptive structure implemented
+
+Frozen core plus115small-block parameters,310parameter meta-trained plasticity,
+8anchors/channel,held-out assessment lessons,bounded numeric skills and simulated
+learning-value questions. Same runtime/journal;actual GUI learns and survives
+restart. Source-only studybd1f8b3 complete:192Adam,351imagined+351prior,0newreal,
+.7923sbody.0.36%audit gain over fixed protection does not pass10%screen;CIincludes0.
+No control/general learning claim. Ledger1895.6321034559958/1704.3678965440042.
+Old files preserved;separate results report and source-only verifier committed.
+
+
 ## Seed contract correction — implementation fixed, learned control not improved
 
 d4e6ff3 matched study:12 scratch fits/6 untrained, same30278/28870 parameter

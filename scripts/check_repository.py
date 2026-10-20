@@ -20,6 +20,8 @@ DOCUMENTS = (
     'docs/seed/GROUNDED_QUICKSTART.md', 'docs/NEXUS_SEED_GROUNDED_PROTOCOL.md',
     'docs/NEXUS_SEED_GROUNDED_RESULTS.md',
     'docs/seed/CONTRACT_QUICKSTART.md','docs/NEXUS_SEED_CONTRACT_RESULTS.md',
+    'docs/seed/ADAPTIVE_QUICKSTART.md','docs/NEXUS_SEED_MEMORY_AWARE_PROTOCOL.md',
+    'docs/NEXUS_SEED_MEMORY_AWARE_RESULTS.md',
 )
 REQUIRED = (
     'AGENTS.md', 'pyproject.toml', 'Makefile', '.gitignore',

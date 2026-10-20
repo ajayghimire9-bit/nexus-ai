@@ -71,6 +71,16 @@ class AdaptiveState:
         return dict(status='learned_actual_feedback',updated=True,error_before=before,
                     error_after=float((x@new-y).square()),parameter_change=float((new-theta).norm()),channel=channel)
 
+    def learn(self,channel,x,y,ref,*,key=''):
+        """Actual-feedback cycle; at most three automatic edit reviews/session.
+
+        Keep remains a valid outcome. Hypothetical answers never call this API.
+        """
+        before=self.steps;receipt=self.update(channel,x,y,ref,key=key)
+        if self.steps>before and self.steps%8==0:
+            receipt['automatic_structural_review']=self.review(channel,key)
+        return receipt
+
     def expected_question(self,xs):
         """Equal .5 answer prior; evaluate remembered *observed* labels only.
 

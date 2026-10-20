@@ -95,3 +95,13 @@ def test_scoped_skill_changes_predictions_and_merge_is_executable():
     report=a.review('reward','new');assert report['adopted']=='add_skill'
     assert a.predict('reward',x,'new')>.9 and a.predict('reward',x,'old')==0
     report=a.review('reward','new');assert 'merge' in [c['edit'] for c in report['candidates']]
+
+
+def test_actual_feedback_automatically_triggers_bounded_structural_decision():
+    a=AdaptiveState();x=torch.zeros(62);x[0]=1
+    receipts=[a.learn('reward',x,0.,f'{i:064x}',key='known') for i in range(24)]
+    reviews=[r['automatic_structural_review'] for r in receipts if 'automatic_structural_review' in r]
+    assert len(reviews)==3 and all(r['adopted']=='keep' for r in reviews)
+    before=a.work['structural_fits']
+    assert a.learn('reward',x,0.,'f'*64,key='known')['status']=='lesson_cap'
+    assert a.work['structural_fits']==before

@@ -1,5 +1,22 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — actual memory-aware Seed adaptive layer
+
+User-supplied structure implemented around SAME frozen RSSM/Belief/Session:
+reward62/meaning53 residual parameters,8anchors/channel,explicit feedback routing,
+310parameter positive diagonal controller trained on assessment learning curves,
+bounded keep/repair/scoped-skill/merge edits and disposable hypothetical questions.
+Precommitbd1f8b3;single source-record study192Adam steps,0new real steps,
+351imagined action rows+351posterior priors,.7923sbody,2sconservative debit.
+Audit MSE learned.1277974 versus fixed-protected.1282639:0.3637%reduction,
+pairedCI[-.0011784,+.0021114],fails10%screen. Replay.2step baseline unstable,
+not strong evidence. Three optimizer-order seeds share ONE pretrained core.
+Learned semantic routing,future-task benefit,control and general learning unproved.
+Actual Chrome label/action/update/restart/hypothesis-isolation/correction/stop
+checks pass. Old checkpoints/results unchanged. See NEXUS_SEED_MEMORY_AWARE_RESULTS.md.
+Ledger1895.6321034559958used/1704.3678965440042remaining. No extra run follows.
+
+
 ## Latest — shared Seed state/memory/value contract; decision screen failed
 
 Source d4e6ff3,12 new scratch fits+6 untrained controls, same parameter counts.

@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed H-plasticity — structure functional; improvement NOT ESTABLISHED
+
+Predeclared10%less held-out source learning-curve MSE versus BOTH fixed protected
+and replay,no worse forgetting. Actual0.3637%versus protected,pairedreduction
+.0004665[-.0011784,+.0021114];fails. Replay unstable,not a strong tuned comparator.
+Three optimizer-order seeds share one frozen decoder. Local math,meta-gradients,
+source isolation,real-label updates,skill edits and GUI persistence pass functional
+tests;these are not independent scientific evidence of transferable learning.
+Precommitbd1f8b3;see NEXUS_SEED_MEMORY_AWARE_RESULTS.md. No new simulator data.
+
+
 ## Seed H-contract — correctness passed; practical improvement screen FAILED
 
 Precommit d4e6ff3;3 paired scratch seeds per original recipe,legacy vs aligned

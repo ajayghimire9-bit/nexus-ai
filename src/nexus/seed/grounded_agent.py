@@ -55,7 +55,7 @@ class GroundedAgent:
             with torch.no_grad():
                 sensors=tensors([observation(obj)])
                 x=meaning_features(self.model.encode(*sensors),sensors[2],word)
-                receipt=self.adaptive.update('meaning',x,float(positive)-.5,ref,key=word)
+                receipt=self.adaptive.learn('meaning',x,float(positive)-.5,ref,key=word)
             self.save_adaptive(session,ref,receipt)
         p=self.pending_question;self.pending_question=None
         if not p or supersedes is not None or p['word']!=word or p['object']!=obj:return
@@ -277,7 +277,7 @@ class GroundedAgent:
             actual_ref=session.event('seed_grounded_state',dict(model_hash=self.model_hash,h=self.h[0].tolist(),z=self.z[0].tolist(),context=self.context,
                 actual_action=choice,actual_reward=reward,done=done,flags=list(self.flags)))
             if self.adaptive is not None:
-                receipt=self.adaptive.update('reward',rx[choice],reward-float(base[choice]),actual_ref,key=digest((ids[0],goal)))
+                receipt=self.adaptive.learn('reward',rx[choice],reward-float(base[choice]),actual_ref,key=digest((ids[0],goal)))
                 self.save_adaptive(session,actual_ref,receipt);result['adaptation']=receipt
             if done:
                 from .grounded_meta import RECIPES

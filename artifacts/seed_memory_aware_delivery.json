@@ -1,0 +1,100 @@
+{
+  "schema": "seed_memory_aware_delivery_v1",
+  "base_sha": "520100e5014192a2c274028902db3f36c18540e5",
+  "source_study_execution_sha": "bd1f8b3c6fcb13529c15f60f7468129c86eb03bb",
+  "branch": "codex/seed-memory-aware-learning",
+  "dependencies": {"python": "3.13.5", "torch": "2.14.1", "numpy": "2.5.4", "device": "CPU", "source_run_torch_threads": 1},
+  "hashes": {
+    "artifacts/seed_memory_aware.json": "a8e36953db8eb03d8a0a9e3285579bc415eb5e7c76ed8029e4d9775941e6b81b",
+    "artifacts/seed_memory_aware_analysis.json": "ab1fdad520bcab622a19d8316fe7cceb43f57a1f28015b2e6283703bfc50f4a3",
+    "configs/seed_memory_aware.json": "bbb577ada95a60ba32030de7c513e7bbfb33ef62116b7b5a1c6259ee1697ad02",
+    "src/nexus/seed/plasticity.py": "65b84054edaf6c36fdb29aea591fa7f37b7c30867c69dd68bf9be33005696267",
+    "src/nexus/seed/adaptive_state.py": "6d7e492aef91509c264bd64d76917e221cf7f7111957506107b684a4ed40216d",
+    "src/nexus/seed/grounded_agent.py": "a0cdfe287f245a97a156ec463cdf754f3e8e58f1662962afb81cdee166fedd0e",
+    "src/nexus/seed/plasticity_study.py": "1a7eafe3a1367d958d9705c561fac7a9e5e8204509b5b9689d0c48ad4f4a8824",
+    "scripts/check_seed_adaptive_browser.cjs": "920d1292b530af76835f12947e9f298c7519e9e168da325f9292b4a7ef83ab98",
+    "artifacts/seed_contract_gui.json": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b"
+  },
+  "tests": {
+    "passed": 156,
+    "wall_s": 9.39,
+    "scope": "relevant regression and repository-only evidence tests; not entire historical suite",
+    "command": "python3 -m pytest -o addopts='' -q tests/test_seed_plasticity.py tests/test_seed_adaptive_runtime.py tests/test_seed_plasticity_artifacts.py tests/test_seed_state_contract.py tests/test_seed_action_readout.py tests/test_seed_action_ranking.py tests/test_seed_grounded.py tests/test_seed_architecture.py tests/test_seed.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py"
+  },
+  "gui": {
+    "schema": "seed_adaptive_browser_qa_v1",
+    "browser": "155.0.8059.85",
+    "checks": [
+      "hash_bound_core_and_controller_with_adaptive_buttons",
+      "actual_teaching_updates_meaning_only_and_readonly_prediction_uses_it",
+      "selected_actual_action_updates_small_reward_block",
+      "repeated_inspection_does_not_train",
+      "process_restart_restores_weights_anchors_and_assessment_split",
+      "hypothetical_answers_discarded_actual_ask_reward_only",
+      "insufficient_evidence_keeps_current_structure",
+      "correction_invalidates_stale_meaning_not_reward",
+      "stop_blocks_learning_and_actions",
+      "mobile_layout"
+    ],
+    "page_errors": [],
+    "external_requests": [],
+    "frozen_core_sha256": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b",
+    "core_file_unchanged": true,
+    "authored_engineering_costs": {
+      "candidate_evaluations": 1110,
+      "generated_examples": 41,
+      "predicate_tests": 1831,
+      "program_evaluations": 1,
+      "sandbox_actions": 0,
+      "teacher_answers": 2
+    },
+    "scientific_environment_collection": 0,
+    "controller_lessons": 3
+  },
+  "preservation": {
+    "historical_artifacts_byte_identical": 706,
+    "reference_sha": "520100e5014192a2c274028902db3f36c18540e5",
+    "parent_weights_and_source_bank_unchanged": true,
+    "main_changed": false,
+    "unrelated_original_checkout_files_preserved": true
+  },
+  "implementation": {
+    "reward_parameters": 62,
+    "meaning_parameters": 53,
+    "controller_parameters": 310,
+    "max_anchors_per_channel": 8,
+    "max_assessments_per_channel": 4,
+    "max_scoped_skills": 2,
+    "max_actual_lessons": 24,
+    "automatic_structural_reviews": "every 8 actual lessons; at most 3; engineering follow-up to source study",
+    "runtime_core_frozen": true,
+    "routing": "typed, not learned semantic routing",
+    "source_only_meta_learning": true
+  },
+  "resources": {
+    "new_scientific_real_steps": 0,
+    "imagined_candidate_rows": 351,
+    "posterior_prior_rows": 351,
+    "encoder_rows": 351,
+    "meta_optimizer_steps": 192,
+    "source_study_body_wall_s": 0.792305540991947,
+    "conservative_execution_debit_s": 2,
+    "session_used_s": 1895.6321034559958,
+    "session_remaining_s": 1704.3678965440042,
+    "tracked_controller_bytes": 18270,
+    "peak_RSS": "not recorded",
+    "gui_and_unit_tests": "separate authored engineering checks, not scientific replications"
+  },
+  "outcome": {
+    "registered_practical_screen": "failed",
+    "learned_audit_curve_MSE": 0.1277974332527568,
+    "fixed_protected_audit_curve_MSE": 0.1282639449927956,
+    "relative_reduction": 0.0036371229659667467,
+    "paired_reduction_ci95": [
+      -0.0011783661402038946,
+      0.0021113896202814794
+    ],
+    "limitation": "3 optimizer-order seeds, 1 frozen core; replay .2 baseline unstable; no new control validation"
+  },
+  "next_question": "Fresh grounded teaching-stream comparison versus scale-stable replay, with fixed protected baseline and retention."
+}

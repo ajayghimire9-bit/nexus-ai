@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+Seed plasticity.py is a small differentiable update-rule head,not a second
+experiment meta-controller. adaptive_state wraps SAME Session/E1 Journal evidence;
+SAME grounded agent/SeedRSSM/Belief consume actual labels and rewards. Bounded
+numeric skills are residual parameters,not generated source or replacement
+symbolic programs. Existing OuterSeedMeta recipe adapter and Predicate checker
+remain. plasticity_study reads ONLY prior source episodes;no parallel world,
+planner,memory,RL or permissions stack. Old runtime modes stay compatible.
+
+
 Seed state_contract.Belief is the shared posterior-time contract over SAME
 SeedRSSM, not another world-model stack. coherent trainer, controller evaluation
 and existing GroundedAgent use it. v2 checkpoint adds fixed source bank metadata

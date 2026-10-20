@@ -1,5 +1,13 @@
 # NEXUS canonical current state
 
+Seed memory-aware adaptive structure IMPLEMENTED;improvement screen FAILED.
+Precommitbd1f8b3,three optimizer-order seeds on one frozen core. Audit learning-
+curve MSE.127797 vs fixed.128264;0.36%gain,CIincludes0,below10%threshold.
+Small actual-feedback blocks,learned diagonal controller,bounded scoped edits,
+temporary question updates and durable GUI all functional. No control/general
+learning finding. See NEXUS_SEED_MEMORY_AWARE_RESULTS.md;historical evidence fixed.
+
+
 Current Seed contract study COMPLETE/FAILED practical improvement. New matched
 legacy/aligned scratch fits plus untrained/random/greedy controls; no parameter
 increase. Shared Belief, fixed source memory bank, V3 current-state targets and

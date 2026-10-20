@@ -1,0 +1,202 @@
+{
+  "schema": "seed_memory_aware_analysis_v1",
+  "raw_sha256": "a8e36953db8eb03d8a0a9e3285579bc415eb5e7c76ed8029e4d9775941e6b81b",
+  "config_sha256": "bbb577ada95a60ba32030de7c513e7bbfb33ef62116b7b5a1c6259ee1697ad02",
+  "splits": {
+    "train": {
+      "query_auc": {
+        "learned": {
+          "mean": 0.18410342630619805,
+          "per_controller_seed": [
+            0.18572303648979868,
+            0.18407380922484057,
+            0.18251343320395488
+          ]
+        },
+        "fixed_protected": {
+          "mean": 0.18698956322526403,
+          "per_controller_seed": [
+            0.18698956322526403,
+            0.18698956322526403,
+            0.18698956322526403
+          ]
+        },
+        "replay_sgd": {
+          "mean": 9.792887448271115,
+          "per_controller_seed": [
+            9.792887448271115,
+            9.792887448271115,
+            9.792887448271115
+          ]
+        }
+      },
+      "forgetting": {
+        "learned": 0.00004452996542592618,
+        "fixed_protected": 0.00005006941553015546,
+        "replay_sgd": 4.986902994227906
+      },
+      "contrasts": {
+        "fixed_protected": {
+          "mean_reduction": 0.0028861369190659827,
+          "ci95": [
+            -0.0011009205073283439,
+            0.006873194345460309
+          ],
+          "paired_values": [
+            0.0012665267354653453,
+            0.0029157540004234594,
+            0.004476130021309144
+          ],
+          "relative_reduction": 0.015434748706210352
+        },
+        "replay_sgd": {
+          "mean_reduction": 9.608784021964917,
+          "ci95": [
+            9.604796964538522,
+            9.612771079391312
+          ],
+          "paired_values": [
+            9.607164411781316,
+            9.608813639046275,
+            9.61037401506716
+          ],
+          "relative_reduction": 0.9812002918160057
+        }
+      }
+    },
+    "development": {
+      "query_auc": {
+        "learned": {
+          "mean": 0.22821307661277906,
+          "per_controller_seed": [
+            0.2310967163315841,
+            0.22804151315774238,
+            0.22550100034901074
+          ]
+        },
+        "fixed_protected": {
+          "mean": 0.2340375663978713,
+          "per_controller_seed": [
+            0.2340375663978713,
+            0.2340375663978713,
+            0.2340375663978713
+          ]
+        },
+        "replay_sgd": {
+          "mean": 6.3996902007077425,
+          "per_controller_seed": [
+            6.3996902007077425,
+            6.3996902007077425,
+            6.3996902007077425
+          ]
+        }
+      },
+      "forgetting": {
+        "learned": 0.00004520123915793949,
+        "fixed_protected": 0.00004881045294499334,
+        "replay_sgd": 2.971743544696697
+      },
+      "contrasts": {
+        "fixed_protected": {
+          "mean_reduction": 0.00582448978509222,
+          "ci95": [
+            -0.0011355679698639275,
+            0.012784547540048367
+          ],
+          "paired_values": [
+            0.002940850066287193,
+            0.005996053240128918,
+            0.00853656604886055
+          ],
+          "relative_reduction": 0.024886986626712748
+        },
+        "replay_sgd": {
+          "mean_reduction": 6.171477124094963,
+          "ci95": [
+            6.164517066340007,
+            6.178437181849919
+          ],
+          "paired_values": [
+            6.168593484376158,
+            6.17164868755,
+            6.1741892003587315
+          ],
+          "relative_reduction": 0.9643399806153833
+        }
+      }
+    },
+    "audit": {
+      "query_auc": {
+        "learned": {
+          "mean": 0.1277974332527568,
+          "per_controller_seed": [
+            0.12811208423227072,
+            0.12824359093792737,
+            0.1270366245880723
+          ]
+        },
+        "fixed_protected": {
+          "mean": 0.1282639449927956,
+          "per_controller_seed": [
+            0.1282639449927956,
+            0.1282639449927956,
+            0.1282639449927956
+          ]
+        },
+        "replay_sgd": {
+          "mean": 12.991580367088318,
+          "per_controller_seed": [
+            12.991580367088318,
+            12.991580367088318,
+            12.991580367088318
+          ]
+        }
+      },
+      "forgetting": {
+        "learned": 0.000012696351092245095,
+        "fixed_protected": 0.000013672808719888963,
+        "replay_sgd": 6.677573226392269
+      },
+      "contrasts": {
+        "fixed_protected": {
+          "mean_reduction": 0.0004665117400387923,
+          "ci95": [
+            -0.0011783661402038946,
+            0.0021113896202814794
+          ],
+          "paired_values": [
+            0.00015186076052486897,
+            0.000020354054868221283,
+            0.0012273204047232866
+          ],
+          "relative_reduction": 0.0036371229659667467
+        },
+        "replay_sgd": {
+          "mean_reduction": 12.86378293383556,
+          "ci95": [
+            12.862138055955318,
+            12.865427811715803
+          ],
+          "paired_values": [
+            12.863468282856047,
+            12.86333677615039,
+            12.864543742500246
+          ],
+          "relative_reduction": 0.9901630571768999
+        }
+      }
+    }
+  },
+  "practical_screen_passed": false,
+  "decision": "practical_learning_rule_improvement_not_established",
+  "statistical_unit": "controller_training_seed_conditional_on_one_frozen_core_and_source_bank",
+  "independent_decoder_replicates": 1,
+  "controller_optimizer_seeds": 3,
+  "limitations": [
+    "source assessment already belongs to inspected source bank, not confirmation",
+    "fixed replay step.2 is unstable for these feature scales and is not a strong tuned baseline",
+    "GUI functional checks are not controlled decision-quality evidence",
+    "meaning-channel plasticity transfer not evaluated",
+    "no new control or all-action ranking comparison"
+  ]
+}

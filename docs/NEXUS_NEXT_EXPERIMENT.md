@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## After actual adaptive-layer implementation — stable replay comparison
+
+One next question:does protected small-block learning improve learning speed and
+retention on a fresh registered grounded-teaching stream versus feature-scale-
+stable replay? First freeze scaling/replay step on training data. Current learned
+diagonal gains only0.36%over fixed protection and fails10%screen;do not expand
+capacity or rerun inspected audit to chase a positive result. Hypothetical
+question value and structural growth are functional but not scientifically
+validated. See NEXUS_SEED_MEMORY_AWARE_RESULTS.md. No additional run started.
+
+
 ## After corrected-contract failure — balanced immediate reward learning proposed
 
 Hold shared Belief, source-bank, task reward and existing frozen weights fixed.

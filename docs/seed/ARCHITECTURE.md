@@ -1,5 +1,14 @@
 # Seed grounded architecture
 
+New adaptive layer: [memory-aware implementation](../NEXUS_SEED_MEMORY_AWARE_RESULTS.md).
+SAME frozen core/Belief/Session journal,115small residual parameters,310parameter
+learned diagonal update head,max8anchors/channel,max2scoped residual skills.
+Runtime actual feedback updates small blocks;outer source training optimizes
+query learning curves/retention. Hypothetical question updates are disposable.
+The functional structure is present;the10% learned-update screen failed.
+Typed routing and residual skills are not arbitrary language or source rewriting.
+
+
 Current contract: [shared-state results](../NEXUS_SEED_CONTRACT_RESULTS.md).
 Read-only inspection does not commit h/z. World conditioning uses a fixed
 source-only bank in training/control/GUI; user concept prototypes are retrieved

@@ -6,7 +6,15 @@
 
 ## What is NEXUS?
 
-**Latest: corrected state/memory/value contracts, tested without increasing
+**Latest implementation: memory-aware adaptive Seed.** Small reward/meaning
+blocks now learn actual feedback around the frozen core,with a trained plasticity
+controller,bounded skill edits and temporary question simulations.
+[Run the adaptive GUI](docs/seed/ADAPTIVE_QUICKSTART.md) ·
+[Honest results](docs/NEXUS_SEED_MEMORY_AWARE_RESULTS.md).
+The source test did **not** establish meaningful learned-update improvement.
+
+
+**Previous: corrected state/memory/value contracts, tested without increasing
 parameter count.** [Run the current GUI](docs/seed/CONTRACT_QUICKSTART.md) ·
 [Matched results](docs/NEXUS_SEED_CONTRACT_RESULTS.md). Read-only inspection is
 stable, but the experiment did **not** establish better learned control.

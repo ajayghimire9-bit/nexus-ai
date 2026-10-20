@@ -1,5 +1,12 @@
 # NEXUS full research registry
 
+Seed memory-aware learning,precommitbd1f8b3:source-only COMPLETE,10%screenFAIL.
+One frozen core,three64-update plasticity fits;new115parameter runtime adapters,
+bounded numeric skills/question simulation.0new real/351imagined+351prior rows.
+Audit.127797 vs protected.128264,CIincludes0. Actual GUI persistence/update QA.
+Protocol/results NEXUS_SEED_MEMORY_AWARE_*;olddata and all prior outcomes preserved.
+
+
 Seed contract study fromd4e6ff3: complete, practical screen failed.12 paired
 scratch fits+6 untrained; fixed architecture; shared belief/source-bank/V3/GUI
 task reward.4208 authored/208912 imagined/27.0816s. Actual Chrome contract QA.

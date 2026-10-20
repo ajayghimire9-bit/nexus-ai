@@ -6,6 +6,11 @@ intelligence mission remains a research ambition.
 
 ## Use and understand Seed
 
+- [Adaptive Seed GUI](seed/ADAPTIVE_QUICKSTART.md)
+- [Memory-aware implementation and negative screen](NEXUS_SEED_MEMORY_AWARE_RESULTS.md)
+- [Precommitted local/meta-learning protocol](NEXUS_SEED_MEMORY_AWARE_PROTOCOL.md)
+
+
 - [Current shared-contract GUI](seed/CONTRACT_QUICKSTART.md)
 - [Contract, ranking and capability results](NEXUS_SEED_CONTRACT_RESULTS.md)
 - [Precommitted matched contract protocol](NEXUS_SEED_CONTRACT_PROTOCOL.md)
