@@ -112,13 +112,13 @@ def choose(method,posterior,remaining,history,library,random_order,costs):
     return min(scored)[1]
 
 
-def adapt(method,library,reveal,seed=0):
+def adapt(method,library,reveal,seed=0,*,choose_fn=choose):
     posterior=list(range(8));remaining=list(range(8));history={};steps=[];snapshots={}
     order=list(range(8));random.Random(seed).shuffle(order)
     costs=dict(tree_nodes=0,hypothesis_predictions=0,search_nodes=0)
     for budget in range(1,9):
         if len(posterior)>1:
-            q=choose(method,tuple(posterior),tuple(remaining),history,library,order,costs)
+            q=choose_fn(method,tuple(posterior),tuple(remaining),history,library,order,costs)
             # Choice is captured before the only reveal call.
             step=dict(question=q,posterior_before=list(posterior));answer=reveal(q)
             if type(answer) is not bool: raise ValueError('boolean_observed_answer')
@@ -148,8 +148,8 @@ def analysis(rows,c):
         claim_scope='authored question-order transfer with supplied sensor bindings and shared finite hypotheses',promoted=False)
 
 
-def run(request):
-    c=request['inputs']['study_config'];config_check(c);start=time.monotonic();directory=Path.cwd()
+def run(request,*,config_validator=config_check,methods=METHODS,analyze=analysis,adapt_fn=adapt,source_record=None):
+    c=request['inputs']['study_config'];config_validator(c);start=time.monotonic();directory=Path.cwd()
     work=dict(real_steps=0,imagined_transitions=0,updates=0,network_forwards=0,source_answers=0,target_pool_observations=0,target_answers=0,final_observations=0,assessment_predictions=0)
     result=dict(config=c,declared_complete=False,rows=[],source=[],library=None,analysis=None)
     def check():
@@ -164,7 +164,7 @@ def run(request):
         result['frozen_checkpoints_before']=checkpoint_hashes()
         if result['frozen_checkpoints_before']!=FROZEN:raise ValueError('historical_checkpoint_hash')
         traces=[]
-        for i,seed in enumerate(c['tasks']['train']):
+        for i,seed in enumerate(c['tasks']['train'] if source_record is None else []):
             family=c['source_families'][i//16];bind=binding(seed,family);law=truth(seed);episodes=[]
             for q,bits in enumerate(BITS):
                 raw=encode(bits,bind,seed*1000+q);observed=decode(raw,bind);answer=bool(hypotheses(observed)[law]);charge('source_answers',1)
@@ -174,8 +174,17 @@ def run(request):
             traces.append(dict(role='source',episode=f'source-{seed}',answers=answers,hypothesis=source_identified))
             result['source'].append(dict(task=seed,family=family,binding=bind,episodes=episodes))
         fit_start=time.perf_counter()
-        library=learn(traces,max_depth=c['tree_depth'],max_nodes=c['tree_nodes']);result['library']=copy.deepcopy(library)
+        if source_record is None:
+            library=learn(traces,max_depth=c['tree_depth'],max_nodes=c['tree_nodes'])
+        else:
+            result['source']=copy.deepcopy(source_record['source'])
+            library=copy.deepcopy(source_record['library'])
+            traces=[dict(role='source',episode=f"source-{s['task']}",answers=[e['answer'] for e in s['episodes']]) for s in result['source']]
+            result['inherited_source']=copy.deepcopy(source_record['inherited_source'])
+        result['library']=copy.deepcopy(library)
         work.update(source_fit_wall_s=time.perf_counter()-fit_start,source_trace_rows=len(traces),source_trace_answers=sum(len(t['answers']) for t in traces),neural_parameters=0,library_nodes=library['nodes'])
+        if source_record is not None:
+            work['source_reuse_wall_s']=work['source_fit_wall_s'];work['source_fit_wall_s']=0
         frozen=digest(library);source_hash=digest(result['source']);result['library_hash']=frozen;result['source_hash']=source_hash
         retention=lambda:[run_tree(library,lambda i,a=t['answers']:a[i],budget=3) for t in traces]
         before=retention()
@@ -187,11 +196,11 @@ def run(request):
             pool=[encode(bits,bind,seed*1000+q) for q,bits in enumerate(BITS)];charge('target_pool_observations',8)
             labels=[bool(hypotheses(decode(raw,bind))[law]) for raw in pool]
             row=dict(task=seed,family=family,binding=bind,pool=pool,support_bank_answers=labels,methods={})
-            for method in METHODS:
+            for method in methods:
                 oracle=LabelOracle(labels,8)
                 def reveal(q):
                     value=oracle.reveal(q);work['target_answers']+=1;check();return value
-                row['methods'][method]=adapt(method,library,reveal,seed+700)
+                row['methods'][method]=adapt_fn(method,library,reveal,seed+700)
             pending.append(row);result['rows']=pending;persist()
         locked=digest(pending);write_new(directory/'locked_target_choices.json',dict(sha256=locked,rows=pending))
         result['choices_hash']=locked;result['choices_locked_before_final']=True
@@ -213,7 +222,7 @@ def run(request):
         if not result['unchanged_library'] or result['retention_before']!=result['retention_after']: raise ValueError('frozen_retention_failure')
         result['frozen_checkpoints_after']=checkpoint_hashes()
         if result['frozen_checkpoints_after']!=FROZEN:raise ValueError('historical_checkpoint_changed')
-        result['analysis']=analysis(pending,c);result['declared_complete']=True;persist()
+        result['analysis']=analyze(pending,c);result['declared_complete']=True;persist()
     except Exception as error:
         result.update(failure=dict(type=type(error).__name__,message=str(error)),partial_resources=work);persist();raise
     work.update(cpu_s=time.process_time(),worker_wall_s=time.monotonic()-start,
@@ -224,8 +233,8 @@ def run(request):
     return dict(adapter=c['schema'],study=result,resources=work,runtime=dict(python=sys.version,device='cpu',threads=1))
 
 
-def validate_output(output,c,caps):
-    config_check(c);r=output['study'];work=output['resources']
+def validate_output(output,c,caps,*,config_validator=config_check,methods=METHODS,analyze=analysis,collected_source=True):
+    config_validator(c);r=output['study'];work=output['resources']
     if r.get('frozen_checkpoints_before')!=FROZEN or r.get('frozen_checkpoints_after')!=FROZEN:raise ValueError('frozen_checkpoint_integrity')
     if r.get('declared_complete') is not True or digest(r['config'])!=digest(c) or not r.get('frozen_before_target') or not r.get('choices_locked_before_final'):raise ValueError('incomplete_or_unlocked')
     if [s['task'] for s in r['source']]!=c['tasks']['train'] or [s['task'] for s in r['rows']]!=c['tasks']['target']:raise ValueError('complete_task_grid')
@@ -243,7 +252,7 @@ def validate_output(output,c,caps):
     if digest(locked)!=r['choices_hash']:raise ValueError('choice_lock_mismatch')
     answers=0
     for i,row in enumerate(r['rows']):
-        if row['family']!=c['target_families'][i//16] or set(row['methods'])!=set(METHODS) or len(row['final'])!=32:raise ValueError('complete_family_method_episode_grid')
+        if row['family']!=c['target_families'][i//16] or set(row['methods'])!=set(methods) or len(row['final'])!=32:raise ValueError('complete_family_method_episode_grid')
         if len(row['pool'])!=8 or len(row['support_bank_answers'])!=8 or any(type(a) is not bool for a in row['support_bank_answers']):raise ValueError('support_grid')
         if any(decode(raw,row['binding'])!=BITS[q] for q,raw in enumerate(row['pool'])):raise ValueError('public_support_binding')
         if [f['id'] for f in row['final']]!=[f"final-{row['task']}-{j}" for j in range(32)]:raise ValueError('final_episode_grid')
@@ -268,8 +277,8 @@ def validate_output(output,c,caps):
                 if pred!=[st.mean(hypotheses(f['bits'])[h] for h in snap['posterior']) for f in row['final']]:raise ValueError('prediction_contract')
                 expected=dict(accuracy=st.mean((p>=.5)==f['answer'] for p,f in zip(pred,row['final'])),brier=st.mean((p-f['answer'])**2 for p,f in zip(pred,row['final'])))
                 if digest(expected)!=digest(d['metrics'][str(b)]):raise ValueError('metric_arithmetic')
-    if digest(analysis(r['rows'],c))!=digest(r['analysis']):raise ValueError('analysis_arithmetic')
-    expected=dict(source_answers=256,target_pool_observations=256,target_answers=answers,final_observations=1024,assessment_predictions=20480,real_steps=1536,updates=0,imagined_transitions=0,network_forwards=0)
+    if digest(analyze(r['rows'],c))!=digest(r['analysis']):raise ValueError('analysis_arithmetic')
+    expected=dict(source_answers=256 if collected_source else 0,target_pool_observations=256,target_answers=answers,final_observations=1024,assessment_predictions=20480,real_steps=1536 if collected_source else 1280,updates=0,imagined_transitions=0,network_forwards=0)
     if any(type(work.get(k)) is not int or work[k]!=v for k,v in expected.items()):raise ValueError('resource_accounting')
     if any(work[k]>caps[k] for k in ('real_steps','updates','imagined_transitions')):raise ValueError('resource_cap')
 
