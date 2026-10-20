@@ -179,3 +179,8 @@ def test_unlocked_protocol_cannot_reserve_execution(tmp_path):
         protocol_path='unlocked.md',protocol_sha256='b'*64),train=None,development=None,model_run=None,assessment=None,protocol=None,gate=None)
     with pytest.raises(ValueError,match='vetted_study_manifest'):h.execute(spec,'toy')
     assert not h.records('reserved')
+
+
+def test_standalone_verifier_imports_under_isolated_python_without_execution():
+    code='import runpy,sys;p=runpy.run_path(sys.argv[1],run_name="audit_import_only");assert callable(p["verify"]);assert not any(k in sys.modules for k in ("torch","numpy","gymnasium"))'
+    subprocess.run([sys.executable,'-I','-S','-c',code,str(ROOT/'scripts/verify_seed_question_headroom.py')],check=True,timeout=10)
