@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-question-utility — source screen FAILED
+
+Executiona8ca30a: learned check .168235 versus action mean .169743/variance
+.170092/keep .170649. Practical gains .89%/1.09%/1.42% below5%; paired intervals
+include zero.6/12 keep wins,2/4 fold wins. Retention/shuffled point gates pass
+but cannot upgrade the failed screen. Utility prediction MSE .000797 worsens
+versus action mean .000386. Valid complete source study, zero new interactions
+or neural fitting. No runtime promotion or learning-to-learn claim. See
+[results](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md). Preregistration history follows.
+
 ## H-question-utility — registered, not executed
 
 Can task-blocked contextual utility prediction choose a better next question

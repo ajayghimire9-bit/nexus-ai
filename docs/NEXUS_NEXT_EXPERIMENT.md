@@ -4,7 +4,22 @@ The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented a
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.
 
-## Current — task-blocked source question-utility learning (proposed, not fitted)
+## Current — question-utility label reliability audit (proposed, not run)
+
+Do signs and candidate rankings from the same saved learner fits agree across
+independently recorded selection/check query subsets? Use the common outer-fold
+counterfactuals, no fitting or new simulation. This tests whether the supervision
+is stable before changing representation, regularization or capacity. Register
+agreement/estimation rules first. Proposed30s CPU/wall, zero interactions;
+no allocation or execution here. The source bank is already inspected, not
+untouched validation/confirmation.
+
+## Closed — task-blocked source question-utility learning
+
+Froma8ca30a: valid complete run, source screen FAILED. Learned .168235 versus
+action mean .169743/variance .170092, paired intervals include zero;6/12 keep
+wins. Utility MSE worsens versus means. No new data or neural fitting/promotion.
+[Results](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md). Original motivation follows.
 
 The executable source-only study is now prepared. Common outer-fold frozen
 learners prevent indirect held-task feedback; all choices lock before check

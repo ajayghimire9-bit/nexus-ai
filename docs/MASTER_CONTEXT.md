@@ -41,13 +41,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
-Next question-utility learning study is prepared, not run: a small source-fitted
-ridge correction over action/budget mean utility, four task-blocked folds,
-fixed learner and no new collection. Training trajectories use each OUTER
-fold's frozen damping/normalization to avoid indirect held-task feedback.
-No candidate answer enters question choice. See
-[protocol](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md). Earlier outcomes below stay
-closed; this preparation does not establish a learned questioner.
+Question-utility learning froma8ca30a completed once. A small task-blocked ridge
+correction chooses from public inputs, with no excluded-task query answers.
+Check MSE .168235 versus action mean .169743 and variance .170092: only.89%/
+1.09% lower, paired intervals include zero. Source improvement screen FAILED;
+6/12 keep wins,2/4 fold wins. Retention passes. Utility prediction error worsens
+versus simple means. No new data/neural calls or live promotion. The component
+works, useful learned questioning and learning-to-learn remain unestablished.
+See [results](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md). Earlier evidence stays closed.
 
 The larger source query-bank replication from25b155a completed its entire grid
 once. Selection-locked check MSE .159819 versus variance .170092, uniform
@@ -198,9 +199,10 @@ screens. The informative-versus-random question test with the stronger learner
 fixed also failed. The subsequent source pool-headroom bound passed, but its
 query-state stability check failed. The subsequent larger independent source
 query bank passed its within-task stability screen with the SAME supports and
-learner. Next: test a task-blocked source utility predictor before any runtime
-promotion. No such fitting or architecture growth has run; fresh validation
-remains required before runtime promotion.
+learner. The subsequent task-blocked utility predictor is now complete and
+FAILED its source screen. Next: audit utility-label reliability on the saved
+queries/fits before changing representation or capacity. No further experiment
+or architecture growth ran; fresh validation remains required for promotion.
 All future learning-to-learn claims still require strong source-informed
 baselines, retention and actual action outcomes, not loss or acceptance alone.
 
@@ -216,8 +218,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1956.6321034559958seconds used,
-1643.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1963.6321034559958seconds used,
+1636.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

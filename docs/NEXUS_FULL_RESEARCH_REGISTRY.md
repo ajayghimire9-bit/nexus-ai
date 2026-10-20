@@ -2,10 +2,11 @@
 
 ## Active evidence, newest first
 
-- [Task-blocked question utility](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md):
-  preparation only, no outcomes. Contextual residual over source action means,
-  fixed inner learner, common outer-fold damping avoids indirect held-label
-  leakage.30s/zero-interaction source study. No runtime promotion.
+- [Task-blocked question utility](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md):
+  valid complete runa8ca30a; source screen FAILED. Learned .168235 versus
+  action mean .169743/variance .170092, intervals include zero.6/12 keep wins,
+  retention passes. Utility prediction MSE worse than mean controls. No new
+  data, neural fitting or runtime promotion. One core/reused source bank.
 
 - [Larger source query bank](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md): within-task
   screen PASSED. Selected .159819 versus variance .170092/keep .170649;9/12

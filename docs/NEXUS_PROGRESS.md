@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Learned question utility — source screen FAILED
+
+Froma8ca30a, one valid complete run in5.672237s host wall/3.562376s CPU. Learned
+check MSE .168235 versus action mean .169743, variance .170092 and keep .170649;
+all required paired intervals include zero, gains below5%.6/12 task wins and
+2/4 fold wins; retention passes. Held utility MSE .000797 versus action mean
+.000386. No useful learned-question advantage established. No new real/imagined
+steps or neural calls. Independent1008-variance replay passes within3.675e−7;
+source/frozen state preserved. Conservative7s debit leaves1963.6321034559958
+used /1636.3678965440042 remaining. Next: recorded utility-label reliability
+audit before capacity changes. [Results](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md).
+Preparation history follows.
+
 ## Task-blocked question utility — preparation, not executed
 
 Starting8f404db on codex/seed-question-utility-learning. A small residual ridge
