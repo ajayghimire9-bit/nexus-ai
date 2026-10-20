@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Larger source query bank](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md): locked
+  preparation; no outcomes yet.12 selection/12 check starts on each original
+  source task, same cached learner states.2592 authored interactions/60s cap.
+  No fitting, new task confirmation, live promotion or learning-to-learn claim.
+
 - [Question-pool headroom](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md): registered
   evaluator-only SOURCE audit completed. Oracle headroom screen passed (.174050
   versus variance .193552); omitted-query-state check FAILED (.194374 versus

@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Larger source query bank — preparation, no outcomes yet
+
+From41b0f099 on codex/seed-query-utility-replication: same saved756 candidate
+updates and144 keep states, no fitting. Register12 selection and12 check starts
+per source task; save all candidate choices before collecting any check outcome.
+Budget2592 authored steps,2592 imagined rows,288 posterior rows,60s CPU/wall.
+Carry1951.6321034559958s used /1648.3678965440042s remaining. No experiment has
+run from this implementation yet. [Protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md).
+
 ## Question-pool headroom — oracle screen passed; cross-state screen FAILED
 
 Locked354f47a ran once in1.820904s host wall/1.283007s CPU, all756 source

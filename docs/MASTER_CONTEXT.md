@@ -41,6 +41,12 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The next larger source query-bank replication is prepared, not yet executed:
+12 selection/12 check starts per original task, same cached learner states,
+no fitting. Choices must lock before check collection;60s/2592 authored-step
+cap. See [protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md). All prior evidence
+below stays closed; preparation/tests are not new scientific outcomes.
+
 The evaluator-only pool-headroom audit from354f47a completed once. Query oracle
 MSE .174050 versus variance .193552 (10.08% lower) passed its retrospective
 source screen, with10/12 task means better than keep. But selecting on two query

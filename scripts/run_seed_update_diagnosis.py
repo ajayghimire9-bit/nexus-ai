@@ -24,8 +24,8 @@ def execute_study(config_name,protocol_name,artifact_name,adapter,identifier):
             raise ValueError('carried_ledger_mismatch')
         grant=identifier
         host.grant(grant,'human standing grant 2026-10-16',
-            'One committed source-only study; only its explicitly planned new-rule updates',
-            dict(wall_s=c['max_wall_s'],cpu_s=c['max_wall_s'],memory_mb=2048,real_steps=0,imagined_transitions=0,updates=c.get('max_outer_updates',0)),
+            'One committed source study; only its explicitly planned updates and collection',
+            dict(wall_s=c['max_wall_s'],cpu_s=c['max_wall_s'],memory_mb=2048,real_steps=c.get('max_authored_steps',0),imagined_transitions=c.get('max_imagined_transitions',0),updates=c.get('max_outer_updates',0)),
             3600,carried,memory_policy='sampled_rss')
         spec=dict(id=identifier,mode='exploration',recipe=dict(
             adapter=adapter,config_path=str(config_path.relative_to(ROOT)),

@@ -28,6 +28,12 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+The larger source query-bank replication is now prepared on
+codex/seed-query-utility-replication: same supports/learner,12 selection starts
+and12 independent check starts per task. No outcomes collected yet;60-second,
+2592-interaction cap. This is evaluator-only utility stability, not question
+policy training or task confirmation. [Protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md).
+
 The evaluator-only pool-headroom audit is complete: an optimistic query oracle
 passes the source screen (.174050 versus variance .193552), but omitted-query-
 state selection fails (.194374 versus keep .194222). This bounds available

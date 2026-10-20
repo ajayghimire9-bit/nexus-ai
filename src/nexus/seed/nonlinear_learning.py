@@ -43,7 +43,9 @@ class Meter:
 
     def model(self,n=9,posterior=False):
         self.check()
-        if posterior:self.posterior+=n
+        if posterior:
+            if self.posterior+n>self.c.get('max_posterior_rows',float('inf')):raise ValueError('study_posterior_cap')
+            self.posterior+=n
         else:
             if self.imagined+n>self.c['max_imagined_transitions']:raise ValueError('study_imagined_cap')
             self.imagined+=n

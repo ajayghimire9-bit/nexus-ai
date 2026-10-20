@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-query-stability — registered, not yet executed
+
+Selecting next questions using12 independent source query starts may improve
+the same task's12 held-out check starts. Competing explanation: utility remains
+state-dependent despite the larger sample. Fixed saved learner/supports, no
+training. Require5% mean MSE improvement over variance/uniform/keep, positive
+paired lower95% bounds versus variance and keep,8/12 task wins and retained
+knowledge within variance+.01. All gates conjunctive; one core and reused
+tasks. Evaluator query selection is not a runtime question learner. See
+[protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md). Old failures stay closed.
+
 ## H-missed / H-pool — oracle headroom PASSED, cross-state check FAILED
 
 From354f47a: query oracle .174050 versus variance .193552, primary descriptive

@@ -33,6 +33,13 @@
 
 ## Verification versus experiments
 
+Larger query bank: seed/query_replication.py reuses the EXACT saved headroom
+states/normalization and nonlinear_learning.fresh_world/score_basis/Meter.
+It collects only source query starts, with all selection choices persisted
+before checking. No new learner, world, optimizer, memory or runtime policy.
+scripts/verify_seed_query_replication.py replays stored scalar arithmetic with
+stdlib only. Existing EXPERIMENTAL caps/ledger/one-use manifests remain enforced.
+
 Question-pool headroom: seed/question_headroom.py is an evaluator adapter over
 saved question_selection states, its shared damped_step/assess helpers, frozen
 source pack and existing cumulative posterior. It adds no runtime questioner.

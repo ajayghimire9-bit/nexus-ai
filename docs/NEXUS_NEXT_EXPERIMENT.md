@@ -4,7 +4,11 @@ The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented a
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.
 
-## Current — larger source query-bank replication (proposed, not run)
+## Current — larger source query-bank replication (registered, not run)
+
+The exact implementation/protocol is now ready for pre-execution tests and
+commit: [protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md).12 selection/12
+independent check starts per task,2592 authored steps/60s cap, unchanged fits.
 
 Do question-utility rankings stabilize with more independent query starts?
 The fixed learner's query oracle has retrospective headroom, but selecting on
