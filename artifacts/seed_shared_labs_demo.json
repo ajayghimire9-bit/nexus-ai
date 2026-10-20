@@ -1,0 +1,1132 @@
+{
+  "authored_actions": 3,
+  "implementation_sha": "5b47bfcb44c3137e783e4da9d492ffe5c4ea7df1",
+  "kind": "authored_engineering_demo_not_scientific_evidence",
+  "ledger_unchanged": {
+    "remaining_s": 1656.3678965440042,
+    "used_s": 1943.6321034559958
+  },
+  "new_scientific_environment_interactions": 0,
+  "private_original_sha256": "0311c005b5a51a06aa322f258c4a86b86fbaa83661f7c596d3bffda71317624c",
+  "restore_exact": true,
+  "scientific": false,
+  "scientific_training_runs": 0,
+  "snapshot": {
+    "data": {
+      "costs": {
+        "candidate_evaluations": 108,
+        "generated_examples": 0,
+        "predicate_tests": 18,
+        "program_evaluations": 9,
+        "sandbox_actions": 3,
+        "teacher_answers": 17
+      },
+      "events": [
+        {
+          "fingerprint": "821b44d7780713960eddac2fefd6b04a472c4221f1a05167c37ee8bed0a40d08",
+          "kind": "seed_shared_teaching",
+          "payload_json": "{\"before_program\":null,\"candidate_evaluations\":22,\"candidates\":[{\"ops\":[\"reverse\"],\"schema\":\"list\"}],\"examples\":[{\"input\":[3,1,2,1],\"output\":[1,2,1,3]}],\"feedback\":[],\"lab\":\"coding\",\"mode\":\"adaptive\",\"model_hash\":null,\"name\":\"flip\",\"origin\":\"bounded_catalogue\",\"prototype\":null,\"retrieval_order\":[],\"rule\":\"enumerate\",\"schema\":\"list\",\"selector\":\"existing_epsilon_greedy\",\"supersedes\":null}",
+          "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+          "sequence": 0
+        },
+        {
+          "fingerprint": "7a9404d78f5bae2205e1966e3fb47aad2f44663fec982848181976d32fb32023",
+          "kind": "seed_shared_teaching",
+          "payload_json": "{\"before_program\":null,\"candidate_evaluations\":22,\"candidates\":[{\"ops\":[\"reverse\"],\"schema\":\"list\"}],\"examples\":[{\"input\":[0,2,1,1],\"output\":[1,1,2,0]}],\"feedback\":[{\"after_error\":0.0,\"before_error\":1.0,\"compute\":22,\"labels\":1,\"reward\":0.978,\"rule\":\"enumerate\"}],\"lab\":\"coding\",\"mode\":\"adaptive\",\"model_hash\":null,\"name\":\"flip\",\"origin\":\"bounded_catalogue\",\"prototype\":null,\"retrieval_order\":[],\"rule\":\"reuse_first\",\"schema\":\"list\",\"selector\":\"existing_epsilon_greedy\",\"supersedes\":null}",
+          "previous": "821b44d7780713960eddac2fefd6b04a472c4221f1a05167c37ee8bed0a40d08",
+          "sequence": 1
+        },
+        {
+          "fingerprint": "99ff9a313db2d41640bd6e6862e97ff9209003ba29494da64740c14b63c7ad39",
+          "kind": "seed_shared_check",
+          "payload_json": "{\"accepted\":true,\"attempt\":\"7a9404d78f5bae2205e1966e3fb47aad2f44663fec982848181976d32fb32023\",\"checks\":[{\"input\":[4,0,4,2],\"output\":[2,4,0,4]}],\"label\":\"authored_development_check_not_confirmation\",\"name\":\"flip\",\"prior\":null,\"program\":{\"ops\":[\"reverse\"],\"schema\":\"list\"}}",
+          "previous": "7a9404d78f5bae2205e1966e3fb47aad2f44663fec982848181976d32fb32023",
+          "sequence": 2
+        },
+        {
+          "fingerprint": "28ae54a119a5d1b05fe54799c31a9d6aff5fc90904005c4836b7e5e8f1ad1551",
+          "kind": "seed_shared_teaching",
+          "payload_json": "{\"before_program\":null,\"candidate_evaluations\":37,\"candidates\":[{\"literals\":[[\"color\",\"red\",false],[\"size\",\"small\",false]],\"schema\":\"predicate\"}],\"examples\":[{\"input\":{\"color\":\"red\",\"id\":\"p0\",\"shape\":\"circle\",\"size\":\"small\",\"x\":0,\"y\":0},\"output\":true},{\"input\":{\"color\":\"red\",\"id\":\"p4\",\"shape\":\"triangle\",\"size\":\"small\",\"x\":4,\"y\":0},\"output\":true},{\"input\":{\"color\":\"red\",\"id\":\"p1\",\"shape\":\"circle\",\"size\":\"large\",\"x\":1,\"y\":0},\"output\":false},{\"input\":{\"color\":\"blue\",\"id\":\"p6\",\"shape\":\"circle\",\"size\":\"small\",\"x\":0,\"y\":1},\"output\":false},{\"input\":{\"color\":\"green\",\"id\":\"p15\",\"shape\":\"square\",\"size\":\"large\",\"x\":3,\"y\":2},\"output\":false}],\"feedback\":[],\"lab\":\"language\",\"mode\":\"adaptive\",\"model_hash\":null,\"name\":\"glim\",\"origin\":\"bounded_catalogue\",\"prototype\":null,\"retrieval_order\":[],\"rule\":\"enumerate\",\"schema\":\"predicate\",\"selector\":\"existing_epsilon_greedy\",\"supersedes\":null}",
+          "previous": "99ff9a313db2d41640bd6e6862e97ff9209003ba29494da64740c14b63c7ad39",
+          "sequence": 3
+        },
+        {
+          "fingerprint": "7522f40409b92309a1682d0df134a846036545c652bc655849f3d963241d4bc9",
+          "kind": "seed_shared_check",
+          "payload_json": "{\"accepted\":true,\"attempt\":\"28ae54a119a5d1b05fe54799c31a9d6aff5fc90904005c4836b7e5e8f1ad1551\",\"checks\":[{\"input\":{\"color\":\"red\",\"id\":\"p2\",\"shape\":\"square\",\"size\":\"small\",\"x\":2,\"y\":0},\"output\":true},{\"input\":{\"color\":\"green\",\"id\":\"p12\",\"shape\":\"circle\",\"size\":\"small\",\"x\":0,\"y\":2},\"output\":false}],\"label\":\"authored_development_check_not_confirmation\",\"name\":\"glim\",\"prior\":null,\"program\":{\"literals\":[[\"color\",\"red\",false],[\"size\",\"small\",false]],\"schema\":\"predicate\"}}",
+          "previous": "28ae54a119a5d1b05fe54799c31a9d6aff5fc90904005c4836b7e5e8f1ad1551",
+          "sequence": 4
+        },
+        {
+          "fingerprint": "8b16ffbaeea3e2da594f234ea4acbe06d262dae3378f4befbbb0cdc116a9cd43",
+          "kind": "seed_program",
+          "payload_json": "{\"program\":[{\"direction\":\"right\",\"reference\":\"o1\",\"steps\":1}],\"trace\":[{\"after\":[1,0],\"before\":[0,0],\"direction\":\"right\",\"object\":\"o1\",\"steps\":1}]}",
+          "previous": "7522f40409b92309a1682d0df134a846036545c652bc655849f3d963241d4bc9",
+          "sequence": 5
+        },
+        {
+          "fingerprint": "2ece666e151f7de81081e8ffffe8950f6e91cb30e51222760feba9260a2ecd79",
+          "kind": "seed_program",
+          "payload_json": "{\"program\":[{\"direction\":\"down\",\"reference\":\"o1\",\"steps\":1}],\"trace\":[{\"after\":[1,1],\"before\":[1,0],\"direction\":\"down\",\"object\":\"o1\",\"steps\":1}]}",
+          "previous": "8b16ffbaeea3e2da594f234ea4acbe06d262dae3378f4befbbb0cdc116a9cd43",
+          "sequence": 6
+        },
+        {
+          "fingerprint": "224eaafa64e586a4fd5880c11e5312f514240076146d2092368a82652fd00d92",
+          "kind": "seed_shared_teaching",
+          "payload_json": "{\"before_program\":null,\"candidate_evaluations\":21,\"candidates\":[{\"ops\":[\"right\"],\"schema\":\"motion\"}],\"examples\":[{\"input\":{\"x\":1,\"y\":1},\"output\":{\"x\":2,\"y\":1}},{\"input\":{\"x\":2,\"y\":2},\"output\":{\"x\":3,\"y\":2}}],\"feedback\":[],\"lab\":\"world\",\"mode\":\"adaptive\",\"model_hash\":null,\"name\":\"nudge\",\"origin\":\"bounded_catalogue\",\"prototype\":null,\"retrieval_order\":[],\"rule\":\"enumerate\",\"schema\":\"motion\",\"selector\":\"existing_epsilon_greedy\",\"supersedes\":null}",
+          "previous": "2ece666e151f7de81081e8ffffe8950f6e91cb30e51222760feba9260a2ecd79",
+          "sequence": 7
+        },
+        {
+          "fingerprint": "8a9aa5cf5f07ede7ea6584934ae24bad6045f9786fa8efb78df2c4f15a29f883",
+          "kind": "seed_shared_check",
+          "payload_json": "{\"accepted\":true,\"attempt\":\"224eaafa64e586a4fd5880c11e5312f514240076146d2092368a82652fd00d92\",\"checks\":[{\"input\":{\"x\":0,\"y\":3},\"output\":{\"x\":1,\"y\":3}}],\"label\":\"authored_development_check_not_confirmation\",\"name\":\"nudge\",\"prior\":null,\"program\":{\"ops\":[\"right\"],\"schema\":\"motion\"}}",
+          "previous": "224eaafa64e586a4fd5880c11e5312f514240076146d2092368a82652fd00d92",
+          "sequence": 8
+        },
+        {
+          "fingerprint": "fcbb5c3430a7cea7fdb12ed213a257c37231dc831c22b4b3ed5141e04ea823f1",
+          "kind": "seed_program",
+          "payload_json": "{\"program\":[{\"direction\":\"right\",\"reference\":\"o1\",\"steps\":1}],\"trace\":[{\"after\":[2,1],\"before\":[1,1],\"direction\":\"right\",\"object\":\"o1\",\"steps\":1}]}",
+          "previous": "8a9aa5cf5f07ede7ea6584934ae24bad6045f9786fa8efb78df2c4f15a29f883",
+          "sequence": 9
+        },
+        {
+          "fingerprint": "d2d8cba1c6e1d9c4c57c9ac7de69f42c744ccf3f93f52a9236f2b87787adf789",
+          "kind": "seed_shared_teaching",
+          "payload_json": "{\"before_program\":null,\"candidate_evaluations\":6,\"candidates\":[{\"name\":\"left_of\",\"schema\":\"relation\"}],\"examples\":[{\"input\":{\"first\":{\"color\":\"red\",\"id\":\"p0\",\"shape\":\"circle\",\"size\":\"small\",\"x\":0,\"y\":0},\"second\":{\"color\":\"red\",\"id\":\"p3\",\"shape\":\"square\",\"size\":\"large\",\"x\":3,\"y\":0}},\"output\":true},{\"input\":{\"first\":{\"color\":\"blue\",\"id\":\"p6\",\"shape\":\"circle\",\"size\":\"small\",\"x\":0,\"y\":1},\"second\":{\"color\":\"red\",\"id\":\"p2\",\"shape\":\"square\",\"size\":\"small\",\"x\":2,\"y\":0}},\"output\":true}],\"feedback\":[],\"lab\":\"reasoning\",\"mode\":\"adaptive\",\"model_hash\":null,\"name\":\"lefter\",\"origin\":\"bounded_catalogue\",\"prototype\":null,\"retrieval_order\":[],\"rule\":\"enumerate\",\"schema\":\"relation\",\"selector\":\"existing_epsilon_greedy\",\"supersedes\":null}",
+          "previous": "fcbb5c3430a7cea7fdb12ed213a257c37231dc831c22b4b3ed5141e04ea823f1",
+          "sequence": 10
+        },
+        {
+          "fingerprint": "d49ddfee9c9f59c1edfcfd992cc3066b10ea3e5a256335613e26c756566713da",
+          "kind": "seed_shared_check",
+          "payload_json": "{\"accepted\":true,\"attempt\":\"d2d8cba1c6e1d9c4c57c9ac7de69f42c744ccf3f93f52a9236f2b87787adf789\",\"checks\":[{\"input\":{\"first\":{\"color\":\"red\",\"id\":\"p1\",\"shape\":\"circle\",\"size\":\"large\",\"x\":1,\"y\":0},\"second\":{\"color\":\"red\",\"id\":\"p4\",\"shape\":\"triangle\",\"size\":\"small\",\"x\":4,\"y\":0}},\"output\":true},{\"input\":{\"first\":{\"color\":\"red\",\"id\":\"p4\",\"shape\":\"triangle\",\"size\":\"small\",\"x\":4,\"y\":0},\"second\":{\"color\":\"red\",\"id\":\"p1\",\"shape\":\"circle\",\"size\":\"large\",\"x\":1,\"y\":0}},\"output\":false}],\"label\":\"authored_development_check_not_confirmation\",\"name\":\"lefter\",\"prior\":null,\"program\":{\"name\":\"left_of\",\"schema\":\"relation\"}}",
+          "previous": "d2d8cba1c6e1d9c4c57c9ac7de69f42c744ccf3f93f52a9236f2b87787adf789",
+          "sequence": 11
+        }
+      ],
+      "grammar_hash": "00336deebffd9528a5e08e471e490956dd148cae7cf0a67b808a5a6e55643587",
+      "schema": "nexus_seed_session_v1",
+      "stopped": false,
+      "world": [
+        {
+          "color": "red",
+          "id": "o1",
+          "shape": "circle",
+          "size": "small",
+          "x": 2,
+          "y": 1
+        },
+        {
+          "color": "red",
+          "id": "o2",
+          "shape": "square",
+          "size": "large",
+          "x": 2,
+          "y": 1
+        },
+        {
+          "color": "blue",
+          "id": "o3",
+          "shape": "circle",
+          "size": "large",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "color": "blue",
+          "id": "o4",
+          "shape": "triangle",
+          "size": "small",
+          "x": 0,
+          "y": 3
+        },
+        {
+          "color": "green",
+          "id": "o5",
+          "shape": "square",
+          "size": "small",
+          "x": 2,
+          "y": 4
+        },
+        {
+          "color": "green",
+          "id": "o6",
+          "shape": "triangle",
+          "size": "large",
+          "x": 4,
+          "y": 0
+        }
+      ]
+    },
+    "sha256": "efef7a1fba7d72ce1e5a1c93533cc53fb1f8e7728d41531637351052a15f457e"
+  },
+  "state": {
+    "architecture": {
+      "encoder_hash": null,
+      "encoder_parameters": 0,
+      "frozen_core_parameters": 0,
+      "learning_to_learn_demonstrated": false,
+      "memory": "existing_Session_E1_Journal",
+      "neural_cross_domain_usefulness": "untested",
+      "planning": "existing_known_grid_reference_not_neural_MPC",
+      "rule_selection": "existing_epsilon_greedy_sample_means",
+      "shared_representation": "symbolic_only_optional_encoder_disabled",
+      "skills": "typed_finite_programs_with_fresh_authored_checks"
+    },
+    "costs": {
+      "candidate_evaluations": 108,
+      "generated_examples": 0,
+      "predicate_tests": 18,
+      "program_evaluations": 9,
+      "sandbox_actions": 3,
+      "teacher_answers": 17
+    },
+    "scientific": false,
+    "shared_library": {
+      "entries": [
+        {
+          "active_revision": "99ff9a313db2d41640bd6e6862e97ff9209003ba29494da64740c14b63c7ad39",
+          "attempt": "7a9404d78f5bae2205e1966e3fb47aad2f44663fec982848181976d32fb32023",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "ops": [
+                "reverse"
+              ],
+              "schema": "list"
+            }
+          ],
+          "current_teaching_consistent": true,
+          "example_input": [
+            3,
+            1,
+            2,
+            1
+          ],
+          "model_hash": null,
+          "name": "flip",
+          "origin_lab": "coding",
+          "prior_revision": null,
+          "program": {
+            "ops": [
+              "reverse"
+            ],
+            "schema": "list"
+          },
+          "question": null,
+          "schema": "list",
+          "selector": "existing_epsilon_greedy",
+          "status": "verified_on_authored_checks",
+          "teaching_examples": 2
+        },
+        {
+          "active_revision": "7522f40409b92309a1682d0df134a846036545c652bc655849f3d963241d4bc9",
+          "attempt": "28ae54a119a5d1b05fe54799c31a9d6aff5fc90904005c4836b7e5e8f1ad1551",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "literals": [
+                [
+                  "color",
+                  "red",
+                  false
+                ],
+                [
+                  "size",
+                  "small",
+                  false
+                ]
+              ],
+              "schema": "predicate"
+            }
+          ],
+          "current_teaching_consistent": true,
+          "example_input": {
+            "color": "red",
+            "id": "p0",
+            "shape": "circle",
+            "size": "small",
+            "x": 0,
+            "y": 0
+          },
+          "model_hash": null,
+          "name": "glim",
+          "origin_lab": "language",
+          "prior_revision": null,
+          "program": {
+            "literals": [
+              [
+                "color",
+                "red",
+                false
+              ],
+              [
+                "size",
+                "small",
+                false
+              ]
+            ],
+            "schema": "predicate"
+          },
+          "question": null,
+          "schema": "predicate",
+          "selector": "existing_epsilon_greedy",
+          "status": "verified_on_authored_checks",
+          "teaching_examples": 5
+        },
+        {
+          "active_revision": "8a9aa5cf5f07ede7ea6584934ae24bad6045f9786fa8efb78df2c4f15a29f883",
+          "attempt": "224eaafa64e586a4fd5880c11e5312f514240076146d2092368a82652fd00d92",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "ops": [
+                "right"
+              ],
+              "schema": "motion"
+            }
+          ],
+          "current_teaching_consistent": true,
+          "example_input": {
+            "x": 1,
+            "y": 1
+          },
+          "model_hash": null,
+          "name": "nudge",
+          "origin_lab": "world",
+          "prior_revision": null,
+          "program": {
+            "ops": [
+              "right"
+            ],
+            "schema": "motion"
+          },
+          "question": null,
+          "schema": "motion",
+          "selector": "existing_epsilon_greedy",
+          "status": "verified_on_authored_checks",
+          "teaching_examples": 2
+        },
+        {
+          "active_revision": "d49ddfee9c9f59c1edfcfd992cc3066b10ea3e5a256335613e26c756566713da",
+          "attempt": "d2d8cba1c6e1d9c4c57c9ac7de69f42c744ccf3f93f52a9236f2b87787adf789",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "name": "left_of",
+              "schema": "relation"
+            }
+          ],
+          "current_teaching_consistent": true,
+          "example_input": {
+            "first": {
+              "color": "red",
+              "id": "p0",
+              "shape": "circle",
+              "size": "small",
+              "x": 0,
+              "y": 0
+            },
+            "second": {
+              "color": "red",
+              "id": "p3",
+              "shape": "square",
+              "size": "large",
+              "x": 3,
+              "y": 0
+            }
+          },
+          "model_hash": null,
+          "name": "lefter",
+          "origin_lab": "reasoning",
+          "prior_revision": null,
+          "program": {
+            "name": "left_of",
+            "schema": "relation"
+          },
+          "question": null,
+          "schema": "relation",
+          "selector": "existing_epsilon_greedy",
+          "status": "verified_on_authored_checks",
+          "teaching_examples": 2
+        }
+      ],
+      "evidence_events": 9,
+      "learning_rules": {
+        "epsilon": 0.1,
+        "kind_n": {
+          "list/enumerate": 1
+        },
+        "kind_sum": {
+          "list/enumerate": 0.978
+        },
+        "name": "existing_epsilon_greedy_statistics"
+      },
+      "learning_to_learn_demonstrated": false,
+      "program_catalogue": {
+        "list": 22,
+        "motion": 21,
+        "predicate": 37,
+        "relation": 6
+      },
+      "scientific": false
+    },
+    "working_memory": {
+      "kind": "symbolic_recurrent_state_not_neural_GRU",
+      "last_concept": "lefter",
+      "last_object": null,
+      "source_event": "d2d8cba1c6e1d9c4c57c9ac7de69f42c744ccf3f93f52a9236f2b87787adf789"
+    },
+    "world": [
+      {
+        "color": "red",
+        "id": "o1",
+        "shape": "circle",
+        "size": "small",
+        "x": 2,
+        "y": 1
+      },
+      {
+        "color": "red",
+        "id": "o2",
+        "shape": "square",
+        "size": "large",
+        "x": 2,
+        "y": 1
+      },
+      {
+        "color": "blue",
+        "id": "o3",
+        "shape": "circle",
+        "size": "large",
+        "x": 4,
+        "y": 2
+      },
+      {
+        "color": "blue",
+        "id": "o4",
+        "shape": "triangle",
+        "size": "small",
+        "x": 0,
+        "y": 3
+      },
+      {
+        "color": "green",
+        "id": "o5",
+        "shape": "square",
+        "size": "small",
+        "x": 2,
+        "y": 4
+      },
+      {
+        "color": "green",
+        "id": "o6",
+        "shape": "triangle",
+        "size": "large",
+        "x": 4,
+        "y": 0
+      }
+    ]
+  },
+  "trace": [
+    {
+      "request": {
+        "examples": [
+          {
+            "input": [
+              3,
+              1,
+              2,
+              1
+            ],
+            "output": [
+              1,
+              2,
+              1,
+              3
+            ]
+          }
+        ],
+        "lab": "coding",
+        "mode": "adaptive",
+        "name": "flip",
+        "op": "lab_teach",
+        "schema": "list",
+        "supersedes": null
+      },
+      "resources": {
+        "candidate_evaluations": 22,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 0,
+        "sandbox_actions": 0,
+        "teacher_answers": 1,
+        "wall_ms": 0.8264580101240426
+      },
+      "response": {
+        "attempt": "821b44d7780713960eddac2fefd6b04a472c4221f1a05167c37ee8bed0a40d08",
+        "candidate_count": 1,
+        "feedback": [],
+        "rule": "enumerate",
+        "status": "proposed",
+        "text": "Evidence saved; existing verified skill remains until fresh checks pass."
+      }
+    },
+    {
+      "request": {
+        "examples": [
+          {
+            "input": [
+              0,
+              2,
+              1,
+              1
+            ],
+            "output": [
+              1,
+              1,
+              2,
+              0
+            ]
+          }
+        ],
+        "lab": "coding",
+        "mode": "adaptive",
+        "name": "flip",
+        "op": "lab_teach",
+        "schema": "list",
+        "supersedes": null
+      },
+      "resources": {
+        "candidate_evaluations": 22,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 0,
+        "sandbox_actions": 0,
+        "teacher_answers": 1,
+        "wall_ms": 0.5177910206839442
+      },
+      "response": {
+        "attempt": "7a9404d78f5bae2205e1966e3fb47aad2f44663fec982848181976d32fb32023",
+        "candidate_count": 1,
+        "feedback": [
+          {
+            "after_error": 0,
+            "before_error": 1,
+            "compute": 22,
+            "labels": 1,
+            "reward": 0.978,
+            "rule": "enumerate"
+          }
+        ],
+        "rule": "reuse_first",
+        "status": "proposed",
+        "text": "Evidence saved; existing verified skill remains until fresh checks pass."
+      }
+    },
+    {
+      "request": {
+        "attempt": "7a9404d78f5bae2205e1966e3fb47aad2f44663fec982848181976d32fb32023",
+        "checks": [
+          {
+            "input": [
+              4,
+              0,
+              4,
+              2
+            ],
+            "output": [
+              2,
+              4,
+              0,
+              4
+            ]
+          }
+        ],
+        "name": "flip",
+        "op": "lab_check"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 1,
+        "sandbox_actions": 0,
+        "teacher_answers": 1,
+        "wall_ms": 0.22537499899044633
+      },
+      "response": {
+        "revision": "99ff9a313db2d41640bd6e6862e97ff9209003ba29494da64740c14b63c7ad39",
+        "status": "accepted",
+        "text": "Authored development check; no confirmation or learning-to-learn claim."
+      }
+    },
+    {
+      "request": {
+        "input": [
+          5,
+          2,
+          3
+        ],
+        "lab": "reasoning",
+        "name": "flip",
+        "op": "lab_run"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 1,
+        "sandbox_actions": 0,
+        "teacher_answers": 0,
+        "wall_ms": 0.2032080083154142
+      },
+      "response": {
+        "output": [
+          3,
+          2,
+          5
+        ],
+        "program": {
+          "ops": [
+            "reverse"
+          ],
+          "schema": "list"
+        },
+        "retrieval": [
+          "flip"
+        ],
+        "skill_id": "99ff9a313db2d41640bd6e6862e97ff9209003ba29494da64740c14b63c7ad39",
+        "status": "predicted",
+        "text": "Executed a checked typed program; no host code or tool calls."
+      }
+    },
+    {
+      "request": {
+        "examples": [
+          {
+            "input": {
+              "color": "red",
+              "id": "p0",
+              "shape": "circle",
+              "size": "small",
+              "x": 0,
+              "y": 0
+            },
+            "output": true
+          },
+          {
+            "input": {
+              "color": "red",
+              "id": "p4",
+              "shape": "triangle",
+              "size": "small",
+              "x": 4,
+              "y": 0
+            },
+            "output": true
+          },
+          {
+            "input": {
+              "color": "red",
+              "id": "p1",
+              "shape": "circle",
+              "size": "large",
+              "x": 1,
+              "y": 0
+            },
+            "output": false
+          },
+          {
+            "input": {
+              "color": "blue",
+              "id": "p6",
+              "shape": "circle",
+              "size": "small",
+              "x": 0,
+              "y": 1
+            },
+            "output": false
+          },
+          {
+            "input": {
+              "color": "green",
+              "id": "p15",
+              "shape": "square",
+              "size": "large",
+              "x": 3,
+              "y": 2
+            },
+            "output": false
+          }
+        ],
+        "lab": "language",
+        "mode": "adaptive",
+        "name": "glim",
+        "op": "lab_teach",
+        "schema": "predicate",
+        "supersedes": null
+      },
+      "resources": {
+        "candidate_evaluations": 37,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 0,
+        "sandbox_actions": 0,
+        "teacher_answers": 5,
+        "wall_ms": 1.0949999850708991
+      },
+      "response": {
+        "attempt": "28ae54a119a5d1b05fe54799c31a9d6aff5fc90904005c4836b7e5e8f1ad1551",
+        "candidate_count": 1,
+        "feedback": [],
+        "rule": "enumerate",
+        "status": "proposed",
+        "text": "Evidence saved; existing verified skill remains until fresh checks pass."
+      }
+    },
+    {
+      "request": {
+        "attempt": "28ae54a119a5d1b05fe54799c31a9d6aff5fc90904005c4836b7e5e8f1ad1551",
+        "checks": [
+          {
+            "input": {
+              "color": "red",
+              "id": "p2",
+              "shape": "square",
+              "size": "small",
+              "x": 2,
+              "y": 0
+            },
+            "output": true
+          },
+          {
+            "input": {
+              "color": "green",
+              "id": "p12",
+              "shape": "circle",
+              "size": "small",
+              "x": 0,
+              "y": 2
+            },
+            "output": false
+          }
+        ],
+        "name": "glim",
+        "op": "lab_check"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 1,
+        "sandbox_actions": 0,
+        "teacher_answers": 2,
+        "wall_ms": 0.3676250053104013
+      },
+      "response": {
+        "revision": "7522f40409b92309a1682d0df134a846036545c652bc655849f3d963241d4bc9",
+        "status": "accepted",
+        "text": "Authored development check; no confirmation or learning-to-learn claim."
+      }
+    },
+    {
+      "request": {
+        "op": "lab_command",
+        "text": "move glim right"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 6,
+        "program_evaluations": 1,
+        "sandbox_actions": 1,
+        "teacher_answers": 0,
+        "wall_ms": 0.48933399375528097
+      },
+      "response": {
+        "status": "acted",
+        "text": "Executed in the authored object world.",
+        "trace": [
+          {
+            "after": [
+              1,
+              0
+            ],
+            "before": [
+              0,
+              0
+            ],
+            "direction": "right",
+            "object": "o1",
+            "steps": 1
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "op": "lab_goal",
+        "reference": "glim",
+        "x": 1,
+        "y": 1
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 6,
+        "program_evaluations": 1,
+        "sandbox_actions": 1,
+        "teacher_answers": 0,
+        "wall_ms": 0.3659999929368496
+      },
+      "response": {
+        "goal": [
+          1,
+          1
+        ],
+        "reward": 1.18,
+        "status": "acted",
+        "symbolic_search": {
+          "edges": 12,
+          "expanded": 3,
+          "kind": "authored_symbolic_search_not_neural_imagination"
+        },
+        "text": "Known-grid reference planning and existing authored reward; not neural control evidence.",
+        "trace": [
+          {
+            "after": [
+              1,
+              1
+            ],
+            "before": [
+              1,
+              0
+            ],
+            "direction": "down",
+            "object": "o1",
+            "steps": 1
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "examples": [
+          {
+            "input": {
+              "x": 1,
+              "y": 1
+            },
+            "output": {
+              "x": 2,
+              "y": 1
+            }
+          },
+          {
+            "input": {
+              "x": 2,
+              "y": 2
+            },
+            "output": {
+              "x": 3,
+              "y": 2
+            }
+          }
+        ],
+        "lab": "world",
+        "mode": "adaptive",
+        "name": "nudge",
+        "op": "lab_teach",
+        "schema": "motion",
+        "supersedes": null
+      },
+      "resources": {
+        "candidate_evaluations": 21,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 0,
+        "sandbox_actions": 0,
+        "teacher_answers": 2,
+        "wall_ms": 0.6466669728979468
+      },
+      "response": {
+        "attempt": "224eaafa64e586a4fd5880c11e5312f514240076146d2092368a82652fd00d92",
+        "candidate_count": 1,
+        "feedback": [],
+        "rule": "enumerate",
+        "status": "proposed",
+        "text": "Evidence saved; existing verified skill remains until fresh checks pass."
+      }
+    },
+    {
+      "request": {
+        "attempt": "224eaafa64e586a4fd5880c11e5312f514240076146d2092368a82652fd00d92",
+        "checks": [
+          {
+            "input": {
+              "x": 0,
+              "y": 3
+            },
+            "output": {
+              "x": 1,
+              "y": 3
+            }
+          }
+        ],
+        "name": "nudge",
+        "op": "lab_check"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 1,
+        "sandbox_actions": 0,
+        "teacher_answers": 1,
+        "wall_ms": 0.34012499963864684
+      },
+      "response": {
+        "revision": "8a9aa5cf5f07ede7ea6584934ae24bad6045f9786fa8efb78df2c4f15a29f883",
+        "status": "accepted",
+        "text": "Authored development check; no confirmation or learning-to-learn claim."
+      }
+    },
+    {
+      "request": {
+        "name": "nudge",
+        "op": "lab_world_skill",
+        "reference": "glim"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 6,
+        "program_evaluations": 1,
+        "sandbox_actions": 1,
+        "teacher_answers": 0,
+        "wall_ms": 0.40862499736249447
+      },
+      "response": {
+        "status": "acted",
+        "text": "Executed in the authored object world.",
+        "trace": [
+          {
+            "after": [
+              2,
+              1
+            ],
+            "before": [
+              1,
+              1
+            ],
+            "direction": "right",
+            "object": "o1",
+            "steps": 1
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "examples": [
+          {
+            "input": {
+              "first": {
+                "color": "red",
+                "id": "p0",
+                "shape": "circle",
+                "size": "small",
+                "x": 0,
+                "y": 0
+              },
+              "second": {
+                "color": "red",
+                "id": "p3",
+                "shape": "square",
+                "size": "large",
+                "x": 3,
+                "y": 0
+              }
+            },
+            "output": true
+          },
+          {
+            "input": {
+              "first": {
+                "color": "blue",
+                "id": "p6",
+                "shape": "circle",
+                "size": "small",
+                "x": 0,
+                "y": 1
+              },
+              "second": {
+                "color": "red",
+                "id": "p2",
+                "shape": "square",
+                "size": "small",
+                "x": 2,
+                "y": 0
+              }
+            },
+            "output": true
+          }
+        ],
+        "lab": "reasoning",
+        "mode": "adaptive",
+        "name": "lefter",
+        "op": "lab_teach",
+        "schema": "relation",
+        "supersedes": null
+      },
+      "resources": {
+        "candidate_evaluations": 6,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 0,
+        "sandbox_actions": 0,
+        "teacher_answers": 2,
+        "wall_ms": 0.6070829986128956
+      },
+      "response": {
+        "attempt": "d2d8cba1c6e1d9c4c57c9ac7de69f42c744ccf3f93f52a9236f2b87787adf789",
+        "candidate_count": 1,
+        "feedback": [],
+        "rule": "enumerate",
+        "status": "proposed",
+        "text": "Evidence saved; existing verified skill remains until fresh checks pass."
+      }
+    },
+    {
+      "request": {
+        "attempt": "d2d8cba1c6e1d9c4c57c9ac7de69f42c744ccf3f93f52a9236f2b87787adf789",
+        "checks": [
+          {
+            "input": {
+              "first": {
+                "color": "red",
+                "id": "p1",
+                "shape": "circle",
+                "size": "large",
+                "x": 1,
+                "y": 0
+              },
+              "second": {
+                "color": "red",
+                "id": "p4",
+                "shape": "triangle",
+                "size": "small",
+                "x": 4,
+                "y": 0
+              }
+            },
+            "output": true
+          },
+          {
+            "input": {
+              "first": {
+                "color": "red",
+                "id": "p4",
+                "shape": "triangle",
+                "size": "small",
+                "x": 4,
+                "y": 0
+              },
+              "second": {
+                "color": "red",
+                "id": "p1",
+                "shape": "circle",
+                "size": "large",
+                "x": 1,
+                "y": 0
+              }
+            },
+            "output": false
+          }
+        ],
+        "name": "lefter",
+        "op": "lab_check"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 1,
+        "sandbox_actions": 0,
+        "teacher_answers": 2,
+        "wall_ms": 0.45241700718179345
+      },
+      "response": {
+        "revision": "d49ddfee9c9f59c1edfcfd992cc3066b10ea3e5a256335613e26c756566713da",
+        "status": "accepted",
+        "text": "Authored development check; no confirmation or learning-to-learn claim."
+      }
+    },
+    {
+      "request": {
+        "input": {
+          "first": {
+            "color": "red",
+            "id": "p2",
+            "shape": "square",
+            "size": "small",
+            "x": 2,
+            "y": 0
+          },
+          "second": {
+            "color": "red",
+            "id": "p5",
+            "shape": "triangle",
+            "size": "large",
+            "x": 5,
+            "y": 0
+          }
+        },
+        "lab": "language",
+        "name": "lefter",
+        "op": "lab_run"
+      },
+      "resources": {
+        "candidate_evaluations": 0,
+        "generated_examples": 0,
+        "neural_work": {},
+        "predicate_tests": 0,
+        "program_evaluations": 1,
+        "sandbox_actions": 0,
+        "teacher_answers": 0,
+        "wall_ms": 0.44379199971444905
+      },
+      "response": {
+        "output": true,
+        "program": {
+          "name": "left_of",
+          "schema": "relation"
+        },
+        "retrieval": [
+          "lefter"
+        ],
+        "skill_id": "d49ddfee9c9f59c1edfcfd992cc3066b10ea3e5a256335613e26c756566713da",
+        "status": "predicted",
+        "text": "Executed a checked typed program; no host code or tool calls."
+      }
+    }
+  ],
+  "wall_s": 0.008954624994657934
+}

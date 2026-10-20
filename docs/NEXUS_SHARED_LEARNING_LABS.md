@@ -158,3 +158,55 @@ scientific lock are created here; no comparative result is claimed.
 The intended architecture is now executable at a bounded authored level.
 General language, useful neural transfer, robust noisy skill induction,
 continual learning and learning-to-learn remain unestablished.
+
+## Verification actually completed
+
+Implementation committed at **5b47bfcb44c3137e783e4da9d492ffe5c4ea7df1** before
+the recorded demo. Explicit retrieval accounting committed at
+**e88d1378629d93cb4eed9598eb8722b843d8cf18** before successful browser QA.
+[Raw authored demo](../artifacts/seed_shared_labs_demo.json) and
+[engineering receipt](../artifacts/seed_shared_labs_engineering.json) preserve
+traces, source/checkpoint hashes, costs and limitations. All770 historical
+artifact files at the starting revision remain byte-identical. Main and both
+unrelated root-checkout files are unchanged.
+
+Final relevant regression: **587 passed in65.79s**. Earlier focused checks
+passed117 in1.73s; final precommit checks63 in2.32s; retrieval-meter checks29
+in.53s. The suite covers shared-kernel parity, relations public aliases,
+cross-lab execution, source/assessment separation, consumed checks, retained
+knowledge, explicit corrections, exact save/load, rollback, typed limits,
+frozen weights, read-only inspection and stdlib-only saved-state replay:
+
+```sh
+env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
+PYTHONPATH=src:/Users/ajayghimire/Projects/nexus-ai/.deps \
+python3 -m pytest -o addopts='' -q --tb=short tests/test_seed*.py \
+tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py \
+tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py \
+tests/test_factory.py tests/test_evolution2_planner_quality.py
+```
+
+The deterministic stdlib demo made14 requests, retained4 checked skills,
+executed3 authored grid moves, showed one actual future-teaching feedback
+update, and restored exactly in.008955s. It is runnable with
+`python3 -I -S scripts/run_seed_shared_demo.py --output runs/my-shared-demo.json`;
+the output path must be new. This is not a randomized benchmark or proof that
+adaptive rule selection helps.
+
+Chrome GUI QA passed **21 checks**: all four labs, coding-to-reasoning reuse,
+language-to-world instructions, correct existing reward, conflict retention,
+explicit correction, save/load, restored execution, immutable inspection,
+mobile layout, no browser errors and unchanged checkpoint bytes. The completed
+flow took2.541s with19 encoder rows,7 neural retrieval calls and3 authored moves.
+These counts exclude earlier aborted automation and ordinary test fixtures.
+One earlier attempt reached3 authored moves before stopping at a collapsed
+correction field; the automation was corrected to expand it. A separate retry
+found the bounded server had expired, then restarted it under the same limits.
+Viewport captures and DOM inspection confirmed the mobile layout after a
+full-page capture showed a compositor artifact. No scientific study was rerun.
+
+Zero new scientific experiments, neural training or scientific environment
+collection. The successful demo/GUI each contain3 authored actions; these are
+reported rather than called zero interactions. The scientific ledger remains
+unchanged. No architecture efficacy, control improvement, general transfer,
+learning-to-learn or AGI result is claimed.
