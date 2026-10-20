@@ -25,6 +25,22 @@ class ActionReadout(nn.Module):
 
     def forward(self,x):return self.net(x).squeeze(-1)
 
+    def adaptation_features(self,x):
+        """Frozen nonlinear action/state basis for existing correction() API.
+
+        This does not fit,score outcomes or install an adapter. Only an external
+        33-vector may be adapted by a separately registered learning procedure.
+        No recurrent h/z or readout parameter changes. Runtime rank stays frozen.
+        """
+        if x.ndim!=2 or x.shape[1]!=34 or not torch.isfinite(x).all():raise ValueError('finite_readout_inputs')
+        with torch.no_grad():
+            hidden=self.net[0](x.detach())
+            return torch.cat((hidden,torch.ones(len(x),1,device=x.device,dtype=x.dtype)),1).detach()
+
+    def adapted_scores(self,x,base,theta):
+        if theta.shape!=(33,) or not torch.isfinite(theta).all() or base.shape!=(len(x),):raise ValueError('standalone_readout_residual_33')
+        return base.detach()+self(x).detach()+self.adaptation_features(x)@theta
+
     def rank(self,model,h,z,proprio,memory=None):
         with torch.no_grad():
             x,base=features(model,h,z,proprio,memory);scores=base+self(x)

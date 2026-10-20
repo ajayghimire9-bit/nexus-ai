@@ -2,6 +2,10 @@
 
 ## Active evidence, newest first
 
+- [Frozen spatial-transfer development](NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md):
+  screen passed versus frozen ranking; greedy stronger; boundary/diagonal
+  limitations. One core,no updates. [Protocol](NEXUS_SEED_SPATIAL_TRANSFER_PROTOCOL.md).
+
 - [Nonlinear action readout and surprise](NEXUS_SEED_SURPRISE_READOUT_RESULTS.md):
   development screen passed; greedy stronger; future-edit credit ties
   historical-best. [Protocol](NEXUS_SEED_SURPRISE_READOUT_PROTOCOL.md).

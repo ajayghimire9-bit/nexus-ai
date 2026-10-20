@@ -22,6 +22,7 @@ def command(args,root):
             return [sys.executable,'-I','-S',str(root/'scripts/run_learning_lab.py'),'--allow-seed','--port',str(args.port),'--max-runtime-s',str(args.seconds)]
         return [sys.executable,str(root/'scripts/run_seed_adaptive_gui.py'),'--with-readout','--port',str(args.port),'--max-runtime-s',str(args.seconds)]
     scripts={'check':'check_repository.py','verify':'verify_seed_surprise_readout.py','audit-source':'audit_seed_focus.py'}
+    if args.action=='verify' and (root/'artifacts/seed_spatial_transfer.json').exists():scripts['verify']='verify_seed_spatial_transfer.py'
     if args.action not in scripts:raise ValueError('explicit_seed_command_required')
     return [sys.executable,'-I','-S',str(root/'scripts'/scripts[args.action])]
 
@@ -38,7 +39,11 @@ def main(argv=None):
         root=repository(args.repository)
         if args.action=='status':
             path=root/'artifacts/seed_surprise_readout.json';r=json.loads(path.read_text())
-            print(json.dumps(dict(project='NEXUS Seed',learning_to_learn_established=False,action_readout_screen=r['analysis']['screen_passed'],core_replications=1,greedy_still_stronger=True,results=str(root/'docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md')),indent=2));return
+            status=dict(project='NEXUS Seed',learning_to_learn_established=False,action_readout_screen=r['analysis']['screen_passed'],core_replications=1,greedy_still_stronger=True,results=str(root/'docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md'))
+            spatial=root/'artifacts/seed_spatial_transfer.json'
+            if spatial.exists():
+                q=json.loads(spatial.read_text());status.update(spatial_transfer_complete=q['declared_complete'],spatial_transfer_screen=q['analysis']['screen_passed'],results=str(root/'docs/NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md'))
+            print(json.dumps(status,indent=2));return
         env=dict(os.environ);env['PYTHONPATH']=str(root/'src')+os.pathsep+env.get('PYTHONPATH','')
         result=subprocess.run(command(args,root),cwd=root,env=env)
         if result.returncode:raise SystemExit(result.returncode)

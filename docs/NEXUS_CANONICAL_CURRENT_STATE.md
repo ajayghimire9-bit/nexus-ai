@@ -21,9 +21,12 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
-Frozen readout transfer under fresh spatial distributions, followed by a
-separately registered learning-curve study only if warranted. Closed audits
-cannot select new hyperparameters. See [next experiment](NEXUS_NEXT_EXPERIMENT.md).
+Frozen spatial transfer passed versus frozen ranking,with greedy stronger,
+boundary initial-ranking weakness and cross-diagonal goal failures. No fitting.
+See [results](NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md). Next is a separately
+registered nonlinear-feature learning-curve study. The readout-to-existing-update
+bridge is implemented/tests only,not enabled. Closed audits cannot select new
+hyperparameters. See [proposal](NEXUS_SEED_READOUT_LEARNING_PROPOSAL.md).
 
 ## Start and verify
 

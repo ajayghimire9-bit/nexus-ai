@@ -34,6 +34,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+Frozen spatial-transfer development from adc60c7 completed7,504 authored steps,
+90,198 imagined rows and6,480 posterior-prior rows in3.154639seconds. Pooled
+readout-minus-frozen return1.411667[1.188644,1.634690],goals45.3125% versus4.6875%:
+registered screen passed. Greedy stayed stronger; diagonal goals27.08% versus
+random56.25%,with return difference versus random inconclusive. Boundary
+initial action regret worsened despite positive episode return. One core only,
+no fitting or policy promotion. See NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md.
+
 From protocol/code4d8b221 and resultsa3fe49a, the existing2,209-parameter nonlinear
 readout trained on128 balanced source states improved fresh nine-action ranking:
 regret0.105208 versus frozen0.78125. On32 paired episode resets per method,
@@ -60,9 +68,9 @@ Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
 
 ## Scientific decision path
 
-First check whether the frozen action scorer's gains transfer to fresh spatial
-distributions with correct recurrent histories. Do not tune on its closed
-64-state or32-reset audit. A separate fresh learning-to-learn study must ask
+The frozen spatial check passed versus frozen ranking,with important task
+failures. Do not tune on either closed readout or transfer audit. A separate
+fresh learning-to-learn study must ask
 whether experience across source tasks improves the subsequent1/2/4/8-example
 learning curve versus scaled replay, fixed protection, no adaptation and the
 strongest simple learned-from-source reference. It must measure forgetting and
@@ -80,8 +88,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1905.6321034559958seconds used,
-1694.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1910.6321034559958seconds used,
+1689.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

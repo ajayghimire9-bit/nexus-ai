@@ -33,6 +33,10 @@ checkpoints are required; this is not an asset-free wheel or cloud service.
 
 ## What the evidence says
 
+The subsequent frozen spatial-transfer screen passed versus frozen ranking:
+goals45.3% versus4.7% across four changed start/goal mixtures. Greedy remained
+stronger; cross-diagonal goals trailed random. [Transfer results](docs/NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md).
+
 The latest nonlinear action-readout development test improved goal completion
 from frozen12.5% to64.6%. Known-grid greedy achieved100% and remains stronger.
 The model uses supplied position/goal features; this is not pixels-only grounding.

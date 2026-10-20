@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed frozen spatial-transfer screen passed,conditional on one core
+
+Readout-minus-frozen return+1.411667[1.188644,1.634690],goal gain+.40625.
+All registered conditions pass. Greedy stronger; diagonal-vs-random negative
+point estimate,inconclusive interval. No meta-learning or general-control claim.
+Learning-rule improvement on nonlinear frozen features remains untested.
+
 ## Latest Seed hypotheses
 
 H-action-nonlinear: passed fresh authored development screen,not general

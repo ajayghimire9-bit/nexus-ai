@@ -7,6 +7,9 @@ demonstrated learning-to-learn.
 
 ## Current evidence
 
+- [Frozen spatial transfer and individual failures](NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md)
+- [Next few-example learned-update comparison,proposed only](NEXUS_SEED_READOUT_LEARNING_PROPOSAL.md)
+
 - [Action-readout gains, greedy limitation, surprise and edit credit](NEXUS_SEED_SURPRISE_READOUT_RESULTS.md)
 - [Negative learned-plasticity/action/meaning benchmark](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md)
 - [Shared state contract and negative decision screen](NEXUS_SEED_CONTRACT_RESULTS.md)

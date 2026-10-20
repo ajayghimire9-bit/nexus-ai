@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Seed focus cleanup and frozen spatial transfer
+
+Verbatim context archive,Seed-first CLI,optional neural/research dependencies,
+lazy old training exports and3 backed-up branch retirements completed.223
+relevant checks passed. Transfer sourceadc60c7 then completed:7504authored steps,
+90198imagined+6480posterior rows,3.154639s. Return gain1.411667[1.188644,1.634690]
+versus frozen; pooled screen passes. Greedy stronger; diagonal goals trail
+random. One core,no L2L claim. Next proposed nonlinear-feature learning-rule
+comparison is not registered or run. See NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md.
+
 ## Latest Seed progress
 
 Fresh action readout: complete4773authored-step study,2.411152s,42798imagined

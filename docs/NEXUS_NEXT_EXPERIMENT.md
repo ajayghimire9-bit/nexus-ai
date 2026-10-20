@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current — learn an update rule over the tested nonlinear action features
+
+Spatial transfer passed against frozen ranking but not greedy; diagonal control
+remains weak. Freeze all existing heads. Compare context-conditioned learned
+plasticity with source-trained static protection,scaled replay,fixed protection
+and no adaptation on fresh1/2/4/8-label tasks,with retention and actual actions.
+The33-feature bridge reuses the same controller/correction APIs; no runtime
+adapter is enabled. Exact tasks/seed registration and bounds still required.
+See NEXUS_SEED_READOUT_LEARNING_PROPOSAL.md. No additional run initiated.
+
 ## After nonlinear readout improvement — transfer of decision quality
 
 Freeze the source-trained readout rule and assess new goal/layout distributions

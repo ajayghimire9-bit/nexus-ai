@@ -8,6 +8,8 @@
 - Neural execution: seed/grounded_agent.py; data-only replay: grounded_records.py.
 - Existing planning: seed/latent_planner.py adapts world/planning.py.
 - Action scorer: seed/action_readout.py; do not replace with another planner.
+  Its frozen nonlinear33-feature bridge reuses PlasticityController/correction;
+  no new optimizer stack or runtime adapter is enabled by that API.
 - Local adaptation: seed/plasticity.py and adaptive_state.py.
 - Vetted edits and rollback: seed/structural_edits.py.
 - Surprise/one-use acceptance: seed/surprise.py.

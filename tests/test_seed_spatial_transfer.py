@@ -47,3 +47,24 @@ def test_resource_bound_and_closed_parent_checkpoint_rule():
     assert 4*32*9+4*8*2*7*20<=c['max_authored_steps']
     assert 4*32*9+4*8*2*20*(4*9+48)<=c['max_imagined_transitions']
     assert c['max_wall_s']<=c['carried_remaining_s'] and c['head_seeds']==[6301,6302,6303]
+
+
+def test_nonlinear_learning_bridge_preserves_frozen_head_and_outer_gradients():
+    import torch
+    from nexus.seed.action_readout import ActionReadout
+    from nexus.seed.plasticity import PlasticityController,correction,context
+    torch.manual_seed(51);head=ActionReadout();weights=copy.deepcopy(head.state_dict());x=torch.randn(9,34);base=torch.randn(9);theta=torch.zeros(33)
+    f=head.adaptation_features(x);assert f.shape==(9,33) and not f.requires_grad
+    assert torch.equal(head.adapted_scores(x,base,theta),base+head(x).detach())
+    controller=PlasticityController(33);anchors=f[:1];y=torch.tensor(.4)
+    d=controller(context(theta,f[1],y,anchors));updated=correction(theta,f[1],y,anchors,d)
+    loss=(f[2:]@updated-.2).square().mean();loss.backward()
+    assert any(p.grad is not None and p.grad.norm()>0 for p in controller.parameters())
+    assert all(p.grad is None for p in head.parameters())
+    assert all(torch.equal(v,head.state_dict()[k]) for k,v in weights.items())
+
+
+def test_saved_spatial_evidence_verifies_without_model_execution():
+    import importlib.util
+    root=Path(__file__).resolve().parents[1];spec=importlib.util.spec_from_file_location('transfer_verify',root/'scripts/verify_seed_spatial_transfer.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    r=m.verify();assert r['valid'] and r['analysis']['screen_passed'] and not r['analysis']['learning_to_learn_tested']
