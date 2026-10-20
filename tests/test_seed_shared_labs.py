@@ -180,6 +180,8 @@ def test_optional_shared_neural_encoder_is_frozen_and_inspection_does_not_advanc
     reverse_skill(b);assert len(lib.state(s)['latest']['flip'][1]['prototype'])==32
     assert b.inspect()['architecture']['encoder_parameters']==7552
     assert predict(b,'flip',[5,2,3])['retrieval']==['flip']
+    measured=b.request(dict(op='lab_run',lab='reasoning',name='flip',input=[3,2,1]))
+    assert measured['resources']['neural_retrieval_calls']==1
     work=dict(model.work);snap=s.snapshot();b.request(dict(op='lab_inspect'));b.request(dict(op='lab_inspect'))
     assert model.work==work and snap==s.snapshot() and all(torch.equal(v,model.state_dict()[k]) for k,v in before.items())
     assert Session.restore(s.snapshot()).snapshot()==s.snapshot()

@@ -19,6 +19,7 @@ from .working import current,resolve_pronouns
 class SharedBrain:
     def __init__(self,session,model=None,model_hash=None):
         self.session=session;self.model=model;self.model_hash=model_hash
+        self.retrieval_calls=0
         if (model is None)!=(model_hash is None):raise ValueError('shared_encoder_and_hash_pair')
         if model is not None:
             if type(model_hash) is not str or not re.fullmatch('[a-f0-9]{64}',model_hash) or model.training or any(p.requires_grad or p.device.type!='cpu' for p in model.parameters()):raise ValueError('owner_verified_frozen_encoder_required')
@@ -52,6 +53,7 @@ class SharedBrain:
                 names.append(name);prototypes.append(origin['prototype'])
         if not names:return sorted(name for name,_ in items)
         with torch.no_grad():_,weights=self.model.retrieve(self.encode(schema,[x]),torch.tensor(prototypes,dtype=torch.float32))
+        self.retrieval_calls+=1
         ranked=sorted(zip(names,weights[0].tolist()),key=lambda v:(-v[1],v[0]))
         return [name for name,_ in ranked]+sorted(name for name,_ in items if name not in names)
 
@@ -75,7 +77,7 @@ class SharedBrain:
         return self.session.execute(program)
 
     def request(self,p):
-        start=time.perf_counter();s=self.session;before=dict(s.counts);neural=dict(self.model.work) if self.model else {}
+        start=time.perf_counter();s=self.session;before=dict(s.counts);neural=dict(self.model.work) if self.model else {};retrieval_before=self.retrieval_calls
         fields={'lab_inspect':{'op'},'lab_ask':{'op','name'},
             'lab_teach':{'op','lab','name','schema','examples','mode','supersedes'},
             'lab_check':{'op','name','attempt','checks'},'lab_rollback':{'op','name','target'},
@@ -142,4 +144,5 @@ class SharedBrain:
             result=dict(status=out['type'],trace=out['trace'],reward=reward,goal=list(goal),symbolic_search=cost,text='Known-grid reference planning and existing authored reward; not neural control evidence.')
         return dict(response_type=result['status'],text=result['text'],result=result,state=self.inspect(),
             resources=dict(wall_ms=(time.perf_counter()-start)*1000,neural_work={k:self.model.work[k]-v for k,v in neural.items()} if self.model else {},
+                neural_retrieval_calls=self.retrieval_calls-retrieval_before,
                 **{k:s.counts[k]-v for k,v in before.items()}))
