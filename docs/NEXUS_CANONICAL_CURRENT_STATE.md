@@ -28,8 +28,11 @@ Source-only first-update diagnosis completed:12.55×median norm ratio,5/12tasks
 harmed; broad-harm screen not supported. Later-prefix oscillation remains a
 source-only lead. The subsequent bounded comparison improved source stability
 by 13.5%, but failed strong-replay and learned-specific practical screens.
-Next proposed cumulative-evidence comparison versus bounded fixed and replay;
-no collection or runtime promotion. See NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md.
+The task-blocked cumulative learner has also failed the5% source screen: .31%
+gain over source-trained static and worse than replay/bounded fixed. Retention
+passed; no fresh validation or runtime promotion. Next proposed scalar update/
+retain gate versus a source-trained constant gate. See
+NEXUS_SEED_CUMULATIVE_LEARNING_RESULTS.md.
 The paragraphs below retain earlier gates.
 
 ### Historical setup stage, superseded by the result above

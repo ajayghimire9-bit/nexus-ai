@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed task-blocked cumulative learning — source screen FAILED
+
+From5235599: curve MSE .187597 learned, .188183 source-trained static,
+.189456 fixed cumulative, .187016 replay and .184388 bounded fixed. Learned
+gain over static .31%, below5%; replay/bounded point differences favor those
+controls. Retention passed. Three independent update-rule initialization/order
+seeds, source tasks aggregated first, ONE frozen feature extractor. Narrow
+conditional seed intervals do not estimate new-task/world-model uncertainty.
+No fresh validation, actual-control or general learning-to-learn claim.
+
 ## Seed bounded correction — source stabilization PASSED; advancement FAILED
 
 From269bcb6, source curve MSE .183824 versus unchanged learned .212504,

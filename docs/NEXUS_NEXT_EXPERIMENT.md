@@ -1,6 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — cumulative source-evidence comparison (proposed, not run)
+## Current — scalar update/retain gate (proposed, not run)
+
+Can a small task-conditioned scalar gate learn how much of a proposed update
+to apply, including zero, better than a source-trained constant gate and strong
+replay/bounded baselines? The cumulative learner failed its5% screen; its first
+label increased mean error despite better final-budget error. Preserve task-blocked
+fitting and frozen features. This specific update-strength question comes before
+capacity growth. Source evidence remains development-only; require fresh
+validation before promotion. See NEXUS_SEED_CUMULATIVE_LEARNING_RESULTS.md.
+
+## Closed — cumulative source-evidence comparison
+
+Completed from5235599: learned-specific practical source screen FAILED;
+retention passed. The original question follows for chronology.
 
 Does using all observed new-task labels to choose the update direction improve
 learning over bounded fixed protection and scaled replay at equal 1/2/4/8-label

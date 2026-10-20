@@ -2,6 +2,13 @@
 
 ## Active evidence, newest first
 
+- [Task-blocked cumulative learning rule](NEXUS_SEED_CUMULATIVE_LEARNING_RESULTS.md):
+  new rule trained across nine source tasks/fold and assessed on three excluded
+  tasks. Only .31% gain over source-trained static; worse than replay/bounded
+  fixed. Practical source screen FAILED, retention passed. Reused-source data,
+  three update-rule seeds, one frozen core; no fresh validation or promotion.
+  [Protocol](NEXUS_SEED_CUMULATIVE_LEARNING_PROTOCOL.md), execution5235599.
+
 - [Bounded source correction](NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md):
   stabilization passed (13.5% versus unchanged learned), strong-replay and
   learned-specific practical screens failed. Reused source evidence only;

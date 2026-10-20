@@ -268,3 +268,15 @@ def validate_output(output,c,caps,pack):
     if r['update_work'].get('cumulative_solves')!=13152 or r['update_work'].get('cumulative_controller_forwards')!=12864:
         raise ValueError('actual_cumulative_work_mismatch')
     return True
+
+
+def saved_replay(root):
+    """Read-only recorded cross-fit results; no training or neural imports."""
+    c=json.loads((root/'configs/seed_cumulative_learning.json').read_text())
+    r=json.loads((root/'artifacts/seed_cumulative_learning.json').read_text())
+    if r['declared_complete'] is not True:raise ValueError('incomplete_cumulative_evidence')
+    validate(r,c,source_pack(root,c));h=r['host_receipt']
+    return dict(id=h['id'],mode='recorded_source_task_blocked_learning',status=h['status'],
+        failure=h['failure'],wall_s=h['wall_s'],memory_mb=h['peak_sampled_rss_mb'],
+        revision=r['execution_sha'],metrics=None,curve=[],resources=r['resources'],
+        model_sha256=digest({f:v['models'] for f,v in r['folds'].items()}),study=None,cumulative=r['analysis'])

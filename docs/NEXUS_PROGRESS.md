@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Task-blocked cumulative meta-training: source screen failed
+
+Locked5235599; one3.508188s host run, five-second conservative debit. Four folds,
+24 new small rules,1536 Adam updates,1944 assessment snapshots. Learned curve
+MSE .187597 versus .188183 static, .187016 replay, .184388 bounded fixed.
+The .31% static improvement misses5%; source screen FAILED, retention passed.
+Zero new environment interactions or world-model forwards; no live promotion.
+Ledger1927.6321034559958 used/1672.3678965440042 remaining. Next proposed
+learned scalar update/retain gate, not executed. See
+NEXUS_SEED_CUMULATIVE_LEARNING_RESULTS.md.
+
 ## Bounded correction: generic source stabilization, advancement failed
 
 Locked269bcb6; one 1.859346s host run, 3-second conservative debit. Curve MSE

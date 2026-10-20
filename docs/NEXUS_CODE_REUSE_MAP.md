@@ -20,6 +20,13 @@
 
 ## Verification versus experiments
 
+Task-blocked cumulative learning: seed/cumulative_learning.py uses the original
+PlasticityController and the existing fit_source optimizer via a curve callback.
+Its small dual solve assimilates permitted prefix/anchor rows. Four source folds
+fit training-only preprocessing and new small rules; no historical weights are
+retrained. Existing host/worker/runner handle caps, logs and immutable results.
+Stdlib verifier reconstructs all24 new JSON checkpoints without retraining.
+
 Bounded source comparison: seed/bounded_correction.py wraps the existing update
 and reuses update_diagnosis trajectory/grid/arithmetic helpers. Its limiter
 accepts only observed rows; it is not enabled in runtime adaptation. Same host,

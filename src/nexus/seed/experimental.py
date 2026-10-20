@@ -496,7 +496,8 @@ class Sandbox:
                     resources=worker.get('resources'), model_sha256=digest(worker['model']) if 'model' in worker else None,
                     study=worker['study']['analysis'] if worker.get('adapter')=='seed_nonlinear_learning_v1' else None,
                     diagnosis=worker['study']['analysis'] if worker.get('adapter')=='seed_update_diagnosis_v1' else None,
-                    bounded=worker['study']['analysis'] if worker.get('adapter')=='seed_bounded_correction_v1' else None))
+                    bounded=worker['study']['analysis'] if worker.get('adapter')=='seed_bounded_correction_v1' else None,
+                    cumulative=worker['study']['analysis'] if worker.get('adapter')=='seed_cumulative_learning_v1' else None))
             except FileNotFoundError:
                 rows.append(dict(id=reserved['run_id'],mode=reserved['mode'],status='reserved_or_interrupted',
                                  wall_s=reserved['wall_cap_s'],curve=[]))

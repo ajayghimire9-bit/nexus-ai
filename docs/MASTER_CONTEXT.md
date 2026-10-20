@@ -34,6 +34,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The task-blocked cumulative learning-rule study from5235599 completed once.
+New learned/static rules trained on nine tasks per fold, assessed three excluded
+tasks. Curve MSE .187597 learned, .188183 static, .189456 fixed cumulative,
+.187016 replay and .184388 bounded fixed. Only .31% gain over static, below5%;
+the registered source screen FAILED. Retention passed. Three meta-training
+seeds share one frozen core and reused source data; no fresh validation or
+runtime promotion. See [results](NEXUS_SEED_CUMULATIVE_LEARNING_RESULTS.md).
+
 The bounded source correction study from269bcb6 completed once. Stabilization
 passed: learned curve MSE .183824 versus .212504 unchanged (13.5% reduction).
 Replay was .187213; the 1.81% difference and interval including zero failed the
@@ -103,9 +111,11 @@ adapter study is now complete and closed; its negative findings are above.
 The fresh1/2/4/8-example comparison did not establish a learned-rule advantage.
 Preserve that failure alongside prior positive readout results. The source-only
 first-update diagnosis is complete and does not explain the failure by itself.
-The bounded source comparison is now complete: stabilization passed but
-advancement failed against strong replay. Next proposed source comparison:
-cumulative evidence fitting versus bounded fixed protection and scaled replay.
+The bounded source comparison is complete: stabilization passed but advancement
+failed against strong replay. The subsequent cumulative evidence learner also
+failed its learned-specific source screen.
+Next proposed source test: a learned scalar update/retain gate versus a matched
+source-trained constant gate and the same replay/bounded references.
 No new collection or architecture growth is scheduled; fresh validation is
 required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -123,8 +133,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1922.6321034559958seconds used,
-1677.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1927.6321034559958seconds used,
+1672.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance
