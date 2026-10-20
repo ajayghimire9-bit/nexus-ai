@@ -374,6 +374,7 @@ class Session:
                     reasoning='existing_MPC_with_learned_value_pruning',
                     generation='local_trace_GRU_with_factual_gate',learned_recurrent_memory=True)
                 state['grounded']=dict(enabled=True,model_hash=self.grounded_agent.model_hash,
+                    action_readout_sha256=getattr(self.grounded_agent.action_readout,'sha256',None),
                     architecture='shared_multimodal_GRU_RSSM',h_size=32,z_size=8,
                     approved_concepts=list(self.grounded_agent.approved(self)),
                     h_norm=float(self.grounded_agent.h.norm()),z_norm=float(self.grounded_agent.z.norm()),
@@ -441,7 +442,7 @@ class Session:
                         type(p['reduction']) not in (int,float) or p['reduction']!=reduction):
                     raise ValueError('saved_feedback_not_reproduced')
                 s.event(event.kind,p)
-            elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information'):
+            elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information','seed_grounded_action_rank'):
                 from .grounded_records import validate_record
                 validate_record(event.kind,p,s)
                 s.event(event.kind,p)

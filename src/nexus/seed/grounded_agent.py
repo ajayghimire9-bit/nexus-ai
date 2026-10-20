@@ -15,11 +15,13 @@ from .latent_planner import plan
 
 
 class GroundedAgent:
-    def __init__(self,model,model_hash):
+    def __init__(self,model,model_hash,action_readout=None):
         self.model=model;self.model_hash=model_hash
         self.h,self.z=model.initial();self.context=None;self.flags=[0,0,0]
         self.outer=OuterSeedMeta()
         self.pending_question=None
+        self.action_readout=action_readout
+        if action_readout is not None and action_readout.parent_hash!=model_hash:raise ValueError('readout_parent_hash')
 
     def restore_state(self,session):
         for event in reversed(session.journal.snapshot()):
@@ -112,8 +114,9 @@ class GroundedAgent:
 
     def request(self,session,action,reference,x,y,word):
         started=time.perf_counter()
-        if type(action) is not str or action not in ('induce','meta','observe','speak','decide','ask','store','retrieve') or type(reference) is not str or not 1<=len(reference)<=24 or not concept_word(word):
+        if type(action) is not str or action not in ('induce','meta','observe','speak','decide','ranked_decide','ask','store','retrieve') or type(reference) is not str or not 1<=len(reference)<=24 or not concept_word(word):
             raise ValueError('grounded_request_schema')
+        if action=='ranked_decide' and self.action_readout is None:raise ValueError('action_readout_not_enabled_by_owner')
         if action=='induce':
             with torch.no_grad():result=self.induce(session,word)
             return result
@@ -142,13 +145,18 @@ class GroundedAgent:
                 return dict(status='language',text=f"Observed {ids[0]} at ({obj['x']}, {obj['y']}).",
                     generated_candidate=candidate,candidate_verified=False,
                     language_source='trained_local_decoder_candidate_plus_factual_template',retrieval=retrieval)
-            if action not in ('decide','ask','store','retrieve'):raise ValueError('grounded_action')
+            if action not in ('decide','ranked_decide','ask','store','retrieve'):raise ValueError('grounded_action')
             if (obj['x'],obj['y'])==goal:
                 self.context=dict(context,done=True)
                 return dict(status='already_at_goal',text='Already at this goal. Choose a new goal; no reward was collected.')
             choice={'ask':4,'store':5,'retrieve':6}.get(action)
             planning=None
-            if choice is None:choice,planning=plan(self.model,self.h,self.z,memory,seed=len(session.journal.snapshot()))
+            if action=='ranked_decide':
+                prop=tensors([observation(obj,goal,self.flags)])[2]
+                choice,planning=self.action_readout.rank(self.model,self.h,self.z,prop,memory)
+                session.event('seed_grounded_action_rank',dict(model_hash=self.model_hash,
+                    readout_hash=self.action_readout.sha256,scores=planning['candidate_scores'],selected=choice))
+            elif choice is None:choice,planning=plan(self.model,self.h,self.z,memory,seed=len(session.journal.snapshot()))
             before_distance=abs(obj['x']-x)+abs(obj['y']-y);trace=[];result={};move_blocked=False
             if choice<4 or choice>=7:
                 names=[ACTION_NAMES[choice]] if choice<4 else (['right','down'] if choice==7 else ['left','up'])

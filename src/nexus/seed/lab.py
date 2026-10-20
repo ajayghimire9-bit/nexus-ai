@@ -6,7 +6,7 @@ from .storage import load, save
 
 
 class SeedWorkspace:
-    def __init__(self, directory, *, language_encoder=None, meta_questions=False, grounded_model=None, grounded_hash=None):
+    def __init__(self, directory, *, language_encoder=None, meta_questions=False, grounded_model=None, grounded_hash=None, action_readout=None):
         self.directory = directory
         self.sessions = {}
         self.lock = threading.RLock()
@@ -15,11 +15,12 @@ class SeedWorkspace:
         self.meta_questions = meta_questions
         self.grounded_model = grounded_model
         self.grounded_hash = grounded_hash
+        self.action_readout=action_readout
 
     def attach_grounded(self, session):
         if self.grounded_model is not None:
             from .grounded_agent import GroundedAgent
-            session.grounded_agent=GroundedAgent(self.grounded_model,self.grounded_hash)
+            session.grounded_agent=GroundedAgent(self.grounded_model,self.grounded_hash,self.action_readout)
             session.grounded_agent.restore_state(session)
 
     def dispatch(self, wire):

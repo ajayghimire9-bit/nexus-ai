@@ -1,0 +1,23 @@
+{
+  "schema": "seed_action_readout_study_v1",
+  "training_seed_start": 84210001,
+  "training_states": 128,
+  "audit_seed_start": 84310001,
+  "audit_states": 64,
+  "control_seed_start": 84410001,
+  "control_episodes": 16,
+  "control_steps": 12,
+  "readout_seeds": [4411,4412,4413],
+  "updates": 800,
+  "learning_rate": 0.003,
+  "batch_size": 128,
+  "model_recipes": ["compact_tanh","compact_relu"],
+  "methods": ["calibrated_4411","calibrated_4412","calibrated_4413","frozen_reward","source_mean","latent_mpc","random","greedy"],
+  "gui_recipe": "compact_tanh",
+  "gui_seed": 4411,
+  "max_wall_s": 180,
+  "max_authored_steps": 5000,
+  "max_imagined_transitions": 60000,
+  "session_used_before_s": 1861.6321034559958,
+  "session_remaining_before_s": 1738.3678965440042
+}

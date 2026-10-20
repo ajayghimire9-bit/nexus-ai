@@ -9,10 +9,13 @@ def vector(v,n):
 
 
 def validate_record(kind,p,session):
-    if kind in ('seed_grounded_state','seed_grounded_concept'):
+    if kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_action_rank'):
         h=p.get('model_hash')
         if type(h) is not str or len(h)!=64 or any(c not in '0123456789abcdef' for c in h):raise ValueError('grounded_model_hash')
-    if kind=='seed_grounded_state':
+    if kind=='seed_grounded_action_rank':
+        h=p.get('readout_hash')
+        if set(p)!={'model_hash','readout_hash','scores','selected'} or type(h) is not str or len(h)!=64 or any(c not in '0123456789abcdef' for c in h) or not vector(p['scores'],9) or type(p['selected']) is not int or p['selected']!=max(range(9),key=lambda i:p['scores'][i]):raise ValueError('grounded_action_rank_schema')
+    elif kind=='seed_grounded_state':
         if set(p)!={'model_hash','h','z','context','actual_action','actual_reward','done','flags'} or not vector(p['h'],32) or not vector(p['z'],8) or type(p['actual_action']) is not int or not 0<=p['actual_action']<9 or type(p['done']) is not bool or type(p['actual_reward']) not in (int,float) or not math.isfinite(p['actual_reward']) or type(p['flags']) is not list or len(p['flags'])!=3 or any(type(v) is not int or v not in (0,1) for v in p['flags']):
             raise ValueError('grounded_state_schema')
         c=p['context']

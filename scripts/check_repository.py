@@ -61,14 +61,14 @@ def check(root=ROOT):
     # A new, committed engineering task can evolve runtime code without
     # retroactively rewriting the historical preservation receipt.
     overrides={}
-    change_path=root/'artifacts/seed_hybrid_code_changes.json'
-    if change_path.exists():
+    for change_path in (root/'artifacts/seed_hybrid_code_changes.json',root/'artifacts/seed_action_code_changes.json'):
+        if not change_path.exists():continue
         change=json.loads(change_path.read_text())
         baseline=hashlib.sha256((root/'artifacts/seed_repository_refresh.json').read_bytes()).hexdigest()
         if change.get('schema')!='seed_explicit_code_evolution_v1' or change.get('baseline_manifest_sha256')!=baseline or type(change.get('changes')) is not dict:
             raise ValueError('invalid_code_evolution_record')
         for name,row in change['changes'].items():
-            if name not in protected or set(row)!={'before','after'} or row['before']!=protected[name] or type(row['after']) is not str or not re.fullmatch('[0-9a-f]{64}',row['after']):
+            if name not in protected or set(row)!={'before','after'} or row['before']!=overrides.get(name,protected[name]) or type(row['after']) is not str or not re.fullmatch('[0-9a-f]{64}',row['after']):
                 raise ValueError('unlisted_or_unanchored_code_change')
             overrides[name]=row['after']
     for name, expected in protected.items():
