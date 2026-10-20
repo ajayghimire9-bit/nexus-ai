@@ -6,6 +6,12 @@
 
 ## What is NEXUS?
 
+**Fresh validation:** repair, merge and scoped addition now have distinct,
+reversible contracts. Stable replay beat learned plasticity; neural action and
+selector improvement were not established. Transfer remained gated off.
+[Read the actual results](docs/NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md).
+
+
 **Latest implementation: memory-aware adaptive Seed.** Small reward/meaning
 blocks now learn actual feedback around the frozen core,with a trained plasticity
 controller,bounded skill edits and temporary question simulations.

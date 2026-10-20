@@ -1,5 +1,12 @@
 # Seed grounded architecture
 
+Current structural contracts: distinct shared repair, new scoped addition,
+training-free merge, cached reviews and safe rollback. The fresh benchmark
+failed learning/action gates; see [actual findings](../NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md).
+The additive reward residual cannot express state-dependent action differences.
+New validation heads are experimental, not silently promoted into the GUI.
+
+
 New adaptive layer: [memory-aware implementation](../NEXUS_SEED_MEMORY_AWARE_RESULTS.md).
 SAME frozen core/Belief/Session journal,115small residual parameters,310parameter
 learned diagonal update head,max8anchors/channel,max2scoped residual skills.

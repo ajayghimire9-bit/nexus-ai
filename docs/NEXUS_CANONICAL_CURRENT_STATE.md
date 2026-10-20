@@ -1,5 +1,14 @@
 # NEXUS canonical current state
 
+Latest Seed validation COMPLETE; learning/action/selector success not established.
+Distinct reversible repair/add/merge, cached reviews, legacy state compatibility.
+Fresh MSE learned.181507 versus stable replay.165435; action goals9.375% versus
+frozen12.5% and grid100%. Three controller seeds share one GRU; n8 task streams
+are conditional assessment units, not pretrained models. Language remains finite;
+transfer not run because gates failed. Source39dd835; see learning validation
+report. Exact additive-feature limitation now regression-tested. Old data closed.
+
+
 Seed memory-aware adaptive structure IMPLEMENTED;improvement screen FAILED.
 Precommitbd1f8b3,three optimizer-order seeds on one frozen core. Audit learning-
 curve MSE.127797 vs fixed.128264;0.36%gain,CIincludes0,below10%threshold.

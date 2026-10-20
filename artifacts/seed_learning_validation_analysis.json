@@ -1,0 +1,557 @@
+{
+  "schema": "seed_learning_validation_analysis_v1",
+  "raw_sha256": "83b5972e55cf884a94b591697d238db1a756e46d93ef063672ad2fda5996fdcc",
+  "execution_sha": "39dd835154c1ccd3fd5dcad4c2cb71098757bba3",
+  "screens": {
+    "learning": {
+      "passed": false,
+      "means": {
+        "learned": 0.1815074982587248,
+        "fixed": 0.18197772116400301,
+        "replay": 0.1654350203461945,
+        "none": 0.17175193689763546,
+        "neutral": 0.1822301170323044
+      },
+      "forgetting": {
+        "learned": 0.016832088741163414,
+        "fixed": 0.016442946391180158,
+        "replay": -0.004280824214220047,
+        "none": 0,
+        "neutral": 0.016623178962618113
+      },
+      "contrasts": {
+        "fixed": {
+          "mean": 0.00047022290527819893,
+          "ci95": [
+            -0.0007417911196574603,
+            0.0016822369302138581
+          ],
+          "paired_values": [
+            0.000548089543978364,
+            -0.000930843253930419,
+            -0.0002583724757035666,
+            0.00017098213235536286,
+            -0.0012915730476379395,
+            0.0013932536045710153,
+            0.0008242614567279816,
+            0.003305985281864793
+          ],
+          "unit": "fresh_teaching_task_stream_conditional_on_one_frozen_core"
+        },
+        "replay": {
+          "mean": -0.01607247791253031,
+          "ci95": [
+            -0.029590145392931366,
+            -0.002554810432129252
+          ],
+          "paired_values": [
+            -0.031165303041537612,
+            0.01370766634742418,
+            -0.03194325913985571,
+            -0.024216783543427794,
+            -0.00014883093535900116,
+            -0.009614394356807082,
+            -0.019706878811120987,
+            -0.02549203981955847
+          ],
+          "unit": "fresh_teaching_task_stream_conditional_on_one_frozen_core"
+        },
+        "none": {
+          "mean": -0.009755561361089356,
+          "ci95": [
+            -0.02736285390896865,
+            0.007851731186789938
+          ],
+          "paired_values": [
+            -0.03241815542181334,
+            0.03394340972105661,
+            -0.028790374596913665,
+            -0.02205815662940344,
+            -0.0001737009733915329,
+            -0.0023977657159169607,
+            -0.01323789358139038,
+            -0.012911853690942138
+          ],
+          "unit": "fresh_teaching_task_stream_conditional_on_one_frozen_core"
+        },
+        "neutral": {
+          "mean": 0.0007226187735795905,
+          "ci95": [
+            -0.0005965613685494668,
+            0.002041798915708648
+          ],
+          "paired_values": [
+            0.0006353470186392374,
+            -0.00017077227433523468,
+            -0.00008184586962065032,
+            0.00019487241903939911,
+            -0.0012755393981933594,
+            0.001413638393084199,
+            0.0010037124156951904,
+            0.004061537484327943
+          ],
+          "unit": "fresh_teaching_task_stream_conditional_on_one_frozen_core"
+        }
+      }
+    },
+    "actions": {
+      "passed": false,
+      "regret": {
+        "learned": 0.7083333333333333,
+        "fixed": 0.7083333333333333,
+        "frozen": 0.44999999999999996
+      },
+      "goal_rate": {
+        "learned": 0.09375,
+        "fixed": 0.09375,
+        "frozen": 0.125
+      },
+      "mean_return": {
+        "learned": -0.08437500000000007,
+        "fixed": -0.08437500000000007,
+        "frozen": -0.2856250000000001
+      },
+      "contrasts": {
+        "fixed": {
+          "mean": 0,
+          "ci95": [
+            0,
+            0
+          ],
+          "paired_values": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "unit": "fresh_teaching_task_stream_conditional_on_one_frozen_core"
+        },
+        "frozen": {
+          "mean": 0.20124999999999998,
+          "ci95": [
+            -0.4045778464349877,
+            0.8070778464349877
+          ],
+          "paired_values": [
+            -0.20499999999999993,
+            -0.43500000000000005,
+            -0.20000000000000018,
+            0.36,
+            1.845,
+            0.30000000000000004,
+            -0.255,
+            0.19999999999999996
+          ],
+          "unit": "fresh_teaching_task_stream_conditional_on_one_frozen_core"
+        }
+      }
+    }
+  },
+  "independent_ranking_arithmetic": {
+    "cells": 4320,
+    "maximum_error": 1.1102230246251565e-16
+  },
+  "resources": {
+    "costs": {
+      "support": 192,
+      "old": 96,
+      "query": 648,
+      "retention": 648,
+      "control": 4843,
+      "meaning_labels": 216,
+      "instruction_demonstrations": 32,
+      "selector_authored_label_bank": 360
+    },
+    "total_authored_interactions": 7035,
+    "model_work": {
+      "encoder_batches": 5948,
+      "encoder_rows": 5948,
+      "transition_batches": 10312,
+      "transition_rows": 51560,
+      "head_batches": 5156,
+      "head_rows": 46404,
+      "language_training_batches": 0,
+      "language_token_forwards": 0,
+      "proposal_calls": 0
+    },
+    "update_work": {
+      "posterior_prior_rows": 5156,
+      "imagined_rows": 46404,
+      "old_anchor_initial_solves": 552,
+      "calls_learned": 3372,
+      "protected_current_examples": 5064,
+      "protected_anchor_examples": 17256,
+      "protected_solves": 4584,
+      "calls_fixed": 1116,
+      "calls_replay": 1116,
+      "replay_prediction_examples": 7956,
+      "calls_none": 1116,
+      "calls_neutral": 576
+    },
+    "body_wall_s": 4.05211279199284,
+    "session_used_s": 1901.6321034559958,
+    "session_remaining_s": 1698.3678965440042,
+    "worst_case_bound": {
+      "max_world_steps": 6960,
+      "max_supervised_answers": 720,
+      "max_authored_interactions": 7680,
+      "max_imagined_rows": 48816
+    }
+  },
+  "budgets": {
+    "1": {
+      "learned": 0.18110738011697927,
+      "fixed": 0.18217353895306587,
+      "replay": 0.17148262821137905,
+      "none": 0.17175193689763546,
+      "neutral": 0.1822167355567217
+    },
+    "2": {
+      "learned": 0.17225452481458584,
+      "fixed": 0.17158378474414349,
+      "replay": 0.17095144093036652,
+      "none": 0.17175193689763546,
+      "neutral": 0.17177776712924242
+    },
+    "4": {
+      "learned": 0.17441192362457514,
+      "fixed": 0.17504003643989563,
+      "replay": 0.16243991535156965,
+      "none": 0.17175193689763546,
+      "neutral": 0.17539457231760025
+    },
+    "8": {
+      "learned": 0.19825616447875896,
+      "fixed": 0.19911352451890707,
+      "replay": 0.1568660968914628,
+      "none": 0.17175193689763546,
+      "neutral": 0.19953139312565327
+    }
+  },
+  "semantics": {
+    "unary": {
+      "1": {
+        "learned": {
+          "accuracy": 0.5611111111111111,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.5666666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.5666666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.8666666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 0,
+          "coverage": 0,
+          "evaluated_examples": 180
+        }
+      },
+      "2": {
+        "learned": {
+          "accuracy": 0.7000000000000001,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.7000000000000001,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.6333333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.8666666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 0,
+          "coverage": 0,
+          "evaluated_examples": 180
+        }
+      },
+      "4": {
+        "learned": {
+          "accuracy": 0.7388888888888889,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.7333333333333334,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.6833333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.8666666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 0.16666666666666666,
+          "coverage": 0.16666666666666666,
+          "evaluated_examples": 180
+        }
+      },
+      "8": {
+        "learned": {
+          "accuracy": 0.8,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.8,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.7166666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.8666666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 0.7166666666666667,
+          "coverage": 0.7166666666666667,
+          "evaluated_examples": 180
+        }
+      }
+    },
+    "relation": {
+      "1": {
+        "learned": {
+          "accuracy": 0.6944444444444444,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.6833333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.6833333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.6333333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 0.21666666666666667,
+          "coverage": 0.21666666666666665,
+          "evaluated_examples": 180
+        }
+      },
+      "2": {
+        "learned": {
+          "accuracy": 0.65,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.65,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.7,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.6333333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 0.6833333333333333,
+          "coverage": 0.6833333333333333,
+          "evaluated_examples": 180
+        }
+      },
+      "4": {
+        "learned": {
+          "accuracy": 0.7166666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.7166666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.7166666666666667,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.6333333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 0.8666666666666667,
+          "coverage": 0.8666666666666667,
+          "evaluated_examples": 180
+        }
+      },
+      "8": {
+        "learned": {
+          "accuracy": 0.65,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "fixed": {
+          "accuracy": 0.65,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "replay": {
+          "accuracy": 0.75,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "none": {
+          "accuracy": 0.6333333333333333,
+          "coverage": 1,
+          "evaluated_examples": 180
+        },
+        "symbolic": {
+          "accuracy": 1,
+          "coverage": 1,
+          "evaluated_examples": 180
+        }
+      }
+    },
+    "instructions": {
+      "1": {
+        "neural_exact": 1,
+        "symbolic_exact": 1
+      },
+      "2": {
+        "neural_exact": 1,
+        "symbolic_exact": 1
+      },
+      "4": {
+        "neural_exact": 1,
+        "symbolic_exact": 1
+      },
+      "8": {
+        "neural_exact": 1,
+        "symbolic_exact": 1
+      }
+    }
+  },
+  "selection": {
+    "adaptive": {
+      "final_query_mse": 0.25,
+      "improvement_per_cost": 0,
+      "labels": 16,
+      "cost": 16,
+      "operations": {
+        "ask": 0,
+        "test_concept": 192,
+        "repair": 0,
+        "add_skill": 0,
+        "keep": 0
+      }
+    },
+    "random": {
+      "final_query_mse": 0.25,
+      "improvement_per_cost": 0,
+      "labels": 1.75,
+      "cost": 1.75,
+      "operations": {
+        "ask": 0,
+        "test_concept": 9,
+        "repair": 0,
+        "add_skill": 0,
+        "keep": 24
+      }
+    },
+    "fixed": {
+      "final_query_mse": 0.21321966941468418,
+      "improvement_per_cost": 0.002215682565380471,
+      "labels": 16,
+      "cost": 16.6,
+      "operations": {
+        "ask": 192,
+        "test_concept": 0,
+        "repair": 0,
+        "add_skill": 0,
+        "keep": 0
+      }
+    },
+    "passed": false
+  },
+  "control": {
+    "learned": {
+      "episodes": 96,
+      "goal_rate": 0.09375,
+      "mean_return": -0.08437500000000006
+    },
+    "fixed": {
+      "episodes": 96,
+      "goal_rate": 0.09375,
+      "mean_return": -0.08437500000000006
+    },
+    "replay": {
+      "episodes": 96,
+      "goal_rate": 0.0625,
+      "mean_return": -0.5281250000000001
+    },
+    "none": {
+      "episodes": 96,
+      "goal_rate": 0,
+      "mean_return": -0.7587500000000001
+    },
+    "frozen": {
+      "episodes": 32,
+      "goal_rate": 0.125,
+      "mean_return": -0.2856250000000001
+    },
+    "grid": {
+      "episodes": 32,
+      "goal_rate": 1,
+      "mean_return": 1.669375
+    }
+  },
+  "transfer": {
+    "status": "not_run_object_success_gate_failed",
+    "gates": {
+      "learning": false,
+      "actions": false
+    }
+  },
+  "decision": "learning_and_actions_not_established"
+}

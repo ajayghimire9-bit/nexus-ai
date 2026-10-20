@@ -41,6 +41,28 @@ def test_neutral_ablation_matches_untrained_controller_exact_update_scale():
     assert all(torch.allclose(a[k],b[k],atol=1e-6) for k in a)
 
 
+def test_source_audit_additive_reward_correction_has_state_invariant_action_differences():
+    from nexus.seed.adaptive_state import reward_features
+    g=torch.Generator().manual_seed(53);theta=torch.randn(62,generator=g)
+    x1=reward_features(torch.randn(1,32,generator=g),torch.randn(1,8,generator=g),torch.randn(1,12,generator=g))
+    x2=reward_features(torch.randn(1,32,generator=g),torch.randn(1,8,generator=g),torch.randn(1,12,generator=g))
+    p1=x1@theta;p2=x2@theta
+    assert torch.allclose(p1-p1[0],p2-p2[0],atol=2e-6)
+    # This proves a representational restriction of the correction,not that
+    # the nonlinear frozen model has state-invariant action rankings.
+
+
+def test_source_audit_shared_word_hash_only_provides_an_object_independent_offset():
+    from nexus.seed.adaptive_state import meaning_features
+    theta=torch.arange(53).float()/53
+    differences=[]
+    for seed in (5,7):
+        g=torch.Generator().manual_seed(seed);e=torch.randn(1,32,generator=g);p=torch.randn(1,12,generator=g)
+        a=meaning_features(e,p,'dax');b=meaning_features(e,p,'wug')
+        differences.append((a-b)@theta)
+    assert torch.equal(differences[0],differences[1])
+
+
 def test_collection_pairs_truth_and_preserves_parent_weights():
     torch.manual_seed(4);m=SeedRSSM();m.world_memory_bank=torch.zeros(32,32);m.semantics='aligned_v1'
     old={k:v.clone() for k,v in m.state_dict().items()};counts={}

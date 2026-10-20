@@ -1,5 +1,14 @@
 # NEXUS full research registry
 
+Seed fresh learning validation39dd835: complete, both primary object gatesFAIL.
+Three new64-update plasticity fits, one frozen core/eight new assessment streams.
+Stable replay beats learned MSE; learned/fixed action trajectories identical,
+worse regret/goals than frozen neural. Finite language and selector diagnostics
+negative/limited; transfer blocked correctly.7035authored,46404imagined,
+4.0521s. Distinct reversible edit contracts and source-only additive feature
+proofs; NEXUS_SEED_LEARNING_VALIDATION_PROTOCOL/RESULTS and raw JSON preserved.
+
+
 Seed memory-aware learning,precommitbd1f8b3:source-only COMPLETE,10%screenFAIL.
 One frozen core,three64-update plasticity fits;new115parameter runtime adapters,
 bounded numeric skills/question simulation.0new real/351imagined+351prior rows.

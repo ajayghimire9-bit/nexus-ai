@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Isolated mechanisms and fresh validation completed
+
+Repair/add/merge distinct; finite retention checks, rollback, repeat-review
+caching and v1/v2 session load tested. New teaching/scaled-replay/neutral/
+no-adaptation curves, actual paired control, finite semantics and costed
+source-only meta selection executed once from39dd835. Primary gates FAILED;
+transfer NOT_RUN by rule. Source proves additive action bias limitation.
+7035authored,46404imagined,4.0521s. Ledger1901.6321034559958/1698.3678965440042.
+Previous weights, results and unrelated original-checkout files preserved.
+
+
 ## Seed user-supplied adaptive structure implemented
 
 Frozen core plus115small-block parameters,310parameter meta-trained plasticity,

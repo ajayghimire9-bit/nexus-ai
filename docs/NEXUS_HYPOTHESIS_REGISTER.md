@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed fresh learning and actions — both registered gates FAILED
+
+H-learning required10%curve-MSE gain versus fixed/scaled replay/none/neutral,
+positive paired intervals and retention bound. Learned.181507 loses to replay
+.165435; replay-minus-learned -.016072[-.029590,-.002555]. Fixed comparison
+inconclusive. H-actions requires regret and goal gains plus positive returns
+versus fixed/frozen: fails. Learned/fixed goals9.375%, frozen12.5%, grid100%.
+Selector utility fails; language is finite/supplied and has no neural advantage.
+No cross-domain run after failure. One frozen core, n8 new task-stream units,
+three optimizer-order seeds averaged within streams. All intervals exploratory.
+
+
 ## Seed H-plasticity — structure functional; improvement NOT ESTABLISHED
 
 Predeclared10%less held-out source learning-curve MSE versus BOTH fixed protected

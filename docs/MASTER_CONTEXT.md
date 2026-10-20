@@ -1,5 +1,24 @@
 # NEXUS AI — MASTER CONTEXT PROMPT
 
+## Latest — fresh Seed learning/action validation failed; edits isolated
+
+Source39dd835154c1ccd3fd5dcad4c2cb71098757bba3. Repair/shared fitting, scoped
+addition/new scopes only, and merge/algebraic absorption now distinct, with
+preservation gates, reversible edits and cached repeated reviews. Frozen GRU
+unchanged. Fresh source-trained three controllers assessed on eight new task
+streams, conditional on one core. Learning-curve MSE learned .181507 versus
+scaled replay .165435, fixed .181978, none .171752. Both object gates FAIL.
+Action regret .70833 versus frozen .45; goals9.375% versus12.5%, known-grid100%.
+Finite language diagnostics show no neural advantage; selector reserves labels
+without learning (MSE .25 versus always-ask .21322). List transfer correctly
+NOT_RUN after gates failed. Source algebra proves the fixed linear reward
+correction lacks state-dependent action differences; word hash likewise only
+adds a shared-head offset. These are representation restrictions, not a complete
+causal explanation.4.0521s,7035authored interactions,46404imagined+5156prior rows.
+Ledger1901.6321034559958used/1698.3678965440042remaining. Preserve previous results.
+See NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md. No additional simulation followed.
+
+
 ## Latest — actual memory-aware Seed adaptive layer
 
 User-supplied structure implemented around SAME frozen RSSM/Belief/Session:

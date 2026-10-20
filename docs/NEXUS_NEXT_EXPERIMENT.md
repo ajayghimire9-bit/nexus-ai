@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## After fresh failure — action-conditioned residual representation
+
+One question:does a bounded action-by-observation interaction residual improve
+fresh ranking/goals versus the present additive head? The current linear
+correction provably has state-invariant relative action biases. Keep GRU frozen;
+retain stable replay, fixed protection, frozen neural and known-grid baselines;
+match/report capacity and compute, and register fresh data before outcomes.
+Do not retune current audit or advance domains on the failed gates. Not run.
+
+
 ## After actual adaptive-layer implementation — stable replay comparison
 
 One next question:does protected small-block learning improve learning speed and

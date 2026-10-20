@@ -47,6 +47,10 @@ async function stop(){if(child){const p=child;child=null;await new Promise(r=>{p
   await click('grounded-adaptive_review');if((await last()).result.adopted!=='keep')throw Error('Insufficient evidence should keep');
   await click('grounded-adaptive_review_reward');if((await last()).result.adopted!=='keep')throw Error('Insufficient evidence should keep');
   checks.push('insufficient_evidence_keeps_current_structure');
+  const undoBefore=JSON.stringify(adaptive(await snapshot()));
+  await click('grounded-adaptive_rollback');if((await last()).result.status!=='nothing_to_rollback')throw Error('Unexpected rollback state');
+  if(JSON.stringify(adaptive(await snapshot()))!==undoBefore)throw Error('Empty undo altered learning state');
+  checks.push('checked_rollback_button_preserves_state_when_no_edit_exists');
   await click('correct');after=adaptive(await snapshot());if(after.blocks.meaning.some(v=>v!==0)||after.anchors.meaning.length)throw Error('Corrected meaning not invalidated');
   checks.push('correction_invalidates_stale_meaning_not_reward');
   await click('stop');await click('grounded-adaptive_decide');if((await last()).response_type!=='stopped')throw Error('Stop bypass');

@@ -1,5 +1,14 @@
 # NEXUS code-reuse map
 
+structural_edits operates on SAME AdaptiveState/Session journal: distinct pure
+proposal/apply/rollback, no duplicate memory. learning_benchmark reuses SAME
+SeedRSSM/Belief/correction; stable replay is a comparison update, not another
+general RL framework. semantic_lessons reuses Predicate/Move and finite supplied
+relations. learning_selection uses SAME OuterSeedMeta/EpsilonGreedyController;
+paid source probes only. list_transfer is a gated task adapter over SAME update.
+No historical checkpoint or planner replacement. See fresh validation protocol.
+
+
 Seed plasticity.py is a small differentiable update-rule head,not a second
 experiment meta-controller. adaptive_state wraps SAME Session/E1 Journal evidence;
 SAME grounded agent/SeedRSSM/Belief consume actual labels and rewards. Bounded

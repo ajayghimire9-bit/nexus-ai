@@ -6,6 +6,10 @@ intelligence mission remains a research ambition.
 
 ## Use and understand Seed
 
+- [Fresh learning/action/meaning/selection results](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md)
+- [Registered fresh validation protocol](NEXUS_SEED_LEARNING_VALIDATION_PROTOCOL.md)
+
+
 - [Adaptive Seed GUI](seed/ADAPTIVE_QUICKSTART.md)
 - [Memory-aware implementation and negative screen](NEXUS_SEED_MEMORY_AWARE_RESULTS.md)
 - [Precommitted local/meta-learning protocol](NEXUS_SEED_MEMORY_AWARE_PROTOCOL.md)
