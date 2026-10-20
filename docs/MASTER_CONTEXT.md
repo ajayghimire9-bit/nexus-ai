@@ -15,6 +15,12 @@ Financial applications are outside current scope.
 
 ## What exists
 
+Owner-requested optional executable-world-model architecture is being prepared on
+a separate branch. It does not replace the default agent or infer architectural
+necessity from failed question selection. [Scope](NEXUS_SEED_EXECUTABLE_WORLD.md),
+[registered source protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md). No outcomes
+at this preparation revision.
+
 A [conversational workspace](NEXUS_SEED_CONVERSATION_WORKSPACE.md) now fronts
 the existing four labs. Its deterministic intent adapter, saved dialogue and
 inline cards use the SAME Session journal and checked skill library. It adds

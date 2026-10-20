@@ -2,6 +2,12 @@
 
 ## Active runtime
 
+- Optional executable state: seed/structure/state,features,learning,mechanisms,
+  investigation,neural,runtime. Reuses Session/E1 Journal/storage, skill_programs,
+  nn.factory/ridge and EXPERIMENTAL host. New graph-effect BFS is bounded and
+  opt-in; it cannot replace default neural planning or known-grid execution.
+  [Architecture and status](NEXUS_SEED_EXECUTABLE_WORLD.md).
+
 - Chat: seed/conversation.py parses bounded intents and delegates to SharedBrain.
   Messages/pending references are Session/E1 Journal events, saved by the existing
   storage. No second knowledge store. seed/lab.py routes typed chat requests;

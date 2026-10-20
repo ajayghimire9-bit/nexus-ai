@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Optional executable model — prepared
+
+Starting e381132, preserving the completed chat workspace and old negative
+results. New opt-in structured state, typed mechanisms, feature construction,
+trace compression and existing-journal integration. One 120s CPU/source study
+registered; no collection at this revision. [Protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md).
+
 ## Conversational workspace engineering
 
 From9080b075 on codex/seed-conversation-workspace: one local chat fronts the same

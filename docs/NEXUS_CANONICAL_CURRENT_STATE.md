@@ -35,6 +35,12 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+Separate owner-requested architecture branch: optional structured state, typed
+mechanisms and bounded history-feature induction. The first source prediction
+study is prepared, not executed at this revision. Baseline chat/labs/checkpoints
+remain unchanged. [Protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md). Previous
+question-utility failures below are closed; their reliability audit remains unrun.
+
 The ten-scalar answer-free predictor completed from8d9bdad and FAILED the
 budgets1/2/4 source screen: .170313 versus variance .173580/keep .173857;
 required intervals include zero,6/12 keep wins. Retention passes. Budget8 is

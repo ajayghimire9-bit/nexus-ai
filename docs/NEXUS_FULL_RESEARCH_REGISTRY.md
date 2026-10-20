@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Executable world model](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md): prepared
+  source-development feature-induction study; no outcomes at this revision.
+  Planning, residual and investigation components are engineering variants,
+  not empirically promoted mechanisms.
+
 - [Ten-scalar answer-free utility](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md):
   complete8d9bdad run, SOURCE screen FAILED. Primary1/2/4 MSE .170313 versus
   variance .173580/keep .173857, intervals include zero,6/12 keep wins. Retention

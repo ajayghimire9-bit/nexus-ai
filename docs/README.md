@@ -22,6 +22,9 @@ demonstrated learning-to-learn.
 
 ## Engineering and research context
 
+- [Optional executable world model](NEXUS_SEED_EXECUTABLE_WORLD.md) and
+  [first registered source study](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md)
+
 - [Conversation workspace: one chat, same four labs](NEXUS_SEED_CONVERSATION_WORKSPACE.md)
 
 - [Shared Learning Brain, four labs and checked skill reuse](NEXUS_SHARED_LEARNING_LABS.md)

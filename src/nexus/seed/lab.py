@@ -66,6 +66,9 @@ class SeedWorkspace:
             elif op == 'export' and set(request) == {'op'}:
                 response = self.sessions[sid].request(dict(op='inspect'))
                 response['export'] = self.sessions[sid].snapshot()
+            elif type(op) is str and op.startswith('structure_'):
+                from .structure.runtime import request as structure_request
+                response=structure_request(self.sessions[sid],request)
             elif type(op) is str and op.startswith('lab_'):
                 from .shared_brain import SharedBrain
                 response=SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash).request(request)

@@ -4,6 +4,13 @@ The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented a
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.
 
+## Owner-requested architecture study — prepared
+
+Implement the optional executable-world-model path and run its predeclared
+source-only history-feature test once. [Protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md).
+This is a separate research question; the prior utility-label reliability audit
+remains recorded and unrun, not answered by a new architecture.
+
 ## Current — question-utility label reliability audit (proposed, not run)
 
 The owner-requested ten-scalar answer-free variant has now also completed and

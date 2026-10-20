@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-history-feature — registered, not yet run
+
+Bounded source conflict induction may improve final-scored authored dependency
+prediction by >=.03 Brier versus the same table without history; paired task
+interval lower bound positive, retained source increase<=.01. Compare all-history
+ridge, replay and newly trained GRU32. No scientific claim for investigation
+transfer, neural residuals, planning, AGI or learning-to-learn.
+[Protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md).
+
 ## H-answer-free-utility — SOURCE screen FAILED
 
 Locked8d9bdad, ten pre-answer scalars/ridge1.0, same four task-blocked learners.
