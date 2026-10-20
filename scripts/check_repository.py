@@ -39,6 +39,7 @@ DOCUMENTS = (
     'docs/NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md',
     'docs/NEXUS_SEED_UPDATE_GATE_PROTOCOL.md',
     'docs/NEXUS_SEED_PREFIX_CONSISTENCY_PROTOCOL.md',
+    'docs/NEXUS_SEED_SEQUENTIAL_CONSISTENCY_PROTOCOL.md',
     'docs/NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md',
     'docs/NEXUS_SEED_UPDATE_GATE_RESULTS.md',
     'docs/NEXUS_SEED_CUMULATIVE_LEARNING_PROTOCOL.md',
@@ -85,7 +86,7 @@ def check(root=ROOT):
     # A new, committed engineering task can evolve runtime code without
     # retroactively rewriting the historical preservation receipt.
     overrides={}
-    for change_path in (root/'artifacts/seed_hybrid_code_changes.json',root/'artifacts/seed_action_code_changes.json',root/'artifacts/seed_contract_code_changes.json',root/'artifacts/seed_contract_document_changes.json',root/'artifacts/seed_plasticity_code_changes.json',root/'artifacts/seed_plasticity_document_changes.json',root/'artifacts/seed_validation_code_changes.json',root/'artifacts/seed_validation_document_changes.json',root/'artifacts/seed_readout_changes.json',root/'artifacts/seed_focus_changes.json',root/'artifacts/seed_transfer_changes.json',root/'artifacts/seed_experimental_changes.json',root/'artifacts/seed_nonlinear_changes.json',root/'artifacts/seed_update_diagnosis_changes.json',root/'artifacts/seed_bounded_changes.json',root/'artifacts/seed_cumulative_changes.json',root/'artifacts/seed_update_gate_changes.json',root/'artifacts/seed_prefix_consistency_changes.json'):
+    for change_path in (root/'artifacts/seed_hybrid_code_changes.json',root/'artifacts/seed_action_code_changes.json',root/'artifacts/seed_contract_code_changes.json',root/'artifacts/seed_contract_document_changes.json',root/'artifacts/seed_plasticity_code_changes.json',root/'artifacts/seed_plasticity_document_changes.json',root/'artifacts/seed_validation_code_changes.json',root/'artifacts/seed_validation_document_changes.json',root/'artifacts/seed_readout_changes.json',root/'artifacts/seed_focus_changes.json',root/'artifacts/seed_transfer_changes.json',root/'artifacts/seed_experimental_changes.json',root/'artifacts/seed_nonlinear_changes.json',root/'artifacts/seed_update_diagnosis_changes.json',root/'artifacts/seed_bounded_changes.json',root/'artifacts/seed_cumulative_changes.json',root/'artifacts/seed_update_gate_changes.json',root/'artifacts/seed_prefix_consistency_changes.json',root/'artifacts/seed_sequential_consistency_changes.json'):
         if not change_path.exists():continue
         change=json.loads(change_path.read_text())
         baseline=hashlib.sha256((root/'artifacts/seed_repository_refresh.json').read_bytes()).hexdigest()
