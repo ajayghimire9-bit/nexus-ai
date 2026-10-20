@@ -19,27 +19,31 @@ class RSSMStepAdapter:
             out=self.model.heads(h,z)
             self.last_reward=out['reward'].numpy().copy()
             self.last_value=out['value'].numpy().copy()
+            self.last_done=torch.sigmoid(out['done']).numpy().copy()
             return torch.cat((h,z),-1).numpy(),torch.sigmoid(out['done']).numpy()
 
 
 class SeedLatentPlanner(RandomShootingMPC):
     def _score_batch(self,obs,seqs):
+        if not getattr(self,'prune',True):return super()._score_batch(obs,seqs)
         n=len(seqs);start=np.repeat(np.asarray(obs).reshape(1,-1),n,0)
         # Learned value prunes half the candidates after a shared one-step probe.
         self.inference.step(start,seqs[:,0])
         estimate=self.model.last_reward+.9*self.model.last_value
+        if getattr(self,'aligned_value',False):estimate=self.model.last_reward+.9*(1-self.model.last_done)*self.model.last_value
         keep=np.argsort(-estimate,kind='stable')[:max(1,n//2)]
         scores=np.full(n,-np.inf);scores[keep]=super()._score_batch(obs,seqs[keep])
         return scores
 
 
-def plan(model,h,z,memory=None,seed=0):
+def plan(model,h,z,memory=None,seed=0,prune=True):
     adapter=RSSMStepAdapter(model,memory);counter=InferenceCounter(adapter)
     planner=SeedLatentPlanner(model=adapter,n_actions=9,horizon=4,n_candidates=16,
         seed=seed,chunk_size=16,enforce_time_budget=False,inference=counter,
         step_reward=lambda s,a,n:adapter.last_reward)
+    planner.prune=prune;planner.aligned_value=getattr(model,'semantics','legacy')=='aligned_v1'
     action,info=planner.act(torch.cat((h,z),-1)[0].detach().numpy())
     # Nonfinite masked scores are internal pruning sentinels, not JSON metrics.
     info['candidate_scores']=[float(s) if np.isfinite(s) else None for s in info['candidate_scores']]
-    info['value_pruned']=8
+    info['value_pruned']=8 if prune else 0
     return action,info

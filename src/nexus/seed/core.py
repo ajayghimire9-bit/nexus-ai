@@ -374,6 +374,9 @@ class Session:
                     reasoning='existing_MPC_with_learned_value_pruning',
                     generation='local_trace_GRU_with_factual_gate',learned_recurrent_memory=True)
                 state['grounded']=dict(enabled=True,model_hash=self.grounded_agent.model_hash,
+                    state_contract=self.grounded_agent.model.semantics,
+                    world_memory='fixed_source_bank' if self.grounded_agent.model.world_memory_bank is not None else 'empty_bank',
+                    value_target='V3_current_state_random_behavior' if self.grounded_agent.model.semantics=='aligned_v1' else 'legacy_unaligned',
                     action_readout_sha256=getattr(self.grounded_agent.action_readout,'sha256',None),
                     architecture='shared_multimodal_GRU_RSSM',h_size=32,z_size=8,
                     approved_concepts=list(self.grounded_agent.approved(self)),

@@ -63,7 +63,7 @@ class AuthoredWorld:
         if 4<=action<=6:
             i=action-4
             if not self.flags[i]:
-                self.flags[i]=1;info=.05 if action==4 else 0.
+                self.flags[i]=1;info=.05 if action==4 and getattr(self,'information_reward',True) else 0.
         after=abs(self.obj['x']-self.goal[0])+abs(self.obj['y']-self.goal[1])
         done=after==0;self.steps+=1
         reward=(before-after)*.2-.02+(1. if done else 0.)+info

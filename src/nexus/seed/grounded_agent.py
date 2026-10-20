@@ -12,12 +12,14 @@ from .core import GRAMMAR,Move,concept_word
 from .grounded_world import observation,tensors,trace_for
 from .grounded_meta import program_truth,expression_for,OuterSeedMeta
 from .latent_planner import plan
+from .state_contract import Belief,world_memory
 
 
 class GroundedAgent:
     def __init__(self,model,model_hash,action_readout=None):
         self.model=model;self.model_hash=model_hash
         self.h,self.z=model.initial();self.context=None;self.flags=[0,0,0]
+        self._belief=Belief(model)
         self.outer=OuterSeedMeta()
         self.pending_question=None
         self.action_readout=action_readout
@@ -29,6 +31,7 @@ class GroundedAgent:
                 p=json.loads(event.payload_json)
                 if p['model_hash']==self.model_hash and p['context']['world']==digest(session.world):
                     self.h=torch.tensor([p['h']]);self.z=torch.tensor([p['z']]);self.context=p['context'];self.flags=list(p['flags'])
+                    self._belief.h=self.h;self._belief.z=self.z;self._belief.token=0
                 break
 
     def teaching_observed(self,session,word,obj,positive,supersedes,ref):
@@ -62,11 +65,20 @@ class GroundedAgent:
         vector,weights=self.model.retrieve(encoded,prototypes)
         return vector,dict(names=list(records),weights=weights[0].tolist())
 
-    def assimilate(self,session,obj,goal,action=0):
-        encoded=self.model.encode(*tensors([observation(obj,goal,self.flags)]))
-        memory,retrieval=self.memory(session,encoded)
-        self.h,self.z,_=self.model.observe(self.h,self.z,torch.tensor([action]),encoded,memory,sample=False)
-        return encoded,memory,retrieval
+    def assimilate(self,session,obj,goal,action=0,*,advance=False,belief=None,commit=True,flags=None):
+        b=self._belief if belief is None else belief
+        if not commit:b=b.clone()
+        if b.token is None or advance or b.encoded is None:
+            encoded=self.model.encode(*tensors([observation(obj,goal,self.flags if flags is None else flags)]))
+            if b.token is None or advance:
+                b.observe(encoded,torch.tensor([action]),0 if b.token is None else b.token+1)
+            else:
+                # Restore cached sensors without assimilating saved history twice.
+                b.encoded=encoded;b.memory=world_memory(self.model,encoded)
+        _,retrieval=self.memory(session,b.encoded)
+        retrieval['world_conditioning']='fixed_source_bank' if self.model.world_memory_bank is not None else 'empty_bank'
+        if commit:self.h,self.z=b.h,b.z
+        return b,b.memory,retrieval
 
     def induce(self,session,word):
         # Current active labels only; old evidence stays in the existing Journal.
@@ -114,7 +126,7 @@ class GroundedAgent:
 
     def request(self,session,action,reference,x,y,word):
         started=time.perf_counter()
-        if type(action) is not str or action not in ('induce','meta','observe','speak','decide','ranked_decide','ask','store','retrieve') or type(reference) is not str or not 1<=len(reference)<=24 or not concept_word(word):
+        if type(action) is not str or action not in ('induce','meta','observe','speak','decide','decide_unpruned','ranked_decide','ask','store','retrieve') or type(reference) is not str or not 1<=len(reference)<=24 or not concept_word(word):
             raise ValueError('grounded_request_schema')
         if action=='ranked_decide' and self.action_readout is None:raise ValueError('action_readout_not_enabled_by_owner')
         if action=='induce':
@@ -130,22 +142,24 @@ class GroundedAgent:
         if any(type(v) is not int or not 0<=v<6 for v in (x,y)):raise ValueError('grounded_goal_bounds')
         obj=next(o for o in session.world if o['id']==ids[0]);goal=(x,y)
         context=dict(reference=ids[0],goal=list(goal),world=digest(session.world))
-        if self.context is None or any(self.context.get(k)!=context[k] for k in context):
-            self.h,self.z=self.model.initial();self.flags=[0,0,0]
+        changed=self.context is None or any(self.context.get(k)!=context[k] for k in context)
+        readonly=action in ('observe','speak')
+        belief=Belief(self.model) if changed else self._belief
+        if changed and not readonly:
+            self._belief=belief;self.h,self.z=belief.h,belief.z;self.flags=[0,0,0]
         with torch.no_grad():
-            encoded,memory,retrieval=self.assimilate(session,obj,goal)
-            estimates=self.model.heads(self.h,self.z)
+            b,memory,retrieval=self.assimilate(session,obj,goal,belief=belief,commit=not readonly,flags=[0,0,0] if changed else self.flags)
+            estimates=self.model.heads(b.h,b.z)
             if action=='observe':
-                self.context=dict(context,done=(obj['x'],obj['y'])==goal)
                 return dict(status='observed',text='Encoded authored text, rendered pixels and proprioception with one GRU.',
-                    h_norm=float(self.h.norm()),z_norm=float(self.z.norm()),retrieval=retrieval,
+                    h_norm=float(b.h.norm()),z_norm=float(b.z.norm()),retrieval=retrieval,state_advanced=False,
                     prediction={k:v[0].tolist() for k,v in estimates.items()},modalities=['text','18x18_authored_pixels','proprioception'])
             if action=='speak':
-                candidate=self.model.generate(self.h,self.z,memory)
+                candidate=self.model.generate(b.h,b.z,memory)
                 return dict(status='language',text=f"Observed {ids[0]} at ({obj['x']}, {obj['y']}).",
                     generated_candidate=candidate,candidate_verified=False,
                     language_source='trained_local_decoder_candidate_plus_factual_template',retrieval=retrieval)
-            if action not in ('decide','ranked_decide','ask','store','retrieve'):raise ValueError('grounded_action')
+            if action not in ('decide','decide_unpruned','ranked_decide','ask','store','retrieve'):raise ValueError('grounded_action')
             if (obj['x'],obj['y'])==goal:
                 self.context=dict(context,done=True)
                 return dict(status='already_at_goal',text='Already at this goal. Choose a new goal; no reward was collected.')
@@ -156,7 +170,7 @@ class GroundedAgent:
                 choice,planning=self.action_readout.rank(self.model,self.h,self.z,prop,memory)
                 session.event('seed_grounded_action_rank',dict(model_hash=self.model_hash,
                     readout_hash=self.action_readout.sha256,scores=planning['candidate_scores'],selected=choice))
-            elif choice is None:choice,planning=plan(self.model,self.h,self.z,memory,seed=len(session.journal.snapshot()))
+            elif choice is None:choice,planning=plan(self.model,self.h,self.z,memory,seed=len(session.journal.snapshot()),prune=action!='decide_unpruned')
             before_distance=abs(obj['x']-x)+abs(obj['y']-y);trace=[];result={};move_blocked=False
             if choice<4 or choice>=7:
                 names=[ACTION_NAMES[choice]] if choice<4 else (['right','down'] if choice==7 else ['left','up'])
@@ -172,16 +186,16 @@ class GroundedAgent:
                 if result['question'].get('object'):
                     self.pending_question=dict(word=word,object=result['question']['object'],before=len(session.candidates(word)))
             elif choice==5:
-                result['concept']=self.induce(session,word);self.flags[1]=int(result['concept']['status']=='adopted_development')
-            else:self.flags[2]=int(bool(retrieval['names']))
+                result['concept']=self.induce(session,word);self.flags[1]=1
+            else:self.flags[2]=1
             obj=next(o for o in session.world if o['id']==ids[0])
             after_distance=abs(obj['x']-x)+abs(obj['y']-y);done=after_distance==0
             # No predicted reward or hypothetical information gain is logged as
             # actual feedback. Human teaching information is settled separately.
             reward=.2*(before_distance-after_distance)-.02+(1. if done else 0.)
-            encoded,memory,retrieval=self.assimilate(session,obj,goal,choice)
+            _,memory,retrieval=self.assimilate(session,obj,goal,choice,advance=True)
             generated=self.model.generate(self.h,self.z,memory)
-            blocked=move_blocked or (choice==5 and not self.flags[1]) or (choice==6 and not self.flags[2]) or (choice==4 and not result['question'].get('object'))
+            blocked=move_blocked or (choice==5 and result['concept']['status']!='adopted_development') or (choice==6 and not retrieval['names']) or (choice==4 and not result['question'].get('object'))
             actual_text=trace_for(choice,done,blocked=blocked)
             source='trained_trace_decoder' if generated==actual_text else 'grounded_template_fallback'
             self.context=dict(reference=ids[0],goal=list(goal),world=digest(session.world),done=done)

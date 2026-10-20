@@ -8,12 +8,14 @@ from nexus.world.seed_rssm import SeedRSSM,ACTION_NAMES,TRACE_WORDS
 from .core import GRAMMAR,examples
 from .grounded_world import AuthoredWorld,observation,tensors,token_trace
 from .latent_planner import plan,RSSMStepAdapter
+from .state_contract import Belief,value_targets
 
 
-def collect(seeds,max_steps,charge,episodes=None):
+def collect(seeds,max_steps,charge,episodes=None,information_reward=True):
     if episodes is None:episodes=[]
     for seed in seeds:
         world=AuthoredWorld(seed);rng=random.Random(seed+917)
+        world.information_reward=information_reward
         frames=[world.observe()];steps=[]
         episodes.append(dict(seed=seed,frames=frames,steps=steps))
         for _ in range(max_steps):
@@ -25,19 +27,24 @@ def collect(seeds,max_steps,charge,episodes=None):
     return episodes
 
 
-def train(recipe,episodes,config,check,progress=None):
+def train(recipe,episodes,config,check,progress=None,semantics='legacy'):
     torch.manual_seed(config['model_seed'])
     model=SeedRSSM(recipe.trunk_width,recipe.activation)
+    if semantics=='aligned_v1':
+        model.semantics=semantics
+        if len(episodes)<32:raise ValueError('source_memory_requires_32_episodes')
+        with torch.no_grad():model.world_memory_bank=model.encode(*tensors([e['frames'][0] for e in episodes[:32]])).detach().clone()
     optimizer=torch.optim.Adam(model.parameters(),lr=config['learning_rate'])
     rng=random.Random(config['schedule_seed']);eligible=[e for e in episodes if len(e['steps'])>=4]
     if not eligible:raise ValueError('coherent_training_windows_missing')
     losses=[];encoder_grad=[]
     for update in range(config['updates']):
         check();batch=[rng.choice(eligible) for _ in range(config['batch_size'])]
-        windows=[]
+        windows=[];aligned_values=[];aligned_masks=[]
         for ep in batch:
             start=rng.randrange(len(ep['steps'])-3)
             windows.append((ep['frames'][start:start+5],ep['steps'][start:start+4]))
+            v,mask=value_targets(ep['steps'],start);aligned_values.append(v);aligned_masks.append(mask)
         b=len(batch)
         text,pixels,prop=tensors([o for frames,steps in windows for o in frames])
         encoded=model.encode(text,pixels,prop).reshape(b,5,32)
@@ -51,11 +58,15 @@ def train(recipe,episodes,config,check,progress=None):
             for s in reversed(steps):total=s['reward']+.9*total*(not s['done']);seq.append(total)
             returns.append(list(reversed(seq)))
         values=torch.tensor(returns)
-        h,z=model.initial(b);prev=torch.zeros(b,dtype=torch.long)
+        h,z=model.initial(b);belief=Belief(model,b);prev=torch.zeros(b,dtype=torch.long)
         loss=0.;parts={k:0. for k in ('state','latent','reward','done','value','kl','language','retrieval','concept')}
         for t in range(4):
-            memory,weights=model.retrieve(encoded[:,t],encoded[:,t].detach())
-            h,z,dist=model.observe(h,z,prev,encoded[:,t],memory,sample=True)
+            _,weights=model.retrieve(encoded[:,t],encoded[:,t].detach())
+            if semantics=='aligned_v1':
+                h,z,dist=belief.observe(encoded[:,t],prev,t,sample=True);memory=belief.memory
+            else:
+                memory,_=model.retrieve(encoded[:,t],encoded[:,t].detach())
+                h,z,dist=model.observe(h,z,prev,encoded[:,t],memory,sample=True)
             predicted_h,predicted_z,_,_=model.transition(h,z,actions[:,t],memory,sample=True)
             pred=model.heads(predicted_h,predicted_z)
             mean,std,pm,ps=dist
@@ -66,9 +77,16 @@ def train(recipe,episodes,config,check,progress=None):
                 value=.1*nn.functional.mse_loss(pred['value'],values[:,t]),
                 kl=.01*(torch.log(ps/std)+(std.square()+(mean-pm).square())/(2*ps.square())-.5).mean(),
                 retrieval=.05*nn.functional.nll_loss(weights.clamp_min(1e-9).log(),torch.arange(b)))
+            if semantics=='aligned_v1':
+                mask=torch.tensor(aligned_masks,dtype=torch.bool)[:,t]
+                current_value=model.heads(h,z)['value']
+                desired=torch.tensor(aligned_values)[:,t]
+                terms['value']=.1*nn.functional.mse_loss(current_value[mask],desired[mask]) if mask.any() else current_value.sum()*0
             trace=torch.tensor([token_trace(steps[t]['trace']) for frames,steps in windows])
             # Decode the ACTUAL action trace from its resulting recurrent state.
             resulting_h,resulting_z,_=model.observe(h,z,actions[:,t],encoded[:,t+1],memory,sample=True)
+            if semantics=='aligned_v1' and dones[:,t].bool().any():
+                terminal=dones[:,t].bool();terms['value']=terms['value']+.1*model.heads(resulting_h,resulting_z)['value'][terminal].square().mean()
             inputs=torch.cat((torch.ones(b,1,dtype=torch.long),trace[:,:-1]),1)
             terms['language']=.2*nn.functional.cross_entropy(model.language_logits(resulting_h,resulting_z,memory,inputs).reshape(-1,len(TRACE_WORDS)),trace.reshape(-1),ignore_index=0)
             for k,v in terms.items():parts[k]+=float(v.detach())/4;loss=loss+v/4
@@ -122,26 +140,29 @@ def prediction_metrics(model,episodes):
         observations=len(errors))
 
 
-def evaluate_control(model,seeds,max_steps,method,charge,check,rows=None,imagine_charge=None):
+def evaluate_control(model,seeds,max_steps,method,charge,check,rows=None,imagine_charge=None,*,prune=True,information_reward=True):
     if rows is None:rows=[]
     for seed in seeds:
         world=AuthoredWorld(seed);rng=random.Random(seed+91);h,z=model.initial();previous=0;steps=[]
+        world.information_reward=information_reward;belief=Belief(model)
         row=dict(seed=seed,return_sum=0.,success=False,steps=steps);rows.append(row)
         for t in range(max_steps):
             check();info={}
             with torch.no_grad():
-                encoded=model.encode(*tensors([world.observe()]));h,z,_=model.observe(h,z,torch.tensor([previous]),encoded)
+                if belief.token is None:belief.observe(model.encode(*tensors([world.observe()])),torch.zeros(1,dtype=torch.long),0)
+                h,z=belief.h,belief.z
                 if method=='latent_mpc':
-                    if imagine_charge is not None:imagine_charge(48)
-                    action,info=plan(model,h,z,seed=seed*100+t)
+                    if imagine_charge is not None:imagine_charge(48 if prune else 64)
+                    action,info=plan(model,h,z,belief.memory,seed=seed*100+t,prune=prune)
                 elif method=='random':action=rng.randrange(9)
                 else:
                     dx=world.goal[0]-world.obj['x'];dy=world.goal[1]-world.obj['y']
                     action=(1 if dx>0 else 0) if dx else (3 if dy>0 else 2)
-            before=dict(world.obj);charge();_,reward,done,actual=world.step(action)
+            before=dict(world.obj);charge();next_obs,reward,done,actual=world.step(action)
             steps.append(dict(action=action,reward=reward,done=done,trace=actual['trace'],planning=info,
                 before=before,after=dict(world.obj),goal=list(world.goal),information_gain_proxy=actual['information_gain_proxy']))
             row['return_sum']+=reward;row['success']=done
             previous=action
+            with torch.no_grad():belief.observe(model.encode(*tensors([next_obs])),torch.tensor([action]),t+1)
             if done:break
     return rows

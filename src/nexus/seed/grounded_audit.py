@@ -18,7 +18,7 @@ def validate_config(c):
     if list(map(len,groups))!=[48,6,4] or any(type(s) is not int for g in groups for s in g) or len(set(sum(groups,[])))!=58:raise ValueError('disjoint_collection_seeds')
 
 
-def audit_episode(e,max_steps):
+def audit_episode(e,max_steps,information_reward=True):
     steps=e['steps']
     if not 1<=len(steps)<=max_steps or any(s['done'] for s in steps[:-1]) or not (steps[-1]['done'] or len(steps)==max_steps):raise ValueError('complete_episode')
     flags=[0,0,0]
@@ -27,7 +27,7 @@ def audit_episode(e,max_steps):
         if i and s['before']!=steps[i-1]['after']:raise ValueError('episode_continuity')
         before,after,goal=s['before'],s['after'],s['goal']
         d=lambda obj:abs(obj['x']-goal[0])+abs(obj['y']-goal[1])
-        info=.05 if s['action']==4 and not flags[0] else 0.
+        info=.05 if s['action']==4 and not flags[0] and information_reward else 0.
         if 4<=s['action']<=6:flags[s['action']-4]=1
         expected=.2*(d(before)-d(after))-.02+int(d(after)==0)+info
         if abs(s['reward']-expected)>1e-8 or s['done']!=(d(after)==0):raise ValueError('reward_accounting')

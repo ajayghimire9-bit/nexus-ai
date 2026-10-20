@@ -21,6 +21,7 @@ class SeedRSSM(nn.Module):
         super().__init__()
         if trunk_width not in (16,32) or activation not in ('tanh','relu'):raise ValueError('registered_seed_architecture')
         self.trunk_width=trunk_width;self.activation=activation
+        self.semantics='legacy';self.world_memory_bank=None
         self.work=dict(encoder_batches=0,encoder_rows=0,transition_batches=0,transition_rows=0,
             head_batches=0,head_rows=0,language_training_batches=0,language_token_forwards=0,proposal_calls=0)
         self.text=nn.Embedding(128,16,padding_idx=0)
@@ -114,6 +115,8 @@ class SeedRSSM(nn.Module):
     def export(self,path,provenance):
         data=dict(schema='seed_rssm_v1',architecture=dict(h=32,z=8,encoder=32,actions=list(ACTION_NAMES),trunk_width=self.trunk_width,activation=self.activation),
                   provenance=provenance,weights={k:v.detach().cpu().tolist() for k,v in self.state_dict().items()})
+        if self.semantics=='aligned_v1':
+            data.update(schema='seed_rssm_v2',state_contract='aligned_v1',world_memory_bank=self.world_memory_bank.detach().tolist())
         path=Path(path)
         with path.open('x') as f:json.dump(data,f,allow_nan=False)
         return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -126,7 +129,9 @@ class SeedRSSM(nn.Module):
         if hashlib.sha256(raw).hexdigest()!=expected_hash:raise ValueError('seed_model_hash')
         data=json.loads(raw)
         a=data.get('architecture',{})
-        if set(data)!={'schema','architecture','provenance','weights'} or data['schema']!='seed_rssm_v1' or a!=dict(h=32,z=8,encoder=32,actions=list(ACTION_NAMES),trunk_width=a.get('trunk_width'),activation=a.get('activation')):
+        expected_fields={'schema','architecture','provenance','weights'}
+        if data.get('schema')=='seed_rssm_v2':expected_fields|={'state_contract','world_memory_bank'}
+        if set(data)!=expected_fields or data['schema'] not in ('seed_rssm_v1','seed_rssm_v2') or a!=dict(h=32,z=8,encoder=32,actions=list(ACTION_NAMES),trunk_width=a.get('trunk_width'),activation=a.get('activation')):
             raise ValueError('seed_rssm_schema')
         model=cls(a['trunk_width'],a['activation']);expected=model.state_dict()
         if set(data['weights'])!=set(expected):raise ValueError('seed_weight_names')
@@ -135,6 +140,11 @@ class SeedRSSM(nn.Module):
         if not all(numeric(v) for v in data['weights'].values()):raise ValueError('seed_numeric_weights')
         state={k:torch.tensor(v,dtype=expected[k].dtype) for k,v in data['weights'].items()}
         if any(v.shape!=expected[k].shape or not torch.isfinite(v).all() for k,v in state.items()):raise ValueError('seed_weight_shapes_or_finiteness')
+        if data['schema']=='seed_rssm_v2':
+            if data['state_contract']!='aligned_v1' or not numeric(data['world_memory_bank']):raise ValueError('state_contract_or_memory')
+            bank=torch.tensor(data['world_memory_bank'],dtype=torch.float32)
+            if bank.shape!=(32,32) or not torch.isfinite(bank).all():raise ValueError('memory_bank_shape')
+            model.semantics='aligned_v1';model.world_memory_bank=bank
         model.load_state_dict(state);model.eval()
         for p in model.parameters():p.requires_grad_(False)
         return model,data['provenance']
