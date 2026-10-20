@@ -90,9 +90,7 @@ def prefix_preserved(row,library):
     return True
 
 
-def summarize(rows,c):
-    # Costs are deterministic operation counts; they are not FLOP or speed claims.
-    source=load_source(Path(__file__).resolve().parents[3]);inherited=source['inherited_source']
+def decision_means(rows,inherited):
     means={m:dict(questions=st.mean(r['methods'][m]['questions_to_identify'] for r in rows),
         accuracy={str(b):st.mean(r['methods'][m]['metrics'][str(b)]['accuracy'] for r in rows) for b in base.BUDGETS},
         brier={str(b):st.mean(r['methods'][m]['metrics'][str(b)]['brier'] for r in rows) for b in base.BUDGETS},
@@ -104,8 +102,15 @@ def summarize(rows,c):
         posterior_checks=sum(r['methods'][m]['costs']['hypothesis_predictions']-r['methods'][m]['costs']['search_predictions'] for r in rows)) for m in METHODS}
     for m,v in means.items():
         v['source_split_comparisons']=inherited['source_split_comparisons'] if m in inherited['charged_to_methods'] else 0
-        v['source_observations']=256 if m in inherited['charged_to_methods'] else 0
+        v['source_observations']=inherited['labeled_observations'] if m in inherited['charged_to_methods'] else 0
         v['total_decision_work']=v['search_predictions']+v['posterior_checks']+v['tree_visits']+v['source_split_comparisons']
+    return means
+
+
+def summarize(rows,c):
+    # Costs are deterministic operation counts; they are not FLOP or speed claims.
+    source=load_source(Path(__file__).resolve().parents[3]);inherited=source['inherited_source']
+    means=decision_means(rows,inherited)
     h=means['tree_greedy'];g=means['greedy']
     question_contrasts={m:base.paired([r['methods'][m]['questions_to_identify']-r['methods']['tree_greedy']['questions_to_identify'] for r in rows]) for m in METHODS if m!='tree_greedy'}
     checks=dict(early_tree_decisions=all(prefix_preserved(r,source['library']) for r in rows),

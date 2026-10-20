@@ -42,6 +42,20 @@ def interpret(text,ctx):
     if t in ('that answer was wrong','that was wrong','correct my previous example','correct the previous example','correct that','change my last example'):return Intent('correct')
     if t in ('show me some examples','show examples','examples','give me an example'):return Intent('examples')
     if t in ('show foundation','show curriculum','foundation','curriculum'):return Intent('foundation')
+    if t in ('show phases','show all phases','open workbench'):return Intent('workbench')
+    if t in ('generate lessons','give me lessons','create curriculum'):return Intent('curriculum_generate')
+    m=re.fullmatch(r'(teach|replace) phrase "([a-z ]+)" as ([a-z][a-z0-9]*)',t)
+    if m:return Intent('alias',dict(phrase=m[2],skill=m[3],replace=m[1]=='replace'))
+    m=re.fullmatch(r'run phrase "([a-z ]+)" on (.+)',raw,flags=re.I)
+    if m:
+        try:value=json.loads(m[2])
+        except ValueError:return Intent('unsupported')
+        return Intent('phrase',dict(phrase=m[1].lower(),input=value))
+    m=re.fullmatch(r'answer lesson (\d+):\s*(.+)',raw,flags=re.I|re.S)
+    if m:
+        try:value=json.loads(m[2])
+        except ValueError:return Intent('unsupported')
+        return Intent('curriculum_answer',dict(index=int(m[1])-1,answer=value))
     m=re.fullmatch(r'(?:write code to|run code to) (.+?)(?: on (\[.*\]))?[.!?]?',raw,flags=re.I)
     if m:
         aliases={'sort':'sort','sort a list':'sort','reverse':'reverse','reverse a list':'reverse','remove duplicates':'unique','keep even numbers':'even','increment':'increment'}
@@ -188,6 +202,28 @@ class Conversation:
 
     def execute(self,intent,ctx,card):
         k=intent.kind;v=intent.values;s=lib.state(self.session)
+        if k in ('workbench','curriculum_generate','curriculum_answer','alias','phrase'):
+            from .foundation import runtime
+            if k=='workbench':
+                result=runtime.request(self.session,dict(op='foundation_workbench',args={}))['result']
+                card('Seven connected phases',result['phases'])
+                return 'All seven bounded workflows share this session. Open /foundation for graph state, typed programs, checked libraries, curriculum and tools. Each phase lists its evidence limits.','reply',False
+            if k=='curriculum_generate':
+                state=runtime.state(self.session);args=dict(seed=123000+len(state['lessons']),count=4)
+                result=runtime.request(self.session,dict(op='foundation_curriculum_issue',args=args))['result']
+                for i,task in enumerate(result['tasks']):card('Lesson '+str(i+1),{key:task[key] for key in ('id','family','program','inputs','label')})
+                return 'I generated four source practice tasks. Read each program and input, then reply “Answer lesson 1: <JSON answer>”. These are public authored exercises; the results are not scientific confirmation.','reply',False
+            if k=='curriculum_answer':
+                state=runtime.state(self.session)
+                # Lesson numbers refer to the most recently issued batch, even
+                # after another answer; they cannot shift and grade another task.
+                all_tasks=list(state['lessons'].values())[-4:]
+                if not 0<=v['index']<len(all_tasks):raise ValueError('issued_lesson_number')
+                task=all_tasks[v['index']];result=runtime.request(self.session,dict(op='foundation_curriculum_submit',args=dict(task=task['id'],answer=v['answer'])))['result']
+                card('Actual source exercise result',result)
+                return ('That answer matches the executable task.' if result['correct'] else 'That answer differs from the executable task; the result card shows the expected value.')+' I recorded it as source practice feedback.','success' if result['correct'] else 'reply',False
+            result=runtime.request(self.session,dict(op='foundation_'+k,args=v))['result'];card('Grounded phrase evidence',result)
+            return ('I saved that phrase as a reference to the separately verified skill.' if k=='alias' else 'I executed the taught phrase using its verified program.'),'success',False
         if k=='compose_code':
             if self.session.stopped:raise ValueError('resume_required')
             from .foundation.programs import pipeline,execute

@@ -95,6 +95,10 @@ class LabHandler(BaseHTTPRequestHandler):
                         if audit['raw_sha256']!=hashlib.sha256((ROOT/'artifacts/seed_investigation_hybrid.json').read_bytes()).hexdigest():raise ValueError('hybrid_audit_mismatch')
                         hybrid['investigation_transfer']['mixture_sensitivity']=audit['mixture_sensitivity']
                     state['experiments']=[r for r in state['experiments'] if r['id']!=hybrid['id']]+[hybrid]
+                if (ROOT/'artifacts/seed_investigation_replication.json').exists():
+                    from nexus.seed.investigation_replication import saved_replay as replication_replay
+                    replication=replication_replay(ROOT)
+                    state['experiments']=[r for r in state['experiments'] if r['id']!=replication['id']]+[replication]
                 if (ROOT/'artifacts/seed_executable_world.json').exists():
                     from nexus.seed.structure.study import saved_replay as structure_replay
                     structure=structure_replay(ROOT)

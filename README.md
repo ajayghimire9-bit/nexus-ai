@@ -28,6 +28,12 @@ results remain unchanged; no live-agent promotion.
 
 ## Try it
 
+The [Phase 1–7 workbench](docs/NEXUS_SEED_PHASE1_7_WORKBENCH.md) connects
+structured state, mechanisms, investigations, grounded phrases, checked typed
+functions, generated source exercises and the same local conversation/session.
+Open `/foundation`; in chat try “Show phases” or “Generate lessons”. These are
+bounded implemented workflows; general learning-to-learn remains unproven.
+
 The new [executable foundation](docs/NEXUS_SEED_FOUNDATION.md) is available at
 `/foundation` on the same server: six operator stages, bounded typed programs,
 attributed document ingestion, conflict-preserving memory, checked program

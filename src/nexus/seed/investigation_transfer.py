@@ -192,7 +192,8 @@ def run(request,*,config_validator=config_check,methods=METHODS,analyze=analysis
         result['frozen_before_target']=True
         pending=[]
         for i,seed in enumerate(c['tasks']['target']):
-            check();family=c['target_families'][i//16];bind=binding(seed,family);law=truth(seed)
+            check();family=c.get('target_family_by_task',{}).get(str(seed),c['target_families'][i//16]);bind=binding(seed,family)
+            law=c['target_laws'][str(seed)] if 'target_laws' in c else truth(seed)
             pool=[encode(bits,bind,seed*1000+q) for q,bits in enumerate(BITS)];charge('target_pool_observations',8)
             labels=[bool(hypotheses(decode(raw,bind))[law]) for raw in pool]
             row=dict(task=seed,family=family,binding=bind,pool=pool,support_bank_answers=labels,methods={})
@@ -206,7 +207,7 @@ def run(request,*,config_validator=config_check,methods=METHODS,analyze=analysis
         result['choices_hash']=locked;result['choices_locked_before_final']=True
         # Only now generate evaluator-owned final episodes; no selection API sees them.
         for row in pending:
-            seed=row['task'];law=truth(seed);final=[];rng=random.Random(seed+90000)
+            seed=row['task'];law=c['target_laws'][str(seed)] if 'target_laws' in c else truth(seed);final=[];rng=random.Random(seed+90000)
             for j in range(c['final_episodes']):
                 bits=BITS[rng.randrange(8)];raw=encode(bits,row['binding'],seed*1000+100+j)
                 observed=decode(raw,row['binding']);answer=bool(hypotheses(observed)[law]);charge('final_observations',1)
@@ -252,7 +253,7 @@ def validate_output(output,c,caps,*,config_validator=config_check,methods=METHOD
     if digest(locked)!=r['choices_hash']:raise ValueError('choice_lock_mismatch')
     answers=0
     for i,row in enumerate(r['rows']):
-        if row['family']!=c['target_families'][i//16] or set(row['methods'])!=set(methods) or len(row['final'])!=32:raise ValueError('complete_family_method_episode_grid')
+        if row['family']!=c.get('target_family_by_task',{}).get(str(row['task']),c['target_families'][i//16]) or set(row['methods'])!=set(methods) or len(row['final'])!=32:raise ValueError('complete_family_method_episode_grid')
         if len(row['pool'])!=8 or len(row['support_bank_answers'])!=8 or any(type(a) is not bool for a in row['support_bank_answers']):raise ValueError('support_grid')
         if any(decode(raw,row['binding'])!=BITS[q] for q,raw in enumerate(row['pool'])):raise ValueError('public_support_binding')
         if [f['id'] for f in row['final']]!=[f"final-{row['task']}-{j}" for j in range(32)]:raise ValueError('final_episode_grid')

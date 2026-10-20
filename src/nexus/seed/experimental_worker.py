@@ -110,7 +110,10 @@ def run(request):
 if __name__=='__main__':
     request = read(Path(sys.argv[1]))
     limits(request['caps'])  # before importing the optional neural runtime
-    if request.get('adapter')=='seed_investigation_hybrid_v1':
+    if request.get('adapter')=='seed_investigation_replication_v1':
+        from .investigation_replication import run as run_replication
+        result=run_replication(request)
+    elif request.get('adapter')=='seed_investigation_hybrid_v1':
         from .investigation_hybrid import run as run_hybrid
         result=run_hybrid(request)
     elif request.get('adapter')=='seed_investigation_transfer_v1':

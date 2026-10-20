@@ -1,5 +1,10 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Registered — independent source-tree replication, not executed
+
+The owner approved the [three-tree rule-balanced replication](NEXUS_SEED_INVESTIGATION_REPLICATION_PROTOCOL.md). Same source recipe and question methods, fresh sources/targets, source trees are independent units. Planned4608 observations within60s/5000 cap; carry1983.6321034559958s used /1616.3678965440042remaining. Protocol and tested code must be committed before one run. Parallel [Phase1–7 bounded engineering](NEXUS_SEED_PHASE1_7_WORKBENCH.md) is not scientific efficacy evidence. Older entries retain their chronology.
+
+
 ## Latest — selective greedy fallback passed its development screen
 
 Frozen-tree hybrid averaged2.96875 questions versus tree-fixed3.15625, pure greedy3, fixed4 and random4.4375. It removed all6 five-question cases and used60 versus3328 search checks; source-inclusive work1991 versus3776 (47.27% lower proxy, not wall speed). Greedy question-difference interval includes zero; equal-rule descriptive reweighting favors greedy3 versus hybrid3.125. This is one frozen tree in a supplied grammar, not general learning-to-learn. No promotion. [Results](NEXUS_SEED_INVESTIGATION_HYBRID_RESULTS.md), [protocol](NEXUS_SEED_INVESTIGATION_HYBRID_PROTOCOL.md).

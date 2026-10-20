@@ -37,6 +37,33 @@ def test_composed_code_executes_and_replay_is_idempotent(workspace):
     assert interpret('Write code to import os',deepcopy(INITIAL)).kind=='unsupported'
 
 
+def test_taught_multiword_phrase_uses_verified_skill(workspace):
+    teach_reverse(workspace)
+    result=send(workspace,'Teach phrase "turn the numbers around" as reverse')
+    assert result['chat']['messages'][-1]['status']=='success'
+    run=send(workspace,'Run phrase "turn the numbers around" on [1, 2, 3]')
+    assert run['chat']['messages'][-1]['cards'][0]['data']['value']==[3,2,1]
+    assert send(workspace,'Teach phrase "turn the numbers around" as reverse')['chat']['messages'][-1]['status']=='error'
+
+
+def test_generated_lessons_actual_answers_and_fixed_numbering(workspace):
+    from nexus.seed.foundation.runtime import state
+    w,sid=workspace;out=send(workspace,'Generate lessons')
+    assert len(out['chat']['messages'][-1]['cards'])==4
+    tasks=list(state(w.sessions[sid])['lessons'].values())
+    for i in (1,0,2,3):
+        result=send(workspace,f"Answer lesson {i+1}: "+json.dumps(tasks[i]['expected']))
+        assert result['chat']['messages'][-1]['cards'][0]['data']['correct']
+    assert len(state(w.sessions[sid])['curriculum_feedback'])==4
+
+
+def test_workbench_inspection_does_not_change_graph_or_learning(workspace):
+    w,sid=workspace;before=w.sessions[sid].counts.copy()
+    out=send(workspace,'Show phases')
+    assert len(out['chat']['messages'][-1]['cards'][0]['data'])==7
+    assert w.sessions[sid].counts==before
+
+
 @pytest.mark.parametrize('text,kind',[('Hello!','hello'),('What can you do?','help'),('I want to teach you a word.','start'),('A dax means a red object.','definition'),('Use the reverse skill on [1, 2, 3].','run'),('Apply this skill to [3, 4]','run'),('What does that word mean?','meaning'),('Show me some examples.','examples'),('What have you learned?','memory'),('Move the red object to the top-right corner.','goal'),('Correct my previous example.','correct'),('Save this conversation.','save'),('Help me find the pattern.','start'),('Buy stocks for me','unsupported')])
 def test_wording(text,kind):assert interpret(text,deepcopy(INITIAL)).kind==kind
 

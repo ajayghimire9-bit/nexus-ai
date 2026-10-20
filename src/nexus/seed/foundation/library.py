@@ -7,7 +7,7 @@ not underlying primitive execution cost. No generalization claim follows.
 from collections import defaultdict
 from itertools import product
 from nexus.evolution1.catalogue import digest
-from .programs import pipeline, execute
+from .programs import pipeline, execute, FIELDS
 
 
 def propose(programs):
@@ -117,3 +117,98 @@ def compressed(ops,candidate):
         if ops[i:i+len(part)]==part: tree=dict(op='call',name='macro',value=tree);i+=len(part)
         else: tree=dict(op='skill',program=dict(schema='list',ops=[ops[i]]),value=tree);i+=1
     return tree
+
+
+def expression_children(tree):
+    """Only typed expression children; literal records and skill data stay data."""
+    if tree['op']=='literal':return []
+    out=[]
+    for v in tree.values():
+        if type(v) is dict and v.get('op') in FIELDS:out.append(v)
+        elif type(v) is list:out.extend(x for x in v if type(x) is dict and 'op' in x)
+    return out
+
+
+def expression_nodes(tree):return 1+sum(expression_nodes(x) for x in expression_children(tree))
+
+
+def free_names(tree,bound=frozenset()):
+    if tree['op']=='var':return {tree['name']}-bound
+    if tree['op']=='literal':return set()
+    if tree['op'] in ('let','map','some','every','repeat'):
+        key={'let':'value','map':'items','some':'items','every':'items','repeat':'initial'}[tree['op']]
+        return free_names(tree[key],bound)|free_names(tree['body'],bound|{tree['name']})
+    return set().union(*(free_names(x,bound) for x in expression_children(tree)))
+
+
+def expression_rows(rows,minimum=2):
+    from .programs import validate,bounded
+    if type(rows) is not list or not minimum<=len(rows)<=8:raise ValueError('bounded_expression_tasks')
+    names=set()
+    for row in rows:
+        if type(row) is not dict or set(row)!={'task','program','examples'} or type(row['task']) is not str or not 1<=len(row['task'])<=64 or row['task'] in names:raise ValueError('unique_expression_tasks')
+        names.add(row['task']);validate(row['program'])
+        if expression_nodes(row['program'])>64:raise ValueError('expression_task_size')
+        if type(row['examples']) is not list or not 1<=len(row['examples'])<=4:raise ValueError('expression_example_count')
+        for e in row['examples']:
+            if type(e) is not dict or set(e)!={'input','output'}:raise ValueError('expression_example_fields')
+            bounded(e['input']);bounded(e['output'])
+
+
+def expression_propose(rows):
+    """Discover repeated typed subtrees, including conditions/maps/temporal code.
+
+    Only x may be free; no unreviewed function dependency can enter a proposal.
+    This extends the existing checked-library machinery, not a new store.
+    """
+    expression_rows(rows);groups={};instructions=0
+    def visit(tree,task):
+        if tree['op']=='call':raise ValueError('source_expression_no_unreviewed_calls')
+        n=expression_nodes(tree)
+        if n>=4 and free_names(tree)=={'x'}:
+            key=digest(tree);entry=groups.setdefault(key,dict(program=tree,tasks=set(),occurrences=0,nodes=n));entry['tasks'].add(task);entry['occurrences']+=1
+        for child in expression_children(tree):visit(child,task)
+    for row in rows:
+        for e in row['examples']:
+            out=execute(row['program'],{'x':e['input']});instructions+=out['instructions']
+            if digest(out['value'])!=digest(e['output']):raise ValueError('source_expression_failed')
+        visit(row['program'],row['task'])
+    result=[]
+    for key,g in groups.items():
+        savings=g['occurrences']*(g['nodes']-2)-g['nodes']
+        if len(g['tasks'])>=2 and savings>0:
+            result.append(dict(id=key,name='f_'+key[:12],program=g['program'],source_tasks=sorted(g['tasks']),occurrences=g['occurrences'],definition_nodes=g['nodes'],stored_node_savings=savings,source_instructions=instructions))
+    return sorted(result,key=lambda x:(-x['stored_node_savings'],x['id']))[:16]
+
+
+def expression_compress(tree,candidate):
+    import copy
+    from .programs import variable
+    if digest(tree)==candidate['id']:return dict(op='call',name=candidate['name'],value=variable())
+    out=copy.deepcopy(tree)
+    if tree['op']=='literal':return out
+    for key,v in tree.items():
+        if type(v) is dict and 'op' in v:out[key]=expression_compress(v,candidate)
+        elif type(v) is list:out[key]=[expression_compress(x,candidate) if type(x) is dict and 'op' in x else x for x in v]
+    return out
+
+
+def expression_assess(candidate,source,checks):
+    expression_rows(checks)
+    if candidate not in expression_propose(source):raise ValueError('source_expression_candidate_required')
+    used_tasks={x['task'] for x in source};used_inputs={digest(e['input']) for x in source for e in x['examples']}
+    outcomes=[];before=after=0
+    for row in checks:
+        if row['task'] in used_tasks:raise ValueError('disjoint_expression_checks')
+        used_tasks.add(row['task']);compiled=expression_compress(row['program'],candidate)
+        if compiled==row['program']:raise ValueError('check_must_exercise_expression')
+        for e in row['examples']:
+            key=digest(e['input'])
+            if key in used_inputs:raise ValueError('fresh_expression_check_inputs')
+            used_inputs.add(key)
+            original=execute(row['program'],{'x':e['input']});reuse=execute(compiled,{'x':e['input']},{candidate['name']:candidate['program']})
+            before+=original['instructions'];after+=reuse['instructions']
+            outcomes.append(dict(task=row['task'],correct=digest(original['value'])==digest(reuse['value'])==digest(e['output']),original_instructions=original['instructions'],macro_instructions=reuse['instructions']))
+    return dict(accepted=all(x['correct'] for x in outcomes),candidate=candidate,outcomes=outcomes,
+        stored_node_savings=candidate['stored_node_savings'],original_instructions=before,macro_instructions=after,
+        label='authored_separate_expression_checks_not_scientific_transfer')
