@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Conversational workspace engineering
+
+From9080b075 on codex/seed-conversation-workspace: one local chat fronts the same
+Language/Coding/Reasoning/World operations, Session/E1 Journal and skill library.
+Guided checks/corrections, current-context references, save/restore, idempotent
+requests and linked supporting views are implemented. No new scientific study
+or neural training; old results/checkpoints unchanged. Scientific ledger stays
+1971.6321034559958 used /1628.3678965440042 remaining. Actual authored GUI moves
+and tests are recorded separately. [Guide](NEXUS_SEED_CONVERSATION_WORKSPACE.md).
+
 ## Ten-scalar answer-free utility — valid complete SOURCE screen FAILED
 
 Execution8d9bdad: primary budgets1/2/4 MSE .170313 versus variance .173580,

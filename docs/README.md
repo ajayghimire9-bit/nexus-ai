@@ -22,6 +22,8 @@ demonstrated learning-to-learn.
 
 ## Engineering and research context
 
+- [Conversation workspace: one chat, same four labs](NEXUS_SEED_CONVERSATION_WORKSPACE.md)
+
 - [Shared Learning Brain, four labs and checked skill reuse](NEXUS_SHARED_LEARNING_LABS.md)
 - [Master context](MASTER_CONTEXT.md)
 - [Canonical current state](NEXUS_CANONICAL_CURRENT_STATE.md)

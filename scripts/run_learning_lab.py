@@ -36,6 +36,13 @@ class LabHandler(BaseHTTPRequestHandler):
         if not self.local_request():return self.send_json(403,{'error':'local_origin_required'})
         parsed=urlparse(self.path)
         try:
+            if not parsed.query and (parsed.path in ('/chat','/chat.css','/chat.js') or parsed.path=='/' and getattr(self.server,'seed_workspace',None)):
+                name={'/':'chat.html','/chat':'chat.html','/chat.css':'chat.css','/chat.js':'chat.js'}[parsed.path]
+                body=(ROOT/'web/learning-lab'/name).read_bytes();self.send_response(200)
+                self.send_header('Content-Type',{'chat.html':'text/html; charset=utf-8','chat.css':'text/css; charset=utf-8','chat.js':'text/javascript; charset=utf-8'}[name])
+                self.send_header('Content-Length',str(len(body)));self.send_header('X-Content-Type-Options','nosniff')
+                self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'")
+                self.end_headers();return self.wfile.write(body)
             if parsed.path=='/labs' and not parsed.query:
                 body=(ROOT/'web/learning-lab/shared.html').read_bytes();self.send_response(200)
                 self.send_header('Content-Type','text/html; charset=utf-8')

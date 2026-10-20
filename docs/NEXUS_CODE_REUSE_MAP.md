@@ -2,6 +2,12 @@
 
 ## Active runtime
 
+- Chat: seed/conversation.py parses bounded intents and delegates to SharedBrain.
+  Messages/pending references are Session/E1 Journal events, saved by the existing
+  storage. No second knowledge store. seed/lab.py routes typed chat requests;
+  web/learning-lab/chat.* renders replies/cards with textContent. Supporting
+  views share the same Session ID. [Guide](NEXUS_SEED_CONVERSATION_WORKSPACE.md).
+
 - Shared labs: seed/shared_brain.py is an adapter over Session, not another agent
   state store. seed/skill_library.py derives typed skill revisions and source-only
   rule feedback from that SAME E1 Journal; existing storage saves them.

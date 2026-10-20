@@ -15,6 +15,11 @@ Financial applications are outside current scope.
 
 ## What exists
 
+A [conversational workspace](NEXUS_SEED_CONVERSATION_WORKSPACE.md) now fronts
+the existing four labs. Its deterministic intent adapter, saved dialogue and
+inline cards use the SAME Session journal and checked skill library. It adds
+no neural learner, scientific result or promoted question-selection policy.
+
 The shared learning-labs engineering layer connects language concepts, list
 programs, finite relations and authored world goals to the SAME Session journal
 and checked skill catalogue. It can reuse executable programs across compatible

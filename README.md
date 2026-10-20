@@ -18,7 +18,12 @@ Python3.11+ and a browser are enough for the symbolic teaching demo:
 python3 -I -S scripts/run_learning_lab.py --allow-seed --port 8766
 ```
 
-Open http://127.0.0.1:8766/seed. Teach an invented word using positive/negative
+Open **http://127.0.0.1:8766/** for the new conversational workspace. Teach a word
+or a checked skill, ask about memory, and explore the same authored world from
+one conversation. Start with “A dax means a red object” or “Teach you a skill
+from examples.” [Conversation guide and screenshots](docs/NEXUS_SEED_CONVERSATION_WORKSPACE.md).
+
+The original form-based interface remains at `/seed`. Teach an invented word using positive/negative
 examples, ask clarifying questions, execute a typed movement program, save the
 session and correct a previous label. The local server stops after15minutes.
 

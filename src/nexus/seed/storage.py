@@ -51,9 +51,12 @@ def save(root, session_id, session):
     row = dict(previous=records[-1]['hash'] if records else None,
                revision=len(records), snapshot=snapshot)
     row['hash'] = digest(row)
+    encoded=canonical(row)
+    if len(encoded.encode('utf-8'))>2_000_000:
+        raise ValueError('saved_revision_size_cap')
     path = directory/f'revision-{len(records):04d}.json'
     with path.open('x') as f:
-        f.write(canonical(row))
+        f.write(encoded)
     path.chmod(0o600)
     return dict(session_id=session_id, revision=row['revision'], hash=row['hash'])
 

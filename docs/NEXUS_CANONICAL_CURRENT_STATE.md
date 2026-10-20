@@ -6,6 +6,12 @@ execution8d9bdade34c2b094f9337816f12b49d52a9a1699. Read
 
 ## Established within the tested authored setup
 
+The new [conversation workspace](NEXUS_SEED_CONVERSATION_WORKSPACE.md) is an
+engineering interface over the same SharedBrain, verified library and Session
+journal. Guided teaching, correction, fresh checks, skill use, world goals and
+local save/restore work through chat; original four labs remain supporting views.
+No new scientific study, neural fitting or learning-efficacy claim follows.
+
 Shared-labs engineering adds one common Session/skill interface for language,
 coding, reasoning and world tasks. Skills require separate authored checks;
 new programs are bounded typed data, not arbitrary source. Optional shared

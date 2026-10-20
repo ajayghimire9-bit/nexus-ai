@@ -1,0 +1,257 @@
+{
+  "schema": "seed_conversation_engineering_v1",
+  "base_revision": "9080b075a43ba37c7dd47d608c7a77e0ae2f1016",
+  "branch": "codex/seed-conversation-workspace",
+  "preservation": {
+    "base": "9080b075a43ba37c7dd47d608c7a77e0ae2f1016",
+    "preserved_artifacts": 789,
+    "inventory_sha256": "03784462177e47b81cf3ac5467ff5e2bde87f7bb5846eca99e953567f1b3120a",
+    "frozen_files": {
+      "artifacts/seed_contract_gui.json": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b",
+      "artifacts/seed_readout_6301.json": "8129cbd4768f4cd5dce938cd8b6740172bf5dbe8742dcb97c497951ad5e87745"
+    }
+  },
+  "scientific_execution": false,
+  "scientific_ledger": {
+    "used_s": 1971.6321034559958,
+    "remaining_s": 1628.3678965440042,
+    "changed": false
+  },
+  "tests": {
+    "focused_core_and_shared": {
+      "passed": 104,
+      "wall_s": 1.89
+    },
+    "first_conversation_http": {
+      "passed": 33,
+      "wall_s": 1.16
+    },
+    "full_relevant": {
+      "passed": 807,
+      "failed": 0,
+      "wall_s": 175.47,
+      "command": "python3 -m pytest -o addopts='' -q --tb=short tests/test_seed*.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py tests/test_factory.py tests/test_evolution2_planner_quality.py"
+    },
+    "final_focused": {
+      "passed": 42,
+      "failed": 0,
+      "wall_s": 2.12,
+      "command": "python3 -m pytest -o addopts='' -q --tb=short tests/test_seed_conversation.py tests/test_seed_conversation_http.py tests/test_repository_layout.py"
+    },
+    "initial_issues_resolved": [
+      "Runtime pytest required the existing .deps PYTHONPATH; no packages installed.",
+      "Two initial pronoun parsing failures fixed; trailing punctuation supported.",
+      "An initially ambiguous increment fixture needed a distinguishing repeated-value example; the learner's clarification was correct."
+    ]
+  },
+  "browser": {
+    "passed": 27,
+    "checks": [
+      "chat is the main Seed entry point",
+      "language teaching waits for a separate answer",
+      "language concept is verified only after separate check",
+      "context reference resolves the taught word",
+      "reused teaching input cannot be a check",
+      "coding separate check succeeds",
+      "verified program really executes",
+      "correction uses a new checked revision",
+      "corrected program changes actual execution",
+      "reasoning pattern executes across compatible inputs",
+      "ambiguous world request has no movement",
+      "object choice executes exactly five authored steps",
+      "new conversations have isolated memory",
+      "restore preserves world, costs, messages without extra actions",
+      "duplicate world request is idempotent",
+      "evidence is optional and inspectable",
+      "supporting lab reuses the SAME conversation Session",
+      "untrusted text renders without HTML execution",
+      "unsupported requests explain their scope",
+      "Shift+Enter preserves a newline",
+      "long conversations keep composer accessible",
+      "stop is cooperative and does not fabricate rollback",
+      "natural save gets an actual local receipt",
+      "mobile sidebar opens accessibly",
+      "mobile has no horizontal overflow",
+      "mobile welcome and keyboard focus work",
+      "no browser JavaScript exceptions"
+    ],
+    "wall_s": 7.305,
+    "fixture_session": {
+      "costs": {
+        "candidate_evaluations": 103,
+        "generated_examples": 0,
+        "predicate_tests": 0,
+        "program_evaluations": 8,
+        "sandbox_actions": 5,
+        "teacher_answers": 12
+      },
+      "world": [
+        {
+          "id": "o1",
+          "color": "red",
+          "shape": "circle",
+          "size": "small",
+          "x": 5,
+          "y": 0
+        },
+        {
+          "id": "o2",
+          "color": "red",
+          "shape": "square",
+          "size": "large",
+          "x": 2,
+          "y": 1
+        },
+        {
+          "id": "o3",
+          "color": "blue",
+          "shape": "circle",
+          "size": "large",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "o4",
+          "color": "blue",
+          "shape": "triangle",
+          "size": "small",
+          "x": 0,
+          "y": 3
+        },
+        {
+          "id": "o5",
+          "color": "green",
+          "shape": "square",
+          "size": "small",
+          "x": 2,
+          "y": 4
+        },
+        {
+          "id": "o6",
+          "color": "green",
+          "shape": "triangle",
+          "size": "large",
+          "x": 4,
+          "y": 0
+        }
+      ],
+      "turns": 52
+    },
+    "scientific_execution": false,
+    "new_scientific_interactions": 0,
+    "neural_training": 0,
+    "live_authored_world_actions": 5,
+    "screenshots": {
+      "seed-chat-mobile.png": "95ed0941e75140d3ad35931a1320b4f93744ca61c705effbce5b9d8506a5ae73",
+      "seed-chat-conversation.png": "69fb4c36d80b508c6c173883d59adae25396f29199575c10d92f4f14207c93d3",
+      "seed-chat-mobile-conversation.png": "2261178f443364265a68dd978c073def32b4f0143952233b97fc7620640b33e7",
+      "seed-chat-desktop.png": "371d0b65f0c8874216ea8af6df738ea8e81890e682b45cc1d2bec653bd8c172b"
+    },
+    "initial_capture_sha256": {
+      "seed-chat-desktop.png": "371d0b65f0c8874216ea8af6df738ea8e81890e682b45cc1d2bec653bd8c172b",
+      "seed-chat-conversation.png": "c655ffbb6053e6d398dc760e0e42b7cef6b4d1713ff7d6afadf736e949bf9be5",
+      "seed-chat-mobile-conversation.png": "c058b4589eabb88084d5c02704073b3d05d269bd36fba07b3a3e28f6539fdd1d",
+      "seed-chat-mobile.png": "95ed0941e75140d3ad35931a1320b4f93744ca61c705effbce5b9d8506a5ae73"
+    },
+    "screenshot_note": "Delivered captures include later read-only restore/layout refinements; initial full-flow hashes are retained separately."
+  },
+  "neural_training": 0,
+  "new_scientific_interactions": 0,
+  "limitations": [
+    "Bounded deterministic grammar, not unrestricted language understanding",
+    "Known-grid authored controller, not new neural control",
+    "No improved learning efficacy or learning-to-learn demonstrated"
+  ],
+  "browser_restore_layout": {
+    "passed": 4,
+    "checks": [
+      "Restored long transcript starts at latest message",
+      "Inspection preserves existing message DOM",
+      "Restore/layout inspection adds no live authored actions",
+      "Historical correction controls cannot silently target a different teaching batch"
+    ],
+    "new_live_authored_actions": 0,
+    "stored_authored_actions": 5,
+    "scientific_execution": false,
+    "screenshot_hashes": {
+      "seed-chat-conversation.png": "69fb4c36d80b508c6c173883d59adae25396f29199575c10d92f4f14207c93d3",
+      "seed-chat-mobile-conversation.png": "2261178f443364265a68dd978c073def32b4f0143952233b97fc7620640b33e7"
+    }
+  },
+  "browser_storage_failure": {
+    "passed": 2,
+    "checks": [
+      "Browser storage failure keeps an accurate visible warning",
+      "Actual server-save receipt remains recoverable without extra actions"
+    ],
+    "new_live_authored_actions": 0,
+    "scientific_execution": false
+  },
+  "browser_attempts": [
+    {
+      "trace_sha256": "11b89358430d4aa4e43ebc0844b93525bc8e8af21d402788039ef5b2c6e58a19",
+      "checks_reached": 13,
+      "resource_maxima_by_fixture_session": {
+        "teacher_answers": 12,
+        "candidate_evaluations": 103,
+        "program_evaluations": 8,
+        "sandbox_actions": 5
+      }
+    },
+    {
+      "trace_sha256": "fd64f5a97e958a1462857671d9dd7f1312c696dc0e3af6561d99d0c31be5e783",
+      "checks_reached": 25,
+      "resource_maxima_by_fixture_session": {
+        "teacher_answers": 12,
+        "candidate_evaluations": 103,
+        "program_evaluations": 8,
+        "sandbox_actions": 5
+      }
+    },
+    {
+      "trace_sha256": "f97189afbde034efae0d02ada6336ca01b0f75f80cb467c6958a464b1c78b7e0",
+      "checks_reached": 25,
+      "resource_maxima_by_fixture_session": {
+        "teacher_answers": 12,
+        "candidate_evaluations": 103,
+        "program_evaluations": 8,
+        "sandbox_actions": 5
+      }
+    }
+  ],
+  "browser_attempt_note": "First stopped at a key-order-sensitive JSON comparison after five authored moves; structural value comparison fixed in QA. Subsequent two full flows passed. Layout refinements and storage-failure checks used saved fixtures and added zero live moves.",
+  "authored_fixture_accounting": {
+    "adhoc_smoke_world_actions": 5,
+    "browser_attempt_world_actions": 15,
+    "total_world_actions_excluding_isolated_unit_fixtures": 20,
+    "adhoc_smoke_teacher_answers": 9,
+    "successful_browser_teacher_answers": 12,
+    "isolated_unit_fixtures": "Each test uses independent temporary authored sessions; these are not scientific evaluation data.",
+    "restoration_live_actions": 0
+  },
+  "source_sha256": {
+    "src/nexus/seed/conversation.py": "84877609460c519be9c498c7a242bdb78f1e15280e8db8c8e83dc43fb9466d5c",
+    "src/nexus/seed/core.py": "1644d5446af08c4857ff13326ccdb13bf3fac43a70cca443e7bfc23491e8e0c5",
+    "src/nexus/seed/lab.py": "867bdc06c66c037778ed3704ade16bacad77f52db8bb7e2f56faa42f9ce9df8c",
+    "src/nexus/seed/storage.py": "df9c3b7eb39fa30d522889ec3019fdc153c65d6e197b385aed121cfd979cefa6",
+    "scripts/run_learning_lab.py": "8e3bab86e6eef6dac673b9463f355a056455f190ba22292ecb80da534f790b7b",
+    "web/learning-lab/chat.html": "0a771a52e544f1e7a0cae9096ad4167fb9d3838659743f56f773be59b215ead1",
+    "web/learning-lab/chat.css": "cf434b384cd6b627bb03bab6afd9c978475e9498baa1dc4874c9c7e2f474dac0",
+    "web/learning-lab/chat.js": "61f82ee4078cc5c6cc02a4fa98f3eb4ed612731ac810409bbd4fa1428c892a6a",
+    "web/learning-lab/shared.html": "139e3e38c2cb64e0e2bf3118bfd6b789de831d34afe75cd17634f15ba3a7e1c8",
+    "tests/browser/seed_chat.cjs": "fe65ad0f7b1e015f743f3ad6dfec022379b798e1c32e51233a5a15cf13c11fd5"
+  },
+  "screenshot_sha256": {
+    "seed-chat-mobile.png": "95ed0941e75140d3ad35931a1320b4f93744ca61c705effbce5b9d8506a5ae73",
+    "seed-chat-conversation.png": "69fb4c36d80b508c6c173883d59adae25396f29199575c10d92f4f14207c93d3",
+    "seed-chat-mobile-conversation.png": "2261178f443364265a68dd978c073def32b4f0143952233b97fc7620640b33e7",
+    "seed-chat-desktop.png": "371d0b65f0c8874216ea8af6df738ea8e81890e682b45cc1d2bec653bd8c172b"
+  },
+  "status": "complete_engineering_verification",
+  "runtime": {
+    "python": "3.13.5",
+    "frontend": "Native HTML/CSS/JavaScript, system fonts",
+    "browser": "Chrome via Playwright; desktop1440x1000 and mobile390x844",
+    "runtime_dependencies_added": 0
+  }
+}

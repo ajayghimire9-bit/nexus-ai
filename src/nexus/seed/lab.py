@@ -69,6 +69,18 @@ class SeedWorkspace:
             elif type(op) is str and op.startswith('lab_'):
                 from .shared_brain import SharedBrain
                 response=SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash).request(request)
+            elif op in ('chat_send','chat_view'):
+                from .shared_brain import SharedBrain
+                from .conversation import Conversation
+                chat=Conversation(SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash))
+                if op=='chat_view' and set(request)=={'op'}:
+                    response=dict(text='Conversation restored without resubmitting messages.',chat=chat.view())
+                elif op=='chat_send' and set(request)=={'op','text','id'}:
+                    response=chat.send(request['text'],request['id'])
+                    if response.pop('save_requested',False):
+                        response['saved']=save(self.directory,sid,self.sessions[sid])
+                        response['notification']='Conversation saved locally.'
+                else:raise ValueError('typed_chat_request')
             else:
                 response = self.sessions[sid].request(request)
             return dict(session_id=sid, kind='live_authored_seed', scientific=False, response=response)

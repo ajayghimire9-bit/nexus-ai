@@ -478,6 +478,10 @@ class Session:
                 from .skill_library import validate_event
                 validate_event(event.kind,p,s)
                 s.event(event.kind,p)
+            elif event.kind=='seed_conversation_turn':
+                from .conversation import validate_turn
+                validate_turn(p,s)
+                s.event(event.kind,p)
             else:
                 raise ValueError('unknown_saved_event')
         if s.world != data['world'] or s.stopped != data['stopped']:
