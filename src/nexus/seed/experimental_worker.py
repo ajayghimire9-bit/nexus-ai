@@ -110,7 +110,10 @@ def run(request):
 if __name__=='__main__':
     request = read(Path(sys.argv[1]))
     limits(request['caps'])  # before importing the optional neural runtime
-    if request.get('adapter')=='seed_bounded_correction_v1':
+    if request.get('adapter')=='seed_cumulative_learning_v1':
+        from .cumulative_learning import run as run_cumulative
+        result=run_cumulative(request)
+    elif request.get('adapter')=='seed_bounded_correction_v1':
         from .bounded_correction import run as run_bounded
         result=run_bounded(request)
     elif request.get('adapter')=='seed_update_diagnosis_v1':

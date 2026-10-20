@@ -119,7 +119,7 @@ def controller(seed,static=False):
     return m
 
 
-def fit_source(tasks,seed,static,c,check):
+def fit_source(tasks,seed,static,c,check,*,curve_fn=None):
     """No development/audit parameter or file access. Source outer labels only."""
     start=time.monotonic();m=controller(seed,static);before={k:v.detach().clone() for k,v in m.state_dict().items()}
     opt=torch.optim.Adam([p for p in m.parameters() if p.requires_grad],lr=c['meta_lr'])
@@ -128,7 +128,7 @@ def fit_source(tasks,seed,static,c,check):
         cycle=list(range(len(tasks)));rng.shuffle(cycle);order.extend(cycle)
     training=[]
     for step,index in enumerate(order[:c['meta_updates']],1):
-        check();rows,_=lb.curve(tasks[index],m,'learned',check)
+        check();rows,_=(curve_fn or lb.curve)(tasks[index],m,'learned',check)
         error=torch.stack([v for _,v,_ in rows]).mean();forget=torch.stack([v for _,_,v in rows]).mean()
         loss=error+c['retention_weight']*forget
         if not torch.isfinite(loss):raise ValueError('nonfinite_outer_loss')

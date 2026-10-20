@@ -24,8 +24,8 @@ def execute_study(config_name,protocol_name,artifact_name,adapter,identifier):
             raise ValueError('carried_ledger_mismatch')
         grant=identifier
         host.grant(grant,'human standing grant 2026-10-16',
-            'One committed source-only diagnosis; no new interaction or outer fitting',
-            dict(wall_s=30,cpu_s=30,memory_mb=2048,real_steps=0,imagined_transitions=0,updates=0),
+            'One committed source-only study; only its explicitly planned new-rule updates',
+            dict(wall_s=c['max_wall_s'],cpu_s=c['max_wall_s'],memory_mb=2048,real_steps=0,imagined_transitions=0,updates=c.get('max_outer_updates',0)),
             3600,carried,memory_policy='sampled_rss')
         spec=dict(id=identifier,mode='exploration',recipe=dict(
             adapter=adapter,config_path=str(config_path.relative_to(ROOT)),
@@ -36,7 +36,10 @@ def execute_study(config_name,protocol_name,artifact_name,adapter,identifier):
         debit=math.ceil(result['wall_s'])+1
         host.debit(identifier+'-carry',debit-result['wall_s'],
                    'Conservative whole-second dispatch accounting',identifier)
-    worker=result.get('worker') or {};r=worker.get('study') or dict(declared_complete=False,config=c)
+    worker=result.get('worker') or {};r=worker.get('study')
+    if r is None:
+        progress=host.directory/'attempts'/identifier/'progress.json'
+        r=read(progress) if progress.exists() else dict(declared_complete=False,config=c)
     r.update(execution_sha=result['revision'],host_receipt={k:v for k,v in result.items() if k!='worker'},
         resources=worker.get('resources'),execution_debit_s=debit,
         session_used_s=c['carried_used_s']+debit,session_remaining_s=c['carried_remaining_s']-debit,
