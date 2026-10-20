@@ -6,6 +6,12 @@ benefit. The later fixed-learner question comparison is complete and closed.
 
 ## Current — question-utility label reliability audit (proposed, not run)
 
+The owner-requested ten-scalar answer-free variant has now also completed and
+failed: .170313 versus variance .173580/keep .173857 at primary budgets1/2/4,
+intervals include zero,6/12 keep wins. Retention passes. No new collection or
+runtime promotion. [Results](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md).
+The single proposed next audit below remains unrun; no architecture sweep.
+
 Do signs and candidate rankings from the same saved learner fits agree across
 independently recorded selection/check query subsets? Use the common outer-fold
 counterfactuals, no fitting or new simulation. This tests whether the supervision

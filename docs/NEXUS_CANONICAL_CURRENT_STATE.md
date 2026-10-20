@@ -1,6 +1,7 @@
 # NEXUS Seed — Current State
 
-Study starting base:cf3f54cebe580a14ec191c48659f79e371cc1b72. Read
+Latest study base:1a6167073321d2a7241227ded4627599a63b4386;
+execution8d9bdade34c2b094f9337816f12b49d52a9a1699. Read
 [master context](MASTER_CONTEXT.md) and [reuse map](NEXUS_CODE_REUSE_MAP.md).
 
 ## Established within the tested authored setup
@@ -27,6 +28,13 @@ enabled. Improved action scoring by ordinary supervised fitting is not evidence
 that NEXUS learned a better learning procedure.
 
 ## Next gate
+
+The ten-scalar answer-free predictor completed from8d9bdad and FAILED the
+budgets1/2/4 source screen: .170313 versus variance .173580/keep .173857;
+required intervals include zero,6/12 keep wins. Retention passes. Budget8 is
+secondary, not ranking evidence. No new collection, neural fitting or promotion.
+Next: recorded utility-label reliability audit, not another capacity change.
+[Results](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md). Older entries follow.
 
 The task-blocked question-utility predictor completed and FAILED its source
 screen: .168235 learned versus action mean .169743 and variance .170092,

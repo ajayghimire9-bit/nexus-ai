@@ -41,6 +41,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The ten-scalar answer-free question predictor from8d9bdad completed once and
+FAILED its source screen. Primary budgets1/2/4 MSE .170313 versus variance
+.173580, uniform .172771, original order .172599 and keep .173857; required
+intervals include zero,6/12 keep wins. Retention passes. Budget8 is secondary
+and has only one question. No new collection/neural calls, live promotion or
+learning-to-learn claim. [Latest results](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md).
+This narrower owner-requested variant preserves the preceding54-feature failure.
+
 Question-utility learning froma8ca30a completed once. A small task-blocked ridge
 correction chooses from public inputs, with no excluded-task query answers.
 Check MSE .168235 versus action mean .169743 and variance .170092: only.89%/
@@ -171,7 +179,7 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_SURPRISE_READOUT_RESULTS.md),
+[latest results](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
@@ -200,7 +208,8 @@ fixed also failed. The subsequent source pool-headroom bound passed, but its
 query-state stability check failed. The subsequent larger independent source
 query bank passed its within-task stability screen with the SAME supports and
 learner. The subsequent task-blocked utility predictor is now complete and
-FAILED its source screen. Next: audit utility-label reliability on the saved
+FAILED its source screen. The subsequent ten-scalar answer-free variant also
+FAILED its primary1/2/4 screen. Next: audit utility-label reliability on the saved
 queries/fits before changing representation or capacity. No further experiment
 or architecture growth ran; fresh validation remains required for promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -218,8 +227,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1963.6321034559958seconds used,
-1636.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1971.6321034559958seconds used,
+1628.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

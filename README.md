@@ -50,11 +50,24 @@ for bounded local development and explicit resource approvals.
 
 ## What the evidence says
 
-The latest evaluator-only audit found useful questions retrospectively: query
+The latest ten-scalar **answer-free question-utility predictor failed** its
+source screen. Primary next-update MSE at budgets1/2/4: .170313 learned versus
+.173580 variance, .172771 uniform, .172599 original order and .173857 keep.
+Gains are below5%, required intervals include zero, and6/12 tasks beat keep.
+Retention passes. Budget8 is a singleton secondary result. No live promotion.
+[Latest results](docs/NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md).
+
+The preceding54-feature predictor also failed its source screen
+([results](docs/NEXUS_SEED_QUESTION_UTILITY_RESULTS.md)). The larger independent
+source query bank passed evaluator selection stability
+([results](docs/NEXUS_SEED_QUERY_REPLICATION_RESULTS.md)); evaluator utility is
+not learned question choice. Neither result establishes learning-to-learn.
+
+An earlier evaluator-only audit found useful questions retrospectively: query
 oracle MSE .174050 versus variance .193552. But selection using two query states
 **failed on the third** (.194374 versus keep .194222). This is potential in
 known source data, not a deployed question learner or learning-to-learn claim.
-[Latest results](docs/NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md).
+[Historical headroom results](docs/NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md).
 
 The previous fixed-learner question study **failed its source improvement screen**:
 informative selection MSE .193552 versus random .191753; its interval includes
@@ -85,7 +98,7 @@ The preceding learned-plasticity experiment lost to scaled replay. The
 future-edit selector tied historical-best. Useful continual learning and
 learning-to-learn are **not established**. Negative results stay visible.
 
-[Latest results](docs/NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md) ·
+[Latest results](docs/NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md) ·
 [Action-readout results](docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md) ·
 [Learning failures](docs/NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) ·
 [Current state](docs/NEXUS_CANONICAL_CURRENT_STATE.md)

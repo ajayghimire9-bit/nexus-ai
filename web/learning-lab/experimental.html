@@ -4,6 +4,7 @@
 <style>
 #seed-query-replication-1{grid-column:1/-1}
 #seed-question-utility-1{grid-column:1/-1}
+#seed-answer-free-utility-1{grid-column:1/-1}table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:8px;border-bottom:1px solid #34435e}.table-scroll{overflow-x:auto}
 *{box-sizing:border-box}:root{color-scheme:dark;font-family:system-ui;background:#0b1220;color:#e3eafa}body{width:100%;max-width:1150px;margin:auto;padding:24px;overflow-wrap:anywhere}a{color:#9acbff}h1{font-size:30px}.badge{color:#ffcf85}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}article,.notice{min-width:0;border:1px solid #33435d;border-radius:12px;padding:18px;margin:18px 0;background:#111d30}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}svg{display:block;width:100%;height:140px;background:#0b1220;border-radius:8px}.muted{color:#a6b4cb}button{background:#254576;color:white;border:1px solid #5174a3;padding:9px;border-radius:6px}#summary{font-size:18px}footer{margin:25px 0}p{line-height:1.6}
 </style>
 <nav><a href="/seed">← NEXUS Seed</a></nav>
@@ -18,6 +19,7 @@ function curve(points){const ns='http://www.w3.org/2000/svg',s=document.createEl
 function answerFreeDetails(element,s){
 element.append(text('h3','Ten-feature answer-free utility: '+(s.source_screen_pass?'PASSED':'FAILED')),text('p','Primary budgets 1 / 2 / 4: isolated next-update interventions, not sequential learning curves. Budget 8 has one candidate. Source development; one frozen core; no live promotion.'));
 element.append(text('p',Object.entries(s.primary_means).map(([m,v])=>m+': '+v.toFixed(6)).join(' · ')));
+const wrap=document.createElement('div');wrap.className='table-scroll';const table=document.createElement('table'),head=document.createElement('tr');for(const label of ['Policy','Primary check MSE','Retention MSE','Selection regret'])head.append(text('th',label));table.append(head);for(const [m,v]of Object.entries(s.primary_means)){const row=document.createElement('tr');for(const value of [m,v.toFixed(6),s.retention_means[m].toFixed(6),s.selection_regret[m].toFixed(6)])row.append(text('td',value));table.append(row);}wrap.append(table);element.append(wrap);
 for(const name of ['variance','uniform','original_order','keep','source_mean']){const c=s.contrasts[name];element.append(text('p',name+' minus learned: '+c.mean.toFixed(6)+' ['+c.ci95.map(v=>v.toFixed(6)).join(', ')+'] · exploratory paired task interval'));}
 element.append(text('p',s.task_wins+'/12 keep wins. Source-mean and original-order choices are identical by the tie rule. Oracle uses assessment outcomes and is only an upper bound.'));
 element.append(curve([1,2,4,8].map(b=>({update:b,train_mse:s.by_budget[b].learned,development_mse:s.by_budget[b].variance}))),text('small','Green: learned; blue: variance. Isolated interventions; budget 8 reported separately.'));

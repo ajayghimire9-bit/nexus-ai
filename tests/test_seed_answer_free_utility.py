@@ -61,8 +61,21 @@ def test_hidden_answers_and_assessment_poison_cannot_change_features_or_choices(
         assert a==b
         assert q.decide({t:{str(budget):a}},f['model'])==q.decide({t:{str(budget):b}},f['model'])
     decision=q.decide(f['held_cases'],f['model']);p=deepcopy(pack)
-    p['evaluator']={'poison':'unavailable'};p['assessments']={'poison':'unavailable'}
-    assert decision==q.decide(f['held_cases'],f['model'])
+    for tid in decision:
+        for cell in p['assessments'][tid].values():
+            for arms in [cell['before']]+list(cell['candidates'].values()):
+                for values in arms.values():values['check_mse']+=999.;values['retention_mse']+=100.
+    means={tid:f['model']['mean'] for tid in decision};frozen=digest(f['model'])
+    before=q.evaluate(decision,{**pack,'_mean':means},config())
+    after=q.evaluate(decision,{**p,'_mean':means},config())
+    for tid in decision:
+        for b in decision[tid]:
+            assert after[tid][b]['query_mse']['learned']-before[tid][b]['query_mse']['learned']==pytest.approx(999.)
+    # Poison is actually consumed by the evaluator, but cannot enter inference.
+    for tid in decision:
+        task=q.base.scale_task(p['tasks'][tid],p['frozen_folds']['0']['scale'])
+        assert q.public_cases(task,p['reference'][tid],config())==f['held_cases'][tid]
+    assert decision==q.decide(f['held_cases'],f['model']) and frozen==digest(f['model'])
     assert list(inspect.signature(q.features).parameters)==['candidate','anchors','anchor_y','observed_x','observed_y','thetas','variance','remaining']
     assert len(q.FEATURES)==10
 

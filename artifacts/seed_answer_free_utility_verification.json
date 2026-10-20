@@ -1,0 +1,150 @@
+{
+  "schema": "seed_answer_free_utility_verification_v1",
+  "execution_sha": "8d9bdade34c2b094f9337816f12b49d52a9a1699",
+  "source_arithmetic": {
+    "valid": true,
+    "raw_sha256": "c3f5f6ac824e0c90653a24be81f89869e99a1fd8c1c275e93c0f8af9284c555c",
+    "checked_variances": 1008,
+    "max_variance_error": 3.67463179884453e-7,
+    "primary_means": {
+      "learned": 0.17031281333658155,
+      "variance": 0.17357991505586715,
+      "uniform": 0.1727709162102051,
+      "original_order": 0.17259880270123376,
+      "keep": 0.1738572138502481,
+      "source_mean": 0.17259880270123376,
+      "oracle": 0.1558223868117317
+    },
+    "paired_contrasts": {
+      "variance": {
+        "mean": 0.003267101719285606,
+        "ci95": [
+          -0.008554213582092763,
+          0.015088417020663976
+        ]
+      },
+      "uniform": {
+        "mean": 0.0024581028736235452,
+        "ci95": [
+          -0.005447700531634287,
+          0.010363906278881377
+        ]
+      },
+      "original_order": {
+        "mean": 0.0022859893646522424,
+        "ci95": [
+          -0.010229043064924316,
+          0.014801021794228802
+        ]
+      },
+      "keep": {
+        "mean": 0.0035444005136665603,
+        "ci95": [
+          -0.00707956519399445,
+          0.01416836622132757
+        ]
+      },
+      "source_mean": {
+        "mean": 0.0022859893646522424,
+        "ci95": [
+          -0.010229043064924316,
+          0.014801021794228802
+        ]
+      }
+    },
+    "complete_grid": true,
+    "frozen_preserved": true,
+    "source_screen_pass": false,
+    "scientific_execution": false
+  },
+  "preservation": {
+    "base": "1a6167073321d2a7241227ded4627599a63b4386",
+    "preserved_artifacts": 786,
+    "inventory_sha256": "1eb28394dc3f220b1b6f429eb97957b450d6a94d495edfbbe16611c48eb7625d",
+    "frozen_files": {
+      "artifacts/seed_contract_gui.json": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b",
+      "artifacts/seed_readout_6301.json": "8129cbd4768f4cd5dce938cd8b6740172bf5dbe8742dcb97c497951ad5e87745"
+    }
+  },
+  "tests": {
+    "initial_focused": {
+      "passed": 21,
+      "wall_s": 20.57
+    },
+    "initial_relevant": {
+      "passed": 755,
+      "setup_errors": 14,
+      "wall_s": 158.56,
+      "diagnosis": "Historical synthetic prefix fixture charged earlier pytest process CPU; test-only isolation fixed before scientific execution."
+    },
+    "corrected_focused_shared": {
+      "passed": 122,
+      "wall_s": 62.08
+    },
+    "final_relevant": {
+      "passed": 773,
+      "failed": 0,
+      "wall_s": 174.97,
+      "command": "python3 -m pytest -o addopts='' -q --tb=short tests/test_seed*.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py tests/test_factory.py tests/test_evolution2_planner_quality.py"
+    },
+    "gui": {
+      "passed": 15,
+      "checks": [
+        "validated API preserves complete execution and failed scientific screen",
+        "API primary comparison exactly matches saved source evidence",
+        "zero new interactions or neural forwards in GUI evidence",
+        "comparison table contains all seven policies",
+        "failed label, oracle boundary and source-only limitation visible",
+        "primary 1/2/4 and separate singleton budget visible",
+        "paired uncertainty and isolated-intervention plot visible",
+        "shared labs show failed source screen",
+        "existing language lab navigation preserved",
+        "existing coding lab navigation preserved",
+        "existing reasoning lab navigation preserved",
+        "existing world lab navigation preserved",
+        "mobile viewport has no page overflow",
+        "no browser JavaScript errors",
+        "read-only GUI leaves scientific journal unchanged"
+      ],
+      "wall_s": 40.241,
+      "journal_unchanged": true,
+      "scientific_execution": false,
+      "new_interactions": 0,
+      "screenshot_sha256": "b839a115da186871e1a12f4c945a4f13a72eba2571e6626235ccb471877e1cd2"
+    },
+    "post_strengthening_focused_saved": {
+      "passed": 25,
+      "wall_s": 31.78,
+      "command": "python3 -m pytest -o addopts='' -q --tb=short tests/test_seed_answer_free_utility.py tests/test_seed_answer_free_saved.py"
+    }
+  },
+  "scientific_runs": 1,
+  "execution_debit_s": 8,
+  "session_used_s": 1971.6321034559958,
+  "session_remaining_s": 1628.3678965440042,
+  "source_development": true,
+  "promotion": false,
+  "start_reconciliation": {
+    "reviewed": "8f404db2539c06a4ed95c8ff5758f8b24ce3af71",
+    "actual_start": "1a6167073321d2a7241227ded4627599a63b4386",
+    "reviewed_is_ancestor": true,
+    "github_start_verified": true,
+    "clean_start": true,
+    "main_unchanged": "ad8b65c155f20a71a82f1ee51bcde9e1fd353492",
+    "unrelated_main_work_preserved": true
+  },
+  "frozen_execution_files_unchanged": [
+    "src/nexus/seed/answer_free_utility.py",
+    "src/nexus/seed/experimental.py",
+    "src/nexus/seed/experimental_worker.py",
+    "configs/seed_answer_free_utility.json",
+    "docs/NEXUS_SEED_ANSWER_FREE_UTILITY_PROTOCOL.md"
+  ],
+  "file_hashes": {
+    "config": "70f26a547cde29a386f3934ac14f48c3fd4a11aa10247bed884fe48e7c3dbe9e",
+    "protocol": "86b88e0513f37cb64e6e33593eeee21304816f760af3879a71feaaadf32f39c5",
+    "raw": "c3f5f6ac824e0c90653a24be81f89869e99a1fd8c1c275e93c0f8af9284c555c",
+    "choices_and_models": "34c05311683f1c26f317eaf09d3f51ca19d3c998a6d7f54737588bc785f53dac"
+  },
+  "result": "valid_complete_source_screen_failed"
+}

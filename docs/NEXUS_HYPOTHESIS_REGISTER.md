@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-answer-free-utility — SOURCE screen FAILED
+
+Locked8d9bdad, ten pre-answer scalars/ridge1.0, same four task-blocked learners.
+Primary budgets1/2/4 learned MSE .170313 versus variance .173580/uniform .172771/
+original .172599/keep .173857. Gains below5%, required intervals include zero,
+6/12 keep wins; retention passes. Source-mean ties equal original order; oracle
+is evaluator-only. Budget8 is secondary. Valid complete run, no new collection,
+neural fitting or live promotion. Useful learned questioning and learning-to-learn
+not established. [Results](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md).
+
 ## H-question-utility — source screen FAILED
 
 Executiona8ca30a: learned check .168235 versus action mean .169743/variance

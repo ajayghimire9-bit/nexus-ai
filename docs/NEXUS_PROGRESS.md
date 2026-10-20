@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Ten-scalar answer-free utility — valid complete SOURCE screen FAILED
+
+Execution8d9bdad: primary budgets1/2/4 MSE .170313 versus variance .173580,
+uniform .172771, original order .172599 and keep .173857. All gains below5%,
+required intervals include zero;6/12 keep wins. Retention passes. Budget8 is
+separate and singleton. One6.191857s host run /4.074281s CPU,340.875MiB RSS;
+zero new collection/neural calls. Independent1008-variance audit passes, no
+promotion.8s debit leaves1971.6321034559958 used /1628.3678965440042 remaining.
+[Results](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md). Preparation history follows.
+
 ## Answer-free ten-scalar utility — prepared, not yet executed
 
 Base1a6167073321d2a7241227ded4627599a63b4386 on a separate branch. The newer

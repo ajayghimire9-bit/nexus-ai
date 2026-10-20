@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Ten-scalar answer-free utility](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md):
+  complete8d9bdad run, SOURCE screen FAILED. Primary1/2/4 MSE .170313 versus
+  variance .173580/keep .173857, intervals include zero,6/12 keep wins. Retention
+  passes. Budget8 singleton secondary; no new collection/neural calls/promotion.
+
 - [Task-blocked question utility](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md):
   valid complete runa8ca30a; source screen FAILED. Learned .168235 versus
   action mean .169743/variance .170092, intervals include zero.6/12 keep wins,

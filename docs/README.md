@@ -7,8 +7,12 @@ demonstrated learning-to-learn.
 
 ## Current evidence
 
+- [Latest: ten-scalar answer-free questioning, source screen FAILED](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md)
+- [Earlier54-feature utility predictor, source screen FAILED](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md)
+- [Larger source query-bank stability, evaluator screen passed](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md)
+
 - [Frozen spatial transfer and individual failures](NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md)
-- [Next few-example learned-update comparison,proposed only](NEXUS_SEED_READOUT_LEARNING_PROPOSAL.md)
+- [Historical few-example proposal; subsequent failures are in the registry](NEXUS_SEED_READOUT_LEARNING_PROPOSAL.md)
 
 - [Action-readout gains, greedy limitation, surprise and edit credit](NEXUS_SEED_SURPRISE_READOUT_RESULTS.md)
 - [Negative learned-plasticity/action/meaning benchmark](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md)
