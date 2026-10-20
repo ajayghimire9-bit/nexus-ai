@@ -6,8 +6,9 @@ def validate_state(p):
     def numeric(v,n):return type(v) is list and len(v)==n and all(type(x) in (int,float) and math.isfinite(x) and abs(x)<1000 for x in v)
     fields={'schema','blocks','anchors','development','skills','seen','steps','work'}
     if type(p) is not dict:raise ValueError('adaptive_state_schema')
-    if p.get('schema')=='seed_adaptive_state_v2':fields|={'reviews','undo'}
-    if set(p)!=fields or p['schema'] not in ('seed_adaptive_state_v1','seed_adaptive_state_v2'):raise ValueError('adaptive_state_schema')
+    if p.get('schema') in ('seed_adaptive_state_v2','seed_adaptive_state_v3'):fields|={'reviews','undo'}
+    if p.get('schema')=='seed_adaptive_state_v3':fields.add('used_assessments')
+    if set(p)!=fields or p['schema'] not in ('seed_adaptive_state_v1','seed_adaptive_state_v2','seed_adaptive_state_v3'):raise ValueError('adaptive_state_schema')
     if any(type(p[k]) is not dict or set(p[k])!=set(CHANNELS) for k in ('blocks','anchors','development')):raise ValueError('adaptive_channels')
     if type(p['steps']) is not int or not 0<=p['steps']<=24 or type(p['seen']) is not list or len(p['seen'])!=p['steps'] or len(set(p['seen']))!=len(p['seen']) or any(type(r) is not str or len(r)!=64 for r in p['seen']):raise ValueError('adaptive_steps')
     for c,n in CHANNELS.items():
@@ -26,7 +27,10 @@ def validate_state(p):
         keys.append((s['channel'],s['key']))
     if len(keys)!=len(set(keys)):raise ValueError('duplicate_skills')
     if type(p['work']) is not dict or set(p['work'])!={'actual_updates','question_hypotheses','structural_fits','linear_solves'} or any(type(v) is not int or not 0<=v<=100000 for v in p['work'].values()):raise ValueError('adaptive_work')
-    if p['schema']=='seed_adaptive_state_v2':
+    if p['schema']=='seed_adaptive_state_v3':
+        u=p['used_assessments']
+        if type(u) is not list or len(u)>24 or len(u)!=len(set(u)) or any(v not in p['seen'] for v in u):raise ValueError('consumed_assessment_refs')
+    if p['schema'] in ('seed_adaptive_state_v2','seed_adaptive_state_v3'):
         from nexus.evolution1.catalogue import digest
         if type(p['reviews']) is not dict or len(p['reviews'])>24 or type(p['undo']) is not list or len(p['undo'])>4:raise ValueError('review_undo_cap')
         for key,r in p['reviews'].items():
@@ -36,4 +40,4 @@ def validate_state(p):
             if any(type(r[k]) is not str or len(r[k])!=64 for k in ('id','after')):raise ValueError('undo_hash')
             if type(r['before']) is not dict or set(r['before'])!={'blocks','skills'}:raise ValueError('undo_parameters')
             prior=dict(p,schema='seed_adaptive_state_v1',blocks=r['before']['blocks'],skills=r['before']['skills'])
-            prior.pop('reviews');prior.pop('undo');validate_state(prior)
+            prior.pop('reviews');prior.pop('undo');prior.pop('used_assessments',None);validate_state(prior)

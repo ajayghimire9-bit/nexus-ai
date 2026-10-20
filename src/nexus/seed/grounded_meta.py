@@ -21,6 +21,24 @@ class OuterSeedMeta:
         self.controller=EpsilonGreedyController(epsilon=0.)
         self.journal=Journal();self.seen=set()
 
+    def choose_edit(self,rng,*,explore=True):
+        actions=('keep','repair','add_skill','merge')
+        unseen=[a for a in actions if not self.controller.kind_n.get('edit/'+a,0)]
+        if explore and unseen:return unseen[0]
+        if explore and rng.random()<.2:return rng.choice(actions)
+        return max(actions,key=lambda a:self.controller.predicted_kind_value((),'edit/'+a))
+
+    def reveal_edit(self,action,receipt,*,phase):
+        keys={'id','future_error_before','future_error_after','forgetting','cost','accepted'}
+        if phase!='source_training' or action not in ('keep','repair','add_skill','merge') or type(receipt) is not dict or set(receipt)!=keys:raise ValueError('source_future_learning_receipt_only')
+        if type(receipt['id']) is not str or receipt['id'] in self.seen or type(receipt['accepted']) is not bool:raise ValueError('unique_edit_receipt')
+        if any(type(receipt[k]) not in (int,float) or not math.isfinite(receipt[k]) or receipt[k]<0 for k in keys-{'id','accepted'}):raise ValueError('finite_edit_cost_and_errors')
+        if receipt['cost']<=0:raise ValueError('rejected_proposals_also_cost')
+        reward=receipt['future_error_before']-receipt['future_error_after']-receipt['forgetting']-.0001*receipt['cost']
+        self.seen.add(receipt['id']);self.controller.update((),'edit/'+action,reward)
+        self.journal.append('seed_future_learning_edit',dict(action=action,receipt=receipt,reward=reward))
+        return reward
+
     def choose_learning(self,available,rng,*,explore=False):
         allowed=('ask','test_concept','repair','add_skill','keep')
         if not available or any(a not in allowed for a in available):raise ValueError('bounded_learning_action')

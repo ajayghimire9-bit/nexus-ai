@@ -35,7 +35,7 @@ class AdaptiveState:
         self.blocks={k:torch.zeros(n) for k,n in CHANNELS.items()}
         self.anchors={k:[] for k in CHANNELS};self.development={k:[] for k in CHANNELS}
         self.skills=[];self.seen=[];self.steps=0
-        self.reviews={};self.undo=[]
+        self.reviews={};self.undo=[];self.used_assessments=[]
         self.work=dict(actual_updates=0,question_hypotheses=0,structural_fits=0,linear_solves=0)
 
     def tensors(self,channel,rows=None):
@@ -111,13 +111,16 @@ class AdaptiveState:
         return rollback(self)
 
     def snapshot(self):
-        return dict(schema='seed_adaptive_state_v2',blocks={k:v.tolist() for k,v in self.blocks.items()},
+        return dict(schema='seed_adaptive_state_v3',blocks={k:v.tolist() for k,v in self.blocks.items()},
                     anchors=copy.deepcopy(self.anchors),development=copy.deepcopy(self.development),
                     skills=copy.deepcopy(self.skills),seen=list(self.seen),steps=self.steps,work=dict(self.work),
-                    reviews=copy.deepcopy(self.reviews),undo=copy.deepcopy(self.undo))
+                    reviews=copy.deepcopy(self.reviews),undo=copy.deepcopy(self.undo),used_assessments=list(self.used_assessments))
 
     def restore(self,p):
         validate_state(p)
         self.blocks={k:torch.tensor(v) for k,v in p['blocks'].items()}
         for k in ('anchors','development','skills','seen','steps','work'):setattr(self,k,copy.deepcopy(p[k]))
         self.reviews=copy.deepcopy(p.get('reviews',{}));self.undo=copy.deepcopy(p.get('undo',[]))
+        # Legacy sessions cannot certify which assessment labels were opened.
+        # Conservatively retire them rather than declaring them fresh again.
+        self.used_assessments=list(p.get('used_assessments',[r['ref'] for rows in self.development.values() for r in rows]))

@@ -94,7 +94,8 @@ def test_scoped_skill_changes_predictions_and_merge_is_executable():
     a.development['reward']=[dict(x=x.tolist(),y=1.,ref=f'{20+i:064x}',key='new') for i in range(2)]
     report=a.review('reward','new');assert report['adopted']=='add_skill'
     assert a.predict('reward',x,'new')>.9 and a.predict('reward',x,'old')==0
-    report=a.review('reward','new');assert 'merge' in [c['edit'] for c in report['candidates']]
+    # The first batch consumed these labels. A later decision cannot reopen them.
+    report=a.review('reward','new');assert report['fresh_required']
 
 
 def test_actual_feedback_automatically_triggers_bounded_structural_decision():

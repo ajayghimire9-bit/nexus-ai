@@ -93,11 +93,14 @@ def rollback(state):
 
 def review(state,channel,key):
     support=[r for r in state.anchors[channel] if r['key']==key]
-    query=[r for r in state.development[channel] if r['key']==key]
+    query=[r for r in state.development[channel] if r['key']==key and r['ref'] not in state.used_assessments]
     signature=lambda:digest(dict(channel=channel,key=key,support=support,query=query,parameters=parameters(state)))
     tag=signature()
     if tag in state.reviews:return dict(copy.deepcopy(state.reviews[tag]),cached_review=True)
-    if len(support)<3 or len(query)<2:return dict(status='needs_separate_development',adopted='keep')
+    if len(support)<3 or len(query)<2:return dict(status='needs_separate_development',fresh_required=True,adopted='keep',cached_review=bool(state.reviews))
+    # One fixed candidate batch may share its assessment; no later promotion
+    # decision may reopen these labels, even when all candidates are rejected.
+    state.used_assessments.extend(r['ref'] for r in query)
     qx,qy=state.tensors(channel,query);proposals={};rows=[]
     for kind in ('keep','repair','add_skill','merge'):
         try:p=propose(state,channel,key,kind)

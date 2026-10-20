@@ -68,5 +68,5 @@ def test_repeated_review_is_idempotent_including_compute_and_undo_history():
 
 
 def test_legacy_state_loads_without_granting_undo_or_review_history():
-    s=AdaptiveState();old=s.snapshot();old['schema']='seed_adaptive_state_v1';old.pop('reviews');old.pop('undo')
+    s=AdaptiveState();old=s.snapshot();old['schema']='seed_adaptive_state_v1';old.pop('reviews');old.pop('undo');old.pop('used_assessments')
     s.restore(old);assert s.reviews=={} and s.undo==[]
