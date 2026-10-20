@@ -263,12 +263,15 @@ class Sandbox:
             raise ValueError('session_budget_exhausted')
         inputs = {}
         dataset_hashes = {}
-        study = type(spec['recipe']) is dict and spec['recipe'].get('adapter')=='seed_nonlinear_learning_v1'
+        adapter = spec['recipe'].get('adapter') if type(spec['recipe']) is dict else None
+        diagnosis = adapter == 'seed_update_diagnosis_v1'
+        study = adapter in ('seed_nonlinear_learning_v1','seed_update_diagnosis_v1')
         if study:
             if mode!='exploration' or any(spec[k] is not None for k in ('train','development','model_run','assessment','protocol','gate')):
                 raise ValueError('registered_seed_development_study_only')
             item=spec['recipe']
-            if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or item['config_path']!='configs/seed_nonlinear_learning.json' or item['protocol_path']!='docs/NEXUS_SEED_NONLINEAR_LEARNING_PROTOCOL.md':
+            expected_paths = ('configs/seed_update_diagnosis.json','docs/NEXUS_SEED_UPDATE_DIAGNOSIS_PROTOCOL.md') if diagnosis else ('configs/seed_nonlinear_learning.json','docs/NEXUS_SEED_NONLINEAR_LEARNING_PROTOCOL.md')
+            if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or (item['config_path'],item['protocol_path'])!=expected_paths:
                 raise ValueError('vetted_study_manifest_required')
             for path,key in ((item['config_path'],'config_sha256'),(item['protocol_path'],'protocol_sha256')):
                 if hashlib.sha256((self.repository/path).read_bytes()).hexdigest()!=item[key]:raise ValueError('study_registration_hash')
@@ -277,12 +280,16 @@ class Sandbox:
             if any(r['spec'].get('recipe',{}).get('config_sha256')==item['config_sha256'] for r in self.records('reserved') if type(r['spec'].get('recipe')) is dict):
                 raise ValueError('study_configuration_consumed')
             c=read(self.repository/item['config_path'])
-            from .nonlinear_learning_audit import config_check
+            if diagnosis:
+                from .update_diagnosis import config_check, source_pack
+            else:
+                from .nonlinear_learning_audit import config_check
             bounds=config_check(c)
             if (bounds['real_steps']>caps['real_steps'] or bounds['imagined_transitions']>caps['imagined_transitions'] or
                 bounds['outer_updates']>caps['updates'] or c['max_wall_s']>min(caps['wall_s'],remaining) or c['max_wall_s']>caps['cpu_s']):
                 raise ValueError('study_grant_insufficient_for_locked_plan')
             inputs=dict(study_config=c,repository=str(self.repository))
+            if diagnosis:inputs=dict(study_config=c,source_pack=source_pack(self.repository,c))
             dataset_hashes=dict(registered_tasks=digest(c['tasks']),config=item['config_sha256'],protocol=item['protocol_sha256'])
         elif mode == 'exploration':
             recipe(spec['recipe'])
@@ -334,6 +341,8 @@ class Sandbox:
             'src/nexus/seed/experimental.py', 'src/nexus/seed/experimental_worker.py',
             'src/nexus/nn/factory.py', 'src/nexus/nn/activations.py')}
         if study:
+            if diagnosis:
+                sources['src/nexus/seed/update_diagnosis.py']=hashlib.sha256((self.repository/'src/nexus/seed/update_diagnosis.py').read_bytes()).hexdigest()
             for p in ('src/nexus/seed/nonlinear_learning.py','src/nexus/seed/nonlinear_learning_audit.py',
                       'src/nexus/seed/learning_benchmark.py','src/nexus/seed/plasticity.py',
                       'src/nexus/seed/action_readout.py','src/nexus/seed/state_contract.py',
@@ -343,7 +352,7 @@ class Sandbox:
         wall_cap = min(caps['wall_s'], remaining)
         request = dict(mode=mode, recipe=spec['recipe'], inputs=inputs, caps=caps,
                        memory_policy=grant['memory_policy'])
-        if study:request['adapter']='seed_nonlinear_learning_v1'
+        if study:request['adapter']=adapter
         write_new(directory/'input.json', request)
         self.append('reserved', dict(run_id=run_id, mode=mode, spec=spec, spec_sha256=digest(spec),
                     grant=grant_id, dataset_hashes=dataset_hashes, wall_cap_s=wall_cap,
@@ -379,8 +388,14 @@ class Sandbox:
             if reason is None:
                 output = read(directory/'output.json')
                 if study:
-                    from .nonlinear_learning_audit import validate_output as study_validate
-                    study_validate(output,inputs['study_config'],caps)
+                    if diagnosis:
+                        from .update_diagnosis import validate_output as study_validate
+                    else:
+                        from .nonlinear_learning_audit import validate_output as study_validate
+                    if diagnosis:study_validate(output,inputs['study_config'],caps,inputs['source_pack'])
+                    else:study_validate(output,inputs['study_config'],caps)
+                    if diagnosis and (output['study']['source_pack_sha256']!=digest(inputs['source_pack']) or output['model']['controllers']!=inputs['source_pack']['controllers']):
+                        raise ValueError('diagnosis_changed_source_controllers')
                 else:validate_output(output, spec, caps, inputs)
                 if mode != 'exploration' and digest(output['model']) != digest(inputs['model']):
                     raise ValueError('assessment_changed_frozen_model')

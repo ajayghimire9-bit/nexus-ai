@@ -110,7 +110,10 @@ def run(request):
 if __name__=='__main__':
     request = read(Path(sys.argv[1]))
     limits(request['caps'])  # before importing the optional neural runtime
-    if request.get('adapter')=='seed_nonlinear_learning_v1':
+    if request.get('adapter')=='seed_update_diagnosis_v1':
+        from .update_diagnosis import run as run_diagnosis
+        result=run_diagnosis(request)
+    elif request.get('adapter')=='seed_nonlinear_learning_v1':
         from .nonlinear_learning import run as run_study
         result=run_study(request)
     else:result=run(request)
