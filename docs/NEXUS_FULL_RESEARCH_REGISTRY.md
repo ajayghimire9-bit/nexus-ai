@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Task-blocked question utility](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md):
+  preparation only, no outcomes. Contextual residual over source action means,
+  fixed inner learner, common outer-fold damping avoids indirect held-label
+  leakage.30s/zero-interaction source study. No runtime promotion.
+
 - [Larger source query bank](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md): within-task
   screen PASSED. Selected .159819 versus variance .170092/keep .170649;9/12
   task wins.2592 new authored outcomes; no fitting or live promotion. Raw capture

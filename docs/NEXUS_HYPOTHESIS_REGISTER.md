@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-question-utility — registered, not executed
+
+Can task-blocked contextual utility prediction choose a better next question
+without the excluded task's query labels? Fixed ridge1.0 residual over action
+means,54 public features, four folds. Require5% MSE improvement over action
+mean/variance/uniform/keep, positive paired lower bounds versus action mean,
+variance and keep,8/12 task wins,3/4 fold wins, retention and shuffled-feedback
+checks. One core, reused source development; no current learning-to-learn claim.
+[Protocol](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md).
+
 ## H-query-stability — within-source-task screen PASSED
 
 From25b155a, all registered query data captured once. Selected check MSE .159819

@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Task-blocked question utility — preparation, not executed
+
+Starting8f404db on codex/seed-question-utility-learning. A small residual ridge
+selects the next teaching row using public inputs and observed prefixes only.
+Compare action means, variance, uniform, keep and shuffled residuals. Rebuild
+nine training tasks under each outer fold's existing frozen learner; this
+prevents indirect excluded-task feedback through other folds. No new world
+collection/neural fitting.30s cap; carried1956.6321034559958 used /
+1643.3678965440042 remaining. [Protocol](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md).
+
 ## Larger source query bank — source screen PASSED after offline validation
 
 Execution25b155a collected all2592 authored outcomes once in3.371769s host wall,

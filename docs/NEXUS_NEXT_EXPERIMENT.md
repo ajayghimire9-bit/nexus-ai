@@ -6,6 +6,11 @@ benefit. The later fixed-learner question comparison is complete and closed.
 
 ## Current — task-blocked source question-utility learning (proposed, not fitted)
 
+The executable source-only study is now prepared. Common outer-fold frozen
+learners prevent indirect held-task feedback; all choices lock before check
+scoring. No candidate answers enter inference. Commit tests/protocol before
+the one run. [Protocol](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md).
+
 Can a small utility predictor choose useful teaching rows from permitted
 experience on other source tasks, without receiving this task's query labels?
 Keep the same learner and compare against variance, uniform, keep and simple

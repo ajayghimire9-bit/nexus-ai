@@ -28,6 +28,13 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+The task-blocked question-utility predictor is prepared on
+codex/seed-question-utility-learning. Source-only, one fixed ridge correction
+over action/budget averages, strong controls, no new world/model execution.
+Each fold's training trajectories use that fold's frozen source learner;
+excluded-task query outcomes never enter fitting or decisions.30s cap, zero
+interactions. No result yet. [Protocol](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md).
+
 The larger source query bank passed its within-task stability screen: locked
 choice MSE .159819 versus variance .170092 and keep .170649,9/12 task wins.
 One run collected2592 authored outcomes; same supports/learner and frozen core.

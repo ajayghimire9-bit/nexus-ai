@@ -33,6 +33,14 @@
 
 ## Verification versus experiments
 
+Question utility: seed/question_utility.py adapts question_selection's variance
+orders/fixed damping and question_headroom's counterfactuals, plus the existing
+nn/ridge primitive. Current-outer-fold source constants/normalization are reused
+for all training cases, avoiding other folds' held-task contributions. Query
+answers and unasked labels are absent from the public selector API. Same
+EXPERIMENTAL host/worker/ledger; no new learner framework or neural model.
+scripts/verify_seed_question_utility.py reuses the earlier stdlib variance solver.
+
 Larger query bank: seed/query_replication.py reuses the EXACT saved headroom
 states/normalization and nonlinear_learning.fresh_world/score_basis/Meter.
 It collects only source query starts, with all selection choices persisted

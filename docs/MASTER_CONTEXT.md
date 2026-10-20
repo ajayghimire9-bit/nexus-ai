@@ -41,6 +41,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+Next question-utility learning study is prepared, not run: a small source-fitted
+ridge correction over action/budget mean utility, four task-blocked folds,
+fixed learner and no new collection. Training trajectories use each OUTER
+fold's frozen damping/normalization to avoid indirect held-task feedback.
+No candidate answer enters question choice. See
+[protocol](NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md). Earlier outcomes below stay
+closed; this preparation does not establish a learned questioner.
+
 The larger source query-bank replication from25b155a completed its entire grid
 once. Selection-locked check MSE .159819 versus variance .170092, uniform
 .169485 and keep .170649 passes the source screen;9/12 task means beat keep.
