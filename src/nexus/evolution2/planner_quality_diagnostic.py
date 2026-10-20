@@ -80,24 +80,13 @@ def quality_features(public, variant, normalizer, *, candidates):
 
 def fit_ridge(x,y):
     """Antisymmetric pairs, RMS scaling fitted only on training rows."""
-    x,y = np.asarray(x,float),np.asarray(y,float)
-    if x.ndim != 2 or len(x)==0 or y.shape!=(len(x),) or not np.isfinite(x).all() or not np.isfinite(y).all():
-        raise ValueError("finite_training_matrix_required")
-    x,y = np.r_[x,-x],np.r_[y,-y]
-    scale = np.sqrt(np.mean(x*x,axis=0))
-    scale = np.where(scale<1e-8,1.,scale)
-    z = x/scale
-    # Closed-form sum-squared loss + RIDGE * ||beta||²; no tuning.
-    if z.shape[1] > len(z):
-        beta = z.T @ np.linalg.solve(z @ z.T + RIDGE*np.eye(len(z)),y)
-    else:
-        beta = np.linalg.solve(z.T @ z + RIDGE*np.eye(z.shape[1]), z.T @ y)
-    return scale,beta
+    from nexus.nn.ridge import fit_ridge as fit
+    return fit(x,y,ridge=RIDGE)
 
 
 def predict_ridge(model, x):
-    scale,beta = model
-    return float((np.asarray(x)/scale) @ beta)
+    from nexus.nn.ridge import predict_ridge as predict
+    return predict(model,x)
 
 
 def collect_source_proxy(deadline):

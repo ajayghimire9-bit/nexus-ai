@@ -42,7 +42,7 @@ def source_pack(root,c):
     return dict(tasks=prior.source_pack(root,json.loads(raw))['tasks'])
 
 
-def prepare_fold(pack,c,fold):
+def prepare_fold(pack,c,fold,*,include_bound=True):
     import torch
     from . import learning_benchmark as lb
     train_ids,excluded=partition(c,fold);tasks={}
@@ -51,11 +51,11 @@ def prepare_fold(pack,c,fold):
             ('support_x','support_y','query_x','query_y','old_x','old_y','retention_x','retention_y')))
     scale=lb.scale_features(torch.cat([x for t in train_ids for x in (tasks[t].support_x,tasks[t].old_x)]))
     tasks={t:lb.scaled(task,scale) for t,task in tasks.items()}
-    rms=float(torch.cat([tasks[t].support_y-tasks[t].support_x@lb.initial(tasks[t]) for t in train_ids]).square().mean().sqrt())
+    rms=float(torch.cat([tasks[t].support_y-tasks[t].support_x@lb.initial(tasks[t]) for t in train_ids]).square().mean().sqrt()) if include_bound else None
     source=[t for t in pack['tasks'] if t['seed'] in train_ids]
     return [tasks[t] for t in train_ids], {t:tasks[t] for t in excluded}, dict(
-        train_ids=train_ids,excluded_ids=excluded,scale=scale.tolist(),tau=max(1e-6,.25*rms),
-        source_sha256=digest(source),scale_fit_rows=108,tau_fit_rows=72)
+        train_ids=train_ids,excluded_ids=excluded,scale=scale.tolist(),tau=max(1e-6,.25*rms) if include_bound else None,
+        source_sha256=digest(source),scale_fit_rows=108,tau_fit_rows=72 if include_bound else 0)
 
 
 def posterior(initial,x,y,diagonal,ridge=.1):
