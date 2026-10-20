@@ -149,6 +149,24 @@ save/restore, answer-free questioning and complete-grid tests. Browser checks
 exercise the actual HTTP server and save/restore, not a mocked response.
 Exact commands/results are recorded in the engineering receipt.
 
+Implementation revision: `4bacea5f73952726792b2d8d266f2e5557914023`.
+[Machine-readable engineering receipt](../artifacts/seed_foundation_engineering.json)
+records 853 broad regression passes (174.61s, before the final search-cost gate),
+95 final focused passes (4.28s), and nine passing browser checks. Repository,
+JavaScript syntax and whitespace checks passed. Initial missing client-header
+and trivial positive-fixture failures were corrected and are recorded, not
+scientific failed runs. All795 historical artifacts and the frozen core/readout
+hashes matched the starting revision.
+
+On the explicit list-program fixtures, the discovered macro reduced bounded
+search from59 candidates /337 interpreter instructions to2 candidates /10
+instructions on each of two check inputs, with identical correct outputs.
+The test also rejects a macro when identity already solves the checks. These
+are deliberately authored implementation checks, not a held-out task-family
+study or evidence of general cumulative learning.
+
+![Foundation GUI executing real journal and program operations](assets/seed-foundation-gui.png)
+
 One next experiment: does a frozen source-learned investigation procedure reduce
 questions needed on fresh tasks relative to fixed-order and no-library controls,
 with identical available teaching and independent scored examples? This remains

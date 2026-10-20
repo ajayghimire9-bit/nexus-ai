@@ -1,0 +1,495 @@
+{
+  "schema": "seed_foundation_engineering_v1",
+  "label": "authored_engineering_verification_not_scientific_evidence",
+  "implementation_revision": "4bacea5f73952726792b2d8d266f2e5557914023",
+  "starting_revision": "5a554a5853cec039d1e3ab6eaefb0c1265d86cec",
+  "branch": "codex/seed-foundation-learning",
+  "source_hashes": {
+    "scripts/run_learning_lab.py": "bba09e23c97895a9b73eca486533f78bc5a01ee63bc601f384b1098fc2c533e2",
+    "src/nexus/seed/conversation.py": "24fb125a2fc81be30ace32c1adc2277d5e74abb93cca21fbfc6fad231c99c2dc",
+    "src/nexus/seed/core.py": "57db897c1c38862db37cdde781ebe7c884c89cf880ddbc01c919e0e75fe5ccd0",
+    "src/nexus/seed/foundation/__init__.py": "66fb6d9cd235bfabff5779329e3e23799d5b781ebccc2188dd4439ba3920eeb7",
+    "src/nexus/seed/foundation/curriculum.py": "e24e9efc703e8df1a93c061151afc955206ae463eaa95583f9306e5b7eb02b22",
+    "src/nexus/seed/foundation/inquiry.py": "b017061f49acaf67edd1b8799a602ed2b291cab7e7c5a71a61fc55aa91cfd7db",
+    "src/nexus/seed/foundation/knowledge.py": "99c8583c98d62613d6e96046b79a69c1bf89788855f883518729933442744001",
+    "src/nexus/seed/foundation/language.py": "c76e5c34267dbe986c102f7d80ed633390189519d3dbc3ad4873ebdf8f5b4506",
+    "src/nexus/seed/foundation/library.py": "1d69e1a8ba3960c52b877c60c544e7bedcc40dacfd0138662c2139797647393b",
+    "src/nexus/seed/foundation/programs.py": "7d0fc210bbf012d59f2b33743721ac22d448c88c8a75c15d50720989eb816d78",
+    "src/nexus/seed/foundation/runtime.py": "408edb473aa3d1d1a1cf6daf79ec9f881dc33304004ed9cb7bcfdd7b482208fb",
+    "src/nexus/seed/foundation/semantics.py": "1399dc9b815f933d5c9a2f3a30e7e080eb2e513627115c27c9de2c5f28a01a51",
+    "src/nexus/seed/lab.py": "188343c68cbfa51867f2596ce9080637b523437cf6b8c1df04d5ef0fc1f219b5",
+    "src/nexus/seed/skill_library.py": "bce835ea9d078fb8c08e1c490e4af273032a9a59d2fe3cc1339d0d2bc85093a0",
+    "src/nexus/seed/skill_programs.py": "28dbd2932786a5c2c003cfdf58145a6b87bd4edf2861ecb6295e3b39d7e2d19d",
+    "src/nexus/seed/structure/investigation.py": "3876a4215a3e35740518952683031aa174337e292d22bc7feb329a278f020565",
+    "tests/browser/seed_foundation.cjs": "7ca41ebfb61705d27b5ebecea344016662ef79486ae1984f8ee727c9cebf315f",
+    "tests/test_seed_foundation.py": "093326ad5d53a6c9e758c1ea35d9e2258cc2ef04eea8951a86856a7edbad79ca",
+    "web/learning-lab/chat.html": "edaf2a6f72247be4a4633e4682f134df8e78ddedad9d14acc5bf72b0525c0e14",
+    "web/learning-lab/chat.js": "9b28131a97fefde409a52e1dac524330c773fc000ac24916c397a3bc9f39ff8c",
+    "web/learning-lab/foundation.html": "e65b7d4e778f15a7e3165ed5b44d50c1d886303de43f5176e56669a08d127af4"
+  },
+  "tests": [
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed*.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_planning.py tests/test_expr.py tests/test_factory.py tests/test_evolution2_planner_quality.py",
+      "passed": 853,
+      "wall_seconds": 174.61,
+      "note": "Broad regression before the final macro search-cost gate; final affected paths retested below."
+    },
+    {
+      "command": "python3 -m pytest -o addopts= -q tests/test_seed_foundation.py tests/test_seed_structure.py tests/test_seed_conversation.py tests/test_seed_conversation_http.py tests/test_repository_layout.py --tb=short",
+      "passed": 95,
+      "wall_seconds": 4.28
+    },
+    {
+      "command": "node tests/browser/seed_foundation.cjs",
+      "passed": 9
+    },
+    {
+      "command": "python3 -I -S scripts/check_repository.py",
+      "valid": true
+    },
+    {
+      "command": "node --check web/learning-lab/chat.js",
+      "valid": true
+    },
+    {
+      "command": "git diff --check",
+      "valid": true
+    }
+  ],
+  "resolved_development_failures": [
+    "Initial GUI omitted required local-fixture request header; added header without changing server protection.",
+    "Stronger macro gate rejected two trivial test cases where a primitive already solved the task. Added a dedicated rejection regression and separate nontrivial positive fixtures."
+  ],
+  "fixtures": {
+    "curriculum": [
+      {
+        "lesson": {
+          "stage": 1,
+          "name": "identity_and_quantity",
+          "family": "grounded",
+          "input": {
+            "items": [
+              1,
+              2,
+              3
+            ]
+          },
+          "program": {
+            "op": "count",
+            "value": {
+              "op": "var",
+              "name": "items"
+            }
+          },
+          "expected": 3
+        },
+        "value": 3,
+        "passed": true,
+        "instructions": 2,
+        "label": "supplied_operator_exercise_not_learning_evidence"
+      },
+      {
+        "lesson": {
+          "stage": 2,
+          "name": "left_instruction",
+          "family": "instructions",
+          "input": {
+            "x": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          "program": {
+            "op": "skill",
+            "program": {
+              "schema": "motion",
+              "ops": [
+                "left"
+              ]
+            },
+            "value": {
+              "op": "var",
+              "name": "x"
+            }
+          },
+          "expected": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        "value": {
+          "x": 1,
+          "y": 2
+        },
+        "passed": true,
+        "instructions": 3,
+        "label": "supplied_operator_exercise_not_learning_evidence"
+      },
+      {
+        "lesson": {
+          "stage": 3,
+          "name": "ordered_events",
+          "family": "reasoning",
+          "input": {
+            "events": [
+              "key",
+              "door"
+            ]
+          },
+          "program": {
+            "op": "before",
+            "events": {
+              "op": "var",
+              "name": "events"
+            },
+            "first": {
+              "op": "literal",
+              "value": "key"
+            },
+            "second": {
+              "op": "literal",
+              "value": "door"
+            }
+          },
+          "expected": true
+        },
+        "value": true,
+        "passed": true,
+        "instructions": 4,
+        "label": "supplied_operator_exercise_not_learning_evidence"
+      },
+      {
+        "lesson": {
+          "stage": 4,
+          "name": "bounded_algorithm",
+          "family": "coding",
+          "input": {
+            "x": [
+              3,
+              1,
+              3
+            ]
+          },
+          "program": {
+            "op": "skill",
+            "program": {
+              "schema": "list",
+              "ops": [
+                "sort"
+              ]
+            },
+            "value": {
+              "op": "skill",
+              "program": {
+                "schema": "list",
+                "ops": [
+                  "unique"
+                ]
+              },
+              "value": {
+                "op": "var",
+                "name": "x"
+              }
+            }
+          },
+          "expected": [
+            1,
+            3
+          ]
+        },
+        "value": [
+          1,
+          3
+        ],
+        "passed": true,
+        "instructions": 5,
+        "label": "supplied_operator_exercise_not_learning_evidence"
+      },
+      {
+        "lesson": {
+          "stage": 5,
+          "name": "conditional_instruction",
+          "family": "mixed",
+          "input": {
+            "x": {
+              "x": 2,
+              "y": 2
+            },
+            "clear": true
+          },
+          "program": {
+            "op": "if",
+            "condition": {
+              "op": "var",
+              "name": "clear"
+            },
+            "then": {
+              "op": "skill",
+              "program": {
+                "schema": "motion",
+                "ops": [
+                  "left"
+                ]
+              },
+              "value": {
+                "op": "var",
+                "name": "x"
+              }
+            },
+            "else": {
+              "op": "var",
+              "name": "x"
+            }
+          },
+          "expected": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        "value": {
+          "x": 1,
+          "y": 2
+        },
+        "passed": true,
+        "instructions": 5,
+        "label": "supplied_operator_exercise_not_learning_evidence"
+      },
+      {
+        "lesson": {
+          "stage": 6,
+          "name": "correction_and_uncertainty",
+          "family": "interaction",
+          "input": {
+            "known": null
+          },
+          "program": {
+            "op": "not",
+            "value": {
+              "op": "var",
+              "name": "known"
+            }
+          },
+          "expected": null
+        },
+        "value": null,
+        "passed": true,
+        "instructions": 2,
+        "label": "supplied_operator_exercise_not_learning_evidence"
+      }
+    ],
+    "library_source": [
+      {
+        "task": "t0",
+        "ops": [
+          "unique",
+          "sort",
+          "reverse"
+        ],
+        "examples": [
+          {
+            "input": [
+              2,
+              1,
+              2
+            ],
+            "output": [
+              2,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "task": "t1",
+        "ops": [
+          "unique",
+          "sort",
+          "reverse"
+        ],
+        "examples": [
+          {
+            "input": [
+              3,
+              1,
+              3
+            ],
+            "output": [
+              3,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "task": "t2",
+        "ops": [
+          "unique",
+          "sort",
+          "reverse"
+        ],
+        "examples": [
+          {
+            "input": [
+              4,
+              1,
+              4
+            ],
+            "output": [
+              4,
+              1
+            ]
+          }
+        ]
+      }
+    ],
+    "library_checks": [
+      {
+        "task": "check0",
+        "ops": [
+          "unique",
+          "sort",
+          "reverse"
+        ],
+        "examples": [
+          {
+            "input": [
+              2,
+              5,
+              1,
+              2
+            ],
+            "output": [
+              5,
+              2,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "task": "check1",
+        "ops": [
+          "unique",
+          "sort",
+          "reverse"
+        ],
+        "examples": [
+          {
+            "input": [
+              3,
+              6,
+              2,
+              3
+            ],
+            "output": [
+              6,
+              3,
+              2
+            ]
+          }
+        ]
+      }
+    ],
+    "candidate": {
+      "id": "cce6e74ced0875b54f0d6fdceb461570fadf07f5ab0308ef0825f66e16cda6d7",
+      "ops": [
+        "unique",
+        "sort",
+        "reverse"
+      ],
+      "source_tasks": [
+        "t0",
+        "t1",
+        "t2"
+      ],
+      "token_savings": 3,
+      "origin": "source_subprogram_compression",
+      "shared_search_cost": {
+        "source_instructions": 21,
+        "windows": 9
+      }
+    },
+    "review": {
+      "accepted": true,
+      "outcomes": [
+        {
+          "task": "check0",
+          "correct": true,
+          "instructions": 9
+        },
+        {
+          "task": "check1",
+          "correct": true,
+          "instructions": 9
+        }
+      ],
+      "search_checks": [
+        {
+          "task": "check0",
+          "without_library": {
+            "status": "solved",
+            "candidates": 59,
+            "instructions": 337,
+            "solution": [
+              "sort",
+              "reverse",
+              "unique"
+            ]
+          },
+          "with_library": {
+            "status": "solved",
+            "candidates": 2,
+            "instructions": 10,
+            "solution": [
+              "macro"
+            ]
+          }
+        },
+        {
+          "task": "check1",
+          "without_library": {
+            "status": "solved",
+            "candidates": 59,
+            "instructions": 337,
+            "solution": [
+              "sort",
+              "reverse",
+              "unique"
+            ]
+          },
+          "with_library": {
+            "status": "solved",
+            "candidates": 2,
+            "instructions": 10,
+            "solution": [
+              "macro"
+            ]
+          }
+        }
+      ],
+      "label": "authored_separate_checks_not_scientific_transfer"
+    }
+  },
+  "preservation": {
+    "historical_artifacts_checked": 795,
+    "changed": [],
+    "frozen_core_sha256": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b",
+    "frozen_readout_sha256": "8129cbd4768f4cd5dce938cd8b6740172bf5dbe8742dcb97c497951ad5e87745",
+    "main_modified": false
+  },
+  "resources": {
+    "scientific_runs": 0,
+    "scientific_interactions": 0,
+    "scientific_training_updates": 0,
+    "scientific_debit_seconds": 0,
+    "carried_used_seconds": 1979.6321034559958,
+    "carried_remaining_seconds": 1620.3678965440042,
+    "engineering_fixture_work": "Finite macro search, source-trace tree learning, count-based wording updates and browser operations; not scientific experiments."
+  },
+  "limitations": [
+    "Supplied bounded grammar, not general language comprehension.",
+    "Library fixture search savings are not evidence of transfer or learning-to-learn.",
+    "New surface decoder learns categorical wording counts, not a neural language model.",
+    "No scientific curriculum, investigation-transfer or future-family learning curve run."
+  ]
+}
