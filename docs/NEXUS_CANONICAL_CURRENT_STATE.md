@@ -1,6 +1,6 @@
 # NEXUS Seed — Current State
 
-Active base:a3fe49adeb0040fc9c10b253f0fc86c4de125bb6. Read
+Workflow starting base:4362344621c048b811a0066e4d9dd2aa87dac055. Read
 [master context](MASTER_CONTEXT.md) and [reuse map](NEXUS_CODE_REUSE_MAP.md).
 
 ## Established within the tested authored setup
@@ -20,6 +20,11 @@ enabled. Improved action scoring by ordinary supervised fitting is not evidence
 that NEXUS learned a better learning procedure.
 
 ## Next gate
+
+Owner-controlled [EXPERIMENTAL mode](NEXUS_EXPERIMENTAL_MODE.md) provides a
+development sandbox, not a new capability claim. Architecture/optimizer/HPO
+iterations use small bounded manifests; validation and confirmation stay
+separate. No new scientific experiment ran during setup.
 
 Frozen spatial transfer passed versus frozen ranking,with greedy stronger,
 boundary initial-ranking weakness and cross-diagonal goal failures. No fitting.

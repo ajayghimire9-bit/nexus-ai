@@ -20,6 +20,12 @@
 
 ## Verification versus experiments
 
+Owner-controlled experimental host: seed/experimental.py and the fixed numeric
+worker seed/experimental_worker.py reuse E1 Journal/canonical hashes, the existing
+nn.factory and Learning Lab server. Run data stays under runs/experimental.
+This is process supervision/development routing, not a second learner or memory.
+New planner/simulator/GPU workers need reviewed metering before execution.
+
 Data-only audits: grounded_audit, contract_audit, learning_validation_audit,
 readout_validation. Neural studies have explicit runner/config/protocol files.
 A verifier must never silently fit a model or collect new scientific data.

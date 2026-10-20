@@ -68,6 +68,14 @@ Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
 
 ## Scientific decision path
 
+The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
+supports lightweight development manifests, typed candidate training, separate
+one-use assessments, local retain/rollback and read-only GUI evidence. New
+explicit owner allocations may change local caps; historical studies and actual
+Codex controls remain intact. GPU execution is unavailable in the first backend.
+This engineering setup adds no scientific result and does not execute the next
+learning-rule study.
+
 The frozen spatial check passed versus frozen ranking,with important task
 failures. Do not tune on either closed readout or transfer audit. A separate
 fresh learning-to-learn study must ask

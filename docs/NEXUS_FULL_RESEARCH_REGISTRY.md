@@ -2,6 +2,10 @@
 
 ## Active evidence, newest first
 
+- [EXPERIMENTAL workflow engineering](NEXUS_EXPERIMENTAL_MODE.md): owner budgets,
+  typed candidate training, independent assessment routes, retain/rollback and
+  read-only GUI. Authored numeric QA only; no scientific result or new simulation.
+
 - [Frozen spatial-transfer development](NEXUS_SEED_SPATIAL_TRANSFER_RESULTS.md):
   screen passed versus frozen ranking; greedy stronger; boundary/diagonal
   limitations. One core,no updates. [Protocol](NEXUS_SEED_SPATIAL_TRANSFER_PROTOCOL.md).

@@ -16,6 +16,9 @@ def repository(path):
 
 def command(args,root):
     """Typed allowlist; never interprets command strings or installs packages."""
+    if args.action=='experimental':
+        directory=['--directory',str(args.directory)] if args.directory is not None else []
+        return [sys.executable,str(root/'scripts/nexus_experimental.py'),*directory,*args.options]
     if args.action=='serve':
         if not 1024<=args.port<=65535 or not 1<=args.seconds<=900:raise ValueError('bounded_loopback_server_required')
         if args.mode=='symbolic':
@@ -33,6 +36,9 @@ def main(argv=None):
     s=p.add_subparsers(dest='action',required=True)
     serve=s.add_parser('serve',help='bounded local GUI; never starts research training')
     serve.add_argument('--mode',choices=('symbolic','readout'),default='symbolic');serve.add_argument('--port',type=int,default=8766);serve.add_argument('--seconds',type=int,default=900)
+    experimental=s.add_parser('experimental',help='owner-controlled development sandbox; no automatic execution')
+    experimental.add_argument('--directory',type=Path)
+    experimental.add_argument('options',nargs=argparse.REMAINDER)
     for name in ('status','check','verify','audit-source'):s.add_parser(name)
     args=p.parse_args(argv)
     try:

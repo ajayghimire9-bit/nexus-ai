@@ -83,6 +83,29 @@ does not demonstrate a better learning procedure.
 - Explain outcomes in plain language. Report exact commits, tests, resource use,
   what the evidence establishes and what remains unknown.
 
+## Owner-controlled EXPERIMENTAL workflow
+
+The owner requested this optional workflow on 2026-10-20. See
+[the sandbox guide](docs/NEXUS_EXPERIMENTAL_MODE.md). It supersedes the full
+publication-style preregistration requirement for explicitly labeled local
+**exploration** iterations only. A small manifest records inputs, recipe,
+revision, budget and result label. Development data can support debugging,
+architecture changes, optimizer changes and hyperparameter selection.
+
+Validation uses separate one-use data and a predeclared acceptance gate;
+confirmation still requires a committed protocol and frozen candidate. Neither
+may train candidates. Historical studies, frozen binaries, consumed evaluations
+and their original restrictions remain unchanged. New experimental weights
+must be separate versions. Reusing data cannot make it untouched confirmation.
+
+The existing standing grant remains the default CPU/session allowance. An owner
+may explicitly approve a different local allocation with its exact caps, reason
+and carried usage; agents must not infer an increase from a candidate request.
+GPU execution requires both explicit approval and a working enforcement backend;
+the initial host refuses GPU execution. No approval overrides actual Codex
+permissions. Sandbox retention changes only a local pointer, never stable code
+or main. No paid services, security bypass, or unbounded background loop.
+
 ## Standing Coding and Local Research Authority
 
 Human-authorized on **2026-10-16**. Applies to future NEXUS development work during an active Codex session. Preserve the project vision and every scientific safeguard above. This standing grant supplies the experiment approval required by the workflow above **only within the following limits**; it supersedes repeated per-experiment human confirmation within that scope, not scientific preconditions or actual app permissions.

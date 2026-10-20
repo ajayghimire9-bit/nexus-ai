@@ -41,6 +41,14 @@ class LabHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-Type','text/html; charset=utf-8')
                 self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
                 self.end_headers();return self.wfile.write(body)
+            if parsed.path=='/experimental' and not parsed.query:
+                body=(ROOT/'web/learning-lab/experimental.html').read_bytes();self.send_response(200)
+                self.send_header('Content-Type','text/html; charset=utf-8')
+                self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
+                self.end_headers();return self.wfile.write(body)
+            if parsed.path=='/api/experimental' and not parsed.query:
+                from nexus.seed.experimental import Sandbox
+                return self.send_json(200,Sandbox(ROOT,getattr(self.server,'experimental_directory',None)).view())
             if parsed.path=='/' and not parsed.query:
                 body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')
                 self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
@@ -89,7 +97,8 @@ def main():
     parser.add_argument('--seed-grounded-model',type=Path);parser.add_argument('--seed-grounded-sha256')
     parser.add_argument('--seed-action-readout',type=Path);parser.add_argument('--seed-action-readout-sha256')
     parser.add_argument('--seed-surprise-study',type=Path);parser.add_argument('--seed-surprise-sha256')
-    parser.add_argument('--seed-plasticity-controller',type=Path);parser.add_argument('--seed-plasticity-sha256');args=parser.parse_args()
+    parser.add_argument('--seed-plasticity-controller',type=Path);parser.add_argument('--seed-plasticity-sha256')
+    parser.add_argument('--experimental-directory',type=Path,help='owner-selected read-only dashboard data; no execution endpoint');args=parser.parse_args()
     if bool(args.seed_plasticity_controller)!=bool(args.seed_plasticity_sha256) or args.seed_plasticity_controller and not args.seed_grounded_model:raise ValueError('plasticity_requires_owner_verified_core')
     if args.fixture_worker:
         print(json.dumps(run_fixture_request(json.loads(sys.stdin.read(4097))),allow_nan=False));return
@@ -123,6 +132,7 @@ def main():
         from nexus.seed.question_policy import choose
         choose(())  # Optional dependency startup, not a measured question/request.
     with ThreadingHTTPServer(('127.0.0.1',args.port),LabHandler) as server:
+        server.experimental_directory=args.experimental_directory
         if args.allow_seed:
             from nexus.seed.lab import SeedWorkspace
             server.seed_workspace=SeedWorkspace(args.seed_directory,language_encoder=encoder,meta_questions=args.seed_meta_questions,grounded_model=grounded,grounded_hash=args.seed_grounded_sha256,action_readout=readout,plasticity_controller=plasticity,plasticity_hash=args.seed_plasticity_sha256,surprise_gate=surprise)

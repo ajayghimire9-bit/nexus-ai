@@ -1,5 +1,10 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+Workflow setup is complete, not a scientific run. Use the owner-controlled
+[EXPERIMENTAL guide](NEXUS_EXPERIMENTAL_MODE.md) for bounded development. The next
+engineering gate is a metered Seed/retention adapter before executing the
+learning-rule comparison below; numeric fixture QA is not its result.
+
 ## Current — learn an update rule over the tested nonlinear action features
 
 Spatial transfer passed against frozen ranking but not greedy; diagonal control

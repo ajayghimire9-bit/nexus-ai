@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Owner-controlled development sandbox
+
+Added lightweight exploration manifests, explicit owner caps, serial process
+supervision, one-use validation/confirmation channels, sandbox retain/rollback,
+candidate worktrees and a read-only experimental GUI. Reused existing Journal,
+MLP factory and Lab server. Numeric engineering fixtures only; no new scientific
+execution, no historical checkpoint or result changes. Scientific ledger remains
+1910.6321034559958 used / 1689.3678965440042 remaining.
+See NEXUS_EXPERIMENTAL_MODE.md for strict-memory and GPU backend limitations.
+
 ## Seed focus cleanup and frozen spatial transfer
 
 Verbatim context archive,Seed-first CLI,optional neural/research dependencies,
