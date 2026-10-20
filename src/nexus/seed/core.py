@@ -384,6 +384,8 @@ class Session:
                         lessons=self.grounded_agent.adaptive.steps,
                         work=dict(self.grounded_agent.adaptive.work),
                         skills=len(self.grounded_agent.adaptive.skills),
+                        reversible_edits=len(self.grounded_agent.adaptive.undo),
+                        cached_reviews=len(self.grounded_agent.adaptive.reviews),
                         core_frozen=True,development_only=True),
                     architecture='shared_multimodal_GRU_RSSM',h_size=32,z_size=8,
                     approved_concepts=list(self.grounded_agent.approved(self)),

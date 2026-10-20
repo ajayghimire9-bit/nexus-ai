@@ -4,7 +4,10 @@ CHANNELS={'reward':62,'meaning':53}
 
 def validate_state(p):
     def numeric(v,n):return type(v) is list and len(v)==n and all(type(x) in (int,float) and math.isfinite(x) and abs(x)<1000 for x in v)
-    if type(p) is not dict or set(p)!={'schema','blocks','anchors','development','skills','seen','steps','work'} or p['schema']!='seed_adaptive_state_v1':raise ValueError('adaptive_state_schema')
+    fields={'schema','blocks','anchors','development','skills','seen','steps','work'}
+    if type(p) is not dict:raise ValueError('adaptive_state_schema')
+    if p.get('schema')=='seed_adaptive_state_v2':fields|={'reviews','undo'}
+    if set(p)!=fields or p['schema'] not in ('seed_adaptive_state_v1','seed_adaptive_state_v2'):raise ValueError('adaptive_state_schema')
     if any(type(p[k]) is not dict or set(p[k])!=set(CHANNELS) for k in ('blocks','anchors','development')):raise ValueError('adaptive_channels')
     if type(p['steps']) is not int or not 0<=p['steps']<=24 or type(p['seen']) is not list or len(p['seen'])!=p['steps'] or len(set(p['seen']))!=len(p['seen']) or any(type(r) is not str or len(r)!=64 for r in p['seen']):raise ValueError('adaptive_steps')
     for c,n in CHANNELS.items():
@@ -23,3 +26,14 @@ def validate_state(p):
         keys.append((s['channel'],s['key']))
     if len(keys)!=len(set(keys)):raise ValueError('duplicate_skills')
     if type(p['work']) is not dict or set(p['work'])!={'actual_updates','question_hypotheses','structural_fits','linear_solves'} or any(type(v) is not int or not 0<=v<=100000 for v in p['work'].values()):raise ValueError('adaptive_work')
+    if p['schema']=='seed_adaptive_state_v2':
+        from nexus.evolution1.catalogue import digest
+        if type(p['reviews']) is not dict or len(p['reviews'])>24 or type(p['undo']) is not list or len(p['undo'])>4:raise ValueError('review_undo_cap')
+        for key,r in p['reviews'].items():
+            if type(key) is not str or len(key)!=64 or type(r) is not dict or r.get('adopted') not in ('keep','repair','add_skill','merge'):raise ValueError('review_record')
+        for r in p['undo']:
+            if type(r) is not dict or set(r)!={'kind','channel','key','before','after','id'} or r['kind'] not in ('repair','add_skill','merge') or r['channel'] not in CHANNELS or type(r['key']) is not str or len(r['key'])>64:raise ValueError('undo_record')
+            if any(type(r[k]) is not str or len(r[k])!=64 for k in ('id','after')):raise ValueError('undo_hash')
+            if type(r['before']) is not dict or set(r['before'])!={'blocks','skills'}:raise ValueError('undo_parameters')
+            prior=dict(p,schema='seed_adaptive_state_v1',blocks=r['before']['blocks'],skills=r['before']['skills'])
+            prior.pop('reviews');prior.pop('undo');validate_state(prior)

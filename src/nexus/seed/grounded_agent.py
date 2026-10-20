@@ -49,6 +49,7 @@ class GroundedAgent:
             self.adaptive.blocks['meaning'].zero_()
             self.adaptive.anchors['meaning']=[];self.adaptive.development['meaning']=[]
             self.adaptive.skills=[s for s in self.adaptive.skills if s['channel']!='meaning']
+            self.adaptive.reviews={};self.adaptive.undo=[]
             self.save_adaptive(session,ref,dict(status='meaning_invalidated_after_correction',updated=False))
         if self.adaptive is not None and supersedes is None:
             from .adaptive_state import meaning_features
@@ -172,9 +173,14 @@ class GroundedAgent:
 
     def request(self,session,action,reference,x,y,word):
         started=time.perf_counter()
-        if type(action) is not str or action not in ('induce','meta','observe','speak','decide','decide_unpruned','ranked_decide','adaptive_decide','adaptive_ask','adaptive_review','adaptive_review_reward','ask','store','retrieve') or type(reference) is not str or not 1<=len(reference)<=24 or not concept_word(word):
+        if type(action) is not str or action not in ('induce','meta','observe','speak','decide','decide_unpruned','ranked_decide','adaptive_decide','adaptive_ask','adaptive_review','adaptive_review_reward','adaptive_rollback','ask','store','retrieve') or type(reference) is not str or not 1<=len(reference)<=24 or not concept_word(word):
             raise ValueError('grounded_request_schema')
         if action.startswith('adaptive_') and self.adaptive is None:raise ValueError('adaptation_not_enabled_by_owner')
+        if action=='adaptive_rollback':
+            result=self.adaptive.rollback()
+            source=next((e.fingerprint for e in reversed(session.journal.snapshot()) if e.kind in ('seed_teaching','seed_grounded_state')),None)
+            if source:self.save_adaptive(session,source,result)
+            return dict(result,text='Checked structural rollback; evidence and spent work are preserved.')
         if action=='adaptive_review':
             result=self.adaptive.review('meaning',word)
             source=next((e.fingerprint for e in reversed(session.journal.snapshot()) if e.kind=='seed_teaching'),None)
