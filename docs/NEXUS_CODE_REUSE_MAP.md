@@ -25,6 +25,11 @@ worker seed/experimental_worker.py reuse E1 Journal/canonical hashes, the existi
 nn.factory and Learning Lab server. Run data stays under runs/experimental.
 This is process supervision/development routing, not a second learner or memory.
 New planner/simulator/GPU workers need reviewed metering before execution.
+The vetted nonlinear-learning adapter (seed/nonlinear_learning.py) now routes a
+single registered Seed study through that SAME host. It reuses existing update
+math and frozen features. seed/nonlinear_learning_audit.py is stdlib-only for
+complete-grid/resource arithmetic and fresh-clone GUI replay; no verifier fits
+or collects data. Historical runner math remains unchanged.
 
 Data-only audits: grounded_audit, contract_audit, learning_validation_audit,
 readout_validation. Neural studies have explicit runner/config/protocol files.

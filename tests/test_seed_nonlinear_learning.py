@@ -47,6 +47,14 @@ def test_nested_budgets_inner_query_isolation_and_no_adaptation():
     _,none=lb.curve(t,None,'none');assert torch.equal(none[1],none[8])
 
 
+def test_later_teaching_labels_cannot_change_earlier_budget_snapshots():
+    task=toy();m=controller(6401);_,before=lb.curve(task,m,'learned')
+    changed=deepcopy(task);labels=task.support_y.clone();labels[4:]+=10
+    object.__setattr__(changed,'support_y',labels);_,after=lb.curve(changed,m,'learned')
+    assert all(torch.equal(before[k],after[k]) for k in (1,2,4))
+    assert not torch.equal(before[8],after[8])
+
+
 def test_scaling_uses_source_support_old_not_query_or_retention():
     t=toy();scale=lb.scale_features(torch.cat((t.support_x,t.old_x)))
     changed=deepcopy(t);object.__setattr__(changed,'query_x',t.query_x*999)

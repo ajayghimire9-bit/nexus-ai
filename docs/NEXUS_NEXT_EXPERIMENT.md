@@ -1,11 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-Workflow setup is complete, not a scientific run. Use the owner-controlled
-[EXPERIMENTAL guide](NEXUS_EXPERIMENTAL_MODE.md) for bounded development. The next
-engineering gate is a metered Seed/retention adapter before executing the
-learning-rule comparison below; numeric fixture QA is not its result.
+## Current — source-only first-update magnitude diagnosis (not run)
 
-## Current — learn an update rule over the tested nonlinear action features
+The nonlinear-feature study failed its registered screen. Does the first
+protected correction take an excessive step compared with scaled replay on
+permitted SOURCE tasks? Inspect prefix errors/update norms and retention using
+existing training data only. No new collection, architecture change or tuning
+on the closed audit. See NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md.
+Older proposals below retain their chronology and are not automatic tasks.
+
+Workflow setup and the metered Seed/retention study are complete. Use the
+[EXPERIMENTAL guide](NEXUS_EXPERIMENTAL_MODE.md) for bounded development.
+The comparison below is closed; numeric fixture QA is not scientific evidence.
+
+## Closed — learn an update rule over the tested nonlinear action features
 
 Spatial transfer passed against frozen ranking but not greedy; diagonal control
 remains weak. Freeze all existing heads. Compare context-conditioned learned

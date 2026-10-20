@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Nonlinear-feature learned update rule](NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md):
+  combined development screen FAILED; retention passed; no reliable advantage
+  over static and replay; learned/static/fixed control actions identical.
+  [Protocol](NEXUS_SEED_NONLINEAR_LEARNING_PROTOCOL.md), execution73d1dcd.
+
 - [EXPERIMENTAL workflow engineering](NEXUS_EXPERIMENTAL_MODE.md): owner budgets,
   typed candidate training, independent assessment routes, retain/rollback and
   read-only GUI. Authored numeric QA only; no scientific result or new simulation.

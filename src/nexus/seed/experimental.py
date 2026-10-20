@@ -218,8 +218,16 @@ class Sandbox:
     def used_s(self):
         reserved = {r['run_id']: r for r in self.records('reserved')}
         settled = {r['run_id']: r for r in self.records('settled')}
-        return sum(settled[k]['charged_wall_s'] if k in settled else v['wall_cap_s']
-                   for k, v in reserved.items())
+        return (sum(settled[k]['charged_wall_s'] if k in settled else v['wall_cap_s']
+                    for k, v in reserved.items()) +
+                sum(row['seconds'] for row in self.records('session_debit')))
+
+    def debit(self, identifier, seconds, reason, reference):
+        """Add external execution/conservative carry; never edit old receipts."""
+        name(identifier);number(seconds)
+        if not reason.strip() or not reference.strip():raise ValueError('debit_provenance_required')
+        if any(row['id']==identifier for row in self.records('session_debit')):raise ValueError('duplicate_session_debit')
+        self.append('session_debit',dict(id=identifier,seconds=seconds,reason=reason,reference=reference))
 
     def fork(self, identifier):
         name(identifier)

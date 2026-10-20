@@ -245,3 +245,10 @@ def test_actual_committed_protocol_binding_and_tamper_rejection(tmp_path):
 
 def test_run_store_cannot_be_historical_artifact_directory():
     with pytest.raises(ValueError,match='historical'):Sandbox(ROOT,ROOT/'artifacts')
+
+
+def test_conservative_or_external_session_debit_is_additive_not_a_fake_run(host):
+    host.debit('carry',1.5,'conservative accounting above actual host charge','fixture receipt')
+    assert host.used_s()==1.5 and not host.records('reserved')
+    with pytest.raises(ValueError,match='duplicate'):host.debit('carry',1.5,'same','same')
+    with pytest.raises(ValueError):host.debit('negative',-1,'cannot refund','fixture')

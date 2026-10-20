@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Nonlinear-feature learning-rule comparison completed
+
+Locked73d1dcd; one EXPERIMENTAL-host run,4.164333s dispatch,4650 authored steps,
+39315 imagined+3116 posterior rows,384 outer optimizer updates. Learning screen
+FAILED: .170873 learned versus .128930 replay and .171423 static; static paired
+gain interval includes zero. Retention passes; learned/static/fixed actions
+identical; control non-regression bound unestablished. No policy promotion or
+historical checkpoint changes. Raw data and honest GUI replay preserved.
+Ledger1916.6321034559958 used/1683.3678965440042 remaining.
+Next question: first-update magnitude on source data only. No further run.
+
 ## Owner-controlled development sandbox
 
 Added lightweight exploration manifests, explicit owner caps, serial process

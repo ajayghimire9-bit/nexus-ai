@@ -206,3 +206,23 @@ def validate_output(output,c,caps):
     if work['real_steps']!=sum(r['costs'].values()) or work['imagined_transitions']!=r['imagined_transitions'] or work['updates']!=bound(c)['outer_updates']:raise ValueError('host_study_accounting')
     if any(work[k]>caps[k] for k in ('real_steps','imagined_transitions','updates','cpu_s')):raise ValueError('study_grant_cap')
     return True
+
+
+def saved_replay(root):
+    """Repository-only GUI replay; no checkpoints, Torch, training or steps."""
+    import json
+    from pathlib import Path
+    root=Path(root);path=root/'artifacts/seed_nonlinear_learning.json'
+    r=json.loads(path.read_text());c=json.loads((root/'configs/seed_nonlinear_learning.json').read_text())
+    if r.get('declared_complete') is not True:raise ValueError('incomplete_saved_study')
+    validate(r,c);h=r['host_receipt']
+    return dict(id=h['id'],mode='recorded_development_replay',status=h['status'],failure=h['failure'],
+        wall_s=h['wall_s'],memory_mb=h['peak_sampled_rss_mb'],revision=r['execution_sha'],
+        metrics=dict(mse=r['analysis']['curve_means']['learned'],
+                     baseline_mse=min(r['analysis']['curve_means'][m] for m in METHODS[1:]),
+                     worst_error_increase=r['analysis']['forgetting']['learned']-r['analysis']['forgetting']['fixed']),
+        curve=[dict(update=b,train_mse=r['analysis']['per_budget'][str(b)]['learned']['mse']['mean'],
+                    development_mse=min(r['analysis']['per_budget'][str(b)][m]['mse']['mean'] for m in METHODS[1:])) for b in c['budgets']],
+        resources=dict(real_steps=sum(r['costs'].values()),imagined_transitions=r['imagined_transitions'],
+                       posterior_rows=r['posterior_rows'],updates=bound(c)['outer_updates']),
+        model_sha256=digest(dict(schema='seed_update_rules_v1',controllers=r['controllers'])),study=r['analysis'])

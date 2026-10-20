@@ -1,6 +1,6 @@
 # NEXUS Seed — Current State
 
-Workflow starting base:4362344621c048b811a0066e4d9dd2aa87dac055. Read
+Study starting base:cf3f54cebe580a14ec191c48659f79e371cc1b72. Read
 [master context](MASTER_CONTEXT.md) and [reuse map](NEXUS_CODE_REUSE_MAP.md).
 
 ## Established within the tested authored setup
@@ -20,6 +20,14 @@ enabled. Improved action scoring by ordinary supervised fitting is not evidence
 that NEXUS learned a better learning procedure.
 
 ## Next gate
+
+The registered nonlinear-feature comparison completed and failed: learned
+plasticity did not beat strong replay or static protection; learned/static/fixed
+actions matched. See [results](NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md).
+Next: source-only first-update magnitude diagnosis; no new collection or
+architecture increase is scheduled. The paragraphs below retain earlier gates.
+
+### Historical setup stage, superseded by the result above
 
 Owner-controlled [EXPERIMENTAL mode](NEXUS_EXPERIMENTAL_MODE.md) provides a
 development sandbox, not a new capability claim. Architecture/optimizer/HPO

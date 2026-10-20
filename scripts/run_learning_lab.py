@@ -48,7 +48,11 @@ class LabHandler(BaseHTTPRequestHandler):
                 self.end_headers();return self.wfile.write(body)
             if parsed.path=='/api/experimental' and not parsed.query:
                 from nexus.seed.experimental import Sandbox
-                return self.send_json(200,Sandbox(ROOT,getattr(self.server,'experimental_directory',None)).view())
+                state=Sandbox(ROOT,getattr(self.server,'experimental_directory',None)).view()
+                if not state['experiments'] and (ROOT/'artifacts/seed_nonlinear_learning.json').exists():
+                    from nexus.seed.nonlinear_learning_audit import saved_replay
+                    state['experiments'].append(saved_replay(ROOT))
+                return self.send_json(200,state)
             if parsed.path=='/' and not parsed.query:
                 body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')
                 self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")

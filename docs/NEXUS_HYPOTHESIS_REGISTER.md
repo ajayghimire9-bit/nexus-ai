@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed nonlinear-feature learned update rule — registered screen FAILED
+
+From73d1dcd: mean1/2/4/8-example MSE .170873 learned, .171423 source-trained
+static, .172414 fixed, .128930 replay, .142419 none. Static reduction only .32%,
+paired95% interval[-.000201,+.001301] includes0. Ten-percent intersection rule
+fails. Retention passes; actual learned/static/fixed control actions identical;
+return non-regression bound not established. One frozen core, outer seeds
+averaged within eight task streams. No general learning-to-learn claim.
+See NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md; this audit is closed.
+
 ## Seed frozen spatial-transfer screen passed,conditional on one core
 
 Readout-minus-frozen return+1.411667[1.188644,1.634690],goal gain+.40625.

@@ -230,6 +230,15 @@ evaluation changes. No architecture/learning-rule efficacy is established here.
 One next engineering milestone: a reviewed Seed adapter with per-step host
 reservations and old-task retention before executing new adaptation science.
 
+That milestone subsequently completed for one locked nonlinear-feature study:
+the adapter reused the host, existing correction math and frozen features. Its
+[registered results](NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md) failed the combined
+screen and remain closed. This adds no arbitrary-code or GPU execution support.
+The GUI shows actual1/2/4/8-example curves, baseline comparisons, task-level
+intervals and resource use. With no private run store it displays a validated
+read-only replay of the tracked artifact. No model inference occurs in replay.
+Latest scientific ledger:1916.6321034559958used/1683.3678965440042remaining.
+
 ## Completed engineering verification
 
 Implementation commit: `aa18434f228a974dc97d08e966725bd8cc49e44f`.

@@ -34,6 +34,15 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The nonlinear-feature learning-rule study from73d1dcd completed once and FAILED
+its combined development screen. Curve MSE .170873 learned versus .171423
+source-trained static, .172414 fixed, .128930 scaled replay and .142419 none.
+Only .32% point improvement over static; its paired interval includes zero.
+Retention passed; actual actions were identical for learned/static/fixed.
+No useful learned update-rule advantage demonstrated. See
+[results](NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md). The EXPERIMENTAL GUI shows
+these measurements without changing the live agent or historical checkpoints.
+
 Frozen spatial-transfer development from adc60c7 completed7,504 authored steps,
 90,198 imagined rows and6,480 posterior-prior rows in3.154639seconds. Pooled
 readout-minus-frozen return1.411667[1.188644,1.634690],goals45.3125% versus4.6875%:
@@ -73,16 +82,15 @@ supports lightweight development manifests, typed candidate training, separate
 one-use assessments, local retain/rollback and read-only GUI evidence. New
 explicit owner allocations may change local caps; historical studies and actual
 Codex controls remain intact. GPU execution is unavailable in the first backend.
-This engineering setup adds no scientific result and does not execute the next
-learning-rule study.
+The setup itself added no scientific result. The subsequent registered Seed
+adapter study is now complete and closed; its negative findings are above.
 
-The frozen spatial check passed versus frozen ranking,with important task
-failures. Do not tune on either closed readout or transfer audit. A separate
-fresh learning-to-learn study must ask
-whether experience across source tasks improves the subsequent1/2/4/8-example
-learning curve versus scaled replay, fixed protection, no adaptation and the
-strongest simple learned-from-source reference. It must measure forgetting and
-action outcomes, not training loss or acceptance rate alone.
+The fresh1/2/4/8-example comparison did not establish a learned-rule advantage.
+Preserve that failure alongside prior positive readout results. Next inspect
+first-update magnitudes/prefix errors on SOURCE data only before registering
+another intervention. No architecture expansion or new collection is scheduled.
+All future learning-to-learn claims still require strong source-informed
+baselines, retention and actual action outcomes, not loss or acceptance alone.
 
 Use the same tested modules; consult the [reuse map](NEXUS_CODE_REUSE_MAP.md).
 No architecture search or automatic rank-four activation is justified merely
@@ -96,8 +104,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1910.6321034559958seconds used,
-1689.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1916.6321034559958seconds used,
+1683.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance
