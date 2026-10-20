@@ -21,6 +21,7 @@ def command(args,root):
         return [sys.executable,str(root/'scripts/nexus_experimental.py'),*directory,*args.options]
     if args.action=='serve':
         if not 1024<=args.port<=65535 or not 1<=args.seconds<=900:raise ValueError('bounded_loopback_server_required')
+        if args.mode=='labs':return [sys.executable,str(root/'scripts/run_seed_shared_gui.py'),'--port',str(args.port),'--max-runtime-s',str(args.seconds)]
         if args.mode=='symbolic':
             return [sys.executable,'-I','-S',str(root/'scripts/run_learning_lab.py'),'--allow-seed','--port',str(args.port),'--max-runtime-s',str(args.seconds)]
         return [sys.executable,str(root/'scripts/run_seed_adaptive_gui.py'),'--with-readout','--port',str(args.port),'--max-runtime-s',str(args.seconds)]
@@ -35,7 +36,7 @@ def main(argv=None):
     p.add_argument('--repository',type=Path,default=Path.cwd(),help='source checkout with web assets and saved evidence')
     s=p.add_subparsers(dest='action',required=True)
     serve=s.add_parser('serve',help='bounded local GUI; never starts research training')
-    serve.add_argument('--mode',choices=('symbolic','readout'),default='symbolic');serve.add_argument('--port',type=int,default=8766);serve.add_argument('--seconds',type=int,default=900)
+    serve.add_argument('--mode',choices=('symbolic','readout','labs'),default='symbolic');serve.add_argument('--port',type=int,default=8766);serve.add_argument('--seconds',type=int,default=900)
     experimental=s.add_parser('experimental',help='owner-controlled development sandbox; no automatic execution')
     experimental.add_argument('--directory',type=Path)
     experimental.add_argument('options',nargs=argparse.REMAINDER)

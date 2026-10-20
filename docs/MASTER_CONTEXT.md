@@ -15,6 +15,13 @@ Financial applications are outside current scope.
 
 ## What exists
 
+The shared learning-labs engineering layer connects language concepts, list
+programs, finite relations and authored world goals to the SAME Session journal
+and checked skill catalogue. It can reuse executable programs across compatible
+labs, with optional frozen GRU32 representation and source-only rule feedback.
+This is a runnable authored prototype, not evidence of useful neural transfer
+or improved learning-to-learn. See [guide](NEXUS_SHARED_LEARNING_LABS.md).
+
 - A finite concept learner, typed movement programs, clarification, corrections
   and durable Session/E1 Journal evidence.
 - A frozen shared multimodal GRU and RSSM-inspired h32/z8 world model, fixed

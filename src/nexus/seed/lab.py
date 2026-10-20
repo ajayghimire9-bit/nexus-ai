@@ -6,7 +6,7 @@ from .storage import load, save
 
 
 class SeedWorkspace:
-    def __init__(self, directory, *, language_encoder=None, meta_questions=False, grounded_model=None, grounded_hash=None, action_readout=None,plasticity_controller=None,plasticity_hash=None,surprise_gate=None):
+    def __init__(self, directory, *, language_encoder=None, meta_questions=False, grounded_model=None, grounded_hash=None, action_readout=None,plasticity_controller=None,plasticity_hash=None,surprise_gate=None,shared_model=None,shared_hash=None):
         self.directory = directory
         self.sessions = {}
         self.lock = threading.RLock()
@@ -18,6 +18,7 @@ class SeedWorkspace:
         self.action_readout=action_readout
         self.plasticity_controller=plasticity_controller;self.plasticity_hash=plasticity_hash
         self.surprise_gate=surprise_gate
+        self.shared_model=shared_model;self.shared_hash=shared_hash
 
     def attach_grounded(self, session):
         if self.grounded_model is not None:
@@ -65,6 +66,9 @@ class SeedWorkspace:
             elif op == 'export' and set(request) == {'op'}:
                 response = self.sessions[sid].request(dict(op='inspect'))
                 response['export'] = self.sessions[sid].snapshot()
+            elif type(op) is str and op.startswith('lab_'):
+                from .shared_brain import SharedBrain
+                response=SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash).request(request)
             else:
                 response = self.sessions[sid].request(request)
             return dict(session_id=sid, kind='live_authored_seed', scientific=False, response=response)

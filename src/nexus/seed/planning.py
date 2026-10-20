@@ -6,6 +6,11 @@ from collections import deque
 from .core import Move, MOVES
 
 
+def movement_reward(before,after,done,information=0.):
+    """Existing authored-world reward, shared by the interactive lab adapter."""
+    return (before-after)*.2-.02+(1. if done else 0.)+information
+
+
 def to_cell(obj, x, y, check, max_expansions=128):
     if any(type(v) is not int or not 0<=v<6 for v in (x,y)):
         raise ValueError('goal_grid_bounds')

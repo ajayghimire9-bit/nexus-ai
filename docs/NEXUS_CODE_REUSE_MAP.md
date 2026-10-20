@@ -2,6 +2,19 @@
 
 ## Active runtime
 
+- Shared labs: seed/shared_brain.py is an adapter over Session, not another agent
+  state store. seed/skill_library.py derives typed skill revisions and source-only
+  rule feedback from that SAME E1 Journal; existing storage saves them.
+- Typed skills: seed/skill_programs.py reuses core Predicate/GRAMMAR/Move and adds
+  bounded list operators. seed/relations.py extracts the old Relation primitives
+  with semantic_lessons public aliases intact. Existing planning.to_cell and the
+  original authored reward serve the World Lab reference.
+- meta/kind_statistics.py is the original EpsilonGreedyController numeric core,
+  shared by that controller and the lab adapter. No second bandit framework.
+- Optional representation/retrieval is the existing frozen SeedRSSM encoder/key/
+  query network; new domains have supplied sensor schemas, unvalidated neural
+  semantics. No GRU, normalization, recurrent contract or checkpoint is changed.
+
 - Finite concepts, typed programs, correction, evidence: src/nexus/seed/core.py.
 - Durable sessions and bounded local requests: seed/storage.py, seed/lab.py.
 - Recurrent state: seed/state_contract.py over world/seed_rssm.py.

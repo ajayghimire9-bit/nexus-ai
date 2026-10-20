@@ -152,6 +152,10 @@ class Session:
     def teach(self, word, obj, positive, supersedes=None):
         if not concept_word(word):
             raise ValueError('invented_word_required')
+        from .skill_library import state as shared_state
+        shared=shared_state(self)['latest'].get(word)
+        if shared and shared[1]['schema']=='predicate':
+            raise ValueError('shared_word_uses_shared_teaching_and_correction')
         obj = valid_object(obj)
         if type(positive) is not bool:
             raise ValueError('boolean_label_required')
@@ -220,6 +224,15 @@ class Session:
         atom = next((a for a in ATOMS if a[1] == reference), None)
         if atom:
             return [o['id'] for o in self.world if Predicate((atom,)).matches(o)], None
+        from .skill_library import state as shared_state
+        from .skill_programs import run as run_shared
+        entry=shared_state(self)['active'].get(reference)
+        if entry and entry[1]['program']['schema']=='predicate':
+            result=[]
+            for obj in self.world:
+                self.check();self.charge('predicate_tests')
+                if run_shared(entry[1]['program'],obj):result.append(obj['id'])
+            return result,None
         if not any(e['word'] == reference for e in self.evidence) and reference not in self.definitions:
             return [], 'unknown_concept'
         pool = self.candidates(reference)
@@ -314,6 +327,9 @@ class Session:
                 word = payload['word']; index = payload['predicate']
                 if not concept_word(word) or type(index) is not int or not 0 <= index < len(GRAMMAR):
                     raise ValueError('definition_schema')
+                from .skill_library import state as shared_state
+                shared=shared_state(self)['latest'].get(word)
+                if shared and shared[1]['schema']=='predicate':raise ValueError('shared_word_uses_shared_teaching_and_correction')
                 self.definitions[word] = index
                 self.event('seed_definition', dict(word=word, predicate=index))
                 result = dict(type='defined', text='Explicit grammar definition saved; this is not induced discovery.')
@@ -457,6 +473,10 @@ class Session:
             elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information','seed_grounded_action_rank','seed_adaptive_state','seed_surprise'):
                 from .grounded_records import validate_record
                 validate_record(event.kind,p,s)
+                s.event(event.kind,p)
+            elif event.kind in ('seed_shared_teaching','seed_shared_check','seed_shared_rollback'):
+                from .skill_library import validate_event
+                validate_event(event.kind,p,s)
                 s.event(event.kind,p)
             else:
                 raise ValueError('unknown_saved_event')

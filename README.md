@@ -22,6 +22,13 @@ Open http://127.0.0.1:8766/seed. Teach an invented word using positive/negative
 examples, ask clarifying questions, execute a typed movement program, save the
 session and correct a previous label. The local server stops after15minutes.
 
+The same server now has four [shared learning labs](docs/NEXUS_SHARED_LEARNING_LABS.md)
+at `/labs`: language concepts, small typed programs, reasoning patterns/relations
+and authored world goals. They share the existing Session and checked skill
+library. This is a functional teaching playground; useful learning-to-learn and
+neural cross-domain transfer remain unestablished. `nexus serve --mode labs`
+loads the original hash-verified frozen encoder when its recorded core is present.
+
 For the frozen neural model and tested action scorer:
 
 ```sh
@@ -43,7 +50,12 @@ for bounded local development and explicit resource approvals.
 
 ## What the evidence says
 
-The latest learning-rule study **failed its registered development screen**.
+The latest learning-choice study **failed all improvement screens**: protected
+learning error .210911 versus constant damping .180187. Observed-memory
+protection passed, but asking mostly deferred learning. No live promotion.
+[Latest results](docs/NEXUS_SEED_LEARNING_CHOICE_RESULTS.md).
+
+The earlier nonlinear-feature study also failed its development screen.
 Average error after 1/2/4/8 new examples was .170873 for learned contextual
 protection, .171423 for source-trained static protection and .128930 for scaled
 replay. The small advantage over static was inconclusive; learned/static/fixed
@@ -62,7 +74,7 @@ The preceding learned-plasticity experiment lost to scaled replay. The
 future-edit selector tied historical-best. Useful continual learning and
 learning-to-learn are **not established**. Negative results stay visible.
 
-[Latest results](docs/NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md) ·
+[Latest results](docs/NEXUS_SEED_LEARNING_CHOICE_RESULTS.md) ·
 [Action-readout results](docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md) ·
 [Learning failures](docs/NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) ·
 [Current state](docs/NEXUS_CANONICAL_CURRENT_STATE.md)

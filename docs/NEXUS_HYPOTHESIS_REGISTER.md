@@ -1,5 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Shared learning labs — engineering foundation, scientific benefit UNTESTED
+
+Four interfaces share typed skills, optional frozen representations and feedback-
+conditioned rule statistics. Exact fixture reuse/save/load is not evidence of
+faster adaptation on new tasks. No comparative benchmark, new holdout registration
+or hypothesis lock. The existing informative-versus-random question experiment
+remains proposed. All earlier learning-rule failures are preserved.
+
 ## Seed policy-roll-in and protected choice — all improvement screens FAILED
 
 H-coverage: .207067 roll-in versus .201848 reference;3/4 fold wins but worse

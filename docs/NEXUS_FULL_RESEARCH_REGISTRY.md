@@ -2,6 +2,12 @@
 
 ## Active evidence, newest first
 
+- [Shared Learning Brain and four labs](NEXUS_SHARED_LEARNING_LABS.md): engineering
+  foundation over the same Session/journal, bounded skill programs, optional
+  frozen representation and existing source-feedback statistics. Authored fixture
+  reuse and durable restore are verification targets, not scientific superiority.
+  No new scientific experiment, allocation, holdout registration or promotion.
+
 - [Policy-roll-in and learning choices](NEXUS_SEED_LEARNING_CHOICE_RESULTS.md):
   source coverage/protection/strong-baseline screens FAILED. Curve .207067
   roll-in, .210911 protected versus reference .201848 and constant .180187.

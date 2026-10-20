@@ -11,6 +11,7 @@ import numpy as np
 from nexus.evolution.mutate import WIDTHS, crossover_spec, mutate_spec, random_spec
 from nexus.meta.schedule import ranking_cost, research_value
 from nexus.meta.schema import ACTION_KINDS, ExperimentAction, Proposal
+from nexus.meta.kind_statistics import kind_value,observe_kind
 from nexus.nn.expr import canonical_key, crossover_expr, expr_to_str, mutate_expr, random_expr, register_expr
 from nexus.nn.spec import ArchitectureSpec
 from nexus.nn.validate import validate_activation
@@ -267,10 +268,7 @@ class EpsilonGreedyController(ResearchController):
         self.kind_n = {k: 0 for k in ACTION_KINDS}
 
     def predicted_kind_value(self, context: np.ndarray, kind: str) -> float:
-        n = self.kind_n.get(kind, 0)
-        if n <= 0:
-            return 0.0
-        return self.kind_sum[kind] / n
+        return kind_value(self.kind_sum,self.kind_n,kind)
 
     def propose(self, state: dict[str, Any], limits: dict[str, Any], rng: random.Random) -> Proposal:
         if rng.random() < self.epsilon or not state.get("elites"):
@@ -311,8 +309,7 @@ class EpsilonGreedyController(ResearchController):
         )
 
     def update(self, context: np.ndarray, kind: str, reward: float) -> None:
-        self.kind_sum[kind] = self.kind_sum.get(kind, 0.0) + float(reward)
-        self.kind_n[kind] = self.kind_n.get(kind, 0) + 1
+        observe_kind(self.kind_sum,self.kind_n,kind,reward)
 
     def state_dict(self) -> dict[str, Any]:
         return {

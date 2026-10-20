@@ -1,5 +1,10 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented as
+an authored engineering interface. It does not replace the scientific gate below
+or establish cross-domain learning benefit. No new experiment has run; source
+question-selection remains the single next scientific comparison.
+
 ## Current — informative versus random question choice (proposed, not run)
 
 Does choosing a more informative teaching example help at fixed label budget?

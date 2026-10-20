@@ -5,6 +5,13 @@ Study starting base:cf3f54cebe580a14ec191c48659f79e371cc1b72. Read
 
 ## Established within the tested authored setup
 
+Shared-labs engineering adds one common Session/skill interface for language,
+coding, reasoning and world tasks. Skills require separate authored checks;
+new programs are bounded typed data, not arbitrary source. Optional shared
+frozen encoding, existing bandit statistics and durable storage are reused.
+Cross-lab fixture execution is functional, not scientific transfer evidence.
+See [guide](NEXUS_SHARED_LEARNING_LABS.md). Prior improvement screens stay failed.
+
 Finite teaching/correction/persistence works. The shared observation-time and
 memory contracts are tested. The frozen-core nonlinear action readout passed
 its fresh development screen and improved goals/returns against frozen ranking,

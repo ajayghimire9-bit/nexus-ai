@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Shared learning-labs engineering
+
+Implemented common language/coding/reasoning/world interfaces, journal-backed
+skill revisions, fresh authored checks, corrections, compatible rollback and
+cross-lab program reuse. Frozen SeedRSSM representation and the original
+controller statistics are reused. No scientific comparison or neural training;
+prior negative results stay closed. Ledger unchanged:1943.6321034559958 used /
+1656.3678965440042 remaining. Functional tests/demo are recorded separately;
+no general transfer or learning-to-learn claim. See NEXUS_SHARED_LEARNING_LABS.md.
+
 ## Policy-roll-in refit and learn/ask/retain: improvement screens FAILED
 
 Locked268589a; one2.284774s CPU dispatch, four-second conservative debit.

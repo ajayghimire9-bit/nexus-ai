@@ -3,7 +3,6 @@
 Syntax/primitives are supplied,not learned universal language. The existing
 Predicate/Move checker is retained. Query meanings never enter feature creation.
 """
-from dataclasses import dataclass
 import random
 import re
 import torch
@@ -11,20 +10,7 @@ from .core import GRAMMAR,Move,examples
 from .adaptive_state import meaning_features
 from .grounded_world import observation,tensors
 from .plasticity import correction,context
-
-
-@dataclass(frozen=True)
-class Relation:
-    name:str
-
-    def matches(self,pair):
-        a,b=pair
-        return {'left_of':a['x']<b['x'],'right_of':a['x']>b['x'],
-                'above':a['y']<b['y'],'below':a['y']>b['y'],
-                'same_color':a['color']==b['color'],'same_shape':a['shape']==b['shape']}[self.name]
-
-
-RELATIONS=tuple(Relation(n) for n in ('left_of','right_of','above','below','same_color','same_shape'))
+from .relations import Relation,RELATIONS
 
 
 def input_features(model,obj,word,partner=None):

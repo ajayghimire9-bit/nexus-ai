@@ -3,6 +3,7 @@ import random
 import numpy as np
 import torch
 from .core import examples
+from .planning import movement_reward
 from nexus.world.seed_rssm import ACTION_NAMES,TRACE_WORDS
 
 COLORS={'red':(1.,0.,0.),'blue':(0.,0.,1.),'green':(0.,1.,0.)}
@@ -66,6 +67,6 @@ class AuthoredWorld:
                 self.flags[i]=1;info=.05 if action==4 and getattr(self,'information_reward',True) else 0.
         after=abs(self.obj['x']-self.goal[0])+abs(self.obj['y']-self.goal[1])
         done=after==0;self.steps+=1
-        reward=(before-after)*.2-.02+(1. if done else 0.)+info
+        reward=movement_reward(before,after,done,info)
         return self.observe(),reward,done,dict(trace=trace_for(action,done,blocked),
             information_gain_proxy=info,primitive_actions=primitive,blocked=blocked)

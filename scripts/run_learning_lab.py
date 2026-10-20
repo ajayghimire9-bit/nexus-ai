@@ -36,6 +36,11 @@ class LabHandler(BaseHTTPRequestHandler):
         if not self.local_request():return self.send_json(403,{'error':'local_origin_required'})
         parsed=urlparse(self.path)
         try:
+            if parsed.path=='/labs' and not parsed.query:
+                body=(ROOT/'web/learning-lab/shared.html').read_bytes();self.send_response(200)
+                self.send_header('Content-Type','text/html; charset=utf-8')
+                self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
+                self.end_headers();return self.wfile.write(body)
             if parsed.path=='/seed' and not parsed.query:
                 body=(ROOT/'web/learning-lab/seed.html').read_bytes();self.send_response(200)
                 self.send_header('Content-Type','text/html; charset=utf-8')
@@ -120,6 +125,7 @@ class LabHandler(BaseHTTPRequestHandler):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765);parser.add_argument('--allow-fixtures',action='store_true');parser.add_argument('--allow-seed',action='store_true');parser.add_argument('--seed-directory',type=Path,default=ROOT/'runs/seed-sessions');parser.add_argument('--max-runtime-s',type=int,default=900);parser.add_argument('--fixture-worker',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--seed-encoder',type=Path);parser.add_argument('--seed-encoder-sha256');parser.add_argument('--seed-meta-questions',action='store_true')
     parser.add_argument('--seed-grounded-model',type=Path);parser.add_argument('--seed-grounded-sha256')
+    parser.add_argument('--seed-shared-model',type=Path);parser.add_argument('--seed-shared-sha256')
     parser.add_argument('--seed-action-readout',type=Path);parser.add_argument('--seed-action-readout-sha256')
     parser.add_argument('--seed-surprise-study',type=Path);parser.add_argument('--seed-surprise-sha256')
     parser.add_argument('--seed-plasticity-controller',type=Path);parser.add_argument('--seed-plasticity-sha256')
@@ -129,6 +135,13 @@ def main():
         print(json.dumps(run_fixture_request(json.loads(sys.stdin.read(4097))),allow_nan=False));return
     if not 1024<=args.port<=65535 or not 1<=args.max_runtime_s<=900:raise ValueError('local_server_limits')
     if bool(args.seed_encoder)!=bool(args.seed_encoder_sha256) or not args.allow_seed and (args.seed_encoder or args.seed_meta_questions):raise ValueError('explicit_seed_model_path_hash_and_opt_in_required')
+    if bool(args.seed_shared_model)!=bool(args.seed_shared_sha256) or args.seed_shared_model and (not args.allow_seed or args.seed_grounded_model):raise ValueError('separate_owner_verified_shared_encoder_workspace_required')
+    shared=None
+    if args.seed_shared_model:
+        import torch
+        torch.set_num_threads(1)
+        from nexus.world.seed_rssm import SeedRSSM
+        shared,_=SeedRSSM.load(args.seed_shared_model,args.seed_shared_sha256)
     encoder=None
     grounded=None;plasticity=None;surprise=None
     readout=None
@@ -160,7 +173,7 @@ def main():
         server.experimental_directory=args.experimental_directory
         if args.allow_seed:
             from nexus.seed.lab import SeedWorkspace
-            server.seed_workspace=SeedWorkspace(args.seed_directory,language_encoder=encoder,meta_questions=args.seed_meta_questions,grounded_model=grounded,grounded_hash=args.seed_grounded_sha256,action_readout=readout,plasticity_controller=plasticity,plasticity_hash=args.seed_plasticity_sha256,surprise_gate=surprise)
+            server.seed_workspace=SeedWorkspace(args.seed_directory,language_encoder=encoder,meta_questions=args.seed_meta_questions,grounded_model=grounded,grounded_hash=args.seed_grounded_sha256,action_readout=readout,plasticity_controller=plasticity,plasticity_hash=args.seed_plasticity_sha256,surprise_gate=surprise,shared_model=shared,shared_hash=args.seed_shared_sha256)
         server.fixture_lock=threading.Lock()
         server.fixtures_enabled=args.allow_fixtures;server.requests_remaining=10;server.timeout=.5
         end=time.monotonic()+args.max_runtime_s

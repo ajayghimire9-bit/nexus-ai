@@ -21,6 +21,8 @@ class WorkingState:
             return WorkingState(None,self.last_concept,event.fingerprint)
         if event.kind in ('seed_teaching','seed_definition'):
             return WorkingState(None,p['word'],event.fingerprint)
+        if event.kind=='seed_shared_teaching':
+            return WorkingState(None,p['name'],event.fingerprint)
         return self
 
     def payload(self):

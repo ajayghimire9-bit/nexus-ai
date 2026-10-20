@@ -18,6 +18,7 @@ demonstrated learning-to-learn.
 
 ## Engineering and research context
 
+- [Shared Learning Brain, four labs and checked skill reuse](NEXUS_SHARED_LEARNING_LABS.md)
 - [Master context](MASTER_CONTEXT.md)
 - [Canonical current state](NEXUS_CANONICAL_CURRENT_STATE.md)
 - [Shared code ownership](NEXUS_CODE_REUSE_MAP.md)
