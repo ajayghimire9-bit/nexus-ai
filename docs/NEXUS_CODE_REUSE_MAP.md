@@ -2,6 +2,12 @@
 
 ## Active runtime
 
+- Selective investigation fallback: `seed/investigation_hybrid.py` reuses
+  `investigation_transfer.run/validate_output/adapt` with explicit internal
+  profiles, the same LabelOracle and existing EXPERIMENTAL host/journal. Only
+  the fallback changes; parent source/tree are hash-verified and never refit.
+  Exact single-pass greedy scoring charges each lookup. No new learning store.
+
 - Investigation transfer: `seed/investigation_transfer.py` reuses the existing
   `structure.investigation` tree, `question_selection.LabelOracle` and
   EXPERIMENTAL host/worker. No parallel memory or learning framework. The

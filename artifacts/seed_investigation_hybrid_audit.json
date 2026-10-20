@@ -1,0 +1,106 @@
+{
+  "valid": true,
+  "independent_arithmetic": {
+    "tree_fixed": {
+      "questions": 3.15625,
+      "search_checks": 0,
+      "total_work_including_source": 1961
+    },
+    "tree_greedy": {
+      "questions": 2.96875,
+      "search_checks": 60,
+      "total_work_including_source": 1991
+    },
+    "greedy": {
+      "questions": 3.0,
+      "search_checks": 3328,
+      "total_work_including_source": 3776
+    },
+    "fixed_order": {
+      "questions": 4.0,
+      "search_checks": 0,
+      "total_work_including_source": 649
+    },
+    "no_library": {
+      "questions": 4.4375,
+      "search_checks": 0,
+      "total_work_including_source": 648
+    }
+  },
+  "recorded_policy_replays": 160,
+  "historical_artifacts_unchanged": 801,
+  "frozen_tree": "c5e68b085ebd654e7dcc57c3319f0099e778dc4bc359aa6cb88b862f67b4e80e",
+  "source_cost_charged": true,
+  "mixture_sensitivity": {
+    "label": "post_run_descriptive_equal_rule_reweighting_not_registered_endpoint",
+    "rule_counts": {
+      "0": 8,
+      "1": 1,
+      "2": 4,
+      "3": 7,
+      "4": 4,
+      "5": 3,
+      "6": 2,
+      "7": 3
+    },
+    "mean_questions": {
+      "tree_fixed": 3.375,
+      "tree_greedy": 3.125,
+      "greedy": 3,
+      "fixed_order": 3.875,
+      "no_library": 4.458333333333333
+    }
+  },
+  "collection": 0,
+  "training": 0,
+  "neural_inference": 0,
+  "schema": "seed_investigation_hybrid_audit_v1",
+  "raw_sha256": "06b9794f0801f06ddd74a8f6549d968fffb8e33c7ef9780146ed4a02654fa5df",
+  "verifier_sha256": "afe81e239212ac2940e2e0abebd50c52d50fb43c97dd798ae2b929f12b7888c0",
+  "execution_sha": "32670a1aab235f979e1e836059da024021c4f709",
+  "tests": [
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed_investigation_hybrid.py tests/test_seed_investigation_transfer.py tests/test_seed_investigation_evidence.py tests/test_seed_structure.py tests/test_seed_structure_evidence.py tests/test_seed_experimental.py tests/test_seed_conversation.py tests/test_seed_foundation_evidence.py",
+      "passed": 138,
+      "seconds": 23.36
+    },
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed*.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_planning.py tests/test_expr.py tests/test_factory.py tests/test_evolution2_planner_quality.py",
+      "passed": 907,
+      "seconds": 188.49
+    },
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed_hybrid_evidence.py tests/test_seed_investigation_hybrid.py tests/test_seed_investigation_evidence.py",
+      "passed": 27,
+      "seconds": 5.55
+    },
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed_hybrid_evidence.py tests/test_seed_investigation_hybrid.py tests/test_seed_investigation_evidence.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py",
+      "passed": 39,
+      "seconds": 13.47
+    }
+  ],
+  "test_environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "PYTHONPATH": "src:/Users/ajayghimire/Projects/nexus-ai/.deps"
+  },
+  "prior_failures": [
+    "Synthetic runner fixture omitted schema; corrected before scientific execution"
+  ],
+  "browser": {
+    "pre_run_original_checks": 8,
+    "initial_post_run_hybrid_checks": 10,
+    "final_post_run_hybrid_checks": 11,
+    "final_command": "node tests/browser/seed_investigation_hybrid.cjs",
+    "javascript_errors": 0
+  },
+  "ledger": {
+    "debit": 2,
+    "used": 1983.6321034559958,
+    "remaining": 1616.3678965440042
+  },
+  "scientific_runs": 1,
+  "screenshot_sha256": "8391a12c37c72810faa0bfff863e9f698781769affcaf06465c511726d974de1"
+}

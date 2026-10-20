@@ -2,6 +2,7 @@
 import hashlib
 import json
 import math
+import statistics as st
 from pathlib import Path
 import subprocess
 import sys
@@ -39,8 +40,17 @@ def verify():
         meta,path=line.split('\t');body=(ROOT/path).read_bytes()
         assert hashlib.sha1(b'blob '+str(len(body)).encode()+b'\0'+body).hexdigest()==meta.split()[2],path
         count+=1
+    # Post-run descriptive reweighting of saved rows only. Does not change the
+    # registered random-task estimand or screen; no new outcomes are generated.
+    groups={i:[] for i in range(8)}
+    for row in r['rows']:
+        law=next(i for i,values in enumerate(h.base.TABLE) if list(values)==row['support_bank_answers'])
+        groups[law].append(row)
+    sensitivity=dict(label='post_run_descriptive_equal_rule_reweighting_not_registered_endpoint',
+        rule_counts={str(i):len(rows) for i,rows in groups.items()},
+        mean_questions={m:st.mean(st.mean(row['methods'][m]['questions_to_identify'] for row in rows) for rows in groups.values()) for m in h.METHODS} if all(groups.values()) else None)
     return dict(valid=True,independent_arithmetic=independent,recorded_policy_replays=160,historical_artifacts_unchanged=count,
-        frozen_tree=r['library_hash'],source_cost_charged=True,collection=0,training=0,neural_inference=0)
+        frozen_tree=r['library_hash'],source_cost_charged=True,mixture_sensitivity=sensitivity,collection=0,training=0,neural_inference=0)
 
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))

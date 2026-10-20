@@ -12,6 +12,14 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Selective greedy fallback](docs/NEXUS_SEED_INVESTIGATION_HYBRID_RESULTS.md)
+passed its authored development screen:2.969 questions versus greedy3.000,
+no five-question cases,98.2% fewer search checks and47.3% less source-inclusive
+work proxy. The interval does not establish question superiority; equal-rule
+reweighting favors greedy. No live promotion or general learning-to-learn claim.
+
+The prior result remains closed:
+
 [Frozen investigation transfer](docs/NEXUS_SEED_INVESTIGATION_TRANSFER_RESULTS.md)
 completed and **failed its registered screen**. The learned question order used
 3.375 questions versus fixed4.219/random4.563, but greedy/exhaustive used3.000.

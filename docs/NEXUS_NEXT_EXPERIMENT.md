@@ -1,5 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest — selective greedy fallback passed its development screen
+
+Frozen-tree hybrid averaged2.96875 questions versus tree-fixed3.15625, pure greedy3, fixed4 and random4.4375. It removed all6 five-question cases and used60 versus3328 search checks; source-inclusive work1991 versus3776 (47.27% lower proxy, not wall speed). Greedy question-difference interval includes zero; equal-rule descriptive reweighting favors greedy3 versus hybrid3.125. This is one frozen tree in a supplied grammar, not general learning-to-learn. No promotion. [Results](NEXUS_SEED_INVESTIGATION_HYBRID_RESULTS.md), [protocol](NEXUS_SEED_INVESTIGATION_HYBRID_PROTOCOL.md).
+
+Execution32670a1aab235f979e1e836059da024021c4f709; one run,1280 new authored observations,2s debit. Ledger1983.6321034559958s used /1616.3678965440042s remaining. Next: independently source-trained frozen-tree replications with rule-balanced fresh targets against pure greedy; no second run. Older entries below retain their chronology.
+
+
 ## Current registration — frozen tree + greedy fallback
 
 The owner-approved [five-way comparison](NEXUS_SEED_INVESTIGATION_HYBRID_PROTOCOL.md) is registered on fresh targets983200–983231. Frozen inherited tree and source provenance; zero source fitting. Exact cap60s/5000 authored observations; carry1981.6321034559958s used /1618.3678965440042s remaining. No new outcome yet. Prior investigation failure stays closed.

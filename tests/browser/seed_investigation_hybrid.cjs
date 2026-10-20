@@ -10,6 +10,7 @@ assert.equal(await card.locator('table tr').count(),6);
 for(const name of ['tree_fixed','tree_greedy','greedy','fixed_order','no_library'])assert.ok((await card.textContent()).includes(name));
 assert.ok((await card.textContent()).includes('total including source'));
 assert.ok((await card.textContent()).includes('five-question tail'));
+assert.ok((await card.textContent()).includes('equal-rule'));
 await card.screenshot({path:'runs/seed-investigation-hybrid-results.png'});
-assert.deepEqual(errors,[]);await browser.close();console.log(JSON.stringify({passed:true,checks:10,scientific_execution:false}));
+assert.deepEqual(errors,[]);await browser.close();console.log(JSON.stringify({passed:true,checks:11,scientific_execution:false}));
 })().catch(e=>{console.error(e);process.exit(1)});

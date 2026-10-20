@@ -3,6 +3,7 @@ import argparse
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from contextlib import nullcontext
 import json
+import hashlib
 from pathlib import Path
 import subprocess
 import sys
@@ -88,6 +89,11 @@ class LabHandler(BaseHTTPRequestHandler):
                 if (ROOT/'artifacts/seed_investigation_hybrid.json').exists():
                     from nexus.seed.investigation_hybrid import saved_replay as hybrid_replay
                     hybrid=hybrid_replay(ROOT)
+                    audit_path=ROOT/'artifacts/seed_investigation_hybrid_audit.json'
+                    if audit_path.exists():
+                        audit=json.loads(audit_path.read_text())
+                        if audit['raw_sha256']!=hashlib.sha256((ROOT/'artifacts/seed_investigation_hybrid.json').read_bytes()).hexdigest():raise ValueError('hybrid_audit_mismatch')
+                        hybrid['investigation_transfer']['mixture_sensitivity']=audit['mixture_sensitivity']
                     state['experiments']=[r for r in state['experiments'] if r['id']!=hybrid['id']]+[hybrid]
                 if (ROOT/'artifacts/seed_executable_world.json').exists():
                     from nexus.seed.structure.study import saved_replay as structure_replay
