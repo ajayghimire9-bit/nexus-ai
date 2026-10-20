@@ -28,6 +28,15 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+The fixed-learner informative-question test is complete and FAILED its source
+screen: MSE .193552 versus random .191753, difference −.001799 with an interval
+including zero. Original-order damping reproduces .180187 exactly. Retention
+passed; no learned question-policy advantage or live promotion. Next: an
+evaluator-only source pool-headroom audit to check whether useful candidate
+questions exist before training their selector. See
+[results](NEXUS_SEED_QUESTION_SELECTION_RESULTS.md).
+Older next-gate entries below preserve their chronology.
+
 One policy-roll-in refit plus the protected learn/ask/retain advisory is now
 complete: all improvement screens FAILED. Protected curve .210911 versus
 constant .180187; known-anchor cap and retention tolerance pass.4 learn /80 ask /

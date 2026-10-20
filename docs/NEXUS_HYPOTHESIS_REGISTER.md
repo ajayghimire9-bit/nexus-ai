@@ -1,6 +1,11 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
-## H-question — registered fixed-learner source comparison, not scored
+## H-question — fixed-learner source screen FAILED
+
+From080d051: informative .193552 versus random .191753, original .180187.
+Primary random-minus-informative −.001799[−.020980,+.017382]; no supported
+improvement. Retention passed, fold wins3/4. Complete valid execution is distinct
+from the failed scientific screen. No promotion. Original hypothesis follows.
 
 Input-only variance selection may reduce the1/2/4/8-label query-error mean versus
 random questions with the same frozen constant-damping learner. Competing null:
@@ -15,8 +20,8 @@ or learned question-policy evidence. Protocol NEXUS_SEED_QUESTION_SELECTION_PROT
 Four interfaces share typed skills, optional frozen representations and feedback-
 conditioned rule statistics. Exact fixture reuse/save/load is not evidence of
 faster adaptation on new tasks. No comparative benchmark, new holdout registration
-or hypothesis lock. The existing informative-versus-random question experiment
-remains proposed. All earlier learning-rule failures are preserved.
+or hypothesis lock during that engineering task. The later question comparison
+is now closed with a failed screen above. Earlier learning-rule failures remain.
 
 ## Seed policy-roll-in and protected choice — all improvement screens FAILED
 

@@ -3,9 +3,10 @@
 ## Active evidence, newest first
 
 - [Fixed-learner question selection](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md):
-  registered source exploration, pending execution. Input-only variance versus
-  ten random orders and original-order reference at1/2/4/8 labels. Frozen damping,
-  12 reused source tasks, no collection or learned question-policy claim.
+  completed source exploration; improvement screen FAILED. Informative .193552
+  versus random .191753, original order .180187. Primary −.001799 interval
+  includes zero; retention passed.12 reused tasks/one core. No collection or
+  promotion. [Results](NEXUS_SEED_QUESTION_SELECTION_RESULTS.md), execution080d051.
 
 - [Shared Learning Brain and four labs](NEXUS_SHARED_LEARNING_LABS.md): engineering
   foundation over the same Session/journal, bounded skill programs, optional

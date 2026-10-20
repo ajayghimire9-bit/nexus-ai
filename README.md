@@ -50,10 +50,15 @@ for bounded local development and explicit resource approvals.
 
 ## What the evidence says
 
-The latest learning-choice study **failed all improvement screens**: protected
+The latest fixed-learner question study **failed its source improvement screen**:
+informative selection MSE .193552 versus random .191753; its interval includes
+zero. Original-order constant damping remains .180187. No new collection or
+live promotion. [Latest results](docs/NEXUS_SEED_QUESTION_SELECTION_RESULTS.md).
+
+The previous learning-choice study **failed all improvement screens**: protected
 learning error .210911 versus constant damping .180187. Observed-memory
 protection passed, but asking mostly deferred learning. No live promotion.
-[Latest results](docs/NEXUS_SEED_LEARNING_CHOICE_RESULTS.md).
+[Learning-choice results](docs/NEXUS_SEED_LEARNING_CHOICE_RESULTS.md).
 
 The earlier nonlinear-feature study also failed its development screen.
 Average error after 1/2/4/8 new examples was .170873 for learned contextual
@@ -74,7 +79,7 @@ The preceding learned-plasticity experiment lost to scaled replay. The
 future-edit selector tied historical-best. Useful continual learning and
 learning-to-learn are **not established**. Negative results stay visible.
 
-[Latest results](docs/NEXUS_SEED_LEARNING_CHOICE_RESULTS.md) ·
+[Latest results](docs/NEXUS_SEED_QUESTION_SELECTION_RESULTS.md) ·
 [Action-readout results](docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md) ·
 [Learning failures](docs/NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) ·
 [Current state](docs/NEXUS_CANONICAL_CURRENT_STATE.md)

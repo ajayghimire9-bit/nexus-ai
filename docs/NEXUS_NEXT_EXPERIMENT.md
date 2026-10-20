@@ -1,25 +1,39 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
 The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented as
-an authored engineering interface. It does not replace the scientific gate below
-or establish cross-domain learning benefit. No new experiment has run; source
-question-selection remains the single next scientific comparison.
+an authored engineering interface. It does not establish cross-domain learning
+benefit. The later fixed-learner question comparison is complete and closed.
 
-## Current — informative versus random question choice (registered, not run)
+## Current — source pool-headroom audit (proposed, not run)
+
+Do useful next questions exist in the allowed eight-row pool, or does the input-
+variance proxy fail to identify them? Keep the learner fixed. On reused SOURCE
+data, an evaluator-only one-label counterfactual audit can measure each available
+candidate's actual query-error reduction. Compare the best attainable reduction
+with the registered variance choice, task by task. Keep these oracle utilities
+outside runtime decisions and label the analysis exploratory. No new model,
+collection, question-policy training, confirmation or live promotion. Register
+its exact scope before scoring. This is the one next proposal, not a run here.
+
+## Closed — informative versus random question choice
+
+From080d051: improvement screen FAILED, retention passed. Informative .193552
+versus random .191753; primary −.001799[−.020980,+.017382]. Original-order learner
+reproduces .180187 exactly. One core,12 reused tasks, no promotion. See
+[results](NEXUS_SEED_QUESTION_SELECTION_RESULTS.md). Original design follows.
 
 Does choosing a more informative teaching example help at fixed label budget?
 Hold the strong constant-damping update fixed. Compare a registered support-only
 question-selection rule with random questions, using a separate candidate pool
 whose labels are hidden until requested. Measure1/2/4/8-label query prediction
-and retention at equal teaching/compute budgets. Do not train from query answers.
-Exact source-only rule/pool/screen now registered in
-[protocol](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md); tested implementation must
-be committed before scoring. Identical labels/learner updates, extra information
+and retention at equal teaching budgets under one compute cap. No query answers
+train the learner. Source rule/pool/screen registered in
+[protocol](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md); implementation was committed
+before scoring. Identical labels/learner updates, extra information
 scoring disclosed; compute is capped, not claimed equal in FLOPs.
 The current learn/ask/retain study FAILED its improvement screens;80 asks merely
 deferred to predetermined examples. A memory cap is not sufficient evidence of
-useful learning. Register the exact pool, rule and acceptance criteria separately;
-no fresh collection, second run or live promotion occurred. See
+useful learning. No fresh collection, second run or live promotion occurred. See
 NEXUS_SEED_LEARNING_CHOICE_RESULTS.md.
 
 ## Closed — one policy-roll-in refit comparison

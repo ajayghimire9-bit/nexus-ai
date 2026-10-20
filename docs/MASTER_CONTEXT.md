@@ -41,6 +41,15 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The fixed-learner question-selection run from080d051 completed once. Its source
+screen FAILED: informative curve MSE .193552 versus random .191753 and original
+order .180187. Random-minus-informative −.001799[−.020980,+.017382], exploratory
+conditional on12 reused source tasks and ONE core. Retention passed;3/4 fold
+wins do not override the primary failure. Original learner replay matched exactly.
+No new collection, model training or runtime promotion. This fixed heuristic
+does not demonstrate learned questioning or learning-to-learn. See
+[results](NEXUS_SEED_QUESTION_SELECTION_RESULTS.md).
+
 The source policy-roll-in and learn/ask/retain study from268589a completed once.
 All improvement screens FAILED: curve MSE .201848 reference, .207067 roll-in,
 .210911 protected versus .180187 constant damping. Protected choices4 learn /
@@ -159,8 +168,9 @@ The scalar gate test also failed; the constant gate matched/exceeded its benefit
 The prefix-feature audit failed its primary full-feature screen. The subsequent
 sequential consistency selector also failed against trained damping and replay.
 The one policy-roll-in refit and protected choice study also failed improvement
-screens. Next proposed study: informative versus random question selection with
-the stronger constant-damping learner fixed, isolating label choice.
+screens. The informative-versus-random question test with the stronger learner
+fixed also failed. Next proposed: evaluator-only source pool-headroom audit of
+available one-label counterfactuals, before training a question selector.
 No new collection or architecture growth is scheduled; fresh validation is
 required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -178,8 +188,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1943.6321034559958seconds used,
-1656.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1948.6321034559958seconds used,
+1651.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

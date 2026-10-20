@@ -1,6 +1,18 @@
 # NEXUS progress log
 
-## Fixed-learner question selection — registered, not scored
+## Fixed-learner question selection — source screen FAILED
+
+Locked080d051 executed once in3.348762s host wall/2.310780s CPU. Informative MSE
+.193552 versus random .191753, original .180187. Primary difference −.001799
+[−.020980,+.017382]; retention passed,3/4 fold wins. All432 trajectories complete,
+original-order baseline exact,432 independent variance checks within2.955e−7.
+No new interactions, neural inference/training or promotion. Eight GUI checks
+passed; saved evidence displays failure honestly. Conservative debit5s leaves
+1948.6321034559958 used /1651.3678965440042 remaining. Next: one evaluator-only
+source pool-headroom audit, proposed not run. See
+[results](NEXUS_SEED_QUESTION_SELECTION_RESULTS.md).
+
+## Fixed-learner question selection — preparation history
 
 From GitHub-matched1bf505c on codex/seed-informative-questions: isolate label
 choice from the previously unsuccessful learner selector. Fixed constant

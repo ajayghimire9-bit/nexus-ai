@@ -1,0 +1,128 @@
+{
+  "schema": "seed_question_selection_verification_v1",
+  "branch": "codex/seed-informative-questions",
+  "starting_sha": "1bf505c0415c5c2b8dd0a9dbfcac511f283ec4e3",
+  "execution_sha": "080d051b7e227d27ba389fd104d9f7d9573b44a6",
+  "audit": {
+    "valid": true,
+    "raw_sha256": "62107f74c6cb0e81b5dcf0a2a352719e8ceb806d88a4d5c7a6adfe1a505577c1",
+    "checked_variances": 432,
+    "max_variance_error": 2.95480509393542e-07,
+    "max_original_order_error": 0.0,
+    "complete_trajectories": 432,
+    "source_screen_pass": false,
+    "frozen_state_preserved": true,
+    "scientific_execution": false
+  },
+  "source_sha256": {
+    "src/nexus/seed/question_selection.py": "556ce97efe4195e2ce83bf34f3cad606b6eaea301157d6dfe8d0eaec781390f5",
+    "src/nexus/seed/experimental.py": "4c9b233de601bd90d054a509b217d6851d8894fccb42e686aea873243d7d97a0",
+    "src/nexus/seed/experimental_worker.py": "4ac82bbbc35d59386bc28125a4fb3bb8656b75071fd9eea575f89a7c8e14cb4d",
+    "src/nexus/seed/sequential_consistency.py": "142a561674150a4e42c5b29ae9be1ab643ccda9d436f4de18d035cc257982eb1",
+    "src/nexus/seed/cumulative_learning.py": "600fb6d475416e7084e20be12c5bf5deb14588e5a50fd06a6d6aa637a33b558e",
+    "src/nexus/seed/learning_benchmark.py": "488722dcc43e8adb87c0350ec78f22a394d5e2fbf518cbbc7a2a4399a098c4d8",
+    "scripts/run_seed_question_selection.py": "95a030feb73b1b0553b225712b70cb9ec926fdaa8ff94cf8e9c7397508301e36",
+    "scripts/verify_seed_question_selection.py": "0921af6697c463ba56d851c745a03af6a96c93f3a9adb8d9966dab639f08429f",
+    "tests/test_seed_question_selection.py": "6628bbd08f415bbeef9870586add79576a6f59c29a735fe9d6174390b62991e6",
+    "tests/test_seed_question_selection_saved.py": "918671f06066e0b6fde3052736ba33aef6658fa503d1c2256c0f52e735ee5e90",
+    "configs/seed_question_selection.json": "1ccee2a6b55784aaa36f0192a647659fa875c6bfa223f20ddadc59f82ec37eee",
+    "docs/NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md": "97fd86622a4c9d218f2fc8f91fe76aa01b8f2ba1e2c585993ec92e527364bff3"
+  },
+  "historical_artifacts": {
+    "count": 773,
+    "all_byte_preserved": true,
+    "inventory_sha256": "2f467dd30e7354975c8d54c715efc71e32cf9f61b60332db899b3f1768c1b429"
+  },
+  "frozen_core_sha256": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b",
+  "frozen_state_sha256": "4c1c58096a92ca22df3b8f241f3a1cc9ecc1854e4eea0ec16a9e6489f2d52dd6",
+  "tests": [
+    {
+      "scope": "initial focus",
+      "passed": 30,
+      "failed": 1,
+      "note": "Test covariance reference used float32 identity. Corrected reference dtype before protocol lock; production math unchanged."
+    },
+    {
+      "scope": "question/sequential/host",
+      "passed": 78,
+      "failed": 0,
+      "wall_s": 21.76
+    },
+    {
+      "scope": "pre-execution full relevant regression",
+      "passed": 618,
+      "failed": 0,
+      "wall_s": 72.64
+    },
+    {
+      "scope": "final full relevant regression",
+      "passed": 622,
+      "failed": 0,
+      "wall_s": 74.43
+    }
+  ],
+  "gui": {
+    "checks": [
+      "actual failed screen, contrast and conditional label displayed",
+      "all 1/2/4/8-example informative and random values match raw artifact",
+      "four lab controls remain available",
+      "mobile viewport has no horizontal overflow",
+      "API reports complete negative evidence and zero new interactions",
+      "detailed dashboard renders actual curves, retention, fold results and uncertainty",
+      "repeated GUI inspection launches no experiment and changes no ledger",
+      "no browser JavaScript errors"
+    ],
+    "passed": 8,
+    "wall_s": 3.018,
+    "new_environment_interactions": 0,
+    "scientific_execution": false
+  },
+  "screenshots": {
+    "docs/assets/seed-question-selection-gui.png": "8d763133465a2293f873c3e2382ef371290e8590e1d2bf291ab6c185ef7278d2"
+  },
+  "main_sha": "ad8b65c155f20a71a82f1ee51bcde9e1fd353492",
+  "unrelated_root_file_sha256": {
+    "src/nexus/evolution1/adapters.py": "3a6ebc91637bccca755aa4d7f5e17d908b836ff74db136e42d624fb3a320123f",
+    "tests/test_evolution1_adapters.py": "36b19194589d997422dc6cfc9ee92ed92bb67a4c78b73625f6002e2cc44f37e1"
+  },
+  "main_unmodified": true,
+  "resources": {
+    "available_candidate_scores": 432,
+    "candidate_variance_scores": 768,
+    "constant_scalar_reads": 432,
+    "cpu_s": 2.31078,
+    "cumulative_anchor_rows": 13824,
+    "cumulative_solves": 3456,
+    "cumulative_support_rows": 15552,
+    "evaluation_snapshots": 3888,
+    "imagined_transitions": 0,
+    "initial_anchor_rows": 1728,
+    "initial_solves": 432,
+    "inner_updates": 3456,
+    "normalization_source_rows": 432,
+    "observed_teaching_presentations": 3456,
+    "query_score_rows": 104976,
+    "random_permutations": 120,
+    "real_steps": 0,
+    "retention_score_rows": 104976,
+    "trajectories": 432,
+    "unique_cached_teaching_labels": 96,
+    "updates": 0,
+    "variance_solves": 96,
+    "world_model_forwards": 0
+  },
+  "host_wall_s": 3.3487623340042774,
+  "peak_sampled_rss_mb": 353.296875,
+  "ledger": {
+    "before_used_s": 1943.6321034559958,
+    "debit_s": 5,
+    "used_s": 1948.6321034559958,
+    "remaining_s": 1651.3678965440042
+  },
+  "scientific_runs": 1,
+  "complete": true,
+  "source_screen_pass": false,
+  "fresh_validation": false,
+  "runtime_promotion": false,
+  "learning_to_learn_established": false
+}
