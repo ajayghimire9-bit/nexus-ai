@@ -1,4 +1,8 @@
 """Read-only source-gate audit; explicit checkpoint audits fail on missing files."""
+from pathlib import Path
+import sys
+
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 from verify_seed_cumulative_learning import main
 from nexus.seed.update_gate import validate,source_pack
 

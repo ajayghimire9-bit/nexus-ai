@@ -34,6 +34,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The scalar update/retain gate study from0ce94d0 completed once. Learned curve
+MSE .180324 versus source-trained constant .180187, unit cumulative .189456,
+replay .187016 and bounded fixed .184388. Contextual learning is .076% worse
+than constant and misses the5% practical screen: FAILED. Retention passed.
+Generic damping helps this reused source bank; useful context-dependent
+learning is not established. No fresh validation, control run or promotion.
+See [results](NEXUS_SEED_UPDATE_GATE_RESULTS.md).
+
 The task-blocked cumulative learning-rule study from5235599 completed once.
 New learned/static rules trained on nine tasks per fold, assessed three excluded
 tasks. Curve MSE .187597 learned, .188183 static, .189456 fixed cumulative,
@@ -114,8 +122,9 @@ first-update diagnosis is complete and does not explain the failure by itself.
 The bounded source comparison is complete: stabilization passed but advancement
 failed against strong replay. The subsequent cumulative evidence learner also
 failed its learned-specific source screen.
-Next proposed source test: a learned scalar update/retain gate versus a matched
-source-trained constant gate and the same replay/bounded references.
+The scalar gate test also failed; the constant gate matched/exceeded its benefit.
+Next proposed source test: whether observed-prefix consistency contains useful
+information for update/retain decisions beyond the current error/novelty context.
 No new collection or architecture growth is scheduled; fresh validation is
 required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -133,8 +142,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1927.6321034559958seconds used,
-1672.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1933.6321034559958seconds used,
+1666.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

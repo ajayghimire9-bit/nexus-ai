@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed scalar update/retain gate — source screen FAILED
+
+H-gate: observed-context strength beats trained constant/unit/replay/bounded
+controls by5%, positive paired intervals, acceptable retention. From0ce94d0:
+learned curve .180324, constant .180187, replay .187016, bounded .184388.
+Contextual gate worse than constant in all three seed aggregates; benefits over
+replay3.58% and bounded2.20% miss5%. Retention passes. Generic damping helps
+reused source evidence; useful task-dependent learning-to-learn not established.
+No fresh validation, control evaluation or runtime promotion. See
+NEXUS_SEED_UPDATE_GATE_RESULTS.md. Next proposed prefix-consistency signal audit.
+
 ## Seed task-blocked cumulative learning — source screen FAILED
 
 From5235599: curve MSE .187597 learned, .188183 source-trained static,

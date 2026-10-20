@@ -1,6 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — scalar update/retain gate (proposed, not run)
+## Current — gate-feature informativeness audit (proposed, not run)
+
+Does consistency across the observed teaching prefix contain information about
+when a correction helps, beyond the present single-row error/novelty context?
+Use task-blocked source-only fitting, compare with the current context and a
+constant gate, preserve strong references and exclude query outcomes from inner
+inputs. The current gate failed against constant; increasing capacity or epochs
+is not yet justified. Reused-source evidence is not fresh validation; require
+separate fresh assessment before promotion. See NEXUS_SEED_UPDATE_GATE_RESULTS.md.
+No second study has run.
+
+## Closed — scalar update/retain gate
+
+Completed from0ce94d0: source screen FAILED, retention passed. Curve .180324
+learned versus .180187 constant; generic damping, not demonstrated useful
+context-conditioned learning. Original motivation follows.
 
 Can a small task-conditioned scalar gate learn how much of a proposed update
 to apply, including zero, better than a source-trained constant gate and strong

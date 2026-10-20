@@ -20,6 +20,13 @@
 
 ## Verification versus experiments
 
+Scalar update/retain gate: seed/update_gate.py reuses PlasticityController(1)
+logits, nonlinear_learning.fit_source's model factory, cumulative_learning's
+posterior/fold/summary/validator helpers and update_diagnosis.trajectory. Same
+metered host and Lab, no runtime promotion or parallel learning framework.
+scripts/verify_seed_update_gate.py reuses the existing checkpoint verifier;
+explicit audits fail on missing files, tracked weights allow exact restoration.
+
 Task-blocked cumulative learning: seed/cumulative_learning.py uses the original
 PlasticityController and the existing fit_source optimizer via a curve callback.
 Its small dual solve assimilates permitted prefix/anchor rows. Four source folds

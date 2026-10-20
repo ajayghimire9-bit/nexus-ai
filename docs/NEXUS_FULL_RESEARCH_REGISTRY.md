@@ -2,6 +2,13 @@
 
 ## Active evidence, newest first
 
+- [Scalar update/retain gate](NEXUS_SEED_UPDATE_GATE_RESULTS.md): curve MSE
+  .180324 learned versus .180187 constant, .187016 replay, .184388 bounded.
+  Source learning screen FAILED; retention passed. Generic damping helps,
+  task-conditioned strength does not beat constant. Three rule-training seeds,
+  one frozen core, reused data; no fresh validation/control/promotion.
+  [Protocol](NEXUS_SEED_UPDATE_GATE_PROTOCOL.md), execution0ce94d0.
+
 - [Task-blocked cumulative learning rule](NEXUS_SEED_CUMULATIVE_LEARNING_RESULTS.md):
   new rule trained across nine source tasks/fold and assessed on three excluded
   tasks. Only .31% gain over source-trained static; worse than replay/bounded

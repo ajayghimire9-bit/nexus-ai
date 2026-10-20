@@ -182,6 +182,8 @@ def validate(r,c,pack,*,config_fn=config_check,methods=METHODS,learner='learned_
                 provenance=dict(config_sha256=digest(c),fold=fold,seed=int(seed),source_sha256=entry['source_sha256'],source_only=True)
                 if info['provenance']!=provenance or info['checkpoint']!=f'rule-{fold}-{seed}-{method}.json':raise ValueError('rule_training_provenance')
                 if [v['update'] for v in info['training']]!=list(range(1,65)):raise ValueError('outer_update_grid')
+                if any(set(row)!={'update','task_index','query_mse','forgetting','gradient_norm'} for row in info['training']):
+                    raise ValueError('required_training_metric_grid')
                 if any(not finite(v) for row in info['training'] for v in row.values()):raise ValueError('finite_training_metrics')
                 if any(type(row['update']) is not int or type(row['task_index']) is not int or not 0<=row['task_index']<9 for row in info['training']):raise ValueError('source_schedule_bounds')
                 if digest([v['task_index'] for v in info['training']])!=info['source_schedule_sha256']:raise ValueError('source_schedule_arithmetic')

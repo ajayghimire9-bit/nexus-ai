@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Scalar update/retain gate: generic damping, failed learned-rule screen
+
+Locked0ce94d0; one4.040320s host run, six-second conservative debit.24 new small
+rules,1536 Adam updates,1944 evaluation snapshots. Learned curve .180324 versus
+constant .180187, replay .187016, bounded .184388: source screen FAILED,
+retention passed. No assessment endpoint saturation; contexts did not beat
+constant. Zero new real/imagined/world-model interactions; no promotion.
+Ledger1933.6321034559958 used /1666.3678965440042 remaining. One next proposal:
+task-blocked source prefix-consistency informativeness audit. Not run. See
+NEXUS_SEED_UPDATE_GATE_RESULTS.md.
+
 ## Task-blocked cumulative meta-training: source screen failed
 
 Locked5235599; one3.508188s host run, five-second conservative debit. Four folds,

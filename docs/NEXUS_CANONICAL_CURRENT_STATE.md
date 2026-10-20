@@ -21,6 +21,13 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+The learned scalar update/retain gate also failed its source screen: .180324
+curve MSE versus constant .180187; generic damping helps but context conditioning
+does not beat constant. Retention passed; no promotion. Next is a proposed
+source-only prefix-consistency informativeness audit, not capacity growth or
+another run here. See [results](NEXUS_SEED_UPDATE_GATE_RESULTS.md).
+The earlier study decisions follow in chronology.
+
 The registered nonlinear-feature comparison completed and failed: learned
 plasticity did not beat strong replay or static protection; learned/static/fixed
 actions matched. See [results](NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md).
