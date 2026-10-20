@@ -20,6 +20,14 @@
 
 ## Verification versus experiments
 
+Learning choices: seed/learning_choice.py performs one roll-in/reference refit
+through existing prefix_consistency helper options and cumulative trajectories.
+seed/learning_decision.py is a pure immutable advisory over predicted benefit,
+observed-anchor damage and budget; it does not replace Session/concept questioning.
+Same EXPERIMENTAL host, ledger and Lab. Ask waits for the next scheduled label;
+no autonomous active-query efficacy established. No live promotion. Stdlib-only
+scripts/verify_seed_learning_choice.py checks fitted equations and decision math.
+
 Sequential frozen selector: seed/sequential_consistency.py reuses cumulative
 posterior/folds, prefix_consistency.features/predict, update_diagnosis trajectories/
 paired intervals and bounded protection. Same EXPERIMENTAL host/worker and Lab;

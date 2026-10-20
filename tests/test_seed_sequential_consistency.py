@@ -4,6 +4,8 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import subprocess
+import sys
 import pytest
 import torch
 from nexus.evolution1.catalogue import digest
@@ -95,9 +97,12 @@ def test_changed_checkpoint_or_fold_provenance_fails(synthetic_pack):
 
 @pytest.fixture(scope='module')
 def synthetic_result(synthetic_pack,tmp_path_factory):
-    before=Path.cwd();os.chdir(tmp_path_factory.mktemp('seq-result'))
-    try:out=seq.run(dict(inputs=dict(study_config=config(),source_pack=synthetic_pack)))
-    finally:os.chdir(before)
+    # Production meters whole worker-process CPU. A fresh child prevents
+    # unrelated earlier pytest CPU from exhausting this fixture's cap.
+    code="import sys,json;sys.path.insert(0,sys.argv[1]);from nexus.seed.sequential_consistency import run;print(json.dumps(run(json.load(sys.stdin)),allow_nan=False))"
+    proc=subprocess.run([sys.executable,'-c',code,str(ROOT/'src')],input=json.dumps(dict(inputs=dict(study_config=config(),source_pack=synthetic_pack))),
+        text=True,capture_output=True,check=True,timeout=30,cwd=tmp_path_factory.mktemp('seq-result'))
+    out=json.loads(proc.stdout)
     assert seq.validate_output(out,config(),dict(cpu_s=30,updates=0),synthetic_pack)
     return out
 

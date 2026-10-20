@@ -34,6 +34,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The source policy-roll-in and learn/ask/retain study from268589a completed once.
+All improvement screens FAILED: curve MSE .201848 reference, .207067 roll-in,
+.210911 protected versus .180187 constant damping. Protected choices4 learn /
+80 ask /12 retain respect the known-anchor cap; hidden retention .067612 improves
+numerically but new-task prediction worsens. Asking only deferred to scheduled
+examples, not active question selection. No runtime promotion. See
+[results](NEXUS_SEED_LEARNING_CHOICE_RESULTS.md).
+
 The sequential consistency selector from2457901 completed once: mean
 1/2/4/8-example MSE **.201848** versus trained constant damping **.180187**,
 replay **.187016** and bounded **.184388**. Registered source screen FAILED;
@@ -143,8 +151,9 @@ failed its learned-specific source screen.
 The scalar gate test also failed; the constant gate matched/exceeded its benefit.
 The prefix-feature audit failed its primary full-feature screen. The subsequent
 sequential consistency selector also failed against trained damping and replay.
-Next proposed source test: one policy-roll-in refit versus an equal-budget
-reference-state refit, testing induced-state coverage without architecture growth.
+The one policy-roll-in refit and protected choice study also failed improvement
+screens. Next proposed study: informative versus random question selection with
+the stronger constant-damping learner fixed, isolating label choice.
 No new collection or architecture growth is scheduled; fresh validation is
 required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -162,8 +171,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1939.6321034559958seconds used,
-1660.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1943.6321034559958seconds used,
+1656.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed policy-roll-in and protected choice — all improvement screens FAILED
+
+H-coverage: .207067 roll-in versus .201848 reference;3/4 fold wins but worse
+aggregate and paired benefit −.005219 [−.045339,+.034900]. H-protection:
+.210911 protected versus .207067 roll-in,1/4 wins; fails. Strong-baseline screen
+also fails versus constant .180187, replay .187016 and bounded .184388.
+Observed-anchor cap and hidden retention tolerance pass; that is not new-task
+learning improvement.4 learn /80 ask /12 retain; asking was deferral only.
+One core,12 reused source tasks, no fresh validation/promotion or established
+learning-to-learn. Execution268589a; NEXUS_SEED_LEARNING_CHOICE_RESULTS.md.
+
 ## Seed sequential consistency selector — source screen FAILED
 
 H-sequential required5% lower actual1/2/4/8-example MSE than trained damping,

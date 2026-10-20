@@ -21,6 +21,15 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+One policy-roll-in refit plus the protected learn/ask/retain advisory is now
+complete: all improvement screens FAILED. Protected curve .210911 versus
+constant .180187; known-anchor cap and retention tolerance pass.4 learn /80 ask /
+12 retain decisions do not establish useful question selection. Keep the module
+optional in the sandbox. Next: informative versus random question choice with
+the strong constant-damping learner fixed, separately registered. See
+[results](NEXUS_SEED_LEARNING_CHOICE_RESULTS.md).
+The following older next-gate entries retain their chronology.
+
 Sequential replay of the frozen consistency selector is now complete: source
 screen FAILED, retention tolerance passed. Curve MSE .201848 versus constant
 .180187 and replay .187016; only11/96 updates. Prior local-regret evidence did

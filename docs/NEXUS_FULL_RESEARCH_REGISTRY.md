@@ -2,6 +2,14 @@
 
 ## Active evidence, newest first
 
+- [Policy-roll-in and learning choices](NEXUS_SEED_LEARNING_CHOICE_RESULTS.md):
+  source coverage/protection/strong-baseline screens FAILED. Curve .207067
+  roll-in, .210911 protected versus reference .201848 and constant .180187.
+  Known-anchor cap/retention tolerance pass.4 learn /80 ask /12 retain;
+  no active-question benefit established. Eight new small source ridge fits,
+  no collection, historical weight changes or promotion.
+  [Protocol](NEXUS_SEED_LEARNING_CHOICE_PROTOCOL.md), execution268589a.
+
 - [Sequential consistency selector](NEXUS_SEED_SEQUENTIAL_CONSISTENCY_RESULTS.md):
   actual1/2/4/8-example MSE .201848 versus damping .180187, replay .187016 and
   bounded .184388. Source screen FAILED; retention tolerance passed;1/4 fold

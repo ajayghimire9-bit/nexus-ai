@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Policy-roll-in refit and learn/ask/retain: improvement screens FAILED
+
+Locked268589a; one2.284774s CPU dispatch, four-second conservative debit.
+Curve .201848 reference, .207067 roll-in, .210911 protected, .180187 constant.
+Coverage/protection/strong-baseline screens fail; retention tolerance and known-
+anchor cap pass. Choices4 learn /80 ask /12 retain. Asking defers, not active
+selection. Eight small ridge fits, zero new real/imagined/world-model interactions;
+no historical weights changed or live promotion. Ledger1943.6321034559958 used /
+1656.3678965440042 remaining. Next proposed informative-versus-random questions
+with fixed constant-damping learner, not executed. See
+NEXUS_SEED_LEARNING_CHOICE_RESULTS.md.
+
 ## Sequential consistency selector: practical source screen FAILED
 
 Locked2457901; one1.986353s host run, three-second conservative debit.

@@ -4,6 +4,8 @@ from dataclasses import FrozenInstanceError
 import json
 import os
 from pathlib import Path
+import subprocess
+import sys
 import pytest
 import torch
 from nexus.evolution1.catalogue import digest
@@ -105,9 +107,10 @@ def test_excluded_labels_cannot_change_training_models(choice_pack):
 
 @pytest.fixture(scope='module')
 def choice_result(choice_pack,tmp_path_factory):
-    before=Path.cwd();os.chdir(tmp_path_factory.mktemp('choice-toy'))
-    try:r=lc.run(dict(inputs=dict(study_config=config(),source_pack=choice_pack)))
-    finally:os.chdir(before)
+    code="import sys,json;sys.path.insert(0,sys.argv[1]);from nexus.seed.learning_choice import run;print(json.dumps(run(json.load(sys.stdin)),allow_nan=False))"
+    proc=subprocess.run([sys.executable,'-c',code,str(ROOT/'src')],input=json.dumps(dict(inputs=dict(study_config=config(),source_pack=choice_pack))),
+        text=True,capture_output=True,check=True,timeout=30,cwd=tmp_path_factory.mktemp('choice-toy'))
+    r=json.loads(proc.stdout)
     assert lc.validate_output(r,config(),dict(cpu_s=30,updates=0),choice_pack)
     return r
 

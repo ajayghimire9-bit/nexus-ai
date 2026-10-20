@@ -1,6 +1,24 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — one policy-roll-in refit comparison (proposed, not run)
+## Current — informative versus random question choice (proposed, not run)
+
+Does choosing a more informative teaching example help at fixed label budget?
+Hold the strong constant-damping update fixed. Compare a registered support-only
+question-selection rule with random questions, using a separate candidate pool
+whose labels are hidden until requested. Measure1/2/4/8-label query prediction
+and retention at equal teaching/compute budgets. Do not train from query answers.
+The current learn/ask/retain study FAILED its improvement screens;80 asks merely
+deferred to predetermined examples. A memory cap is not sufficient evidence of
+useful learning. Register the exact pool, rule and acceptance criteria separately;
+no fresh collection, second run or live promotion occurred. See
+NEXUS_SEED_LEARNING_CHOICE_RESULTS.md.
+
+## Closed — one policy-roll-in refit comparison
+
+From268589a: coverage, protection and strong-baseline screens FAILED. Reference
+.201848, roll-in .207067, protected .210911 versus constant .180187. Anchor cap
+and retention tolerance pass; neither establishes improved learning. Original
+motivation follows for chronology.
 
 Does training-state coverage contribute to the sequential selector's failure?
 Compare one roll-in refit of the SAME small utility model using states reached
