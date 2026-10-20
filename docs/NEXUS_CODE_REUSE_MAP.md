@@ -2,6 +2,12 @@
 
 ## Active runtime
 
+- Investigation transfer: `seed/investigation_transfer.py` reuses the existing
+  `structure.investigation` tree, `question_selection.LabelOracle` and
+  EXPERIMENTAL host/worker. No parallel memory or learning framework. The
+  registered screen failed; no live promotion. Conversation code composition
+  reuses `foundation.programs.pipeline/execute` and the existing journal.
+
 - Foundation: seed/foundation uses the SAME Session/E1 Journal, skill_programs
   primitives and structure.investigation learner. programs is a bounded typed
   composition interpreter; library discovers repeated source list sequences;

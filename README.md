@@ -10,6 +10,14 @@ capability we already claim. No external LLM or API key is required at runtime.
 `main` branch carries this work; earlier control and Evolution studies remain
 preserved research. Future experiments use separate bounded research branches.
 
+## Latest research result
+
+[Frozen investigation transfer](docs/NEXUS_SEED_INVESTIGATION_TRANSFER_RESULTS.md)
+completed and **failed its registered screen**. The learned question order used
+3.375 questions versus fixed4.219/random4.563, but greedy/exhaustive used3.000.
+This narrow authored result is not general learning-to-learn. Historical
+results remain unchanged; no live-agent promotion.
+
 ## Try it
 
 The new [executable foundation](docs/NEXUS_SEED_FOUNDATION.md) is available at
@@ -26,7 +34,10 @@ python3 -I -S scripts/run_learning_lab.py --allow-seed --port 8766
 
 Open **http://127.0.0.1:8766/** for the new conversational workspace. Teach a word
 or a checked skill, ask about memory, and explore the same authored world from
-one conversation. Start with “A dax means a red object” or “Teach you a skill
+one conversation. It can also compose and execute small list programs: try
+“Write code to sort and remove duplicates on [3, 1, 3, 2]”.
+These are bounded supplied operators, not unrestricted coding. Open Evidence →
+Latest investigation results to inspect the actual study. Start with “A dax means a red object” or “Teach you a skill
 from examples.” [Conversation guide and screenshots](docs/NEXUS_SEED_CONVERSATION_WORKSPACE.md).
 
 The original form-based interface remains at `/seed`. Teach an invented word using positive/negative

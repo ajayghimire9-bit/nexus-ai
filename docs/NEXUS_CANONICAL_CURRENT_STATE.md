@@ -1,8 +1,11 @@
 # NEXUS Seed — Current State
 
-## Registered current work — investigation transfer
+## Latest — frozen investigation transfer FAILED its registered screen
 
-The owner approved the [frozen investigation comparison](NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md): 32 source tasks, 32 fresh target tasks, five policies, budgets 1/2/4/8, one frozen source tree. Cap60s /5000 authored observations, no neural updates. Implementation is being tested before a separate protocol commit and one execution. No results yet; older proposals below are historical. Ledger remains1979.6321034559958s used /1620.3678965440042s remaining.
+Clean execution60eefee173b3cbf62a858ba397b06bdb54b373ca; one complete authored development run. Learned3.375 questions versus fixed4.21875/random4.5625, but greedy and exhaustive3.000. Budget-two gain over fixed4.6875pp missed5pp; extra questions versus strong baselines.375 exceeded.25. No promotion or general learning-to-learn claim. All797 historical artifacts and frozen checkpoints preserved. [Results](NEXUS_SEED_INVESTIGATION_TRANSFER_RESULTS.md), [protocol](NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md).
+
+Debit2s; carried1981.6321034559958s used /1618.3678965440042s remaining. Next: separately register fixed versus greedy fallback at tree-abandon states against pure greedy; no second run here. Older entries below retain their original chronology.
+
 
 
 Latest study base:e381132c79a2d3c71aed883e54b8577ecd0071ec;

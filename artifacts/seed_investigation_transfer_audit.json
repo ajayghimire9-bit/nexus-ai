@@ -1,0 +1,108 @@
+{
+  "valid": true,
+  "recorded_policy_replays": 160,
+  "independent_arithmetic": {
+    "learned": {
+      "questions": 3.375,
+      "accuracy": {
+        "1": 0.7900390625,
+        "2": 0.892578125,
+        "4": 0.96875,
+        "8": 1.0
+      }
+    },
+    "fixed_order": {
+      "questions": 4.21875,
+      "accuracy": {
+        "1": 0.7822265625,
+        "2": 0.845703125,
+        "4": 0.943359375,
+        "8": 1.0
+      }
+    },
+    "no_library": {
+      "questions": 4.5625,
+      "accuracy": {
+        "1": 0.767578125,
+        "2": 0.802734375,
+        "4": 0.923828125,
+        "8": 1.0
+      }
+    },
+    "greedy": {
+      "questions": 3.0,
+      "accuracy": {
+        "1": 0.7783203125,
+        "2": 0.853515625,
+        "4": 1.0,
+        "8": 1.0
+      }
+    },
+    "exhaustive": {
+      "questions": 3.0,
+      "accuracy": {
+        "1": 0.7783203125,
+        "2": 0.853515625,
+        "4": 1.0,
+        "8": 1.0
+      }
+    }
+  },
+  "historical_artifacts_unchanged": 797,
+  "source_hashes_verified": true,
+  "collection": 0,
+  "model_inference": 0,
+  "training": 0,
+  "schema": "seed_investigation_transfer_audit_v1",
+  "execution_sha": "60eefee173b3cbf62a858ba397b06bdb54b373ca",
+  "raw_sha256": "219b5089d4c2964b45b61d411f10cc199dbb5ba047122bb3e54a42960dd1ba34",
+  "verifier_sha256": "7f2aa3fca5c23833045f21a873ab644278fd99f9ebcb1d93457afb5f6d6e3a23",
+  "tests": [
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed_investigation_transfer.py tests/test_seed_conversation.py tests/test_seed_experimental.py tests/test_seed_foundation_evidence.py tests/test_seed_structure.py tests/test_seed_foundation.py",
+      "passed": 137,
+      "seconds": 16.97
+    },
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed_structure_evidence.py tests/test_seed_investigation_transfer.py tests/test_seed_conversation.py tests/test_seed_foundation_evidence.py",
+      "passed": 60,
+      "seconds": 2.12
+    },
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed*.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_planning.py tests/test_expr.py tests/test_factory.py tests/test_evolution2_planner_quality.py",
+      "passed": 882,
+      "seconds": 177.05
+    },
+    {
+      "command": "python3 -m pytest -o addopts= -q --tb=short tests/test_seed_investigation_evidence.py tests/test_seed_investigation_transfer.py tests/test_seed_structure_evidence.py tests/test_seed_foundation_evidence.py",
+      "passed": 31,
+      "seconds": 3.25
+    }
+  ],
+  "test_environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "PYTHONPATH": "src:/Users/ajayghimire/Projects/nexus-ai/.deps"
+  },
+  "browser": {
+    "pre_run": 6,
+    "post_run": 8,
+    "command": "node tests/browser/seed_investigation.cjs --results",
+    "javascript_errors": 0
+  },
+  "prior_failures": [
+    "One chat assertion expected 3 instead of 5 metered instructions; corrected before run",
+    "Historical structure test compared current source to old hashes; corrected to recorded commit before run",
+    "One pytest invocation lacked dependency path; no tests ran"
+  ],
+  "ledger": {
+    "debit": 2,
+    "used": 1981.6321034559958,
+    "remaining": 1618.3678965440042
+  },
+  "screenshots": {
+    "docs/assets/seed-investigation-chat.png": "c8276fc1c2941a339878fa1675351f682ee98b634fc5e3a20c923c61b0ee54b8",
+    "docs/assets/seed-investigation-results.png": "821bc1e98c62f36fbd5fbaa0f20e85c5dbde2ec55bc6af4b740e3935d741453e"
+  }
+}

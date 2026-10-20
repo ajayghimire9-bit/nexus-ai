@@ -58,6 +58,13 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+## Latest — frozen investigation transfer FAILED its registered screen
+
+Clean execution60eefee173b3cbf62a858ba397b06bdb54b373ca; one complete authored development run. Learned3.375 questions versus fixed4.21875/random4.5625, but greedy and exhaustive3.000. Budget-two gain over fixed4.6875pp missed5pp; extra questions versus strong baselines.375 exceeded.25. No promotion or general learning-to-learn claim. All797 historical artifacts and frozen checkpoints preserved. [Results](NEXUS_SEED_INVESTIGATION_TRANSFER_RESULTS.md), [protocol](NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md).
+
+Debit2s; carried1981.6321034559958s used /1618.3678965440042s remaining. Next: separately register fixed versus greedy fallback at tree-abandon states against pure greedy; no second run here. Older entries below retain their original chronology.
+
+
 Executable history-feature induction frombc57da1 completed once: primary Brier
 .000000 versus fixed .238707, all-history ridge .050260, replay .228617, GRU
 .453393; paired fixed-minus-induced .238707 [.223296,.254117], source screen
@@ -206,16 +213,18 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md),
+[latest results](NEXUS_SEED_INVESTIGATION_TRANSFER_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
 ## Scientific decision path
 
 The owner-requested optional executable-model branch now has a completed authored
-source feature-induction result, without default promotion. Its next proposed
-gate is separately registered frozen investigation reuse. The older question-
-utility label audit below remains unresolved; the new result does not answer it.
+source feature-induction result, without default promotion. Frozen investigation
+reuse then completed and FAILED its registered screen against strong baselines.
+The next proposal is a fixed-versus-greedy fallback comparison on fresh tasks,
+with pure greedy retained. The older question-utility label audit below remains
+unresolved; the investigation result does not answer it.
 
 The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
 supports lightweight development manifests, typed candidate training, separate
@@ -259,8 +268,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1979.6321034559958seconds used,
-1620.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1981.6321034559958seconds used,
+1618.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

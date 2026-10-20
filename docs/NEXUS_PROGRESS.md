@@ -1,5 +1,12 @@
 # NEXUS progress log
 
+## Latest — frozen investigation transfer FAILED its registered screen
+
+Clean execution60eefee173b3cbf62a858ba397b06bdb54b373ca; one complete authored development run. Learned3.375 questions versus fixed4.21875/random4.5625, but greedy and exhaustive3.000. Budget-two gain over fixed4.6875pp missed5pp; extra questions versus strong baselines.375 exceeded.25. No promotion or general learning-to-learn claim. All797 historical artifacts and frozen checkpoints preserved. [Results](NEXUS_SEED_INVESTIGATION_TRANSFER_RESULTS.md), [protocol](NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md).
+
+Debit2s; carried1981.6321034559958s used /1618.3678965440042s remaining. Next: separately register fixed versus greedy fallback at tree-abandon states against pure greedy; no second run here. Older entries below retain their original chronology.
+
+
 ## Executable foundation engineering
 
 From5a554a5 on codex/seed-foundation-learning: ten requested foundation areas
