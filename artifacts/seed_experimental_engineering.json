@@ -1,0 +1,71 @@
+{
+  "schema": "seed_experimental_engineering_verification_v1",
+  "kind": "engineering_verification_not_scientific_evidence",
+  "branch": "codex/seed-experimental-sandbox",
+  "starting_sha": "4362344621c048b811a0066e4d9dd2aa87dac055",
+  "implementation_sha": "aa18434f228a974dc97d08e966725bd8cc49e44f",
+  "verification": {
+    "relevant_pytest_passed": 265,
+    "relevant_pytest_wall_s": 25.46,
+    "pytest_command": "env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH=src:/Users/ajayghimire/Projects/nexus-ai/.deps python3 -m pytest -o addopts='' -q tests/test_seed*.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py tests/test_factory.py",
+    "whole_historical_suite_run": false,
+    "browser_command": "env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH=src:/Users/ajayghimire/Projects/nexus-ai/.deps NEXUS_PLAYWRIGHT_MODULE=/Users/ajayghimire/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright /opt/homebrew/bin/node scripts/check_experimental_browser.cjs",
+    "browser": "155.0.8059.85",
+    "browser_checks": [
+      "actual_candidate_hash_resources_and_error_change",
+      "measured_training_and_development_curves",
+      "refresh_is_read_only",
+      "no_browser_execution_or_approval_endpoint",
+      "mobile_layout",
+      "existing_seed_GUI_preserved"
+    ],
+    "browser_page_errors": [],
+    "browser_external_requests": [],
+    "fixture": {
+      "label": "authored numeric engineering fixture, not learning-to-learn evidence",
+      "parameter_count": 2,
+      "optimizer_updates": 12,
+      "training_examples_processed": 48,
+      "development_examples_processed": 52,
+      "network_forwards": 37,
+      "wall_s": 1.389857917005429,
+      "worker_process_cpu_s": 0.879233,
+      "development_mse": 0.2273137867450714,
+      "zero_predictor_development_mse": 2.009999990463257
+    },
+    "initial_engineering_failures_corrected": [
+      "deadline fixture below original minimum wall allowance",
+      "mobile long-text wrapping",
+      "nested CLI directory-option parsing"
+    ]
+  },
+  "preservation": {
+    "historical_artifacts_git_blob_verified": 740,
+    "repository_preservation_check_valid": true,
+    "historical_standing_grant_verbatim": true,
+    "main_modified_or_merged": false,
+    "historical_weights_retrained_or_replaced": false,
+    "unrelated_primary_worktree_files_excluded": [
+      "src/nexus/evolution1/adapters.py",
+      "tests/test_evolution1_adapters.py"
+    ]
+  },
+  "scientific_resources": {
+    "new_real_environment_interactions": 0,
+    "new_imagined_environment_transitions": 0,
+    "new_scientific_experiments": 0,
+    "session_used_s": 1910.6321034559958,
+    "session_remaining_s": 1689.3678965440042,
+    "engineering_iteration_aggregate_cpu_s": null,
+    "engineering_cpu_note": "Only final suite wall time and one successful browser fixture's process CPU are recorded; no total CPU claim for all debugging iterations."
+  },
+  "limitations": [
+    "Initial executable adapter is numeric MLP development, not arbitrary generated code or a simulator runner.",
+    "GPU execution is rejected pending a reviewed metering backend.",
+    "Strict kernel memory mode fails closed on macOS; sampled RSS requires explicit owner selection and may overshoot between samples.",
+    "Worktrees and hash chains are not hostile-code isolation or cryptographic owner authentication.",
+    "Owner provenance is still needed to establish that newly supplied assessments were never previously inspected.",
+    "External runners and other directories must be carried into the same owner session ledger; this host cannot meter unrelated processes.",
+    "No scientific efficacy or learning-to-learn result is established."
+  ]
+}

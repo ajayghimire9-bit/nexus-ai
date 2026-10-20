@@ -229,3 +229,25 @@ No historical benchmark, trained checkpoint, model state contract or closed
 evaluation changes. No architecture/learning-rule efficacy is established here.
 One next engineering milestone: a reviewed Seed adapter with per-step host
 reservations and old-task retention before executing new adaptation science.
+
+## Completed engineering verification
+
+Implementation commit: `aa18434f228a974dc97d08e966725bd8cc49e44f`.
+The relevant Seed, session/release, repository, planning, expression and factory
+suite passed **265 tests in 25.46 seconds**. The entire historical experiment
+suite was not invoked. Real Chrome 155 QA passed six checks, including measured
+curves, immutable refresh, no browser execution endpoint, mobile layout and the
+unchanged Seed interface; zero page errors or external requests.
+
+The GUI exercised an authored two-parameter numeric fixture: 12 Adam updates,
+48 training examples processed, 52 development examples processed and 37 neural
+forward calls. It is an integration test, not scientific evidence. The successful
+recorded fixture took 1.389858 s wall / 0.879233 s worker CPU. Previous debugging
+iterations are not included in those individual times. No new environment data
+or scientific experiment was collected.
+
+All **740 historical artifact Git blobs** match the starting commit. Repository
+preservation and the saved spatial-transfer data-only verifier passed. The
+standing grant remains verbatim, the two unrelated files in the original
+checkout are excluded, and main is untouched. Machine-readable verification:
+[engineering receipt](../artifacts/seed_experimental_engineering.json).
