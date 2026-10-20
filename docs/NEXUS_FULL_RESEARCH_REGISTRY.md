@@ -2,6 +2,13 @@
 
 ## Active evidence, newest first
 
+- [Bounded source correction](NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md):
+  stabilization passed (13.5% versus unchanged learned), strong-replay and
+  learned-specific practical screens failed. Reused source evidence only;
+  no runtime promotion. [Protocol](NEXUS_SEED_BOUNDED_CORRECTION_PROTOCOL.md),
+  execution269bcb6. Original receipt's legacy adapter label is documented;
+  future host metadata corrected without rewriting the old receipt.
+
 - [Source update-magnitude diagnosis](NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md):
   large norm ratio12.55×,but only5/12source tasks harmed; registered broad-harm
   pattern not supported. Reused source evidence,not new validation or causation.

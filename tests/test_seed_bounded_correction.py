@@ -2,6 +2,7 @@
 from copy import deepcopy
 import json
 from pathlib import Path
+import subprocess
 import pytest
 import torch
 
@@ -106,3 +107,43 @@ def test_locked_rule_and_declared_work_arithmetic():
     assert len(c['outer_seeds'])*len(c['tasks']['train'])*len(METHODS)*9==2592
     c['bound_fraction']=.5
     with pytest.raises(ValueError):config_check(c)
+
+
+def test_host_receipt_matches_dispatched_adapter_without_executing_worker(tmp_path,monkeypatch):
+    """Mock worker output tests host wiring; never runs the source experiment."""
+    from nexus.seed.experimental import Sandbox,write_new
+    import nexus.seed.bounded_correction as module
+    pack=dict(data=dict(controllers=[]))
+    monkeypatch.setattr(module,'source_pack',lambda *args:pack)
+    monkeypatch.setattr(module,'validate_output',lambda *args:True)
+    actual_output=subprocess.check_output;actual_popen=subprocess.Popen
+    def git_output(args,**kwargs):
+        if args==['git','status','--porcelain']:return b''
+        return actual_output(args,**kwargs)
+    def process(args,**kwargs):
+        if '-m' not in args or 'nexus.seed.experimental_worker' not in args:
+            return actual_popen(args,**kwargs)
+        request=json.loads(Path(args[-2]).read_text())
+        assert request['adapter']=='seed_bounded_correction_v1'
+        write_new(Path(args[-1]),dict(adapter=request['adapter'],study=dict(source_pack_sha256=digest(pack)),
+                                    model=dict(controllers=[])))
+        class Finished:
+            returncode=0
+            def poll(self):return 0
+            def wait(self):return 0
+        return Finished()
+    monkeypatch.setattr(subprocess,'check_output',git_output)
+    monkeypatch.setattr(subprocess,'Popen',process)
+    h=Sandbox(ROOT,tmp_path/'host')
+    h.grant('fixture','test owner','mock adapter provenance only',
+        dict(wall_s=30,cpu_s=30,memory_mb=2048,real_steps=0,imagined_transitions=0,updates=0),
+        60,0,memory_policy='sampled_rss')
+    import hashlib
+    sha=lambda p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
+    spec=dict(id='mock-bounded',mode='exploration',recipe=dict(adapter='seed_bounded_correction_v1',
+        config_path='configs/seed_bounded_correction.json',config_sha256=sha('configs/seed_bounded_correction.json'),
+        protocol_path='docs/NEXUS_SEED_BOUNDED_CORRECTION_PROTOCOL.md',protocol_sha256=sha('docs/NEXUS_SEED_BOUNDED_CORRECTION_PROTOCOL.md')),
+        train=None,development=None,model_run=None,assessment=None,protocol=None,gate=None)
+    with h.locked():r=h.execute(spec,'fixture')
+    assert r['status']=='complete_development',r
+    assert r['adapter']==r['worker']['adapter']=='seed_bounded_correction_v1'

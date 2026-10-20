@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Bounded correction: generic source stabilization, advancement failed
+
+Locked269bcb6; one 1.859346s host run, 3-second conservative debit. Curve MSE
+.183824 bounded learned versus .212504 original and .187213 replay. The 13.5%
+stabilization screen passes; replay and learned-specific practical screens fail.
+2592 snapshots (972 new,1620 cached), no new interactions/world-model forwards
+or outer training. No runtime promotion. Ledger1922.6321034559958 used /
+1677.3678965440042 remaining. Legacy adapter-name metadata bug documented in
+an immutable-receipt erratum and fixed prospectively. Next proposed cumulative
+evidence comparison; no second experiment. See NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md.
+
 ## Source-only update diagnosis complete
 
 Locked9c379aa; one metered dispatch1.433732s,0newreal/imagined/world-model

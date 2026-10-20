@@ -20,6 +20,11 @@
 
 ## Verification versus experiments
 
+Bounded source comparison: seed/bounded_correction.py wraps the existing update
+and reuses update_diagnosis trajectory/grid/arithmetic helpers. Its limiter
+accepts only observed rows; it is not enabled in runtime adaptation. Same host,
+worker and runner entry; cached baselines are verified rather than re-executed.
+
 Source-only update diagnosis: seed/update_diagnosis.py reuses LessonTask,
 initial/update/scaled and existing frozen PlasticityController weights. Its
 fixed adapter uses the SAME EXPERIMENTAL host/meter; stdlib replay recomputes

@@ -190,3 +190,15 @@ def validate_output(output,c,caps,pack):
     if set(work)!=set(expected_costs)|{'cpu_s'} or any(type(work[k]) is not int or work[k]!=v for k,v in expected_costs.items()):
         raise ValueError('reported_bounded_costs_mismatch')
     return True
+
+
+def saved_replay(root):
+    """Recorded evidence only; stdlib arithmetic, no correction execution."""
+    c=json.loads((root/'configs/seed_bounded_correction.json').read_text())
+    r=json.loads((root/'artifacts/seed_bounded_correction.json').read_text())
+    if r['declared_complete'] is not True:raise ValueError('incomplete_bounded_evidence')
+    validate(r,c,source_pack(root,c));h=r['host_receipt']
+    return dict(id=h['id'],mode='recorded_source_only_comparison',status=h['status'],
+        failure=h['failure'],wall_s=h['wall_s'],memory_mb=h['peak_sampled_rss_mb'],
+        revision=r['execution_sha'],metrics=None,curve=[],resources=r['resources'],
+        model_sha256=r['source_pack_sha256'],study=None,bounded=r['analysis'])

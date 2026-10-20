@@ -55,6 +55,9 @@ class LabHandler(BaseHTTPRequestHandler):
                 if (ROOT/'artifacts/seed_update_diagnosis.json').exists() and not any(r['id']=='seed-source-update-diagnosis-1' for r in state['experiments']):
                     from nexus.seed.update_diagnosis import saved_replay as source_replay
                     state['experiments'].append(source_replay(ROOT))
+                if (ROOT/'artifacts/seed_bounded_correction.json').exists() and not any(r['id']=='seed-bounded-correction-1' for r in state['experiments']):
+                    from nexus.seed.bounded_correction import saved_replay as bounded_replay
+                    state['experiments'].append(bounded_replay(ROOT))
                 return self.send_json(200,state)
             if parsed.path=='/' and not parsed.query:
                 body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')

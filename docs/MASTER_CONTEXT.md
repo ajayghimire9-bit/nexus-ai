@@ -34,6 +34,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The bounded source correction study from269bcb6 completed once. Stabilization
+passed: learned curve MSE .183824 versus .212504 unchanged (13.5% reduction).
+Replay was .187213; the 1.81% difference and interval including zero failed the
+strong-baseline screen. Fixed bounded was .185384; learned-specific practical
+screen also failed. Generic stabilization on reused source data is supported;
+useful learned-learning advantage is not. No runtime promotion. See
+[results](NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md).
+
 Source-only update diagnosis from9c379aa completed once: learned first steps
 were12.55×replay by median task ratio, but query harm occurred on only5/12source
 tasks. Registered broad-harm pattern NOT_SUPPORTED. Later-prefix instability
@@ -95,9 +103,11 @@ adapter study is now complete and closed; its negative findings are above.
 The fresh1/2/4/8-example comparison did not establish a learned-rule advantage.
 Preserve that failure alongside prior positive readout results. The source-only
 first-update diagnosis is complete and does not explain the failure by itself.
-Next proposed bounded source comparison: output-change-limited correction versus
-unchanged protection and scaled replay. No new collection or architecture growth
-is scheduled; fresh validation is required before runtime promotion.
+The bounded source comparison is now complete: stabilization passed but
+advancement failed against strong replay. Next proposed source comparison:
+cumulative evidence fitting versus bounded fixed protection and scaled replay.
+No new collection or architecture growth is scheduled; fresh validation is
+required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
 baselines, retention and actual action outcomes, not loss or acceptance alone.
 
@@ -113,8 +123,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1919.6321034559958seconds used,
-1680.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1922.6321034559958seconds used,
+1677.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

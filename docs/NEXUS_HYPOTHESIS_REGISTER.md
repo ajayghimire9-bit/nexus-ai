@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed bounded correction — source stabilization PASSED; advancement FAILED
+
+From269bcb6, source curve MSE .183824 versus unchanged learned .212504,
+13.5% reduction, paired benefit [.004901,.052457], retention improved. Replay
+.187213: only 1.81% advantage with interval including zero; fails 5% screen.
+Fixed bounded .185384: learned-specific improvement .84%, below 5% despite a
+positive exploratory interval. Reused source tasks, one frozen core; generic
+stabilization does not establish learned-learning advantage. No promotion.
+See NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md.
+
 ## Seed first-update broad-harm diagnostic — NOT_SUPPORTED
 
 Source-only registered screen required medianlearned/replaynormratio>2 and

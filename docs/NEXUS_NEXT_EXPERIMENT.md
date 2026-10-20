@@ -1,6 +1,21 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — bounded source correction comparison (proposed, not run)
+## Current — cumulative source-evidence comparison (proposed, not run)
+
+Does using all observed new-task labels to choose the update direction improve
+learning over bounded fixed protection and scaled replay at equal 1/2/4/8-label
+budgets? Current protected candidates use the latest label and old-task anchors;
+replay explicitly refits the full observed prefix. Earlier labels already affect
+theta implicitly in both methods. The bounded source study passed generic
+stabilization but failed strong-baseline advancement. Test this information-use
+difference before increasing capacity; do not retune the closed audit or claim
+source results are fresh validation. No second study has run. See
+NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md.
+
+## Closed — bounded source correction comparison
+
+Completed from269bcb6: stabilization passed, replay and learned-specific screens
+failed. The question below is preserved as the original pre-run motivation.
 
 Does limiting protected output change stabilize later source prefixes versus
 both unchanged protection and scaled replay? Fix the bound/objective before

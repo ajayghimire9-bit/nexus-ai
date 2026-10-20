@@ -26,9 +26,10 @@ plasticity did not beat strong replay or static protection; learned/static/fixed
 actions matched. See [results](NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md).
 Source-only first-update diagnosis completed:12.55×median norm ratio,5/12tasks
 harmed; broad-harm screen not supported. Later-prefix oscillation remains a
-source-only lead. Next proposed bounded output-change comparison against
-unchanged protection and scaled replay, not architecture growth. No collection
-or runtime promotion. See NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md.
+source-only lead. The subsequent bounded comparison improved source stability
+by 13.5%, but failed strong-replay and learned-specific practical screens.
+Next proposed cumulative-evidence comparison versus bounded fixed and replay;
+no collection or runtime promotion. See NEXUS_SEED_BOUNDED_CORRECTION_RESULTS.md.
 The paragraphs below retain earlier gates.
 
 ### Historical setup stage, superseded by the result above
