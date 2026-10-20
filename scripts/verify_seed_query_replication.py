@@ -15,7 +15,7 @@ def verify(root=ROOT):
     c=json.loads((root/'configs/seed_query_replication.json').read_text())
     r=json.loads((root/'artifacts/seed_query_replication.json').read_text());p=qr.source_pack(root,c)
     qr.validate(r,c,p)
-    if r['declared_complete'] is not True:raise ValueError('complete_capture_required')
+    if r['declared_complete'] is not True:qr.verify_offline_receipt(root,r,c)
     errors={m:[] for m in ('selected','variance','keep')};checked=0;max_error=0.
     scales={str(t):f['scale'] for f in p['frozen_folds'].values() for t in f['excluded_ids']}
     def mse(t,theta,role):

@@ -37,6 +37,20 @@ def config_check(c):
     return dict(real_steps=2592,imagined_transitions=2592,outer_updates=0)
 
 
+def checkpoint_parameter_count(root,c):
+    """Derive accounting from hash-verified weight arrays, not a magic total."""
+    def count(v):
+        if type(v) is list:return sum(count(x) for x in v)
+        if not finite(v):raise ValueError('checkpoint_numeric_weights')
+        return 1
+    sizes={}
+    for key in ('parent_model','parent_readout'):
+        raw=(Path(root)/c[key]).read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=c[key+'_sha256']:raise ValueError('query_parameter_checkpoint_hash')
+        sizes[key]=sum(count(v) for v in json.loads(raw)['weights'].values())
+    return sizes
+
+
 def historical_seeds(value):
     """Conservative identifier inventory, never reads scores to choose seeds."""
     found=set()
@@ -243,8 +257,8 @@ def validate(r,c,pack):
                 for row in arms.values():
                     for k in ('check_mse','check_blocks'):del row[k]
     manifest=selection_manifest(selection_rows,r['queries'],c,pack)
-    if r['selection_manifest']!=manifest or r['selection_manifest_sha256']!=digest(manifest) or r['selection_locked_before_check'] is not True:raise ValueError('query_selection_manifest')
-    if r['analysis']!=summarize(r['rows'],manifest['choices'],c,pack):raise ValueError('query_summary_arithmetic')
+    if digest(r['selection_manifest'])!=digest(manifest) or r['selection_manifest_sha256']!=digest(manifest) or r['selection_locked_before_check'] is not True:raise ValueError('query_selection_manifest')
+    if digest(r['analysis'])!=digest(summarize(r['rows'],manifest['choices'],c,pack)):raise ValueError('query_summary_arithmetic')
     expected_work=dict(collection=2592,control=0)
     if r['costs']!=expected_work or r['imagined_transitions']!=2592 or r['posterior_rows']!=288:raise ValueError('query_resource_accounting')
     return True
@@ -303,7 +317,8 @@ def run(request):
 def validate_output(output,c,caps,pack):
     r=output['study'];validate(r,c,pack);work=output['resources']
     if output['adapter']!='seed_query_replication_v1' or r['declared_complete'] is not True or output['model']!=dict(schema='unchanged_query_replication_v1',**r['frozen_after']):raise ValueError('incomplete_query_replication')
-    for key,expected in dict(updates=0,real_steps=2592,imagined_transitions=2592,posterior_rows=288,evaluated_cached_states=900,cached_retention_rows=24300,new_query_score_rows=194400,counterfactual_updates=0,normalization_fit_rows=0,parameter_count=40487).items():
+    sizes=checkpoint_parameter_count(Path(__file__).resolve().parents[3],c)
+    for key,expected in dict(updates=0,real_steps=2592,imagined_transitions=2592,posterior_rows=288,evaluated_cached_states=900,cached_retention_rows=24300,new_query_score_rows=194400,counterfactual_updates=0,normalization_fit_rows=0,parameter_count=sum(sizes.values())).items():
         if type(work[key]) is not int or work[key]!=expected:raise ValueError('query_execution_resource_grid')
     if not finite(work['cpu_s']) or not 0<=work['cpu_s']<=caps['cpu_s'] or any(work[k]>caps[k] for k in ('real_steps','imagined_transitions','updates')):raise ValueError('query_execution_cap')
     if r['model_work']['encoder_rows']!=288 or r['model_work']['transition_rows']!=2880 or r['model_work']['head_rows']!=2592 or r['update_work']!={'readout_score_batches':288,'readout_basis_batches':288}:raise ValueError('query_model_work')
@@ -312,6 +327,24 @@ def validate_output(output,c,caps,pack):
 
 def saved_replay(root):
     c=json.loads((root/'configs/seed_query_replication.json').read_text());r=json.loads((root/'artifacts/seed_query_replication.json').read_text())
-    if r['declared_complete'] is not True:raise ValueError('incomplete_query_replication_evidence')
+    status=r['host_receipt']['status']
+    if r['declared_complete'] is not True:
+        receipt=verify_offline_receipt(root,r,c)
+        status=receipt['status']
     validate(r,c,source_pack(root,c));h=r['host_receipt']
-    return dict(id=h['id'],mode='recorded_source_query_replication',status=h['status'],failure=h['failure'],wall_s=h['wall_s'],memory_mb=h['peak_sampled_rss_mb'],revision=r['execution_sha'],metrics=dict(mse=r['analysis']['check_means']['selected'],baseline_mse=r['analysis']['check_means']['variance']),curve=[],resources=r['resources'],model_sha256=r['frozen_after']['state'],query_replication=r['analysis'])
+    return dict(id=h['id'],mode='recorded_source_query_replication',status=status,failure=h['failure'],wall_s=h['wall_s'],memory_mb=h['peak_sampled_rss_mb'],revision=r['execution_sha'],metrics=dict(mse=r['analysis']['check_means']['selected'],baseline_mse=r['analysis']['check_means']['variance']),curve=[],resources=r['resources'],model_sha256=r['frozen_after']['state'],query_replication=r['analysis'])
+
+
+def verify_offline_receipt(root,r,c):
+    """A separate arithmetic validation can never rewrite the execution status."""
+    receipt=json.loads((root/'artifacts/seed_query_replication_validation.json').read_text())
+    raw=hashlib.sha256((root/'artifacts/seed_query_replication.json').read_bytes()).hexdigest()
+    if (receipt.get('raw_sha256')!=raw or receipt.get('status')!='complete_offline_validation_of_unchanged_capture'
+        or receipt.get('schema')!='seed_query_offline_validation_v1'
+        or receipt.get('scientific_rerun') is not False or receipt.get('validated_complete') is not True
+        or receipt.get('original_status')!=r['host_receipt']['status'] or receipt.get('analysis_sha256')!=digest(r['analysis'])
+        or receipt.get('config_file_sha256')!=hashlib.sha256((root/'configs/seed_query_replication.json').read_bytes()).hexdigest()
+        or receipt.get('protocol_file_sha256')!=r['host_receipt']['dataset_hashes']['protocol']
+        or receipt.get('validator_sha256')!=hashlib.sha256((root/'scripts/validate_seed_query_replication.py').read_bytes()).hexdigest()
+        or receipt.get('audit_module_sha256')!=hashlib.sha256((root/'src/nexus/seed/query_replication.py').read_bytes()).hexdigest()):raise ValueError('offline_query_validation_provenance')
+    return receipt

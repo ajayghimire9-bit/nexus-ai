@@ -175,6 +175,24 @@ def test_verifier_imports_in_isolated_stdlib_python():
     subprocess.run([sys.executable,'-I','-S','-c',code,str(ROOT/'scripts/verify_seed_query_replication.py')],check=True,timeout=10)
 
 
+def test_parameter_accounting_is_derived_from_frozen_weights():
+    sizes=qr.checkpoint_parameter_count(ROOT,config())
+    assert sizes=={'parent_model':30278,'parent_readout':2209}
+    assert sum(sizes.values())==32487
+
+
+def test_actual_output_resource_validation_catches_wrong_parameter_total(replication):
+    r,p=deepcopy(replication);r['declared_complete']=True
+    r['model_work']=dict(encoder_rows=288,transition_rows=2880,head_rows=2592)
+    r['update_work']=dict(readout_score_batches=288,readout_basis_batches=288)
+    out=dict(adapter='seed_query_replication_v1',study=r,model=dict(schema='unchanged_query_replication_v1',**r['frozen_after']),
+        resources=dict(updates=0,real_steps=2592,imagined_transitions=2592,posterior_rows=288,evaluated_cached_states=900,cached_retention_rows=24300,new_query_score_rows=194400,counterfactual_updates=0,normalization_fit_rows=0,parameter_count=32487,cpu_s=1.))
+    caps=dict(cpu_s=60,real_steps=2592,imagined_transitions=2592,updates=0)
+    assert qr.validate_output(out,config(),caps,p)
+    out['resources']['parameter_count']=40487
+    with pytest.raises(ValueError,match='query_execution_resource_grid'):qr.validate_output(out,config(),caps,p)
+
+
 @pytest.mark.parametrize('k,v',[('budgets',[1,2,4]),('starts_per_role',11),('minimum_fraction',.01),('max_authored_steps',2593),('max_posterior_rows',289),('max_wall_s',61),('constant_seeds',[7201])])
 def test_locked_plan_cannot_shrink_or_expand(k,v):
     c=config();c[k]=v
