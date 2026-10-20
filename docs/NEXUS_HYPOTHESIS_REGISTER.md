@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-missed / H-pool — registered evaluator-only headroom audit, not scored
+
+Do useful one-label examples exist that input variance misses, or is the small
+pool inadequate/unstable? On fixed prior states before budgets1/2/4/8, enumerate
+all remaining candidates with the same learner. Oracle must beat variance,
+uniform and keep by5%, improve8/12 task means and retain within variance+.01.
+Separately check selection using two recorded query states on the omitted third.
+An optimistic query-oracle bound is not an agent capability or validation.
+One core,12 reused SOURCE tasks, no new data/training/promotion. See
+[protocol](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md).
+
 ## H-question — fixed-learner source screen FAILED
 
 From080d051: informative .193552 versus random .191753, original .180187.

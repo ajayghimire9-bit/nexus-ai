@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Question-pool headroom](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md): registered
+  evaluator-only SOURCE audit, pending scoring. Every remaining one-label
+  candidate at fixed prior prefixes; oracle bound plus leave-one-query-state-out
+  stability. Frozen learner, no new collection, fitting recipe or live promotion.
+
 - [Fixed-learner question selection](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md):
   completed source exploration; improvement screen FAILED. Informative .193552
   versus random .191753, original order .180187. Primary −.001799 interval

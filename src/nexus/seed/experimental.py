@@ -271,10 +271,11 @@ class Sandbox:
         sequential = adapter == 'seed_sequential_consistency_v1'
         learning_choice = adapter == 'seed_learning_choice_v1'
         questions = adapter == 'seed_question_selection_v1'
+        headroom = adapter == 'seed_question_headroom_v1'
         diagnosis = adapter in ('seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
         study = adapter in ('seed_nonlinear_learning_v1','seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
-        diagnosis = diagnosis or learning_choice or questions
-        study = study or learning_choice or questions
+        diagnosis = diagnosis or learning_choice or questions or headroom
+        study = study or learning_choice or questions or headroom
         if study:
             if mode!='exploration' or any(spec[k] is not None for k in ('train','development','model_run','assessment','protocol','gate')):
                 raise ValueError('registered_seed_development_study_only')
@@ -287,6 +288,7 @@ class Sandbox:
             if sequential:expected_paths=('configs/seed_sequential_consistency.json','docs/NEXUS_SEED_SEQUENTIAL_CONSISTENCY_PROTOCOL.md')
             if learning_choice:expected_paths=('configs/seed_learning_choice.json','docs/NEXUS_SEED_LEARNING_CHOICE_PROTOCOL.md')
             if questions:expected_paths=('configs/seed_question_selection.json','docs/NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md')
+            if headroom:expected_paths=('configs/seed_question_headroom.json','docs/NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md')
             if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or (item['config_path'],item['protocol_path'])!=expected_paths:
                 raise ValueError('vetted_study_manifest_required')
             for path,key in ((item['config_path'],'config_sha256'),(item['protocol_path'],'protocol_sha256')):
@@ -296,7 +298,9 @@ class Sandbox:
             if any(r['spec'].get('recipe',{}).get('config_sha256')==item['config_sha256'] for r in self.records('reserved') if type(r['spec'].get('recipe')) is dict):
                 raise ValueError('study_configuration_consumed')
             c=read(self.repository/item['config_path'])
-            if questions:
+            if headroom:
+                from .question_headroom import config_check, source_pack
+            elif questions:
                 from .question_selection import config_check, source_pack
             elif learning_choice:
                 from .learning_choice import config_check, source_pack
@@ -371,6 +375,9 @@ class Sandbox:
             'src/nexus/seed/experimental.py', 'src/nexus/seed/experimental_worker.py',
             'src/nexus/nn/factory.py', 'src/nexus/nn/activations.py')}
         if study:
+            if headroom:
+                for p in ('src/nexus/seed/question_headroom.py','src/nexus/seed/question_selection.py','src/nexus/seed/sequential_consistency.py','src/nexus/seed/cumulative_learning.py'):
+                    sources[p]=hashlib.sha256((self.repository/p).read_bytes()).hexdigest()
             if questions:
                 for p in ('src/nexus/seed/question_selection.py','src/nexus/seed/sequential_consistency.py','src/nexus/seed/cumulative_learning.py'):
                     sources[p]=hashlib.sha256((self.repository/p).read_bytes()).hexdigest()
@@ -435,7 +442,9 @@ class Sandbox:
             if reason is None:
                 output = read(directory/'output.json')
                 if study:
-                    if questions:
+                    if headroom:
+                        from .question_headroom import validate_output as study_validate
+                    elif questions:
                         from .question_selection import validate_output as study_validate
                     elif learning_choice:
                         from .learning_choice import validate_output as study_validate
@@ -455,10 +464,10 @@ class Sandbox:
                         from .nonlinear_learning_audit import validate_output as study_validate
                     if diagnosis:study_validate(output,inputs['study_config'],caps,inputs['source_pack'])
                     else:study_validate(output,inputs['study_config'],caps)
-                    source_controllers=inputs['source_pack']['data']['controllers'] if bounded else inputs['source_pack']['controllers'] if diagnosis and not (cumulative or update_gate or prefix_audit or sequential or learning_choice or questions) else None
+                    source_controllers=inputs['source_pack']['data']['controllers'] if bounded else inputs['source_pack']['controllers'] if diagnosis and not (cumulative or update_gate or prefix_audit or sequential or learning_choice or questions or headroom) else None
                     if diagnosis and output['study']['source_pack_sha256']!=digest(inputs['source_pack']):
                         raise ValueError('study_changed_source_pack')
-                    if diagnosis and not (cumulative or update_gate or prefix_audit or sequential or learning_choice or questions) and output['model']['controllers']!=source_controllers:
+                    if diagnosis and not (cumulative or update_gate or prefix_audit or sequential or learning_choice or questions or headroom) and output['model']['controllers']!=source_controllers:
                         raise ValueError('diagnosis_changed_source_controllers')
                 else:validate_output(output, spec, caps, inputs)
                 if mode != 'exploration' and digest(output['model']) != digest(inputs['model']):
@@ -547,7 +556,8 @@ class Sandbox:
                     prefix_consistency=worker['study']['analysis'] if worker.get('adapter')=='seed_prefix_consistency_v1' else None,
                     sequential_consistency=worker['study']['analysis'] if worker.get('adapter')=='seed_sequential_consistency_v1' else None,
                     learning_choice=worker['study']['analysis'] if worker.get('adapter')=='seed_learning_choice_v1' else None,
-                    question_selection=worker['study']['analysis'] if worker.get('adapter')=='seed_question_selection_v1' else None))
+                    question_selection=worker['study']['analysis'] if worker.get('adapter')=='seed_question_selection_v1' else None,
+                    question_headroom=worker['study']['analysis'] if worker.get('adapter')=='seed_question_headroom_v1' else None))
             except FileNotFoundError:
                 rows.append(dict(id=reserved['run_id'],mode=reserved['mode'],status='reserved_or_interrupted',
                                  wall_s=reserved['wall_cap_s'],curve=[]))

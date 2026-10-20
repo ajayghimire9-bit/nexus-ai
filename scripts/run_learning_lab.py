@@ -54,9 +54,15 @@ class LabHandler(BaseHTTPRequestHandler):
             if parsed.path=='/api/questions' and not parsed.query:
                 from nexus.seed.question_selection import saved_replay
                 return self.send_json(200,saved_replay(ROOT))
+            if parsed.path=='/api/question-headroom' and not parsed.query:
+                from nexus.seed.question_headroom import saved_replay
+                return self.send_json(200,saved_replay(ROOT))
             if parsed.path=='/api/experimental' and not parsed.query:
                 from nexus.seed.experimental import Sandbox
                 state=Sandbox(ROOT,getattr(self.server,'experimental_directory',None)).view()
+                if (ROOT/'artifacts/seed_question_headroom.json').exists() and not any(r['id']=='seed-question-headroom-1' for r in state['experiments']):
+                    from nexus.seed.question_headroom import saved_replay as headroom_replay
+                    state['experiments'].append(headroom_replay(ROOT))
                 if (ROOT/'artifacts/seed_question_selection.json').exists() and not any(r['id']=='seed-question-selection-1' for r in state['experiments']):
                     from nexus.seed.question_selection import saved_replay as questions_replay
                     state['experiments'].append(questions_replay(ROOT))

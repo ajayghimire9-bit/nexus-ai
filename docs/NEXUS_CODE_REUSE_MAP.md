@@ -33,6 +33,14 @@
 
 ## Verification versus experiments
 
+Question-pool headroom: seed/question_headroom.py is an evaluator adapter over
+saved question_selection states, its shared damped_step/assess helpers, frozen
+source pack and existing cumulative posterior. It adds no runtime questioner.
+Oracle choices are computed after all independent counterfactual fits; query
+blocks derive from hashed original records. Same EXPERIMENTAL host and ledger.
+scripts/verify_seed_question_headroom.py checks recorded equations using the
+prior verifier's numeric audit primitive; no new learner/framework or collection.
+
 Question choice: seed/question_selection.py reuses sequential source/hash/fold
 validation, the existing constant damping and cumulative posterior, anchor fit,
 paired intervals and EXPERIMENTAL host. Input-only variance chooses a requested

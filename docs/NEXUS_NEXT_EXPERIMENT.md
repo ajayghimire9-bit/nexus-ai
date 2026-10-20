@@ -4,7 +4,7 @@ The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented a
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.
 
-## Current — source pool-headroom audit (proposed, not run)
+## Current — source pool-headroom audit (registered, not run)
 
 Do useful next questions exist in the allowed eight-row pool, or does the input-
 variance proxy fail to identify them? Keep the learner fixed. On reused SOURCE
@@ -13,7 +13,9 @@ candidate's actual query-error reduction. Compare the best attainable reduction
 with the registered variance choice, task by task. Keep these oracle utilities
 outside runtime decisions and label the analysis exploratory. No new model,
 collection, question-policy training, confirmation or live promotion. Register
-its exact scope before scoring. This is the one next proposal, not a run here.
+its exact scope before scoring. Exact scope and screens are now in
+[protocol](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md), pending committed tests
+and one bounded execution. No result is claimed at preparation time.
 
 ## Closed — informative versus random question choice
 

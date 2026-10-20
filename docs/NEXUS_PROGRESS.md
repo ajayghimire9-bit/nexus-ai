@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Question-pool headroom — registered, not scored
+
+From2b9bf380 on codex/seed-question-pool-headroom: evaluator-only one-label
+counterfactual audit of the fixed learner, plus query-state stability. Reuses
+saved source data and reference fits; no worlds, neural calls or neural/meta-training.
+756 counterfactuals under30-second cap. Carried ledger remains1948.6321034559958
+used /1651.3678965440042 remaining until execution. Protocol/tested code must
+commit before scoring. See NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md.
+
 ## Fixed-learner question selection — source screen FAILED
 
 Locked080d051 executed once in3.348762s host wall/2.310780s CPU. Informative MSE

@@ -114,6 +114,15 @@ def orders(pool,anchors,task_id,c,check=lambda:None):
         random=random_orders,original_order={'fixed':dict(indices=list(range(8)),variance_trace=None)})
 
 
+def damped_step(initial,previous,anchors,old_y,seen_x,seen_y,g):
+    """Original fixed learner expression; observed labels only, no evaluation."""
+    import torch
+    proposal=cum.posterior(initial,torch.cat((anchors,seen_x)),
+        torch.cat((old_y,seen_y)),torch.ones_like(initial))
+    theta=proposal if g==1 else previous if g==0 else previous+g*(proposal-previous)
+    return theta,proposal
+
+
 def fit_path(pool,anchors,old_y,oracle,order,g,check=lambda:None):
     """Only requested teaching and known anchors. No assessment tensors here."""
     import torch
@@ -127,21 +136,22 @@ def fit_path(pool,anchors,old_y,oracle,order,g,check=lambda:None):
     for p,index in enumerate(order,1):
         check();x=pool[index];y=oracle.reveal(index);before=float(x@theta)
         xs.append(x);ys.append(y)
-        proposal=cum.posterior(initial,torch.cat((anchors,torch.stack(xs))),
-            torch.cat((old_y,torch.tensor(ys,dtype=pool.dtype))),torch.ones_like(initial))
-        theta=proposal if g==1 else theta if g==0 else theta+g*(proposal-theta)
+        theta,proposal=damped_step(initial,theta,anchors,old_y,torch.stack(xs),torch.tensor(ys,dtype=pool.dtype),g)
         rows.append(dict(prefix=p,index=index,theta=theta.tolist(),proposal=proposal.tolist(),
             support_error_before=(float(y)-before)**2,support_error_after=(float(y)-float(x@theta))**2))
     return rows
 
 
-def assess(path,query_x,query_y,retention_x,retention_y):
+def assess(path,query_x,query_y,retention_x,retention_y,*,blocks=False):
     """Evaluator-only, called AFTER the whole fitted path has been frozen."""
     import torch
     for row in path:
         theta=torch.tensor(row['theta'],dtype=query_x.dtype)
-        row.update(query_mse=float((query_x@theta-query_y).square().mean()),
-            retention_mse=float((retention_x@theta-retention_y).square().mean()))
+        errors=dict(query=(query_x@theta-query_y).square(),retention=(retention_x@theta-retention_y).square())
+        row.update({role+'_mse':float(error.mean()) for role,error in errors.items()})
+        if blocks:
+            if any(len(error)!=27 for error in errors.values()):raise ValueError('three_nine_action_query_blocks')
+            row.update({role+'_blocks':[float(error[i:i+9].mean()) for i in (0,9,18)] for role,error in errors.items()})
     return path
 
 
