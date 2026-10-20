@@ -12,6 +12,12 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Try it
 
+The new [executable foundation](docs/NEXUS_SEED_FOUNDATION.md) is available at
+`/foundation` on the same server: six operator stages, bounded typed programs,
+attributed document ingestion, conflict-preserving memory, checked program
+abstractions and investigation tools. This is tested engineering, not a new
+learning-to-learn result. Historical findings and frozen models are unchanged.
+
 Python3.11+ and a browser are enough for the symbolic teaching demo:
 
 ```sh

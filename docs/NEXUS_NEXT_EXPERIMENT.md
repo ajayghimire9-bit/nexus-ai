@@ -6,6 +6,10 @@ benefit. The later fixed-learner question comparison is complete and closed.
 
 ## Current proposal — frozen investigation reuse (not executed)
 
+The [foundation engineering](NEXUS_SEED_FOUNDATION.md) now provides journaled
+source-trace investigation and bounded replay, alongside curriculum/abstraction
+tools. Its fixture tests do not execute or answer this proposed experiment.
+
 The executable-model authored source screen passed frombc57da1; no live
 promotion. [Results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). Next test whether
 a frozen source-learned investigation helps identify useful features on fresh

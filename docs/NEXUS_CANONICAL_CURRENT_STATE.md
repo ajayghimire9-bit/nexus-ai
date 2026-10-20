@@ -6,6 +6,12 @@ executionbc57da126051d0aa5d148fcbf05bb4704f2571e1. Read
 
 ## Established within the tested authored setup
 
+[Foundation engineering](NEXUS_SEED_FOUNDATION.md) extends the same journal with
+typed composition, checked macros, six supplied curriculum stages, attributed
+text ingestion, conflict/rehearsal views, bounded investigation and grounded
+wording. New `/foundation` interface; no new scientific execution or efficacy
+claim. Base5a554a5853cec039d1e3ab6eaefb0c1265d86cec; old evidence stays closed.
+
 The new [conversation workspace](NEXUS_SEED_CONVERSATION_WORKSPACE.md) is an
 engineering interface over the same SharedBrain, verified library and Session
 journal. Guided teaching, correction, fresh checks, skill use, world goals and

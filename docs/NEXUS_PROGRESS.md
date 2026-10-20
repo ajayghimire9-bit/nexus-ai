@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Executable foundation engineering
+
+From5a554a5 on codex/seed-foundation-learning: ten requested foundation areas
+connected through the existing journal and skill operators. Typed bounded
+execution, repeated-program proposals with one-use checks, source ingestion,
+conflict/rehearsal views, curriculum and actual HTTP GUI operations are tested.
+No new scientific run or frozen-model change; ledger remains1979.6321034559958
+used /1620.3678965440042 remaining. [Scope](NEXUS_SEED_FOUNDATION.md).
+
 ## Executable model — complete authored SOURCE screen PASSED
 
 Executionbc57da1, one6.559924s host run. Feature Brier0 versus fixed .238707,

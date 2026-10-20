@@ -46,3 +46,5 @@ $('show-world').onclick=()=>{closeSidebar();send('Show the world.');};for(const 
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&sid&&!busy){try{const currentSid=sid;const d=await api({op:'chat_view'});if(!busy&&sid===currentSid&&d.response.chat.messages.length>=(chat?.messages.length||0)){chat=d.response.chat;render();controls();}}catch(e){notice(e.message,true);}}});
 window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
 (async()=>{controls();renderSaves();closeSidebar();let active;try{active=localStorage.getItem(ACTIVE);}catch{}const previous=saved().find(r=>r.session_id===active);if(previous)await restore(previous);else await create();})();
+
+$('foundation-open').onclick=()=>{if(sid)location.href='/foundation#session='+sid;};

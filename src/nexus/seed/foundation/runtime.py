@@ -1,0 +1,113 @@
+"""Foundation views and versioned additions to the SAME Session/E1 journal.
+
+Every persisted derived payload is recomputed on restore. The client cannot
+label a failed proposal accepted, omit checks, or silently overwrite evidence.
+"""
+import copy
+import json
+from nexus.evolution1.catalogue import digest
+from . import knowledge, library, language, curriculum, programs, inquiry, semantics
+
+KIND='seed_foundation'
+
+
+def records(session):
+    return [(e.fingerprint,json.loads(e.payload_json)) for e in session.journal.snapshot() if e.kind==KIND]
+
+
+def state(session):
+    out=dict(documents=[],proposals={},reviews={},active=None,traces=[],investigations={},used_checks=set())
+    for ref,p in records(session):
+        op=p['op'];r=p['result']
+        if op=='ingest': out['documents'].append(r)
+        elif op=='propose': out['proposals'][ref]=p
+        elif op=='review':
+            out['reviews'][ref]=p
+            for row in p['args']['checks']:
+                out['used_checks'].add(('task',row['task']))
+                out['used_checks'].update(('input',digest(x['input'])) for x in row['examples'])
+            if r['accepted']: out['active']=ref
+        elif op=='rollback': out['active']=p['args']['target']
+        elif op=='language_trace': out['traces'].append(p['args'])
+        elif op=='investigation': out['investigations'][ref]=r
+    return out
+
+
+def build(session,op,args):
+    if session.stopped: raise ValueError('resume_before_foundation_edit')
+    if len(records(session))>=128: raise ValueError('foundation_journal_cap')
+    s=state(session)
+    if type(args) is not dict: raise ValueError('typed_foundation_args')
+    fields={'ingest':{'source','text'},'propose':{'programs'},'review':{'proposal','candidate','checks'},
+            'rollback':{'target'},'language_trace':{'role','intent','surface'},'investigation':{'traces'}}
+    if op not in fields or set(args)!=fields[op]: raise ValueError('foundation_operation_fields')
+    if op=='ingest':
+        if len(s['documents'])>=16: raise ValueError('document_count_cap')
+        result=knowledge.ingest(**args)
+        if any(d['sha256']==result['sha256'] and d['source']==result['source'] for d in s['documents']): raise ValueError('duplicate_document')
+    elif op=='propose':
+        if any(('task',row['task']) in s['used_checks'] or any(('input',digest(x['input'])) in s['used_checks'] for x in row['examples']) for row in args['programs']): raise ValueError('assessment_cannot_train_library')
+        result=library.propose(args['programs'])
+    elif op=='review':
+        if args['proposal'] not in s['proposals'] or any(p['args']['proposal']==args['proposal'] for p in s['reviews'].values()): raise ValueError('unconsumed_library_proposal')
+        source=s['proposals'][args['proposal']];candidate=next((c for c in source['result'] if c['id']==args['candidate']),None)
+        if candidate is None: raise ValueError('proposed_candidate_required')
+        if any(('task',row['task']) in s['used_checks'] or any(('input',digest(x['input'])) in s['used_checks'] for x in row['examples']) for row in args['checks']): raise ValueError('fresh_assessment_required')
+        result=library.assess(candidate,source['args']['programs'],args['checks'])
+        result.update(candidate=candidate,previous=s['active'])
+    elif op=='rollback':
+        if args['target'] is not None and (args['target'] not in s['reviews'] or not s['reviews'][args['target']]['result']['accepted']): raise ValueError('accepted_revision_required')
+        result=dict(previous=s['active'],target=args['target'])
+    elif op=='language_trace':
+        if type(args['intent']) is not str or not 1<=len(args['intent'])<=128: raise ValueError('language_intent')
+        language.render(dict(intent=args['intent'],decision='check',reason='source trace',evidence=['trace'],uncertainty=1),[args],{'trace'})
+        result=dict(status='source_wording_feedback_not_factual_learning')
+    else: result=inquiry.learn(args['traces'])
+    return dict(op=op,args=copy.deepcopy(args),result=result)
+
+
+def validate_event(payload,session):
+    if type(payload) is not dict or set(payload)!={'op','args','result'} or payload!=build(session,payload['op'],payload['args']): raise ValueError('foundation_event_not_reproduced')
+
+
+def inspect(session):
+    s=state(session)
+    from nexus.seed.skill_library import view
+    return dict(curriculum=curriculum.lessons(),documents=s['documents'],knowledge=knowledge.consolidate(s['documents']),
+                proposals=[dict(ref=r,**p) for r,p in s['proposals'].items()],
+                reviews=[dict(ref=r,**p) for r,p in s['reviews'].items()],active_macro=s['active'],
+                investigations=s['investigations'],wording_traces=len(s['traces']),skills=view(session)['entries'],
+                limits=dict(events=128,documents=16,instructions=512),
+                scope='bounded executable foundation; no demonstrated cumulative intelligence')
+
+
+def request(session,req):
+    if type(req) is not dict or set(req)!={'op','args'} or type(req['op']) is not str or not req['op'].startswith('foundation_') or type(req['args']) is not dict: raise ValueError('foundation_request')
+    op=req['op'].removeprefix('foundation_');args=req['args'];s=state(session)
+    if op in ('ingest','propose','review','rollback','language_trace','investigation'):
+        p=build(session,op,args);ref=session.event(KIND,p);result=dict(ref=ref,**p['result']) if type(p['result']) is dict else dict(ref=ref,candidates=p['result'])
+    elif op=='inspect' and not args: result=inspect(session)
+    elif op=='retrieve' and set(args)=={'query'}: result=knowledge.retrieve(s['documents'],args['query'])
+    elif op=='exercise' and set(args)=={'stage'}: result=curriculum.exercise(args['stage'])
+    elif op=='execute' and set(args)=={'program','inputs'}:
+        functions={}
+        if s['active']: functions['macro']=programs.pipeline(s['reviews'][s['active']]['result']['candidate']['ops'])
+        result=programs.execute(args['program'],args['inputs'],functions)
+    elif op=='instruction' and set(args)=={'text','input'}:
+        result=curriculum.instruction(args['text'])
+        if 'program' in result: result.update(programs.execute(result['program'],{'x':args['input']}))
+    elif op=='question' and set(args)=={'candidates','pool','observed'}: result=inquiry.choose(**args)
+    elif op=='container' and set(args)=={'graph','item','target','action'}: result=semantics.container(**args)
+    elif op=='render' and set(args)=={'record'}:
+        known={e.fingerprint for e in session.journal.snapshot()}|{u['id'] for d in s['documents'] for u in d['units']}
+        result=language.render(args['record'],s['traces'],known)
+    elif op=='investigate' and set(args)=={'ref','answers','budget'}:
+        if args['ref'] not in s['investigations']: raise ValueError('known_investigation')
+        answers=args['answers']
+        if type(answers) is not dict or any(type(v) is not bool for v in answers.values()): raise ValueError('observed_probe_answers')
+        result=inquiry.run(s['investigations'][args['ref']],lambda i:answers[str(i)],budget=args['budget'])
+        result['observed_answer_reads']=result['real_probes'];result['real_probes']=0
+        for row in result['transcript']: row['real']=False
+        result.update(label='replay_of_supplied_observations',new_environment_interactions=0)
+    else: raise ValueError('foundation_read_fields')
+    return dict(text='Bounded foundation operation completed.',result=result)

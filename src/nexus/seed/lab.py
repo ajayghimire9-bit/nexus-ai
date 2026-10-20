@@ -66,6 +66,9 @@ class SeedWorkspace:
             elif op == 'export' and set(request) == {'op'}:
                 response = self.sessions[sid].request(dict(op='inspect'))
                 response['export'] = self.sessions[sid].snapshot()
+            elif type(op) is str and op.startswith('foundation_'):
+                from .foundation.runtime import request as foundation_request
+                response=foundation_request(self.sessions[sid],request)
             elif type(op) is str and op.startswith('structure_'):
                 from .structure.runtime import request as structure_request
                 response=structure_request(self.sessions[sid],request)

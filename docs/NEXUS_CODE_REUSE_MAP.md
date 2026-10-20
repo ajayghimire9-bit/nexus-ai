@@ -2,6 +2,13 @@
 
 ## Active runtime
 
+- Foundation: seed/foundation uses the SAME Session/E1 Journal, skill_programs
+  primitives and structure.investigation learner. programs is a bounded typed
+  composition interpreter; library discovers repeated source list sequences;
+  knowledge derives evidence-linked views, not a new store. language is a small
+  source-count surface decoder, not a replacement neural model. Frozen GRU/RSSM
+  remain intact. [Usage and limits](NEXUS_SEED_FOUNDATION.md).
+
 - Optional executable state: seed/structure/state,features,learning,mechanisms,
   investigation,neural,runtime. Reuses Session/E1 Journal/storage, skill_programs,
   nn.factory/ridge and EXPERIMENTAL host. New graph-effect BFS is bounded and

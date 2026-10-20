@@ -36,6 +36,11 @@ class LabHandler(BaseHTTPRequestHandler):
         if not self.local_request():return self.send_json(403,{'error':'local_origin_required'})
         parsed=urlparse(self.path)
         try:
+            if parsed.path=='/foundation' and not parsed.query:
+                body=(ROOT/'web/learning-lab/foundation.html').read_bytes();self.send_response(200)
+                self.send_header('Content-Type','text/html; charset=utf-8')
+                self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'")
+                self.end_headers();return self.wfile.write(body)
             if not parsed.query and (parsed.path in ('/chat','/chat.css','/chat.js') or parsed.path=='/' and getattr(self.server,'seed_workspace',None)):
                 name={'/':'chat.html','/chat':'chat.html','/chat.css':'chat.css','/chat.js':'chat.js'}[parsed.path]
                 body=(ROOT/'web/learning-lab'/name).read_bytes();self.send_response(200)

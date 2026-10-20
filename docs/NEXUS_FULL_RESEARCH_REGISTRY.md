@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Executable foundation engineering](NEXUS_SEED_FOUNDATION.md): typed
+  composition, checked abstraction, curriculum, ingestion, memory projection,
+  investigation and grounded wording. Deterministic fixture/GUI verification;
+  no scientific experiment, resource allocation or learning-to-learn result.
+
 - [Executable world model](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md): complete
   bc57da1 SOURCE feature screen PASSED. Primary Brier0 versus fixed .238707 /
   all-history .050260; all unavailable candidates rejected. GRU source-fitting

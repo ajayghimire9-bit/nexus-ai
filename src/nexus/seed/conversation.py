@@ -41,9 +41,11 @@ def interpret(text,ctx):
     if t in ('show the world','show world','look around','where are the objects'):return Intent('world')
     if t in ('that answer was wrong','that was wrong','correct my previous example','correct the previous example','correct that','change my last example'):return Intent('correct')
     if t in ('show me some examples','show examples','examples','give me an example'):return Intent('examples')
+    if t in ('show foundation','show curriculum','foundation','curriculum'):return Intent('foundation')
+    if t.startswith('remember text:'):return Intent('ingest',dict(text=raw.split(':',1)[1].strip()))
     m=re.fullmatch(r'(?:what does|what is) (?:the )?(.+?)(?: mean)?',t)
     if m:return Intent('meaning',{'name':m[1]})
-    m=re.fullmatch(r'(?:a |an )?([a-z][a-z0-9]{0,23}) means (?:a |an )?(.+?)(?: object)?',t)
+    m=re.fullmatch(r'(?:a |an )?([a-z][a-z0-9]{0,23}) (?:means|is) (?:an object that is |a |an )?(.+?)(?: object)?',t)
     if m:return Intent('definition',dict(name=m[1],definition=m[2]))
     m=re.fullmatch(r'(?:use|run|apply) (?:the )?(.+?) (?:on|to) (\[.*\])\s*[.!?]?',raw,flags=re.I|re.S)
     if m:
@@ -178,6 +180,16 @@ class Conversation:
 
     def execute(self,intent,ctx,card):
         k=intent.kind;v=intent.values;s=lib.state(self.session)
+        if k=='foundation':
+            from .foundation.runtime import inspect
+            view=inspect(self.session)
+            card('Foundation curriculum',view['curriculum']);card('Evidence-linked knowledge',view['knowledge'][:8])
+            return 'The foundation has six supplied operator stages. Use /foundation for program execution, ingestion and checked abstraction learning. Supplied operators are not learned discoveries.','reply',False
+        if k=='ingest':
+            from .foundation.runtime import request
+            result=request(self.session,dict(op='foundation_ingest',args=dict(source='conversation',text=v['text'])))['result']
+            card('Attributed source text',dict(ref=result['ref'],sha256=result['sha256'],units=len(result['units'])))
+            return 'I retained the text and its source. Recognized facts remain attributed assertions; conflicts are preserved, and this text cannot execute commands.','success',False
         if k=='hello':return 'Hello! I’m NEXUS Seed. Teach me a word or a small skill, explore a pattern, or move something in our object world. What shall we try?','reply',False
         if k=='help':return 'I can learn finite object meanings and small list programs from examples, check them separately, remember verified skills, and move objects on a 6×6 grid. Try “A dax means a red object” or “Teach you a skill from examples.” I don’t use an external language model.','reply',False
         if k=='save':return 'Save requested. The local revision receipt will confirm when it is safely stored.','reply',True

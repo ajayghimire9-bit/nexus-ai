@@ -15,6 +15,13 @@ Financial applications are outside current scope.
 
 ## What exists
 
+The [executable foundation](NEXUS_SEED_FOUNDATION.md) adds bounded compositional
+programs, a six-stage supplied curriculum, evidence-linked ingestion and memory
+consolidation, source-program abstraction with fresh checks, investigation and
+a compact source-count wording decoder. It shares Session/E1 Journal and the
+existing skill operators. No new scientific result, frozen-model update or
+learning-to-learn claim. The scientific ledger below is unchanged.
+
 The optional executable-world-model path is implemented and its first authored
 source test completed frombc57da1. Feature induction passed its narrow screen;
 no default promotion or architecture-necessity claim. [Architecture](NEXUS_SEED_EXECUTABLE_WORLD.md),
