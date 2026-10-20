@@ -7,7 +7,9 @@ demonstrated learning-to-learn.
 
 ## Current evidence
 
-- [Latest: ten-scalar answer-free questioning, source screen FAILED](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md)
+- [Latest: optional executable model, authored source feature screen PASSED](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md)
+
+- [Ten-scalar answer-free questioning, source screen FAILED](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md)
 - [Earlier54-feature utility predictor, source screen FAILED](NEXUS_SEED_QUESTION_UTILITY_RESULTS.md)
 - [Larger source query-bank stability, evaluator screen passed](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md)
 

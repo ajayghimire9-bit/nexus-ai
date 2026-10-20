@@ -4,14 +4,18 @@ The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented a
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.
 
-## Owner-requested architecture study — prepared
+## Current proposal — frozen investigation reuse (not executed)
 
-Implement the optional executable-world-model path and run its predeclared
-source-only history-feature test once. [Protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md).
-This is a separate research question; the prior utility-label reliability audit
-remains recorded and unrun, not answered by a new architecture.
+The executable-model authored source screen passed frombc57da1; no live
+promotion. [Results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). Next test whether
+a frozen source-learned investigation helps identify useful features on fresh
+tasks versus fixed-order and no-library induction, with the SAME limited target
+support and separate scored episodes. Observable support must identify new
+category bindings; no hidden source-to-target mapping. Pre-register all rules,
+splits and thresholds before collection. Proposed60 CPU seconds /5000 authored
+observations, no allocation or execution yet. No architecture sweep.
 
-## Current — question-utility label reliability audit (proposed, not run)
+## Separate unresolved — question-utility label reliability audit (not run)
 
 The owner-requested ten-scalar answer-free variant has now also completed and
 failed: .170313 versus variance .173580/keep .173857 at primary budgets1/2/4,

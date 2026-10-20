@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Executable model — complete authored SOURCE screen PASSED
+
+Executionbc57da1, one6.559924s host run. Feature Brier0 versus fixed .238707,
+all-history ridge .050260, replay .228617 and GRU .453393 on eight noiseless
+dependency tasks.12/16 features retained; four unavailable cases rejected.
+Noisy Brier .101881. No control, transfer or live promotion. Independent7680-
+prediction audit passed.22,925 authored observations /3200 new baseline updates;
+8s debit leaves1979.6321034559958 used /1620.3678965440042 remaining.
+[Results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). Preparation history follows.
+
 ## Optional executable model — prepared
 
 Starting e381132, preserving the completed chat workspace and old negative

@@ -15,11 +15,10 @@ Financial applications are outside current scope.
 
 ## What exists
 
-Owner-requested optional executable-world-model architecture is being prepared on
-a separate branch. It does not replace the default agent or infer architectural
-necessity from failed question selection. [Scope](NEXUS_SEED_EXECUTABLE_WORLD.md),
-[registered source protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md). No outcomes
-at this preparation revision.
+The optional executable-world-model path is implemented and its first authored
+source test completed frombc57da1. Feature induction passed its narrow screen;
+no default promotion or architecture-necessity claim. [Architecture](NEXUS_SEED_EXECUTABLE_WORLD.md),
+[results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). The chat and old core remain available.
 
 A [conversational workspace](NEXUS_SEED_CONVERSATION_WORKSPACE.md) now fronts
 the existing four labs. Its deterministic intent adapter, saved dialogue and
@@ -51,6 +50,16 @@ These paths working does not establish useful continual learning, unrestricted
 language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
+
+Executable history-feature induction frombc57da1 completed once: primary Brier
+.000000 versus fixed .238707, all-history ridge .050260, replay .228617, GRU
+.453393; paired fixed-minus-induced .238707 [.223296,.254117], source screen
+PASSED on eight authored dependency tasks. Noisy induced Brier .101881; all four
+unavailable-information candidates rejected. GRU fits source but generalizes
+poorly under the locked recipe, not proof against recurrence. 22,925 authored
+observations /6.559924s host wall /8s ledger debit. No control, transfer,
+investigation-transfer, default promotion or learning-to-learn claim.
+[Results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). Old evidence follows.
 
 The ten-scalar answer-free question predictor from8d9bdad completed once and
 FAILED its source screen. Primary budgets1/2/4 MSE .170313 versus variance
@@ -190,11 +199,16 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md),
+[latest results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
 ## Scientific decision path
+
+The owner-requested optional executable-model branch now has a completed authored
+source feature-induction result, without default promotion. Its next proposed
+gate is separately registered frozen investigation reuse. The older question-
+utility label audit below remains unresolved; the new result does not answer it.
 
 The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
 supports lightweight development manifests, typed candidate training, separate
@@ -222,7 +236,7 @@ learner. The subsequent task-blocked utility predictor is now complete and
 FAILED its source screen. The subsequent ten-scalar answer-free variant also
 FAILED its primary1/2/4 screen. Next: audit utility-label reliability on the saved
 queries/fits before changing representation or capacity. No further experiment
-or architecture growth ran; fresh validation remains required for promotion.
+or architecture growth had run at that prior milestone; fresh validation remains required for promotion.
 All future learning-to-learn claims still require strong source-informed
 baselines, retention and actual action outcomes, not loss or acceptance alone.
 
@@ -238,8 +252,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1971.6321034559958seconds used,
-1628.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1979.6321034559958seconds used,
+1620.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

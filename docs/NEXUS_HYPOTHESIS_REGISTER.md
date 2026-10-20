@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-history-feature — authored SOURCE screen PASSED
+
+Frombc57da1, induced final Brier0 versus fixed .238707; paired difference
++.238707 [.223296,.254117], eight authored dependency tasks. All-history .050260,
+replay .228617, GRU .453393.12 accepted features,4 unavailable-information
+rejections; noisy Brier .101881. Supplied grammar contains the exact noiseless
+laws. No transferred investigation, control, promotion or learning-to-learn
+claim. [Results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). Preregistration follows.
+
 ## H-history-feature — registered, not yet run
 
 Bounded source conflict induction may improve final-scored authored dependency

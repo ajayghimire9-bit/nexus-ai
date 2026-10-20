@@ -55,12 +55,17 @@ for bounded local development and explicit resource approvals.
 
 ## What the evidence says
 
-The latest ten-scalar **answer-free question-utility predictor failed** its
+The newest optional [executable-world-model study](docs/NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md)
+passed its authored source history-feature screen. This is prediction on a supplied
+grammar, with no control, transfer or live promotion. The prior utility studies
+remain failed and closed.
+
+The preceding ten-scalar **answer-free question-utility predictor failed** its
 source screen. Primary next-update MSE at budgets1/2/4: .170313 learned versus
 .173580 variance, .172771 uniform, .172599 original order and .173857 keep.
 Gains are below5%, required intervals include zero, and6/12 tasks beat keep.
 Retention passes. Budget8 is a singleton secondary result. No live promotion.
-[Latest results](docs/NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md).
+[Executable-model results](docs/NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md).
 
 The preceding54-feature predictor also failed its source screen
 ([results](docs/NEXUS_SEED_QUESTION_UTILITY_RESULTS.md)). The larger independent
@@ -103,7 +108,7 @@ The preceding learned-plasticity experiment lost to scaled replay. The
 future-edit selector tied historical-best. Useful continual learning and
 learning-to-learn are **not established**. Negative results stay visible.
 
-[Latest results](docs/NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md) ·
+[Executable-model results](docs/NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md) ·
 [Action-readout results](docs/NEXUS_SEED_SURPRISE_READOUT_RESULTS.md) ·
 [Learning failures](docs/NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) ·
 [Current state](docs/NEXUS_CANONICAL_CURRENT_STATE.md)

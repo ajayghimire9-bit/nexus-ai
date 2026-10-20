@@ -2,10 +2,11 @@
 
 ## Active evidence, newest first
 
-- [Executable world model](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md): prepared
-  source-development feature-induction study; no outcomes at this revision.
-  Planning, residual and investigation components are engineering variants,
-  not empirically promoted mechanisms.
+- [Executable world model](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md): complete
+  bc57da1 SOURCE feature screen PASSED. Primary Brier0 versus fixed .238707 /
+  all-history .050260; all unavailable candidates rejected. GRU source-fitting
+  did not generalize. No control, transfer, default promotion or learning-to-learn.
+  Planning, residual and investigation components remain engineering variants.
 
 - [Ten-scalar answer-free utility](NEXUS_SEED_ANSWER_FREE_UTILITY_RESULTS.md):
   complete8d9bdad run, SOURCE screen FAILED. Primary1/2/4 MSE .170313 versus

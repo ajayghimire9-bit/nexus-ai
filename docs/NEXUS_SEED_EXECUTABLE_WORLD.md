@@ -1,7 +1,8 @@
 # Optional executable world model
 
 This is a bounded experimental extension, not a replacement for Seed's core.
-Read the [locked first study](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md). Historical
+Read the [locked first study](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md) and
+[completed results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). Historical
 question-utility failures remain intact; their reliability audit is still unrun.
 
 ## Working implementation
@@ -49,6 +50,9 @@ source traces; fixed order is labeled supplied. Probe callbacks must return
 observations, not predictions; each answer consumes one real probe. Source trace
 labels are identified hypotheses, not hidden target answers. Max16 candidate
 probes/depth3/15 nodes, source128 traces. Target history cannot update the library.
+The integrated first version compresses observed source binary outcomes into
+conditional probe trees. It does not yet learn a policy for discovering competing
+mechanistic explanations through new environment experiments.
 Scientific investigation-transfer evaluation remains unrun, including its fixed
 and exhaustive-search comparisons. Merely saving a template is not learned reuse.
 
@@ -65,7 +69,8 @@ These local owner-authored records are not authenticated external scientific pro
 Existing `/api/seed` envelopes support `structure_inspect`, `structure_reset`,
 `structure_observe`, `structure_example`, `structure_review`, `structure_predict`,
 `structure_install`, `structure_plan`, `structure_learn_investigation` and
-`structure_rollback`. These are OPTIONAL, bounded, typed calls, not inferred
+`structure_rollback`, `structure_investigate`, `structure_install_numeric` and
+`structure_predict_numeric`. These are OPTIONAL, bounded, typed calls, not inferred
 commands hidden in chat. The chat Evidence button's experimental-model view
 shows actual current state/library/costs; empty means no observed records yet.
 The current checked skills, chat and four labs remain usable and baseline-default.

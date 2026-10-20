@@ -1,7 +1,7 @@
 # NEXUS Seed — Current State
 
-Latest study base:1a6167073321d2a7241227ded4627599a63b4386;
-execution8d9bdade34c2b094f9337816f12b49d52a9a1699. Read
+Latest study base:e381132c79a2d3c71aed883e54b8577ecd0071ec;
+executionbc57da126051d0aa5d148fcbf05bb4704f2571e1. Read
 [master context](MASTER_CONTEXT.md) and [reuse map](NEXUS_CODE_REUSE_MAP.md).
 
 ## Established within the tested authored setup
@@ -35,11 +35,14 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
-Separate owner-requested architecture branch: optional structured state, typed
-mechanisms and bounded history-feature induction. The first source prediction
-study is prepared, not executed at this revision. Baseline chat/labs/checkpoints
-remain unchanged. [Protocol](NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md). Previous
-question-utility failures below are closed; their reliability audit remains unrun.
+Optional executable core completed its first source prediction study: induced
+Brier0 versus fixed .238707 and all-history .050260 on eight authored tasks;
+source screen PASSED. Noisy error remains .101881, unavailable proposals all
+rejected, GRU recipe generalizes poorly. No live promotion or learning-to-learn
+claim. [Results](NEXUS_SEED_EXECUTABLE_WORLD_RESULTS.md). Next: separately register
+a frozen investigation-reuse test with explicit target-support bindings. Prior
+question-utility failures stay closed; their reliability audit remains unrun.
+Ledger1979.6321034559958 used /1620.3678965440042 remaining.
 
 The ten-scalar answer-free predictor completed from8d9bdad and FAILED the
 budgets1/2/4 source screen: .170313 versus variance .173580/keep .173857;
