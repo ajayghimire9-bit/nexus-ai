@@ -21,6 +21,16 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+Sequential replay of the frozen consistency selector is now complete: source
+screen FAILED, retention tolerance passed. Curve MSE .201848 versus constant
+.180187 and replay .187016; only11/96 updates. Prior local-regret evidence did
+not establish a useful sequential procedure. All84 baseline trajectories match
+exactly; no promotion. Next proposal is one training-only policy-roll-in refit
+versus an equal-budget reference-state refit, not more capacity. See
+[results](NEXUS_SEED_SEQUENTIAL_CONSISTENCY_RESULTS.md).
+Older next-gate wording below is retained as historical chronology, superseded
+by this result.
+
 The teaching-prefix feature audit failed: full utility-prediction MSE .002908
 versus constant .002250, prefix mean .002084. Consistency-only local regret has
 an uncertain positive lead; no actual sequential adaptation was tested. Next

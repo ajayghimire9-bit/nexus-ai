@@ -1,5 +1,19 @@
 # NEXUS progress log
 
+## Sequential consistency selector: practical source screen FAILED
+
+Locked2457901; one1.986353s host run, three-second conservative debit.
+Mean1/2/4/8-example MSE .201848 versus constant damping .180187, replay .187016
+and bounded .184388. Retention tolerance passes; only1/4 fold wins. Selector
+applies11/96 updates, versus53 on earlier full-update reference states; all84
+recomputed baseline trajectories exactly match their parent. The earlier
+local-regret lead did not transfer to sequential use. One frozen core, reused
+source tasks, no fresh validation or runtime promotion. Zero new real/imagined/
+world-model interactions and zero predictor fits. Ledger1939.6321034559958 used /
+1660.3678965440042 remaining. Next proposed single policy-roll-in refit versus
+an equal-budget reference-state refit; not executed. See
+NEXUS_SEED_SEQUENTIAL_CONSISTENCY_RESULTS.md.
+
 ## Teaching-prefix audit: prediction screen failed; decision lead uncertain
 
 Locked420ed2a; one1.769373s dispatch, three-second conservative debit. Four folds,

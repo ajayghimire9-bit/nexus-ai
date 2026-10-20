@@ -1,5 +1,18 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed sequential consistency selector — source screen FAILED
+
+H-sequential required5% lower actual1/2/4/8-example MSE than trained damping,
+replay and bounded controls, positive paired intervals,3/4 fold wins and
+retention within damping+.01. From2457901: .201848 selector versus .180187
+constant, .187016 replay, .184388 bounded;1/4 wins, retention passes. Contrast
+intervals include zero; practical improvement fails. Applies11/96 updates;
+prior local-regret lead does not establish sequential learning benefit.
+Twelve reused task clusters, overlapping source folds, ONE frozen core; no
+fresh validation, control run or promotion. Competing causes include induced
+fit-state mismatch, binary decisions and myopic labels. See
+NEXUS_SEED_SEQUENTIAL_CONSISTENCY_RESULTS.md.
+
 ## Seed prefix-consistency signal — full-feature screen FAILED
 
 H-prefix required5% MSE reduction versus constant/prefix/current-plus-prefix,

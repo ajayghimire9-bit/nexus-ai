@@ -20,6 +20,13 @@
 
 ## Verification versus experiments
 
+Sequential frozen selector: seed/sequential_consistency.py reuses cumulative
+posterior/folds, prefix_consistency.features/predict, update_diagnosis trajectories/
+paired intervals and bounded protection. Same EXPERIMENTAL host/worker and Lab;
+no new optimizer, memory or resource framework. Frozen source-fitted state is
+tracked JSON; scripts/verify_seed_sequential_consistency.py checks complete
+sequential arithmetic without fitting, neural imports or private binaries.
+
 Teaching-prefix informativeness: seed/prefix_consistency.py uses existing source
 packing, cumulative folds/posterior, anchor initialization and task intervals.
 The original E2.25 ridge math is extracted to nn/ridge.py; original public APIs

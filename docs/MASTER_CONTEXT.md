@@ -34,6 +34,15 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The sequential consistency selector from2457901 completed once: mean
+1/2/4/8-example MSE **.201848** versus trained constant damping **.180187**,
+replay **.187016** and bounded **.184388**. Registered source screen FAILED;
+retention tolerance passed, fold wins1/4. Only11/96 updates were applied.
+First decisions reproduce the prior audit; later decisions change with the
+learner state. All84 baseline trajectories reproduce exactly. No new collection,
+neural fitting or promotion. See
+[results](NEXUS_SEED_SEQUENTIAL_CONSISTENCY_RESULTS.md).
+
 The teaching-prefix feature audit from420ed2a completed once: full utility
 prediction MSE .002908 versus constant .002250 and prefix mean .002084;
 registered signal screen FAILED. Consistency-only local regret .006177 versus
@@ -132,10 +141,10 @@ The bounded source comparison is complete: stabilization passed but advancement
 failed against strong replay. The subsequent cumulative evidence learner also
 failed its learned-specific source screen.
 The scalar gate test also failed; the constant gate matched/exceeded its benefit.
-The prefix-feature audit failed its primary full-feature screen. Next proposed
-source test: sequential replay of the frozen consistency-only selector against
-trained fractional damping, scaled replay and bounded protection, measuring
-actual1/2/4/8-example adaptation rather than local counterfactual utility.
+The prefix-feature audit failed its primary full-feature screen. The subsequent
+sequential consistency selector also failed against trained damping and replay.
+Next proposed source test: one policy-roll-in refit versus an equal-budget
+reference-state refit, testing induced-state coverage without architecture growth.
 No new collection or architecture growth is scheduled; fresh validation is
 required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -153,8 +162,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1936.6321034559958seconds used,
-1663.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1939.6321034559958seconds used,
+1660.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

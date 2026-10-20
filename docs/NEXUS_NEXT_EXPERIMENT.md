@@ -1,6 +1,23 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — sequential replay of frozen consistency selector (proposed, not run)
+## Current — one policy-roll-in refit comparison (proposed, not run)
+
+Does training-state coverage contribute to the sequential selector's failure?
+Compare one roll-in refit of the SAME small utility model using states reached
+by its existing policy against an equal-budget always-update reference-state
+refit. Keep nine-source/three-excluded task folds,72 utility cases per fit,
+support-only decision inputs and strong trained damping/replay baselines.
+Excluded query outcomes remain evaluator-only; original source training queries
+may label permitted training utility cases. Register exact rules before fitting.
+One iteration does not establish converged on-policy learning or fresh validation.
+No new architecture, collection or second experiment has run. See
+NEXUS_SEED_SEQUENTIAL_CONSISTENCY_RESULTS.md.
+
+## Closed — sequential replay of frozen consistency selector
+
+From2457901: source screen FAILED; retention tolerance passed. Curve .201848
+versus damping .180187 and replay .187016; only11/96 updates,1/4 fold wins.
+All84 baselines reproduce exactly. Original motivation follows for chronology.
 
 Does the consistency-only selector's uncertain local-regret lead survive when
 its own update/retain choices change later fit states? Assess actual1/2/4/8-

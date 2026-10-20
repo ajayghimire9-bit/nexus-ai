@@ -2,6 +2,13 @@
 
 ## Active evidence, newest first
 
+- [Sequential consistency selector](NEXUS_SEED_SEQUENTIAL_CONSISTENCY_RESULTS.md):
+  actual1/2/4/8-example MSE .201848 versus damping .180187, replay .187016 and
+  bounded .184388. Source screen FAILED; retention tolerance passed;1/4 fold
+  wins,11/96 updates. All84 recomputed baseline trajectories reproduce exactly.
+  One core, reused source data; no predictor fitting, fresh validation or promotion.
+  [Protocol](NEXUS_SEED_SEQUENTIAL_CONSISTENCY_PROTOCOL.md), execution2457901.
+
 - [Teaching-prefix informativeness](NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md):
   full utility-prediction MSE .002908 versus constant .002250 and prefix mean
   .002084; primary signal screen FAILED. Consistency-only local regret35.34%
