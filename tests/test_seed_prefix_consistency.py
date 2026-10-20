@@ -101,12 +101,14 @@ def test_source_payload_is_tasks_only_and_host_rejects_unlocked_path(tmp_path):
 @pytest.fixture(scope='module')
 def synthetic_result(tmp_path_factory):
     # Entire execution path on generated linear arrays; zero scientific data.
-    root=tmp_path_factory.mktemp('prefix-toy');previous=Path.cwd()
-    import os
-    os.chdir(root)
-    try:
-        c=config();pack=toy_pack();output=audit.run(dict(inputs=dict(study_config=c,source_pack=pack)))
-    finally:os.chdir(previous)
+    # The worker reports process CPU time. A fresh process prevents unrelated
+    # earlier pytest tests from being charged to this bounded fixture.
+    import subprocess
+    import sys
+    root=tmp_path_factory.mktemp('prefix-toy');c=config();pack=toy_pack()
+    code='import json,sys;sys.path.insert(0,sys.argv[1]);from nexus.seed.prefix_consistency import run;print(json.dumps(run(json.load(sys.stdin)),allow_nan=False))'
+    proc=subprocess.run([sys.executable,'-c',code,str(ROOT/'src')],input=json.dumps(dict(inputs=dict(study_config=c,source_pack=pack))),text=True,capture_output=True,check=True,cwd=root,timeout=30)
+    output=json.loads(proc.stdout)
     assert output['study']['declared_complete'] is True
     assert audit.validate_output(output,c,dict(cpu_s=30,updates=0),pack)
     return output,c,pack

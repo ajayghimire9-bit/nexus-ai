@@ -33,6 +33,14 @@
 
 ## Verification versus experiments
 
+Answer-free utility: seed/answer_free_utility.py reuses question_utility's current-
+outer-fold counterfactual construction and training extraction, question_selection's
+LabelOracle/variance, question_headroom's fixed update and nn/ridge. Its separate
+pure ten-scalar API has no answer or assessment argument. Same EXPERIMENTAL host,
+ledger and read-only Lab. No new optimizer or live questioning framework.
+[Protocol](NEXUS_SEED_ANSWER_FREE_UTILITY_PROTOCOL.md).
+
+
 Question utility: seed/question_utility.py adapts question_selection's variance
 orders/fixed damping and question_headroom's counterfactuals, plus the existing
 nn/ridge primitive. Current-outer-fold source constants/normalization are reused

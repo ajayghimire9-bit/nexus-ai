@@ -54,6 +54,9 @@ class LabHandler(BaseHTTPRequestHandler):
             if parsed.path=='/api/questions' and not parsed.query:
                 from nexus.seed.question_selection import saved_replay
                 return self.send_json(200,saved_replay(ROOT))
+            if parsed.path=='/api/answer-free-utility' and not parsed.query:
+                from nexus.seed.answer_free_utility import saved_replay
+                return self.send_json(200,saved_replay(ROOT))
             if parsed.path=='/api/question-utility' and not parsed.query:
                 from nexus.seed.question_utility import saved_replay
                 return self.send_json(200,saved_replay(ROOT))
@@ -66,6 +69,10 @@ class LabHandler(BaseHTTPRequestHandler):
             if parsed.path=='/api/experimental' and not parsed.query:
                 from nexus.seed.experimental import Sandbox
                 state=Sandbox(ROOT,getattr(self.server,'experimental_directory',None)).view()
+                if (ROOT/'artifacts/seed_answer_free_utility.json').exists():
+                    from nexus.seed.answer_free_utility import saved_replay as answer_free_replay
+                    answer_free=answer_free_replay(ROOT)
+                    state['experiments']=[r for r in state['experiments'] if r['id']!=answer_free['id']]+[answer_free]
                 if (ROOT/'artifacts/seed_question_utility.json').exists() and not any(r['id']=='seed-question-utility-1' for r in state['experiments']):
                     from nexus.seed.question_utility import saved_replay as utility_replay
                     state['experiments'].append(utility_replay(ROOT))

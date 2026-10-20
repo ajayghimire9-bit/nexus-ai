@@ -1,5 +1,13 @@
 # NEXUS progress log
 
+## Answer-free ten-scalar utility — prepared, not yet executed
+
+Base1a6167073321d2a7241227ded4627599a63b4386 on a separate branch. The newer
+54-feature failed study is preserved. One ridge1.0, four task-blocked folds,
+primary budgets1/2/4; budget8 separately.60s CPU/wall,2048MiB sampled RSS,
+zero collection, same frozen learner. Carry1963.6321034559958s used /
+1636.3678965440042remaining. [Protocol](NEXUS_SEED_ANSWER_FREE_UTILITY_PROTOCOL.md).
+
 ## Learned question utility — source screen FAILED
 
 Froma8ca30a, one valid complete run in5.672237s host wall/3.562376s CPU. Learned
