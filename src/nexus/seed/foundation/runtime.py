@@ -84,6 +84,7 @@ def build(session,op,args):
         if source is None or any(p['args']['proposal']==args['proposal'] for p in s['expression_reviews'].values()):raise ValueError('unconsumed_expression_proposal')
         candidate=next((x for x in source['result'] if x['id']==args['candidate']),None)
         if candidate is None:raise ValueError('known_expression_candidate')
+        if candidate['name'] in s['active_expressions'] and s['expression_reviews'][s['active_expressions'][candidate['name']]]['result']['candidate']['id']!=candidate['id']:raise ValueError('expression_name_collision')
         if len(s['active_expressions'])>=8 and candidate['name'] not in s['active_expressions']:raise ValueError('expression_library_capacity')
         if any(('task',row['task']) in s['used_checks'] or any(('input',digest(e['input'])) in s['used_checks'] for e in row['examples']) for row in args['checks']):raise ValueError('fresh_expression_assessment_required')
         result=library.expression_assess(candidate,source['args']['programs'],args['checks']);result['previous']=s['active_expressions'].get(candidate['name'])
@@ -98,8 +99,12 @@ def build(session,op,args):
         phrase=args['phrase'];known=shared_state(session)['active']
         if type(phrase) is not str or not re.fullmatch(r'[a-z][a-z ]{1,79}',phrase) or type(args['replace']) is not bool:raise ValueError('bounded_taught_phrase')
         if phrase in s['aliases'] and not args['replace']:raise ValueError('explicit_alias_replacement_required')
-        if args['skill'] not in known:raise ValueError('verified_shared_skill_required')
-        ref,p=known[args['skill']];result=dict(skill=args['skill'],evidence=ref,program=p['program'],origin='owner_taught_grounded_alias')
+        if args['skill'] in known:
+            ref,p=known[args['skill']];result=dict(skill=args['skill'],evidence=ref,program=p['program'],origin='owner_taught_grounded_alias')
+        elif args['skill'] in s['active_expressions']:
+            ref=s['active_expressions'][args['skill']];candidate=s['expression_reviews'][ref]['result']['candidate']
+            result=dict(skill=args['skill'],evidence=ref,program=candidate['program'],expression=True,origin='owner_taught_grounded_alias')
+        else:raise ValueError('verified_shared_skill_or_expression_required')
     elif op=='curriculum_issue':
         tasks=curriculum.generate(s['curriculum_feedback'],args['seed'],args['count'])
         if len(s['lessons'])+len(tasks)>48 or any(t['id'] in s['lessons'] for t in tasks):raise ValueError('unique_bounded_curriculum')
@@ -146,7 +151,15 @@ def request(session,req):
         from ..skill_programs import run
         alias=s['aliases'].get(args['phrase'])
         if alias is None:raise ValueError('unknown_taught_phrase')
-        result=dict(value=run(alias['program'],args['input']),evidence=alias['evidence'],phrase=alias['ref'],label='execution_of_owner_taught_phrase')
+        if alias.get('expression') is True:
+            if s['active_expressions'].get(alias['skill'])!=alias['evidence']:raise ValueError('phrase_revision_no_longer_active')
+            out=programs.execute(alias['program'],{'x':args['input']});value=out['value']
+        else:
+            from ..skill_library import state as shared_state
+            current=shared_state(session)['active'].get(alias['skill'])
+            if current is None or current[0]!=alias['evidence']:raise ValueError('phrase_revision_no_longer_active')
+            value=run(alias['program'],args['input'])
+        result=dict(value=value,evidence=alias['evidence'],phrase=alias['ref'],label='execution_of_owner_taught_phrase')
     elif op=='workbench' and not args:
         from ..structure.runtime import inspect as inspect_graph
         result=dict(foundation=inspect(session),graph=inspect_graph(session),phases=[

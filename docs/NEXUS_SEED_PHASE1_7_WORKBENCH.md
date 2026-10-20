@@ -72,6 +72,10 @@ In chat:
   `Teach phrase "turn the numbers around" as reverse`.
 - `Run phrase "turn the numbers around" on [1, 2, 3]` executes the checked
   revision. `Replace phrase "..." as skill` explicitly versions a replacement.
+- Checked expression functions also accept a taught phrase: `Teach phrase
+  "count distinct items" as f_<id>`, then `Run phrase "count distinct items"
+  on [3, 1, 3]`. A rollback disables phrases referencing that revision, so
+  language cannot continue using a reverted improvement silently.
 - `Write code to sort and remove duplicates on [3, 1, 3, 2]` still runs real
   bounded typed code, with equivalent explanatory Python displayed.
 

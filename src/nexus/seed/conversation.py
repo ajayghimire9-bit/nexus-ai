@@ -44,7 +44,7 @@ def interpret(text,ctx):
     if t in ('show foundation','show curriculum','foundation','curriculum'):return Intent('foundation')
     if t in ('show phases','show all phases','open workbench'):return Intent('workbench')
     if t in ('generate lessons','give me lessons','create curriculum'):return Intent('curriculum_generate')
-    m=re.fullmatch(r'(teach|replace) phrase "([a-z ]+)" as ([a-z][a-z0-9]*)',t)
+    m=re.fullmatch(r'(teach|replace) phrase "([a-z ]+)" as ([a-z][a-z0-9_]*)',t)
     if m:return Intent('alias',dict(phrase=m[2],skill=m[3],replace=m[1]=='replace'))
     m=re.fullmatch(r'run phrase "([a-z ]+)" on (.+)',raw,flags=re.I)
     if m:
@@ -160,6 +160,7 @@ class Conversation:
 
     @staticmethod
     def friendly_error(reason):
+        if reason=='phrase_revision_no_longer_active':return 'That phrase points to a rolled-back revision. Teach it again using a currently verified skill or function.'
         if reason=='clarify_name':return 'Which word or skill do you mean? Tell me its name.'
         if 'fresh_disjoint' in reason:return 'That example was already used for teaching or checking. Please give a different input for the separate check.'
         if 'consumed' in reason:return 'That check attempt has already been used. Add a new teaching example to make a new proposal before checking again.'

@@ -53,6 +53,8 @@ def test_promotion_persistence_rollback_and_repeated_review(tmp_path):
     assert reviewed['accepted']
     tree=dict(op='call',name=candidate['name'],value=programs.variable())
     assert call(s,'execute',program=tree,inputs={'x':[3,1,3]})['value']==2
+    call(s,'alias',phrase='count distinct items',skill=candidate['name'],replace=False)
+    assert call(s,'phrase',phrase='count distinct items',input=[3,1,3])['value']==2
     before=s.snapshot();one=call(s,'workbench');two=call(s,'workbench');assert one==two and s.snapshot()==before
     receipt=save(tmp_path,'a'*32,s);restored=load(tmp_path,'a'*32,receipt['hash'])
     assert call(restored,'execute',program=tree,inputs={'x':[5,4,5]})['value']==2
@@ -60,6 +62,7 @@ def test_promotion_persistence_rollback_and_repeated_review(tmp_path):
     with pytest.raises(ValueError):call(s,'expression_propose',programs=checks())
     call(s,'expression_rollback',name=candidate['name'],target=None)
     with pytest.raises(ValueError):call(s,'execute',program=tree,inputs={'x':[1]})
+    with pytest.raises(ValueError):call(s,'phrase',phrase='count distinct items',input=[1])
     call(s,'expression_rollback',name=candidate['name'],target=reviewed['ref'])
     assert call(s,'execute',program=tree,inputs={'x':[1]})['value']==1
 
