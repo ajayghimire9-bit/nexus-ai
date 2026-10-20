@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Fixed-learner question selection](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md):
+  registered source exploration, pending execution. Input-only variance versus
+  ten random orders and original-order reference at1/2/4/8 labels. Frozen damping,
+  12 reused source tasks, no collection or learned question-policy claim.
+
 - [Shared Learning Brain and four labs](NEXUS_SHARED_LEARNING_LABS.md): engineering
   foundation over the same Session/journal, bounded skill programs, optional
   frozen representation and existing source-feedback statistics. Authored fixture

@@ -5,13 +5,17 @@ an authored engineering interface. It does not replace the scientific gate below
 or establish cross-domain learning benefit. No new experiment has run; source
 question-selection remains the single next scientific comparison.
 
-## Current — informative versus random question choice (proposed, not run)
+## Current — informative versus random question choice (registered, not run)
 
 Does choosing a more informative teaching example help at fixed label budget?
 Hold the strong constant-damping update fixed. Compare a registered support-only
 question-selection rule with random questions, using a separate candidate pool
 whose labels are hidden until requested. Measure1/2/4/8-label query prediction
 and retention at equal teaching/compute budgets. Do not train from query answers.
+Exact source-only rule/pool/screen now registered in
+[protocol](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md); tested implementation must
+be committed before scoring. Identical labels/learner updates, extra information
+scoring disclosed; compute is capped, not claimed equal in FLOPs.
 The current learn/ask/retain study FAILED its improvement screens;80 asks merely
 deferred to predetermined examples. A memory cap is not sufficient evidence of
 useful learning. Register the exact pool, rule and acceptance criteria separately;

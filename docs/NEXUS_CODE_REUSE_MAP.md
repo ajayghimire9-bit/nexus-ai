@@ -33,6 +33,14 @@
 
 ## Verification versus experiments
 
+Question choice: seed/question_selection.py reuses sequential source/hash/fold
+validation, the existing constant damping and cumulative posterior, anchor fit,
+paired intervals and EXPERIMENTAL host. Input-only variance chooses a requested
+saved teaching row; an oracle adapter reveals only its label. Fit and assessment
+functions have separate arguments. No new learner, memory, model or simulator.
+scripts/verify_seed_question_selection.py independently checks recorded equations
+and original-order replication using stdlib only. No live promotion.
+
 Learning choices: seed/learning_choice.py performs one roll-in/reference refit
 through existing prefix_consistency helper options and cumulative trajectories.
 seed/learning_decision.py is a pure immutable advisory over predicted benefit,

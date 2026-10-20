@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Fixed-learner question selection — registered, not scored
+
+From GitHub-matched1bf505c on codex/seed-informative-questions: isolate label
+choice from the previously unsuccessful learner selector. Fixed constant
+damping, input-only variance versus random/original orders,1/2/4/8 labels.
+No new collection, model fitting or live promotion.60-second cap through the
+existing EXPERIMENTAL host. Carried ledger remains1943.6321034559958 used /
+1656.3678965440042 remaining until execution. See
+[protocol](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md).
+
 ## Shared learning-labs engineering
 
 Implemented common language/coding/reasoning/world interfaces, journal-backed

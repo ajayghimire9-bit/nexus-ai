@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-question — registered fixed-learner source comparison, not scored
+
+Input-only variance selection may reduce the1/2/4/8-label query-error mean versus
+random questions with the same frozen constant-damping learner. Competing null:
+input novelty selects unrepresentative/noisy rows or offers no useful benefit.
+Require5% reduction, positive paired task interval lower bound,3/4 fold wins,
+and final retention excess<=.01.12 reused source tasks, one core; random and
+damping seeds averaged inside tasks. Source exploration, not fresh validation
+or learned question-policy evidence. Protocol NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md.
+
 ## Shared learning labs — engineering foundation, scientific benefit UNTESTED
 
 Four interfaces share typed skills, optional frozen representations and feedback-

@@ -110,7 +110,10 @@ def run(request):
 if __name__=='__main__':
     request = read(Path(sys.argv[1]))
     limits(request['caps'])  # before importing the optional neural runtime
-    if request.get('adapter')=='seed_learning_choice_v1':
+    if request.get('adapter')=='seed_question_selection_v1':
+        from .question_selection import run as run_questions
+        result=run_questions(request)
+    elif request.get('adapter')=='seed_learning_choice_v1':
         from .learning_choice import run as run_learning_choice
         result=run_learning_choice(request)
     elif request.get('adapter')=='seed_sequential_consistency_v1':
