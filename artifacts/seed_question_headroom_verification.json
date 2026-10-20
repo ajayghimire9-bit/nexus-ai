@@ -1,0 +1,147 @@
+{
+  "schema": "seed_question_headroom_verification_v1",
+  "branch": "codex/seed-question-pool-headroom",
+  "starting_sha": "2b9bf380f8fbfcf4f74b827202cc3e238db07573",
+  "execution_sha": "354f47af7cf5cfaf2e69130fac7758b08d9706c8",
+  "verification_fix_sha": "8f423cd6535fd839c5ddfd5a2df4599a9441ad00",
+  "audit": {
+    "valid": true,
+    "raw_sha256": "56afbd9a42b228517c6f50b4a03cd5ea5fd1745044683e537a6d36a491c3216c",
+    "checked_counterfactuals": 756,
+    "max_posterior_error": 6.240584317085407e-07,
+    "max_prior_choice_error": 0.0,
+    "label": "useful_questions_missed",
+    "cross_state_pass": false,
+    "frozen_state_preserved": true,
+    "scientific_execution": false
+  },
+  "audit_wall_s": 1.1615870839741547,
+  "source_sha256": {
+    "src/nexus/seed/question_headroom.py": "c911064f10a55b564499d0dbf834aa6a881a274351294505218b7e3e5faffa8c",
+    "src/nexus/seed/question_selection.py": "4b6f3c07f43ad760d3412ca49306097996b973972dccb74e4071951cf9854ec1",
+    "src/nexus/seed/experimental.py": "59b82a30e3716bdcf076df9dafc346554dcf7941d232f9c9c9004a38ca8eb34e",
+    "src/nexus/seed/experimental_worker.py": "0e15bedb64d3c3c196cac4089c31221f49eb911fc4b1bfcb0b68aa93868db572",
+    "src/nexus/seed/cumulative_learning.py": "600fb6d475416e7084e20be12c5bf5deb14588e5a50fd06a6d6aa637a33b558e",
+    "src/nexus/seed/sequential_consistency.py": "142a561674150a4e42c5b29ae9be1ab643ccda9d436f4de18d035cc257982eb1",
+    "src/nexus/seed/learning_benchmark.py": "488722dcc43e8adb87c0350ec78f22a394d5e2fbf518cbbc7a2a4399a098c4d8",
+    "scripts/run_seed_question_headroom.py": "3d79032238f5cae7d30c9a73c8c3607556c2f34897a7a948bff57906ff1e0f48",
+    "scripts/verify_seed_question_headroom.py": "dd344e1b298b5a23ae41336c8a29486c2ef666c530244a2376a9294e2cb08478",
+    "tests/test_seed_question_headroom.py": "f6b5ebc22a83035d85762bdc96dc6a630199d31c63d01ae8256a0fbde426c5d3",
+    "tests/test_seed_question_headroom_saved.py": "2cfc9c875ad25d0642f6a67d4710603a1a7ea207805e4f523e90f75dd7b8e986",
+    "configs/seed_question_headroom.json": "36da0ef02fa20d0793544a6c9bc5f625c882a52234b23aefb428972370681920",
+    "docs/NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md": "cc65630d65d662b00a7cda82e511c4599554c4173bf2b13b9c7e81bd8d581ebd"
+  },
+  "historical_artifacts": {
+    "count": 776,
+    "all_byte_preserved": true,
+    "inventory_sha256": "c60bdb46e5f8d9271842334ba33490071c3208f8be3eb69d8e88b4bf1dbd1ff0"
+  },
+  "frozen_core_sha256": "cfe06a6737c8e225564ebcaea9ba4678aabd45b61129828e64354e74fa3c8d1b",
+  "frozen_state_sha256": "4c1c58096a92ca22df3b8f241f3a1cc9ecc1854e4eea0ec16a9e6489f2d52dd6",
+  "reference_state_sha256": "fb36540f4472198bec59fdcde76b2d386735d15e820ae8c081db2b15a900b9a6",
+  "tests": [
+    {
+      "scope": "initial focused",
+      "passed": 62,
+      "failed": 1,
+      "note": "Exact whole-array/block float32 reduction comparison corrected to predeclared 2e-6 before lock. No scientific outcomes used."
+    },
+    {
+      "scope": "headroom/question/saved/host focused",
+      "passed": 90,
+      "failed": 0,
+      "wall_s": 29.55
+    },
+    {
+      "scope": "pre-execution full relevant",
+      "passed": 656,
+      "failed": 0,
+      "wall_s": 83.01
+    },
+    {
+      "scope": "isolated verifier import after packaging fix",
+      "passed": 1,
+      "failed": 0,
+      "wall_s": 0.51
+    },
+    {
+      "scope": "final full relevant",
+      "passed": 662,
+      "failed": 0,
+      "wall_s": 84.54
+    }
+  ],
+  "verification_issue": {
+    "first_isolated_invocation": "failed importing sibling script with python -I",
+    "correction": "Explicit scripts path; regression test added",
+    "scientific_rerun": false,
+    "raw_capture_changed": false
+  },
+  "gui": {
+    "passed": 8,
+    "checks": [
+      "retrospective headroom and failed cross-state screen displayed together",
+      "oracle, omitted-state and keep errors match artifact",
+      "oracle uses query outcomes and is not presented as learned capability",
+      "four existing labs preserved",
+      "mobile view has no horizontal overflow",
+      "counterfactual plot and descriptive-interval caveats visible",
+      "repeated inspection changes no ledger or attempts",
+      "no browser JavaScript errors"
+    ],
+    "wall_s": 4.68,
+    "new_environment_interactions": 0,
+    "scientific_execution": false
+  },
+  "screenshots": {
+    "docs/assets/seed-question-headroom-gui.png": "0fe48ebe44c8639f3e2db0ea35f9efaed372c617e2ea3b0353c6664ea321e39a"
+  },
+  "main_sha": "ad8b65c155f20a71a82f1ee51bcde9e1fd353492",
+  "main_unmodified": true,
+  "unrelated_root_file_sha256": {
+    "src/nexus/evolution1/adapters.py": "3a6ebc91637bccca755aa4d7f5e17d908b836ff74db136e42d624fb3a320123f",
+    "tests/test_evolution1_adapters.py": "36b19194589d997422dc6cfc9ee92ed92bb67a4c78b73625f6002e2cc44f37e1"
+  },
+  "resources": {
+    "cached_reference_snapshots": 324,
+    "constant_scalar_reads": 36,
+    "counterfactual_updates": 756,
+    "cpu_s": 1.283007,
+    "cumulative_anchor_rows": 3024,
+    "cumulative_solves": 756,
+    "cumulative_support_rows": 1800,
+    "evaluated_states": 900,
+    "imagined_transitions": 0,
+    "initial_solves": 0,
+    "keep_states": 144,
+    "normalization_fit_rows": 0,
+    "query_score_rows": 24300,
+    "real_steps": 0,
+    "retention_score_rows": 24300,
+    "unique_cached_teaching_labels": 96,
+    "updates": 0,
+    "variance_solves": 0,
+    "world_model_forwards": 0
+  },
+  "host_wall_s": 1.8209036249900237,
+  "peak_sampled_rss_mb": 282.84375,
+  "ledger": {
+    "before_used_s": 1948.6321034559958,
+    "debit_s": 3,
+    "used_s": 1951.6321034559958,
+    "remaining_s": 1648.3678965440042
+  },
+  "scientific_runs": 1,
+  "complete": true,
+  "oracle_label": "useful_questions_missed",
+  "cross_state_pass": false,
+  "fresh_validation": false,
+  "runtime_promotion": false,
+  "learning_to_learn_established": false,
+  "limitations": [
+    "Oracle selection uses scoring queries; optimism is by construction",
+    "Only three recorded query starts per source task",
+    "One frozen core and reused source tasks; overlapping source fits",
+    "No new question learner or actual control study"
+  ]
+}

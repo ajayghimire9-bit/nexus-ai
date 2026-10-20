@@ -4,7 +4,24 @@ The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented a
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.
 
-## Current — source pool-headroom audit (registered, not run)
+## Current — larger source query-bank replication (proposed, not run)
+
+Do question-utility rankings stabilize with more independent query starts?
+The fixed learner's query oracle has retrospective headroom, but selecting on
+two recorded states failed on the third. Hold the same supports, feature core,
+source normalization and damping fixed. Register a larger independent SOURCE
+query collection and disjoint utility-selection/check subsets before collection.
+Check the frozen selection procedure on the check subset at1/2/4/8 labels;
+do not tune on it. Continue to distinguish oracle potential from a deployable
+question learner. This is the one next proposal, no collection or run here.
+
+## Closed — source pool-headroom audit
+
+From354f47a: optimistic query-oracle screen PASSED (.174050 versus variance
+.193552), but omitted-query-state screen FAILED (.194374 versus keep .194222).
+Useful questions exist retrospectively; stable utility is not established.
+No new data, neural/meta-training or live promotion. See
+[results](NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md). Prior motivation follows.
 
 Do useful next questions exist in the allowed eight-row pool, or does the input-
 variance proxy fail to identify them? Keep the learner fixed. On reused SOURCE
@@ -13,9 +30,9 @@ candidate's actual query-error reduction. Compare the best attainable reduction
 with the registered variance choice, task by task. Keep these oracle utilities
 outside runtime decisions and label the analysis exploratory. No new model,
 collection, question-policy training, confirmation or live promotion. Register
-its exact scope before scoring. Exact scope and screens are now in
-[protocol](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md), pending committed tests
-and one bounded execution. No result is claimed at preparation time.
+its exact scope before scoring. Scope and screens were committed in
+[protocol](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md) before the single completed
+execution. The oracle result does not override the negative cross-state finding.
 
 ## Closed — informative versus random question choice
 

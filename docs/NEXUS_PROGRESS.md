@@ -1,6 +1,19 @@
 # NEXUS progress log
 
-## Question-pool headroom — registered, not scored
+## Question-pool headroom — oracle screen passed; cross-state screen FAILED
+
+Locked354f47a ran once in1.820904s host wall/1.283007s CPU, all756 source
+counterfactuals complete. Oracle MSE .174050 versus variance .193552 and keep
+.194222; retrospective headroom10.08%,10/12 task means improve keep. But
+omitted-state selection .194374 and4/12 task wins fails stability. Oracle
+privileged query access is not a deployed learning capability. No new data,
+neural/meta-training or promotion. Independent equation replay within6.241e−7,
+old choices reproduced exactly. Verifier-only isolated-import fix8f423cd; no
+science rerun. Conservative debit3s leaves1951.6321034559958 used /
+1648.3678965440042 remaining. See [results](NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md).
+Next proposed: independent larger source query-bank replication, same learner.
+
+## Question-pool headroom — preparation history
 
 From2b9bf380 on codex/seed-question-pool-headroom: evaluator-only one-label
 counterfactual audit of the fixed learner, plus query-state stability. Reuses

@@ -28,6 +28,15 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+The evaluator-only pool-headroom audit is complete: an optimistic query oracle
+passes the source screen (.174050 versus variance .193552), but omitted-query-
+state selection fails (.194374 versus keep .194222). This bounds available
+opportunity; it is not useful learned question selection or learning-to-learn.
+Next: a larger independently collected source query-bank replication with the
+same supports/learner, to test utility stability before training a selector.
+See [results](NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md).
+Older next-gate entries below preserve their chronology.
+
 The fixed-learner informative-question test is complete and FAILED its source
 screen: MSE .193552 versus random .191753, difference −.001799 with an interval
 including zero. Original-order damping reproduces .180187 exactly. Retention

@@ -1,6 +1,13 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
-## H-missed / H-pool — registered evaluator-only headroom audit, not scored
+## H-missed / H-pool — oracle headroom PASSED, cross-state check FAILED
+
+From354f47a: query oracle .174050 versus variance .193552, primary descriptive
+gap+.019502[+.002267,+.036737],10/12 task wins over keep. Retention passes.
+Omitted-query-state choice .194374 versus keep .194222; gain−.000153
+[−.008115,+.007810],4/12 wins: stability screen FAILED. Retrospective source
+headroom exists; transferable question utility is unresolved. No policy promotion
+or learning-to-learn claim. Original hypotheses and criteria follow.
 
 Do useful one-label examples exist that input variance misses, or is the small
 pool inadequate/unstable? On fixed prior states before budgets1/2/4/8, enumerate

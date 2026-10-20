@@ -3,9 +3,11 @@
 ## Active evidence, newest first
 
 - [Question-pool headroom](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md): registered
-  evaluator-only SOURCE audit, pending scoring. Every remaining one-label
-  candidate at fixed prior prefixes; oracle bound plus leave-one-query-state-out
-  stability. Frozen learner, no new collection, fitting recipe or live promotion.
+  evaluator-only SOURCE audit completed. Oracle headroom screen passed (.174050
+  versus variance .193552); omitted-query-state check FAILED (.194374 versus
+  keep .194222). Oracle is not a learned/deployed question policy. No collection,
+  neural/meta-training or promotion. [Results](NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md),
+  execution354f47a.
 
 - [Fixed-learner question selection](NEXUS_SEED_QUESTION_SELECTION_PROTOCOL.md):
   completed source exploration; improvement screen FAILED. Informative .193552

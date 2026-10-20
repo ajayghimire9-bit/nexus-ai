@@ -41,6 +41,15 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The evaluator-only pool-headroom audit from354f47a completed once. Query oracle
+MSE .174050 versus variance .193552 (10.08% lower) passed its retrospective
+source screen, with10/12 task means better than keep. But selecting on two query
+states and testing on the third scored .194374 versus keep .194222; its cross-
+state screen FAILED. Useful choices exist on this inspected bank, while reliable
+question utility remains unestablished. The oracle uses query outcomes and is
+not a deployed agent. No new data, neural/meta-training or live promotion. See
+[results](NEXUS_SEED_QUESTION_HEADROOM_RESULTS.md).
+
 The fixed-learner question-selection run from080d051 completed once. Its source
 screen FAILED: informative curve MSE .193552 versus random .191753 and original
 order .180187. Random-minus-informative −.001799[−.020980,+.017382], exploratory
@@ -169,8 +178,9 @@ The prefix-feature audit failed its primary full-feature screen. The subsequent
 sequential consistency selector also failed against trained damping and replay.
 The one policy-roll-in refit and protected choice study also failed improvement
 screens. The informative-versus-random question test with the stronger learner
-fixed also failed. Next proposed: evaluator-only source pool-headroom audit of
-available one-label counterfactuals, before training a question selector.
+fixed also failed. The subsequent source pool-headroom bound passed, but its
+query-state stability check failed. Next proposed: a larger independent source
+query-bank replication with the SAME supports/learner, before fitting a selector.
 No new collection or architecture growth is scheduled; fresh validation is
 required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -188,8 +198,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1948.6321034559958seconds used,
-1651.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1951.6321034559958seconds used,
+1648.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance
