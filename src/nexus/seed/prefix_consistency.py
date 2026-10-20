@@ -219,7 +219,7 @@ def run(request):
         progress()
     r['analysis']=summarize(r['folds'],c);validate(r,c,pack);r['declared_complete']=True;progress();a=r['analysis']
     return dict(adapter='seed_prefix_consistency_v1',study=r,curve=[],model=dict(schema='prefix_utility_ridge_v1',folds={k:v['models'] for k,v in r['folds'].items()}),
-        metrics=dict(mse=a['metrics']['full']['mse'],baseline_mse=a['metrics']['constant']['mse'],worst_error_increase=0.),
+        metrics=dict(mse=a['metrics']['full']['mse'],baseline_mse=a['metrics']['constant']['mse']),
         resources=resources(time.process_time()),runtime=dict(python=sys.version,torch=torch.__version__,numpy=np.__version__,device='cpu',threads=1))
 
 

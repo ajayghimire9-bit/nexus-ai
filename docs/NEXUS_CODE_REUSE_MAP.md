@@ -20,6 +20,14 @@
 
 ## Verification versus experiments
 
+Teaching-prefix informativeness: seed/prefix_consistency.py uses existing source
+packing, cumulative folds/posterior, anchor initialization and task intervals.
+The original E2.25 ridge math is extracted to nn/ridge.py; original public APIs
+delegate to it with identical numerical results. No new regression framework.
+Same EXPERIMENTAL host/worker and Lab; saved vectors/normal equations allow
+stdlib-only verification without fits. This is retrospective local utility,
+not a runtime update-policy promotion or another world-model training stack.
+
 Scalar update/retain gate: seed/update_gate.py reuses PlasticityController(1)
 logits, nonlinear_learning.fit_source's model factory, cumulative_learning's
 posterior/fold/summary/validator helpers and update_diagnosis.trajectory. Same

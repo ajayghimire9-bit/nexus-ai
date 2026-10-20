@@ -2,6 +2,14 @@
 
 ## Active evidence, newest first
 
+- [Teaching-prefix informativeness](NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md):
+  full utility-prediction MSE .002908 versus constant .002250 and prefix mean
+  .002084; primary signal screen FAILED. Consistency-only local regret35.34%
+  lower as an uncertain secondary point estimate; its descriptive interval
+  includes zero. Fixed-reference/source-only, one frozen core, no actual
+  adaptive learning curves or promotion. [Protocol](NEXUS_SEED_PREFIX_CONSISTENCY_PROTOCOL.md),
+  execution420ed2a.
+
 - [Scalar update/retain gate](NEXUS_SEED_UPDATE_GATE_RESULTS.md): curve MSE
   .180324 learned versus .180187 constant, .187016 replay, .184388 bounded.
   Source learning screen FAILED; retention passed. Generic damping helps,

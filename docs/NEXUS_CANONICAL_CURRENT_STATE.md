@@ -21,6 +21,14 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
+The teaching-prefix feature audit failed: full utility-prediction MSE .002908
+versus constant .002250, prefix mean .002084. Consistency-only local regret has
+an uncertain positive lead; no actual sequential adaptation was tested. Next
+proposal: source-only sequential replay against trained fractional damping,
+replay and bounded baselines before fresh validation. No promotion. See
+[results](NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md).
+Earlier decisions below retain their chronology.
+
 The learned scalar update/retain gate also failed its source screen: .180324
 curve MSE versus constant .180187; generic damping helps but context conditioning
 does not beat constant. Retention passed; no promotion. Next is a proposed

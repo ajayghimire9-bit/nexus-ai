@@ -1,5 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed prefix-consistency signal — full-feature screen FAILED
+
+H-prefix required5% MSE reduction versus constant/prefix/current-plus-prefix,
+better than permutation,3/4 fold wins and non-worse local regret. Full .002908
+versus .002250 constant and .002084 prefix mean, only2/4 wins and worse regret:
+FAILED. Secondary consistency-only regret .006177 versus .009553 constant,
+35.34% point reduction; post-hoc descriptive interval includes zero. Do not
+substitute this group or regret for the registered primary outcome. One core,
+reused source tasks, fixed-reference counterfactuals; no realized learning
+procedure/control benefit established. Execution420ed2a; see
+NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md.
+
 ## Seed scalar update/retain gate — source screen FAILED
 
 H-gate: observed-context strength beats trained constant/unit/replay/bounded

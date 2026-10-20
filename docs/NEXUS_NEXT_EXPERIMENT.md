@@ -1,6 +1,23 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — gate-feature informativeness audit (proposed, not run)
+## Current — sequential replay of frozen consistency selector (proposed, not run)
+
+Does the consistency-only selector's uncertain local-regret lead survive when
+its own update/retain choices change later fit states? Assess actual1/2/4/8-
+example learning curves on task-blocked source folds against trained fractional
+constant damping, scaled replay and bounded updates. Freeze the source predictor
+recipe; recompute support-only features at each evolving fit, never read query
+labels into the selector. The preceding full-feature audit FAILED; its secondary
+lead is not promotion or a successful primary result. Fresh validation remains
+necessary before learning-to-learn claims. No second experiment has run.
+See NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md.
+
+## Closed — gate-feature informativeness audit
+
+From420ed2a: primary full-feature signal screen FAILED. Full MSE .002908 versus
+constant .002250/prefix .002084; consistency-only regret has an uncertain lead.
+Fixed-reference utility is not a realized adaptive learning curve. Original
+motivation follows.
 
 Does consistency across the observed teaching prefix contain information about
 when a correction helps, beyond the present single-row error/novelty context?

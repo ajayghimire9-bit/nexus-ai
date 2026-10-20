@@ -34,6 +34,15 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+The teaching-prefix feature audit from420ed2a completed once: full utility
+prediction MSE .002908 versus constant .002250 and prefix mean .002084;
+registered signal screen FAILED. Consistency-only local regret .006177 versus
+constant .009553 is an uncertain secondary lead, with a descriptive interval
+including zero. Full sign accuracy improved but local regret worsened. These
+are fixed-reference counterfactuals, not actual adaptive learning curves or
+control. No new collection, neural training or promotion. See
+[results](NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md).
+
 The scalar update/retain gate study from0ce94d0 completed once. Learned curve
 MSE .180324 versus source-trained constant .180187, unit cumulative .189456,
 replay .187016 and bounded fixed .184388. Contextual learning is .076% worse
@@ -123,8 +132,10 @@ The bounded source comparison is complete: stabilization passed but advancement
 failed against strong replay. The subsequent cumulative evidence learner also
 failed its learned-specific source screen.
 The scalar gate test also failed; the constant gate matched/exceeded its benefit.
-Next proposed source test: whether observed-prefix consistency contains useful
-information for update/retain decisions beyond the current error/novelty context.
+The prefix-feature audit failed its primary full-feature screen. Next proposed
+source test: sequential replay of the frozen consistency-only selector against
+trained fractional damping, scaled replay and bounded protection, measuring
+actual1/2/4/8-example adaptation rather than local counterfactual utility.
 No new collection or architecture growth is scheduled; fresh validation is
 required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
@@ -142,8 +153,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1933.6321034559958seconds used,
-1666.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1936.6321034559958seconds used,
+1663.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

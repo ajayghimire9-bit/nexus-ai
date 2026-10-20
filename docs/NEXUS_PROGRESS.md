@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Teaching-prefix audit: prediction screen failed; decision lead uncertain
+
+Locked420ed2a; one1.769373s dispatch, three-second conservative debit. Four folds,
+20 ridge/8 baseline fits,672 held predictions,384 reference solves. Full utility
+prediction MSE .002908 versus constant .002250 and prefix mean .002084: FAILED.
+Consistency-only local regret35.34% lower, but descriptive interval includes0;
+no actual sequential adaptation or promotion. Zero new real/imagined/world-model
+interactions, no neural training. Ledger1936.6321034559958 used /
+1663.3678965440042 remaining. Next proposed source sequential replay against
+fractional damping/replay/bounded controls, not run. See
+NEXUS_SEED_PREFIX_CONSISTENCY_RESULTS.md.
+
 ## Scalar update/retain gate: generic damping, failed learned-rule screen
 
 Locked0ce94d0; one4.040320s host run, six-second conservative debit.24 new small

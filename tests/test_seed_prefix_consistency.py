@@ -118,6 +118,7 @@ def test_synthetic_full_path_is_complete_reproducible_and_not_control(synthetic_
     assert len(output['study']['analysis']['per_task'])==12
     assert 'not realized' in output['study']['analysis']['trajectory_interpretation']
     assert output['resources']['world_model_forwards']==0
+    assert set(output['metrics'])=={'mse','baseline_mse'}  # No invented forgetting metric.
 
 
 @pytest.mark.parametrize('fault',['fold','task','prefix','method','metric','coefficient','feature','state','scale','prediction','nan','boolean','permutation'])
