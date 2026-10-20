@@ -9,19 +9,19 @@ ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
 from nexus.seed.cumulative_learning import validate,source_pack,checkpoint_bytes
 
 
-def main():
+def main(*,study_name='seed_cumulative_learning',identifier='seed-cumulative-learning-1',width=33,validator=validate,packer=source_pack):
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--check-checkpoints',action='store_true')
     p.add_argument('--restore-checkpoints',type=Path)
-    a=p.parse_args();path=ROOT/'artifacts/seed_cumulative_learning.json';r=json.loads(path.read_text())
-    c=json.loads((ROOT/'configs/seed_cumulative_learning.json').read_text())
+    a=p.parse_args();path=ROOT/'artifacts'/f'{study_name}.json';r=json.loads(path.read_text())
+    c=json.loads((ROOT/'configs'/f'{study_name}.json').read_text())
     if r['declared_complete'] is not True:raise ValueError('incomplete_cumulative_execution')
-    validate(r,c,source_pack(ROOT,c));count=0
-    base=ROOT/'runs/experimental/attempts/seed-cumulative-learning-1'
+    validator(r,c,packer(ROOT,c));count=0
+    base=ROOT/'runs/experimental/attempts'/identifier
     for fold in r['folds'].values():
         for arms in fold['models'].values():
             for info in arms.values():
-                raw=checkpoint_bytes(info);count+=1
+                raw=checkpoint_bytes(info,width=width);count+=1
                 if a.check_checkpoints:
                     file=base/info['checkpoint']
                     if not file.is_file() or file.read_bytes()!=raw:raise ValueError('missing_or_wrong_checkpoint: '+str(file))

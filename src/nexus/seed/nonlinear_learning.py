@@ -112,16 +112,17 @@ def collect(model,head,seed,goal,old_goal,meter,used):
                      arrays=data,array_sha256=digest(data),dtype='float32',feature_width=33)
 
 
-def controller(seed,static=False):
-    torch.manual_seed(seed);m=PlasticityController(33)
+def controller(seed,static=False,*,width=33):
+    torch.manual_seed(seed);m=PlasticityController(width)
     with torch.no_grad():m.logits.bias.normal_(0,.01)
     if static:m.logits.weight.requires_grad_(False)
     return m
 
 
-def fit_source(tasks,seed,static,c,check,*,curve_fn=None):
+def fit_source(tasks,seed,static,c,check,*,curve_fn=None,model_factory=None):
     """No development/audit parameter or file access. Source outer labels only."""
-    start=time.monotonic();m=controller(seed,static);before={k:v.detach().clone() for k,v in m.state_dict().items()}
+    start=time.monotonic();m=(model_factory or controller)(seed,static);before={k:v.detach().clone() for k,v in m.state_dict().items()}
+    trainable=sum(p.numel() for p in m.parameters() if p.requires_grad)
     opt=torch.optim.Adam([p for p in m.parameters() if p.requires_grad],lr=c['meta_lr'])
     rng=random.Random(seed+41);order=[]
     while len(order)<c['meta_updates']:
@@ -142,7 +143,7 @@ def fit_source(tasks,seed,static,c,check,*,curve_fn=None):
     m.eval()
     for p in m.parameters():p.requires_grad_(False)
     return m,dict(training=training,parameter_change_l2=change,seconds=time.monotonic()-start,
-        trainable_parameters=33 if static else 165,source_schedule_sha256=digest(order[:c['meta_updates']]),
+        trainable_parameters=trainable,source_schedule_sha256=digest(order[:c['meta_updates']]),
         support_examples=c['meta_updates']*8,query_examples=c['meta_updates']*4*27,
         retention_examples=c['meta_updates']*4*27)
 

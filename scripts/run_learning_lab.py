@@ -61,6 +61,9 @@ class LabHandler(BaseHTTPRequestHandler):
                 if (ROOT/'artifacts/seed_cumulative_learning.json').exists() and not any(r['id']=='seed-cumulative-learning-1' for r in state['experiments']):
                     from nexus.seed.cumulative_learning import saved_replay as cumulative_replay
                     state['experiments'].append(cumulative_replay(ROOT))
+                if (ROOT/'artifacts/seed_update_gate.json').exists() and not any(r['id']=='seed-update-gate-1' for r in state['experiments']):
+                    from nexus.seed.update_gate import saved_replay as gate_replay
+                    state['experiments'].append(gate_replay(ROOT))
                 return self.send_json(200,state)
             if parsed.path=='/' and not parsed.query:
                 body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')

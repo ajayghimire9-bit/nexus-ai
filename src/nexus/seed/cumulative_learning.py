@@ -113,43 +113,43 @@ def seed_interval(values):
                 unit='three_update_rule_training_seeds_conditional_on_one_core_and_fixed_source_bank',exploratory=True)
 
 
-def summarize(rows,c):
+def summarize(rows,c,*,methods=METHODS,learner='learned_cumulative',static='static_cumulative'):
     def error(s,m,ids,key='query_mse',prefixes=None):
         return st.mean(rows[str(s)][str(t)][m][p][key] for t in ids for p in (prefixes or c['curve_budgets']))
     ids=c['tasks']['train'];seeds=c['outer_seeds']
-    per={m:[error(s,m,ids) for s in seeds] for m in METHODS}
+    per={m:[error(s,m,ids) for s in seeds] for m in methods}
     means={m:st.mean(v) for m,v in per.items()}
-    contrasts={m:seed_interval([a-b for a,b in zip(per[m],per['learned_cumulative'])]) for m in METHODS[1:]}
-    retention={m:st.mean(error(s,m,ids,'retention_mse',[8]) for s in seeds) for m in METHODS}
+    contrasts={m:seed_interval([a-b for a,b in zip(per[m],per[learner])]) for m in methods[1:]}
+    retention={m:st.mean(error(s,m,ids,'retention_mse',[8]) for s in seeds) for m in methods}
     passed=all(contrasts[m]['mean']>=c['minimum_fraction']*means[m] and contrasts[m]['ci95'][0]>0
-               for m in ('static_cumulative','fixed_cumulative','replay','fixed_bounded'))
-    retained=retention['learned_cumulative']<=retention['fixed_cumulative']+c['retention_excess']
+               for m in (static,'fixed_cumulative','replay','fixed_bounded'))
+    retained=retention[learner]<=retention['fixed_cumulative']+c['retention_excess']
     return dict(curve_means=means,per_seed_curve=per,contrasts=contrasts,final_retention=retention,
         learned_screen_pass=passed,retention_pass=retained,source_screen_pass=passed and retained,
         generic_fixed_minus_replay=seed_interval([a-b for a,b in zip(per['fixed_cumulative'],per['replay'])]),
-        query_curves={m:{str(p):st.mean(error(s,m,ids,prefixes=[p]) for s in seeds) for p in c['prefixes']} for m in METHODS},
-        per_fold={str(f):{m:st.mean(error(s,m,partition(c,f)[1]) for s in seeds) for m in METHODS} for f in range(4)},
-        per_task={str(t):{m:st.mean(error(s,m,[t]) for s in seeds) for m in METHODS} for t in ids},
+        query_curves={m:{str(p):st.mean(error(s,m,ids,prefixes=[p]) for s in seeds) for p in c['prefixes']} for m in methods},
+        per_fold={str(f):{m:st.mean(error(s,m,partition(c,f)[1]) for s in seeds) for m in methods} for f in range(4)},
+        per_task={str(t):{m:st.mean(error(s,m,[t]) for s in seeds) for m in methods} for t in ids},
         fresh_validation=False,runtime_promotion=False,independent_pretrained_cores=1)
 
 
-def checkpoint_bytes(info):
+def checkpoint_bytes(info,*,width=33):
     provenance={k:info['provenance'][k] for k in ('config_sha256','fold','seed','source_sha256','source_only')}
-    raw=json.dumps(dict(schema='seed_plasticity_v1',width=33,provenance=provenance,
+    raw=json.dumps(dict(schema='seed_plasticity_v1',width=width,provenance=provenance,
         weights={k:info['weights'][k] for k in ('logits.weight','logits.bias')}),allow_nan=False).encode()
     if hashlib.sha256(raw).hexdigest()!=info['sha256']:raise ValueError('nonreproducible_new_rule_checkpoint')
     return raw
 
 
-def complete_grid(r,c):
-    prior.validate_rows(r['rows'],c,METHODS)
+def complete_grid(r,c,*,methods=METHODS):
+    prior.validate_rows(r['rows'],c,methods)
     if set(r['folds'])!=set(map(str,range(4))):raise ValueError('fold_grid')
     for fold in range(4):
         entry=r['folds'][str(fold)];train,held=partition(c,fold)
         if entry['train_ids']!=train or entry['excluded_ids']!=held:raise ValueError('fold_assignment')
         if set(entry['models'])!=set(map(str,c['outer_seeds'])):raise ValueError('model_seed_grid')
         for arms in entry['models'].values():
-            if set(arms)!={'learned_cumulative','static_cumulative'}:raise ValueError('fitted_arm_grid')
+            if set(arms)!=set(c['methods'][:2]):raise ValueError('fitted_arm_grid')
             for info in arms.values():
                 if [row['update'] for row in info['training']]!=list(range(1,65)):raise ValueError('outer_update_grid')
                 if type(info['checkpoint']) is not str or type(info['sha256']) is not str or len(info['sha256'])!=64:
@@ -157,11 +157,11 @@ def complete_grid(r,c):
     return True
 
 
-def validate(r,c,pack):
-    config_check(c)
+def validate(r,c,pack,*,config_fn=config_check,methods=METHODS,learner='learned_cumulative',static='static_cumulative',width=33):
+    config_fn(c)
     if r['config']!=c or r['source_pack_sha256']!=digest(pack) or r['frozen_during_evaluation'] is not True:
         raise ValueError('cumulative_source_integrity')
-    complete_grid(r,c)
+    complete_grid(r,c,methods=methods)
     all_source={t['seed']:t for t in pack['tasks']}
     for fold in range(4):
         entry=r['folds'][str(fold)];train,held=partition(c,fold)
@@ -175,8 +175,8 @@ def validate(r,c,pack):
         if not finite(entry['tau']) or entry['tau']<=0:raise ValueError('fold_bound')
         if set(entry['models'])!=set(map(str,c['outer_seeds'])):raise ValueError('model_seed_grid')
         for seed,arms in entry['models'].items():
-            if set(arms)!={'learned_cumulative','static_cumulative'}:raise ValueError('fitted_arm_grid')
-            if arms['learned_cumulative']['source_schedule_sha256']!=arms['static_cumulative']['source_schedule_sha256']:
+            if set(arms)!={learner,static}:raise ValueError('fitted_arm_grid')
+            if arms[learner]['source_schedule_sha256']!=arms[static]['source_schedule_sha256']:
                 raise ValueError('paired_source_schedule')
             for method,info in arms.items():
                 provenance=dict(config_sha256=digest(c),fold=fold,seed=int(seed),source_sha256=entry['source_sha256'],source_only=True)
@@ -185,18 +185,18 @@ def validate(r,c,pack):
                 if any(not finite(v) for row in info['training'] for v in row.values()):raise ValueError('finite_training_metrics')
                 if any(type(row['update']) is not int or type(row['task_index']) is not int or not 0<=row['task_index']<9 for row in info['training']):raise ValueError('source_schedule_bounds')
                 if digest([v['task_index'] for v in info['training']])!=info['source_schedule_sha256']:raise ValueError('source_schedule_arithmetic')
-                if info['trainable_parameters']!=(165 if method=='learned_cumulative' else 33):raise ValueError('rule_trainable_parameter_count')
+                if info['trainable_parameters']!=(5*width if method==learner else width):raise ValueError('rule_trainable_parameter_count')
                 w=info['weights']
-                if set(w)!={'logits.weight','logits.bias'} or len(w['logits.weight'])!=33 or len(w['logits.bias'])!=33:
+                if set(w)!={'logits.weight','logits.bias'} or len(w['logits.weight'])!=width or len(w['logits.bias'])!=width:
                     raise ValueError('rule_weight_grid')
                 if any(len(row)!=4 or any(not finite(v) for v in row) for row in w['logits.weight']) or any(not finite(v) for v in w['logits.bias']):
                     raise ValueError('finite_rule_weights')
-                if method=='static_cumulative' and any(v!=0 for row in w['logits.weight'] for v in row):raise ValueError('static_contextual_weights')
+                if method==static and any(v!=0 for row in w['logits.weight'] for v in row):raise ValueError('static_contextual_weights')
                 if not finite(info['parameter_change_l2']) or not finite(info['seconds']):raise ValueError('finite_rule_diagnostics')
-                checkpoint_bytes(info)
+                checkpoint_bytes(info,width=width)
         subset={s:{str(t):methods[str(t)] for t in held} for s,methods in r['rows'].items()}
         prior.validate_source_math(subset,dict(scale=scale,tasks=[all_source[t] for t in held]))
-    if r['analysis']!=summarize(r['rows'],c):raise ValueError('cumulative_summary_arithmetic')
+    if r['analysis']!=summarize(r['rows'],c,methods=methods,learner=learner,static=static):raise ValueError('cumulative_summary_arithmetic')
     return True
 
 

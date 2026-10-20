@@ -266,8 +266,9 @@ class Sandbox:
         adapter = spec['recipe'].get('adapter') if type(spec['recipe']) is dict else None
         bounded = adapter == 'seed_bounded_correction_v1'
         cumulative = adapter == 'seed_cumulative_learning_v1'
-        diagnosis = adapter in ('seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1')
-        study = adapter in ('seed_nonlinear_learning_v1','seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1')
+        update_gate = adapter == 'seed_update_gate_v1'
+        diagnosis = adapter in ('seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1')
+        study = adapter in ('seed_nonlinear_learning_v1','seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1')
         if study:
             if mode!='exploration' or any(spec[k] is not None for k in ('train','development','model_run','assessment','protocol','gate')):
                 raise ValueError('registered_seed_development_study_only')
@@ -275,6 +276,7 @@ class Sandbox:
             expected_paths = ('configs/seed_update_diagnosis.json','docs/NEXUS_SEED_UPDATE_DIAGNOSIS_PROTOCOL.md') if diagnosis else ('configs/seed_nonlinear_learning.json','docs/NEXUS_SEED_NONLINEAR_LEARNING_PROTOCOL.md')
             if bounded:expected_paths=('configs/seed_bounded_correction.json','docs/NEXUS_SEED_BOUNDED_CORRECTION_PROTOCOL.md')
             if cumulative:expected_paths=('configs/seed_cumulative_learning.json','docs/NEXUS_SEED_CUMULATIVE_LEARNING_PROTOCOL.md')
+            if update_gate:expected_paths=('configs/seed_update_gate.json','docs/NEXUS_SEED_UPDATE_GATE_PROTOCOL.md')
             if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or (item['config_path'],item['protocol_path'])!=expected_paths:
                 raise ValueError('vetted_study_manifest_required')
             for path,key in ((item['config_path'],'config_sha256'),(item['protocol_path'],'protocol_sha256')):
@@ -284,7 +286,9 @@ class Sandbox:
             if any(r['spec'].get('recipe',{}).get('config_sha256')==item['config_sha256'] for r in self.records('reserved') if type(r['spec'].get('recipe')) is dict):
                 raise ValueError('study_configuration_consumed')
             c=read(self.repository/item['config_path'])
-            if cumulative:
+            if update_gate:
+                from .update_gate import config_check, source_pack
+            elif cumulative:
                 from .cumulative_learning import config_check, source_pack
             elif bounded:
                 from .bounded_correction import config_check, source_pack
@@ -349,9 +353,11 @@ class Sandbox:
             'src/nexus/seed/experimental.py', 'src/nexus/seed/experimental_worker.py',
             'src/nexus/nn/factory.py', 'src/nexus/nn/activations.py')}
         if study:
-            if cumulative:
+            if update_gate:
+                sources['src/nexus/seed/update_gate.py']=hashlib.sha256((self.repository/'src/nexus/seed/update_gate.py').read_bytes()).hexdigest()
+            if cumulative or update_gate:
                 sources['src/nexus/seed/cumulative_learning.py']=hashlib.sha256((self.repository/'src/nexus/seed/cumulative_learning.py').read_bytes()).hexdigest()
-            if bounded or cumulative:
+            if bounded or cumulative or update_gate:
                 sources['src/nexus/seed/bounded_correction.py']=hashlib.sha256((self.repository/'src/nexus/seed/bounded_correction.py').read_bytes()).hexdigest()
             if diagnosis:
                 sources['src/nexus/seed/update_diagnosis.py']=hashlib.sha256((self.repository/'src/nexus/seed/update_diagnosis.py').read_bytes()).hexdigest()
@@ -400,7 +406,9 @@ class Sandbox:
             if reason is None:
                 output = read(directory/'output.json')
                 if study:
-                    if cumulative:
+                    if update_gate:
+                        from .update_gate import validate_output as study_validate
+                    elif cumulative:
                         from .cumulative_learning import validate_output as study_validate
                     elif bounded:
                         from .bounded_correction import validate_output as study_validate
@@ -410,10 +418,10 @@ class Sandbox:
                         from .nonlinear_learning_audit import validate_output as study_validate
                     if diagnosis:study_validate(output,inputs['study_config'],caps,inputs['source_pack'])
                     else:study_validate(output,inputs['study_config'],caps)
-                    source_controllers=inputs['source_pack']['data']['controllers'] if bounded else inputs['source_pack']['controllers'] if diagnosis and not cumulative else None
+                    source_controllers=inputs['source_pack']['data']['controllers'] if bounded else inputs['source_pack']['controllers'] if diagnosis and not (cumulative or update_gate) else None
                     if diagnosis and output['study']['source_pack_sha256']!=digest(inputs['source_pack']):
                         raise ValueError('study_changed_source_pack')
-                    if diagnosis and not cumulative and output['model']['controllers']!=source_controllers:
+                    if diagnosis and not (cumulative or update_gate) and output['model']['controllers']!=source_controllers:
                         raise ValueError('diagnosis_changed_source_controllers')
                 else:validate_output(output, spec, caps, inputs)
                 if mode != 'exploration' and digest(output['model']) != digest(inputs['model']):
@@ -497,7 +505,8 @@ class Sandbox:
                     study=worker['study']['analysis'] if worker.get('adapter')=='seed_nonlinear_learning_v1' else None,
                     diagnosis=worker['study']['analysis'] if worker.get('adapter')=='seed_update_diagnosis_v1' else None,
                     bounded=worker['study']['analysis'] if worker.get('adapter')=='seed_bounded_correction_v1' else None,
-                    cumulative=worker['study']['analysis'] if worker.get('adapter')=='seed_cumulative_learning_v1' else None))
+                    cumulative=worker['study']['analysis'] if worker.get('adapter')=='seed_cumulative_learning_v1' else None,
+                    update_gate=worker['study']['analysis'] if worker.get('adapter')=='seed_update_gate_v1' else None))
             except FileNotFoundError:
                 rows.append(dict(id=reserved['run_id'],mode=reserved['mode'],status='reserved_or_interrupted',
                                  wall_s=reserved['wall_cap_s'],curve=[]))
