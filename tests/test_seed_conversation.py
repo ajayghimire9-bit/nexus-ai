@@ -26,6 +26,17 @@ def teach_reverse(w):
     assert r['chat']['messages'][-1]['status']=='success'
 
 
+def test_composed_code_executes_and_replay_is_idempotent(workspace):
+    identifier=uuid.uuid4().hex
+    result=send(workspace,'Write code to sort and remove duplicates on [3, 1, 3, 2]',identifier)
+    card=result['chat']['messages'][-1]['cards'][0]['data']
+    assert card['executed'] and card['output']==[1,2,3]
+    assert card['instructions']==5 and 'sorted' in card['python']
+    duplicate=send(workspace,'Write code to sort and remove duplicates on [3, 1, 3, 2]',identifier)
+    assert duplicate['duplicate']
+    assert interpret('Write code to import os',deepcopy(INITIAL)).kind=='unsupported'
+
+
 @pytest.mark.parametrize('text,kind',[('Hello!','hello'),('What can you do?','help'),('I want to teach you a word.','start'),('A dax means a red object.','definition'),('Use the reverse skill on [1, 2, 3].','run'),('Apply this skill to [3, 4]','run'),('What does that word mean?','meaning'),('Show me some examples.','examples'),('What have you learned?','memory'),('Move the red object to the top-right corner.','goal'),('Correct my previous example.','correct'),('Save this conversation.','save'),('Help me find the pattern.','start'),('Buy stocks for me','unsupported')])
 def test_wording(text,kind):assert interpret(text,deepcopy(INITIAL)).kind==kind
 

@@ -1,5 +1,10 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Registered current work — investigation transfer
+
+The owner approved the [frozen investigation comparison](NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md): 32 source tasks, 32 fresh target tasks, five policies, budgets 1/2/4/8, one frozen source tree. Cap60s /5000 authored observations, no neural updates. Implementation is being tested before a separate protocol commit and one execution. No results yet; older proposals below are historical. Ledger remains1979.6321034559958s used /1620.3678965440042s remaining.
+
+
 The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented as
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.

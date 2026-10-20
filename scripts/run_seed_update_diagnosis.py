@@ -44,6 +44,7 @@ def execute_study(config_name,protocol_name,artifact_name,adapter,identifier):
         resources=worker.get('resources'),execution_debit_s=debit,
         session_used_s=c['carried_used_s']+debit,session_remaining_s=c['carried_remaining_s']-debit,
         config_file_sha256=sha(config_path),runtime=worker.get('runtime'))
+    r['registration']=next(row for row in host.records('reserved') if row['run_id']==identifier)
     r['declared_complete']=result['status']=='complete_development' and r['declared_complete'] is True
     write_new(destination,r)
     import json

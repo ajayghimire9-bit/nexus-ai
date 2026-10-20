@@ -81,6 +81,10 @@ class LabHandler(BaseHTTPRequestHandler):
             if parsed.path=='/api/experimental' and not parsed.query:
                 from nexus.seed.experimental import Sandbox
                 state=Sandbox(ROOT,getattr(self.server,'experimental_directory',None)).view()
+                if (ROOT/'artifacts/seed_investigation_transfer.json').exists():
+                    from nexus.seed.investigation_transfer import saved_replay as investigation_replay
+                    investigation=investigation_replay(ROOT)
+                    state['experiments']=[r for r in state['experiments'] if r['id']!=investigation['id']]+[investigation]
                 if (ROOT/'artifacts/seed_executable_world.json').exists():
                     from nexus.seed.structure.study import saved_replay as structure_replay
                     structure=structure_replay(ROOT)

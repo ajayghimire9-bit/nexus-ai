@@ -1,5 +1,10 @@
 # NEXUS Seed — Current State
 
+## Registered current work — investigation transfer
+
+The owner approved the [frozen investigation comparison](NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md): 32 source tasks, 32 fresh target tasks, five policies, budgets 1/2/4/8, one frozen source tree. Cap60s /5000 authored observations, no neural updates. Implementation is being tested before a separate protocol commit and one execution. No results yet; older proposals below are historical. Ledger remains1979.6321034559958s used /1620.3678965440042s remaining.
+
+
 Latest study base:e381132c79a2d3c71aed883e54b8577ecd0071ec;
 executionbc57da126051d0aa5d148fcbf05bb4704f2571e1. Read
 [master context](MASTER_CONTEXT.md) and [reuse map](NEXUS_CODE_REUSE_MAP.md).

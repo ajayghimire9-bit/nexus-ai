@@ -42,6 +42,14 @@ def interpret(text,ctx):
     if t in ('that answer was wrong','that was wrong','correct my previous example','correct the previous example','correct that','change my last example'):return Intent('correct')
     if t in ('show me some examples','show examples','examples','give me an example'):return Intent('examples')
     if t in ('show foundation','show curriculum','foundation','curriculum'):return Intent('foundation')
+    m=re.fullmatch(r'(?:write code to|run code to) (.+?)(?: on (\[.*\]))?[.!?]?',raw,flags=re.I)
+    if m:
+        aliases={'sort':'sort','sort a list':'sort','reverse':'reverse','reverse a list':'reverse','remove duplicates':'unique','keep even numbers':'even','increment':'increment'}
+        parts=re.split(r'\s+(?:then|and)\s+',m[1].lower().strip())
+        if not 1<=len(parts)<=8 or any(p not in aliases for p in parts):return Intent('unsupported')
+        try:value=json.loads(m[2]) if m[2] else None
+        except ValueError:return Intent('unsupported')
+        return Intent('compose_code',dict(ops=[aliases[p] for p in parts],input=value))
     if t.startswith('remember text:'):return Intent('ingest',dict(text=raw.split(':',1)[1].strip()))
     m=re.fullmatch(r'(?:what does|what is) (?:the )?(.+?)(?: mean)?',t)
     if m:return Intent('meaning',{'name':m[1]})
@@ -180,6 +188,18 @@ class Conversation:
 
     def execute(self,intent,ctx,card):
         k=intent.kind;v=intent.values;s=lib.state(self.session)
+        if k=='compose_code':
+            if self.session.stopped:raise ValueError('resume_required')
+            from .foundation.programs import pipeline,execute
+            tree=pipeline(v['ops'])
+            lines={'sort':'x = sorted(x)','reverse':'x = list(reversed(x))','unique':'x = list(dict.fromkeys(x))','even':'x = [v for v in x if v % 2 == 0]','increment':'x = [v + 1 for v in x]'}
+            data=dict(kind='bounded_code',python='def transform(x):\n'+''.join('    '+lines[o]+'\n' for o in v['ops'])+'    return x',program=tree,operators=v['ops'],executed=False)
+            if v['input'] is not None:
+                ir.value('list',v['input'])
+                outcome=execute(tree,{'x':v['input']},budget=128)
+                data.update(executed=True,input=v['input'],output=outcome['value'],instructions=outcome['instructions'])
+            card('Executable list program',data)
+            return 'I composed these supplied list operators. The displayed Python is an equivalent explanation; execution uses the bounded expression interpreter, with no file or shell access. This is not unrestricted code generation.','success',False
         if k=='foundation':
             from .foundation.runtime import inspect
             view=inspect(self.session)

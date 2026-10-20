@@ -20,7 +20,9 @@ def test_saved_arithmetic_and_provenance_are_reproducible_without_optional_packa
     audit=json.loads((ROOT/'artifacts/seed_executable_world_audit.json').read_text())
     assert audit['execution_tree_clean'] is True
     assert audit['execution_sha']==record['execution_sha']
-    for p,sha in audit['source_hashes'].items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==sha
+    for p,sha in audit['source_hashes'].items():
+        recorded=subprocess.check_output(['git','show',audit['execution_sha']+':'+p],cwd=ROOT)
+        assert hashlib.sha256(recorded).hexdigest()==sha
     assert record['frozen_before_final'] is True
 
 

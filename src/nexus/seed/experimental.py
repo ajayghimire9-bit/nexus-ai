@@ -276,10 +276,11 @@ class Sandbox:
         answer_free = adapter == 'seed_answer_free_utility_v1'
         question_utility = adapter == 'seed_question_utility_v1'
         executable_world = adapter == 'seed_executable_world_v1'
+        investigation_transfer = adapter == 'seed_investigation_transfer_v1'
         diagnosis = adapter in ('seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
         study = adapter in ('seed_nonlinear_learning_v1','seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
         diagnosis = diagnosis or learning_choice or questions or headroom or query_replication or question_utility or answer_free
-        study = study or learning_choice or questions or headroom or query_replication or question_utility or answer_free or executable_world
+        study = study or learning_choice or questions or headroom or query_replication or question_utility or answer_free or executable_world or investigation_transfer
         if study:
             if mode!='exploration' or any(spec[k] is not None for k in ('train','development','model_run','assessment','protocol','gate')):
                 raise ValueError('registered_seed_development_study_only')
@@ -297,6 +298,7 @@ class Sandbox:
             if answer_free:expected_paths=('configs/seed_answer_free_utility.json','docs/NEXUS_SEED_ANSWER_FREE_UTILITY_PROTOCOL.md')
             if question_utility:expected_paths=('configs/seed_question_utility.json','docs/NEXUS_SEED_QUESTION_UTILITY_PROTOCOL.md')
             if executable_world:expected_paths=('configs/seed_executable_world.json','docs/NEXUS_SEED_EXECUTABLE_WORLD_PROTOCOL.md')
+            if investigation_transfer:expected_paths=('configs/seed_investigation_transfer.json','docs/NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md')
             if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or (item['config_path'],item['protocol_path'])!=expected_paths:
                 raise ValueError('vetted_study_manifest_required')
             for path,key in ((item['config_path'],'config_sha256'),(item['protocol_path'],'protocol_sha256')):
@@ -306,7 +308,9 @@ class Sandbox:
             if any(r['spec'].get('recipe',{}).get('config_sha256')==item['config_sha256'] for r in self.records('reserved') if type(r['spec'].get('recipe')) is dict):
                 raise ValueError('study_configuration_consumed')
             c=read(self.repository/item['config_path'])
-            if executable_world:
+            if investigation_transfer:
+                from .investigation_transfer import config_check
+            elif executable_world:
                 from .structure.study import config_check
             elif answer_free:
                 from .answer_free_utility import config_check, source_pack
@@ -392,6 +396,9 @@ class Sandbox:
             'src/nexus/seed/experimental.py', 'src/nexus/seed/experimental_worker.py',
             'src/nexus/nn/factory.py', 'src/nexus/nn/activations.py')}
         if study:
+            if investigation_transfer:
+                for p in ('src/nexus/seed/investigation_transfer.py','src/nexus/seed/structure/investigation.py','src/nexus/seed/question_selection.py','src/nexus/evolution1/catalogue.py'):
+                    sources[p]=hashlib.sha256((self.repository/p).read_bytes()).hexdigest()
             if executable_world:
                 for path in sorted((self.repository/'src/nexus/seed/structure').glob('*.py')):
                     sources[str(path.relative_to(self.repository))]=hashlib.sha256(path.read_bytes()).hexdigest()
@@ -472,7 +479,9 @@ class Sandbox:
             if reason is None:
                 output = read(directory/'output.json')
                 if study:
-                    if executable_world:
+                    if investigation_transfer:
+                        from .investigation_transfer import validate_output as study_validate
+                    elif executable_world:
                         from .structure.study import validate_output as study_validate
                     elif answer_free:
                         from .answer_free_utility import validate_output as study_validate
