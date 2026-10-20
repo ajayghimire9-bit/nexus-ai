@@ -70,6 +70,9 @@ class LabHandler(BaseHTTPRequestHandler):
                 if (ROOT/'artifacts/seed_sequential_consistency.json').exists() and not any(r['id']=='seed-sequential-consistency-1' for r in state['experiments']):
                     from nexus.seed.sequential_consistency import saved_replay as sequential_replay
                     state['experiments'].append(sequential_replay(ROOT))
+                if (ROOT/'artifacts/seed_learning_choice.json').exists() and not any(r['id']=='seed-learning-choice-1' for r in state['experiments']):
+                    from nexus.seed.learning_choice import saved_replay as choice_replay
+                    state['experiments'].append(choice_replay(ROOT))
                 return self.send_json(200,state)
             if parsed.path=='/' and not parsed.query:
                 body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')

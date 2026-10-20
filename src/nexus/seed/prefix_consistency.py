@@ -59,8 +59,8 @@ def features(previous,proposal,x,y,old_x,old_y,seen_x,seen_y):
         max(-1,min(1,agreement)),clip(damage),n/8]
 
 
-def support_trace(support_x,support_y,old_x,old_y,check=lambda:None):
-    """No query argument, evaluator or file access; returns a fixed reference."""
+def support_trace(support_x,support_y,old_x,old_y,check=lambda:None,*,selector=None):
+    """Support-only trace; full updates by default, optional vetted roll-in."""
     import torch
     from . import learning_benchmark as lb
     initial=lb.initial(SimpleNamespace(old_x=old_x,old_y=old_y)).detach();previous=initial;rows=[]
@@ -68,7 +68,8 @@ def support_trace(support_x,support_y,old_x,old_y,check=lambda:None):
         check();proposal=cum.posterior(initial,torch.cat((old_x,support_x[:p])),torch.cat((old_y,support_y[:p])),torch.ones_like(initial))
         before=previous.tolist();after=proposal.tolist()
         phi=features(before,after,support_x[p-1].tolist(),float(support_y[p-1]),old_x.tolist(),old_y.tolist(),support_x[:p].tolist(),support_y[:p].tolist())
-        rows.append(dict(prefix=p,before=before,proposal=after,features=phi));previous=proposal
+        row=dict(prefix=p,before=before,proposal=after,features=phi);rows.append(row)
+        if selector is None or selector(row):previous=proposal
     return rows
 
 
@@ -91,19 +92,24 @@ def permute_ids(train,c,fold):
 def training_rows(cases,ids):return [row for t in ids for row in cases[str(t)]]
 
 
-def fit_predictors(cases,train,c,fold):
+def fit_predictors(cases,train,c,fold,*,methods=None):
     """Receives only permitted training cases, never an excluded query table."""
     import numpy as np
     from nexus.nn.ridge import fit_ridge
+    selected=METHODS if methods is None else methods
+    if not selected or len(set(selected))!=len(selected) or set(selected)-set(METHODS):raise ValueError('predictor_subset')
     rows=training_rows(cases,train);y=np.asarray([r['utility'] for r in rows]);mean=float(y.mean())
-    models={'constant':dict(mean=mean),'prefix_mean':dict(means=[st.mean(r['utility'] for r in rows if r['prefix']==p) for p in c['prefixes']])}
+    models={}
+    if 'constant' in selected:models['constant']=dict(mean=mean)
+    if 'prefix_mean' in selected:models['prefix_mean']=dict(means=[st.mean(r['utility'] for r in rows if r['prefix']==p) for p in c['prefixes']])
     permutation=permute_ids(train,c,fold)
     for method,cols in COLUMNS.items():
+        if method not in selected:continue
         source=training_rows(cases,permutation) if method=='permuted_full' else rows
         x=np.asarray([[r['features'][j] for j in cols] for r in source]);center=x.mean(0)
         scale,beta=fit_ridge(x-center,y-mean,ridge=c['predictor_ridge'])
         models[method]=dict(columns=cols,center=center.tolist(),mean=mean,scale=scale.tolist(),beta=beta.tolist())
-    return models
+    return {k:models[k] for k in selected}
 
 
 def predict(model,method,row):
