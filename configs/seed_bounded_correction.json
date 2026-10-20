@@ -1,0 +1,17 @@
+{
+  "schema":"seed_bounded_correction_v1",
+  "source_plan":"configs/seed_update_diagnosis.json",
+  "source_plan_sha256":"788d2df3ae49cdd71a91068fc0a4fd04b7a65790a475c16635bccd6135c4866b",
+  "baseline":"artifacts/seed_update_diagnosis.json",
+  "baseline_sha256":"afd58451bbf2a6d005e06c2536789f3dd6d3ff23262e3bfc91456d2f48f970bd",
+  "tasks":{"train":[95000000,95010000,95020000,95030000,95040000,95050000,95060000,95070000,95080000,95090000,95100000,95110000]},
+  "outer_seeds":[6401,6402,6403],
+  "prefixes":[0,1,2,3,4,5,6,7,8],
+  "curve_budgets":[1,2,4,8],
+  "methods":["learned_bounded","static_bounded","fixed_bounded","learned","static","fixed","replay","none"],
+  "bound_fraction":0.25,"minimum_bound":0.000001,
+  "stabilization_min_fraction":0.1,"replay_min_fraction":0.05,
+  "learned_specific_min_fraction":0.05,"retention_excess":0.01,
+  "max_wall_s":30,"carried_used_s":1919.6321034559958,
+  "carried_remaining_s":1680.3678965440042
+}

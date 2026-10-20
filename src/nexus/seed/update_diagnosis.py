@@ -50,7 +50,7 @@ def source_pack(root, c):
     return pack
 
 
-def trajectory(task, controller, method, check=lambda: None):
+def trajectory(task, controller, method, check=lambda: None, *, update_fn=None):
     import torch
     from . import learning_benchmark as lb
     theta = lb.initial(task).detach()
@@ -63,7 +63,7 @@ def trajectory(task, controller, method, check=lambda: None):
             before = float(x@theta)
             prior = theta.clone()
             with torch.no_grad():
-                theta = lb.update(theta,x,y,task.old_x,task.old_y,
+                theta = (update_fn or lb.update)(theta,x,y,task.old_x,task.old_y,
                     task.support_x[:prefix],task.support_y[:prefix],controller,
                     'learned' if method == 'static' else method)
             change = float(torch.linalg.vector_norm(theta-prior))
@@ -109,17 +109,15 @@ def summarize(rows, c):
         generalization_test=False,causation_established=False)
 
 
-def validate(r,c,pack=None):
-    config_check(c)
-    if r['config']!=c or r['frozen_controllers'] is not True or r['source_only'] is not True:
-        raise ValueError('source_frozen_integrity')
-    if set(r['rows'])!=set(map(str,c['outer_seeds'])):
+def validate_rows(rows,c,methods):
+    """Shared complete-grid checks; expected sets come from the caller's plan."""
+    if set(rows)!=set(map(str,c['outer_seeds'])):
         raise ValueError('seed_grid')
-    for tasks in r['rows'].values():
+    for tasks in rows.values():
         if set(tasks)!=set(map(str,c['tasks']['train'])):raise ValueError('task_grid')
-        for methods in tasks.values():
-            if set(methods)!=set(METHODS):raise ValueError('method_grid')
-            for snapshots in methods.values():
+        for cell in tasks.values():
+            if set(cell)!=set(methods):raise ValueError('method_grid')
+            for snapshots in cell.values():
                 if [v['prefix'] for v in snapshots]!=c['prefixes']:raise ValueError('prefix_grid')
                 for v in snapshots:
                     if any(not finite(v[k]) or v[k]<0 for k in ('query_mse','retention_mse','update_l2','cumulative_update_l2')):
@@ -130,24 +128,35 @@ def validate(r,c,pack=None):
                     if type(v['prefix']) is not int:raise ValueError('typed_prefix')
                     if v['prefix'] and any(v[k] is None for k in ('support_error_before','support_error_after')):
                         raise ValueError('missing_support_metrics')
+
+
+def validate_source_math(rows,pack):
+    scale=pack['scale'];source={str(t['seed']):t['arrays'] for t in pack['tasks']}
+    for tasks in rows.values():
+        for task_id,methods in tasks.items():
+            a=source[task_id]
+            for snapshots in methods.values():
+                previous=snapshots[0]['theta']
+                for row in snapshots:
+                    theta=row['theta']
+                    for role in ('query','retention'):
+                        mse=st.mean((sum(v*w/s for v,w,s in zip(x,theta,scale))-y)**2
+                            for x,y in zip(a[role+'_x'],a[role+'_y']))
+                        if abs(mse-row[role+'_mse'])>2e-6:raise ValueError('source_mse_arithmetic')
+                    norm=sum((x-y)**2 for x,y in zip(theta,previous))**.5
+                    if abs(norm-row['update_l2'])>2e-6:raise ValueError('update_norm_arithmetic')
+                    previous=theta
+
+
+def validate(r,c,pack=None):
+    config_check(c)
+    if r['config']!=c or r['frozen_controllers'] is not True or r['source_only'] is not True:
+        raise ValueError('source_frozen_integrity')
+    validate_rows(r['rows'],c,METHODS)
     if r['analysis']!=summarize(r['rows'],c):raise ValueError('summary_arithmetic')
     if pack is not None:
         if r['source_pack_sha256']!=digest(pack):raise ValueError('source_pack_hash')
-        scale=pack['scale'];source={str(t['seed']):t['arrays'] for t in pack['tasks']}
-        for tasks in r['rows'].values():
-            for task_id,methods in tasks.items():
-                a=source[task_id]
-                for snapshots in methods.values():
-                    previous=snapshots[0]['theta']
-                    for row in snapshots:
-                        theta=row['theta']
-                        for role in ('query','retention'):
-                            mse=st.mean((sum(v*w/s for v,w,s in zip(x,theta,scale))-y)**2
-                                for x,y in zip(a[role+'_x'],a[role+'_y']))
-                            if abs(mse-row[role+'_mse'])>2e-6:raise ValueError('source_mse_arithmetic')
-                        norm=sum((x-y)**2 for x,y in zip(theta,previous))**.5
-                        if abs(norm-row['update_l2'])>2e-6:raise ValueError('update_norm_arithmetic')
-                        previous=theta
+        validate_source_math(r['rows'],pack)
     return True
 
 
