@@ -2,13 +2,9 @@
 import math
 import statistics as st
 from nexus.evolution1.catalogue import digest
-from .grounded_audit import audit_episode
+from .grounded_audit import audit_episode, finite as numeric
 
 METHODS=['learned','static','fixed','replay','none']
-
-
-def numeric(v):
-    return type(v) in (int,float) and math.isfinite(v)
 
 
 def bound(c):

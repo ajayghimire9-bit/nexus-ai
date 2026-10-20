@@ -2,11 +2,11 @@
 import copy
 import hashlib
 import json
-import math
 import random
 import numpy as np
 import torch
 from .grounded_world import AuthoredWorld,tensors
+from .grounded_audit import finite
 
 
 def hash_file(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -53,9 +53,6 @@ def rank_metrics(predicted,actual):
     return dict(selected=choice,regret=float(y.max()-y[choice]),optimal=bool(y.max()-y[choice]<1e-8),
         pairwise_accuracy=accuracy,score_range=float(np.ptp(p)),reward_mae=float(np.abs(p-y).mean()),
         uniform_expected_regret=float(y.max()-y.mean()))
-
-
-def finite(v):return type(v) in (int,float) and math.isfinite(v)
 
 
 def validate_diagnostic(r):

@@ -1,12 +1,8 @@
 """Repository-only arithmetic/completeness; optional explicit local weight audit."""
 import hashlib
 import json
-import math
 from pathlib import Path
-from .grounded_audit import audit_episode
-
-
-def finite(v):return type(v) in (int,float) and math.isfinite(v)
+from .grounded_audit import audit_episode, finite
 
 
 def identities(c):return [f'{r}_{s}_{k}' for r in c['recipes'] for s in c['model_seeds'] for k in c['conditions']]

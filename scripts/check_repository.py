@@ -32,6 +32,7 @@ DOCUMENTS = (
     'docs/NEXUS_EXPERIMENTAL_MODE.md',
     'docs/NEXUS_SEED_NONLINEAR_LEARNING_PROTOCOL.md',
     'docs/NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md',
+    'docs/NEXUS_SEED_BRANCH_CLEANUP.md',
 )
 REQUIRED = (
     'AGENTS.md', 'pyproject.toml', 'Makefile', '.gitignore',

@@ -1,7 +1,6 @@
 """Stdlib completeness/statistics for registered fresh tasks; no local binaries."""
-import math
 import statistics as st
-from .grounded_audit import audit_episode
+from .grounded_audit import audit_episode, finite as numeric
 
 
 def interval(values):
@@ -31,9 +30,6 @@ def summarize(r):
     action_pass=all(st.mean(regrets['learned'])<=st.mean(regrets[b])*(1-c['action_min_fraction']) and st.mean(goals['learned'])>=st.mean(goals[b])+c['goal_min_difference'] and action_contrasts[b]['ci95'][0]>0 for b in ('fixed','frozen'))
     return dict(learning=dict(passed=learning_pass,means={m:st.mean(v) for m,v in learning.items()},forgetting=forget,contrasts=contrasts),
         actions=dict(passed=action_pass,regret={m:st.mean(v) for m,v in regrets.items()},goal_rate={m:st.mean(v) for m,v in goals.items()},mean_return={m:st.mean(v) for m,v in returns.items()},contrasts=action_contrasts))
-
-
-def numeric(v):return type(v) in (int,float) and math.isfinite(v)
 
 
 def resource_bound(c):

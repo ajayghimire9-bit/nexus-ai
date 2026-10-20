@@ -1,12 +1,8 @@
 """Stdlib-only exact-grid and accounting audit of residual action learning."""
 import hashlib
 import json
-import math
 from pathlib import Path
-from .grounded_audit import audit_episode
-
-
-def finite(v):return type(v) in (int,float) and math.isfinite(v)
+from .grounded_audit import audit_episode, finite
 
 
 def require_manifest(r,root):
