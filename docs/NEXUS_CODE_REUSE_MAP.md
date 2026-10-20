@@ -2,6 +2,14 @@
 
 ## Active runtime
 
+- Independent-tree replication: `seed/investigation_replication` reuses the same
+  investigation runner, hybrid proposer and host, with task-balanced evaluator
+  assignments and source-tree aggregation. Frozen neural models are unchanged.
+- Phase1–7 workbench extends `foundation.library/runtime/curriculum` in the SAME
+  Session/E1 Journal: typed expression abstractions, taught verified-function
+  phrases, source practice and the existing `meta.kind_statistics` updates.
+  `structure.runtime` remains the graph/mechanism backend; no parallel framework.
+
 - Selective investigation fallback: `seed/investigation_hybrid.py` reuses
   `investigation_transfer.run/validate_output/adapt` with explicit internal
   profiles, the same LabelOracle and existing EXPERIMENTAL host/journal. Only

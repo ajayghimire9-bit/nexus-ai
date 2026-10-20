@@ -58,6 +58,13 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+## Latest — balanced independent-tree replication FAILED
+
+Execution93284549aa8399f15fbb2016a192b5f1214b6b1e, three newly source-trained/frozen trees,96 fresh rule-balanced targets. Hybrid3.041667 questions versus greedy3.000; greedy-minus-hybrid−.041667[−.220944,.137611], n3/df2. Tail and compute gates pass (99.20% fewer search checks;46.93% less source-inclusive work proxy), but the zero mean-regression requirement fails. No statistical superiority/inferiority claim, no promotion. [Results](NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md).
+
+4608 authored observations;2s debit; ledger1985.6321034559958s used /1614.3678965440042s remaining. [Phase1–7 bounded workflows](NEXUS_SEED_PHASE1_7_WORKBENCH.md) are connected and tested, including expression phrases and rollback; their broad scientific claims remain open. Next: source-only exact compiled-greedy baseline audit using public grammar/saved arrays, no new collection. Older entries retain their chronology.
+
+
 ## Latest — selective greedy fallback passed its development screen
 
 Frozen-tree hybrid averaged2.96875 questions versus tree-fixed3.15625, pure greedy3, fixed4 and random4.4375. It removed all6 five-question cases and used60 versus3328 search checks; source-inclusive work1991 versus3776 (47.27% lower proxy, not wall speed). Greedy question-difference interval includes zero; equal-rule descriptive reweighting favors greedy3 versus hybrid3.125. This is one frozen tree in a supplied grammar, not general learning-to-learn. No promotion. [Results](NEXUS_SEED_INVESTIGATION_HYBRID_RESULTS.md), [protocol](NEXUS_SEED_INVESTIGATION_HYBRID_PROTOCOL.md).
@@ -220,7 +227,7 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_INVESTIGATION_HYBRID_RESULTS.md),
+[latest results](NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
@@ -230,8 +237,9 @@ The owner-requested optional executable-model branch now has a completed authore
 source feature-induction result, without default promotion. Frozen investigation
 reuse then completed and FAILED its registered screen against strong baselines.
 The subsequent selective greedy fallback passed its authored development screen,
-with rule-mixture sensitivity. Next: independent source-tree replications on
-rule-balanced targets, retaining pure greedy. The older question-utility label audit below remains
+with rule-mixture sensitivity. Independent rule-balanced tree replication then
+failed the zero question-regression requirement while retaining compute savings.
+Next: a source-only compiled-greedy baseline audit, with no new collection. The older question-utility label audit below remains
 unresolved; the investigation result does not answer it.
 
 The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
@@ -276,8 +284,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1983.6321034559958seconds used,
-1616.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1985.6321034559958seconds used,
+1614.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

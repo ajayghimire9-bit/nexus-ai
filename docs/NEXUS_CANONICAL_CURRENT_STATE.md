@@ -1,5 +1,12 @@
 # NEXUS Seed — Current State
 
+## Latest — balanced independent-tree replication FAILED
+
+Execution93284549aa8399f15fbb2016a192b5f1214b6b1e, three newly source-trained/frozen trees,96 fresh rule-balanced targets. Hybrid3.041667 questions versus greedy3.000; greedy-minus-hybrid−.041667[−.220944,.137611], n3/df2. Tail and compute gates pass (99.20% fewer search checks;46.93% less source-inclusive work proxy), but the zero mean-regression requirement fails. No statistical superiority/inferiority claim, no promotion. [Results](NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md).
+
+4608 authored observations;2s debit; ledger1985.6321034559958s used /1614.3678965440042s remaining. [Phase1–7 bounded workflows](NEXUS_SEED_PHASE1_7_WORKBENCH.md) are connected and tested, including expression phrases and rollback; their broad scientific claims remain open. Next: source-only exact compiled-greedy baseline audit using public grammar/saved arrays, no new collection. Older entries retain their chronology.
+
+
 ## Latest — selective greedy fallback passed its development screen
 
 Frozen-tree hybrid averaged2.96875 questions versus tree-fixed3.15625, pure greedy3, fixed4 and random4.4375. It removed all6 five-question cases and used60 versus3328 search checks; source-inclusive work1991 versus3776 (47.27% lower proxy, not wall speed). Greedy question-difference interval includes zero; equal-rule descriptive reweighting favors greedy3 versus hybrid3.125. This is one frozen tree in a supplied grammar, not general learning-to-learn. No promotion. [Results](NEXUS_SEED_INVESTIGATION_HYBRID_RESULTS.md), [protocol](NEXUS_SEED_INVESTIGATION_HYBRID_PROTOCOL.md).

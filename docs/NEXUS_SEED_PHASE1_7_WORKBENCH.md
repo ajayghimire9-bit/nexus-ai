@@ -115,3 +115,15 @@ interpreter instructions, source curriculum rewards and research-host resources
 separately. Engineering unit/GUI fixtures are not registered research results.
 The one authorized scientific run here is the separately committed replication.
 No scientific execution starts from chat, lesson generation, tools or inspection.
+
+## Verified local views
+
+[Engineering receipt](../artifacts/seed_phase1_7_engineering.json) records exact
+source hashes, checked expression examples, actual interpreter costs, phrase
+execution, rollback and test outcomes.
+
+![Workbench overview](assets/seed-phase-overview.png)
+![Actual multi-turn phrase execution](assets/seed-phase-chat.png)
+
+The [full workbench screenshot](assets/seed-phase-workbench.png) includes the
+graph plan, expression review, generated tasks and durable memory.

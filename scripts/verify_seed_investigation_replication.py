@@ -41,8 +41,21 @@ def verify():
         meta,path=line.split('\t');data=(ROOT/path).read_bytes()
         assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==meta.split()[2],path
         count+=1
+    policies={};source_counts={}
+    for i,rep in enumerate(record['replications']):
+        signatures={};counts=[0]*8
+        for source in rep['study']['source']:
+            answers=[e['answer'] for e in source['episodes']];counts[next(j for j,row in enumerate(r.b.TABLE) if list(row)==answers)]+=1
+        for row in rep['study']['rows']:
+            law=r.subconfig(record['config'],i)['target_laws'][str(row['task'])]
+            sequence=[s['question'] for s in row['methods']['tree_greedy']['steps']]
+            if law in signatures:assert signatures[law]==sequence
+            signatures[law]=sequence
+        policies[str(rep['id'])]=signatures;source_counts[str(rep['id'])]=counts
     return dict(valid=True,independent_trees=3,paired_unit='source_tree',df=2,means=means,per_tree_questions=per_tree,
-        policy_replays=480,old_artifacts_unchanged=count,collection=0,training=0,neural_inference=0)
+        policy_replays=480,old_artifacts_unchanged=count,source_class_counts=source_counts,
+        observed_hybrid_policy_signatures=policies,distinct_observed_hybrid_policies=len({r.digest(v) for v in policies.values()}),
+        collection=0,training=0,neural_inference=0)
 
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))

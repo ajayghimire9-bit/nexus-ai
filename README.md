@@ -12,6 +12,13 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Independent rule-balanced replication](docs/NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md)
+**failed** its registered screen: hybrid3.042 questions versus pure greedy3.000
+across three independently source-trained trees. Compute savings persisted,
+but the strict question-quality criterion did not. No live promotion.
+
+Previous closed result:
+
 [Selective greedy fallback](docs/NEXUS_SEED_INVESTIGATION_HYBRID_RESULTS.md)
 passed its authored development screen:2.969 questions versus greedy3.000,
 no five-question cases,98.2% fewer search checks and47.3% less source-inclusive

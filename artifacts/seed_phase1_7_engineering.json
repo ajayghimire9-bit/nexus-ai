@@ -1,0 +1,358 @@
+{
+  "schema": "seed_phase1_7_engineering_v1",
+  "label": "authored_bounded_workflow_verification_not_scientific_transfer",
+  "implementation_revision": "a1abcaeef1cfe34cb065b0698d97260a2325b5ce",
+  "source_hashes": {
+    "src/nexus/seed/foundation/__init__.py": "66fb6d9cd235bfabff5779329e3e23799d5b781ebccc2188dd4439ba3920eeb7",
+    "src/nexus/seed/foundation/curriculum.py": "9e42c76bc918d2627554661502209360fe76a77f8c2605a42502c4bd6f8d7b37",
+    "src/nexus/seed/foundation/inquiry.py": "b017061f49acaf67edd1b8799a602ed2b291cab7e7c5a71a61fc55aa91cfd7db",
+    "src/nexus/seed/foundation/knowledge.py": "99c8583c98d62613d6e96046b79a69c1bf89788855f883518729933442744001",
+    "src/nexus/seed/foundation/language.py": "c76e5c34267dbe986c102f7d80ed633390189519d3dbc3ad4873ebdf8f5b4506",
+    "src/nexus/seed/foundation/library.py": "0828d8f5d1341938c414b8e6a4fde6811ab2425cddf34611721a87d7564097ec",
+    "src/nexus/seed/foundation/programs.py": "7d0fc210bbf012d59f2b33743721ac22d448c88c8a75c15d50720989eb816d78",
+    "src/nexus/seed/foundation/runtime.py": "076ff112c2a66a0e976796ac3c8e94b946c25907c9e4f01398bb899a70498c20",
+    "src/nexus/seed/foundation/semantics.py": "1399dc9b815f933d5c9a2f3a30e7e080eb2e513627115c27c9de2c5f28a01a51",
+    "src/nexus/seed/conversation.py": "eabcc1da3af7c51c6b9b30707f762d9e29435747ce9635bb4c93f771e444dc79",
+    "web/learning-lab/chat.html": "fade945b31c25cfa71b7641b712ee471e8fcb8f3f081f2687802034adcbf27d4",
+    "web/learning-lab/chat.js": "9d38786cbf294bba7432085b19a447c298bb730cea1e949c507feb513d4ec2a5",
+    "web/learning-lab/foundation.html": "1f5ace512efa70b0002fcf2a208ef64fde18279d80983727b6575dd9bd74af05",
+    "scripts/run_learning_lab.py": "db9150cd4b5146bef3a9ec0506ac007aa1bcc3eb3a9c85d171cb059145fafa0c",
+    "tests/test_seed_phase_workflows.py": "89b727e71276e9db23fafec4eb8f66100ef7f1964783df72888dbb845ad284b9",
+    "tests/browser/seed_phase_workbench.cjs": "8e5e726e7497f95d04b74aebb059ab772b3fd906aeda6a39ba8bbb91e07d7357"
+  },
+  "fixtures": {
+    "expression_source": [
+      {
+        "task": "source0",
+        "program": {
+          "op": "add",
+          "left": {
+            "op": "count",
+            "value": {
+              "op": "skill",
+              "program": {
+                "schema": "list",
+                "ops": [
+                  "unique"
+                ]
+              },
+              "value": {
+                "op": "skill",
+                "program": {
+                  "schema": "list",
+                  "ops": [
+                    "sort"
+                  ]
+                },
+                "value": {
+                  "op": "var",
+                  "name": "x"
+                }
+              }
+            }
+          },
+          "right": {
+            "op": "literal",
+            "value": 0
+          }
+        },
+        "examples": [
+          {
+            "input": [
+              3,
+              1,
+              3
+            ],
+            "output": 2
+          }
+        ]
+      },
+      {
+        "task": "source1",
+        "program": {
+          "op": "add",
+          "left": {
+            "op": "count",
+            "value": {
+              "op": "skill",
+              "program": {
+                "schema": "list",
+                "ops": [
+                  "unique"
+                ]
+              },
+              "value": {
+                "op": "skill",
+                "program": {
+                  "schema": "list",
+                  "ops": [
+                    "sort"
+                  ]
+                },
+                "value": {
+                  "op": "var",
+                  "name": "x"
+                }
+              }
+            }
+          },
+          "right": {
+            "op": "literal",
+            "value": 1
+          }
+        },
+        "examples": [
+          {
+            "input": [
+              4,
+              1,
+              4
+            ],
+            "output": 3
+          }
+        ]
+      },
+      {
+        "task": "source2",
+        "program": {
+          "op": "add",
+          "left": {
+            "op": "count",
+            "value": {
+              "op": "skill",
+              "program": {
+                "schema": "list",
+                "ops": [
+                  "unique"
+                ]
+              },
+              "value": {
+                "op": "skill",
+                "program": {
+                  "schema": "list",
+                  "ops": [
+                    "sort"
+                  ]
+                },
+                "value": {
+                  "op": "var",
+                  "name": "x"
+                }
+              }
+            }
+          },
+          "right": {
+            "op": "literal",
+            "value": 2
+          }
+        },
+        "examples": [
+          {
+            "input": [
+              5,
+              1,
+              5
+            ],
+            "output": 4
+          }
+        ]
+      }
+    ],
+    "expression_checks": [
+      {
+        "task": "check0",
+        "program": {
+          "op": "add",
+          "left": {
+            "op": "count",
+            "value": {
+              "op": "skill",
+              "program": {
+                "schema": "list",
+                "ops": [
+                  "unique"
+                ]
+              },
+              "value": {
+                "op": "skill",
+                "program": {
+                  "schema": "list",
+                  "ops": [
+                    "sort"
+                  ]
+                },
+                "value": {
+                  "op": "var",
+                  "name": "x"
+                }
+              }
+            }
+          },
+          "right": {
+            "op": "literal",
+            "value": 10
+          }
+        },
+        "examples": [
+          {
+            "input": [
+              8,
+              2,
+              8,
+              1
+            ],
+            "output": 13
+          }
+        ]
+      },
+      {
+        "task": "check1",
+        "program": {
+          "op": "add",
+          "left": {
+            "op": "count",
+            "value": {
+              "op": "skill",
+              "program": {
+                "schema": "list",
+                "ops": [
+                  "unique"
+                ]
+              },
+              "value": {
+                "op": "skill",
+                "program": {
+                  "schema": "list",
+                  "ops": [
+                    "sort"
+                  ]
+                },
+                "value": {
+                  "op": "var",
+                  "name": "x"
+                }
+              }
+            }
+          },
+          "right": {
+            "op": "literal",
+            "value": 11
+          }
+        },
+        "examples": [
+          {
+            "input": [
+              9,
+              3,
+              9,
+              1
+            ],
+            "output": 14
+          }
+        ]
+      }
+    ],
+    "review": {
+      "ref": "40ee8c225532334357696a6fabc0665eea5ee1e451c85ae4d412c6c31eae7e43",
+      "accepted": true,
+      "candidate": {
+        "definition_nodes": 4,
+        "id": "485bb87f5b38ff1094dd7c8dd4cab3f2115d0aa1d87a7ba21291410f849a9f15",
+        "name": "f_485bb87f5b38",
+        "occurrences": 3,
+        "program": {
+          "op": "count",
+          "value": {
+            "op": "skill",
+            "program": {
+              "ops": [
+                "unique"
+              ],
+              "schema": "list"
+            },
+            "value": {
+              "op": "skill",
+              "program": {
+                "ops": [
+                  "sort"
+                ],
+                "schema": "list"
+              },
+              "value": {
+                "name": "x",
+                "op": "var"
+              }
+            }
+          }
+        },
+        "source_instructions": 24,
+        "source_tasks": [
+          "source0",
+          "source1",
+          "source2"
+        ],
+        "stored_node_savings": 2
+      },
+      "outcomes": [
+        {
+          "task": "check0",
+          "correct": true,
+          "original_instructions": 8,
+          "macro_instructions": 10
+        },
+        {
+          "task": "check1",
+          "correct": true,
+          "original_instructions": 8,
+          "macro_instructions": 10
+        }
+      ],
+      "stored_node_savings": 2,
+      "original_instructions": 16,
+      "macro_instructions": 20,
+      "label": "authored_separate_expression_checks_not_scientific_transfer",
+      "previous": null
+    },
+    "phrase_result": {
+      "value": 2,
+      "evidence": "40ee8c225532334357696a6fabc0665eea5ee1e451c85ae4d412c6c31eae7e43",
+      "phrase": "1543971ed10d0e08ca8a543e9fe48e4e9593632fbebc405908a6685efb31f728",
+      "label": "execution_of_owner_taught_phrase"
+    },
+    "inspection_unchanged": true,
+    "rollback_disables_phrase": true,
+    "phase_count": 7,
+    "generated_source_families": [
+      "coding",
+      "reasoning",
+      "language",
+      "world"
+    ]
+  },
+  "scientific": {
+    "additional_experiments": 0,
+    "engineering_scientific_debit": 0,
+    "associated_scientific_result": "artifacts/seed_investigation_replication.json",
+    "associated_scientific_screen": "failed"
+  },
+  "verified_tests": {
+    "broad_regression_before_final_integration": 931,
+    "final_affected": 94,
+    "browser_workflows": 20,
+    "browser_results": 12,
+    "final_with_receipt_checks": 96
+  },
+  "capability_limits": [
+    "Bounded supplied IR and finite concepts",
+    "No unrestricted language or coding",
+    "No installed microphone recognizer",
+    "Voice output requires an installed local browser voice; remote voices refused",
+    "No established cross-domain learning-to-learn"
+  ],
+  "screenshots": {
+    "docs/assets/seed-phase-overview.png": "b4e46a9dafea396d6a52a4cfacc2188ef941ae7fd969f57c771a0609b7b32798",
+    "docs/assets/seed-phase-workbench.png": "ae46eb7cb5873ac8fbca4cbcf9c530ea090e2aab1e26274d2086483de0798b57",
+    "docs/assets/seed-phase-chat.png": "a282ad00b3b80ac4ab5b392fac171a8674c1f191c0d4c838943b3f6b2108f08b",
+    "docs/assets/seed-investigation-replication-results.png": "058280a4822be43b0a34f36ce8a43da79fc4345347a222cd9da7aedd970989e7"
+  }
+}

@@ -1,5 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest — balanced independent-tree replication FAILED
+
+Execution93284549aa8399f15fbb2016a192b5f1214b6b1e, three newly source-trained/frozen trees,96 fresh rule-balanced targets. Hybrid3.041667 questions versus greedy3.000; greedy-minus-hybrid−.041667[−.220944,.137611], n3/df2. Tail and compute gates pass (99.20% fewer search checks;46.93% less source-inclusive work proxy), but the zero mean-regression requirement fails. No statistical superiority/inferiority claim, no promotion. [Results](NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md).
+
+4608 authored observations;2s debit; ledger1985.6321034559958s used /1614.3678965440042s remaining. [Phase1–7 bounded workflows](NEXUS_SEED_PHASE1_7_WORKBENCH.md) are connected and tested, including expression phrases and rollback; their broad scientific claims remain open. Next: source-only exact compiled-greedy baseline audit using public grammar/saved arrays, no new collection. Older entries retain their chronology.
+
+
 ## Registered — independent source-tree replication, not executed
 
 The owner approved the [three-tree rule-balanced replication](NEXUS_SEED_INVESTIGATION_REPLICATION_PROTOCOL.md). Same source recipe and question methods, fresh sources/targets, source trees are independent units. Planned4608 observations within60s/5000 cap; carry1983.6321034559958s used /1616.3678965440042remaining. Protocol and tested code must be committed before one run. Parallel [Phase1–7 bounded engineering](NEXUS_SEED_PHASE1_7_WORKBENCH.md) is not scientific efficacy evidence. Older entries retain their chronology.
