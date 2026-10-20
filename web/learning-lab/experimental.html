@@ -2,6 +2,7 @@
 <html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NEXUS · Experimental Lab</title>
 <style>
+#seed-query-replication-1{grid-column:1/-1}
 *{box-sizing:border-box}:root{color-scheme:dark;font-family:system-ui;background:#0b1220;color:#e3eafa}body{width:100%;max-width:1150px;margin:auto;padding:24px;overflow-wrap:anywhere}a{color:#9acbff}h1{font-size:30px}.badge{color:#ffcf85}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}article,.notice{min-width:0;border:1px solid #33435d;border-radius:12px;padding:18px;margin:18px 0;background:#111d30}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}svg{display:block;width:100%;height:140px;background:#0b1220;border-radius:8px}.muted{color:#a6b4cb}button{background:#254576;color:white;border:1px solid #5174a3;padding:9px;border-radius:6px}#summary{font-size:18px}footer{margin:25px 0}p{line-height:1.6}
 </style>
 <nav><a href="/seed">← NEXUS Seed</a></nav>
@@ -17,6 +18,7 @@ function queryReplicationDetails(element,s){
  element.id='seed-query-replication-1';
  element.append(text('h3','Independent query-bank replication'),text('p',`Source screen: ${s.screen_passed?'PASSED':'FAILED'} · ${s.label}`));
  element.append(text('p','Question choices use only the selection subset, then are locked before check collection. Same supports/learner, one core. This evaluator is not a deployed question learner or task confirmation.'));
+ element.append(text('p','Audit note: the original capture retains an invalid resource-count receipt. A separate offline validation corrected the parameter total from frozen checkpoint arrays; no data or experiment was rerun.'));
  const c=s.contrasts.variance;element.append(text('p',`Check variance-minus-selected MSE: ${c.mean.toFixed(6)} [${c.ci95.map(v=>v.toFixed(6)).join(', ')}]. Exploratory paired task-cluster interval. Keep wins: ${s.task_wins}/12.`));
  element.append(curve([1,2,4,8].map(p=>({update:p,train_mse:s.check_curves.selected[p],development_mse:s.check_curves.variance[p]}))),text('small','Fixed-state one-update checks at 1, 2, 4, 8 labels · Green: selection-locked choice · Blue: variance. Not sequential selected learning curves.'));
  for(const [m,v]of Object.entries(s.check_means))element.append(text('p',`${m}: check MSE ${v.toFixed(6)}`));

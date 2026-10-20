@@ -39,6 +39,8 @@ It collects only source query starts, with all selection choices persisted
 before checking. No new learner, world, optimizer, memory or runtime policy.
 scripts/verify_seed_query_replication.py replays stored scalar arithmetic with
 stdlib only. Existing EXPERIMENTAL caps/ledger/one-use manifests remain enforced.
+scripts/validate_seed_query_replication.py is an OFFLINE arithmetic/accounting
+validator for the unchanged initial capture; it does not reopen or rerun it.
 
 Question-pool headroom: seed/question_headroom.py is an evaluator adapter over
 saved question_selection states, its shared damped_step/assess helpers, frozen

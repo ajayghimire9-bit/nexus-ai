@@ -1,0 +1,151 @@
+{
+  "schema": "seed_query_replication_verification_v1",
+  "execution_sha": "25b155a16b0e0b49d4a5f3e4181d3d426be3e65d",
+  "offline_validator_sha": "7839514ce8838ff308265055ac75547e286168ba",
+  "raw_sha256": "79c8ad44827ca6be5e9b8a6f35abb888f41755f7c3751e2356ba60c0e9ce9b70",
+  "original_execution_status": "invalid_integrity",
+  "separate_offline_validation_status": "complete_offline_validation_of_unchanged_capture",
+  "scientific_rerun": false,
+  "post_documentation_saved_and_layout_tests": {"passed":14,"wall_s":8.67},
+  "pre_execution_focused": {
+    "passed": 130,
+    "wall_s": 40.46
+  },
+  "pre_execution_full_relevant": {
+    "passed": 699,
+    "wall_s": 98.9
+  },
+  "after_count_correction": {
+    "focused_passed": 39,
+    "focused_and_layout_passed": 47
+  },
+  "final_full_relevant": {
+    "passed": 707,
+    "wall_s": 111.09,
+    "command": "env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH=src:/Users/ajayghimire/Projects/nexus-ai/.deps python3 -m pytest -o addopts='' -q --tb=short tests/test_seed*.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py tests/test_repository_layout.py tests/test_planning.py tests/test_expr.py tests/test_factory.py tests/test_evolution2_planner_quality.py",
+    "scope": "Full relevant Seed/shared-dependency suite, not all historical scientific suites"
+  },
+  "arithmetic": {
+    "valid": true,
+    "artifact_sha256": "79c8ad44827ca6be5e9b8a6f35abb888f41755f7c3751e2356ba60c0e9ce9b70",
+    "checked_cached_states": 900,
+    "max_metric_error": 1.8843846594229774e-8,
+    "frozen_network_state_sha256": "7d3868c8de885209b038063e177170ddafdc485cad94112b245483e5971709ee",
+    "paired_contrasts": {
+      "variance": {
+        "mean": 0.010273155039478165,
+        "ci95": [
+          0.0014400836723276345,
+          0.019106226406628693
+        ]
+      },
+      "keep": {
+        "mean": 0.010830709751408674,
+        "ci95": [
+          0.001782067768101199,
+          0.01987935173471615
+        ]
+      }
+    },
+    "screen_passed": true,
+    "scientific_execution": false
+  },
+  "gui": {
+    "passed": 8,
+    "checks": [
+      "API preserves original failure and requires separate offline validation",
+      "independent-check outcome, means and interval match saved artifact",
+      "evaluator selection distinguished from learned runtime questioning",
+      "four shared labs preserved",
+      "mobile viewport has no horizontal overflow",
+      "curve, resources and audit correction rendered together",
+      "repeated inspection spends no scientific budget and creates no attempts",
+      "no browser JavaScript errors"
+    ],
+    "wall_s": 16.349,
+    "new_environment_interactions": 0,
+    "scientific_execution": false
+  },
+  "preservation": {
+    "base_revision": "41b0f0990362e47ff378cd6a887a1cb89bf9de94",
+    "historical_artifact_count": 779,
+    "git_blob_inventory_sha256": "2093243389449d1dbdc74cc69c5a4aa477ce390ed79bd6ee398f6684ef45e52b",
+    "historical_artifacts_unchanged": true,
+    "execution_reserved_clean": true,
+    "execution_source_hashes": {
+      "src/nexus/nn/activations.py": "129ca1dbd565dfcefa2a8a5f8fed69575612110244ee6ccbaf133e17ce30f04d",
+      "src/nexus/nn/factory.py": "039789ec21ab5edeacf8bdb9f5ee828f98efb5756c3ed6e2fab4662fbf824112",
+      "src/nexus/seed/action_readout.py": "31979d2238ceae00b50737a82091330a67bcb3e6417a091be1b93a72826d1c96",
+      "src/nexus/seed/cumulative_learning.py": "600fb6d475416e7084e20be12c5bf5deb14588e5a50fd06a6d6aa637a33b558e",
+      "src/nexus/seed/experimental.py": "6f0aafe3f37985b3a151a617fb6c643cac79a3d7c9b4f69cb07b3a29db7f255a",
+      "src/nexus/seed/experimental_worker.py": "ae85bad85784a2e641ee16029ea041248aebbaa3c09ae70e4eccfaa4c4125b16",
+      "src/nexus/seed/grounded_world.py": "05b4ce8ab529fb83fa1937ec92db360d2537969177dfdd9f99bd300f08655756",
+      "src/nexus/seed/latent_planner.py": "dad0faa68ece7939d756729f6715e59ddf7f0f8ddf505bc2f140f424aa52b0fc",
+      "src/nexus/seed/learning_benchmark.py": "488722dcc43e8adb87c0350ec78f22a394d5e2fbf518cbbc7a2a4399a098c4d8",
+      "src/nexus/seed/nonlinear_learning.py": "969af642a266a1e10fe825d169c326f37921a0f9a9921afe7e0f19f6655e7aa1",
+      "src/nexus/seed/nonlinear_learning_audit.py": "b3571ba06a0bb70650a0105c881137b4190bf9813982148a242afdf2f041f904",
+      "src/nexus/seed/planning.py": "12bf6aa1bb72e0aede2535f70451dc9afda666dbc7d3f28f9790d2e9dd888a4d",
+      "src/nexus/seed/plasticity.py": "65b84054edaf6c36fdb29aea591fa7f37b7c30867c69dd68bf9be33005696267",
+      "src/nexus/seed/query_replication.py": "ecca3ecbd24290bf820c9619a869cb7df2ec7e7c517b94e3bae8c05241ac4929",
+      "src/nexus/seed/question_headroom.py": "c911064f10a55b564499d0dbf834aa6a881a274351294505218b7e3e5faffa8c",
+      "src/nexus/seed/question_selection.py": "4b6f3c07f43ad760d3412ca49306097996b973972dccb74e4071951cf9854ec1",
+      "src/nexus/seed/sequential_consistency.py": "142a561674150a4e42c5b29ae9be1ab643ccda9d436f4de18d035cc257982eb1",
+      "src/nexus/seed/spatial_transfer.py": "921fbaeb1189a41de37caf114c3f2bb5fe991d869a180e1a3c95b627b0f65265",
+      "src/nexus/seed/state_contract.py": "896982d3f9a05f6e86b52deeaea62882d79cce61a383906112c4f45fd81d5730",
+      "src/nexus/seed/update_diagnosis.py": "69dd137400e2ccddf283bd434145398d1bfc3bb0a8763241b4acfa12e0a065b8",
+      "src/nexus/world/planning.py": "5a9dbcc8164ec225498bc86d3cacbf969a99aa222231073d2d809975e13005e0",
+      "src/nexus/world/seed_rssm.py": "7ac93e5715a2f212cae5af4597ffb3fd72a04b0d84b08b41334f2388e77aecc6"
+    },
+    "resource_grant": {
+      "caps": {
+        "cpu_s": 60,
+        "imagined_transitions": 2592,
+        "memory_mb": 2048,
+        "real_steps": 2592,
+        "updates": 0,
+        "wall_s": 60
+      },
+      "carried_used_s": 1910.6321034559958,
+      "device": "cpu",
+      "host_mode": "experimental_local",
+      "id": "seed-query-replication-1",
+      "memory_policy": "sampled_rss",
+      "owner": "human standing grant 2026-10-16",
+      "reason": "One committed source study; only its explicitly planned updates and collection",
+      "session_limit_s": 3600
+    },
+    "ledger_initial_carried": 1910.6321034559958,
+    "ledger_journal_used_s": 46,
+    "session_used_s": 1956.6321034559958,
+    "root_main_sha": "ad8b65c155f20a71a82f1ee51bcde9e1fd353492",
+    "unrelated_root_files_sha256": {
+      "src/nexus/evolution1/adapters.py": "3a6ebc91637bccca755aa4d7f5e17d908b836ff74db136e42d624fb3a320123f",
+      "tests/test_evolution1_adapters.py": "36b19194589d997422dc6cfc9ee92ed92bb67a4c78b73625f6002e2cc44f37e1"
+    },
+    "descriptive_sensitivity": {
+      "variance": {
+        "leave_one_task_out_mean_range": [
+          0.007367979262419271,
+          0.011172866099514069
+        ]
+      },
+      "keep": {
+        "leave_one_task_out_mean_range": [
+          0.008320598284810353,
+          0.011965209589694926
+        ]
+      }
+    }
+  },
+  "execution_resources": {
+    "real_steps": 2592,
+    "imagined_transitions": 2592,
+    "posterior_rows": 288,
+    "optimizer_updates": 0,
+    "host_wall_s": 3.371768916986184,
+    "worker_cpu_s": 2.465307,
+    "peak_sampled_rss_mb": 352.890625,
+    "conservative_debit_s": 5
+  },
+  "scientific_execution_in_this_verification": false
+}

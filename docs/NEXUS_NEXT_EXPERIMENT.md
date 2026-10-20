@@ -4,10 +4,29 @@ The [shared-labs foundation](NEXUS_SHARED_LEARNING_LABS.md) is now implemented a
 an authored engineering interface. It does not establish cross-domain learning
 benefit. The later fixed-learner question comparison is complete and closed.
 
-## Current — larger source query-bank replication (registered, not run)
+## Current — task-blocked source question-utility learning (proposed, not fitted)
 
-The exact implementation/protocol is now ready for pre-execution tests and
-commit: [protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md).12 selection/12
+Can a small utility predictor choose useful teaching rows from permitted
+experience on other source tasks, without receiving this task's query labels?
+Keep the same learner and compare against variance, uniform, keep and simple
+source-mean utility. Use task-blocked fitting and held-out task check rows;
+freeze representation/regularization/screen before fitting. The preceding
+larger-query stability screen PASSED, but its evaluator supplied utility using
+query outcomes. That is opportunity, not a deployed learner. No new fit, run,
+allocation or architecture change is performed here.
+This check bank is now inspected; future reuse must be labeled source
+development, with separate fresh validation before any runtime promotion.
+
+## Closed — larger source query-bank replication
+
+From25b155a: selected check MSE .159819 versus variance .170092 and keep .170649,
+all gates passed;9/12 task wins. Full2592-outcome grid captured once, raw invalid
+parameter-count receipt preserved. Offline validation7839514 rechecks correct
+32487 parameter accounting without replay. See
+[results](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md). Original motivation follows.
+
+The exact implementation/protocol was locked before execution:
+[protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md).12 selection/12
 independent check starts per task,2592 authored steps/60s cap, unchanged fits.
 
 Do question-utility rankings stabilize with more independent query starts?

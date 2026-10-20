@@ -28,11 +28,15 @@ that NEXUS learned a better learning procedure.
 
 ## Next gate
 
-The larger source query-bank replication is now prepared on
-codex/seed-query-utility-replication: same supports/learner,12 selection starts
-and12 independent check starts per task. No outcomes collected yet;60-second,
-2592-interaction cap. This is evaluator-only utility stability, not question
-policy training or task confirmation. [Protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md).
+The larger source query bank passed its within-task stability screen: locked
+choice MSE .159819 versus variance .170092 and keep .170649,9/12 task wins.
+One run collected2592 authored outcomes; same supports/learner and frozen core.
+Original invalid parameter-count capture preserved; separate offline validation
+corrected the count without replay. Next: task-blocked source question-utility
+learning, not yet fitted. This is evaluator-only utility stability, not learned
+questioning or task confirmation. [Results](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md).
+
+Older next-gate entries below preserve their chronology.
 
 The evaluator-only pool-headroom audit is complete: an optimistic query oracle
 passes the source screen (.174050 versus variance .193552), but omitted-query-

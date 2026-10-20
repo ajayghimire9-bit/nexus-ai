@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Larger source query bank — source screen PASSED after offline validation
+
+Execution25b155a collected all2592 authored outcomes once in3.371769s host wall,
+2.465307s worker CPU. Check MSE .159819 selected versus .170092 variance,
+.169485 uniform,.170649 keep. Practical/interval/retention screens pass;9/12
+task wins. One core, reused tasks, evaluator selection only. The raw capture
+retains invalid_integrity from my erroneous40487 parameter expectation; exact
+weights contain32487. Offline validator7839514 rechecks the unchanged full grid;
+no rerun or changed outcomes. Five-second debit leaves1956.6321034559958 used /
+1643.3678965440042 remaining. Next: source task-blocked utility prediction.
+See [results](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md). Preparation history follows.
+
 ## Larger source query bank — preparation, no outcomes yet
 
 From41b0f099 on codex/seed-query-utility-replication: same saved756 candidate

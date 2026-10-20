@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## H-query-stability — within-source-task screen PASSED
+
+From25b155a, all registered query data captured once. Selected check MSE .159819
+versus variance .170092, uniform .169485, keep .170649; variance-minus-selected
++.010273[+.001440,+.019106], keep-minus-selected+.010831[+.001782,+.019879].
+9/12 task wins and retention pass. Original invalid count receipt preserved;
+offline validation7839514 fixes accounting only, no rerun. Reused tasks/one
+core; this does not establish a learned questioner or learning-to-learn. New
+query balance differs from the old sample; larger N alone is not a causal
+explanation of the earlier failure. [Results](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md).
+
 ## H-query-stability — registered, not yet executed
 
 Selecting next questions using12 independent source query starts may improve

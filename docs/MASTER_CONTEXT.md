@@ -41,11 +41,14 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
-The next larger source query-bank replication is prepared, not yet executed:
-12 selection/12 check starts per original task, same cached learner states,
-no fitting. Choices must lock before check collection;60s/2592 authored-step
-cap. See [protocol](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md). All prior evidence
-below stays closed; preparation/tests are not new scientific outcomes.
+The larger source query-bank replication from25b155a completed its entire grid
+once. Selection-locked check MSE .159819 versus variance .170092, uniform
+.169485 and keep .170649 passes the source screen;9/12 task means beat keep.
+The original capture retains an invalid parameter-count receipt. Separate
+offline validation at7839514 derives the correct32487 total and verifies the
+unchanged data, without rerunning. No learner fitting, changed weights or live
+promotion. Evaluator query utility is not learned questioning. See
+[results](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md).
 
 The evaluator-only pool-headroom audit from354f47a completed once. Query oracle
 MSE .174050 versus variance .193552 (10.08% lower) passed its retrospective
@@ -185,10 +188,11 @@ sequential consistency selector also failed against trained damping and replay.
 The one policy-roll-in refit and protected choice study also failed improvement
 screens. The informative-versus-random question test with the stronger learner
 fixed also failed. The subsequent source pool-headroom bound passed, but its
-query-state stability check failed. Next proposed: a larger independent source
-query-bank replication with the SAME supports/learner, before fitting a selector.
-No new collection or architecture growth is scheduled; fresh validation is
-required before runtime promotion.
+query-state stability check failed. The subsequent larger independent source
+query bank passed its within-task stability screen with the SAME supports and
+learner. Next: test a task-blocked source utility predictor before any runtime
+promotion. No such fitting or architecture growth has run; fresh validation
+remains required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
 baselines, retention and actual action outcomes, not loss or acceptance alone.
 
@@ -204,8 +208,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1951.6321034559958seconds used,
-1648.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1956.6321034559958seconds used,
+1643.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

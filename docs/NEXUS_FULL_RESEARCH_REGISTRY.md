@@ -2,10 +2,12 @@
 
 ## Active evidence, newest first
 
-- [Larger source query bank](NEXUS_SEED_QUERY_REPLICATION_PROTOCOL.md): locked
-  preparation; no outcomes yet.12 selection/12 check starts on each original
-  source task, same cached learner states.2592 authored interactions/60s cap.
-  No fitting, new task confirmation, live promotion or learning-to-learn claim.
+- [Larger source query bank](NEXUS_SEED_QUERY_REPLICATION_RESULTS.md): within-task
+  screen PASSED. Selected .159819 versus variance .170092/keep .170649;9/12
+  task wins.2592 new authored outcomes; no fitting or live promotion. Raw capture
+  keeps its invalid parameter-count receipt; separate offline validation fixes
+  the count, no rerun. Execution25b155a; validator7839514. One core and reused
+  tasks; evaluator selection, not learned questioning or learning-to-learn.
 
 - [Question-pool headroom](NEXUS_SEED_QUESTION_HEADROOM_PROTOCOL.md): registered
   evaluator-only SOURCE audit completed. Oracle headroom screen passed (.174050
