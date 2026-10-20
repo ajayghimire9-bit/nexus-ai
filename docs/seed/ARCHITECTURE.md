@@ -1,5 +1,20 @@
 # Seed grounded architecture
 
+## Current action path
+
+The [nonlinear readout study](../NEXUS_SEED_SURPRISE_READOUT_RESULTS.md) passed
+its authored development screen. The existing2,209-parameter action head is
+frozen at runtime and improves tested decisions; known-grid greedy remains
+stronger. One core does not establish general control or learning-to-learn.
+`nexus serve --mode readout` enables the first registered head,not an audit-picked
+winner. Surprise requests investigation only; statev3 consumes assessment labels.
+The rank-four hidden residual is implemented but remains disabled.
+
+The source-only audit distinguishes active Seed/shared dependencies from
+retained historical modules. Lazy package exports prevent the Seed bandit from
+loading old PPO research loops. The existing planner, factory, journal and
+meta-controller remain shared; deleting their directories would break Seed.
+
 Current structural contracts: distinct shared repair, new scoped addition,
 training-free merge, cached reviews and safe rollback. The fresh benchmark
 failed learning/action gates; see [actual findings](../NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md).

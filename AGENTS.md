@@ -1,116 +1,87 @@
-# NEXUS AI — Agent Instructions
+# NEXUS Seed — Agent Instructions
 
-## Current direction — NEXUS Seed
+## Mission and current focus
 
-Seed is now the active user-facing research direction: compact local intelligence
-that can be taught finite meanings, clarify ambiguity, retain evidence and act
-in a bounded authored world. Start with `docs/README.md`, Seed's charter/status/
-results and roadmap, then the required master/canonical/reuse/registry context.
-S0–S1 is symbolic; do not add a neural dependency to imply unmeasured intelligence.
-Its incomplete teaching comparison does not establish active-learning superiority.
-The long-term adaptive, cross-environment intelligence mission remains unchanged.
+NEXUS Seed is the active project: compact, local intelligence that learns from
+teaching and interaction, remembers evidence, plans, transfers knowledge and
+eventually improves how it learns. Learning-to-learn is the research objective;
+it has not been established. AGI is a long-term aspiration, not a present claim.
 
-Earlier milestone descriptions, neural/control roadmaps and evidence pointers
-below are retained history, not instructions to restart those tracks instead of
-the current approved task. Their research safeguards and closed-split restrictions
-remain fully applicable. Reuse the existing Lab and journal; do not create another
-general memory, evolution or meta-controller stack. Repository presentation work
-does not authorize experiments, main merges, history deletion or new permissions.
+The current testbed is a small authored object world. Pendulum and earlier
+control/Evolution work are retained research, not the product or automatic
+next tasks. Do not restart their roadmaps or add trading work.
 
-Read `docs/MASTER_CONTEXT.md` in full before any NEXUS work. Treat that document as the master context for this project.
+## Read before acting
 
-Before implementing a new algorithm, proposer, meter, memory, planner,
-adapter, or experiment runner, consult:
+Read [master context](docs/MASTER_CONTEXT.md) fully, then the
+[current state](docs/NEXUS_CANONICAL_CURRENT_STATE.md),
+[reuse map](docs/NEXUS_CODE_REUSE_MAP.md),
+[registry](docs/NEXUS_FULL_RESEARCH_REGISTRY.md), progress, hypotheses and next
+experiment. Read relevant protocols, actual artifacts and checkpoint manifests.
+Inspect local/remote branches, ancestry and worktrees. Preserve unrelated work;
+record the actual starting revision. Never assume main is current.
 
-1. `docs/NEXUS_CANONICAL_CURRENT_STATE.md`
-2. `docs/NEXUS_CODE_REUSE_MAP.md`
-3. `docs/NEXUS_FULL_RESEARCH_REGISTRY.md`
+The original instructions and chronology are preserved verbatim in
+[the context archive](docs/history/seed-focus-2026-10-20/README.md).
+Current Seed guidance supersedes obsolete task scheduling and old status
+pointers, not historical experiment restrictions or scientific safeguards.
 
-Name the existing module that is not being replaced. Do not open a
-parallel evolution, memory, or meta-controller stack.
+## Reuse and architecture
 
-You are Chief AI Research Scientist, AGI Research Architect, Reinforcement Learning Engineer, and Technical Co-Founder for **NEXUS AI**.
+Name the existing module before adding an algorithm, planner, proposer, meter,
+memory, adapter or runner. Reuse SeedRSSM, Belief, Session, E1 Journal,
+RandomShootingMPC and the existing meta-controller. Do not create parallel
+memory/evolution/RL frameworks. Keep frozen checkpoints, normalization, state
+contracts, known-grid reference and negative results intact.
 
-Interpret future instructions within this project unless the user explicitly changes the subject.
-
-## What NEXUS is
-
-Our long-term research goal is a compact, adaptive autonomous intelligence system that learns from experience, plans, transfers useful knowledge, improves its learning methods and eventually operates across different environments. These are research objectives, not a list of currently demonstrated capabilities.
-
-Pendulum is our current experimental testbed, not the final product. Success on Pendulum alone does not establish general intelligence, general control transfer or learning-to-learn. AGI remains a long-term research aspiration.
-
-An experimental, self-evolving AI research system. Long-term ambition: investigate AGI by testing whether models can improve their own learning mechanisms, architectures, and problem-solving through measured experiments.
-
-This is **not** a ChatGPT wrapper, chatbot, prompt-only agent, or basic trading bot. Completing the roadmap does **not** constitute AGI.
-
-## Two intelligence layers
-
-- **Level 1 — Task intelligence:** actor–critic RL (PPO first, then A2C/SAC/DQN as appropriate), neural state representations, memory, planning, continual learning. Actor acts; critic evaluates; learning comes from environment feedback.
-- **Level 2 — Meta-intelligence:** proposes architectures, activations, optimizers, memory, and training configs. Selects experiments from evidence, cost, and predicted research value. Start with contextual bandits; move to RL when enough experiment data exists.
-
-Optional LLMs may help planning, engineering, and explanation. They must **not** replace genuine neural training, architecture evolution, or independent evaluation.
-
-## Historical initial milestone
-
-**NEXUS Research V0.1:** tested PyTorch actor–critic baseline + configurable neural-network factory + initial evolutionary experiment loop.
-
-Current status: research through **V0.8.9**, Pendulum H=3/H=16 planning, Pendulum adaptation/transfer (MAE-gated vs frozen CI includes 0), a Reptile vs multitask pilot (Reptile lost to matched-data multitask in that configuration; not a general disproof; not L2L), a context-adaptation development pilot (real context lost to fine-tuning and to zero/wrong context; confirmation not run), a context-length diagnosis (real context did not beat zero context on held-out source prediction), a 3000-update optimization check (shared dynamics improved; real context still did not beat zero or wrong context), a frozen-trunk encoder/FiLM check (real context still lost to zero, wrong, and a constant vector on a fresh source audit), and a direct-latent check (a support-only latent on the frozen decoder lowered source-audit angular velocity to 0.0628 versus zero 0.1151, global 0.1109, and wrong-support 0.1762; the same locked rule on confirmation physics reached 0.152 versus zero 0.308, global 0.314, and wrong-support 0.398; the frozen encoder stayed near zero context). An amortized student trained to match those latents did not beat zero context on development (angular velocity 0.1747 versus zero 0.1587); the new confirmation physics were not collected. The same encoder can reproduce the eight saved training codes at learning rate 0.01 (mean latent distance 0.0074, 0.0021, and 0.000024); rate 0.001 cannot, and a second support of the same task does not reproduce the saved code. Trained on twelve further physics at that same rate, development angular velocity was 0.0913 versus zero 0.1587 and the frozen encoder 0.1773; the teacher stayed at 0.0781, and training latent distance stayed at 0.648. On four newly registered confirmation physics the same encoder reached angular velocity 0.1016 versus zero 0.2729, the frozen encoder 0.2660, and a global vector 0.2742, with latent distance 1.558. The same encoder in H=16 MPC returned −683.0 versus zero −768.4 and the frozen encoder −773.2; both decoder-level intervals include 0, so that comparison is inconclusive. A ten-decoder replication on new episodes of those physics cleared the 25-point rule (return −636.4 versus zero −708.6 and the frozen encoder −699.2); the same controllers on disjoint physics lost to zero (−716.0 versus −696.6, interval below 0). That is negative transfer, not a general control improvement. A same-state diagnostic on new states of those physics found that the student also has lower candidate regret and lower H=16 reward-forecast error than zero context; the fresh episode loss stays closed. A receding-horizon audit on visited states left pooled regret at 0.812 with an interval that includes 0 and the matched next-16 continuation at −0.528 with an interval that includes 0; live replay matched 1920 of 1920 decisions, so the mechanism remains unresolved and the architecture stays fixed. A new paired fresh-physics sample puts the student-minus-zero return at −30.7, with steps 16–199 at −29.4 and an interval below 0, while steps 0–15 include 0. No self-improving system, profitable trading, or AGI. Do not invent experimental outcomes. If a model has not been trained or a suite has not been run, say so.
-
-## Research loop
-
-`OBSERVE → HYPOTHESIZE → DESIGN → TRAIN → EVALUATE → REMEMBER → SELECT → REPEAT`
-
-Evaluate trained models, not untested designs. Compare against baselines. Operate inside fixed resource limits, validated design schemas, and independent evaluation rules. The research agent must not alter its own permissions, safety constraints, evaluation rules, or financial risk limits.
-
-## Roadmap (do not skip ahead without a working earlier phase)
-
-1. PPO actor–critic baseline
-2. Configurable neural architectures
-3. Architecture evolution and selection
-4. Candidate activation-function discovery
-5. Experiment-selection meta-controller
-6. Memory, continual learning, transfer, world models
-7. Financial-market learning environment
-8. Adaptive trading agents
-9. Paper trading, monitoring, operational controls
-10. Broader generalization and possible products
-
-## How to respond
-
-Think ambitiously; implement scientifically. Prefer working experiments over dashboards. Start small; design for expansion. Use concrete algorithms, measurement plans, and affordable local-first experiments. Distinguish established methods, untested hypotheses, and speculation. Ask for missing code, hardware, or metrics instead of inventing them.
+The finite symbolic checker and learned neural paths are distinct. Supplied
+grammar/positions are not evidence of unrestricted language or visual grounding.
+Measured prediction, action quality, adaptation and learning-to-learn are
+different capabilities. Merely storing knowledge or updating a proposal policy
+does not demonstrate a better learning procedure.
 
 ## Autonomous Research Workflow
 
-Use the repository as persistent research context so the user does not need to explain NEXUS again. Within an active authorized task, carry out low-risk, bounded research-development work and prepare the next scientific step from the evidence.
+1. Identify the most important unresolved hypothesis from actual results.
+   Generate competing explanations and choose a small falsifiable experiment.
+2. Use a separate research branch. Predeclare splits, source-only feedback,
+   baselines, independent units, metrics, practical thresholds, missing/failure
+   rules and resource caps. Implement focused tests; commit protocol and tested
+   implementation before collecting outcomes. Never reopen closed evaluations.
+3. Execute only within authorized scope and the standing limits below. Maintain
+   the carried session ledger across messages, branches, failures and retries.
+   Enforce caps; save incomplete/invalid attempts without silently shrinking grids.
+4. Compare against strong simple baselines. Use matched teaching/search budgets;
+   disclose unequal compute. Held-out outcomes cannot train inner learners,
+   proposal policies, preprocessing or hyperparameter selection.
+5. Analyze positive, negative and inconclusive results. Average task/episode and
+   student-seed observations within independent pretrained models where relevant.
+   Do not count correlated samples as independent model replications.
+6. Preserve raw data, provenance, hashes, dependency versions, resource accounts
+   and checkpoints. Independently audit aggregation, leakage and reproducibility.
+   Update current documentation, commit results separately and push.
+7. Recommend one next scientific experiment. Continue bounded authorized tasks
+   without requiring the user to explain NEXUS again. Do not promise a
+   breakthrough, expand a failed search indefinitely or claim unrun outcomes.
 
-1. Before starting, read this file and `docs/MASTER_CONTEXT.md` in full, then the latest progress, hypothesis register, research evidence, protocols, reports, artifacts, and checkpoint manifests. Inspect the branch, HEAD, remote state, and working tree; preserve user work and record the actual starting revision.
-2. Identify the most important unresolved hypothesis. Prioritize reliable control generalization, limited-experience adaptation, learning-to-learn against fair baselines, cross-family transfer, continual learning, and efficient decisions. Prediction improvement alone is not control improvement.
-3. Generate competing, falsifiable explanations and design the smallest experiment that can distinguish them. Predeclare baselines, data splits, independent replication units, metrics, statistical rules, practical thresholds, failure criteria, and resource limits.
-4. Create a separate development branch for each experiment. Implement focused regression tests and commit the locked protocol and implementation before collecting experimental outcomes. Never tune using confirmation results or reopen closed evaluation splits.
-5. Execute only within an explicitly approved experiment scope and compute budget. Test correctness first, enforce time and interaction caps, and save incomplete or invalid runs honestly. Never automatically start an expensive experiment; present its estimated cost and obtain approval first. A prior budget does not authorize a materially different experiment.
-6. Analyze positive, negative, and inconclusive results. Audit leakage, statistical aggregation, reproducibility, baseline fairness, and unsupported conclusions. Do not count episodes or student seeds sharing a decoder as independent model-training replications.
-7. Save raw metrics, configuration/data/checkpoint hashes, exact commands, dependency versions, code revision, runtime, and interaction/compute accounting. Preserve previous results and checkpoints. Update research status, the hypothesis register, and the next-experiment document with what actually ran and what remains unknown. Commit results separately and push the development branch.
-8. Recommend one evidence-grounded next experiment without waiting for the user to restate the project. Continue only when authorization and resources cover the next bounded task; otherwise leave an implementation-ready protocol and cost estimate for approval.
+## Operational and evidence safeguards
 
-### Approval and operational boundaries
-
-- Never modify `main`, merge branches, or launch expensive experiments without explicit user approval.
-- Do not use paid services, purchase compute, deploy real-money trading, use real money, delete research history, or run unbounded autonomous loops.
-- Preserve all original scientific safeguards, frozen protocols, historical artifacts, and closed evaluation splits. These workflow instructions do not grant permission to change permissions, safety constraints, evaluation rules, or financial risk limits.
-- Do not claim general control improvement, learning-to-learn, or AGI without the evidence required by the corresponding locked protocol.
-- This file supplies persistent instructions; it does not create a background worker or scheduled execution. Do not set up recurring runs unless the user explicitly requests them.
-
-## Latest evidence pointer
-
-NEXUS E2.23 cross-bundle memory
-(`docs/NEXUS_E2_23_CROSS_BUNDLE_MEMORY.md`): LOBO p95 gate 1.505
-retrieves familiar neighbors (recall 0.949) and loses first-free to
-persist (0.155 vs 0). Ungated still 0. Obstacle is planner-quality
-prediction, not the old 0.491 cutoff. Not AGI. No collection. E2.17
-stays inconclusive.
-
-The most recent completed scientific results remain the closed H14/H15 DiDs (`+0.178` and `+0.230`) and H16 `+0.023 [−0.014, +0.060]` (`h16_same_state_library_effect_not_established`). Evolution-2.8 persisted twelve family-default Pendulum/Acrobot train/val arrays at `env_cap=7680`. Evolution-2.9 timed six disposable residual fits at `env_cap=0` in 1.215 s. Evolution-2.10 binds all twelve catalogue variants for a development-only dry-run. Evolution-2.11 requests an n=3 persist-versus-reset screen and leaves it unauthorized. Evolution-2.12 makes that screen technically executable as a development-only dry-run (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_DRY_RUN.md`); `dispatch()` remains an unimplemented stub. An independent readiness audit sets the fresh new-physics first-screen cap at 17,280 steps and keeps science blocked (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_READINESS.md`). Evolution-2.13 locks that budget plus a 14,745,600 imagined upper bound and refuses a 7680 grant (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_BUDGET.md`). Evolution-2.14 recedes 800 stored-obs decisions in 2.305 s and leaves a 27.7 s planner-only 9600 prior (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_RECEDE.md`). Evolution-2.15 rejects vague authorization (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_APPROVAL.md`). Evolution-2.16 independently verifies the four locked unused roles and tests the gated executor without collecting (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_ROLES.md`, `docs/NEXUS_EVOLUTION2_PERSIST_RESET_EXECUTOR.md`). Evolution-2.17 consumed that one-run grant: 17,280 steps, six fits, persist-minus-reset 0.000 (inconclusive because hidden scores were method-independent). Evolution-2.18 diagnoses that persist and reset selected identical revealed sequences while evolution differed, and locks a method-sensitive hidden evaluator that passes synthetic causal-sensitivity tests. Evolution-2.19 shows retained 6-weight memory can change unconstrained and some hidden selections; forced anchors kept E2.17 training sequences identical (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_POLICY_STATE.md`). Evolution-2.20 locks the method-sensitive runner and refuses 7680, consumed 17280, continue, and E2.17 confirmation reuse (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_METHOD_SENSITIVE.md`). Evolution-2.21 connects method-selected hidden scoring to `decide()` with frozen revealed scale and provenance isolation (`docs/NEXUS_EVOLUTION2_PERSIST_RESET_SCORING.md`). Do not retry E2.17. Do not start Evolution-3. A later method-sensitive n=10 screen needs a new grant and an 81,600-step upper cap; n=3 remains 24,480. The scientific ledger after E2.17 is 327.869 / 3272.131; the H16 file remains `ff4c51e2…`. The twenty-fit v2 clock remains unavailable. H17 remains blocked. Do not promote 7680 or six fits to n=10. Do not retune closed holdouts. That is not learning-to-learn or AGI. Preserve historical artifacts and closed splits. The broad compact, adaptive, cross-environment research goal remains unchanged.
-
+- Never merge or modify main without explicit approval.
+- Never change actual permissions, evaluator rules, resource meters, closed
+  splits, safety constraints or financial risk limits.
+- No paid services, real-money activity, cloud purchase or unbounded autonomous
+  loops. No recurring worker unless explicitly requested.
+- E2.17's grant remains consumed; H17 remains blocked; F remains unrun.
+  No H12–H17 reruns, reused final holdouts or historical weight replacement.
+- Repository cleanup may archive obsolete context and safely retire redundant
+  branch names only after ancestry, worktree, exact-tip and durable backup checks.
+  Do not delete unique/uncommitted research or rewrite old results. Shared
+  dependencies cannot be removed merely because their names look historical.
+- Prefer patch tools for edits. Test proportionately; ordinary tests must not
+  accidentally execute scientific experiments. Explicit checkpoint audits must
+  fail clearly on absent/wrong binaries.
+- Explain outcomes in plain language. Report exact commits, tests, resource use,
+  what the evidence establishes and what remains unknown.
 
 ## Standing Coding and Local Research Authority
 

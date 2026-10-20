@@ -5,11 +5,12 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from collections.abc import Callable
-from typing import Any, Literal, Protocol
+from typing import Any, Literal, Protocol, TYPE_CHECKING
 
 import numpy as np
 
-from nexus.world.dynamics import WorldModel
+if TYPE_CHECKING:
+    from nexus.world.dynamics import WorldModel
 
 Objective = Literal["predicted_reward", "hand_stability", "both"]
 

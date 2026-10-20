@@ -8,18 +8,17 @@ version = "0.1.0"
 description = "NEXUS Seed: local teachable-agent research with preserved control and learning experiments"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-  "torch>=2.2",
-  "numpy>=1.26",
-  "gymnasium>=0.29",
-  "pyyaml>=6.0",
-]
+dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+seed = ["torch>=2.2", "numpy>=1.26"]
+research = ["torch>=2.2", "numpy>=1.26", "gymnasium>=0.29", "pyyaml>=6.0"]
 
 [project.scripts]
-nexus = "nexus.cli:main"
+nexus = "nexus.seed.cli:main"
+nexus-seed = "nexus.seed.cli:main"
+nexus-research = "nexus.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

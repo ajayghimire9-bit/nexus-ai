@@ -1,5 +1,11 @@
 # Teach Seed locally
 
+For the tested neural action scorer, install the optional seed dependencies
+with `python -m pip install -e ".[seed,dev]"`, then run
+`nexus serve --mode readout` from the checkout. The default `nexus serve` remains
+symbolic and needs no neural model import. Use `nexus status`, `nexus check` and
+`nexus verify` for current evidence. Historical training CLI is `nexus-research`.
+
 ## Start
 
 Use Python 3.11+ and a browser. In the repository root:
