@@ -2,6 +2,11 @@
 
 ## Active evidence, newest first
 
+- [Source update-magnitude diagnosis](NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md):
+  large norm ratio12.55×,but only5/12source tasks harmed; registered broad-harm
+  pattern not supported. Reused source evidence,not new validation or causation.
+  [Protocol](NEXUS_SEED_UPDATE_DIAGNOSIS_PROTOCOL.md), execution9c379aa.
+
 - [Nonlinear-feature learned update rule](NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md):
   combined development screen FAILED; retention passed; no reliable advantage
   over static and replay; learned/static/fixed control actions identical.

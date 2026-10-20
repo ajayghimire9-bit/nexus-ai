@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Source-only update diagnosis complete
+
+Locked9c379aa; one metered dispatch1.433732s,0newreal/imagined/world-model
+forwards,576tinyfrozen-controller calls. First learned step12.55×replay median
+norm,but5/12source tasks harmed: registered broad-harm screen not supported.
+Queryerrorpeaks atprefix6; sourcepatternnotcausal. All1620snapshots complete,
+frozenweights unchanged,no runtimepromotion. Three-second conservative debit:
+ledger1919.6321034559958used/1680.3678965440042remaining. Next proposed source
+output-change-bound comparison,not run. See NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md.
+
 ## Nonlinear-feature learning-rule comparison completed
 
 Locked73d1dcd; one EXPERIMENTAL-host run,4.164333s dispatch,4650 authored steps,

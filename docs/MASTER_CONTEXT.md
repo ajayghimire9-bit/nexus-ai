@@ -34,6 +34,13 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+Source-only update diagnosis from9c379aa completed once: learned first steps
+were12.55×replay by median task ratio, but query harm occurred on only5/12source
+tasks. Registered broad-harm pattern NOT_SUPPORTED. Later-prefix instability
+and one large-harm task remain descriptive leads, not causal explanations.
+No collection, world-model inference, outer training or live promotion. See
+[diagnosis](NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md). Prior failures remain closed.
+
 The nonlinear-feature learning-rule study from73d1dcd completed once and FAILED
 its combined development screen. Curve MSE .170873 learned versus .171423
 source-trained static, .172414 fixed, .128930 scaled replay and .142419 none.
@@ -86,9 +93,11 @@ The setup itself added no scientific result. The subsequent registered Seed
 adapter study is now complete and closed; its negative findings are above.
 
 The fresh1/2/4/8-example comparison did not establish a learned-rule advantage.
-Preserve that failure alongside prior positive readout results. Next inspect
-first-update magnitudes/prefix errors on SOURCE data only before registering
-another intervention. No architecture expansion or new collection is scheduled.
+Preserve that failure alongside prior positive readout results. The source-only
+first-update diagnosis is complete and does not explain the failure by itself.
+Next proposed bounded source comparison: output-change-limited correction versus
+unchanged protection and scaled replay. No new collection or architecture growth
+is scheduled; fresh validation is required before runtime promotion.
 All future learning-to-learn claims still require strong source-informed
 baselines, retention and actual action outcomes, not loss or acceptance alone.
 
@@ -104,8 +113,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1916.6321034559958seconds used,
-1683.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1919.6321034559958seconds used,
+1680.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

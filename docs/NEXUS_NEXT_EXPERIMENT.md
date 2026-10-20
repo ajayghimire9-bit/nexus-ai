@@ -1,12 +1,23 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — source-only first-update magnitude diagnosis (not run)
+## Current — bounded source correction comparison (proposed, not run)
+
+Does limiting protected output change stabilize later source prefixes versus
+both unchanged protection and scaled replay? Fix the bound/objective before
+scoring, preserve frozen networks and query isolation. First-update diagnosis
+did not support broad harm:5/12tasks,despite12.55×norm ratio. Do not treat large
+steps as an established cause. Separate fresh validation before any runtime
+promotion; no new architecture,collection or second run initiated here.
+See NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md.
+
+## Closed — source-only first-update magnitude diagnosis
 
 The nonlinear-feature study failed its registered screen. Does the first
 protected correction take an excessive step compared with scaled replay on
 permitted SOURCE tasks? Inspect prefix errors/update norms and retention using
-existing training data only. No new collection, architecture change or tuning
-on the closed audit. See NEXUS_SEED_NONLINEAR_LEARNING_RESULTS.md.
+existing training data only. Completed from9c379aa; broad-harm pattern not
+supported. No new collection, architecture change or tuning on the closed audit.
+See NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md.
 Older proposals below retain their chronology and are not automatic tasks.
 
 Workflow setup and the metered Seed/retention study are complete. Use the

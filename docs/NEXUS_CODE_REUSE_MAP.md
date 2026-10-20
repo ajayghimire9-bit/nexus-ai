@@ -20,6 +20,11 @@
 
 ## Verification versus experiments
 
+Source-only update diagnosis: seed/update_diagnosis.py reuses LessonTask,
+initial/update/scaled and existing frozen PlasticityController weights. Its
+fixed adapter uses the SAME EXPERIMENTAL host/meter; stdlib replay recomputes
+recorded arithmetic without model inference or collection. No new learner.
+
 Owner-controlled experimental host: seed/experimental.py and the fixed numeric
 worker seed/experimental_worker.py reuse E1 Journal/canonical hashes, the existing
 nn.factory and Learning Lab server. Run data stays under runs/experimental.

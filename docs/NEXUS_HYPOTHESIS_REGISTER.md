@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Seed first-update broad-harm diagnostic — NOT_SUPPORTED
+
+Source-only registered screen required medianlearned/replaynormratio>2 and
+first-query harm on>=8/12tasks. Actual12.5538×and5/12:screenfails. Meanfirst
+querychange+.032766[-.037982,+.103514],conditionalreusedsourcebank,onecore.
+Large steps alone do not establish excessive-update causation. Laterprefix
+instability is descriptive. No fresh generalization or learning-to-learn claim.
+Protocol/code9c379aa;NEXUS_SEED_UPDATE_DIAGNOSIS_RESULTS.md.
+
 ## Seed nonlinear-feature learned update rule — registered screen FAILED
 
 From73d1dcd: mean1/2/4/8-example MSE .170873 learned, .171423 source-trained

@@ -52,6 +52,9 @@ class LabHandler(BaseHTTPRequestHandler):
                 if not state['experiments'] and (ROOT/'artifacts/seed_nonlinear_learning.json').exists():
                     from nexus.seed.nonlinear_learning_audit import saved_replay
                     state['experiments'].append(saved_replay(ROOT))
+                if (ROOT/'artifacts/seed_update_diagnosis.json').exists() and not any(r['id']=='seed-source-update-diagnosis-1' for r in state['experiments']):
+                    from nexus.seed.update_diagnosis import saved_replay as source_replay
+                    state['experiments'].append(source_replay(ROOT))
                 return self.send_json(200,state)
             if parsed.path=='/' and not parsed.query:
                 body=(ROOT/'web/learning-lab/index.html').read_bytes();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8')

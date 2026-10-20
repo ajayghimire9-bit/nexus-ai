@@ -475,7 +475,8 @@ class Sandbox:
                     wall_s=row['wall_s'], memory_mb=row['peak_sampled_rss_mb'], revision=row['revision'],
                     metrics=worker.get('metrics'), curve=worker.get('curve', []),
                     resources=worker.get('resources'), model_sha256=digest(worker['model']) if 'model' in worker else None,
-                    study=worker['study']['analysis'] if worker.get('adapter')=='seed_nonlinear_learning_v1' else None))
+                    study=worker['study']['analysis'] if worker.get('adapter')=='seed_nonlinear_learning_v1' else None,
+                    diagnosis=worker['study']['analysis'] if worker.get('adapter')=='seed_update_diagnosis_v1' else None))
             except FileNotFoundError:
                 rows.append(dict(id=reserved['run_id'],mode=reserved['mode'],status='reserved_or_interrupted',
                                  wall_s=reserved['wall_cap_s'],curve=[]))

@@ -201,3 +201,16 @@ def validate_output(output,c,caps,pack=None):
     if work['inner_update_calls']!=1440 or work['active_corrections']!=1152 or work['controller_forwards']!=576 or work['network_forwards']!=576 or work['cpu_s']>caps['cpu_s']:
         raise ValueError('diagnosis_work_grid')
     return True
+
+
+def saved_replay(root):
+    """Stdlib-only recorded-source card. Never replays the update algorithm."""
+    r=json.loads((root/'artifacts/seed_update_diagnosis.json').read_text())
+    c=json.loads((root/'configs/seed_update_diagnosis.json').read_text())
+    if r['declared_complete'] is not True:raise ValueError('incomplete_source_diagnosis')
+    validate(r,c,source_pack(root,c))
+    h=r['host_receipt'];a=r['analysis']
+    return dict(id=h['id'],mode='recorded_source_only_diagnosis',status=h['status'],
+        failure=h['failure'],wall_s=h['wall_s'],memory_mb=h['peak_sampled_rss_mb'],
+        revision=r['execution_sha'],metrics=None,curve=[],model_sha256=r['source_pack_sha256'],
+        resources=r['resources'],study=None,diagnosis=a)
