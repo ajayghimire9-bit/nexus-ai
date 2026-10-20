@@ -9,6 +9,17 @@ def vector(v,n):
 
 
 def validate_record(kind,p,session):
+    if kind=='seed_adaptive_state':
+        from .adaptive_records import validate_state
+        if type(p) is not dict or set(p)!={'model_hash','controller_hash','source_ref','state','receipt'}:raise ValueError('adaptive_record')
+        for key in ('model_hash','controller_hash'):
+            value=p[key]
+            if type(value) is not str or len(value)!=64 or any(c not in '0123456789abcdef' for c in value):raise ValueError('adaptive_checkpoint_binding')
+        actual={e.fingerprint for e in session.journal.snapshot() if e.kind in ('seed_teaching','seed_grounded_state')}
+        if p['source_ref'] not in actual or not set(p['state']['seen'])<=actual:raise ValueError('adaptive_actual_feedback_required')
+        validate_state(p['state'])
+        if type(p['receipt']) is not dict or type(p['receipt'].get('status')) is not str:raise ValueError('adaptive_receipt')
+        return
     if kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_action_rank'):
         h=p.get('model_hash')
         if type(h) is not str or len(h)!=64 or any(c not in '0123456789abcdef' for c in h):raise ValueError('grounded_model_hash')

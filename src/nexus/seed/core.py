@@ -378,6 +378,13 @@ class Session:
                     world_memory='fixed_source_bank' if self.grounded_agent.model.world_memory_bank is not None else 'empty_bank',
                     value_target='V3_current_state_random_behavior' if self.grounded_agent.model.semantics=='aligned_v1' else 'legacy_unaligned',
                     action_readout_sha256=getattr(self.grounded_agent.action_readout,'sha256',None),
+                    adaptation=None if self.grounded_agent.adaptive is None else dict(
+                        schema='memory_aware_small_blocks',parameters=115,
+                        controller_hash=self.grounded_agent.controller_hash,
+                        lessons=self.grounded_agent.adaptive.steps,
+                        work=dict(self.grounded_agent.adaptive.work),
+                        skills=len(self.grounded_agent.adaptive.skills),
+                        core_frozen=True,development_only=True),
                     architecture='shared_multimodal_GRU_RSSM',h_size=32,z_size=8,
                     approved_concepts=list(self.grounded_agent.approved(self)),
                     h_norm=float(self.grounded_agent.h.norm()),z_norm=float(self.grounded_agent.z.norm()),
@@ -445,7 +452,7 @@ class Session:
                         type(p['reduction']) not in (int,float) or p['reduction']!=reduction):
                     raise ValueError('saved_feedback_not_reproduced')
                 s.event(event.kind,p)
-            elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information','seed_grounded_action_rank'):
+            elif event.kind in ('seed_grounded_state','seed_grounded_concept','seed_grounded_information','seed_grounded_action_rank','seed_adaptive_state'):
                 from .grounded_records import validate_record
                 validate_record(event.kind,p,s)
                 s.event(event.kind,p)
