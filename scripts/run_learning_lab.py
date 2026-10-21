@@ -127,6 +127,10 @@ class LabHandler(BaseHTTPRequestHandler):
                     from nexus.seed.task_conditioned_meta import saved_replay as task_cond_replay
                     task_cond=task_cond_replay(ROOT)
                     state['experiments']=[r for r in state['experiments'] if r['id']!=task_cond['id']]+[task_cond]
+                if (ROOT/'artifacts/seed_meta_rule_evolution.json').exists():
+                    from nexus.seed.meta_rule_evolution import saved_replay as meta_rule_evo_replay
+                    meta_rule_evo=meta_rule_evo_replay(ROOT)
+                    state['experiments']=[r for r in state['experiments'] if r['id']!=meta_rule_evo['id']]+[meta_rule_evo]
                 if (ROOT/'artifacts/seed_executable_world.json').exists():
                     from nexus.seed.structure.study import saved_replay as structure_replay
                     structure=structure_replay(ROOT)
