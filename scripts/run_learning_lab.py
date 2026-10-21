@@ -111,6 +111,10 @@ class LabHandler(BaseHTTPRequestHandler):
                     from nexus.seed.source_acquisition import saved_replay as acquisition_replay
                     acquisition=acquisition_replay(ROOT)
                     state['experiments']=[r for r in state['experiments'] if r['id']!=acquisition['id']]+[acquisition]
+                if (ROOT/'artifacts/seed_query_context.json').exists():
+                    from nexus.seed.query_context import saved_replay as context_replay
+                    context=context_replay(ROOT)
+                    state['experiments']=[r for r in state['experiments'] if r['id']!=context['id']]+[context]
                 if (ROOT/'artifacts/seed_executable_world.json').exists():
                     from nexus.seed.structure.study import saved_replay as structure_replay
                     structure=structure_replay(ROOT)

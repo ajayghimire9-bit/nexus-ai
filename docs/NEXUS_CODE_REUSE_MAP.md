@@ -2,6 +2,11 @@
 
 ## Active runtime
 
+- Query-context audit: `seed/query_context.py` reuses source acquisition's
+  feature map, posterior update, public grammar and fixed learner. It reads only
+  saved source projections, computes expected-value counterexamples and uses
+  the SAME EXPERIMENTAL host/journal. No learner or model is trained.
+
 - Source acquisition: `seed/source_acquisition.py` uses the SAME bounded
   `foundation.programs` interpreter, `question_selection.LabelOracle`,
   `nn.ridge` fitter and EXPERIMENTAL host/journal. A ten-feature question

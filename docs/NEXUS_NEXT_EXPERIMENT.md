@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Registered — source-only query-context sufficiency audit
+
+[Protocol](NEXUS_SEED_QUERY_CONTEXT_PROTOCOL.md): freeze prior features/learner;
+pair eight public singleton query contexts at each of 512 saved source prefixes.
+Test whether a query-blind choice can be optimal across all paired contexts.
+No new labels, model fits, simulator or closed target evaluation. Cap 60 seconds;
+carry 1996.6321034559958 used / 1603.3678965440042 remaining. Precommit before run.
+
 ## Latest — source-trained acquisition completed; both screens FAILED
 
 Clean execution2a7670284a6a530c8cb739c340ec6a7a06971ef7. Eight new10-coefficient

@@ -86,7 +86,11 @@ def constructed_base():
         blocks.append(dict(id=family,source=source,fit_cost=fit_cost,model=model,model_hash=digest(model),rows=rows,locked_choices_hash=lock,means=means))
     study=dict(config=c,declared_complete=True,blocks=blocks,assignment=assigned,catalogue_hash=digest(entries),catalogue_instructions=123,
         frozen_before=a.FROZEN,frozen_after=a.FROZEN,all_source_fits_frozen_before_targets=True,all_choices_locked_before_query_labels=True)
-    study['seed_audit']=a.seed_audit(Path(__file__).resolve().parents[1],c);study['analysis']=a.summarize(blocks,c)
+    root=Path(__file__).resolve().parents[1]
+    # This fixture represents the historical registration, not future audits
+    # deliberately reusing its SOURCE data. Keep the original registry snapshot.
+    names=json.loads((root/'artifacts/seed_source_acquisition.json').read_text())['seed_audit']['config_hashes']
+    study['seed_audit']=a.seed_audit(root,c,names=names);study['analysis']=a.summarize(blocks,c)
     resources=dict(real_steps=3072,source_labels=2048,target_support=512,target_query=512,updates=8,imagined_transitions=0,
         network_forwards=0,fitted_ridge_models=8,learned_coefficients=80,selector_training_cases=4608,program_instructions=123,cpu_s=.1,worker_wall_s=.1,
         cached_target_answer_exposures=3072,target_policy_paths=384,uniform_assessment_subsets=6848)
