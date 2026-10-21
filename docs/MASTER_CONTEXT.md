@@ -58,6 +58,23 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+## Latest — query-context information limitation demonstrated
+
+The source-only audit completed from clean execution
+071fe025d4f0d1a1de68ddc35b5fbf07cfa88d37. Optimal question sets conflict across
+public query inputs in 489/512 source-prefix contexts; 445 exceed the registered
+0.0001 mean-query regret threshold. The ten-feature selector omits relevant query
+information under the supplied uniform prior. This does not explain the prior
+failure causally or establish better actual learning. No policy promotion.
+[Results](NEXUS_SEED_QUERY_CONTEXT_RESULTS.md).
+
+Zero new labels, fits, neural forwards or simulator steps; 3-second debit.
+Ledger: 1999.6321034559958 seconds used / 1600.3678965440042 remaining.
+All 822 prior artifacts preserved. Next: one fresh, separately registered
+query-conditioned acquisition comparison against query-blind and full model-based
+selection, with actual independent query error and matched budgets. Not run.
+Older entries preserve their chronology.
+
 ## Latest — source-trained acquisition completed; both screens FAILED
 
 Clean execution2a7670284a6a530c8cb739c340ec6a7a06971ef7. Eight new10-coefficient
@@ -286,7 +303,7 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_SOURCE_ACQUISITION_RESULTS.md),
+[latest results](NEXUS_SEED_QUERY_CONTEXT_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
@@ -304,8 +321,10 @@ the supplied grammar suffices here. Source-inferred query-outcome transfer then
 completed on eight new tables: all source models recovered, but learned hybrid
 again failed against equally informed compiled greedy. Source-question
 acquisition then completed on new structured programs and failed both screens:
-learned.221353 MSE versus source-informed model-based.210662. Next: a source-only
-query-context sufficiency audit, not another run on these closed target banks. The older question-utility label audit below remains
+learned.221353 MSE versus source-informed model-based.210662. The source-only
+query-context sufficiency audit then demonstrated missing query information.
+Next: separately test query-conditioned acquisition on fresh assignments,
+not another run on these closed target banks. The older question-utility label audit below remains
 unresolved; the investigation result does not answer it.
 
 The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
@@ -350,8 +369,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1996.6321034559958seconds used,
-1603.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1999.6321034559958seconds used,
+1600.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

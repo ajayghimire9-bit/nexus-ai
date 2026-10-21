@@ -1,5 +1,22 @@
 # NEXUS Seed — Current State
 
+## Latest — query-context information limitation demonstrated
+
+The source-only audit completed from clean execution
+071fe025d4f0d1a1de68ddc35b5fbf07cfa88d37. Optimal question sets conflict across
+public query inputs in 489/512 source-prefix contexts; 445 exceed the registered
+0.0001 mean-query regret threshold. The ten-feature selector omits relevant query
+information under the supplied uniform prior. This does not explain the prior
+failure causally or establish better actual learning. No policy promotion.
+[Results](NEXUS_SEED_QUERY_CONTEXT_RESULTS.md).
+
+Zero new labels, fits, neural forwards or simulator steps; 3-second debit.
+Ledger: 1999.6321034559958 seconds used / 1600.3678965440042 remaining.
+All 822 prior artifacts preserved. Next: one fresh, separately registered
+query-conditioned acquisition comparison against query-blind and full model-based
+selection, with actual independent query error and matched budgets. Not run.
+Older entries preserve their chronology.
+
 ## Latest — source-trained acquisition completed; both screens FAILED
 
 Clean execution2a7670284a6a530c8cb739c340ec6a7a06971ef7. Eight new10-coefficient

@@ -60,6 +60,23 @@ def test_unobserved_outcomes_not_context_arguments_and_frozen_model():
     assert m==before
 
 
+def test_actual_source_replay_ignores_unobserved_source_answers(monkeypatch):
+    import random
+    table=np.tile(toy(),(1,4))
+    monkeypatch.setattr(a,'catalogue',lambda:([dict(answers=row.tolist()) for row in table],0))
+    monkeypatch.setattr(a,'split_inputs',lambda task:(list(range(8)),list(range(8,16))))
+    task=10;order=list(range(8));random.Random(task+700).shuffle(order)
+    source=dict(task=task,answers=table[0].tolist())
+    pack=[dict(id=1,source=[source],model=model())]
+    c=q.configuration();c['prefixes']=[0,1]
+    before=q.calculate(pack,c)
+    # Only the first prefix label is permitted. Every other candidate answer
+    # and all source query labels change; fixed model and permitted prefix stay.
+    for x in range(16):
+        if x!=order[0]:source['answers'][x]=not source['answers'][x]
+    assert q.calculate(pack,c)==before
+
+
 def cell_fixture():
     task=q.configuration()['tasks']['source'][0];pool,queries=a.split_inputs(task)
     pack=[dict(id=1,source=[dict(task=task)])];c=dict(prefixes=[0],families=[1],source_tasks_per_block=1,tasks={'source':[task]})

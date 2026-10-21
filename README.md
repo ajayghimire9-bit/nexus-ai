@@ -12,6 +12,12 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Query-context source audit](docs/NEXUS_SEED_QUERY_CONTEXT_RESULTS.md): relevant
+query information is missing from the current question selector. Optimal choices
+conflict in 489/512 saved contexts. No new labels or training, and no demonstrated
+improvement in actual learning. Next: test query-conditioned acquisition on fresh
+assignments. Previous closed results remain below.
+
 [Source-trained question acquisition](docs/NEXUS_SEED_SOURCE_ACQUISITION_RESULTS.md)
 **failed both screens**: primary MSE.221353 versus fixed order.215762 and
 source-informed model-based.210662. It beats random expectation, but not strong
