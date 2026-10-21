@@ -170,25 +170,16 @@ class MasterSeedArchitecture:
                 response=rendered,
             )
 
-        # 1b. Meta-learning & general problem-solving benchmark exchange
+        # 1b. Bounded exact-motif program-prior reuse demo & bounded multi-reasoner integration suite exchange
         if intent == "meta_learning_benchmark":
             suite = self.meta_learner.run_general_intelligence_suite()
             ltl = suite["learning_to_learn_benchmark"]
-            msg = (
-                f"Within the bounded Seed Master Architecture, workable meta-learning reduced candidate program search "
-                f"by {ltl['search_evaluations_reduction_pct']}% ({ltl['mean_cold_start_evaluations']} -> {ltl['mean_meta_learned_evaluations']} evaluations) "
-                f"with {int(ltl['held_out_accuracy']*100)}% held-out accuracy across all {suite['domains_verified']} reasoning domains, "
-                f"passing the LearningAcceptanceGate ({ltl['acceptance_gate']['decision']}). "
-                f"Note: historical locked scientific ledger experiments remain separate and are not overwritten."
-            )
+            msg = "Not yet. I demonstrated bounded program-prior reuse, but genuine held-out learning-to-learn remains unestablished."
             plan = ResponsePlan(
                 dialogue_act="meta_learning_and_general_suite_report",
                 factual_claims=[dict(text=msg, evidence=ltl["acceptance_gate"]["ref"])],
                 supporting_evidence=[ltl["acceptance_gate"]["ref"]],
-                execution_results=[dict(
-                    search_reduction_pct=ltl["search_evaluations_reduction_pct"],
-                    domains_passed=suite["domains_verified"],
-                )],
+                execution_results=[],
                 uncertainty=dict(confidence=0.98),
             )
             rendered = self.response_generator.render_and_verify(plan, belief)
@@ -517,9 +508,9 @@ def request(session, req: dict, shared_brain: SharedBrain | None = None) -> dict
         return dict(text="Tiered compute profile evaluated.", result=tier_res)
     if op == "meta_learn":
         res = arch.meta_learner.run_learning_to_learn_benchmark()
-        return dict(text="Workable learning-to-learn benchmark completed.", result=res)
+        return dict(text="Bounded exact-motif program-prior reuse demo completed.", result=res)
     if op == "general_suite":
         res = arch.meta_learner.run_general_intelligence_suite()
-        return dict(text="Multi-domain general intelligence suite completed.", result=res)
+        return dict(text="Bounded multi-reasoner integration suite completed.", result=res)
 
     raise ValueError(f"unsupported_master_op:{op}")

@@ -110,7 +110,10 @@ def run(request):
 if __name__=='__main__':
     request = read(Path(sys.argv[1]))
     limits(request['caps'])  # before importing the optional neural runtime
-    if request.get('adapter')=='seed_conditioned_acquisition_v1':
+    if request.get('adapter')=='seed_disjoint_meta_v1':
+        from .disjoint_meta import run as run_disjoint_meta
+        result=run_disjoint_meta(request)
+    elif request.get('adapter')=='seed_conditioned_acquisition_v1':
         from .conditioned_acquisition import run as run_conditioned
         result=run_conditioned(request)
     elif request.get('adapter')=='seed_query_context_v1':

@@ -73,7 +73,7 @@ if($('run-general-suite'))$('run-general-suite').onclick=async()=>{
   const res=d.response.result,ltl=res.learning_to_learn_benchmark;
   const banner=$('suite-banner');
   banner.hidden=false;
-  banner.textContent=`✓ All ${res.domains_verified}/6 Reasoning Domains Verified · Workable Meta-Learning Reduced Candidate Search by ${ltl.search_evaluations_reduction_pct}% (${ltl.mean_cold_start_evaluations} → ${ltl.mean_meta_learned_evaluations} evaluations) · Acceptance Gate: ${ltl.acceptance_gate.decision.toUpperCase()}`;
+  banner.textContent=`✓ Bounded multi-reasoner integration suite (${res.domains_verified}/6 domains) · Bounded exact-motif program-prior reuse demo (engineering demonstration of within-family search-prior reuse: ${ltl.search_evaluations_reduction_pct}% reduction, ${ltl.mean_cold_start_evaluations} → ${ltl.mean_meta_learned_evaluations} evaluations) · Gate: ${ltl.acceptance_gate.decision.toUpperCase()}`;
   $('memory-gate-output').textContent=JSON.stringify(res,null,2);
  }catch(e){$('suite-banner').hidden=false;$('suite-banner').textContent='Error: '+e.message;}
 };

@@ -221,6 +221,17 @@ class Conversation:
                 return 'All 15 NEXUS Seed master architecture components are active over this Session and SharedBrain. This is a bounded research architecture, not a claim of AGI or learning-to-learn.','reply',False
             out=arch.handle_dialogue_turn(v['text'])
             card('Master cognitive trace',dict(exchange_kind=out['exchange_kind'],meta_operation=out['meta_decision']['selected_operation'],compute_tier=out['compute_tier']['tier_name'],verified=out['response']['verification_passed']))
+            if 'suite_result' in out:
+                ltl=out['suite_result']['learning_to_learn_benchmark']
+                card('Bounded exact-motif program-prior reuse demo',dict(
+                    benchmark_label=ltl['benchmark_label'],
+                    claim_classification=ltl['claim_classification'],
+                    suite_label=out['suite_result']['suite_label'],
+                    mean_cold_start_evaluations=ltl['mean_cold_start_evaluations'],
+                    mean_meta_learned_evaluations=ltl['mean_meta_learned_evaluations'],
+                    search_evaluations_reduction_pct=ltl['search_evaluations_reduction_pct'],
+                    domains_verified=out['suite_result']['domains_verified'],
+                ))
             status='clarification' if out['exchange_kind'] in ('learning','clarification') else 'success'
             return out['response']['text'],status,False
         if k in ('workbench','curriculum_generate','curriculum_answer','alias','phrase'):

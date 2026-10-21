@@ -88,6 +88,27 @@ flowchart TD
 15. **Compute architecture for Mac and mobile (`src/nexus/seed/master/controller.py`)**:
     - `TieredComputeController` manages Tier 1 (always-on compact core), Tier 2 (medium neural layer), and Tier 3 (on-demand/background consolidation), including 8-bit and 4-bit weight quantization and mobile battery/charging deferment.
 
+## Audited Benchmark Classification (`src/nexus/seed/master/meta_learning.py`)
+
+- **Benchmark label**: `bounded exact-motif program-prior reuse demo` (`mean_cold_start_evaluations = 9.5 -> mean_meta_learned_evaluations = 1.75`, `81.58%` reduction)
+- **Claim classification**: `engineering demonstration of within-family search-prior reuse`
+- **Multi-domain suite label**: `bounded multi-reasoner integration suite` (6 domains)
+- **Dialogue answer to "Did we achieve learning to learn?"**:
+  `"Not yet. I demonstrated bounded program-prior reuse, but genuine held-out learning-to-learn remains unestablished."`
+
+### Five Audited Limitations of the Present Demo
+
+1. **Source and target reuse exact canonical motifs**:
+   - `sort -> unique`
+   - `reverse -> increment`
+   - `even -> sort`
+2. **Held-out inputs are not held-out program mechanisms**: evaluating the same canonical program on new integer lists tests input execution, not unseen program composition.
+3. **"Retention" in the demo stores target held-out correctness rather than old-task retention**: `retention_scores` recorded whether the target held-out input passed rather than re-evaluating frozen source tasks before and after learning.
+4. **"Transfer" in the demo is constructed rather than independently measured**: `transfer_score = meta_score + 0.02` is a synthetic offset, not a separate domain evaluation.
+5. **The six-domain suite contains hand-authored solver fixtures**: it is a `bounded multi-reasoner integration suite`, not evidence of acquired general intelligence.
+
+For the preregistered scientific test of disjoint compositional meta-learning, see [NEXUS_SEED_DISJOINT_META_PROTOCOL.md](NEXUS_SEED_DISJOINT_META_PROTOCOL.md).
+
 ## Related Documentation
 
 - [Master Context](MASTER_CONTEXT.md)

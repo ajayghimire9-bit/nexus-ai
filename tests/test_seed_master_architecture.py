@@ -499,15 +499,18 @@ def test_natural_conversation_and_workable_learning_to_learn_suite(tmp_path):
     math_reply = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Solve 3*x + 7 = 22", id=uuid.uuid4().hex)))["response"]
     assert "5" in math_reply["text"]
 
-    # Workable Learning-to-Learn & General Intelligence Suite via chat and via master_general_suite
+    # Bounded exact-motif program-prior reuse demo & bounded multi-reasoner integration suite via chat and via master_general_suite
     ltl_chat = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Did we achieve learning to learn?", id=uuid.uuid4().hex)))["response"]
-    assert "reduced candidate program search" in ltl_chat["text"]
-    assert "LearningAcceptanceGate" in ltl_chat["text"]
+    assert ltl_chat["text"] == "Not yet. I demonstrated bounded program-prior reuse, but genuine held-out learning-to-learn remains unestablished."
 
     suite = w.dispatch(dict(session_id=sid, request=dict(op="master_general_suite", args={})))["response"]["result"]
+    assert suite["suite_label"] == "bounded multi-reasoner integration suite"
     assert suite["all_domains_passed"]
     assert suite["domains_verified"] == 6
     bench = suite["learning_to_learn_benchmark"]
+    assert bench["benchmark_label"] == "bounded exact-motif program-prior reuse demo"
+    assert bench["claim_classification"] == "engineering demonstration of within-family search-prior reuse"
+    assert len(bench["limitations"]) == 5
     assert bench["mean_meta_learned_evaluations"] < bench["mean_cold_start_evaluations"]
     assert bench["search_evaluations_reduction_pct"] > 50.0
     assert bench["acceptance_gate"]["accepted"]

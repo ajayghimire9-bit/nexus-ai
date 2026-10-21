@@ -284,10 +284,11 @@ class Sandbox:
         source_acquisition = adapter == 'seed_source_acquisition_v1'
         query_context = adapter == 'seed_query_context_v1'
         conditioned = adapter == 'seed_conditioned_acquisition_v1'
+        disjoint_meta = adapter == 'seed_disjoint_meta_v1'
         diagnosis = adapter in ('seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
         study = adapter in ('seed_nonlinear_learning_v1','seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
         diagnosis = diagnosis or learning_choice or questions or headroom or query_replication or question_utility or answer_free
-        study = study or learning_choice or questions or headroom or query_replication or question_utility or answer_free or executable_world or investigation_transfer or investigation_hybrid or investigation_replication or compiled_greedy or inferred_investigation or source_acquisition or query_context or conditioned
+        study = study or learning_choice or questions or headroom or query_replication or question_utility or answer_free or executable_world or investigation_transfer or investigation_hybrid or investigation_replication or compiled_greedy or inferred_investigation or source_acquisition or query_context or conditioned or disjoint_meta
         if study:
             if mode!='exploration' or any(spec[k] is not None for k in ('train','development','model_run','assessment','protocol','gate')):
                 raise ValueError('registered_seed_development_study_only')
@@ -313,6 +314,7 @@ class Sandbox:
             if source_acquisition:expected_paths=('configs/seed_source_acquisition.json','docs/NEXUS_SEED_SOURCE_ACQUISITION_PROTOCOL.md')
             if query_context:expected_paths=('configs/seed_query_context.json','docs/NEXUS_SEED_QUERY_CONTEXT_PROTOCOL.md')
             if conditioned:expected_paths=('configs/seed_conditioned_acquisition.json','docs/NEXUS_SEED_CONDITIONED_ACQUISITION_PROTOCOL.md')
+            if disjoint_meta:expected_paths=('configs/seed_disjoint_meta.json','docs/NEXUS_SEED_DISJOINT_META_PROTOCOL.md')
             if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or (item['config_path'],item['protocol_path'])!=expected_paths:
                 raise ValueError('vetted_study_manifest_required')
             for path,key in ((item['config_path'],'config_sha256'),(item['protocol_path'],'protocol_sha256')):
@@ -322,7 +324,9 @@ class Sandbox:
             if any(r['spec'].get('recipe',{}).get('config_sha256')==item['config_sha256'] for r in self.records('reserved') if type(r['spec'].get('recipe')) is dict):
                 raise ValueError('study_configuration_consumed')
             c=read(self.repository/item['config_path'])
-            if conditioned:
+            if disjoint_meta:
+                from .disjoint_meta import config_check
+            elif conditioned:
                 from .conditioned_acquisition import config_check
             elif query_context:
                 from .query_context import config_check
@@ -445,6 +449,9 @@ class Sandbox:
             if conditioned:
                 for p in ('src/nexus/seed/conditioned_acquisition.py','src/nexus/seed/source_acquisition.py','src/nexus/seed/inferred_investigation.py','src/nexus/seed/investigation_transfer.py','src/nexus/seed/question_selection.py','src/nexus/seed/foundation/programs.py','src/nexus/seed/skill_programs.py','src/nexus/nn/ridge.py'):
                     sources[p]=hashlib.sha256((self.repository/p).read_bytes()).hexdigest()
+            if disjoint_meta:
+                for p in ('src/nexus/seed/disjoint_meta.py','src/nexus/seed/source_acquisition.py','src/nexus/seed/skill_programs.py','src/nexus/evolution1/catalogue.py'):
+                    sources[p]=hashlib.sha256((self.repository/p).read_bytes()).hexdigest()
             if executable_world:
                 for path in sorted((self.repository/'src/nexus/seed/structure').glob('*.py')):
                     sources[str(path.relative_to(self.repository))]=hashlib.sha256(path.read_bytes()).hexdigest()
@@ -525,7 +532,9 @@ class Sandbox:
             if reason is None:
                 output = read(directory/'output.json')
                 if study:
-                    if conditioned:
+                    if disjoint_meta:
+                        from .disjoint_meta import validate_output as study_validate
+                    elif conditioned:
                         from .conditioned_acquisition import validate_output as study_validate
                     elif query_context:
                         from .query_context import validate_output as study_validate
@@ -667,7 +676,8 @@ class Sandbox:
                     question_headroom=worker['study']['analysis'] if worker.get('adapter')=='seed_question_headroom_v1' else None,
                     query_replication=worker['study']['analysis'] if worker.get('adapter')=='seed_query_replication_v1' else None,
                     question_utility=worker['study']['analysis'] if worker.get('adapter')=='seed_question_utility_v1' else None,
-                    executable_world=worker['study']['analysis'] if worker.get('adapter')=='seed_executable_world_v1' else None))
+                    executable_world=worker['study']['analysis'] if worker.get('adapter')=='seed_executable_world_v1' else None,
+                    disjoint_meta=worker['study']['analysis'] if worker.get('adapter')=='seed_disjoint_meta_v1' else None))
             except FileNotFoundError:
                 rows.append(dict(id=reserved['run_id'],mode=reserved['mode'],status='reserved_or_interrupted',
                                  wall_s=reserved['wall_cap_s'],curve=[]))

@@ -1,25 +1,22 @@
-"""Workable Meta-Learning (Learning-to-Learn) and Multi-Domain General Problem-Solving
-Engine for the NEXUS Seed Master Architecture.
+"""Bounded Exact-Motif Program-Prior Reuse Demo and Bounded Multi-Reasoner
+Integration Suite for the NEXUS Seed Master Architecture.
 
-Demonstrates measurable, verifiable meta-learning within the bounded Seed
-architecture across three mechanisms:
-1. Operator & Macro Prior Induction: learns empirical operator transition
-   frequencies and reusable two-step program macros from solved source tasks,
-   reducing candidate search evaluations on new held-out target tasks.
-2. Adaptive Active Questioning (Empirical VOI Meta-Policy): learns which
-   diagnostic inputs maximally split the hypothesis space across task families,
-   reducing the number of teacher queries required to identify a target concept
-   or skill program.
-3. Cross-Domain General Problem Solver: unifies language grounding, relational
-   deduction, CSP constraint solving, mathematical equation solving, causal
-   inference, analogical transfer, code synthesis/debugging, and grid planning
-   under a single verifiable curriculum benchmark gated by LearningAcceptanceGate.
+Historical Engineering Demonstration & Audited Limitations:
+1. Source and target reuse exact canonical motifs:
+   - sort -> unique
+   - reverse -> increment
+   - even -> sort
+2. Held-out inputs are not held-out program mechanisms.
+3. "Retention" in this demo stores target held-out correctness rather than old-task retention.
+4. "Transfer" in this demo is constructed with transfer_score = meta_score + 0.02
+   rather than independently measured.
+5. The six-domain suite contains hand-authored solver fixtures and is an
+   integration suite, not evidence of acquired general intelligence.
 
-Scientific Honesty Note:
-This engine demonstrates workable sample-efficiency and search-efficiency gains
-on structured multi-domain task families within the Seed architecture. It does
-not overwrite historical locked scientific ledger experiments or claim
-unrestricted human-level AGI.
+Classification:
+- Benchmark label: "bounded exact-motif program-prior reuse demo"
+- Claim classification: "engineering demonstration of within-family search-prior reuse"
+- Suite label: "bounded multi-reasoner integration suite"
 """
 import copy
 import math
@@ -200,8 +197,20 @@ class MetaLearningEngine:
         reduction_pct = round(100.0 * (mean_cold - mean_meta) / max(1.0, mean_cold), 2)
 
         return dict(
-            status="verified_within_bounded_architecture",
-            scientific_boundary="Demonstrates workable within-architecture search and sample efficiency gains on structured task families; historical locked scientific ledger studies remain separate.",
+            benchmark_label="bounded exact-motif program-prior reuse demo",
+            claim_classification="engineering demonstration of within-family search-prior reuse",
+            status="engineering_demonstration_of_within_family_search_prior_reuse",
+            scientific_boundary=(
+                "Engineering demonstration of within-family search-prior reuse (bounded exact-motif program-prior reuse demo). "
+                "Genuine held-out learning-to-learn is tested separately under docs/NEXUS_SEED_DISJOINT_META_PROTOCOL.md."
+            ),
+            limitations=[
+                "1. Source and target reuse exact canonical motifs: sort -> unique, reverse -> increment, even -> sort.",
+                "2. Held-out inputs are not held-out program mechanisms.",
+                "3. Retention stores target held-out correctness rather than old-task retention.",
+                "4. Transfer is constructed with transfer_score = meta_score + 0.02 rather than independently measured.",
+                "5. The six-domain suite contains hand-authored solver fixtures and is an integration suite, not evidence of acquired general intelligence.",
+            ],
             mean_cold_start_evaluations=round(mean_cold, 2),
             mean_meta_learned_evaluations=round(mean_meta, 2),
             search_evaluations_reduction_pct=reduction_pct,
@@ -210,10 +219,13 @@ class MetaLearningEngine:
             acceptance_gate=gate_report,
         )
 
+    def run_bounded_motif_reuse_demo(self) -> dict:
+        return self.run_learning_to_learn_benchmark()
+
     def run_general_intelligence_suite(self) -> dict:
-        """Execute a cross-domain suite spanning all 6 core cognitive domains
+        """Execute a bounded multi-reasoner integration suite spanning all 6 core cognitive domains
         (Relational, Constraint CSP, Mathematical, Causal, Analogical, and Hierarchical Planning)
-        and verify that every domain produces a proof/trace-backed solution."""
+        and verify that every domain produces a proof/trace-backed solution on authored fixtures."""
         domains = {}
 
         # 1. Relational deduction
@@ -260,7 +272,7 @@ class MetaLearningEngine:
         # 6. Hierarchical world planning
         r6 = self.router.route("planning", dict(
             goal=dict(object="o1", x=4, y=3),
-            world_state=[dict(id="o1", x=1, y=1, color="red", shape="circle", size="small")],
+            world_state=[dict(id="o1", x="1" if False else 1, y=1, color="red", shape="circle", size="small")],
         ))
         domains["hierarchical_planning"] = dict(passed=len(r6.conclusion["verified_action"]) == 2, conclusion=r6.conclusion["verified_action"], confidence=r6.confidence)
 
@@ -268,8 +280,14 @@ class MetaLearningEngine:
         all_passed = all(d["passed"] for d in domains.values()) and meta_bench["acceptance_gate"]["accepted"]
 
         return dict(
+            suite_label="bounded multi-reasoner integration suite",
+            claim_classification="engineering demonstration of within-family search-prior reuse",
             all_domains_passed=all_passed,
             domains_verified=len(domains),
             domain_results=domains,
             learning_to_learn_benchmark=meta_bench,
+            bounded_motif_reuse_demo=meta_bench,
         )
+
+    def run_multi_reasoner_integration_suite(self) -> dict:
+        return self.run_general_intelligence_suite()
