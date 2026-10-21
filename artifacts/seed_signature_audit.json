@@ -1,0 +1,523 @@
+{
+  "schema": "seed_signature_audit_v1",
+  "source_artifact": "artifacts/seed_disjoint_meta.json",
+  "source_artifact_sha256": "13159690aacd36d393f9aa699ed5bddfce044530f802e773b00fb9024ca065fa",
+  "target_outcomes_accessed": false,
+  "source_program_count": 17,
+  "unique_source_signature_count": 17,
+  "signature_dimension": 17,
+  "signature_feature_names": [
+    "len_preserved_rate",
+    "len_decreased_rate",
+    "mean_len_ratio",
+    "sorted_asc_rate",
+    "sorted_desc_rate",
+    "direct_reversal_rate",
+    "duplicates_removed_rate",
+    "first_appearance_order_rate",
+    "reversed_first_appearance_rate",
+    "last_appearance_reversed_rate",
+    "all_even_output_rate",
+    "all_odd_output_rate",
+    "pre_shift_odd_origin_rate",
+    "positive_shift_norm",
+    "negative_shift_norm",
+    "zero_shift_indicator",
+    "order_and_cardinality_preserved_rate"
+  ],
+  "clue_group_statistics": {
+    "output_length_change": {
+      "feature_count": 3,
+      "mean_pairwise_l1_contribution": 1.2644,
+      "active_source_programs": 17
+    },
+    "sorting_or_reversal": {
+      "feature_count": 3,
+      "mean_pairwise_l1_contribution": 1.126838,
+      "active_source_programs": 12
+    },
+    "duplicates_removed": {
+      "feature_count": 4,
+      "mean_pairwise_l1_contribution": 1.625,
+      "active_source_programs": 13
+    },
+    "even_odd_filtering": {
+      "feature_count": 3,
+      "mean_pairwise_l1_contribution": 0.382353,
+      "active_source_programs": 4
+    },
+    "constant_value_shift": {
+      "feature_count": 3,
+      "mean_pairwise_l1_contribution": 0.686275,
+      "active_source_programs": 17
+    },
+    "order_and_cardinality_preservation": {
+      "feature_count": 1,
+      "mean_pairwise_l1_contribution": 0.117647,
+      "active_source_programs": 1
+    }
+  },
+  "locked_hyperparameters": {
+    "alpha": 0.05,
+    "beta": 0.05,
+    "ridge_lambda": 1.0
+  },
+  "loso_source_evaluations": {
+    "deterministic_signature": 1.06770833,
+    "structural_meta_prior_loso": 11.86197917,
+    "flat_catalogue": 8.56770833,
+    "shortest_program": 8.66666667
+  },
+  "loso_source_accuracy": {
+    "deterministic_signature": 0.92513021,
+    "structural_meta_prior_loso": 0.89192708,
+    "flat_catalogue": 0.92594401,
+    "shortest_program": 0.92513021
+  },
+  "search_reduction_vs_flat": 0.87537994,
+  "search_reduction_vs_structural_loso": 0.90998902,
+  "source_program_signatures": [
+    {
+      "program_id": 7,
+      "ops": [
+        "even",
+        "reverse"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.47916667,
+        0.5,
+        0.25,
+        1.0,
+        0.625,
+        0.0,
+        1.0,
+        0.375,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 11,
+      "ops": [
+        "even",
+        "unique",
+        "reverse"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.41666667,
+        0.5,
+        0.25,
+        0.625,
+        1.0,
+        0.0,
+        1.0,
+        0.375,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 12,
+      "ops": [
+        "even",
+        "unique"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.41666667,
+        0.25,
+        0.5,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 13,
+      "ops": [
+        "even"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.47916667,
+        0.25,
+        0.5,
+        0.0,
+        0.625,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 25,
+      "ops": [
+        "increment",
+        "reverse"
+      ],
+      "signature": [
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33333333,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 26,
+      "ops": [
+        "increment",
+        "sort",
+        "reverse"
+      ],
+      "signature": [
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33333333,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 27,
+      "ops": [
+        "increment",
+        "sort",
+        "unique"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.83333333,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33333333,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 28,
+      "ops": [
+        "increment",
+        "sort"
+      ],
+      "signature": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33333333,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 29,
+      "ops": [
+        "increment",
+        "unique",
+        "reverse"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.83333333,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33333333,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 30,
+      "ops": [
+        "increment",
+        "unique"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.83333333,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33333333,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 31,
+      "ops": [
+        "increment"
+      ],
+      "signature": [
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.33333333,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "program_id": 34,
+      "ops": [
+        "reverse"
+      ],
+      "signature": [
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 36,
+      "ops": [
+        "sort",
+        "reverse"
+      ],
+      "signature": [
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 37,
+      "ops": [
+        "sort",
+        "unique"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.83333333,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 38,
+      "ops": [
+        "sort"
+      ],
+      "signature": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 39,
+      "ops": [
+        "unique",
+        "reverse"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.83333333,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "program_id": 40,
+      "ops": [
+        "unique"
+      ],
+      "signature": [
+        0.0,
+        1.0,
+        0.83333333,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    }
+  ],
+  "audit_passed": true
+}
