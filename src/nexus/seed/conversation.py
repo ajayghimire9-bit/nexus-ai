@@ -43,7 +43,11 @@ def interpret(text,ctx):
     if t in ('show me some examples','show examples','examples','give me an example'):return Intent('examples')
     if t in ('show foundation','show curriculum','foundation','curriculum'):return Intent('foundation')
     if t in ('show phases','show all phases','open workbench'):return Intent('workbench')
+    if t in ('show master architecture','master architecture','inspect master'):return Intent('master_inspect')
     if t in ('generate lessons','give me lessons','create curriculum'):return Intent('curriculum_generate')
+    if re.fullmatch(r'["“][a-z][a-z0-9_]{0,23}["”] means .+',t):return Intent('master_dialogue',dict(text=raw))
+    if re.search(r'^if .+ is .+ (?:of|than) .+ and .+ is .+ (?:of|than) .+',t):return Intent('master_dialogue',dict(text=raw))
+    if ('arrange' in t or 'sort' in t) and ('smallest to largest' in t or 'largest to smallest' in t):return Intent('master_dialogue',dict(text=raw))
     m=re.fullmatch(r'(teach|replace) phrase "([a-z ]+)" as ([a-z][a-z0-9_]*)',t)
     if m:return Intent('alias',dict(phrase=m[2],skill=m[3],replace=m[1]=='replace'))
     m=re.fullmatch(r'run phrase "([a-z ]+)" on (.+)',raw,flags=re.I)
@@ -203,6 +207,17 @@ class Conversation:
 
     def execute(self,intent,ctx,card):
         k=intent.kind;v=intent.values;s=lib.state(self.session)
+        if k in ('master_inspect','master_dialogue'):
+            from .master.runtime import MasterSeedArchitecture
+            arch=MasterSeedArchitecture(self.session,self.brain)
+            if k=='master_inspect':
+                info=arch.inspect()
+                card('Master architecture (15 components)',dict(schema=info['architecture_schema'],components=info['components_implemented'],scientific_claim=info['scientific_claim']))
+                return 'All 15 NEXUS Seed master architecture components are active over this Session and SharedBrain. This is a bounded research architecture, not a claim of AGI or learning-to-learn.','reply',False
+            out=arch.handle_dialogue_turn(v['text'])
+            card('Master cognitive trace',dict(exchange_kind=out['exchange_kind'],meta_operation=out['meta_decision']['selected_operation'],compute_tier=out['compute_tier']['tier_name'],verified=out['response']['verification_passed']))
+            status='clarification' if out['exchange_kind'] in ('learning','clarification') else 'success'
+            return out['response']['text'],status,False
         if k in ('workbench','curriculum_generate','curriculum_answer','alias','phrase'):
             from .foundation import runtime
             if k=='workbench':
@@ -271,7 +286,13 @@ class Conversation:
             return ('Describe its meaning, for example “A '+v['name']+' means a red object.” Or send labeled object examples.' if ir_schema=='predicate' else 'Show me input -> output examples. I’ll propose only a small, supported program, then ask for a separate check.'),'clarification',False
         if k=='definition':
             target=next((g for g in GRAMMAR if sorted(g.description.split(' and '))==sorted(v['definition'].split(' and '))),None)
-            if target is None:return 'I can use colors, shapes, sizes, “not”, and two properties joined by “and”. For example: “A dax means red and small.”','clarification',False
+            if target is None:
+                if any(w in v['definition'] for w in ('reverse','sequence','bright','sort')):
+                    from .master.runtime import MasterSeedArchitecture
+                    out=MasterSeedArchitecture(self.session,self.brain).handle_dialogue_turn(f'"{v["name"]}" means {v["definition"]}')
+                    card('Master cognitive trace',dict(exchange_kind=out['exchange_kind'],meta_operation=out['meta_decision']['selected_operation'],compute_tier=out['compute_tier']['tier_name'],verified=out['response']['verification_passed']))
+                    return out['response']['text'],'clarification',False
+                return 'I can use colors, shapes, sizes, “not”, and two properties joined by “and”. For example: “A dax means red and small.”','clarification',False
             lib.named('language',v['name'],'predicate');ctx.update(active_name=v['name'],lab='language',pending=dict(kind='examples',schema='predicate'))
             # Labels are consequences of the USER'S explicit definition, never
             # model-generated assessment answers. Checks still require the user.

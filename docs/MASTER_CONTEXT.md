@@ -15,6 +15,17 @@ Financial applications are outside current scope.
 
 ## What exists
 
+The [15-component Seed master architecture](NEXUS_SEED_MASTER_ARCHITECTURE.md)
+(`src/nexus/seed/master/`) integrates multimodal neural grounding, a shared
+belief workspace, unified typed knowledge structures, six-tier memory views, a
+hybrid world model with disagreement triggers, an eight-reasoner portfolio and
+router, program synthesis/debugging, a cognitive meta-controller, three learning
+timescales with an acceptance gate, verified response generation, evidence-linked
+knowledge acquisition, and Mac/mobile compute tiers over the SAME `Session`,
+`SharedBrain`, and `E1 Journal`. It is a bounded research architecture—not a
+claim of AGI or demonstrated learning-to-learn. The scientific ledger below is
+unchanged.
+
 The [executable foundation](NEXUS_SEED_FOUNDATION.md) adds bounded compositional
 programs, a six-stage supplied curriculum, evidence-linked ingestion and memory
 consolidation, source-program abstraction with fresh checks, investigation and

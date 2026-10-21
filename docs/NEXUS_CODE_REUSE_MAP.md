@@ -2,6 +2,13 @@
 
 ## Active runtime
 
+- Master architecture: `seed/master/` (`types.py`, `grounding.py`, `memory.py`,
+  `hybrid_world.py`, `reasoning.py`, `coding.py`, `controller.py`, `runtime.py`)
+  connects all 15 master architecture components over the SAME `Session`,
+  `SharedBrain`, `E1 Journal`, `skill_library`, `foundation`, `structure`, and
+  `Conversation`. No replacement database or unverified memory store.
+  [Guide](NEXUS_SEED_MASTER_ARCHITECTURE.md).
+
 - Query-conditioned acquisition: `seed/conditioned_acquisition.py` extends
   `source_acquisition.fit_selector` with an explicit source-count option,
   reuses its utility cases and all fixed learner/baseline paths, plus `nn.ridge`.

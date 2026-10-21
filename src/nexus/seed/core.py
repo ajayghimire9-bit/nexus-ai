@@ -490,6 +490,10 @@ class Session:
                 from .conversation import validate_turn
                 validate_turn(p,s)
                 s.event(event.kind,p)
+            elif event.kind=='seed_master':
+                from .master.runtime import validate_event
+                validate_event(p,s)
+                s.event(event.kind,p)
             else:
                 raise ValueError('unknown_saved_event')
         if s.world != data['world'] or s.stopped != data['stopped']:

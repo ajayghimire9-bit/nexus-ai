@@ -1,0 +1,98 @@
+"""NEXUS Seed 15-component master architecture package."""
+from .coding import (
+    CodeTaskParser,
+    DebuggingController,
+    ExecutionSandbox,
+    ProgramSynthesizer,
+    RepositoryModel,
+)
+from .controller import (
+    COGNITIVE_OPERATIONS,
+    CognitiveMetaController,
+    GroundedResponseGenerator,
+    KnowledgeAcquisitionEngine,
+    TieredComputeController,
+)
+from .grounding import (
+    CompactSubwordTokenizer,
+    NeuralGroundingLayer,
+    build_torch_grounding_encoder,
+)
+from .hybrid_world import HybridWorldModel
+from .memory import (
+    LearningAcceptanceGate,
+    MASTER_EVENT_KIND,
+    MemoryArchitecture,
+    SharedBeliefWorkspace,
+    ThreeTimescalesLearner,
+    master_records,
+)
+from .reasoning import (
+    ActiveInvestigationReasoner,
+    AnalogicalReasoner,
+    CausalReasoner,
+    ConstraintReasoner,
+    HierarchicalPlanner,
+    MathematicalReasoner,
+    ProgramExecutionReasoner,
+    ReasoningRouter,
+    RelationalReasoner,
+)
+from .runtime import MasterSeedArchitecture, request, validate_event
+from .types import (
+    BeliefState,
+    Concept,
+    DebuggingSkill,
+    ExperienceEvent,
+    GroundedObservation,
+    Hypothesis,
+    ReasoningResult,
+    ResponsePlan,
+    Skill,
+    TaskSpec,
+)
+
+__all__ = [
+    "ActiveInvestigationReasoner",
+    "AnalogicalReasoner",
+    "BeliefState",
+    "COGNITIVE_OPERATIONS",
+    "CausalReasoner",
+    "CodeTaskParser",
+    "CognitiveMetaController",
+    "CompactSubwordTokenizer",
+    "Concept",
+    "ConstraintReasoner",
+    "DebuggingController",
+    "DebuggingSkill",
+    "ExecutionSandbox",
+    "ExperienceEvent",
+    "GroundedObservation",
+    "GroundedResponseGenerator",
+    "HierarchicalPlanner",
+    "HybridWorldModel",
+    "Hypothesis",
+    "KnowledgeAcquisitionEngine",
+    "LearningAcceptanceGate",
+    "MASTER_EVENT_KIND",
+    "MasterSeedArchitecture",
+    "MathematicalReasoner",
+    "MemoryArchitecture",
+    "NeuralGroundingLayer",
+    "ProgramExecutionReasoner",
+    "ProgramSynthesizer",
+    "ReasoningResult",
+    "ReasoningRouter",
+    "RelationalReasoner",
+    "RepositoryModel",
+    "ResponsePlan",
+    "SharedBeliefWorkspace",
+    "Skill",
+    "TaskSpec",
+    "ThreeTimescalesLearner",
+    "TieredComputeController",
+    "build_torch_grounding_encoder",
+    "master_records",
+    "request",
+    "validate_event",
+]
