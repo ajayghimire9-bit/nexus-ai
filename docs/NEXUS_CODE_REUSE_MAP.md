@@ -2,6 +2,19 @@
 
 ## Active runtime
 
+- Task-conditioned program ranking, source-only signature audit, and cross-lab transfer:
+  `seed/signature_audit.py`, `seed/task_conditioned_meta.py`, and `seed/cross_lab_transfer.py`
+  reuse `disjoint_meta.probe_domain/action_probe_domain/frozen_hashes`,
+  `evolution1.catalogue.canonical/digest`, `shared_brain.SharedBrain`,
+  `skill_library`, `foundation.programs`, and the SAME `EXPERIMENTAL` host/worker/journal.
+  `scripts/verify_seed_task_conditioned_replication.py` is a standalone stdlib
+  verifier that independently reconstructs the 6-operator catalogues, three-way
+  partition invariants, family summaries, paired Student-$t$ intervals, and all 7
+  advancement gates. [Protocol](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md),
+  [Results](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md),
+  [Signature Audit](NEXUS_SEED_SIGNATURE_AUDIT_RESULTS.md),
+  [Cross-Lab Transfer](NEXUS_SEED_CROSS_LAB_TRANSFER_RESULTS.md).
+
 - Disjoint compositional meta-learning replication: `seed/disjoint_meta.py`
   reuses `skill_programs.run/value` for primitive execution, `evolution1.catalogue.canonical/digest`
   for canonical serialization and SHA-256 digests, `investigation_transfer.FROZEN` for

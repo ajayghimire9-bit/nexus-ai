@@ -1,0 +1,244 @@
+{
+  "schema": "seed_cross_lab_transfer_v1",
+  "episodes": [
+    {
+      "episode_id": 1,
+      "name": "canonseq",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "sort",
+          "unique"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    },
+    {
+      "episode_id": 2,
+      "name": "flipstep",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "increment",
+          "reverse"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    },
+    {
+      "episode_id": 3,
+      "name": "evenstep",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "even",
+          "increment"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    },
+    {
+      "episode_id": 4,
+      "name": "steporder",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "increment",
+          "sort"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    },
+    {
+      "episode_id": 5,
+      "name": "evenset",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "even",
+          "unique"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    },
+    {
+      "episode_id": 6,
+      "name": "stepset",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "increment",
+          "unique"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    },
+    {
+      "episode_id": 7,
+      "name": "descorder",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "sort",
+          "reverse"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    },
+    {
+      "episode_id": 8,
+      "name": "uniqueflip",
+      "program": {
+        "schema": "list",
+        "ops": [
+          "unique",
+          "reverse"
+        ]
+      },
+      "shared_memory": {
+        "downstream_evaluations": 1,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true,
+        "journal_events": 4
+      },
+      "scratch_learning": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 1.0,
+        "world_goal_reached": true
+      },
+      "isolated_labs": {
+        "downstream_evaluations": 66,
+        "downstream_accuracy": 0.0,
+        "world_goal_reached": false
+      }
+    }
+  ],
+  "summary": {
+    "shared_memory_transfer": {
+      "mean_downstream_evaluations": 1.0,
+      "total_downstream_evaluations": 8,
+      "downstream_accuracy": 1.0,
+      "world_goal_completion_rate": 1.0
+    },
+    "scratch_learning": {
+      "mean_downstream_evaluations": 66.0,
+      "total_downstream_evaluations": 528,
+      "downstream_accuracy": 1.0,
+      "world_goal_completion_rate": 1.0
+    },
+    "isolated_labs": {
+      "mean_downstream_evaluations": 66.0,
+      "total_downstream_evaluations": 528,
+      "downstream_accuracy": 0.0,
+      "world_goal_completion_rate": 0.0
+    }
+  },
+  "evaluation_reduction_vs_scratch": 0.984848,
+  "accuracy_gain_vs_isolated": 1.0,
+  "passed": true
+}

@@ -108,3 +108,17 @@ def test_post_run_replication_artifact_if_present() -> None:
     replay = tcm.saved_replay(ROOT)
     assert replay["status"] == "complete_development"
     assert replay["task_conditioned_replication"]["overall_pass"] is True
+    assert replay["task_conditioned_replication"]["CrossDomainTransferEstablished"] is True
+
+    audit_path = ROOT / "artifacts" / "seed_task_conditioned_replication_audit.json"
+    assert audit_path.exists()
+    audit = json.loads(audit_path.read_text(encoding="utf-8"))
+    assert audit["valid"] is True
+    assert audit["overall_pass"] is True
+    assert audit["CrossDomainTransferEstablished"] is True
+    assert audit["CrossLabTransferEstablished"] is True
+
+    xlab_path = ROOT / "artifacts" / "seed_cross_lab_transfer.json"
+    assert xlab_path.exists()
+    xlab_art = json.loads(xlab_path.read_text(encoding="utf-8"))
+    assert xlab_art["passed"] is True

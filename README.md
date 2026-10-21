@@ -12,6 +12,33 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Task-conditioned program ranking & sealed compositional replication](docs/NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md)
+([protocol](docs/NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md),
+[source-only I/O signature audit](docs/NEXUS_SEED_SIGNATURE_AUDIT_RESULTS.md),
+[cross-lab shared-memory transfer](docs/NEXUS_SEED_CROSS_LAB_TRANSFER_RESULTS.md))
+**passed all 7 preregistered gates** (`seed-task-conditioned-replication-1`,
+pre-run SHA `cc57cddff4491a93b76a842e43a85229216f0bce`): on a fresh 6-operator
+grammar (`258` raw $\to$ `100` canonical $\to$ `65` semantically unique: `18`
+source, `23` quarantined `v1` targets, `24` fresh sealed `decrement` targets
+with `0` overlap), conditioning candidate ranking on the 17-dimensional
+input-output signature $S(p\mid D_B) = -\|\operatorname{signature}(D_B)-\operatorname{signature}(p)\|_1 + \alpha S_{\text{structural}}(p) - \beta\operatorname{complexity}(p)$
+reduced primary candidate evaluations to **`1.0000`** (`1.0000` held-out
+accuracy, `1.0000` old-task retention), beating `flat_catalogue` (`12.7083`,
+`92.13%` reduction, 95% CI `[+8.0858, +15.3309]`), `shortest_program` (`28.2500`,
+`96.46%`), `exact_macro_cache` (`30.5000`, `96.72%`), `random_ordering`
+(`33.0130`, `96.97%`), task-independent `structural_meta_prior` (`42.3333`,
+`97.64%`), and `operator_frequency` (`50.2500`, `98.01%`), while also outperforming
+`bayesian_version_space` (`1.3333`) and `learned_linear_ranker` (`5.6250`) so no
+neural ranker is needed. Cross-domain transfer under a supplied mapping
+(`action_token_sequence`) reduced evaluations from `48.0417` (`scratch_flat`) to
+`1.0000` (`97.92%` reduction), and shared-memory cross-lab transfer (`Language`
+$\to$ `Coding` $\to$ `Reasoning` $\to$ `World`) reduced downstream evaluations
+from `66.0` to `1.0` (`98.48%` reduction, `100%` World Lab goal completion vs
+`0%` for `isolated_labs`). This establishes **bounded task-conditioned program
+ranking and shared-memory cross-lab transfer within the registered finite
+grammar**; open-ended general intelligence remains unestablished. No live
+promotion. Previous closed results remain below.
+
 [Disjoint compositional meta-learning replication](docs/NEXUS_SEED_DISJOINT_META_RESULTS.md)
 ([protocol](docs/NEXUS_SEED_DISJOINT_META_PROTOCOL.md)) **failed its registered
 learning-to-learn screen** (`seed-disjoint-meta-1`, Gate 1 passed, Gates 2–7
