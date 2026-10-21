@@ -45,6 +45,17 @@ def compile_policy():
     objective and lowest-question tie-break as online greedy. Partition reads
     are charged separately from candidate-scoring reads.
     """
+    return compile_table(b.TABLE)
+
+
+def compile_table(table):
+    """Exact compilation from a caller's explicit outcome model, not hidden data.
+
+    The caller owns provenance. Historical compile_policy still supplies the
+    original fixed grammar; new source-only studies supply a fitted model.
+    """
+    if len(table)!=8 or any(len(row)!=8 or any(type(v) is not bool for v in row) for row in table):raise ValueError('boolean_eight_by_eight_model')
+    if len({tuple(row) for row in table})!=8:raise ValueError('distinct_class_responses')
     nodes={};cost=dict(score_table_reads=0,partition_table_reads=0,candidate_scores=0,nodes=0)
     def visit(ids,remaining):
         k=key(ids,remaining)
@@ -53,17 +64,17 @@ def compile_policy():
         if len(ids)==1:nodes[k]=dict(posterior=list(ids),question=None);return
         scores=[]
         for q in remaining:
-            yes=sum(b.TABLE[i][q] for i in ids);cost['score_table_reads']+=len(ids)
+            yes=sum(table[i][q] for i in ids);cost['score_table_reads']+=len(ids)
             scores.append((yes*yes+(len(ids)-yes)**2,q));cost['candidate_scores']+=1
         q=min(scores)[1];nodes[k]=dict(posterior=list(ids),question=q)
         groups=[[],[]]
         for i in ids:
-            groups[int(b.TABLE[i][q])].append(i);cost['partition_table_reads']+=1
+            groups[int(table[i][q])].append(i);cost['partition_table_reads']+=1
         if any(len(g)==len(ids) for g in groups):raise ValueError('nonseparating_grammar')
         for child in groups:
             if child:visit(tuple(child),tuple(x for x in remaining if x!=q))
     visit(tuple(range(8)),tuple(range(8)))
-    return dict(grammar_sha256=digest(b.TABLE),nodes=nodes,construction=cost)
+    return dict(grammar_sha256=digest(table),nodes=nodes,construction=cost)
 
 
 def choose(method,posterior,remaining,history,library,order,costs):

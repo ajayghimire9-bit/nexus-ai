@@ -112,7 +112,11 @@ def choose(method,posterior,remaining,history,library,random_order,costs):
     return min(scored)[1]
 
 
-def adapt(method,library,reveal,seed=0,*,choose_fn=choose):
+def adapt(method,library,reveal,seed=0,*,choose_fn=choose,table=None):
+    # Optional explicit model for source-inferred studies; historical default
+    # and every recorded old decision remain unchanged.
+    if table is not None and choose_fn is choose:raise ValueError('explicit_model_requires_matching_choice_function')
+    table=TABLE if table is None else table
     posterior=list(range(8));remaining=list(range(8));history={};steps=[];snapshots={}
     order=list(range(8));random.Random(seed).shuffle(order)
     costs=dict(tree_nodes=0,hypothesis_predictions=0,search_nodes=0)
@@ -124,7 +128,7 @@ def adapt(method,library,reveal,seed=0,*,choose_fn=choose):
             if type(answer) is not bool: raise ValueError('boolean_observed_answer')
             history[q]=answer;remaining.remove(q)
             costs['hypothesis_predictions']+=len(posterior)
-            posterior=[h for h in posterior if TABLE[h][q] is answer]
+            posterior=[h for h in posterior if table[h][q] is answer]
             if not posterior: raise ValueError('inconsistent_support')
             step.update(answer=answer,posterior_after=list(posterior));steps.append(step)
         if budget in BUDGETS: snapshots[str(budget)]=dict(posterior=list(posterior),questions=len(steps))

@@ -2,6 +2,12 @@
 
 ## Active runtime
 
+- Source-inferred investigation: `seed/inferred_investigation.py` fits only source
+  traces, reuses `structure.investigation.learn`, `investigation_transfer.adapt`,
+  `investigation_hybrid.choose`, `compiled_greedy.compile_table` and the SAME
+  EXPERIMENTAL host. Explicit table arguments preserve historical defaults;
+  no global table swapping or new memory/optimizer framework.
+
 - Source-free compilation: `seed/compiled_greedy.py` compiles the supplied grammar
   and reuses `investigation_transfer.adapt`, `LabelOracle`, `investigation_hybrid.choose`
   and the existing EXPERIMENTAL host/journal. Saved-bank audit only; no live promotion.

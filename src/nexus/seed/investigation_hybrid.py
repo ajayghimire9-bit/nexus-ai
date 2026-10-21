@@ -53,7 +53,8 @@ def load_source(root):
     return dict(source=p['source'],library=p['library'],inherited_source=inherited)
 
 
-def choose(method,posterior,remaining,history,library,random_order,costs):
+def choose(method,posterior,remaining,history,library,random_order,costs,*,table=None):
+    table=base.TABLE if table is None else table
     costs.setdefault('greedy_calls',0);costs.setdefault('search_predictions',0);costs.setdefault('fallback_calls',0)
     if method in ('tree_fixed','tree_greedy'):
         tree=library['tree']
@@ -69,7 +70,7 @@ def choose(method,posterior,remaining,history,library,random_order,costs):
         for q in remaining:
             # One actual table lookup per hypothesis, rather than recomputing
             # both Boolean partitions. Same exact squared-partition criterion.
-            yes=sum(base.TABLE[h][q] for h in posterior);no=len(posterior)-yes
+            yes=sum(table[h][q] for h in posterior);no=len(posterior)-yes
             costs['hypothesis_predictions']+=len(posterior)
             costs['search_predictions']+=len(posterior)
             scores.append((yes*yes+no*no,q))

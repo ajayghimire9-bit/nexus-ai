@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Registered — source-inferred investigation, not yet run
+
+[Protocol](NEXUS_SEED_INFERRED_INVESTIGATION_PROTOCOL.md): eight new authored
+query-response families; only source traces fit the outcome models and trees.
+Equally informed compiled/online/fixed/random controls. Cap60s/13000 interactions
+(including class annotations); carry1987.6321034559958s used /
+1612.3678965440042s remaining. Commit tested code before collecting outcomes.
+No neural retraining, live promotion or general learning-to-learn claim.
+
 ## Latest — source-free compiled greedy audit PASSED its cost/exactness screen
 
 Clean execution7081cc79c0e7f8a98125db7864cfcc3e17d1cb88, one saved-data-only
