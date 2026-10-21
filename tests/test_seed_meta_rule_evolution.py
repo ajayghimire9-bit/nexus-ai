@@ -83,3 +83,12 @@ def test_full_study_passes_all_nine_gates() -> None:
     assert eval_block["overall_pass"] is True
     for g_name, g_val in eval_block["gates"].items():
         assert g_val is True, f"Gate failed: {g_name}"
+
+
+def test_saved_replay_and_independent_verifier() -> None:
+    replay = mre.saved_replay()
+    assert replay["id"] == "seed-meta-rule-evolution-1"
+    assert replay["status"] == "complete_development"
+    assert replay["meta_rule_evolution"]["verdict"] == "PASS_META_RULE_EVOLUTION_V1"
+    assert replay["meta_rule_evolution"]["overall_pass"] is True
+

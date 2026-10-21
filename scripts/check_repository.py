@@ -13,6 +13,7 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 DOCUMENTS = (
     'docs/NEXUS_SEED_META_RULE_EVOLUTION_PROTOCOL.md',
+    'docs/NEXUS_SEED_META_RULE_EVOLUTION_RESULTS.md',
     'docs/NEXUS_SEED_SIGNATURE_AUDIT_PROTOCOL.md',
     'docs/NEXUS_SEED_SIGNATURE_AUDIT_RESULTS.md',
     'docs/NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md',

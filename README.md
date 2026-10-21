@@ -12,6 +12,36 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Combined Wake–Sleep–Dream–Evolution Architecture & Meta-Rule Evolution v1](docs/NEXUS_SEED_META_RULE_EVOLUTION_RESULTS.md)
+([protocol](docs/NEXUS_SEED_META_RULE_EVOLUTION_PROTOCOL.md)) **passed all 9
+preregistered gates** (`seed-meta-rule-evolution-1`, pre-run SHA
+`322583377f03ccca702dda5478d158f57c1b0408`): inside an `ImmutableTrustedKernel`
+(`kernel_sha256_before == kernel_sha256_after`), NEXUS evolved a 32-rule
+population across 20 generations and 8 independent seeds (`5,120` rule
+evaluations) over a 13-opcode typed learning-rule DSL (`10–30` instructions),
+freezing the winning rule (`frozen_evolved_rule_sha256`) before generating the
+sealed final grammar. With **zero stored whole-program fingerprints** and **no
+manually supplied cross-lab mapping**, the evolved learning rule constructs
+concept capsules from learned primitive transition models (including
+`filter-even -> decrement -> reverse -> unique` bound to `"zorp"`), achieves
+`1.0000` task success and `1.0000` (`>= 98%`) protected old-skill retention, and
+beats the handwritten `exact_information_gain_learner` across all **4
+independent grammars** (`list_transformations`, `boolean_mechanisms`,
+`relational_graphs`, and sealed `sealed_action_state_transitions` with new
+sensor `thermal_flux`, action `calibrate_shield`, and hidden variable
+`latent_drift_polarity`), reducing active experiments by **`66.67%`** (`1.0000`
+vs `3.0000`) and execution compute by **`92.50%`** (`5.2361` vs `69.8039`
+episodic, `4.9080` continual after Stitch-like Sleep subprogram compression;
+sealed paired cost reduction `+64.4656`, 95% CI `[+63.8448, +65.0864]`).
+Removing the evolved rule removes the advantage, and neither
+`random_evolution_control` nor `rule_size_only_control` matches it. **Permitted
+conclusion: NEXUS evolved an executable learning procedure that acquired bounded
+hidden mechanisms more efficiently than its handwritten learner and transferred
+to independently generated grammar families. This is genuine evidence of bounded
+learning-to-learn; it does not establish AGI, unrestricted self-improvement, or
+general language intelligence.** No live promotion. Previous closed results
+remain below.
+
 [Task-conditioned program ranking & sealed compositional replication](docs/NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md)
 ([protocol](docs/NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md),
 [source-only I/O signature audit](docs/NEXUS_SEED_SIGNATURE_AUDIT_RESULTS.md),

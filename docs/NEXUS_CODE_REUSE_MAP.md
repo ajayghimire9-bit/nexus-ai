@@ -2,6 +2,21 @@
 
 ## Active runtime
 
+- Combined Wake–Sleep–Dream–Evolution Architecture & Meta-Rule Evolution v1:
+  `seed/meta_rule_evolution.py` implements the `ImmutableTrustedKernel`, 13-opcode
+  typed learning-rule DSL interpreter, 7 mutation operators, `ConceptCapsule`
+  acquisition without stored whole-program fingerprints (`zorp` $\to$
+  `filter-even -> decrement -> reverse -> unique`), Dream 6-criterion
+  admissibility & regret generator, Lexicographic/Pareto evolution over separate
+  Episodic and Continual regimes, and Sleep Stitch-like subprogram compression &
+  choice-policy distillation, reusing `evolution1.catalogue.canonical/digest`,
+  `disjoint_meta.frozen_hashes`, `source_acquisition.FROZEN`, and the SAME
+  `EXPERIMENTAL` host/worker/journal. `scripts/verify_seed_meta_rule_evolution.py`
+  is a standalone stdlib verifier that independently audits kernel integrity,
+  pre-sealed rule freezing, capsule provenance, paired intervals, and all 9 gates.
+  [Protocol](NEXUS_SEED_META_RULE_EVOLUTION_PROTOCOL.md),
+  [Results](NEXUS_SEED_META_RULE_EVOLUTION_RESULTS.md).
+
 - Task-conditioned program ranking, source-only signature audit, and cross-lab transfer:
   `seed/signature_audit.py`, `seed/task_conditioned_meta.py`, and `seed/cross_lab_transfer.py`
   reuse `disjoint_meta.probe_domain/action_probe_domain/frozen_hashes`,
