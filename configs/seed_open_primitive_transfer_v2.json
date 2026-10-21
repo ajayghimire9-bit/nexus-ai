@@ -1,0 +1,48 @@
+{
+  "schema": "seed_open_primitive_transfer_v2_preparation_v1",
+  "authorized": false,
+  "execution_ready": false,
+  "base_sha": "8d62ce23722bafea9c355cde4f306ca23dad3584",
+  "carried_used_s": 2078.632103455996,
+  "carried_remaining_s": 1521.3678965440042,
+  "proposed_budget": {"wall_s": 300, "cpu_s": 300, "memory_mb": 2048, "sandbox_actions": 100000, "real_environment_steps": 0, "imagined_transitions": 0},
+  "seeds": [2140001001, 2140001002, 2140001003, 2140001004, 2140001005, 2140001006, 2140001007, 2140001008],
+  "planned_partitions": {
+    "evolution_training": {"families": ["flat_list", "boolean_circuit"], "seed_base": 2130001000},
+    "curriculum_development": {"families": ["string_fst"], "seed_base": 2130101000},
+    "frozen_rule_selection": {"families": ["integer_pair"], "seed_base": 2130201000},
+    "final_transfer": {
+      "stateful_stream": [2140100000, 2140100001, 2140100002, 2140100003, 2140100004, 2140100005, 2140100006, 2140100007],
+      "nested_record": [2140100100, 2140100101, 2140100102, 2140100103, 2140100104, 2140100105, 2140100106, 2140100107],
+      "graph_path": [2140100200, 2140100201, 2140100202, 2140100203, 2140100204, 2140100205, 2140100206, 2140100207]
+    }
+  },
+  "methods": ["frozen_evolved_rule", "strongest_handwritten", "exact_information_gain_effect", "mdl_best_first", "exhaustive_typed", "random_valid_rule", "random_evolutionary_selection", "no_propose", "no_sleep", "scratch_isolated", "shared_memory", "evaluator_only_oracle"],
+  "per_episode_action_budget": 64,
+  "per_episode_dsl_budget": 64,
+  "per_episode_question_budget": 4,
+  "primary_success_noninferiority_margin": 0.02,
+  "material_acquisition_difference": 0.05,
+  "bootstrap_samples": 20000,
+  "bootstrap_seed": 112233,
+  "multiplicity": "Holm across non-oracle baseline comparisons",
+  "gates": {
+    "01": "zero unauthorized evaluator-private payloads reach learner",
+    "02": "runner cannot access evaluator-private state",
+    "03": "frozen rule chooses every Stage-B action",
+    "04": "no learner-visible solution fields",
+    "05": "mean hidden accuracy >= 0.95",
+    "06": "at least two final families accuracy >= 0.90",
+    "07": "success noninferior to strongest executed baseline",
+    "08": "positive paired 95% cost or experiment advantage",
+    "09": "no-propose materially removes acquisition success",
+    "10": "no evolved rule materially removes success or efficiency",
+    "11": "shared cross-lab memory beats isolated and scratch",
+    "12": "retention >= 0.98 and worst regression <= 0.02",
+    "13": "every promotion passes private lifecycle executions",
+    "14": "metrics exactly reconstruct from raw receipts",
+    "15": "independent verifier imports no result builder",
+    "16": "renaming and decoy shuffling preserve results",
+    "17": "no automatic live-agent promotion"
+  }
+}

@@ -1,5 +1,17 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Current primitive-transfer repair (incomplete)
+
+`seed/primitive_transfer_v2/` adds strict JSON capabilities, three role processes,
+a bounded AST interpreter and a public-helper patch fixture. `environment.py`
+reuses `CommonEnvironmentAdapter`/`TransitionReceipt` without initializing legacy
+private state; `private_evaluator.py` owns the unchanged `ImmutableTrustedKernel`.
+The new runner refuses scientific execution. The independent v2 verifier checks
+historical bytes and receipt arithmetic, not acquisition. Full DSL evolution,
+`PrimitiveProposal` lifecycle, sealed generation, baselines, retention/MDL and
+cross-lab integration remain unfinished. Do not reuse v1's answer-bearing specs
+or baseline table as a shortcut. See the [audit](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md).
+
 ## Active runtime
 
 - Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1:

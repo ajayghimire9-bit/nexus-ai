@@ -170,6 +170,10 @@ function inferredDetails(e,s){
  const detail=document.createElement('details');detail.append(text('summary','All family results, accuracy/Brier and predeclared gates'),text('pre',JSON.stringify(s,null,2)));e.append(detail);
 }
 function openPrimitiveTransferDetails(e,s){
+ if(s.audit_status==='UNSUPPORTED_V1_STAGE_B'){
+  e.append(text('h3','Open Primitive Transfer v1 · scientific conclusion unsupported'),text('p',s.audit_conclusion),text('p','Source audit confirmed private-test access, answer-bearing specifications, scripted patches, assigned baseline costs and reused development selection. V2 is unauthorized and incomplete; no replacement experiment has run. Historical data below are preserved, not endorsed.'));
+  const detail=document.createElement('details');detail.append(text('summary','Historical reported results — superseded by source audit'),text('pre',JSON.stringify(s,null,2)));e.append(detail);return;
+ }
  e.append(text('h3','Meta-Rule Evolution v2 + Open Primitive Code Transfer v1 · '+s.screen),text('p',s.permitted_conclusion+' No live promotion.'));
  const pc=s.paired_comparisons.stage_a_cost_vs_info_gain_plus_effect;
  e.append(text('p',`Stage A pass: ${s.stage_a_pass} · Stage B pass: ${s.stage_b_pass} · Stage A compute diff vs info-gain+effect: ${pc.mean_diff.toFixed(4)} [${pc.ci95_low.toFixed(4)}, ${pc.ci95_high.toFixed(4)}] · Zero evaluator leakage verified.`));

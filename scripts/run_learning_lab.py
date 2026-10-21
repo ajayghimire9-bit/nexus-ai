@@ -133,7 +133,8 @@ class LabHandler(BaseHTTPRequestHandler):
                     state['experiments']=[r for r in state['experiments'] if r['id']!=meta_rule_evo['id']]+[meta_rule_evo]
                 if (ROOT/'artifacts/seed_open_primitive_transfer.json').exists():
                     from nexus.seed.open_primitive_transfer import saved_replay as open_prim_replay
-                    open_prim=open_prim_replay(ROOT)
+                    from nexus.seed.primitive_transfer_v2.audit_view import audited_replay
+                    open_prim=audited_replay(open_prim_replay(ROOT))
                     state['experiments']=[r for r in state['experiments'] if r['id']!=open_prim['id']]+[open_prim]
                 if (ROOT/'artifacts/seed_executable_world.json').exists():
                     from nexus.seed.structure.study import saved_replay as structure_replay

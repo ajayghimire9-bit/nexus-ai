@@ -1,5 +1,17 @@
 # NEXUS Seed — Master Context
 
+## Current correction — Open Primitive Transfer v1
+
+The [source audit](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md)
+supersedes the later historical "passed Stage B" claims in this file. Private
+test access, supplied solutions, scripted actions and assigned baseline costs
+mean autonomous primitive acquisition and learning-rule transfer are unsupported.
+Stage-A development also entered winner selection. Historical results stay intact.
+[V2 preparation](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V2_PROTOCOL.md) is incomplete
+and unauthorized; no replacement scientific run or final task generation occurred.
+Authoritative carried ledger: **2078.632103455996 s used / 1521.3678965440042 s
+remaining**. Earlier ledger entries below are chronology, not a budget reset.
+
 ## Ultimate goal
 
 Build a compact, adaptive autonomous intelligence system that learns from

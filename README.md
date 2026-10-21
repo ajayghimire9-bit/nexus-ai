@@ -10,7 +10,20 @@ capability we already claim. No external LLM or API key is required at runtime.
 `main` branch carries this work; earlier control and Evolution studies remain
 preserved research. Future experiments use separate bounded research branches.
 
-## Latest research result
+## Current scientific status — v1 Stage-B claim unsupported
+
+The [adversarial source audit](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md)
+confirmed private-test access, answer-bearing specifications, scripted patches,
+assigned baseline costs and development-set selection in the latest study.
+**Open Primitive Transfer v1 Stage-B results do not establish autonomous primitive
+acquisition or learning-rule transfer.** Historical artifacts remain unchanged.
+
+[V2 repair preparation](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V2_PROTOCOL.md)
+adds tested process boundaries and bounded execution, but is **incomplete and
+unauthorized**. No replacement scientific experiment has run. The read-only Lab
+labels the superseded result explicitly.
+
+## Historical reported result — superseded by the audit above
 
 [Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md)
 ([protocol](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md),

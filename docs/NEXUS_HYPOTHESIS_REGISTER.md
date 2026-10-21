@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Current correction — bounded autonomous primitive acquisition
+
+Status: **not established**. The latest v1 Stage-B report is scientifically
+unsupported after [source audit](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md).
+Supplied solutions, private checks and manually assigned baseline costs invalidate
+the claimed discovery/efficiency comparison. V2 engineering fixtures do not test
+the hypothesis. Its 17 prospective gates are all unevaluated; the incomplete
+implementation cannot be authorized or run. Older entries retain chronology.
+
 ## Latest — task-conditioned program ranking & sealed compositional replication PASSED all 7 registered gates
 
 Clean execution `cc57cddff4491a93b76a842e43a85229216f0bce` (`seed-task-conditioned-replication-1`, `seed_task_conditioned_replication_v1`).

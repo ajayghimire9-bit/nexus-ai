@@ -1,5 +1,14 @@
 # NEXUS Seed — Research Registry
 
+## Superseding status — Open Primitive Transfer v1 scientific claim unsupported
+
+[Source audit](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md) confirms
+private-test access, supplied solutions, scripted transfer and unmeasured baseline
+costs. Historical result/audit bytes remain unchanged; their recorded pass labels
+below must not be used as evidence of autonomous acquisition. V2 is incomplete,
+unauthorized engineering preparation, not a completed registered study. No new
+scientific execution; carried ledger stays 2078.632103455996 / 1521.3678965440042 s.
+
 ## Latest — Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1 PASSED Stage A, Stage B, and all 12 registered gates
 
 Clean execution `4bc6443e939287f80bac50cbdfa935e6b5bf0049` (`seed-open-primitive-transfer-1`, `seed_open_primitive_transfer_v1`). Following the adversarial v1 audit ([NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md)) confirming all 15 v1 confounds, Stage A enforced strict `LearnerTaskView` vs `EvaluatorTaskPrivate` separation (`zero_leakage_verified = true`), real counted candidate execution (`2,806,530` executions), uniform mutation without guided injection, in-loop Dream novelty without `seed`, real pre/post retention (`1.0000` -> `1.0000`, `worst_regression = 0.0`), and real Sleep test re-execution over 3 non-isomorphic families (`list_transformations`, `boolean_circuit_induction`, `fst_string_rewrite`) across 8 seeds (`1762000001..1762000008`). `evolved_meta_rule` achieved `1.0000` task success and `1.0000` retention at `11.2244` compute cost, beating `exact_information_gain_plus_effect_composition` (`19.6275`, CI `[+4.7622, +12.0441]`), `exact_information_gain_learner` (`97.0508`, CI `[+82.4780, +89.1750]`), and untouched `random_evolutionary_selection` (`0.3229` success). Frozen before Stage B, the rule entered `UnknownLibraryCodeLab` across 3 unknown-library families (`ulib_window_checksum`, `ulib_runlength_bucket`, `ulib_zigzag_interleave`), promoted new primitives via `PROPOSE_PRIMITIVE` (`24/24` `PROMOTED`), achieved `1.0000` hidden accuracy vs `0.0000` without `PROPOSE_PRIMITIVE`, beat `strongest_handwritten_learner` (`11.70` vs `28.90` cost, `2.0` vs `4.0` experiments), and transferred promoted primitives (`krelv`, `voux`, `zarn`) across Coding and Reasoning Labs (`1.0000` vs `0.0000` for `isolated_labs`). **NEXUS demonstrated bounded executable learning-rule transfer and acquired one previously unavailable primitive from sandboxed code interactions. This does not establish arbitrary coding, general language understanding, unrestricted self-improvement or AGI.** [Results](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md), [protocol](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md). No live promotion.

@@ -1,5 +1,17 @@
 # NEXUS Seed — Current State
 
+## Superseding audit: primitive acquisition is not established
+
+[Open Primitive Transfer v1 audit](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md)
+confirms all nine reported confounds and a resource-counting defect. Its Stage-B
+scientific conclusion is unsupported; the historical pass entries below are not
+current evidence of independent discovery. V2 has tested JSON/process boundaries,
+bounded public AST execution and receipt checks, but ten required capabilities
+remain incomplete. No v2 run, target generation or allocation occurred.
+Ledger unchanged: **2078.632103455996 / 1521.3678965440042 seconds used/remaining**.
+Next: complete the private generator and proposal/retention/MDL pipeline behind
+the tested boundary, then finish the fair baselines before any authorization.
+
 ## Master Architecture & Unified Workspace (Engineering Demonstration of Within-Family Search-Prior Reuse)
 
 The [15-Component Seed Master Architecture](NEXUS_SEED_MASTER_ARCHITECTURE.md) (`src/nexus/seed/master/`) and its [Bounded Exact-Motif Program-Prior Reuse Demo & Bounded Multi-Reasoner Integration Suite](../src/nexus/seed/master/meta_learning.py) are implemented and verified over the existing `Session`, `SharedBrain`, and `E1 Journal`. In [meta_learning.py](../src/nexus/seed/master/meta_learning.py), learning operator and macro priors from solved source tasks reduces candidate program search evaluations from `9.5` to `1.75` (`81.58%`) when source and target curricula share the same 3 canonical motifs (`sort->unique`, `reverse->increment`, `even->sort`) alongside the 6-domain bounded multi-reasoner integration suite (`relational`, `constraint`, `mathematical`, `causal`, `analogical`, `hierarchical_planning`). Genuine held-out learning-to-learn on canonically and semantically disjoint target compositions is tested separately in `seed_disjoint_meta_v1` below and remains unestablished.

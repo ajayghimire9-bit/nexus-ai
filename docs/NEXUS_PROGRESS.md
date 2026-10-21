@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Current correction — primitive-transfer validity repair
+
+The [adversarial source audit](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md)
+confirmed all nine reported v1 issues plus configured limits reported as usage.
+Its Stage-B scientific conclusion is unsupported. Implemented a public-only
+rule/patch fixture, strict JSON schemas, OS-restricted role subprocesses, bounded
+AST execution, fail-closed readiness and independent receipt/preservation checks.
+The full v2 study remains incomplete and unauthorized. No Stage-A/B scientific
+results or new final targets exist. Historical files are preserved; ledger stays
+2078.632103455996 s used / 1521.3678965440042 s remaining.
+
 ## Latest — task-conditioned program ranking & sealed compositional replication PASSED all 7 registered gates
 
 Clean execution `cc57cddff4491a93b76a842e43a85229216f0bce` (`seed-task-conditioned-replication-1`, `seed_task_conditioned_replication_v1`). On the expanded 6-operator grammar (`258` raw $\to$ `100` canonical $\to$ `65` semantically unique: `18` source, `23` quarantined `v1` targets, `24` fresh sealed `decrement` targets with `0` overlap), task-conditioned signature ranking (`deterministic_signature`) required `1.0000` mean evaluations (`1.0000` held-out accuracy, `1.0000` old-source retention), reducing search evaluations by `92.13%` vs `flat_catalogue` (`12.7083`), `96.46%` vs `shortest_program` (`28.2500`), `96.72%` vs `exact_macro_cache` (`30.5000`), `96.97%` vs `random_ordering` (`33.0130`), `97.64%` vs `structural_meta_prior` (`42.3333`), and `98.01%` vs `operator_frequency` (`50.2500`), while outperforming `bayesian_version_space` (`1.3333`) and `learned_linear_ranker` (`5.6250`). Cross-domain transfer under a supplied mapping (`action_token_sequence`) reduced evaluations from `48.0417` (`scratch_flat`) to `1.0000` (`97.92%` reduction), and cross-lab shared-memory transfer (`Language` $\to$ `Coding` $\to$ `Reasoning` $\to$ `World`) reduced downstream evaluations from `66.0` to `1.0` (`98.48%` reduction, `100%` World Lab goal completion vs `0%` for `isolated_labs`). [Results](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md), [protocol](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md), [signature audit](NEXUS_SEED_SIGNATURE_AUDIT_RESULTS.md), [cross-lab transfer](NEXUS_SEED_CROSS_LAB_TRANSFER_RESULTS.md). No live promotion.

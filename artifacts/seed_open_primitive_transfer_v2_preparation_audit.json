@@ -1,0 +1,57 @@
+{
+  "schema": "seed_open_primitive_transfer_v2_preparation_audit_v1",
+  "artifact_kind": "source_audit_and_engineering_readiness_not_scientific_results",
+  "base_sha": "8d62ce23722bafea9c355cde4f306ca23dad3584",
+  "branch": "codex/seed-open-primitive-transfer-v2",
+  "status": "BLOCKED_INCOMPLETE_IMPLEMENTATION",
+  "authorized": false,
+  "scientific_run_performed": false,
+  "generated_final_tasks": 0,
+  "scientific_debit_s": 0,
+  "session_used_s": 2078.632103455996,
+  "session_remaining_s": 1521.3678965440042,
+  "preserved_base_artifacts_and_tracked_binaries": 846,
+  "historical_sha256": {
+    "artifacts/seed_open_primitive_transfer.json": "384f050886442e6db07dd0388085a4070f754046e7c38fc654bcc7bfd4e68a02",
+    "artifacts/seed_open_primitive_transfer_audit.json": "aa1252dc686c53a29a1b313d17d3bb96708264ec2fb15b2a4683dc9f8d172722",
+    "src/nexus/seed/open_primitive_transfer.py": "c4f3f999d29196b7da2b6d24f750b9ec8591bcc56b67d9cd913859bd08ee923b",
+    "scripts/verify_seed_open_primitive_transfer.py": "9090aeb7156e11b0f50a5c1011308c963f794c1d8972225cc441982e46a7a650"
+  },
+  "source_audit_findings": [
+    {"id": 1, "confirmed": true, "issue": "Stage-B private hidden-test access", "source_lines": "2597-2603"},
+    {"id": 2, "confirmed": true, "issue": "Answer-bearing UNKNOWN_LIB_SPECS", "source_lines": "2101-2224"},
+    {"id": 3, "confirmed": true, "issue": "Scripted successful action sequence", "source_lines": "2566-2620"},
+    {"id": 4, "confirmed": true, "issue": "Frozen rule does not choose Stage-B actions", "source_lines": "2534-2620"},
+    {"id": 5, "confirmed": true, "issue": "Assigned baseline experiment and compute values", "source_lines": "2670-2763"},
+    {"id": 6, "confirmed": true, "issue": "No-propose comparator never attempts a patch", "source_lines": "2714-2738"},
+    {"id": 7, "confirmed": true, "issue": "Cross-lab teaching and scoring use supplied implementation", "source_lines": "2639-2659"},
+    {"id": 8, "confirmed": true, "issue": "Development scoring enters winner selection", "source_lines": "1667-1745,2858+"},
+    {"id": 9, "confirmed": true, "issue": "Original verifier checks consistency rather than independence", "source": "scripts/verify_seed_open_primitive_transfer.py"}
+  ],
+  "additional_accounting_finding": "Configured maxima assigned as actual real_steps and updates at legacy source line 3460 onward",
+  "superseding_conclusion": "Open Primitive Transfer v1 Stage-B results do not establish autonomous primitive acquisition or learning-rule transfer.",
+  "implemented": ["strict_json_roles", "bounded_ast_execution", "message_only_processes", "public_rule_patch_fixture", "independent_receipt_reconstruction"],
+  "missing_capabilities": ["aggregate_actor_resource_host", "all_executable_equal_budget_baselines", "complete_17_gate_verifier", "disjoint_four_partition_generator", "grounded_cross_lab_assessment", "one_use_authorization_binding", "post_freeze_private_final_generator", "private_proposal_retention_mdl_lifecycle", "renamed_shuffled_full_replay", "source_ast_rule_evolution"],
+  "gate_status": "all_17_unevaluated",
+  "tests": {
+    "command": "env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH=src:/Users/ajayghimire/Projects/nexus-ai/.deps python3 -m pytest -o addopts= -q tests/test_seed_open_primitive_transfer_v2.py tests/test_seed_experimental.py tests/test_learning_lab_sessions.py tests/test_learning_lab_release.py",
+    "final_passed": 167,
+    "final_failed": 0,
+    "final_skipped": 0,
+    "final_wall_s": 20.43,
+    "initial_integration_attempt": {"passed": 166, "failed": 1, "wall_s": 41.96, "reason": "Unscoped legacy GUI endpoint exceeded ten-second HTTP client timeout"},
+    "integration_scope": "Final HTTP test exercises changed route using unchanged v1 artifact in an isolated repository; full-archive latency is not validated"
+  },
+  "verification_commands": [
+    "env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 scripts/verify_seed_open_primitive_transfer_v2.py",
+    "env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 scripts/run_seed_open_primitive_transfer_v2.py --readiness"
+  ],
+  "readiness_exit_status": 2,
+  "stage_a_results": null,
+  "stage_b_results": null,
+  "commit_2_created": false,
+  "live_promotion": false,
+  "merge": false,
+  "external_api": false,
+  "unrestricted_submitted_code_execution": false
+}

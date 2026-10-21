@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current priority — finish validity repair before another experiment
+
+The [v1 primitive-transfer source audit](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V1_ADVERSARIAL_AUDIT.md)
+supersedes its Stage-B success claim. The next engineering milestone is the
+evaluator-owned sealed generator and real proposal/retention/MDL pipeline behind
+the new process boundary. Complete all ten readiness requirements, fair executed
+baselines and the independent gate verifier before enabling the
+[prospective v2 protocol](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_V2_PROTOCOL.md).
+No scientific run is currently enabled; do not resume the historical suggestions
+below as an automatic next task. Ledger unchanged: 2078.632103455996 s used /
+1521.3678965440042 s remaining.
+
 ## Latest — task-conditioned program ranking & sealed compositional replication PASSED all 7 registered gates
 
 Clean execution `cc57cddff4491a93b76a842e43a85229216f0bce` (`seed-task-conditioned-replication-1`, `seed_task_conditioned_replication_v1`). On the 6-operator compositional grammar (`258` raw $\to$ `100` canonical $\to$ `65` unique: `18` source, `23` quarantined `v1` targets, `24` fresh sealed `decrement` targets with `0` overlap), `deterministic_signature` required `1.0000` mean evaluations (`1.0000` held-out accuracy, `1.0000` old-source retention), beating `flat_catalogue` (`12.7083`, `92.13%` reduction, CI `[+8.0858, +15.3309]`), `shortest_program` (`28.2500`), `exact_macro_cache` (`30.5000`), `random_ordering` (`33.0130`), `structural_meta_prior` (`42.3333`), `operator_frequency` (`50.2500`), `bayesian_version_space` (`1.3333`), and `learned_linear_ranker` (`5.6250`). Cross-domain transfer under a supplied mapping (`action_token_sequence`) reduced evaluations from `48.0417` to `1.0000` (`97.92%`), and cross-lab shared-memory transfer reduced downstream evaluations from `66.0` to `1.0` (`98.48%`). [Results](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md), [protocol](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md). No live promotion.
