@@ -12,6 +12,12 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Fresh query-conditioned selection](docs/NEXUS_SEED_CONDITIONED_ACQUISITION_RESULTS.md)
+**failed both screens**: primary MSE .230198 versus blind .218490 and
+source-informed model-based .210423; 0/8 wins versus blind. No promotion or
+learning-to-learn claim. Honest results and costs are available in the GUI.
+Previous closed results remain below.
+
 [Query-context source audit](docs/NEXUS_SEED_QUERY_CONTEXT_RESULTS.md): relevant
 query information is missing from the current question selector. Optimal choices
 conflict in 489/512 saved contexts. No new labels or training, and no demonstrated

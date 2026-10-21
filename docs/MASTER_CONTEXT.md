@@ -58,6 +58,24 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+## Latest — fresh query-conditioned acquisition FAILED both screens
+
+Clean execution 609c4d46654826a539494a6a201338bf73bc0e09. On 128 fresh programs
+excluding all prior 192 identities, conditioned primary MSE .230198 versus blind
+.218490, equal-parameter blind .218832, uniform model-based .212389 and
+source-informed .210423. Conditioned lost to blind in all eight selector fits;
+paired blind-minus-conditioned -.011707 [-.018121,-.005293], exploratory n8/df7.
+Both registered screens failed. The earlier missing-query-information audit
+remains valid; these geometry features do not demonstrate useful questioning.
+[Results](NEXUS_SEED_CONDITIONED_ACQUISITION_RESULTS.md). No live promotion.
+
+2048 authored labels, 24 small ridge fits, zero neural forwards or simulator
+steps; 6-second debit. Ledger 2005.6321034559958 used /1594.3678965440042 remaining.
+All 826 prior artifacts unchanged. Next: one source-only utility-label reliability
+audit on saved SOURCE cases, comparing realized utilities with posterior-expected
+gains. No new labels, target tuning or architecture sweep; not run.
+Older entries retain their original chronology.
+
 ## Latest — query-context information limitation demonstrated
 
 The source-only audit completed from clean execution
@@ -303,7 +321,7 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_QUERY_CONTEXT_RESULTS.md),
+[latest results](NEXUS_SEED_CONDITIONED_ACQUISITION_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
@@ -323,8 +341,9 @@ again failed against equally informed compiled greedy. Source-question
 acquisition then completed on new structured programs and failed both screens:
 learned.221353 MSE versus source-informed model-based.210662. The source-only
 query-context sufficiency audit then demonstrated missing query information.
-Next: separately test query-conditioned acquisition on fresh assignments,
-not another run on these closed target banks. The older question-utility label audit below remains
+Fresh query-conditioned acquisition then failed both screens; the conditioned
+selector lost to blind in all eight fits. Next: a source-only utility-label
+reliability audit, not another run on these closed target banks. The older question-utility label audit below remains
 unresolved; the investigation result does not answer it.
 
 The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
@@ -369,8 +388,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1999.6321034559958seconds used,
-1600.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:2005.6321034559958seconds used,
+1594.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance

@@ -1,6 +1,24 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Registered — fresh query-conditioned acquisition
+## Latest — fresh query-conditioned acquisition FAILED both screens
+
+Clean execution 609c4d46654826a539494a6a201338bf73bc0e09. On 128 fresh programs
+excluding all prior 192 identities, conditioned primary MSE .230198 versus blind
+.218490, equal-parameter blind .218832, uniform model-based .212389 and
+source-informed .210423. Conditioned lost to blind in all eight selector fits;
+paired blind-minus-conditioned -.011707 [-.018121,-.005293], exploratory n8/df7.
+Both registered screens failed. The earlier missing-query-information audit
+remains valid; these geometry features do not demonstrate useful questioning.
+[Results](NEXUS_SEED_CONDITIONED_ACQUISITION_RESULTS.md). No live promotion.
+
+2048 authored labels, 24 small ridge fits, zero neural forwards or simulator
+steps; 6-second debit. Ledger 2005.6321034559958 used /1594.3678965440042 remaining.
+All 826 prior artifacts unchanged. Next: one source-only utility-label reliability
+audit on saved SOURCE cases, comparing realized utilities with posterior-expected
+gains. No new labels, target tuning or architecture sweep; not run.
+Older entries retain their original chronology.
+
+## Registration record — query-conditioned comparison (now completed)
 
 [Protocol](NEXUS_SEED_CONDITIONED_ACQUISITION_PROTOCOL.md): eight independent
 source fits per representation; 128 fresh program identities excluding all prior
