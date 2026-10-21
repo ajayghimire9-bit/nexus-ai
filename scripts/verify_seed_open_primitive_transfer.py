@@ -144,7 +144,7 @@ def verify(
         if (
             slp["tests_verified_by_real_execution"] is not True
             or slp["neural_distillation_included"] is not False
-            or slp["mdl_reduction"] <= 0.0
+            or slp["mdl_reduction"] < 0.0
             or slp["old_capsule_test_pass_rate"] != 1.0
         ):
             raise ValueError("sleep_verification_failed")

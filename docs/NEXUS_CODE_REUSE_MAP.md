@@ -17,7 +17,8 @@
   `ulib_zigzag_interleave`) reusing the SAME `EXPERIMENTAL` host/worker/journal.
   `scripts/verify_seed_open_primitive_transfer.py` is a standalone stdlib verifier.
   [v1 Audit](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md),
-  [Protocol](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md).
+  [Protocol](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md),
+  [Results](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md).
 
 - Combined Wake–Sleep–Dream–Evolution Architecture & Meta-Rule Evolution v1:
   `seed/meta_rule_evolution.py` implements the `ImmutableTrustedKernel`, 13-opcode

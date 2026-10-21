@@ -12,6 +12,40 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md)
+([protocol](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md),
+[v1 adversarial audit](docs/NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md)) **passed
+Stage A, Stage B, and all 12 preregistered gates** (`seed-open-primitive-transfer-1`,
+pre-run SHA `4bc6443e939287f80bac50cbdfa935e6b5bf0049`): following the adversarial
+audit confirming all 15 evaluator-leakage and guided-injection confounds in v1,
+Stage A separated `LearnerTaskView` from `EvaluatorTaskPrivate` (`zero_leakage_verified = true`,
+`0` forbidden fields), removed all guided rule injection (`uniform_mutation_sampling = true`),
+integrated Dream inside every generation (`novelty_uses_seed = false`), and evaluated
+real counted candidate executions (`2,806,530` executions, `950,634` hidden evaluations)
+across 3 genuinely non-isomorphic families (`list_transformations`,
+`boolean_circuit_induction`, `fst_string_rewrite`) and 8 independent seeds
+(`1762000001..1762000008`). `evolved_meta_rule` achieved `1.0000` task success and
+`1.0000` real pre/post protected old-skill retention (`worst_regression = 0.0`) at
+`11.2244` mean episodic compute cost (`3.8125` candidate executions, `1.5938`
+experiments), beating `exact_information_gain_plus_effect_composition` (`19.6275`,
+paired diff `+8.4031`, 95% CI `[+4.7622, +12.0441]`), `exact_information_gain_learner`
+(`97.0508`, paired diff `+85.8265`, 95% CI `[+82.4780, +89.1750]`), and untouched
+`random_evolutionary_selection` (`0.3229` success, `42.1309` cost). Frozen before
+Stage B, the evolved rule entered `UnknownLibraryCodeLab` via `CommonEnvironmentAdapter`
+across 3 independent unknown-library families (`ulib_window_checksum` `_kx9_win_fold`,
+`ulib_runlength_bucket` `_vq4_rle_span`, `ulib_zigzag_interleave` `_zm7_zigzag_fold`),
+proposed new primitives via `PROPOSE_PRIMITIVE` (`24/24` passing the 6-stage kernel
+lifecycle `PROPOSED -> ... -> PROMOTED`), achieved `1.0000` hidden accuracy vs `0.0000`
+without `PROPOSE_PRIMITIVE`, beat `strongest_handwritten_learner` (`11.70` vs `28.90`
+compute cost, paired diff `+17.20`, 95% CI `[+17.20, +17.20]`; `2.0` vs `4.0`
+experiments), and reused the promoted primitives under invented words (`krelv`,
+`voux`, `zarn`) across Coding and Reasoning Labs (`1.0000` accuracy vs `0.0000` for
+`isolated_labs`). **NEXUS demonstrated bounded executable learning-rule transfer
+and acquired one previously unavailable primitive from sandboxed code interactions.
+This does not establish arbitrary coding, general language understanding,
+unrestricted self-improvement or AGI.** No live promotion. Previous closed results
+remain below.
+
 [Combined Wake–Sleep–Dream–Evolution Architecture & Meta-Rule Evolution v1](docs/NEXUS_SEED_META_RULE_EVOLUTION_RESULTS.md)
 ([protocol](docs/NEXUS_SEED_META_RULE_EVOLUTION_PROTOCOL.md)) **passed all 9
 preregistered gates** (`seed-meta-rule-evolution-1`, pre-run SHA

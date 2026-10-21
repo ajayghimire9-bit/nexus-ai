@@ -1,0 +1,54 @@
+{
+  "schema": "seed_open_primitive_transfer_audit_v1",
+  "valid": true,
+  "raw_sha256": "384f050886442e6db07dd0388085a4070f754046e7c38fc654bcc7bfd4e68a02",
+  "execution_sha": "4bc6443e939287f80bac50cbdfa935e6b5bf0049",
+  "protocol_sha256": "0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e",
+  "config_sha256": "9d8e522a9386ff222297a5e0f9b93a16568e1fb0875a7503589c84061c56a3c9",
+  "v1_artifact_preserved_sha256": "818300f5100bccf5fcbb461b03aee86742b2173847bbd09d1f52dbd811ec8292",
+  "v1_adversarial_audit_confirmed_confounds": 15,
+  "kernel_integrity_verified": true,
+  "zero_evaluator_leakage_verified": true,
+  "uniform_mutation_without_guided_injection": true,
+  "frozen_before_stage_b": true,
+  "stored_whole_program_fingerprints": 0,
+  "manually_supplied_cross_lab_mapping": false,
+  "unknown_families_reproduced": 3,
+  "stage_a_paired_vs_exact_info_gain": {
+    "mean_diff": 85.82645833,
+    "ci95_low": 82.47796345,
+    "ci95_high": 89.17495322
+  },
+  "stage_a_paired_vs_info_gain_plus_effect": {
+    "mean_diff": 8.403125,
+    "ci95_low": 4.76216781,
+    "ci95_high": 12.04408219
+  },
+  "stage_b_paired_vs_strongest_handwritten": {
+    "mean_diff": 17.2,
+    "ci95_low": 17.2,
+    "ci95_high": 17.2
+  },
+  "gates": {
+    "gate_01_zero_evaluator_private_fields_reach_learner": true,
+    "gate_02_selected_program_passes_hidden_execution_tests": true,
+    "gate_03_unknown_effect_learned_without_stored_complete_fingerprint": true,
+    "gate_04_proposed_primitive_passes_complete_kernel_lifecycle": true,
+    "gate_05_frozen_rule_transfers_to_non_isomorphic_code_family": true,
+    "gate_06_beats_or_non_inferior_to_strongest_fair_baseline_on_success": true,
+    "gate_07_improves_experiments_or_compute_with_paired_ci_excluding_zero": true,
+    "gate_08_removing_promoted_primitive_removes_transfer_gain": true,
+    "gate_09_no_human_written_cross_lab_semantic_mapping": true,
+    "gate_10_old_task_retention_at_least_98pct_real_pre_post": true,
+    "gate_11_all_discovery_evolution_sandbox_validation_costs_included": true,
+    "gate_12_at_least_two_unknown_library_families_reproduce": true
+  },
+  "stage_a_pass": true,
+  "stage_b_pass": true,
+  "overall_pass": true,
+  "verdict": "PASS_BOTH_STAGE_A_AND_STAGE_B",
+  "permitted_conclusion": "NEXUS demonstrated bounded executable learning-rule transfer and acquired one previously unavailable primitive from sandboxed code interactions. This does not establish arbitrary coding, general language understanding, unrestricted self-improvement or AGI.",
+  "historical_artifacts_unchanged": 831,
+  "frozen_checkpoints_unchanged": 2,
+  "new_collection": 0
+}

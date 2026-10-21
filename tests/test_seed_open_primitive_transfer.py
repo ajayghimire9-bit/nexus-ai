@@ -280,3 +280,25 @@ def test_locked_config_rejects_unauthorized_execution():
     c_unauth = configuration(authorized=False)
     with pytest.raises(ValueError, match="study_not_yet_authorized_pre_run_lock"):
         config_check(c_unauth)
+
+
+def test_saved_artifact_and_independent_verifier():
+    """Verify the recorded artifacts/seed_open_primitive_transfer.json and independent verifier pass all 12 gates."""
+    from nexus.seed.open_primitive_transfer import saved_replay
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import verify_seed_open_primitive_transfer as verifier
+
+    audit = verifier.verify(ROOT)
+    assert audit["valid"] is True
+    assert audit["stage_a_pass"] is True
+    assert audit["stage_b_pass"] is True
+    assert audit["overall_pass"] is True
+    assert audit["verdict"] == "PASS_BOTH_STAGE_A_AND_STAGE_B"
+    assert all(audit["gates"].values())
+
+    replay = saved_replay(ROOT)
+    assert replay["id"] == "seed-open-primitive-transfer-1"
+    assert replay["open_primitive_transfer"]["overall_pass"] is True
+
