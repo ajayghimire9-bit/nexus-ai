@@ -69,6 +69,12 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+## Latest — disjoint compositional meta-learning replication FAILED its registered screen
+
+Clean execution `540a30596814ec1687db13e7e38cdc0ab43aa701` (`seed-disjoint-meta-1`, `seed_disjoint_meta_v1`). Over 41 semantically unique programs (`17` source, `24` canonically and semantically disjoint target programs, `0` overlap), `structural_meta_prior` averaged `18.555556` evaluations (accuracy `0.911458`), beating `exact_macro_cache` (`26.902778`), `bayesian_model_based` (`25.263889`), and `operator_frequency` (`24.527778`), but losing to `flat_catalogue` (`15.583333`, accuracy `0.921875`). Structural transfer under a supplied mapping (`action_token_sequence`) required `17.652778` evaluations versus `scratch_flat` `16.722222`. **The registered bounded learning-to-learn screen failed. The architecture and benchmark remain useful engineering infrastructure, but useful learning-to-learn was not established.** [Results](NEXUS_SEED_DISJOINT_META_RESULTS.md), [protocol](NEXUS_SEED_DISJOINT_META_PROTOCOL.md). No live promotion.
+
+2496 real steps, 8 ridge fits ($d=23$), zero neural forwards or simulator steps; 33-second debit. Ledger `2038.6321034559958` used / `1561.3678965440042` remaining. All 831 prior artifacts unchanged; independently verified in `artifacts/seed_disjoint_meta_audit.json` (`valid: true`). Older entries retain their original chronology.
+
 ## Latest — fresh query-conditioned acquisition FAILED both screens
 
 Clean execution 609c4d46654826a539494a6a201338bf73bc0e09. On 128 fresh programs

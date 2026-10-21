@@ -12,6 +12,21 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Disjoint compositional meta-learning replication](docs/NEXUS_SEED_DISJOINT_META_RESULTS.md)
+([protocol](docs/NEXUS_SEED_DISJOINT_META_PROTOCOL.md)) **failed its registered
+learning-to-learn screen** (`seed-disjoint-meta-1`, Gate 1 passed, Gates 2–7
+failed): across 8 families and 24 canonically and semantically disjoint target
+programs (`0` source/target overlap), `structural_meta_prior` required `18.555556`
+construction-inclusive evaluations (held-out accuracy `0.911458`), beating
+source-fitted `exact_macro_cache` (`26.902778`), `bayesian_model_based`
+(`25.263889`), and `operator_frequency` (`24.527778`), but losing to
+`flat_catalogue` (`15.583333`, accuracy `0.921875`). Structural transfer under a
+supplied mapping (`action_token_sequence`) required `17.652778` evaluations
+versus `scratch_flat` `16.722222`. **The registered bounded learning-to-learn
+screen failed. The architecture and benchmark remain useful engineering
+infrastructure, but useful learning-to-learn was not established.** No live
+promotion. Previous closed results remain below.
+
 [Fresh query-conditioned selection](docs/NEXUS_SEED_CONDITIONED_ACQUISITION_RESULTS.md)
 **failed both screens**: primary MSE .230198 versus blind .218490 and
 source-informed model-based .210423; 0/8 wins versus blind. No promotion or
@@ -75,7 +90,7 @@ The [15-Component Seed Master Architecture](docs/NEXUS_SEED_MASTER_ARCHITECTURE.
 (`src/nexus/seed/master/`) is now integrated into the single unified GUI at `/`:
 - **Natural Dialogue & Grounding**: Talk naturally (“How are you?”, “Who are you?”), teach immediate concepts (`"Flip" means reverse the order of a sequence.`), solve relational & math problems (`"If A is north of B and B is north of C, where is A relative to C?"`, `"Solve 3*x + 7 = 22"`), or sort sequences (`"Could you arrange these from smallest to largest? [4, 1, 3, 2]"`).
 - **15-Component Master Hub**: Inspect and run Neural Grounding, Shared Belief Workspace, 6-Tier Memory, Hybrid World Model disagreement triggers, the 8-Reasoner Portfolio, Code Synthesis & Auto-Debugger, Cognitive Meta-Controller, 3 Learning Timescales, and the 5-check `LearningAcceptanceGate` from one tab.
-- **Workable Meta-Learning & Multi-Domain Suite (`meta_learning.py`)**: Induces empirical operator/macro priors from solved source tasks to cut candidate program search evaluations on unseen held-out target tasks while verifying all 6 cognitive domains (`Relational`, `Constraint CSP`, `Mathematical`, `Causal`, `Analogical`, `Hierarchical Planning`). Historical locked scientific ledger studies remain separate and unaltered below.
+- **Bounded Exact-Motif Program-Prior Reuse Demo & Bounded Multi-Reasoner Integration Suite (`meta_learning.py`)**: Engineering demonstration of within-family search-prior reuse (`9.5 -> 1.75` candidate evaluations when source and target share exact canonical motifs `sort->unique`, `reverse->increment`, `even->sort`) alongside the 6-domain bounded multi-reasoner integration suite (`Relational`, `Constraint CSP`, `Mathematical`, `Causal`, `Analogical`, `Hierarchical Planning`). Genuine held-out learning-to-learn on disjoint compositions is tested separately in [NEXUS_SEED_DISJOINT_META_RESULTS.md](docs/NEXUS_SEED_DISJOINT_META_RESULTS.md) and remains unestablished.
 
 The [Phase 1–7 workbench](docs/NEXUS_SEED_PHASE1_7_WORKBENCH.md) connects
 structured state, mechanisms, investigations, grounded phrases, checked typed

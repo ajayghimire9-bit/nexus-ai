@@ -247,3 +247,12 @@ def test_18_existing_conversation_labs_and_relabeled_benchmark_remain_functional
 
     snap = w.sessions[sid].snapshot()
     assert Session.restore(snap).snapshot() == snap
+
+    if (ROOT / "artifacts/seed_disjoint_meta.json").is_file():
+        replay = dm.saved_replay(ROOT)
+        assert replay["disjoint_meta"]["schema"] == "seed_disjoint_meta_evaluation_v1"
+        vmod = load_verifier()
+        audit = vmod.verify(ROOT)
+        assert audit["valid"] is True
+        assert audit["canonical_disjoint"] is True
+        assert audit["semantic_disjoint"] is True

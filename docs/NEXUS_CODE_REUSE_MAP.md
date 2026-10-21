@@ -2,9 +2,20 @@
 
 ## Active runtime
 
+- Disjoint compositional meta-learning replication: `seed/disjoint_meta.py`
+  reuses `skill_programs.run/value` for primitive execution, `evolution1.catalogue.canonical/digest`
+  for canonical serialization and SHA-256 digests, `investigation_transfer.FROZEN` for
+  frozen checkpoint verification, and the SAME `EXPERIMENTAL` host/worker/journal.
+  `scripts/verify_seed_disjoint_meta.py` is a standalone stdlib verifier that
+  independently recomputes all primitives, canonical forms, ridge weights,
+  candidate orderings, retention, cross-domain transfer, intervals, and gates.
+  [Protocol](NEXUS_SEED_DISJOINT_META_PROTOCOL.md), [Results](NEXUS_SEED_DISJOINT_META_RESULTS.md).
+
 - Master architecture: `seed/master/` (`types.py`, `grounding.py`, `memory.py`,
-  `hybrid_world.py`, `reasoning.py`, `coding.py`, `controller.py`, `runtime.py`)
-  connects all 15 master architecture components over the SAME `Session`,
+  `hybrid_world.py`, `reasoning.py`, `coding.py`, `controller.py`, `runtime.py`,
+  `meta_learning.py`) connects all 15 master architecture
+  components, the bounded exact-motif program-prior reuse demo, and the 6-domain
+  bounded multi-reasoner integration suite over the SAME `Session`,
   `SharedBrain`, `E1 Journal`, `skill_library`, `foundation`, `structure`, and
   `Conversation`. No replacement database or unverified memory store.
   [Guide](NEXUS_SEED_MASTER_ARCHITECTURE.md).

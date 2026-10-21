@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest — disjoint compositional meta-learning replication FAILED its registered screen
+
+Clean execution `540a30596814ec1687db13e7e38cdc0ab43aa701` (`seed-disjoint-meta-1`, `seed_disjoint_meta_v1`). On the 41 semantically unique programs of length $1\dots 3$ in $\mathcal{O} = (\text{reverse}, \text{sort}, \text{unique}, \text{increment}, \text{even})$ (`155` raw $\to$ `68` canonical $\to$ `41` unique across 781 probes), holding out 5 adjacent pairs partitioned the grammar into `17` source programs and `24` canonically and semantically disjoint target programs (`0` overlap). Across 8 non-repeating families and budgets $B \in \{1, 2, 4\}$, `structural_meta_prior` required `18.555556` construction-inclusive evaluations (held-out accuracy `0.911458`), beating source-fitted `exact_macro_cache` (`26.902778`, CI `[+3.103318, +13.591126]`), `bayesian_model_based` (`25.263889`, CI `[+2.491547, +10.925120]`), and `operator_frequency` (`24.527778`, CI `[+1.882069, +10.062375]`), and averaging fewer evaluations than `shortest_program` (`22.402778`, CI `[-2.398620, +10.093065]`) and `random_ordering` (`18.745009`, CI `[-3.644101, +4.023007]`), but losing to `flat_catalogue` (`15.583333`, accuracy `0.921875`, CI `[-10.684631, +4.740186]`). **The registered bounded learning-to-learn screen failed. The architecture and benchmark remain useful engineering infrastructure, but useful learning-to-learn was not established.** [Results](NEXUS_SEED_DISJOINT_META_RESULTS.md), [protocol](NEXUS_SEED_DISJOINT_META_PROTOCOL.md). No live promotion.
+
+2496 real steps, 8 ridge fits ($d=23$), zero neural forwards or simulator steps; 33-second debit. Ledger `2038.6321034559958` used / `1561.3678965440042` remaining. All 831 prior artifacts unchanged. Next: one source-only input-output signature conditioning audit testing whether conditioning candidate ranking on observed teaching input-output invariants (length change, sortedness, parity, value range) separates held-out compositions from task-independent static orderings without leaking target labels. Not run. Older entries retain their original chronology.
+
+## Registration record — disjoint compositional meta-learning replication (now completed)
+
+[Protocol](NEXUS_SEED_DISJOINT_META_PROTOCOL.md), [Implementation Plan](NEXUS_SEED_DISJOINT_META_IMPLEMENTATION_PLAN.md): eight independent source fits ($d=23$, $\lambda=1.0$) over 17 source programs; 24 canonically and semantically disjoint target programs ($3$ per family, non-repeating) and 24 cross-domain `action_token_sequence` programs under an explicitly supplied operator-role mapping; 32 frozen old-source retention tasks. Primary budgets $1/2/4$, budget $8$ secondary. Cap 120 seconds / 2496 real steps / 8 outer updates; carry `2005.6321034559958` used / `1594.3678965440042` remaining. Precommitted at `540a30596814ec1687db13e7e38cdc0ab43aa701` before run.
+
 ## Latest — fresh query-conditioned acquisition FAILED both screens
 
 Clean execution 609c4d46654826a539494a6a201338bf73bc0e09. On 128 fresh programs

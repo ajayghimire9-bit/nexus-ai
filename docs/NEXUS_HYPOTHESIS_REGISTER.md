@@ -1,5 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — disjoint compositional meta-learning replication FAILED its registered screen
+
+Clean execution `540a30596814ec1687db13e7e38cdc0ab43aa701` (`seed-disjoint-meta-1`, `seed_disjoint_meta_v1`).
+- **Primary Hypothesis ($H_1$)**: A 23-feature structural meta-prior fitted only on source programs reduces search on canonically and semantically disjoint target programs without reducing held-out accuracy or old-task retention, while beating all 5 simple ordering baselines and `bayesian_model_based`. **Outcome: REFUTED / FAILED SCREEN** (`18.555556` evaluations vs `flat_catalogue` `15.583333`, CI `[-10.684631, +4.740186]`; beats `exact_macro_cache` `26.902778`, `bayesian_model_based` `25.263889`, and `operator_frequency` `24.527778` with 95% CI $> 0$, and averages fewer evaluations than `shortest_program` `22.402778` and `random_ordering` `18.745009`, but fails Gates 2–5 and 7).
+- **Secondary Hypothesis ($H_2$, structural transfer under a supplied mapping)**: Source-learned abstract structural prior transfers to `action_token_sequence` under `SUPPLIED_ROLE_MAPPING` better than `scratch_flat`. **Outcome: REFUTED / FAILED SCREEN** (`transferred_structural_prior` `17.652778` evaluations beats `exact_macro_cache` `19.625000` and `bayesian_model_based` `23.291667`, but loses to `scratch_flat` `16.722222`, CI `[-6.915361, +5.054250]`, failing Gate 6).
+- **Conclusion**: **The registered bounded learning-to-learn screen failed. The architecture and benchmark remain useful engineering infrastructure, but useful learning-to-learn was not established.** [Results](NEXUS_SEED_DISJOINT_META_RESULTS.md), [protocol](NEXUS_SEED_DISJOINT_META_PROTOCOL.md). No live promotion.
+
 ## Latest — fresh query-conditioned acquisition FAILED both screens
 
 Clean execution 609c4d46654826a539494a6a201338bf73bc0e09. On 128 fresh programs
