@@ -45,6 +45,9 @@ def interpret(text,ctx):
     if t in ('show phases','show all phases','open workbench'):return Intent('workbench')
     if t in ('show master architecture','master architecture','inspect master'):return Intent('master_inspect')
     if t in ('generate lessons','give me lessons','create curriculum'):return Intent('curriculum_generate')
+    if any(p in t for p in ('how are you','how are u','how r u','how is it going','how\'s it going','how do you feel','who are you','what are you','what is your name','tell me about yourself','introduce yourself')) or t in ('thanks','thank you','thx','ty','good job','great job','awesome'):return Intent('master_dialogue',dict(text=raw))
+    if any(p in t for p in ('learning to learn','meta learning','meta-learning','general intelligence','are you agi','did we achieve','run general suite')):return Intent('master_dialogue',dict(text=raw))
+    if t.startswith(('solve ','calculate ','compute ')) or re.fullmatch(r'[0-9x\+\-\*\/\(\)\.\s=]+',t) and any(op in t for op in ('+','-','*','/','=')):return Intent('master_dialogue',dict(text=raw))
     if re.fullmatch(r'["“][a-z][a-z0-9_]{0,23}["”] means .+',t):return Intent('master_dialogue',dict(text=raw))
     if re.search(r'^if .+ is .+ (?:of|than) .+ and .+ is .+ (?:of|than) .+',t):return Intent('master_dialogue',dict(text=raw))
     if ('arrange' in t or 'sort' in t) and ('smallest to largest' in t or 'largest to smallest' in t):return Intent('master_dialogue',dict(text=raw))
@@ -166,13 +169,15 @@ class Conversation:
     def friendly_error(reason):
         if reason=='phrase_revision_no_longer_active':return 'That phrase points to a rolled-back revision. Teach it again using a currently verified skill or function.'
         if reason=='clarify_name':return 'Which word or skill do you mean? Tell me its name.'
-        if 'fresh_disjoint' in reason:return 'That example was already used for teaching or checking. Please give a different input for the separate check.'
+        if 'fresh_disjoint' in reason or 'assessment_examples_cannot_become_teaching' in reason:return 'That example was already used for teaching or checking. Please give a different input for the separate check.'
         if 'consumed' in reason:return 'That check attempt has already been used. Add a new teaching example to make a new proposal before checking again.'
         if 'verified_shared_skill' in reason:return 'That skill is not verified yet. Teach examples and complete a separate check before using it.'
+        if 'explicit_alias_replacement_required' in reason:return 'That phrase already has a meaning. Use “Replace phrase ... as ...” if you want to update it.'
+        if 'issued_lesson_number' in reason or 'fresh_issued_source_task' in reason:return 'Choose an unanswered lesson number from the latest issued curriculum batch (for example, “Answer lesson 1: [1, 2]”).'
         if 'name' in reason or 'word' in reason:return 'Choose a short name using letters and numbers, starting with a letter. Property names such as “red” are already reserved.'
         if 'resume' in reason or 'cancel' in reason:return 'This conversation is paused. Say “resume” before teaching or acting again.'
         if 'bounded_integer' in reason:return 'Use a list of at most 16 integers between −64 and 64.'
-        return 'I couldn’t complete that request. Your earlier evidence is preserved. Try the suggested example format or ask for help.'
+        return f'I couldn’t complete that request ({reason}). Your earlier evidence is preserved. Try the suggested example format or ask “What can you do?” for help.'
 
     def resolve_name(self,name,ctx):
         if name in ('that word','this word','that skill','this skill','it','that pattern'):
@@ -348,4 +353,12 @@ class Conversation:
             ctx['pending']=None;ctx['lab']='world';card('Actual world outcome',dict(result=result,world=self.session.world))
             return ('Moved '+ids[0]+'. The world card shows the actual result.' if result['status']=='acted' else 'No move was executed: '+result['text']),('success' if result['status'] in ('acted','already_at_goal') else 'error'),False
         if k=='clarify_examples':return 'Use input -> output, one example per line, or a JSON list of {"input": ..., "output": ...}. Ask “show examples” for a template.','clarification',False
-        return 'I can’t do that yet. I support taught object words, small list patterns, checked skills and grid movement. Try “What can you do?” or “Teach you a skill from examples.”','clarification',False
+        card('Try one of these supported commands',[
+            'How are you?',
+            '"Flip" means reverse the order of a sequence.',
+            'Could you arrange these from smallest to largest? [4, 1, 3, 2]',
+            'If A is north of B and B is north of C, where is A relative to C?',
+            'Solve 3*x + 7 = 22',
+            'Did we achieve learning to learn?',
+        ])
+        return 'I can’t do that yet. I support natural check-ins, taught object words, concept/skill definitions, relational & math reasoning, checked list programs, and 6×6 grid movement. Try one of the prompts below!','clarification',False

@@ -71,6 +71,12 @@ results remain unchanged; no live-agent promotion.
 
 ## Try it
 
+The [15-Component Seed Master Architecture](docs/NEXUS_SEED_MASTER_ARCHITECTURE.md)
+(`src/nexus/seed/master/`) is now integrated into the single unified GUI at `/`:
+- **Natural Dialogue & Grounding**: Talk naturally (“How are you?”, “Who are you?”), teach immediate concepts (`"Flip" means reverse the order of a sequence.`), solve relational & math problems (`"If A is north of B and B is north of C, where is A relative to C?"`, `"Solve 3*x + 7 = 22"`), or sort sequences (`"Could you arrange these from smallest to largest? [4, 1, 3, 2]"`).
+- **15-Component Master Hub**: Inspect and run Neural Grounding, Shared Belief Workspace, 6-Tier Memory, Hybrid World Model disagreement triggers, the 8-Reasoner Portfolio, Code Synthesis & Auto-Debugger, Cognitive Meta-Controller, 3 Learning Timescales, and the 5-check `LearningAcceptanceGate` from one tab.
+- **Workable Meta-Learning & Multi-Domain Suite (`meta_learning.py`)**: Induces empirical operator/macro priors from solved source tasks to cut candidate program search evaluations on unseen held-out target tasks while verifying all 6 cognitive domains (`Relational`, `Constraint CSP`, `Mathematical`, `Causal`, `Analogical`, `Hierarchical Planning`). Historical locked scientific ledger studies remain separate and unaltered below.
+
 The [Phase 1–7 workbench](docs/NEXUS_SEED_PHASE1_7_WORKBENCH.md) connects
 structured state, mechanisms, investigations, grounded phrases, checked typed
 functions, generated source exercises and the same local conversation/session.

@@ -315,11 +315,46 @@ class NeuralGroundingLayer:
                 confidence=confidence,
             )
 
-        # 4. Greeting
-        elif lower.rstrip(".!?") in ("hello", "hi", "hey", "good morning", "hello nexus", "hi nexus"):
+        # 4. Greeting & natural conversational check-ins
+        elif lower.rstrip(".!?") in (
+            "hello", "hi", "hey", "good morning", "good afternoon", "good evening",
+            "hello nexus", "hi nexus", "hey nexus",
+        ):
             intent = "greeting"
             confidence = 0.99
-            requested_goal = dict(intent="greeting", confidence=confidence)
+            requested_goal = dict(intent="greeting", subtype="hello", confidence=confidence)
+
+        elif any(p in lower for p in (
+            "how are you", "how are u", "how r u", "how is it going", "how's it going",
+            "how do you feel", "are you there", "you good",
+        )):
+            intent = "greeting"
+            arguments = dict(subtype="status_check")
+            confidence = 0.98
+            requested_goal = dict(intent="greeting", subtype="status_check", confidence=confidence)
+
+        elif any(p in lower for p in (
+            "who are you", "what are you", "what is your name", "tell me about yourself",
+            "introduce yourself",
+        )):
+            intent = "greeting"
+            arguments = dict(subtype="identity")
+            confidence = 0.98
+            requested_goal = dict(intent="greeting", subtype="identity", confidence=confidence)
+
+        elif lower.rstrip(".!?") in ("thanks", "thank you", "thx", "ty", "good job", "great job", "awesome", "nice", "cool", "well done"):
+            intent = "greeting"
+            arguments = dict(subtype="appreciation")
+            confidence = 0.99
+            requested_goal = dict(intent="greeting", subtype="appreciation", confidence=confidence)
+
+        elif any(p in lower for p in (
+            "learning to learn", "meta learning", "meta-learning", "general intelligence",
+            "are you agi", "did we achieve", "run general suite",
+        )):
+            intent = "meta_learning_benchmark"
+            confidence = 0.96
+            requested_goal = dict(intent="meta_learning_benchmark", text=raw, confidence=confidence)
 
         # 5. Causal reasoning query
         elif any(phrase in lower for phrase in ("causes", "correlates with", "confounder", "causal", "explain both")):

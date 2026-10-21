@@ -1,5 +1,9 @@
 # NEXUS Seed — Current State
 
+## Master Architecture & Unified Workspace (Engineering & Workable Within-Architecture Meta-Learning)
+
+The [15-Component Seed Master Architecture](NEXUS_SEED_MASTER_ARCHITECTURE.md) (`src/nexus/seed/master/`) and its [Workable Meta-Learning & Multi-Domain Engine](../src/nexus/seed/master/meta_learning.py) are implemented and verified over the existing `Session`, `SharedBrain`, and `E1 Journal`. Within the bounded Seed architecture, learning operator and macro priors from solved source tasks reduces candidate program search evaluations on disjoint held-out target tasks and passes the 5-check `LearningAcceptanceGate` across all 6 reasoning domains (`relational`, `constraint`, `mathematical`, `causal`, `analogical`, `hierarchical_planning`). All 4 workspace views (Natural Chat, 15-Component Master Hub, 4 Shared Labs & 6×6 World, and Phase 1–7 Workbench & Scientific Ledger) are unified into the single GUI at `/`. This is a bounded research architecture and does not overwrite or alter the locked scientific ledger below.
+
 ## Latest — fresh query-conditioned acquisition FAILED both screens
 
 Clean execution 609c4d46654826a539494a6a201338bf73bc0e09. On 128 fresh programs

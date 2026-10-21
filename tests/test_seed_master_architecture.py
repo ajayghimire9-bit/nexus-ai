@@ -480,3 +480,39 @@ def test_component14_and_15_knowledge_acquisition_and_tiered_compute():
     assert q8["compression_ratio"] == 4.0 and q8["mean_absolute_error"] < 0.01
     q4 = arch.compute.quantize_weights([-0.5, 0.0, 0.25, 0.5], bits=4)
     assert q4["compression_ratio"] == 8.0 and q4["mean_absolute_error"] < 0.05
+
+
+def test_natural_conversation_and_workable_learning_to_learn_suite(tmp_path):
+    w = SeedWorkspace(tmp_path)
+    sid = w.dispatch(dict(session_id=None, request={"op": "new"}))["session_id"]
+
+    # Natural check-ins ("how are u", "who are you", "thanks", "solve 3*x + 7 = 22")
+    how = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="how are u?", id=uuid.uuid4().hex)))["response"]
+    assert "doing well" in how["text"] and "15-component" in how["text"]
+
+    who = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Who are you?", id=uuid.uuid4().hex)))["response"]
+    assert "NEXUS Seed" in who["text"]
+
+    thx = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Thank you!", id=uuid.uuid4().hex)))["response"]
+    assert "welcome" in thx["text"].lower()
+
+    math_reply = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Solve 3*x + 7 = 22", id=uuid.uuid4().hex)))["response"]
+    assert "5" in math_reply["text"]
+
+    # Workable Learning-to-Learn & General Intelligence Suite via chat and via master_general_suite
+    ltl_chat = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Did we achieve learning to learn?", id=uuid.uuid4().hex)))["response"]
+    assert "reduced candidate program search" in ltl_chat["text"]
+    assert "LearningAcceptanceGate" in ltl_chat["text"]
+
+    suite = w.dispatch(dict(session_id=sid, request=dict(op="master_general_suite", args={})))["response"]["result"]
+    assert suite["all_domains_passed"]
+    assert suite["domains_verified"] == 6
+    bench = suite["learning_to_learn_benchmark"]
+    assert bench["mean_meta_learned_evaluations"] < bench["mean_cold_start_evaluations"]
+    assert bench["search_evaluations_reduction_pct"] > 50.0
+    assert bench["acceptance_gate"]["accepted"]
+
+    # Verify Session restore with all new events
+    snap = w.sessions[sid].snapshot()
+    assert Session.restore(snap).snapshot() == snap
+

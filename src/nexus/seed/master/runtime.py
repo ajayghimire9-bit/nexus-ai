@@ -32,6 +32,7 @@ from .memory import (
     ThreeTimescalesLearner,
     master_records,
 )
+from .meta_learning import MetaLearningEngine
 from .reasoning import ReasoningRouter
 from .types import (
     BeliefState,
@@ -104,6 +105,7 @@ class MasterSeedArchitecture:
         self.response_generator = GroundedResponseGenerator()
         self.acquisition = KnowledgeAcquisitionEngine(session, self.memory)
         self.compute = TieredComputeController(device_profile=device_profile)
+        self.meta_learner = MetaLearningEngine(session, self.memory, self.router)
 
     def handle_dialogue_turn(self, text: str) -> dict:
         """Executes the full cognitive pipeline on a dialogue input:
@@ -126,16 +128,33 @@ class MasterSeedArchitecture:
         compute_tier = self.compute.select_tier(selected_op)
         intent = obs.provenance.get("intent", "general_query")
 
-        # 1. Normal greeting exchange
+        # 1. Normal greeting & natural conversational exchanges
         if intent == "greeting":
+            subtype = (obs.requested_goal or {}).get("subtype", "hello") if isinstance(obs.requested_goal, dict) else "hello"
+            n_concepts = len(semantic_concepts)
+            n_skills = len(procedural_skills)
+            if subtype == "status_check":
+                msg = (
+                    f"I am doing well and running smoothly! My 15-component Seed master architecture is active "
+                    f"with {n_concepts} semantic concept(s), {n_skills} verified procedural skill(s), and our 6x6 object world ready. "
+                    f"How can we learn or reason together today?"
+                )
+            elif subtype == "identity":
+                msg = (
+                    "I am NEXUS Seed—a compact, verifiable cognitive architecture combining neural grounding, "
+                    "a shared belief workspace, 6-tier memory, a hybrid world model, 8 specialized reasoners, "
+                    "a code synthesizer/debugger, and a 3-timescale learning engine."
+                )
+            elif subtype == "appreciation":
+                msg = (
+                    "You're very welcome! Every verified example and reasoning step stays safely recorded in our session journal. "
+                    "What would you like to try next?"
+                )
+            else:
+                msg = "Hello! I am NEXUS Seed. I am ready to learn concepts or skills, reason over relations and constraints, or act in the 6x6 object world."
             plan = ResponsePlan(
                 dialogue_act="greeting_and_readiness",
-                factual_claims=[
-                    dict(
-                        text="Hello! I am NEXUS Seed. I am ready to learn concepts or skills, reason over relations and constraints, or act in the 6x6 object world.",
-                        evidence="session_active",
-                    )
-                ],
+                factual_claims=[dict(text=msg, evidence="session_active")],
                 supporting_evidence=["session_active"],
                 execution_results=[],
                 uncertainty=dict(confidence=0.99),
@@ -147,6 +166,39 @@ class MasterSeedArchitecture:
                 belief_state=belief.to_dict(),
                 meta_decision=decision,
                 compute_tier=compute_tier,
+                response_plan=plan.to_dict(),
+                response=rendered,
+            )
+
+        # 1b. Meta-learning & general problem-solving benchmark exchange
+        if intent == "meta_learning_benchmark":
+            suite = self.meta_learner.run_general_intelligence_suite()
+            ltl = suite["learning_to_learn_benchmark"]
+            msg = (
+                f"Within the bounded Seed Master Architecture, workable meta-learning reduced candidate program search "
+                f"by {ltl['search_evaluations_reduction_pct']}% ({ltl['mean_cold_start_evaluations']} -> {ltl['mean_meta_learned_evaluations']} evaluations) "
+                f"with {int(ltl['held_out_accuracy']*100)}% held-out accuracy across all {suite['domains_verified']} reasoning domains, "
+                f"passing the LearningAcceptanceGate ({ltl['acceptance_gate']['decision']}). "
+                f"Note: historical locked scientific ledger experiments remain separate and are not overwritten."
+            )
+            plan = ResponsePlan(
+                dialogue_act="meta_learning_and_general_suite_report",
+                factual_claims=[dict(text=msg, evidence=ltl["acceptance_gate"]["ref"])],
+                supporting_evidence=[ltl["acceptance_gate"]["ref"]],
+                execution_results=[dict(
+                    search_reduction_pct=ltl["search_evaluations_reduction_pct"],
+                    domains_passed=suite["domains_verified"],
+                )],
+                uncertainty=dict(confidence=0.98),
+            )
+            rendered = self.response_generator.render_and_verify(plan, belief)
+            return dict(
+                exchange_kind="meta_learning_benchmark",
+                observation=obs.to_dict(),
+                belief_state=belief.to_dict(),
+                meta_decision=decision,
+                compute_tier=compute_tier,
+                suite_result=suite,
                 response_plan=plan.to_dict(),
                 response=rendered,
             )
@@ -463,5 +515,11 @@ def request(session, req: dict, shared_brain: SharedBrain | None = None) -> dict
         if "weights" in args:
             tier_res["quantization"] = arch.compute.quantize_weights(args["weights"], bits=int(args.get("bits", 8)))
         return dict(text="Tiered compute profile evaluated.", result=tier_res)
+    if op == "meta_learn":
+        res = arch.meta_learner.run_learning_to_learn_benchmark()
+        return dict(text="Workable learning-to-learn benchmark completed.", result=res)
+    if op == "general_suite":
+        res = arch.meta_learner.run_general_intelligence_suite()
+        return dict(text="Multi-domain general intelligence suite completed.", result=res)
 
     raise ValueError(f"unsupported_master_op:{op}")

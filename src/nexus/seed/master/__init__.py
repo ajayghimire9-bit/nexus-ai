@@ -27,6 +27,7 @@ from .memory import (
     ThreeTimescalesLearner,
     master_records,
 )
+from .meta_learning import MetaLearningEngine
 from .reasoning import (
     ActiveInvestigationReasoner,
     AnalogicalReasoner,
@@ -78,6 +79,7 @@ __all__ = [
     "MasterSeedArchitecture",
     "MathematicalReasoner",
     "MemoryArchitecture",
+    "MetaLearningEngine",
     "NeuralGroundingLayer",
     "ProgramExecutionReasoner",
     "ProgramSynthesizer",
