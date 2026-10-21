@@ -96,7 +96,9 @@ def complete(monkeypatch):
         block['means']=n.family_summary(block);blocks.append(block)
     r=dict(config=c,blocks=blocks,declared_complete=True,all_sources_frozen_before_targets=True,
         all_choices_locked_before_final=True,frozen_before=b.FROZEN,frozen_after=b.FROZEN)
-    r['seed_audit']=n.seed_audit(Path(__file__).resolve().parents[1],c)
+    root=Path(__file__).resolve().parents[1]
+    historical=json.loads((root/'artifacts/seed_inferred_investigation.json').read_text())['seed_audit']['config_hashes']
+    r['seed_audit']=n.seed_audit(root,c,names=historical)
     r['analysis']=n.summarize(blocks,c)
     work=dict(real_steps=12544,source_responses=2048,source_annotations=256,target_support=2048,final_observations=8192,
         assessment_predictions=163840,updates=0,imagined_transitions=0,network_forwards=0,source_model_fits=8,source_tree_fits=8,

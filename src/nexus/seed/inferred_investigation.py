@@ -49,12 +49,14 @@ def seed_audit(root,c,*,names=None):
     planned.update(x+10000 for x in c['families'])
     planned.update(x+200000 for x in c['tasks']['target'])
     planned.update(x+700 for x in c['tasks']['target'])
+    planned.update(c.get('extra_registration_seeds',[]))
+    for offset in c.get('source_registration_offsets',[]):planned.update(x+offset for x in c['tasks']['train'])
     files={}
     folder=Path(root)/'configs'
     paths=folder.iterdir() if names is None else (folder/name for name in names)
     for p in sorted(paths):
         if p.parent!=folder or p.name!=str(p.relative_to(folder)):raise ValueError('config_path')
-        if p.suffix not in ('.json','.yaml','.yml') or p.name=='seed_inferred_investigation.json':continue
+        if p.suffix not in ('.json','.yaml','.yml') or p.name==c.get('registration_config','seed_inferred_investigation.json'):continue
         raw=p.read_bytes();text=raw.decode()
         numbers={int(x.replace('_','')) for x in re.findall(r'(?<![\w.])[0-9][0-9_]*(?![\w.])',text)}
         if planned & numbers:raise ValueError('closed_or_existing_config_identifier:'+p.name)

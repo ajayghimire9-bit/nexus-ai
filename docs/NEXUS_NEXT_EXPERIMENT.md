@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Registered — source-question acquisition, not yet run
+
+[Protocol](NEXUS_SEED_SOURCE_ACQUISITION_PROTOCOL.md): eight source-trained
+linear question selectors, globally disjoint source/target Boolean programs,
+fixed target learner and strong source-informed/model-based controls. Primary
+budgets1/2/4; budget8 secondary. Cap60s CPU/wall,4000 authored labels,2048MiB.
+Carry1990.6321034559958s used /1609.3678965440042s remaining. No architecture
+sweep, historical retraining or live promotion. Commit tested code before run.
+
 ## Latest — source-inferred investigation completed; learned hybrid FAILED
 
 Execution3fb6831aa9282e55828cb4158dd4e6278d66117a; eight new independently

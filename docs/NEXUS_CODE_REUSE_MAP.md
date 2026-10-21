@@ -2,6 +2,12 @@
 
 ## Active runtime
 
+- Source acquisition: `seed/source_acquisition.py` uses the SAME bounded
+  `foundation.programs` interpreter, `question_selection.LabelOracle`,
+  `nn.ridge` fitter and EXPERIMENTAL host/journal. A ten-feature question
+  selector is separate from the fixed target version-space learner.
+  No parallel memory framework or historical neural checkpoint change.
+
 - Source-inferred investigation: `seed/inferred_investigation.py` fits only source
   traces, reuses `structure.investigation.learn`, `investigation_transfer.adapt`,
   `investigation_hybrid.choose`, `compiled_greedy.compile_table` and the SAME

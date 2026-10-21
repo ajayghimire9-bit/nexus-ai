@@ -110,7 +110,10 @@ def run(request):
 if __name__=='__main__':
     request = read(Path(sys.argv[1]))
     limits(request['caps'])  # before importing the optional neural runtime
-    if request.get('adapter')=='seed_inferred_investigation_v1':
+    if request.get('adapter')=='seed_source_acquisition_v1':
+        from .source_acquisition import run as run_acquisition
+        result=run_acquisition(request)
+    elif request.get('adapter')=='seed_inferred_investigation_v1':
         from .inferred_investigation import run as run_inferred
         result=run_inferred(request)
     elif request.get('adapter')=='seed_compiled_greedy_v1':
