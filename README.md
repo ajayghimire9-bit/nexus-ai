@@ -34,12 +34,7 @@ vs `3.0000`) and execution compute by **`92.50%`** (`5.2361` vs `69.8039`
 episodic, `4.9080` continual after Stitch-like Sleep subprogram compression;
 sealed paired cost reduction `+64.4656`, 95% CI `[+63.8448, +65.0864]`).
 Removing the evolved rule removes the advantage, and neither
-`random_evolution_control` nor `rule_size_only_control` matches it. **Permitted
-conclusion: NEXUS evolved an executable learning procedure that acquired bounded
-hidden mechanisms more efficiently than its handwritten learner and transferred
-to independently generated grammar families. This is genuine evidence of bounded
-learning-to-learn; it does not establish AGI, unrestricted self-improvement, or
-general language intelligence.** No live promotion. Previous closed results
+`random_evolution_control` nor `rule_size_only_control` matches it. **Adversarial v1 audit ([NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md](docs/NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md), [`artifacts/seed_meta_rule_evolution_v1_audit.json`](artifacts/seed_meta_rule_evolution_v1_audit.json)): Meta-Rule Evolution v1 passed its internal synthetic contract but does not establish bounded learning-to-learn because evaluator-derived hypothesis labels, isomorphic grammar families, guided rule injection and non-executed protected assessments confound the result.** No live promotion. Previous closed results
 remain below.
 
 [Task-conditioned program ranking & sealed compositional replication](docs/NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md)

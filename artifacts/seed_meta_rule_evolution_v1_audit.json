@@ -1,0 +1,90 @@
+{
+  "all_15_confounds_confirmed": true,
+  "audited_artifact_path": "artifacts/seed_meta_rule_evolution.json",
+  "audited_artifact_sha256": "818300f5100bccf5fcbb461b03aee86742b2173847bbd09d1f52dbd811ec8292",
+  "audited_code_path": "src/nexus/seed/meta_rule_evolution.py",
+  "audited_code_sha256": "9878e58f5657d80a7e071cd98a106f136165386617adba58c057351842079a83",
+  "confounds_checked": 15,
+  "confounds_confirmed": 15,
+  "findings": {
+    "10_guided_winning_rule_injected_every_generation": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:1813-1834",
+      "confirmed": true,
+      "evidence": "run_single_seed_evolution overwrites child_idx == 0 in every generation with the 14-instruction guided winner."
+    },
+    "11_random_evolution_control_overwritten_after_evolution": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:1855-1871",
+      "confirmed": true,
+      "evidence": "After the 20-generation random loop, random_control_rule is overwritten with a fixed 10-instruction rule with stopping_threshold=2."
+    },
+    "12_four_grammars_are_isomorphic_renamings": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:210-370",
+      "confirmed": true,
+      "evidence": "All four grammars decode to _base_structured_ints and apply identical target_ops sequences over reverse/sort/unique/increment/decrement/even."
+    },
+    "13_dream_tasks_do_not_influence_evolution_loop": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:1565, 2020",
+      "confirmed": true,
+      "evidence": "run_dream_adversarial_phase is only called at line 2020 after the 20-generation loop and after rule freezing, and includes seed in its semantic novelty hash."
+    },
+    "14_sleep_validation_reads_stored_passed_booleans": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:1681-1684",
+      "confirmed": true,
+      "evidence": "run_sleep_compression_and_distillation checks t_item.get('passed', False) without re-executing capsule programs."
+    },
+    "15_distilled_choice_policy_is_stub": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:1687-1704",
+      "confirmed": true,
+      "evidence": "distilled_policy sets top1_choice_agreement = 1.0 if len(capsules) > 0 else 0.0 without fitting or evaluating a policy."
+    },
+    "1_hypothesis_profiles_exposes_exact_consistent": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:766-776",
+      "confirmed": true,
+      "evidence": "Each entry in task['hypothesis_profiles'] includes precomputed 'exact_consistent': (h_pred_eff == true_eff)."
+    },
+    "2_hypothesis_profiles_exposes_coarse_consistent": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:765-775",
+      "confirmed": true,
+      "evidence": "Each entry in task['hypothesis_profiles'] includes precomputed 'coarse_consistent'."
+    },
+    "3_hypothesis_profiles_exposes_effect_distance_and_state_key": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:758-777",
+      "confirmed": true,
+      "evidence": "Each entry in task['hypothesis_profiles'] exposes 'effect_distance' and 'state_key'."
+    },
+    "4_execute_learning_rule_receives_target_ops": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:785",
+      "confirmed": true,
+      "evidence": "task dict passed to execute_learning_rule contains 'target_ops': list(target_ops)."
+    },
+    "5_execute_learning_rule_receives_true_effect_state": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:789",
+      "confirmed": true,
+      "evidence": "task dict passed to execute_learning_rule contains 'true_effect_state': true_eff."
+    },
+    "6_macro_discount_reads_target_ops": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:926-933",
+      "confirmed": true,
+      "evidence": "execute_learning_rule computes macro_discount by matching macros against task['target_ops']."
+    },
+    "7_heldout_accuracy_assigned_from_exact_consistent": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:1137-1142",
+      "confirmed": true,
+      "evidence": "heldout_accuracy is assigned from accepted['exact_consistent'] (1.0) or accepted['coarse_consistent'] (0.25); tampering with protected_assessment outputs leaves task_success == 1.0."
+    },
+    "8_protected_assessment_outputs_in_learner_object": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:792",
+      "confirmed": true,
+      "evidence": "task['protected_assessment'] with ground-truth 'output' fields is inside the learner-facing task dict."
+    },
+    "9_structured_winning_rule_injected_in_initial_population": {
+      "code_location": "src/nexus/seed/meta_rule_evolution.py:1376-1395",
+      "confirmed": true,
+      "evidence": "build_initial_population manually inserts the 13-instruction compositional candidate at idx == 0 (population index 5)."
+    }
+  },
+  "original_artifact_preserved_unchanged": true,
+  "original_v1_verdict_recorded": "PASS_META_RULE_EVOLUTION_V1",
+  "retraction_statement": "Meta-Rule Evolution v1 passed its internal synthetic contract but does not establish bounded learning-to-learn because evaluator-derived hypothesis labels, isomorphic grammar families, guided rule injection and non-executed protected assessments confound the result.",
+  "schema": "seed_meta_rule_evolution_v1_adversarial_audit_v1"
+}

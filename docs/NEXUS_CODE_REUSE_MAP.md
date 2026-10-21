@@ -2,6 +2,23 @@
 
 ## Active runtime
 
+- Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1:
+  `seed/meta_rule_evolution_v1_audit.py` audits all 15 v1 evaluator-leakage and
+  guided-injection confounds without altering `artifacts/seed_meta_rule_evolution.json`.
+  `seed/open_primitive_transfer.py` implements strict `LearnerTaskView` vs
+  `EvaluatorTaskPrivate` separation (`assert_zero_evaluator_leakage`), real counted
+  candidate execution over 3 non-isomorphic Stage A families (`list_transformations`,
+  `boolean_circuit_induction`, `fst_string_rewrite`), uniform mutation without
+  guided injection, in-loop Dream novelty without seed in hash, real pre/post
+  retention, real Sleep test re-execution + non-overlapping MDL compression, and
+  Stage B `CommonEnvironmentAdapter`, `TransitionReceipt`, `PROPOSE_PRIMITIVE`
+  6-stage kernel lifecycle, and `UnknownLibraryCodeLab` over 3 independent
+  unknown-library families (`ulib_window_checksum`, `ulib_runlength_bucket`,
+  `ulib_zigzag_interleave`) reusing the SAME `EXPERIMENTAL` host/worker/journal.
+  `scripts/verify_seed_open_primitive_transfer.py` is a standalone stdlib verifier.
+  [v1 Audit](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md),
+  [Protocol](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md).
+
 - Combined Wake–Sleep–Dream–Evolution Architecture & Meta-Rule Evolution v1:
   `seed/meta_rule_evolution.py` implements the `ImmutableTrustedKernel`, 13-opcode
   typed learning-rule DSL interpreter, 7 mutation operators, `ConceptCapsule`

@@ -110,7 +110,10 @@ def run(request):
 if __name__=='__main__':
     request = read(Path(sys.argv[1]))
     limits(request['caps'])  # before importing the optional neural runtime
-    if request.get('adapter')=='seed_meta_rule_evolution_v1':
+    if request.get('adapter')=='seed_open_primitive_transfer_v1':
+        from .open_primitive_transfer import run as run_open_primitive_transfer
+        result=run_open_primitive_transfer(request)
+    elif request.get('adapter')=='seed_meta_rule_evolution_v1':
         from .meta_rule_evolution import run as run_meta_rule_evolution
         result=run_meta_rule_evolution(request)
     elif request.get('adapter')=='seed_task_conditioned_replication_v1':

@@ -10,7 +10,11 @@
 - **Config**: [`configs/seed_meta_rule_evolution.json`](../configs/seed_meta_rule_evolution.json) (`f7384e7336bac063e39d944bd2be3d14c29d55792a783c10e222c44fef7db0b4`)
 - **Verdict**: **`PASS_META_RULE_EVOLUTION_V1` (9 / 9 Registered Gates Passed)**
 
-> **Permitted Scientific Conclusion**:
+> **Adversarial v1 Audit & Scientific Retraction Notice ([NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md), [`artifacts/seed_meta_rule_evolution_v1_audit.json`](../artifacts/seed_meta_rule_evolution_v1_audit.json))**:
+> **Meta-Rule Evolution v1 passed its internal synthetic contract but does not establish bounded learning-to-learn because evaluator-derived hypothesis labels, isomorphic grammar families, guided rule injection and non-executed protected assessments confound the result.**
+> *(The original v1 artifact and reported numbers below are preserved unchanged as historical records.)*
+
+> **Original v1 Conclusion (Superseded by Audit Above)**:
 > *NEXUS evolved an executable learning procedure that acquired bounded hidden mechanisms more efficiently than its handwritten learner and transferred to independently generated grammar families. This is genuine evidence of bounded learning-to-learn; it does not establish AGI, unrestricted self-improvement, or general language intelligence.*
 
 ---
