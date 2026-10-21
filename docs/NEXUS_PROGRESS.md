@@ -1,5 +1,24 @@
 # NEXUS progress log
 
+## Latest — source-inferred investigation completed; learned hybrid FAILED
+
+Execution3fb6831aa9282e55828cb4158dd4e6278d66117a; eight new independently
+drawn authored response tables,256 targets. Source-only teaching reconstructs
+all outcome models, then freezes them. Hybrid3.046875 questions versus compiled
+and online greedy3.015625; compiled-minus-hybrid−.031250[−.079625,+.017125],
+exploratory n8/df7. Hybrid work19880 versus compiled9765; its quality/efficiency
+screen failed. Compiler exactly matches online decisions and passes its separate
+cost screen. This is ordinary source model inference, not learned learning-rule
+improvement. No neural training, simulator run or live promotion.
+[Results](NEXUS_SEED_INFERRED_INVESTIGATION_RESULTS.md). All814 old artifacts intact.
+
+12544 authored interactions INCLUDING256 source class annotations;3s debit.
+Ledger1990.6321034559958s used /1609.3678965440042s remaining. Next: separately
+test learned source-question acquisition on fresh structured families with
+incomplete source coverage, against equal-budget fixed/random and uncertainty
+controls. Not executed. Older entries retain their original chronology.
+
+
 ## Latest — source-free compiled greedy audit PASSED its cost/exactness screen
 
 Clean execution7081cc79c0e7f8a98125db7864cfcc3e17d1cb88, one saved-data-only

@@ -12,6 +12,14 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Source-inferred investigation](docs/NEXUS_SEED_INFERRED_INVESTIGATION_RESULTS.md):
+**learned hybrid failed** its strong-baseline screen on eight new authored
+response tables. Hybrid3.046875 questions versus compiled greedy3.015625;
+construction-inclusive work19880 versus9765. Source-only model reconstruction
+works; useful learning-to-learn remains unestablished. No live promotion.
+
+Previous closed result:
+
 [Source-free compiled greedy audit](docs/NEXUS_SEED_COMPILED_GREEDY_RESULTS.md)
 **passed its exactness/cost screen** on saved data: exact greedy decisions,
 2208 construction-inclusive work units versus learned hybrid6012 (63.27% lower

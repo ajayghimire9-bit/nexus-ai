@@ -58,6 +58,26 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+## Latest — source-inferred investigation completed; learned hybrid FAILED
+
+Execution3fb6831aa9282e55828cb4158dd4e6278d66117a; eight new independently
+drawn authored response tables,256 targets. Source-only teaching reconstructs
+all outcome models, then freezes them. Hybrid3.046875 questions versus compiled
+and online greedy3.015625; compiled-minus-hybrid−.031250[−.079625,+.017125],
+exploratory n8/df7. Hybrid work19880 versus compiled9765; its quality/efficiency
+screen failed. Compiler exactly matches online decisions and passes its separate
+cost screen. This is ordinary source model inference, not learned learning-rule
+improvement. No neural training, simulator run or live promotion.
+[Results](NEXUS_SEED_INFERRED_INVESTIGATION_RESULTS.md). All814 old artifacts intact.
+
+12544 authored interactions INCLUDING256 source class annotations;3s debit.
+Ledger1990.6321034559958s used /1609.3678965440042s remaining. Next: separately
+test learned source-question acquisition on fresh structured families with
+incomplete source coverage, against equal-budget fixed/random and uncertainty
+controls. Not executed. Older entries retain their original chronology.
+
+
+
 ## Latest — source-free compiled greedy audit PASSED its cost/exactness screen
 
 Clean execution7081cc79c0e7f8a98125db7864cfcc3e17d1cb88, one saved-data-only
@@ -247,7 +267,7 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_COMPILED_GREEDY_RESULTS.md),
+[latest results](NEXUS_SEED_INFERRED_INVESTIGATION_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
@@ -261,9 +281,11 @@ with rule-mixture sensitivity. Independent rule-balanced tree replication then
 failed the zero question-regression requirement while retaining compute savings.
 The source-only compiled-greedy audit is now complete: exact online-greedy
 choices with2208 versus hybrid6012 construction-inclusive work units. Caching
-the supplied grammar suffices here. Next: source-inferred query-outcome transfer
-against equally informed compiled and online planners, not another run on this
-closed bank. The older question-utility label audit below remains
+the supplied grammar suffices here. Source-inferred query-outcome transfer then
+completed on eight new tables: all source models recovered, but learned hybrid
+again failed against equally informed compiled greedy. Next: source-question
+acquisition with incomplete coverage on new structured families, not another
+run on either now-closed bank. The older question-utility label audit below remains
 unresolved; the investigation result does not answer it.
 
 The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
@@ -308,8 +330,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1987.6321034559958seconds used,
-1612.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1990.6321034559958seconds used,
+1609.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance
