@@ -12,6 +12,14 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Source-trained question acquisition](docs/NEXUS_SEED_SOURCE_ACQUISITION_RESULTS.md)
+**failed both screens**: primary MSE.221353 versus fixed order.215762 and
+source-informed model-based.210662. It beats random expectation, but not strong
+controls. Eight source fits; disjoint target programs; no live promotion or
+learning-to-learn claim.
+
+Previous closed result:
+
 [Source-inferred investigation](docs/NEXUS_SEED_INFERRED_INVESTIGATION_RESULTS.md):
 **learned hybrid failed** its strong-baseline screen on eight new authored
 response tables. Hybrid3.046875 questions versus compiled greedy3.015625;

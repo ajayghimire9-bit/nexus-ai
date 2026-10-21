@@ -1,5 +1,23 @@
 # NEXUS progress log
 
+## Latest — source-trained acquisition completed; both screens FAILED
+
+Clean execution2a7670284a6a530c8cb739c340ec6a7a06971ef7. Eight new10-coefficient
+selectors,128 source and64 globally excluded target Boolean programs. Primary
+1/2/4 query MSE.221353 versus variance.219191, fixed order.215762, model-based
+.214463 and source-informed model-based.210662. Uniform expectation.238161 and
+source-static.227639 are weaker. Only3/8 variance wins; both locked screens
+failed. Budget8 is identical for every non-keep policy, as required. No promotion
+or general learning-to-learn claim. [Results](NEXUS_SEED_SOURCE_ACQUISITION_RESULTS.md).
+
+3072 authored labels, eight numerical ridge fits,zero neural forwards or simulator
+steps;6s debit. Ledger1996.6321034559958s used /1603.3678965440042s remaining.
+All818 previous artifacts preserved. Next: source-only query-context sufficiency
+audit—can identical ten-feature descriptions require different expected-value
+question rankings when the public query set changes? No new labels; not run.
+Older entries retain their original chronology.
+
+
 ## Latest — source-inferred investigation completed; learned hybrid FAILED
 
 Execution3fb6831aa9282e55828cb4158dd4e6278d66117a; eight new independently
