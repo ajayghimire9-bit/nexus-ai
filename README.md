@@ -12,6 +12,14 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
+[Source-free compiled greedy audit](docs/NEXUS_SEED_COMPILED_GREEDY_RESULTS.md)
+**passed its exactness/cost screen** on saved data: exact greedy decisions,
+2208 construction-inclusive work units versus learned hybrid6012 (63.27% lower
+proxy, not wall-speedup). Zero new collection or fitting. This shows caching
+the supplied grammar suffices here; it does **not** establish learning-to-learn.
+
+Previous closed result:
+
 [Independent rule-balanced replication](docs/NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md)
 **failed** its registered screen: hybrid3.042 questions versus pure greedy3.000
 across three independently source-trained trees. Compute savings persisted,

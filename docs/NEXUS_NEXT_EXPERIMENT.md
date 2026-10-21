@@ -1,5 +1,24 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest — source-free compiled greedy audit PASSED its cost/exactness screen
+
+Clean execution7081cc79c0e7f8a98125db7864cfcc3e17d1cb88, one saved-data-only
+audit. Compiled greedy exactly matches online greedy on all96 saved tasks:
+3.000 questions versus learned hybrid3.041667. Construction-inclusive work
+2208 versus hybrid6012 (63.27% fewer proxy operations, not wall/FLOPs).
+The hybrid retains slightly higher early classification accuracy; compiled
+greedy has lower Brier error. Question interval includes zero. Source learning
+is not needed for these compute savings under the fully supplied eight-law
+grammar; learning-to-learn remains unestablished. No live promotion.
+[Results](NEXUS_SEED_COMPILED_GREEDY_RESULTS.md). All810 prior artifacts preserved.
+
+Zero new data, model fitting or neural inference;2s debit. Ledger
+1987.6321034559958s used /1612.3678965440042s remaining. Next: separately test
+investigation transfer when query-outcome rules must be inferred from source
+experience, against equally informed compiled and online planners. Not executed.
+Older entries retain their original chronology.
+
+
 ## Registered — source-free compiled greedy audit, not yet executed
 
 [Locked protocol](NEXUS_SEED_COMPILED_GREEDY_PROTOCOL.md): exact cached greedy

@@ -58,6 +58,26 @@ language understanding, general control, self-evolution or learning-to-learn.
 
 ## Latest verified evidence
 
+## Latest — source-free compiled greedy audit PASSED its cost/exactness screen
+
+Clean execution7081cc79c0e7f8a98125db7864cfcc3e17d1cb88, one saved-data-only
+audit. Compiled greedy exactly matches online greedy on all96 saved tasks:
+3.000 questions versus learned hybrid3.041667. Construction-inclusive work
+2208 versus hybrid6012 (63.27% fewer proxy operations, not wall/FLOPs).
+The hybrid retains slightly higher early classification accuracy; compiled
+greedy has lower Brier error. Question interval includes zero. Source learning
+is not needed for these compute savings under the fully supplied eight-law
+grammar; learning-to-learn remains unestablished. No live promotion.
+[Results](NEXUS_SEED_COMPILED_GREEDY_RESULTS.md). All810 prior artifacts preserved.
+
+Zero new data, model fitting or neural inference;2s debit. Ledger
+1987.6321034559958s used /1612.3678965440042s remaining. Next: separately test
+investigation transfer when query-outcome rules must be inferred from source
+experience, against equally informed compiled and online planners. Not executed.
+Older entries retain their original chronology.
+
+
+
 ## Latest — balanced independent-tree replication FAILED
 
 Execution93284549aa8399f15fbb2016a192b5f1214b6b1e, three newly source-trained/frozen trees,96 fresh rule-balanced targets. Hybrid3.041667 questions versus greedy3.000; greedy-minus-hybrid−.041667[−.220944,.137611], n3/df2. Tail and compute gates pass (99.20% fewer search checks;46.93% less source-inclusive work proxy), but the zero mean-regression requirement fails. No statistical superiority/inferiority claim, no promotion. [Results](NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md).
@@ -227,7 +247,7 @@ learned update rules is still missing. Prior action success came from ordinary
 supervised fitting, not a learned learning algorithm.
 
 Read [current state](NEXUS_CANONICAL_CURRENT_STATE.md),
-[latest results](NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md),
+[latest results](NEXUS_SEED_COMPILED_GREEDY_RESULTS.md),
 [negative validation](NEXUS_SEED_LEARNING_VALIDATION_RESULTS.md) and
 [next experiment](NEXUS_NEXT_EXPERIMENT.md).
 
@@ -239,7 +259,11 @@ reuse then completed and FAILED its registered screen against strong baselines.
 The subsequent selective greedy fallback passed its authored development screen,
 with rule-mixture sensitivity. Independent rule-balanced tree replication then
 failed the zero question-regression requirement while retaining compute savings.
-Next: a source-only compiled-greedy baseline audit, with no new collection. The older question-utility label audit below remains
+The source-only compiled-greedy audit is now complete: exact online-greedy
+choices with2208 versus hybrid6012 construction-inclusive work units. Caching
+the supplied grammar suffices here. Next: source-inferred query-outcome transfer
+against equally informed compiled and online planners, not another run on this
+closed bank. The older question-utility label audit below remains
 unresolved; the investigation result does not answer it.
 
 The owner-controlled [EXPERIMENTAL workflow](NEXUS_EXPERIMENTAL_MODE.md) now
@@ -284,8 +308,8 @@ smaller locked caps when specified. No historical frozen checkpoint replacement,
 main merge, paid service or permission changes. Preserve all closed data.
 Configuration, tests and engineering are not scientific outcome evidence.
 
-Carried scientific ledger:1985.6321034559958seconds used,
-1614.3678965440042remaining. Carry forward; do not reset on a new message.
+Carried scientific ledger:1987.6321034559958seconds used,
+1612.3678965440042remaining. Carry forward; do not reset on a new message.
 Later result receipts supersede this number only by documented debits.
 
 ## Historical evidence and provenance
