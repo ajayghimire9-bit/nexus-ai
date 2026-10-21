@@ -1,5 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Registered — source-free compiled greedy audit, not yet executed
+
+[Locked protocol](NEXUS_SEED_COMPILED_GREEDY_PROTOCOL.md): exact cached greedy
+versus online greedy and learned hybrid on the96 already inspected targets.
+Construction charged once per32-task block, plus runtime work.30s CPU/wall,
+zero new collection, zero fitting. Carry1985.6321034559958s used /
+1614.3678965440042s remaining. No unbounded research loop or promotion.
+
 ## Latest — balanced independent-tree replication FAILED
 
 Execution93284549aa8399f15fbb2016a192b5f1214b6b1e, three newly source-trained/frozen trees,96 fresh rule-balanced targets. Hybrid3.041667 questions versus greedy3.000; greedy-minus-hybrid−.041667[−.220944,.137611], n3/df2. Tail and compute gates pass (99.20% fewer search checks;46.93% less source-inclusive work proxy), but the zero mean-regression requirement fails. No statistical superiority/inferiority claim, no promotion. [Results](NEXUS_SEED_INVESTIGATION_REPLICATION_RESULTS.md).

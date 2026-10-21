@@ -279,10 +279,11 @@ class Sandbox:
         investigation_transfer = adapter == 'seed_investigation_transfer_v1'
         investigation_hybrid = adapter == 'seed_investigation_hybrid_v1'
         investigation_replication = adapter == 'seed_investigation_replication_v1'
+        compiled_greedy = adapter == 'seed_compiled_greedy_v1'
         diagnosis = adapter in ('seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
         study = adapter in ('seed_nonlinear_learning_v1','seed_update_diagnosis_v1','seed_bounded_correction_v1','seed_cumulative_learning_v1','seed_update_gate_v1','seed_prefix_consistency_v1','seed_sequential_consistency_v1')
         diagnosis = diagnosis or learning_choice or questions or headroom or query_replication or question_utility or answer_free
-        study = study or learning_choice or questions or headroom or query_replication or question_utility or answer_free or executable_world or investigation_transfer or investigation_hybrid or investigation_replication
+        study = study or learning_choice or questions or headroom or query_replication or question_utility or answer_free or executable_world or investigation_transfer or investigation_hybrid or investigation_replication or compiled_greedy
         if study:
             if mode!='exploration' or any(spec[k] is not None for k in ('train','development','model_run','assessment','protocol','gate')):
                 raise ValueError('registered_seed_development_study_only')
@@ -303,6 +304,7 @@ class Sandbox:
             if investigation_transfer:expected_paths=('configs/seed_investigation_transfer.json','docs/NEXUS_SEED_INVESTIGATION_TRANSFER_PROTOCOL.md')
             if investigation_hybrid:expected_paths=('configs/seed_investigation_hybrid.json','docs/NEXUS_SEED_INVESTIGATION_HYBRID_PROTOCOL.md')
             if investigation_replication:expected_paths=('configs/seed_investigation_replication.json','docs/NEXUS_SEED_INVESTIGATION_REPLICATION_PROTOCOL.md')
+            if compiled_greedy:expected_paths=('configs/seed_compiled_greedy.json','docs/NEXUS_SEED_COMPILED_GREEDY_PROTOCOL.md')
             if set(item)!={'adapter','config_path','config_sha256','protocol_path','protocol_sha256'} or (item['config_path'],item['protocol_path'])!=expected_paths:
                 raise ValueError('vetted_study_manifest_required')
             for path,key in ((item['config_path'],'config_sha256'),(item['protocol_path'],'protocol_sha256')):
@@ -312,7 +314,9 @@ class Sandbox:
             if any(r['spec'].get('recipe',{}).get('config_sha256')==item['config_sha256'] for r in self.records('reserved') if type(r['spec'].get('recipe')) is dict):
                 raise ValueError('study_configuration_consumed')
             c=read(self.repository/item['config_path'])
-            if investigation_replication:
+            if compiled_greedy:
+                from .compiled_greedy import config_check
+            elif investigation_replication:
                 from .investigation_replication import config_check
             elif investigation_hybrid:
                 from .investigation_hybrid import config_check
@@ -404,13 +408,15 @@ class Sandbox:
             'src/nexus/seed/experimental.py', 'src/nexus/seed/experimental_worker.py',
             'src/nexus/nn/factory.py', 'src/nexus/nn/activations.py')}
         if study:
-            if investigation_transfer or investigation_hybrid or investigation_replication:
+            if investigation_transfer or investigation_hybrid or investigation_replication or compiled_greedy:
                 for p in ('src/nexus/seed/investigation_transfer.py','src/nexus/seed/structure/investigation.py','src/nexus/seed/question_selection.py','src/nexus/evolution1/catalogue.py'):
                     sources[p]=hashlib.sha256((self.repository/p).read_bytes()).hexdigest()
-            if investigation_hybrid or investigation_replication:
+            if investigation_hybrid or investigation_replication or compiled_greedy:
                 sources['src/nexus/seed/investigation_hybrid.py']=hashlib.sha256((self.repository/'src/nexus/seed/investigation_hybrid.py').read_bytes()).hexdigest()
             if investigation_replication:
                 sources['src/nexus/seed/investigation_replication.py']=hashlib.sha256((self.repository/'src/nexus/seed/investigation_replication.py').read_bytes()).hexdigest()
+            if compiled_greedy:
+                sources['src/nexus/seed/compiled_greedy.py']=hashlib.sha256((self.repository/'src/nexus/seed/compiled_greedy.py').read_bytes()).hexdigest()
             if executable_world:
                 for path in sorted((self.repository/'src/nexus/seed/structure').glob('*.py')):
                     sources[str(path.relative_to(self.repository))]=hashlib.sha256(path.read_bytes()).hexdigest()
@@ -491,7 +497,9 @@ class Sandbox:
             if reason is None:
                 output = read(directory/'output.json')
                 if study:
-                    if investigation_replication:
+                    if compiled_greedy:
+                        from .compiled_greedy import validate_output as study_validate
+                    elif investigation_replication:
                         from .investigation_replication import validate_output as study_validate
                     elif investigation_hybrid:
                         from .investigation_hybrid import validate_output as study_validate

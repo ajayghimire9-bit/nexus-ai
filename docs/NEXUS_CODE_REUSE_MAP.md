@@ -2,6 +2,10 @@
 
 ## Active runtime
 
+- Source-free compilation: `seed/compiled_greedy.py` compiles the supplied grammar
+  and reuses `investigation_transfer.adapt`, `LabelOracle`, `investigation_hybrid.choose`
+  and the existing EXPERIMENTAL host/journal. Saved-bank audit only; no live promotion.
+
 - Independent-tree replication: `seed/investigation_replication` reuses the same
   investigation runner, hybrid proposer and host, with task-balanced evaluator
   assignments and source-tree aggregation. Frozen neural models are unchanged.

@@ -1,0 +1,20 @@
+/* Read-only saved-evidence UI. No experiment or agent action is started. */
+const assert=require('node:assert/strict');const{chromium}=require('playwright');
+(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1400,height:1000}});const errors=[];
+page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://127.0.0.1:8785/experimental#seed-compiled-greedy-1');
+const card=page.locator('#seed-compiled-greedy-1');await card.locator('table').waitFor();
+assert.equal(await card.locator('table tr').count(),4);
+const body=await card.textContent();
+for(const word of ['compiled_greedy','tree_greedy','Source labels','Construction work','Runtime work','not FLOPs or a measured wall-speedup','not demonstrate learning-to-learn','Exact decisions and predictions: true'])assert.ok(body.includes(word));
+const response=await page.request.get('http://127.0.0.1:8785/api/experimental');assert.equal(response.status(),200);
+const data=await response.json();const r=data.experiments.find(x=>x.id==='seed-compiled-greedy-1');
+assert.equal(r.resources.real_steps,0);assert.equal(r.resources.network_forwards,0);
+assert.equal(r.compiled_greedy.means.compiled_greedy.questions,r.compiled_greedy.means.greedy.questions);
+await card.screenshot({path:'runs/seed-compiled-greedy-results.png'});
+await page.setViewportSize({width:390,height:844});
+assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+assert.deepEqual(errors,[]);await browser.close();
+console.log(JSON.stringify({passed:true,checks:15,read_only:true,scientific_execution:false}));
+})().catch(e=>{console.error(e);process.exit(1)});

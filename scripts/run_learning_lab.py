@@ -99,6 +99,10 @@ class LabHandler(BaseHTTPRequestHandler):
                     from nexus.seed.investigation_replication import saved_replay as replication_replay
                     replication=replication_replay(ROOT)
                     state['experiments']=[r for r in state['experiments'] if r['id']!=replication['id']]+[replication]
+                if (ROOT/'artifacts/seed_compiled_greedy.json').exists():
+                    from nexus.seed.compiled_greedy import saved_replay as compiled_replay
+                    compiled=compiled_replay(ROOT)
+                    state['experiments']=[r for r in state['experiments'] if r['id']!=compiled['id']]+[compiled]
                 if (ROOT/'artifacts/seed_executable_world.json').exists():
                     from nexus.seed.structure.study import saved_replay as structure_replay
                     structure=structure_replay(ROOT)
