@@ -135,10 +135,10 @@ def expected_gain(table,ids,x,query,weights,cost):
     return before-after
 
 
-def fit_selector(source,table,groups,c,cost):
+def fit_selector(source,table,groups,c,cost,*,source_count=16):
     import numpy as np
     from nexus.nn.ridge import fit_ridge
-    if len(source)!=16 or any(row.get('role')!='source' for row in source):raise ValueError('source_only_fit')
+    if len(source)!=source_count or any(row.get('role')!='source' for row in source):raise ValueError('source_only_fit')
     x=[];y=[];cases=[];static=[[] for _ in range(16)];counts=[0]*4;identity_entries=0;feature_entries=0
     for row in source:
         full=row['answers']

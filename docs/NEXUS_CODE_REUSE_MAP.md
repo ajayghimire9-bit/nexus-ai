@@ -2,6 +2,11 @@
 
 ## Active runtime
 
+- Query-conditioned acquisition: `seed/conditioned_acquisition.py` extends
+  `source_acquisition.fit_selector` with an explicit source-count option,
+  reuses its utility cases and all fixed learner/baseline paths, plus `nn.ridge`.
+  Same EXPERIMENTAL host and journal; no parallel learning/memory framework.
+
 - Query-context audit: `seed/query_context.py` reuses source acquisition's
   feature map, posterior update, public grammar and fixed learner. It reads only
   saved source projections, computes expected-value counterexamples and uses

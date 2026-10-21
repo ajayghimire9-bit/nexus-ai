@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Registered — fresh query-conditioned acquisition
+
+[Protocol](NEXUS_SEED_CONDITIONED_ACQUISITION_PROTOCOL.md): eight independent
+source fits per representation; 128 fresh program identities excluding all prior
+192. Actual query MSE after 1/2/4 examples, budget 8 secondary. Fixed learner;
+original blind, 13-parameter blind/conditioned, both strong model-based controls.
+Cap 60 seconds / 2500 authored labels / 24 ridge fits; carry 1999.6321034559958
+used / 1600.3678965440042 remaining. Commit tested implementation before run.
+
 ## Latest — query-context information limitation demonstrated
 
 The source-only audit completed from clean execution
