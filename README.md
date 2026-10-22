@@ -38,24 +38,32 @@ across 3 independent multi-file unknown-library families generated after freezin
 1 true helper + 2 decoy helpers, 3 candidate post-steps, and 3 candidate call sites),
 with hidden tests (`12` private inputs per family per seed) isolated in a separate
 evaluator subprocess (`src/nexus/seed/blackbox_evaluator_worker.py`,
-`private_inputs_exposed_to_learner = false`). The learner inspected files, chose probes,
-proposed new primitives via `PROPOSE_PRIMITIVE` (`24/24` passing `PROPOSED -> ... -> PROMOTED`),
-synthesized its own AST patch (`def solve_pipeline(seq): return ...`), achieved `1.0000`
-hidden subprocess accuracy vs `0.0000` without `PROPOSE_PRIMITIVE`, beat
-`strongest_handwritten_learner` (`37.80` vs `82.0938` compute cost, paired diff
-`+44.2938`, 95% CI `[+31.1927, +57.3948]`; `3.0` vs `8.125` experiments, CI
-`[+3.9063, +6.3437]`) and `exact_information_gain_plus_effect_composition` (`54.55` cost,
-diff `+16.75`), and reused promoted primitives (`krelv`, `voux`, `zarn`) across Coding
-and Reasoning Labs (`1.0000` accuracy vs `0.0000` for `isolated_labs`). In addition,
-the [10-part NEXUS Seed Integrated Architecture](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md)
+`private_inputs_exposed_to_learner = false`). Driven directly by `execute_code_lab_rule_interpreter`
+(`method_specific_hardcoded_policy_branching = false`, verified by 3 causal instruction ablations),
+the learner inspected files, chose probes, proposed new primitives via `PROPOSE_PRIMITIVE`
+(`24/24` passing `PROPOSED -> ... -> PROMOTED`), synthesized its own AST patch
+(`def solve_pipeline(seq): return ...`), achieved `1.0000` hidden subprocess accuracy vs `0.0000`
+without `PROPOSE_PRIMITIVE`, beat `strongest_handwritten_learner` (`41.0188` vs `92.4438`
+compute cost, paired diff `+51.4250`, 95% CI `[+38.0856, +64.7644]`; `2.6250` vs `9.1250`
+experiments, CI `[+5.1594, +7.8406]`) and `exact_information_gain_plus_effect_composition`
+(`47.5500` cost, diff `+6.5313`, CI `[+5.1668, +7.8957]`), and transferred promoted primitives
+(`krelv`, `voux`, `zarn`) across all 4 labs (`Language`, `Coding`, `Reasoning`, `World`:
+`1.0000` accuracy vs `0.0000` for `isolated_labs` and `capsule_removed`, `1.0000` old-skill
+retention). In addition, the [10-part NEXUS Seed Integrated Architecture](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md)
 (`src/nexus/seed/integrated_architecture.py`) verified 3 operating timescales, the
-3-tier `EvidenceKernel`, 3-way intent routing & source-attributed claims, splittable
-`BeliefWorkspace` equivalence groups, Kautz-Singleton $AG(2,3)$ $9\times 12$ 2-disjunct
-non-adaptive + conditional group testing & Bat `SURVEY -> DISCRIMINATE -> VALIDATE_AND_ACT`
-scheduler, 6-part `MechanismCapsule` with separately verified `goal_adapter`, bounded
-1-minimal `ddmin` delta debugging, `TriLibrarySleepConsolidator` + `SuccessorFeatureLearner`
-zero-shot GPI + `SmallLearnedOptimizer`, 6-stage `DevelopmentalCurriculum` + 11-action
-`CognitiveController`, and all 7 isolated component ablations (`10/10` gates passed).
+3-tier `EvidenceKernel`, a genuinely trained 1,443-parameter neural encoder-decoder
+`SmallNeuralLanguageCodec` (`artifacts/seed_neural_language_weights_v1.json`, `1.00` held-out
+unfamiliar paraphrase & composition accuracy, zero XML tags), splittable `BeliefWorkspace`
+equivalence groups, Kautz-Singleton $AG(2,3)$ $9\times 12$ 2-disjunct non-adaptive + conditional
+group testing, hypothesis-sensitive `synthesize_compound_probe`, evidence-directed mutation across
+4 distinct mechanisms (`3.50` vs `7.25`/`12.25`/`12.00` evals, zero hardcoded operator preference),
+6-part `MechanismCapsule` with 4-lab transfer, 1-minimal `ddmin` delta debugging,
+`TriLibrarySleepConsolidator` + trajectory-learned TD($0$) `SuccessorFeatureLearner` (`105,000`
+transitions, `+3.085207` vs `-0.500000` closed-loop GPI return) + outer-loop meta-trained
+`SmallLearnedOptimizer` (`artifacts/seed_learned_optimizer_params_v1.json`, `0.001862` target loss
+vs `0.003482` `tuned_momentum`, `0.023808` `tuned_adam`, `0.027659` `tuned_sgd`), 6-stage
+`DevelopmentalCurriculum` + 11-action `CognitiveController`, and all 7 isolated component ablations
+(`10/10` gates passed, tamper-rejection verified).
 **NEXUS demonstrated bounded executable learning-rule transfer and acquired one
 previously unavailable primitive from sandboxed code interactions. This does not
 establish arbitrary coding, general language understanding, unrestricted

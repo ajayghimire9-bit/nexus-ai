@@ -25,11 +25,14 @@ from nexus.seed.integrated_architecture import (
     MechanismCapsule,
     PerceptionAndLanguageInterface,
     SmallLearnedOptimizer,
+    SmallNeuralLanguageCodec,
     SuccessorFeatureLearner,
     TriLibrarySleepConsolidator,
     build_integrated_architecture_report,
     disjunct_matrix_comp,
+    evaluate_compound_probe_sensitivity_across_families,
     evaluate_goal_adapters_separately,
+    evaluate_targeted_variation_across_four_mechanisms,
     run_conditional_group_testing,
     run_integrated_end_to_end_episode,
     run_seven_isolated_comparisons,
@@ -231,16 +234,54 @@ def test_section_6_and_7_capsule_goal_adapter_targeted_variation_and_ddmin():
 
 
 def test_section_8_9_10_sleep_gpi_learned_optimizer_controller_and_full_report():
-    """Verify SuccessorFeatureLearner GPI, SmallLearnedOptimizer, 11-action CognitiveController, 7 isolated comparisons, and full episode."""
+    """Verify Trajectory-Learned SuccessorFeatureLearner GPI, Outer-Loop SmallLearnedOptimizer,
+    Trainable SmallNeuralLanguageCodec, Compound Probe Sensitivity, 4-Mechanism Evidence-Directed
+    Mutation, 11-action CognitiveController, 7 isolated comparisons, full episode, and tamper-rejecting verifier."""
+    # 1. Trainable SmallNeuralLanguageCodec: real backprop training, saved weights, unfamiliar paraphrases & compositions, no XML tags
+    codec = SmallNeuralLanguageCodec(seed=1762700101)
+    tr_sum = codec.train_on_source_corpus(epochs=55, lr=0.18)
+    assert tr_sum["final_loss"] < tr_sum["initial_loss"] * 0.25
+    heldout_eval = codec.evaluate_unfamiliar_paraphrases_and_compositions()
+    assert heldout_eval["unfamiliar_intent_accuracy"] == 1.0
+    assert heldout_eval["composition_clause_accuracy"] == 1.0
+
+    pli_neural = PerceptionAndLanguageInterface(mode="nexus_small_neural", neural_codec=codec)
+    v_neural = pli_neural.verbalize_response(
+        "mechanism_investigation",
+        {"capsule_id": "cap_1", "evidence_status": "tested", "invented_word": "krelv"},
+    )
+    assert "<neural_codec>" not in v_neural["response_text"]
+    assert v_neural["neural_decoder_used"] is True
+    assert len(v_neural["chosen_clause_indices"]) == 3
+
+    # 2. Dynamic compound-probe synthesis: changing hypothesis families changes selected probe
+    sens = evaluate_compound_probe_sensitivity_across_families()
+    assert sens["changing_hypotheses_changes_selected_probe"] is True
+    assert sens["unique_selected_probe_count"] == 3
+
+    # 3. Evidence-directed mutation across 4 distinct mechanisms without hardcoded operator bias
+    mm = evaluate_targeted_variation_across_four_mechanisms()
+    assert mm["zero_hardcoded_operator_preference"] is True
+    assert mm["all_mechanisms_solved_fastest_by_evidence_directed"] is True
+
+    # 4. Trajectory-learned SuccessorFeatureLearner & closed-loop GPI rollout in ResourceGridEnv
     sf = SuccessorFeatureLearner()
     gpi_res = sf.evaluate_gpi_under_changed_goal((1.0, 0.0, 0.5), (0.0, 1.0, 0.5))
+    assert gpi_res["learned_from_trajectories"] is True
+    assert gpi_res["final_td_bellman_error"] < gpi_res["initial_td_bellman_error"]
     assert gpi_res["zero_shot_gpi_gain"] > 0.0
+    assert len(gpi_res["gpi_trajectory"]) == 10
     assert gpi_res["environment_relearning_steps_required"] == 0
 
+    # 5. Outer-loop meta-trained SmallLearnedOptimizer frozen before target evaluation vs tuned SGD/Momentum/Adam
     opt = SmallLearnedOptimizer()
     opt_res = opt.evaluate_on_heldout_quadratics(steps=12)
+    assert opt_res["frozen_before_target_evaluation"] is True
+    assert opt_res["final_source_mean_loss"] < opt_res["initial_source_mean_loss"]
     assert opt_res["beats_fixed_sgd_and_momentum"] is True
+    assert opt_res["beats_all_tuned_conventional_optimizers"] is True
 
+    # 6. Controller & Curriculum
     ctrl = CognitiveController()
     assert len(CONTROLLER_ACTIONS) == 11
     assert len(CONTROLLER_POLICIES) == 5
@@ -252,6 +293,11 @@ def test_section_8_9_10_sleep_gpi_learned_optimizer_controller_and_full_report()
     cur_res = cur.evaluate_progression()
     assert cur_res["all_6_stages_completed"] is True
 
-    full_rep = build_integrated_architecture_report()
-    assert full_rep["all_gates_passed"] is True
-    assert all(full_rep["gates"].values())
+    # 7. Full report & independent tamper-rejecting verifier
+    from scripts.verify_seed_integrated_architecture import verify as verify_integrated
+
+    audit = verify_integrated(ROOT, write_artifact=False)
+    assert audit["valid"] is True
+    assert audit["all_gates_passed"] is True
+    assert audit["independent_replay_verified"] is True
+    assert all(audit["tamper_rejection_checks"].values())

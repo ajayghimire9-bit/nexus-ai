@@ -14,16 +14,64 @@
   },
   "integrated_episode": {
     "blackbox_final_assessment": {
+      "capsule_removed_control": {
+        "coding_lab_accuracy": 0.0,
+        "evaluator_receipt_sha256": "5774620dfbe6d318e17a7492192c2d497b4e957fd7b8fc0779ef458ae5f36613",
+        "family_name": "ulib_window_checksum",
+        "invented_word": "krelv",
+        "language_lab_accuracy": 0.0,
+        "old_skill_retention_accuracy": 1.0,
+        "overall_four_lab_accuracy": 0.0,
+        "private_inputs_exposed_to_learner": false,
+        "reasoning_lab_accuracy": 0.0,
+        "seed": 1762999500,
+        "separate_evaluator_process": true,
+        "world_lab_accuracy": 0.0
+      },
+      "capsule_removed_control_accuracy": 0.0,
       "cross_lab_coding_accuracy": 1.0,
+      "cross_lab_language_accuracy": 1.0,
       "cross_lab_reasoning_accuracy": 1.0,
-      "evaluator_receipt_sha256": "346e9caf0786e749f1d3d7bfed25baa38ab14c0af27f31a77bf286215130daed",
+      "cross_lab_world_accuracy": 1.0,
+      "evaluator_receipt_sha256": "eebbd4a8c6fc791718baadd2515d89bb8dbc9a1bb68c10a38cc09b57464f0d69",
       "family_name": "ulib_window_checksum",
+      "four_lab_transfer": {
+        "coding_lab_accuracy": 1.0,
+        "evaluator_receipt_sha256": "ad5cf14984be8800558e4c37a3f81ee3e425d17c28c27df8281030d5beb1430f",
+        "family_name": "ulib_window_checksum",
+        "invented_word": "krelv",
+        "language_lab_accuracy": 1.0,
+        "old_skill_retention_accuracy": 1.0,
+        "overall_four_lab_accuracy": 1.0,
+        "private_inputs_exposed_to_learner": false,
+        "reasoning_lab_accuracy": 1.0,
+        "seed": 1762999500,
+        "separate_evaluator_process": true,
+        "world_lab_accuracy": 1.0
+      },
+      "four_lab_transfer_accuracy": 1.0,
+      "goal_satisfied": true,
       "hidden_accuracy": 1.0,
       "hidden_tests_passed": 12,
       "hidden_tests_total": 12,
+      "old_skill_retention": 1.0,
       "private_inputs_exposed_to_learner": false,
-      "seed": 1762999500,
-      "separate_evaluator_process": true
+      "separate_evaluator_process": true,
+      "unlearned_binding_control": {
+        "coding_lab_accuracy": 0.0,
+        "evaluator_receipt_sha256": "5774620dfbe6d318e17a7492192c2d497b4e957fd7b8fc0779ef458ae5f36613",
+        "family_name": "ulib_window_checksum",
+        "invented_word": "krelv",
+        "language_lab_accuracy": 0.0,
+        "old_skill_retention_accuracy": 1.0,
+        "overall_four_lab_accuracy": 0.0,
+        "private_inputs_exposed_to_learner": false,
+        "reasoning_lab_accuracy": 0.0,
+        "seed": 1762999500,
+        "separate_evaluator_process": true,
+        "world_lab_accuracy": 0.0
+      },
+      "unlearned_binding_language_accuracy": 0.0
     },
     "journal_entries": 2,
     "kernel_budget_used": 8.55,
@@ -34,6 +82,26 @@
       "learning_feedback_ops": 10,
       "promotion_checks_ops": 6,
       "rollbacks": 0
+    },
+    "neural_verbal_response": {
+      "chosen_clause_indices": [
+        5,
+        6,
+        7
+      ],
+      "epistemic_tags": [
+        "tested"
+      ],
+      "language_mode": "nexus_small_neural",
+      "neural_decoder_used": true,
+      "pretrained_assisted": false,
+      "response_text": "[status=tested, capsule=cap__post_reverse_of__cand_alpha_2_1762999500, binding=krelv] Verified mechanism report: active probe discrimination and counterexample reduction confirmed capsule behavior and bound the mechanism for cross-lab compositional reuse.",
+      "route": "mechanism_investigation",
+      "slot_top_probabilities": [
+        0.99747,
+        0.997397,
+        0.997426
+      ]
     },
     "operating_timescales_verified": [
       "WITHIN_INTERACTION",
@@ -56,10 +124,27 @@
     "step_1_intent_routing": {
       "creates_capsule": true,
       "language_mode": "deterministic_template",
+      "neural_inference_used": false,
       "pretrained_assisted": false,
       "route": "mechanism_investigation",
       "triggers_experiment": true,
       "utterance": "Learn what this function does and bind it to krelv"
+    },
+    "step_1b_neural_intent_routing": {
+      "creates_capsule": true,
+      "intent_probabilities": [
+        0.315413,
+        0.075632,
+        0.608955
+      ],
+      "language_mode": "nexus_small_neural",
+      "neural_inference_used": true,
+      "predicted_modifier": "direct_apply",
+      "pretrained_assisted": false,
+      "requires_source_attribution": false,
+      "route": "mechanism_investigation",
+      "triggers_experiment": true,
+      "utterance": "Uncover the underlying rule in this module and attach it to krelv"
     },
     "step_2_initial_controller_action": "retrieve",
     "step_3_encoder_report": {
@@ -81,6 +166,75 @@
     },
     "step_4_initial_unfamiliar_regime": "UNFAMILIAR_MECHANISM_INADEQUATE_FIT",
     "step_5_revised_winning_composition": "_post_reverse_of__cand_alpha_2",
+    "step_5b_evolved_rule_interpreter_execution": {
+      "chosen_helper": "_cand_alpha_2",
+      "chosen_post": "_post_reverse",
+      "compute_cost": 30.1,
+      "experiments": 2.0,
+      "instructions": [
+        "OBSERVE",
+        "GENERATE_TYPED_HYPOTHESES",
+        "PREDICT_EFFECTS",
+        "MERGE_EQUIVALENT",
+        "DISCARD_HYPOTHESIS",
+        "FILTER_INCONSISTENT",
+        "RANK_BY_MDL",
+        "SELECT_QUERY_BY_INFORMATION_GAIN",
+        "RUN_EXPERIMENT",
+        "FILTER_INCONSISTENT",
+        "RANK_BY_MDL",
+        "PROPOSE_PRIMITIVE",
+        "ACCEPT_IF_IDENTIFIED",
+        "CREATE_CAPSULE",
+        "RUN_VALIDATION",
+        "STOP"
+      ],
+      "promoted_source": "def _cand_alpha_2(seq):\n    if not seq:\n        return []\n    n = len(seq)\n    return [(seq[i] + 2 * seq[(i + 1) % n] + 3) % 11 - 5 for i in range(n)]",
+      "receipt_count": 9,
+      "rule_id": "frozen_evolved_rule_v2"
+    },
+    "step_5c_evolved_rule_instruction_ablations": {
+      "ablations": [
+        {
+          "compute_cost": 10.75,
+          "cross_lab_success": 0.0,
+          "experiments": 1.0,
+          "hidden_accuracy": 0.0,
+          "receipt_count": 4,
+          "removed_opcode": "PROPOSE_PRIMITIVE"
+        },
+        {
+          "compute_cost": 76.5,
+          "cross_lab_success": 1.0,
+          "experiments": 8.0,
+          "hidden_accuracy": 1.0,
+          "receipt_count": 18,
+          "removed_opcode": "PREDICT_EFFECTS"
+        },
+        {
+          "compute_cost": 39.25,
+          "cross_lab_success": 1.0,
+          "experiments": 2.0,
+          "hidden_accuracy": 1.0,
+          "receipt_count": 14,
+          "removed_opcode": "MERGE_EQUIVALENT"
+        },
+        {
+          "compute_cost": 22.25,
+          "cross_lab_success": 0.0,
+          "experiments": 1.0,
+          "hidden_accuracy": 0.0,
+          "receipt_count": 7,
+          "removed_opcode": "CREATE_CAPSULE"
+        }
+      ],
+      "create_capsule_necessary_for_transfer": true,
+      "full_rule_compute_cost": 30.1,
+      "full_rule_cross_lab_success": 1.0,
+      "full_rule_hidden_accuracy": 1.0,
+      "predict_effects_reduces_cost": true,
+      "propose_primitive_necessary": true
+    },
     "step_6_bat_stage_history": [
       "SURVEY",
       "SURVEY",
@@ -144,11 +298,57 @@
       "goal_adapter_tested_separately": true,
       "naive_sequence_reversal_reaches_start": false
     },
+    "step_9b_four_lab_transfer_assessment": {
+      "capsule_removed_control": {
+        "coding_lab_accuracy": 0.0,
+        "evaluator_receipt_sha256": "5774620dfbe6d318e17a7492192c2d497b4e957fd7b8fc0779ef458ae5f36613",
+        "family_name": "ulib_window_checksum",
+        "invented_word": "krelv",
+        "language_lab_accuracy": 0.0,
+        "old_skill_retention_accuracy": 1.0,
+        "overall_four_lab_accuracy": 0.0,
+        "private_inputs_exposed_to_learner": false,
+        "reasoning_lab_accuracy": 0.0,
+        "seed": 1762999500,
+        "separate_evaluator_process": true,
+        "world_lab_accuracy": 0.0
+      },
+      "full_transfer": {
+        "coding_lab_accuracy": 1.0,
+        "evaluator_receipt_sha256": "ad5cf14984be8800558e4c37a3f81ee3e425d17c28c27df8281030d5beb1430f",
+        "family_name": "ulib_window_checksum",
+        "invented_word": "krelv",
+        "language_lab_accuracy": 1.0,
+        "old_skill_retention_accuracy": 1.0,
+        "overall_four_lab_accuracy": 1.0,
+        "private_inputs_exposed_to_learner": false,
+        "reasoning_lab_accuracy": 1.0,
+        "seed": 1762999500,
+        "separate_evaluator_process": true,
+        "world_lab_accuracy": 1.0
+      },
+      "learned_binding_trace": 1,
+      "unlearned_binding_control": {
+        "coding_lab_accuracy": 0.0,
+        "evaluator_receipt_sha256": "5774620dfbe6d318e17a7492192c2d497b4e957fd7b8fc0779ef458ae5f36613",
+        "family_name": "ulib_window_checksum",
+        "invented_word": "krelv",
+        "language_lab_accuracy": 0.0,
+        "old_skill_retention_accuracy": 1.0,
+        "overall_four_lab_accuracy": 0.0,
+        "private_inputs_exposed_to_learner": false,
+        "reasoning_lab_accuracy": 0.0,
+        "seed": 1762999500,
+        "separate_evaluator_process": true,
+        "world_lab_accuracy": 0.0
+      }
+    },
     "verbal_response": {
       "epistemic_tags": [
         "tested"
       ],
       "language_mode": "deterministic_template",
+      "neural_decoder_used": false,
       "pretrained_assisted": false,
       "response_text": "[status=tested, capsule=cap__post_reverse_of__cand_alpha_2_1762999500, binding=krelv] Mechanism verified on discriminating and reduced counterexample tests.",
       "route": "mechanism_investigation"
@@ -158,15 +358,174 @@
     "comparison_1_pooling_and_compound_probes": {
       "binary_information_theoretic_lower_bound": 6,
       "compound_probe": [
-        -4,
-        -1,
-        0,
+        1,
         2,
-        2,
-        7
+        3
       ],
       "compound_probe_partitions": 50,
       "compound_probe_resolves_in_1_step": true,
+      "compound_probe_synthesis_details": {
+        "candidate_rankings": [
+          {
+            "entropy_bits": 2.99908,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.3,
+            "length": 2,
+            "num_partitions": 9,
+            "probe": [
+              1,
+              1
+            ],
+            "utility_score": 2.92908
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.45,
+            "length": 3,
+            "num_partitions": 50,
+            "probe": [
+              1,
+              2,
+              3
+            ],
+            "utility_score": 5.903856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.45,
+            "length": 3,
+            "num_partitions": 50,
+            "probe": [
+              -3,
+              0,
+              4
+            ],
+            "utility_score": 5.903856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.6,
+            "length": 4,
+            "num_partitions": 50,
+            "probe": [
+              -5,
+              -2,
+              0,
+              3
+            ],
+            "utility_score": 5.823856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.6,
+            "length": 4,
+            "num_partitions": 50,
+            "probe": [
+              0,
+              5,
+              10,
+              15
+            ],
+            "utility_score": 5.823856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.75,
+            "length": 5,
+            "num_partitions": 50,
+            "probe": [
+              1,
+              -1,
+              2,
+              -2,
+              3
+            ],
+            "utility_score": 5.743856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.75,
+            "length": 5,
+            "num_partitions": 50,
+            "probe": [
+              2,
+              2,
+              5,
+              5,
+              8
+            ],
+            "utility_score": 5.743856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.75,
+            "length": 5,
+            "num_partitions": 50,
+            "probe": [
+              4,
+              4,
+              4,
+              1,
+              1
+            ],
+            "utility_score": 5.743856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.9,
+            "length": 6,
+            "num_partitions": 50,
+            "probe": [
+              -4,
+              -1,
+              0,
+              2,
+              2,
+              7
+            ],
+            "utility_score": 5.663856
+          },
+          {
+            "entropy_bits": 5.643856,
+            "hypothesis_count": 50,
+            "input_length_cost": 0.9,
+            "length": 6,
+            "num_partitions": 50,
+            "probe": [
+              3,
+              -2,
+              6,
+              6,
+              -1,
+              4
+            ],
+            "utility_score": 5.663856
+          }
+        ],
+        "candidates_evaluated": 10,
+        "entropy_bits": 5.643856,
+        "exposed_properties": [
+          "even_odd_parity_transitions"
+        ],
+        "hypothesis_count": 50,
+        "input_length_cost": 0.45,
+        "length": 3,
+        "num_partitions": 50,
+        "probe": [
+          1,
+          2,
+          3
+        ],
+        "utility_score": 5.903856
+      },
       "conditional_group_testing_nonlinear_fallback": {
         "decoded_vector": [
           0,
@@ -206,6 +565,535 @@
         "used_disjunct_matrix": true
       },
       "hypothesis_count": 50,
+      "probe_sensitivity_across_hypothesis_families": {
+        "changing_hypotheses_changes_selected_probe": true,
+        "family_dup_runs_partitions": 6,
+        "family_dup_runs_selected_probe": [
+          2,
+          2,
+          5,
+          5,
+          8
+        ],
+        "family_full_diverse_partitions": 9,
+        "family_full_diverse_selected_probe": [
+          -4,
+          -1,
+          0,
+          2,
+          2,
+          7
+        ],
+        "family_sign_zero_partitions": 4,
+        "family_sign_zero_selected_probe": [
+          -3,
+          0,
+          4
+        ],
+        "per_family_details": {
+          "duplicate_runlength_family": {
+            "candidate_rankings": [
+              {
+                "entropy_bits": 1.584963,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.3,
+                "length": 2,
+                "num_partitions": 3,
+                "probe": [
+                  1,
+                  1
+                ],
+                "utility_score": 1.674963
+              },
+              {
+                "entropy_bits": 1.459148,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.45,
+                "length": 3,
+                "num_partitions": 3,
+                "probe": [
+                  1,
+                  2,
+                  3
+                ],
+                "utility_score": 1.469148
+              },
+              {
+                "entropy_bits": 1.459148,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.45,
+                "length": 3,
+                "num_partitions": 3,
+                "probe": [
+                  -3,
+                  0,
+                  4
+                ],
+                "utility_score": 1.469148
+              },
+              {
+                "entropy_bits": 1.459148,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.6,
+                "length": 4,
+                "num_partitions": 3,
+                "probe": [
+                  -5,
+                  -2,
+                  0,
+                  3
+                ],
+                "utility_score": 1.389148
+              },
+              {
+                "entropy_bits": 1.459148,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.6,
+                "length": 4,
+                "num_partitions": 3,
+                "probe": [
+                  0,
+                  5,
+                  10,
+                  15
+                ],
+                "utility_score": 1.389148
+              },
+              {
+                "entropy_bits": 1.459148,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 3,
+                "probe": [
+                  1,
+                  -1,
+                  2,
+                  -2,
+                  3
+                ],
+                "utility_score": 1.309148
+              },
+              {
+                "entropy_bits": 2.584963,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 6,
+                "probe": [
+                  2,
+                  2,
+                  5,
+                  5,
+                  8
+                ],
+                "utility_score": 2.684963
+              },
+              {
+                "entropy_bits": 2.251629,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 5,
+                "probe": [
+                  4,
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "utility_score": 2.268296
+              },
+              {
+                "entropy_bits": 2.251629,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.9,
+                "length": 6,
+                "num_partitions": 5,
+                "probe": [
+                  -4,
+                  -1,
+                  0,
+                  2,
+                  2,
+                  7
+                ],
+                "utility_score": 2.188296
+              },
+              {
+                "entropy_bits": 2.251629,
+                "hypothesis_count": 6,
+                "input_length_cost": 0.9,
+                "length": 6,
+                "num_partitions": 5,
+                "probe": [
+                  3,
+                  -2,
+                  6,
+                  6,
+                  -1,
+                  4
+                ],
+                "utility_score": 2.188296
+              }
+            ],
+            "candidates_evaluated": 10,
+            "entropy_bits": 2.584963,
+            "exposed_properties": [
+              "duplicate_preservation_or_removal",
+              "non_monotonic_adjacent_differences",
+              "even_odd_parity_transitions"
+            ],
+            "hypothesis_count": 6,
+            "input_length_cost": 0.75,
+            "length": 5,
+            "num_partitions": 6,
+            "probe": [
+              2,
+              2,
+              5,
+              5,
+              8
+            ],
+            "utility_score": 2.684963
+          },
+          "full_diverse_family": {
+            "candidate_rankings": [
+              {
+                "entropy_bits": 2.058814,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.3,
+                "length": 2,
+                "num_partitions": 5,
+                "probe": [
+                  1,
+                  1
+                ],
+                "utility_score": 2.176592
+              },
+              {
+                "entropy_bits": 2.281036,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.45,
+                "length": 3,
+                "num_partitions": 6,
+                "probe": [
+                  1,
+                  2,
+                  3
+                ],
+                "utility_score": 2.374369
+              },
+              {
+                "entropy_bits": 2.947703,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.45,
+                "length": 3,
+                "num_partitions": 8,
+                "probe": [
+                  -3,
+                  0,
+                  4
+                ],
+                "utility_score": 3.152147
+              },
+              {
+                "entropy_bits": 2.947703,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.6,
+                "length": 4,
+                "num_partitions": 8,
+                "probe": [
+                  -5,
+                  -2,
+                  0,
+                  3
+                ],
+                "utility_score": 3.072147
+              },
+              {
+                "entropy_bits": 2.641604,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.6,
+                "length": 4,
+                "num_partitions": 7,
+                "probe": [
+                  0,
+                  5,
+                  10,
+                  15
+                ],
+                "utility_score": 2.710493
+              },
+              {
+                "entropy_bits": 2.947703,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 8,
+                "probe": [
+                  1,
+                  -1,
+                  2,
+                  -2,
+                  3
+                ],
+                "utility_score": 2.992147
+              },
+              {
+                "entropy_bits": 2.641604,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 7,
+                "probe": [
+                  2,
+                  2,
+                  5,
+                  5,
+                  8
+                ],
+                "utility_score": 2.630493
+              },
+              {
+                "entropy_bits": 2.641604,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 7,
+                "probe": [
+                  4,
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "utility_score": 2.630493
+              },
+              {
+                "entropy_bits": 3.169925,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.9,
+                "length": 6,
+                "num_partitions": 9,
+                "probe": [
+                  -4,
+                  -1,
+                  0,
+                  2,
+                  2,
+                  7
+                ],
+                "utility_score": 3.189925
+              },
+              {
+                "entropy_bits": 3.169925,
+                "hypothesis_count": 9,
+                "input_length_cost": 0.9,
+                "length": 6,
+                "num_partitions": 9,
+                "probe": [
+                  3,
+                  -2,
+                  6,
+                  6,
+                  -1,
+                  4
+                ],
+                "utility_score": 3.189925
+              }
+            ],
+            "candidates_evaluated": 10,
+            "entropy_bits": 3.169925,
+            "exposed_properties": [
+              "negative_sign_handling",
+              "zero_boundary_handling",
+              "duplicate_preservation_or_removal",
+              "non_monotonic_adjacent_differences",
+              "even_odd_parity_transitions"
+            ],
+            "hypothesis_count": 9,
+            "input_length_cost": 0.9,
+            "length": 6,
+            "num_partitions": 9,
+            "probe": [
+              -4,
+              -1,
+              0,
+              2,
+              2,
+              7
+            ],
+            "utility_score": 3.189925
+          },
+          "sign_and_zero_family": {
+            "candidate_rankings": [
+              {
+                "entropy_bits": 0.0,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.3,
+                "length": 2,
+                "num_partitions": 1,
+                "probe": [
+                  1,
+                  1
+                ],
+                "utility_score": -0.035
+              },
+              {
+                "entropy_bits": 0.0,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.45,
+                "length": 3,
+                "num_partitions": 1,
+                "probe": [
+                  1,
+                  2,
+                  3
+                ],
+                "utility_score": -0.115
+              },
+              {
+                "entropy_bits": 2.0,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.45,
+                "length": 3,
+                "num_partitions": 4,
+                "probe": [
+                  -3,
+                  0,
+                  4
+                ],
+                "utility_score": 2.26
+              },
+              {
+                "entropy_bits": 2.0,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.6,
+                "length": 4,
+                "num_partitions": 4,
+                "probe": [
+                  -5,
+                  -2,
+                  0,
+                  3
+                ],
+                "utility_score": 2.18
+              },
+              {
+                "entropy_bits": 0.811278,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.6,
+                "length": 4,
+                "num_partitions": 2,
+                "probe": [
+                  0,
+                  5,
+                  10,
+                  15
+                ],
+                "utility_score": 0.741278
+              },
+              {
+                "entropy_bits": 1.5,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 3,
+                "probe": [
+                  1,
+                  -1,
+                  2,
+                  -2,
+                  3
+                ],
+                "utility_score": 1.475
+              },
+              {
+                "entropy_bits": 0.0,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 1,
+                "probe": [
+                  2,
+                  2,
+                  5,
+                  5,
+                  8
+                ],
+                "utility_score": -0.275
+              },
+              {
+                "entropy_bits": 0.0,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.75,
+                "length": 5,
+                "num_partitions": 1,
+                "probe": [
+                  4,
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "utility_score": -0.275
+              },
+              {
+                "entropy_bits": 2.0,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.9,
+                "length": 6,
+                "num_partitions": 4,
+                "probe": [
+                  -4,
+                  -1,
+                  0,
+                  2,
+                  2,
+                  7
+                ],
+                "utility_score": 2.02
+              },
+              {
+                "entropy_bits": 1.5,
+                "hypothesis_count": 4,
+                "input_length_cost": 0.9,
+                "length": 6,
+                "num_partitions": 3,
+                "probe": [
+                  3,
+                  -2,
+                  6,
+                  6,
+                  -1,
+                  4
+                ],
+                "utility_score": 1.395
+              }
+            ],
+            "candidates_evaluated": 10,
+            "entropy_bits": 2.0,
+            "exposed_properties": [
+              "negative_sign_handling",
+              "zero_boundary_handling",
+              "non_monotonic_adjacent_differences",
+              "even_odd_parity_transitions"
+            ],
+            "hypothesis_count": 4,
+            "input_length_cost": 0.45,
+            "length": 3,
+            "num_partitions": 4,
+            "probe": [
+              -3,
+              0,
+              4
+            ],
+            "utility_score": 2.26
+          }
+        },
+        "unique_selected_probe_count": 3
+      },
       "single_feature_probe_partitions": 9
     },
     "comparison_2_bat_scheduling_and_unfamiliar_detection": {
@@ -242,11 +1130,770 @@
         "goal_adapter_tested_separately": true,
         "naive_sequence_reversal_reaches_start": false
       },
+      "multi_mechanism_evaluation": {
+        "all_mechanisms_solved_fastest_by_evidence_directed": true,
+        "per_target_results": {
+          "adjacent_xor_mod__inc_one": {
+            "counterexample_directed_repair": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.92,
+                "mirror_diff": 0.275,
+                "parity_run_sum": 0.385,
+                "window_shift": 0.395
+              },
+              "evaluations_used": 2,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "adjacent_xor_mod",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "inc_one",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.5
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "adjacent_xor_mod",
+                "inc_one"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "ordinary_typed_enumeration": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.92,
+                "mirror_diff": 0.275,
+                "parity_run_sum": 0.385,
+                "window_shift": 0.395
+              },
+              "evaluations_used": 5,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "adjacent_xor_mod",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "inc_one",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.5
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "adjacent_xor_mod",
+                "inc_one"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "uncertainty_directed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.92,
+                "mirror_diff": 0.275,
+                "parity_run_sum": 0.385,
+                "window_shift": 0.395
+              },
+              "evaluations_used": 8,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "adjacent_xor_mod",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "inc_one",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.5
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "adjacent_xor_mod",
+                "inc_one"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "uniform_typed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.92,
+                "mirror_diff": 0.275,
+                "parity_run_sum": 0.385,
+                "window_shift": 0.395
+              },
+              "evaluations_used": 18,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "adjacent_xor_mod",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "inc_one",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.7
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.5
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "adjacent_xor_mod",
+                "inc_one"
+              ],
+              "visible_accuracy": 1.0
+            }
+          },
+          "mirror_diff__abs_val": {
+            "counterexample_directed_repair": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.415,
+                "mirror_diff": 0.9,
+                "parity_run_sum": 0.35,
+                "window_shift": 0.33
+              },
+              "evaluations_used": 3,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "mirror_diff",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "abs_val",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.5
+                }
+              ],
+              "selected_composition": [
+                "mirror_diff",
+                "abs_val"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "ordinary_typed_enumeration": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.415,
+                "mirror_diff": 0.9,
+                "parity_run_sum": 0.35,
+                "window_shift": 0.33
+              },
+              "evaluations_used": 7,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "mirror_diff",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "abs_val",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.5
+                }
+              ],
+              "selected_composition": [
+                "mirror_diff",
+                "abs_val"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "uncertainty_directed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.415,
+                "mirror_diff": 0.9,
+                "parity_run_sum": 0.35,
+                "window_shift": 0.33
+              },
+              "evaluations_used": 5,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "mirror_diff",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "abs_val",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.5
+                }
+              ],
+              "selected_composition": [
+                "mirror_diff",
+                "abs_val"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "uniform_typed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.415,
+                "mirror_diff": 0.9,
+                "parity_run_sum": 0.35,
+                "window_shift": 0.33
+              },
+              "evaluations_used": 8,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "mirror_diff",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "abs_val",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.5
+                }
+              ],
+              "selected_composition": [
+                "mirror_diff",
+                "abs_val"
+              ],
+              "visible_accuracy": 1.0
+            }
+          },
+          "parity_run_sum__reverse": {
+            "counterexample_directed_repair": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.375,
+                "mirror_diff": 0.23,
+                "parity_run_sum": 0.95,
+                "window_shift": 0.37
+              },
+              "evaluations_used": 4,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "parity_run_sum",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "reverse",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                }
+              ],
+              "selected_composition": [
+                "parity_run_sum",
+                "reverse"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "ordinary_typed_enumeration": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.375,
+                "mirror_diff": 0.23,
+                "parity_run_sum": 0.95,
+                "window_shift": 0.37
+              },
+              "evaluations_used": 18,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "parity_run_sum",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "reverse",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                }
+              ],
+              "selected_composition": [
+                "parity_run_sum",
+                "reverse"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "uncertainty_directed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.375,
+                "mirror_diff": 0.23,
+                "parity_run_sum": 0.95,
+                "window_shift": 0.37
+              },
+              "evaluations_used": 9,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "parity_run_sum",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "reverse",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                }
+              ],
+              "selected_composition": [
+                "parity_run_sum",
+                "reverse"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "uniform_typed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.375,
+                "mirror_diff": 0.23,
+                "parity_run_sum": 0.95,
+                "window_shift": 0.37
+              },
+              "evaluations_used": 13,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "parity_run_sum",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "reverse",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dedup",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.6
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.58
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.58
+                }
+              ],
+              "selected_composition": [
+                "parity_run_sum",
+                "reverse"
+              ],
+              "visible_accuracy": 1.0
+            }
+          },
+          "window_shift__dedup": {
+            "counterexample_directed_repair": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.0,
+                "mirror_diff": 0.0,
+                "parity_run_sum": 0.0,
+                "window_shift": 0.88
+              },
+              "evaluations_used": 5,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "window_shift",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "dedup",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "window_shift",
+                "dedup"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "ordinary_typed_enumeration": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.0,
+                "mirror_diff": 0.0,
+                "parity_run_sum": 0.0,
+                "window_shift": 0.88
+              },
+              "evaluations_used": 18,
+              "heldout_accuracy": 0.0,
+              "inferred_best_prefix": "window_shift",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "dedup",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "adjacent_xor_mod",
+                "abs_val"
+              ],
+              "visible_accuracy": 0.0
+            },
+            "uncertainty_directed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.0,
+                "mirror_diff": 0.0,
+                "parity_run_sum": 0.0,
+                "window_shift": 0.88
+              },
+              "evaluations_used": 7,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "window_shift",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "dedup",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "window_shift",
+                "dedup"
+              ],
+              "visible_accuracy": 1.0
+            },
+            "uniform_typed_mutation": {
+              "budget_limit": 18,
+              "derived_prefix_evidence_scores": {
+                "adjacent_xor_mod": 0.0,
+                "mirror_diff": 0.0,
+                "parity_run_sum": 0.0,
+                "window_shift": 0.88
+              },
+              "evaluations_used": 10,
+              "heldout_accuracy": 1.0,
+              "inferred_best_prefix": "window_shift",
+              "post_op_residual_ranking": [
+                {
+                  "post_op": "dedup",
+                  "score": 1.0
+                },
+                {
+                  "post_op": "abs_val",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "dec_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "id",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "inc_one",
+                  "score": 0.0
+                },
+                {
+                  "post_op": "reverse",
+                  "score": 0.0
+                }
+              ],
+              "selected_composition": [
+                "window_shift",
+                "dedup"
+              ],
+              "visible_accuracy": 1.0
+            }
+          }
+        },
+        "strategy_means": {
+          "counterexample_directed_repair": {
+            "mean_evaluations_used": 3.5,
+            "mean_heldout_accuracy": 1.0
+          },
+          "ordinary_typed_enumeration": {
+            "mean_evaluations_used": 12.0,
+            "mean_heldout_accuracy": 0.75
+          },
+          "uncertainty_directed_mutation": {
+            "mean_evaluations_used": 7.25,
+            "mean_heldout_accuracy": 1.0
+          },
+          "uniform_typed_mutation": {
+            "mean_evaluations_used": 12.25,
+            "mean_heldout_accuracy": 1.0
+          }
+        },
+        "targets_tested": [
+          "parity_run_sum__reverse",
+          "adjacent_xor_mod__inc_one",
+          "mirror_diff__abs_val",
+          "window_shift__dedup"
+        ],
+        "zero_hardcoded_operator_preference": true
+      },
       "targeted_variation_strategies": {
         "counterexample_directed_repair": {
           "budget_limit": 18,
-          "evaluations_used": 2,
+          "derived_prefix_evidence_scores": {
+            "adjacent_xor_mod": 0.34375,
+            "mirror_diff": 0.225,
+            "parity_run_sum": 0.95,
+            "window_shift": 0.4
+          },
+          "evaluations_used": 4,
           "heldout_accuracy": 1.0,
+          "inferred_best_prefix": "parity_run_sum",
+          "post_op_residual_ranking": [
+            {
+              "post_op": "reverse",
+              "score": 1.0
+            },
+            {
+              "post_op": "abs_val",
+              "score": 0.5
+            },
+            {
+              "post_op": "dec_one",
+              "score": 0.5
+            },
+            {
+              "post_op": "dedup",
+              "score": 0.5
+            },
+            {
+              "post_op": "id",
+              "score": 0.5
+            },
+            {
+              "post_op": "inc_one",
+              "score": 0.5
+            }
+          ],
           "selected_composition": [
             "parity_run_sum",
             "reverse"
@@ -255,8 +1902,41 @@
         },
         "ordinary_typed_enumeration": {
           "budget_limit": 18,
+          "derived_prefix_evidence_scores": {
+            "adjacent_xor_mod": 0.34375,
+            "mirror_diff": 0.225,
+            "parity_run_sum": 0.95,
+            "window_shift": 0.4
+          },
           "evaluations_used": 18,
           "heldout_accuracy": 1.0,
+          "inferred_best_prefix": "parity_run_sum",
+          "post_op_residual_ranking": [
+            {
+              "post_op": "reverse",
+              "score": 1.0
+            },
+            {
+              "post_op": "abs_val",
+              "score": 0.5
+            },
+            {
+              "post_op": "dec_one",
+              "score": 0.5
+            },
+            {
+              "post_op": "dedup",
+              "score": 0.5
+            },
+            {
+              "post_op": "id",
+              "score": 0.5
+            },
+            {
+              "post_op": "inc_one",
+              "score": 0.5
+            }
+          ],
           "selected_composition": [
             "parity_run_sum",
             "reverse"
@@ -265,8 +1945,41 @@
         },
         "uncertainty_directed_mutation": {
           "budget_limit": 18,
-          "evaluations_used": 3,
+          "derived_prefix_evidence_scores": {
+            "adjacent_xor_mod": 0.34375,
+            "mirror_diff": 0.225,
+            "parity_run_sum": 0.95,
+            "window_shift": 0.4
+          },
+          "evaluations_used": 9,
           "heldout_accuracy": 1.0,
+          "inferred_best_prefix": "parity_run_sum",
+          "post_op_residual_ranking": [
+            {
+              "post_op": "reverse",
+              "score": 1.0
+            },
+            {
+              "post_op": "abs_val",
+              "score": 0.5
+            },
+            {
+              "post_op": "dec_one",
+              "score": 0.5
+            },
+            {
+              "post_op": "dedup",
+              "score": 0.5
+            },
+            {
+              "post_op": "id",
+              "score": 0.5
+            },
+            {
+              "post_op": "inc_one",
+              "score": 0.5
+            }
+          ],
           "selected_composition": [
             "parity_run_sum",
             "reverse"
@@ -275,8 +1988,41 @@
         },
         "uniform_typed_mutation": {
           "budget_limit": 18,
-          "evaluations_used": 11,
+          "derived_prefix_evidence_scores": {
+            "adjacent_xor_mod": 0.34375,
+            "mirror_diff": 0.225,
+            "parity_run_sum": 0.95,
+            "window_shift": 0.4
+          },
+          "evaluations_used": 13,
           "heldout_accuracy": 1.0,
+          "inferred_best_prefix": "parity_run_sum",
+          "post_op_residual_ranking": [
+            {
+              "post_op": "reverse",
+              "score": 1.0
+            },
+            {
+              "post_op": "abs_val",
+              "score": 0.5
+            },
+            {
+              "post_op": "dec_one",
+              "score": 0.5
+            },
+            {
+              "post_op": "dedup",
+              "score": 0.5
+            },
+            {
+              "post_op": "id",
+              "score": 0.5
+            },
+            {
+              "post_op": "inc_one",
+              "score": 0.5
+            }
+          ],
           "selected_composition": [
             "parity_run_sum",
             "reverse"
@@ -344,20 +2090,1307 @@
         "verified_capsules": []
       },
       "small_learned_optimizer": {
+        "beats_all_tuned_conventional_optimizers": true,
         "beats_fixed_sgd_and_momentum": true,
-        "fixed_momentum_mean_loss": 0.17131387,
-        "fixed_sgd_mean_loss": 0.2205748,
-        "learned_optimizer_mean_loss": 0.00024847,
-        "steps": 12
+        "final_source_mean_loss": 0.00044542,
+        "fixed_momentum_mean_loss": 0.21775658,
+        "fixed_sgd_mean_loss": 0.14906439,
+        "frozen_before_target_evaluation": true,
+        "frozen_meta_params": {
+          "alpha_grad": 0.133484,
+          "alpha_mom": 0.404941,
+          "alpha_pre": 0.501024,
+          "beta_m": 0.361385,
+          "beta_v": 0.585976,
+          "eps": 0.0001,
+          "gamma_decay": 0.28907,
+          "kappa_curv": -0.284895
+        },
+        "frozen_params_sha256": "3d36eb38e5169a0a2393bdda8e4dcca91678486e37b6f770fe93712a1556ff6a",
+        "heldout_tasks": [
+          {
+            "curvatures": [
+              6.1665,
+              0.6966,
+              3.6056,
+              0.9913,
+              0.6511,
+              0.8379
+            ],
+            "quartic_coeff": 0.031,
+            "target": [
+              -0.2529,
+              -2.8831,
+              -1.6082,
+              2.5175,
+              2.5597,
+              -1.9442
+            ],
+            "task_id": "opt_task_1762800999_00"
+          },
+          {
+            "curvatures": [
+              2.9705,
+              6.6745,
+              0.683,
+              3.7973,
+              5.8283,
+              1.2623
+            ],
+            "quartic_coeff": 0.0265,
+            "target": [
+              -0.4883,
+              1.465,
+              2.952,
+              -1.1735,
+              -0.5355,
+              -0.8205
+            ],
+            "task_id": "opt_task_1762800999_01"
+          },
+          {
+            "curvatures": [
+              0.8731,
+              4.8423,
+              5.7898,
+              0.5736,
+              0.6398,
+              5.4923
+            ],
+            "quartic_coeff": 0.0249,
+            "target": [
+              3.0507,
+              -0.2894,
+              1.1446,
+              -1.0493,
+              -1.4748,
+              1.5255
+            ],
+            "task_id": "opt_task_1762800999_02"
+          },
+          {
+            "curvatures": [
+              1.6371,
+              1.8702,
+              2.5938,
+              5.3242,
+              0.5194,
+              3.2972
+            ],
+            "quartic_coeff": 0.0214,
+            "target": [
+              -0.0684,
+              0.1593,
+              -2.7919,
+              -0.6427,
+              0.2244,
+              -3.0024
+            ],
+            "task_id": "opt_task_1762800999_03"
+          },
+          {
+            "curvatures": [
+              4.0859,
+              3.5195,
+              2.9795,
+              4.911,
+              6.2911,
+              0.5755
+            ],
+            "quartic_coeff": 0.033,
+            "target": [
+              -0.1655,
+              -1.2829,
+              -0.3882,
+              2.5182,
+              0.2466,
+              0.8108
+            ],
+            "task_id": "opt_task_1762800999_04"
+          },
+          {
+            "curvatures": [
+              0.4716,
+              1.0368,
+              5.4687,
+              0.5436,
+              2.9749,
+              6.306
+            ],
+            "quartic_coeff": 0.0272,
+            "target": [
+              2.494,
+              0.4286,
+              -0.8974,
+              0.6447,
+              -2.8788,
+              -1.2723
+            ],
+            "task_id": "opt_task_1762800999_05"
+          },
+          {
+            "curvatures": [
+              5.5604,
+              0.5506,
+              1.6354,
+              3.4598,
+              2.346,
+              4.5454
+            ],
+            "quartic_coeff": 0.0163,
+            "target": [
+              -2.9782,
+              2.5425,
+              1.0228,
+              -0.0247,
+              3.138,
+              0.5037
+            ],
+            "task_id": "opt_task_1762800999_06"
+          },
+          {
+            "curvatures": [
+              1.7226,
+              5.7572,
+              0.515,
+              4.7638,
+              4.2271,
+              4.3264
+            ],
+            "quartic_coeff": 0.0161,
+            "target": [
+              -0.4514,
+              2.9376,
+              -1.1735,
+              -1.0107,
+              -0.5044,
+              -2.0536
+            ],
+            "task_id": "opt_task_1762800999_07"
+          },
+          {
+            "curvatures": [
+              4.6803,
+              3.7846,
+              6.4265,
+              0.3936,
+              4.4379,
+              5.3514
+            ],
+            "quartic_coeff": 0.0226,
+            "target": [
+              -0.7268,
+              1.9502,
+              -2.1158,
+              0.7996,
+              -0.552,
+              -0.0533
+            ],
+            "task_id": "opt_task_1762800999_08"
+          },
+          {
+            "curvatures": [
+              1.7605,
+              3.1549,
+              0.6051,
+              6.0106,
+              0.4039,
+              4.585
+            ],
+            "quartic_coeff": 0.0319,
+            "target": [
+              -1.0665,
+              -2.0795,
+              -2.3812,
+              -1.7468,
+              0.6859,
+              0.2401
+            ],
+            "task_id": "opt_task_1762800999_09"
+          },
+          {
+            "curvatures": [
+              5.6057,
+              5.2931,
+              3.8999,
+              4.6772,
+              5.4929,
+              0.5921
+            ],
+            "quartic_coeff": 0.0159,
+            "target": [
+              -1.5347,
+              -0.8997,
+              0.7581,
+              -1.4484,
+              -1.865,
+              0.7627
+            ],
+            "task_id": "opt_task_1762800999_10"
+          },
+          {
+            "curvatures": [
+              0.4584,
+              2.083,
+              3.0307,
+              1.6436,
+              1.0167,
+              6.3734
+            ],
+            "quartic_coeff": 0.0257,
+            "target": [
+              -3.1964,
+              1.0569,
+              0.8826,
+              -2.9188,
+              -3.135,
+              -2.1717
+            ],
+            "task_id": "opt_task_1762800999_11"
+          }
+        ],
+        "initial_source_mean_loss": 0.72886214,
+        "learned_optimizer_mean_loss": 0.00186206,
+        "learned_optimizer_trajectories": [
+          {
+            "final_loss": 5.74e-06,
+            "initial_loss": 15.95499186,
+            "loss_trace": [
+              15.95499186,
+              4.82759385,
+              1.73094738,
+              0.41710667,
+              0.13206035,
+              0.04184129,
+              0.0120061,
+              0.00268244,
+              0.00043548,
+              0.00011489,
+              7.021e-05,
+              3.088e-05,
+              5.74e-06
+            ],
+            "task_id": "opt_task_1762800999_00"
+          },
+          {
+            "final_loss": 0.0009241,
+            "initial_loss": 14.917864,
+            "loss_trace": [
+              14.917864,
+              4.05924729,
+              0.73700784,
+              0.22558939,
+              0.09205717,
+              0.03611951,
+              0.01201128,
+              0.00305163,
+              0.00042272,
+              4.5e-06,
+              4.276e-05,
+              0.00010201,
+              0.0009241
+            ],
+            "task_id": "opt_task_1762800999_01"
+          },
+          {
+            "final_loss": 9.02e-06,
+            "initial_loss": 16.08117597,
+            "loss_trace": [
+              16.08117597,
+              3.82069273,
+              0.96643795,
+              0.2596921,
+              0.10142703,
+              0.03608188,
+              0.01058344,
+              0.00218853,
+              0.00020165,
+              8.1e-06,
+              5.49e-05,
+              3.034e-05,
+              9.02e-06
+            ],
+            "task_id": "opt_task_1762800999_02"
+          },
+          {
+            "final_loss": 0.00902137,
+            "initial_loss": 26.87107592,
+            "loss_trace": [
+              26.87107592,
+              4.23910434,
+              0.34542197,
+              0.0200158,
+              0.00702385,
+              0.00619988,
+              0.00282858,
+              0.00060252,
+              3.706e-05,
+              3.613e-05,
+              0.00012844,
+              0.00098453,
+              0.00902137
+            ],
+            "task_id": "opt_task_1762800999_03"
+          },
+          {
+            "final_loss": 0.00022343,
+            "initial_loss": 19.48619498,
+            "loss_trace": [
+              19.48619498,
+              3.02206811,
+              1.06174381,
+              0.06829648,
+              0.01023703,
+              0.0012251,
+              7.763e-05,
+              4.037e-05,
+              1.989e-05,
+              1.97e-06,
+              3.78e-06,
+              2.104e-05,
+              0.00022343
+            ],
+            "task_id": "opt_task_1762800999_04"
+          },
+          {
+            "final_loss": 0.00657486,
+            "initial_loss": 22.06182326,
+            "loss_trace": [
+              22.06182326,
+              3.59872528,
+              0.33781498,
+              0.08855705,
+              0.03354529,
+              0.01248642,
+              0.00347233,
+              0.00049525,
+              1.215e-05,
+              5.409e-05,
+              9.314e-05,
+              0.00064894,
+              0.00657486
+            ],
+            "task_id": "opt_task_1762800999_05"
+          },
+          {
+            "final_loss": 0.0002437,
+            "initial_loss": 40.31347915,
+            "loss_trace": [
+              40.31347915,
+              4.46539311,
+              1.0111396,
+              0.20031932,
+              0.04460926,
+              0.00860632,
+              0.0018788,
+              0.00059144,
+              0.00024399,
+              8.894e-05,
+              2.718e-05,
+              3.064e-05,
+              0.0002437
+            ],
+            "task_id": "opt_task_1762800999_06"
+          },
+          {
+            "final_loss": 0.00523951,
+            "initial_loss": 37.84822432,
+            "loss_trace": [
+              37.84822432,
+              1.2298129,
+              0.21430365,
+              0.06845771,
+              0.01414169,
+              0.00093711,
+              7.518e-05,
+              9.711e-05,
+              2.139e-05,
+              9.27e-06,
+              4.034e-05,
+              0.00039058,
+              0.00523951
+            ],
+            "task_id": "opt_task_1762800999_07"
+          },
+          {
+            "final_loss": 6.276e-05,
+            "initial_loss": 23.82648373,
+            "loss_trace": [
+              23.82648373,
+              3.50388812,
+              0.76802468,
+              0.04205415,
+              0.00932723,
+              0.00065611,
+              6.359e-05,
+              7.09e-05,
+              1.067e-05,
+              1.12e-06,
+              2.19e-06,
+              7.41e-06,
+              6.276e-05
+            ],
+            "task_id": "opt_task_1762800999_08"
+          },
+          {
+            "final_loss": 1.09e-05,
+            "initial_loss": 19.42726613,
+            "loss_trace": [
+              19.42726613,
+              2.45652516,
+              0.58174127,
+              0.09660712,
+              0.02867079,
+              0.00600066,
+              0.00052626,
+              3.509e-05,
+              0.0001083,
+              5.376e-05,
+              9.93e-06,
+              1.34e-06,
+              1.09e-05
+            ],
+            "task_id": "opt_task_1762800999_09"
+          },
+          {
+            "final_loss": 7.26e-06,
+            "initial_loss": 24.58845296,
+            "loss_trace": [
+              24.58845296,
+              1.6939002,
+              0.25623857,
+              0.02907307,
+              0.00096374,
+              0.00046051,
+              0.00013811,
+              9.39e-06,
+              2.89e-06,
+              6.3e-07,
+              3.9e-07,
+              1.16e-06,
+              7.26e-06
+            ],
+            "task_id": "opt_task_1762800999_10"
+          },
+          {
+            "final_loss": 2.202e-05,
+            "initial_loss": 33.62480028,
+            "loss_trace": [
+              33.62480028,
+              5.4811815,
+              1.85040224,
+              0.67961416,
+              0.27471798,
+              0.11695104,
+              0.04952916,
+              0.01990165,
+              0.00709875,
+              0.00202394,
+              0.0003801,
+              3.495e-05,
+              2.202e-05
+            ],
+            "task_id": "opt_task_1762800999_11"
+          }
+        ],
+        "outer_loss_history": [
+          0.72886214,
+          0.00071618,
+          0.00771381,
+          0.00273547,
+          0.00093305,
+          0.0002211,
+          6.081e-05,
+          0.00014953,
+          0.0002564,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.00025852,
+          0.0002337,
+          0.00050583,
+          0.00050583,
+          0.00050583,
+          0.00050583,
+          0.00050583,
+          0.00046922,
+          0.00044542,
+          0.00044542,
+          0.00044542
+        ],
+        "params_artifact_path": "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/artifacts/seed_learned_optimizer_params_v1.json",
+        "per_task_win_count": 9,
+        "source_seed": 1762800101,
+        "source_task_count": 16,
+        "steps": 12,
+        "target_seed": 1762800999,
+        "target_task_count": 12,
+        "tuned_adam_mean_loss": 0.02380831,
+        "tuned_adam_trajectories": [
+          {
+            "final_loss": 0.0097003,
+            "initial_loss": 15.95499186,
+            "loss_trace": [
+              15.95499186,
+              7.91443716,
+              2.81765425,
+              1.00293897,
+              0.49632424,
+              0.38034756,
+              0.30960807,
+              0.17132496,
+              0.1477962,
+              0.11144541,
+              0.07524554,
+              0.0238155,
+              0.0097003
+            ],
+            "task_id": "opt_task_1762800999_00"
+          },
+          {
+            "final_loss": 0.01967443,
+            "initial_loss": 14.917864,
+            "loss_trace": [
+              14.917864,
+              4.83155293,
+              1.72669735,
+              0.96940087,
+              1.03972424,
+              0.69155039,
+              0.17193353,
+              0.08953269,
+              0.12252291,
+              0.11724731,
+              0.06037588,
+              0.0211578,
+              0.01967443
+            ],
+            "task_id": "opt_task_1762800999_01"
+          },
+          {
+            "final_loss": 0.01492908,
+            "initial_loss": 16.08117597,
+            "loss_trace": [
+              16.08117597,
+              6.12122521,
+              1.74930381,
+              1.22327146,
+              1.18042309,
+              0.6420177,
+              0.21472766,
+              0.08872662,
+              0.1314281,
+              0.1081977,
+              0.07392911,
+              0.0340689,
+              0.01492908
+            ],
+            "task_id": "opt_task_1762800999_02"
+          },
+          {
+            "final_loss": 0.00575641,
+            "initial_loss": 26.87107592,
+            "loss_trace": [
+              26.87107592,
+              15.89958231,
+              8.32150365,
+              3.68751637,
+              1.02973438,
+              0.17021721,
+              0.13968543,
+              0.24901984,
+              0.36208219,
+              0.28115834,
+              0.14883667,
+              0.05231052,
+              0.00575641
+            ],
+            "task_id": "opt_task_1762800999_03"
+          },
+          {
+            "final_loss": 0.02465974,
+            "initial_loss": 19.48619498,
+            "loss_trace": [
+              19.48619498,
+              10.47852887,
+              3.99337593,
+              1.64554375,
+              0.58380468,
+              0.21206787,
+              0.35410682,
+              0.35683399,
+              0.33569205,
+              0.14958123,
+              0.03705914,
+              0.00709248,
+              0.02465974
+            ],
+            "task_id": "opt_task_1762800999_04"
+          },
+          {
+            "final_loss": 0.0164708,
+            "initial_loss": 22.06182326,
+            "loss_trace": [
+              22.06182326,
+              9.85206885,
+              4.49892948,
+              2.43597014,
+              1.13237274,
+              0.30266345,
+              0.13293418,
+              0.23694268,
+              0.27372944,
+              0.20137614,
+              0.09056292,
+              0.03023179,
+              0.0164708
+            ],
+            "task_id": "opt_task_1762800999_05"
+          },
+          {
+            "final_loss": 0.01811521,
+            "initial_loss": 40.31347915,
+            "loss_trace": [
+              40.31347915,
+              24.48467465,
+              12.9226609,
+              5.91467765,
+              1.99899291,
+              0.29981274,
+              0.10077312,
+              0.35547567,
+              0.46403004,
+              0.42193852,
+              0.2460783,
+              0.09391945,
+              0.01811521
+            ],
+            "task_id": "opt_task_1762800999_06"
+          },
+          {
+            "final_loss": 0.02412664,
+            "initial_loss": 37.84822432,
+            "loss_trace": [
+              37.84822432,
+              19.9112161,
+              9.68881983,
+              3.94491215,
+              1.32126208,
+              0.43447638,
+              0.40976619,
+              0.55052033,
+              0.43229416,
+              0.2832818,
+              0.17079585,
+              0.07927736,
+              0.02412664
+            ],
+            "task_id": "opt_task_1762800999_07"
+          },
+          {
+            "final_loss": 0.05192715,
+            "initial_loss": 23.82648373,
+            "loss_trace": [
+              23.82648373,
+              11.13800856,
+              3.79581648,
+              0.97884731,
+              0.30099528,
+              0.71094808,
+              0.94026575,
+              0.56385104,
+              0.18846524,
+              0.04750242,
+              0.03651332,
+              0.07556425,
+              0.05192715
+            ],
+            "task_id": "opt_task_1762800999_08"
+          },
+          {
+            "final_loss": 0.02207468,
+            "initial_loss": 19.42726613,
+            "loss_trace": [
+              19.42726613,
+              8.40059998,
+              2.25868476,
+              0.4885327,
+              0.4550713,
+              0.71682409,
+              0.67077747,
+              0.33748274,
+              0.11746511,
+              0.04645284,
+              0.06832352,
+              0.05096956,
+              0.02207468
+            ],
+            "task_id": "opt_task_1762800999_09"
+          },
+          {
+            "final_loss": 0.02508142,
+            "initial_loss": 24.58845296,
+            "loss_trace": [
+              24.58845296,
+              7.94316559,
+              1.76019207,
+              0.83548342,
+              1.132374,
+              1.20432338,
+              0.78386249,
+              0.24329313,
+              0.07829191,
+              0.13633844,
+              0.10531004,
+              0.04264739,
+              0.02508142
+            ],
+            "task_id": "opt_task_1762800999_10"
+          },
+          {
+            "final_loss": 0.05318385,
+            "initial_loss": 33.62480028,
+            "loss_trace": [
+              33.62480028,
+              17.20900092,
+              7.81482037,
+              3.1012597,
+              1.00304045,
+              0.47586758,
+              0.55241747,
+              0.51052396,
+              0.30293777,
+              0.15844765,
+              0.10834902,
+              0.08248493,
+              0.05318385
+            ],
+            "task_id": "opt_task_1762800999_11"
+          }
+        ],
+        "tuned_baseline_params": {
+          "fixed_momentum": {
+            "beta": 0.7,
+            "lr": 0.15
+          },
+          "fixed_sgd": {
+            "lr": 0.15
+          },
+          "tuned_adam": {
+            "beta1": 0.6,
+            "beta2": 0.95,
+            "eps": 1e-06,
+            "lr": 0.65
+          },
+          "tuned_momentum": {
+            "beta": 0.5,
+            "lr": 0.22
+          },
+          "tuned_sgd": {
+            "lr": 0.25
+          }
+        },
+        "tuned_momentum_mean_loss": 0.00348207,
+        "tuned_sgd_mean_loss": 0.02765905
       },
       "successor_features_gpi": {
         "environment_relearning_steps_required": 0,
-        "gpi_selected_action": "go_east",
-        "gpi_selected_policy": "policy_red_collector",
-        "gpi_target_return": 2.55,
-        "source_selected_action": "go_north",
+        "final_td_bellman_error": 0.000156,
+        "gpi_selected_action": "west",
+        "gpi_selected_policy": "policy_safe_navigator",
+        "gpi_target_return": 3.085207,
+        "gpi_trajectory": [
+          {
+            "action": "west",
+            "next_state": [
+              2,
+              1
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_safe_navigator",
+            "reward": 0.0,
+            "state": [
+              2,
+              2
+            ],
+            "t": 0
+          },
+          {
+            "action": "south",
+            "next_state": [
+              3,
+              1
+            ],
+            "phi": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 1.0,
+            "state": [
+              2,
+              1
+            ],
+            "t": 1
+          },
+          {
+            "action": "south",
+            "next_state": [
+              4,
+              1
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 0.0,
+            "state": [
+              3,
+              1
+            ],
+            "t": 2
+          },
+          {
+            "action": "north",
+            "next_state": [
+              3,
+              1
+            ],
+            "phi": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 1.0,
+            "state": [
+              4,
+              1
+            ],
+            "t": 3
+          },
+          {
+            "action": "south",
+            "next_state": [
+              4,
+              1
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 0.0,
+            "state": [
+              3,
+              1
+            ],
+            "t": 4
+          },
+          {
+            "action": "north",
+            "next_state": [
+              3,
+              1
+            ],
+            "phi": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 1.0,
+            "state": [
+              4,
+              1
+            ],
+            "t": 5
+          },
+          {
+            "action": "south",
+            "next_state": [
+              4,
+              1
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 0.0,
+            "state": [
+              3,
+              1
+            ],
+            "t": 6
+          },
+          {
+            "action": "north",
+            "next_state": [
+              3,
+              1
+            ],
+            "phi": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 1.0,
+            "state": [
+              4,
+              1
+            ],
+            "t": 7
+          },
+          {
+            "action": "south",
+            "next_state": [
+              4,
+              1
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 0.0,
+            "state": [
+              3,
+              1
+            ],
+            "t": 8
+          },
+          {
+            "action": "north",
+            "next_state": [
+              3,
+              1
+            ],
+            "phi": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "policy": "policy_red_collector",
+            "reward": 1.0,
+            "state": [
+              4,
+              1
+            ],
+            "t": 9
+          }
+        ],
+        "hazard_sensitive_goal_transfer": {
+          "gpi_gain": 3.034083,
+          "gpi_return": 3.085207,
+          "unadapted_return": 0.051124,
+          "w_hazard_sensitive": [
+            0.6,
+            1.0,
+            1.8
+          ]
+        },
+        "initial_td_bellman_error": 0.282843,
+        "learned_from_trajectories": true,
+        "learned_psi_start_state": {
+          "policy_blue_collector": {
+            "east": [
+              4.736842,
+              0.0,
+              -1.0
+            ],
+            "north": [
+              4.73653,
+              0.0,
+              0.0
+            ],
+            "south": [
+              3.836516,
+              0.0,
+              -1.809875
+            ],
+            "west": [
+              3.836562,
+              0.0,
+              -0.809947
+            ]
+          },
+          "policy_red_collector": {
+            "east": [
+              0.0,
+              3.836564,
+              -0.999943
+            ],
+            "north": [
+              0.0,
+              3.836534,
+              -0.809949
+            ],
+            "south": [
+              0.0,
+              4.736842,
+              -1.0
+            ],
+            "west": [
+              0.0,
+              4.736564,
+              0.0
+            ]
+          },
+          "policy_safe_navigator": {
+            "east": [
+              0.89993,
+              0.0,
+              -0.999943
+            ],
+            "north": [
+              4.736566,
+              0.0,
+              0.0
+            ],
+            "south": [
+              0.0,
+              3.836353,
+              -0.999943
+            ],
+            "west": [
+              0.0,
+              4.736842,
+              0.0
+            ]
+          }
+        },
+        "source_policy_return_on_source": 2.585207,
+        "source_selected_action": "east",
         "source_selected_policy": "policy_blue_collector",
-        "unadapted_target_return": 0.0,
+        "tabular_q_scratch_comparison": {
+          "episodes_required_to_match_gpi": 9,
+          "transitions_required_to_match_gpi": 90,
+          "zero_episode_return": 0.0
+        },
+        "total_trajectory_transitions": 105000,
+        "unadapted_target_return": -0.5,
+        "unadapted_trajectory": [
+          {
+            "action": "east",
+            "next_state": [
+              2,
+              3
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": -0.5,
+            "state": [
+              2,
+              2
+            ],
+            "t": 0
+          },
+          {
+            "action": "north",
+            "next_state": [
+              1,
+              3
+            ],
+            "phi": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              2,
+              3
+            ],
+            "t": 1
+          },
+          {
+            "action": "north",
+            "next_state": [
+              0,
+              3
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              1,
+              3
+            ],
+            "t": 2
+          },
+          {
+            "action": "south",
+            "next_state": [
+              1,
+              3
+            ],
+            "phi": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              0,
+              3
+            ],
+            "t": 3
+          },
+          {
+            "action": "north",
+            "next_state": [
+              0,
+              3
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              1,
+              3
+            ],
+            "t": 4
+          },
+          {
+            "action": "south",
+            "next_state": [
+              1,
+              3
+            ],
+            "phi": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              0,
+              3
+            ],
+            "t": 5
+          },
+          {
+            "action": "north",
+            "next_state": [
+              0,
+              3
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              1,
+              3
+            ],
+            "t": 6
+          },
+          {
+            "action": "south",
+            "next_state": [
+              1,
+              3
+            ],
+            "phi": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              0,
+              3
+            ],
+            "t": 7
+          },
+          {
+            "action": "north",
+            "next_state": [
+              0,
+              3
+            ],
+            "phi": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              1,
+              3
+            ],
+            "t": 8
+          },
+          {
+            "action": "south",
+            "next_state": [
+              1,
+              3
+            ],
+            "phi": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "policy": "policy_blue_collector",
+            "reward": 0.0,
+            "state": [
+              0,
+              3
+            ],
+            "t": 9
+          }
+        ],
         "w_source": [
           1.0,
           0.0,
@@ -368,7 +3401,7 @@
           1.0,
           0.5
         ],
-        "zero_shot_gpi_gain": 2.55
+        "zero_shot_gpi_gain": 3.585207
       }
     },
     "comparison_7_controller_curriculum_and_language": {
@@ -529,11 +3562,13 @@
           "greeting_response": "Hello! I am doing well and ready to converse, examine documents, or investigate a mechanism.",
           "greeting_route": "ordinary_conversation",
           "greeting_triggers_experiment": false,
+          "investigation_response": "[status=tested, capsule=cap_ulib_window_checksum, binding=krelv] Mechanism verified on discriminating and reduced counterexample tests.",
           "investigation_route": "mechanism_investigation",
-          "pretrained_assisted": false
+          "pretrained_assisted": false,
+          "uses_xml_tag_wrapper": false
         },
         "nexus_small_neural": {
-          "document_response": "<neural_codec>[status=disputed, uncertainty=0.28, sources=1, contradictions=1] Historical analyses of 'French Revolution' attribute causation to interacting fiscal, institutional, and social pressures rather than a single monocausal trigger.</neural_codec>",
+          "document_response": "[status=disputed, uncertainty=0.28, sources=1, contradictions=1] Attributed synthesis: archival evidence indicates multi-factor fiscal and institutional causation with documented interpretive disagreement across sources.",
           "document_route": "knowledge_retrieval_and_explanation",
           "extracted_claim": {
             "claim_id": "claim_bcea4aec47",
@@ -564,14 +3599,17 @@
             ],
             "topic": "French Revolution"
           },
-          "greeting_response": "<neural_codec>Hello! I am doing well and ready to converse, examine documents, or investigate a mechanism.</neural_codec>",
+          "greeting_response": "[status=observed] Greeting acknowledged: ready for dialogue, document analysis, or active mechanism discovery.",
           "greeting_route": "ordinary_conversation",
           "greeting_triggers_experiment": false,
+          "investigation_response": "[status=tested, capsule=cap_ulib_window_checksum, binding=krelv] Verified mechanism report: active probe discrimination and counterexample reduction confirmed capsule behavior and bound the mechanism for cross-lab compositional reuse.",
           "investigation_route": "mechanism_investigation",
-          "pretrained_assisted": false
+          "neural_decoder_trace": {},
+          "pretrained_assisted": false,
+          "uses_xml_tag_wrapper": false
         },
         "optional_local_pretrained": {
-          "document_response": "<pretrained_assisted>[status=disputed, uncertainty=0.28, sources=1, contradictions=1] Historical analyses of 'French Revolution' attribute causation to interacting fiscal, institutional, and social pressures rather than a single monocausal trigger.</pretrained_assisted>",
+          "document_response": "[pretrained_assisted=true] [status=disputed, uncertainty=0.28, sources=1, contradictions=1] Historical analyses of 'French Revolution' attribute causation to interacting fiscal, institutional, and social pressures rather than a single monocausal trigger.",
           "document_route": "knowledge_retrieval_and_explanation",
           "extracted_claim": {
             "claim_id": "claim_bcea4aec47",
@@ -602,15 +3640,731 @@
             ],
             "topic": "French Revolution"
           },
-          "greeting_response": "<pretrained_assisted>Hello! I am doing well and ready to converse, examine documents, or investigate a mechanism.</pretrained_assisted>",
+          "greeting_response": "[pretrained_assisted=true] Hello! I am doing well and ready to converse, examine documents, or investigate a mechanism.",
           "greeting_route": "ordinary_conversation",
           "greeting_triggers_experiment": false,
+          "investigation_response": "[pretrained_assisted=true] [status=tested, capsule=cap_ulib_window_checksum, binding=krelv] Mechanism verified on discriminating and reduced counterexample tests.",
           "investigation_route": "mechanism_investigation",
-          "pretrained_assisted": true
+          "pretrained_assisted": true,
+          "uses_xml_tag_wrapper": false
         }
+      },
+      "neural_codec_evaluation": {
+        "parameter_count": 1443,
+        "schema": "seed_neural_language_codec_eval_v1",
+        "training_summary": {
+          "epochs": 55,
+          "final_loss": 0.008066,
+          "initial_loss": 3.909097,
+          "learning_rate": 0.18,
+          "loss_curve_checkpoints": [
+            3.909097,
+            0.035638,
+            0.013452,
+            0.008066
+          ],
+          "loss_reduction": 3.901031,
+          "parameter_count": 1443,
+          "train_examples": 22
+        },
+        "unfamiliar_paraphrase_and_composition_eval": {
+          "composition_clause_accuracy": 1.0,
+          "heldout_count": 9,
+          "heldout_intent_accuracy": 1.0,
+          "heldout_modifier_accuracy": 1.0,
+          "heldout_records": [
+            {
+              "expected_intent": "ordinary_conversation",
+              "expected_modifier": "direct_apply",
+              "feature_vector": [
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.999689,
+                0.000239,
+                7.2e-05
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.999048,
+                0.0003,
+                0.000557,
+                9.5e-05
+              ],
+              "predicted_intent": "ordinary_conversation",
+              "predicted_modifier": "direct_apply",
+              "utterance": "Hey friend, how are you doing this morning?"
+            },
+            {
+              "expected_intent": "ordinary_conversation",
+              "expected_modifier": "direct_apply",
+              "feature_vector": [
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.994383,
+                0.003265,
+                0.002351
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.996192,
+                0.00141,
+                0.001109,
+                0.001289
+              ],
+              "predicted_intent": "ordinary_conversation",
+              "predicted_modifier": "direct_apply",
+              "utterance": "Hello! Hope your afternoon is going great."
+            },
+            {
+              "expected_intent": "knowledge_retrieval_and_explanation",
+              "expected_modifier": "direct_apply",
+              "feature_vector": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.000465,
+                0.999251,
+                0.000285
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.999356,
+                0.00013,
+                0.000457,
+                5.7e-05
+              ],
+              "predicted_intent": "knowledge_retrieval_and_explanation",
+              "predicted_modifier": "direct_apply",
+              "utterance": "According to archival records, what triggered the 1789 French monarchy collapse?"
+            },
+            {
+              "expected_intent": "knowledge_retrieval_and_explanation",
+              "expected_modifier": "direct_apply",
+              "feature_vector": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.85,
+                1.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                0.85,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.000482,
+                0.999394,
+                0.000124
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.99951,
+                7e-05,
+                0.000372,
+                4.7e-05
+              ],
+              "predicted_intent": "knowledge_retrieval_and_explanation",
+              "predicted_modifier": "direct_apply",
+              "utterance": "Why did the French Revolution happen according to historical documents?"
+            },
+            {
+              "expected_intent": "mechanism_investigation",
+              "expected_modifier": "direct_apply",
+              "feature_vector": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.001195,
+                0.001564,
+                0.99724
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.996667,
+                0.00244,
+                0.000795,
+                9.8e-05
+              ],
+              "predicted_intent": "mechanism_investigation",
+              "predicted_modifier": "direct_apply",
+              "utterance": "Please figure out what this unknown routine does and bind krelv"
+            },
+            {
+              "expected_intent": "mechanism_investigation",
+              "expected_modifier": "reverse_after",
+              "feature_vector": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.000139,
+                0.000201,
+                0.999659
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.006274,
+                0.989954,
+                0.002167,
+                0.001605
+              ],
+              "predicted_intent": "mechanism_investigation",
+              "predicted_modifier": "reverse_after",
+              "utterance": "Explore the mystery function on [3, 1, 4] and flip the order"
+            },
+            {
+              "expected_intent": "mechanism_investigation",
+              "expected_modifier": "reverse_after",
+              "feature_vector": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.000161,
+                0.00012,
+                0.999719
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.002427,
+                0.975583,
+                0.013467,
+                0.008522
+              ],
+              "predicted_intent": "mechanism_investigation",
+              "predicted_modifier": "reverse_after",
+              "utterance": "Please apply voux to [5, -2, 8] and reverse the order"
+            },
+            {
+              "expected_intent": "mechanism_investigation",
+              "expected_modifier": "filter_nonneg",
+              "feature_vector": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.0005,
+                0.000238,
+                0.999262
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.003272,
+                0.006391,
+                0.954227,
+                0.03611
+              ],
+              "predicted_intent": "mechanism_investigation",
+              "predicted_modifier": "filter_nonneg",
+              "utterance": "Investigate zarn on [4, -3, 2] and keep only non-negative numbers"
+            },
+            {
+              "expected_intent": "mechanism_investigation",
+              "expected_modifier": "add_const_2",
+              "feature_vector": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "intent_correct": true,
+              "intent_probabilities": [
+                0.000662,
+                0.000538,
+                0.9988
+              ],
+              "modifier_correct": true,
+              "modifier_probabilities": [
+                0.001754,
+                0.019934,
+                0.027803,
+                0.950509
+              ],
+              "predicted_intent": "mechanism_investigation",
+              "predicted_modifier": "add_const_2",
+              "utterance": "Compute krelv for [-1, 6, 3] and add 2 to each element"
+            }
+          ],
+          "unfamiliar_intent_accuracy": 1.0
+        },
+        "weights_artifact_path": "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/artifacts/seed_neural_language_weights_v1.json",
+        "weights_sha256": "150e770b078a52eacab5ecda867923ace27e5b80bb66a9c1f28a966566c10edd"
       }
     }
   },
   "schema": "seed_integrated_architecture_v1",
-  "wall_clock_s": 0.055574
+  "wall_clock_s": 1.810473
 }

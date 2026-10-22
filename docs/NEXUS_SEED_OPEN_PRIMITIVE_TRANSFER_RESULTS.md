@@ -7,7 +7,7 @@
 - **Protocol**: [NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md) (`0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e`)
 - **v1 Adversarial Audit**: [NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md) ([`artifacts/seed_meta_rule_evolution_v1_audit.json`](../artifacts/seed_meta_rule_evolution_v1_audit.json))
 - **Locked Config**: [`configs/seed_open_primitive_transfer.json`](../configs/seed_open_primitive_transfer.json) (`9d8e522a9386ff222297a5e0f9b93a16568e1fb0875a7503589c84061c56a3c9`)
-- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`adc7edd374712f0077bffb7f2ff41b7500dc7960fb0e39a687960eedbc69792b`)
+- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`c39dad37a0a8700f0a31a3f421247e13f33fc2827e8ae863e1d0b77c2077a32e`)
 - **Independent Verifier Audit**: [`artifacts/seed_open_primitive_transfer_audit.json`](../artifacts/seed_open_primitive_transfer_audit.json) ([`scripts/verify_seed_open_primitive_transfer.py`](../scripts/verify_seed_open_primitive_transfer.py))
 - **Integrated 10-Part Architecture Report**: [NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md](NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md) ([`artifacts/seed_integrated_architecture_v1.json`](../artifacts/seed_integrated_architecture_v1.json))
 - **Stage A Status**: `PASSED` (`stage_a_pass = true`)
@@ -113,37 +113,40 @@ Because Stage A passed all pre-declared criteria, the Stage A evolved rule was f
 Every `PROPOSE_PRIMITIVE` action creates a quarantined `PrimitiveProposal` that must traverse the 6-stage kernel lifecycle:
 $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATED} \to \texttt{HELDOUT\_VALIDATED} \to \texttt{RETENTION\_VALIDATED} \to \texttt{PROMOTED}$$
 
-### 4.2 Stage B Per-Family Results Across 3 Independent Unknown-Library Families
+### 4.2 Stage B Per-Family Results Across 3 Independent Unknown-Library Families & 4 Downstream Labs
 
-| Unknown-Library Family | Candidate Helpers (1 True + 2 Decoys) | Invented Word | Hidden Accuracy (`evolved`) | Without `PROPOSE_PRIMITIVE` Accuracy | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | Cross-Lab Coding & Reasoning Accuracy |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `ulib_window_checksum` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `krelv` | `1.0000` | `0.0000` | `3.00` | `36.70` | `74.03` | `1.0000` / `1.0000` |
-| `ulib_runlength_bucket` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `voux` | `1.0000` | `0.0104` | `3.00` | `37.80` | `76.72` | `1.0000` / `1.0000` |
-| `ulib_zigzag_interleave` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `zarn` | `1.0000` | `0.0000` | `3.00` | `38.90` | `95.53` | `1.0000` / `1.0000` |
+| Unknown-Library Family | Candidate Helpers (1 True + 2 Decoys) | Invented Word | Hidden Accuracy (`evolved`) | Without `PROPOSE_PRIMITIVE` Accuracy | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | 4-Lab Transfer (`Lang` / `Code` / `Reas` / `World`) | Capsule-Removed Control |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ulib_window_checksum` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `krelv` | `1.0000` | `0.0000` | `2.625` | `41.0188` | `84.3813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.0000` |
+| `ulib_runlength_bucket` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `voux` | `1.0000` | `0.0000` | `2.625` | `41.0188` | `87.0688` | `1.00` / `1.00` / `1.00` / `1.00` | `0.0000` |
+| `ulib_zigzag_interleave` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `zarn` | `1.0000` | `0.0000` | `2.625` | `41.0188` | `105.8813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.0000` |
 
-### 4.3 Stage B 9-Method Comparison Across All 8 Seeds (Receipt & Counter Derived)
+### 4.3 Stage B 9-Method Comparison Across All 8 Seeds (Unified `execute_code_lab_rule_interpreter`)
 
-| Stage B Method | Mean Hidden Success | Mean Sandbox Experiments | Mean Total Compute Cost | Mean Cross-Lab Reuse Success (`krelv`/`voux`/`zarn`) |
+| Stage B Method | Mean Hidden Success | Mean Sandbox Experiments | Mean Total Compute Cost | Mean 4-Lab Reuse Success (`Language`, `Coding`, `Reasoning`, `World`) |
 | :--- | :---: | :---: | :---: | :---: |
-| **`corrected_frozen_evolved_rule`** | **`1.0000`** | **`3.0000`** | **`37.8000`** | **`1.0000`** |
-| `proposal_lifecycle_without_sleep_compression` | `1.0000` | `3.0000` | `37.8000` | `1.0000` |
-| `exact_information_gain_plus_effect_composition` | `1.0000` | `4.0000` | `54.5500` | `1.0000` |
-| `strongest_handwritten_learner` | `1.0000` | `8.1250` | `82.0938` | `1.0000` |
-| `scratch_learning_in_target_lab` | `1.0000` | `11.1250` | `101.5938` | `1.0000` |
-| `exhaustive_sandbox_probing` | `1.0000` | `19.0000` | `149.2500` | `1.0000` |
-| `isolated_labs` | `1.0000` | `3.0000` | `37.8000` | `0.0000` |
-| `learner_without_propose_primitive` | `0.0035` | `2.0000` | `23.0000` | `0.0000` |
-| `examples_only_retrieval` | `0.0000` | `3.0000` | `32.7500` | `0.0000` |
+| **`corrected_frozen_evolved_rule`** | **`1.0000`** | **`2.6250`** | **`41.0188`** | **`1.0000`** |
+| `proposal_lifecycle_without_sleep_compression` | `1.0000` | `2.6250` | `41.0188` | `1.0000` |
+| `exact_information_gain_plus_effect_composition` | `1.0000` | `4.0000` | `47.5500` | `1.0000` |
+| `strongest_handwritten_learner` | `1.0000` | `9.1250` | `92.4438` | `1.0000` |
+| `scratch_learning_in_target_lab` | `1.0000` | `12.1250` | `111.9438` | `1.0000` |
+| `exhaustive_sandbox_probing` | `1.0000` | `28.0000` | `191.3000` | `1.0000` |
+| `isolated_labs` | `1.0000` | `2.6250` | `41.0188` | `0.0000` |
+| `learner_without_propose_primitive` | `0.0000` | `1.0000` | `10.3875` | `0.0000` |
+| `examples_only_retrieval` | `0.0000` | `4.0000` | `42.3000` | `0.0000` |
 
-### 4.4 Stage B Paired Student-$t$ ($df=7$) Comparisons
+### 4.4 Stage B Paired Student-$t$ ($df=7$) Comparisons & Instruction Ablations
 
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` compute cost**:
-  $$\Delta = +44.2938, \quad \text{SD} = 15.6707, \quad \text{SE} = 5.5404, \quad 95\%\ \text{CI} = [+31.1927,\ +57.3948]$$
+  $$\Delta = +51.4250, \quad \text{SD} = 15.9558, \quad \text{SE} = 5.6412, \quad 95\%\ \text{CI} = [+38.0856,\ +64.7644]$$
 - **`exact_information_gain_plus_effect_composition` minus `corrected_frozen_evolved_rule` compute cost**:
-  $$\Delta = +16.7500, \quad 95\%\ \text{CI} = [+16.7500,\ +16.7500]$$
+  $$\Delta = +6.5313, \quad \text{SD} = 1.6320, \quad \text{SE} = 0.5770, \quad 95\%\ \text{CI} = [+5.1668,\ +7.8957]$$
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` sandbox experiments**:
-  $$\Delta = +5.1250, \quad \text{SD} = 1.4577, \quad \text{SE} = 0.5154, \quad 95\%\ \text{CI} = [+3.9063,\ +6.3437]$$
-- **Ablation of `PROPOSE_PRIMITIVE`**: Removing `PROPOSE_PRIMITIVE` (`learner_without_propose_primitive`) drops hidden task success from `1.0000` to `0.0035` across the 3 unknown-library families, proving that the unseen library functions cannot be solved by fixed initial primitives alone.
+  $$\Delta = +6.5000, \quad \text{SD} = 1.6036, \quad \text{SE} = 0.5669, \quad 95\%\ \text{CI} = [+5.1594,\ +7.8406]$$
+- **Causal Opcode Ablations in `execute_code_lab_rule_interpreter` (`stage_b_instruction_ablations`)**:
+  - Removing `PROPOSE_PRIMITIVE`: drops `hidden_accuracy` from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
+  - Removing `CREATE_CAPSULE`: drops `hidden_accuracy` from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
+  - Removing `PREDICT_EFFECTS`: increases sandbox experiments from `2.625` to `8.00` and compute cost from `42.20` to `79.10`.
 
 ---
 

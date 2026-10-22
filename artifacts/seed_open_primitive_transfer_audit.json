@@ -1,34 +1,8 @@
 {
-  "schema": "seed_open_primitive_transfer_audit_v1",
-  "valid": true,
-  "raw_sha256": "adc7edd374712f0077bffb7f2ff41b7500dc7960fb0e39a687960eedbc69792b",
-  "execution_sha": "4bc6443e939287f80bac50cbdfa935e6b5bf0049",
-  "protocol_sha256": "0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e",
   "config_sha256": "9d8e522a9386ff222297a5e0f9b93a16568e1fb0875a7503589c84061c56a3c9",
-  "v1_artifact_preserved_sha256": "818300f5100bccf5fcbb461b03aee86742b2173847bbd09d1f52dbd811ec8292",
-  "v1_adversarial_audit_confirmed_confounds": 15,
-  "kernel_integrity_verified": true,
-  "zero_evaluator_leakage_verified": true,
-  "uniform_mutation_without_guided_injection": true,
+  "execution_sha": "4bc6443e939287f80bac50cbdfa935e6b5bf0049",
   "frozen_before_stage_b": true,
-  "stored_whole_program_fingerprints": 0,
-  "manually_supplied_cross_lab_mapping": false,
-  "unknown_families_reproduced": 3,
-  "stage_a_paired_vs_exact_info_gain": {
-    "mean_diff": 85.82645833,
-    "ci95_low": 82.47796345,
-    "ci95_high": 89.17495322
-  },
-  "stage_a_paired_vs_info_gain_plus_effect": {
-    "mean_diff": 8.403125,
-    "ci95_low": 4.76216781,
-    "ci95_high": 12.04408219
-  },
-  "stage_b_paired_vs_strongest_handwritten": {
-    "mean_diff": 44.29375,
-    "ci95_low": 31.19273098,
-    "ci95_high": 57.39476902
-  },
+  "frozen_checkpoints_unchanged": 2,
   "gates": {
     "gate_01_zero_evaluator_private_fields_reach_learner": true,
     "gate_02_selected_program_passes_hidden_execution_tests": true,
@@ -43,12 +17,52 @@
     "gate_11_all_discovery_evolution_sandbox_validation_costs_included": true,
     "gate_12_at_least_two_unknown_library_families_reproduce": true
   },
-  "stage_a_pass": true,
-  "stage_b_pass": true,
-  "overall_pass": true,
-  "verdict": "PASS_BOTH_STAGE_A_AND_STAGE_B",
-  "permitted_conclusion": "NEXUS demonstrated bounded executable learning-rule transfer and acquired one previously unavailable primitive from sandboxed code interactions. This does not establish arbitrary coding, general language understanding, unrestricted self-improvement or AGI.",
   "historical_artifacts_unchanged": 831,
-  "frozen_checkpoints_unchanged": 2,
-  "new_collection": 0
+  "independent_stage_b_replay": {
+    "family": "ulib_window_checksum",
+    "matches_saved_record": true,
+    "replayed_compute_cost": 42.2,
+    "replayed_four_lab_accuracy": 1.0,
+    "replayed_hidden_accuracy": 1.0,
+    "seed": 1762999000
+  },
+  "kernel_integrity_verified": true,
+  "manually_supplied_cross_lab_mapping": false,
+  "new_collection": 0,
+  "overall_pass": true,
+  "permitted_conclusion": "NEXUS demonstrated bounded executable learning-rule transfer and acquired one previously unavailable primitive from sandboxed code interactions. This does not establish arbitrary coding, general language understanding, unrestricted self-improvement or AGI.",
+  "protocol_sha256": "0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e",
+  "raw_sha256": "c39dad37a0a8700f0a31a3f421247e13f33fc2827e8ae863e1d0b77c2077a32e",
+  "schema": "seed_open_primitive_transfer_audit_v1",
+  "stage_a_paired_vs_exact_info_gain": {
+    "ci95_high": 89.17495322,
+    "ci95_low": 82.47796345,
+    "mean_diff": 85.82645833
+  },
+  "stage_a_paired_vs_info_gain_plus_effect": {
+    "ci95_high": 12.04408219,
+    "ci95_low": 4.76216781,
+    "mean_diff": 8.403125
+  },
+  "stage_a_pass": true,
+  "stage_b_paired_vs_strongest_handwritten": {
+    "ci95_high": 64.76439057,
+    "ci95_low": 38.08560943,
+    "mean_diff": 51.425
+  },
+  "stage_b_pass": true,
+  "stored_whole_program_fingerprints": 0,
+  "tamper_rejection_checks": {
+    "rejects_tampered_capsule_removed_control": true,
+    "rejects_tampered_per_family_compute_cost": true,
+    "rejects_tampered_per_family_world_lab_accuracy": true,
+    "rejects_tampered_stage_b_instruction_ablation": true
+  },
+  "uniform_mutation_without_guided_injection": true,
+  "unknown_families_reproduced": 3,
+  "v1_adversarial_audit_confirmed_confounds": 15,
+  "v1_artifact_preserved_sha256": "818300f5100bccf5fcbb461b03aee86742b2173847bbd09d1f52dbd811ec8292",
+  "valid": true,
+  "verdict": "PASS_BOTH_STAGE_A_AND_STAGE_B",
+  "zero_evaluator_leakage_verified": true
 }

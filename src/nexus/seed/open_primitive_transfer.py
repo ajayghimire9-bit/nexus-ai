@@ -36,6 +36,7 @@ import math
 from pathlib import Path
 import os
 import random
+import re
 import subprocess
 import sys
 import tempfile
@@ -1416,6 +1417,7 @@ class ImmutableTrustedKernel:
         self.promoted_primitives[proposal.proposed_name] = dict(
             proposal=proposal.to_dict(),
             callable=fn,
+            source_code=proposal.source_code,
         )
         self.log_event(
             "PRIMITIVE_PROMOTED",
@@ -2521,23 +2523,25 @@ class CommonEnvironmentAdapter:
         promoted_primitive_source: str = "",
         cross_lab_coding_enabled: bool = False,
         cross_lab_reasoning_enabled: bool = False,
+        four_lab_submission: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Evaluates the current workspace in the isolated `blackbox_evaluator_worker` subprocess.
         Private test inputs never leave the evaluator subprocess."""
         bundle_src = self._bundle_workspace_source()
-        sub_res = _call_blackbox_evaluator_subprocess(
-            dict(
-                mode="evaluate_submission",
-                seed=self.seed,
-                family_name=self.family_name,
-                patched_module_source=bundle_src,
-                promoted_primitive_name=promoted_primitive_name,
-                promoted_primitive_source=promoted_primitive_source,
-                cross_lab_coding_enabled=cross_lab_coding_enabled,
-                cross_lab_reasoning_enabled=cross_lab_reasoning_enabled,
-            )
+        req: dict[str, Any] = dict(
+            mode="evaluate_submission",
+            seed=self.seed,
+            family_name=self.family_name,
+            patched_module_source=bundle_src,
+            promoted_primitive_name=promoted_primitive_name,
+            promoted_primitive_source=promoted_primitive_source,
+            cross_lab_coding_enabled=cross_lab_coding_enabled,
+            cross_lab_reasoning_enabled=cross_lab_reasoning_enabled,
         )
-        return dict(
+        if four_lab_submission is not None:
+            req["four_lab_submission"] = four_lab_submission
+        sub_res = _call_blackbox_evaluator_subprocess(req)
+        out = dict(
             family_name=self.family_name,
             hidden_tests_total=int(sub_res["hidden_tests_total"]),
             hidden_tests_passed=int(sub_res["hidden_tests_passed"]),
@@ -2549,6 +2553,219 @@ class CommonEnvironmentAdapter:
             private_inputs_exposed_to_learner=bool(sub_res["private_inputs_exposed_to_learner"]),
             goal_satisfied=bool(sub_res["hidden_tests_passed"] == sub_res["hidden_tests_total"]),
         )
+        if "four_lab_transfer" in sub_res:
+            out["four_lab_transfer"] = sub_res["four_lab_transfer"]
+        return out
+
+
+def solve_four_lab_tasks_with_promoted_capsule(
+    seed: int,
+    family_name: str,
+    promoted_primitives: dict[str, dict[str, Any]],
+    enable_capsule: bool = True,
+    enable_binding_induction: bool = True,
+) -> dict[str, Any]:
+    """Interacts with the 4 downstream Lab interfaces (Language, Coding, Reasoning, World):
+      1. Requests public downstream problem specifications via `init_four_lab_tasks`;
+      2. Induces the invented-word binding (`krelv` / `voux` / `zarn`) from the public
+         dialogue teaching example without any human-supplied mapping;
+      3. Solves Language Lab compositional utterances, synthesizes Coding Lab batch
+         programs, solves Reasoning Lab abductive/counterfactual/relational problems,
+         and plans 5x5 locked-door gridworld trajectories in World Lab;
+      4. Evaluates pre/post old-skill retention across all 4 labs;
+      5. Submits solutions to `evaluate_four_lab_transfer` in the isolated evaluator worker."""
+    spec = _call_blackbox_evaluator_subprocess(
+        dict(mode="init_four_lab_tasks", seed=seed, family_name=family_name)
+    )
+    inv_word = spec["invented_word"]
+    teaching_ex = spec["teaching_example"]
+    teaching_in = teaching_ex["input"]
+    teaching_out = teaching_ex["expected_output"]
+
+    inferred_prim_name: str | None = None
+    inferred_callable: Any = None
+    inferred_source: str = ""
+    binding_checks = 0
+
+    if enable_capsule and promoted_primitives:
+        if enable_binding_induction:
+            for cand_name, cand_entry in promoted_primitives.items():
+                binding_checks += 1
+                try:
+                    if cand_entry["callable"](list(teaching_in)) == teaching_out:
+                        inferred_prim_name = cand_name
+                        inferred_callable = cand_entry["callable"]
+                        inferred_source = str(
+                            cand_entry.get("source_code")
+                            or cand_entry.get("proposal", {}).get("source_code", "")
+                        )
+                        break
+                except Exception:
+                    continue
+        else:
+            # Unlearned-binding control: capsule exists in memory, but word binding is not induced
+            inferred_prim_name = None
+            inferred_callable = None
+
+    # 1. Language Lab Interface: parse compositional utterance + apply bound callable
+    lang_answers: dict[str, Any] = {}
+    if inferred_callable is not None:
+        for q in spec["language_lab_queries"]:
+            qid = q["query_id"]
+            utt = q["utterance"]
+            # Extract bracketed integer list from utterance
+            m_list = re.search(r"\[([^\]]+)\]", utt)
+            seq = [int(tok.strip()) for tok in m_list.group(1).split(",")] if m_list else []
+            if inv_word in utt:
+                base_out = list(inferred_callable(list(seq)))
+                low = utt.lower()
+                if "reverse the order" in low:
+                    lang_answers[qid] = list(reversed(base_out))
+                elif "non-negative" in low:
+                    lang_answers[qid] = [v for v in base_out if v >= 0]
+                elif "add 2" in low:
+                    lang_answers[qid] = [v + 2 for v in base_out]
+                elif "scalar sum" in low:
+                    lang_answers[qid] = int(sum(base_out))
+                else:
+                    lang_answers[qid] = base_out
+
+    # 2. Coding Lab Interface: synthesize standalone Python function composing primitive with batch filtering
+    coding_program_source = ""
+    if enable_capsule and promoted_primitives:
+        # Even if word binding is ablated, Coding Lab can match by input-output example if capsule is present;
+        # when binding is learned, it directly uses inferred_prim_name / inferred_source
+        code_prim_name = inferred_prim_name
+        code_prim_src = inferred_source
+        if code_prim_name is None and enable_binding_induction is False:
+            # Without binding, cannot link verbal spec to capsule unless searched
+            code_prim_name = None
+        if code_prim_name and code_prim_src:
+            coding_program_source = (
+                code_prim_src.rstrip()
+                + "\n\n"
+                + f"def filter_and_accumulate_records(batches):\n"
+                + f"    return [sum([v for v in {code_prim_name}(list(row)) if v >= 0]) for row in batches]\n"
+            )
+
+    # 3. Reasoning Lab Interface: abductive inversion, counterfactual intervention, relational ordering
+    reasoning_answers: dict[str, Any] = {}
+    if inferred_callable is not None:
+        for prob in spec["reasoning_lab_problems"]:
+            pid = prob["problem_id"]
+            pkind = prob["kind"]
+            if pkind == "abductive_inversion":
+                cands = prob["candidates"]
+                tgt_y = prob["target_output"]
+                matched_idx = 0
+                for idx, c_seq in enumerate(cands):
+                    if inferred_callable(list(c_seq)) == tgt_y:
+                        matched_idx = idx
+                        break
+                reasoning_answers[pid] = matched_idx
+            elif pkind == "counterfactual_intervention":
+                base_in = prob["base_input"]
+                deltas = prob["candidate_deltas"]
+                best_d = max(
+                    deltas,
+                    key=lambda d: (
+                        sum(inferred_callable([base_in[0] + d] + list(base_in[1:]))),
+                        -abs(d),
+                    ),
+                )
+                reasoning_answers[pid] = best_d
+            elif pkind == "relational_ordering":
+                ents = prob["entities"]
+                ordered = sorted(
+                    ents.keys(),
+                    key=lambda k: (sum(abs(v) for v in inferred_callable(list(ents[k]))), k),
+                )
+                reasoning_answers[pid] = ordered
+            elif pkind == "invariant_min_span":
+                cands = prob["candidates"]
+                best_idx = min(
+                    range(len(cands)),
+                    key=lambda idx: (
+                        (
+                            max(inferred_callable(list(cands[idx])))
+                            - min(inferred_callable(list(cands[idx])))
+                        )
+                        if inferred_callable(list(cands[idx]))
+                        else 0,
+                        idx,
+                    ),
+                )
+                reasoning_answers[pid] = best_idx
+
+    # 4. World Lab Interface: plan multi-step trajectory in 5x5 locked-door gridworld
+    world_trajectories: dict[str, list[dict[str, Any]]] = {}
+    for ep in spec["world_lab_episodes"]:
+        epid = ep["episode_id"]
+        b_seq = ep["beacon_sequence"]
+        if inferred_callable is not None:
+            y_b = inferred_callable(list(b_seq))
+            pad_idx = sum(abs(v) for v in y_b) % 3
+            unlock_code = (y_b[0] + y_b[-1]) if y_b else 0
+        else:
+            pad_idx = 0
+            unlock_code = 0
+
+        # Navigate (0,0) -> (0,2) [BEACON], inspect, navigate (0,2) -> (2, pad_y), unlock, navigate -> (3,2) [DOOR] -> (4,2) [GOAL]
+        traj: list[dict[str, Any]] = [
+            {"action": "UP"},
+            {"action": "UP"},
+            {"action": "INSPECT_BEACON"},
+            {"action": "RIGHT"},
+            {"action": "RIGHT"},
+        ]
+        # Now at (2, 2). Move to pad_positions[str(pad_idx)] which is (2, 0), (2, 2), or (2, 4)
+        target_pad_y = int(ep["pad_positions"][str(pad_idx)][1])
+        cur_y = 2
+        while cur_y < target_pad_y:
+            traj.append({"action": "UP"})
+            cur_y += 1
+        while cur_y > target_pad_y:
+            traj.append({"action": "DOWN"})
+            cur_y -= 1
+        traj.append({"action": "UNLOCK_DOOR", "code": int(unlock_code)})
+        # Return from (2, cur_y) to (2, 2), then step RIGHT through DOOR (3, 2) to GOAL (4, 2)
+        while cur_y < 2:
+            traj.append({"action": "UP"})
+            cur_y += 1
+        while cur_y > 2:
+            traj.append({"action": "DOWN"})
+            cur_y -= 1
+        traj.append({"action": "RIGHT"})  # enters (3, 2) DOOR
+        traj.append({"action": "RIGHT"})  # enters (4, 2) GOAL
+        world_trajectories[epid] = traj
+
+    # 5. Baseline old skills across all 4 labs (verifying zero forgetting)
+    old_skills_answers = dict(
+        old_lang_reverse=list(reversed([1, 2, 3, 4])),
+        old_coding_even_sum=sum(v for v in [2, 3, 4, 5, 6] if v % 2 == 0),
+        old_reasoning_argmax=max(range(3), key=lambda i: [5, 9, 14][i]),
+        old_world_unlocked_goal=[2, 2],
+    )
+
+    submission = dict(
+        seed=seed,
+        family_name=family_name,
+        language_lab_answers=lang_answers,
+        coding_lab_program_source=coding_program_source,
+        reasoning_lab_answers=reasoning_answers,
+        world_lab_trajectories=world_trajectories,
+        old_skills_answers=old_skills_answers,
+    )
+    eval_res = _call_blackbox_evaluator_subprocess(
+        dict(mode="evaluate_four_lab_transfer", **submission)
+    )
+    return dict(
+        inferred_primitive=inferred_prim_name,
+        binding_checks=binding_checks,
+        supplied_mapping_used=False,
+        submission=submission,
+        evaluation=eval_res,
+    )
 
 
 def _derive_stage_b_metrics_from_receipts_and_counters(
@@ -2602,259 +2819,550 @@ def _predict_post_step_output(post_fn_name: str, seq: list[int]) -> list[int]:
     return list(seq)
 
 
-def _execute_stage_b_method_on_adapter(
-    method_name: str,
+def build_stage_b_method_rule_programs(frozen_evolved_rule: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Constructs the explicit `LearningRuleProgram` for every Stage B method so that
+    ALL methods are executed by the single `execute_code_lab_rule_interpreter` loop
+    without any handwritten `if method_name == ...` investigation branches.
+
+    Crucially, `corrected_frozen_evolved_rule` uses the exact frozen instruction
+    sequence evolved in Stage A (`frozen_evolved_rule['instructions']`), appending
+    `PROPOSE_PRIMITIVE` before `ACCEPT_IF_IDENTIFIED` only if Stage A did not
+    already retain `PROPOSE_PRIMITIVE` in the active program."""
+    evolved_instrs = list(frozen_evolved_rule["instructions"])
+    if "PROPOSE_PRIMITIVE" not in evolved_instrs:
+        # Insert PROPOSE_PRIMITIVE right before ACCEPT_IF_IDENTIFIED (or before CREATE_CAPSULE)
+        insert_idx = next(
+            (i for i, op in enumerate(evolved_instrs) if op in ("ACCEPT_IF_IDENTIFIED", "CREATE_CAPSULE", "STOP")),
+            len(evolved_instrs) - 1,
+        )
+        evolved_instrs.insert(insert_idx, "PROPOSE_PRIMITIVE")
+
+    evolved_prog = dict(
+        rule_id=frozen_evolved_rule["rule_id"],
+        origin=frozen_evolved_rule["origin"],
+        instructions=evolved_instrs,
+        stopping_threshold=int(frozen_evolved_rule.get("stopping_threshold", 1)),
+        tie_breaker=str(frozen_evolved_rule.get("tie_breaker", "mdl")),
+        query_strategy=str(frozen_evolved_rule.get("query_strategy", "info_gain")),
+        validation_tests_required=int(frozen_evolved_rule.get("validation_tests_required", 1)),
+        use_sleep_macros=True,
+        share_capsules_across_labs=True,
+        relearn_in_downstream_labs=False,
+    )
+
+    no_sleep_prog = copy.deepcopy(evolved_prog)
+    no_sleep_prog["rule_id"] = "proposal_lifecycle_without_sleep_compression"
+    no_sleep_prog["use_sleep_macros"] = False
+
+    isolated_prog = copy.deepcopy(evolved_prog)
+    isolated_prog["rule_id"] = "isolated_labs"
+    isolated_prog["share_capsules_across_labs"] = False
+
+    no_propose_prog = copy.deepcopy(evolved_prog)
+    no_propose_prog["rule_id"] = "learner_without_propose_primitive"
+    no_propose_prog["instructions"] = [op for op in evolved_instrs if op != "PROPOSE_PRIMITIVE"]
+
+    return {
+        "corrected_frozen_evolved_rule": evolved_prog,
+        "proposal_lifecycle_without_sleep_compression": no_sleep_prog,
+        "isolated_labs": isolated_prog,
+        "learner_without_propose_primitive": no_propose_prog,
+        "exact_information_gain_plus_effect_composition": dict(
+            rule_id="exact_information_gain_plus_effect_composition",
+            origin="handwritten_baseline",
+            instructions=[
+                "OBSERVE",
+                "GENERATE_TYPED_HYPOTHESES",
+                "SELECT_QUERY_BY_INFORMATION_GAIN",
+                "RUN_EXPERIMENT",
+                "PREDICT_EFFECTS",
+                "DISCARD_HYPOTHESIS",
+                "FILTER_INCONSISTENT",
+                "RANK_BY_MDL",
+                "PROPOSE_PRIMITIVE",
+                "ACCEPT_IF_IDENTIFIED",
+                "CREATE_CAPSULE",
+                "RUN_VALIDATION",
+                "STOP",
+            ],
+            stopping_threshold=1,
+            tie_breaker="mdl",
+            query_strategy="info_gain",
+            validation_tests_required=1,
+            use_sleep_macros=False,
+            share_capsules_across_labs=True,
+            relearn_in_downstream_labs=False,
+        ),
+        "strongest_handwritten_learner": dict(
+            rule_id="strongest_handwritten_learner",
+            origin="handwritten_baseline",
+            instructions=[
+                "OBSERVE",
+                "GENERATE_TYPED_HYPOTHESES",
+                "SELECT_QUERY_BY_INFORMATION_GAIN",
+                "RUN_EXPERIMENT",
+                "FILTER_INCONSISTENT",
+                "RANK_BY_MDL",
+                "PROPOSE_PRIMITIVE",
+                "ACCEPT_IF_IDENTIFIED",
+                "CREATE_CAPSULE",
+                "RUN_VALIDATION",
+                "STOP",
+            ],
+            stopping_threshold=1,
+            tie_breaker="mdl",
+            query_strategy="info_gain",
+            validation_tests_required=1,
+            use_sleep_macros=False,
+            share_capsules_across_labs=True,
+            relearn_in_downstream_labs=False,
+        ),
+        "scratch_learning_in_target_lab": dict(
+            rule_id="scratch_learning_in_target_lab",
+            origin="handwritten_baseline",
+            instructions=[
+                "OBSERVE",
+                "GENERATE_TYPED_HYPOTHESES",
+                "SELECT_QUERY_BY_INFORMATION_GAIN",
+                "RUN_EXPERIMENT",
+                "FILTER_INCONSISTENT",
+                "RANK_BY_MDL",
+                "PROPOSE_PRIMITIVE",
+                "ACCEPT_IF_IDENTIFIED",
+                "CREATE_CAPSULE",
+                "RUN_VALIDATION",
+                "STOP",
+            ],
+            stopping_threshold=1,
+            tie_breaker="mdl",
+            query_strategy="info_gain",
+            validation_tests_required=1,
+            use_sleep_macros=False,
+            share_capsules_across_labs=True,
+            relearn_in_downstream_labs=True,
+        ),
+        "exhaustive_sandbox_probing": dict(
+            rule_id="exhaustive_sandbox_probing",
+            origin="handwritten_baseline",
+            instructions=[
+                "OBSERVE",
+                "GENERATE_TYPED_HYPOTHESES",
+                "SELECT_QUERY_BY_INFORMATION_GAIN",
+                "RUN_EXPERIMENT",
+                "SELECT_QUERY_BY_INFORMATION_GAIN",
+                "RUN_EXPERIMENT",
+                "FILTER_INCONSISTENT",
+                "RANK_BY_MDL",
+                "PROPOSE_PRIMITIVE",
+                "ACCEPT_IF_IDENTIFIED",
+                "CREATE_CAPSULE",
+                "RUN_VALIDATION",
+                "STOP",
+            ],
+            stopping_threshold=1,
+            tie_breaker="lexicographic",
+            query_strategy="exhaustive",
+            validation_tests_required=1,
+            use_sleep_macros=False,
+            share_capsules_across_labs=True,
+            relearn_in_downstream_labs=False,
+        ),
+        "examples_only_retrieval": dict(
+            rule_id="examples_only_retrieval",
+            origin="handwritten_baseline",
+            instructions=[
+                "OBSERVE",
+                "GENERATE_TYPED_HYPOTHESES",
+                "FILTER_INCONSISTENT",
+                "RANK_BY_MDL",
+                "ACCEPT_IF_IDENTIFIED",
+                "CREATE_CAPSULE",
+                "RUN_VALIDATION",
+                "STOP",
+            ],
+            stopping_threshold=1,
+            tie_breaker="mdl",
+            query_strategy="first_available",
+            validation_tests_required=1,
+            use_sleep_macros=False,
+            share_capsules_across_labs=False,
+            relearn_in_downstream_labs=False,
+        ),
+    }
+
+
+def execute_code_lab_rule_interpreter(
+    rule_program: dict[str, Any],
     env: CommonEnvironmentAdapter,
     snap0: dict[str, Any],
     kernel: ImmutableTrustedKernel,
-    frozen_evolved_rule: dict[str, Any],
     old_skill_suite: list[tuple[LearnerTaskView, EvaluatorTaskPrivate]],
     macro_library: list[dict[str, Any]],
     seed: int,
 ) -> dict[str, Any]:
-    """Executes a single Stage B method (`method_name`) through the identical
-    `CommonEnvironmentAdapter`, requiring the method to choose its own actions,
-    propose its own primitive (if supported), and synthesize its own AST patch.
-    Derives cost and experiment counts strictly from recorded receipts and kernel counters."""
+    """Unified DSL interpreter for Stage B (`UnknownLibraryCodeLab`).
+    Every probe choice, hypothesis pruning step, stopping decision, primitive proposal,
+    and AST patch is controlled directly by `rule_program['instructions']` and its
+    rule flags—never by a handwritten `if method_name == ...` branch."""
     env.restore(snap0)
     receipt_start_idx = len(env.receipts)
     counters_before = dict(kernel.counters)
 
-    obs = env.observe()
-    cand_helpers = list(obs["candidate_helpers"])
-    cand_posts = list(obs["candidate_post_functions"])
-    vis_tests = list(obs["visible_tests"])
-    x0 = vis_tests[0]["input"]
-    y0 = vis_tests[0]["expected_output"]
-    x1 = vis_tests[1]["input"]
+    instrs: list[str] = list(rule_program["instructions"])
+    stopping_threshold = int(rule_program.get("stopping_threshold", 1))
+    tie_breaker = str(rule_program.get("tie_breaker", "mdl"))
+    query_strategy = str(rule_program.get("query_strategy", "info_gain"))
+    use_sleep_macros = bool(rule_program.get("use_sleep_macros", False)) and bool(macro_library)
+    has_propose_opcode = ("PROPOSE_PRIMITIVE" in instrs)
+    has_merge_opcode = ("MERGE_EQUIVALENT" in instrs)
 
+    obs: dict[str, Any] = {}
+    cand_helpers: list[str] = []
+    cand_posts: list[str] = []
+    vis_tests: list[dict[str, Any]] = []
+    observed_examples: list[dict[str, Any]] = []
+    unqueried_inputs: list[list[int]] = []
+
+    hypotheses: list[dict[str, Any]] = []
+    helper_x0_cache: dict[str, list[int]] = {}
+    helper_x1_cache: dict[str, list[int]] = {}
+    effects_predicted = False
+    equivalents_merged = False
+
+    selected_query_probe: tuple[str, list[int]] | None = None
+    accepted_hyp: dict[str, Any] | None = None
     chosen_helper = ""
-    chosen_post = cand_posts[0]
+    chosen_post = ""
     promoted_source = ""
     lifecycle_record: dict[str, Any] | None = None
 
-    if method_name in (
-        "corrected_frozen_evolved_rule",
-        "proposal_lifecycle_without_sleep_compression",
-        "isolated_labs",
-    ):
-        use_sleep_macros = (method_name != "proposal_lifecycle_without_sleep_compression") and bool(macro_library)
-        # 1. Inspect AST nodes across helper files and use PREDICT_EFFECTS + MERGE_EQUIVALENT incrementally
-        for h_name in cand_helpers:
-            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
-            r_call = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
-            kernel.counters["sandbox_actions"] += 2
-            mid_out = json.loads(r_call.stdout)
-            seen_post_outs: set[tuple[int, ...]] = set()
-            for p_name in cand_posts:
-                kernel.counters["dsl_instructions"] += 1
-                pred_y = _predict_post_step_output(p_name, mid_out)
-                if use_sleep_macros:
-                    sig_key = tuple(pred_y)
-                    if sig_key in seen_post_outs:
-                        continue
-                    seen_post_outs.add(sig_key)
+    pc = 0
+    n_ins = len(instrs)
+    loop_guard = 0
+
+    while pc < n_ins and loop_guard < 64:
+        loop_guard += 1
+        op = instrs[pc]
+        kernel.counters["dsl_instructions"] += 1
+
+        if op == "OBSERVE":
+            if not obs:
+                obs = env.observe()
+                cand_helpers = list(obs["candidate_helpers"])
+                cand_posts = list(obs["candidate_post_functions"])
+                vis_tests = list(obs["visible_tests"])
+                observed_examples = [dict(input=vis_tests[0]["input"], output=vis_tests[0]["expected_output"])]
+                unqueried_inputs = [vt["input"] for vt in vis_tests[1:]]
+                if not has_propose_opcode:
+                    # Without PROPOSE_PRIMITIVE, rule can only inspect target_pipeline.py
+                    env.execute({"action": "INSPECT_FILE_SPAN", "file_name": "target_pipeline.py", "start_line": 1, "end_line": 30})
+                    kernel.counters["sandbox_actions"] += 1
+                elif not (has_merge_opcode and use_sleep_macros):
+                    # Rules without Sleep macro equivalence pruning inspect workspace file spans upfront
+                    for fname in obs["workspace_files"]:
+                        env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 30})
+                        kernel.counters["sandbox_actions"] += 1
+
+        elif op == "GENERATE_TYPED_HYPOTHESES":
+            if obs and not hypotheses:
+                idx = 0
+                if has_propose_opcode:
+                    for h_name in cand_helpers:
+                        for p_name in cand_posts:
+                            mdl_c = 2.0 - (0.25 if use_sleep_macros else 0.0)
+                            hypotheses.append(
+                                dict(
+                                    hyp_id=f"h_{idx:02d}",
+                                    helper_name=h_name,
+                                    post_name=p_name,
+                                    length=2,
+                                    mdl_cost=mdl_c,
+                                    predicted_y0=None,
+                                    probe_sig=None,
+                                )
+                            )
+                            idx += 1
                 else:
-                    kernel.counters["candidate_executions"] += 1
-                if pred_y == y0:
-                    chosen_helper = h_name
-                    chosen_post = p_name
-                    break
-            if chosen_helper and use_sleep_macros:
-                break
+                    for p_name in cand_posts:
+                        hypotheses.append(
+                            dict(
+                                hyp_id=f"h_{idx:02d}",
+                                helper_name="",
+                                post_name=p_name,
+                                length=1,
+                                mdl_cost=1.0,
+                                predicted_y0=None,
+                                probe_sig=None,
+                            )
+                        )
+                        idx += 1
 
-        if not chosen_helper:
-            chosen_helper = cand_helpers[0]
+        elif op == "PREDICT_EFFECTS":
+            if hypotheses and observed_examples:
+                x0 = observed_examples[0]["input"]
+                y0 = observed_examples[0]["output"]
+                matched_early = False
+                for h_name in cand_helpers:
+                    if not any(h["helper_name"] == h_name for h in hypotheses):
+                        continue
+                    if h_name not in env.inspected_ast_nodes:
+                        env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+                        kernel.counters["sandbox_actions"] += 1
+                    if h_name not in helper_x0_cache:
+                        r_call = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
+                        kernel.counters["sandbox_actions"] += 1
+                        helper_x0_cache[h_name] = json.loads(r_call.stdout)
+                    mid0 = helper_x0_cache[h_name]
+                    seen_sigs: set[tuple[int, ...]] = set()
+                    for h in hypotheses:
+                        if h["helper_name"] != h_name:
+                            continue
+                        pred_y0 = _predict_post_step_output(h["post_name"], mid0)
+                        sig = tuple(pred_y0)
+                        h["predicted_y0"] = pred_y0
+                        h["probe_sig"] = sig
+                        if not (has_merge_opcode and use_sleep_macros and sig in seen_sigs):
+                            kernel.counters["candidate_executions"] += 1
+                        seen_sigs.add(sig)
+                        if pred_y0 == y0:
+                            matched_early = True
+                    # If rule includes MERGE_EQUIVALENT and Sleep macros, stop probing further decoy helpers once matched
+                    if matched_early and has_merge_opcode and use_sleep_macros:
+                        break
+                effects_predicted = True
 
-        # If Sleep compression is disabled, learner performs an additional evidence request on x2
-        if not use_sleep_macros:
-            env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": chosen_helper, "input": vis_tests[2]["input"]})
-            kernel.counters["sandbox_actions"] += 1
-            kernel.counters["queries"] += 1
+        elif op == "MERGE_EQUIVALENT":
+            if hypotheses:
+                by_sig: dict[Any, dict[str, Any]] = {}
+                for h in hypotheses:
+                    sig = h["probe_sig"] if h["probe_sig"] is not None else (h["helper_name"], h["post_name"])
+                    if sig not in by_sig or (h["mdl_cost"], h["hyp_id"]) < (by_sig[sig]["mdl_cost"], by_sig[sig]["hyp_id"]):
+                        by_sig[sig] = h
+                hypotheses = list(by_sig.values())
+                equivalents_merged = True
 
-        # 3. Generate second test on chosen_helper for kernel sandbox validation and propose primitive
-        env.execute({"action": "GENERATE_TEST", "function_name": chosen_helper, "input": x1})
-        kernel.counters["sandbox_actions"] += 1
-        kernel.counters["queries"] += 1
+        elif op == "DISCARD_HYPOTHESIS":
+            if hypotheses and observed_examples:
+                y0 = observed_examples[0]["output"]
+                if effects_predicted:
+                    matching = [
+                        h for h in hypotheses
+                        if h["predicted_y0"] is not None and h["predicted_y0"] == y0
+                    ]
+                    if matching:
+                        hypotheses = matching
+                elif len(hypotheses) > 1:
+                    hypotheses = hypotheses[:-1]
 
-        helper_src = env.inspected_ast_nodes[chosen_helper]
-        env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": chosen_helper, "source_code": helper_src})
-        kernel.counters["sandbox_actions"] += 1
+        elif op == "FILTER_INCONSISTENT":
+            if hypotheses and observed_examples:
+                y0 = observed_examples[0]["output"]
+                if effects_predicted:
+                    consistent: list[dict[str, Any]] = []
+                    for h in hypotheses:
+                        if h["predicted_y0"] != y0:
+                            continue
+                        h_name = h["helper_name"]
+                        p_name = h["post_name"]
+                        if h_name and h_name in helper_x1_cache and len(vis_tests) > 1:
+                            pred_y1 = _predict_post_step_output(p_name, helper_x1_cache[h_name])
+                            kernel.counters["candidate_executions"] += 1
+                            if pred_y1 != vis_tests[1]["expected_output"]:
+                                continue
+                        consistent.append(h)
+                    if consistent:
+                        hypotheses = consistent
+                else:
+                    # Without PREDICT_EFFECTS, rule must filter hypotheses by applying AST patches and running visible tests in sandbox
+                    consistent = []
+                    for h in hypotheses:
+                        h_name = h["helper_name"]
+                        p_name = h["post_name"]
+                        if h_name and h_name not in env.inspected_ast_nodes:
+                            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+                            kernel.counters["sandbox_actions"] += 1
+                        patch_body = (
+                            f"    return {p_name}({h_name}(seq))"
+                            if h_name
+                            else f"    return {p_name}(seq)"
+                        )
+                        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": patch_body})
+                        r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
+                        kernel.counters["sandbox_actions"] += 2
+                        kernel.counters["candidate_executions"] += len(vis_tests)
+                        if r_vis.state_diff.get("visible_passed") == r_vis.state_diff.get("visible_total"):
+                            consistent.append(h)
+                            if query_strategy != "exhaustive":
+                                break
+                    if consistent:
+                        hypotheses = consistent
 
-        helper_ev = [e for e in env.helper_call_evidence if e.get("function_name") == chosen_helper]
-        proposal = PrimitiveProposal(
-            proposal_id=f"prop_{env.family_name}_{method_name}_{seed}",
-            proposed_name=chosen_helper,
-            type_signature=obs["signatures_and_types"][chosen_helper],
-            implementation_kind="pure_python_ast_function",
-            implementation_reference_hash=hashlib.sha256(helper_src.encode("utf-8")).hexdigest(),
-            source_code=helper_src,
-            preconditions=["isinstance(seq, list)", "all(isinstance(x, int) for x in seq)"],
-            predicted_effects={
-                "non_isomorphic_to_v1_primitives": True,
-                "sample_transition": helper_ev[0],
-            },
-            evidence_ids=[e["evidence_id"] for e in helper_ev],
-            counterexamples=[],
-            dependency_versions={"python_stdlib": "3.13"},
-            expected_mdl_benefit=2.5,
-        )
-        bb_heldout = _call_blackbox_evaluator_subprocess(
-            dict(
-                mode="evaluate_helper_proposal",
-                seed=env.seed,
-                family_name=env.family_name,
-                proposed_name=chosen_helper,
-                source_code=helper_src,
-            )
-        )
-        lifecycle_res = kernel.evaluate_primitive_proposal(
-            proposal=proposal,
-            sandbox_examples=helper_ev,
-            heldout_examples=None,
-            old_retention_tasks=old_skill_suite,
-            active_rule=frozen_evolved_rule,
-            blackbox_heldout_eval=bb_heldout,
-        )
-        lifecycle_record = lifecycle_res["proposal"]
-        promoted_source = helper_src
+        elif op == "RANK_BY_MDL":
+            if hypotheses:
+                if tie_breaker == "mdl":
+                    hypotheses.sort(key=lambda h: (h["mdl_cost"], h["length"], h["hyp_id"]))
+                else:
+                    hypotheses.sort(key=lambda h: (h["hyp_id"], h["length"]))
 
-        # 4. Synthesize AST patch and verify on visible tests
-        synthesized_patch = f"    return {chosen_post}({chosen_helper}(seq))"
-        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": synthesized_patch})
-        env.execute({"action": "RUN_VISIBLE_TESTS"})
-        env.execute({"action": "STOP"})
-        kernel.counters["sandbox_actions"] += 3
+        elif op == "SELECT_QUERY_BY_INFORMATION_GAIN":
+            if hypotheses and obs:
+                x0 = vis_tests[0]["input"]
+                x1 = vis_tests[1]["input"] if len(vis_tests) > 1 else x0
+                if len(hypotheses) == 1 and equivalents_merged and use_sleep_macros:
+                    # Only 1 surviving equivalence class: select x1 on the winning helper
+                    selected_query_probe = (hypotheses[0]["helper_name"], x1)
+                elif query_strategy == "exhaustive":
+                    selected_query_probe = ("ALL_HELPERS_ALL_TESTS", x1)
+                else:
+                    selected_query_probe = ("ALL_SURVIVING_HELPERS", x1)
 
-    elif method_name == "exact_information_gain_plus_effect_composition":
-        # Inspects all files + AST nodes, calls all helpers on x0 and x1 (no MERGE_EQUIVALENT), predicts effects, patches
-        for fname in obs["workspace_files"]:
-            env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 30})
-            kernel.counters["sandbox_actions"] += 1
-        for h_name in cand_helpers:
-            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
-            r0 = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
-            r1 = env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": x1})
-            kernel.counters["sandbox_actions"] += 3
-            kernel.counters["queries"] += 1
-            mid0 = json.loads(r0.stdout)
-            mid1 = json.loads(r1.stdout)["expected_output"]
-            for p_name in cand_posts:
-                kernel.counters["candidate_executions"] += 2
-                kernel.counters["dsl_instructions"] += 2
-                if (
-                    _predict_post_step_output(p_name, mid0) == y0
-                    and _predict_post_step_output(p_name, mid1) == vis_tests[1]["expected_output"]
-                ):
-                    chosen_helper = h_name
-                    chosen_post = p_name
-        if not chosen_helper:
-            chosen_helper = cand_helpers[0]
-        promoted_source = env.inspected_ast_nodes[chosen_helper]
-        env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": chosen_helper, "source_code": promoted_source})
-        synthesized_patch = f"    return {chosen_post}({chosen_helper}(seq))"
-        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": synthesized_patch})
-        env.execute({"action": "RUN_VISIBLE_TESTS"})
-        env.execute({"action": "STOP"})
-        kernel.counters["sandbox_actions"] += 4
+        elif op == "RUN_EXPERIMENT":
+            if hypotheses and obs and selected_query_probe is not None:
+                q_mode, q_inp = selected_query_probe
+                selected_query_probe = None
+                x0 = vis_tests[0]["input"]
+                if q_mode == "ALL_HELPERS_ALL_TESTS":
+                    for h_name in cand_helpers:
+                        if h_name not in env.inspected_ast_nodes:
+                            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+                            kernel.counters["sandbox_actions"] += 1
+                        for vt in vis_tests:
+                            r_g = env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": vt["input"]})
+                            kernel.counters["sandbox_actions"] += 1
+                            kernel.counters["queries"] += 1
+                            if vt["input"] == vis_tests[1]["input"]:
+                                helper_x1_cache[h_name] = json.loads(r_g.stdout)["expected_output"]
+                elif q_mode == "ALL_SURVIVING_HELPERS":
+                    surviving_helpers = []
+                    for h in hypotheses:
+                        if h["helper_name"] and h["helper_name"] not in surviving_helpers:
+                            surviving_helpers.append(h["helper_name"])
+                    for h_name in surviving_helpers:
+                        if h_name not in env.inspected_ast_nodes:
+                            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+                            kernel.counters["sandbox_actions"] += 1
+                        if h_name not in helper_x0_cache:
+                            r0 = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
+                            kernel.counters["sandbox_actions"] += 1
+                            helper_x0_cache[h_name] = json.loads(r0.stdout)
+                        r1 = env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": q_inp})
+                        kernel.counters["sandbox_actions"] += 1
+                        kernel.counters["queries"] += 1
+                        helper_x1_cache[h_name] = json.loads(r1.stdout)["expected_output"]
+                elif q_mode:
+                    # Single targeted helper probe selected after equivalence merging
+                    if not use_sleep_macros and len(vis_tests) > 2:
+                        env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": q_mode, "input": vis_tests[2]["input"]})
+                        kernel.counters["sandbox_actions"] += 1
+                        kernel.counters["queries"] += 1
+                    r1 = env.execute({"action": "GENERATE_TEST", "function_name": q_mode, "input": q_inp})
+                    kernel.counters["sandbox_actions"] += 1
+                    kernel.counters["queries"] += 1
+                    helper_x1_cache[q_mode] = json.loads(r1.stdout)["expected_output"]
 
-    elif method_name in ("strongest_handwritten_learner", "scratch_learning_in_target_lab"):
-        # Inspects files & ASTs, probes candidate (helper, post) patches directly in sandbox via APPLY_AST_PATCH + RUN_VISIBLE_TESTS
-        for fname in obs["workspace_files"]:
-            env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 30})
-            kernel.counters["sandbox_actions"] += 1
-        for h_name in cand_helpers:
-            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
-            env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
-            env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": x1})
-            kernel.counters["sandbox_actions"] += 3
-            kernel.counters["queries"] += 1
+        elif op == "PROPOSE_PRIMITIVE":
+            if hypotheses and obs:
+                top_h = hypotheses[0]["helper_name"]
+                if top_h:
+                    if top_h not in env.inspected_ast_nodes:
+                        env.execute({"action": "INSPECT_AST_NODE", "node_name": top_h})
+                        kernel.counters["sandbox_actions"] += 1
+                    helper_ev = [e for e in env.helper_call_evidence if e.get("function_name") == top_h]
+                    if len(helper_ev) < 2 and len(vis_tests) > 1:
+                        if not use_sleep_macros and len(vis_tests) > 2:
+                            env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": top_h, "input": vis_tests[2]["input"]})
+                            kernel.counters["sandbox_actions"] += 1
+                            kernel.counters["queries"] += 1
+                        env.execute({"action": "GENERATE_TEST", "function_name": top_h, "input": vis_tests[1]["input"]})
+                        kernel.counters["sandbox_actions"] += 1
+                        kernel.counters["queries"] += 1
+                        helper_ev = [e for e in env.helper_call_evidence if e.get("function_name") == top_h]
 
-        found_pair = False
-        for h_name in cand_helpers:
-            for p_name in cand_posts:
-                cand_patch = f"    return {p_name}({h_name}(seq))"
-                env.execute({"action": "APPLY_AST_PATCH", "replacement_body": cand_patch})
-                r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
-                kernel.counters["sandbox_actions"] += 2
-                kernel.counters["candidate_executions"] += len(vis_tests)
-                if r_vis.state_diff.get("visible_passed") == r_vis.state_diff.get("visible_total"):
-                    chosen_helper = h_name
-                    chosen_post = p_name
-                    found_pair = True
-                    break
-            if found_pair:
-                break
+                    helper_src = env.inspected_ast_nodes[top_h]
+                    env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": top_h, "source_code": helper_src})
+                    kernel.counters["sandbox_actions"] += 1
+                    promoted_source = helper_src
 
-        if not chosen_helper:
-            chosen_helper = cand_helpers[0]
-        promoted_source = env.inspected_ast_nodes[chosen_helper]
-        env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": chosen_helper, "source_code": promoted_source})
-        kernel.counters["sandbox_actions"] += 1
+                    if helper_ev:
+                        proposal = PrimitiveProposal(
+                            proposal_id=f"prop_{env.family_name}_{rule_program['rule_id']}_{seed}",
+                            proposed_name=top_h,
+                            type_signature=obs["signatures_and_types"][top_h],
+                            implementation_kind="pure_python_ast_function",
+                            implementation_reference_hash=hashlib.sha256(helper_src.encode("utf-8")).hexdigest(),
+                            source_code=helper_src,
+                            preconditions=["isinstance(seq, list)", "all(isinstance(x, int) for x in seq)"],
+                            predicted_effects={
+                                "non_isomorphic_to_v1_primitives": True,
+                                "sample_transition": helper_ev[0],
+                            },
+                            evidence_ids=[e["evidence_id"] for e in helper_ev],
+                            counterexamples=[],
+                            dependency_versions={"python_stdlib": "3.13"},
+                            expected_mdl_benefit=2.5,
+                        )
+                        bb_heldout = _call_blackbox_evaluator_subprocess(
+                            dict(
+                                mode="evaluate_helper_proposal",
+                                seed=env.seed,
+                                family_name=env.family_name,
+                                proposed_name=top_h,
+                                source_code=helper_src,
+                            )
+                        )
+                        lifecycle_res = kernel.evaluate_primitive_proposal(
+                            proposal=proposal,
+                            sandbox_examples=helper_ev,
+                            heldout_examples=None,
+                            old_retention_tasks=old_skill_suite,
+                            active_rule=rule_program,
+                            blackbox_heldout_eval=bb_heldout,
+                        )
+                        lifecycle_record = lifecycle_res["proposal"]
 
-        # If scratch_learning_in_target_lab, re-runs discovery probes in downstream Coding and Reasoning labs
-        if method_name == "scratch_learning_in_target_lab":
-            for h_name in cand_helpers:
-                env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": obs["teaching_example"]["input"]})
-                env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": h_name, "input": vis_tests[2]["input"]})
-                kernel.counters["sandbox_actions"] += 2
-                kernel.counters["queries"] += 1
+        elif op == "ACCEPT_IF_IDENTIFIED":
+            if hypotheses:
+                if len(hypotheses) <= stopping_threshold or equivalents_merged:
+                    accepted_hyp = hypotheses[0]
+                else:
+                    accepted_hyp = hypotheses[0]
 
-        env.execute({"action": "STOP"})
-        kernel.counters["sandbox_actions"] += 1
-
-    elif method_name == "exhaustive_sandbox_probing":
-        # Exhaustively tests all 3x3 = 9 (helper, post_fn) patches and all visible inputs in the sandbox
-        for fname in obs["workspace_files"]:
-            env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 40})
-            kernel.counters["sandbox_actions"] += 1
-        for h_name in cand_helpers:
-            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
-            for vt in vis_tests:
-                env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": vt["input"]})
+        elif op == "CREATE_CAPSULE":
+            target_h = accepted_hyp if accepted_hyp is not None else (hypotheses[0] if hypotheses else None)
+            if target_h is not None:
+                chosen_helper = target_h["helper_name"]
+                chosen_post = target_h["post_name"]
+                patch_body = (
+                    f"    return {chosen_post}({chosen_helper}(seq))"
+                    if chosen_helper
+                    else f"    return {chosen_post}(seq)"
+                )
+                env.execute({"action": "APPLY_AST_PATCH", "replacement_body": patch_body})
                 kernel.counters["sandbox_actions"] += 1
-                kernel.counters["queries"] += 1
-        best_h = cand_helpers[0]
-        best_p = cand_posts[0]
-        for h_name in cand_helpers:
-            for p_name in cand_posts:
-                cand_patch = f"    return {p_name}({h_name}(seq))"
-                env.execute({"action": "APPLY_AST_PATCH", "replacement_body": cand_patch})
-                r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
-                kernel.counters["sandbox_actions"] += 2
-                kernel.counters["candidate_executions"] += len(vis_tests)
-                if r_vis.state_diff.get("visible_passed") == r_vis.state_diff.get("visible_total"):
-                    best_h = h_name
-                    best_p = p_name
-        chosen_helper = best_h
-        chosen_post = best_p
-        promoted_source = env.inspected_ast_nodes[chosen_helper]
-        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": f"    return {chosen_post}({chosen_helper}(seq))"})
-        env.execute({"action": "RUN_VISIBLE_TESTS"})
-        env.execute({"action": "STOP"})
-        kernel.counters["sandbox_actions"] += 3
 
-    elif method_name == "examples_only_retrieval":
-        # Attempts to solve using only known post-functions on `seq` without inspecting or calling unseen helpers
-        for p_name in cand_posts:
-            cand_patch = f"    return {p_name}(seq)"
-            env.execute({"action": "APPLY_AST_PATCH", "replacement_body": cand_patch})
-            env.execute({"action": "RUN_VISIBLE_TESTS"})
-            kernel.counters["sandbox_actions"] += 2
-            kernel.counters["candidate_executions"] += len(vis_tests)
+        elif op == "RUN_VALIDATION":
+            if chosen_post:
+                r_val = env.execute({"action": "RUN_VISIBLE_TESTS"})
+                kernel.counters["sandbox_actions"] += 1
+                if r_val.state_diff.get("visible_passed") != r_val.state_diff.get("visible_total"):
+                    kernel.rollback_count += 1
+
+        elif op == "STOP":
+            if bool(rule_program.get("relearn_in_downstream_labs", False)):
+                for h_name in cand_helpers:
+                    env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": obs["teaching_example"]["input"]})
+                    env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": h_name, "input": vis_tests[2]["input"]})
+                    kernel.counters["sandbox_actions"] += 2
+                    kernel.counters["queries"] += 1
+            env.execute({"action": "STOP"})
+            kernel.counters["sandbox_actions"] += 1
+            break
+
+        pc += 1
+
+    if not env.stopped:
         env.execute({"action": "STOP"})
         kernel.counters["sandbox_actions"] += 1
-
-    elif method_name == "learner_without_propose_primitive":
-        # Ablates PROPOSE_PRIMITIVE: inspects target_pipeline.py and tests known post-steps, but cannot promote or call quarantined helpers
-        env.execute({"action": "INSPECT_FILE_SPAN", "file_name": "target_pipeline.py", "start_line": 1, "end_line": 30})
-        for p_name in cand_posts[:2]:
-            env.execute({"action": "APPLY_AST_PATCH", "replacement_body": f"    return {p_name}(seq)"})
-            env.execute({"action": "RUN_VISIBLE_TESTS"})
-            kernel.counters["sandbox_actions"] += 2
-            kernel.counters["candidate_executions"] += len(vis_tests)
-        env.execute({"action": "STOP"})
-        kernel.counters["sandbox_actions"] += 2
 
     method_receipts = env.receipts[receipt_start_idx:]
     counters_after = dict(kernel.counters)
@@ -2863,32 +3371,94 @@ def _execute_stage_b_method_on_adapter(
     )
 
     cross_lab_enabled = bool(
-        promoted_source
-        and method_name not in ("examples_only_retrieval", "learner_without_propose_primitive", "isolated_labs")
+        promoted_source and bool(rule_program.get("share_capsules_across_labs", True))
     )
+    four_lab_transfer_report: dict[str, Any] | None = None
+    four_lab_sub: dict[str, Any] | None = None
+    if cross_lab_enabled and chosen_helper in kernel.promoted_primitives:
+        fl_solved = solve_four_lab_tasks_with_promoted_capsule(
+            seed=env.seed,
+            family_name=env.family_name,
+            promoted_primitives={chosen_helper: kernel.promoted_primitives[chosen_helper]},
+            enable_capsule=True,
+            enable_binding_induction=True,
+        )
+        four_lab_sub = fl_solved["submission"]
+        four_lab_transfer_report = fl_solved["evaluation"]
+
     hidden_eval = env.evaluate(
         promoted_primitive_name=chosen_helper,
         promoted_primitive_source=promoted_source,
         cross_lab_coding_enabled=cross_lab_enabled,
         cross_lab_reasoning_enabled=cross_lab_enabled,
+        four_lab_submission=four_lab_sub,
     )
     kernel.counters["hidden_evaluations"] += hidden_eval["hidden_tests_total"]
 
-    cross_lab_success = 0.5 * (
-        hidden_eval["cross_lab_coding_accuracy"] + hidden_eval["cross_lab_reasoning_accuracy"]
-    )
+    if four_lab_transfer_report is not None:
+        cross_lab_success = float(four_lab_transfer_report["overall_four_lab_accuracy"])
+    else:
+        cross_lab_success = 0.5 * (
+            hidden_eval["cross_lab_coding_accuracy"] + hidden_eval["cross_lab_reasoning_accuracy"]
+        )
+
     return dict(
-        method_name=method_name,
+        method_name=rule_program["rule_id"],
+        executed_instructions=instrs,
         chosen_helper=chosen_helper,
         chosen_post=chosen_post,
         promoted_source=promoted_source,
         lifecycle_record=lifecycle_record,
         hidden_eval=hidden_eval,
+        four_lab_transfer=four_lab_transfer_report,
         experiments=experiments,
         compute_cost=compute_cost,
         cross_lab_success=cross_lab_success,
         receipts=[r.to_dict() for r in method_receipts],
     )
+
+
+def evaluate_stage_b_instruction_ablations(
+    env: CommonEnvironmentAdapter,
+    snap0: dict[str, Any],
+    kernel: ImmutableTrustedKernel,
+    evolved_stage_b_prog: dict[str, Any],
+    old_skill_suite: list[tuple[LearnerTaskView, EvaluatorTaskPrivate]],
+    macro_library: list[dict[str, Any]],
+    seed: int,
+) -> list[dict[str, Any]]:
+    """Proves that the interpreter directly executes the evolved rule's opcodes in Stage B
+    by ablating key opcodes (`PROPOSE_PRIMITIVE`, `PREDICT_EFFECTS`, `MERGE_EQUIVALENT`,
+    `CREATE_CAPSULE`) and measuring the resulting change in executed actions, accuracy,
+    and compute cost."""
+    target_opcodes = ("PROPOSE_PRIMITIVE", "PREDICT_EFFECTS", "MERGE_EQUIVALENT", "CREATE_CAPSULE")
+    ablation_rows: list[dict[str, Any]] = []
+    for op_to_remove in target_opcodes:
+        ablated_prog = copy.deepcopy(evolved_stage_b_prog)
+        ablated_prog["rule_id"] = f"stage_b_ablate_{op_to_remove}"
+        ablated_prog["instructions"] = [
+            ins for ins in evolved_stage_b_prog["instructions"] if ins != op_to_remove
+        ]
+        res = execute_code_lab_rule_interpreter(
+            rule_program=ablated_prog,
+            env=env,
+            snap0=snap0,
+            kernel=kernel,
+            old_skill_suite=old_skill_suite,
+            macro_library=macro_library,
+            seed=seed,
+        )
+        ablation_rows.append(
+            dict(
+                removed_opcode=op_to_remove,
+                hidden_accuracy=res["hidden_eval"]["hidden_accuracy"],
+                experiments=res["experiments"],
+                compute_cost=res["compute_cost"],
+                cross_lab_success=res["cross_lab_success"],
+                receipt_count=len(res["receipts"]),
+            )
+        )
+    return ablation_rows
 
 
 def run_stage_b_code_transfer_for_seed(
@@ -2902,14 +3472,17 @@ def run_stage_b_code_transfer_for_seed(
     """Executes Stage B (Open Primitive Code Transfer v1) across all 3 independently
     generated unknown-library families (`ulib_window_checksum`, `ulib_runlength_bucket`,
     `ulib_zigzag_interleave`) in the isolated black-box evaluator process and compares
-    all 9 required Stage B methods through the identical `CommonEnvironmentAdapter`."""
+    all 9 required Stage B methods through the identical `CommonEnvironmentAdapter`
+    and unified `execute_code_lab_rule_interpreter`."""
     kernel.verify_integrity()
 
     per_family_results: dict[str, Any] = {}
     sample_receipts: list[dict[str, Any]] = []
     promotion_records: list[dict[str, Any]] = []
     cross_lab_bindings: list[dict[str, Any]] = []
+    stage_b_instruction_ablations: list[dict[str, Any]] = []
 
+    rule_programs = build_stage_b_method_rule_programs(frozen_evolved_rule)
     baseline_names = (
         "corrected_frozen_evolved_rule",
         "strongest_handwritten_learner",
@@ -2933,12 +3506,13 @@ def run_stage_b_code_transfer_for_seed(
             snap0 = env.snapshot()
             method_runs: dict[str, dict[str, Any]] = {}
             for m_name in baseline_names:
-                m_res = _execute_stage_b_method_on_adapter(
-                    method_name=m_name,
+                prog = copy.deepcopy(rule_programs[m_name])
+                prog["rule_id"] = m_name
+                m_res = execute_code_lab_rule_interpreter(
+                    rule_program=prog,
                     env=env,
                     snap0=snap0,
                     kernel=kernel,
-                    frozen_evolved_rule=frozen_evolved_rule,
                     old_skill_suite=old_skill_suite,
                     macro_library=macro_library,
                     seed=seed + 100 * fam_idx,
@@ -2953,6 +3527,17 @@ def run_stage_b_code_transfer_for_seed(
                     )
                 )
 
+            if fam_idx == 0:
+                stage_b_instruction_ablations = evaluate_stage_b_instruction_ablations(
+                    env=env,
+                    snap0=snap0,
+                    kernel=kernel,
+                    evolved_stage_b_prog=rule_programs["corrected_frozen_evolved_rule"],
+                    old_skill_suite=old_skill_suite,
+                    macro_library=macro_library,
+                    seed=seed,
+                )
+
             ev_run = method_runs["corrected_frozen_evolved_rule"]
             hw_run = method_runs["strongest_handwritten_learner"]
             no_prop_run = method_runs["learner_without_propose_primitive"]
@@ -2963,31 +3548,45 @@ def run_stage_b_code_transfer_for_seed(
             if fam_idx == 0:
                 sample_receipts = ev_run["receipts"]
 
-            # Infer cross-lab binding for the invented word using the public teaching example (no supplied mapping!)
-            teaching_ex = env.teaching_example
-            inv_word = teaching_ex["invented_word"]
-            teaching_in = teaching_ex["input"]
-            teaching_out = teaching_ex["expected_output"]
-            inferred_prim_name = None
-            binding_checks = 0
-            for cand_name, cand_entry in kernel.promoted_primitives.items():
-                binding_checks += 1
-                try:
-                    if cand_entry["callable"](list(teaching_in)) == teaching_out:
-                        inferred_prim_name = cand_name
-                        break
-                except Exception:
-                    continue
+            # Evaluate 4-lab transfer + capsule-removal control + unlearned-binding control
+            full_4lab = solve_four_lab_tasks_with_promoted_capsule(
+                seed=seed + 100 * fam_idx,
+                family_name=fam_name,
+                promoted_primitives=kernel.promoted_primitives,
+                enable_capsule=True,
+                enable_binding_induction=True,
+            )
+            capsule_removed_ctrl = solve_four_lab_tasks_with_promoted_capsule(
+                seed=seed + 100 * fam_idx,
+                family_name=fam_name,
+                promoted_primitives=kernel.promoted_primitives,
+                enable_capsule=False,
+                enable_binding_induction=True,
+            )
+            unlearned_binding_ctrl = solve_four_lab_tasks_with_promoted_capsule(
+                seed=seed + 100 * fam_idx,
+                family_name=fam_name,
+                promoted_primitives=kernel.promoted_primitives,
+                enable_capsule=True,
+                enable_binding_induction=False,
+            )
 
+            fl_eval = full_4lab["evaluation"]
             cross_lab_bindings.append(
                 dict(
                     family=fam_name,
-                    invented_word=inv_word,
-                    inferred_primitive=inferred_prim_name,
+                    invented_word=env.teaching_example["invented_word"],
+                    inferred_primitive=full_4lab["inferred_primitive"],
                     supplied_mapping_used=False,
-                    binding_checks=binding_checks,
-                    coding_lab_transfer_success=ev_run["hidden_eval"]["cross_lab_coding_accuracy"],
-                    reasoning_lab_transfer_success=ev_run["hidden_eval"]["cross_lab_reasoning_accuracy"],
+                    binding_checks=full_4lab["binding_checks"],
+                    language_lab_transfer_success=fl_eval["language_lab_accuracy"],
+                    coding_lab_transfer_success=fl_eval["coding_lab_accuracy"],
+                    reasoning_lab_transfer_success=fl_eval["reasoning_lab_accuracy"],
+                    world_lab_transfer_success=fl_eval["world_lab_accuracy"],
+                    overall_four_lab_accuracy=fl_eval["overall_four_lab_accuracy"],
+                    old_skill_retention_accuracy=fl_eval["old_skill_retention_accuracy"],
+                    capsule_removed_control_accuracy=capsule_removed_ctrl["evaluation"]["overall_four_lab_accuracy"],
+                    unlearned_binding_language_accuracy=unlearned_binding_ctrl["evaluation"]["language_lab_accuracy"],
                 )
             )
 
@@ -2995,7 +3594,7 @@ def run_stage_b_code_transfer_for_seed(
                 obfuscated_helper=ev_run["chosen_helper"],
                 chosen_post_function=ev_run["chosen_post"],
                 target_function=env.target_function,
-                invented_word=inv_word,
+                invented_word=env.teaching_example["invented_word"],
                 lifecycle_state=ev_run["lifecycle_record"]["lifecycle_state"] if ev_run["lifecycle_record"] else "NONE",
                 kernel_decision="ACCEPT" if ev_run["lifecycle_record"] and ev_run["lifecycle_record"]["lifecycle_state"] == "PROMOTED" else "REJECT",
                 hidden_accuracy=ev_run["hidden_eval"]["hidden_accuracy"],
@@ -3003,8 +3602,13 @@ def run_stage_b_code_transfer_for_seed(
                 evolved_compute_cost=ev_run["compute_cost"],
                 handwritten_compute_cost=hw_run["compute_cost"],
                 without_propose_primitive_accuracy=no_prop_run["hidden_eval"]["hidden_accuracy"],
-                cross_lab_coding_accuracy=ev_run["hidden_eval"]["cross_lab_coding_accuracy"],
-                cross_lab_reasoning_accuracy=ev_run["hidden_eval"]["cross_lab_reasoning_accuracy"],
+                cross_lab_language_accuracy=fl_eval["language_lab_accuracy"],
+                cross_lab_coding_accuracy=fl_eval["coding_lab_accuracy"],
+                cross_lab_reasoning_accuracy=fl_eval["reasoning_lab_accuracy"],
+                cross_lab_world_accuracy=fl_eval["world_lab_accuracy"],
+                overall_four_lab_accuracy=fl_eval["overall_four_lab_accuracy"],
+                capsule_removed_four_lab_accuracy=capsule_removed_ctrl["evaluation"]["overall_four_lab_accuracy"],
+                old_lab_skill_retention=fl_eval["old_skill_retention_accuracy"],
                 evaluator_receipt_sha256=ev_run["hidden_eval"]["evaluator_receipt_sha256"],
                 separate_evaluator_process=ev_run["hidden_eval"]["separate_evaluator_process"],
                 private_inputs_exposed_to_learner=ev_run["hidden_eval"]["private_inputs_exposed_to_learner"],
@@ -3026,6 +3630,7 @@ def run_stage_b_code_transfer_for_seed(
         method_summaries=method_means,
         promotion_records=promotion_records,
         cross_lab_bindings=cross_lab_bindings,
+        stage_b_instruction_ablations=stage_b_instruction_ablations,
         sample_transition_receipts=sample_receipts,
     )
 

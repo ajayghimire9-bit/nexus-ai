@@ -276,12 +276,22 @@ def test_stage_b_environment_adapter_and_propose_primitive_lifecycle():
     for fam in UNKNOWN_LIBRARY_FAMILIES:
         f_stat = sb_res["per_family"][fam]
         assert f_stat["hidden_accuracy"] == 1.0
+        assert f_stat["cross_lab_language_accuracy"] == 1.0
         assert f_stat["cross_lab_coding_accuracy"] == 1.0
         assert f_stat["cross_lab_reasoning_accuracy"] == 1.0
+        assert f_stat["cross_lab_world_accuracy"] == 1.0
+        assert f_stat["overall_four_lab_accuracy"] == 1.0
+        assert f_stat["capsule_removed_four_lab_accuracy"] == 0.0
+        assert f_stat["old_lab_skill_retention"] == 1.0
         assert f_stat["separate_evaluator_process"] is True
         assert f_stat["private_inputs_exposed_to_learner"] is False
         assert f_stat["evolved_compute_cost"] < f_stat["handwritten_compute_cost"]
         assert f_stat["without_propose_primitive_accuracy"] < 0.50
+
+    abl_by_op = {r["removed_opcode"]: r for r in sb_res["stage_b_instruction_ablations"]}
+    assert abl_by_op["PROPOSE_PRIMITIVE"]["cross_lab_success"] == 0.0
+    assert abl_by_op["CREATE_CAPSULE"]["hidden_accuracy"] == 0.0
+    assert abl_by_op["PREDICT_EFFECTS"]["compute_cost"] > sb_res["per_family"]["ulib_window_checksum"]["evolved_compute_cost"]
 
 
 def test_locked_config_rejects_unauthorized_execution():
@@ -310,6 +320,8 @@ def test_saved_artifact_and_independent_verifier():
     assert audit["overall_pass"] is True
     assert audit["verdict"] == "PASS_BOTH_STAGE_A_AND_STAGE_B"
     assert all(audit["gates"].values())
+    assert audit["independent_stage_b_replay"]["matches_saved_record"] is True
+    assert all(audit["tamper_rejection_checks"].values())
 
     replay = saved_replay(ROOT)
     assert replay["id"] == "seed-open-primitive-transfer-1"
