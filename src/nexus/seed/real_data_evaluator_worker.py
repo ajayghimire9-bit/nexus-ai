@@ -17,6 +17,7 @@ so that:
 """
 from __future__ import annotations
 
+import ast
 import csv
 import hashlib
 import io
@@ -26,6 +27,7 @@ from pathlib import Path
 import sqlite3
 import stat
 import sys
+import tempfile
 from typing import Any
 
 
@@ -403,6 +405,73 @@ def _ref_sql3_hospital_lab_results_db(rows: list[dict[str, Any]]) -> list[dict[s
     return summary
 
 
+def _ref_r1_repo_python_ast_metrics(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Naturally Occurring Repository Task R1 (`repo_python_ast_metrics`):
+    Processes real AST metrics extracted from actual repository `.py` files on disk.
+    Filter `module_tier == 'active'`, `ast_node_count >= 150.0`, normalize `package_group`
+    (`strip`, `lower`, `strip_trailing_slash`), group by `package_group`, aggregate
+    (`event_count`, `total_ast_node_count`, `mean_ast_node_count`, `max_ast_node_count`),
+    and order by `total_ast_node_count DESC, package_group ASC`."""
+    groups: dict[str, list[float]] = {}
+    for r in rows:
+        mt = _norm_text(r.get("module_tier"), ("strip", "lower"))
+        if mt != "active":
+            continue
+        nodes = _parse_num(r.get("ast_node_count"), "float")
+        pkg = _norm_text(r.get("package_group"), ("strip", "lower", "strip_trailing_slash"))
+        if nodes is None or not pkg:
+            continue
+        if float(nodes) >= 150.0:
+            groups.setdefault(pkg, []).append(round(float(nodes), 2))
+    summary: list[dict[str, Any]] = []
+    for pkg, vals in groups.items():
+        cnt = len(vals)
+        tot = round(sum(vals), 2)
+        summary.append(
+            dict(
+                package_group=pkg,
+                event_count=cnt,
+                total_ast_node_count=tot,
+                mean_ast_node_count=round(tot / cnt, 2),
+                max_ast_node_count=round(max(vals), 2),
+            )
+        )
+    summary.sort(key=lambda x: (-float(x["total_ast_node_count"]), str(x["package_group"])))
+    return summary
+
+
+def _ref_amb1_revenue_eur_semantic_disambiguation(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Ambiguous-Header Task AMB1 (`european_merchant_settlements`):
+    Header `revenue_eur` contains both positive gross charges (`>= 50.0`), small fees (`20.0`),
+    and negative refunds (`-45.0`, `-80.0`). Requires positive settled gross revenue (`>= 50.0`)."""
+    groups: dict[str, list[float]] = {}
+    for r in rows:
+        st = _norm_text(r.get("settlement_state"), ("strip", "lower"))
+        if st != "settled":
+            continue
+        rev = _parse_num(r.get("revenue_eur"), "float")
+        mcat = _norm_text(r.get("merchant_Desk"), ("strip", "lower", "strip_trailing_slash"))
+        if rev is None or not mcat:
+            continue
+        if float(rev) >= 50.0:
+            groups.setdefault(mcat, []).append(round(float(rev), 2))
+    summary: list[dict[str, Any]] = []
+    for mcat, vals in groups.items():
+        cnt = len(vals)
+        tot = round(sum(vals), 2)
+        summary.append(
+            dict(
+                merchant_Desk=mcat,
+                event_count=cnt,
+                total_revenue_eur=tot,
+                mean_revenue_eur=round(tot / cnt, 2),
+                max_revenue_eur=round(max(vals), 2),
+            )
+        )
+    summary.sort(key=lambda x: (-float(x["total_revenue_eur"]), str(x["merchant_Desk"])))
+    return summary
+
+
 REFERENCE_TASK_FUNCTIONS = {
     "S1_filter_and_normalize_error_logs": _ref_s1_filter_and_normalize_error_logs,
     "S2_endpoint_latency_grouped_summary": _ref_s2_endpoint_latency_grouped_summary,
@@ -414,6 +483,8 @@ REFERENCE_TASK_FUNCTIONS = {
     "SQL1_service_telemetry_db": _ref_sql1_service_telemetry_db,
     "SQL2_supply_chain_shipments_db": _ref_sql2_supply_chain_shipments_db,
     "SQL3_hospital_lab_results_db": _ref_sql3_hospital_lab_results_db,
+    "R1_repo_python_ast_metrics": _ref_r1_repo_python_ast_metrics,
+    "AMB1_revenue_eur_semantic_disambiguation": _ref_amb1_revenue_eur_semantic_disambiguation,
 }
 
 
@@ -595,6 +666,83 @@ def _sql3_private_heldout_rows() -> list[dict[str, Any]]:
     ]
 
 
+def _extract_real_stdlib_ast_row(mod_obj: Any, package_group: str, module_tier: str, mod_id: str) -> dict[str, Any]:
+    """Parses a real Python standard-library `.py` file on disk and extracts its
+    actual AST node count and function count."""
+    src_file = Path(mod_obj.__file__)
+    tree = ast.parse(src_file.read_text(encoding="utf-8", errors="replace"))
+    node_count = sum(1 for _ in ast.walk(tree))
+    return {
+        "module_id": mod_id,
+        "package_group": package_group,
+        "ast_node_count": str(float(node_count)),
+        "module_tier": module_tier,
+        "source_file": src_file.name,
+    }
+
+
+def _repo_ast_public_rows() -> list[dict[str, Any]]:
+    import csv as _m_csv
+    import heapq as _m_heapq
+    import pathlib as _m_pathlib
+    import sqlite3.dbapi2 as _m_dbapi2
+    import types as _m_types
+    return [
+        _extract_real_stdlib_ast_row(_m_csv, " STDLIB_DATA/ ", "ACTIVE", "MOD-1"),
+        _extract_real_stdlib_ast_row(_m_dbapi2, "stdlib_data", "active", "MOD-2"),
+        _extract_real_stdlib_ast_row(_m_pathlib, "stdlib_data/", "active", "MOD-3"),
+        _extract_real_stdlib_ast_row(_m_heapq, " STDLIB_CORE/ ", "Active", "MOD-4"),
+        _extract_real_stdlib_ast_row(_m_types, "stdlib_core", "active", "MOD-5"),
+        {"module_id": "MOD-6", "package_group": "stdlib_core/", "ast_node_count": "N/A", "module_tier": "active", "source_file": "corrupt.py"},
+        {"module_id": "MOD-7", "package_group": "stdlib_core", "ast_node_count": "900.0", "module_tier": "deprecated", "source_file": "legacy.py"},
+    ]
+
+
+def _repo_ast_private_heldout_rows() -> list[dict[str, Any]]:
+    import difflib as _m_difflib
+    import fractions as _m_fractions
+    import functools as _m_functools
+    import pathlib as _m_pathlib
+    import re as _m_re
+    import statistics as _m_statistics
+    import urllib.parse as _m_uparse
+    return [
+        _extract_real_stdlib_ast_row(_m_fractions, " STDLIB_MATH/ ", "active", "MOD-101"),
+        _extract_real_stdlib_ast_row(_m_statistics, "stdlib_math", "ACTIVE", "MOD-102"),
+        _extract_real_stdlib_ast_row(_m_pathlib, "stdlib_math/", "active", "MOD-103"),
+        _extract_real_stdlib_ast_row(_m_difflib, " STDLIB_TEXT/ ", "active", "MOD-104"),
+        _extract_real_stdlib_ast_row(_m_re, "stdlib_text", "Active", "MOD-105"),
+        _extract_real_stdlib_ast_row(_m_uparse, "stdlib_text/", "deprecated", "MOD-106"),
+        _extract_real_stdlib_ast_row(_m_functools, " STDLIB_FUNC/ ", "active", "MOD-107"),
+    ]
+
+
+def _amb1_public_rows() -> list[dict[str, Any]]:
+    # Contains positive gross revenue (>= 50.0), small fee (20.0), and negative refunds (-45.0, -80.0)
+    return [
+        {"settlement_id": "EU-1", "merchant_Desk": " RETAIL-BERLIN/ ", "revenue_eur": "140.0", "settlement_state": "SETTLED", "currency": "EUR"},
+        {"settlement_id": "EU-2", "merchant_Desk": "retail-berlin", "revenue_eur": "60.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-3", "merchant_Desk": "retail-berlin/", "revenue_eur": "-45.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-4", "merchant_Desk": " SAAS-PARIS/ ", "revenue_eur": "250.0", "settlement_state": "Settled", "currency": "EUR"},
+        {"settlement_id": "EU-5", "merchant_Desk": "saas-paris", "revenue_eur": "-80.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-6", "merchant_Desk": "saas-paris/", "revenue_eur": "90.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-7", "merchant_Desk": "saas-paris", "revenue_eur": "null", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-8", "merchant_Desk": "saas-paris", "revenue_eur": "180.0", "settlement_state": "chargeback", "currency": "EUR"},
+    ]
+
+
+def _amb1_private_heldout_rows() -> list[dict[str, Any]]:
+    return [
+        {"settlement_id": "EU-101", "merchant_Desk": " FINTECH-MADRID/ ", "revenue_eur": "50.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-102", "merchant_Desk": "fintech-madrid", "revenue_eur": "150.0", "settlement_state": "SETTLED", "currency": "EUR"},
+        {"settlement_id": "EU-103", "merchant_Desk": "fintech-madrid/", "revenue_eur": "-65.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-104", "merchant_Desk": " LOGISTICS-MILAN/ ", "revenue_eur": "310.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-105", "merchant_Desk": "logistics-milan", "revenue_eur": "-120.0", "settlement_state": "settled", "currency": "EUR"},
+        {"settlement_id": "EU-106", "merchant_Desk": "logistics-milan/", "revenue_eur": "90.0", "settlement_state": "Settled", "currency": "EUR"},
+        {"settlement_id": "EU-107", "merchant_Desk": "logistics-milan", "revenue_eur": "220.0", "settlement_state": "disputed", "currency": "EUR"},
+    ]
+
+
 TASK_PUBLIC_ROWS = {
     "S1_filter_and_normalize_error_logs": _server_logs_public_rows,
     "S2_endpoint_latency_grouped_summary": _server_logs_public_rows,
@@ -606,6 +754,8 @@ TASK_PUBLIC_ROWS = {
     "SQL1_service_telemetry_db": _sql1_public_rows,
     "SQL2_supply_chain_shipments_db": _sql2_public_rows,
     "SQL3_hospital_lab_results_db": _sql3_public_rows,
+    "R1_repo_python_ast_metrics": _repo_ast_public_rows,
+    "AMB1_revenue_eur_semantic_disambiguation": _amb1_public_rows,
 }
 
 TASK_PRIVATE_HELDOUT_ROWS = {
@@ -619,6 +769,8 @@ TASK_PRIVATE_HELDOUT_ROWS = {
     "SQL1_service_telemetry_db": _sql1_private_heldout_rows,
     "SQL2_supply_chain_shipments_db": _sql2_private_heldout_rows,
     "SQL3_hospital_lab_results_db": _sql3_private_heldout_rows,
+    "R1_repo_python_ast_metrics": _repo_ast_private_heldout_rows,
+    "AMB1_revenue_eur_semantic_disambiguation": _amb1_private_heldout_rows,
 }
 
 
@@ -726,6 +878,26 @@ TASK_METADATA = {
         required_output_columns=["panel_code", "event_count", "total_concentration_ug", "mean_concentration_ug", "max_concentration_ug"],
         task_kind="grouped_summary",
     ),
+    "R1_repo_python_ast_metrics": dict(
+        tier="naturally_occurring_repo_data",
+        format="json",
+        source_filename="stdlib_python_ast_metrics.json",
+        output_filename="r1_stdlib_ast_summary.json",
+        schema_family="python_stdlib_ast",
+        candidate_thresholds=[150.0, 300.0, 500.0],
+        required_output_columns=["package_group", "event_count", "total_ast_node_count", "mean_ast_node_count", "max_ast_node_count"],
+        task_kind="grouped_summary",
+    ),
+    "AMB1_revenue_eur_semantic_disambiguation": dict(
+        tier="ambiguous_header_disambiguation",
+        format="csv",
+        source_filename="european_merchant_settlements.csv",
+        output_filename="amb1_revenue_eur_summary.json",
+        schema_family="european_merchant_settlements",
+        candidate_thresholds=[-100.0, 0.0, 50.0],
+        required_output_columns=["merchant_Desk", "event_count", "total_revenue_eur", "mean_revenue_eur", "max_revenue_eur"],
+        task_kind="grouped_summary",
+    ),
 }
 
 
@@ -740,6 +912,35 @@ def _write_csv_file(path: Path, rows: list[dict[str, Any]]) -> None:
     for r in rows:
         writer.writerow(r)
     path.write_text(buf.getvalue(), encoding="utf-8")
+
+
+def _write_normalized_relational_tables(conn: sqlite3.Connection, rows: list[dict[str, Any]]) -> None:
+    """Writes a normalized 2-table foreign-key schema (`dim_entities` and `fact_events`)
+    so relational SQL queries with `JOIN`, `WHERE`, `GROUP BY`, and `ORDER BY` can be
+    executed directly inside SQLite."""
+    cols = list(rows[0].keys())
+    # cols order in SQL1/SQL2/SQL3: [id_col, key_col, metric_col, status_col, aux_col]
+    id_col, key_col, metric_col, status_col, aux_col = cols[0], cols[1], cols[2], cols[3], cols[4]
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.execute(
+        f'CREATE TABLE "dim_entities" ('
+        f'"entity_id" TEXT PRIMARY KEY, "{key_col}" TEXT, "{status_col}" TEXT)'
+    )
+    conn.execute(
+        f'CREATE TABLE "fact_events" ('
+        f'"event_id" TEXT PRIMARY KEY, "entity_fk" TEXT, "{metric_col}" TEXT, "{aux_col}" TEXT, '
+        f'FOREIGN KEY("entity_fk") REFERENCES "dim_entities"("entity_id"))'
+    )
+    for idx, r in enumerate(rows):
+        ent_id = f"ENT-{idx + 1}"
+        conn.execute(
+            f'INSERT INTO "dim_entities" VALUES (?, ?, ?)',
+            (ent_id, str(r.get(key_col, "")), str(r.get(status_col, ""))),
+        )
+        conn.execute(
+            f'INSERT INTO "fact_events" VALUES (?, ?, ?, ?)',
+            (str(r.get(id_col, f"EV-{idx + 1}")), ent_id, str(r.get(metric_col, "")), str(r.get(aux_col, ""))),
+        )
 
 
 def _write_sqlite_table(db_path: Path, table_name: str, rows: list[dict[str, Any]]) -> None:
@@ -757,7 +958,34 @@ def _write_sqlite_table(db_path: Path, table_name: str, rows: list[dict[str, Any
                 f'INSERT INTO "{table_name}" VALUES ({placeholders})',
                 tuple(str(r.get(c, "")) for c in cols),
             )
+        if len(cols) >= 5:
+            _write_normalized_relational_tables(conn, rows)
         conn.commit()
+    finally:
+        conn.close()
+
+
+def _execute_relational_sql_on_rows(sql_query: str, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Executes `sql_query` inside an isolated in-memory SQLite database containing ONLY
+    the normalized relational tables `dim_entities` and `fact_events` (no flat table),
+    so only a genuine relational JOIN + GROUP BY query can succeed."""
+    conn = sqlite3.connect(":memory:")
+    try:
+        _write_normalized_relational_tables(conn, rows)
+        conn.commit()
+        cur = conn.execute(sql_query)
+        col_names = [desc[0] for desc in cur.description]
+        out: list[dict[str, Any]] = []
+        for row in cur.fetchall():
+            rec: dict[str, Any] = {}
+            for i, col in enumerate(col_names):
+                val = row[i]
+                if isinstance(val, float):
+                    rec[col] = round(val, 2)
+                else:
+                    rec[col] = val
+            out.append(rec)
+        return out
     finally:
         conn.close()
 
@@ -1039,7 +1267,26 @@ def evaluate_task_submission(payload: dict[str, Any]) -> dict[str, Any]:
     expected_priv = ref_fn(priv_rows)
     pred_priv = evaluate_serialized_adapter_program(program_ops, priv_rows)
 
-    heldout_exact_match = bool(pred_priv == expected_priv)
+    # Also compute exact uniform expectation across the surviving version space V if provided
+    vs_ops_list = payload.get("surviving_version_space_ops")
+    if isinstance(vs_ops_list, list) and len(vs_ops_list) > 0:
+        vs_hits = sum(
+            1 for cand_ops in vs_ops_list
+            if evaluate_serialized_adapter_program(cand_ops, priv_rows) == expected_priv
+        )
+        version_space_expected_accuracy = round(vs_hits / len(vs_ops_list), 6)
+    else:
+        version_space_expected_accuracy = 1.0 if (pred_priv == expected_priv) else 0.0
+
+    submitted_sql = payload.get("submitted_sql_query")
+    relational_sql_exact_match: bool | None = None
+    if submitted_sql:
+        sql_priv_pred = _execute_relational_sql_on_rows(str(submitted_sql), priv_rows)
+        relational_sql_exact_match = bool(sql_priv_pred == expected_priv)
+        heldout_exact_match = bool(pred_priv == expected_priv and relational_sql_exact_match)
+    else:
+        heldout_exact_match = bool(pred_priv == expected_priv)
+
     if len(expected_priv) == 0:
         row_acc = 1.0 if len(pred_priv) == 0 else 0.0
     else:
@@ -1061,6 +1308,8 @@ def evaluate_task_submission(payload: dict[str, Any]) -> dict[str, Any]:
         output_file_written=output_file_written,
         demo_exact_match=demo_exact_match,
         heldout_exact_match=heldout_exact_match,
+        version_space_expected_accuracy=version_space_expected_accuracy,
+        relational_sql_exact_match=relational_sql_exact_match,
         heldout_row_accuracy=row_acc,
         schema_exact_match=schema_ok,
         program_sha256=_sha256_obj(program_ops),
@@ -1074,6 +1323,28 @@ def evaluate_task_submission(payload: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def answer_pidgin_stream_query(payload: dict[str, Any]) -> dict[str, Any]:
+    """Answers a teaching query from Pillar 4 for an unknown stream verb (`'debounce'`,
+    `'throttle'`) by executing the ground-truth stream semantics inside the isolated
+    teacher subprocess."""
+    verb = str(payload.get("verb", "")).strip().lower()
+    probe_stream = payload.get("probe_stream", [])
+    if verb == "debounce":
+        out = [
+            str(ev[0])
+            for idx, ev in enumerate(probe_stream)
+            if idx == 0 or not (ev[0] == probe_stream[idx - 1][0] and (int(ev[1]) - int(probe_stream[idx - 1][1])) <= 10)
+        ]
+    else:
+        raise ValueError(f"unknown_pidgin_verb:{verb}")
+    return dict(
+        verb=verb,
+        probe_stream=probe_stream,
+        teacher_output=out,
+        teacher_subprocess_receipt=_sha256_obj(dict(verb=verb, probe_stream=probe_stream, out=out)),
+    )
+
+
 def main() -> None:
     raw = sys.stdin.read()
     req = json.loads(raw)
@@ -1084,6 +1355,8 @@ def main() -> None:
         res = answer_disambiguating_query(req)
     elif mode == "evaluate_task_submission":
         res = evaluate_task_submission(req)
+    elif mode == "answer_pidgin_stream_query":
+        res = answer_pidgin_stream_query(req)
     else:
         raise ValueError(f"unknown_worker_mode:{mode}")
     sys.stdout.write(json.dumps(res, sort_keys=True))
