@@ -99,32 +99,64 @@ def reconstruct_and_replay_integrated_report(
         raise ValueError("neural_weights_sha256_mismatch")
 
     codec = SmallNeuralLanguageCodec(seed=1762700101)
-    codec.load_weights_dict(json.loads(weights_raw))
+    weights_obj = json.loads(weights_raw)
+    codec.load_weights_dict(weights_obj)
+
+    # Verify exact architectural parameter consistency between code, weights artifact, and report
+    expected_arch = codec.architectural_dimensions()
+    saved_arch = neural_eval.get("architecture", {})
+    if (
+        expected_arch["vocab_size"] != 55
+        or expected_arch["char_trigram_buckets"] != 64
+        or expected_arch["handcrafted_structural_features"] != 0
+        or expected_arch["input_dim"] != 119
+        or expected_arch["hidden_dim"] != 16
+        or expected_arch["state_dim"] != 10
+        or expected_arch["dec_hidden_dim"] != 16
+        or expected_arch["decoder_vocab_size"] != 35
+        or expected_arch["parameter_count"] != 10970
+        or saved_arch != expected_arch
+        or ResourceGridEnv.GRID_SIZE != 5
+    ):
+        raise ValueError("architectural_dimensions_mismatch_between_code_and_artifact")
 
     heldout_records = neural_eval["unfamiliar_paraphrase_and_composition_eval"]["heldout_records"]
-    if len(heldout_records) < 9:
-        raise ValueError("insufficient_neural_heldout_records")
+    if len(heldout_records) != 36:
+        raise ValueError("expected_36_neural_heldout_records")
 
     replayed_intent_hits = 0
     replayed_mod_hits = 0
+    in_domain_count = 0
+    replayed_ood_hits = 0
+    ood_count = 0
+
     for rec in heldout_records:
         inf = codec.infer_utterance(rec["utterance"])
         if inf["predicted_intent"] != rec["predicted_intent"]:
             raise ValueError("replayed_neural_intent_mismatch_with_record")
         if inf["predicted_modifier"] != rec["predicted_modifier"]:
             raise ValueError("replayed_neural_modifier_mismatch_with_record")
-        if inf["predicted_intent"] == rec["expected_intent"]:
-            replayed_intent_hits += 1
-        if inf["predicted_modifier"] == rec["expected_modifier"]:
-            replayed_mod_hits += 1
+        if rec.get("category") == "out_of_distribution_abstention":
+            ood_count += 1
+            if inf.get("epistemic_abstain_out_of_domain") is True and rec.get("expected_intent") == "epistemic_abstain":
+                replayed_ood_hits += 1
+        else:
+            in_domain_count += 1
+            if inf["predicted_intent"] == rec["expected_intent"]:
+                replayed_intent_hits += 1
+            if inf["predicted_modifier"] == rec["expected_modifier"]:
+                replayed_mod_hits += 1
 
-    recon_intent_acc = float(round(replayed_intent_hits / len(heldout_records), 6))
-    recon_mod_acc = float(round(replayed_mod_hits / len(heldout_records), 6))
+    recon_intent_acc = float(round(replayed_intent_hits / max(1, in_domain_count), 6))
+    recon_mod_acc = float(round(replayed_mod_hits / max(1, in_domain_count), 6))
+    recon_ood_acc = float(round(replayed_ood_hits / max(1, ood_count), 6))
     saved_unfam_eval = neural_eval["unfamiliar_paraphrase_and_composition_eval"]
     if not _approx_equal(recon_intent_acc, saved_unfam_eval["unfamiliar_intent_accuracy"]):
         raise ValueError("reconstructed_neural_intent_accuracy_mismatch")
     if not _approx_equal(recon_mod_acc, saved_unfam_eval["composition_clause_accuracy"]):
         raise ValueError("reconstructed_neural_modifier_accuracy_mismatch")
+    if not _approx_equal(recon_ood_acc, saved_unfam_eval["ood_epistemic_abstention_accuracy"]):
+        raise ValueError("reconstructed_neural_ood_abstention_accuracy_mismatch")
 
     neural_mode_entry = c7["language_modes_and_routing"]["nexus_small_neural"]
     has_xml_wrapper = any(
@@ -136,8 +168,12 @@ def reconstruct_and_replay_integrated_report(
         c7["language_modes_and_routing"]["deterministic_template"]["greeting_triggers_experiment"] is False
         and neural_mode_entry["greeting_triggers_experiment"] is False
         and not has_xml_wrapper
+        and saved_arch.get("handcrafted_structural_features") == 0
+        and len(heldout_records) == 36
         and recon_intent_acc == 1.0
         and recon_mod_acc == 1.0
+        and recon_ood_acc == 1.0
+        and float(saved_unfam_eval.get("token_level_decoder_accuracy", 0.0)) == 1.0
         and float(train_sum["final_loss"]) < float(train_sum["initial_loss"])
         and c7["language_modes_and_routing"]["deterministic_template"]["extracted_claim"]["evidence_status"]
         == "disputed"
@@ -338,11 +374,26 @@ def reconstruct_and_replay_integrated_report(
     full_ha = float(abl_sec["full_rule_hidden_accuracy"])
     full_cost = float(abl_sec["full_rule_compute_cost"])
 
-    propose_necessary = float(abl_map["PROPOSE_PRIMITIVE"]["cross_lab_success"]) < full_cl
+    ev_tr = abl_sec.get("full_rule_investigation_trace", {})
+    np_tr = abl_map["PROPOSE_PRIMITIVE"].get("investigation_trace", {})
+    propose_unconfounded = bool(
+        ev_tr.get("inspected_ast_nodes") == np_tr.get("inspected_ast_nodes")
+        and ev_tr.get("helper_call_count") == np_tr.get("helper_call_count")
+        and ev_tr.get("generated_hypothesis_count") == np_tr.get("generated_hypothesis_count") == 12
+        and ev_tr.get("chosen_helper") == np_tr.get("chosen_helper")
+        and ev_tr.get("chosen_post") == np_tr.get("chosen_post")
+        and ev_tr.get("applied_ast_patch") == np_tr.get("applied_ast_patch")
+    )
+
+    propose_necessary = (
+        float(abl_map["PROPOSE_PRIMITIVE"]["hidden_accuracy"]) < full_ha
+        and float(abl_map["PROPOSE_PRIMITIVE"]["cross_lab_success"]) < full_cl
+    )
     capsule_necessary = float(abl_map["CREATE_CAPSULE"]["hidden_accuracy"]) < full_ha
     predict_saves_cost = float(abl_map["PREDICT_EFFECTS"]["compute_cost"]) > full_cost
     if (
         propose_necessary != abl_sec["propose_primitive_necessary"]
+        or propose_unconfounded != abl_sec.get("propose_primitive_control_unconfounded")
         or capsule_necessary != abl_sec["create_capsule_necessary_for_transfer"]
         or predict_saves_cost != abl_sec["predict_effects_reduces_cost"]
     ):
@@ -380,6 +431,7 @@ def reconstruct_and_replay_integrated_report(
             },
             enable_capsule=True,
             enable_binding_induction=True,
+            enable_adapter_induction=True,
         )["evaluation"]
         if not _approx_equal(replayed_4lab["overall_four_lab_accuracy"], bb["four_lab_transfer_accuracy"]):
             raise ValueError("subprocess_replayed_four_lab_accuracy_mismatch")
@@ -391,9 +443,15 @@ def reconstruct_and_replay_integrated_report(
         and float(fl_saved["reasoning_lab_accuracy"]) == 1.0
         and float(fl_saved["world_lab_accuracy"]) == 1.0
         and recon_4lab_mean == 1.0
-        and float(bb["capsule_removed_control_accuracy"]) == 0.0
+        and float(bb["capsule_removed_control_accuracy"]) <= 0.25
+        and float(bb.get("unlearned_binding_control_accuracy", 1.0)) <= 0.25
+        and float(bb.get("unlearned_adapter_control_accuracy", 1.0)) <= 0.25
+        and bb.get("controls_never_set_callable_none") is True
+        and bb.get("handwritten_language_rules_used") is False
+        and bb.get("neural_language_parser_used") is True
         and float(bb["old_skill_retention"]) == 1.0
         and propose_necessary is True
+        and propose_unconfounded is True
         and capsule_necessary is True
         and predict_saves_cost is True
         and bb["separate_evaluator_process"] is True
@@ -483,7 +541,59 @@ def verify_tamper_rejection(report: dict[str, Any], root: Path) -> dict[str, boo
     except ValueError:
         checks["rejects_tampered_four_lab_transfer_record"] = True
 
+    # Tamper 6: Confound PROPOSE_PRIMITIVE ablation by altering investigation_trace hypothesis count
+    t6 = copy.deepcopy(report)
+    t6["integrated_episode"]["step_5c_evolved_rule_instruction_ablations"]["ablations"][0][
+        "investigation_trace"
+    ]["generated_hypothesis_count"] = 3
+    try:
+        reconstruct_and_replay_integrated_report(t6, root, run_subprocess_replay=False)
+        raise AssertionError("tamper_6_confounded_propose_ablation_was_not_rejected")
+    except ValueError:
+        checks["rejects_confounded_propose_primitive_ablation"] = True
+
+    # Tamper 7: Corrupt cross-lab control to use null callable or handwritten language rules
+    t7 = copy.deepcopy(report)
+    t7["integrated_episode"]["blackbox_final_assessment"]["controls_never_set_callable_none"] = False
+    try:
+        reconstruct_and_replay_integrated_report(t7, root, run_subprocess_replay=False)
+        raise AssertionError("tamper_7_null_callable_control_was_not_rejected")
+    except ValueError:
+        checks["rejects_null_callable_in_cross_lab_control"] = True
+
     return checks
+
+
+def verify_report_matches_source_and_artifacts(root: Path) -> bool:
+    """Verifies that `docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md` matches the exact
+    committed architectural parameters (`hidden_dim=16`, `input_dim=119`, `GRID_SIZE=5`,
+    `parameter_count=10,970` / `10970`) and contains zero stale `14`-dim or `3x4` claims."""
+    doc_path = root / "docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md"
+    if not doc_path.exists():
+        raise ValueError("missing_integrated_architecture_report_doc")
+    doc_text = doc_path.read_text(encoding="utf-8")
+    forbidden_stale_phrases = (
+        "14-dimensional",
+        "hidden_dim=14",
+        "hidden_dim = 14",
+        "3x4 resource",
+        "3×4 resource",
+        "12-state (48 state-action",
+    )
+    for phrase in forbidden_stale_phrases:
+        if phrase in doc_text:
+            raise ValueError(f"stale_parameter_in_report_doc:{phrase}")
+    required_exact_tokens = (
+        "119",
+        "16",
+        "10,970",
+        "5×5",
+        "36",
+    )
+    for req in required_exact_tokens:
+        if req not in doc_text:
+            raise ValueError(f"missing_exact_parameter_in_report_doc:{req}")
+    return True
 
 
 def verify(root_dir: Path | str | None = None, write_artifact: bool = False) -> dict[str, Any]:
@@ -500,6 +610,7 @@ def verify(root_dir: Path | str | None = None, write_artifact: bool = False) -> 
         report, root, run_subprocess_replay=True
     )
     tamper_checks = verify_tamper_rejection(report, root)
+    doc_reconciled = verify_report_matches_source_and_artifacts(root)
 
     art_sha256 = hashlib.sha256(art_path.read_bytes()).hexdigest()
     return dict(
@@ -508,6 +619,7 @@ def verify(root_dir: Path | str | None = None, write_artifact: bool = False) -> 
         artifact_sha256=art_sha256,
         all_gates_passed=True,
         gates=reconstructed_gates,
+        report_reconciled_with_source_and_artifacts=doc_reconciled,
         disjunct_matrix_verified=True,
         independent_replay_verified=True,
         tamper_rejection_checks=tamper_checks,

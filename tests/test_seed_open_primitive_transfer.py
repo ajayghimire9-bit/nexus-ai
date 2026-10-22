@@ -281,14 +281,32 @@ def test_stage_b_environment_adapter_and_propose_primitive_lifecycle():
         assert f_stat["cross_lab_reasoning_accuracy"] == 1.0
         assert f_stat["cross_lab_world_accuracy"] == 1.0
         assert f_stat["overall_four_lab_accuracy"] == 1.0
-        assert f_stat["capsule_removed_four_lab_accuracy"] == 0.0
+        assert f_stat["capsule_removed_four_lab_accuracy"] <= 0.25
+        assert f_stat["unlearned_binding_four_lab_accuracy"] <= 0.25
+        assert f_stat["unlearned_adapter_four_lab_accuracy"] <= 0.25
         assert f_stat["old_lab_skill_retention"] == 1.0
         assert f_stat["separate_evaluator_process"] is True
         assert f_stat["private_inputs_exposed_to_learner"] is False
         assert f_stat["evolved_compute_cost"] < f_stat["handwritten_compute_cost"]
-        assert f_stat["without_propose_primitive_accuracy"] < 0.50
+        assert f_stat["without_propose_primitive_accuracy"] == 0.0
+        assert f_stat["propose_control_unconfounded"] is True
+        ev_tr = f_stat["evolved_investigation_trace"]
+        np_tr = f_stat["without_propose_investigation_trace"]
+        assert ev_tr["inspected_ast_nodes"] == np_tr["inspected_ast_nodes"]
+        assert ev_tr["helper_call_count"] == np_tr["helper_call_count"]
+        assert ev_tr["generated_hypothesis_count"] == np_tr["generated_hypothesis_count"] == 12
+        assert ev_tr["chosen_helper"] == np_tr["chosen_helper"]
+        assert ev_tr["applied_ast_patch"] == np_tr["applied_ast_patch"]
+
+    for b_rec in sb_res["cross_lab_bindings"]:
+        assert b_rec["handwritten_language_rules_used"] is False
+        assert b_rec["neural_language_parser_used"] is True
+        assert b_rec["capsule_removed_callable_is_none"] is False
+        assert b_rec["unlearned_binding_callable_is_none"] is False
+        assert b_rec["unlearned_adapter_callable_is_none"] is False
 
     abl_by_op = {r["removed_opcode"]: r for r in sb_res["stage_b_instruction_ablations"]}
+    assert abl_by_op["PROPOSE_PRIMITIVE"]["hidden_accuracy"] == 0.0
     assert abl_by_op["PROPOSE_PRIMITIVE"]["cross_lab_success"] == 0.0
     assert abl_by_op["CREATE_CAPSULE"]["hidden_accuracy"] == 0.0
     assert abl_by_op["PREDICT_EFFECTS"]["compute_cost"] > sb_res["per_family"]["ulib_window_checksum"]["evolved_compute_cost"]

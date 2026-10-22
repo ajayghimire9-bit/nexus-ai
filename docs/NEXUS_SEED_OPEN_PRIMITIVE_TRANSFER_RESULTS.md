@@ -7,9 +7,9 @@
 - **Protocol**: [NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md) (`0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e`)
 - **v1 Adversarial Audit**: [NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md) ([`artifacts/seed_meta_rule_evolution_v1_audit.json`](../artifacts/seed_meta_rule_evolution_v1_audit.json))
 - **Locked Config**: [`configs/seed_open_primitive_transfer.json`](../configs/seed_open_primitive_transfer.json) (`9d8e522a9386ff222297a5e0f9b93a16568e1fb0875a7503589c84061c56a3c9`)
-- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`c39dad37a0a8700f0a31a3f421247e13f33fc2827e8ae863e1d0b77c2077a32e`)
-- **Independent Verifier Audit**: [`artifacts/seed_open_primitive_transfer_audit.json`](../artifacts/seed_open_primitive_transfer_audit.json) ([`scripts/verify_seed_open_primitive_transfer.py`](../scripts/verify_seed_open_primitive_transfer.py))
-- **Integrated 10-Part Architecture Report**: [NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md](NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md) ([`artifacts/seed_integrated_architecture_v1.json`](../artifacts/seed_integrated_architecture_v1.json))
+- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`4b30999632fd3938f2395acec42fd996ed417982384c93562f4ec863904549e6`)
+- **Independent Verifier Audit**: [`artifacts/seed_open_primitive_transfer_audit.json`](../artifacts/seed_open_primitive_transfer_audit.json) (`10ea2f3004d63cb8c6c6bae701e56bdac80a1b514eea8dbc71b399a4ef0c633c`, [`scripts/verify_seed_open_primitive_transfer.py`](../scripts/verify_seed_open_primitive_transfer.py))
+- **Integrated 10-Part Architecture Report**: [NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md](NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md) ([`artifacts/seed_integrated_architecture_v1.json`](../artifacts/seed_integrated_architecture_v1.json), `64939e9ead3e8c8a7458b3eaa2c06e385f81850a4989aa326c8f7943ba724796`)
 - **Stage A Status**: `PASSED` (`stage_a_pass = true`)
 - **Stage B Status**: `PASSED` (`stage_b_pass = true`, `12/12` registered gates passed in isolated black-box subprocess)
 - **Overall Verdict**: `PASS_BOTH_STAGE_A_AND_STAGE_B`
@@ -115,38 +115,41 @@ $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATE
 
 ### 4.2 Stage B Per-Family Results Across 3 Independent Unknown-Library Families & 4 Downstream Labs
 
-| Unknown-Library Family | Candidate Helpers (1 True + 2 Decoys) | Invented Word | Hidden Accuracy (`evolved`) | Without `PROPOSE_PRIMITIVE` Accuracy | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | 4-Lab Transfer (`Lang` / `Code` / `Reas` / `World`) | Capsule-Removed Control |
+| Unknown-Library Family | Candidate Helpers (1 True + 2 Decoys) | Invented Word | Hidden Accuracy (`evolved`) | Without `PROPOSE_PRIMITIVE` Accuracy (Unconfounded) | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | 4-Lab Transfer (`Lang` / `Code` / `Reas` / `World`) | Capsule-Removed / Unlearned-Binding / Unlearned-Adapter Controls |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `ulib_window_checksum` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `krelv` | `1.0000` | `0.0000` | `2.625` | `41.0188` | `84.3813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.0000` |
-| `ulib_runlength_bucket` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `voux` | `1.0000` | `0.0000` | `2.625` | `41.0188` | `87.0688` | `1.00` / `1.00` / `1.00` / `1.00` | `0.0000` |
-| `ulib_zigzag_interleave` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `zarn` | `1.0000` | `0.0000` | `2.625` | `41.0188` | `105.8813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.0000` |
+| `ulib_window_checksum` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `krelv` | `1.0000` | `0.0000` | `2.375` | `35.9563` | `84.3813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1719` / `0.1719` / `0.0625` |
+| `ulib_runlength_bucket` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `voux` | `1.0000` | `0.0000` | `2.375` | `33.6125` | `87.0688` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1875` / `0.1875` / `0.1250` |
+| `ulib_zigzag_interleave` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `zarn` | `1.0000` | `0.0000` | `2.375` | `35.1750` | `105.8813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1484` / `0.1484` / `0.0234` |
 
 ### 4.3 Stage B 9-Method Comparison Across All 8 Seeds (Unified `execute_code_lab_rule_interpreter`)
 
 | Stage B Method | Mean Hidden Success | Mean Sandbox Experiments | Mean Total Compute Cost | Mean 4-Lab Reuse Success (`Language`, `Coding`, `Reasoning`, `World`) |
 | :--- | :---: | :---: | :---: | :---: |
-| **`corrected_frozen_evolved_rule`** | **`1.0000`** | **`2.6250`** | **`41.0188`** | **`1.0000`** |
-| `proposal_lifecycle_without_sleep_compression` | `1.0000` | `2.6250` | `41.0188` | `1.0000` |
+| **`corrected_frozen_evolved_rule`** | **`1.0000`** | **`2.3750`** | **`34.9146`** | **`1.0000`** |
+| `proposal_lifecycle_without_sleep_compression` | `1.0000` | `3.3750` | `45.5813` | `1.0000` |
 | `exact_information_gain_plus_effect_composition` | `1.0000` | `4.0000` | `47.5500` | `1.0000` |
 | `strongest_handwritten_learner` | `1.0000` | `9.1250` | `92.4438` | `1.0000` |
 | `scratch_learning_in_target_lab` | `1.0000` | `12.1250` | `111.9438` | `1.0000` |
-| `exhaustive_sandbox_probing` | `1.0000` | `28.0000` | `191.3000` | `1.0000` |
-| `isolated_labs` | `1.0000` | `2.6250` | `41.0188` | `0.0000` |
-| `learner_without_propose_primitive` | `0.0000` | `1.0000` | `10.3875` | `0.0000` |
-| `examples_only_retrieval` | `0.0000` | `4.0000` | `42.3000` | `0.0000` |
+| `exhaustive_sandbox_probing` | `1.0000` | `31.0000` | `223.5500` | `1.0000` |
+| `isolated_labs` | `1.0000` | `2.3750` | `34.9146` | `0.0000` |
+| `learner_without_propose_primitive` | `0.0000` | `2.3750` | `32.3146` | `0.0000` |
+| `examples_only_retrieval` | `0.0000` | `6.1250` | `69.1854` | `0.0000` |
 
-### 4.4 Stage B Paired Student-$t$ ($df=7$) Comparisons & Instruction Ablations
+### 4.4 Stage B Paired Student-$t$ ($df=7$) Comparisons & Unconfounded Instruction Ablations
 
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` compute cost**:
-  $$\Delta = +51.4250, \quad \text{SD} = 15.9558, \quad \text{SE} = 5.6412, \quad 95\%\ \text{CI} = [+38.0856,\ +64.7644]$$
+  $$\Delta = +57.5292, \quad \text{SD} = 14.8806, \quad \text{SE} = 5.2611, \quad 95\%\ \text{CI} = [+45.0887,\ +69.9696]$$
 - **`exact_information_gain_plus_effect_composition` minus `corrected_frozen_evolved_rule` compute cost**:
-  $$\Delta = +6.5313, \quad \text{SD} = 1.6320, \quad \text{SE} = 0.5770, \quad 95\%\ \text{CI} = [+5.1668,\ +7.8957]$$
+  $$\Delta = +12.6354, \quad \text{SD} = 5.8370, \quad \text{SE} = 2.0637, \quad 95\%\ \text{CI} = [+7.7556,\ +17.5153]$$
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` sandbox experiments**:
-  $$\Delta = +6.5000, \quad \text{SD} = 1.6036, \quad \text{SE} = 0.5669, \quad 95\%\ \text{CI} = [+5.1594,\ +7.8406]$$
-- **Causal Opcode Ablations in `execute_code_lab_rule_interpreter` (`stage_b_instruction_ablations`)**:
-  - Removing `PROPOSE_PRIMITIVE`: drops `hidden_accuracy` from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
+  $$\Delta = +6.7500, \quad \text{SD} = 1.4880, \quad \text{SE} = 0.5261, \quad 95\%\ \text{CI} = [+5.5060,\ +7.9940]$$
+- **Unconfounded Causal Opcode Ablations in `execute_code_lab_rule_interpreter` (`stage_b_instruction_ablations`)**:
+  - Removing `PROPOSE_PRIMITIVE` (`all_propose_control_unconfounded = true`): keeps AST inspection, helper probing, all 12 hypothesis constructions, effect prediction, equivalence merging, hypothesis elimination, and AST patch synthesis 100% identical to the full rule, and solely omits promoting the discovered helper into `target_pipeline.py`'s module scope (`_bundle_target_pipeline_source`), dropping `hidden_accuracy` from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
   - Removing `CREATE_CAPSULE`: drops `hidden_accuracy` from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
-  - Removing `PREDICT_EFFECTS`: increases sandbox experiments from `2.625` to `8.00` and compute cost from `42.20` to `79.10`.
+  - Removing `PREDICT_EFFECTS`: increases sandbox experiments from `2.375` to `8.00` and compute cost from `35.35` to `70.75` on the integrated episode (`66.10–105.30` across seeds with effect-guided query/merge).
+- **Autonomous Cross-Domain Adapter Induction & Non-Null-Callable 4-Lab Controls**:
+  - `solve_four_lab_tasks_with_promoted_capsule` uses the trained 10,970-parameter `SmallNeuralLanguageCodec` (`handwritten_language_rules_used = false`, `neural_language_parser_used = true`) and `induce_four_lab_cross_domain_adapters` to induce downstream task adapters from public calibration support examples across all 4 labs (`Language`, `Coding`, `Reasoning`, `World`).
+  - No control ever sets `inferred_callable = None` (`capsule_removed_callable_is_none = false`, `unlearned_binding_callable_is_none = false`, `unlearned_adapter_callable_is_none = false`): `capsule_removed` and `unlearned_binding` bind and execute `_base_identity_capsule` (`0.1484–0.1875` accuracy), and `unlearned_adapter` binds the promoted primitive with uninduced default adapters (`0.0234–0.1250` accuracy), compared to `1.0000` for full transfer.
 
 ---
 
@@ -160,9 +163,9 @@ $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATE
 | `gate_04` | Proposed primitive passes complete 6-stage kernel lifecycle (`24/24` `PROMOTED`) | `PASS` |
 | `gate_05` | Frozen rule transfers to non-isomorphic code family (`non_isomorphic_verified = true`, Stage B success `1.0000`) | `PASS` |
 | `gate_06` | Beats or is non-inferior to strongest fair baseline on task success (`1.0000` vs `1.0000`) | `PASS` |
-| `gate_07` | Improves experiments or total compute cost with paired 95% CI excluding zero (`[+4.7622, +12.0441]` Stage A; `[+31.1927, +57.3948]` Stage B) | `PASS` |
-| `gate_08` | Removing promoted primitive removes transfer gain (`1.0000` vs `0.0035`) | `PASS` |
-| `gate_09` | No human-written cross-lab semantic mapping (`manually_supplied_cross_lab_mapping = false`, cross-lab success `1.0000`) | `PASS` |
+| `gate_07` | Improves experiments or total compute cost with paired 95% CI excluding zero (`[+4.7622, +12.0441]` Stage A; `[+45.0887, +69.9696]` Stage B) | `PASS` |
+| `gate_08` | Removing promoted primitive removes transfer gain (`1.0000` vs `0.0000` without `PROPOSE_PRIMITIVE`, `0.1693` capsule-removed 4-lab control) | `PASS` |
+| `gate_09` | No human-written cross-lab semantic mapping (`manually_supplied_cross_lab_mapping = false`, `handwritten_language_rules_used = false`, cross-lab success `1.0000`) | `PASS` |
 | `gate_10` | Old-task retention `>= 98%` by real pre/post execution (`1.0000` -> `1.0000`, worst regression `0.0`) | `PASS` |
 | `gate_11` | All discovery, evolution, sandbox, and validation costs included (`kernel_sha256_before == kernel_sha256_after`) | `PASS` |
 | `gate_12` | At least 2 independent unknown-library families reproduce (`3/3` families reproduced) | `PASS` |
@@ -173,17 +176,16 @@ $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATE
 
 - **Host Execution**: Dispatched via `scripts/run_seed_open_primitive_transfer.py` through `Sandbox.execute()` (`adapter = seed_open_primitive_transfer_v1`, `run_id = seed-open-primitive-transfer-1`, `execution_sha = 4bc6443e939287f80bac50cbdfa935e6b5bf0049`, `dirty = false`).
 - **Kernel Counters Total**:
-  - `candidate_executions = 2,808,603`
-  - `dsl_instructions = 1,986,245`
-  - `hidden_evaluations = 952,434`
-  - `queries = 148,954`
-  - `sandbox_actions = 3,660`
+  - `candidate_executions = 2,809,305`
+  - `dsl_instructions = 1,988,111`
+  - `hidden_evaluations = 953,270`
+  - `queries = 149,218`
+  - `sandbox_actions = 5,007`
   - `primitive_calibrations = 288`
-  - `proposal_validations = 72`
+  - `proposal_validations = 187`
 - **Wall / CPU / Session Budget**:
-  - `wall_clock_s = 34.526387` (`execution_debit_s = 27.159129`)
-  - `cpu_time_s = 27.159129`
-  - `session_used_s = 2087.158490705996` (`session_remaining_s = 1512.8415092940043`)
+  - `wall_clock_s = 53.415096` (`cpu_time_s = 32.709724`)
+  - `session_used_s = 2106.0471992059947` (`session_remaining_s = 1493.9528007940055`)
 - **Reproduction & Verification Commands**:
   ```bash
   PYTHONPATH=src python3 scripts/verify_seed_open_primitive_transfer.py

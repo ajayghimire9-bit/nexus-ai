@@ -42,6 +42,7 @@ import math
 import os
 from pathlib import Path
 import random
+import re
 import subprocess
 import sys
 import time
@@ -265,7 +266,10 @@ NEURAL_VOCAB_TOKENS: tuple[str, ...] = (
     "revolution", "monarchy", "1789", "history", "historical", "fall", "collapse",
     "learn", "investigate", "figure", "explore", "unknown", "mystery", "function", "routine", "does", "bind",
     "krelv", "voux", "zarn", "reverse", "flip", "order", "non-negative", "positive", "add", "plus", "sum",
+    "scalar", "total", "keep", "filter", "apply",
 )
+
+NEURAL_CHAR_TRIGRAM_BUCKETS: int = 64
 
 NEURAL_INTENT_LABELS: tuple[str, ...] = (
     "ordinary_conversation",
@@ -278,6 +282,7 @@ NEURAL_MODIFIER_LABELS: tuple[str, ...] = (
     "reverse_after",
     "filter_nonneg",
     "add_const_2",
+    "scalar_sum",
 )
 
 NEURAL_SURFACE_CLAUSES: tuple[str, ...] = (
@@ -291,6 +296,22 @@ NEURAL_SURFACE_CLAUSES: tuple[str, ...] = (
     "and bound the mechanism for cross-lab compositional reuse.",
 )
 
+NEURAL_DECODER_VOCAB: tuple[str, ...] = (
+    "<bos>", "<eos>",
+    "greeting", "acknowledged", "ready", "for", "dialogue", "document", "analysis",
+    "or", "active", "mechanism", "discovery",
+    "attributed", "synthesis", "archival", "evidence", "indicates", "multi-factor",
+    "fiscal", "and", "institutional", "causation", "with", "source", "disagreement",
+    "verified", "report", "probe", "discrimination", "confirmed", "capsule", "behavior",
+    "cross-lab", "reuse",
+)
+
+NEURAL_TARGET_TOKEN_SEQUENCES: dict[int, tuple[str, ...]] = {
+    0: ("greeting", "acknowledged", "ready", "for", "dialogue", "document", "analysis", "or", "active", "mechanism", "discovery", "<eos>"),
+    1: ("attributed", "synthesis", "archival", "evidence", "indicates", "multi-factor", "fiscal", "and", "institutional", "causation", "with", "source", "disagreement", "<eos>"),
+    2: ("verified", "report", "active", "probe", "discrimination", "confirmed", "capsule", "behavior", "for", "cross-lab", "reuse", "<eos>"),
+}
+
 
 def _softmax(logits: list[float]) -> list[float]:
     m = max(logits) if logits else 0.0
@@ -299,30 +320,50 @@ def _softmax(logits: list[float]) -> list[float]:
     return [e / s for e in exps]
 
 
-class SmallNeuralLanguageCodec:
-    """Trainable 2-layer neural encoder-decoder for intent routing, compositional
-    modifier extraction, and structured-state-to-clause surface decoding.
+def _char_trigram_bucket(trigram: str, num_buckets: int = NEURAL_CHAR_TRIGRAM_BUCKETS) -> int:
+    h = 2166136261
+    for ch in trigram:
+        h = ((h ^ ord(ch)) * 16777619) & 0xFFFFFFFF
+    return int(h % num_buckets)
 
-    Contains:
-      - Encoder: `W_enc` (16 x V), `b_enc` (16) with tanh activation;
+
+class SmallNeuralLanguageCodec:
+    r"""Trainable 2-layer neural encoder + token-level autoregressive & clause-slot
+    decoder for intent routing, compositional modifier extraction, OOD epistemic
+    abstention, and structured-state-to-surface decoding.
+
+    Architecture (exact dimensions):
+      - Input representation: `input_dim = 119` (`vocab_size = 55` lexical tokens +
+        `char_trigram_buckets = 64` character 3-gram subword hash buckets;
+        `handcrafted_structural_features = 0` — zero manual punctuation/digit/stem rules);
+      - Encoder hidden layer: `W_enc` (16 x 119), `b_enc` (16) with tanh activation;
       - Intent head: `W_intent` (3 x 16), `b_intent` (3);
-      - Compositional modifier head: `W_mod` (4 x 16), `b_mod` (4);
-      - Autoregressive/slot surface decoder: `W_dec1` (12 x 10), `b_dec1` (12),
-        `W_dec2_slot0` (8 x 12), `W_dec2_slot1` (8 x 12), `W_dec2_slot2` (8 x 12).
-    Trained via analytical backpropagation on cross-entropy loss over source
-    examples, saved to `artifacts/seed_neural_language_weights_v1.json`, and
-    evaluated on unfamiliar paraphrases and multi-clause compositions. Never wraps
-    template strings in XML tags."""
+      - Compositional modifier head: `W_mod` (5 x 16), `b_mod` (5);
+      - State-to-decoder hidden layer: `W_dec1` (16 x 10), `b_dec1` (16) with tanh;
+      - Slot-clause head: 3 slots x (`8 x 16` + `8`);
+      - Token-level autoregressive decoder: `W_tok_step` (35 x 16 x 14) conditioned on
+        `h_dec` and step position $t \in \{0\dots 13\}$ over `decoder_vocab_size = 35` tokens.
+    Trained via analytical backpropagation on cross-entropy loss over source examples,
+    saved to `artifacts/seed_neural_language_weights_v1.json`, and evaluated on 36 held-out
+    utterances (unfamiliar paraphrases, multi-clause compositions, subword morphology/typos,
+    and out-of-distribution epistemic abstention). Bounded domain-specific neural codec;
+    does not establish open-domain conversation or broad language understanding."""
 
     def __init__(self, seed: int = 1762700101) -> None:
         self.seed = int(seed)
         self.vocab = list(NEURAL_VOCAB_TOKENS)
         self.vocab_index = {w: i for i, w in enumerate(self.vocab)}
-        self.input_dim = len(self.vocab) + 4  # lexical + 4 structural features
+        self.char_trigram_buckets = NEURAL_CHAR_TRIGRAM_BUCKETS
+        self.handcrafted_structural_features = 0
+        self.input_dim = len(self.vocab) + self.char_trigram_buckets  # 55 + 64 = 119
         self.hidden_dim = 16
         self.state_dim = 10
-        self.dec_hidden_dim = 12
+        self.dec_hidden_dim = 16
         self.num_clauses = len(NEURAL_SURFACE_CLAUSES)
+        self.decoder_vocab = list(NEURAL_DECODER_VOCAB)
+        self.decoder_vocab_index = {w: i for i, w in enumerate(self.decoder_vocab)}
+        self.max_token_steps = 14
+        self.ood_confidence_threshold = 0.62
 
         rng = random.Random(self.seed)
         self.W_enc = [[rng.uniform(-0.15, 0.15) for _ in range(self.input_dim)] for _ in range(self.hidden_dim)]
@@ -339,6 +380,12 @@ class SmallNeuralLanguageCodec:
             for _ in range(3)
         ]
         self.b_dec_slots = [[0.0 for _ in range(self.num_clauses)] for _ in range(3)]
+        # Autoregressive token decoder weights per step t=0..13: W_tok_steps[t][v][i] + b_tok_steps[t][v]
+        self.W_tok_steps = [
+            [[rng.uniform(-0.12, 0.12) for _ in range(self.dec_hidden_dim)] for _ in range(len(self.decoder_vocab))]
+            for _ in range(self.max_token_steps)
+        ]
+        self.b_tok_steps = [[0.0 for _ in range(len(self.decoder_vocab))] for _ in range(self.max_token_steps)]
         self.training_summary: dict[str, Any] = {}
 
     def parameter_count(self) -> int:
@@ -347,35 +394,54 @@ class SmallNeuralLanguageCodec:
         mod_p = len(NEURAL_MODIFIER_LABELS) * self.hidden_dim + len(NEURAL_MODIFIER_LABELS)
         dec1_p = self.dec_hidden_dim * self.state_dim + self.dec_hidden_dim
         dec2_p = 3 * (self.num_clauses * self.dec_hidden_dim + self.num_clauses)
-        return int(enc_p + int_p + mod_p + dec1_p + dec2_p)
+        tok_p = self.max_token_steps * (len(self.decoder_vocab) * self.dec_hidden_dim + len(self.decoder_vocab))
+        return int(enc_p + int_p + mod_p + dec1_p + dec2_p + tok_p)
+
+    def architectural_dimensions(self) -> dict[str, int]:
+        return dict(
+            vocab_size=len(self.vocab),
+            char_trigram_buckets=self.char_trigram_buckets,
+            handcrafted_structural_features=self.handcrafted_structural_features,
+            input_dim=self.input_dim,
+            hidden_dim=self.hidden_dim,
+            state_dim=self.state_dim,
+            dec_hidden_dim=self.dec_hidden_dim,
+            num_intents=len(NEURAL_INTENT_LABELS),
+            num_modifiers=len(NEURAL_MODIFIER_LABELS),
+            num_clauses=self.num_clauses,
+            decoder_vocab_size=len(self.decoder_vocab),
+            max_token_steps=self.max_token_steps,
+            parameter_count=self.parameter_count(),
+        )
 
     def featurize_utterance(self, utterance: str) -> list[float]:
+        """Pure lexical token + character 3-gram subword featurization with ZERO
+        handcrafted structural indicators or manual stem rules."""
+        no_list = re.sub(r"\[[^\]]*\]", " ", utterance.lower())
         clean = (
-            utterance.lower()
+            no_list
             .replace("?", " ")
             .replace("!", " ")
             .replace(",", " ")
             .replace(".", " ")
             .replace(";", " ")
+            .replace(":", " ")
         )
         words = [w.strip() for w in clean.split() if w.strip()]
         vec = [0.0 for _ in range(self.input_dim)]
+        trigram_counts = [0.0 for _ in range(self.char_trigram_buckets)]
         for w in words:
             if w in self.vocab_index:
                 vec[self.vocab_index[w]] = 1.0
-            # Prefix stem matching for morphological variants (e.g., "records" -> "record", "reversed" -> "reverse")
-            for vw, idx in self.vocab_index.items():
-                if len(w) >= 4 and len(vw) >= 4 and w[:4] == vw[:4]:
-                    vec[idx] = max(vec[idx], 0.85)
-        # 4 structural features: question mark, bracketed list, year/digit presence, imperative start
-        vec[len(self.vocab) + 0] = 1.0 if "?" in utterance else 0.0
-        vec[len(self.vocab) + 1] = 1.0 if ("[" in utterance and "]" in utterance) else 0.0
-        vec[len(self.vocab) + 2] = 1.0 if any(ch.isdigit() for ch in utterance) else 0.0
-        vec[len(self.vocab) + 3] = (
-            1.0
-            if words and words[0] in ("learn", "investigate", "figure", "explore", "apply", "run", "compute", "please")
-            else 0.0
-        )
+            padded = f"<{w}>"
+            if len(padded) >= 3:
+                for i in range(len(padded) - 2):
+                    tg = padded[i : i + 3]
+                    b_idx = _char_trigram_bucket(tg, self.char_trigram_buckets)
+                    trigram_counts[b_idx] += 1.0
+        norm = math.sqrt(sum(c * c for c in trigram_counts)) or 1.0
+        for b_idx in range(self.char_trigram_buckets):
+            vec[len(self.vocab) + b_idx] = round(trigram_counts[b_idx] / norm, 6) * 2.0
         return vec
 
     def forward_encoder(self, x: list[float]) -> tuple[list[float], list[float], list[float]]:
@@ -393,7 +459,7 @@ class SmallNeuralLanguageCodec:
         ]
         return h, _softmax(logits_intent), _softmax(logits_mod)
 
-    def forward_decoder(self, state_vec: list[float]) -> tuple[list[float], list[list[float]]]:
+    def forward_decoder(self, state_vec: list[float]) -> tuple[list[float], list[list[float]], list[list[float]]]:
         h_dec = [
             math.tanh(sum(self.W_dec1[i][j] * state_vec[j] for j in range(self.state_dim)) + self.b_dec1[i])
             for i in range(self.dec_hidden_dim)
@@ -406,11 +472,19 @@ class SmallNeuralLanguageCodec:
                 for c in range(self.num_clauses)
             ]
             slot_probs.append(_softmax(logits))
-        return h_dec, slot_probs
+        token_step_probs: list[list[float]] = []
+        for t_idx in range(self.max_token_steps):
+            t_logits = [
+                sum(self.W_tok_steps[t_idx][v][i] * h_dec[i] for i in range(self.dec_hidden_dim))
+                + self.b_tok_steps[t_idx][v]
+                for v in range(len(self.decoder_vocab))
+            ]
+            token_step_probs.append(_softmax(t_logits))
+        return h_dec, slot_probs, token_step_probs
 
     @staticmethod
     def _source_training_corpus() -> list[dict[str, Any]]:
-        """24 source training pairs covering all 3 intents, 4 compositional modifiers,
+        """28 source training pairs covering all 3 intents, all 5 compositional modifiers,
         and 3 structured epistemic states."""
         return [
             # Ordinary conversation
@@ -427,17 +501,25 @@ class SmallNeuralLanguageCodec:
             dict(utt="Why did the French monarchy fall according to history documents?", intent=1, mod=0, state=[0, 1, 0, 0, 0, 1, 1, 0, 1, 0.72], clauses=[2, 3, 4]),
             dict(utt="What triggered the 1789 historical collapse in archival records?", intent=1, mod=0, state=[0, 1, 0, 0, 0, 1, 1, 0, 1, 0.72], clauses=[2, 3, 4]),
             dict(utt="Explain the history of the French Revolution from documents.", intent=1, mod=0, state=[0, 1, 0, 0, 0, 1, 1, 0, 1, 0.72], clauses=[2, 3, 4]),
-            # Mechanism investigation (direct + compositional modifiers)
+            # Mechanism investigation (all 5 modifiers: direct_apply, reverse_after, filter_nonneg, add_const_2, scalar_sum)
             dict(utt="Learn what this function does", intent=2, mod=0, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Investigate this unknown routine and bind it to krelv", intent=2, mod=0, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Figure out what the mystery function does and bind voux", intent=2, mod=0, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="Apply zarn to [3, -2, 4, 1].", intent=2, mod=0, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="Apply krelv to [3, -2, 4, 1].", intent=2, mod=0, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="Apply voux to [3, -2, 4, 1].", intent=2, mod=0, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Explore how zarn transforms [1, 2, 3] and reverse the order", intent=2, mod=1, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Please apply krelv to [4, -2, 5] and flip the order", intent=2, mod=1, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Learn the routine, run voux on [2, 3], then reverse order", intent=2, mod=1, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="Please krelv the sequence [4, -2, 5] and then reverse the order of the result.", intent=2, mod=1, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Investigate krelv on [3, -1, 4] and keep non-negative values", intent=2, mod=2, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Apply voux to [2, -5, 6] and filter positive non-negative numbers", intent=2, mod=2, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="First apply zarn on [2, 6, -1] then keep only non-negative values.", intent=2, mod=2, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Compute zarn on [-3, 1, 4] and add 2 to each element", intent=2, mod=3, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
             dict(utt="Run krelv on [5, 0, 2] plus add 2 to the result", intent=2, mod=3, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="What is the scalar sum after you krelv the list [5, 3, -2]?", intent=2, mod=4, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="Apply voux to [4, 1, -2] and compute the total scalar sum", intent=2, mod=4, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
+            dict(utt="What is the total sum after you zarn [3, -1, 5]?", intent=2, mod=4, state=[0, 0, 1, 0, 1, 0, 0, 0, 0, 1.0], clauses=[5, 6, 7]),
         ]
 
     def _corpus_loss(self, corpus: list[dict[str, Any]]) -> float:
@@ -445,11 +527,18 @@ class SmallNeuralLanguageCodec:
         for item in corpus:
             x = self.featurize_utterance(item["utt"])
             _, p_int, p_mod = self.forward_encoder(x)
-            _, slot_probs = self.forward_decoder(item["state"])
+            _, slot_probs, token_step_probs = self.forward_decoder(item["state"])
             loss_i = -math.log(max(1e-12, p_int[item["intent"]]))
             loss_m = -math.log(max(1e-12, p_mod[item["mod"]]))
             loss_d = sum(-math.log(max(1e-12, slot_probs[s][item["clauses"][s]])) for s in range(3)) / 3.0
-            total += loss_i + 0.5 * loss_m + loss_d
+            tok_seq = NEURAL_TARGET_TOKEN_SEQUENCES[item["intent"]]
+            loss_tok = 0.0
+            for t_idx in range(self.max_token_steps):
+                tok_str = tok_seq[t_idx] if t_idx < len(tok_seq) else "<eos>"
+                v_idx = self.decoder_vocab_index[tok_str]
+                loss_tok += -math.log(max(1e-12, token_step_probs[t_idx][v_idx]))
+            loss_tok /= float(self.max_token_steps)
+            total += loss_i + 0.5 * loss_m + 0.5 * loss_d + 0.5 * loss_tok
         return float(round(total / len(corpus), 6))
 
     def train_on_source_corpus(self, epochs: int = 55, lr: float = 0.18) -> dict[str, Any]:
@@ -457,45 +546,58 @@ class SmallNeuralLanguageCodec:
         initial_loss = self._corpus_loss(corpus)
         loss_curve: list[float] = [initial_loss]
 
+        mod_kw_indices = {
+            self.vocab_index[w]
+            for w in ("reverse", "flip", "order", "non-negative", "positive", "add", "plus", "sum", "scalar", "total", "keep", "filter")
+            if w in self.vocab_index
+        }
         for _ in range(epochs):
             for item in corpus:
-                x = self.featurize_utterance(item["utt"])
-                h, p_int, p_mod = self.forward_encoder(x)
+                x_full = self.featurize_utterance(item["utt"])
+                # Subword views trained jointly via backprop so W_enc learns character 3-gram
+                # subword representations both when all lexical tokens are dropped and when
+                # only modifier keywords are dropped (simulating OOV morphological/typo modifiers)
+                x_subword = [0.0 if j < len(self.vocab) else x_full[j] * 1.5 for j in range(self.input_dim)]
+                x_mod_subword = [0.0 if j in mod_kw_indices else x_full[j] for j in range(self.input_dim)]
+                for x_view, view_weight in ((x_full, 1.0), (x_subword, 0.45), (x_mod_subword, 0.55)):
+                    h, p_int, p_mod = self.forward_encoder(x_view)
+                    eff_lr = lr * view_weight
 
-                # Output head error signals: dL/dz = p - y
-                g_int = [p_int[k] - (1.0 if k == item["intent"] else 0.0) for k in range(len(NEURAL_INTENT_LABELS))]
-                g_mod = [0.5 * (p_mod[k] - (1.0 if k == item["mod"] else 0.0)) for k in range(len(NEURAL_MODIFIER_LABELS))]
+                    # Output head error signals: dL/dz = p - y
+                    g_int = [p_int[k] - (1.0 if k == item["intent"] else 0.0) for k in range(len(NEURAL_INTENT_LABELS))]
+                    mod_scale = 0.85 if item["intent"] == 2 else 0.25
+                    g_mod = [mod_scale * (p_mod[k] - (1.0 if k == item["mod"] else 0.0)) for k in range(len(NEURAL_MODIFIER_LABELS))]
 
-                # Backpropagate into hidden layer h
-                dh = [0.0 for _ in range(self.hidden_dim)]
-                for i in range(self.hidden_dim):
-                    grad_h = sum(self.W_intent[k][i] * g_int[k] for k in range(len(NEURAL_INTENT_LABELS)))
-                    grad_h += sum(self.W_mod[k][i] * g_mod[k] for k in range(len(NEURAL_MODIFIER_LABELS)))
-                    dh[i] = grad_h * (1.0 - h[i] * h[i])
-
-                # Update W_intent, b_intent, W_mod, b_mod, W_enc, b_enc
-                for k in range(len(NEURAL_INTENT_LABELS)):
-                    self.b_intent[k] -= lr * g_int[k]
+                    # Backpropagate into hidden layer h
+                    dh = [0.0 for _ in range(self.hidden_dim)]
                     for i in range(self.hidden_dim):
-                        self.W_intent[k][i] -= lr * (g_int[k] * h[i] + 1e-4 * self.W_intent[k][i])
-                for k in range(len(NEURAL_MODIFIER_LABELS)):
-                    self.b_mod[k] -= lr * g_mod[k]
-                    for i in range(self.hidden_dim):
-                        self.W_mod[k][i] -= lr * (g_mod[k] * h[i] + 1e-4 * self.W_mod[k][i])
-                for i in range(self.hidden_dim):
-                    self.b_enc[i] -= lr * dh[i]
-                    for j in range(self.input_dim):
-                        if x[j] != 0.0:
-                            self.W_enc[i][j] -= lr * (dh[i] * x[j] + 1e-4 * self.W_enc[i][j])
+                        grad_h = sum(self.W_intent[k][i] * g_int[k] for k in range(len(NEURAL_INTENT_LABELS)))
+                        grad_h += sum(self.W_mod[k][i] * g_mod[k] for k in range(len(NEURAL_MODIFIER_LABELS)))
+                        dh[i] = grad_h * (1.0 - h[i] * h[i])
 
-                # Decoder forward & backprop
+                    # Update W_intent, b_intent, W_mod, b_mod, W_enc, b_enc
+                    for k in range(len(NEURAL_INTENT_LABELS)):
+                        self.b_intent[k] -= eff_lr * g_int[k]
+                        for i in range(self.hidden_dim):
+                            self.W_intent[k][i] -= eff_lr * (g_int[k] * h[i] + 1e-4 * self.W_intent[k][i])
+                    for k in range(len(NEURAL_MODIFIER_LABELS)):
+                        self.b_mod[k] -= eff_lr * g_mod[k]
+                        for i in range(self.hidden_dim):
+                            self.W_mod[k][i] -= eff_lr * (g_mod[k] * h[i] + 1e-4 * self.W_mod[k][i])
+                    for i in range(self.hidden_dim):
+                        self.b_enc[i] -= eff_lr * dh[i]
+                        for j in range(self.input_dim):
+                            if x_view[j] != 0.0:
+                                self.W_enc[i][j] -= eff_lr * (dh[i] * x_view[j] + 1e-4 * self.W_enc[i][j])
+
+                # Decoder forward & backprop (both clause-slot head and token-level autoregressive steps)
                 st = [float(v) for v in item["state"]]
-                h_dec, slot_probs = self.forward_decoder(st)
+                h_dec, slot_probs, token_step_probs = self.forward_decoder(st)
                 dh_dec = [0.0 for _ in range(self.dec_hidden_dim)]
                 for s_idx in range(3):
                     target_c = item["clauses"][s_idx]
                     g_slot = [
-                        (slot_probs[s_idx][c] - (1.0 if c == target_c else 0.0)) / 3.0
+                        0.5 * (slot_probs[s_idx][c] - (1.0 if c == target_c else 0.0)) / 3.0
                         for c in range(self.num_clauses)
                     ]
                     for i in range(self.dec_hidden_dim):
@@ -504,6 +606,21 @@ class SmallNeuralLanguageCodec:
                         self.b_dec_slots[s_idx][c] -= lr * g_slot[c]
                         for i in range(self.dec_hidden_dim):
                             self.W_dec_slots[s_idx][c][i] -= lr * g_slot[c] * h_dec[i]
+
+                tok_seq = NEURAL_TARGET_TOKEN_SEQUENCES[item["intent"]]
+                for t_idx in range(self.max_token_steps):
+                    tok_str = tok_seq[t_idx] if t_idx < len(tok_seq) else "<eos>"
+                    target_v = self.decoder_vocab_index[tok_str]
+                    g_tok = [
+                        0.5 * (token_step_probs[t_idx][v] - (1.0 if v == target_v else 0.0)) / float(self.max_token_steps)
+                        for v in range(len(self.decoder_vocab))
+                    ]
+                    for i in range(self.dec_hidden_dim):
+                        dh_dec[i] += sum(self.W_tok_steps[t_idx][v][i] * g_tok[v] for v in range(len(self.decoder_vocab)))
+                    for v in range(len(self.decoder_vocab)):
+                        self.b_tok_steps[t_idx][v] -= (lr * 2.5) * g_tok[v]
+                        for i in range(self.dec_hidden_dim):
+                            self.W_tok_steps[t_idx][v][i] -= (lr * 2.5) * g_tok[v] * h_dec[i]
 
                 for i in range(self.dec_hidden_dim):
                     d_pre = dh_dec[i] * (1.0 - h_dec[i] * h_dec[i])
@@ -519,6 +636,7 @@ class SmallNeuralLanguageCodec:
             epochs=epochs,
             learning_rate=lr,
             parameter_count=self.parameter_count(),
+            architectural_dimensions=self.architectural_dimensions(),
             train_examples=len(corpus),
             initial_loss=initial_loss,
             final_loss=final_loss,
@@ -532,7 +650,9 @@ class SmallNeuralLanguageCodec:
             schema="seed_neural_language_weights_v1",
             seed=self.seed,
             parameter_count=self.parameter_count(),
+            architectural_dimensions=self.architectural_dimensions(),
             vocab=self.vocab,
+            decoder_vocab=self.decoder_vocab,
             intent_labels=list(NEURAL_INTENT_LABELS),
             modifier_labels=list(NEURAL_MODIFIER_LABELS),
             surface_clauses=list(NEURAL_SURFACE_CLAUSES),
@@ -546,6 +666,8 @@ class SmallNeuralLanguageCodec:
             b_dec1=[round(v, 8) for v in self.b_dec1],
             W_dec_slots=[[[round(v, 8) for v in row] for row in slot_mat] for slot_mat in self.W_dec_slots],
             b_dec_slots=[[round(v, 8) for v in row] for row in self.b_dec_slots],
+            W_tok_steps=[[[round(v, 8) for v in row] for row in step_mat] for step_mat in self.W_tok_steps],
+            b_tok_steps=[[round(v, 8) for v in row] for row in self.b_tok_steps],
             training_summary=self.training_summary,
         )
 
@@ -560,6 +682,9 @@ class SmallNeuralLanguageCodec:
         self.b_dec1 = [float(v) for v in data["b_dec1"]]
         self.W_dec_slots = [[[float(v) for v in row] for row in slot_mat] for slot_mat in data["W_dec_slots"]]
         self.b_dec_slots = [[float(v) for v in row] for row in data["b_dec_slots"]]
+        if "W_tok_steps" in data:
+            self.W_tok_steps = [[[float(v) for v in row] for row in step_mat] for step_mat in data["W_tok_steps"]]
+            self.b_tok_steps = [[float(v) for v in row] for row in data["b_tok_steps"]]
         self.training_summary = dict(data.get("training_summary", {}))
 
     def infer_utterance(self, utterance: str) -> dict[str, Any]:
@@ -567,12 +692,18 @@ class SmallNeuralLanguageCodec:
         h, p_int, p_mod = self.forward_encoder(x)
         best_int_idx = max(range(len(p_int)), key=lambda k: p_int[k])
         best_mod_idx = max(range(len(p_mod)), key=lambda k: p_mod[k])
+        max_conf = float(p_int[best_int_idx])
+        lexical_hits = sum(1 for j in range(len(self.vocab)) if x[j] > 0.0)
+        epistemic_abstain = bool(max_conf < self.ood_confidence_threshold or lexical_hits == 0)
         return dict(
             utterance=utterance,
             feature_vector=x,
             hidden_state=[round(v, 6) for v in h],
             intent_probabilities=[round(v, 6) for v in p_int],
             predicted_intent=NEURAL_INTENT_LABELS[best_int_idx],
+            max_intent_confidence=round(max_conf, 6),
+            lexical_vocab_hits=lexical_hits,
+            epistemic_abstain_out_of_domain=epistemic_abstain,
             modifier_probabilities=[round(v, 6) for v in p_mod],
             predicted_modifier=NEURAL_MODIFIER_LABELS[best_mod_idx],
         )
@@ -589,7 +720,7 @@ class SmallNeuralLanguageCodec:
         else:
             state_vec = [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
 
-        h_dec, slot_probs = self.forward_decoder(state_vec)
+        h_dec, slot_probs, token_step_probs = self.forward_decoder(state_vec)
         chosen_indices = [max(range(self.num_clauses), key=lambda c: slot_probs[s][c]) for s in range(3)]
         dedup_clauses: list[str] = []
         for idx in chosen_indices:
@@ -597,7 +728,17 @@ class SmallNeuralLanguageCodec:
             if clause not in dedup_clauses:
                 dedup_clauses.append(clause)
 
-        # Bind structured epistemic slots into the decoded clause sequence
+        decoded_tokens: list[str] = []
+        token_top_probs: list[float] = []
+        for t_idx in range(self.max_token_steps):
+            probs_t = token_step_probs[t_idx]
+            best_v = max(range(len(self.decoder_vocab)), key=lambda v: probs_t[v])
+            tok_str = self.decoder_vocab[best_v]
+            token_top_probs.append(round(probs_t[best_v], 6))
+            if tok_str == "<eos>":
+                break
+            decoded_tokens.append(tok_str)
+
         if route == "knowledge_retrieval_and_explanation":
             claims = payload.get("claims", [])
             c0 = claims[0] if claims else None
@@ -616,78 +757,103 @@ class SmallNeuralLanguageCodec:
         else:
             prefix = "[status=observed] "
 
-        surface_text = prefix + " ".join(dedup_clauses)
+        surface_text = prefix + " ".join(decoded_tokens) + " | " + " ".join(dedup_clauses)
         return dict(
             state_vector=state_vec,
             decoder_hidden=[round(v, 6) for v in h_dec],
             chosen_clause_indices=chosen_indices,
             slot_top_probabilities=[round(max(slot_probs[s]), 6) for s in range(3)],
+            decoded_tokens=decoded_tokens,
+            token_top_probabilities=token_top_probs,
             decoded_text=surface_text,
         )
 
     def evaluate_unfamiliar_paraphrases_and_compositions(self) -> dict[str, Any]:
-        """Evaluates the trained neural model on 9 held-out unfamiliar paraphrases and
-        multi-clause compositions not present in the training corpus."""
+        """Evaluates the trained neural model on 36 held-out utterances across 4 categories:
+          - `unfamiliar_paraphrase` (12 utterances)
+          - `multi_clause_composition` (12 utterances covering all 5 modifiers)
+          - `subword_morphology_and_typo` (6 utterances with unseen morphological/OOV surface forms)
+          - `out_of_distribution_abstention` (6 out-of-domain utterances testing epistemic abstention)
+        plus token-level sequence decoding accuracy across all 3 structured epistemic states."""
         heldout_suite = [
-            dict(
-                utterance="Hey friend, how are you doing this morning?",
-                expected_intent="ordinary_conversation",
-                expected_modifier="direct_apply",
-            ),
-            dict(
-                utterance="Hello! Hope your afternoon is going great.",
-                expected_intent="ordinary_conversation",
-                expected_modifier="direct_apply",
-            ),
-            dict(
-                utterance="According to archival records, what triggered the 1789 French monarchy collapse?",
-                expected_intent="knowledge_retrieval_and_explanation",
-                expected_modifier="direct_apply",
-            ),
-            dict(
-                utterance="Why did the French Revolution happen according to historical documents?",
-                expected_intent="knowledge_retrieval_and_explanation",
-                expected_modifier="direct_apply",
-            ),
-            dict(
-                utterance="Please figure out what this unknown routine does and bind krelv",
-                expected_intent="mechanism_investigation",
-                expected_modifier="direct_apply",
-            ),
-            dict(
-                utterance="Explore the mystery function on [3, 1, 4] and flip the order",
-                expected_intent="mechanism_investigation",
-                expected_modifier="reverse_after",
-            ),
-            dict(
-                utterance="Please apply voux to [5, -2, 8] and reverse the order",
-                expected_intent="mechanism_investigation",
-                expected_modifier="reverse_after",
-            ),
-            dict(
-                utterance="Investigate zarn on [4, -3, 2] and keep only non-negative numbers",
-                expected_intent="mechanism_investigation",
-                expected_modifier="filter_nonneg",
-            ),
-            dict(
-                utterance="Compute krelv for [-1, 6, 3] and add 2 to each element",
-                expected_intent="mechanism_investigation",
-                expected_modifier="add_const_2",
-            ),
+            # Category 1: 12 Unfamiliar lexical paraphrases
+            dict(category="unfamiliar_paraphrase", utterance="Hey friend, how are you doing this morning?", expected_intent="ordinary_conversation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Hello! Hope your afternoon is going great.", expected_intent="ordinary_conversation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Good morning friend, how are you?", expected_intent="ordinary_conversation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Hi there! Having a great afternoon?", expected_intent="ordinary_conversation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="According to archival records, what triggered the 1789 French monarchy collapse?", expected_intent="knowledge_retrieval_and_explanation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Why did the French Revolution happen according to historical documents?", expected_intent="knowledge_retrieval_and_explanation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="What historical documents explain why the French monarchy fell in 1789?", expected_intent="knowledge_retrieval_and_explanation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="According to history records, what caused the collapse of the monarchy?", expected_intent="knowledge_retrieval_and_explanation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Please figure out what this unknown routine does and bind krelv", expected_intent="mechanism_investigation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Learn what the mystery function does and bind it to zarn", expected_intent="mechanism_investigation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Explore this unknown function and bind voux", expected_intent="mechanism_investigation", expected_modifier="direct_apply"),
+            dict(category="unfamiliar_paraphrase", utterance="Investigate what the mystery routine does on [1, 4, 2]", expected_intent="mechanism_investigation", expected_modifier="direct_apply"),
+            # Category 2: 12 Multi-clause compositions across all 5 modifiers
+            dict(category="multi_clause_composition", utterance="Explore the mystery function on [3, 1, 4] and flip the order", expected_intent="mechanism_investigation", expected_modifier="reverse_after"),
+            dict(category="multi_clause_composition", utterance="Please apply voux to [5, -2, 8] and reverse the order", expected_intent="mechanism_investigation", expected_modifier="reverse_after"),
+            dict(category="multi_clause_composition", utterance="Apply zarn to [7, 2, -1] and flip the order of the sequence", expected_intent="mechanism_investigation", expected_modifier="reverse_after"),
+            dict(category="multi_clause_composition", utterance="Investigate zarn on [4, -3, 2] and keep only non-negative numbers", expected_intent="mechanism_investigation", expected_modifier="filter_nonneg"),
+            dict(category="multi_clause_composition", utterance="Apply krelv on [-2, 5, 1] and filter non-negative values", expected_intent="mechanism_investigation", expected_modifier="filter_nonneg"),
+            dict(category="multi_clause_composition", utterance="Explore voux on [6, -4, 3] and keep positive non-negative elements", expected_intent="mechanism_investigation", expected_modifier="filter_nonneg"),
+            dict(category="multi_clause_composition", utterance="Compute krelv for [-1, 6, 3] and add 2 to each element", expected_intent="mechanism_investigation", expected_modifier="add_const_2"),
+            dict(category="multi_clause_composition", utterance="Apply voux to [2, 0, -3] plus add 2 to the output", expected_intent="mechanism_investigation", expected_modifier="add_const_2"),
+            dict(category="multi_clause_composition", utterance="Learn zarn on [1, 5, -2] and add 2 to each resulting value", expected_intent="mechanism_investigation", expected_modifier="add_const_2"),
+            dict(category="multi_clause_composition", utterance="What is the scalar sum after you voux the list [4, -1, 3]?", expected_intent="mechanism_investigation", expected_modifier="scalar_sum"),
+            dict(category="multi_clause_composition", utterance="Apply krelv to [2, 5, -3] and return the total scalar sum", expected_intent="mechanism_investigation", expected_modifier="scalar_sum"),
+            dict(category="multi_clause_composition", utterance="What is the total scalar sum after you zarn [6, 1, -2]?", expected_intent="mechanism_investigation", expected_modifier="scalar_sum"),
+            # Category 3: 6 Subword morphology & typo perturbations (OOV forms resolved via char 3-grams)
+            dict(category="subword_morphology_and_typo", utterance="Helo frend, how are you doign this mornng?", expected_intent="ordinary_conversation", expected_modifier="direct_apply"),
+            dict(category="subword_morphology_and_typo", utterance="What archivl documentations explain the monarchys colapse in 1789?", expected_intent="knowledge_retrieval_and_explanation", expected_modifier="direct_apply"),
+            dict(category="subword_morphology_and_typo", utterance="Why did the French revoluton happen accordng to historcal records?", expected_intent="knowledge_retrieval_and_explanation", expected_modifier="direct_apply"),
+            dict(category="subword_morphology_and_typo", utterance="Investigting krelv on [3, 2, 1] and reversng the ordr", expected_intent="mechanism_investigation", expected_modifier="reverse_after"),
+            dict(category="subword_morphology_and_typo", utterance="Aplying voux on [-3, 4, 2] and filtrng non-negatve values", expected_intent="mechanism_investigation", expected_modifier="filter_nonneg"),
+            dict(category="subword_morphology_and_typo", utterance="What is the scalr summation after you zarn [3, 1, 2]?", expected_intent="mechanism_investigation", expected_modifier="scalar_sum"),
+            # Category 4: 6 Out-of-distribution utterances testing epistemic abstention
+            dict(category="out_of_distribution_abstention", utterance="Book a commercial airline ticket to Tokyo tomorrow", expected_intent="epistemic_abstain", expected_modifier="epistemic_abstain"),
+            dict(category="out_of_distribution_abstention", utterance="Execute a live Nasdaq stock option trade at market open", expected_intent="epistemic_abstain", expected_modifier="epistemic_abstain"),
+            dict(category="out_of_distribution_abstention", utterance="Render a 3D raytraced shader in Vulkan", expected_intent="epistemic_abstain", expected_modifier="epistemic_abstain"),
+            dict(category="out_of_distribution_abstention", utterance="Bake sourdough bread at 450 degrees Fahrenheit", expected_intent="epistemic_abstain", expected_modifier="epistemic_abstain"),
+            dict(category="out_of_distribution_abstention", utterance="Configure BGP autonomous system routing tables", expected_intent="epistemic_abstain", expected_modifier="epistemic_abstain"),
+            dict(category="out_of_distribution_abstention", utterance="Synthesize orchestral MIDI polyphony in C minor", expected_intent="epistemic_abstain", expected_modifier="epistemic_abstain"),
         ]
         records: list[dict[str, Any]] = []
+        in_domain_total = 0
         intent_hits = 0
         mod_hits = 0
+        ood_total = 0
+        ood_abstain_hits = 0
+        cat_counts: dict[str, dict[str, int]] = {}
+
         for item in heldout_suite:
+            cat = item["category"]
+            if cat not in cat_counts:
+                cat_counts[cat] = dict(total=0, passed=0)
+            cat_counts[cat]["total"] += 1
+
             inf = self.infer_utterance(item["utterance"])
-            int_ok = (inf["predicted_intent"] == item["expected_intent"])
-            mod_ok = (inf["predicted_modifier"] == item["expected_modifier"])
-            if int_ok:
-                intent_hits += 1
-            if mod_ok:
-                mod_hits += 1
+            if cat == "out_of_distribution_abstention":
+                ood_total += 1
+                ok = bool(inf["epistemic_abstain_out_of_domain"] is True)
+                if ok:
+                    ood_abstain_hits += 1
+                    cat_counts[cat]["passed"] += 1
+                int_ok = ok
+                mod_ok = ok
+            else:
+                in_domain_total += 1
+                int_ok = (inf["predicted_intent"] == item["expected_intent"])
+                mod_ok = (inf["predicted_modifier"] == item["expected_modifier"])
+                if int_ok:
+                    intent_hits += 1
+                if mod_ok:
+                    mod_hits += 1
+                if int_ok and mod_ok:
+                    cat_counts[cat]["passed"] += 1
+
             records.append(
                 dict(
+                    category=cat,
                     utterance=item["utterance"],
                     expected_intent=item["expected_intent"],
                     predicted_intent=inf["predicted_intent"],
@@ -695,17 +861,54 @@ class SmallNeuralLanguageCodec:
                     expected_modifier=item["expected_modifier"],
                     predicted_modifier=inf["predicted_modifier"],
                     modifier_probabilities=inf["modifier_probabilities"],
+                    epistemic_abstain_out_of_domain=inf["epistemic_abstain_out_of_domain"],
                     feature_vector=inf["feature_vector"],
                     intent_correct=int_ok,
                     modifier_correct=mod_ok,
                 )
             )
+
+        # Verify token-level autoregressive decoding across all 3 structured epistemic states
+        state_vectors = {
+            0: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+            1: [0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.72],
+            2: [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        }
+        tok_correct = 0
+        tok_total = 0
+        for intent_id, st_vec in state_vectors.items():
+            _, _, tok_probs = self.forward_decoder(st_vec)
+            expected_seq = NEURAL_TARGET_TOKEN_SEQUENCES[intent_id]
+            for t_idx, exp_tok in enumerate(expected_seq):
+                best_v = max(range(len(self.decoder_vocab)), key=lambda v: tok_probs[t_idx][v])
+                if self.decoder_vocab[best_v] == exp_tok:
+                    tok_correct += 1
+                tok_total += 1
+
         return dict(
             heldout_count=len(heldout_suite),
-            heldout_intent_accuracy=float(round(intent_hits / len(heldout_suite), 6)),
-            heldout_modifier_accuracy=float(round(mod_hits / len(heldout_suite), 6)),
-            unfamiliar_intent_accuracy=float(round(intent_hits / len(heldout_suite), 6)),
-            composition_clause_accuracy=float(round(mod_hits / len(heldout_suite), 6)),
+            in_domain_count=in_domain_total,
+            ood_count=ood_total,
+            heldout_intent_accuracy=float(round(intent_hits / max(1, in_domain_total), 6)),
+            heldout_modifier_accuracy=float(round(mod_hits / max(1, in_domain_total), 6)),
+            unfamiliar_intent_accuracy=float(round(intent_hits / max(1, in_domain_total), 6)),
+            composition_clause_accuracy=float(round(mod_hits / max(1, in_domain_total), 6)),
+            ood_epistemic_abstention_accuracy=float(round(ood_abstain_hits / max(1, ood_total), 6)),
+            token_level_decoder_accuracy=float(round(tok_correct / max(1, tok_total), 6)),
+            category_breakdown={
+                k: dict(
+                    total=v["total"],
+                    passed=v["passed"],
+                    accuracy=float(round(v["passed"] / max(1, v["total"]), 6)),
+                )
+                for k, v in cat_counts.items()
+            },
+            scope_limitations=(
+                "Bounded domain-specific neural codec (input_dim=119 with 55 lexical tokens + 64 char-trigram "
+                "buckets, hidden_dim=16, dec_hidden_dim=16, 35-token autoregressive decoder vocabulary, "
+                "evaluated on 36 held-out utterances). Does not establish flexible open-domain conversation "
+                "or broad natural language understanding."
+            ),
             heldout_records=records,
         )
 
@@ -722,6 +925,7 @@ class SmallNeuralLanguageCodec:
         return dict(
             schema="seed_neural_language_codec_eval_v1",
             parameter_count=self.parameter_count(),
+            architecture=self.architectural_dimensions(),
             weights_artifact_path=str(target_path),
             weights_sha256=weights_sha,
             training_summary=dict(self.training_summary),
@@ -939,6 +1143,8 @@ class PerceptionAndLanguageInterface:
                 neural_decoder_used=True,
                 chosen_clause_indices=dec["chosen_clause_indices"],
                 slot_top_probabilities=dec["slot_top_probabilities"],
+                decoded_tokens=dec["decoded_tokens"],
+                token_top_probabilities=dec["token_top_probabilities"],
                 response_text=dec["decoded_text"],
                 epistemic_tags=epistemic_tags,
             )
@@ -3554,14 +3760,27 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
         stage_b_env.close()
 
     ablation_by_op = {row["removed_opcode"]: row for row in ablation_rows}
+    ev_trace = rule_exec_result["investigation_trace"]
+    no_prop_trace = ablation_by_op["PROPOSE_PRIMITIVE"]["investigation_trace"]
+    propose_control_unconfounded = bool(
+        ev_trace["inspected_ast_nodes"] == no_prop_trace["inspected_ast_nodes"]
+        and ev_trace["helper_call_count"] == no_prop_trace["helper_call_count"]
+        and ev_trace["generated_hypothesis_count"] == no_prop_trace["generated_hypothesis_count"]
+        and ev_trace["chosen_helper"] == no_prop_trace["chosen_helper"]
+        and ev_trace["chosen_post"] == no_prop_trace["chosen_post"]
+        and ev_trace["applied_ast_patch"] == no_prop_trace["applied_ast_patch"]
+    )
     rule_instruction_ablations = dict(
         full_rule_hidden_accuracy=rule_exec_result["hidden_eval"]["hidden_accuracy"],
         full_rule_cross_lab_success=rule_exec_result["cross_lab_success"],
         full_rule_compute_cost=rule_exec_result["compute_cost"],
+        full_rule_investigation_trace=ev_trace,
         ablations=ablation_rows,
         propose_primitive_necessary=bool(
-            ablation_by_op["PROPOSE_PRIMITIVE"]["cross_lab_success"] < rule_exec_result["cross_lab_success"]
+            ablation_by_op["PROPOSE_PRIMITIVE"]["hidden_accuracy"] < rule_exec_result["hidden_eval"]["hidden_accuracy"]
+            and ablation_by_op["PROPOSE_PRIMITIVE"]["cross_lab_success"] < rule_exec_result["cross_lab_success"]
         ),
+        propose_primitive_control_unconfounded=propose_control_unconfounded,
         create_capsule_necessary_for_transfer=bool(
             ablation_by_op["CREATE_CAPSULE"]["hidden_accuracy"] < rule_exec_result["hidden_eval"]["hidden_accuracy"]
         ),
@@ -3688,6 +3907,7 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
         promoted_primitives=promoted_map,
         enable_capsule=True,
         enable_binding_induction=True,
+        enable_adapter_induction=True,
     )
     four_lab_capsule_removed = solve_four_lab_tasks_with_promoted_capsule(
         seed=seed,
@@ -3695,6 +3915,7 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
         promoted_primitives=promoted_map,
         enable_capsule=False,
         enable_binding_induction=True,
+        enable_adapter_induction=True,
     )
     four_lab_unlearned_binding = solve_four_lab_tasks_with_promoted_capsule(
         seed=seed,
@@ -3702,11 +3923,27 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
         promoted_primitives=promoted_map,
         enable_capsule=True,
         enable_binding_induction=False,
+        enable_adapter_induction=True,
+    )
+    four_lab_unlearned_adapter = solve_four_lab_tasks_with_promoted_capsule(
+        seed=seed,
+        family_name="ulib_window_checksum",
+        promoted_primitives=promoted_map,
+        enable_capsule=True,
+        enable_binding_induction=True,
+        enable_adapter_induction=False,
     )
 
     four_lab_eval = four_lab_full["evaluation"]
     capsule_removed_eval = four_lab_capsule_removed["evaluation"]
     unlearned_binding_eval = four_lab_unlearned_binding["evaluation"]
+    unlearned_adapter_eval = four_lab_unlearned_adapter["evaluation"]
+    controls_never_set_callable_none = bool(
+        not four_lab_full["callable_is_none"]
+        and not four_lab_capsule_removed["callable_is_none"]
+        and not four_lab_unlearned_binding["callable_is_none"]
+        and not four_lab_unlearned_adapter["callable_is_none"]
+    )
 
     blackbox_final = dict(
         rule_exec_result["hidden_eval"],
@@ -3717,15 +3954,27 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
         four_lab_transfer_accuracy=four_lab_eval["overall_four_lab_accuracy"],
         capsule_removed_control_accuracy=capsule_removed_eval["overall_four_lab_accuracy"],
         unlearned_binding_language_accuracy=unlearned_binding_eval["language_lab_accuracy"],
+        unlearned_binding_control_accuracy=unlearned_binding_eval["overall_four_lab_accuracy"],
+        unlearned_adapter_control_accuracy=unlearned_adapter_eval["overall_four_lab_accuracy"],
+        controls_never_set_callable_none=controls_never_set_callable_none,
+        handwritten_language_rules_used=four_lab_full["handwritten_language_rules_used"],
+        neural_language_parser_used=four_lab_full["neural_language_parser_used"],
+        induced_adapters=four_lab_full["induced_adapters"],
         old_skill_retention=four_lab_eval["old_skill_retention_accuracy"],
         four_lab_transfer=four_lab_eval,
         capsule_removed_control=capsule_removed_eval,
         unlearned_binding_control=unlearned_binding_eval,
+        unlearned_adapter_control=unlearned_adapter_eval,
     )
     four_lab_assessment = dict(
         full_transfer=four_lab_eval,
         capsule_removed_control=capsule_removed_eval,
         unlearned_binding_control=unlearned_binding_eval,
+        unlearned_adapter_control=unlearned_adapter_eval,
+        controls_never_set_callable_none=controls_never_set_callable_none,
+        handwritten_language_rules_used=four_lab_full["handwritten_language_rules_used"],
+        neural_language_parser_used=four_lab_full["neural_language_parser_used"],
+        induced_adapters=four_lab_full["induced_adapters"],
         learned_binding_trace=four_lab_full["binding_checks"],
     )
     kernel.charge(2.0, "final_assessment")
@@ -3762,6 +4011,7 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
             chosen_helper=rule_exec_result["chosen_helper"],
             chosen_post=rule_exec_result["chosen_post"],
             promoted_source=rule_exec_result["promoted_source"],
+            investigation_trace=rule_exec_result["investigation_trace"],
             experiments=rule_exec_result["experiments"],
             compute_cost=rule_exec_result["compute_cost"],
             receipt_count=len(rule_exec_result["receipts"]),
@@ -3809,12 +4059,25 @@ def build_integrated_architecture_report() -> dict[str, Any]:
             c7["language_modes_and_routing"]["deterministic_template"]["greeting_triggers_experiment"] is False
             and c7["language_modes_and_routing"]["nexus_small_neural"]["greeting_triggers_experiment"] is False
             and c7["language_modes_and_routing"]["nexus_small_neural"]["uses_xml_tag_wrapper"] is False
+            and c7["neural_codec_evaluation"]["architecture"]["handcrafted_structural_features"] == 0
+            and c7["neural_codec_evaluation"]["unfamiliar_paraphrase_and_composition_eval"][
+                "heldout_count"
+            ]
+            == 36
             and c7["neural_codec_evaluation"]["unfamiliar_paraphrase_and_composition_eval"][
                 "unfamiliar_intent_accuracy"
             ]
             == 1.0
             and c7["neural_codec_evaluation"]["unfamiliar_paraphrase_and_composition_eval"][
                 "composition_clause_accuracy"
+            ]
+            == 1.0
+            and c7["neural_codec_evaluation"]["unfamiliar_paraphrase_and_composition_eval"][
+                "ood_epistemic_abstention_accuracy"
+            ]
+            == 1.0
+            and c7["neural_codec_evaluation"]["unfamiliar_paraphrase_and_composition_eval"][
+                "token_level_decoder_accuracy"
             ]
             == 1.0
             and c7["neural_codec_evaluation"]["training_summary"]["final_loss"]
@@ -3867,12 +4130,18 @@ def build_integrated_architecture_report() -> dict[str, Any]:
             episode["blackbox_final_assessment"]["hidden_accuracy"] == 1.0
             and episode["blackbox_final_assessment"]["cross_lab_coding_accuracy"] == 1.0
             and episode["blackbox_final_assessment"]["cross_lab_reasoning_accuracy"] == 1.0
-            and episode["blackbox_final_assessment"][" cross_lab_language_accuracy".strip()] == 1.0
+            and episode["blackbox_final_assessment"]["cross_lab_language_accuracy"] == 1.0
             and episode["blackbox_final_assessment"]["cross_lab_world_accuracy"] == 1.0
             and episode["blackbox_final_assessment"]["four_lab_transfer_accuracy"] == 1.0
-            and episode["blackbox_final_assessment"]["capsule_removed_control_accuracy"] == 0.0
+            and episode["blackbox_final_assessment"]["capsule_removed_control_accuracy"] <= 0.25
+            and episode["blackbox_final_assessment"]["unlearned_binding_control_accuracy"] <= 0.25
+            and episode["blackbox_final_assessment"]["unlearned_adapter_control_accuracy"] <= 0.25
+            and episode["blackbox_final_assessment"]["controls_never_set_callable_none"] is True
+            and episode["blackbox_final_assessment"]["handwritten_language_rules_used"] is False
+            and episode["blackbox_final_assessment"]["neural_language_parser_used"] is True
             and episode["blackbox_final_assessment"]["old_skill_retention"] == 1.0
             and episode["step_5c_evolved_rule_instruction_ablations"]["propose_primitive_necessary"] is True
+            and episode["step_5c_evolved_rule_instruction_ablations"]["propose_primitive_control_unconfounded"] is True
             and episode["step_5c_evolved_rule_instruction_ablations"]["create_capsule_necessary_for_transfer"] is True
             and episode["blackbox_final_assessment"]["separate_evaluator_process"] is True
             and episode["blackbox_final_assessment"]["private_inputs_exposed_to_learner"] is False

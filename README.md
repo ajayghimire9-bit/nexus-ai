@@ -39,27 +39,27 @@ across 3 independent multi-file unknown-library families generated after freezin
 with hidden tests (`12` private inputs per family per seed) isolated in a separate
 evaluator subprocess (`src/nexus/seed/blackbox_evaluator_worker.py`,
 `private_inputs_exposed_to_learner = false`). Driven directly by `execute_code_lab_rule_interpreter`
-(`method_specific_hardcoded_policy_branching = false`, verified by 3 causal instruction ablations),
+(`method_specific_hardcoded_policy_branching = false`, verified by unconfounded causal instruction ablations where `PROPOSE_PRIMITIVE` removal keeps AST inspection, helper probing, all 12 hypothesis constructions, and AST patch synthesis identical),
 the learner inspected files, chose probes, proposed new primitives via `PROPOSE_PRIMITIVE`
 (`24/24` passing `PROPOSED -> ... -> PROMOTED`), synthesized its own AST patch
 (`def solve_pipeline(seq): return ...`), achieved `1.0000` hidden subprocess accuracy vs `0.0000`
-without `PROPOSE_PRIMITIVE`, beat `strongest_handwritten_learner` (`41.0188` vs `92.4438`
-compute cost, paired diff `+51.4250`, 95% CI `[+38.0856, +64.7644]`; `2.6250` vs `9.1250`
-experiments, CI `[+5.1594, +7.8406]`) and `exact_information_gain_plus_effect_composition`
-(`47.5500` cost, diff `+6.5313`, CI `[+5.1668, +7.8957]`), and transferred promoted primitives
+without `PROPOSE_PRIMITIVE`, beat `strongest_handwritten_learner` (`34.9146` vs `92.4438`
+compute cost, paired diff `+57.5292`, 95% CI `[+45.0887, +69.9696]`; `2.3750` vs `9.1250`
+experiments, CI `[+5.5060, +7.9940]`) and `exact_information_gain_plus_effect_composition`
+(`47.5500` cost, diff `+12.6354`, CI `[+7.7556, +17.5153]`), and transferred promoted primitives
 (`krelv`, `voux`, `zarn`) across all 4 labs (`Language`, `Coding`, `Reasoning`, `World`:
-`1.0000` accuracy vs `0.0000` for `isolated_labs` and `capsule_removed`, `1.0000` old-skill
+`1.0000` accuracy via neural utterance parsing and autonomous cross-domain adapter induction vs `0.0000` for `isolated_labs` and `<= 0.1875` for non-null-callable `capsule_removed`, `unlearned_binding`, and `unlearned_adapter` controls, `1.0000` old-skill
 retention). In addition, the [10-part NEXUS Seed Integrated Architecture](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md)
 (`src/nexus/seed/integrated_architecture.py`) verified 3 operating timescales, the
-3-tier `EvidenceKernel`, a genuinely trained 1,443-parameter neural encoder-decoder
-`SmallNeuralLanguageCodec` (`artifacts/seed_neural_language_weights_v1.json`, `1.00` held-out
-unfamiliar paraphrase & composition accuracy, zero XML tags), splittable `BeliefWorkspace`
+3-tier `EvidenceKernel`, a genuinely trained 10,970-parameter subword + token-level neural encoder-decoder
+`SmallNeuralLanguageCodec` (`input_dim = 119` with `55` lexical tokens + `64` char-trigram buckets and `0` handcrafted structural features, `hidden_dim = 16`, `dec_hidden_dim = 16`, `35`-token autoregressive decoder, `artifacts/seed_neural_language_weights_v1.json`, `1.00` accuracy across `36` held-out
+unfamiliar paraphrases, multi-clause compositions, subword/typo variants, and OOD abstentions, zero XML tags), splittable `BeliefWorkspace`
 equivalence groups, Kautz-Singleton $AG(2,3)$ $9\times 12$ 2-disjunct non-adaptive + conditional
 group testing, hypothesis-sensitive `synthesize_compound_probe`, evidence-directed mutation across
 4 distinct mechanisms (`3.50` vs `7.25`/`12.25`/`12.00` evals, zero hardcoded operator preference),
 6-part `MechanismCapsule` with 4-lab transfer, 1-minimal `ddmin` delta debugging,
 `TriLibrarySleepConsolidator` + trajectory-learned TD($0$) `SuccessorFeatureLearner` (`105,000`
-transitions, `+3.085207` vs `-0.500000` closed-loop GPI return) + outer-loop meta-trained
+transitions in the 5×5 `ResourceGridEnv`, `+3.085207` vs `-0.500000` closed-loop GPI return) + outer-loop meta-trained
 `SmallLearnedOptimizer` (`artifacts/seed_learned_optimizer_params_v1.json`, `0.001862` target loss
 vs `0.003482` `tuned_momentum`, `0.023808` `tuned_adam`, `0.027659` `tuned_sgd`), 6-stage
 `DevelopmentalCurriculum` + 11-action `CognitiveController`, and all 7 isolated component ablations

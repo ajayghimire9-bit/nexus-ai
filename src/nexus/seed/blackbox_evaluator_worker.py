@@ -511,7 +511,7 @@ def _build_four_lab_ground_truth(seed: int, family_name: str) -> dict[str, Any]:
     ]
 
     # 2. Coding Lab: multi-batch filtering & accumulation synthesis task
-    public_batches = [[3, 1, 4, 2], [-2, 5, 0, 3]]
+    public_batches = [[3, 1, 4, 2], [-2, 5, 0, 3], [-4, -1, 6, -3, 2]]
     public_coding_expected = [sum(v for v in gt_prim(row) if v >= 0) for row in public_batches]
     private_coding_test_batches: list[list[list[int]]] = []
     private_coding_expected: list[list[int]] = []
@@ -519,6 +519,94 @@ def _build_four_lab_ground_truth(seed: int, family_name: str) -> dict[str, Any]:
         batch = [[rng.randint(-6, 8) for _ in range(rng.randint(4, 6))] for _ in range(3)]
         private_coding_test_batches.append(batch)
         private_coding_expected.append([sum(v for v in gt_prim(row) if v >= 0) for row in batch])
+
+    # Public calibration support examples for autonomous cross-domain adapter induction
+    lang_support_seq = [-4, -3, 2, -5]
+    lang_support_base = gt_prim(lang_support_seq)
+    language_support_examples = [
+        dict(
+            utterance=f"Apply {inv_word} to {lang_support_seq}.",
+            input_seq=lang_support_seq,
+            expected_output=list(lang_support_base),
+        ),
+        dict(
+            utterance=f"Please {inv_word} the sequence {lang_support_seq} and reverse the order.",
+            input_seq=lang_support_seq,
+            expected_output=list(reversed(lang_support_base)),
+        ),
+        dict(
+            utterance=f"First apply {inv_word} on {lang_support_seq} and keep non-negative values.",
+            input_seq=lang_support_seq,
+            expected_output=[v for v in lang_support_base if v >= 0],
+        ),
+        dict(
+            utterance=f"Compute {inv_word} for {lang_support_seq} and add 2 to each element.",
+            input_seq=lang_support_seq,
+            expected_output=[v + 2 for v in lang_support_base],
+        ),
+        dict(
+            utterance=f"What is the scalar sum after you {inv_word} the list {lang_support_seq}?",
+            input_seq=lang_support_seq,
+            expected_output=int(sum(lang_support_base)),
+        ),
+    ]
+
+    reas_sup_abd_cands = [[1, 3, 2, 4], [5, -2, 3, 1], [2, 4, -1, 5]]
+    reas_sup_abd_y = gt_prim(reas_sup_abd_cands[1])
+    reas_sup_abd_exp = next(i for i, c in enumerate(reas_sup_abd_cands) if gt_prim(c) == reas_sup_abd_y)
+    reas_sup_cf_base = [2, -1, 3, 4]
+    reas_sup_cf_deltas = [-2, 1, 4]
+    reas_sup_cf_exp = max(
+        reas_sup_cf_deltas,
+        key=lambda d: (sum(gt_prim([reas_sup_cf_base[0] + d] + reas_sup_cf_base[1:])), -abs(d)),
+    )
+    reas_sup_ents = {"X": [1, 1, 2], "Y": [7, -6, 8, -5], "Z": [3, -2, 4]}
+    reas_sup_ord_exp = sorted(
+        reas_sup_ents.keys(),
+        key=lambda k: (sum(abs(v) for v in gt_prim(reas_sup_ents[k])), k),
+    )
+    reas_sup_span_cands = [[2, 2, 2, 2], [8, -7, 9, -6], [4, -2, 5, -1]]
+    reas_sup_span_exp = min(
+        range(len(reas_sup_span_cands)),
+        key=lambda idx: (
+            (max(gt_prim(reas_sup_span_cands[idx])) - min(gt_prim(reas_sup_span_cands[idx])))
+            if gt_prim(reas_sup_span_cands[idx])
+            else 0,
+            idx,
+        ),
+    )
+    reasoning_support_examples = dict(
+        abductive_inversion=dict(
+            candidates=reas_sup_abd_cands,
+            target_output=reas_sup_abd_y,
+            expected=reas_sup_abd_exp,
+        ),
+        counterfactual_intervention=dict(
+            base_input=reas_sup_cf_base,
+            candidate_deltas=reas_sup_cf_deltas,
+            expected=reas_sup_cf_exp,
+        ),
+        relational_ordering=dict(
+            entities=reas_sup_ents,
+            expected=reas_sup_ord_exp,
+        ),
+        invariant_min_span=dict(
+            candidates=reas_sup_span_cands,
+            expected=reas_sup_span_exp,
+        ),
+    )
+
+    world_support_beacons = [[2, -1, 4, 3], [5, 0, -3, 2, 4], [-2, 6, 1, 3, 5]]
+    world_support_examples = []
+    for wb in world_support_beacons:
+        yb = gt_prim(wb)
+        world_support_examples.append(
+            dict(
+                beacon_sequence=wb,
+                expected_pad=sum(abs(v) for v in yb) % 3,
+                expected_unlock_code=(yb[0] + yb[-1]) if yb else 0,
+            )
+        )
 
     # 3. Reasoning Lab: 4 abductive, counterfactual, and relational deduction problems
     # Problem 0: Abductive state inversion — identify which candidate input produces target_y
@@ -633,11 +721,14 @@ def _build_four_lab_ground_truth(seed: int, family_name: str) -> dict[str, Any]:
     return dict(
         invented_word=inv_word,
         language_queries=lang_queries,
+        language_support_examples=language_support_examples,
         coding_public_example=dict(batches=public_batches, expected=public_coding_expected),
         coding_private_batches=private_coding_test_batches,
         coding_private_expected=private_coding_expected,
         reasoning_problems=reasoning_problems,
+        reasoning_support_examples=reasoning_support_examples,
         world_episodes=world_episodes,
+        world_support_examples=world_support_examples,
     )
 
 
@@ -733,13 +824,16 @@ def init_four_lab_tasks(payload: dict[str, Any]) -> dict[str, Any]:
             expected_output=teaching_out,
         ),
         language_lab_queries=public_lang,
+        language_support_examples=gt["language_support_examples"],
         coding_lab_spec=dict(
             target_function_name="filter_and_accumulate_records",
             description="Apply the bound primitive to each batch row, filter values >= 0, and return the list of per-row sums.",
             public_example=gt["coding_public_example"],
         ),
         reasoning_lab_problems=public_reasoning,
+        reasoning_support_examples=gt["reasoning_support_examples"],
         world_lab_episodes=public_world,
+        world_support_examples=gt["world_support_examples"],
     )
 
 

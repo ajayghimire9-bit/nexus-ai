@@ -237,13 +237,26 @@ def test_section_8_9_10_sleep_gpi_learned_optimizer_controller_and_full_report()
     """Verify Trajectory-Learned SuccessorFeatureLearner GPI, Outer-Loop SmallLearnedOptimizer,
     Trainable SmallNeuralLanguageCodec, Compound Probe Sensitivity, 4-Mechanism Evidence-Directed
     Mutation, 11-action CognitiveController, 7 isolated comparisons, full episode, and tamper-rejecting verifier."""
-    # 1. Trainable SmallNeuralLanguageCodec: real backprop training, saved weights, unfamiliar paraphrases & compositions, no XML tags
+    # 1. Trainable SmallNeuralLanguageCodec: real backprop training, saved weights, 36 held-out utterances, char-trigram subwords, token decoder, no XML tags
     codec = SmallNeuralLanguageCodec(seed=1762700101)
+    arch = codec.architectural_dimensions()
+    assert arch["handcrafted_structural_features"] == 0
+    assert arch["vocab_size"] == 55
+    assert arch["char_trigram_buckets"] == 64
+    assert arch["input_dim"] == 119
+    assert arch["hidden_dim"] == 16
+    assert arch["dec_hidden_dim"] == 16
+    assert arch["decoder_vocab_size"] == 35
+    assert arch["parameter_count"] == 10970
     tr_sum = codec.train_on_source_corpus(epochs=55, lr=0.18)
     assert tr_sum["final_loss"] < tr_sum["initial_loss"] * 0.25
     heldout_eval = codec.evaluate_unfamiliar_paraphrases_and_compositions()
+    assert heldout_eval["heldout_count"] == 36
     assert heldout_eval["unfamiliar_intent_accuracy"] == 1.0
     assert heldout_eval["composition_clause_accuracy"] == 1.0
+    assert heldout_eval["ood_epistemic_abstention_accuracy"] == 1.0
+    assert heldout_eval["token_level_decoder_accuracy"] == 1.0
+    assert heldout_eval["category_breakdown"]["subword_morphology_and_typo"]["accuracy"] == 1.0
 
     pli_neural = PerceptionAndLanguageInterface(mode="nexus_small_neural", neural_codec=codec)
     v_neural = pli_neural.verbalize_response(
@@ -253,6 +266,7 @@ def test_section_8_9_10_sleep_gpi_learned_optimizer_controller_and_full_report()
     assert "<neural_codec>" not in v_neural["response_text"]
     assert v_neural["neural_decoder_used"] is True
     assert len(v_neural["chosen_clause_indices"]) == 3
+    assert len(v_neural["decoded_tokens"]) > 0
 
     # 2. Dynamic compound-probe synthesis: changing hypothesis families changes selected probe
     sens = evaluate_compound_probe_sensitivity_across_families()

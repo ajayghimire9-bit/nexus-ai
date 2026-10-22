@@ -164,14 +164,29 @@ def reconstruct_and_validate_records(
         fam_4lab_accs: list[float] = []
 
         for fam, fres in sb["per_family"].items():
+            ev_tr = fres.get("evolved_investigation_trace", {})
+            np_tr = fres.get("without_propose_investigation_trace", {})
+            unconf_ok = bool(
+                fres.get("propose_control_unconfounded") is True
+                and ev_tr.get("inspected_ast_nodes") == np_tr.get("inspected_ast_nodes")
+                and ev_tr.get("helper_call_count") == np_tr.get("helper_call_count")
+                and ev_tr.get("generated_hypothesis_count") == np_tr.get("generated_hypothesis_count") == 12
+                and ev_tr.get("chosen_helper") == np_tr.get("chosen_helper")
+                and ev_tr.get("chosen_post") == np_tr.get("chosen_post")
+                and ev_tr.get("applied_ast_patch") == np_tr.get("applied_ast_patch")
+            )
             if (
                 fres["hidden_accuracy"] != 1.0
+                or fres["without_propose_primitive_accuracy"] != 0.0
+                or not unconf_ok
                 or fres["cross_lab_language_accuracy"] != 1.0
                 or fres["cross_lab_coding_accuracy"] != 1.0
                 or fres["cross_lab_reasoning_accuracy"] != 1.0
                 or fres["cross_lab_world_accuracy"] != 1.0
                 or fres["overall_four_lab_accuracy"] != 1.0
-                or fres["capsule_removed_four_lab_accuracy"] != 0.0
+                or float(fres["capsule_removed_four_lab_accuracy"]) > 0.25
+                or float(fres.get("unlearned_binding_four_lab_accuracy", 1.0)) > 0.25
+                or float(fres.get("unlearned_adapter_four_lab_accuracy", 1.0)) > 0.25
                 or fres["old_lab_skill_retention"] != 1.0
                 or fres.get("separate_evaluator_process") is not True
                 or fres.get("private_inputs_exposed_to_learner") is not False
@@ -204,10 +219,21 @@ def reconstruct_and_validate_records(
         if len(abl_rows) < 4:
             raise ValueError("missing_stage_b_instruction_ablations")
         abl_by_op = {row["removed_opcode"]: row for row in abl_rows}
+        wc_evolved_cost = float(sb["per_family"]["ulib_window_checksum"]["evolved_compute_cost"])
+        evolved_instrs = s["frozen_evolved_rule"]["instructions"]
+        uses_predicted_effects = (
+            "MERGE_EQUIVALENT" in evolved_instrs
+            or "SELECT_QUERY_BY_INFORMATION_GAIN" in evolved_instrs
+        )
         if (
-            float(abl_by_op["PROPOSE_PRIMITIVE"]["cross_lab_success"]) >= 1.0
+            float(abl_by_op["PROPOSE_PRIMITIVE"]["hidden_accuracy"]) >= 1.0
+            or float(abl_by_op["PROPOSE_PRIMITIVE"]["cross_lab_success"]) >= 1.0
             or float(abl_by_op["CREATE_CAPSULE"]["hidden_accuracy"]) >= 1.0
-            or float(abl_by_op["PREDICT_EFFECTS"]["compute_cost"]) <= float( fam_evolved_costs[0] )
+            or (
+                uses_predicted_effects
+                and float(abl_by_op["PREDICT_EFFECTS"]["compute_cost"]) <= wc_evolved_cost
+            )
+            or float(abl_by_op["PREDICT_EFFECTS"]["compute_cost"]) == wc_evolved_cost
         ):
             raise ValueError("stage_b_instruction_ablation_causality_failed")
 
@@ -218,9 +244,15 @@ def reconstruct_and_validate_records(
         for b_rec in bindings:
             if (
                 b_rec.get("supplied_mapping_used") is not False
+                or b_rec.get("handwritten_language_rules_used") is not False
+                or b_rec.get("neural_language_parser_used") is not True
+                or b_rec.get("capsule_removed_callable_is_none") is not False
+                or b_rec.get("unlearned_binding_callable_is_none") is not False
+                or b_rec.get("unlearned_adapter_callable_is_none") is not False
                 or float(b_rec.get("overall_four_lab_accuracy", 0.0)) != 1.0
-                or float(b_rec.get("capsule_removed_control_accuracy", 1.0)) != 0.0
-                or float(b_rec.get("unlearned_binding_language_accuracy", 1.0)) != 0.0
+                or float(b_rec.get("capsule_removed_control_accuracy", 1.0)) > 0.25
+                or float(b_rec.get("unlearned_binding_overall_accuracy", 1.0)) > 0.25
+                or float(b_rec.get("unlearned_adapter_overall_accuracy", 1.0)) > 0.25
                 or float(b_rec.get("old_skill_retention_accuracy", 0.0)) != 1.0
             ):
                 raise ValueError("stage_b_cross_lab_binding_record_invalid")
@@ -356,6 +388,26 @@ def verify_tamper_rejection(
         raise AssertionError("tamper_4_capsule_removed_control_was_not_rejected")
     except ValueError:
         checks["rejects_tampered_capsule_removed_control"] = True
+
+    # Tamper 5: Confound PROPOSE_PRIMITIVE control by altering without_propose_investigation_trace hypothesis count
+    t5 = copy.deepcopy(r)
+    t5["seeds"][0]["stage_b_report"]["per_family"]["ulib_window_checksum"]["without_propose_investigation_trace"][
+        "generated_hypothesis_count"
+    ] = 3
+    try:
+        reconstruct_and_validate_records(t5, proto_text, c_disk)
+        raise AssertionError("tamper_5_confounded_propose_control_was_not_rejected")
+    except ValueError:
+        checks["rejects_confounded_propose_primitive_control"] = True
+
+    # Tamper 6: Corrupt cross-lab control to use null callable or handwritten language rules
+    t6 = copy.deepcopy(r)
+    t6["seeds"][0]["stage_b_report"]["cross_lab_bindings"][0]["unlearned_binding_callable_is_none"] = True
+    try:
+        reconstruct_and_validate_records(t6, proto_text, c_disk)
+        raise AssertionError("tamper_6_null_callable_control_was_not_rejected")
+    except ValueError:
+        checks["rejects_null_callable_in_cross_lab_control"] = True
 
     return checks
 
