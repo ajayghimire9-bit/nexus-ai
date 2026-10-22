@@ -191,22 +191,39 @@ def _ground_truth_helper_only(family_name: str, xs: list[int], param_a: int, par
     raise ValueError(f"unknown_family:{family_name}")
 
 
-def _ground_truth_mechanism(family_name: str, xs: list[int], param_a: int, param_b: int) -> list[int]:
-    """Ground-truth target pipeline behavior (true helper followed by family post-step)."""
+def _ground_truth_mechanism(
+    family_name: str,
+    xs: list[int],
+    param_a: int,
+    param_b: int,
+    task_index: int = 0,
+) -> list[int]:
+    """Ground-truth target pipeline behavior (true helper followed by task post-step).
+    For `task_index == 0`, uses the default family post-step; for sequential fresh tasks
+    `task_index > 0`, rotates across the 3 candidate post-steps (`_post_reverse`,
+    `_post_inc`, `_post_dedup`)."""
     mid = _ground_truth_helper_only(family_name, xs, param_a, param_b)
     if family_name == "ulib_window_checksum":
+        base_post_idx = 0
+    elif family_name == "ulib_runlength_bucket":
+        base_post_idx = 1
+    elif family_name == "ulib_zigzag_interleave":
+        base_post_idx = 2
+    else:
+        raise ValueError(f"unknown_family:{family_name}")
+
+    post_idx = (base_post_idx + int(task_index)) % 3
+    if post_idx == 0:
         return list(reversed(mid))
-    if family_name == "ulib_runlength_bucket":
+    if post_idx == 1:
         return [v + 1 for v in mid]
-    if family_name == "ulib_zigzag_interleave":
-        seen: set[int] = set()
-        dedup: list[int] = []
-        for v in mid:
-            if v not in seen:
-                seen.add(v)
-                dedup.append(v)
-        return dedup
-    raise ValueError(f"unknown_family:{family_name}")
+    seen: set[int] = set()
+    dedup: list[int] = []
+    for v in mid:
+        if v not in seen:
+            seen.add(v)
+            dedup.append(v)
+    return dedup
 
 
 def _build_helper_bodies(family_name: str, param_a: int, param_b: int) -> tuple[str, str, str]:
@@ -332,15 +349,25 @@ def _generate_private_test_inputs(seed: int, family_name: str) -> list[list[int]
 
 
 def init_workspace(payload: dict[str, Any]) -> dict[str, Any]:
-    """Generates the multi-file unseen library workspace after rule freeze."""
+    """Generates the multi-file unseen library workspace after rule freeze.
+    Supports `task_index` (0, 1, 2, 3) for sequential multi-task evaluation where each
+    fresh task permutes the candidate helper slots (`_cand_alpha_1`, `_cand_alpha_2`,
+    `_cand_beta_1`), rotates the target post-step composition, and uses fresh visible
+    and private test inputs while keeping the family's true helper semantics invariant."""
     seed = int(payload["seed"])
     family_name = str(payload["family_name"])
+    task_index = int(payload.get("task_index", 0))
     freeze_sha = str(payload.get("freeze_journal_sha256", ""))
     if not freeze_sha:
         raise ValueError("stage_b_requires_frozen_rule_journal_sha256")
 
     param_a, param_b, slot_perm_idx = _private_parameters(seed, family_name)
     true_body, decoy_1, decoy_2 = _build_helper_bodies(family_name, param_a, param_b)
+    if task_index > 0:
+        _, decoy_1, decoy_2 = _build_helper_bodies(
+            family_name, param_a + task_index, param_b + task_index
+        )
+    eff_slot_perm_idx = (slot_perm_idx + task_index) % 3
 
     # Permute which candidate function name gets the true helper vs the 2 decoys
     permutations = [
@@ -348,7 +375,7 @@ def init_workspace(payload: dict[str, Any]) -> dict[str, Any]:
         (decoy_1, true_body, decoy_2),
         (decoy_1, decoy_2, true_body),
     ]
-    b_alpha_1, b_alpha_2, b_beta_1 = permutations[slot_perm_idx]
+    b_alpha_1, b_alpha_2, b_beta_1 = permutations[eff_slot_perm_idx]
 
     def _wrap_fn(fn_name: str, body: str) -> str:
         indented = textwrap.indent(body.rstrip() + "\n", "    ")
@@ -389,15 +416,35 @@ def init_workspace(payload: dict[str, Any]) -> dict[str, Any]:
         """
     )
 
-    visible_inputs = [
-        [3, 3, 6, 1, 4, 2],
-        [2, 5, 5, 8, 1, 7],
-        [4, 1, 9, 2, 2, 5],
+    task_visible_input_sets = [
+        [
+            [3, 3, 6, 1, 4, 2],
+            [2, 5, 5, 8, 1, 7],
+            [4, 1, 9, 2, 2, 5],
+        ],
+        [
+            [2, 5, 5, 8, 1, 7],
+            [4, 1, 9, 2, 2, 5],
+            [3, 3, 6, 1, 4, 2],
+        ],
+        [
+            [4, 1, 9, 2, 2, 5],
+            [3, 3, 6, 1, 4, 2],
+            [2, 5, 5, 8, 1, 7],
+        ],
+        [
+            [3, 5, 5, 2, 6, 1],
+            [2, 5, 5, 8, 1, 7],
+            [4, 1, 9, 2, 2, 5],
+        ],
     ]
+    visible_inputs = task_visible_input_sets[task_index % len(task_visible_input_sets)]
     visible_tests = [
         dict(
             input=list(inp),
-            expected_output=_ground_truth_mechanism(family_name, list(inp), param_a, param_b),
+            expected_output=_ground_truth_mechanism(
+                family_name, list(inp), param_a, param_b, task_index=task_index
+            ),
         )
         for inp in visible_inputs
     ]
@@ -412,6 +459,7 @@ def init_workspace(payload: dict[str, Any]) -> dict[str, Any]:
     return dict(
         family_name=family_name,
         seed=seed,
+        task_index=task_index,
         freeze_journal_sha256=freeze_sha,
         files={
             "helpers_alpha.py": helpers_alpha_src,
@@ -928,6 +976,7 @@ def evaluate_four_lab_transfer(payload: dict[str, Any]) -> dict[str, Any]:
 def evaluate_blackbox_submission(payload: dict[str, Any]) -> dict[str, Any]:
     seed = int(payload["seed"])
     family_name = str(payload["family_name"])
+    task_index = int(payload.get("task_index", 0))
     patched_module_source = str(payload.get("patched_module_source", ""))
     promoted_primitive_source = str(payload.get("promoted_primitive_source", ""))
     promoted_primitive_name = str(payload.get("promoted_primitive_name", ""))
@@ -935,7 +984,7 @@ def evaluate_blackbox_submission(payload: dict[str, Any]) -> dict[str, Any]:
     cross_lab_reasoning_enabled = bool(payload.get("cross_lab_reasoning_enabled", False))
 
     param_a, param_b, _ = _private_parameters(seed, family_name)
-    private_inputs = _generate_private_test_inputs(seed, family_name)
+    private_inputs = _generate_private_test_inputs(seed + 1009 * task_index, family_name)
 
     hidden_hits = 0
     if patched_module_source.strip():
@@ -944,7 +993,9 @@ def evaluate_blackbox_submission(payload: dict[str, Any]) -> dict[str, Any]:
             target_fn = env.get("solve_pipeline")
             if callable(target_fn):
                 for inp in private_inputs:
-                    expected = _ground_truth_mechanism(family_name, list(inp), param_a, param_b)
+                    expected = _ground_truth_mechanism(
+                        family_name, list(inp), param_a, param_b, task_index=task_index
+                    )
                     got = target_fn(list(inp))
                     if got == expected:
                         hidden_hits += 1

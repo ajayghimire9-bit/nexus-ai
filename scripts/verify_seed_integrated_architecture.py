@@ -114,6 +114,8 @@ def reconstruct_and_replay_integrated_report(
         or expected_arch["state_dim"] != 10
         or expected_arch["dec_hidden_dim"] != 16
         or expected_arch["decoder_vocab_size"] != 35
+        or expected_arch["decoder_type"] != "fixed_length_position_conditioned_token_decoder"
+        or expected_arch["previous_generated_tokens_fed_as_inputs"] is not False
         or expected_arch["parameter_count"] != 10970
         or saved_arch != expected_arch
         or ResourceGridEnv.GRID_SIZE != 5
@@ -399,6 +401,23 @@ def reconstruct_and_replay_integrated_report(
     ):
         raise ValueError("reconstructed_instruction_ablation_flags_mismatch")
 
+    dir_single_acc = float(abl_sec.get("direct_helper_single_task_accuracy", 0.0))
+    dir_single_cost = float(abl_sec.get("direct_helper_single_task_compute_cost", 999.0))
+    if dir_single_acc != 1.0 or not (dir_single_cost < full_cost):
+        raise ValueError("direct_helper_single_task_baseline_invalid")
+
+    seq_cmp = ep.get("step_5d_sequential_fresh_tasks_comparison", {})
+    if (
+        seq_cmp.get("num_tasks") != 4
+        or float(seq_cmp.get("persistent_capsule_mean_accuracy", 0.0)) != 1.0
+        or float(seq_cmp.get("direct_helper_mean_accuracy", 0.0)) != 1.0
+        or seq_cmp.get("task_1_direct_helper_cheaper") is not True
+        or seq_cmp.get("break_even_task_index") != 1
+        or float(seq_cmp.get("cumulative_cost_savings", 0.0)) <= 0.0
+        or float(seq_cmp.get("cumulative_experiment_savings", 0.0)) <= 0.0
+    ):
+        raise ValueError("sequential_fresh_tasks_comparison_invalid")
+
     bb = ep["blackbox_final_assessment"]
     fl_saved = bb["four_lab_transfer"]
     recon_4lab_mean = float(
@@ -452,6 +471,13 @@ def reconstruct_and_replay_integrated_report(
         and float(bb["old_skill_retention"]) == 1.0
         and propose_necessary is True
         and propose_unconfounded is True
+        and dir_single_acc == 1.0
+        and dir_single_cost < full_cost
+        and float(seq_cmp.get("persistent_capsule_mean_accuracy", 0.0)) == 1.0
+        and float(seq_cmp.get("direct_helper_mean_accuracy", 0.0)) == 1.0
+        and seq_cmp.get("task_1_direct_helper_cheaper") is True
+        and seq_cmp.get("break_even_task_index") == 1
+        and float(seq_cmp.get("cumulative_cost_savings", 0.0)) > 0.0
         and capsule_necessary is True
         and predict_saves_cost is True
         and bb["separate_evaluator_process"] is True
@@ -561,13 +587,24 @@ def verify_tamper_rejection(report: dict[str, Any], root: Path) -> dict[str, boo
     except ValueError:
         checks["rejects_null_callable_in_cross_lab_control"] = True
 
+    # Tamper 8: Corrupt sequential fresh tasks comparison (claim direct helper cost savings <= 0)
+    t8 = copy.deepcopy(report)
+    t8["integrated_episode"]["step_5d_sequential_fresh_tasks_comparison"]["cumulative_cost_savings"] = -5.0
+    try:
+        reconstruct_and_replay_integrated_report(t8, root, run_subprocess_replay=False)
+        raise AssertionError("tamper_8_sequential_fresh_tasks_was_not_rejected")
+    except ValueError:
+        checks["rejects_tampered_sequential_fresh_tasks_record"] = True
+
     return checks
 
 
 def verify_report_matches_source_and_artifacts(root: Path) -> bool:
     """Verifies that `docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md` matches the exact
     committed architectural parameters (`hidden_dim=16`, `input_dim=119`, `GRID_SIZE=5`,
-    `parameter_count=10,970` / `10970`) and contains zero stale `14`-dim or `3x4` claims."""
+    `parameter_count=10,970` / `10970`, fixed-length position-conditioned token decoder,
+    and direct-helper sequential task comparison) and contains zero stale `14`-dim, `3x4`,
+    or inaccurate `autoregressive` decoder claims."""
     doc_path = root / "docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md"
     if not doc_path.exists():
         raise ValueError("missing_integrated_architecture_report_doc")
@@ -579,6 +616,8 @@ def verify_report_matches_source_and_artifacts(root: Path) -> bool:
         "3x4 resource",
         "3×4 resource",
         "12-state (48 state-action",
+        "autoregressive",
+        "Autoregressive",
     )
     for phrase in forbidden_stale_phrases:
         if phrase in doc_text:
@@ -589,6 +628,8 @@ def verify_report_matches_source_and_artifacts(root: Path) -> bool:
         "10,970",
         "5×5",
         "36",
+        "position-conditioned",
+        "direct_helper_import_without_capsule",
     )
     for req in required_exact_tokens:
         if req not in doc_text:

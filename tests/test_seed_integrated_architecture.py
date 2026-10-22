@@ -247,6 +247,8 @@ def test_section_8_9_10_sleep_gpi_learned_optimizer_controller_and_full_report()
     assert arch["hidden_dim"] == 16
     assert arch["dec_hidden_dim"] == 16
     assert arch["decoder_vocab_size"] == 35
+    assert arch["decoder_type"] == "fixed_length_position_conditioned_token_decoder"
+    assert arch["previous_generated_tokens_fed_as_inputs"] is False
     assert arch["parameter_count"] == 10970
     tr_sum = codec.train_on_source_corpus(epochs=55, lr=0.18)
     assert tr_sum["final_loss"] < tr_sum["initial_loss"] * 0.25

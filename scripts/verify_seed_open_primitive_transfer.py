@@ -108,6 +108,10 @@ def reconstruct_and_validate_records(
     ev_b_costs: list[float] = []
     hw_b_costs: list[float] = []
     ige_b_costs: list[float] = []
+    seq_cap_costs: list[float] = []
+    seq_dir_costs: list[float] = []
+    seq_cap_exps: list[float] = []
+    seq_dir_exps: list[float] = []
 
     for idx, s in enumerate(seeds_data):
         if s["seed"] != c_disk["seeds"][idx]:
@@ -162,12 +166,17 @@ def reconstruct_and_validate_records(
         fam_hw_costs: list[float] = []
         fam_evolved_accs: list[float] = []
         fam_4lab_accs: list[float] = []
+        fam_seq_cap_costs: list[float] = []
+        fam_seq_dir_costs: list[float] = []
+        fam_seq_cap_exps: list[float] = []
+        fam_seq_dir_exps: list[float] = []
 
         for fam, fres in sb["per_family"].items():
             ev_tr = fres.get("evolved_investigation_trace", {})
             np_tr = fres.get("without_propose_investigation_trace", {})
             unconf_ok = bool(
                 fres.get("propose_control_unconfounded") is True
+                and fres.get("without_propose_tests_execution_scope_registration_only") is True
                 and ev_tr.get("inspected_ast_nodes") == np_tr.get("inspected_ast_nodes")
                 and ev_tr.get("helper_call_count") == np_tr.get("helper_call_count")
                 and ev_tr.get("generated_hypothesis_count") == np_tr.get("generated_hypothesis_count") == 12
@@ -175,10 +184,35 @@ def reconstruct_and_validate_records(
                 and ev_tr.get("chosen_post") == np_tr.get("chosen_post")
                 and ev_tr.get("applied_ast_patch") == np_tr.get("applied_ast_patch")
             )
+            seq_f = fres.get("sequential_fresh_tasks", {})
+            seq_tasks = seq_f.get("tasks", [])
+            recon_seq_cap_cost = round(sum(float(t["persistent_capsule_compute_cost"]) for t in seq_tasks), 6) if seq_tasks else -1.0
+            recon_seq_dir_cost = round(sum(float(t["direct_helper_compute_cost"]) for t in seq_tasks), 6) if seq_tasks else -1.0
+            recon_seq_cap_exp = round(sum(float(t["persistent_capsule_experiments"]) for t in seq_tasks), 6) if seq_tasks else -1.0
+            recon_seq_dir_exp = round(sum(float(t["direct_helper_experiments"]) for t in seq_tasks), 6) if seq_tasks else -1.0
+            seq_ok = bool(
+                len(seq_tasks) == 4
+                and seq_f.get("identical_access_and_costs") is True
+                and seq_f.get("task_1_direct_helper_cheaper") is True
+                and seq_f.get("break_even_task_index") == 1
+                and float(seq_f.get("persistent_capsule_mean_accuracy", 0.0)) == 1.0
+                and float(seq_f.get("direct_helper_mean_accuracy", 0.0)) == 1.0
+                and abs(recon_seq_cap_cost - float(seq_f.get("persistent_capsule_total_cost", -2.0))) < 1e-5
+                and abs(recon_seq_dir_cost - float(seq_f.get("direct_helper_total_cost", -2.0))) < 1e-5
+                and abs((recon_seq_dir_cost - recon_seq_cap_cost) - float(seq_f.get("cumulative_cost_savings", -999.0))) < 1e-5
+                and abs(recon_seq_cap_exp - float(seq_f.get("persistent_capsule_total_experiments", -2.0))) < 1e-5
+                and abs(recon_seq_dir_exp - float(seq_f.get("direct_helper_total_experiments", -2.0))) < 1e-5
+                and abs((recon_seq_dir_exp - recon_seq_cap_exp) - float(seq_f.get("cumulative_experiment_savings", -999.0))) < 1e-5
+                and recon_seq_cap_cost < recon_seq_dir_cost
+                and recon_seq_cap_exp < recon_seq_dir_exp
+            )
             if (
                 fres["hidden_accuracy"] != 1.0
+                or float(fres.get("direct_helper_single_task_accuracy", 0.0)) != 1.0
+                or float(fres.get("direct_helper_single_task_compute_cost", 999.0)) >= float(fres["evolved_compute_cost"])
                 or fres["without_propose_primitive_accuracy"] != 0.0
                 or not unconf_ok
+                or not seq_ok
                 or fres["cross_lab_language_accuracy"] != 1.0
                 or fres["cross_lab_coding_accuracy"] != 1.0
                 or fres["cross_lab_reasoning_accuracy"] != 1.0
@@ -197,6 +231,10 @@ def reconstruct_and_validate_records(
             fam_hw_costs.append(float(fres["handwritten_compute_cost"]))
             fam_evolved_accs.append(float(fres["hidden_accuracy"]))
             fam_4lab_accs.append(float(fres["overall_four_lab_accuracy"]))
+            fam_seq_cap_costs.append(recon_seq_cap_cost)
+            fam_seq_dir_costs.append(recon_seq_dir_cost)
+            fam_seq_cap_exps.append(recon_seq_cap_exp)
+            fam_seq_dir_exps.append(recon_seq_dir_exp)
 
         # Verify method_summaries match raw per_family means for corrected_frozen_evolved_rule and strongest_handwritten_learner
         recon_ev_b_cost = sum(fam_evolved_costs) / len(fam_evolved_costs)
@@ -262,6 +300,10 @@ def reconstruct_and_validate_records(
         ige_b_costs.append(
             float(sb["method_summaries"]["exact_information_gain_plus_effect_composition"]["mean_compute_cost"])
         )
+        seq_cap_costs.append(sum(fam_seq_cap_costs) / len(fam_seq_cap_costs))
+        seq_dir_costs.append(sum(fam_seq_dir_costs) / len(fam_seq_dir_costs))
+        seq_cap_exps.append(sum(fam_seq_cap_exps) / len(fam_seq_cap_exps))
+        seq_dir_exps.append(sum(fam_seq_dir_exps) / len(fam_seq_dir_exps))
 
     # Recompute entire analysis object and compare digest against saved r["analysis"]
     recomputed_eval = evaluate_open_primitive_transfer_artifact(r, proto_text, c_disk)
@@ -274,6 +316,8 @@ def reconstruct_and_validate_records(
     st_a_ige = ind_paired_stats(ige_a_costs, ev_a_costs)
     st_b_hw = ind_paired_stats(hw_b_costs, ev_b_costs)
     st_b_ige = ind_paired_stats(ige_b_costs, ev_b_costs)
+    st_b_seq_cost = ind_paired_stats(seq_dir_costs, seq_cap_costs)
+    st_b_seq_exp = ind_paired_stats(seq_dir_exps, seq_cap_exps)
 
     rec_pc = r["analysis"]["paired_comparisons"]
     if (
@@ -281,6 +325,10 @@ def reconstruct_and_validate_records(
         or abs(st_a_ige["mean_diff"] - rec_pc["stage_a_cost_vs_info_gain_plus_effect"]["mean_diff"]) > 1e-7
         or abs(st_b_hw["mean_diff"] - rec_pc["stage_b_cost_vs_strongest_handwritten"]["mean_diff"]) > 1e-7
         or abs(st_b_ige["mean_diff"] - rec_pc["stage_b_cost_vs_info_gain_plus_effect"]["mean_diff"]) > 1e-7
+        or abs(st_b_seq_cost["mean_diff"] - rec_pc["stage_b_sequential_cost_vs_direct_helper"]["mean_diff"]) > 1e-7
+        or abs(st_b_seq_exp["mean_diff"] - rec_pc["stage_b_sequential_experiments_vs_direct_helper"]["mean_diff"]) > 1e-7
+        or st_b_seq_cost["ci95_low"] <= 0.0
+        or st_b_seq_exp["ci95_low"] <= 0.0
     ):
         raise ValueError("paired_interval_mismatch")
 
@@ -289,6 +337,8 @@ def reconstruct_and_validate_records(
         st_a_ige=st_a_ige,
         st_b_hw=st_b_hw,
         st_b_ige=st_b_ige,
+        st_b_seq_cost=st_b_seq_cost,
+        st_b_seq_exp=st_b_seq_exp,
         recomputed_eval=recomputed_eval,
     )
 
@@ -409,6 +459,17 @@ def verify_tamper_rejection(
     except ValueError:
         checks["rejects_null_callable_in_cross_lab_control"] = True
 
+    # Tamper 7: Corrupt sequential fresh tasks comparison (claim direct helper cost savings <= 0 or accuracy < 1.0)
+    t7 = copy.deepcopy(r)
+    t7["seeds"][0]["stage_b_report"]["per_family"]["ulib_window_checksum"]["sequential_fresh_tasks"][
+        "cumulative_cost_savings"
+    ] = -5.0
+    try:
+        reconstruct_and_validate_records(t7, proto_text, c_disk)
+        raise AssertionError("tamper_7_sequential_fresh_tasks_was_not_rejected")
+    except ValueError:
+        checks["rejects_tampered_sequential_fresh_tasks_record"] = True
+
     return checks
 
 
@@ -448,6 +509,8 @@ def verify(
     st_a_ig = recon["st_a_ig"]
     st_a_ige = recon["st_a_ige"]
     st_b_hw = recon["st_b_hw"]
+    st_b_seq_cost = recon["st_b_seq_cost"]
+    st_b_seq_exp = recon["st_b_seq_exp"]
 
     # 3. Independently replay Stage B DSL interpreter + 4-lab subprocess execution
     replay_check = replay_stage_b_execution(r, c_disk)
@@ -501,6 +564,16 @@ def verify(
             mean_diff=round(st_b_hw["mean_diff"], 8),
             ci95_low=round(st_b_hw["ci95_low"], 8),
             ci95_high=round(st_b_hw["ci95_high"], 8),
+        ),
+        stage_b_sequential_cost_vs_direct_helper=dict(
+            mean_diff=round(st_b_seq_cost["mean_diff"], 8),
+            ci95_low=round(st_b_seq_cost["ci95_low"], 8),
+            ci95_high=round(st_b_seq_cost["ci95_high"], 8),
+        ),
+        stage_b_sequential_experiments_vs_direct_helper=dict(
+            mean_diff=round(st_b_seq_exp["mean_diff"], 8),
+            ci95_low=round(st_b_seq_exp["ci95_low"], 8),
+            ci95_high=round(st_b_seq_exp["ci95_high"], 8),
         ),
         gates=r["analysis"]["gates"],
         stage_a_pass=r["analysis"]["stage_a_pass"],

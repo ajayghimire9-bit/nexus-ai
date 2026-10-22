@@ -290,6 +290,16 @@ def test_stage_b_environment_adapter_and_propose_primitive_lifecycle():
         assert f_stat["evolved_compute_cost"] < f_stat["handwritten_compute_cost"]
         assert f_stat["without_propose_primitive_accuracy"] == 0.0
         assert f_stat["propose_control_unconfounded"] is True
+        assert f_stat["direct_helper_single_task_accuracy"] == 1.0
+        assert f_stat["direct_helper_single_task_compute_cost"] < f_stat["evolved_compute_cost"]
+        seq_ft = f_stat["sequential_fresh_tasks"]
+        assert seq_ft["num_tasks"] == 4
+        assert seq_ft["persistent_capsule_mean_accuracy"] == 1.0
+        assert seq_ft["direct_helper_mean_accuracy"] == 1.0
+        assert seq_ft["task_1_direct_helper_cheaper"] is True
+        assert seq_ft["break_even_task_index"] == 1
+        assert seq_ft["cumulative_cost_savings"] > 0.0
+        assert seq_ft["cumulative_experiment_savings"] > 0
         ev_tr = f_stat["evolved_investigation_trace"]
         np_tr = f_stat["without_propose_investigation_trace"]
         assert ev_tr["inspected_ast_nodes"] == np_tr["inspected_ast_nodes"]

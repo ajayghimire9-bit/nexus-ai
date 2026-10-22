@@ -328,8 +328,8 @@ def _char_trigram_bucket(trigram: str, num_buckets: int = NEURAL_CHAR_TRIGRAM_BU
 
 
 class SmallNeuralLanguageCodec:
-    r"""Trainable 2-layer neural encoder + token-level autoregressive & clause-slot
-    decoder for intent routing, compositional modifier extraction, OOD epistemic
+    r"""Trainable 2-layer neural encoder + fixed-length, position-conditioned token &
+    clause-slot decoder for intent routing, compositional modifier extraction, OOD epistemic
     abstention, and structured-state-to-surface decoding.
 
     Architecture (exact dimensions):
@@ -341,8 +341,9 @@ class SmallNeuralLanguageCodec:
       - Compositional modifier head: `W_mod` (5 x 16), `b_mod` (5);
       - State-to-decoder hidden layer: `W_dec1` (16 x 10), `b_dec1` (16) with tanh;
       - Slot-clause head: 3 slots x (`8 x 16` + `8`);
-      - Token-level autoregressive decoder: `W_tok_step` (35 x 16 x 14) conditioned on
-        `h_dec` and step position $t \in \{0\dots 13\}$ over `decoder_vocab_size = 35` tokens.
+      - Fixed-length, position-conditioned token decoder: `W_tok_steps` (14 x 35 x 16) predicting
+        each token position $t \in \{0\dots 13\}$ from `h_dec` using separate per-position output
+        heads over `decoder_vocab_size = 35` tokens (previous generated tokens are not fed as inputs).
     Trained via analytical backpropagation on cross-entropy loss over source examples,
     saved to `artifacts/seed_neural_language_weights_v1.json`, and evaluated on 36 held-out
     utterances (unfamiliar paraphrases, multi-clause compositions, subword morphology/typos,
@@ -380,7 +381,7 @@ class SmallNeuralLanguageCodec:
             for _ in range(3)
         ]
         self.b_dec_slots = [[0.0 for _ in range(self.num_clauses)] for _ in range(3)]
-        # Autoregressive token decoder weights per step t=0..13: W_tok_steps[t][v][i] + b_tok_steps[t][v]
+        # Fixed-length, position-conditioned token decoder weights per position t=0..13: W_tok_steps[t][v][i] + b_tok_steps[t][v]
         self.W_tok_steps = [
             [[rng.uniform(-0.12, 0.12) for _ in range(self.dec_hidden_dim)] for _ in range(len(self.decoder_vocab))]
             for _ in range(self.max_token_steps)
@@ -397,7 +398,7 @@ class SmallNeuralLanguageCodec:
         tok_p = self.max_token_steps * (len(self.decoder_vocab) * self.dec_hidden_dim + len(self.decoder_vocab))
         return int(enc_p + int_p + mod_p + dec1_p + dec2_p + tok_p)
 
-    def architectural_dimensions(self) -> dict[str, int]:
+    def architectural_dimensions(self) -> dict[str, Any]:
         return dict(
             vocab_size=len(self.vocab),
             char_trigram_buckets=self.char_trigram_buckets,
@@ -411,6 +412,8 @@ class SmallNeuralLanguageCodec:
             num_clauses=self.num_clauses,
             decoder_vocab_size=len(self.decoder_vocab),
             max_token_steps=self.max_token_steps,
+            decoder_type="fixed_length_position_conditioned_token_decoder",
+            previous_generated_tokens_fed_as_inputs=False,
             parameter_count=self.parameter_count(),
         )
 
@@ -590,7 +593,7 @@ class SmallNeuralLanguageCodec:
                             if x_view[j] != 0.0:
                                 self.W_enc[i][j] -= eff_lr * (dh[i] * x_view[j] + 1e-4 * self.W_enc[i][j])
 
-                # Decoder forward & backprop (both clause-slot head and token-level autoregressive steps)
+                # Decoder forward & backprop (both clause-slot head and fixed-length position-conditioned token heads)
                 st = [float(v) for v in item["state"]]
                 h_dec, slot_probs, token_step_probs = self.forward_decoder(st)
                 dh_dec = [0.0 for _ in range(self.dec_hidden_dim)]
@@ -868,7 +871,7 @@ class SmallNeuralLanguageCodec:
                 )
             )
 
-        # Verify token-level autoregressive decoding across all 3 structured epistemic states
+        # Verify fixed-length, position-conditioned token decoding across all 3 structured epistemic states
         state_vectors = {
             0: [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
             1: [0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.72],
@@ -905,9 +908,10 @@ class SmallNeuralLanguageCodec:
             },
             scope_limitations=(
                 "Bounded domain-specific neural codec (input_dim=119 with 55 lexical tokens + 64 char-trigram "
-                "buckets, hidden_dim=16, dec_hidden_dim=16, 35-token autoregressive decoder vocabulary, "
-                "evaluated on 36 held-out utterances). Does not establish flexible open-domain conversation "
-                "or broad natural language understanding."
+                "buckets, hidden_dim=16, dec_hidden_dim=16, 35-token fixed-length position-conditioned decoder "
+                "predicting each token position from h_dec via separate output heads without previous-token "
+                "inputs, evaluated on 36 held-out utterances). Does not establish flexible open-domain "
+                "conversation or broad natural language understanding."
             ),
             heldout_records=records,
         )
@@ -3620,6 +3624,7 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
         build_old_skill_retention_suite,
         build_stage_b_method_rule_programs,
         configuration,
+        evaluate_sequential_fresh_tasks_stage_b,
         evaluate_stage_b_instruction_ablations,
         execute_code_lab_rule_interpreter,
         run_single_seed_two_stage,
@@ -3738,8 +3743,18 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
     try:
         snap0 = stage_b_env.snapshot()
         evolved_prog = copy.deepcopy(rule_programs["corrected_frozen_evolved_rule"])
+        direct_helper_prog = copy.deepcopy(rule_programs["direct_helper_import_without_capsule"])
         rule_exec_result = execute_code_lab_rule_interpreter(
             rule_program=evolved_prog,
+            env=stage_b_env,
+            snap0=snap0,
+            kernel=opt_kernel,
+            old_skill_suite=old_skill_suite,
+            macro_library=macro_lib,
+            seed=seed,
+        )
+        direct_helper_exec_result = execute_code_lab_rule_interpreter(
+            rule_program=direct_helper_prog,
             env=stage_b_env,
             snap0=snap0,
             kernel=opt_kernel,
@@ -3759,6 +3774,17 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
     finally:
         stage_b_env.close()
 
+    sequential_fresh_tasks_comparison = evaluate_sequential_fresh_tasks_stage_b(
+        kernel=opt_kernel,
+        frozen_evolved_rule=frozen_evolved_rule,
+        old_skill_suite=old_skill_suite,
+        macro_library=macro_lib,
+        seed=seed,
+        family_name="ulib_window_checksum",
+        freeze_journal_sha256=freeze_sha,
+        num_tasks=4,
+    )
+
     ablation_by_op = {row["removed_opcode"]: row for row in ablation_rows}
     ev_trace = rule_exec_result["investigation_trace"]
     no_prop_trace = ablation_by_op["PROPOSE_PRIMITIVE"]["investigation_trace"]
@@ -3775,6 +3801,10 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
         full_rule_cross_lab_success=rule_exec_result["cross_lab_success"],
         full_rule_compute_cost=rule_exec_result["compute_cost"],
         full_rule_investigation_trace=ev_trace,
+        direct_helper_single_task_accuracy=direct_helper_exec_result["hidden_eval"]["hidden_accuracy"],
+        direct_helper_single_task_compute_cost=direct_helper_exec_result["compute_cost"],
+        direct_helper_investigation_trace=direct_helper_exec_result["investigation_trace"],
+        without_propose_tests_execution_scope_registration_only=True,
         ablations=ablation_rows,
         propose_primitive_necessary=bool(
             ablation_by_op["PROPOSE_PRIMITIVE"]["hidden_accuracy"] < rule_exec_result["hidden_eval"]["hidden_accuracy"]
@@ -4017,6 +4047,7 @@ def run_integrated_end_to_end_episode(seed: int = 1762999500) -> dict[str, Any]:
             receipt_count=len(rule_exec_result["receipts"]),
         ),
         step_5c_evolved_rule_instruction_ablations=rule_instruction_ablations,
+        step_5d_sequential_fresh_tasks_comparison=sequential_fresh_tasks_comparison,
         step_6_bat_stage_history=bat_scheduler.stage_history,
         step_7_ddmin_counterexample_reduction=ddmin_record.to_dict(),
         step_8_promoted_capsule_id=capsule.capsule_id,
@@ -4142,6 +4173,12 @@ def build_integrated_architecture_report() -> dict[str, Any]:
             and episode["blackbox_final_assessment"]["old_skill_retention"] == 1.0
             and episode["step_5c_evolved_rule_instruction_ablations"]["propose_primitive_necessary"] is True
             and episode["step_5c_evolved_rule_instruction_ablations"]["propose_primitive_control_unconfounded"] is True
+            and episode["step_5c_evolved_rule_instruction_ablations"]["direct_helper_single_task_accuracy"] == 1.0
+            and episode["step_5d_sequential_fresh_tasks_comparison"]["persistent_capsule_mean_accuracy"] == 1.0
+            and episode["step_5d_sequential_fresh_tasks_comparison"]["direct_helper_mean_accuracy"] == 1.0
+            and episode["step_5d_sequential_fresh_tasks_comparison"]["task_1_direct_helper_cheaper"] is True
+            and episode["step_5d_sequential_fresh_tasks_comparison"]["break_even_task_index"] == 1
+            and episode["step_5d_sequential_fresh_tasks_comparison"]["cumulative_cost_savings"] > 0.0
             and episode["step_5c_evolved_rule_instruction_ablations"]["create_capsule_necessary_for_transfer"] is True
             and episode["blackbox_final_assessment"]["separate_evaluator_process"] is True
             and episode["blackbox_final_assessment"]["private_inputs_exposed_to_learner"] is False

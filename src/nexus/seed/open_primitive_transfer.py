@@ -2154,16 +2154,20 @@ class CommonEnvironmentAdapter:
         family_name: str,
         seed: int,
         freeze_journal_sha256: str = "standalone_adapter_freeze_sha256",
+        task_index: int = 0,
+        allow_direct_helper_copy: bool = False,
     ) -> None:
         if family_name not in UNKNOWN_LIBRARY_FAMILIES:
             raise ValueError(f"unknown_code_lab_family:{family_name}")
         self.family_name = family_name
         self.seed = int(seed)
+        self.task_index = int(task_index)
+        self.allow_direct_helper_copy = bool(allow_direct_helper_copy)
         self.freeze_journal_sha256 = str(freeze_journal_sha256)
         self._temp_dir = tempfile.TemporaryDirectory(prefix=f"nexus_ulib_{family_name}_")
         self.sandbox_root = Path(self._temp_dir.name).resolve()
         self.receipts: list[TransitionReceipt] = []
-        self.reset(seed)
+        self.reset(seed, task_index=self.task_index)
 
     def close(self) -> None:
         self._temp_dir.cleanup()
@@ -2177,9 +2181,14 @@ class CommonEnvironmentAdapter:
         return "\n\n".join(parts) + "\n"
 
     def _bundle_target_pipeline_source(self) -> str:
-        """Bundles `target_pipeline.py` together with ONLY those primitives explicitly
-        promoted via `PROPOSE_PRIMITIVE`. Unpromoted helpers in `helpers_alpha.py` or
-        `helpers_beta.py` are not in `target_pipeline.py`'s module scope unless promoted."""
+        """Bundles `target_pipeline.py` for target-scope execution.
+        - Under strict execution-scope registration (`allow_direct_helper_copy=False`),
+          bundles `target_pipeline.py` together with ONLY those primitives explicitly
+          promoted via `PROPOSE_PRIMITIVE` (`learner_without_propose_primitive` tests
+          this execution-scope registration requirement).
+        - Under direct-helper access (`allow_direct_helper_copy=True`), any discovered/inspected
+          helper in `inspected_ast_nodes` is also imported/copied directly into `target_pipeline.py`'s
+          module scope even without `PROPOSE_PRIMITIVE`."""
         parts: list[str] = []
         seen_names: set[str] = set()
         for prop in self.proposed_primitives:
@@ -2188,6 +2197,12 @@ class CommonEnvironmentAdapter:
             if pname and psrc and pname not in seen_names:
                 parts.append(psrc)
                 seen_names.add(pname)
+        if self.allow_direct_helper_copy:
+            for hname, hsrc in sorted(self.inspected_ast_nodes.items()):
+                hsrc_clean = str(hsrc).strip()
+                if hname and hsrc_clean and hname not in seen_names:
+                    parts.append(hsrc_clean)
+                    seen_names.add(hname)
         fpath = self.sandbox_root / self.target_file
         if fpath.exists():
             parts.append(fpath.read_text(encoding="utf-8"))
@@ -2221,14 +2236,17 @@ class CommonEnvironmentAdapter:
         exec(compile(ast.parse(bundle_src), filename="<sandbox_workspace>", mode="exec"), ns, ns)
         return ns
 
-    def reset(self, seed: int) -> dict[str, Any]:
+    def reset(self, seed: int, task_index: int | None = None) -> dict[str, Any]:
         self.seed = int(seed)
+        if task_index is not None:
+            self.task_index = int(task_index)
         ws = _call_blackbox_evaluator_subprocess(
             dict(
                 mode="init_workspace",
                 seed=self.seed,
                 family_name=self.family_name,
                 freeze_journal_sha256=self.freeze_journal_sha256,
+                task_index=self.task_index,
             )
         )
         self.workspace_files: list[str] = sorted(ws["files"].keys())
@@ -2548,13 +2566,14 @@ class CommonEnvironmentAdapter:
     ) -> dict[str, Any]:
         """Evaluates the current workspace in the isolated `blackbox_evaluator_worker` subprocess.
         Private test inputs never leave the evaluator subprocess. `patched_module_source`
-        bundles `target_pipeline.py` plus only those primitives explicitly promoted via
-        `PROPOSE_PRIMITIVE`."""
+        bundles `target_pipeline.py` plus promoted primitives (or directly copied helpers when
+        `allow_direct_helper_copy=True`)."""
         bundle_src = self._bundle_target_pipeline_source()
         req: dict[str, Any] = dict(
             mode="evaluate_submission",
             seed=self.seed,
             family_name=self.family_name,
+            task_index=self.task_index,
             patched_module_source=bundle_src,
             promoted_primitive_name=promoted_primitive_name,
             promoted_primitive_source=promoted_primitive_source,
@@ -2566,6 +2585,7 @@ class CommonEnvironmentAdapter:
         sub_res = _call_blackbox_evaluator_subprocess(req)
         out = dict(
             family_name=self.family_name,
+            task_index=int(sub_res.get("task_index", self.task_index)),
             hidden_tests_total=int(sub_res["hidden_tests_total"]),
             hidden_tests_passed=int(sub_res["hidden_tests_passed"]),
             hidden_accuracy=float(sub_res["hidden_accuracy"]),
@@ -3153,12 +3173,22 @@ def build_stage_b_method_rule_programs(frozen_evolved_rule: dict[str, Any]) -> d
     no_propose_prog = copy.deepcopy(evolved_prog)
     no_propose_prog["rule_id"] = "learner_without_propose_primitive"
     no_propose_prog["instructions"] = [op for op in evolved_instrs if op != "PROPOSE_PRIMITIVE"]
+    no_propose_prog["allow_direct_helper_copy"] = False
+    no_propose_prog["persist_promoted_capsule"] = False
+
+    direct_helper_prog = copy.deepcopy(evolved_prog)
+    direct_helper_prog["rule_id"] = "direct_helper_import_without_capsule"
+    direct_helper_prog["instructions"] = [op for op in evolved_instrs if op != "PROPOSE_PRIMITIVE"]
+    direct_helper_prog["allow_direct_helper_copy"] = True
+    direct_helper_prog["persist_promoted_capsule"] = False
+    direct_helper_prog["share_capsules_across_labs"] = False
 
     return {
         "corrected_frozen_evolved_rule": evolved_prog,
         "proposal_lifecycle_without_sleep_compression": no_sleep_prog,
         "isolated_labs": isolated_prog,
         "learner_without_propose_primitive": no_propose_prog,
+        "direct_helper_import_without_capsule": direct_helper_prog,
         "exact_information_gain_plus_effect_composition": dict(
             rule_id="exact_information_gain_plus_effect_composition",
             origin="handwritten_baseline",
@@ -3291,19 +3321,32 @@ def execute_code_lab_rule_interpreter(
     old_skill_suite: list[tuple[LearnerTaskView, EvaluatorTaskPrivate]],
     macro_library: list[dict[str, Any]],
     seed: int,
+    persisted_capsules: dict[str, dict[str, Any]] | None = None,
+    run_four_lab_downstream: bool = True,
 ) -> dict[str, Any]:
     """Unified DSL interpreter for Stage B (`UnknownLibraryCodeLab`).
     Every probe choice, hypothesis pruning step, stopping decision, primitive proposal,
     and AST patch is controlled directly by `rule_program['instructions']` and its
     rule flags—never by a handwritten `if method_name == ...` branch.
 
-    Crucially, `PROPOSE_PRIMITIVE` does NOT alter `OBSERVE`, `GENERATE_TYPED_HYPOTHESES`,
-    `PREDICT_EFFECTS`, `MERGE_EQUIVALENT`, `DISCARD_HYPOTHESIS`, `FILTER_INCONSISTENT`,
-    `SELECT_QUERY_BY_INFORMATION_GAIN`, or `RUN_EXPERIMENT`. A learner without
-    `PROPOSE_PRIMITIVE` performs the exact same file/AST inspection, helper probing,
-    and 12-hypothesis generation/filtering, isolating the causal benefit of primitive
-    promotion into `target_pipeline.py`'s executable module scope and cross-lab registry."""
+    - `learner_without_propose_primitive` (`allow_direct_helper_copy=False`, no `PROPOSE_PRIMITIVE`)
+      tests strict execution-scope registration when `target_pipeline.py` only bundles promoted
+      primitives.
+    - `direct_helper_import_without_capsule` (`allow_direct_helper_copy=True`, no `PROPOSE_PRIMITIVE`)
+      imports/copies the discovered helper directly into `target_pipeline.py`'s module scope with
+      identical access and identical costs, without persistent capsule learning.
+    - When `persisted_capsules` is provided across a sequence of fresh tasks ($T_1 \\dots T_K$),
+      a learner that promoted a capsule on an earlier task can reuse that persisted capsule
+      without re-inspecting or probing the permuted workspace decoy helpers."""
     env.restore(snap0)
+    env.allow_direct_helper_copy = bool(rule_program.get("allow_direct_helper_copy", False))
+    persist_capsule_flag = bool(
+        rule_program.get("persist_promoted_capsule", "PROPOSE_PRIMITIVE" in rule_program["instructions"])
+    )
+    active_persisted_capsules: dict[str, dict[str, Any]] = (
+        persisted_capsules if (persisted_capsules is not None and persist_capsule_flag) else {}
+    )
+
     receipt_start_idx = len(env.receipts)
     counters_before = dict(kernel.counters)
 
@@ -3334,6 +3377,7 @@ def execute_code_lab_rule_interpreter(
     chosen_post = ""
     applied_ast_patch = ""
     promoted_source = ""
+    reused_persisted_capsule = False
     lifecycle_record: dict[str, Any] | None = None
 
     pc = 0
@@ -3353,8 +3397,8 @@ def execute_code_lab_rule_interpreter(
                 vis_tests = list(obs["visible_tests"])
                 observed_examples = [dict(input=vis_tests[0]["input"], output=vis_tests[0]["expected_output"])]
                 unqueried_inputs = [vt["input"] for vt in vis_tests[1:]]
-                if not (has_merge_opcode and use_sleep_macros):
-                    # Rules without Sleep macro equivalence pruning inspect workspace file spans upfront
+                if not (has_merge_opcode and use_sleep_macros) and not active_persisted_capsules:
+                    # Rules without Sleep macro equivalence pruning inspect workspace file spans upfront when no capsule is persisted
                     for fname in obs["workspace_files"]:
                         env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 30})
                         kernel.counters["sandbox_actions"] += 1
@@ -3362,6 +3406,21 @@ def execute_code_lab_rule_interpreter(
         elif op == "GENERATE_TYPED_HYPOTHESES":
             if obs and not hypotheses:
                 idx = 0
+                for cap_name in sorted(active_persisted_capsules.keys()):
+                    for p_name in cand_posts:
+                        hypotheses.append(
+                            dict(
+                                hyp_id=f"h_{idx:02d}",
+                                helper_name=cap_name,
+                                post_name=p_name,
+                                length=2,
+                                mdl_cost=1.25 if use_sleep_macros else 1.50,
+                                predicted_y0=None,
+                                probe_sig=None,
+                                from_persisted_capsule=True,
+                            )
+                        )
+                        idx += 1
                 for h_name in cand_helpers:
                     for p_name in cand_posts:
                         mdl_c = 2.0 - (0.25 if use_sleep_macros else 0.0)
@@ -3374,6 +3433,7 @@ def execute_code_lab_rule_interpreter(
                                 mdl_cost=mdl_c,
                                 predicted_y0=None,
                                 probe_sig=None,
+                                from_persisted_capsule=False,
                             )
                         )
                         idx += 1
@@ -3387,6 +3447,7 @@ def execute_code_lab_rule_interpreter(
                             mdl_cost=1.0,
                             predicted_y0=None,
                             probe_sig=None,
+                            from_persisted_capsule=False,
                         )
                     )
                     idx += 1
@@ -3397,33 +3458,57 @@ def execute_code_lab_rule_interpreter(
                 x0 = observed_examples[0]["input"]
                 y0 = observed_examples[0]["output"]
                 matched_early = False
-                for h_name in cand_helpers:
-                    if not any(h["helper_name"] == h_name for h in hypotheses):
+                capsule_matched_y0 = False
+                for cap_name, cap_entry in sorted(active_persisted_capsules.items()):
+                    if not any(h["helper_name"] == cap_name for h in hypotheses):
                         continue
-                    if h_name not in env.inspected_ast_nodes:
-                        env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
-                        kernel.counters["sandbox_actions"] += 1
-                    if h_name not in helper_x0_cache:
-                        r_call = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
-                        kernel.counters["sandbox_actions"] += 1
-                        helper_x0_cache[h_name] = json.loads(r_call.stdout)
-                    mid0 = helper_x0_cache[h_name]
-                    seen_sigs: set[tuple[int, ...]] = set()
+                    env.inspected_ast_nodes[cap_name] = str(cap_entry["source_code"])
+                    if cap_name not in helper_x0_cache:
+                        helper_x0_cache[cap_name] = list(cap_entry["callable"](list(x0)))
+                        kernel.counters["candidate_executions"] += 1
+                    mid0_cap = helper_x0_cache[cap_name]
+                    seen_cap_sigs: set[tuple[int, ...]] = set()
                     for h in hypotheses:
-                        if h["helper_name"] != h_name:
+                        if h["helper_name"] != cap_name:
                             continue
-                        pred_y0 = _predict_post_step_output(h["post_name"], mid0)
+                        pred_y0 = _predict_post_step_output(h["post_name"], mid0_cap)
                         sig = tuple(pred_y0)
                         h["predicted_y0"] = pred_y0
                         h["probe_sig"] = sig
-                        if not (has_merge_opcode and use_sleep_macros and sig in seen_sigs):
+                        if not (has_merge_opcode and use_sleep_macros and sig in seen_cap_sigs):
                             kernel.counters["candidate_executions"] += 1
-                        seen_sigs.add(sig)
+                        seen_cap_sigs.add(sig)
                         if pred_y0 == y0:
                             matched_early = True
-                    # If rule includes MERGE_EQUIVALENT and Sleep macros, stop probing further decoy helpers once matched
-                    if matched_early and has_merge_opcode and use_sleep_macros:
-                        break
+                            capsule_matched_y0 = True
+                if not capsule_matched_y0:
+                    for h_name in cand_helpers:
+                        if not any(h["helper_name"] == h_name for h in hypotheses):
+                            continue
+                        if h_name not in env.inspected_ast_nodes:
+                            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+                            kernel.counters["sandbox_actions"] += 1
+                        if h_name not in helper_x0_cache:
+                            r_call = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
+                            kernel.counters["sandbox_actions"] += 1
+                            helper_x0_cache[h_name] = json.loads(r_call.stdout)
+                        mid0 = helper_x0_cache[h_name]
+                        seen_sigs: set[tuple[int, ...]] = set()
+                        for h in hypotheses:
+                            if h["helper_name"] != h_name:
+                                continue
+                            pred_y0 = _predict_post_step_output(h["post_name"], mid0)
+                            sig = tuple(pred_y0)
+                            h["predicted_y0"] = pred_y0
+                            h["probe_sig"] = sig
+                            if not (has_merge_opcode and use_sleep_macros and sig in seen_sigs):
+                                kernel.counters["candidate_executions"] += 1
+                            seen_sigs.add(sig)
+                            if pred_y0 == y0:
+                                matched_early = True
+                        # If rule includes MERGE_EQUIVALENT and Sleep macros, stop probing further decoy helpers once matched
+                        if matched_early and has_merge_opcode and use_sleep_macros:
+                            break
                 for h in hypotheses:
                     if h["helper_name"] == "":
                         pred_y0 = _predict_post_step_output(h["post_name"], x0)
@@ -3466,14 +3551,20 @@ def execute_code_lab_rule_interpreter(
                         p_name = h["post_name"]
                         if h_name and len(vis_tests) > 1:
                             if h_name not in helper_x1_cache:
-                                if not use_sleep_macros and "teaching_example" in obs:
-                                    env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": h_name, "input": obs["teaching_example"]["input"]})
+                                if h_name in active_persisted_capsules:
+                                    helper_x1_cache[h_name] = list(
+                                        active_persisted_capsules[h_name]["callable"](list(vis_tests[1]["input"]))
+                                    )
+                                    kernel.counters["candidate_executions"] += 1
+                                else:
+                                    if not use_sleep_macros and "teaching_example" in obs:
+                                        env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": h_name, "input": obs["teaching_example"]["input"]})
+                                        kernel.counters["sandbox_actions"] += 1
+                                        kernel.counters["queries"] += 1
+                                    r_g = env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": vis_tests[1]["input"]})
                                     kernel.counters["sandbox_actions"] += 1
                                     kernel.counters["queries"] += 1
-                                r_g = env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": vis_tests[1]["input"]})
-                                kernel.counters["sandbox_actions"] += 1
-                                kernel.counters["queries"] += 1
-                                helper_x1_cache[h_name] = json.loads(r_g.stdout)["expected_output"]
+                                    helper_x1_cache[h_name] = json.loads(r_g.stdout)["expected_output"]
                             pred_y1 = _predict_post_step_output(p_name, helper_x1_cache[h_name])
                             kernel.counters["candidate_executions"] += 1
                             if pred_y1 != vis_tests[1]["expected_output"]:
@@ -3482,29 +3573,49 @@ def execute_code_lab_rule_interpreter(
                     if consistent:
                         hypotheses = consistent
                 else:
-                    # Without PREDICT_EFFECTS, rule must filter hypotheses by applying AST patches and running visible tests in sandbox
+                    # Without PREDICT_EFFECTS yet: if a persisted capsule is available, check it first
                     consistent = []
-                    for h in hypotheses:
-                        h_name = h["helper_name"]
-                        p_name = h["post_name"]
-                        if h_name and h_name not in env.inspected_ast_nodes:
-                            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
-                            kernel.counters["sandbox_actions"] += 1
-                        patch_body = (
-                            f"    return {p_name}({h_name}(seq))"
-                            if h_name
-                            else f"    return {p_name}(seq)"
-                        )
-                        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": patch_body})
-                        r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
-                        kernel.counters["sandbox_actions"] += 2
-                        kernel.counters["candidate_executions"] += len(vis_tests)
-                        if r_vis.state_diff.get("visible_passed") == r_vis.state_diff.get("visible_total"):
-                            consistent.append(h)
-                            if query_strategy != "exhaustive":
-                                break
-                    if consistent:
-                        hypotheses = consistent
+                    if active_persisted_capsules:
+                        x0 = observed_examples[0]["input"]
+                        for h in hypotheses:
+                            h_name = h["helper_name"]
+                            p_name = h["post_name"]
+                            if h_name in active_persisted_capsules:
+                                env.inspected_ast_nodes[h_name] = str(active_persisted_capsules[h_name]["source_code"])
+                                if h_name not in helper_x0_cache:
+                                    helper_x0_cache[h_name] = list(active_persisted_capsules[h_name]["callable"](list(x0)))
+                                    kernel.counters["candidate_executions"] += 1
+                                pred_y0 = _predict_post_step_output(p_name, helper_x0_cache[h_name])
+                                h["predicted_y0"] = pred_y0
+                                h["probe_sig"] = tuple(pred_y0)
+                                kernel.counters["candidate_executions"] += 1
+                                if pred_y0 == y0:
+                                    consistent.append(h)
+                        if consistent:
+                            hypotheses = consistent
+                            effects_predicted = True
+                    if not consistent:
+                        for h in hypotheses:
+                            h_name = h["helper_name"]
+                            p_name = h["post_name"]
+                            if h_name and h_name not in env.inspected_ast_nodes:
+                                env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+                                kernel.counters["sandbox_actions"] += 1
+                            patch_body = (
+                                f"    return {p_name}({h_name}(seq))"
+                                if h_name
+                                else f"    return {p_name}(seq)"
+                            )
+                            env.execute({"action": "APPLY_AST_PATCH", "replacement_body": patch_body})
+                            r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
+                            kernel.counters["sandbox_actions"] += 2
+                            kernel.counters["candidate_executions"] += len(vis_tests)
+                            if r_vis.state_diff.get("visible_passed") == r_vis.state_diff.get("visible_total"):
+                                consistent.append(h)
+                                if query_strategy != "exhaustive":
+                                    break
+                        if consistent:
+                            hypotheses = consistent
 
         elif op == "RANK_BY_MDL":
             if hypotheses:
@@ -3517,7 +3628,7 @@ def execute_code_lab_rule_interpreter(
             if hypotheses and obs:
                 x0 = vis_tests[0]["input"]
                 x1 = vis_tests[1]["input"] if len(vis_tests) > 1 else x0
-                if len(hypotheses) == 1 and equivalents_merged and use_sleep_macros:
+                if len(hypotheses) == 1 and (equivalents_merged or hypotheses[0].get("from_persisted_capsule", False)) and use_sleep_macros:
                     # Only 1 surviving equivalence class: select x1 on the winning helper
                     selected_query_probe = (hypotheses[0]["helper_name"], x1)
                 elif query_strategy == "exhaustive":
@@ -3547,6 +3658,12 @@ def execute_code_lab_rule_interpreter(
                         if h["helper_name"] and h["helper_name"] not in surviving_helpers:
                             surviving_helpers.append(h["helper_name"])
                     for h_name in surviving_helpers:
+                        if h_name in active_persisted_capsules:
+                            helper_x1_cache[h_name] = list(
+                                active_persisted_capsules[h_name]["callable"](list(q_inp))
+                            )
+                            kernel.counters["candidate_executions"] += 1
+                            continue
                         if h_name not in env.inspected_ast_nodes:
                             env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
                             kernel.counters["sandbox_actions"] += 1
@@ -3559,20 +3676,32 @@ def execute_code_lab_rule_interpreter(
                         kernel.counters["queries"] += 1
                         helper_x1_cache[h_name] = json.loads(r1.stdout)["expected_output"]
                 elif q_mode:
-                    # Single targeted helper probe selected after equivalence merging
-                    if not use_sleep_macros and len(vis_tests) > 2:
-                        env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": q_mode, "input": vis_tests[2]["input"]})
+                    if q_mode in active_persisted_capsules:
+                        helper_x1_cache[q_mode] = list(
+                            active_persisted_capsules[q_mode]["callable"](list(q_inp))
+                        )
+                        kernel.counters["candidate_executions"] += 1
+                    else:
+                        # Single targeted helper probe selected after equivalence merging
+                        if not use_sleep_macros and len(vis_tests) > 2:
+                            env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": q_mode, "input": vis_tests[2]["input"]})
+                            kernel.counters["sandbox_actions"] += 1
+                            kernel.counters["queries"] += 1
+                        r1 = env.execute({"action": "GENERATE_TEST", "function_name": q_mode, "input": q_inp})
                         kernel.counters["sandbox_actions"] += 1
                         kernel.counters["queries"] += 1
-                    r1 = env.execute({"action": "GENERATE_TEST", "function_name": q_mode, "input": q_inp})
-                    kernel.counters["sandbox_actions"] += 1
-                    kernel.counters["queries"] += 1
-                    helper_x1_cache[q_mode] = json.loads(r1.stdout)["expected_output"]
+                        helper_x1_cache[q_mode] = json.loads(r1.stdout)["expected_output"]
 
         elif op == "PROPOSE_PRIMITIVE":
             if hypotheses and obs:
                 top_h = hypotheses[0]["helper_name"]
-                if top_h and top_h in env.inspected_ast_nodes:
+                if top_h and top_h in active_persisted_capsules:
+                    cap_src = str(active_persisted_capsules[top_h]["source_code"])
+                    env.proposed_primitives.append(dict(proposed_name=top_h, source_code=cap_src))
+                    promoted_source = cap_src
+                    reused_persisted_capsule = True
+                    lifecycle_record = active_persisted_capsules[top_h].get("proposal")
+                elif top_h and top_h in env.inspected_ast_nodes:
                     helper_ev = [e for e in env.helper_call_evidence if e.get("function_name") == top_h]
                     helper_src = env.inspected_ast_nodes[top_h]
                     env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": top_h, "source_code": helper_src})
@@ -3615,6 +3744,24 @@ def execute_code_lab_rule_interpreter(
                             blackbox_heldout_eval=bb_heldout,
                         )
                         lifecycle_record = lifecycle_res["proposal"]
+                        if (
+                            persist_capsule_flag
+                            and persisted_capsules is not None
+                            and top_h in kernel.promoted_primitives
+                        ):
+                            cap_id = f"_promoted_cap_{env.family_name}"
+                            cap_src = re.sub(
+                                rf"^(\s*def\s+){re.escape(top_h)}\b",
+                                rf"\1{cap_id}",
+                                helper_src,
+                                count=1,
+                            )
+                            persisted_capsules[cap_id] = dict(
+                                capsule_name=cap_id,
+                                source_code=cap_src,
+                                callable=kernel.promoted_primitives[top_h]["callable"],
+                                proposal=lifecycle_record,
+                            )
 
         elif op == "ACCEPT_IF_IDENTIFIED":
             if hypotheses:
@@ -3672,7 +3819,7 @@ def execute_code_lab_rule_interpreter(
     )
     four_lab_transfer_report: dict[str, Any] | None = None
     four_lab_sub: dict[str, Any] | None = None
-    if cross_lab_enabled and chosen_helper in kernel.promoted_primitives:
+    if run_four_lab_downstream and cross_lab_enabled and chosen_helper in kernel.promoted_primitives:
         fl_solved = solve_four_lab_tasks_with_promoted_capsule(
             seed=env.seed,
             family_name=env.family_name,
@@ -3710,6 +3857,8 @@ def execute_code_lab_rule_interpreter(
         chosen_post=chosen_post,
         applied_ast_patch=applied_ast_patch,
         promoted_into_target_scope=bool(promoted_source),
+        direct_helper_copy_enabled=bool(env.allow_direct_helper_copy),
+        reused_persisted_capsule=bool(reused_persisted_capsule),
     )
 
     return dict(
@@ -3718,6 +3867,7 @@ def execute_code_lab_rule_interpreter(
         chosen_helper=chosen_helper,
         chosen_post=chosen_post,
         promoted_source=promoted_source,
+        reused_persisted_capsule=reused_persisted_capsule,
         investigation_trace=investigation_trace,
         lifecycle_record=lifecycle_record,
         hidden_eval=hidden_eval,
@@ -3773,6 +3923,146 @@ def evaluate_stage_b_instruction_ablations(
     return ablation_rows
 
 
+def evaluate_sequential_fresh_tasks_stage_b(
+    kernel: ImmutableTrustedKernel,
+    frozen_evolved_rule: dict[str, Any],
+    old_skill_suite: list[tuple[LearnerTaskView, EvaluatorTaskPrivate]],
+    macro_library: list[dict[str, Any]],
+    seed: int,
+    family_name: str,
+    freeze_journal_sha256: str = "verified_freeze_journal_sha256",
+    num_tasks: int = 4,
+) -> dict[str, Any]:
+    """Tests both `persistent_capsule_learner` (`corrected_frozen_evolved_rule`) and
+    `direct_helper_import_without_capsule` across a sequence of `num_tasks` fresh tasks
+    ($T_1, T_2, T_3, T_4$, `task_index = 0, 1, 2, 3`) with identical access and identical
+    action/compute costs (`allow_direct_helper_copy=True` for both).
+
+    - On each fresh task $T_k$, the candidate helper slots (`_cand_alpha_1`, `_cand_alpha_2`,
+      `_cand_beta_1`) and decoy parameters are freshly permuted, the target post-step
+      composition (`_post_reverse`, `_post_inc`, `_post_dedup`) is rotated, and fresh visible
+      and private hidden test inputs are generated.
+    - `direct_helper_import_without_capsule` uses the discovered helper directly on each task
+      without persistent capsule promotion (`PROPOSE_PRIMITIVE`), so it is cheaper on Task 1
+      ($T_1$) by avoiding promotion validation overhead, but must re-discover the permuted
+      helper on Tasks 2..4.
+    - `persistent_capsule_learner` pays the 6-stage `PROPOSE_PRIMITIVE` validation cost on
+      Task 1 ($T_1$) and reuses its promoted capsule on Tasks 2..4 ($T_2, T_3, T_4$)."""
+    rule_programs = build_stage_b_method_rule_programs(frozen_evolved_rule)
+
+    capsule_prog = copy.deepcopy(rule_programs["corrected_frozen_evolved_rule"])
+    capsule_prog["rule_id"] = "persistent_capsule_learner"
+    capsule_prog["allow_direct_helper_copy"] = True
+    capsule_prog["persist_promoted_capsule"] = True
+
+    direct_prog = copy.deepcopy(rule_programs["direct_helper_import_without_capsule"])
+    direct_prog["rule_id"] = "direct_helper_import_without_capsule"
+    direct_prog["allow_direct_helper_copy"] = True
+    direct_prog["persist_promoted_capsule"] = False
+
+    capsule_store: dict[str, dict[str, Any]] = {}
+    direct_store: dict[str, dict[str, Any]] = {}
+
+    per_task_records: list[dict[str, Any]] = []
+    cum_capsule_cost = 0.0
+    cum_direct_cost = 0.0
+    cum_capsule_exps = 0.0
+    cum_direct_exps = 0.0
+
+    for t_idx in range(num_tasks):
+        env_t = CommonEnvironmentAdapter(
+            family_name=family_name,
+            seed=seed,
+            freeze_journal_sha256=freeze_journal_sha256,
+            task_index=t_idx,
+            allow_direct_helper_copy=True,
+        )
+        try:
+            snap_t = env_t.snapshot()
+            cap_res = execute_code_lab_rule_interpreter(
+                rule_program=capsule_prog,
+                env=env_t,
+                snap0=snap_t,
+                kernel=kernel,
+                old_skill_suite=old_skill_suite,
+                macro_library=macro_library,
+                seed=seed + t_idx,
+                persisted_capsules=capsule_store,
+                run_four_lab_downstream=False,
+            )
+            dir_res = execute_code_lab_rule_interpreter(
+                rule_program=direct_prog,
+                env=env_t,
+                snap0=snap_t,
+                kernel=kernel,
+                old_skill_suite=old_skill_suite,
+                macro_library=macro_library,
+                seed=seed + t_idx,
+                persisted_capsules=direct_store,
+                run_four_lab_downstream=False,
+            )
+            cum_capsule_cost = float(round(cum_capsule_cost + cap_res["compute_cost"], 6))
+            cum_direct_cost = float(round(cum_direct_cost + dir_res["compute_cost"], 6))
+            cum_capsule_exps = float(round(cum_capsule_exps + cap_res["experiments"], 6))
+            cum_direct_exps = float(round(cum_direct_exps + dir_res["experiments"], 6))
+
+            per_task_records.append(
+                dict(
+                    task_index=t_idx,
+                    task_label=f"T{t_idx + 1}",
+                    persistent_capsule_accuracy=cap_res["hidden_eval"]["hidden_accuracy"],
+                    direct_helper_accuracy=dir_res["hidden_eval"]["hidden_accuracy"],
+                    persistent_capsule_experiments=cap_res["experiments"],
+                    direct_helper_experiments=dir_res["experiments"],
+                    persistent_capsule_compute_cost=cap_res["compute_cost"],
+                    direct_helper_compute_cost=dir_res["compute_cost"],
+                    cumulative_persistent_capsule_cost=cum_capsule_cost,
+                    cumulative_direct_helper_cost=cum_direct_cost,
+                    cumulative_persistent_capsule_experiments=cum_capsule_exps,
+                    cumulative_direct_helper_experiments=cum_direct_exps,
+                    persistent_capsule_reused=bool(cap_res["reused_persisted_capsule"]),
+                    persistent_chosen_post=cap_res["chosen_post"],
+                    direct_chosen_helper=dir_res["chosen_helper"],
+                    direct_chosen_post=dir_res["chosen_post"],
+                )
+            )
+        finally:
+            env_t.close()
+
+    cap_mean_acc = float(
+        sum(r["persistent_capsule_accuracy"] for r in per_task_records) / len(per_task_records)
+    )
+    dir_mean_acc = float(
+        sum(r["direct_helper_accuracy"] for r in per_task_records) / len(per_task_records)
+    )
+    return dict(
+        family_name=family_name,
+        num_tasks=num_tasks,
+        identical_access_and_costs=True,
+        task_1_direct_helper_cheaper=bool(
+            per_task_records[0]["direct_helper_compute_cost"]
+            < per_task_records[0]["persistent_capsule_compute_cost"]
+        ),
+        break_even_task_index=next(
+            (
+                r["task_index"]
+                for r in per_task_records
+                if r["cumulative_persistent_capsule_cost"] < r["cumulative_direct_helper_cost"]
+            ),
+            -1,
+        ),
+        persistent_capsule_mean_accuracy=cap_mean_acc,
+        direct_helper_mean_accuracy=dir_mean_acc,
+        persistent_capsule_total_cost=cum_capsule_cost,
+        direct_helper_total_cost=cum_direct_cost,
+        cumulative_cost_savings=float(round(cum_direct_cost - cum_capsule_cost, 6)),
+        persistent_capsule_total_experiments=cum_capsule_exps,
+        direct_helper_total_experiments=cum_direct_exps,
+        cumulative_experiment_savings=float(round(cum_direct_exps - cum_capsule_exps, 6)),
+        tasks=per_task_records,
+    )
+
+
 def run_stage_b_code_transfer_for_seed(
     kernel: ImmutableTrustedKernel,
     frozen_evolved_rule: dict[str, Any],
@@ -3784,8 +4074,10 @@ def run_stage_b_code_transfer_for_seed(
     """Executes Stage B (Open Primitive Code Transfer v1) across all 3 independently
     generated unknown-library families (`ulib_window_checksum`, `ulib_runlength_bucket`,
     `ulib_zigzag_interleave`) in the isolated black-box evaluator process and compares
-    all 9 required Stage B methods through the identical `CommonEnvironmentAdapter`
-    and unified `execute_code_lab_rule_interpreter`."""
+    all 10 Stage B methods (including `direct_helper_import_without_capsule`) plus the
+    4-task sequential fresh-task evaluation (`evaluate_sequential_fresh_tasks_stage_b`)
+    through the identical `CommonEnvironmentAdapter` and unified
+    `execute_code_lab_rule_interpreter`."""
     kernel.verify_integrity()
 
     per_family_results: dict[str, Any] = {}
@@ -3793,10 +4085,12 @@ def run_stage_b_code_transfer_for_seed(
     promotion_records: list[dict[str, Any]] = []
     cross_lab_bindings: list[dict[str, Any]] = []
     stage_b_instruction_ablations: list[dict[str, Any]] = []
+    sequential_by_family: dict[str, Any] = {}
 
     rule_programs = build_stage_b_method_rule_programs(frozen_evolved_rule)
     baseline_names = (
         "corrected_frozen_evolved_rule",
+        "direct_helper_import_without_capsule",
         "strongest_handwritten_learner",
         "exact_information_gain_plus_effect_composition",
         "exhaustive_sandbox_probing",
@@ -3851,8 +4145,21 @@ def run_stage_b_code_transfer_for_seed(
                 )
 
             ev_run = method_runs["corrected_frozen_evolved_rule"]
+            dir_run = method_runs["direct_helper_import_without_capsule"]
             hw_run = method_runs["strongest_handwritten_learner"]
             no_prop_run = method_runs["learner_without_propose_primitive"]
+
+            seq_report = evaluate_sequential_fresh_tasks_stage_b(
+                kernel=kernel,
+                frozen_evolved_rule=frozen_evolved_rule,
+                old_skill_suite=old_skill_suite,
+                macro_library=macro_library,
+                seed=seed + 100 * fam_idx,
+                family_name=fam_name,
+                freeze_journal_sha256=freeze_journal_sha256,
+                num_tasks=4,
+            )
+            sequential_by_family[fam_name] = seq_report
 
             if ev_run["lifecycle_record"] is not None:
                 promotion_records.append(ev_run["lifecycle_record"])
@@ -3896,6 +4203,7 @@ def run_stage_b_code_transfer_for_seed(
 
             fl_eval = full_4lab["evaluation"]
             ev_trace = ev_run["investigation_trace"]
+            dir_trace = dir_run["investigation_trace"]
             no_prop_trace = no_prop_run["investigation_trace"]
             propose_control_unconfounded = bool(
                 ev_trace["inspected_ast_nodes"] == no_prop_trace["inspected_ast_nodes"]
@@ -3942,11 +4250,17 @@ def run_stage_b_code_transfer_for_seed(
                 hidden_accuracy=ev_run["hidden_eval"]["hidden_accuracy"],
                 evolved_experiments=ev_run["experiments"],
                 evolved_compute_cost=ev_run["compute_cost"],
+                direct_helper_single_task_accuracy=dir_run["hidden_eval"]["hidden_accuracy"],
+                direct_helper_single_task_experiments=dir_run["experiments"],
+                direct_helper_single_task_compute_cost=dir_run["compute_cost"],
                 handwritten_compute_cost=hw_run["compute_cost"],
                 without_propose_primitive_accuracy=no_prop_run["hidden_eval"]["hidden_accuracy"],
+                without_propose_tests_execution_scope_registration_only=True,
                 propose_control_unconfounded=propose_control_unconfounded,
                 evolved_investigation_trace=ev_trace,
+                direct_helper_investigation_trace=dir_trace,
                 without_propose_investigation_trace=no_prop_trace,
+                sequential_fresh_tasks=seq_report,
                 cross_lab_language_accuracy=fl_eval["language_lab_accuracy"],
                 cross_lab_coding_accuracy=fl_eval["coding_lab_accuracy"],
                 cross_lab_reasoning_accuracy=fl_eval["reasoning_lab_accuracy"],
@@ -3972,9 +4286,42 @@ def run_stage_b_code_transfer_for_seed(
             mean_cross_lab_success=float(sum(r["cross_lab_success"] for r in rows) / len(rows)),
         )
 
+    seq_rows = list(sequential_by_family.values())
+    sequential_summary = dict(
+        num_tasks_per_family=4,
+        identical_access_and_costs=True,
+        mean_persistent_capsule_accuracy=float(
+            sum(r["persistent_capsule_mean_accuracy"] for r in seq_rows) / len(seq_rows)
+        ),
+        mean_direct_helper_accuracy=float(
+            sum(r["direct_helper_mean_accuracy"] for r in seq_rows) / len(seq_rows)
+        ),
+        mean_persistent_capsule_total_cost=float(
+            sum(r["persistent_capsule_total_cost"] for r in seq_rows) / len(seq_rows)
+        ),
+        mean_direct_helper_total_cost=float(
+            sum(r["direct_helper_total_cost"] for r in seq_rows) / len(seq_rows)
+        ),
+        mean_cumulative_cost_savings=float(
+            sum(r["cumulative_cost_savings"] for r in seq_rows) / len(seq_rows)
+        ),
+        mean_persistent_capsule_total_experiments=float(
+            sum(r["persistent_capsule_total_experiments"] for r in seq_rows) / len(seq_rows)
+        ),
+        mean_direct_helper_total_experiments=float(
+            sum(r["direct_helper_total_experiments"] for r in seq_rows) / len(seq_rows)
+        ),
+        mean_cumulative_experiment_savings=float(
+            sum(r["cumulative_experiment_savings"] for r in seq_rows) / len(seq_rows)
+        ),
+        all_task_1_direct_helper_cheaper=bool(all(r["task_1_direct_helper_cheaper"] for r in seq_rows)),
+        all_break_even_by_task_2=bool(all(r["break_even_task_index"] == 1 for r in seq_rows)),
+    )
+
     return dict(
         per_family=per_family_results,
         method_summaries=method_means,
+        sequential_fresh_tasks_summary=sequential_summary,
         promotion_records=promotion_records,
         cross_lab_bindings=cross_lab_bindings,
         stage_b_instruction_ablations=stage_b_instruction_ablations,
@@ -4381,6 +4728,7 @@ def evaluate_open_primitive_transfer_artifact(
     # Aggregate Stage B summaries
     stage_b_method_names = (
         "corrected_frozen_evolved_rule",
+        "direct_helper_import_without_capsule",
         "strongest_handwritten_learner",
         "exact_information_gain_plus_effect_composition",
         "exhaustive_sandbox_probing",
@@ -4408,9 +4756,27 @@ def evaluate_open_primitive_transfer_artifact(
         u_acc = [s["stage_b_report"]["per_family"][ufam]["hidden_accuracy"] for s in seeds_data]
         u_exp = [s["stage_b_report"]["per_family"][ufam]["evolved_experiments"] for s in seeds_data]
         u_cost = [s["stage_b_report"]["per_family"][ufam]["evolved_compute_cost"] for s in seeds_data]
+        u_dir_acc = [s["stage_b_report"]["per_family"][ufam].get("direct_helper_single_task_accuracy", 1.0) for s in seeds_data]
+        u_dir_cost = [s["stage_b_report"]["per_family"][ufam].get("direct_helper_single_task_compute_cost", 0.0) for s in seeds_data]
         u_hw_cost = [s["stage_b_report"]["per_family"][ufam]["handwritten_compute_cost"] for s in seeds_data]
         u_no_prop = [s["stage_b_report"]["per_family"][ufam]["without_propose_primitive_accuracy"] for s in seeds_data]
         u_unconf = [bool(s["stage_b_report"]["per_family"][ufam].get("propose_control_unconfounded", False)) for s in seeds_data]
+        u_seq_cap_cost = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["persistent_capsule_total_cost"]
+            for s in seeds_data
+        ]
+        u_seq_dir_cost = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["direct_helper_total_cost"]
+            for s in seeds_data
+        ]
+        u_seq_cap_acc = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["persistent_capsule_mean_accuracy"]
+            for s in seeds_data
+        ]
+        u_seq_dir_acc = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["direct_helper_mean_accuracy"]
+            for s in seeds_data
+        ]
         u_4lab = [s["stage_b_report"]["per_family"][ufam]["overall_four_lab_accuracy"] for s in seeds_data]
         u_cap_rem = [s["stage_b_report"]["per_family"][ufam]["capsule_removed_four_lab_accuracy"] for s in seeds_data]
         u_unbind = [s["stage_b_report"]["per_family"][ufam].get("unlearned_binding_four_lab_accuracy", 0.0) for s in seeds_data]
@@ -4419,9 +4785,15 @@ def evaluate_open_primitive_transfer_artifact(
             mean_hidden_accuracy=float(sum(u_acc) / len(u_acc)),
             mean_evolved_experiments=float(sum(u_exp) / len(u_exp)),
             mean_evolved_compute_cost=float(sum(u_cost) / len(u_cost)),
+            mean_direct_helper_single_task_accuracy=float(sum(u_dir_acc) / len(u_dir_acc)),
+            mean_direct_helper_single_task_compute_cost=float(sum(u_dir_cost) / len(u_dir_cost)),
             mean_handwritten_compute_cost=float(sum(u_hw_cost) / len(u_hw_cost)),
             mean_without_propose_primitive_accuracy=float(sum(u_no_prop) / len(u_no_prop)),
             all_propose_control_unconfounded=bool(all(u_unconf)),
+            mean_sequential_4task_capsule_accuracy=float(sum(u_seq_cap_acc) / len(u_seq_cap_acc)),
+            mean_sequential_4task_direct_helper_accuracy=float(sum(u_seq_dir_acc) / len(u_seq_dir_acc)),
+            mean_sequential_4task_capsule_total_cost=float(sum(u_seq_cap_cost) / len(u_seq_cap_cost)),
+            mean_sequential_4task_direct_helper_total_cost=float(sum(u_seq_dir_cost) / len(u_seq_dir_cost)),
             mean_overall_four_lab_accuracy=float(sum(u_4lab) / len(u_4lab)),
             mean_capsule_removed_four_lab_accuracy=float(sum(u_cap_rem) / len(u_cap_rem)),
             mean_unlearned_binding_four_lab_accuracy=float(sum(u_unbind) / len(u_unbind)),
@@ -4434,9 +4806,118 @@ def evaluate_open_primitive_transfer_artifact(
     ev_b_exps = [s["stage_b_report"]["method_summaries"]["corrected_frozen_evolved_rule"]["mean_experiments"] for s in seeds_data]
     hw_b_exps = [s["stage_b_report"]["method_summaries"]["strongest_handwritten_learner"]["mean_experiments"] for s in seeds_data]
 
+    seq_cap_costs = [
+        s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_persistent_capsule_total_cost"]
+        for s in seeds_data
+    ]
+    seq_dir_costs = [
+        s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_direct_helper_total_cost"]
+        for s in seeds_data
+    ]
+    seq_cap_exps = [
+        s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_persistent_capsule_total_experiments"]
+        for s in seeds_data
+    ]
+    seq_dir_exps = [
+        s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_direct_helper_total_experiments"]
+        for s in seeds_data
+    ]
+
     paired_b_cost_vs_hw = _paired_stats(hw_b_costs, ev_b_costs)
     paired_b_cost_vs_ige = _paired_stats(ige_b_costs, ev_b_costs)
     paired_b_exp_vs_hw = _paired_stats(hw_b_exps, ev_b_exps)
+    paired_b_seq_cost_vs_dir = _paired_stats(seq_dir_costs, seq_cap_costs)
+    paired_b_seq_exp_vs_dir = _paired_stats(seq_dir_exps, seq_cap_exps)
+
+    per_task_seq_means: list[dict[str, Any]] = []
+    for t_idx in range(4):
+        t_cap_accs = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["persistent_capsule_accuracy"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        t_dir_accs = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["direct_helper_accuracy"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        t_cap_costs = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["persistent_capsule_compute_cost"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        t_dir_costs = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["direct_helper_compute_cost"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        t_cum_cap_costs = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["cumulative_persistent_capsule_cost"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        t_cum_dir_costs = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["cumulative_direct_helper_cost"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        t_cap_exps = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["persistent_capsule_experiments"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        t_dir_exps = [
+            s["stage_b_report"]["per_family"][ufam]["sequential_fresh_tasks"]["tasks"][t_idx]["direct_helper_experiments"]
+            for s in seeds_data
+            for ufam in UNKNOWN_LIBRARY_FAMILIES
+        ]
+        per_task_seq_means.append(
+            dict(
+                task_index=t_idx,
+                task_label=f"T{t_idx + 1}",
+                mean_persistent_capsule_accuracy=float(sum(t_cap_accs) / len(t_cap_accs)),
+                mean_direct_helper_accuracy=float(sum(t_dir_accs) / len(t_dir_accs)),
+                mean_persistent_capsule_experiments=float(sum(t_cap_exps) / len(t_cap_exps)),
+                mean_direct_helper_experiments=float(sum(t_dir_exps) / len(t_dir_exps)),
+                mean_persistent_capsule_compute_cost=float(sum(t_cap_costs) / len(t_cap_costs)),
+                mean_direct_helper_compute_cost=float(sum(t_dir_costs) / len(t_dir_costs)),
+                mean_cumulative_persistent_capsule_cost=float(sum(t_cum_cap_costs) / len(t_cum_cap_costs)),
+                mean_cumulative_direct_helper_cost=float(sum(t_cum_dir_costs) / len(t_cum_dir_costs)),
+            )
+        )
+
+    sequential_fresh_tasks_summary = dict(
+        num_tasks_per_family=4,
+        identical_access_and_costs=True,
+        proposal_removal_narrow_meaning="learner_without_propose_primitive (0.0000 accuracy) tests strict execution-scope registration when target_pipeline.py excludes unpromoted helpers; direct_helper_import_without_capsule (1.0000 accuracy) tests direct helper copy/import without persistent capsule learning.",
+        mean_persistent_capsule_accuracy=float(
+            sum(s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_persistent_capsule_accuracy"] for s in seeds_data)
+            / len(seeds_data)
+        ),
+        mean_direct_helper_accuracy=float(
+            sum(s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_direct_helper_accuracy"] for s in seeds_data)
+            / len(seeds_data)
+        ),
+        mean_persistent_capsule_total_cost=float(sum(seq_cap_costs) / len(seq_cap_costs)),
+        mean_direct_helper_total_cost=float(sum(seq_dir_costs) / len(seq_dir_costs)),
+        mean_cumulative_cost_savings=float(
+            sum(s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_cumulative_cost_savings"] for s in seeds_data)
+            / len(seeds_data)
+        ),
+        mean_persistent_capsule_total_experiments=float(sum(seq_cap_exps) / len(seq_cap_exps)),
+        mean_direct_helper_total_experiments=float(sum(seq_dir_exps) / len(seq_dir_exps)),
+        mean_cumulative_experiment_savings=float(
+            sum(s["stage_b_report"]["sequential_fresh_tasks_summary"]["mean_cumulative_experiment_savings"] for s in seeds_data)
+            / len(seeds_data)
+        ),
+        all_task_1_direct_helper_cheaper=bool(
+            all(s["stage_b_report"]["sequential_fresh_tasks_summary"]["all_task_1_direct_helper_cheaper"] for s in seeds_data)
+        ),
+        all_break_even_by_task_2=bool(
+            all(s["stage_b_report"]["sequential_fresh_tasks_summary"]["all_break_even_by_task_2"] for s in seeds_data)
+        ),
+        per_task_progression=per_task_seq_means,
+    )
 
     # Check all 12 registered acceptance gates
     worst_ret_regression = max(s["retention_report"]["worst_regression"] for s in seeds_data)
@@ -4505,6 +4986,9 @@ def evaluate_open_primitive_transfer_artifact(
             and stage_b_summaries["corrected_frozen_evolved_rule"]["mean_success"]
             - stage_b_summaries["learner_without_propose_primitive"]["mean_success"]
             >= 0.50
+            and stage_b_summaries["direct_helper_import_without_capsule"]["mean_success"] >= 0.99
+            and paired_b_seq_cost_vs_dir["ci95_low"] > 0.0
+            and paired_b_seq_exp_vs_dir["ci95_low"] > 0.0
         ),
         gate_09_no_human_written_cross_lab_semantic_mapping=bool(
             not c["manually_supplied_cross_lab_mapping"]
@@ -4542,6 +5026,7 @@ def evaluate_open_primitive_transfer_artifact(
         stage_a_summaries=stage_a_summaries,
         stage_b_summaries=stage_b_summaries,
         stage_b_by_family=stage_b_by_family,
+        sequential_fresh_tasks_summary=sequential_fresh_tasks_summary,
         unknown_families_reproduced=unknown_families_reproduced,
         paired_comparisons=dict(
             stage_a_cost_vs_exact_info_gain=paired_a_vs_ig,
@@ -4550,6 +5035,8 @@ def evaluate_open_primitive_transfer_artifact(
             stage_b_cost_vs_strongest_handwritten=paired_b_cost_vs_hw,
             stage_b_cost_vs_info_gain_plus_effect=paired_b_cost_vs_ige,
             stage_b_experiments_vs_strongest_handwritten=paired_b_exp_vs_hw,
+            stage_b_sequential_cost_vs_direct_helper=paired_b_seq_cost_vs_dir,
+            stage_b_sequential_experiments_vs_direct_helper=paired_b_seq_exp_vs_dir,
         ),
         retention_summary=dict(
             mean_pre_accuracy=float(

@@ -7,9 +7,9 @@
 - **Protocol**: [NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md) (`0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e`)
 - **v1 Adversarial Audit**: [NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md) ([`artifacts/seed_meta_rule_evolution_v1_audit.json`](../artifacts/seed_meta_rule_evolution_v1_audit.json))
 - **Locked Config**: [`configs/seed_open_primitive_transfer.json`](../configs/seed_open_primitive_transfer.json) (`9d8e522a9386ff222297a5e0f9b93a16568e1fb0875a7503589c84061c56a3c9`)
-- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`4b30999632fd3938f2395acec42fd996ed417982384c93562f4ec863904549e6`)
-- **Independent Verifier Audit**: [`artifacts/seed_open_primitive_transfer_audit.json`](../artifacts/seed_open_primitive_transfer_audit.json) (`10ea2f3004d63cb8c6c6bae701e56bdac80a1b514eea8dbc71b399a4ef0c633c`, [`scripts/verify_seed_open_primitive_transfer.py`](../scripts/verify_seed_open_primitive_transfer.py))
-- **Integrated 10-Part Architecture Report**: [NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md](NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md) ([`artifacts/seed_integrated_architecture_v1.json`](../artifacts/seed_integrated_architecture_v1.json), `64939e9ead3e8c8a7458b3eaa2c06e385f81850a4989aa326c8f7943ba724796`)
+- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`05946d720e3df173f8ba35d6d79c1915cab7de1ac9d06025000c601e639adabb`)
+- **Independent Verifier Audit**: [`artifacts/seed_open_primitive_transfer_audit.json`](../artifacts/seed_open_primitive_transfer_audit.json) (`b4f0fb908ff64e8f7944c5ab1685a2631e7eb08337d4fede6ada416e46028d61`, [`scripts/verify_seed_open_primitive_transfer.py`](../scripts/verify_seed_open_primitive_transfer.py))
+- **Integrated 10-Part Architecture Report**: [NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md](NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md) ([`artifacts/seed_integrated_architecture_v1.json`](../artifacts/seed_integrated_architecture_v1.json), `7787af8e7b16e61dfaf02505715e66f8722e0107fe8400e27a4523f946514a8b`)
 - **Stage A Status**: `PASSED` (`stage_a_pass = true`)
 - **Stage B Status**: `PASSED` (`stage_b_pass = true`, `12/12` registered gates passed in isolated black-box subprocess)
 - **Overall Verdict**: `PASS_BOTH_STAGE_A_AND_STAGE_B`
@@ -107,25 +107,26 @@ Because Stage A passed all pre-declared criteria, the Stage A evolved rule was f
 
 - **Separate Evaluator Process**: Hidden test inputs (`12` private inputs per family per seed) and ground-truth reference implementations live exclusively inside `nexus.seed.blackbox_evaluator_worker` invoked via `subprocess.run`. Private test inputs are never returned or exposed to the learner process (`separate_evaluator_process = true`, `private_inputs_exposed_to_learner = false`).
 - **Zero Oracle Selection Fields**: `patched_target_body`, `post_op`, `correct_helper`, and `_private_hidden_tests` are absent from learner-accessible specifications and included in `FORBIDDEN_LEARNER_KEYS`.
-- **Multi-File Decoy Helpers & Multiple Call Sites**: Each unseen library workspace generated after rule freeze contains `helpers_alpha.py`, `helpers_beta.py`, and `target_pipeline.py` with **3 candidate helpers** (`_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` — 1 true helper and 2 plausible decoys whose assignment is permuted by seed), **3 candidate post-step functions** (`_post_reverse`, `_post_inc`, `_post_dedup`), and **3 candidate call sites** (`stage_pre_filter(seq)`, `stage_core_transform(seq)`, `solve_pipeline(seq)`).
-- **Identical Adapter & Receipt-Derived Costs**: All 9 Stage B methods execute through the identical `CommonEnvironmentAdapter`, choose their own inspection and probing actions, synthesize their own AST patches (`def solve_pipeline(seq): return ...`), and derive their experiment counts and compute costs exclusively from recorded `TransitionReceipt`s and `ImmutableTrustedKernel` counter deltas.
+- **Multi-File Decoy Helpers & Multiple Call Sites**: Each unseen library workspace generated after rule freeze contains `helpers_alpha.py`, `helpers_beta.py`, and `target_pipeline.py` with **3 candidate helpers** (`_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` — 1 true helper and 2 plausible decoys whose assignment is permuted by seed and task index), **3 candidate post-step functions** (`_post_reverse`, `_post_inc`, `_post_dedup`), and **3 candidate call sites** (`stage_pre_filter(seq)`, `stage_core_transform(seq)`, `solve_pipeline(seq)`).
+- **Identical Adapter & Receipt-Derived Costs**: All 10 Stage B methods execute through the identical `CommonEnvironmentAdapter`, choose their own inspection and probing actions, synthesize their own AST patches (`def solve_pipeline(seq): return ...`), and derive their experiment counts and compute costs exclusively from recorded `TransitionReceipt`s and `ImmutableTrustedKernel` counter deltas.
 
 Every `PROPOSE_PRIMITIVE` action creates a quarantined `PrimitiveProposal` that must traverse the 6-stage kernel lifecycle:
 $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATED} \to \texttt{HELDOUT\_VALIDATED} \to \texttt{RETENTION\_VALIDATED} \to \texttt{PROMOTED}$$
 
 ### 4.2 Stage B Per-Family Results Across 3 Independent Unknown-Library Families & 4 Downstream Labs
 
-| Unknown-Library Family | Candidate Helpers (1 True + 2 Decoys) | Invented Word | Hidden Accuracy (`evolved`) | Without `PROPOSE_PRIMITIVE` Accuracy (Unconfounded) | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | 4-Lab Transfer (`Lang` / `Code` / `Reas` / `World`) | Capsule-Removed / Unlearned-Binding / Unlearned-Adapter Controls |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `ulib_window_checksum` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `krelv` | `1.0000` | `0.0000` | `2.375` | `35.9563` | `84.3813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1719` / `0.1719` / `0.0625` |
-| `ulib_runlength_bucket` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `voux` | `1.0000` | `0.0000` | `2.375` | `33.6125` | `87.0688` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1875` / `0.1875` / `0.1250` |
-| `ulib_zigzag_interleave` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `zarn` | `1.0000` | `0.0000` | `2.375` | `35.1750` | `105.8813` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1484` / `0.1484` / `0.0234` |
+| Unknown-Library Family | Candidate Helpers (1 True + 2 Decoys) | Invented Word | Hidden Accuracy (`evolved`) | Direct-Helper Single-Task Accuracy / Cost (`direct_helper_import_without_capsule`) | Without `PROPOSE_PRIMITIVE` Accuracy (Strict Registration Only) | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | 4-Task Sequential Cost (`Capsule` vs `Direct Helper`) | 4-Lab Transfer (`Lang` / `Code` / `Reas` / `World`) | Capsule-Removed / Unlearned-Binding / Unlearned-Adapter Controls |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ulib_window_checksum` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `krelv` | `1.0000` | `1.0000` / `33.3563` | `0.0000` | `2.375` | `35.9563` | `84.3813` | `85.7938` vs `128.7375` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1719` / `0.1719` / `0.0625` |
+| `ulib_runlength_bucket` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `voux` | `1.0000` | `1.0000` / `31.0125` | `0.0000` | `2.375` | `33.6125` | `87.0688` | `83.4500` vs `126.3938` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1875` / `0.1875` / `0.1250` |
+| `ulib_zigzag_interleave` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `zarn` | `1.0000` | `1.0000` / `32.5750` | `0.0000` | `2.375` | `35.1750` | `105.8813` | `85.0125` vs `127.9563` | `1.00` / `1.00` / `1.00` / `1.00` | `0.1484` / `0.1484` / `0.0234` |
 
-### 4.3 Stage B 9-Method Comparison Across All 8 Seeds (Unified `execute_code_lab_rule_interpreter`)
+### 4.3 Stage B 10-Method Comparison Across All 8 Seeds (Unified `execute_code_lab_rule_interpreter`)
 
 | Stage B Method | Mean Hidden Success | Mean Sandbox Experiments | Mean Total Compute Cost | Mean 4-Lab Reuse Success (`Language`, `Coding`, `Reasoning`, `World`) |
 | :--- | :---: | :---: | :---: | :---: |
 | **`corrected_frozen_evolved_rule`** | **`1.0000`** | **`2.3750`** | **`34.9146`** | **`1.0000`** |
+| `direct_helper_import_without_capsule` | `1.0000` | `2.3750` | `32.3146` | `0.0000` |
 | `proposal_lifecycle_without_sleep_compression` | `1.0000` | `3.3750` | `45.5813` | `1.0000` |
 | `exact_information_gain_plus_effect_composition` | `1.0000` | `4.0000` | `47.5500` | `1.0000` |
 | `strongest_handwritten_learner` | `1.0000` | `9.1250` | `92.4438` | `1.0000` |
@@ -135,7 +136,29 @@ $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATE
 | `learner_without_propose_primitive` | `0.0000` | `2.3750` | `32.3146` | `0.0000` |
 | `examples_only_retrieval` | `0.0000` | `6.1250` | `69.1854` | `0.0000` |
 
-### 4.4 Stage B Paired Student-$t$ ($df=7$) Comparisons & Unconfounded Instruction Ablations
+### 4.4 Narrowed Meaning of `learner_without_propose_primitive` vs Direct-Helper Baseline (`direct_helper_import_without_capsule`) Across a Sequence of Fresh Tasks ($T_1 \dots T_4$)
+
+- **Narrowed Interpretation of Proposal Removal (`without_propose_tests_execution_scope_registration_only = true`)**:
+  - In `learner_without_propose_primitive` (`allow_direct_helper_copy = false`), `_bundle_target_pipeline_source` only bundles helpers that were promoted through `PROPOSE_PRIMITIVE` into `target_pipeline.py`'s execution scope. Its `0.0000` accuracy therefore demonstrates that **registration is required by this execution-scope design**—it does **not**, by itself, demonstrate that learning a reusable primitive beats directly importing, copying, or composing the discovered helper on a single task.
+- **Direct-Helper Baseline on a Single Task ($T_1$) (`direct_helper_import_without_capsule`)**:
+  - When `direct_helper_import_without_capsule` is given **identical access and identical costs** (`allow_direct_helper_copy = true`, `persist_promoted_capsule = false`) and allowed to copy/import the inspected winning helper directly into `target_pipeline.py`'s module scope without running `PROPOSE_PRIMITIVE`, it achieves **`1.0000` hidden accuracy** on $T_1$ at **lower** single-task compute cost (`32.3146` vs `34.9146`) because it avoids the `2.6000`-unit `PROPOSE_PRIMITIVE` validation overhead (`all_task_1_direct_helper_cheaper = true`).
+- **Sequential Fresh-Task Comparison ($T_1, T_2, T_3, T_4$, `evaluate_sequential_fresh_tasks_stage_b`)**:
+  - To test whether persistent capsule learning beats direct helper import/copy when both have identical access and costs (`allow_direct_helper_copy = true` for both), both systems were evaluated on a sequence of **4 fresh tasks ($T_1, T_2, T_3, T_4$)** per family per seed in the isolated `blackbox_evaluator_worker.py` subprocess, where each fresh task permutes candidate helper slots (`_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1`) and decoy parameters, rotates the target post-step composition (`_post_reverse`, `_post_inc`, `_post_dedup`), and draws fresh visible and private hidden test inputs while keeping the family's underlying helper semantics invariant:
+
+| Task in Sequence | `persistent_capsule_learner` Accuracy | `direct_helper_import_without_capsule` Accuracy | `persistent_capsule_learner` Step Experiments / Cost | `direct_helper_import_without_capsule` Step Experiments / Cost | Cumulative `persistent_capsule_learner` Cost | Cumulative `direct_helper_import_without_capsule` Cost |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Task 1 ($T_1$)** | `1.0000` | `1.0000` | `2.3750` / `34.9146` | `2.3750` / **`32.3146`** | `34.9146` | **`32.3146`** |
+| **Task 2 ($T_2$, Break-Even)** | `1.0000` | `1.0000` | **`1.0000`** / **`16.6125`** | `2.3750` / `32.3146` | **`51.5271`** | `64.6292` |
+| **Task 3 ($T_3$)** | `1.0000` | `1.0000` | **`1.0000`** / **`16.6125`** | `2.3750` / `30.7521` | **`68.1396`** | `95.3813` |
+| **Task 4 ($T_4$)** | `1.0000` | `1.0000` | **`1.0000`** / **`16.6125`** | `2.3750` / `32.3146` | **`84.7521`** | `127.6958` |
+
+  - **`direct_helper_import_without_capsule` minus `persistent_capsule_learner` 4-task cumulative compute cost**:
+    $$\Delta = +42.9438, \quad \text{SD} = 14.4846, \quad \text{SE} = 5.1211, \quad 95\%\ \text{CI} = [+30.8344,\ +55.0531]$$
+  - **`direct_helper_import_without_capsule` minus `persistent_capsule_learner` 4-task cumulative sandbox experiments**:
+    $$\Delta = +4.1250, \quad \text{SD} = 1.5526, \quad \text{SE} = 0.5489, \quad 95\%\ \text{CI} = [+2.8270,\ +5.4230]$$
+  - Across all 8 seeds and all 3 families (`24/24` family sequences), `direct_helper_import_without_capsule` is cheaper on $T_1$ (`all_task_1_direct_helper_cheaper = true`), `persistent_capsule_learner` breaks even by $T_2$ (`all_break_even_by_task_2 = true`), and persistent capsule reuse reduces 4-task cumulative compute cost by `33.63%` (`84.7521` vs `127.6958`) and sandbox experiments by `43.42%` (`5.3750` vs `9.5000`).
+
+### 4.5 Stage B Paired Student-$t$ ($df=7$) Comparisons & Unconfounded Instruction Ablations
 
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` compute cost**:
   $$\Delta = +57.5292, \quad \text{SD} = 14.8806, \quad \text{SE} = 5.2611, \quad 95\%\ \text{CI} = [+45.0887,\ +69.9696]$$
@@ -144,11 +167,11 @@ $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATE
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` sandbox experiments**:
   $$\Delta = +6.7500, \quad \text{SD} = 1.4880, \quad \text{SE} = 0.5261, \quad 95\%\ \text{CI} = [+5.5060,\ +7.9940]$$
 - **Unconfounded Causal Opcode Ablations in `execute_code_lab_rule_interpreter` (`stage_b_instruction_ablations`)**:
-  - Removing `PROPOSE_PRIMITIVE` (`all_propose_control_unconfounded = true`): keeps AST inspection, helper probing, all 12 hypothesis constructions, effect prediction, equivalence merging, hypothesis elimination, and AST patch synthesis 100% identical to the full rule, and solely omits promoting the discovered helper into `target_pipeline.py`'s module scope (`_bundle_target_pipeline_source`), dropping `hidden_accuracy` from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
+  - Removing `PROPOSE_PRIMITIVE` (`all_propose_control_unconfounded = true`, `without_propose_tests_execution_scope_registration_only = true`): keeps AST inspection, helper probing, all 12 hypothesis constructions, effect prediction, equivalence merging, hypothesis elimination, and AST patch synthesis 100% identical to the full rule, and solely omits promoting the discovered helper into `target_pipeline.py`'s module scope (`_bundle_target_pipeline_source`), dropping single-task `hidden_accuracy` under strict scope registration from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
   - Removing `CREATE_CAPSULE`: drops `hidden_accuracy` from `1.00` to `0.00` and 4-lab transfer from `1.00` to `0.00`.
   - Removing `PREDICT_EFFECTS`: increases sandbox experiments from `2.375` to `8.00` and compute cost from `35.35` to `70.75` on the integrated episode (`66.10–105.30` across seeds with effect-guided query/merge).
 - **Autonomous Cross-Domain Adapter Induction & Non-Null-Callable 4-Lab Controls**:
-  - `solve_four_lab_tasks_with_promoted_capsule` uses the trained 10,970-parameter `SmallNeuralLanguageCodec` (`handwritten_language_rules_used = false`, `neural_language_parser_used = true`) and `induce_four_lab_cross_domain_adapters` to induce downstream task adapters from public calibration support examples across all 4 labs (`Language`, `Coding`, `Reasoning`, `World`).
+  - `solve_four_lab_tasks_with_promoted_capsule` uses the trained 10,970-parameter `SmallNeuralLanguageCodec` (`handwritten_language_rules_used = false`, `neural_language_parser_used = true`, fixed-length position-conditioned token decoder) and `induce_four_lab_cross_domain_adapters` to induce downstream task adapters from public calibration support examples across all 4 labs (`Language`, `Coding`, `Reasoning`, `World`).
   - No control ever sets `inferred_callable = None` (`capsule_removed_callable_is_none = false`, `unlearned_binding_callable_is_none = false`, `unlearned_adapter_callable_is_none = false`): `capsule_removed` and `unlearned_binding` bind and execute `_base_identity_capsule` (`0.1484–0.1875` accuracy), and `unlearned_adapter` binds the promoted primitive with uninduced default adapters (`0.0234–0.1250` accuracy), compared to `1.0000` for full transfer.
 
 ---
@@ -164,7 +187,7 @@ $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATE
 | `gate_05` | Frozen rule transfers to non-isomorphic code family (`non_isomorphic_verified = true`, Stage B success `1.0000`) | `PASS` |
 | `gate_06` | Beats or is non-inferior to strongest fair baseline on task success (`1.0000` vs `1.0000`) | `PASS` |
 | `gate_07` | Improves experiments or total compute cost with paired 95% CI excluding zero (`[+4.7622, +12.0441]` Stage A; `[+45.0887, +69.9696]` Stage B) | `PASS` |
-| `gate_08` | Removing promoted primitive removes transfer gain (`1.0000` vs `0.0000` without `PROPOSE_PRIMITIVE`, `0.1693` capsule-removed 4-lab control) | `PASS` |
+| `gate_08` | Execution-scope registration (`1.0000` vs `0.0000` without `PROPOSE_PRIMITIVE`), 4-lab capsule removal (`0.1693`), and 4-task sequential reuse vs `direct_helper_import_without_capsule` (`+42.9438` cost savings, CI `[+30.8344, +55.0531]`; `+4.1250` experiment savings, CI `[+2.8270, +5.4230]`) | `PASS` |
 | `gate_09` | No human-written cross-lab semantic mapping (`manually_supplied_cross_lab_mapping = false`, `handwritten_language_rules_used = false`, cross-lab success `1.0000`) | `PASS` |
 | `gate_10` | Old-task retention `>= 98%` by real pre/post execution (`1.0000` -> `1.0000`, worst regression `0.0`) | `PASS` |
 | `gate_11` | All discovery, evolution, sandbox, and validation costs included (`kernel_sha256_before == kernel_sha256_after`) | `PASS` |
@@ -176,16 +199,16 @@ $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATE
 
 - **Host Execution**: Dispatched via `scripts/run_seed_open_primitive_transfer.py` through `Sandbox.execute()` (`adapter = seed_open_primitive_transfer_v1`, `run_id = seed-open-primitive-transfer-1`, `execution_sha = 4bc6443e939287f80bac50cbdfa935e6b5bf0049`, `dirty = false`).
 - **Kernel Counters Total**:
-  - `candidate_executions = 2,809,305`
-  - `dsl_instructions = 1,988,111`
-  - `hidden_evaluations = 953,270`
-  - `queries = 149,218`
-  - `sandbox_actions = 5,007`
+  - `candidate_executions = 2,811,060`
+  - `dsl_instructions = 1,990,664`
+  - `hidden_evaluations = 955,958`
+  - `queries = 149,416`
+  - `sandbox_actions = 6,645`
   - `primitive_calibrations = 288`
-  - `proposal_validations = 187`
+  - `proposal_validations = 211`
 - **Wall / CPU / Session Budget**:
-  - `wall_clock_s = 53.415096` (`cpu_time_s = 32.709724`)
-  - `session_used_s = 2106.0471992059947` (`session_remaining_s = 1493.9528007940055`)
+  - `wall_clock_s = 69.209956` (`cpu_time_s = 37.231761`)
+  - `session_used_s = 2121.842059205993` (`session_remaining_s = 1478.1579407940073`)
 - **Reproduction & Verification Commands**:
   ```bash
   PYTHONPATH=src python3 scripts/verify_seed_open_primitive_transfer.py

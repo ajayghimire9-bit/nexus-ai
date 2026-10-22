@@ -43,16 +43,16 @@ evaluator subprocess (`src/nexus/seed/blackbox_evaluator_worker.py`,
 the learner inspected files, chose probes, proposed new primitives via `PROPOSE_PRIMITIVE`
 (`24/24` passing `PROPOSED -> ... -> PROMOTED`), synthesized its own AST patch
 (`def solve_pipeline(seq): return ...`), achieved `1.0000` hidden subprocess accuracy vs `0.0000`
-without `PROPOSE_PRIMITIVE`, beat `strongest_handwritten_learner` (`34.9146` vs `92.4438`
+without `PROPOSE_PRIMITIVE` under strict execution-scope registration (`without_propose_tests_execution_scope_registration_only = true`), beat `strongest_handwritten_learner` (`34.9146` vs `92.4438`
 compute cost, paired diff `+57.5292`, 95% CI `[+45.0887, +69.9696]`; `2.3750` vs `9.1250`
 experiments, CI `[+5.5060, +7.9940]`) and `exact_information_gain_plus_effect_composition`
-(`47.5500` cost, diff `+12.6354`, CI `[+7.7556, +17.5153]`), and transferred promoted primitives
+(`47.5500` cost, diff `+12.6354`, CI `[+7.7556, +17.5153]`), beat `direct_helper_import_without_capsule` (which has identical access and costs and is cheaper on a single task at `32.3146` vs `34.9146`) across a sequence of 4 fresh tasks ($T_1 \dots T_4$: breaking even by $T_2$ at `51.5271` vs `64.6292` and reducing 4-task cumulative cost from `127.6958` to `84.7521`, paired diff `+42.9438`, 95% CI `[+30.8344, +55.0531]`; `5.3750` vs `9.5000` experiments, CI `[+2.8270, +5.4230]`), and transferred promoted primitives
 (`krelv`, `voux`, `zarn`) across all 4 labs (`Language`, `Coding`, `Reasoning`, `World`:
 `1.0000` accuracy via neural utterance parsing and autonomous cross-domain adapter induction vs `0.0000` for `isolated_labs` and `<= 0.1875` for non-null-callable `capsule_removed`, `unlearned_binding`, and `unlearned_adapter` controls, `1.0000` old-skill
 retention). In addition, the [10-part NEXUS Seed Integrated Architecture](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md)
 (`src/nexus/seed/integrated_architecture.py`) verified 3 operating timescales, the
 3-tier `EvidenceKernel`, a genuinely trained 10,970-parameter subword + token-level neural encoder-decoder
-`SmallNeuralLanguageCodec` (`input_dim = 119` with `55` lexical tokens + `64` char-trigram buckets and `0` handcrafted structural features, `hidden_dim = 16`, `dec_hidden_dim = 16`, `35`-token autoregressive decoder, `artifacts/seed_neural_language_weights_v1.json`, `1.00` accuracy across `36` held-out
+`SmallNeuralLanguageCodec` (`input_dim = 119` with `55` lexical tokens + `64` char-trigram buckets and `0` handcrafted structural features, `hidden_dim = 16`, `dec_hidden_dim = 16`, `35`-token fixed-length, position-conditioned token decoder where previous generated tokens are not inputs to the next prediction, `artifacts/seed_neural_language_weights_v1.json`, `1.00` accuracy across `36` held-out
 unfamiliar paraphrases, multi-clause compositions, subword/typo variants, and OOD abstentions, zero XML tags), splittable `BeliefWorkspace`
 equivalence groups, Kautz-Singleton $AG(2,3)$ $9\times 12$ 2-disjunct non-adaptive + conditional
 group testing, hypothesis-sensitive `synthesize_compound_probe`, evidence-directed mutation across

@@ -32,7 +32,7 @@
   "overall_pass": true,
   "permitted_conclusion": "NEXUS demonstrated bounded executable learning-rule transfer and acquired one previously unavailable primitive from sandboxed code interactions. This does not establish arbitrary coding, general language understanding, unrestricted self-improvement or AGI.",
   "protocol_sha256": "0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e",
-  "raw_sha256": "4b30999632fd3938f2395acec42fd996ed417982384c93562f4ec863904549e6",
+  "raw_sha256": "05946d720e3df173f8ba35d6d79c1915cab7de1ac9d06025000c601e639adabb",
   "schema": "seed_open_primitive_transfer_audit_v1",
   "stage_a_paired_vs_exact_info_gain": {
     "ci95_high": 89.17495322,
@@ -51,6 +51,16 @@
     "mean_diff": 57.52916667
   },
   "stage_b_pass": true,
+  "stage_b_sequential_cost_vs_direct_helper": {
+    "ci95_high": 55.05314453,
+    "ci95_low": 30.83435547,
+    "mean_diff": 42.94375
+  },
+  "stage_b_sequential_experiments_vs_direct_helper": {
+    "ci95_high": 5.4230458,
+    "ci95_low": 2.8269542,
+    "mean_diff": 4.125
+  },
   "stored_whole_program_fingerprints": 0,
   "tamper_rejection_checks": {
     "rejects_confounded_propose_primitive_control": true,
@@ -58,6 +68,7 @@
     "rejects_tampered_capsule_removed_control": true,
     "rejects_tampered_per_family_compute_cost": true,
     "rejects_tampered_per_family_world_lab_accuracy": true,
+    "rejects_tampered_sequential_fresh_tasks_record": true,
     "rejects_tampered_stage_b_instruction_ablation": true
   },
   "uniform_mutation_without_guided_injection": true,

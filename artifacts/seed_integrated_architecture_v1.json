@@ -79,6 +79,7 @@
       "old_skill_retention": 1.0,
       "private_inputs_exposed_to_learner": false,
       "separate_evaluator_process": true,
+      "task_index": 0,
       "unlearned_adapter_control": {
         "coding_lab_accuracy": 0.0,
         "evaluator_receipt_sha256": "10f09162afb6c105451564cf6e5c1c1440cc89e9d8875870be49ca380b20ddcf",
@@ -258,6 +259,7 @@
         "applied_ast_patch": "    return _post_reverse(_cand_alpha_2(seq))",
         "chosen_helper": "_cand_alpha_2",
         "chosen_post": "_post_reverse",
+        "direct_helper_copy_enabled": false,
         "generated_hypothesis_count": 12,
         "helper_call_count": 4,
         "inspected_ast_nodes": [
@@ -266,6 +268,7 @@
         ],
         "inspected_spans": [],
         "promoted_into_target_scope": true,
+        "reused_persisted_capsule": false,
         "surviving_hypothesis_count": 1
       },
       "promoted_source": "def _cand_alpha_2(seq):\n    if not seq:\n        return []\n    n = len(seq)\n    return [(seq[i] + 2 * seq[(i + 1) % n] + 3) % 11 - 5 for i in range(n)]",
@@ -283,6 +286,7 @@
             "applied_ast_patch": "    return _post_reverse(_cand_alpha_2(seq))",
             "chosen_helper": "_cand_alpha_2",
             "chosen_post": "_post_reverse",
+            "direct_helper_copy_enabled": false,
             "generated_hypothesis_count": 12,
             "helper_call_count": 4,
             "inspected_ast_nodes": [
@@ -291,6 +295,7 @@
             ],
             "inspected_spans": [],
             "promoted_into_target_scope": false,
+            "reused_persisted_capsule": false,
             "surviving_hypothesis_count": 1
           },
           "receipt_count": 9,
@@ -305,6 +310,7 @@
             "applied_ast_patch": "    return _post_reverse(_cand_alpha_2(seq))",
             "chosen_helper": "_cand_alpha_2",
             "chosen_post": "_post_reverse",
+            "direct_helper_copy_enabled": false,
             "generated_hypothesis_count": 12,
             "helper_call_count": 1,
             "inspected_ast_nodes": [
@@ -313,6 +319,7 @@
             ],
             "inspected_spans": [],
             "promoted_into_target_scope": true,
+            "reused_persisted_capsule": false,
             "surviving_hypothesis_count": 1
           },
           "receipt_count": 17,
@@ -327,6 +334,7 @@
             "applied_ast_patch": "    return _post_reverse(_cand_alpha_2(seq))",
             "chosen_helper": "_cand_alpha_2",
             "chosen_post": "_post_reverse",
+            "direct_helper_copy_enabled": false,
             "generated_hypothesis_count": 12,
             "helper_call_count": 5,
             "inspected_ast_nodes": [
@@ -340,6 +348,7 @@
               "def _post_reverse(seq):\n    return list(reversed(seq))\n\ndef _post_inc(seq):\n    return [v + 1 for v in seq]\n\ndef _post_dedup(seq):\n    seen = set()\n    out = []\n    for v in seq:\n        if v not in seen:\n            seen.add(v)\n            out.append(v)\n    return out\n\ndef stage_pre_filter(seq):\n    return list(seq)\n\ndef stage_core_transform(seq):\n    return _cand_alpha_1(seq)\n\ndef solve_pipeline(seq):\n    return stage_pre_filter(seq)"
             ],
             "promoted_into_target_scope": true,
+            "reused_persisted_capsule": false,
             "surviving_hypothesis_count": 1
           },
           "receipt_count": 15,
@@ -354,6 +363,7 @@
             "applied_ast_patch": "",
             "chosen_helper": "",
             "chosen_post": "",
+            "direct_helper_copy_enabled": false,
             "generated_hypothesis_count": 12,
             "helper_call_count": 4,
             "inspected_ast_nodes": [
@@ -362,6 +372,7 @@
             ],
             "inspected_spans": [],
             "promoted_into_target_scope": true,
+            "reused_persisted_capsule": false,
             "surviving_hypothesis_count": 1
           },
           "receipt_count": 8,
@@ -369,6 +380,24 @@
         }
       ],
       "create_capsule_necessary_for_transfer": true,
+      "direct_helper_investigation_trace": {
+        "applied_ast_patch": "    return _post_reverse(_cand_alpha_2(seq))",
+        "chosen_helper": "_cand_alpha_2",
+        "chosen_post": "_post_reverse",
+        "direct_helper_copy_enabled": true,
+        "generated_hypothesis_count": 12,
+        "helper_call_count": 4,
+        "inspected_ast_nodes": [
+          "_cand_alpha_1",
+          "_cand_alpha_2"
+        ],
+        "inspected_spans": [],
+        "promoted_into_target_scope": false,
+        "reused_persisted_capsule": false,
+        "surviving_hypothesis_count": 1
+      },
+      "direct_helper_single_task_accuracy": 1.0,
+      "direct_helper_single_task_compute_cost": 32.75,
       "full_rule_compute_cost": 35.35,
       "full_rule_cross_lab_success": 1.0,
       "full_rule_hidden_accuracy": 1.0,
@@ -376,6 +405,7 @@
         "applied_ast_patch": "    return _post_reverse(_cand_alpha_2(seq))",
         "chosen_helper": "_cand_alpha_2",
         "chosen_post": "_post_reverse",
+        "direct_helper_copy_enabled": false,
         "generated_hypothesis_count": 12,
         "helper_call_count": 4,
         "inspected_ast_nodes": [
@@ -384,11 +414,102 @@
         ],
         "inspected_spans": [],
         "promoted_into_target_scope": true,
+        "reused_persisted_capsule": false,
         "surviving_hypothesis_count": 1
       },
       "predict_effects_reduces_cost": true,
       "propose_primitive_control_unconfounded": true,
-      "propose_primitive_necessary": true
+      "propose_primitive_necessary": true,
+      "without_propose_tests_execution_scope_registration_only": true
+    },
+    "step_5d_sequential_fresh_tasks_comparison": {
+      "break_even_task_index": 1,
+      "cumulative_cost_savings": 42.1,
+      "cumulative_experiment_savings": 6.0,
+      "direct_helper_mean_accuracy": 1.0,
+      "direct_helper_total_cost": 131.0,
+      "direct_helper_total_experiments": 12.0,
+      "family_name": "ulib_window_checksum",
+      "identical_access_and_costs": true,
+      "num_tasks": 4,
+      "persistent_capsule_mean_accuracy": 1.0,
+      "persistent_capsule_total_cost": 88.9,
+      "persistent_capsule_total_experiments": 6.0,
+      "task_1_direct_helper_cheaper": true,
+      "tasks": [
+        {
+          "cumulative_direct_helper_cost": 32.75,
+          "cumulative_direct_helper_experiments": 3.0,
+          "cumulative_persistent_capsule_cost": 35.35,
+          "cumulative_persistent_capsule_experiments": 3.0,
+          "direct_chosen_helper": "_cand_alpha_2",
+          "direct_chosen_post": "_post_reverse",
+          "direct_helper_accuracy": 1.0,
+          "direct_helper_compute_cost": 32.75,
+          "direct_helper_experiments": 3.0,
+          "persistent_capsule_accuracy": 1.0,
+          "persistent_capsule_compute_cost": 35.35,
+          "persistent_capsule_experiments": 3.0,
+          "persistent_capsule_reused": false,
+          "persistent_chosen_post": "_post_reverse",
+          "task_index": 0,
+          "task_label": "T1"
+        },
+        {
+          "cumulative_direct_helper_cost": 71.75,
+          "cumulative_direct_helper_experiments": 6.0,
+          "cumulative_persistent_capsule_cost": 53.2,
+          "cumulative_persistent_capsule_experiments": 4.0,
+          "direct_chosen_helper": "_cand_beta_1",
+          "direct_chosen_post": "_post_inc",
+          "direct_helper_accuracy": 1.0,
+          "direct_helper_compute_cost": 39.0,
+          "direct_helper_experiments": 3.0,
+          "persistent_capsule_accuracy": 1.0,
+          "persistent_capsule_compute_cost": 17.85,
+          "persistent_capsule_experiments": 1.0,
+          "persistent_capsule_reused": true,
+          "persistent_chosen_post": "_post_inc",
+          "task_index": 1,
+          "task_label": "T2"
+        },
+        {
+          "cumulative_direct_helper_cost": 98.25,
+          "cumulative_direct_helper_experiments": 9.0,
+          "cumulative_persistent_capsule_cost": 71.05,
+          "cumulative_persistent_capsule_experiments": 5.0,
+          "direct_chosen_helper": "_cand_alpha_1",
+          "direct_chosen_post": "_post_dedup",
+          "direct_helper_accuracy": 1.0,
+          "direct_helper_compute_cost": 26.5,
+          "direct_helper_experiments": 3.0,
+          "persistent_capsule_accuracy": 1.0,
+          "persistent_capsule_compute_cost": 17.85,
+          "persistent_capsule_experiments": 1.0,
+          "persistent_capsule_reused": true,
+          "persistent_chosen_post": "_post_dedup",
+          "task_index": 2,
+          "task_label": "T3"
+        },
+        {
+          "cumulative_direct_helper_cost": 131.0,
+          "cumulative_direct_helper_experiments": 12.0,
+          "cumulative_persistent_capsule_cost": 88.9,
+          "cumulative_persistent_capsule_experiments": 6.0,
+          "direct_chosen_helper": "_cand_alpha_2",
+          "direct_chosen_post": "_post_reverse",
+          "direct_helper_accuracy": 1.0,
+          "direct_helper_compute_cost": 32.75,
+          "direct_helper_experiments": 3.0,
+          "persistent_capsule_accuracy": 1.0,
+          "persistent_capsule_compute_cost": 17.85,
+          "persistent_capsule_experiments": 1.0,
+          "persistent_capsule_reused": true,
+          "persistent_chosen_post": "_post_reverse",
+          "task_index": 3,
+          "task_label": "T4"
+        }
+      ]
     },
     "step_6_bat_stage_history": [
       "SURVEY",
@@ -3844,6 +3965,7 @@
         "architecture": {
           "char_trigram_buckets": 64,
           "dec_hidden_dim": 16,
+          "decoder_type": "fixed_length_position_conditioned_token_decoder",
           "decoder_vocab_size": 35,
           "handcrafted_structural_features": 0,
           "hidden_dim": 16,
@@ -3853,6 +3975,7 @@
           "num_intents": 3,
           "num_modifiers": 5,
           "parameter_count": 10970,
+          "previous_generated_tokens_fed_as_inputs": false,
           "state_dim": 10,
           "vocab_size": 55
         },
@@ -3862,6 +3985,7 @@
           "architectural_dimensions": {
             "char_trigram_buckets": 64,
             "dec_hidden_dim": 16,
+            "decoder_type": "fixed_length_position_conditioned_token_decoder",
             "decoder_vocab_size": 35,
             "handcrafted_structural_features": 0,
             "hidden_dim": 16,
@@ -3871,6 +3995,7 @@
             "num_intents": 3,
             "num_modifiers": 5,
             "parameter_count": 10970,
+            "previous_generated_tokens_fed_as_inputs": false,
             "state_dim": 10,
             "vocab_size": 55
           },
@@ -9104,15 +9229,15 @@
           "in_domain_count": 30,
           "ood_count": 6,
           "ood_epistemic_abstention_accuracy": 1.0,
-          "scope_limitations": "Bounded domain-specific neural codec (input_dim=119 with 55 lexical tokens + 64 char-trigram buckets, hidden_dim=16, dec_hidden_dim=16, 35-token autoregressive decoder vocabulary, evaluated on 36 held-out utterances). Does not establish flexible open-domain conversation or broad natural language understanding.",
+          "scope_limitations": "Bounded domain-specific neural codec (input_dim=119 with 55 lexical tokens + 64 char-trigram buckets, hidden_dim=16, dec_hidden_dim=16, 35-token fixed-length position-conditioned decoder predicting each token position from h_dec via separate output heads without previous-token inputs, evaluated on 36 held-out utterances). Does not establish flexible open-domain conversation or broad natural language understanding.",
           "token_level_decoder_accuracy": 1.0,
           "unfamiliar_intent_accuracy": 1.0
         },
         "weights_artifact_path": "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/artifacts/seed_neural_language_weights_v1.json",
-        "weights_sha256": "7518ee8370eb032ecdebd575e6892bdccd8e93a0363d0aa71b0854c61e217c27"
+        "weights_sha256": "a1a21edcbcc99c2e8a9828c33ee92eaf78bca4a3c541fd4c39299e8b92af3cbf"
       }
     }
   },
   "schema": "seed_integrated_architecture_v1",
-  "wall_clock_s": 4.606905
+  "wall_clock_s": 5.517363
 }
