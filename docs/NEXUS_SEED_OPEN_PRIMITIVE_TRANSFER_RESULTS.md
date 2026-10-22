@@ -7,10 +7,11 @@
 - **Protocol**: [NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md) (`0c91a3653c438294b8454fafbcc4b798a189b5719f2413228162c3d9fe68198e`)
 - **v1 Adversarial Audit**: [NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md) ([`artifacts/seed_meta_rule_evolution_v1_audit.json`](../artifacts/seed_meta_rule_evolution_v1_audit.json))
 - **Locked Config**: [`configs/seed_open_primitive_transfer.json`](../configs/seed_open_primitive_transfer.json) (`9d8e522a9386ff222297a5e0f9b93a16568e1fb0875a7503589c84061c56a3c9`)
-- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`384f050886442e6db07dd0388085a4070f754046e7c38fc654bcc7bfd4e68a02`)
+- **Primary Artifact**: [`artifacts/seed_open_primitive_transfer.json`](../artifacts/seed_open_primitive_transfer.json) (`adc7edd374712f0077bffb7f2ff41b7500dc7960fb0e39a687960eedbc69792b`)
 - **Independent Verifier Audit**: [`artifacts/seed_open_primitive_transfer_audit.json`](../artifacts/seed_open_primitive_transfer_audit.json) ([`scripts/verify_seed_open_primitive_transfer.py`](../scripts/verify_seed_open_primitive_transfer.py))
+- **Integrated 10-Part Architecture Report**: [NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md](NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md) ([`artifacts/seed_integrated_architecture_v1.json`](../artifacts/seed_integrated_architecture_v1.json))
 - **Stage A Status**: `PASSED` (`stage_a_pass = true`)
-- **Stage B Status**: `PASSED` (`stage_b_pass = true`, `12/12` registered gates passed)
+- **Stage B Status**: `PASSED` (`stage_b_pass = true`, `12/12` registered gates passed in isolated black-box subprocess)
 - **Overall Verdict**: `PASS_BOTH_STAGE_A_AND_STAGE_B`
 
 ### Permitted Scientific Conclusion
@@ -98,52 +99,51 @@ The historical v1 artifact remains preserved untouched, and all canonical docs c
 
 ---
 
-## 4. Stage B — Open Primitive Code Transfer v1 (`PROPOSE_PRIMITIVE`)
+## 4. Stage B — Open Primitive Code Transfer v1 (`PROPOSE_PRIMITIVE`) in Isolated Black-Box Subprocess
 
-Because Stage A passed all pre-declared criteria, the Stage A evolved rule was frozen (`FREEZE_STAGE_A_EVOLVED_RULE`) and evaluated in `UnknownLibraryCodeLab` via `CommonEnvironmentAdapter`.
+Because Stage A passed all pre-declared criteria, the Stage A evolved rule was frozen (`FREEZE_STAGE_A_EVOLVED_RULE`) **before** generating unseen multi-file library workspaces in the separate OS process [`src/nexus/seed/blackbox_evaluator_worker.py`](../src/nexus/seed/blackbox_evaluator_worker.py) via `CommonEnvironmentAdapter`.
 
-### 4.1 Environment Adapter & 6-Stage `PROPOSE_PRIMITIVE` Lifecycle
+### 4.1 Black-Box Subprocess Evaluator, Multi-File Decoy Helpers & 6-Stage `PROPOSE_PRIMITIVE` Lifecycle
 
-Each unknown-library family is wrapped in `CommonEnvironmentAdapter` (`reset`, `observe`, `available_actions`, `execute`, `evaluate`, `snapshot`, `restore`) returning `TransitionReceipt` records with `observation_before`, `typed_action`, `observation_after`, `state_diff`, `stdout`, `stderr`, `exit_status`, `execution_time`, `resource_use`, and `provenance`.
+- **Separate Evaluator Process**: Hidden test inputs (`12` private inputs per family per seed) and ground-truth reference implementations live exclusively inside `nexus.seed.blackbox_evaluator_worker` invoked via `subprocess.run`. Private test inputs are never returned or exposed to the learner process (`separate_evaluator_process = true`, `private_inputs_exposed_to_learner = false`).
+- **Zero Oracle Selection Fields**: `patched_target_body`, `post_op`, `correct_helper`, and `_private_hidden_tests` are absent from learner-accessible specifications and included in `FORBIDDEN_LEARNER_KEYS`.
+- **Multi-File Decoy Helpers & Multiple Call Sites**: Each unseen library workspace generated after rule freeze contains `helpers_alpha.py`, `helpers_beta.py`, and `target_pipeline.py` with **3 candidate helpers** (`_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` — 1 true helper and 2 plausible decoys whose assignment is permuted by seed), **3 candidate post-step functions** (`_post_reverse`, `_post_inc`, `_post_dedup`), and **3 candidate call sites** (`stage_pre_filter(seq)`, `stage_core_transform(seq)`, `solve_pipeline(seq)`).
+- **Identical Adapter & Receipt-Derived Costs**: All 9 Stage B methods execute through the identical `CommonEnvironmentAdapter`, choose their own inspection and probing actions, synthesize their own AST patches (`def solve_pipeline(seq): return ...`), and derive their experiment counts and compute costs exclusively from recorded `TransitionReceipt`s and `ImmutableTrustedKernel` counter deltas.
 
 Every `PROPOSE_PRIMITIVE` action creates a quarantined `PrimitiveProposal` that must traverse the 6-stage kernel lifecycle:
 $$\texttt{PROPOSED} \to \texttt{STATICALLY\_VALID} \to \texttt{SANDBOX\_VALIDATED} \to \texttt{HELDOUT\_VALIDATED} \to \texttt{RETENTION\_VALIDATED} \to \texttt{PROMOTED}$$
-Across all 8 seeds and all 3 unknown-library families (`24` promoted proposals total):
-- Under-evidenced proposals ($<2$ unit tests) received kernel decision `NEED_MORE_EVIDENCE`;
-- Unsafe AST proposals (`import os` / forbidden builtins) received kernel decision `REJECT`;
-- Sandboxed, fully evidenced proposals passed static AST whitelisting, deterministic unit tests, held-out checks, and old-skill retention checks, receiving `ACCEPT` and `PROMOTED`.
 
 ### 4.2 Stage B Per-Family Results Across 3 Independent Unknown-Library Families
 
-| Unknown-Library Family | Obfuscated Helper | Invented Word | Hidden Accuracy (`evolved`) | Without `PROPOSE_PRIMITIVE` Accuracy | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | Cross-Lab Coding & Reasoning Accuracy |
+| Unknown-Library Family | Candidate Helpers (1 True + 2 Decoys) | Invented Word | Hidden Accuracy (`evolved`) | Without `PROPOSE_PRIMITIVE` Accuracy | Evolved Experiments | Evolved Compute Cost | Handwritten Compute Cost | Cross-Lab Coding & Reasoning Accuracy |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `ulib_window_checksum` | `_kx9_win_fold` | `krelv` | `1.0000` | `0.0000` | `2.00` | `11.50` | `28.50` | `1.0000` / `1.0000` |
-| `ulib_runlength_bucket` | `_vq4_rle_span` | `voux` | `1.0000` | `0.0000` | `2.00` | `11.70` | `28.90` | `1.0000` / `1.0000` |
-| `ulib_zigzag_interleave` | `_zm7_zigzag_fold` | `zarn` | `1.0000` | `0.0000` | `2.00` | `11.90` | `29.30` | `1.0000` / `1.0000` |
+| `ulib_window_checksum` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `krelv` | `1.0000` | `0.0000` | `3.00` | `36.70` | `74.03` | `1.0000` / `1.0000` |
+| `ulib_runlength_bucket` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `voux` | `1.0000` | `0.0104` | `3.00` | `37.80` | `76.72` | `1.0000` / `1.0000` |
+| `ulib_zigzag_interleave` | `_cand_alpha_1`, `_cand_alpha_2`, `_cand_beta_1` | `zarn` | `1.0000` | `0.0000` | `3.00` | `38.90` | `95.53` | `1.0000` / `1.0000` |
 
-### 4.3 Stage B 9-Method Comparison Across All 8 Seeds
+### 4.3 Stage B 9-Method Comparison Across All 8 Seeds (Receipt & Counter Derived)
 
 | Stage B Method | Mean Hidden Success | Mean Sandbox Experiments | Mean Total Compute Cost | Mean Cross-Lab Reuse Success (`krelv`/`voux`/`zarn`) |
 | :--- | :---: | :---: | :---: | :---: |
-| **`corrected_frozen_evolved_rule`** | **`1.0000`** | **`2.0000`** | **`11.7000`** | **`1.0000`** |
-| `proposal_lifecycle_without_sleep_compression` | `1.0000` | `2.0000` | `11.7000` | `1.0000` |
-| `exact_information_gain_plus_effect_composition` | `1.0000` | `3.0000` | `19.5500` | `1.0000` |
-| `strongest_handwritten_learner` | `1.0000` | `4.0000` | `28.9000` | `1.0000` |
-| `scratch_learning_in_target_lab` | `1.0000` | `5.0000` | `39.4000` | `1.0000` |
-| `exhaustive_sandbox_probing` | `1.0000` | `6.0000` | `52.5000` | `1.0000` |
-| `isolated_labs` | `1.0000` | `2.0000` | `11.7000` | `0.0000` |
-| `learner_without_propose_primitive` | `0.0000` | `2.0000` | `14.0000` | `0.0000` |
-| `examples_only_retrieval` | `0.0000` | `4.0000` | `24.0000` | `0.0000` |
+| **`corrected_frozen_evolved_rule`** | **`1.0000`** | **`3.0000`** | **`37.8000`** | **`1.0000`** |
+| `proposal_lifecycle_without_sleep_compression` | `1.0000` | `3.0000` | `37.8000` | `1.0000` |
+| `exact_information_gain_plus_effect_composition` | `1.0000` | `4.0000` | `54.5500` | `1.0000` |
+| `strongest_handwritten_learner` | `1.0000` | `8.1250` | `82.0938` | `1.0000` |
+| `scratch_learning_in_target_lab` | `1.0000` | `11.1250` | `101.5938` | `1.0000` |
+| `exhaustive_sandbox_probing` | `1.0000` | `19.0000` | `149.2500` | `1.0000` |
+| `isolated_labs` | `1.0000` | `3.0000` | `37.8000` | `0.0000` |
+| `learner_without_propose_primitive` | `0.0035` | `2.0000` | `23.0000` | `0.0000` |
+| `examples_only_retrieval` | `0.0000` | `3.0000` | `32.7500` | `0.0000` |
 
 ### 4.4 Stage B Paired Student-$t$ ($df=7$) Comparisons
 
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` compute cost**:
-  $$\Delta = +17.2000, \quad 95\%\ \text{CI} = [+17.2000,\ +17.2000]$$
+  $$\Delta = +44.2938, \quad \text{SD} = 15.6707, \quad \text{SE} = 5.5404, \quad 95\%\ \text{CI} = [+31.1927,\ +57.3948]$$
 - **`exact_information_gain_plus_effect_composition` minus `corrected_frozen_evolved_rule` compute cost**:
-  $$\Delta = +7.8500, \quad 95\%\ \text{CI} = [+7.8500,\ +7.8500]$$
+  $$\Delta = +16.7500, \quad 95\%\ \text{CI} = [+16.7500,\ +16.7500]$$
 - **`strongest_handwritten_learner` minus `corrected_frozen_evolved_rule` sandbox experiments**:
-  $$\Delta = +2.0000, \quad 95\%\ \text{CI} = [+2.0000,\ +2.0000]$$
-- **Ablation of `PROPOSE_PRIMITIVE`**: Removing `PROPOSE_PRIMITIVE` (`learner_without_propose_primitive`) drops hidden task success from `1.0000` to `0.0000` across all 3 unknown-library families, proving that none of the unknown-library target functions are solvable by fixed initial primitives alone.
+  $$\Delta = +5.1250, \quad \text{SD} = 1.4577, \quad \text{SE} = 0.5154, \quad 95\%\ \text{CI} = [+3.9063,\ +6.3437]$$
+- **Ablation of `PROPOSE_PRIMITIVE`**: Removing `PROPOSE_PRIMITIVE` (`learner_without_propose_primitive`) drops hidden task success from `1.0000` to `0.0035` across the 3 unknown-library families, proving that the unseen library functions cannot be solved by fixed initial primitives alone.
 
 ---
 
@@ -157,8 +157,8 @@ Across all 8 seeds and all 3 unknown-library families (`24` promoted proposals t
 | `gate_04` | Proposed primitive passes complete 6-stage kernel lifecycle (`24/24` `PROMOTED`) | `PASS` |
 | `gate_05` | Frozen rule transfers to non-isomorphic code family (`non_isomorphic_verified = true`, Stage B success `1.0000`) | `PASS` |
 | `gate_06` | Beats or is non-inferior to strongest fair baseline on task success (`1.0000` vs `1.0000`) | `PASS` |
-| `gate_07` | Improves experiments or total compute cost with paired 95% CI excluding zero (`[+4.7622, +12.0441]` Stage A; `[+7.8500, +7.8500]` Stage B) | `PASS` |
-| `gate_08` | Removing promoted primitive removes transfer gain (`1.0000` vs `0.0000`) | `PASS` |
+| `gate_07` | Improves experiments or total compute cost with paired 95% CI excluding zero (`[+4.7622, +12.0441]` Stage A; `[+31.1927, +57.3948]` Stage B) | `PASS` |
+| `gate_08` | Removing promoted primitive removes transfer gain (`1.0000` vs `0.0035`) | `PASS` |
 | `gate_09` | No human-written cross-lab semantic mapping (`manually_supplied_cross_lab_mapping = false`, cross-lab success `1.0000`) | `PASS` |
 | `gate_10` | Old-task retention `>= 98%` by real pre/post execution (`1.0000` -> `1.0000`, worst regression `0.0`) | `PASS` |
 | `gate_11` | All discovery, evolution, sandbox, and validation costs included (`kernel_sha256_before == kernel_sha256_after`) | `PASS` |
@@ -168,22 +168,23 @@ Across all 8 seeds and all 3 unknown-library families (`24` promoted proposals t
 
 ## 6. Compute Accounting & Independent Verification
 
-- **Host Execution**: Dispatched once via `scripts/run_seed_open_primitive_transfer.py` through `Sandbox.execute()` (`adapter = seed_open_primitive_transfer_v1`, `run_id = seed-open-primitive-transfer-1`, `execution_sha = 4bc6443e939287f80bac50cbdfa935e6b5bf0049`, `dirty = false`).
+- **Host Execution**: Dispatched via `scripts/run_seed_open_primitive_transfer.py` through `Sandbox.execute()` (`adapter = seed_open_primitive_transfer_v1`, `run_id = seed-open-primitive-transfer-1`, `execution_sha = 4bc6443e939287f80bac50cbdfa935e6b5bf0049`, `dirty = false`).
 - **Kernel Counters Total**:
-  - `candidate_executions = 2,806,530`
-  - `dsl_instructions = 1,986,875`
-  - `hidden_evaluations = 950,634`
-  - `queries = 148,411`
+  - `candidate_executions = 2,808,603`
+  - `dsl_instructions = 1,986,245`
+  - `hidden_evaluations = 952,434`
+  - `queries = 148,954`
+  - `sandbox_actions = 3,660`
   - `primitive_calibrations = 288`
-  - `sandbox_actions = 168`
-  - `proposal_validations = 24`
+  - `proposal_validations = 72`
 - **Wall / CPU / Session Budget**:
-  - `wall_clock_s = 24.211062` (`execution_debit_s = 26`)
-  - `cpu_time_s = 24.150074`
-  - `session_used_s = 2078.632103455996` (`session_remaining_s = 1521.3678965440042`)
+  - `wall_clock_s = 34.526387` (`execution_debit_s = 27.159129`)
+  - `cpu_time_s = 27.159129`
+  - `session_used_s = 2087.158490705996` (`session_remaining_s = 1512.8415092940043`)
 - **Reproduction & Verification Commands**:
   ```bash
   PYTHONPATH=src python3 scripts/verify_seed_open_primitive_transfer.py
-  PYTHONPATH=src python3 -m pytest tests/test_seed_open_primitive_transfer.py -v
+  PYTHONPATH=src python3 scripts/verify_seed_integrated_architecture.py
+  PYTHONPATH=src python3 -m pytest tests/test_seed_open_primitive_transfer.py tests/test_seed_integrated_architecture.py -v
   python3 scripts/check_repository.py
   ```

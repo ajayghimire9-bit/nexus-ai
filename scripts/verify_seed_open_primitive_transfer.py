@@ -168,6 +168,9 @@ def verify(
                 fres["hidden_accuracy"] != 1.0
                 or fres["cross_lab_coding_accuracy"] != 1.0
                 or fres["cross_lab_reasoning_accuracy"] != 1.0
+                or fres.get("separate_evaluator_process") is not True
+                or fres.get("private_inputs_exposed_to_learner") is not False
+                or not fres.get("evaluator_receipt_sha256")
             ):
                 raise ValueError(f"stage_b_family_verification_failed:{fam}")
         ev_b_costs.append(float(sb["method_summaries"]["corrected_frozen_evolved_rule"]["mean_compute_cost"]))

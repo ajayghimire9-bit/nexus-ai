@@ -235,12 +235,20 @@ def test_real_retention_and_real_sleep_mdl():
 
 
 def test_stage_b_environment_adapter_and_propose_primitive_lifecycle():
-    """Verify CommonEnvironmentAdapter TransitionReceipt, 6-stage PROPOSE_PRIMITIVE lifecycle (ACCEPT, REJECT, NEED_MORE_EVIDENCE), and cross-lab reuse."""
+    """Verify CommonEnvironmentAdapter TransitionReceipt, multi-file decoy helpers, zero oracle leakage, separate subprocess evaluation, 6-stage PROPOSE_PRIMITIVE lifecycle, and receipt-derived baseline costs."""
     kernel = ImmutableTrustedKernel(configuration(authorized=True))
     lab = CommonEnvironmentAdapter("ulib_window_checksum", 1762999000)
     obs0 = lab.reset(1762999000)
     assert obs0["family_name"] == "ulib_window_checksum"
     assert set(lab.available_actions()) == set(CODE_LAB_TYPED_ACTIONS)
+    assert obs0["workspace_files"] == ["helpers_alpha.py", "helpers_beta.py", "target_pipeline.py"]
+    assert obs0["candidate_helpers"] == ["_cand_alpha_1", "_cand_alpha_2", "_cand_beta_1"]
+    assert obs0["candidate_post_functions"] == ["_post_reverse", "_post_inc", "_post_dedup"]
+    assert len(obs0["selected_call_sites"]) == 3
+    assert_zero_evaluator_leakage(obs0)
+    for forbidden in ("patched_target_body", "post_op", "correct_helper", "_private_hidden_tests", "private_hidden_tests"):
+        assert forbidden not in obs0
+        assert forbidden not in lab.__dict__
 
     snap = lab.snapshot()
     r1 = lab.execute({"action": "INSPECT_FILE_SPAN", "start_line": 1, "end_line": 8})
@@ -248,15 +256,16 @@ def test_stage_b_environment_adapter_and_propose_primitive_lifecycle():
     assert r1.exit_status == 0
     lab.restore(snap)
     assert lab.snapshot() == snap
+    lab.close()
 
-    # Verify full Stage B seed run exercises ACCEPT -> PROMOTED across all 3 unknown-library families
+    # Verify full Stage B seed run exercises ACCEPT -> PROMOTED across all 3 unknown-library families in isolated subprocess
     baselines = make_fair_baseline_rules()
     old_suite = build_old_skill_retention_suite(1762400000)
     sb_res = run_stage_b_code_transfer_for_seed(
         kernel=kernel,
         frozen_evolved_rule=baselines["exact_information_gain_plus_effect_composition"],
         old_skill_suite=old_suite,
-        macro_library=[],
+        macro_library=[{"macro_id": "macro_sleep_0"}],
         seed=1762999000,
     )
     assert len(sb_res["promotion_records"]) == 3
@@ -269,6 +278,10 @@ def test_stage_b_environment_adapter_and_propose_primitive_lifecycle():
         assert f_stat["hidden_accuracy"] == 1.0
         assert f_stat["cross_lab_coding_accuracy"] == 1.0
         assert f_stat["cross_lab_reasoning_accuracy"] == 1.0
+        assert f_stat["separate_evaluator_process"] is True
+        assert f_stat["private_inputs_exposed_to_learner"] is False
+        assert f_stat["evolved_compute_cost"] < f_stat["handwritten_compute_cost"]
+        assert f_stat["without_propose_primitive_accuracy"] < 0.50
 
 
 def test_locked_config_rejects_unauthorized_execution():

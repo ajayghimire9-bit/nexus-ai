@@ -2,20 +2,35 @@
 
 ## Active runtime
 
-- Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1:
+- 10-Part NEXUS Seed Integrated Architecture & Black-Box Open Primitive Code Transfer v1:
+  `seed/integrated_architecture.py` implements the 3 operating timescales, 3-tier
+  `EvidenceKernel`, `PerceptionAndLanguageInterface` (compact encoder + predictive
+  feature discovery, 3 interchangeable language modes, 3-way intent routing,
+  source-attributed claims), `BeliefWorkspace` with splittable observational
+  equivalence groups, Kautz-Singleton $AG(2,3)$ $9\times 12$ 2-disjunct matrix +
+  conditional group testing + Bat `SURVEY -> DISCRIMINATE -> VALIDATE_AND_ACT`
+  scheduler + `DiagnosticProcedureLibrary`, 6-part `MechanismCapsule` with
+  separately verified `goal_adapter`, bounded 1-minimal `ddmin` `DeltaDebuggingReducer`
+  + `FailureLibrary`, `TriLibrarySleepConsolidator` + `SuccessorFeatureLearner`
+  (zero-shot GPI) + `SmallLearnedOptimizer`, 6-stage `DevelopmentalCurriculum` +
+  11-action `CognitiveController` (5 policies), and all 7 isolated component
+  comparisons (`scripts/verify_seed_integrated_architecture.py`).
   `seed/meta_rule_evolution_v1_audit.py` audits all 15 v1 evaluator-leakage and
   guided-injection confounds without altering `artifacts/seed_meta_rule_evolution.json`.
-  `seed/open_primitive_transfer.py` implements strict `LearnerTaskView` vs
-  `EvaluatorTaskPrivate` separation (`assert_zero_evaluator_leakage`), real counted
-  candidate execution over 3 non-isomorphic Stage A families (`list_transformations`,
+  `seed/open_primitive_transfer.py` and `seed/blackbox_evaluator_worker.py` implement
+  strict `LearnerTaskView` vs `EvaluatorTaskPrivate` separation (`assert_zero_evaluator_leakage`),
+  real counted candidate execution over 3 non-isomorphic Stage A families (`list_transformations`,
   `boolean_circuit_induction`, `fst_string_rewrite`), uniform mutation without
   guided injection, in-loop Dream novelty without seed in hash, real pre/post
   retention, real Sleep test re-execution + non-overlapping MDL compression, and
   Stage B `CommonEnvironmentAdapter`, `TransitionReceipt`, `PROPOSE_PRIMITIVE`
-  6-stage kernel lifecycle, and `UnknownLibraryCodeLab` over 3 independent
-  unknown-library families (`ulib_window_checksum`, `ulib_runlength_bucket`,
-  `ulib_zigzag_interleave`) reusing the SAME `EXPERIMENTAL` host/worker/journal.
-  `scripts/verify_seed_open_primitive_transfer.py` is a standalone stdlib verifier.
+  6-stage kernel lifecycle, and multi-file `UnknownLibraryCodeLab` with decoy helpers,
+  candidate call sites, learner-synthesized AST patches, and isolated subprocess hidden
+  evaluation over 3 independent unknown-library families (`ulib_window_checksum`,
+  `ulib_runlength_bucket`, `ulib_zigzag_interleave`) reusing the SAME `EXPERIMENTAL`
+  host/worker/journal. `scripts/verify_seed_open_primitive_transfer.py` is a
+  standalone stdlib verifier.
+  [Integrated Architecture](NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md),
   [v1 Audit](NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md),
   [Protocol](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md),
   [Results](NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md).

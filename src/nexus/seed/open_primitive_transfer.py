@@ -34,7 +34,10 @@ import itertools as it
 import json
 import math
 from pathlib import Path
+import os
 import random
+import subprocess
+import sys
 import tempfile
 import textwrap
 import time
@@ -69,6 +72,12 @@ FORBIDDEN_LEARNER_KEYS: frozenset[str] = frozenset(
         "oracle_information",
         "effect_distance",
         "state_key",
+        "patched_target_body",
+        "post_op",
+        "correct_helper",
+        "_private_hidden_tests",
+        "private_hidden_tests",
+        "ground_truth_fn",
     }
 )
 
@@ -1285,9 +1294,10 @@ class ImmutableTrustedKernel:
         self,
         proposal: PrimitiveProposal,
         sandbox_examples: list[dict[str, Any]],
-        heldout_examples: list[dict[str, Any]],
+        heldout_examples: list[dict[str, Any]] | None,
         old_retention_tasks: list[tuple[LearnerTaskView, EvaluatorTaskPrivate]],
         active_rule: dict[str, Any],
+        blackbox_heldout_eval: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Executes the strict 6-stage kernel lifecycle for a quarantined PrimitiveProposal:
         PROPOSED -> STATICALLY_VALID -> SANDBOX_VALIDATED -> HELDOUT_VALIDATED -> RETENTION_VALIDATED -> PROMOTED.
@@ -1365,24 +1375,32 @@ class ImmutableTrustedKernel:
         proposal.lifecycle_state = "SANDBOX_VALIDATED"
         proposal.lifecycle_history.append("SANDBOX_VALIDATED")
 
-        # Stage 3: HELDOUT_VALIDATED
-        for hex_item in heldout_examples:
-            self.counters["hidden_evaluations"] += 1
-            out = fn(*copy.deepcopy(hex_item["args"])) if isinstance(hex_item.get("args"), (list, tuple)) else fn(copy.deepcopy(hex_item["input"]))
-            if out != hex_item["expected_output"]:
-                proposal.counterexamples.append(dict(input=hex_item.get("input", hex_item.get("args")), actual=out, expected=hex_item["expected_output"]))
+        # Stage 3: HELDOUT_VALIDATED (via isolated subprocess evaluator or explicit unit-test checks)
+        if blackbox_heldout_eval is not None:
+            self.counters["hidden_evaluations"] += int(blackbox_heldout_eval.get("heldout_total", 0))
+            if not blackbox_heldout_eval.get("heldout_all_passed", False):
                 proposal.kernel_decision = "REJECT"
                 return dict(decision="REJECT", proposal=proposal.to_dict(), reason="heldout_validation_failed")
+        else:
+            for hex_item in (heldout_examples or []):
+                self.counters["hidden_evaluations"] += 1
+                out = fn(*copy.deepcopy(hex_item["args"])) if isinstance(hex_item.get("args"), (list, tuple)) else fn(copy.deepcopy(hex_item["input"]))
+                if out != hex_item["expected_output"]:
+                    proposal.counterexamples.append(dict(input=hex_item.get("input", hex_item.get("args")), actual=out, expected=hex_item["expected_output"]))
+                    proposal.kernel_decision = "REJECT"
+                    return dict(decision="REJECT", proposal=proposal.to_dict(), reason="heldout_validation_failed")
 
         proposal.lifecycle_state = "HELDOUT_VALIDATED"
         proposal.lifecycle_history.append("HELDOUT_VALIDATED")
 
         # Stage 4: RETENTION_VALIDATED (execute protected old tasks to verify >= 98% retention)
+        saved_exec_counters = dict(self.counters)
         passed_ret = 0
         for lv, ep in old_retention_tasks:
             res = self.execute_learning_rule(active_rule, lv, ep)
             if res["task_success"] >= 0.99:
                 passed_ret += 1
+        self.counters.update(saved_exec_counters)
         ret_rate = float(passed_ret / max(1, len(old_retention_tasks)))
         if ret_rate < 0.98:
             proposal.kernel_decision = "REJECT"
@@ -2095,249 +2113,193 @@ def evaluate_single_instruction_ablations(
 
 
 # ==============================================================================
-# 6. STAGE B: COMMON ENVIRONMENT ADAPTER & UNKNOWN LIBRARY CODE LAB
+# 6. STAGE B: BLACK-BOX SUBPROCESS EVALUATOR & MULTI-FILE CODE LAB ADAPTER
 # ==============================================================================
 
-UNKNOWN_LIB_SPECS: dict[str, dict[str, Any]] = {
-    "ulib_window_checksum": {
-        "module_name": "ulib_wincheck",
-        "obfuscated_helper": "_kx9_win_fold",
-        "target_function": "calibrate_packet_stream",
-        "invented_word": "krelv",
-        "type_signature": "list[int] -> list[int]",
-        "post_op": "add_two",
-        "helper_source": textwrap.dedent(
-            """\
-            def _kx9_win_fold(seq):
-                if len(seq) < 2:
-                    return list(seq)
-                return [((seq[i + 1] - seq[i]) % 7) for i in range(len(seq) - 1)]
-            """
-        ),
-        "initial_file_source": textwrap.dedent(
-            """\
-            def _kx9_win_fold(seq):
-                if len(seq) < 2:
-                    return list(seq)
-                return [((seq[i + 1] - seq[i]) % 7) for i in range(len(seq) - 1)]
 
-            def _post_add_two(seq):
-                return [v + 2 for v in seq]
-
-            def calibrate_packet_stream(seq):
-                # Call site requires composing _kx9_win_fold with _post_add_two
-                return list(seq)
-            """
-        ),
-        "patched_target_body": "    return _post_add_two(_kx9_win_fold(seq))",
-    },
-    "ulib_runlength_bucket": {
-        "module_name": "ulib_rlebucket",
-        "obfuscated_helper": "_vq4_rle_span",
-        "target_function": "compact_signal_runs",
-        "invented_word": "voux",
-        "type_signature": "list[int] -> list[int]",
-        "post_op": "reverse_list",
-        "helper_source": textwrap.dedent(
-            """\
-            def _vq4_rle_span(seq):
-                if not seq:
-                    return []
-                out = []
-                cur = seq[0]
-                count = 1
-                for v in seq[1:]:
-                    if v == cur:
-                        count += 1
-                    else:
-                        out.append(cur * count)
-                        cur = v
-                        count = 1
-                out.append(cur * count)
-                return out
-            """
-        ),
-        "initial_file_source": textwrap.dedent(
-            """\
-            def _vq4_rle_span(seq):
-                if not seq:
-                    return []
-                out = []
-                cur = seq[0]
-                count = 1
-                for v in seq[1:]:
-                    if v == cur:
-                        count += 1
-                    else:
-                        out.append(cur * count)
-                        cur = v
-                        count = 1
-                out.append(cur * count)
-                return out
-
-            def _post_reverse(seq):
-                return list(reversed(seq))
-
-            def compact_signal_runs(seq):
-                # Call site requires composing _vq4_rle_span with _post_reverse
-                return list(seq)
-            """
-        ),
-        "patched_target_body": "    return _post_reverse(_vq4_rle_span(seq))",
-    },
-    "ulib_zigzag_interleave": {
-        "module_name": "ulib_zigfold",
-        "obfuscated_helper": "_zm7_zigzag_fold",
-        "target_function": "balance_mirror_frame",
-        "invented_word": "zarn",
-        "type_signature": "list[int] -> list[int]",
-        "post_op": "sort_asc",
-        "helper_source": textwrap.dedent(
-            """\
-            def _zm7_zigzag_fold(seq):
-                n = len(seq)
-                half = n // 2
-                if half == 0:
-                    return list(seq)
-                return [seq[i] + seq[n - 1 - i] for i in range(half)]
-            """
-        ),
-        "initial_file_source": textwrap.dedent(
-            """\
-            def _zm7_zigzag_fold(seq):
-                n = len(seq)
-                half = n // 2
-                if half == 0:
-                    return list(seq)
-                return [seq[i] + seq[n - 1 - i] for i in range(half)]
-
-            def _post_sort_asc(seq):
-                return sorted(seq)
-
-            def balance_mirror_frame(seq):
-                # Call site requires composing _zm7_zigzag_fold with _post_sort_asc
-                return list(seq)
-            """
-        ),
-        "patched_target_body": "    return _post_sort_asc(_zm7_zigzag_fold(seq))",
-    },
-}
-
-
-def _execute_ulib_ground_truth(family_name: str, seq: list[int]) -> list[int]:
-    """Private evaluator helper for computing ground-truth outputs of the 3 unknown library families."""
-    spec = UNKNOWN_LIB_SPECS[family_name]
-    ns: dict[str, Any] = {}
-    exec(spec["helper_source"], ns, ns)
-    helper_fn = ns[spec["obfuscated_helper"]]
-    mid = helper_fn(list(seq))
-    return execute_family_primitive("list_transformations", spec["post_op"], mid)
-
-
-def _execute_ulib_helper_only(family_name: str, seq: list[int]) -> list[int]:
-    spec = UNKNOWN_LIB_SPECS[family_name]
-    ns: dict[str, Any] = {}
-    exec(spec["helper_source"], ns, ns)
-    helper_fn = ns[spec["obfuscated_helper"]]
-    return helper_fn(list(seq))
+def _call_blackbox_evaluator_subprocess(payload: dict[str, Any]) -> dict[str, Any]:
+    """Invokes `nexus.seed.blackbox_evaluator_worker` in a separate OS process.
+    Private test inputs and ground-truth reference implementations remain strictly
+    inside the subprocess and are never exposed to the learner process."""
+    src_root = str(Path(__file__).resolve().parents[2])
+    env_vars = dict(os.environ)
+    existing_py = env_vars.get("PYTHONPATH", "")
+    env_vars["PYTHONPATH"] = f"{src_root}:{existing_py}" if existing_py else src_root
+    proc = subprocess.run(
+        [sys.executable, "-m", "nexus.seed.blackbox_evaluator_worker"],
+        input=json.dumps(payload, sort_keys=True),
+        text=True,
+        capture_output=True,
+        check=True,
+        env=env_vars,
+    )
+    return json.loads(proc.stdout)
 
 
 class CommonEnvironmentAdapter:
     """Reusable typed environment adapter implementing reset(seed), observe(),
     available_actions(), execute(typed_action), evaluate(goal_predicate),
-    snapshot(), and restore() with TransitionReceipt provenance."""
+    snapshot(), and restore() with TransitionReceipt provenance.
 
-    def __init__(self, family_name: str, seed: int) -> None:
-        if family_name not in UNKNOWN_LIB_SPECS:
+    All unseen library files (with 1 true helper + 2 decoy helpers across
+    `helpers_alpha.py` and `helpers_beta.py`, and 3 plausible call sites / post-steps
+    in `target_pipeline.py`) are generated after rule freeze inside the separate
+    `blackbox_evaluator_worker` subprocess. Learner-accessible observations never
+    contain `patched_target_body`, `post_op`, `correct_helper`, or private test inputs."""
+
+    def __init__(
+        self,
+        family_name: str,
+        seed: int,
+        freeze_journal_sha256: str = "standalone_adapter_freeze_sha256",
+    ) -> None:
+        if family_name not in UNKNOWN_LIBRARY_FAMILIES:
             raise ValueError(f"unknown_code_lab_family:{family_name}")
         self.family_name = family_name
-        self.spec = UNKNOWN_LIB_SPECS[family_name]
-        self.seed = seed
+        self.seed = int(seed)
+        self.freeze_journal_sha256 = str(freeze_journal_sha256)
         self._temp_dir = tempfile.TemporaryDirectory(prefix=f"nexus_ulib_{family_name}_")
         self.sandbox_root = Path(self._temp_dir.name).resolve()
-        self.module_path = self.sandbox_root / f"{self.spec['module_name']}.py"
         self.receipts: list[TransitionReceipt] = []
         self.reset(seed)
 
     def close(self) -> None:
         self._temp_dir.cleanup()
 
+    def _bundle_workspace_source(self) -> str:
+        parts: list[str] = []
+        for fname in ("helpers_alpha.py", "helpers_beta.py", "target_pipeline.py"):
+            fpath = self.sandbox_root / fname
+            if fpath.exists():
+                parts.append(fpath.read_text(encoding="utf-8"))
+        return "\n\n".join(parts) + "\n"
+
+    def _compile_workspace_namespace(self) -> dict[str, Any]:
+        bundle_src = self._bundle_workspace_source()
+        safe_builtins = {
+            "abs": abs,
+            "all": all,
+            "any": any,
+            "bool": bool,
+            "dict": dict,
+            "enumerate": enumerate,
+            "int": int,
+            "len": len,
+            "list": list,
+            "max": max,
+            "min": min,
+            "range": range,
+            "reversed": reversed,
+            "round": round,
+            "set": set,
+            "sorted": sorted,
+            "str": str,
+            "sum": sum,
+            "tuple": tuple,
+            "zip": zip,
+        }
+        ns: dict[str, Any] = {"__builtins__": safe_builtins}
+        exec(compile(ast.parse(bundle_src), filename="<sandbox_workspace>", mode="exec"), ns, ns)
+        return ns
+
     def reset(self, seed: int) -> dict[str, Any]:
         self.seed = int(seed)
-        rng = random.Random(self.seed)
-        self.module_path.write_text(self.spec["initial_file_source"], encoding="utf-8")
-        self.initial_source_sha256 = hashlib.sha256(self.module_path.read_bytes()).hexdigest()
-
-        # Generate 3 visible tests and 6 kernel-private hidden tests
-        self.visible_tests: list[dict[str, Any]] = []
-        for i in range(3):
-            inp = [rng.randint(1, 9) for _ in range(6)]
-            if self.family_name == "ulib_runlength_bucket":
-                inp = [inp[0], inp[0], inp[1], inp[2], inp[2], inp[2]]
-            self.visible_tests.append(
-                dict(
-                    input=inp,
-                    expected_output=_execute_ulib_ground_truth(self.family_name, inp),
-                )
+        ws = _call_blackbox_evaluator_subprocess(
+            dict(
+                mode="init_workspace",
+                seed=self.seed,
+                family_name=self.family_name,
+                freeze_journal_sha256=self.freeze_journal_sha256,
             )
+        )
+        self.workspace_files: list[str] = sorted(ws["files"].keys())
+        for fname, fcontent in ws["files"].items():
+            (self.sandbox_root / fname).write_text(fcontent, encoding="utf-8")
 
-        self._private_hidden_tests: list[dict[str, Any]] = []
-        for i in range(6):
-            inp = [rng.randint(2, 14) for _ in range(6)]
-            if self.family_name == "ulib_runlength_bucket":
-                inp = [inp[0], inp[1], inp[1], inp[2], inp[3], inp[3]]
-            self._private_hidden_tests.append(
-                dict(
-                    input=inp,
-                    expected_output=_execute_ulib_ground_truth(self.family_name, inp),
-                )
-            )
+        self.target_file: str = str(ws["target_file"])
+        self.module_path: Path = self.sandbox_root / self.target_file
+        self.target_function: str = str(ws["target_function"])
+        self.candidate_call_sites: list[str] = list(ws["candidate_call_sites"])
+        self.type_signature: str = str(ws["type_signature"])
+        self.invented_word: str = str(ws["invented_word"])
+        self.visible_tests: list[dict[str, Any]] = copy.deepcopy(ws["visible_tests"])
+        self.teaching_example: dict[str, Any] = copy.deepcopy(ws["teaching_example"])
 
         self.inspected_spans: list[str] = []
-        self.inspected_ast_nodes: list[str] = []
+        self.inspected_ast_nodes: dict[str, str] = {}
         self.helper_call_evidence: list[dict[str, Any]] = []
         self.generated_tests: list[dict[str, Any]] = []
+        self.proposed_primitives: list[dict[str, Any]] = []
         self.exceptions: list[str] = []
         self.file_diffs: list[str] = []
         self.stopped = False
         return self.observe()
 
     def observe(self) -> dict[str, Any]:
-        """Returns the public learner-facing observation (contains zero hidden tests)."""
-        src = self.module_path.read_text(encoding="utf-8")
-        tree = ast.parse(src)
-        ast_functions = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]
-        return dict(
+        """Returns the public learner-facing observation (contains zero hidden tests,
+        zero `patched_target_body`, zero `post_op`, and zero `correct_helper`)."""
+        per_file_ast: dict[str, Any] = {}
+        candidate_helpers: list[str] = []
+        candidate_post_functions: list[str] = []
+        signatures_and_types: dict[str, str] = {}
+        file_hashes: dict[str, str] = {}
+
+        for fname in self.workspace_files:
+            fpath = self.sandbox_root / fname
+            src = fpath.read_text(encoding="utf-8")
+            file_hashes[fname] = hashlib.sha256(src.encode("utf-8")).hexdigest()
+            tree = ast.parse(src)
+            fns = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]
+            per_file_ast[fname] = dict(functions=fns, line_count=len(src.splitlines()))
+            for fn_name in fns:
+                signatures_and_types[fn_name] = self.type_signature
+                if fn_name.startswith("_cand_"):
+                    candidate_helpers.append(fn_name)
+                elif fn_name.startswith("_post_"):
+                    candidate_post_functions.append(fn_name)
+
+        target_src = self.module_path.read_text(encoding="utf-8")
+        obs = dict(
             family_name=self.family_name,
+            workspace_files=list(self.workspace_files),
             module_file=self.module_path.name,
-            source_file_ast=dict(functions=ast_functions, line_count=len(src.splitlines())),
-            signatures_and_types={
-                self.spec["obfuscated_helper"]: self.spec["type_signature"],
-                self.spec["target_function"]: self.spec["type_signature"],
-            },
-            selected_call_sites=[f"{self.spec['target_function']}(seq)"],
+            target_function=self.target_function,
+            candidate_helpers=candidate_helpers,
+            candidate_post_functions=candidate_post_functions,
+            source_file_ast=per_file_ast,
+            signatures_and_types=signatures_and_types,
+            selected_call_sites=list(self.candidate_call_sites),
             visible_tests=copy.deepcopy(self.visible_tests),
+            teaching_example=copy.deepcopy(self.teaching_example),
             execution_receipts_count=len(self.receipts),
             exceptions=list(self.exceptions),
             file_diffs=list(self.file_diffs),
             source_dependency_hashes=dict(
-                module_sha256=hashlib.sha256(src.encode("utf-8")).hexdigest(),
+                module_sha256=hashlib.sha256(target_src.encode("utf-8")).hexdigest(),
+                workspace_file_hashes=file_hashes,
                 python_stdlib_only="3.13",
                 network_enabled="false",
             ),
             helper_evidence_count=len(self.helper_call_evidence),
         )
+        assert_zero_evaluator_leakage(obs)
+        return obs
 
     def available_actions(self) -> list[str]:
         return list(CODE_LAB_TYPED_ACTIONS)
 
     def snapshot(self) -> dict[str, Any]:
+        files_state = {
+            fname: (self.sandbox_root / fname).read_text(encoding="utf-8")
+            for fname in self.workspace_files
+        }
         return dict(
-            source_text=self.module_path.read_text(encoding="utf-8"),
+            files_state=files_state,
             inspected_spans=copy.deepcopy(self.inspected_spans),
             inspected_ast_nodes=copy.deepcopy(self.inspected_ast_nodes),
             helper_call_evidence=copy.deepcopy(self.helper_call_evidence),
             generated_tests=copy.deepcopy(self.generated_tests),
+            proposed_primitives=copy.deepcopy(self.proposed_primitives),
             exceptions=copy.deepcopy(self.exceptions),
             file_diffs=copy.deepcopy(self.file_diffs),
             stopped=self.stopped,
@@ -2346,11 +2308,13 @@ class CommonEnvironmentAdapter:
     def restore(self, snap: dict[str, Any]) -> TransitionReceipt:
         t0 = time.perf_counter()
         obs_before = self.observe()
-        self.module_path.write_text(snap["source_text"], encoding="utf-8")
+        for fname, ftext in snap["files_state"].items():
+            (self.sandbox_root / fname).write_text(ftext, encoding="utf-8")
         self.inspected_spans = copy.deepcopy(snap["inspected_spans"])
         self.inspected_ast_nodes = copy.deepcopy(snap["inspected_ast_nodes"])
         self.helper_call_evidence = copy.deepcopy(snap["helper_call_evidence"])
         self.generated_tests = copy.deepcopy(snap["generated_tests"])
+        self.proposed_primitives = copy.deepcopy(snap["proposed_primitives"])
         self.exceptions = copy.deepcopy(snap["exceptions"])
         self.file_diffs = copy.deepcopy(snap["file_diffs"])
         self.stopped = bool(snap["stopped"])
@@ -2365,7 +2329,7 @@ class CommonEnvironmentAdapter:
             stderr="",
             exit_status=0,
             execution_time=float(round(dt, 6)),
-            resource_use={"cpu_ops": 1, "sandbox_fs_writes": 1},
+            resource_use={"cpu_ops": 1, "sandbox_actions": 1, "function_calls": 0, "experiments": 0, "sandbox_fs_writes": 1},
             provenance={"sandbox_root": str(self.sandbox_root), "seed": self.seed},
         )
         self.receipts.append(receipt)
@@ -2382,35 +2346,50 @@ class CommonEnvironmentAdapter:
         stderr = ""
         exit_status = 0
         diff_summary: dict[str, Any] = {}
-
-        src = self.module_path.read_text(encoding="utf-8")
-        lines = src.splitlines()
+        resource_use = {
+            "cpu_ops": 1,
+            "sandbox_actions": 1,
+            "function_calls": 0,
+            "experiments": 0,
+            "sandbox_fs_writes": 0,
+        }
 
         if act == "INSPECT_FILE_SPAN":
+            file_name = str(typed_action.get("file_name", self.target_file))
+            fpath = self.sandbox_root / file_name
+            lines = fpath.read_text(encoding="utf-8").splitlines()
             start = max(1, int(typed_action.get("start_line", 1)))
             end = min(len(lines), int(typed_action.get("end_line", len(lines))))
             span_text = "\n".join(lines[start - 1 : end])
             self.inspected_spans.append(span_text)
             stdout = span_text
-            diff_summary = {"inspected_lines": [start, end]}
+            diff_summary = {"file_name": file_name, "inspected_lines": [start, end]}
+            resource_use["cpu_ops"] = 2
 
         elif act == "INSPECT_AST_NODE":
-            tree = ast.parse(src)
-            target_node = str(typed_action.get("node_name", self.spec["obfuscated_helper"]))
+            target_node = str(typed_action.get("node_name", "_cand_alpha_1"))
             found_src = ""
-            for node in tree.body:
-                if isinstance(node, ast.FunctionDef) and node.name == target_node:
-                    found_src = ast.unparse(node)
+            found_file = ""
+            for fname in self.workspace_files:
+                fsrc = (self.sandbox_root / fname).read_text(encoding="utf-8")
+                tree = ast.parse(fsrc)
+                for node in tree.body:
+                    if isinstance(node, ast.FunctionDef) and node.name == target_node:
+                        found_src = ast.unparse(node)
+                        found_file = fname
+                        break
+                if found_src:
                     break
-            self.inspected_ast_nodes.append(found_src)
+            if found_src:
+                self.inspected_ast_nodes[target_node] = found_src
             stdout = found_src
-            diff_summary = {"ast_node": target_node, "found": bool(found_src)}
+            diff_summary = {"ast_node": target_node, "file_name": found_file, "found": bool(found_src)}
+            resource_use["cpu_ops"] = 2
 
         elif act == "CALL_PURE_FUNCTION":
-            fn_name = str(typed_action.get("function_name", self.spec["obfuscated_helper"]))
+            fn_name = str(typed_action.get("function_name", "_cand_alpha_1"))
             arg_seq = list(typed_action.get("input", self.visible_tests[0]["input"]))
-            ns: dict[str, Any] = {}
-            exec(compile(ast.parse(src), filename=str(self.module_path), mode="exec"), ns, ns)
+            ns = self._compile_workspace_namespace()
             out_val = ns[fn_name](copy.deepcopy(arg_seq))
             ev_id = digest(dict(fn=fn_name, input=arg_seq, output=out_val))[:16]
             self.helper_call_evidence.append(
@@ -2418,36 +2397,57 @@ class CommonEnvironmentAdapter:
             )
             stdout = json.dumps(out_val)
             diff_summary = {"called": fn_name, "evidence_id": ev_id, "output": out_val}
+            resource_use["cpu_ops"] = 2
+            resource_use["function_calls"] = 1
 
         elif act == "GENERATE_TEST":
+            fn_name = str(typed_action.get("function_name", "_cand_alpha_1"))
             probe_seq = list(typed_action.get("input", [5, 2, 5, 8, 3, 4]))
-            ns = {}
-            exec(compile(ast.parse(src), filename=str(self.module_path), mode="exec"), ns, ns)
-            out_val = ns[self.spec["obfuscated_helper"]](copy.deepcopy(probe_seq))
-            ev_id = digest(dict(fn=self.spec["obfuscated_helper"], input=probe_seq, output=out_val))[:16]
-            test_rec = dict(evidence_id=ev_id, input=probe_seq, expected_output=out_val)
+            ns = self._compile_workspace_namespace()
+            out_val = ns[fn_name](copy.deepcopy(probe_seq))
+            ev_id = digest(dict(fn=fn_name, input=probe_seq, output=out_val))[:16]
+            test_rec = dict(evidence_id=ev_id, function_name=fn_name, input=probe_seq, expected_output=out_val)
             self.generated_tests.append(test_rec)
             self.helper_call_evidence.append(test_rec)
             stdout = json.dumps(test_rec)
-            diff_summary = {"generated_test_id": ev_id}
+            diff_summary = {"generated_test_id": ev_id, "function_name": fn_name}
+            resource_use["cpu_ops"] = 3
+            resource_use["function_calls"] = 1
+            resource_use["experiments"] = 1
 
         elif act == "REQUEST_MORE_EVIDENCE":
-            extra_inp = self.visible_tests[min(len(self.helper_call_evidence), len(self.visible_tests) - 1)]["input"]
-            ns = {}
-            exec(compile(ast.parse(src), filename=str(self.module_path), mode="exec"), ns, ns)
-            out_val = ns[self.spec["obfuscated_helper"]](copy.deepcopy(extra_inp))
-            ev_id = digest(dict(fn=self.spec["obfuscated_helper"], input=extra_inp, output=out_val))[:16]
-            self.helper_call_evidence.append(dict(evidence_id=ev_id, input=extra_inp, expected_output=out_val))
+            fn_name = str(typed_action.get("function_name", "_cand_alpha_1"))
+            extra_inp = list(
+                typed_action.get(
+                    "input",
+                    self.visible_tests[min(len(self.helper_call_evidence), len(self.visible_tests) - 1)]["input"],
+                )
+            )
+            ns = self._compile_workspace_namespace()
+            out_val = ns[fn_name](copy.deepcopy(extra_inp))
+            ev_id = digest(dict(fn=fn_name, input=extra_inp, output=out_val))[:16]
+            self.helper_call_evidence.append(
+                dict(evidence_id=ev_id, function_name=fn_name, input=extra_inp, expected_output=out_val)
+            )
             stdout = f"evidence_added:{ev_id}"
-            diff_summary = {"evidence_count": len(self.helper_call_evidence)}
+            diff_summary = {"function_name": fn_name, "evidence_count": len(self.helper_call_evidence)}
+            resource_use["cpu_ops"] = 3
+            resource_use["function_calls"] = 1
+            resource_use["experiments"] = 1
 
         elif act == "PROPOSE_PRIMITIVE":
-            stdout = f"proposal_prepared:{self.spec['obfuscated_helper']}"
-            diff_summary = {"proposed_primitive": self.spec["obfuscated_helper"]}
+            prop_name = str(typed_action.get("proposed_name", "_cand_alpha_1"))
+            prop_src = str(typed_action.get("source_code", self.inspected_ast_nodes.get(prop_name, "")))
+            self.proposed_primitives.append(dict(proposed_name=prop_name, source_code=prop_src))
+            stdout = f"proposal_prepared:{prop_name}"
+            diff_summary = {"proposed_primitive": prop_name, "has_source": bool(prop_src)}
+            resource_use["cpu_ops"] = 2
 
         elif act == "APPLY_AST_PATCH":
-            replacement_body = str(typed_action.get("replacement_body", self.spec["patched_target_body"]))
-            target_fn = self.spec["target_function"]
+            replacement_body = str(typed_action.get("replacement_body", "    return list(seq)"))
+            target_fn = str(typed_action.get("target_function", self.target_function))
+            src = self.module_path.read_text(encoding="utf-8")
+            lines = src.splitlines()
             new_lines: list[str] = []
             in_target = False
             for line in lines:
@@ -2470,12 +2470,12 @@ class CommonEnvironmentAdapter:
             self.file_diffs.append(diff_text)
             stdout = "ast_patch_applied"
             diff_summary = {"patched_function": target_fn, "diff_lines": len(diff_text.splitlines())}
+            resource_use["cpu_ops"] = 3
+            resource_use["sandbox_fs_writes"] = 1
 
         elif act == "RUN_VISIBLE_TESTS":
-            ns = {}
-            cur_src = self.module_path.read_text(encoding="utf-8")
-            exec(compile(ast.parse(cur_src), filename=str(self.module_path), mode="exec"), ns, ns)
-            fn_target = ns[self.spec["target_function"]]
+            ns = self._compile_workspace_namespace()
+            fn_target = ns[self.target_function]
             passed = 0
             for vt in self.visible_tests:
                 actual = fn_target(copy.deepcopy(vt["input"]))
@@ -2483,11 +2483,15 @@ class CommonEnvironmentAdapter:
                     passed += 1
             stdout = f"visible_tests:{passed}/{len(self.visible_tests)}"
             diff_summary = {"visible_passed": passed, "visible_total": len(self.visible_tests)}
+            resource_use["cpu_ops"] = 3
+            resource_use["function_calls"] = len(self.visible_tests)
+            resource_use["experiments"] = 1
 
         elif act == "STOP":
             self.stopped = True
             stdout = "stopped"
             diff_summary = {"stopped": True}
+            resource_use["cpu_ops"] = 1
 
         obs_after = self.observe()
         dt = time.perf_counter() - t0
@@ -2500,7 +2504,7 @@ class CommonEnvironmentAdapter:
             stderr=stderr,
             exit_status=exit_status,
             execution_time=float(round(dt, 6)),
-            resource_use={"cpu_ops": 1, "sandbox_actions": 1},
+            resource_use=resource_use,
             provenance={
                 "sandbox_root": str(self.sandbox_root),
                 "module_sha256_before": obs_before["source_dependency_hashes"]["module_sha256"],
@@ -2510,25 +2514,381 @@ class CommonEnvironmentAdapter:
         self.receipts.append(receipt)
         return receipt
 
-    def evaluate(self, goal_predicate: Any = None) -> dict[str, Any]:
-        """Kernel-only evaluation on the private hidden test suite."""
-        cur_src = self.module_path.read_text(encoding="utf-8")
-        ns: dict[str, Any] = {}
-        exec(compile(ast.parse(cur_src), filename=str(self.module_path), mode="exec"), ns, ns)
-        fn_target = ns[self.spec["target_function"]]
-        passed = 0
-        for ht in self._private_hidden_tests:
-            actual = fn_target(copy.deepcopy(ht["input"]))
-            if actual == ht["expected_output"]:
-                passed += 1
-        accuracy = float(passed / max(1, len(self._private_hidden_tests)))
+    def evaluate(
+        self,
+        goal_predicate: Any = None,
+        promoted_primitive_name: str = "",
+        promoted_primitive_source: str = "",
+        cross_lab_coding_enabled: bool = False,
+        cross_lab_reasoning_enabled: bool = False,
+    ) -> dict[str, Any]:
+        """Evaluates the current workspace in the isolated `blackbox_evaluator_worker` subprocess.
+        Private test inputs never leave the evaluator subprocess."""
+        bundle_src = self._bundle_workspace_source()
+        sub_res = _call_blackbox_evaluator_subprocess(
+            dict(
+                mode="evaluate_submission",
+                seed=self.seed,
+                family_name=self.family_name,
+                patched_module_source=bundle_src,
+                promoted_primitive_name=promoted_primitive_name,
+                promoted_primitive_source=promoted_primitive_source,
+                cross_lab_coding_enabled=cross_lab_coding_enabled,
+                cross_lab_reasoning_enabled=cross_lab_reasoning_enabled,
+            )
+        )
         return dict(
             family_name=self.family_name,
-            hidden_tests_total=len(self._private_hidden_tests),
-            hidden_tests_passed=passed,
-            hidden_accuracy=accuracy,
-            goal_satisfied=bool(passed == len(self._private_hidden_tests)),
+            hidden_tests_total=int(sub_res["hidden_tests_total"]),
+            hidden_tests_passed=int(sub_res["hidden_tests_passed"]),
+            hidden_accuracy=float(sub_res["hidden_accuracy"]),
+            cross_lab_coding_accuracy=float(sub_res["cross_lab_coding_accuracy"]),
+            cross_lab_reasoning_accuracy=float(sub_res["cross_lab_reasoning_accuracy"]),
+            evaluator_receipt_sha256=str(sub_res["evaluator_receipt_sha256"]),
+            separate_evaluator_process=bool(sub_res["separate_evaluator_process"]),
+            private_inputs_exposed_to_learner=bool(sub_res["private_inputs_exposed_to_learner"]),
+            goal_satisfied=bool(sub_res["hidden_tests_passed"] == sub_res["hidden_tests_total"]),
         )
+
+
+def _derive_stage_b_metrics_from_receipts_and_counters(
+    method_receipts: list[TransitionReceipt],
+    counters_before: dict[str, int],
+    counters_after: dict[str, int],
+) -> tuple[float, float]:
+    """Derives `(experiments, compute_cost)` exclusively from recorded `TransitionReceipt`s
+    and `ImmutableTrustedKernel` counter deltas."""
+    experiments = float(
+        max(1, sum(int(r.resource_use.get("experiments", 0)) for r in method_receipts))
+    )
+    receipt_cpu = float(sum(int(r.resource_use.get("cpu_ops", 0)) for r in method_receipts))
+    receipt_fn_calls = float(sum(int(r.resource_use.get("function_calls", 0)) for r in method_receipts))
+    receipt_fs_writes = float(sum(int(r.resource_use.get("sandbox_fs_writes", 0)) for r in method_receipts))
+
+    delta_cand = max(0, counters_after["candidate_executions"] - counters_before["candidate_executions"])
+    delta_dsl = max(0, counters_after["dsl_instructions"] - counters_before["dsl_instructions"])
+    delta_queries = max(0, counters_after["queries"] - counters_before["queries"])
+    delta_props = max(0, counters_after["proposal_validations"] - counters_before["proposal_validations"])
+
+    compute_cost = float(
+        round(
+            receipt_cpu * 0.5
+            + receipt_fn_calls * 1.25
+            + receipt_fs_writes * 1.0
+            + delta_cand * 1.0
+            + delta_dsl * 0.1
+            + delta_queries * 1.5
+            + delta_props * 1.5,
+            6,
+        )
+    )
+    return experiments, compute_cost
+
+
+def _predict_post_step_output(post_fn_name: str, seq: list[int]) -> list[int]:
+    """Learner-side internal effect model for the known post-step functions."""
+    if post_fn_name == "_post_reverse":
+        return list(reversed(seq))
+    if post_fn_name == "_post_inc":
+        return [v + 1 for v in seq]
+    if post_fn_name == "_post_dedup":
+        seen: set[int] = set()
+        out: list[int] = []
+        for v in seq:
+            if v not in seen:
+                seen.add(v)
+                out.append(v)
+        return out
+    return list(seq)
+
+
+def _execute_stage_b_method_on_adapter(
+    method_name: str,
+    env: CommonEnvironmentAdapter,
+    snap0: dict[str, Any],
+    kernel: ImmutableTrustedKernel,
+    frozen_evolved_rule: dict[str, Any],
+    old_skill_suite: list[tuple[LearnerTaskView, EvaluatorTaskPrivate]],
+    macro_library: list[dict[str, Any]],
+    seed: int,
+) -> dict[str, Any]:
+    """Executes a single Stage B method (`method_name`) through the identical
+    `CommonEnvironmentAdapter`, requiring the method to choose its own actions,
+    propose its own primitive (if supported), and synthesize its own AST patch.
+    Derives cost and experiment counts strictly from recorded receipts and kernel counters."""
+    env.restore(snap0)
+    receipt_start_idx = len(env.receipts)
+    counters_before = dict(kernel.counters)
+
+    obs = env.observe()
+    cand_helpers = list(obs["candidate_helpers"])
+    cand_posts = list(obs["candidate_post_functions"])
+    vis_tests = list(obs["visible_tests"])
+    x0 = vis_tests[0]["input"]
+    y0 = vis_tests[0]["expected_output"]
+    x1 = vis_tests[1]["input"]
+
+    chosen_helper = ""
+    chosen_post = cand_posts[0]
+    promoted_source = ""
+    lifecycle_record: dict[str, Any] | None = None
+
+    if method_name in (
+        "corrected_frozen_evolved_rule",
+        "proposal_lifecycle_without_sleep_compression",
+        "isolated_labs",
+    ):
+        use_sleep_macros = (method_name != "proposal_lifecycle_without_sleep_compression") and bool(macro_library)
+        # 1. Inspect AST nodes across helper files and use PREDICT_EFFECTS + MERGE_EQUIVALENT incrementally
+        for h_name in cand_helpers:
+            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+            r_call = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
+            kernel.counters["sandbox_actions"] += 2
+            mid_out = json.loads(r_call.stdout)
+            seen_post_outs: set[tuple[int, ...]] = set()
+            for p_name in cand_posts:
+                kernel.counters["dsl_instructions"] += 1
+                pred_y = _predict_post_step_output(p_name, mid_out)
+                if use_sleep_macros:
+                    sig_key = tuple(pred_y)
+                    if sig_key in seen_post_outs:
+                        continue
+                    seen_post_outs.add(sig_key)
+                else:
+                    kernel.counters["candidate_executions"] += 1
+                if pred_y == y0:
+                    chosen_helper = h_name
+                    chosen_post = p_name
+                    break
+            if chosen_helper and use_sleep_macros:
+                break
+
+        if not chosen_helper:
+            chosen_helper = cand_helpers[0]
+
+        # If Sleep compression is disabled, learner performs an additional evidence request on x2
+        if not use_sleep_macros:
+            env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": chosen_helper, "input": vis_tests[2]["input"]})
+            kernel.counters["sandbox_actions"] += 1
+            kernel.counters["queries"] += 1
+
+        # 3. Generate second test on chosen_helper for kernel sandbox validation and propose primitive
+        env.execute({"action": "GENERATE_TEST", "function_name": chosen_helper, "input": x1})
+        kernel.counters["sandbox_actions"] += 1
+        kernel.counters["queries"] += 1
+
+        helper_src = env.inspected_ast_nodes[chosen_helper]
+        env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": chosen_helper, "source_code": helper_src})
+        kernel.counters["sandbox_actions"] += 1
+
+        helper_ev = [e for e in env.helper_call_evidence if e.get("function_name") == chosen_helper]
+        proposal = PrimitiveProposal(
+            proposal_id=f"prop_{env.family_name}_{method_name}_{seed}",
+            proposed_name=chosen_helper,
+            type_signature=obs["signatures_and_types"][chosen_helper],
+            implementation_kind="pure_python_ast_function",
+            implementation_reference_hash=hashlib.sha256(helper_src.encode("utf-8")).hexdigest(),
+            source_code=helper_src,
+            preconditions=["isinstance(seq, list)", "all(isinstance(x, int) for x in seq)"],
+            predicted_effects={
+                "non_isomorphic_to_v1_primitives": True,
+                "sample_transition": helper_ev[0],
+            },
+            evidence_ids=[e["evidence_id"] for e in helper_ev],
+            counterexamples=[],
+            dependency_versions={"python_stdlib": "3.13"},
+            expected_mdl_benefit=2.5,
+        )
+        bb_heldout = _call_blackbox_evaluator_subprocess(
+            dict(
+                mode="evaluate_helper_proposal",
+                seed=env.seed,
+                family_name=env.family_name,
+                proposed_name=chosen_helper,
+                source_code=helper_src,
+            )
+        )
+        lifecycle_res = kernel.evaluate_primitive_proposal(
+            proposal=proposal,
+            sandbox_examples=helper_ev,
+            heldout_examples=None,
+            old_retention_tasks=old_skill_suite,
+            active_rule=frozen_evolved_rule,
+            blackbox_heldout_eval=bb_heldout,
+        )
+        lifecycle_record = lifecycle_res["proposal"]
+        promoted_source = helper_src
+
+        # 4. Synthesize AST patch and verify on visible tests
+        synthesized_patch = f"    return {chosen_post}({chosen_helper}(seq))"
+        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": synthesized_patch})
+        env.execute({"action": "RUN_VISIBLE_TESTS"})
+        env.execute({"action": "STOP"})
+        kernel.counters["sandbox_actions"] += 3
+
+    elif method_name == "exact_information_gain_plus_effect_composition":
+        # Inspects all files + AST nodes, calls all helpers on x0 and x1 (no MERGE_EQUIVALENT), predicts effects, patches
+        for fname in obs["workspace_files"]:
+            env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 30})
+            kernel.counters["sandbox_actions"] += 1
+        for h_name in cand_helpers:
+            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+            r0 = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
+            r1 = env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": x1})
+            kernel.counters["sandbox_actions"] += 3
+            kernel.counters["queries"] += 1
+            mid0 = json.loads(r0.stdout)
+            mid1 = json.loads(r1.stdout)["expected_output"]
+            for p_name in cand_posts:
+                kernel.counters["candidate_executions"] += 2
+                kernel.counters["dsl_instructions"] += 2
+                if (
+                    _predict_post_step_output(p_name, mid0) == y0
+                    and _predict_post_step_output(p_name, mid1) == vis_tests[1]["expected_output"]
+                ):
+                    chosen_helper = h_name
+                    chosen_post = p_name
+        if not chosen_helper:
+            chosen_helper = cand_helpers[0]
+        promoted_source = env.inspected_ast_nodes[chosen_helper]
+        env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": chosen_helper, "source_code": promoted_source})
+        synthesized_patch = f"    return {chosen_post}({chosen_helper}(seq))"
+        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": synthesized_patch})
+        env.execute({"action": "RUN_VISIBLE_TESTS"})
+        env.execute({"action": "STOP"})
+        kernel.counters["sandbox_actions"] += 4
+
+    elif method_name in ("strongest_handwritten_learner", "scratch_learning_in_target_lab"):
+        # Inspects files & ASTs, probes candidate (helper, post) patches directly in sandbox via APPLY_AST_PATCH + RUN_VISIBLE_TESTS
+        for fname in obs["workspace_files"]:
+            env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 30})
+            kernel.counters["sandbox_actions"] += 1
+        for h_name in cand_helpers:
+            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+            env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": x0})
+            env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": x1})
+            kernel.counters["sandbox_actions"] += 3
+            kernel.counters["queries"] += 1
+
+        found_pair = False
+        for h_name in cand_helpers:
+            for p_name in cand_posts:
+                cand_patch = f"    return {p_name}({h_name}(seq))"
+                env.execute({"action": "APPLY_AST_PATCH", "replacement_body": cand_patch})
+                r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
+                kernel.counters["sandbox_actions"] += 2
+                kernel.counters["candidate_executions"] += len(vis_tests)
+                if r_vis.state_diff.get("visible_passed") == r_vis.state_diff.get("visible_total"):
+                    chosen_helper = h_name
+                    chosen_post = p_name
+                    found_pair = True
+                    break
+            if found_pair:
+                break
+
+        if not chosen_helper:
+            chosen_helper = cand_helpers[0]
+        promoted_source = env.inspected_ast_nodes[chosen_helper]
+        env.execute({"action": "PROPOSE_PRIMITIVE", "proposed_name": chosen_helper, "source_code": promoted_source})
+        kernel.counters["sandbox_actions"] += 1
+
+        # If scratch_learning_in_target_lab, re-runs discovery probes in downstream Coding and Reasoning labs
+        if method_name == "scratch_learning_in_target_lab":
+            for h_name in cand_helpers:
+                env.execute({"action": "CALL_PURE_FUNCTION", "function_name": h_name, "input": obs["teaching_example"]["input"]})
+                env.execute({"action": "REQUEST_MORE_EVIDENCE", "function_name": h_name, "input": vis_tests[2]["input"]})
+                kernel.counters["sandbox_actions"] += 2
+                kernel.counters["queries"] += 1
+
+        env.execute({"action": "STOP"})
+        kernel.counters["sandbox_actions"] += 1
+
+    elif method_name == "exhaustive_sandbox_probing":
+        # Exhaustively tests all 3x3 = 9 (helper, post_fn) patches and all visible inputs in the sandbox
+        for fname in obs["workspace_files"]:
+            env.execute({"action": "INSPECT_FILE_SPAN", "file_name": fname, "start_line": 1, "end_line": 40})
+            kernel.counters["sandbox_actions"] += 1
+        for h_name in cand_helpers:
+            env.execute({"action": "INSPECT_AST_NODE", "node_name": h_name})
+            for vt in vis_tests:
+                env.execute({"action": "GENERATE_TEST", "function_name": h_name, "input": vt["input"]})
+                kernel.counters["sandbox_actions"] += 1
+                kernel.counters["queries"] += 1
+        best_h = cand_helpers[0]
+        best_p = cand_posts[0]
+        for h_name in cand_helpers:
+            for p_name in cand_posts:
+                cand_patch = f"    return {p_name}({h_name}(seq))"
+                env.execute({"action": "APPLY_AST_PATCH", "replacement_body": cand_patch})
+                r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
+                kernel.counters["sandbox_actions"] += 2
+                kernel.counters["candidate_executions"] += len(vis_tests)
+                if r_vis.state_diff.get("visible_passed") == r_vis.state_diff.get("visible_total"):
+                    best_h = h_name
+                    best_p = p_name
+        chosen_helper = best_h
+        chosen_post = best_p
+        promoted_source = env.inspected_ast_nodes[chosen_helper]
+        env.execute({"action": "APPLY_AST_PATCH", "replacement_body": f"    return {chosen_post}({chosen_helper}(seq))"})
+        env.execute({"action": "RUN_VISIBLE_TESTS"})
+        env.execute({"action": "STOP"})
+        kernel.counters["sandbox_actions"] += 3
+
+    elif method_name == "examples_only_retrieval":
+        # Attempts to solve using only known post-functions on `seq` without inspecting or calling unseen helpers
+        for p_name in cand_posts:
+            cand_patch = f"    return {p_name}(seq)"
+            env.execute({"action": "APPLY_AST_PATCH", "replacement_body": cand_patch})
+            env.execute({"action": "RUN_VISIBLE_TESTS"})
+            kernel.counters["sandbox_actions"] += 2
+            kernel.counters["candidate_executions"] += len(vis_tests)
+        env.execute({"action": "STOP"})
+        kernel.counters["sandbox_actions"] += 1
+
+    elif method_name == "learner_without_propose_primitive":
+        # Ablates PROPOSE_PRIMITIVE: inspects target_pipeline.py and tests known post-steps, but cannot promote or call quarantined helpers
+        env.execute({"action": "INSPECT_FILE_SPAN", "file_name": "target_pipeline.py", "start_line": 1, "end_line": 30})
+        for p_name in cand_posts[:2]:
+            env.execute({"action": "APPLY_AST_PATCH", "replacement_body": f"    return {p_name}(seq)"})
+            env.execute({"action": "RUN_VISIBLE_TESTS"})
+            kernel.counters["sandbox_actions"] += 2
+            kernel.counters["candidate_executions"] += len(vis_tests)
+        env.execute({"action": "STOP"})
+        kernel.counters["sandbox_actions"] += 2
+
+    method_receipts = env.receipts[receipt_start_idx:]
+    counters_after = dict(kernel.counters)
+    experiments, compute_cost = _derive_stage_b_metrics_from_receipts_and_counters(
+        method_receipts, counters_before, counters_after
+    )
+
+    cross_lab_enabled = bool(
+        promoted_source
+        and method_name not in ("examples_only_retrieval", "learner_without_propose_primitive", "isolated_labs")
+    )
+    hidden_eval = env.evaluate(
+        promoted_primitive_name=chosen_helper,
+        promoted_primitive_source=promoted_source,
+        cross_lab_coding_enabled=cross_lab_enabled,
+        cross_lab_reasoning_enabled=cross_lab_enabled,
+    )
+    kernel.counters["hidden_evaluations"] += hidden_eval["hidden_tests_total"]
+
+    cross_lab_success = 0.5 * (
+        hidden_eval["cross_lab_coding_accuracy"] + hidden_eval["cross_lab_reasoning_accuracy"]
+    )
+    return dict(
+        method_name=method_name,
+        chosen_helper=chosen_helper,
+        chosen_post=chosen_post,
+        promoted_source=promoted_source,
+        lifecycle_record=lifecycle_record,
+        hidden_eval=hidden_eval,
+        experiments=experiments,
+        compute_cost=compute_cost,
+        cross_lab_success=cross_lab_success,
+        receipts=[r.to_dict() for r in method_receipts],
+    )
 
 
 def run_stage_b_code_transfer_for_seed(
@@ -2537,12 +2897,13 @@ def run_stage_b_code_transfer_for_seed(
     old_skill_suite: list[tuple[LearnerTaskView, EvaluatorTaskPrivate]],
     macro_library: list[dict[str, Any]],
     seed: int,
+    freeze_journal_sha256: str = "verified_freeze_journal_sha256",
 ) -> dict[str, Any]:
     """Executes Stage B (Open Primitive Code Transfer v1) across all 3 independently
     generated unknown-library families (`ulib_window_checksum`, `ulib_runlength_bucket`,
-    `ulib_zigzag_interleave`) and compares against all 9 required Stage B baselines."""
+    `ulib_zigzag_interleave`) in the isolated black-box evaluator process and compares
+    all 9 required Stage B methods through the identical `CommonEnvironmentAdapter`."""
     kernel.verify_integrity()
-    sleep_bonus = 0.75 if macro_library else 0.0
 
     per_family_results: dict[str, Any] = {}
     sample_receipts: list[dict[str, Any]] = []
@@ -2563,101 +2924,61 @@ def run_stage_b_code_transfer_for_seed(
     agg_by_method: dict[str, list[dict[str, float]]] = {m: [] for m in baseline_names}
 
     for fam_idx, fam_name in enumerate(UNKNOWN_LIBRARY_FAMILIES):
-        spec = UNKNOWN_LIB_SPECS[fam_name]
-        env = CommonEnvironmentAdapter(fam_name, seed + 100 * fam_idx)
+        env = CommonEnvironmentAdapter(
+            fam_name,
+            seed + 100 * fam_idx,
+            freeze_journal_sha256=freeze_journal_sha256,
+        )
         try:
             snap0 = env.snapshot()
-
-            # 1. Execute `corrected_frozen_evolved_rule` inside UnknownLibraryCodeLab
-            r_inspect = env.execute({"action": "INSPECT_AST_NODE", "node_name": spec["obfuscated_helper"]})
-            r_call1 = env.execute({"action": "CALL_PURE_FUNCTION", "function_name": spec["obfuscated_helper"], "input": env.visible_tests[0]["input"]})
-            r_gen = env.execute({"action": "GENERATE_TEST", "input": env.visible_tests[1]["input"]})
-            r_prop = env.execute({"action": "PROPOSE_PRIMITIVE"})
-            kernel.counters["sandbox_actions"] += 4
-
-            # Build quarantined PrimitiveProposal for the discovered helper
-            helper_src = spec["helper_source"]
-            proposal = PrimitiveProposal(
-                proposal_id=f"prop_{fam_name}_{seed}",
-                proposed_name=spec["obfuscated_helper"],
-                type_signature=spec["type_signature"],
-                implementation_kind="pure_python_ast_function",
-                implementation_reference_hash=hashlib.sha256(helper_src.encode("utf-8")).hexdigest(),
-                source_code=helper_src,
-                preconditions=["isinstance(seq, list)", "all(isinstance(x, int) for x in seq)"],
-                predicted_effects={
-                    "non_isomorphic_to_v1_primitives": True,
-                    "sample_transition": env.helper_call_evidence[0],
-                },
-                evidence_ids=[e["evidence_id"] for e in env.helper_call_evidence],
-                counterexamples=[],
-                dependency_versions={"python_stdlib": "3.13"},
-                expected_mdl_benefit=2.5,
-            )
-
-            heldout_helper_checks = [
-                dict(
-                    input=ht["input"],
-                    expected_output=_execute_ulib_helper_only(fam_name, ht["input"]),
+            method_runs: dict[str, dict[str, Any]] = {}
+            for m_name in baseline_names:
+                m_res = _execute_stage_b_method_on_adapter(
+                    method_name=m_name,
+                    env=env,
+                    snap0=snap0,
+                    kernel=kernel,
+                    frozen_evolved_rule=frozen_evolved_rule,
+                    old_skill_suite=old_skill_suite,
+                    macro_library=macro_library,
+                    seed=seed + 100 * fam_idx,
                 )
-                for ht in env._private_hidden_tests[:3]
-            ]
+                method_runs[m_name] = m_res
+                agg_by_method[m_name].append(
+                    dict(
+                        success=m_res["hidden_eval"]["hidden_accuracy"],
+                        experiments=m_res["experiments"],
+                        compute_cost=m_res["compute_cost"],
+                        cross_lab_success=m_res["cross_lab_success"],
+                    )
+                )
 
-            lifecycle_res = kernel.evaluate_primitive_proposal(
-                proposal=proposal,
-                sandbox_examples=env.helper_call_evidence,
-                heldout_examples=heldout_helper_checks,
-                old_retention_tasks=old_skill_suite,
-                active_rule=frozen_evolved_rule,
-            )
-            promotion_records.append(lifecycle_res["proposal"])
+            ev_run = method_runs["corrected_frozen_evolved_rule"]
+            hw_run = method_runs["strongest_handwritten_learner"]
+            no_prop_run = method_runs["learner_without_propose_primitive"]
 
-            # Compose the promoted primitive with the post-step primitive via APPLY_AST_PATCH
-            # Only 1 candidate composition is needed once PREDICT_EFFECTS + MERGE_EQUIVALENT matches the post-step
-            r_patch = env.execute({"action": "APPLY_AST_PATCH", "replacement_body": spec["patched_target_body"]})
-            r_vis = env.execute({"action": "RUN_VISIBLE_TESTS"})
-            r_stop = env.execute({"action": "STOP"})
-            kernel.counters["sandbox_actions"] += 3
-
-            hidden_eval = env.evaluate()
-            kernel.counters["hidden_evaluations"] += hidden_eval["hidden_tests_total"]
+            if ev_run["lifecycle_record"] is not None:
+                promotion_records.append(ev_run["lifecycle_record"])
 
             if fam_idx == 0:
-                sample_receipts = [
-                    r_inspect.to_dict(),
-                    r_call1.to_dict(),
-                    r_gen.to_dict(),
-                    r_prop.to_dict(),
-                    r_patch.to_dict(),
-                    r_vis.to_dict(),
-                    r_stop.to_dict(),
-                ]
+                sample_receipts = ev_run["receipts"]
 
-            # Test secondary invented-word binding in Coding Lab and Reasoning Lab without a supplied mapping
-            inv_word = spec["invented_word"]
-            teaching_probe = [4, 1, 6, 2, 5, 3]
-            teaching_out = _execute_ulib_helper_only(fam_name, teaching_probe)
-            # Infer binding across promoted primitives by behavioral execution on teaching_probe (no supplied mapping!)
+            # Infer cross-lab binding for the invented word using the public teaching example (no supplied mapping!)
+            teaching_ex = env.teaching_example
+            inv_word = teaching_ex["invented_word"]
+            teaching_in = teaching_ex["input"]
+            teaching_out = teaching_ex["expected_output"]
             inferred_prim_name = None
             binding_checks = 0
             for cand_name, cand_entry in kernel.promoted_primitives.items():
                 binding_checks += 1
-                if cand_entry["callable"](list(teaching_probe)) == teaching_out:
-                    inferred_prim_name = cand_name
-                    break
+                try:
+                    if cand_entry["callable"](list(teaching_in)) == teaching_out:
+                        inferred_prim_name = cand_name
+                        break
+                except Exception:
+                    continue
 
-            coding_test_in = [7, 3, 9, 4, 2, 8]
-            reasoning_test_in = [6, 6, 2, 5, 5, 1]
-            coding_ok = (
-                inferred_prim_name == spec["obfuscated_helper"]
-                and kernel.promoted_primitives[inferred_prim_name]["callable"](list(coding_test_in))
-                == _execute_ulib_helper_only(fam_name, coding_test_in)
-            )
-            reasoning_ok = (
-                inferred_prim_name == spec["obfuscated_helper"]
-                and kernel.promoted_primitives[inferred_prim_name]["callable"](list(reasoning_test_in))
-                == _execute_ulib_helper_only(fam_name, reasoning_test_in)
-            )
             cross_lab_bindings.append(
                 dict(
                     family=fam_name,
@@ -2665,119 +2986,28 @@ def run_stage_b_code_transfer_for_seed(
                     inferred_primitive=inferred_prim_name,
                     supplied_mapping_used=False,
                     binding_checks=binding_checks,
-                    coding_lab_transfer_success=1.0 if coding_ok else 0.0,
-                    reasoning_lab_transfer_success=1.0 if reasoning_ok else 0.0,
-                )
-            )
-
-            # Record metrics for all 9 Stage B methods on this unknown-library family
-            # 1. corrected_frozen_evolved_rule: uses PREDICT_EFFECTS + MERGE_EQUIVALENT + PROPOSE_PRIMITIVE + Sleep macro
-            evolved_exp = 2.0
-            evolved_cost = float(round(11.5 - sleep_bonus + 0.2 * fam_idx, 6))
-            agg_by_method["corrected_frozen_evolved_rule"].append(
-                dict(
-                    success=hidden_eval["hidden_accuracy"],
-                    experiments=evolved_exp,
-                    compute_cost=evolved_cost,
-                    cross_lab_success=1.0 if (coding_ok and reasoning_ok) else 0.0,
-                )
-            )
-
-            # 2. strongest_handwritten_learner: tests all 6 post-step compositions in sandbox without effect merging
-            agg_by_method["strongest_handwritten_learner"].append(
-                dict(
-                    success=hidden_eval["hidden_accuracy"],
-                    experiments=4.0,
-                    compute_cost=float(round(28.5 + 0.4 * fam_idx, 6)),
-                    cross_lab_success=1.0,
-                )
-            )
-
-            # 3. exact_information_gain_plus_effect_composition: predicts effects but does not merge equivalent post-steps
-            agg_by_method["exact_information_gain_plus_effect_composition"].append(
-                dict(
-                    success=hidden_eval["hidden_accuracy"],
-                    experiments=3.0,
-                    compute_cost=float(round(19.25 + 0.3 * fam_idx, 6)),
-                    cross_lab_success=1.0,
-                )
-            )
-
-            # 4. exhaustive_sandbox_probing: probes all combinations in the sandbox before patching
-            agg_by_method["exhaustive_sandbox_probing"].append(
-                dict(
-                    success=hidden_eval["hidden_accuracy"],
-                    experiments=6.0,
-                    compute_cost=float(round(52.0 + 0.5 * fam_idx, 6)),
-                    cross_lab_success=1.0,
-                )
-            )
-
-            # 5. examples_only_retrieval: tries to solve using only known list_transformations primitives without AST inspection
-            env.restore(snap0)
-            unpatched_eval = env.evaluate()
-            agg_by_method["examples_only_retrieval"].append(
-                dict(
-                    success=unpatched_eval["hidden_accuracy"],
-                    experiments=4.0,
-                    compute_cost=24.0,
-                    cross_lab_success=0.0,
-                )
-            )
-
-            # 6. learner_without_propose_primitive: ablates PROPOSE_PRIMITIVE (cannot promote or compose the unknown helper)
-            agg_by_method["learner_without_propose_primitive"].append(
-                dict(
-                    success=unpatched_eval["hidden_accuracy"],
-                    experiments=2.0,
-                    compute_cost=14.0,
-                    cross_lab_success=0.0,
-                )
-            )
-
-            # 7. proposal_lifecycle_without_sleep_compression: promotes primitive but lacks Sleep macro compression
-            agg_by_method["proposal_lifecycle_without_sleep_compression"].append(
-                dict(
-                    success=hidden_eval["hidden_accuracy"],
-                    experiments=2.0,
-                    compute_cost=float(round(11.5 + 0.2 * fam_idx, 6)),
-                    cross_lab_success=1.0,
-                )
-            )
-
-            # 8. scratch_learning_in_target_lab: re-discovers and re-validates primitive from scratch in each downstream lab
-            agg_by_method["scratch_learning_in_target_lab"].append(
-                dict(
-                    success=hidden_eval["hidden_accuracy"],
-                    experiments=5.0,
-                    compute_cost=float(round(39.0 + 0.4 * fam_idx, 6)),
-                    cross_lab_success=1.0,
-                )
-            )
-
-            # 9. isolated_labs: cannot share promoted primitive with Coding or Reasoning Labs
-            agg_by_method["isolated_labs"].append(
-                dict(
-                    success=hidden_eval["hidden_accuracy"],
-                    experiments=2.0,
-                    compute_cost=float(round(11.5 + 0.2 * fam_idx, 6)),
-                    cross_lab_success=0.0,
+                    coding_lab_transfer_success=ev_run["hidden_eval"]["cross_lab_coding_accuracy"],
+                    reasoning_lab_transfer_success=ev_run["hidden_eval"]["cross_lab_reasoning_accuracy"],
                 )
             )
 
             per_family_results[fam_name] = dict(
-                obfuscated_helper=spec["obfuscated_helper"],
-                target_function=spec["target_function"],
+                obfuscated_helper=ev_run["chosen_helper"],
+                chosen_post_function=ev_run["chosen_post"],
+                target_function=env.target_function,
                 invented_word=inv_word,
-                lifecycle_state=lifecycle_res["proposal"]["lifecycle_state"],
-                kernel_decision=lifecycle_res["decision"],
-                hidden_accuracy=hidden_eval["hidden_accuracy"],
-                evolved_experiments=evolved_exp,
-                evolved_compute_cost=evolved_cost,
-                handwritten_compute_cost=float(round(28.5 + 0.4 * fam_idx, 6)),
-                without_propose_primitive_accuracy=unpatched_eval["hidden_accuracy"],
-                cross_lab_coding_accuracy=1.0 if coding_ok else 0.0,
-                cross_lab_reasoning_accuracy=1.0 if reasoning_ok else 0.0,
+                lifecycle_state=ev_run["lifecycle_record"]["lifecycle_state"] if ev_run["lifecycle_record"] else "NONE",
+                kernel_decision="ACCEPT" if ev_run["lifecycle_record"] and ev_run["lifecycle_record"]["lifecycle_state"] == "PROMOTED" else "REJECT",
+                hidden_accuracy=ev_run["hidden_eval"]["hidden_accuracy"],
+                evolved_experiments=ev_run["experiments"],
+                evolved_compute_cost=ev_run["compute_cost"],
+                handwritten_compute_cost=hw_run["compute_cost"],
+                without_propose_primitive_accuracy=no_prop_run["hidden_eval"]["hidden_accuracy"],
+                cross_lab_coding_accuracy=ev_run["hidden_eval"]["cross_lab_coding_accuracy"],
+                cross_lab_reasoning_accuracy=ev_run["hidden_eval"]["cross_lab_reasoning_accuracy"],
+                evaluator_receipt_sha256=ev_run["hidden_eval"]["evaluator_receipt_sha256"],
+                separate_evaluator_process=ev_run["hidden_eval"]["separate_evaluator_process"],
+                private_inputs_exposed_to_learner=ev_run["hidden_eval"]["private_inputs_exposed_to_learner"],
             )
         finally:
             env.close()
@@ -3083,6 +3313,7 @@ def run_single_seed_two_stage(seed_idx: int, seed: int, cfg: dict[str, Any]) -> 
             old_skill_suite=old_skill_suite,
             macro_library=sleep_report["accepted_macros"],
             seed=cfg["sealed_code_seed_base"] + seed_idx * 10,
+            freeze_journal_sha256=freeze_journal_sha,
         )
 
     kernel_sha_after = kernel.kernel_signature()

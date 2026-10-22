@@ -12,10 +12,11 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
-[Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md)
+[10-Part NEXUS Seed Integrated Architecture & Black-Box Open Primitive Code Transfer v1](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md)
+and [Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md)
 ([protocol](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md),
 [v1 adversarial audit](docs/NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md)) **passed
-Stage A, Stage B, and all 12 preregistered gates** (`seed-open-primitive-transfer-1`,
+Stage A, Black-Box Subprocess Stage B (`12/12` gates), and all `10/10` Integrated Architecture gates** (`seed-open-primitive-transfer-1`,
 pre-run SHA `4bc6443e939287f80bac50cbdfa935e6b5bf0049`): following the adversarial
 audit confirming all 15 evaluator-leakage and guided-injection confounds in v1,
 Stage A separated `LearnerTaskView` from `EvaluatorTaskPrivate` (`zero_leakage_verified = true`,
@@ -32,19 +33,33 @@ paired diff `+8.4031`, 95% CI `[+4.7622, +12.0441]`), `exact_information_gain_le
 (`97.0508`, paired diff `+85.8265`, 95% CI `[+82.4780, +89.1750]`), and untouched
 `random_evolutionary_selection` (`0.3229` success, `42.1309` cost). Frozen before
 Stage B, the evolved rule entered `UnknownLibraryCodeLab` via `CommonEnvironmentAdapter`
-across 3 independent unknown-library families (`ulib_window_checksum` `_kx9_win_fold`,
-`ulib_runlength_bucket` `_vq4_rle_span`, `ulib_zigzag_interleave` `_zm7_zigzag_fold`),
-proposed new primitives via `PROPOSE_PRIMITIVE` (`24/24` passing the 6-stage kernel
-lifecycle `PROPOSED -> ... -> PROMOTED`), achieved `1.0000` hidden accuracy vs `0.0000`
-without `PROPOSE_PRIMITIVE`, beat `strongest_handwritten_learner` (`11.70` vs `28.90`
-compute cost, paired diff `+17.20`, 95% CI `[+17.20, +17.20]`; `2.0` vs `4.0`
-experiments), and reused the promoted primitives under invented words (`krelv`,
-`voux`, `zarn`) across Coding and Reasoning Labs (`1.0000` accuracy vs `0.0000` for
-`isolated_labs`). **NEXUS demonstrated bounded executable learning-rule transfer
-and acquired one previously unavailable primitive from sandboxed code interactions.
-This does not establish arbitrary coding, general language understanding,
-unrestricted self-improvement or AGI.** No live promotion. Previous closed results
-remain below.
+across 3 independent multi-file unknown-library families generated after freezing
+(`ulib_window_checksum`, `ulib_runlength_bucket`, `ulib_zigzag_interleave`, each with
+1 true helper + 2 decoy helpers, 3 candidate post-steps, and 3 candidate call sites),
+with hidden tests (`12` private inputs per family per seed) isolated in a separate
+evaluator subprocess (`src/nexus/seed/blackbox_evaluator_worker.py`,
+`private_inputs_exposed_to_learner = false`). The learner inspected files, chose probes,
+proposed new primitives via `PROPOSE_PRIMITIVE` (`24/24` passing `PROPOSED -> ... -> PROMOTED`),
+synthesized its own AST patch (`def solve_pipeline(seq): return ...`), achieved `1.0000`
+hidden subprocess accuracy vs `0.0000` without `PROPOSE_PRIMITIVE`, beat
+`strongest_handwritten_learner` (`37.80` vs `82.0938` compute cost, paired diff
+`+44.2938`, 95% CI `[+31.1927, +57.3948]`; `3.0` vs `8.125` experiments, CI
+`[+3.9063, +6.3437]`) and `exact_information_gain_plus_effect_composition` (`54.55` cost,
+diff `+16.75`), and reused promoted primitives (`krelv`, `voux`, `zarn`) across Coding
+and Reasoning Labs (`1.0000` accuracy vs `0.0000` for `isolated_labs`). In addition,
+the [10-part NEXUS Seed Integrated Architecture](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md)
+(`src/nexus/seed/integrated_architecture.py`) verified 3 operating timescales, the
+3-tier `EvidenceKernel`, 3-way intent routing & source-attributed claims, splittable
+`BeliefWorkspace` equivalence groups, Kautz-Singleton $AG(2,3)$ $9\times 12$ 2-disjunct
+non-adaptive + conditional group testing & Bat `SURVEY -> DISCRIMINATE -> VALIDATE_AND_ACT`
+scheduler, 6-part `MechanismCapsule` with separately verified `goal_adapter`, bounded
+1-minimal `ddmin` delta debugging, `TriLibrarySleepConsolidator` + `SuccessorFeatureLearner`
+zero-shot GPI + `SmallLearnedOptimizer`, 6-stage `DevelopmentalCurriculum` + 11-action
+`CognitiveController`, and all 7 isolated component ablations (`10/10` gates passed).
+**NEXUS demonstrated bounded executable learning-rule transfer and acquired one
+previously unavailable primitive from sandboxed code interactions. This does not
+establish arbitrary coding, general language understanding, unrestricted
+self-improvement or AGI.** No live promotion. Previous closed results remain below.
 
 [Combined Wake–Sleep–Dream–Evolution Architecture & Meta-Rule Evolution v1](docs/NEXUS_SEED_META_RULE_EVOLUTION_RESULTS.md)
 ([protocol](docs/NEXUS_SEED_META_RULE_EVOLUTION_PROTOCOL.md)) **passed all 9
