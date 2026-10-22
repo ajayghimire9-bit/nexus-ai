@@ -6,6 +6,7 @@ import ast
 import json
 import subprocess
 import sys
+import pytest
 from pathlib import Path
 
 from nexus.seed.real_data_adapter_learning import (
@@ -190,20 +191,16 @@ def test_unfamiliar_derived_composition_discovery_and_canonical_selection_rule()
     assert active_res["mean_heldout_accuracy"] > passive_res["mean_heldout_accuracy"]
 
 
-def test_three_way_local_model_benchmark_and_net_savings() -> None:
-    model = GrammarConstrainedLocalIntentModel()
-    assert model.GGUF_MODEL_PATH.name == "qwen2.5-0.5b-instruct-q4_k_m.gguf"
-    assert model.weight_memory_kb > 400000.0
-
-    bench = run_three_way_local_model_benchmark(num_repeated_trials=5)
+def test_historical_three_way_record_without_live_inference() -> None:
+    """Recorded claims remain intact; this does NOT independently endorse them."""
+    report = json.loads(DEFAULT_ARTIFACT_PATH.read_text())
+    bench = report['three_way_local_model_benchmark']
     assert bench["workload_size_N"] == 6
     assert bench["pretrained_model_verification"]["used_keyword_matching"] is False
     assert bench["pretrained_model_verification"]["grammar_constrained_decoding"] is True
     assert bench["pretrained_model_verification"]["real_model_tokenizer_counts"] is True
-    assert (
-        bench["repeated_trials_uncertainty"]["paired_solver_latency_savings_vs_ordinary_caching_ms"]["ci95_low"]
-        > 0.0
-    )
+    with pytest.raises(RuntimeError, match='Closed legacy'):
+        run_three_way_local_model_benchmark(num_repeated_trials=5)
     assert bench["inappropriate_reuse_rejected_on_row_level_task"] is True
     assert bench["ambiguous_revenue_eur_disambiguated"] is True
     assert bench["net_savings_vs_ordinary_program_caching"]["net_compute_cost_savings"] > 0.0
@@ -211,14 +208,14 @@ def test_three_way_local_model_benchmark_and_net_savings() -> None:
     assert bench["net_savings_vs_model_plus_tools"]["net_compute_cost_savings"] > 0.0
 
 
-def test_full_real_data_adapter_learning_artifact_and_tamper_verifier() -> None:
+def test_historical_artifact_hash_verification_does_not_rerun_closed_study() -> None:
     assert DEFAULT_ARTIFACT_PATH.exists(), "Expected seed_real_data_adapter_learning_v1.json to exist"
     report = json.loads(DEFAULT_ARTIFACT_PATH.read_text(encoding="utf-8"))
     assert report["schema"] == "seed_real_data_adapter_learning_v1"
     assert report["all_gates_passed"] is True
     assert all(report["gates"].values())
 
-    # Verify standalone verifier script passes and rejects all 14 tamper modes
+    # Default verification must never execute the historical scientific study.
     proc = subprocess.run(
         [sys.executable, str(REPO_ROOT / "scripts" / "verify_seed_real_data_adapter_learning.py")],
         cwd=str(REPO_ROOT),
@@ -227,6 +224,6 @@ def test_full_real_data_adapter_learning_artifact_and_tamper_verifier() -> None:
         check=True,
     )
     out = json.loads(proc.stdout)
-    assert out["status"] == "VERIFIED"
-    assert out["all_gates_passed"] is True
-    assert len(out["tamper_cases_rejected"]) == 14
+    assert out["status"] == "HISTORICAL_BYTES_VERIFIED"
+    assert out["scientific_claims_revalidated"] is False
+    assert out["model_calls"] == out["new_environment_steps"] == 0

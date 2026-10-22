@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — executable retention beyond ordinary caching
+
+Hypothesis: parameterized AST capsules improve correctness or total work beyond
+the same local model/tools and ordinary caching. **Not supported on the locked
+v2.1 source-development workload.** All methods scored 83.33% and executed the
+same number of candidates. Capsule reuse occurred but did not establish a useful
+advantage; timing reset-pair intervals include zero. The source grammar permits
+a strong one-candidate direct planner, leaving no candidate-search headroom.
+[Report](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md). No general learning or
+language claim; the original failed startup remains a separate incomplete run.
+
 ## Latest — task-conditioned program ranking & sealed compositional replication PASSED all 7 registered gates
 
 Clean execution `cc57cddff4491a93b76a842e43a85229216f0bce` (`seed-task-conditioned-replication-1`, `seed_task_conditioned_replication_v1`).

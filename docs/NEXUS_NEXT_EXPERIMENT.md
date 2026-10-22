@@ -1,5 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next recommendation — measure genuine discovery headroom
+
+The [persistent assistant v2.1 study](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md)
+failed: capsules reused successfully but did not improve on ordinary caching.
+Keep this real persistent model runtime and fair caching controls. Separately
+preregister a richer multi-step workflow whose strong baseline must actually
+search, first verifying discovery headroom without weakening that baseline.
+Do not expand model size or tune these scored tasks to manufacture a win.
+No new experiment is scheduled or executed here. Latest accounted ledger:
+2186.632103455996 s used / 1413.367896544004 s remaining. Earlier next-task
+entries below are historical context, not automatic instructions to rerun them.
+
 ## Latest — task-conditioned program ranking & sealed compositional replication PASSED all 7 registered gates
 
 Clean execution `cc57cddff4491a93b76a842e43a85229216f0bce` (`seed-task-conditioned-replication-1`, `seed_task_conditioned_replication_v1`). On the 6-operator compositional grammar (`258` raw $\to$ `100` canonical $\to$ `65` unique: `18` source, `23` quarantined `v1` targets, `24` fresh sealed `decrement` targets with `0` overlap), `deterministic_signature` required `1.0000` mean evaluations (`1.0000` held-out accuracy, `1.0000` old-source retention), beating `flat_catalogue` (`12.7083`, `92.13%` reduction, CI `[+8.0858, +15.3309]`), `shortest_program` (`28.2500`), `exact_macro_cache` (`30.5000`), `random_ordering` (`33.0130`), `structural_meta_prior` (`42.3333`), `operator_frequency` (`50.2500`), `bayesian_version_space` (`1.3333`), and `learned_linear_ranker` (`5.6250`). Cross-domain transfer under a supplied mapping (`action_token_sequence`) reduced evaluations from `48.0417` to `1.0000` (`97.92%`), and cross-lab shared-memory transfer reduced downstream evaluations from `66.0` to `1.0` (`98.48%`). [Results](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md), [protocol](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md). No live promotion.

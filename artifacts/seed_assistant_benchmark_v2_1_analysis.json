@@ -1,0 +1,129 @@
+{
+  "all_requests_including_integration": {
+    "actual_generated_tokens": 956,
+    "actual_input_tokens": 21440,
+    "client_requests": 146,
+    "confirmed_model_calls": 67,
+    "response_cache_hits": 79,
+    "unknown_token_requests": 0
+  },
+  "incorrect_cases": {
+    "inappropriate_reuse": {
+      "intents": [
+        {
+          "min": 8,
+          "op": "rows",
+          "order": "asc"
+        }
+      ],
+      "methods": [
+        "ordinary_cache",
+        "nexus_capsules",
+        "tools_retrieval"
+      ],
+      "occurrences": 12
+    },
+    "unsupported": {
+      "intents": [
+        {
+          "min": null,
+          "op": "clarify",
+          "order": "desc"
+        }
+      ],
+      "methods": [
+        "ordinary_cache",
+        "nexus_capsules",
+        "tools_retrieval"
+      ],
+      "occurrences": 12
+    }
+  },
+  "label": "posthoc saved-data sensitivity audit, not a new experiment",
+  "methods": {
+    "nexus_capsules": {
+      "max_serialized_capsules_bytes": 1758,
+      "max_serialized_program_cache_bytes": 4283,
+      "median_workflow_s": 0.00018264550089952536,
+      "ordinary_program_cache_hits": 26,
+      "stage_total_s": {
+        "abstraction_s": 8.662200707476586e-05,
+        "execution_s": 0.0014860400260658935,
+        "intent_s": 29.7821782129613,
+        "program_search_s": 0.00015645899839000776,
+        "response_s": 0.00029728801018791273,
+        "retrieval_binding_s": 0.0007071649743011221,
+        "source_profile_s": 0.004412755988596473,
+        "validation_s": 0.0002002919718506746
+      },
+      "warm_uncached_model_mean_s": 1.3628532103011821,
+      "warm_uncached_model_requests": 20
+    },
+    "ordinary_cache": {
+      "max_serialized_capsules_bytes": 2,
+      "max_serialized_program_cache_bytes": 4283,
+      "median_workflow_s": 0.00017214550098287873,
+      "ordinary_program_cache_hits": 26,
+      "stage_total_s": {
+        "abstraction_s": 7.994996849447489e-06,
+        "execution_s": 0.0017590839706826955,
+        "intent_s": 29.657239043990558,
+        "program_search_s": 0.0003366229866514914,
+        "response_s": 0.0002983720041811466,
+        "retrieval_binding_s": 0.000513706989295315,
+        "source_profile_s": 0.004404335020808503,
+        "validation_s": 0.00020533201313810423
+      },
+      "warm_uncached_model_mean_s": 1.3569895978507702,
+      "warm_uncached_model_requests": 20
+    },
+    "tools_retrieval": {
+      "max_serialized_capsules_bytes": 2,
+      "max_serialized_program_cache_bytes": 2,
+      "median_workflow_s": 0.00019262449859525077,
+      "ordinary_program_cache_hits": 0,
+      "stage_total_s": {
+        "abstraction_s": 5.247980880085379e-06,
+        "execution_s": 0.0014343359944177791,
+        "intent_s": 29.915386417989794,
+        "program_search_s": 0.0009488769937888719,
+        "response_s": 0.00030816602520644665,
+        "retrieval_binding_s": 8.287499804282561e-05,
+        "source_profile_s": 0.004455712019989733,
+        "validation_s": 0.00021804095740662888
+      },
+      "warm_uncached_model_mean_s": 1.3689218167499348,
+      "warm_uncached_model_requests": 20
+    }
+  },
+  "timing_reset_replication_sensitivity": {
+    "ordinary_cache": {
+      "degrees_of_freedom": 1,
+      "differences_s": [
+        -0.006440515622368026,
+        -0.0010111492501891917
+      ],
+      "mean_s": -0.003725832436278609,
+      "reset_repetitions": 2,
+      "scope": "posthoc n=2 reset-pair interval; not independent pretrained models",
+      "t95_s": [
+        -0.038219152792107525,
+        0.030767487919550307
+      ]
+    },
+    "tools_retrieval": {
+      "degrees_of_freedom": 1,
+      "differences_s": [
+        0.003989237709295823,
+        0.002414708333769
+      ],
+      "mean_s": 0.0032019730215324116,
+      "reset_repetitions": 2,
+      "scope": "posthoc n=2 reset-pair interval; not independent pretrained models",
+      "t95_s": [
+        -0.0068011732826126076,
+        0.01320511932567743
+      ]
+    }
+  }
+}

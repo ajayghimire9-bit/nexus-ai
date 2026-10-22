@@ -1,5 +1,17 @@
 # NEXUS progress log
 
+## Latest — persistent inference works; capsule advantage not demonstrated
+
+Completed [assistant v2.1](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md):
+144 trials, live frozen GGUF CPU inference, 83.33% strict correctness for all
+methods. Capsule reuses 8; candidate executions 40 per method; ordinary caching
+was slightly faster by point estimate. The 5% / 90%-accuracy screen FAILED.
+The initial startup failure remains INCOMPLETE, never relabeled a scientific
+negative. Saved trial outputs and arithmetic independently reconstruct. No
+weight training or stable promotion. Additional debit 108 s including initial
+failure and technical diagnostics; current accounted ledger 2186.632103455996 s
+used / 1413.367896544004 s remaining. Older entries retain chronology.
+
 ## Latest — task-conditioned program ranking & sealed compositional replication PASSED all 7 registered gates
 
 Clean execution `cc57cddff4491a93b76a842e43a85229216f0bce` (`seed-task-conditioned-replication-1`, `seed_task_conditioned_replication_v1`). On the expanded 6-operator grammar (`258` raw $\to$ `100` canonical $\to$ `65` semantically unique: `18` source, `23` quarantined `v1` targets, `24` fresh sealed `decrement` targets with `0` overlap), task-conditioned signature ranking (`deterministic_signature`) required `1.0000` mean evaluations (`1.0000` held-out accuracy, `1.0000` old-source retention), reducing search evaluations by `92.13%` vs `flat_catalogue` (`12.7083`), `96.46%` vs `shortest_program` (`28.2500`), `96.72%` vs `exact_macro_cache` (`30.5000`), `96.97%` vs `random_ordering` (`33.0130`), `97.64%` vs `structural_meta_prior` (`42.3333`), and `98.01%` vs `operator_frequency` (`50.2500`), while outperforming `bayesian_version_space` (`1.3333`) and `learned_linear_ranker` (`5.6250`). Cross-domain transfer under a supplied mapping (`action_token_sequence`) reduced evaluations from `48.0417` (`scratch_flat`) to `1.0000` (`97.92%` reduction), and cross-lab shared-memory transfer (`Language` $\to$ `Coding` $\to$ `Reasoning` $\to$ `World`) reduced downstream evaluations from `66.0` to `1.0` (`98.48%` reduction, `100%` World Lab goal completion vs `0%` for `isolated_labs`). [Results](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_RESULTS.md), [protocol](NEXUS_SEED_TASK_CONDITIONED_REPLICATION_PROTOCOL.md), [signature audit](NEXUS_SEED_SIGNATURE_AUDIT_RESULTS.md), [cross-lab transfer](NEXUS_SEED_CROSS_LAB_TRANSFER_RESULTS.md). No live promotion.

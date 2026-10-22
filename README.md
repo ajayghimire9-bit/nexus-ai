@@ -1,5 +1,13 @@
 # NEXUS Seed
 
+**Latest completed study:** [persistent local assistant v2.1](docs/NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md)
+completed all 144 trials and **failed its development screen**. All methods
+scored 83.33%; retained AST capsules added no correctness/candidate-count benefit
+and did not beat ordinary caching in measured latency. The real persistent GGUF
+runtime, explicit cache accounting and independent saved-data verifier work.
+[Runtime guide](docs/NEXUS_LOCAL_ASSISTANT_RUNTIME.md). The initial startup failure
+is preserved separately; older research entries below retain their chronology.
+
 **Teach. Remember. Act. Learn how to learn.**
 
 A local research agent for learning finite concepts, using memory and making

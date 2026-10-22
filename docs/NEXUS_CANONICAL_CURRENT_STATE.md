@@ -1,5 +1,19 @@
 # NEXUS Seed — Current State
 
+## Latest — persistent assistant benchmark v2.1 FAILED
+
+The [completed v2.1 study](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md) ran
+144 trials after clean pushed revision `8fe8192e207bf95fa3b8b153f31913df2c7490e4`.
+All three methods: 40/48 correct; 22 real model calls and 40 program executions
+each. NEXUS made eight capsule reuses but no execution/correctness gain. Mean
+startup-inclusive latency: 649.879 ms tools, 642.951 ms ordinary cache,
+646.677 ms NEXUS. The primary screen failed; reset-level timing intervals
+include zero. Existing artifacts and model weights remain intact; initial v2
+startup failure is separately preserved. Latest accounted ledger:
+2186.632103455996 s used / 1413.367896544004 s remaining.
+Next: establish discovery headroom in richer multi-step workflows against the
+same strong direct/tool-cache baseline. No further study has run.
+
 ## Master Architecture & Unified Workspace (Engineering Demonstration of Within-Family Search-Prior Reuse)
 
 The [15-Component Seed Master Architecture](NEXUS_SEED_MASTER_ARCHITECTURE.md) (`src/nexus/seed/master/`) and its [Bounded Exact-Motif Program-Prior Reuse Demo & Bounded Multi-Reasoner Integration Suite](../src/nexus/seed/master/meta_learning.py) are implemented and verified over the existing `Session`, `SharedBrain`, and `E1 Journal`. In [meta_learning.py](../src/nexus/seed/master/meta_learning.py), learning operator and macro priors from solved source tasks reduces candidate program search evaluations from `9.5` to `1.75` (`81.58%`) when source and target curricula share the same 3 canonical motifs (`sort->unique`, `reverse->increment`, `even->sort`) alongside the 6-domain bounded multi-reasoner integration suite (`relational`, `constraint`, `mathematical`, `causal`, `analogical`, `hierarchical_planning`). Genuine held-out learning-to-learn on canonically and semantically disjoint target compositions is tested separately in `seed_disjoint_meta_v1` below and remains unestablished.

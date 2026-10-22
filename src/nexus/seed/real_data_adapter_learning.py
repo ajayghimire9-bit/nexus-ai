@@ -3009,6 +3009,8 @@ def run_three_way_local_model_benchmark(num_repeated_trials: int = 5) -> dict[st
     end-to-end harness latency (ms), and real model tokenizer counts across `num_repeated_trials`
     independent runs with 95% confidence intervals.
     """
+    raise RuntimeError('Closed legacy v1 benchmark: use the versioned persistent assistant runner; '
+                       'historical cache/timing claims must not be regenerated as current evidence')
     workload = [
         ("S2_endpoint_latency_grouped_summary", "Summarize prod error endpoint latency", "initial_grouped_task"),
         ("S2_endpoint_latency_grouped_summary", "Summarize prod error endpoint latency again", "exact_repeat_same_schema"),
@@ -3366,6 +3368,8 @@ def run_three_way_local_model_benchmark(num_repeated_trials: int = 5) -> dict[st
 def build_real_data_adapter_learning_report() -> dict[str, Any]:
     """Executes the complete real-data learning experiment and returns the structured,
     reconstructible report (`seed_real_data_adapter_learning_v1`)."""
+    raise RuntimeError('Closed historical report: verify preserved bytes instead; '
+                       'new evaluation requires a separately registered version')
     master_kernel = EvidenceKernel(max_budget_units=10000.0)
 
     # 1. Verify compositional representation & >15 operation pipeline + missing-value handling

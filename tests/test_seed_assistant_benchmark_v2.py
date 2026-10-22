@@ -285,3 +285,47 @@ def test_ordinary_signature_cache_includes_field_types(tmp_path):
     result=a.solve('x',p)
     assert result['status']=='executed' and result['counters']['program_cache_hit']==0
     assert result['output']==[{'amount':'a','total':21.0}]
+
+
+def test_saved_real_model_accounting_and_posthoc_analysis_reconstruct():
+    path=ROOT/'artifacts/seed_assistant_benchmark_v2_1_raw.jsonl'
+    if not path.exists():pytest.skip('post-run artifact not present in pre-run revision')
+    records=verifier.parse_records(path.read_bytes())
+    cfg=json.loads((ROOT/'configs/seed_assistant_benchmark_v2_1.json').read_text())
+    summary=verifier.reconstruct(records,cfg)
+    assert summary['declared_complete'] and not summary['passed']
+    assert summary['methods']['nexus_capsules']['candidate_executions']==40
+    for method in verifier.METHODS:
+        assert summary['methods'][method]['correct']==40
+        assert summary['methods'][method]['application_cache_hits']==26
+    s=importlib.util.spec_from_file_location('posthoc_analysis_test',ROOT/'scripts/analyze_seed_assistant_benchmark_v2.py')
+    a=importlib.util.module_from_spec(s);s.loader.exec_module(a)
+    result=a.analyze(records)
+    assert result==json.loads((ROOT/'artifacts/seed_assistant_benchmark_v2_1_analysis.json').read_text())
+    assert result['all_requests_including_integration']['confirmed_model_calls']==67
+    assert result['all_requests_including_integration']['actual_generated_tokens']==956
+    assert all(x['t95_s'][0]<0<x['t95_s'][1] for x in result['timing_reset_replication_sensitivity'].values())
+
+
+def test_independent_saved_output_verifier_rejects_forged_correctness():
+    path=ROOT/'artifacts/seed_assistant_benchmark_v2_1_raw.jsonl'
+    if not path.exists():pytest.skip('post-run artifact not present in pre-run revision')
+    records=verifier.parse_records(path.read_bytes())
+    cfg=json.loads((ROOT/'configs/seed_assistant_benchmark_v2_1.json').read_text())
+    verifier.verify_outputs(records,cfg,ROOT/'artifacts/seed_assistant_benchmark_v2_1_inputs')
+    forged=deepcopy(records)
+    next(r for r in forged if r['kind']=='trial' and not r['correct'])['correct']=True
+    with pytest.raises(ValueError,match='forged'):
+        verifier.verify_outputs(forged,cfg,ROOT/'artifacts/seed_assistant_benchmark_v2_1_inputs')
+
+
+def test_exported_resource_journal_reconstructs_and_rejects_corruption():
+    path=ROOT/'artifacts/seed_assistant_benchmark_v2_1_ledger.json'
+    if not path.exists():pytest.skip('post-run journal export absent')
+    s=importlib.util.spec_from_file_location('ledger_analysis_test',ROOT/'scripts/analyze_seed_assistant_benchmark_v2.py')
+    a=importlib.util.module_from_spec(s);s.loader.exec_module(a)
+    ledger=json.loads(path.read_text())
+    assert a.verify_ledger(ledger)==pytest.approx(2186.632103455996)
+    assert len(ledger['events'])==8
+    altered=deepcopy(ledger);altered['events'][-1]['payload_json']='{}'
+    with pytest.raises(ValueError,match='event'):a.verify_ledger(altered)

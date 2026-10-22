@@ -1,5 +1,19 @@
 # NEXUS Seed — Master Context
 
+## Current evidence — persistent assistant v2.1
+
+[Results](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md): all 144 authored
+source-development trials completed with a real persistent Qwen GGUF CPU server.
+All three methods scored 40/48 (83.33%). NEXUS capsules made eight reuses but
+saved no candidate executions and did not beat ordinary caching. The registered
+screen FAILED. Same-file request changes affected actual programs in 12/12
+controls; this remains a narrow supplied grammar, not general language or
+learning-to-learn. Process startup/cache telemetry now have explicit accounting.
+The first incomplete attempt remains preserved. Latest accounted ledger:
+**2186.632103455996 s used / 1413.367896544004 s remaining**, superseding older
+ledger entries below. An intervening v1 real-data debit is unavailable; do not
+invent it from reused cache timings. No main merge or stable promotion.
+
 ## Ultimate goal
 
 Build a compact, adaptive autonomous intelligence system that learns from

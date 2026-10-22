@@ -1,5 +1,18 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Persistent local assistant study
+
+`seed/local_model_runtime.py` owns a CPU llama.cpp server, strict deadlines,
+instance-scoped application cache, native telemetry and shutdown. The existing
+`GrammarConstrainedLocalIntentModel` delegates to it; no class-wide decode cache
+or user-specific model path remains. `seed/assistant_benchmark_v2.py` reuses
+`TypedDataAdapterProgram`, `ParameterizedAdapterTemplate`, schema profiling and
+the execution-backed renderer. The versioned runner extends existing Sandbox/E1
+reservation/debit conventions with a descendant-process meter. The independent
+verifier replays saved programs and reference outputs; the analysis script is
+saved-data only. [Guide](NEXUS_LOCAL_ASSISTANT_RUNTIME.md),
+[negative result](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md).
+
 ## Active runtime
 
 - 10-Part NEXUS Seed Integrated Architecture & Black-Box Open Primitive Code Transfer v1:

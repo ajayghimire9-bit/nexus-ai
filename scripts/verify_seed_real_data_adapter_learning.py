@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Standalone Tamper-Rejecting Verifier for `seed_real_data_adapter_learning_v1`.
+"""Historical verifier implementation for `seed_real_data_adapter_learning_v1`.
+
+The CLI now checks preserved artifact bytes ONLY. It never reruns the closed
+study or endorses its scientific claims. Functions below retain historical
+reconstruction code; the versioned assistant verifier is the new study tool.
 
 Reconstructs all 10 verification gates from raw per-task records, live held-out
 program re-execution (`reverify_heldout_program_ops` in the isolated evaluator worker),
@@ -841,50 +845,21 @@ def verify_tamper_rejection(base_report: dict[str, Any]) -> list[str]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Verify or write the seed_real_data_adapter_learning_v1 artifact."
-    )
-    parser.add_argument(
-        "--write",
-        action="store_true",
-        help="Re-run the experiment and write artifacts/seed_real_data_adapter_learning_v1.json.",
-    )
-    parser.add_argument(
-        "--artifact",
-        type=pathlib.Path,
-        default=DEFAULT_ARTIFACT_PATH,
-        help="Path to the artifact JSON file.",
-    )
+    """Archive verification only; never rerun a closed study from a test."""
+    import hashlib
+    parser = argparse.ArgumentParser(description="Verify preserved historical v1 bytes; no model or new data.")
+    parser.add_argument("--artifact", type=pathlib.Path, default=DEFAULT_ARTIFACT_PATH)
+    parser.add_argument("--write", action="store_true")
     args = parser.parse_args()
-
-    if args.write or not args.artifact.exists():
-        report = write_real_data_adapter_learning_artifact(args.artifact)
-    else:
-        report = json.loads(args.artifact.read_text(encoding="utf-8"))
-
-    reconstructed_gates = reconstruct_gates_from_raw_records(report)
-    verify_live_subprocess_workspace_isolation()
-    tamper_cases = verify_tamper_rejection(report)
-
-    live_report = build_real_data_adapter_learning_report()
-    live_gates = reconstruct_gates_from_raw_records(live_report)
-    if live_gates != reconstructed_gates:
-        raise ValueError("Live re-execution gates do not match artifact gates")
-
-    print(
-        json.dumps(
-            dict(
-                status="VERIFIED",
-                schema=report["schema"],
-                artifact=str(args.artifact),
-                all_gates_passed=True,
-                gates=reconstructed_gates,
-                tamper_cases_rejected=tamper_cases,
-            ),
-            indent=2,
-            sort_keys=True,
-        )
-    )
+    if args.write:
+        raise ValueError("closed historical artifact cannot be overwritten")
+    actual = hashlib.sha256(args.artifact.read_bytes()).hexdigest()
+    expected = "ec6336bc92dfe51053ee12b659d6bdb9445bb43723c962a7b241f996af9ee1a9"
+    if actual != expected:
+        raise ValueError("historical artifact hash mismatch")
+    print(json.dumps(dict(status="HISTORICAL_BYTES_VERIFIED", sha256=actual,
+                          scientific_claims_revalidated=False, model_calls=0,
+                          new_environment_steps=0, artifact=args.artifact.name), sort_keys=True))
     return 0
 
 
