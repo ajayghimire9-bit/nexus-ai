@@ -129,7 +129,8 @@ class Assistant:
                 return result
             t = time.perf_counter()
             bindings = bind(profiles, intent)
-            signature = digest([list(profiles), intent])
+            signature = (digest([[(k,v['inferred_type']) for k,v in profiles.items()], intent])
+                         if self.method != 'tools_retrieval' else None)
             shape = (intent['op'], intent['min'] is not None, intent['order'])
             winner = self.programs.get(signature) if self.method != 'tools_retrieval' else None
             counters['program_cache_hit'] = int(winner is not None)
@@ -264,12 +265,14 @@ def run(config, runtime_config, directory, emit):
                 for phase in ('cold', 'warm'):
                     for index, case in enumerate(config['cases']):
                         result = assistant.solve(case['request'], files[case['file']])
+                        assessment_start = time.perf_counter()
                         expected_status, expected_output = reference(files[case['file']], case['expected'])
                         correct = result['status'] == expected_status and result['output'] == expected_output
+                        assessment_s = time.perf_counter()-assessment_start
                         emit(dict(kind='trial', repeat=repeat, phase=phase, index=index,
                                   method=method, task_id=case['id'], file_id=case['file'],
                                   input_file_sha256=__import__('hashlib').sha256(files[case['file']].read_bytes()).hexdigest(),
-                                  correct=correct, result=result,
+                                  correct=correct, result=result, evaluator_assessment_s=assessment_s,
                                   cold_startup_s=meta['cold_startup_s'] if phase == 'cold' and index == 0 else 0,
                                   amortized_startup_s=meta['cold_startup_s']/(2*len(config['cases']))))
             except Exception as exc:

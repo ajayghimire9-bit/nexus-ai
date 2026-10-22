@@ -16,6 +16,7 @@ import os
 from pathlib import Path
 import platform
 import shutil
+import secrets
 import socket
 import subprocess
 import struct
@@ -116,6 +117,7 @@ class PersistentLocalRuntime:
         self._connection = None
         self.metadata = None
         self._cancel = threading.Event()
+        self._api_key = secrets.token_urlsafe(24)
         atexit.register(self.close)
 
     def start(self):
@@ -141,7 +143,7 @@ class PersistentLocalRuntime:
         args = [binary, '-m', str(model), '--host', self.config.host, '--port', str(self.port),
                 '-c', str(self.config.context_size), '-t', str(self.config.threads),
                 '-tb', str(self.config.threads), '-np', '1', '-ngl', '0', '--device', 'none',
-                '--no-op-offload', '--offline', '--no-webui', '--cache-ram', '0']
+                '--no-op-offload', '--offline', '--no-webui', '--cache-ram', '0', '--api-key', self._api_key]
         self._log = open(self.log_path, 'ab') if self.log_path else open(os.devnull, 'ab')
         # Inherit the benchmark worker's process group: supervisor kills descendants too.
         self.process = subprocess.Popen(args, stdout=self._log, stderr=self._log,
@@ -151,7 +153,8 @@ class PersistentLocalRuntime:
             deadline = time.monotonic() + self.config.startup_timeout_s
             while time.monotonic() < deadline:
                 if self.process.poll() is not None:
-                    raise RuntimeError('model server exited during startup; inspect server log')
+                    raise RuntimeError('model server exited during startup (return code '+
+                                       str(self.process.poll())+'); inspect server log')
                 try:
                     if self._http('GET', '/health', None, timeout=.3).get('status') == 'ok':
                         break
@@ -179,7 +182,8 @@ class PersistentLocalRuntime:
         self._connection = conn
         try:
             body = None if payload is None else json.dumps(payload, allow_nan=False)
-            conn.request(method, path, body, {'Content-Type': 'application/json'})
+            conn.request(method, path, body, {'Content-Type': 'application/json',
+                                            'Authorization': 'Bearer '+self._api_key})
             response = conn.getresponse()
             raw = response.read(1_000_001)
             if response.status != 200 or len(raw) > 1_000_000:

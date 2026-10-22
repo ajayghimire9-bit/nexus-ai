@@ -1,0 +1,178 @@
+{
+  "schema": "seed_assistant_benchmark_v2_1",
+  "base_sha": "d4c19e446e1c6e233ef2c8a596bdefd988a29579",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "carried_used_s": 2090.632103455996,
+  "wall_s": 480,
+  "cpu_s": 480,
+  "memory_mb": 2048,
+  "cold_repetitions": 2,
+  "order_seed": 782104,
+  "runtime": {
+    "context_size": 2048,
+    "threads": 1,
+    "backend": "llama_cpp_server",
+    "request_timeout_s": 20,
+    "startup_timeout_s": 30,
+    "max_tokens": 128,
+    "seed": 42,
+    "application_cache": true,
+    "prompt_cache": false
+  },
+  "files": [
+    {
+      "id": "v2_region",
+      "key": "region",
+      "value": "amount",
+      "seed": 782201
+    },
+    {
+      "id": "v2_zone",
+      "key": "zone",
+      "value": "latency",
+      "seed": 782202
+    },
+    {
+      "id": "v2_category",
+      "key": "category",
+      "value": "score",
+      "seed": 782203
+    },
+    {
+      "id": "v2_label",
+      "key": "label",
+      "value": "value",
+      "seed": 782204
+    }
+  ],
+  "cases": [
+    {
+      "id": "repeat_1",
+      "file": "v2_region",
+      "request": "Sum amounts per region, at least 5, largest first",
+      "expected": {
+        "op": "sum",
+        "min": 5,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "repeat_2",
+      "file": "v2_region",
+      "request": "Sum amounts per region, at least 5, largest first",
+      "expected": {
+        "op": "sum",
+        "min": 5,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "same_file_different_instruction",
+      "file": "v2_region",
+      "request": "Show individual records with amount at least 5, largest first",
+      "expected": {
+        "op": "rows",
+        "min": 5,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "new_schema",
+      "file": "v2_zone",
+      "request": "Sum latencies per zone, at least 5, largest first",
+      "expected": {
+        "op": "sum",
+        "min": 5,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "paraphrase",
+      "file": "v2_zone",
+      "request": "Total the latency values for each zone, minimum 5, descending",
+      "expected": {
+        "op": "sum",
+        "min": 5,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "changed_threshold",
+      "file": "v2_zone",
+      "request": "Sum latencies per zone, at least 12, largest first",
+      "expected": {
+        "op": "sum",
+        "min": 12,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "ambiguous",
+      "file": "v2_category",
+      "request": "Make this data better",
+      "expected": {
+        "op": "clarify",
+        "min": null,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "unsupported",
+      "file": "v2_category",
+      "request": "Delete my files and send an email",
+      "expected": {
+        "op": "unsupported",
+        "min": null,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "correction",
+      "file": "v2_category",
+      "request": "No, return individual records with score at least 8, smallest first",
+      "expected": {
+        "op": "rows",
+        "min": 8,
+        "order": "asc"
+      }
+    },
+    {
+      "id": "new_binding",
+      "file": "v2_label",
+      "request": "Sum values per label, at least 8, largest first",
+      "expected": {
+        "op": "sum",
+        "min": 8,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "inappropriate_reuse",
+      "file": "v2_label",
+      "request": "Show individual records with value at least 8, largest first",
+      "expected": {
+        "op": "rows",
+        "min": 8,
+        "order": "desc"
+      }
+    },
+    {
+      "id": "unfamiliar_paraphrase",
+      "file": "v2_label",
+      "request": "Fold values into a total for each label, minimum 8, descending",
+      "expected": {
+        "op": "sum",
+        "min": 8,
+        "order": "desc"
+      }
+    }
+  ],
+  "success_rule": {
+    "minimum_latency_reduction": 0.05,
+    "minimum_task_accuracy": 0.9,
+    "correctness_regression_allowed": 0,
+    "positive_paired_interval_required": true
+  },
+  "new_environment_interactions": 0,
+  "neural_training_updates": 0
+}

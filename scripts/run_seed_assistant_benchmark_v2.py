@@ -20,6 +20,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
 CONFIG=ROOT/'configs/seed_assistant_benchmark_v2.json'
 PROTOCOL=ROOT/'docs/NEXUS_SEED_ASSISTANT_BENCHMARK_V2_PROTOCOL.md'
+RUN_ID='seed-assistant-benchmark-v2-1'
 
 
 def read_records(path):
@@ -35,7 +36,7 @@ def worker(args,config):
     from nexus.seed.experimental import Sandbox
     from nexus.seed.local_model_runtime import file_hash
     directory=Path(args.directory).resolve()
-    expected=ROOT/'runs/experimental/attempts/seed-assistant-benchmark-v2-1'
+    expected=ROOT/'runs/experimental/attempts'/RUN_ID
     if directory!=expected.resolve() or not (directory/'registration.json').is_file():
         raise ValueError('registered host-owned worker directory required')
     registration=json.loads((directory/'registration.json').read_text())
@@ -105,7 +106,7 @@ def host(args,config):
     if subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()=='main':
         raise ValueError('research branch required')
     revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    run_id='seed-assistant-benchmark-v2-1'
+    run_id=RUN_ID
     sandbox=Sandbox(ROOT)
     with sandbox.locked():
         if any(r['run_id']==run_id for r in sandbox.records('reserved')):raise ValueError('one-shot run already consumed')
@@ -126,6 +127,7 @@ def host(args,config):
                       caps,3600,carried,memory_policy='sampled_rss')
         directory=sandbox.directory/'attempts'/run_id;directory.mkdir()
         registration=dict(run_id=run_id,source_sha=revision,config_sha256=config_hash,
+                          config_path=str(CONFIG.relative_to(ROOT)),protocol_path=str(PROTOCOL.relative_to(ROOT)),
                           protocol_sha256=protocol_hash,model_sha256=config['model_sha256'],
                           carried_used_s=used,cap=caps,authorization='standing human grant; owner current task',
                           executable_name=Path(args.executable).name)
@@ -137,7 +139,7 @@ def host(args,config):
         before_self=resource.getrusage(resource.RUSAGE_SELF)
         started=time.monotonic();peak=0;cpu_seen={};samples=[];reason=None
         command=[sys.executable,'-B',__file__,'--worker','--model',str(Path(args.model).resolve()),
-                 '--executable',args.executable,'--directory',str(directory)]
+                 '--executable',args.executable,'--study-version',args.study_version,'--directory',str(directory)]
         with (directory/'worker.log').open('xb') as log:
             process=subprocess.Popen(command,cwd=ROOT,stdout=log,stderr=log,start_new_session=True,
                 env=dict(os.environ,OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',PYTHONDONTWRITEBYTECODE='1'))
@@ -175,9 +177,10 @@ def host(args,config):
         if reason or process.returncode!=0:
             summary['declared_complete']=False;summary['passed']=False;summary['verdict']='INCOMPLETE'
         destination=ROOT/'artifacts'
-        raw_name='seed_assistant_benchmark_v2_raw.jsonl'
+        stem=config['schema']
+        raw_name=stem+'_raw.jsonl'
         with (destination/raw_name).open('xb') as output:output.write((directory/'raw.jsonl').read_bytes() if (directory/'raw.jsonl').exists() else b'')
-        inputs_name='seed_assistant_benchmark_v2_inputs';inputs=destination/inputs_name;inputs.mkdir()
+        inputs_name=stem+'_inputs';inputs=destination/inputs_name;inputs.mkdir()
         for path in directory.glob('*.csv'):shutil.copyfile(path,inputs/path.name)
         meter=dict(wall_s=wall,charged_wall_s=charged,peak_sampled_aggregate_rss_mb=peak,
                    aggregate_waited_cpu_s=final_cpu,
@@ -188,14 +191,25 @@ def host(args,config):
                    session_used_s=carried+sandbox.used_s(),session_remaining_s=3600-carried-sandbox.used_s())
         result=dict(schema=config['schema'],registration=registration,summary=summary,resources=meter,
                     raw_file=raw_name,raw_sha256=file_hash(destination/raw_name),inputs_directory=inputs_name)
-        write_new(destination/'seed_assistant_benchmark_v2.json',result)
+        write_new(destination/(stem+'.json'),result)
         print(json.dumps(dict(summary=summary,resources={k:v for k,v in meter.items() if k!='samples'}),indent=2))
 
 
 def main():
+    global CONFIG,PROTOCOL,RUN_ID
     p=argparse.ArgumentParser(__doc__);p.add_argument('--model',required=True)
     p.add_argument('--executable',default='llama-server');p.add_argument('--worker',action='store_true')
-    p.add_argument('--directory');args=p.parse_args();config=json.loads(CONFIG.read_text())
+    p.add_argument('--study-version',choices=('v2','v2_1'),required=True)
+    p.add_argument('--directory');args=p.parse_args()
+    if args.study_version=='v2_1':
+        CONFIG=ROOT/'configs/seed_assistant_benchmark_v2_1.json'
+        PROTOCOL=ROOT/'docs/NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_PROTOCOL.md'
+        RUN_ID='seed-assistant-benchmark-v2p1-1'
+    config=json.loads(CONFIG.read_text())
+    if args.study_version=='v2_1':
+        original=json.loads((ROOT/'configs/seed_assistant_benchmark_v2.json').read_text())
+        for key in ('cases','files','runtime','cold_repetitions','order_seed','success_rule','model_sha256'):
+            if config[key]!=original[key]:raise ValueError('unchanged scientific design required')
     if args.worker:worker(args,config)
     else:host(args,config)
 

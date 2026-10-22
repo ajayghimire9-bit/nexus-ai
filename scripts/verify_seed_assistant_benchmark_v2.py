@@ -154,6 +154,7 @@ def reconstruct(records, config):
 def verify_outputs(records, config, directory):
     """Independent reference calculation from saved CSV, never model inference."""
     import csv
+    from nexus.seed.real_data_evaluator_worker import evaluate_serialized_adapter_program
     cases = {c['id']: c for c in config['cases']}
     for trial in (r for r in records if r['kind']=='trial'):
         case = cases[trial['task_id']]
@@ -178,12 +179,20 @@ def verify_outputs(records, config, directory):
             status='executed'
         correct=trial['result']['status']==status and trial['result']['output']==output
         if correct != trial['correct']:raise ValueError('forged correctness')
+        if trial['result']['status']=='executed':
+            executed=evaluate_serialized_adapter_program(trial['result']['program'],rows)
+            if executed!=trial['result']['output']:raise ValueError('saved program/output mismatch')
 
 
 def main():
     p=argparse.ArgumentParser(__doc__);p.add_argument('artifact',type=Path);args=p.parse_args()
     artifact=json.loads(args.artifact.read_text()); root=Path(__file__).resolve().parents[1]
-    config=json.loads((root/'configs/seed_assistant_benchmark_v2.json').read_text())
+    config_path=artifact['registration'].get('config_path','configs/seed_assistant_benchmark_v2.json')
+    if config_path not in ('configs/seed_assistant_benchmark_v2.json','configs/seed_assistant_benchmark_v2_1.json'):
+        raise ValueError('unregistered configuration path')
+    content=(root/config_path).read_bytes();config=json.loads(content)
+    if hashlib.sha256(content).hexdigest()!=artifact['registration']['config_sha256']:
+        raise ValueError('configuration hash mismatch')
     raw=(args.artifact.parent/artifact['raw_file']).read_bytes()
     if hashlib.sha256(raw).hexdigest()!=artifact['raw_sha256']:raise ValueError('raw digest mismatch')
     records=parse_records(raw)

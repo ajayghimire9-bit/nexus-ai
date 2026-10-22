@@ -95,6 +95,7 @@ def test_persistent_lifecycle_paths_and_cpu_flags(monkeypatch,tmp_path):
     assert len(commands)==1 and first['gguf_file_type']==15
     assert commands[0][commands[0].index('-ngl')+1]=='0'
     assert '--offline' in commands[0] and '--no-op-offload' in commands[0]
+    assert '--api-key' in commands[0] and r._api_key not in json.dumps(first)
     assert commands[0][commands[0].index('-m')+1]==str(model.resolve())
     r.close();assert proc.terminations==1
 
@@ -267,3 +268,20 @@ def test_worker_cannot_bypass_durable_host_reservation(tmp_path):
     host=importlib.util.module_from_spec(s);s.loader.exec_module(host)
     with pytest.raises(ValueError,match='registered'):
         host.worker(SimpleNamespace(directory=str(tmp_path)),{})
+
+
+def test_infrastructure_amendment_preserves_the_scientific_design():
+    a=json.loads((ROOT/'configs/seed_assistant_benchmark_v2.json').read_text())
+    b=json.loads((ROOT/'configs/seed_assistant_benchmark_v2_1.json').read_text())
+    for key in ('cases','files','runtime','cold_repetitions','order_seed','success_rule','model_sha256'):
+        assert a[key]==b[key]
+    assert b['carried_used_s']==pytest.approx(a['carried_used_s']+12)
+
+
+def test_ordinary_signature_cache_includes_field_types(tmp_path):
+    p=source(tmp_path);a=Assistant(ModelFixture(),'ordinary_cache')
+    assert a.solve('x',p)['status']=='executed'
+    p.write_text('region,amount\n9,A\n12,A\n4,B\n')
+    result=a.solve('x',p)
+    assert result['status']=='executed' and result['counters']['program_cache_hit']==0
+    assert result['output']==[{'amount':'a','total':21.0}]
