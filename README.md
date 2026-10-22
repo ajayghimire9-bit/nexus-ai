@@ -12,10 +12,12 @@ preserved research. Future experiments use separate bounded research branches.
 
 ## Latest research result
 
-[10-Part NEXUS Seed Integrated Architecture & Black-Box Open Primitive Code Transfer v1](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md)
+[NEXUS Seed Real-Data Adapter Learning & Wall-Breaking Pillars v1](docs/NEXUS_SEED_REAL_DATA_ADAPTER_LEARNING_V1.md),
+[10-Part NEXUS Seed Integrated Architecture & Black-Box Open Primitive Code Transfer v1](docs/NEXUS_SEED_INTEGRATED_ARCHITECTURE_V1.md),
 and [Meta-Rule Evolution v2 (Leakage-Repaired) & Open Primitive Code Transfer v1](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_RESULTS.md)
 ([protocol](docs/NEXUS_SEED_OPEN_PRIMITIVE_TRANSFER_PROTOCOL.md),
 [v1 adversarial audit](docs/NEXUS_SEED_META_RULE_EVOLUTION_V1_AUDIT.md)) **passed
+all `10/10` Real-Data Adapter Learning & Wall-Breaking Pillars gates (`artifacts/seed_real_data_adapter_learning_v1.json`),
 Stage A, Black-Box Subprocess Stage B (`12/12` gates), and all `10/10` Integrated Architecture gates** (`seed-open-primitive-transfer-1`,
 pre-run SHA `4bc6443e939287f80bac50cbdfa935e6b5bf0049`): following the adversarial
 audit confirming all 15 evaluator-leakage and guided-injection confounds in v1,
