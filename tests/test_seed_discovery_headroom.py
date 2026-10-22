@@ -151,3 +151,38 @@ def test_independent_reference_matches_known_execution_and_filter_placement():
     _, public = fixture()
     for plan in grammar(config()):
         assert module.reference(plan.__dict__, public.columns, public.probes[0], 10) == execute(plan, public.columns, public.probes[0], 10)
+
+
+def test_ambiguous_repeat_reuses_predictions_without_claiming_resolved_solution():
+    c = config(); _, public = fixture()
+    # No probes: ambiguity cannot be safely retained as a uniquely solved task.
+    ambiguous = replace(public, probes=())
+    oracle = TeachingOracle(Plan(0, 0, 1, 'sub', 'sum', 'none'), ambiguous, 10, 3)
+    baseline = ExactCachedBaseline(c)
+    _, first = baseline.solve(ambiguous, oracle)
+    _, second = baseline.solve(ambiguous, oracle)
+    assert first['final_survivors'] > 1 and second['final_survivors'] > 1
+    assert second['candidate_executions'] == second['fragment_executions'] == 0
+    assert not second['cache_hit']
+
+
+@pytest.mark.parametrize('corruption', ['missing', 'duplicate', 'cohort', 'nonfinite', 'output', 'summary'])
+def test_saved_preflight_rejection_without_reexecuting_workload(corruption):
+    import importlib.util
+    path = ROOT/'artifacts/seed_discovery_headroom_raw.jsonl'
+    if not path.exists():
+        # Pre-run tests have no registered outcomes; fixture tests above apply.
+        return
+    spec = importlib.util.spec_from_file_location('saved_headroom_test', ROOT/'scripts/verify_seed_discovery_headroom.py')
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    records = [json.loads(s) for s in path.read_text().splitlines()]
+    summary = json.loads((ROOT/'artifacts/seed_discovery_headroom.json').read_text())['summary']
+    c = json.loads((ROOT/'configs/seed_discovery_headroom.json').read_text())
+    task = next(r for r in records if r['kind'] == 'task')
+    if corruption == 'missing': records.remove(task)
+    if corruption == 'duplicate': records.append(task)
+    if corruption == 'cohort': task['cohort'] = 'new_composition'
+    if corruption == 'nonfinite': task['discovery_s'] = float('nan')
+    if corruption == 'output': task['output'] = [{'fake': True}]
+    if corruption == 'summary': summary['novel_accuracy'] = .5
+    with pytest.raises(ValueError): module.verify(records, c, summary)

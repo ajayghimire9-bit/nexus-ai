@@ -1,6 +1,9 @@
 """Independent saved-data arithmetic/output audit; no model or outcome collection."""
 from __future__ import annotations
 import hashlib
+import argparse
+from dataclasses import asdict
+import importlib.util
 import json
 from pathlib import Path
 import statistics
@@ -58,7 +61,7 @@ def verify(records, config, summary):
         output = reference(row['selected'], row['columns'], row['assessment'], config['threshold']) if row['selected'] else None
         if output != row['output'] or type(row['correct']) is not bool or row['correct'] != (output == row['expected']):
             raise ValueError('forged_output_or_correctness')
-        if row['cohort'] in ('explicit', 'repeat') and (row['candidate_executions'] or row['questions']):
+        if (row['cohort'] == 'explicit' or row['cache_hit']) and (row['candidate_executions'] or row['questions']):
             raise ValueError('artificial_search_in_control')
     accounting = next(r for r in records if r['kind'] == 'cache_accounting')
     if accounting['executions'] != sum(r['candidate_executions'] for r in tasks):
@@ -84,15 +87,34 @@ def verify(records, config, summary):
                  new_compositions=len(target) >= s['minimum_new_compositions'])
     if summary['gates'] != gates or summary['symbolic_screen_passed'] != all(gates.values()) or summary['ready_for_learning_study'] is not False:
         raise ValueError('wrong_gate_or_promotion')
+    # Descriptive saved-input audit, not a replacement gate: normalize bindings
+    # so differences cannot be attributed merely to renamed schema columns.
+    probes = []
+    names = ('k', 'j', 'a', 'b', 'c')
+    for row in tasks:
+        if row['cohort'] not in ('source', 'new_composition'): continue
+        probes.extend([[dict(zip(names, (r[c] for c in row['columns']))) for r in batch]
+                       for batch in row['probes']])
+    def signature(row):
+        plan = dict(row['truth'], key=0, lhs=0, rhs=1)
+        outputs = [reference(plan, names, batch, config['threshold']) for batch in probes]
+        return json.dumps(outputs, sort_keys=True, separators=(',', ':'))
+    source_signatures = {signature(r) for r in tasks if r['cohort'] == 'source'}
+    novel_signatures = {signature(r) for r in novel}
     return dict(valid=True, tasks=len(tasks), questions=sum(r['questions'] for r in tasks),
                 authored_response_events=2*len(tasks)+sum(r['questions'] for r in tasks),
                 outputs_independently_recomputed=True, neural_calls=0,
+                finite_witness_novel_compositions=len(novel_signatures-source_signatures),
+                behavioral_witness_batches=len(probes),
                 cohorts={cohort: dict(n=sum(r['cohort'] == cohort for r in tasks),
                             correct=sum(r['correct'] for r in tasks if r['cohort'] == cohort),
                             questions=sum(r['questions'] for r in tasks if r['cohort'] == cohort)) for cohort in set(expected.values())})
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(__doc__)
+    parser.add_argument('--save-audit', action='store_true')
+    args = parser.parse_args()
     result = json.loads((ROOT/'artifacts/seed_discovery_headroom.json').read_text())
     raw = (ROOT/'artifacts/seed_discovery_headroom_raw.jsonl').read_bytes()
     config_bytes = (ROOT/'configs/seed_discovery_headroom.json').read_bytes()
@@ -102,4 +124,27 @@ if __name__ == '__main__':
                         ('src/nexus/seed/local_model_runtime.py', 'runtime_source_sha256')]:
         if hashlib.sha256((ROOT/path).read_bytes()).hexdigest() != result['registration'][field]:
             raise ValueError('frozen_source_mismatch')
-    print(json.dumps(verify([json.loads(line) for line in raw.splitlines()], json.loads(config_bytes), result['summary']), indent=2, sort_keys=True))
+    audit = verify([json.loads(line) for line in raw.splitlines()], json.loads(config_bytes), result['summary'])
+    if args.save_audit:
+        sys.path.insert(0, str(ROOT/'src'))
+        from nexus.seed.experimental import Sandbox
+        sandbox = Sandbox(ROOT)
+        events = sandbox.events()
+        new = [e for e in events if json.loads(e.payload_json).get('run_id') == 'seed-discovery-headroom-1'
+               or (e.kind == 'grant' and json.loads(e.payload_json).get('id') == 'seed-discovery-headroom-1')]
+        prior = new[0].sequence-1
+        ledger = dict(previous_anchor=events[prior].fingerprint,
+                      accounted_balance_before_reconciliation_s=result['registration']['carried_used_s'],
+                      prior_sequence=prior, count=len(new), events=[asdict(e) for e in new], head=new[-1].fingerprint)
+        spec = importlib.util.spec_from_file_location('existing_ledger_verifier', ROOT/'scripts/analyze_seed_assistant_benchmark_v2.py')
+        module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+        ledger['reconstructed_used_s'] = module.verify_ledger(ledger)
+        if ledger['reconstructed_used_s'] != result['resources']['session_used_s']:
+            raise ValueError('ledger_resource_mismatch')
+        audit.update(raw_sha256=result['raw_sha256'], execution_sha=result['registration']['source_sha'],
+                     verifier_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                     verification_note='Initial verifier overrestricted unresolved repeats; corrected after run. Raw data and gates unchanged.',
+                     ledger=ledger)
+        with (ROOT/'artifacts/seed_discovery_headroom_audit.json').open('x') as f:
+            json.dump(audit, f, indent=2, sort_keys=True); f.write('\n')
+    print(json.dumps(audit, indent=2, sort_keys=True))

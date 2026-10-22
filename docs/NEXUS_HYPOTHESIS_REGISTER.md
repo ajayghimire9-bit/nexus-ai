@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — meaningful discovery before abstraction learning
+
+Predeclared: a richer unfamiliar-schema/compositional workload may require
+meaningful discovery even with direct compilation, exact constraints and
+ordinary source-free caches. [Preflight](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md)
+solved 28/28, but new-composition median discovery 8.101 ms missed the 10 ms
+floor: practical screen FAILED. No learned-library comparison or neural calls.
+Nine unresolved candidate sets motivate a saved-data identifiability audit,
+not larger models or forced baseline search. Real assistant cost remains unknown.
+
 ## Latest — executable retention beyond ordinary caching
 
 Hypothesis: parameterized AST capsules improve correctness or total work beyond

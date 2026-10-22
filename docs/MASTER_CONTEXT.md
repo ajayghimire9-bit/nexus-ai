@@ -1,5 +1,17 @@
 # NEXUS Seed — Master Context
 
+## Current baseline-first development preflight
+
+[Discovery headroom](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md): 28/28 correct,
+including eight fresh compositions, using a source-free exact cached solver.
+All eight new compositions were initially ambiguous, but median discovery was
+8.101 ms, below the precommitted 10 ms floor. Practical screen FAILED; no
+learning comparison or model calls. Nine tasks remain non-uniquely identified
+despite correct finite assessment outputs. Persistent runtime and closed
+assistant evidence are unchanged. Next: saved-data identifiability audit.
+Latest accounted ledger **2188.632103455996 s used / 1411.367896544004 s remaining**.
+This symbolic preflight does not establish the real assistant cost balance.
+
 ## Current evidence — persistent assistant v2.1
 
 [Results](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md): all 144 authored

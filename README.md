@@ -1,6 +1,12 @@
 # NEXUS Seed
 
-**Latest completed study:** [persistent local assistant v2.1](docs/NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md)
+**Latest baseline preflight:** [ambiguous workflow headroom](docs/NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md)
+solved 28/28 authored tasks with an exact source-free cached solver. New
+compositions required median 8.10 ms discovery, below the locked 10 ms floor:
+**practical screen failed**. No abstraction-learning comparison followed. This
+symbolic preflight made zero model calls; the persistent runtime is unchanged.
+
+**Closed assistant study:** [persistent local assistant v2.1](docs/NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md)
 completed all 144 trials and **failed its development screen**. All methods
 scored 83.33%; retained AST capsules added no correctness/candidate-count benefit
 and did not beat ordinary caching in measured latency. The real persistent GGUF

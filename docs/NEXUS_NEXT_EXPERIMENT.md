@@ -1,6 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next recommendation — baseline-first discovery preflight
+## Current next recommendation — unresolved-candidate identifiability audit
+
+The [baseline preflight](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md) completed
+28/28 tasks correctly, but median new-composition discovery 8.101 ms missed
+the locked 10 ms floor. Practical headroom screen FAILED. Nine tasks retain
+multiple candidates despite correct finite assessment outputs. Use saved inputs
+to determine whether those alternatives are equivalent or whether the public
+probe pool lacks distinguishing evidence. No new model, forced search or
+learning comparison. Latest accounted ledger: 2188.632103455996 s used /
+1411.367896544004 s remaining.
+
+## Completed registration — symbolic discovery preflight
 
 [Registered protocol](NEXUS_SEED_DISCOVERY_HEADROOM_PROTOCOL.md): source-free
 direct compilation, exact constraint filtering, active disambiguation and
@@ -9,8 +20,9 @@ comparison; no forced search on fully specified or cached requests. The
 persistent model runtime stays byte-identical. This symbolic preflight alone
 cannot establish the assistant's inference-versus-discovery cost balance.
 The actual persistent direct/tool path remains a separate required gate.
-Implementation tests: 84 targeted tests passed before the registered run.
-The study below remains closed; no scored case is retuned.
+Implementation tests: 84 passed before execution; 91 relevant tests passed
+after saved-data audit checks. This preflight is now complete and closed;
+do not retune its floor or cases. The earlier study below also remains closed.
 
 ## Previous recommendation and closed evidence
 

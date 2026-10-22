@@ -1,5 +1,14 @@
 # NEXUS Seed — Research Registry
 
+## Latest — symbolic discovery preflight, complete negative practical screen
+
+`seed-discovery-headroom-1`, pre-run `50d231555952f630d3debc1f3c4be2233d1bf054`:
+28/28 correct, eight new compositions, 21 teaching probes; exact cached solver,
+zero neural calls. Median novel discovery 8.101 ms <10 ms floor: FAILED.
+No learning comparison. Conservative 2 s debit; ledger 2188.632103455996 used /
+1411.367896544004 remaining. [Protocol](NEXUS_SEED_DISCOVERY_HEADROOM_PROTOCOL.md),
+[results](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md). Earlier evidence unchanged.
+
 ## Latest — persistent assistant v2.1, complete negative development result
 
 Pre-run `8fe8192e207bf95fa3b8b153f31913df2c7490e4`,

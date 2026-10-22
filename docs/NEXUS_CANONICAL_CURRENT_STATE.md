@@ -1,5 +1,16 @@
 # NEXUS Seed — Current State
 
+## Latest — discovery headroom not established at the practical floor
+
+[Baseline preflight](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md) completed once
+from `50d231555952f630d3debc1f3c4be2233d1bf054`: 28/28 correct; new-composition
+median discovery 8.101 ms <10 ms locked floor, so practical screen FAILED.
+The strong exact solver has direct compilation and source-free prefix caches;
+no forced search, neural calls or learned-abstraction comparison. Persistent
+runtime and prior evidence remain unchanged. Nine tasks retain ambiguous
+candidates. Next: source-only identifiability audit. Latest accounted ledger:
+2188.632103455996 s used /1411.367896544004 s remaining. Older entries follow.
+
 ## Latest — persistent assistant benchmark v2.1 FAILED
 
 The [completed v2.1 study](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md) ran

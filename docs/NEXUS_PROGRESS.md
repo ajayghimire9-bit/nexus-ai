@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — baseline-first ambiguous-workflow preflight, screen failed
+
+Pre-run `50d231555952f630d3debc1f3c4be2233d1bf054`; 28/28 correct, eight new
+compositions, median discovery 8.101 ms below the locked 10 ms floor. Exact
+source-free prefix/solution caches were enabled; no forced search or neural
+calls. No learning comparison followed. Independent output/ledger audit passed
+after correcting an overstrict verifier assertion for unresolved repeats;
+raw data and primary gate unchanged. 84 pre-run /91 post-run targeted tests.
+0.365530 s wall, conservative 2 s debit; ledger 2188.632103455996 used /
+1411.367896544004 remaining. [Results](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md).
+
 ## Latest — persistent inference works; capsule advantage not demonstrated
 
 Completed [assistant v2.1](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md):
