@@ -1,6 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next recommendation — unresolved-candidate identifiability audit
+## Current next recommendation — different practical task, strong baseline first
+
+The [identifiability audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md)
+is complete: all seven distinct candidate pairs differ, yet a single zero-valued
+row separates each in median 20.5 µs. No new answers or assessments. Decision:
+[prepare a local repository-maintenance workload](NEXUS_SEED_PRACTICAL_DISCOVERY_NEXT.md),
+and establish genuine discovery cost with direct tools, ordinary caching and
+the unchanged persistent runtime before comparing learned abstractions.
+Proposal only; no new practical-task scoring. Latest accounted ledger:
+2190.632103455996 s used /1409.367896544004 s remaining.
+
+## Completed recommendation — unresolved-candidate identifiability audit
 
 The [baseline preflight](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md) completed
 28/28 tasks correctly, but median new-composition discovery 8.101 ms missed

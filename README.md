@@ -1,5 +1,12 @@
 # NEXUS Seed
 
+**Latest saved-data audit:** [candidate identifiability](docs/NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md)
+found genuinely different programs in all seven distinct unresolved cases, but
+one all-zero boundary row separates each pair. Median construction: **20.5 µs**,
+two program executions; zero new answers or model calls. This family still lacks
+practical discovery headroom. A different baseline-first task proposal is ready;
+no learning comparison or new practical-task experiment has run.
+
 **Latest baseline preflight:** [ambiguous workflow headroom](docs/NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md)
 solved 28/28 authored tasks with an exact source-free cached solver. New
 compositions required median 8.10 ms discovery, below the locked 10 ms floor:

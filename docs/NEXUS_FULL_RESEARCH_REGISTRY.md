@@ -1,5 +1,15 @@
 # NEXUS Seed — Research Registry
 
+## Latest — saved candidate-identifiability audit
+
+`seed-candidate-identifiability-1`, pre-run `3a24ad55f70a12e6c35212e8a789a93233efa14e`:
+seven distinct requests/nine records, all distinct pairs cheaply separable by
+one all-zero row. Median construction 20.5 µs; 18 program predictions; zero new
+answers, assessment scores or neural calls. Decision: prepare a different
+practical task family. 2 s debit; ledger 2190.632103455996 used /
+1409.367896544004 remaining. [Protocol](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_PROTOCOL.md),
+[results](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md). No prior evidence changes.
+
 ## Latest — symbolic discovery preflight, complete negative practical screen
 
 `seed-discovery-headroom-1`, pre-run `50d231555952f630d3debc1f3c4be2233d1bf054`:

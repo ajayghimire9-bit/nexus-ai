@@ -1,5 +1,16 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Saved-candidate audit and boundary probes
+
+`seed/candidate_identifiability.py` reuses `discovery_headroom.Plan`, the fixed
+grammar and vetted AST executor. It reconstructs already-observed evidence,
+normalizes only justified identities and constructs answer-free distinguishing
+inputs. It does not replace the runtime or promote a policy. The existing
+headroom runner adds an explicit trusted `--study identifiability` dispatch and
+uses the SAME Sandbox/E1 host/meter; published attempts refuse reruns. The new
+verifier reuses the previous independent arithmetic reference, not the executor
+or constructor. [Results](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md).
+
 ## Baseline-first discovery workload
 
 `seed/discovery_headroom.py` reuses the vetted real-data AST executor for a

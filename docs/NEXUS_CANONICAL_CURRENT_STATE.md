@@ -1,5 +1,16 @@
 # NEXUS Seed — Current State
 
+## Latest — boundary clarification resolves saved ambiguity cheaply
+
+[Audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md) ran once from
+`3a24ad55f70a12e6c35212e8a789a93233efa14e`: seven distinct cases, all genuinely
+different. A zero-valued singleton separates each pair in two program executions,
+median 20.5 µs. No new answers/final assessments, model calls or learning study.
+No need to canonicalize distinct semantics; no practical discovery headroom
+established. Next: [baseline-first repository-maintenance proposal](NEXUS_SEED_PRACTICAL_DISCOVERY_NEXT.md),
+not executed. Runtime and historical evidence remain frozen. Latest accounted
+ledger: 2190.632103455996 s used /1409.367896544004 s remaining.
+
 ## Latest — discovery headroom not established at the practical floor
 
 [Baseline preflight](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md) completed once

@@ -1,6 +1,18 @@
 # NEXUS Seed — Master Context
 
-## Current baseline-first development preflight
+## Latest — candidate differences are real but cheap to distinguish
+
+[Saved-data audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md): seven distinct
+requests (nine records including correlated controls), all meaningfully different,
+none proven equivalent/unknown. One legal zero-valued singleton distinguishes
+each pair, median construction 20.5 µs/two program executions. Zero new answers,
+assessment rescoring, neural inference or training. Previous screens and runtime
+unchanged. Decision: prepare a different practical task family, baseline first;
+[proposal](NEXUS_SEED_PRACTICAL_DISCOVERY_NEXT.md) only, not executed. Latest ledger:
+**2190.632103455996 s used /1409.367896544004 s remaining**; older entries below
+retain their chronology and are superseded only by documented new debits.
+
+## Closed baseline-first development preflight
 
 [Discovery headroom](NEXUS_SEED_DISCOVERY_HEADROOM_RESULTS.md): 28/28 correct,
 including eight fresh compositions, using a source-free exact cached solver.

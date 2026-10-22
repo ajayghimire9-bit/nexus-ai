@@ -41,6 +41,10 @@ def verify(rows, config, source, source_config, summary):
         raise ValueError('missing_duplicate_case')
     source = {r['id']: r for r in source if r.get('kind') == 'task'}
     for row in rows:
+        for field in ('original_remaining', 'canonical_classes', 'examined', 'prediction_executions',
+                      'worst_remaining', 'reconstruction_executions', 'saved_answer_reconstructions', 'new_answers'):
+            if type(row.get(field)) is not int or row[field] < 0: raise ValueError('invalid_count')
+        if type(row.get('primary')) is not bool: raise ValueError('invalid_unit_flag')
         original = source[row['id']]; columns = original['columns']
         observations = [(original['demonstration'], original['demonstration_output'])]
         for index in original['locked_probes']:
@@ -65,7 +69,7 @@ def verify(rows, config, source, source_config, summary):
         if row['canonical_classes'] != len(classes): raise ValueError('wrong_canonical_count')
         label, witness = row['classification'], row['witness']
         if label == 'PROVEN_EQUIVALENT':
-            if len(classes) != 1 or witness is not None or row['prediction_executions'] != 0:
+            if len(classes) != 1 or witness is not None or row['prediction_executions'] != 0 or row['worst_remaining'] != 1:
                 raise ValueError('unjustified_equivalence')
         elif label == 'MEANINGFULLY_DIFFERENT':
             if not witness or {encode(p) for p in witness['representatives']} != classes:
@@ -79,7 +83,7 @@ def verify(rows, config, source, source_config, summary):
             if predictions != witness['predictions'] or partitions != witness['partition_sizes'] or len(partitions) < 2:
                 raise ValueError('not_a_counterexample')
             if row['worst_remaining'] != max(partitions): raise ValueError('wrong_partition_bound')
-        elif label != 'UNKNOWN' or witness is not None:
+        elif label != 'UNKNOWN' or witness is not None or row['worst_remaining'] != len(classes):
             raise ValueError('invalid_classification')
         if type(row['examined']) is not int or not 0 <= row['examined'] <= config['maximum_probe_candidates']:
             raise ValueError('probe_budget')

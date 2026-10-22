@@ -111,3 +111,27 @@ def test_published_study_refuses_rerun_even_without_private_ledger():
     config = json.loads((root/'configs/seed_discovery_headroom.json').read_text())
     with pytest.raises(ValueError, match='published_attempt_is_closed'):
         module.host(config)
+
+
+@pytest.mark.parametrize('corruption', ['missing', 'false_equivalence', 'predictions', 'hidden_access', 'summary', 'boolean_count'])
+def test_saved_audit_rejects_corrupt_evidence(corruption):
+    import importlib.util
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    path = root/'artifacts/seed_candidate_identifiability_raw.jsonl'
+    if not path.exists(): return  # Outcomes are unavailable before the one run.
+    spec = importlib.util.spec_from_file_location('saved_identifiability_test', root/'scripts/verify_seed_candidate_identifiability.py')
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    rows = [json.loads(s) for s in path.read_text().splitlines()]
+    config = json.loads((root/'configs/seed_candidate_identifiability.json').read_text())
+    source = [json.loads(s) for s in (root/'artifacts/seed_discovery_headroom_raw.jsonl').read_text().splitlines()]
+    source_config = json.loads((root/'configs/seed_discovery_headroom.json').read_text())
+    summary = json.loads((root/'artifacts/seed_candidate_identifiability.json').read_text())['summary']
+    if corruption == 'missing': rows.pop()
+    if corruption == 'false_equivalence': rows[0]['classification'] = 'PROVEN_EQUIVALENT'
+    if corruption == 'predictions': rows[0]['witness']['predictions'] = [[], []]
+    if corruption == 'hidden_access': rows[0]['assessment_access'] = True
+    if corruption == 'summary': summary['cheap_resolution'] = False
+    if corruption == 'boolean_count': rows[0]['prediction_executions'] = True
+    with pytest.raises(ValueError): module.verify(rows, config, source, source_config, summary)

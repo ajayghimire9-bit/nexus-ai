@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — equivalence versus missing probe evidence
+
+[Source audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md): seven distinct
+unresolved pairs are meaningfully different, not equivalent under the justified
+normal forms. Concrete legal zero-valued inputs distinguish every pair; median
+construction 20.5 µs, no actual answer collected. Supports missing boundary
+coverage on this saved grammar, not a learned clarification advantage. Cheap
+resolution keeps abstraction learning gated off. Next: establish baseline
+discovery cost in a different practical task family; proposal only.
+
 ## Latest — meaningful discovery before abstraction learning
 
 Predeclared: a richer unfamiliar-schema/compositional workload may require

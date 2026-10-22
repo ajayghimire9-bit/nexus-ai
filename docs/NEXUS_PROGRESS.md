@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — saved ambiguity is a cheap boundary-probe issue
+
+Execution `3a24ad55f70a12e6c35212e8a789a93233efa14e`, complete once. Seven distinct
+requests/nine records: all candidate pairs meaningfully differ; one all-zero row
+separates each pair. Median new construction 20.5 µs, 18 predictions across nine
+records; zero new answers or model calls. Independent reconstruction/witness and
+E1 accounting audit passed. 101 pre-run /107 post-run targeted tests passed.
+0.123769 s wall, 2 s debit; ledger 2190.632103455996 /1409.367896544004 s
+used/remaining. No old result changes. [Results](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md).
+Next practical task proposal is prepared, not run.
+
 ## Latest — baseline-first ambiguous-workflow preflight, screen failed
 
 Pre-run `50d231555952f630d3debc1f3c4be2233d1bf054`; 28/28 correct, eight new
