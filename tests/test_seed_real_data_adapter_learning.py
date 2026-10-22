@@ -14,10 +14,12 @@ from nexus.seed.real_data_adapter_learning import (
     CausalInterventionAndLakatosEngine,
     EvidenceKernel,
     FunctorialCategoryBridge,
+    GrammarConstrainedLocalIntentModel,
     PidginBootstrapAndCounterfactualExplainer,
     RealDataWorkspaceAdapter,
     build_type_directed_candidate_space,
     compare_search_methods_on_tasks,
+    evaluate_unfamiliar_derived_composition_and_transfer,
     execute_method_on_task_sequence,
     extract_parameterized_template_from_winner,
     infer_schema_role_candidates,
@@ -166,9 +168,42 @@ def test_four_wall_breaking_pillars_execution() -> None:
     assert len(p4_pidgin["teacher_subprocess_receipt"]) == 64
 
 
+def test_unfamiliar_derived_composition_discovery_and_canonical_selection_rule() -> None:
+    unfam = evaluate_unfamiliar_derived_composition_and_transfer()
+    assert unfam["verified"] is True
+    assert unfam["contains_compute_derived_field_op"] is True
+    assert unfam["u1_heldout_accuracy"] == 1.0
+    assert unfam["u2_heldout_accuracy"] == 1.0
+    assert unfam["u2_execution_savings"] > 0
+
+    passive_res = execute_method_on_task_sequence(
+        "passive_fixed_library",
+        ["S1_filter_and_normalize_error_logs", "S2_endpoint_latency_grouped_summary"],
+    )
+    active_res = execute_method_on_task_sequence(
+        "active_growing_library",
+        ["S1_filter_and_normalize_error_logs", "S2_endpoint_latency_grouped_summary"],
+    )
+    assert passive_res["selection_rule"] == "canonical_first_surviving_candidate"
+    assert active_res["selection_rule"] == "canonical_first_surviving_candidate"
+    assert active_res["mean_heldout_accuracy"] == 1.0
+    assert active_res["mean_heldout_accuracy"] > passive_res["mean_heldout_accuracy"]
+
+
 def test_three_way_local_model_benchmark_and_net_savings() -> None:
-    bench = run_three_way_local_model_benchmark()
+    model = GrammarConstrainedLocalIntentModel()
+    assert model.GGUF_MODEL_PATH.name == "qwen2.5-0.5b-instruct-q4_k_m.gguf"
+    assert model.weight_memory_kb > 400000.0
+
+    bench = run_three_way_local_model_benchmark(num_repeated_trials=5)
     assert bench["workload_size_N"] == 6
+    assert bench["pretrained_model_verification"]["used_keyword_matching"] is False
+    assert bench["pretrained_model_verification"]["grammar_constrained_decoding"] is True
+    assert bench["pretrained_model_verification"]["real_model_tokenizer_counts"] is True
+    assert (
+        bench["repeated_trials_uncertainty"]["paired_solver_latency_savings_vs_ordinary_caching_ms"]["ci95_low"]
+        > 0.0
+    )
     assert bench["inappropriate_reuse_rejected_on_row_level_task"] is True
     assert bench["ambiguous_revenue_eur_disambiguated"] is True
     assert bench["net_savings_vs_ordinary_program_caching"]["net_compute_cost_savings"] > 0.0
@@ -183,7 +218,7 @@ def test_full_real_data_adapter_learning_artifact_and_tamper_verifier() -> None:
     assert report["all_gates_passed"] is True
     assert all(report["gates"].values())
 
-    # Verify standalone verifier script passes and rejects all 10 tamper modes
+    # Verify standalone verifier script passes and rejects all 14 tamper modes
     proc = subprocess.run(
         [sys.executable, str(REPO_ROOT / "scripts" / "verify_seed_real_data_adapter_learning.py")],
         cwd=str(REPO_ROOT),
@@ -194,4 +229,4 @@ def test_full_real_data_adapter_learning_artifact_and_tamper_verifier() -> None:
     out = json.loads(proc.stdout)
     assert out["status"] == "VERIFIED"
     assert out["all_gates_passed"] is True
-    assert len(out["tamper_cases_rejected"]) == 10
+    assert len(out["tamper_cases_rejected"]) == 14

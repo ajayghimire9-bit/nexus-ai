@@ -472,6 +472,67 @@ def _ref_amb1_revenue_eur_semantic_disambiguation(rows: list[dict[str, Any]]) ->
     return summary
 
 
+def _ref_u1_derived_net_margin_audit(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Unfamiliar Composition Task U1 (`derived_net_margin_audit`):
+    Requires an operator sequence absent from both standard templates:
+    filter `audit_state == 'verified'`, parse `gross_usd` and `fee_usd` as float,
+    compute derived column `net_usd = round(gross_usd - fee_usd, 2)` via `ComputeDerivedField`,
+    filter `net_usd >= 100.0`, normalize `account_code` (`strip`, `lower`, `strip_trailing_slash`),
+    project `["account_code", "gross_usd", "fee_usd", "net_usd"]`, and order by
+    `net_usd DESC, account_code ASC`."""
+    out: list[dict[str, Any]] = []
+    for r in rows:
+        st = _norm_text(r.get("audit_state"), ("strip", "lower"))
+        if st != "verified":
+            continue
+        gross = _parse_num(r.get("gross_usd"), "float")
+        fee = _parse_num(r.get("fee_usd"), "float")
+        acct = _norm_text(r.get("account_code"), ("strip", "lower", "strip_trailing_slash"))
+        if gross is None or fee is None or not acct:
+            continue
+        net = round(float(gross) - float(fee), 2)
+        if net >= 100.0:
+            out.append(
+                dict(
+                    account_code=acct,
+                    gross_usd=round(float(gross), 2),
+                    fee_usd=round(float(fee), 2),
+                    net_usd=net,
+                )
+            )
+    out.sort(key=lambda x: (-float(x["net_usd"]), str(x["account_code"])))
+    return out
+
+
+def _ref_u2_regional_net_payout_audit(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Unfamiliar Composition Transfer Task U2 (`regional_net_payout_audit`):
+    Tests transfer of the newly discovered derived-arithmetic adapter composition from U1
+    onto a new schema (`partner_slug`, `payout_eur`, `tax_eur`, `net_payout_eur = payout_eur - tax_eur`,
+    `settlement_state == 'cleared'`, `net_payout_eur >= 200.0`)."""
+    out: list[dict[str, Any]] = []
+    for r in rows:
+        st = _norm_text(r.get("settlement_state"), ("strip", "lower"))
+        if st != "cleared":
+            continue
+        gross = _parse_num(r.get("payout_eur"), "float")
+        tax = _parse_num(r.get("tax_eur"), "float")
+        slug = _norm_text(r.get("partner_slug"), ("strip", "lower", "strip_trailing_slash"))
+        if gross is None or tax is None or not slug:
+            continue
+        net = round(float(gross) - float(tax), 2)
+        if net >= 200.0:
+            out.append(
+                dict(
+                    partner_slug=slug,
+                    payout_eur=round(float(gross), 2),
+                    tax_eur=round(float(tax), 2),
+                    net_payout_eur=net,
+                )
+            )
+    out.sort(key=lambda x: (-float(x["net_payout_eur"]), str(x["partner_slug"])))
+    return out
+
+
 REFERENCE_TASK_FUNCTIONS = {
     "S1_filter_and_normalize_error_logs": _ref_s1_filter_and_normalize_error_logs,
     "S2_endpoint_latency_grouped_summary": _ref_s2_endpoint_latency_grouped_summary,
@@ -485,6 +546,8 @@ REFERENCE_TASK_FUNCTIONS = {
     "SQL3_hospital_lab_results_db": _ref_sql3_hospital_lab_results_db,
     "R1_repo_python_ast_metrics": _ref_r1_repo_python_ast_metrics,
     "AMB1_revenue_eur_semantic_disambiguation": _ref_amb1_revenue_eur_semantic_disambiguation,
+    "U1_derived_net_margin_audit": _ref_u1_derived_net_margin_audit,
+    "U2_regional_net_payout_audit": _ref_u2_regional_net_payout_audit,
 }
 
 
@@ -743,6 +806,46 @@ def _amb1_private_heldout_rows() -> list[dict[str, Any]]:
     ]
 
 
+def _u1_public_rows() -> list[dict[str, Any]]:
+    return [
+        {"invoice_id": "INV-1", "account_code": " ACCT-CLOUD/ ", "gross_usd": "260.0", "fee_usd": "40.0", "audit_state": "VERIFIED"},
+        {"invoice_id": "INV-2", "account_code": "acct-data", "gross_usd": "150.0", "fee_usd": "30.0", "audit_state": "verified"},
+        {"invoice_id": "INV-3", "account_code": "acct-edge/", "gross_usd": "130.0", "fee_usd": "45.0", "audit_state": "verified"},
+        {"invoice_id": "INV-4", "account_code": "acct-cloud", "gross_usd": "ERR", "fee_usd": "20.0", "audit_state": "verified"},
+        {"invoice_id": "INV-5", "account_code": "acct-sec/", "gross_usd": "310.0", "fee_usd": "50.0", "audit_state": "draft"},
+    ]
+
+
+def _u1_private_heldout_rows() -> list[dict[str, Any]]:
+    return [
+        {"invoice_id": "INV-101", "account_code": " ACCT-CORE/ ", "gross_usd": "140.0", "fee_usd": "40.0", "audit_state": "verified"},
+        {"invoice_id": "INV-102", "account_code": "acct-ml", "gross_usd": "350.0", "fee_usd": "50.0", "audit_state": "VERIFIED"},
+        {"invoice_id": "INV-103", "account_code": "acct-ops/", "gross_usd": "125.0", "fee_usd": "30.0", "audit_state": "verified"},
+        {"invoice_id": "INV-104", "account_code": "acct-ml", "gross_usd": "200.0", "fee_usd": "N/A", "audit_state": "verified"},
+        {"invoice_id": "INV-105", "account_code": "acct-core", "gross_usd": "400.0", "fee_usd": "50.0", "audit_state": "rejected"},
+    ]
+
+
+def _u2_public_rows() -> list[dict[str, Any]]:
+    return [
+        {"settlement_id": "S-1", "partner_slug": " PARTNER-NORTH/ ", "payout_eur": "420.0", "tax_eur": "70.0", "settlement_state": "CLEARED"},
+        {"settlement_id": "S-2", "partner_slug": "partner-south", "payout_eur": "260.0", "tax_eur": "40.0", "settlement_state": "cleared"},
+        {"settlement_id": "S-3", "partner_slug": "partner-west/", "payout_eur": "210.0", "tax_eur": "30.0", "settlement_state": "cleared"},
+        {"settlement_id": "S-4", "partner_slug": "partner-north", "payout_eur": "null", "tax_eur": "20.0", "settlement_state": "cleared"},
+        {"settlement_id": "S-5", "partner_slug": "partner-east/", "payout_eur": "500.0", "tax_eur": "80.0", "settlement_state": "pending"},
+    ]
+
+
+def _u2_private_heldout_rows() -> list[dict[str, Any]]:
+    return [
+        {"settlement_id": "S-101", "partner_slug": " PARTNER-ALPHA/ ", "payout_eur": "250.0", "tax_eur": "50.0", "settlement_state": "cleared"},
+        {"settlement_id": "S-102", "partner_slug": "partner-beta", "payout_eur": "510.0", "tax_eur": "60.0", "settlement_state": "CLEARED"},
+        {"settlement_id": "S-103", "partner_slug": "partner-gamma/", "payout_eur": "230.0", "tax_eur": "40.0", "settlement_state": "cleared"},
+        {"settlement_id": "S-104", "partner_slug": "partner-beta", "payout_eur": "300.0", "tax_eur": "ERR", "settlement_state": "cleared"},
+        {"settlement_id": "S-105", "partner_slug": "partner-alpha", "payout_eur": "600.0", "tax_eur": "90.0", "settlement_state": "held"},
+    ]
+
+
 TASK_PUBLIC_ROWS = {
     "S1_filter_and_normalize_error_logs": _server_logs_public_rows,
     "S2_endpoint_latency_grouped_summary": _server_logs_public_rows,
@@ -756,6 +859,8 @@ TASK_PUBLIC_ROWS = {
     "SQL3_hospital_lab_results_db": _sql3_public_rows,
     "R1_repo_python_ast_metrics": _repo_ast_public_rows,
     "AMB1_revenue_eur_semantic_disambiguation": _amb1_public_rows,
+    "U1_derived_net_margin_audit": _u1_public_rows,
+    "U2_regional_net_payout_audit": _u2_public_rows,
 }
 
 TASK_PRIVATE_HELDOUT_ROWS = {
@@ -771,6 +876,8 @@ TASK_PRIVATE_HELDOUT_ROWS = {
     "SQL3_hospital_lab_results_db": _sql3_private_heldout_rows,
     "R1_repo_python_ast_metrics": _repo_ast_private_heldout_rows,
     "AMB1_revenue_eur_semantic_disambiguation": _amb1_private_heldout_rows,
+    "U1_derived_net_margin_audit": _u1_private_heldout_rows,
+    "U2_regional_net_payout_audit": _u2_private_heldout_rows,
 }
 
 
@@ -781,7 +888,7 @@ TASK_METADATA = {
         source_filename="server_access_logs.csv",
         output_filename="s1_error_logs_cleaned.json",
         schema_family="server_access_logs",
-        candidate_thresholds=[500.0, 501.0, 502.0],
+        candidate_thresholds=[495.0, 500.0, 501.0],
         required_output_columns=["endpoint", "status_code", "latency_ms", "region"],
         task_kind="filter_normalize_order",
     ),
@@ -791,7 +898,7 @@ TASK_METADATA = {
         source_filename="server_access_logs.csv",
         output_filename="s2_endpoint_latency_summary.json",
         schema_family="server_access_logs",
-        candidate_thresholds=[500.0, 501.0, 502.0],
+        candidate_thresholds=[495.0, 500.0, 501.0],
         required_output_columns=["endpoint", "event_count", "total_latency_ms", "mean_latency_ms", "max_latency_ms"],
         task_kind="grouped_summary",
     ),
@@ -801,7 +908,7 @@ TASK_METADATA = {
         source_filename="server_access_logs.json",
         output_filename="s3_region_incident_rollup.csv",
         schema_family="server_access_logs",
-        candidate_thresholds=[500.0, 501.0, 502.0],
+        candidate_thresholds=[495.0, 500.0, 501.0],
         required_output_columns=["region", "event_count", "total_latency_ms", "mean_latency_ms", "max_latency_ms"],
         task_kind="grouped_summary",
     ),
@@ -811,7 +918,7 @@ TASK_METADATA = {
         source_filename="ecommerce_orders.json",
         output_filename="d1_completed_orders.json",
         schema_family="ecommerce_orders_and_refunds",
-        candidate_thresholds=[50.0, 55.0, 60.0],
+        candidate_thresholds=[45.0, 50.0, 55.0],
         required_output_columns=["sku_code", "amount_usd", "warehouse_zone"],
         task_kind="filter_normalize_order",
     ),
@@ -821,7 +928,7 @@ TASK_METADATA = {
         source_filename="ecommerce_orders.csv",
         output_filename="d2_sku_revenue_summary.csv",
         schema_family="ecommerce_orders_and_refunds",
-        candidate_thresholds=[50.0, 55.0, 60.0],
+        candidate_thresholds=[45.0, 50.0, 55.0],
         required_output_columns=["sku_code", "event_count", "total_amount_usd", "mean_amount_usd", "max_amount_usd"],
         task_kind="grouped_summary",
     ),
@@ -831,7 +938,7 @@ TASK_METADATA = {
         source_filename="clinical_sensor_telemetry.csv",
         output_filename="a1_telemetry_ward_summary.json",
         schema_family="clinical_sensor_telemetry",
-        candidate_thresholds=[120.0, 125.0, 130.0],
+        candidate_thresholds=[110.0, 120.0, 125.0],
         required_output_columns=["ward_id", "event_count", "total_reading_mv", "mean_reading_mv", "max_reading_mv"],
         task_kind="grouped_summary",
     ),
@@ -841,7 +948,7 @@ TASK_METADATA = {
         source_filename="financial_ledger_audit.json",
         output_filename="a2_ledger_dept_summary.json",
         schema_family="financial_ledger_audit",
-        candidate_thresholds=[200.0, 210.0, 220.0],
+        candidate_thresholds=[180.0, 200.0, 210.0],
         required_output_columns=["dept_code", "event_count", "total_posted_usd", "mean_posted_usd", "max_posted_usd"],
         task_kind="grouped_summary",
     ),
@@ -852,7 +959,7 @@ TASK_METADATA = {
         table_name="cluster_rpc_events",
         output_filename="sql1_service_telemetry_summary.json",
         schema_family="cluster_rpc_events",
-        candidate_thresholds=[250.0, 260.0, 270.0],
+        candidate_thresholds=[230.0, 250.0, 260.0],
         required_output_columns=["service_route", "event_count", "total_duration_ms", "mean_duration_ms", "max_duration_ms"],
         task_kind="grouped_summary",
     ),
@@ -863,7 +970,7 @@ TASK_METADATA = {
         table_name="freight_manifests",
         output_filename="sql2_supply_chain_summary.json",
         schema_family="freight_manifests",
-        candidate_thresholds=[100.0, 115.0, 130.0],
+        candidate_thresholds=[90.0, 100.0, 115.0],
         required_output_columns=["corridor_lane", "event_count", "total_freight_kg", "mean_freight_kg", "max_freight_kg"],
         task_kind="grouped_summary",
     ),
@@ -874,7 +981,7 @@ TASK_METADATA = {
         table_name="assay_batches",
         output_filename="sql3_hospital_lab_summary.json",
         schema_family="assay_batches",
-        candidate_thresholds=[40.0, 50.0, 55.0],
+        candidate_thresholds=[32.0, 40.0, 50.0],
         required_output_columns=["panel_code", "event_count", "total_concentration_ug", "mean_concentration_ug", "max_concentration_ug"],
         task_kind="grouped_summary",
     ),
@@ -897,6 +1004,26 @@ TASK_METADATA = {
         candidate_thresholds=[-100.0, 0.0, 50.0],
         required_output_columns=["merchant_Desk", "event_count", "total_revenue_eur", "mean_revenue_eur", "max_revenue_eur"],
         task_kind="grouped_summary",
+    ),
+    "U1_derived_net_margin_audit": dict(
+        tier="unfamiliar_composition_discovery",
+        format="json",
+        source_filename="invoice_fee_audit.json",
+        output_filename="u1_derived_net_margin.json",
+        schema_family="invoice_fee_audit",
+        candidate_thresholds=[90.0, 100.0, 110.0],
+        required_output_columns=["account_code", "gross_usd", "fee_usd", "net_usd"],
+        task_kind="derived_field_filter_order",
+    ),
+    "U2_regional_net_payout_audit": dict(
+        tier="unfamiliar_composition_transfer",
+        format="csv",
+        source_filename="regional_payout_audit.csv",
+        output_filename="u2_regional_net_payout.json",
+        schema_family="regional_payout_audit",
+        candidate_thresholds=[185.0, 200.0, 210.0],
+        required_output_columns=["partner_slug", "payout_eur", "tax_eur", "net_payout_eur"],
+        task_kind="derived_field_filter_order",
     ),
 }
 
@@ -1345,6 +1472,47 @@ def answer_pidgin_stream_query(payload: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def reverify_heldout_program_ops(payload: dict[str, Any]) -> dict[str, Any]:
+    """Re-executes `program_ops` (and optional `surviving_version_space_ops` and
+    `submitted_sql_query`) live against `TASK_PRIVATE_HELDOUT_ROWS[task_id]()` so
+    the standalone verifier never trusts saved `heldout_accuracy` floats in an artifact."""
+    task_id = str(payload["task_id"])
+    program_ops = list(payload["program_ops"])
+    priv_rows = TASK_PRIVATE_HELDOUT_ROWS[task_id]()
+    ref_fn = REFERENCE_TASK_FUNCTIONS[task_id]
+    expected_priv = ref_fn(priv_rows)
+    pred_priv = evaluate_serialized_adapter_program(program_ops, priv_rows)
+
+    vs_ops_list = payload.get("surviving_version_space_ops")
+    if isinstance(vs_ops_list, list) and len(vs_ops_list) > 0:
+        vs_hits = sum(
+            1 for cand_ops in vs_ops_list
+            if evaluate_serialized_adapter_program(cand_ops, priv_rows) == expected_priv
+        )
+        version_space_expected_accuracy = round(vs_hits / len(vs_ops_list), 6)
+    else:
+        version_space_expected_accuracy = 1.0 if (pred_priv == expected_priv) else 0.0
+
+    submitted_sql = payload.get("submitted_sql_query")
+    relational_sql_exact_match: bool | None = None
+    if submitted_sql:
+        sql_priv_pred = _execute_relational_sql_on_rows(str(submitted_sql), priv_rows)
+        relational_sql_exact_match = bool(sql_priv_pred == expected_priv)
+        heldout_exact_match = bool(pred_priv == expected_priv and relational_sql_exact_match)
+    else:
+        heldout_exact_match = bool(pred_priv == expected_priv)
+
+    return dict(
+        task_id=task_id,
+        heldout_accuracy=1.0 if heldout_exact_match else 0.0,
+        version_space_expected_accuracy=version_space_expected_accuracy,
+        relational_sql_exact_match=relational_sql_exact_match,
+        live_heldout_accuracy=1.0 if heldout_exact_match else 0.0,
+        live_version_space_expected_accuracy=version_space_expected_accuracy,
+        live_relational_sql_exact_match=relational_sql_exact_match,
+    )
+
+
 def main() -> None:
     raw = sys.stdin.read()
     req = json.loads(raw)
@@ -1355,6 +1523,8 @@ def main() -> None:
         res = answer_disambiguating_query(req)
     elif mode == "evaluate_task_submission":
         res = evaluate_task_submission(req)
+    elif mode == "reverify_heldout_program_ops":
+        res = reverify_heldout_program_ops(req)
     elif mode == "answer_pidgin_stream_query":
         res = answer_pidgin_stream_query(req)
     else:

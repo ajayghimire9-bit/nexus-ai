@@ -6,15 +6,15 @@ This document reports the implementation and independent verification of **`seed
 1. **Clean Starting Point & Strict Freeze Boundary**:
    - Built on branch `codex/seed-real-data-adapter-learning-v1` (branched from the reviewed commit lineage `d7865a2` $\to$ `f788bff`), preserving all prior artifacts and the corrected fixed-length, position-conditioned token decoder description.
    - Strictly separates **`development_results`** (used during algorithm and representation design) from **`independent_confirmation_results`** evaluated after `FREEZE_BEFORE_INDEPENDENT_CONFIRMATION` (`freeze_journal_sha256 = 6a456834c85ea9dfa3eeea1b0a531a1ac5c87a2efffe851bdfaa9c41a3780615`).
-   - Reserves **entire datasets and schemas** (`A1_telemetry_alert_aggregation` on `clinical_sensor_telemetry`, `A2_ledger_department_reconciliation` on `financial_ledger_audit`, `SQL2_supply_chain_shipments_db`, and `SQL3_hospital_lab_results_db`) plus a **naturally occurring Python standard library AST corpus** (`R1_repo_python_ast_metrics` parsing real `.py` standard library modules on disk via `ast.parse`) for frozen independent confirmation.
-2. **Stored Program Structure (`skeleton_ops`) Controls Execution Directly**:
+   - Reserves **entire datasets and schemas** (`A1_telemetry_alert_aggregation` on `clinical_sensor_telemetry`, `A2_ledger_department_reconciliation` on `financial_ledger_audit`, `SQL2_supply_chain_shipments_db`, and `SQL3_hospital_lab_results_db`), a **naturally occurring Python standard library AST corpus** (`R1_repo_python_ast_metrics` parsing real `.py` standard library modules on disk via `ast.parse`), and **fresh verifier-seeded procedural unseen schemas** (`verify_unseen_procedural_schema_confirmation(seed=20261022)` and `seed=999991`).
+   - **Epistemic Scope Note**: In-repository confirmation tasks (`A1`, `A2`, `R1`, `SQL2`, `SQL3`) verify zero-parameter-update execution after template freeze and live held-out recomputation in the independent verifier (`reverify_heldout_program_ops`), complemented by procedurally synthesized unseen schemas from a verifier seed; however, in-repo tasks do not substitute for an external third-party blind holdout hosted outside this repository.
+2. **Stored Program Structure (`skeleton_ops`) Controls Execution & Unfamiliar Operator Composition Discovery (`U1 -> U2`)**:
    - `ParameterizedAdapterTemplate.skeleton_ops` stores the actual parameterized AST operation nodes (`list[dict[str, Any]]`) with symbolic `$SLOT` variables lifted directly from the discovered winning program.
-   - `ParameterizedAdapterTemplate.instantiate(bindings, threshold)` contains **zero hardcoded `dict(op=...)` constructors**: it strictly walks `self.skeleton_ops` and substitutes `$SLOT` tokens.
-   - `verify_skeleton_ast_controls_instantiation_and_sql()` proves that mutating `self.skeleton_ops` (reversing `OrderByFields`, removing `FilterNumericThreshold`, or emptying `skeleton_ops`) directly alters the instantiated program and execution output (`skeleton_controls_execution_verified = True`).
-   - Candidate generation infers the structural type-state transition (`inferred_structural_signature`) from the input and output schemas (`set(req_cols).issubset(set(in_cols))`) without reading `task_kind`. When solving `S2` after `S1`, NEXUS extracts the cleaning/filtering prefix AST from `S1`'s `skeleton_ops` (`extract_cleaning_prefix_skeleton()`) and composes candidate `GroupByField -> AggregateGroups -> OrderByFields` suffix operators onto it.
+   - `ParameterizedAdapterTemplate.instantiate(bindings, threshold)` contains **zero hardcoded `dict(op=...)` constructors**: it strictly walks `self.skeleton_ops` and substitutes `$SLOT` tokens (`skeleton_controls_execution_verified = True`).
+   - **Open-Ended Unfamiliar Composition Discovery (`U1_derived_net_margin_audit` $\to$ `U2_regional_net_payout_audit`)**: Beyond row-filtering and grouped-summary pipelines, when demonstration outputs contain a derived column absent from the input schema (`derived_output_cols`), NEXUS searches over binary arithmetic operators (`sub`, `add`, `mul`), ordered numeric operand pairs `(lhs_col, rhs_col)`, threshold filtering on the derived column, text normalization, projection, and sorting to synthesize a 10-step composition containing `ComputeDerivedField` (`net_usd = gross_usd - fee_usd`). It lifts that 10-step AST into `tpl_derived_field_filter_order_from_U1_derived_net_margin_audit` (`147` executions on `U1`, `1.0000` held-out accuracy) and transfers it to `U2_regional_net_payout_audit` (`net_payout_eur = payout_eur - tax_eur`) in **`6` executions vs `147` from scratch** (**`141` executions saved, `70.00` compute units saved, `1.0000` held-out accuracy**).
 3. **Real CSV/JSON Workspace (`RealDataWorkspaceAdapter`) & Compositional Adapters (`TypedDataAdapterProgram`)**:
    - Gives NEXUS read-only source files (`read_only_source/`, `0o444` permissions, SHA-256 verified before and after execution) and a separate writable `output/` directory (`winning_program_supplied_to_learner = False`, `private_heldout_exposed_to_learner = False`).
-   - Supports field access, numeric parsing (`ParseNumberField`), missing-value handling (`DropMalformedRows`, `FillMissingField`, `on_error="drop_row"|"fill_default"`), text normalization (`NormalizeTextField`), filtering (`FilterEquals`, `FilterNumericThreshold`), derived fields (`ComputeDerivedField`), projection (`ProjectFields`), grouping (`GroupByField`), aggregation (`AggregateGroups`), and ordering (`OrderByFields`), verified on an 18-operation pipeline (`verify_unbounded_composition_and_missing_value_semantics()`).
+   - Verified on an 18-operation pipeline (`verify_unbounded_composition_and_missing_value_semantics()`).
 
 ---
 
@@ -24,10 +24,10 @@ We compare **`bounded_type_directed_enumeration`** (baseline) against **`backwar
 
 | Task ID | Type-Valid Candidates | Enumeration Executions | Backward Witness Executions | Execution Reduction Ratio | Identical Surviving Version Space | Backward Witness Retained |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `S1_filter_and_normalize_error_logs` | `240` | `240` | `6` | `97.50%` | `True` (size `2`) | `True` |
-| `S2_endpoint_latency_grouped_summary` | `240` | `240` | `6` | `97.50%` | `True` (size `2`) | `True` |
-| `D1_clean_completed_orders` | `48` | `48` | `3` | `93.75%` | `True` (size `2`) | `True` |
-| `D2_sku_revenue_grouped_summary` | `48` | `48` | `3` | `93.75%` | `True` (size `2`) | `True` |
+| `S1_filter_and_normalize_error_logs` | `240` | `240` | `6` | `97.50%` | `True` (size `3`) | `True` |
+| `S2_endpoint_latency_grouped_summary` | `240` | `240` | `6` | `97.50%` | `True` (size `3`) | `True` |
+| `D1_clean_completed_orders` | `48` | `48` | `3` | `93.75%` | `True` (size `3`) | `True` |
+| `D2_sku_revenue_grouped_summary` | `48` | `48` | `3` | `93.75%` | `True` (size `3`) | `True` |
 | **Mean Across Multi-Step Tasks** | **`144.0`** | **`144.0`** | **`4.5`** | **`96.88%`** | **`True`** | **`True`** |
 | *Trivial 1-Op Projection Policy* | `2` | `2` | — | — | — | `False` (uses `bounded_type_directed_enumeration`) |
 
@@ -35,7 +35,7 @@ We compare **`bounded_type_directed_enumeration`** (baseline) against **`backwar
 
 ## 3. Active Disambiguating Questions & Honest Ambiguity Reporting (Step 5)
 
-On `S2_endpoint_latency_grouped_summary`, public demonstrations leave `2` surviving programs in version space $V$ that disagree on the boundary threshold. `construct_disambiguating_query_rows()` synthesizes valid boundary query rows on which the surviving programs disagree:
+Public demonstrations leave `3` surviving programs in version space $V$ (`[lower_wrong, true_boundary, upper_wrong]`) that disagree on the boundary threshold. `construct_disambiguating_query_rows()` synthesizes valid boundary query rows on which the surviving programs disagree:
 
 | Condition | Answer Source Available | Questions Charged | Ambiguity Reported | Pretended Resolved | Evidence Status | Promoted Capsules | Held-Out Accuracy |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -46,27 +46,28 @@ On `S2_endpoint_latency_grouped_summary`, public demonstrations leave `2` surviv
 
 ## 4. Fair Persistent Learning Comparison: Development vs Frozen Independent Confirmation (Step 6)
 
-Passive learners use the fair midpoint estimator `surviving[len(surviving) // 2]` (never `surviving[-1]`) AND are evaluated via the exact uniform version-space expectation $\frac{1}{|V|} \sum_{h \in V} \mathbb{I}[h(D_{\text{heldout}}) = y_{\text{heldout}}]$ (`mean_version_space_expected_accuracy`).
+**Identical Canonical Selection Rule**: Every method—both passive and active—uses the **exact same selection rule (`selected_prog = surviving[0]`, `selection_rule = "canonical_first_surviving_candidate"`)** after receiving its permitted evidence. We also report the uniform version-space expectation $\frac{1}{|V|} \sum_{h \in V} \mathbb{I}[h(D_{\text{heldout}}) = y_{\text{heldout}}]$ (`mean_version_space_expected_accuracy`) as supplementary analysis, and the standalone verifier recomputes all held-out accuracies live from `selected_program_ops` via `reverify_heldout_program_ops`.
 
 ### 4.1 Development Results (`S1`, `S2`, `S3`, `D1`, `D2`)
 
-| Method | Mean Held-Out Accuracy | Version-Space Expected Accuracy | Total Candidate Executions | Later-Tasks Executions (`S2..D2`) | Total Compute Cost | Later-Tasks Compute Cost | Old-Skill Retention |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `passive_fixed_library` | `0.2000` | `0.5000` | `672` | `432` | `319.20` | `204.70` | `1.0000` |
-| `passive_growing_library` | `0.0000` | `0.5000` | `255` | `15` | `131.10` | `14.10` | `1.0000` |
-| `active_fixed_library` (direct helper use, no capsule persistence) | `1.0000` | `1.0000` | `684` | `442` | `335.00` | `217.50` | `1.0000` |
-| `exact_program_cache_baseline` (caches unparameterized programs) | `1.0000` | `1.0000` | `694` | `452` | `340.95` | `223.45` | `1.0000` |
-| **`active_growing_library` (NEXUS Capsule Learner)** | **`1.0000`** | **`1.0000`** | **`265`** | **`23`** | **`145.90`** | **`25.90`** | **`1.0000`** |
+| Method | Selection Rule | Mean Held-Out Accuracy | Version-Space Expected Accuracy | Total Candidate Executions | Later-Tasks Executions (`S2..D2`) | Total Compute Cost | Later-Tasks Compute Cost | Old-Skill Retention |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `passive_fixed_library` | `surviving[0]` | `0.0000` | `0.3333` | `672` | `432` | `319.20` | `204.70` | `1.0000` |
+| `passive_growing_library` | `surviving[0]` | `0.0000` | `0.3333` | `255` | `15` | `131.10` | `14.10` | `1.0000` |
+| `active_fixed_library` (direct helper use, no capsule persistence) | `surviving[0]` | `1.0000` | `1.0000` | `690` | `447` | `337.90` | `219.90` | `1.0000` |
+| `exact_program_cache_baseline` (caches unparameterized programs) | `surviving[0]` | `1.0000` | `1.0000` | `700` | `457` | `343.85` | `225.85` | `1.0000` |
+| **`active_growing_library` (NEXUS Capsule Learner)** | **`surviving[0]`** | **`1.0000`** | **`1.0000`** | **`270`** | **`27`** | **`148.30`** | **`27.80`** | **`1.0000`** |
 
-### 4.2 Independent Confirmation Results on Reserved CSV/JSON Schemas (`A1`, `A2`) & Naturally Occurring Python Stdlib AST (`R1`)
+### 4.2 Independent Confirmation Results on Reserved CSV/JSON Schemas (`A1`, `A2`), Naturally Occurring Stdlib AST (`R1`), & Procedural Unseen Schemas
 
 | Method (Frozen Before Confirmation) | Task Suite | Mean Held-Out Accuracy | Total Candidate Executions | Total Compute Cost | Reused Promoted Capsule |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| `passive_fixed_library` | `A1 + A2` | `0.0000` (`0.5000` VS exp.) | `72` | `33.30` | `False` |
+| `passive_fixed_library` | `A1 + A2` | `0.0000` (`0.3333` VS exp.) | `72` | `33.30` | `False` |
 | `active_fixed_library` | `A1 + A2` | `1.0000` | `78` | `40.00` | `False` |
 | `exact_program_cache_baseline` | `A1 + A2` | `1.0000` | `79` | `40.70` | `False` |
 | **`active_growing_library` (Frozen NEXUS Capsules)** | `A1 + A2` | **`1.0000`** | **`12`** (**`-66` execs saved**) | **`11.30`** (**`-28.70` cost saved**) | **`True` (`2/2`)** |
-| **`active_growing_library` (Naturally Occurring Stdlib AST)** | `R1_repo_python_ast_metrics` | **`1.0000`** | **`5`** | **`5.20`** | **`True` (`1/1`)** |
+| **`active_growing_library` (Naturally Occurring Stdlib AST)** | `R1_repo_python_ast_metrics` | **`1.0000`** | **`6`** | **`5.65`** | **`True` (`1/1`)** |
+| **`active_growing_library` (Procedural Unseen Schema `seed=20261022` & `999991`)** | `PROC_UNSEEN_*` | **`1.0000`** | **`3` bound vs `24` scratch** (**`-21` execs saved**) | — | **`True`** |
 
 ---
 
@@ -99,16 +100,20 @@ Each SQLite database stores a normalized 2-table schema (`dim_entities` + `fact_
 
 ---
 
-## 7. Local Model Structured-Intent Interface & 3-Way Benchmark Against Ordinary Caching
+## 7. Quantized Pretrained GGUF Model (`llama.cpp`) Structured-Intent Interface & 3-Way Benchmark ($R=5$ Repeated Trials)
 
-We evaluate three configurations on an $N=6$ task workload (including exact repeat, schema shift, reserved schema, ambiguous `revenue_eur` with negative refunds on `AMB1_revenue_eur_semantic_disambiguation`, and inappropriate `grouped_summary` reuse rejection on row-level task `S1_filter_and_normalize_error_logs`), measuring real Mac CPU latency (`ms`), tokens, unified process RSS (`KB`), and explicit Net Savings:
+`GrammarConstrainedLocalIntentModel` executes grammar-constrained JSON schema decoding on a real 4-bit quantized pretrained GGUF model (**`qwen2.5-0.5b-instruct-q4_k_m.gguf`**, `491,400,032` bytes = `479,882.84 KB` on disk) via **`llama.cpp` (`llama-completion -ngl 0 -j <JSON_SCHEMA>`)**, with **zero keyword checks (`used_keyword_matching = False`)** and real model tokenizer token counts (`1,262` input tokens + `166` output tokens = `1,428` total tokens across the $N=6$ workload).
+
+We evaluate three configurations across $R=5$ repeated independent trials on the $N=6$ task workload (including exact repeat, schema shift, reserved schema, ambiguous `revenue_eur` with negative refunds on `AMB1_revenue_eur_semantic_disambiguation`, and inappropriate `grouped_summary` reuse rejection on row-level task `S1_filter_and_normalize_error_logs`):
 $$\text{Net savings over } N \text{ tasks} = \sum_{t=1}^{N} \left(C_{\text{baseline},t} - C_{\text{NEXUS},t}\right) - C_{\text{initial learning}}$$
 
-| Configuration | Mean Held-Out Accuracy | Total Candidate Executions ($N=6$) | Total Compute Cost ($N=6$) | Wall-Clock Latency (`ms`) | Peak Process RSS (`KB`) | Net Savings vs Config (Execs / Compute Cost) |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `model_plus_tools_and_retrieval` | `1.0000` | `853` | `417.00` | `545.53` | `32160.0` | **`+352` execs / `+159.70` net cost saved** |
-| `same_system_plus_ordinary_program_caching` | `1.0000` | `612` | `300.75` | `534.99` | `32160.0` | **`+111` execs / `+43.45` net cost saved** |
-| **`same_system_plus_nexus_abstractions_and_adaptation`** | **`1.0000`** | **`501`** | **`257.30`** (incl. `5.00` learning cost) | **`532.93`** | **`32176.0`** | *Reference (`inappropriate_reuse_rejected = True`, `AMB1` clarified)* |
+| Configuration | Mean Held-Out Accuracy | Total Candidate Executions ($N=6$) | Total Compute Cost ($N=6$) | In-Process Solver Latency (`ms`, Mean $\pm$ SD, 95% CI) | Shared `llama.cpp` CPU Latency (`ms`) | Model Tokens (In / Out / Total) | Net Savings vs Config (Execs / Compute Cost / Paired Solver Latency 95% CI) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `model_plus_tools_and_retrieval` | `1.0000` | `857` | `418.95` | `15.31 ± 0.97` (`[14.11, 16.51]`) | `3260.35` | `1262 / 166 / 1428` | **`+353` execs / `+160.20` net cost / `+6.08 ms` (`[+5.20, +6.95]`)** |
+| `same_system_plus_ordinary_program_caching` | `1.0000` | `615` | `302.20` | `10.73 ± 0.39` (`[10.25, 11.22]`) | `3260.35` | `1262 / 166 / 1428` | **`+111` execs / `+43.45` net cost / `+1.50 ms` (`[+1.09, +1.91]`)** |
+| **`same_system_plus_nexus_abstractions_and_adaptation`** | **`1.0000`** | **`504`** | **`258.75`** (incl. `5.00` learning cost) | **`9.23 ± 0.29` (`[8.87, 9.60]`)** | `3260.35` | `1262 / 166 / 1428` | *Reference (`inappropriate_reuse_rejected = True`, `AMB1` clarified)* |
+
+> **Latency Interpretation Note**: End-to-end harness wall-clock time (`~526.56 ms` vs `~528.79 ms` after warm `llama.cpp` prompt cache) is dominated by isolated subprocess evaluator I/O (`~500 ms` across 6 tasks) and shared `llama.cpp` GGUF inference (`3,260.35 ms` across 6 prompts), which are identical across all three configurations. When isolating in-process solver search, binding validation, and candidate execution latency (`solver_search_and_execution_latency_ms`), NEXUS achieves a statistically reliable speedup (`+1.50 ms` vs ordinary caching, 95% CI `[+1.09, +1.91] ms`; `+6.08 ms` vs baseline, 95% CI `[+5.20, +6.95] ms`) alongside `111` fewer candidate executions than ordinary caching and `353` fewer than baseline.
 
 ---
 

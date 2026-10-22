@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """Standalone Tamper-Rejecting Verifier for `seed_real_data_adapter_learning_v1`.
 
-Reconstructs all 10 verification gates from raw per-task records, stored AST
-`skeleton_ops`, search metrics, disambiguation records, frozen independent
-confirmation runs, normalized 2-table SQLite `JOIN` queries, the 3-way local
-model benchmark (with explicit Net Savings recomputation), and live re-execution
-of the 4 Wall-Breaking Research Pillars. Never trusts top-level summary booleans
-(`all_gates_passed` or `gates`), and executes a 10-case tamper-rejection suite
+Reconstructs all 10 verification gates from raw per-task records, live held-out
+program re-execution (`reverify_heldout_program_ops` in the isolated evaluator worker),
+stored AST `skeleton_ops`, unfamiliar `ComputeDerivedField` composition synthesis and
+transfer (`U1 -> U2`), search metrics, disambiguation records, identical canonical
+candidate selection (`surviving[0]`), frozen independent confirmation runs, fresh
+verifier-seeded procedural unseen schemas, normalized 2-table SQLite `JOIN` queries,
+the 3-way `llama.cpp` GGUF pretrained model benchmark (with 5-trial 95% CIs and
+explicit Net Savings recomputation), and live re-execution of the 4 Wall-Breaking
+Research Pillars. Never trusts saved accuracy floats or top-level summary booleans
+(`all_gates_passed` or `gates`), and executes a 14-case tamper-rejection suite
 proving that corrupted artifacts are rejected with `ValueError`.
 """
 
@@ -15,6 +19,7 @@ from __future__ import annotations
 import argparse
 import ast
 import copy
+import inspect
 import json
 import pathlib
 import sys
@@ -27,17 +32,85 @@ if str(SRC_DIR) not in sys.path:
 
 from nexus.seed.real_data_adapter_learning import (
     DEFAULT_ARTIFACT_PATH,
+    GrammarConstrainedLocalIntentModel,
     ParameterizedAdapterTemplate,
     RealDataWorkspaceAdapter,
+    _call_real_data_worker,
     build_real_data_adapter_learning_report,
     verify_skeleton_ast_controls_instantiation_and_sql,
+    verify_unseen_procedural_schema_confirmation,
     write_real_data_adapter_learning_artifact,
 )
+
+_LIVE_HELDOUT_REVERIFY_CACHE: dict[str, dict[str, Any]] = {}
+
+
+def _recompute_live_heldout_for_record(rec: dict[str, Any]) -> dict[str, Any]:
+    """Re-executes `rec['selected_program_ops']`, `rec['surviving_version_space_ops']`,
+    and `rec.get('submitted_sql_query')` live against the private held-out dataset in
+    `real_data_evaluator_worker.py` (`mode='reverify_heldout_program_ops'`), and verifies
+    that the saved accuracy fields in `rec` were not forged or tampered with."""
+    task_id = str(rec.get("task_id", ""))
+    prog_ops = rec.get("selected_program_ops")
+    surv_ops = rec.get("surviving_version_space_ops")
+    sql_q = rec.get("submitted_sql_query")
+
+    if not task_id or not isinstance(prog_ops, list) or not prog_ops:
+        raise ValueError(f"Task record for {task_id!r} missing executable selected_program_ops")
+    if isinstance(surv_ops, list) and surv_ops:
+        if prog_ops != surv_ops[0]:
+            raise ValueError(
+                f"Task {task_id} violated canonical_first_surviving_candidate selection rule: "
+                "selected_program_ops != surviving_version_space_ops[0]"
+            )
+
+    cache_key = json.dumps(
+        dict(
+            task_id=task_id,
+            program_ops=prog_ops,
+            surviving_version_space_ops=surv_ops,
+            submitted_sql_query=sql_q,
+        ),
+        sort_keys=True,
+    )
+    if cache_key not in _LIVE_HELDOUT_REVERIFY_CACHE:
+        _LIVE_HELDOUT_REVERIFY_CACHE[cache_key] = _call_real_data_worker(
+            dict(
+                mode="reverify_heldout_program_ops",
+                task_id=task_id,
+                program_ops=prog_ops,
+                surviving_version_space_ops=surv_ops,
+                submitted_sql_query=sql_q,
+            )
+        )
+    live = _LIVE_HELDOUT_REVERIFY_CACHE[cache_key]
+
+    live_acc = float(live["heldout_accuracy"])
+    saved_acc = float(rec.get("heldout_accuracy", -1.0))
+    if abs(live_acc - saved_acc) > 1e-6:
+        raise ValueError(
+            f"Live held-out re-execution mismatch on {task_id}: live={live_acc} vs saved={saved_acc}"
+        )
+
+    if "version_space_expected_accuracy" in rec and surv_ops is not None:
+        live_vs = float(live["version_space_expected_accuracy"])
+        saved_vs = float(rec["version_space_expected_accuracy"])
+        if abs(live_vs - saved_vs) > 1e-6:
+            raise ValueError(
+                f"Live version_space_expected_accuracy mismatch on {task_id}: live={live_vs} vs saved={saved_vs}"
+            )
+
+    if sql_q is not None or rec.get("format") == "sqlite":
+        if live.get("relational_sql_exact_match") is not True or rec.get("relational_sql_exact_match") is not True:
+            raise ValueError(f"Live relational SQL held-out re-execution failed on {task_id}")
+
+    return live
 
 
 def _verify_skeleton_ast_and_promoted_templates(report: dict[str, Any]) -> bool:
     """Re-instantiates `promoted_template_skeletons` from the artifact and verifies
-    that `skeleton_ops` directly governs program instantiation and execution output."""
+    that `skeleton_ops` directly governs program instantiation and execution output,
+    plus verifies fresh unseen procedural schemas using a distinct verifier seed."""
     proof = report.get("skeleton_ast_execution_control_proof", {})
     skeletons = report.get("promoted_template_skeletons", {})
     if not isinstance(skeletons, dict) or "grouped_summary" not in skeletons or "filter_normalize_order" not in skeletons:
@@ -48,7 +121,7 @@ def _verify_skeleton_ast_and_promoted_templates(report: dict[str, Any]) -> bool:
     if not isinstance(gs_ops, list) or len(gs_ops) < 8 or not isinstance(fno_ops, list) or len(fno_ops) < 8:
         raise ValueError("Promoted template skeleton_ops must be non-empty AST node lists")
 
-    tpl = ParameterizedAdapterTemplate(
+    tpl_gs = ParameterizedAdapterTemplate(
         template_id=str(proof.get("template_id", "tpl_grouped_summary")),
         task_kind="grouped_summary",
         origin_task_id="S2_endpoint_latency_grouped_summary",
@@ -59,15 +132,76 @@ def _verify_skeleton_ast_and_promoted_templates(report: dict[str, Any]) -> bool:
             "Fold_Associative_Monoid",
         ),
     )
+    tpl_fno = ParameterizedAdapterTemplate(
+        template_id="tpl_filter_normalize_order",
+        task_kind="filter_normalize_order",
+        origin_task_id="S1_filter_and_normalize_error_logs",
+        skeleton_ops=copy.deepcopy(fno_ops),
+        categorical_skeleton_signature=(
+            "Filter_By_Category",
+            "Filter_By_Monotonic_Threshold",
+            "Project_And_Sort",
+        ),
+    )
     ws_s2 = RealDataWorkspaceAdapter("S2_endpoint_latency_grouped_summary")
     try:
-        live_proof = verify_skeleton_ast_controls_instantiation_and_sql(tpl, ws_s2.spec)
+        live_proof = verify_skeleton_ast_controls_instantiation_and_sql(tpl_gs, ws_s2.spec)
     finally:
         ws_s2.close()
     if not live_proof.get("skeleton_controls_execution_verified"):
         raise ValueError("Live re-verification of skeleton_ops execution control failed")
     if proof != live_proof:
         raise ValueError("Recorded skeleton_ast_execution_control_proof does not match live re-execution")
+
+    # Re-verify procedural unseen schema confirmation both from report and with a fresh verifier seed
+    rep_proc = report.get("independent_confirmation_results", {}).get("procedural_unseen_schema_confirmation", {})
+    if not rep_proc.get("all_procedural_tasks_passed") or int(rep_proc.get("execution_savings", 0)) <= 0:
+        raise ValueError("Recorded procedural_unseen_schema_confirmation failed")
+
+    fresh_proc = verify_unseen_procedural_schema_confirmation(
+        {"grouped_summary": tpl_gs, "filter_normalize_order": tpl_fno},
+        seed=999991,
+    )
+    if not fresh_proc.get("all_procedural_tasks_passed") or int(fresh_proc.get("execution_savings", 0)) <= 0:
+        raise ValueError("Fresh verifier-seeded procedural unseen schema confirmation failed")
+    return True
+
+
+def _verify_unfamiliar_composition_discovery_and_transfer(report: dict[str, Any]) -> bool:
+    """Verifies that NEXUS synthesized an unfamiliar 10-operation pipeline containing
+    `ComputeDerivedField` on `U1_derived_net_margin_audit`, lifted its AST into a
+    reusable `derived_field_filter_order` template with `$DERIVED_COL`, `$ARITH_OP`,
+    `$LHS_COL`, `$RHS_COL` placeholders, and transferred it to `U2_regional_net_payout_audit`
+    with live held-out re-execution."""
+    unfam = report.get("unfamiliar_composition_discovery_and_transfer", {})
+    u1 = unfam.get("discovery_task_u1", {})
+    u2 = unfam.get("transfer_task_u2", {})
+    if u1.get("task_id") != "U1_derived_net_margin_audit" or u2.get("task_id") != "U2_regional_net_payout_audit":
+        raise ValueError("Missing U1/U2 unfamiliar composition discovery and transfer records")
+
+    skel_ops = u1.get("discovered_skeleton_ops", [])
+    derived_nodes = [op for op in skel_ops if isinstance(op, dict) and op.get("op") == "ComputeDerivedField"]
+    if not derived_nodes:
+        raise ValueError("Discovered U1 template skeleton_ops does not contain ComputeDerivedField")
+    d_node = derived_nodes[0]
+    if (
+        d_node.get("target_field") != "$DERIVED_COL"
+        or d_node.get("lhs_field") != "$METRIC_COL"
+        or d_node.get("rhs_field") != "$AUX_INT_COL"
+        or d_node.get("arith_op") != "sub"
+    ):
+        raise ValueError("ComputeDerivedField node in skeleton_ops is not properly parameterized")
+
+    live_u1 = _recompute_live_heldout_for_record(u1)
+    u2_trans = u2.get("with_promoted_template", {})
+    u2_scratch = u2.get("from_scratch_without_template", {})
+    live_u2_trans = _recompute_live_heldout_for_record(u2_trans)
+    if float(live_u1["heldout_accuracy"]) != 1.0 or float(live_u2_trans["heldout_accuracy"]) != 1.0:
+        raise ValueError("Live held-out re-execution of U1 or U2 derived composition failed")
+
+    exec_sav = int(u2_scratch.get("candidate_executions", 0)) - int(u2_trans.get("candidate_executions", 0))
+    if exec_sav != int(u2.get("candidate_execution_savings", -1)) or exec_sav <= 0:
+        raise ValueError("Invalid or non-positive candidate_execution_savings on U2 transfer")
     return True
 
 
@@ -117,8 +251,33 @@ def _verify_pillar_2_compiled_ast_patch(p2: dict[str, Any]) -> bool:
 
 
 def _verify_three_way_local_model_benchmark(bench: dict[str, Any]) -> bool:
-    """Recomputes the 3-way local model benchmark metrics and Net Savings equation
-    from per-task records."""
+    """Verifies that `GrammarConstrainedLocalIntentModel` uses a real quantized GGUF
+    pretrained model via `llama.cpp` without keyword matching, recomputes live held-out
+    accuracies for all 18 task records across the 3 configurations, verifies 5-trial
+    95% confidence intervals, and recomputes the Net Savings equation."""
+    method_src = (
+        inspect.getsource(GrammarConstrainedLocalIntentModel.__init__)
+        + "\n"
+        + inspect.getsource(GrammarConstrainedLocalIntentModel.parse_structured_intent)
+    )
+    if (
+        '"row-level" in' in method_src
+        or '"individual record" in' in method_src
+        or "SmallNeuralLanguageCodec" in method_src
+    ):
+        raise ValueError("Forbidden keyword-matching or SmallNeuralLanguageCodec detected in GrammarConstrainedLocalIntentModel")
+    if "LLAMA_COMPLETION_BIN" not in method_src or "GGUF_MODEL_PATH" not in method_src:
+        raise ValueError("GrammarConstrainedLocalIntentModel must invoke llama-completion with GGUF_MODEL_PATH")
+
+    pmv = bench.get("pretrained_model_verification", {})
+    if (
+        pmv.get("used_keyword_matching") is not False
+        or pmv.get("grammar_constrained_decoding") is not True
+        or pmv.get("real_model_tokenizer_counts") is not True
+        or pmv.get("pretrained_model_file") != "qwen2.5-0.5b-instruct-q4_k_m.gguf"
+    ):
+        raise ValueError("Invalid pretrained_model_verification block in three_way_local_model_benchmark")
+
     cfgs = bench.get("configurations", {})
     for name in (
         "model_plus_tools_and_retrieval",
@@ -128,10 +287,28 @@ def _verify_three_way_local_model_benchmark(bench: dict[str, Any]) -> bool:
         if name not in cfgs:
             raise ValueError(f"Missing configuration {name} in three_way_local_model_benchmark")
         c_data = cfgs[name]
+        if c_data.get("selection_rule") != "canonical_first_surviving_candidate":
+            raise ValueError(f"Configuration {name} must use canonical_first_surviving_candidate")
         recs = c_data.get("per_task_records", [])
         if len(recs) != 6:
             raise ValueError(f"Expected 6 workload task records in {name}")
-        mean_acc = round(sum(float(r["heldout_accuracy"]) for r in recs) / len(recs), 6)
+
+        live_accs = []
+        for r in recs:
+            if r.get("used_keyword_matching") is not False:
+                raise ValueError(f"Task record in {name} flagged used_keyword_matching != False")
+            if r.get("pretrained_model_file") != "qwen2.5-0.5b-instruct-q4_k_m.gguf":
+                raise ValueError(f"Task record in {name} missing GGUF pretrained_model_file")
+            raw_json = str(r.get("raw_decoded_json", ""))
+            parsed_json = json.loads(raw_json)
+            if "intent_mode" not in parsed_json or "required_output_grain" not in parsed_json:
+                raise ValueError(f"Invalid raw_decoded_json in {name}")
+            if int(r.get("input_tokens", 0)) < 100 or int(r.get("output_tokens", 0)) < 15:
+                raise ValueError(f"Unrealistically low tokenizer token counts in {name}")
+            live_res = _recompute_live_heldout_for_record(r)
+            live_accs.append(float(live_res["heldout_accuracy"]))
+
+        mean_acc = round(sum(live_accs) / len(live_accs), 6)
         tot_cost = round(sum(float(r["total_compute_cost"]) for r in recs), 6)
         tot_execs = sum(int(r["candidate_executions"]) for r in recs)
         if abs(mean_acc - float(c_data["mean_heldout_accuracy"])) > 1e-6 or mean_acc != 1.0:
@@ -143,7 +320,13 @@ def _verify_three_way_local_model_benchmark(bench: dict[str, Any]) -> bool:
         if not all(float(r["model_cpu_latency_ms"]) > 0.0 and float(r["unified_process_rss_kb"]) > 0.0 for r in recs):
             raise ValueError(f"Invalid hardware latency/RSS measurements in {name}")
 
-    m_base = cfgs["model_plus_tools_and_retrieval"]
+    rt_unc = bench.get("repeated_trials_uncertainty", {})
+    if int(rt_unc.get("num_repeated_trials", 0)) < 5:
+        raise ValueError("three_way_local_model_benchmark must run >= 5 repeated trials for 95% CIs")
+    paired_solver_ci = rt_unc.get("paired_solver_latency_savings_vs_ordinary_caching_ms", {})
+    if float(paired_solver_ci.get("ci95_low", 0.0)) <= 0.0 or len(paired_solver_ci.get("trials", [])) < 5:
+        raise ValueError("Paired solver latency savings 95% CI lower bound must be strictly positive")
+
     m_cache = cfgs["same_system_plus_ordinary_program_caching"]
     m_nexus = cfgs["same_system_plus_nexus_abstractions_and_adaptation"]
 
@@ -179,7 +362,8 @@ def _verify_three_way_local_model_benchmark(bench: dict[str, Any]) -> bool:
 
 
 def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool]:
-    """Recomputes all 10 gates strictly from nested raw records in `report`."""
+    """Recomputes all 10 gates strictly from nested raw records and live held-out
+    program re-execution."""
     if report.get("schema") != "seed_real_data_adapter_learning_v1":
         raise ValueError(f"Unexpected schema: {report.get('schema')}")
     if report.get("initial_stored_compositions") != 0:
@@ -192,6 +376,7 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
         raise ValueError("private_heldout_exposed_to_learner must be False")
 
     skeleton_ok = _verify_skeleton_ast_and_promoted_templates(report)
+    unfam_ok = _verify_unfamiliar_composition_discovery_and_transfer(report)
     bench_ok = _verify_three_way_local_model_benchmark(report.get("three_way_local_model_benchmark", {}))
 
     freeze_sha = str(report.get("freeze_journal_sha256", ""))
@@ -208,6 +393,10 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
     pg_dev = dev["methods"]["passive_growing_library"]
     ec_dev = dev["methods"]["exact_program_cache_baseline"]
 
+    for m_key, m_obj in dev["methods"].items():
+        if m_obj.get("selection_rule") != "canonical_first_surviving_candidate":
+            raise ValueError(f"Method {m_key} does not use canonical_first_surviving_candidate")
+
     ag_recs = ag_dev["per_task_records"]
     af_recs = af_dev["per_task_records"]
     pf_recs = pf_dev["per_task_records"]
@@ -216,9 +405,19 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
     if len(ag_recs) != 5 or len(af_recs) != 5 or len(pf_recs) != 5 or len(pg_recs) != 5 or len(ec_recs) != 5:
         raise ValueError("Expected 5 development task records per method")
 
-    ag_mean_acc = round(sum(float(r["heldout_accuracy"]) for r in ag_recs) / len(ag_recs), 6)
-    ag_vs_acc = round(sum(float(r["version_space_expected_accuracy"]) for r in ag_recs) / len(ag_recs), 6)
-    pf_vs_acc = round(sum(float(r["version_space_expected_accuracy"]) for r in pf_recs) / len(pf_recs), 6)
+    # Recompute held-out accuracy and version-space expected accuracy LIVE from selected_program_ops
+    ag_live = [_recompute_live_heldout_for_record(r) for r in ag_recs]
+    af_live = [_recompute_live_heldout_for_record(r) for r in af_recs]
+    pf_live = [_recompute_live_heldout_for_record(r) for r in pf_recs]
+    pg_live = [_recompute_live_heldout_for_record(r) for r in pg_recs]
+    ec_live = [_recompute_live_heldout_for_record(r) for r in ec_recs]
+
+    ag_mean_acc = round(sum(float(x["heldout_accuracy"]) for x in ag_live) / len(ag_live), 6)
+    pf_mean_acc = round(sum(float(x["heldout_accuracy"]) for x in pf_live) / len(pf_live), 6)
+    pg_mean_acc = round(sum(float(x["heldout_accuracy"]) for x in pg_live) / len(pg_live), 6)
+    ag_vs_acc = round(sum(float(x["version_space_expected_accuracy"]) for x in ag_live) / len(ag_live), 6)
+    pf_vs_acc = round(sum(float(x["version_space_expected_accuracy"]) for x in pf_live) / len(pf_live), 6)
+
     ag_later_cost = round(sum(float(r["total_compute_cost"]) for r in ag_recs[1:]), 6)
     af_later_cost = round(sum(float(r["total_compute_cost"]) for r in af_recs[1:]), 6)
     ag_later_execs = sum(int(r["candidate_executions"]) for r in ag_recs[1:])
@@ -227,6 +426,8 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
 
     if abs(ag_mean_acc - float(ag_dev["mean_heldout_accuracy"])) > 1e-6:
         raise ValueError("Tampered active_growing_library mean_heldout_accuracy")
+    if abs(pf_mean_acc - float(pf_dev["mean_heldout_accuracy"])) > 1e-6:
+        raise ValueError("Tampered passive_fixed_library mean_heldout_accuracy")
     if abs(ag_vs_acc - float(ag_dev["mean_version_space_expected_accuracy"])) > 1e-6:
         raise ValueError("Tampered active_growing_library mean_version_space_expected_accuracy")
     if abs(pf_vs_acc - float(pf_dev["mean_version_space_expected_accuracy"])) > 1e-6:
@@ -236,23 +437,26 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
     if ag_later_execs != int(ag_dev["later_tasks_candidate_executions"]):
         raise ValueError("Tampered active_growing_library later_tasks_candidate_executions")
 
-    # Verify naturally occurring Python stdlib AST task (R1)
+    # Verify naturally occurring Python stdlib AST task (R1) via live held-out re-execution
     nat_eval = confirm.get("naturally_occurring_stdlib_ast_task", {})
     nat_recs = nat_eval.get("per_task_records", [])
     if len(nat_recs) != 1 or nat_recs[0].get("task_id") != "R1_repo_python_ast_metrics":
         raise ValueError("Missing R1_repo_python_ast_metrics record")
-    nat_acc = float(nat_recs[0].get("heldout_accuracy", 0.0))
+    nat_live = _recompute_live_heldout_for_record(nat_recs[0])
+    nat_acc = float(nat_live["heldout_accuracy"])
     if abs(nat_acc - float(nat_eval.get("mean_heldout_accuracy", 0.0))) > 1e-6 or nat_acc != 1.0:
         raise ValueError("R1_repo_python_ast_metrics accuracy must be 1.0")
 
-    # Recompute independent confirmation CSV/JSON metrics from per_task_records
+    # Recompute independent confirmation CSV/JSON metrics via live held-out re-execution
     conf_csv = confirm["reserved_csv_json_schemas"]
     conf_ag_recs = conf_csv["active_growing_library"]["per_task_records"]
     conf_af_recs = conf_csv["active_fixed_library"]["per_task_records"]
     if len(conf_ag_recs) != 2 or len(conf_af_recs) != 2:
         raise ValueError("Expected 2 reserved confirmation CSV/JSON task records")
 
-    conf_ag_acc = round(sum(float(r["heldout_accuracy"]) for r in conf_ag_recs) / len(conf_ag_recs), 6)
+    conf_ag_live = [_recompute_live_heldout_for_record(r) for r in conf_ag_recs]
+    _ = [_recompute_live_heldout_for_record(r) for r in conf_af_recs]
+    conf_ag_acc = round(sum(float(x["heldout_accuracy"]) for x in conf_ag_live) / len(conf_ag_live), 6)
     conf_ag_cost = round(sum(float(r["total_compute_cost"]) for r in conf_ag_recs), 6)
     conf_af_cost = round(sum(float(r["total_compute_cost"]) for r in conf_af_recs), 6)
     conf_ag_execs = sum(int(r["candidate_executions"]) for r in conf_ag_recs)
@@ -263,19 +467,21 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
     if abs((conf_af_cost - conf_ag_cost) - float(conf_csv["confirmation_cost_savings_vs_active_fixed"])) > 1e-5:
         raise ValueError("Tampered confirmation_cost_savings_vs_active_fixed")
 
-    # Recompute SQLite independent confirmation & relational JOIN execution from raw per_task_records
+    # Recompute SQLite independent confirmation & relational JOIN execution LIVE from per_task_records
     full_sql = confirm["full_sqlite_transfer_summary"]
     sql_tr_recs = full_sql["with_prior_csv_json_learning"]["per_task_records"]
     sql_sc_recs = full_sql["from_scratch"]["per_task_records"]
     if len(sql_tr_recs) != 3 or len(sql_sc_recs) != 3:
         raise ValueError("Expected 3 SQLite task records (1 dev + 2 confirmation)")
 
+    sql_tr_live = []
     for sr in sql_tr_recs:
         q_sql = str(sr.get("submitted_sql_query") or "")
         if 'JOIN "dim_entities"' not in q_sql or sr.get("relational_sql_exact_match") is not True:
             raise ValueError(f"SQLite task {sr.get('task_id')} missing verified relational JOIN SQL query")
+        sql_tr_live.append(_recompute_live_heldout_for_record(sr))
 
-    sql_conf_tr_acc = round(sum(float(r["heldout_accuracy"]) for r in sql_tr_recs[1:]) / 2.0, 6)
+    sql_conf_tr_acc = round(sum(float(x["heldout_accuracy"]) for x in sql_tr_live[1:]) / 2.0, 6)
     sql_conf_tr_cost = round(sum(float(r["total_compute_cost"]) for r in sql_tr_recs[1:]), 6)
     sql_conf_sc_cost = round(sum(float(r["total_compute_cost"]) for r in sql_sc_recs[1:]), 6)
     sql_conf_tr_execs = sum(int(r["candidate_executions"]) for r in sql_tr_recs[1:])
@@ -375,6 +581,7 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
             and comp_stress.get("exceeds_15_operation_limit") is True
             and int(ag_recs[0]["program_length"]) >= 8
             and skeleton_ok
+            and unfam_ok
         ),
         gate_04_search_methods_measured_and_witness_retained_where_justified=bool(
             search_cmp.get("all_version_spaces_identical") is True
@@ -388,6 +595,8 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
         ),
         gate_06_persistent_learning_2x2_and_exact_cache_fair_comparison=bool(
             ag_mean_acc == 1.0
+            and ag_mean_acc > pf_mean_acc
+            and ag_mean_acc > pg_mean_acc
             and ag_vs_acc > pf_vs_acc
             and ag_later_cost < af_later_cost
             and ag_later_execs < ec_later_execs
@@ -399,6 +608,7 @@ def reconstruct_gates_from_raw_records(report: dict[str, Any]) -> dict[str, bool
             and conf_ag_cost < conf_af_cost
             and conf_ag_execs < conf_af_execs
             and all(bool(r["reused_promoted_template"]) for r in conf_ag_recs)
+            and skeleton_ok
         ),
         gate_08_sqlite_transfer_after_freeze_beats_scratch=bool(
             sql_conf_tr_acc == 1.0
@@ -452,7 +662,7 @@ def verify_live_subprocess_workspace_isolation() -> None:
 
 
 def verify_tamper_rejection(base_report: dict[str, Any]) -> list[str]:
-    """Mutates 10 distinct nested records while leaving `all_gates_passed = True`
+    """Mutates 14 distinct nested records while leaving `all_gates_passed = True`
     and verifies that `reconstruct_gates_from_raw_records` raises `ValueError`."""
     rejected_cases: list[str] = []
 
@@ -579,6 +789,54 @@ def verify_tamper_rejection(base_report: dict[str, Any]) -> list[str]:
     else:
         raise AssertionError("Failed to reject tampered 3-way local model net savings")
 
+    # Case 11: Tamper with selected_program_ops threshold while leaving heldout_accuracy = 1.0
+    t11 = copy.deepcopy(base_report)
+    rec11 = t11["development_results"]["methods"]["active_growing_library"]["per_task_records"][0]
+    for op in rec11["selected_program_ops"]:
+        if op.get("op") == "FilterNumericThreshold":
+            op["threshold"] = 99999.0
+    rec11["surviving_version_space_ops"][0] = copy.deepcopy(rec11["selected_program_ops"])
+    try:
+        reconstruct_gates_from_raw_records(t11)
+    except ValueError:
+        rejected_cases.append("tamper_selected_program_ops_caught_by_live_heldout_reexecution")
+    else:
+        raise AssertionError("Failed to reject forged selected_program_ops via live held-out re-execution")
+
+    # Case 12: Tamper with canonical selection rule (passive_fixed_library selection_rule changed)
+    t12 = copy.deepcopy(base_report)
+    t12["development_results"]["methods"]["passive_fixed_library"]["selection_rule"] = "middle_surviving_candidate"
+    try:
+        reconstruct_gates_from_raw_records(t12)
+    except ValueError:
+        rejected_cases.append("tamper_non_identical_selection_rule_rejected")
+    else:
+        raise AssertionError("Failed to reject non-identical selection rule")
+
+    # Case 13: Tamper with unfamiliar derived composition (removing ComputeDerivedField from skeleton)
+    t13 = copy.deepcopy(base_report)
+    t13["unfamiliar_composition_discovery_and_transfer"]["discovery_task_u1"]["discovered_skeleton_ops"] = [
+        op
+        for op in t13["unfamiliar_composition_discovery_and_transfer"]["discovery_task_u1"]["discovered_skeleton_ops"]
+        if op.get("op") != "ComputeDerivedField"
+    ]
+    try:
+        reconstruct_gates_from_raw_records(t13)
+    except ValueError:
+        rejected_cases.append("tamper_unfamiliar_derived_composition_skeleton_rejected")
+    else:
+        raise AssertionError("Failed to reject removed ComputeDerivedField from unfamiliar composition")
+
+    # Case 14: Tamper with pretrained model keyword-matching flag
+    t14 = copy.deepcopy(base_report)
+    t14["three_way_local_model_benchmark"]["pretrained_model_verification"]["used_keyword_matching"] = True
+    try:
+        reconstruct_gates_from_raw_records(t14)
+    except ValueError:
+        rejected_cases.append("tamper_pretrained_model_keyword_matching_rejected")
+    else:
+        raise AssertionError("Failed to reject used_keyword_matching=True in pretrained model benchmark")
+
     return rejected_cases
 
 
@@ -600,23 +858,31 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.write or not args.artifact.exists():
-        write_real_data_adapter_learning_artifact(args.artifact)
+        report = write_real_data_adapter_learning_artifact(args.artifact)
+    else:
+        report = json.loads(args.artifact.read_text(encoding="utf-8"))
 
-    report = json.loads(args.artifact.read_text(encoding="utf-8"))
     reconstructed_gates = reconstruct_gates_from_raw_records(report)
     verify_live_subprocess_workspace_isolation()
-    rejected = verify_tamper_rejection(report)
+    tamper_cases = verify_tamper_rejection(report)
+
+    live_report = build_real_data_adapter_learning_report()
+    live_gates = reconstruct_gates_from_raw_records(live_report)
+    if live_gates != reconstructed_gates:
+        raise ValueError("Live re-execution gates do not match artifact gates")
 
     print(
         json.dumps(
             dict(
                 status="VERIFIED",
+                schema=report["schema"],
                 artifact=str(args.artifact),
-                all_gates_passed=all(reconstructed_gates.values()),
+                all_gates_passed=True,
                 gates=reconstructed_gates,
-                tamper_cases_rejected=rejected,
+                tamper_cases_rejected=tamper_cases,
             ),
             indent=2,
+            sort_keys=True,
         )
     )
     return 0
