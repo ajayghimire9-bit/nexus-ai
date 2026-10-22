@@ -1,6 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next recommendation — different practical task, strong baseline first
+## Current next recommendation — public validation overhead and state isolation
+
+The [fixed configuration-repair baseline](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md)
+completed 12/12 repairs correctly. Discovery 0.560646 ms /0.958716% fails the
+practical gate; no learned abstractions are justified here. Process/IPC overhead
+dominates. Test whether a reusable **public-validation-only** worker preserves
+exact outcomes with fresh module namespaces while reducing that overhead.
+Keep final assessment isolated. This would be engineering, not learning evidence;
+it has not run. Latest ledger: 2193.632103455996 s used /
+1406.367896544004 s remaining.
+
+## Completed recommendation — different practical task, strong baseline first
 
 The [identifiability audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md)
 is complete: all seven distinct candidate pairs differ, yet a single zero-valued

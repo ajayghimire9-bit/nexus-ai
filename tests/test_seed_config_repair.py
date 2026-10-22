@@ -106,3 +106,24 @@ def test_independent_verifier_on_unregistered_toy_end_to_end():
     broken = deepcopy(records); broken[0]['assessment']['results'][0]['actual'] = -999
     with pytest.raises(ValueError, match='forged'):
         module.verify(broken, config, summary, replay=False)
+
+
+@pytest.mark.parametrize('corruption', ['missing', 'patch', 'cache', 'timing', 'summary', 'retention'])
+def test_saved_repair_artifact_rejects_corruption(corruption):
+    import importlib.util
+    root = Path(__file__).resolve().parents[1]
+    path = root/'artifacts/seed_config_repair_baseline_raw.jsonl'
+    if not path.exists(): return  # Not available before the one registered run.
+    spec = importlib.util.spec_from_file_location('saved_repair_test', root/'scripts/verify_seed_config_repair.py')
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    records = [json.loads(s) for s in path.read_text().splitlines()]
+    config = json.loads((root/'configs/seed_config_repair_baseline.json').read_text())
+    summary = json.loads((root/'artifacts/seed_config_repair_baseline.json').read_text())['summary']
+    row = next(r for r in records if r['kind'] == 'task')
+    if corruption == 'missing': records.remove(row)
+    if corruption == 'patch': row['files']['app.py'] += '\n# changed\n'
+    if corruption == 'cache': next(r for r in records if r.get('cache_hit'))['public_receipt_sha256'] = 'forged'
+    if corruption == 'timing': row['stages']['patch_construction_s'] = float('nan')
+    if corruption == 'summary': summary['median_discovery_s'] += 1
+    if corruption == 'retention': row['assessment_cases'][-2]['expected'] = -999
+    with pytest.raises(ValueError): module.verify(records, config, summary, replay=False)

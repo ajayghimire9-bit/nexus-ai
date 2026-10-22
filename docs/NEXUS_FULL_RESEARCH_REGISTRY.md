@@ -1,5 +1,15 @@
 # NEXUS Seed — Research Registry
 
+## Latest — configuration-repair baseline, complete negative headroom screen
+
+`seed-config-repair-baseline-1`, pre-run `d2eaec0a12a82c591142ae325b892d40eb52cfc5`:
+12/12 projects correct; 20 public +12 final bounded Python processes, 288
+function calls. Discovery median 0.560646 ms /0.958716%: FAILED practical screen.
+No model calls, training or learned repair study. 3 s debit; ledger
+2193.632103455996 used /1406.367896544004 remaining.
+[Protocol](NEXUS_SEED_CONFIG_REPAIR_PROTOCOL.md),
+[results](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md). Prior evidence unchanged.
+
 ## Latest — saved candidate-identifiability audit
 
 `seed-candidate-identifiability-1`, pre-run `3a24ad55f70a12e6c35212e8a789a93233efa14e`:

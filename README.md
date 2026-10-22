@@ -1,5 +1,12 @@
 # NEXUS Seed
 
+**Latest repair baseline:** [fixed multi-file configuration workload](docs/NEXUS_SEED_CONFIG_REPAIR_RESULTS.md)
+repaired **12/12 projects** and passed all final/retention checks. Discovery was
+**0.56 ms**, only **0.96%** of repair wall; subprocess overhead dominated.
+No practical discovery headroom, so no learned-repair study followed. This
+tool-first baseline derived the supplied contract from public tests without
+neural inference. The persistent runtime and prior evidence remain unchanged.
+
 **Latest saved-data audit:** [candidate identifiability](docs/NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md)
 found genuinely different programs in all seven distinct unresolved cases, but
 one all-zero boundary row separates each pair. Median construction: **20.5 µs**,

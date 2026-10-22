@@ -1,5 +1,17 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Configuration repair and real Python validation
+
+`seed/config_repair_baseline.py` reuses `master.coding.RepositoryModel`, with
+public-contract inference, source-free AST edits and an ordinary exact patch
+cache. It is not a learner. `seed/config_repair_worker.py` uses the historical
+black-box worker's safe builtins under a narrower vetted three-module execution
+contract; it does not change that historical evaluator. The master
+ExecutionSandbox's list interpreter is not used as if it supported real Python.
+The existing host adds trusted `--study config_repair` dispatch and retains E1
+metering. Independent verification replays saved patches in bounded workers and
+reconstructs cache/stage arithmetic. [Results](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md).
+
 ## Saved-candidate audit and boundary probes
 
 `seed/candidate_identifiability.py` reuses `discovery_headroom.Plan`, the fixed

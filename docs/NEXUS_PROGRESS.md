@@ -1,5 +1,16 @@
 # NEXUS progress log
 
+## Latest — fixed configuration-repair baseline complete
+
+Execution `d2eaec0a12a82c591142ae325b892d40eb52cfc5`: 12/12 projects repaired;
+168 final checks including retention pass. Discovery median 0.560646 ms and
+0.958716% of repair wall: no practical headroom. Actual source search, traces,
+AST edits, bounded Python execution and exact caches; no neural calls or
+learned abstractions. 120 pre-run /126 post-run tests; independent replay valid.
+1.093451 s wall, 3 s debit; ledger 2193.632103455996 used /
+1406.367896544004 remaining. [Results](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md).
+Next: exact-equivalence public-worker reuse test; not run.
+
 ## Latest — saved ambiguity is a cheap boundary-probe issue
 
 Execution `3a24ad55f70a12e6c35212e8a789a93233efa14e`, complete once. Seven distinct

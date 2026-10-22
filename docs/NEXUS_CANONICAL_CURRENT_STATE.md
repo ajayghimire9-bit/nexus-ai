@@ -1,5 +1,16 @@
 # NEXUS Seed — Current State
 
+## Latest — complete cheap configuration-repair baseline
+
+Pre-run `d2eaec0a12a82c591142ae325b892d40eb52cfc5`,
+`seed-config-repair-baseline-1`: 12/12 projects pass final/retention checks;
+median original discovery 0.560646 ms, 0.958716% of repair wall. Practical
+headroom FAILED; no learned comparison. Real bounded Python execution,
+source-free AST edits and exact caches; no model calls or language claim.
+126 targeted tests and independent saved-patch replay passed. Process/IPC
+overhead dominates. [Results](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md).
+Latest ledger 2193.632103455996 s used /1406.367896544004 s remaining.
+
 ## Latest — boundary clarification resolves saved ambiguity cheaply
 
 [Audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md) ran once from

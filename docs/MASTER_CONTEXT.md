@@ -1,5 +1,18 @@
 # NEXUS Seed — Master Context
 
+## Latest — configuration repair works; discovery remains cheap
+
+[Fixed repair baseline](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md): 12/12 three-module
+fixtures repaired, all final and retention checks pass. Eight original projects,
+two renamed and two exact repeats; one direct AST patch per uncached project.
+Median discovery 0.560646 ms /0.958716% of repair wall misses both practical
+floors. No learned-repair study. Public examples identify the contract directly;
+zero neural calls and no language-understanding claim. Process/IPC overhead
+dominates; next is an exact-equivalence/state-isolation test for a reusable
+public-validation worker, keeping final evaluation isolated. Not executed.
+Latest ledger **2193.632103455996 s used /1406.367896544004 s remaining**.
+Prior runtime, results and main remain unchanged; older entries follow.
+
 ## Latest — candidate differences are real but cheap to distinguish
 
 [Saved-data audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md): seven distinct

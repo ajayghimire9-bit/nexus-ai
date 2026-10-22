@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — practical discovery cost in multi-file configuration repair
+
+Hypothesis: discovery remains meaningful after strong direct contract tools,
+source search, traces, AST edits and ordinary caching. Fixed 12-task pilot:
+12/12 correct, but discovery 0.560646 ms /0.958716% misses 10 ms /25% floors.
+**Practical headroom not established**. No learned-repair comparison. Known
+source-free transformations cover this authored family; general Python repair
+and natural-language task understanding are not demonstrated. Measured overhead
+suggests a separate exact-equivalence public-worker reuse test.
+[Results](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md).
+
 ## Latest — equivalence versus missing probe evidence
 
 [Source audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md): seven distinct

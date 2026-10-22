@@ -1,5 +1,17 @@
 # Next proposal: baseline-first local repository maintenance
 
+## Status update — bounded configuration-repair pilot completed
+
+[Configuration-repair results](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md): 12/12
+correct; discovery 0.560646 ms /0.958716% of repair wall fails the practical
+headroom gate. Direct public-contract extraction made neural calls unnecessary;
+the persistent model path was not forced or tested. The narrower 60 s /512 MiB
+pilot was separately registered and committed before scoring. No learned repair
+comparison followed. The broader original proposal below remains historical
+design context, not an active allocation or claim of model-backed coding.
+
+## Original proposal
+
 **Proposal only. No tasks collected/scored, seed registration, model calls,
 learning comparison or allocation created by this document.** The preceding
 [candidate audit](NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_RESULTS.md) found genuine
