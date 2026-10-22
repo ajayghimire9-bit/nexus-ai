@@ -59,7 +59,10 @@ def worker(config, directory):
         run(config, emit)
 
 
-def host(config):
+def host(config, study='headroom'):
+    stem = config.get('artifact_stem', 'seed_discovery_headroom')
+    if (ROOT/'artifacts'/f'{stem}.json').exists() or (ROOT/'artifacts'/f'{stem}_raw.jsonl').exists():
+        raise ValueError('published_attempt_is_closed_no_rerun')
     if git('status', '--porcelain') or git('branch', '--show-current') == 'main':
         raise ValueError('clean_committed_research_branch_required')
     if file_hash(ROOT/'src/nexus/seed/local_model_runtime.py') != config['runtime_source_sha256']:
@@ -77,9 +80,9 @@ def host(config):
         if used + config['wall_s'] > 3600 or config['wall_s'] > 900:
             raise ValueError('session_cap')
         caps = dict(wall_s=config['wall_s'], cpu_s=config['cpu_s'], memory_mb=config['memory_mb'],
-                    real_steps=140, imagined_transitions=0, updates=0)
+                    real_steps=config.get('real_steps', 140), imagined_transitions=0, updates=0)
         sandbox.grant(config['id'], 'standing-human-grant-2026-10-16',
-                      'Owner-requested baseline-first source workload preflight '+file_hash(CONFIG),
+                      'Owner-requested source audit '+config['id']+' '+file_hash(CONFIG),
                       caps, 3600, carry, memory_policy='sampled_rss')
         directory = sandbox.directory/'attempts'/config['id']; directory.mkdir()
         registration = dict(source_sha=git('rev-parse', 'HEAD'), config_sha256=file_hash(CONFIG),
@@ -87,11 +90,11 @@ def host(config):
                             carried_used_s=used, caps=caps, mode=config['mode'])
         write_new(directory/'registration.json', registration)
         sandbox.append('reserved', dict(run_id=config['id'], wall_cap_s=config['wall_s'],
-                       registration=registration, spec=dict(mode='exploration', recipe=dict(adapter='discovery_headroom'))))
+                       registration=registration, spec=dict(mode='exploration', recipe=dict(adapter=config.get('adapter', 'discovery_headroom')))))
         before = resource.getrusage(resource.RUSAGE_CHILDREN)
         started = time.monotonic(); peak = 0.; cpus = {}; stop = None
         with (directory/'worker.log').open('xb') as log:
-            proc = subprocess.Popen([sys.executable, '-B', __file__, '--worker', '--directory', str(directory)],
+            proc = subprocess.Popen([sys.executable, '-B', __file__, '--study', study, '--worker', '--directory', str(directory)],
                                     cwd=ROOT, stdout=log, stderr=log, start_new_session=True,
                                     env=dict(os.environ, OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1'))
             try:
@@ -107,7 +110,8 @@ def host(config):
                 stop = 'supervisor_error:'+type(exc).__name__
             finally:
                 if proc.poll() is None:
-                    os.killpg(proc.pid, signal.SIGKILL)
+                    try: os.killpg(proc.pid, signal.SIGKILL)
+                    except ProcessLookupError: pass
                 proc.wait()
         wall = time.monotonic()-started
         after = resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -126,7 +130,7 @@ def host(config):
             summary = dict(declared_complete=False, verdict='INVALID', error=type(exc).__name__)
         if stop or proc.returncode:
             summary.update(declared_complete=False, verdict='INCOMPLETE', ready_for_learning_study=False)
-        raw = ROOT/'artifacts/seed_discovery_headroom_raw.jsonl'
+        raw = ROOT/'artifacts'/f'{stem}_raw.jsonl'
         with raw.open('xb') as f: f.write(data)
         result = dict(registration=registration, summary=summary, raw_sha256=file_hash(raw),
                       resources=dict(wall_s=wall, worker_cpu_s=cpu, charged_wall_s=charge,
@@ -135,12 +139,18 @@ def host(config):
                                      session_used_s=carry+sandbox.used_s(),
                                      session_remaining_s=3600-carry-sandbox.used_s(),
                                      memory_policy='100 ms summed host/worker RSS; shared pages can double count'))
-        write_new(ROOT/'artifacts/seed_discovery_headroom.json', result)
+        write_new(ROOT/'artifacts'/f'{stem}.json', result)
         print(json.dumps(result, indent=2))
 
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(__doc__); p.add_argument('--worker', action='store_true'); p.add_argument('--directory')
-    args = p.parse_args(); config = json.loads(CONFIG.read_text())
+    p.add_argument('--study', choices=('headroom', 'identifiability'), default='headroom')
+    args = p.parse_args()
+    if args.study == 'identifiability':
+        CONFIG = ROOT/'configs/seed_candidate_identifiability.json'
+        PROTOCOL = ROOT/'docs/NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_PROTOCOL.md'
+        from nexus.seed.candidate_identifiability import run, summarize
+    config = json.loads(CONFIG.read_text())
     if args.worker: worker(config, Path(args.directory))
-    else: host(config)
+    else: host(config, args.study)
