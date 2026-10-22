@@ -1,0 +1,28 @@
+{
+  "id": "seed-config-repair-baseline-1",
+  "artifact_stem": "seed_config_repair_baseline",
+  "adapter": "config_repair_baseline",
+  "base_sha": "e438d6641827f88654d6abc9c3b5f49e2233e890",
+  "runtime_source_sha256": "967842923d5e43c64732094f8e829d9b6995f07e80dce60ca1ce4c76ca0b3fda",
+  "carried_used_s": 2190.632103455996,
+  "wall_s": 60,
+  "cpu_s": 60,
+  "memory_mb": 512,
+  "real_steps": 0,
+  "mode": "source_development_config_repair_baseline",
+  "screen": {"minimum_accuracy": 0.9, "minimum_discovery_s": 0.01, "minimum_discovery_fraction": 0.25},
+  "tasks": [
+    {"id":"parser_or", "key":"limit", "default":3, "parser":"or", "core":"correct", "caller":"correct", "cohort":"primary"},
+    {"id":"core_or", "key":"attempts", "default":4, "parser":"correct", "core":"or", "caller":"correct", "cohort":"primary"},
+    {"id":"caller_ternary", "key":"count", "default":5, "parser":"correct", "core":"correct", "caller":"ternary", "cohort":"primary"},
+    {"id":"explicit_null", "key":"retries", "default":6, "parser":"get_default", "core":"correct", "caller":"correct", "cohort":"primary"},
+    {"id":"parser_core", "key":"window", "default":7, "parser":"if", "core":"or", "caller":"correct", "cohort":"primary"},
+    {"id":"all_three", "key":"samples", "default":3, "parser":"or", "core":"ternary", "caller":"or", "cohort":"primary"},
+    {"id":"missing_floor", "key":"batch", "default":4, "parser":"subscript", "core":"floor", "caller":"ternary", "cohort":"primary"},
+    {"id":"mixed_three", "key":"workers", "default":5, "parser":"if", "core":"ternary", "caller":"if", "cohort":"primary"},
+    {"id":"renamed_parser", "key":"quota", "default":3, "parser":"or", "core":"correct", "caller":"correct", "cohort":"renamed"},
+    {"id":"renamed_three", "key":"capacity", "default":3, "parser":"or", "core":"ternary", "caller":"or", "cohort":"renamed"},
+    {"id":"repeat_parser", "key":"limit", "default":3, "parser":"or", "core":"correct", "caller":"correct", "cohort":"repeat"},
+    {"id":"repeat_three", "key":"samples", "default":3, "parser":"or", "core":"ternary", "caller":"or", "cohort":"repeat"}
+  ]
+}

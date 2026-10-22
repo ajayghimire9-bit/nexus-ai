@@ -145,12 +145,16 @@ def host(config, study='headroom'):
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(__doc__); p.add_argument('--worker', action='store_true'); p.add_argument('--directory')
-    p.add_argument('--study', choices=('headroom', 'identifiability'), default='headroom')
+    p.add_argument('--study', choices=('headroom', 'identifiability', 'config_repair'), default='headroom')
     args = p.parse_args()
     if args.study == 'identifiability':
         CONFIG = ROOT/'configs/seed_candidate_identifiability.json'
         PROTOCOL = ROOT/'docs/NEXUS_SEED_CANDIDATE_IDENTIFIABILITY_PROTOCOL.md'
         from nexus.seed.candidate_identifiability import run, summarize
+    elif args.study == 'config_repair':
+        CONFIG = ROOT/'configs/seed_config_repair_baseline.json'
+        PROTOCOL = ROOT/'docs/NEXUS_SEED_CONFIG_REPAIR_PROTOCOL.md'
+        from nexus.seed.config_repair_baseline import run, summarize
     config = json.loads(CONFIG.read_text())
     if args.worker: worker(config, Path(args.directory))
     else: host(config, args.study)
