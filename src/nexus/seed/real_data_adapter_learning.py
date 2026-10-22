@@ -2779,20 +2779,14 @@ class PidginBootstrapAndCounterfactualExplainer:
 # ==============================================================================
 
 class GrammarConstrainedLocalIntentModel:
-    """Executes grammar-constrained structured-intent decoding on a real 4-bit quantized
-    pretrained GGUF language model (`qwen2.5-0.5b-instruct-q4_k_m.gguf`, 491.4 MB on disk)
-    via `llama.cpp` (`llama-completion -j <JSON_SCHEMA> -ngl 0`).
+    """Legacy two-mode schema, now served by an owned persistent CPU runtime.
 
-    - Uses ZERO Python keyword checks (`"row-level" in utt_lower` is absent).
-    - Uses ZERO Python dictionary construction + `json.dumps`; the JSON string is
-      generated token-by-token by `llama-completion` under a GBNF grammar compiled from
-      `INTENT_JSON_SCHEMA` and parsed with `json.loads`.
-    - Extracts exact model tokenizer `input_tokens`, `output_tokens`, `load_time_ms`,
-      `prompt_eval_time_ms`, `eval_time_ms`, and `measured_tokens_per_sec` directly from
-      `llama.cpp`'s `common_perf_print` telemetry."""
+    New studies use assistant_benchmark_v2 four-way intent. Historical artifacts
+    remain unchanged; old telemetry claims are not retrospectively repaired.
+    """
 
-    LLAMA_COMPLETION_BIN = Path("/opt/homebrew/opt/llama.cpp/bin/llama-completion")
-    GGUF_MODEL_PATH = Path("/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf")
+    LLAMA_COMPLETION_BIN = Path("llama-server")
+    GGUF_MODEL_PATH = Path(".models/qwen2.5-0.5b-instruct-q4_k_m.gguf")
 
     INTENT_JSON_SCHEMA = json.dumps(
         {
@@ -2833,119 +2827,60 @@ class GrammarConstrainedLocalIntentModel:
         '{"intent_mode": "grouped_summary", "required_output_grain": "grouped_summary", "requires_clarification": true}<|im_end|>\n'
     )
 
-    _DECODE_CACHE: dict[tuple[str, str], dict[str, Any]] = {}
-
-    def __init__(self) -> None:
-        if not self.LLAMA_COMPLETION_BIN.exists():
-            raise FileNotFoundError(f"Missing llama.cpp binary: {self.LLAMA_COMPLETION_BIN}")
-        if not self.GGUF_MODEL_PATH.exists():
-            raise FileNotFoundError(f"Missing quantized GGUF model: {self.GGUF_MODEL_PATH}")
+    def __init__(self, runtime_config=None) -> None:
+        from .local_model_runtime import PersistentLocalRuntime, RuntimeConfig
+        cfg = runtime_config or RuntimeConfig.from_environment()
+        self.runtime = PersistentLocalRuntime(cfg)
+        self.GGUF_MODEL_PATH = Path(cfg.model_path).expanduser()
         self.model_file_bytes = self.GGUF_MODEL_PATH.stat().st_size
-        self.weight_memory_kb = round(self.model_file_bytes / 1024.0, 2)
+        self.weight_memory_kb = self.model_file_bytes / 1024  # Disk size, not model RSS.
 
-    def parse_structured_intent(
-        self,
-        utterance: str,
-        column_profiles: dict[str, dict[str, Any]],
-    ) -> dict[str, Any]:
-        import re
-        import resource
+    def parse_structured_intent(self, utterance, column_profiles):
+        ambiguous = [c for c, p in column_profiles.items()
+                     if p.get("negative_count", 0) > 0 and p.get("positive_count", 0) > 0]
+        sign_summary = ", ".join(f"{c} (has negative and positive values)" for c in ambiguous) or "none"
+        prompt = (self.FEW_SHOT_SYSTEM_PROMPT +
+                  f"<|im_start|>user\nRequest: {utterance}\nmixed_sign_columns: {sign_summary}<|im_end|>\n"
+                  "<|im_start|>assistant\n")
+        self.runtime.start()
+        reply = self.runtime.complete(prompt, json.loads(self.INTENT_JSON_SCHEMA))
+        obj = json.loads(reply["content"])
+        if (set(obj) != {"intent_mode", "required_output_grain", "requires_clarification"}
+                or obj["intent_mode"] not in ("grouped_summary", "filter_normalize_order")
+                or obj["required_output_grain"] not in ("grouped_summary", "row_level")
+                or type(obj["requires_clarification"]) is not bool
+                or ((obj["intent_mode"] == "grouped_summary") !=
+                    (obj["required_output_grain"] == "grouped_summary"))):
+            raise ValueError("inconsistent structured intent")
+        obj["ambiguous_columns_requiring_clarification"] = ambiguous
+        t = reply["telemetry"]
+        startup = 0 if getattr(self, "_load_recorded", False) else self.runtime.metadata["cold_startup_s"]
+        self._load_recorded = True
+        timings = t["runtime_timings"] or {}
+        return dict(runtime_backend="persistent llama.cpp CPU server",
+                    pretrained_model_file=self.GGUF_MODEL_PATH.name,
+                    raw_decoded_json=reply["content"], structured_intent=obj,
+                    grammar_valid_json=True, used_keyword_matching=False,
+                    input_tokens=t["input_tokens"], output_tokens=t["generated_tokens"],
+                    inference_telemetry=t, runtime_metadata=self.runtime.metadata,
+                    load_time_ms=1000*startup,
+                    measured_cpu_latency_ms=None,
+                    prompt_eval_time_ms=timings.get("prompt_ms"),
+                    eval_time_ms=timings.get("predicted_ms"),
+                    measured_tokens_per_sec=timings.get("predicted_per_second"),
+                    unified_process_rss_kb=None,
+                    request_wall_ms=1000*t["request_wall_s"])
 
-        ambiguous_columns = [
-            col_name
-            for col_name, prof in column_profiles.items()
-            if prof.get("negative_count", 0) > 0 and prof.get("positive_count", 0) > 0
-        ]
-        sign_summary = (
-            ", ".join(f"{c} (has negative and positive values)" for c in ambiguous_columns)
-            if ambiguous_columns
-            else "none"
-        )
-        cache_key = (utterance, sign_summary)
-        if cache_key in self._DECODE_CACHE:
-            return copy.deepcopy(self._DECODE_CACHE[cache_key])
+    def close(self):
+        self.runtime.close()
+        self._load_recorded = False
 
-        prompt = (
-            f"{self.FEW_SHOT_SYSTEM_PROMPT}"
-            f"<|im_start|>user\nRequest: {utterance}\nmixed_sign_columns: {sign_summary}<|im_end|>\n"
-            f"<|im_start|>assistant\n"
-        )
-        proc = subprocess.run(
-            [
-                str(self.LLAMA_COMPLETION_BIN),
-                "-m",
-                str(self.GGUF_MODEL_PATH),
-                "-n",
-                "48",
-                "--temp",
-                "0.0",
-                "--seed",
-                "42",
-                "-no-cnv",
-                "-ngl",
-                "0",
-                "-j",
-                self.INTENT_JSON_SCHEMA,
-                "-p",
-                prompt,
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        json_lines = [
-            line.replace("[end of text]", "").strip()
-            for line in proc.stdout.splitlines()
-            if line.strip().startswith("{")
-        ]
-        if not json_lines:
-            raise ValueError(f"llama-completion did not emit grammar-constrained JSON: {proc.stdout}")
-        raw_decoded_json = json_lines[-1]
-        decoded_obj = json.loads(raw_decoded_json)
-        decoded_obj["ambiguous_columns_requiring_clarification"] = ambiguous_columns
+    def __enter__(self):
+        self.runtime.start()
+        return self
 
-        stderr_text = proc.stderr
-        m_load = re.search(r"load time\s*=\s*([0-9.]+)\s*ms", stderr_text)
-        m_prompt = re.search(
-            r"prompt eval time\s*=\s*([0-9.]+)\s*ms\s*/\s*([0-9]+)\s*tokens\s*\(\s*[0-9.]+\s*ms per token,\s*([0-9.]+)\s*tokens per second\)",
-            stderr_text,
-        )
-        m_eval = re.search(
-            r"eval time\s*=\s*([0-9.]+)\s*ms\s*/\s*([0-9]+)\s*runs\s*\(\s*[0-9.]+\s*ms per token,\s*([0-9.]+)\s*tokens per second\)",
-            stderr_text,
-        )
-        m_total = re.search(r"total time\s*=\s*([0-9.]+)\s*ms", stderr_text)
-
-        load_ms = float(m_load.group(1)) if m_load else 0.0
-        prompt_eval_ms = float(m_prompt.group(1)) if m_prompt else 0.0
-        in_tokens = int(m_prompt.group(2)) if m_prompt else 0
-        prompt_tps = float(m_prompt.group(3)) if m_prompt else 0.0
-        eval_ms = float(m_eval.group(1)) if m_eval else 0.0
-        out_tokens = int(m_eval.group(2)) if m_eval else 0
-        eval_tps = float(m_eval.group(3)) if m_eval else 0.0
-        total_ms = float(m_total.group(1)) if m_total else (prompt_eval_ms + eval_ms)
-
-        rss_kb = round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0, 2)
-        res = dict(
-            runtime_backend="llama.cpp (llama-completion -ngl 0 --json-schema)",
-            pretrained_model_file=self.GGUF_MODEL_PATH.name,
-            raw_decoded_json=raw_decoded_json,
-            structured_intent=decoded_obj,
-            grammar_valid_json=True,
-            used_keyword_matching=False,
-            input_tokens=in_tokens,
-            output_tokens=out_tokens,
-            load_time_ms=round(load_ms, 2),
-            prompt_eval_time_ms=round(prompt_eval_ms, 2),
-            eval_time_ms=round(eval_ms, 2),
-            measured_cpu_latency_ms=round(total_ms, 2),
-            measured_prompt_tokens_per_sec=round(prompt_tps, 2),
-            measured_tokens_per_sec=round(eval_tps, 2),
-            unified_process_rss_kb=rss_kb,
-            model_weight_memory_kb=self.weight_memory_kb,
-        )
-        self._DECODE_CACHE[cache_key] = copy.deepcopy(res)
-        return res
+    def __exit__(self, *_):
+        self.close()
 
 
 class SchemaProfileAndBindingValidator:
