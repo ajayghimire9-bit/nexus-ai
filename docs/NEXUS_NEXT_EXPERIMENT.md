@@ -1,12 +1,24 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next recommendation — measure genuine discovery headroom
+## Current next recommendation — baseline-first discovery preflight
+
+[Registered protocol](NEXUS_SEED_DISCOVERY_HEADROOM_PROTOCOL.md): source-free
+direct compilation, exact constraint filtering, active disambiguation and
+ordinary prefix caches on 28 fresh authored workflows. No learned-abstraction
+comparison; no forced search on fully specified or cached requests. The
+persistent model runtime stays byte-identical. This symbolic preflight alone
+cannot establish the assistant's inference-versus-discovery cost balance.
+The actual persistent direct/tool path remains a separate required gate.
+Implementation tests: 84 targeted tests passed before the registered run.
+The study below remains closed; no scored case is retuned.
+
+## Previous recommendation and closed evidence
 
 The [persistent assistant v2.1 study](NEXUS_SEED_ASSISTANT_BENCHMARK_V2_1_RESULTS.md)
 failed: capsules reused successfully but did not improve on ordinary caching.
 Keep this real persistent model runtime and fair caching controls. Separately
-preregister a richer multi-step workflow whose strong baseline must actually
-search, first verifying discovery headroom without weakening that baseline.
+preregister a richer multi-step workflow that may require discovery, first
+verifying headroom without forcing or weakening the strong baseline.
 Do not expand model size or tune these scored tasks to manufacture a win.
 No new experiment is scheduled or executed here. Latest accounted ledger:
 2186.632103455996 s used / 1413.367896544004 s remaining. Earlier next-task

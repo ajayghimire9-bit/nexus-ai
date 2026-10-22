@@ -1,5 +1,14 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Baseline-first discovery workload
+
+`seed/discovery_headroom.py` reuses the vetted real-data AST executor for a
+typed, unfamiliar-schema workload and an exact source-free baseline with
+ordinary prefix caches. It does not replace the assistant or runtime. The
+runner reuses `experimental.Sandbox`, E1 accounting and the existing assistant
+supervisor's process-tree meter. Its independent verifier recomputes outputs
+arithmetically without the executor or model. No learning comparison yet.
+
 ## Persistent local assistant study
 
 `seed/local_model_runtime.py` owns a CPU llama.cpp server, strict deadlines,
