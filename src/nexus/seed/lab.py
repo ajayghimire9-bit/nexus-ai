@@ -122,6 +122,10 @@ class SeedWorkspace:
                 from .shared_brain import SharedBrain
                 from .master.runtime import request as master_request
                 response=master_request(self.sessions[sid],request,SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash))
+            elif type(op) is str and op.startswith('workbench_'):
+                from .symbiotic_workbench import SymbioticWorkbenchController
+                ctrl=SymbioticWorkbenchController(self,self.sessions[sid],session_id=sid)
+                response=dict(result=ctrl.execute_request(request))
             elif type(op) is str and op.startswith('lab_'):
                 from .shared_brain import SharedBrain
                 response=SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash).request(request)

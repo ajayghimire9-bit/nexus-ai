@@ -32,3 +32,30 @@ def test_parser_flags_conflict_and_two_files():
     assert 'conflicting_order' in clash.conflicts
     both = parse_request('Summarize amounts by region using a.csv and b.csv')
     assert 'multiple_files' in both.conflicts
+
+
+def test_verifier_reconstructs_reference_and_rejects_tampering(tmp_path):
+    import json
+    from scripts.verify_seed_conversation_capability import verify
+    root = Path(__file__).resolve().parents[1]
+    artifact = root / 'artifacts/seed_conversation_capability_v1/seed_conversation_capability_v1.json'
+    report = verify(artifact)
+    assert report['valid'] is True
+    assert report['independent_reference_reconstructed'] is True
+
+    # Tamper with both output and reference_output so they still equal each other
+    payload = json.loads(artifact.read_text(encoding='utf-8'))
+    for row in payload['records']:
+        if row.get('kind') == 'csv_trial' and row['task_id'] == 'csv_easy_sum':
+            row['scored']['output'] = [{'region': 'tampered', 'total': 999999.0}]
+            row['scored']['reference_output'] = [{'region': 'tampered', 'total': 999999.0}]
+            break
+    tampered_path = tmp_path / 'tampered.json'
+    tampered_path.write_text(json.dumps(payload), encoding='utf-8')
+    try:
+        verify(tampered_path)
+    except SystemExit as exc:
+        assert exc.code == 1
+    else:
+        raise AssertionError('expected verifier to reject tampered output')
+

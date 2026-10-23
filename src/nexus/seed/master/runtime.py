@@ -73,6 +73,9 @@ def validate_event(payload: dict, session) -> None:
         required = {"adapter_name", "accepted", "decision", "gate_ref", "dataset"}
         if set(data) != required or type(data["accepted"]) is not bool:
             raise ValueError("master_consolidation_schema")
+    elif op == "symbiotic_workbench":
+        if type(data.get("backend")) is not str or len(json.dumps(data, allow_nan=False)) > 16000:
+            raise ValueError("symbiotic_workbench_event_schema")
     else:
         raise ValueError("unknown_master_event_op")
 

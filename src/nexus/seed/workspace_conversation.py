@@ -231,6 +231,11 @@ class WorkspaceTurn:
             self.ws['pending_clarification'] = None
             self.card('Unsupported request', dict(executed=False, source='workspace_policy'))
             return 'That request is outside the supported local tools. No file was changed and no program ran.', 'clarification', False
+        from .symbiotic_workbench import SymbioticWorkbenchController
+        wb_ctrl = SymbioticWorkbenchController(self.store, self.session, session_id=self.conversation.session_id)
+        wb_routed = wb_ctrl.try_handle_chat(self)
+        if wb_routed is not None:
+            return wb_routed
         answered = self._answer_clarification()
         if answered:
             return answered
@@ -467,11 +472,11 @@ class WorkspaceTurn:
         profiles = SchemaProfileAndBindingValidator.compute_compact_column_profiles(rows)
         return rows, profiles
 
-    def _checkpoint(self, stage):
+    def _checkpoint(self, stage, allow_cancel=True):
         hook = getattr(self.store, 'execution_checkpoint', None)
         if hook is not None:
             hook(stage, self)
-        if self.session.stopped or self.session.cancelled.is_set():
+        if allow_cancel and (self.session.stopped or self.session.cancelled.is_set()):
             raise ValueError('cancel')
 
     def execute_intent(self, intent, path_text, change=None, capsule=None, saved_explicit=None,
@@ -527,7 +532,11 @@ class WorkspaceTurn:
             if str(exc) == 'cancel':
                 raise
             raise
-        self._checkpoint('after_commit')
+        # Once publish_json returns, os.replace has already committed the file.
+        # Post-commit cancellation must NEVER raise before recording the receipt
+        # and updating workspace state, and must never report the action as undone.
+        self._checkpoint('after_commit', allow_cancel=False)
+        cancelled_after_commit = bool(self.session.stopped or self.session.cancelled.is_set())
         receipt = digest(output)
         rendered = ExecutionBackedResponseRenderer.render(path.stem, output, receipt)
         compact_bindings = {key: bindings[key] for key in ('key_col', 'metric_col', 'status_col', 'required_output_columns') if key in bindings}
@@ -541,13 +550,18 @@ class WorkspaceTurn:
         if capsule and capsule.get('saved_explicitly'):
             self.ws['last_procedure_id'] = capsule['id']
         self.card('Execution-backed result', dict(
-            source='execution_backed', executed=True, row_count=len(output), preview=output[:5],
+            source='execution_backed', executed=True, committed=True,
+            cancelled_after_commit=cancelled_after_commit, row_count=len(output), preview=output[:5],
             output_path=str(output_path), source_file=str(path), source_file_unchanged=True,
             receipt=receipt, response=rendered, saved_explicitly=bool(capsule and capsule.get('saved_explicitly')),
             autonomously_discovered=False, request_kind=request_kind))
+        suffix = (
+            ' Stop arrived after atomic commit; the committed output and receipt were preserved and not undone.'
+            if cancelled_after_commit else ''
+        )
         return (
             rendered + ' Wrote '+str(output_path)+'. The source CSV was not modified. '
-            'This result is execution-backed, not model-generated.'
+            'This result is execution-backed, not model-generated.' + suffix
         ), 'success', False
 
     def compatible(self, capsule, profiles, intent):

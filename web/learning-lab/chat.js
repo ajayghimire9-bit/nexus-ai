@@ -156,6 +156,9 @@ for(const btn of document.querySelectorAll('.lab-jump-btn')){
 if($('load-workbench'))$('load-workbench').onclick=async()=>{
  try{await ensureSession();const d=await api({op:'foundation_workbench',args:{}});$('workbench-output').textContent=JSON.stringify(d.response.result,null,2);}catch(e){$('workbench-output').textContent=e.message;}
 };
+if($('load-symbiotic'))$('load-symbiotic').onclick=async()=>{
+ try{await ensureSession();const d=await api({op:'workbench_inspect',args:{}});$('workbench-output').textContent=JSON.stringify(d.response.result,null,2);}catch(e){$('workbench-output').textContent=e.message;}
+};
 if($('issue-curriculum'))$('issue-curriculum').onclick=()=>{send('Generate lessons');};
 if($('load-ledger'))$('load-ledger').onclick=async()=>{
  try{const r=await fetch('/api/experimental',{cache:'no-store'});const d=await r.json();$('workbench-output').textContent=JSON.stringify({ledger:d.ledger,experiment_count:d.experiments?.length||0,latest_experiments:(d.experiments||[]).slice(-5)},null,2);}catch(e){$('workbench-output').textContent=e.message;}

@@ -292,6 +292,28 @@ def test_cancellation_after_execute_does_not_commit(pair, tmp_path):
     assert not list(workspace.outputs_dir().glob('*.tmp-*'))
 
 
+def test_cancellation_after_commit_preserves_receipt_and_workspace_state(pair, tmp_path):
+    path = write_csv(tmp_path / 'regions.csv', SAMPLE_A)
+    workspace, sid, _ = pair
+
+    def hook(stage, turn):
+        if stage == 'after_commit':
+            turn.session.cancelled.set()
+
+    workspace.execution_checkpoint = hook
+    result = send(pair, 'Summarize amounts by region using '+str(path))
+    assert result['chat']['messages'][-1]['status'] == 'success'
+    card = execution_card(result)
+    assert card['executed'] is True
+    assert card['committed'] is True
+    assert card['cancelled_after_commit'] is True
+    assert Path(card['output_path']).is_file()
+    assert result['chat']['context']['workspace']['last_output_path'] == card['output_path']
+    assert result['chat']['context']['workspace']['last_program'] is not None
+    assert 'not undone' in result['text']
+
+
+
 def test_atomic_publish_removes_temp_on_cancel(tmp_path):
     from nexus.seed.workspace_conversation import publish_json
     target = tmp_path / 'out.json'

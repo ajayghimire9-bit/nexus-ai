@@ -66,6 +66,7 @@ def interpret(text,ctx):
     if any(p in t for p in ('how are you','how are u','how r u','how is it going','how\'s it going','how do you feel','who are you','what are you','what is your name','tell me about yourself','introduce yourself')) or t in ('thanks','thank you','thx','ty','good job','great job','awesome'):return Intent('master_dialogue',dict(text=raw))
     if any(p in t for p in ('learning to learn','meta learning','meta-learning','general intelligence','are you agi','did we achieve','run general suite')):return Intent('master_dialogue',dict(text=raw))
     if t.startswith(('solve ','calculate ','compute ')) or re.fullmatch(r'[0-9x\+\-\*\/\(\)\.\s=]+',t) and any(op in t for op in ('+','-','*','/','=')):return Intent('master_dialogue',dict(text=raw))
+    if t.startswith(('z3 ','sympy ','lean4 ','lean ','program ','editor ','wikidata ','docs ','code ','typescript ','repo ','plan ','capsule ')):return Intent('unsupported')
     if re.fullmatch(r'["“][a-z][a-z0-9_]{0,23}["”] means .+',t):return Intent('master_dialogue',dict(text=raw))
     if re.search(r'^if .+ is .+ (?:of|than) .+ and .+ is .+ (?:of|than) .+',t):return Intent('master_dialogue',dict(text=raw))
     if ('arrange' in t or 'sort' in t) and ('smallest to largest' in t or 'largest to smallest' in t):return Intent('master_dialogue',dict(text=raw))

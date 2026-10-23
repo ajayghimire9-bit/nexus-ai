@@ -1,0 +1,62 @@
+{
+  "study_id": "seed-symbiotic-workbench-v1",
+  "protocol": "docs/NEXUS_SEED_SYMBIOTIC_WORKBENCH_V1_PROTOCOL.md",
+  "scientific": true,
+  "kind": "symbiotic_multi_backend_evaluation",
+  "aggregate_score": false,
+  "weighting": null,
+  "order_seed": 20261023,
+  "configurations": [
+    "model_tools_editor",
+    "ordinary_cache_templates_retrieval",
+    "nexus_symbiotic_abstractions"
+  ],
+  "controls": [
+    "nexus_reset_memory",
+    "nexus_wrong_memory"
+  ],
+  "budgets": {
+    "wall_s": 900,
+    "cpu_s": 900,
+    "model_calls": 16,
+    "real_environment_steps": 512
+  },
+  "tasks": [
+    {"id": "t01_data_sales_6step", "category": "data_programs", "cohort": "development", "family": "stateful_editor_6step", "description": "6-step regional sales workflow with row_filter, group_filter, sort asc, selective_undo gf_1, save capsule, restart, and rebind to territory/revenue schema."},
+    {"id": "t02_data_json_flatten_reconstruct", "category": "data_programs", "cohort": "development", "family": "json_nested", "description": "Flatten nested JSON order records, aggregate regional totals, and reconstruct nested envelope structure."},
+    {"id": "t03_data_sqlite_join_where_having", "category": "data_programs", "cohort": "development", "family": "sqlite_multi_table", "description": "Execute SQLite JOIN across orders and stores with WHERE row filter >= 10 and HAVING group filter >= 100."},
+    {"id": "t04_data_post_commit_cancel", "category": "data_programs", "cohort": "development", "family": "cancellation_safety", "description": "Trigger cancellation after atomic commit (os.replace / DB commit) and verify receipt and workspace state are preserved and not reported as undone."},
+    {"id": "t05_data_confirm_schema_rebind", "category": "data_programs", "cohort": "confirmation", "family": "schema_transfer", "description": "Apply saved stateful editor AST capsule from sales_q1 to reserved confirmation dataset (country_zone, net_bookings) after session reload."},
+    {"id": "t06_data_confirm_dependent_undo_guard", "category": "data_programs", "cohort": "confirmation", "family": "dependency_conflict", "description": "Attempt selective undo of group_by node grp_1 while agg_1 and gf_1 depend on it; must block and preserve active graph."},
+
+    {"id": "t07_code_py_multifile_discount_tax", "category": "polyglot_coding", "cohort": "development", "family": "py_multifile_repair", "description": "Coordinate multi-file Python repair across pricing.py (discount formula) and checkout.py (subtract discount before applying tax)."},
+    {"id": "t08_code_py_selective_undo", "category": "polyglot_coding", "cohort": "development", "family": "py_selective_undo", "description": "Apply independent patches to pricing.py and checkout.py, then selectively undo only one patch while preserving the other."},
+    {"id": "t09_code_ts_interface_and_formatter", "category": "polyglot_coding", "cohort": "development", "family": "ts_typecheck_and_run", "description": "Repair TypeScript Receipt formatter bug and validate with real tsc --noEmit and Node execution."},
+    {"id": "t10_code_confirm_py_inventory_reservation", "category": "polyglot_coding", "cohort": "confirmation", "family": "py_multifile_repair", "description": "Coordinate multi-file Python repair across stock.py and order_service.py so available stock deducts reserved quantities."},
+    {"id": "t11_code_confirm_ts_ledger_balance", "category": "polyglot_coding", "cohort": "confirmation", "family": "ts_typecheck_and_run", "description": "Repair TypeScript multi-function ledger debit/credit sign coordination and verify with tsc --noEmit and Node test runner."},
+
+    {"id": "t12_reason_z3_schedule_sat_unsat_undo", "category": "z3_sympy_reasoning", "cohort": "development", "family": "z3_stateful_undo", "description": "Add Z3 constraints c1 (x >= 10) and c2 (y == x + 5) [sat], add conflicting c3 (y < 12) [unsat], selectively undo c3, and verify model translation."},
+    {"id": "t13_reason_sympy_quadratic_verified", "category": "z3_sympy_reasoning", "cohort": "development", "family": "sympy_algebra", "description": "Solve quadratic x**2 - 9 = 0 over real domain and verify roots by symbolic substitution."},
+    {"id": "t14_reason_sympy_derivative_and_equiv", "category": "z3_sympy_reasoning", "cohort": "development", "family": "sympy_calculus", "description": "Compute symbolic derivative of x**3 + 4*x**2 - 7*x and verify algebraic equivalence of (x + 2)**2 - 4 == x**2 + 4*x."},
+    {"id": "t15_reason_confirm_z3_resource_allocation", "category": "z3_sympy_reasoning", "cohort": "confirmation", "family": "z3_stateful_undo", "description": "Solve 3-worker Z3 capacity allocation with c1..c3, detect unsat on over-constrained c4, selectively remove c4, and verify model."},
+    {"id": "t16_reason_confirm_sympy_cubic_roots", "category": "z3_sympy_reasoning", "cohort": "confirmation", "family": "sympy_algebra", "description": "Solve x**3 - 6*x**2 + 11*x - 6 = 0 over reals and verify all 3 roots {1, 2, 3}."},
+
+    {"id": "t17_proof_lean4_reject_sorry", "category": "formal_proof", "cohort": "development", "family": "lean4_unverified_guard", "description": "Reject Lean 4 proof containing `sorry` token (`status=rejected_unverified_token`)."},
+    {"id": "t18_proof_lean4_reject_axiom", "category": "formal_proof", "cohort": "development", "family": "lean4_unverified_guard", "description": "Reject Lean 4 proof introducing unverified `axiom` (`status=rejected_unverified_token`)."},
+    {"id": "t19_proof_confirm_lean4_honest_runtime_or_check", "category": "formal_proof", "cohort": "confirmation", "family": "lean4_execution_or_blocked", "description": "Submit clean Lean 4 theorem (`theorem rfl_nat (n : Nat) : n = n := rfl`); verify real binary check if installed or honest `blocked_missing_runtime` report without mocking."},
+
+    {"id": "t20_know_versioned_doc_grounding", "category": "knowledge_wikidata", "cohort": "development", "family": "versioned_docs", "description": "Retrieve versioned local tax rounding specification with sha256, timestamp, and grounded executable bindings."},
+    {"id": "t21_know_wikidata_contradiction_detection", "category": "knowledge_wikidata", "cohort": "development", "family": "wikidata_contradiction", "description": "Query saved Wikidata snapshot for Mercury density, detect conflicting claims across sources, and separate lexical meanings from executable bindings."},
+    {"id": "t22_know_confirm_api_rate_limit_spec", "category": "knowledge_wikidata", "cohort": "confirmation", "family": "versioned_docs", "description": "Retrieve reserved confirmation API rate-limit specification and extract grounded executable retry bindings."},
+    {"id": "t23_know_confirm_wikidata_boiling_point_conflict", "category": "knowledge_wikidata", "cohort": "confirmation", "family": "wikidata_contradiction", "description": "Detect contradiction in saved Wikidata snapshot for ethanol boiling point claims and preserve source attribution."},
+
+    {"id": "t24_cap_reject_counterexample", "category": "capsule_transfer", "cohort": "development", "family": "capsule_probe_gate", "description": "Reject buggy candidate capsule (`normalize_Margin`) using behavioral probes and retain counterexample."},
+    {"id": "t25_cap_acquire_export_import_profile_b", "category": "capsule_transfer", "cohort": "development", "family": "cross_profile_exchange", "description": "Acquire verified `compute_margin` capsule in Profile A, export bundle, import into isolated Profile B with sandbox revalidation (no auto-exec on import), and execute on new task."},
+    {"id": "t26_cap_consolidate_active_cold", "category": "capsule_transfer", "cohort": "development", "family": "capsule_consolidation", "description": "Consolidate capsule registry: move zero-reuse capsules to cold storage while keeping active high-utility capsules."},
+    {"id": "t27_cap_confirm_cross_profile_zscore_norm", "category": "capsule_transfer", "cohort": "confirmation", "family": "cross_profile_exchange", "description": "Acquire `normalize_basis_points` capsule in Profile A, transfer to Profile B, revalidate in sandbox, and solve reserved confirmation task."},
+
+    {"id": "t28_mixed_hierarchical_plan_contract_change", "category": "mixed_workflows", "cohort": "development", "family": "hierarchical_planning", "description": "3-level hierarchical plan (`project_goal` <-> `module_contract` <-> `function_or_program`): update function contract, propagate invalidation, and revalidate."},
+    {"id": "t29_mixed_unsupported_and_ambiguous_guard", "category": "mixed_workflows", "cohort": "development", "family": "safety_and_ambiguity", "description": "Refuse unsafe shell/network requests and ask clarifying questions on ambiguous multi-file or conflicting-order requests without executing."},
+    {"id": "t30_mixed_confirm_doc_to_code_and_z3_audit", "category": "mixed_workflows", "cohort": "confirmation", "family": "multi_backend_synthesis", "description": "Retrieve versioned SLA doc threshold, verify threshold satisfiability in Z3, and validate Python SLA checker in isolated worktree."}
+  ]
+}
