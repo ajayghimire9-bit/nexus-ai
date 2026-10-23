@@ -28,6 +28,7 @@ def load_manifest(path):
 
 def write_files(root, specs):
     root = Path(root)
+    root.mkdir(parents=True, exist_ok=True)
     paths = {}
     for spec in specs:
         path = root / (spec['id'] + '.csv')
