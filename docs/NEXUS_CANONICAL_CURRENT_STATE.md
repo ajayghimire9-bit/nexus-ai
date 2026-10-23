@@ -1,14 +1,15 @@
 # NEXUS Seed — Current State
 
-## Current — capability follow-up (protocol locked)
+## Current — capability follow-up (results)
 
-[Protocol](NEXUS_SEED_CAPABILITY_FOLLOWUP_PROTOCOL.md). Branch
-`cursor/seed-capability-followup` from `1bc5bd4`. Four tracks: provenance
-conflicts (not timestamp sort), inspectable math versus the calculator
-route, API binding separate from coordinated helper/caller, and a
-blinded review of the frozen conversation replies. The 90-cell map is
-not rescored. Frozen debit **0**. Not learning-to-learn. Live scoring
-follows this protocol commit.
+[Protocol](NEXUS_SEED_CAPABILITY_FOLLOWUP_PROTOCOL.md),
+[results](NEXUS_SEED_CAPABILITY_FOLLOWUP_RESULTS.md).
+Protocol `4607542`. Artifact
+`df3e216aa8c542d8864b14a8e44657a0e1e308493240fdac29f8753d6ccaae3c`.
+Verifier 29/29. Provenance 3/3 versus timestamp 0/3. Math calculator
+2/6, interpret 1/6. API and coordinated coding 0/2 each. Conversation
+review: clarification 0/1; detector 3/3. 20 calls, 86.787 s, frozen
+debit **0**. Original map not rescored. Not learning-to-learn.
 
 ## Previous — five-area capability map (results)
 

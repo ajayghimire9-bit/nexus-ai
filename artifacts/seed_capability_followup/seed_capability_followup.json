@@ -1,0 +1,1745 @@
+{
+  "kind": "seed_capability_followup",
+  "confirmation": false,
+  "aggregate_score": false,
+  "learning_to_learn_established": false,
+  "original_map_artifact": "f3b2d0e8a66832154f19f5ade8ab2c02b34fc393a44eaedb42a95e417d305edc",
+  "config": {
+    "id": "seed-capability-followup-1",
+    "base": "1bc5bd4",
+    "product_parent": "e3d21b6",
+    "original_map_artifact": "f3b2d0e8a66832154f19f5ade8ab2c02b34fc393a44eaedb42a95e417d305edc",
+    "original_map_rescored": false,
+    "methods": {
+      "knowledge": [
+        "dump_all",
+        "timestamp_sort",
+        "provenance"
+      ],
+      "mathematics": [
+        "calculator_direct",
+        "interpret_compile"
+      ],
+      "coding_api": [
+        "direct",
+        "nexus"
+      ],
+      "coding_coord": [
+        "direct",
+        "nexus"
+      ]
+    },
+    "expected_grid": {
+      "knowledge_cells": 9,
+      "mathematics_cells": 12,
+      "coding_api_cells": 4,
+      "coding_coord_cells": 4,
+      "live_cells": 20
+    },
+    "wall_cap_s": 900,
+    "call_cap": 80,
+    "backend": "cpu",
+    "ngl": 0,
+    "device": "none",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 192,
+    "frozen_cpu_debit_s": 0,
+    "product_chat_usage_used": false,
+    "metal_used": false,
+    "acquired_solution_memory": false,
+    "ranking_policy_resumed": false,
+    "learning_to_learn_established": false,
+    "api_audit_preserved": true
+  },
+  "rows": [
+    {
+      "task_id": "know_prov_update",
+      "track": "knowledge",
+      "family": "explicit_update",
+      "method": "dump_all",
+      "scored": {
+        "passed": false,
+        "select_ok": true,
+        "stale_ok": false,
+        "conflict_ok": true,
+        "fact_ok": false,
+        "selected": [
+          "harbor-v2",
+          "harbor-v1",
+          "weather-new",
+          "pilot-dawn",
+          "pilot-dusk"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "The inner harbor office opens at 06:30 local time. [harbor-v2] The inner harbor office opens at 09:00 local time. [harbor-v1] Fog is expected at dawn on the outer reach. [weather-new] Pilot Mora takes the dawn watch. [pilot-dawn] Pilot Mora takes the dusk watch. [pilot-dusk]",
+        "method": "dump_all",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_update",
+      "track": "knowledge",
+      "family": "explicit_update",
+      "method": "timestamp_sort",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": false,
+        "conflict_ok": true,
+        "fact_ok": false,
+        "selected": [
+          "harbor-v1"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "The inner harbor office opens at 09:00 local time. [harbor-v1]",
+        "method": "timestamp_sort",
+        "used_ingestion_timestamp_as_freshness": true,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_update",
+      "track": "knowledge",
+      "family": "explicit_update",
+      "method": "provenance",
+      "scored": {
+        "passed": true,
+        "select_ok": true,
+        "stale_ok": true,
+        "conflict_ok": true,
+        "fact_ok": true,
+        "selected": [
+          "harbor-v2"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "The inner harbor office opens at 06:30 local time. [harbor-v2]",
+        "method": "provenance_resolve",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_unrelated",
+      "track": "knowledge",
+      "family": "unrelated_newer",
+      "method": "dump_all",
+      "scored": {
+        "passed": false,
+        "select_ok": true,
+        "stale_ok": false,
+        "conflict_ok": true,
+        "fact_ok": false,
+        "selected": [
+          "harbor-v2",
+          "harbor-v1",
+          "weather-new",
+          "pilot-dawn",
+          "pilot-dusk"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "The inner harbor office opens at 06:30 local time. [harbor-v2] The inner harbor office opens at 09:00 local time. [harbor-v1] Fog is expected at dawn on the outer reach. [weather-new] Pilot Mora takes the dawn watch. [pilot-dawn] Pilot Mora takes the dusk watch. [pilot-dusk]",
+        "method": "dump_all",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_unrelated",
+      "track": "knowledge",
+      "family": "unrelated_newer",
+      "method": "timestamp_sort",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": false,
+        "conflict_ok": true,
+        "fact_ok": false,
+        "selected": [
+          "harbor-v1"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "The inner harbor office opens at 09:00 local time. [harbor-v1]",
+        "method": "timestamp_sort",
+        "used_ingestion_timestamp_as_freshness": true,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_unrelated",
+      "track": "knowledge",
+      "family": "unrelated_newer",
+      "method": "provenance",
+      "scored": {
+        "passed": true,
+        "select_ok": true,
+        "stale_ok": true,
+        "conflict_ok": true,
+        "fact_ok": true,
+        "selected": [
+          "harbor-v2"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "The inner harbor office opens at 06:30 local time. [harbor-v2]",
+        "method": "provenance_resolve",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_ambiguous",
+      "track": "knowledge",
+      "family": "genuine_ambiguity",
+      "method": "dump_all",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": true,
+        "conflict_ok": false,
+        "fact_ok": false,
+        "selected": [
+          "harbor-v2",
+          "harbor-v1",
+          "weather-new",
+          "pilot-dawn",
+          "pilot-dusk"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "The inner harbor office opens at 06:30 local time. [harbor-v2] The inner harbor office opens at 09:00 local time. [harbor-v1] Fog is expected at dawn on the outer reach. [weather-new] Pilot Mora takes the dawn watch. [pilot-dawn] Pilot Mora takes the dusk watch. [pilot-dusk]",
+        "method": "dump_all",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_ambiguous",
+      "track": "knowledge",
+      "family": "genuine_ambiguity",
+      "method": "timestamp_sort",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": true,
+        "conflict_ok": false,
+        "fact_ok": false,
+        "selected": [
+          "pilot-dusk"
+        ],
+        "conflict": false,
+        "conflict_ids": [],
+        "text": "Pilot Mora takes the dusk watch. [pilot-dusk]",
+        "method": "timestamp_sort",
+        "used_ingestion_timestamp_as_freshness": true,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_prov_ambiguous",
+      "track": "knowledge",
+      "family": "genuine_ambiguity",
+      "method": "provenance",
+      "scored": {
+        "passed": true,
+        "select_ok": true,
+        "stale_ok": true,
+        "conflict_ok": true,
+        "fact_ok": true,
+        "selected": [],
+        "conflict": true,
+        "conflict_ids": [
+          "pilot-dawn",
+          "pilot-dusk"
+        ],
+        "text": "conflict: These sources conflict on the same subject and neither supersedes the other: pilot-dawn: Pilot Mora takes the dawn watch. | pilot-dusk: Pilot Mora takes the dusk watch.",
+        "method": "provenance_resolve",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "conv_book_later",
+      "track": "conversation_clarify",
+      "method": "unresolved_referent",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "booking_keyword_sufficient": false,
+        "detector": {
+          "needed": true,
+          "reason": "unresolved_referent",
+          "has_action": true,
+          "has_referent": true,
+          "prior_options": false,
+          "question": "Which one do you mean? I do not have a later or earlier option from this conversation.",
+          "booking_keyword_sufficient": false,
+          "programmer_supplied": true
+        },
+        "reply": "Which one do you mean? I do not have a later or earlier option from this conversation."
+      },
+      "live": false
+    },
+    {
+      "task_id": "conv_book_named",
+      "track": "conversation_clarify",
+      "method": "unresolved_referent",
+      "scored": {
+        "passed": true,
+        "clarification": false,
+        "booking_keyword_sufficient": false,
+        "detector": {
+          "needed": false,
+          "reason": "resolved_or_ordinary",
+          "has_action": true,
+          "has_referent": false,
+          "prior_options": false,
+          "question": "",
+          "booking_keyword_sufficient": false,
+          "programmer_supplied": true
+        },
+        "reply": ""
+      },
+      "live": false
+    },
+    {
+      "task_id": "conv_book_after_options",
+      "track": "conversation_clarify",
+      "method": "unresolved_referent",
+      "scored": {
+        "passed": true,
+        "clarification": false,
+        "booking_keyword_sufficient": false,
+        "detector": {
+          "needed": false,
+          "reason": "resolved_or_ordinary",
+          "has_action": true,
+          "has_referent": true,
+          "prior_options": true,
+          "question": "",
+          "booking_keyword_sufficient": false,
+          "programmer_supplied": true
+        },
+        "reply": ""
+      },
+      "live": false
+    },
+    {
+      "task_id": "conv_clarify_frozen",
+      "track": "conversation_clarify",
+      "method": "model_alone_frozen",
+      "scored": {
+        "passed": false,
+        "clarification": false,
+        "booking_keyword_sufficient": false,
+        "reply": "I apologize, but I cannot assist with that request.",
+        "detector": {
+          "needed": true,
+          "reason": "unresolved_referent",
+          "has_action": true,
+          "has_referent": true,
+          "prior_options": false,
+          "question": "Which one do you mean? I do not have a later or earlier option from this conversation.",
+          "booking_keyword_sufficient": false,
+          "programmer_supplied": true
+        }
+      },
+      "live": false
+    },
+    {
+      "task_id": "math_int_units",
+      "track": "mathematics",
+      "family": "units",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": true,
+        "value": 3200.0,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 3200.0
+        },
+        "expression": "3.2 * 1000",
+        "expression_represents_problem": true,
+        "inspectable": false,
+        "tool_assisted": true,
+        "programmer_supplied_calculator": true,
+        "raw": "```json\n{\n  \"expression\": \"3.2 * 1000\",\n  \"unit\": \"millilitres\",\n  \"clarification\": \"To convert liters to millilitres, you multiply the number of liters by 1000.\"\n}\n```",
+        "route": "calculator_direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_units",
+      "track": "mathematics",
+      "family": "units",
+      "method": "interpret_compile",
+      "scored": {
+        "passed": false,
+        "value": 3200.0,
+        "unit_ok": false,
+        "statement": {
+          "quantities": [
+            {
+              "name": "oil",
+              "value": 3.2,
+              "unit": "liters"
+            },
+            {
+              "name": "millilitres",
+              "value": 3200,
+              "unit": "milliliters"
+            }
+          ],
+          "relationships": [
+            {
+              "name": "conversion",
+              "expression": "3.2 * 1000"
+            }
+          ],
+          "unknown": [],
+          "unit": "milliliters",
+          "missing": [],
+          "expression": "3.2 * 1000"
+        },
+        "validation": {
+          "ok": false,
+          "clarify": false,
+          "errors": [
+            "no_unknown"
+          ],
+          "missing": []
+        },
+        "compiled": {
+          "ok": true,
+          "error": null,
+          "value": 3200.0,
+          "expression": "3.2 * 1000",
+          "extra_constants": [],
+          "expression_represents_problem": true,
+          "compiled_from": "stated_expression",
+          "programmer_supplied_compiler": true
+        },
+        "expression_represents_problem": true,
+        "inspectable": true,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "raw": "```json\n{\n  \"quantities\": [\n    {\n      \"name\": \"oil\",\n      \"value\": 3.2,\n      \"unit\": \"liters\"\n    },\n    {\n      \"name\": \"millilitres\",\n      \"value\": 3200,\n      \"unit\": \"milliliters\"\n    }\n  ],\n  \"relationships\": [\n    {\n      \"name\": \"conversion\",\n      \"expression\": \"3.2 * 1000\"\n    }\n  ],\n  \"unknown\": [],\n  \"unit\": \"milliliters\",\n  \"missing\": [],\n  \"expression\": \"3.2 * 1000\"\n}\n```",
+        "route": "interpret_compile"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_algebra",
+      "track": "mathematics",
+      "family": "algebra",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "tool": {
+          "ok": false,
+          "error": "SyntaxError",
+          "value": null
+        },
+        "expression": "4n - 5 = 19",
+        "expression_represents_problem": false,
+        "inspectable": false,
+        "tool_assisted": false,
+        "programmer_supplied_calculator": true,
+        "raw": "Here's the solution in JSON format:\n\n```json\n{\n  \"expression\": \"4n - 5 = 19\",\n  \"unit\": \"n\",\n  \"clarification\": \"Solve for n in the equation 4n - 5 = 19.\"\n}\n```",
+        "route": "calculator_direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_algebra",
+      "track": "mathematics",
+      "family": "algebra",
+      "method": "interpret_compile",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "unit_ok": true,
+        "statement": {
+          "quantities": null,
+          "relationships": [
+            {
+              "name": "4n",
+              "value": 4,
+              "unit": "units"
+            },
+            {
+              "name": "-5",
+              "value": -5,
+              "unit": "units"
+            },
+            {
+              "name": "19",
+              "value": 19,
+              "unit": "units"
+            }
+          ],
+          "unknown": "n",
+          "unit": "units",
+          "missing": [],
+          "expression": "4n - 5 = 19"
+        },
+        "validation": {
+          "ok": false,
+          "clarify": false,
+          "errors": [
+            "no_quantities"
+          ],
+          "missing": []
+        },
+        "compiled": {
+          "ok": false,
+          "error": "SyntaxError",
+          "value": null,
+          "expression": "4n - 5 = 19",
+          "extra_constants": [],
+          "expression_represents_problem": true,
+          "compiled_from": "stated_expression",
+          "programmer_supplied_compiler": true
+        },
+        "expression_represents_problem": true,
+        "inspectable": true,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "raw": "```json\n{\n  \"unknown\": \"n\",\n  \"unit\": \"units\",\n  \"relationships\": [\n    {\n      \"name\": \"4n\",\n      \"value\": 4,\n      \"unit\": \"units\"\n    },\n    {\n      \"name\": \"-5\",\n      \"value\": -5,\n      \"unit\": \"units\"\n    },\n    {\n      \"name\": \"19\",\n      \"value\": 19,\n      \"unit\": \"units\"\n    }\n  ],\n  \"missing\": [],\n  \"expression\": \"4n - 5 = 19\"\n}\n```",
+        "route": "interpret_compile"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_word",
+      "track": "mathematics",
+      "family": "word",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "tool": {
+          "ok": false,
+          "error": "no_expression",
+          "value": null
+        },
+        "expression": null,
+        "expression_represents_problem": false,
+        "inspectable": false,
+        "tool_assisted": false,
+        "programmer_supplied_calculator": true,
+        "raw": "To determine how many apples are left in the crate, we need to follow these steps:\n\n1. Start with the initial number of apples.\n2. Subtract the number of apples sold.\n3. Add the number of apples added.\n\nLet's go through the calculations step by step:\n\n1. Initial number of apples: 36\n2. Apples sold: 11\n   \\[\n   36 - 11 = 25\n   \\]\n   So, after selling 11 apples, there are 25 apples left.\n3. Apples added: 8\n   \\[\n   25 + 8 = 33\n   \\]\n   So, after adding 8 apples, there are 33 apples left.\n\nTherefore, the number of apples left is \\(\\boxed{33}\\).",
+        "route": "calculator_direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_word",
+      "track": "mathematics",
+      "family": "word",
+      "method": "interpret_compile",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "unit_ok": true,
+        "statement": {
+          "quantities": null,
+          "relationships": [
+            {
+              "name": "sold",
+              "value": 11,
+              "unit": "count",
+              "relationship_type": "subtract"
+            },
+            {
+              "name": "added",
+              "value": 8,
+              "unit": "count",
+              "relationship_type": "add"
+            }
+          ],
+          "unknown": "left",
+          "unit": "count",
+          "missing": [],
+          "expression": "36 - 11 + 8"
+        },
+        "validation": {
+          "ok": false,
+          "clarify": false,
+          "errors": [
+            "no_quantities"
+          ],
+          "missing": []
+        },
+        "compiled": {
+          "ok": false,
+          "error": null,
+          "value": null,
+          "expression": "36 - 11 + 8",
+          "extra_constants": [
+            8.0,
+            36.0,
+            11.0
+          ],
+          "expression_represents_problem": false,
+          "compiled_from": "stated_expression",
+          "programmer_supplied_compiler": true
+        },
+        "expression_represents_problem": false,
+        "inspectable": true,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "raw": "```json\n{\n  \"name\": \"apples\",\n  \"value\": 36,\n  \"unit\": \"count\",\n  \"relationships\": [\n    {\n      \"name\": \"sold\",\n      \"value\": 11,\n      \"unit\": \"count\",\n      \"relationship_type\": \"subtract\"\n    },\n    {\n      \"name\": \"added\",\n      \"value\": 8,\n      \"unit\": \"count\",\n      \"relationship_type\": \"add\"\n    }\n  ],\n  \"unknown\": \"left\",\n  \"unit\": \"count\",\n  \"missing\": [],\n  \"expression\": \"36 - 11 + 8\"\n}\n```",
+        "route": "interpret_compile"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_percent",
+      "track": "mathematics",
+      "family": "percent",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "tool": {
+          "ok": false,
+          "error": "no_expression",
+          "value": null
+        },
+        "expression": null,
+        "expression_represents_problem": false,
+        "inspectable": false,
+        "tool_assisted": false,
+        "programmer_supplied_calculator": true,
+        "raw": "To find 25 percent of 64, we can use the following formula:\n\n\\[ \\text{Result} = \\text{Number} \\times \\left( \\frac{\\text{Percentage}}{100} \\right) \\]\n\nIn this case, the number is 64 and the percentage is 25. Plugging these values into the formula, we get:\n\n\\[ \\text{Result} = 64 \\times \\left( \\frac{25}{100} \\right) \\]\n\nSimplifying the fraction:\n\n\\[ \\frac{25}{100} = 0.25 \\]\n\nSo the calculation becomes:\n\n\\[ \\text{Result} = 64 \\times 0.25 \\]\n\nNow, we perform the multiplication:\n\n\\[ 64 \\times 0.25 = 16 \\]\n\nTherefore, 25 percent of ",
+        "route": "calculator_direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_percent",
+      "track": "mathematics",
+      "family": "percent",
+      "method": "interpret_compile",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "unit_ok": true,
+        "statement": {
+          "quantities": null,
+          "relationships": [
+            {
+              "name": "is",
+              "value": "of",
+              "unit": "unknown"
+            },
+            {
+              "name": "is",
+              "value": "of",
+              "unit": "unknown"
+            }
+          ],
+          "unknown": "unknown",
+          "unit": "unknown",
+          "missing": "unknown",
+          "expression": "25% * 64"
+        },
+        "validation": {
+          "ok": false,
+          "clarify": true,
+          "errors": [
+            "underspecified"
+          ],
+          "missing": [
+            "u",
+            "n",
+            "k",
+            "n",
+            "o",
+            "w",
+            "n"
+          ]
+        },
+        "compiled": {
+          "ok": false,
+          "error": "SyntaxError",
+          "value": null,
+          "expression": "25% * 64",
+          "extra_constants": [],
+          "expression_represents_problem": true,
+          "compiled_from": "stated_expression",
+          "programmer_supplied_compiler": true
+        },
+        "expression_represents_problem": true,
+        "inspectable": true,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "raw": "```json\n{\n  \"name\": \"25 percent of 64\",\n  \"value\": 16,\n  \"unit\": \"units\",\n  \"relationships\": [\n    {\n      \"name\": \"is\",\n      \"value\": \"of\",\n      \"unit\": \"unknown\"\n    },\n    {\n      \"name\": \"is\",\n      \"value\": \"of\",\n      \"unit\": \"unknown\"\n    }\n  ],\n  \"unknown\": \"unknown\",\n  \"unit\": \"unknown\",\n  \"missing\": \"unknown\",\n  \"expression\": \"25% * 64\"\n}\n```",
+        "route": "interpret_compile"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_trap",
+      "track": "mathematics",
+      "family": "wrong_problem",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "tool": {
+          "ok": false,
+          "error": "no_expression",
+          "value": null
+        },
+        "expression": null,
+        "expression_represents_problem": false,
+        "inspectable": false,
+        "tool_assisted": false,
+        "programmer_supplied_calculator": true,
+        "raw": "To solve this problem, we need to follow these steps:\n\n1. Start with the original length of the rope, which is 12 meters.\n2. Cut off 3 meters from the original length.\n3. Cut the remaining length in half.\n\nLet's break it down and use Python to ensure the result is accurate.\n\n1. Calculate the length after cutting off 3 meters.\n2. Divide the remaining length by 2 to get the length of each remaining piece.\n\nHere is the Python code to perform these calculations:\n\n```python\n# Original length of the rope\noriginal_length = 12\n\n# Length cut off\ncut_off_length = 3\n\n# Remaining length after cutting off\nremaining_length = original_length - cut_off_length\n\n# Length of each remaining piece\nlength_per_piece = remaining_length / 2\n\n# Return the result in JSON format\nresult = {\n    \"expression\": f\"{original_length} - {cut",
+        "route": "calculator_direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_trap",
+      "track": "mathematics",
+      "family": "wrong_problem",
+      "method": "interpret_compile",
+      "scored": {
+        "passed": false,
+        "value": null,
+        "unit_ok": true,
+        "statement": {
+          "quantities": null,
+          "relationships": [
+            {
+              "name": "Cut off",
+              "value": 3,
+              "unit": "m",
+              "relationship_type": "subtraction"
+            },
+            {
+              "name": "Cut in half",
+              "value": 6,
+              "unit": "m",
+              "relationship_type": "division"
+            }
+          ],
+          "unknown": "Each remaining piece",
+          "unit": "m",
+          "missing": "Each remaining piece",
+          "expression": "12 - 3 / 2"
+        },
+        "validation": {
+          "ok": false,
+          "clarify": true,
+          "errors": [
+            "underspecified"
+          ],
+          "missing": [
+            "E",
+            "a",
+            "c",
+            "h",
+            "r",
+            "e",
+            "m",
+            "a",
+            "i",
+            "n",
+            "i",
+            "n",
+            "g",
+            "p",
+            "i",
+            "e",
+            "c",
+            "e"
+          ]
+        },
+        "compiled": {
+          "ok": false,
+          "error": null,
+          "value": null,
+          "expression": "12 - 3 / 2",
+          "extra_constants": [
+            12.0,
+            3.0
+          ],
+          "expression_represents_problem": false,
+          "compiled_from": "stated_expression",
+          "programmer_supplied_compiler": true
+        },
+        "expression_represents_problem": false,
+        "inspectable": true,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "raw": "```json\n{\n  \"name\": \"Rope\",\n  \"value\": 12,\n  \"unit\": \"m\",\n  \"relationships\": [\n    {\n      \"name\": \"Cut off\",\n      \"value\": 3,\n      \"unit\": \"m\",\n      \"relationship_type\": \"subtraction\"\n    },\n    {\n      \"name\": \"Cut in half\",\n      \"value\": 6,\n      \"unit\": \"m\",\n      \"relationship_type\": \"division\"\n    }\n  ],\n  \"unknown\": \"Each remaining piece\",\n  \"unit\": \"m\",\n  \"missing\": \"Each remaining piece\",\n  \"expression\": \"12 - 3 / 2\"\n}\n```",
+        "route": "interpret_compile"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_under",
+      "track": "mathematics",
+      "family": "underspecified",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "expression": "100 / 5",
+        "inspectable": false,
+        "raw": "To determine the unit price of the tea, we need to know the total cost and the quantity of tea purchased. Let's assume the total cost is $100 and the quantity is 5 cups. The unit price can be calculated by dividing the total cost by the quantity.\n\nHere is the step-by-step calculation:\n\n1. Identify the total cost of the tea, which is $100.\n2. Identify the quantity of tea, which is 5 cups.\n3. Divide the total cost by the quantity to get the unit price.\n\nThe calculation is:\n\\[\n\\text{Unit Price} = \\frac{\\text{Total Cost}}{\\text{Quantity}} = \\frac{100}{5} = 20\n\\]\n\nSo, the unit price of the tea is $20 per cup.\n\nThe final answer is:\n\\[\n\\boxed{\"expression\": \"100 / 5\", \"unit\":",
+        "route": "calculator_direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_int_under",
+      "track": "mathematics",
+      "family": "underspecified",
+      "method": "interpret_compile",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "statement": {
+          "quantities": [
+            {
+              "name": "tea",
+              "value": 1,
+              "unit": "cup"
+            }
+          ],
+          "relationships": [
+            {
+              "name": "price",
+              "value": 2.5,
+              "unit": "dollars"
+            }
+          ],
+          "unknown": [],
+          "unit": "dollars",
+          "missing": [],
+          "expression": "price * tea"
+        },
+        "validation": {
+          "ok": false,
+          "clarify": true,
+          "errors": [
+            "underspecified"
+          ],
+          "missing": []
+        },
+        "compiled": {
+          "ok": false,
+          "error": "unsupported_node",
+          "value": null,
+          "expression": "price * tea",
+          "extra_constants": [],
+          "expression_represents_problem": true,
+          "compiled_from": "stated_expression",
+          "programmer_supplied_compiler": true
+        },
+        "inspectable": true,
+        "raw": "```json\n{\n  \"quantities\": [\n    {\n      \"name\": \"tea\",\n      \"value\": 1,\n      \"unit\": \"cup\"\n    }\n  ],\n  \"relationships\": [\n    {\n      \"name\": \"price\",\n      \"value\": 2.50,\n      \"unit\": \"dollars\"\n    }\n  ],\n  \"unknown\": [],\n  \"unit\": \"dollars\",\n  \"missing\": [],\n  \"expression\": \"price * tea\"\n}\n```",
+        "route": "interpret_compile"
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_clip_hi",
+      "track": "coding_api",
+      "family": "documented_api",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [
+              {
+                "symbol": "high_cut",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef high_cut(item):\n    return clip_hi(bag.nums, bag.hi)\n",
+          "span.py": "def clip_hi(nums, hi):\n    return [hi if n > hi else n for n in nums]\n"
+        },
+        "route": "direct",
+        "track": "coding_api",
+        "family_score": {
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false,
+          "helper_not_required": true
+        }
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_clip_hi",
+      "track": "coding_api",
+      "family": "documented_api",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "high_cut",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "high_cut",
+              "file": "work.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "span.py": "def clip_hi(nums, hi):\n    return [hi if n > hi else n for n in nums]\n"
+        },
+        "route": "eligible_always_extract",
+        "track": "coding_api",
+        "family_score": {
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false,
+          "helper_not_required": true
+        }
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_glue_parts",
+      "track": "coding_api",
+      "family": "documented_api",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [
+              {
+                "symbol": "label_of",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef label_of(item):\n    return glue[0] + glue[1]\n",
+          "marks.py": "def glue(parts, mark):\n    return mark.join(parts)\n"
+        },
+        "route": "direct",
+        "track": "coding_api",
+        "family_score": {
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false,
+          "helper_not_required": true
+        }
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_glue_parts",
+      "track": "coding_api",
+      "family": "documented_api",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "label_of",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "label_of",
+              "file": "work.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "marks.py": "def glue(parts, mark):\n    return mark.join(parts)\n"
+        },
+        "route": "eligible_always_extract",
+        "track": "coding_api",
+        "family_score": {
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false,
+          "helper_not_required": true
+        }
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_under",
+      "track": "coding_coord",
+      "family": "helper_and_caller",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": true,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.pack_ok": {
+            "entry": "app.pack_ok",
+            "symbol": "pack_ok",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.under": {
+            "entry": "util.under",
+            "symbol": "under",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "under",
+                "file": "util.py",
+                "args": "value, lim"
+              },
+              {
+                "symbol": "pack_ok",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "under",
+                "module": "util",
+                "source": "add"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "under",
+              "file": "util.py",
+              "args": "value, lim"
+            },
+            {
+              "symbol": "pack_ok",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n\ndef under(value, lim):\n    if value > lim:\n        return 'yes'\n    else:\n        return 'no'\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "route": "direct",
+        "track": "coding_coord",
+        "family_score": {
+          "helper_present": false,
+          "caller_present": false,
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false
+        }
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_under",
+      "track": "coding_coord",
+      "family": "helper_and_caller",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": true,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.pack_ok": {
+            "entry": "app.pack_ok",
+            "symbol": "pack_ok",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.under": {
+            "entry": "util.under",
+            "symbol": "under",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "under",
+                "file": "util.py",
+                "args": "value, lim"
+              },
+              {
+                "symbol": "pack_ok",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "under",
+                "module": "util",
+                "source": "add"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "under",
+              "file": "util.py",
+              "args": "value, lim"
+            },
+            {
+              "symbol": "pack_ok",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n\ndef under(value, lim):\n    if value > lim:\n        return 'yes'\n    else:\n        return 'no'\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "route": "direct_fallback:ineligible_optional_or_nullable",
+        "track": "coding_coord",
+        "family_score": {
+          "helper_present": false,
+          "caller_present": false,
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false
+        }
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_stamp",
+      "track": "coding_coord",
+      "family": "helper_and_caller",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": true,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.row_tag": {
+            "entry": "app.row_tag",
+            "symbol": "row_tag",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.stamp": {
+            "entry": "util.stamp",
+            "symbol": "stamp",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "stamp",
+                "file": "util.py",
+                "args": "name"
+              },
+              {
+                "symbol": "row_tag",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "stamp",
+                "module": "util",
+                "source": "add"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "stamp",
+              "file": "util.py",
+              "args": "name"
+            },
+            {
+              "symbol": "row_tag",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "route": "direct",
+        "track": "coding_coord",
+        "family_score": {
+          "helper_present": false,
+          "caller_present": false,
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false
+        }
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_stamp",
+      "track": "coding_coord",
+      "family": "helper_and_caller",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": true,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.row_tag": {
+            "entry": "app.row_tag",
+            "symbol": "row_tag",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.stamp": {
+            "entry": "util.stamp",
+            "symbol": "stamp",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "stamp",
+                "file": "util.py",
+                "args": "name"
+              },
+              {
+                "symbol": "row_tag",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "stamp",
+                "module": "util",
+                "source": "add"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "stamp",
+              "file": "util.py",
+              "args": "name"
+            },
+            {
+              "symbol": "row_tag",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "route": "direct_fallback:ineligible_optional_or_nullable",
+        "track": "coding_coord",
+        "family_score": {
+          "helper_present": false,
+          "caller_present": false,
+          "required_call": true,
+          "public_passed": false,
+          "private_passed": false
+        }
+      },
+      "live": true
+    }
+  ],
+  "conversation_review": [
+    {
+      "review_id": "R01",
+      "task_id": "conv_follow",
+      "family": "follow_up",
+      "turns": [
+        "What is a tide pool in one sentence?",
+        "How does that differ from a rock pool?"
+      ],
+      "replies": [
+        "A tide pool is a collection of marine life that forms on the shore during high tide, where the water level is higher than the surrounding land.",
+        "A rock pool is a collection of marine life that forms on the shore during low tide, where the water level is lower than the surrounding land."
+      ],
+      "dimensions": {
+        "relevance": 1,
+        "factual_accuracy": 0,
+        "clarification": null,
+        "correction_handling": null,
+        "naturalness": 1
+      },
+      "applicable_passed": 2,
+      "applicable_n": 3,
+      "notes": "Both turns stay on tide/rock pools. The high-tide versus low-tide split is not a reliable fact, so factual accuracy fails.",
+      "reviewer": "agent_on_frozen_transcripts",
+      "independent_human": false,
+      "blinded_method": true,
+      "keyword_quality_score": false
+    },
+    {
+      "review_id": "R02",
+      "task_id": "conv_paraphrase",
+      "family": "paraphrase",
+      "turns": [
+        "Say the same idea in simpler words: A estuary is where a river meets the sea."
+      ],
+      "replies": [
+        "A estuary is where a river meets the ocean."
+      ],
+      "dimensions": {
+        "relevance": 1,
+        "factual_accuracy": 1,
+        "clarification": null,
+        "correction_handling": null,
+        "naturalness": 0
+      },
+      "applicable_passed": 2,
+      "applicable_n": 3,
+      "notes": "Keeps river meeting a large body of water. Automatic fail wanted the word sea; ocean is an acceptable paraphrase. Copied 'A estuary', so naturalness fails.",
+      "reviewer": "agent_on_frozen_transcripts",
+      "independent_human": false,
+      "blinded_method": true,
+      "keyword_quality_score": false
+    },
+    {
+      "review_id": "R03",
+      "task_id": "conv_correct",
+      "family": "correction",
+      "turns": [
+        "The lighthouse is on the north cliff.",
+        "No \u2014 I meant the south cliff. Where is it?"
+      ],
+      "replies": [
+        "The lighthouse is on the north cliff.",
+        "The lighthouse is on the south cliff."
+      ],
+      "dimensions": {
+        "relevance": 1,
+        "factual_accuracy": 1,
+        "clarification": null,
+        "correction_handling": 1,
+        "naturalness": 1
+      },
+      "applicable_passed": 4,
+      "applicable_n": 4,
+      "notes": "Uses south after the correction and does not keep north.",
+      "reviewer": "agent_on_frozen_transcripts",
+      "independent_human": false,
+      "blinded_method": true,
+      "keyword_quality_score": false
+    },
+    {
+      "review_id": "R04",
+      "task_id": "conv_return",
+      "family": "topic_return",
+      "turns": [
+        "Name one harbor bird.",
+        "What is 2+2?",
+        "Back to the bird: what was it?"
+      ],
+      "replies": [
+        "The harbor bird is the harbor pigeon.",
+        "2 + 2 equals 4.",
+        "The harbor pigeon is a type of bird that is commonly found in coastal areas."
+      ],
+      "dimensions": {
+        "relevance": 1,
+        "factual_accuracy": 0,
+        "clarification": null,
+        "correction_handling": null,
+        "naturalness": 1
+      },
+      "applicable_passed": 2,
+      "applicable_n": 3,
+      "notes": "Returns to the bird after 2+2. 'Harbor pigeon' is invented, so factual accuracy fails.",
+      "reviewer": "agent_on_frozen_transcripts",
+      "independent_human": false,
+      "blinded_method": true,
+      "keyword_quality_score": false
+    },
+    {
+      "review_id": "R05",
+      "task_id": "conv_beginner",
+      "family": "beginner",
+      "turns": [
+        "Explain what salinity means to a child who has never heard the word."
+      ],
+      "replies": [
+        "Salinity is a measure of the amount of dissolved salt in water. It is a chemical property of water that affects its taste, appearance, and behavior. Salinity is often used to describe the concentration of salt in seawater, but it can also be found in other types of water, such as lake water or river water. Salinity is important for many living organisms, as it helps them to survive and thrive in their environment."
+      ],
+      "dimensions": {
+        "relevance": 1,
+        "factual_accuracy": 1,
+        "clarification": null,
+        "correction_handling": null,
+        "naturalness": 1
+      },
+      "applicable_passed": 3,
+      "applicable_n": 3,
+      "notes": "Names dissolved salt. A bit textbook, still usable for a beginner.",
+      "reviewer": "agent_on_frozen_transcripts",
+      "independent_human": false,
+      "blinded_method": true,
+      "keyword_quality_score": false
+    },
+    {
+      "review_id": "R06",
+      "task_id": "conv_clarify",
+      "family": "ambiguous",
+      "turns": [
+        "Book the later one."
+      ],
+      "replies": [
+        "I apologize, but I cannot assist with that request."
+      ],
+      "dimensions": {
+        "relevance": 0,
+        "factual_accuracy": null,
+        "clarification": 0,
+        "correction_handling": null,
+        "naturalness": 0
+      },
+      "applicable_passed": 0,
+      "applicable_n": 3,
+      "notes": "Refuses instead of asking which item is later. A booking keyword is not present and would not have been enough.",
+      "reviewer": "agent_on_frozen_transcripts",
+      "independent_human": false,
+      "blinded_method": true,
+      "keyword_quality_score": false
+    }
+  ],
+  "conversation_review_summary": {
+    "dimensions": {
+      "relevance": {
+        "passed": 5,
+        "n": 6
+      },
+      "factual_accuracy": {
+        "passed": 3,
+        "n": 5
+      },
+      "clarification": {
+        "passed": 0,
+        "n": 1
+      },
+      "correction_handling": {
+        "passed": 1,
+        "n": 1
+      },
+      "naturalness": {
+        "passed": 4,
+        "n": 6
+      }
+    },
+    "tasks": 6,
+    "independent_human": false,
+    "pending_independent_human": true,
+    "keyword_quality_score": false
+  },
+  "summary": {
+    "knowledge": {
+      "dump_all": {
+        "n": 3,
+        "passed": 0
+      },
+      "timestamp_sort": {
+        "n": 3,
+        "passed": 0
+      },
+      "provenance": {
+        "n": 3,
+        "passed": 3
+      }
+    },
+    "conversation_clarify": {
+      "unresolved_referent": {
+        "n": 3,
+        "passed": 3
+      },
+      "model_alone_frozen": {
+        "n": 1,
+        "passed": 0
+      }
+    },
+    "mathematics": {
+      "calculator_direct": {
+        "n": 6,
+        "passed": 2
+      },
+      "interpret_compile": {
+        "n": 6,
+        "passed": 1
+      }
+    },
+    "coding_api": {
+      "direct": {
+        "n": 2,
+        "passed": 0
+      },
+      "nexus": {
+        "n": 2,
+        "passed": 0
+      }
+    },
+    "coding_coord": {
+      "direct": {
+        "n": 2,
+        "passed": 0
+      },
+      "nexus": {
+        "n": 2,
+        "passed": 0
+      }
+    }
+  },
+  "usage": {
+    "kind": "capability_followup_cpu_usage",
+    "backend": "cpu",
+    "gpu_used": false,
+    "metal_used": false,
+    "product_chat_usage_used": false,
+    "research_cpu_ledger_frozen_s": 3564.568,
+    "research_cpu_ledger_remaining_s": 35.432,
+    "research_cpu_ledger_debit_s": 0.0,
+    "model_calls": 20,
+    "inference_ran": 18,
+    "wall_s": 86.787,
+    "cap_s": 900.0,
+    "call_cap": 80,
+    "memory": {
+      "parent_pid": 55947,
+      "server_pid": 55972,
+      "parent_rss_mib": 36.438,
+      "server_rss_mib": 2045.656,
+      "combined_rss_mib": 2082.094,
+      "source": "ps_rss_kib",
+      "weight_file_is_not_memory": true
+    },
+    "acquired_solution_memory": false,
+    "ranking_policy_resumed": false,
+    "learning_to_learn_established": false,
+    "original_map_rescored": false,
+    "partial": false
+  },
+  "events": 20,
+  "api_audit_preserved": true,
+  "hash": "df3e216aa8c542d8864b14a8e44657a0e1e308493240fdac29f8753d6ccaae3c",
+  "startup": {
+    "status": "started",
+    "model": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "ngl": 0,
+    "device": "none",
+    "model_sha256": null
+  }
+}
