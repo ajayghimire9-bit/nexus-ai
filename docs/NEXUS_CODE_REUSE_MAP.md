@@ -1,5 +1,13 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## v3 stepwise residual search
+
+`seed/v3_stepwise_residual.py` reuses `apply_v3`, `execute_v3`,
+`support_io_invariant`, `EventMeter`, and the flat `9b4468b` runners.
+It adds a frozen φ_step over residual invariants plus specialist-probe
+profiles and a B=35 beam. It does not edit `apply_primitive_op`.
+[Protocol](NEXUS_SEED_V3_STEPWISE_RESIDUAL_PROTOCOL.md).
+
 ## v3 high-headroom investigation benchmark
 
 `seed/v3_headroom.py` adds a typed 24-operator catalogue and specialist

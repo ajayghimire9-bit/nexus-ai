@@ -1,6 +1,17 @@
 # NEXUS Seed — Research Registry
 
-## Current — v3_headroom Set A → Set B transfer, gates failed
+## Current — v3 stepwise residual search, Gate 2 failed
+
+`seed-v3-stepwise-residual-1`, protocol `f8c4c83`, artifact sha256
+`84fca19cec75db54ce6cfbd5ccdd085c1a33413694089e31341cc8372cb91f11`.
+Zero neural calls. Zero ledger debit. Gate 2 fail (23.250 vs 15.5;
+solve 3/8 vs φ 4/8). Depth 4 0.75, Depth 3 0.00. `9b4468b` untouched.
+Transfer not established. Ledger
+**3128.309460455996 used / 471.690539544004 remaining**.
+[Protocol](NEXUS_SEED_V3_STEPWISE_RESIDUAL_PROTOCOL.md),
+[results](NEXUS_SEED_V3_STEPWISE_RESIDUAL_RESULTS.md).
+
+## Previous — v3_headroom Set A → Set B transfer, gates failed
 
 `seed-v3-headroom-transfer-1`, protocol `3190714`, artifact sha256
 `4324e5d51f085c9738c1867002da10ef6f5daa47ea664377b66e7e33a62dd596`.

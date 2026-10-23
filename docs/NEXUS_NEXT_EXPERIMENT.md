@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not retune the failed transfer gates
+## Current next — do not retune stepwise after a failed call gate
+
+The [stepwise residual run](NEXUS_SEED_V3_STEPWISE_RESIDUAL_RESULTS.md)
+cut capped mean calls from 31.625 to 23.250 and raised Depth 4 solve
+from 0.25 to 0.75, but missed the `<= 15.5` Gate 2 and lost Depth 3
+(0.00 vs flat φ 0.75). Do not widen the beam or plant Depth 3
+templates after seeing these scores. Ranking stays paused. Ledger
+unchanged **3128.309460455996 used / 471.690539544004 remaining**.
+
+## Previous next — do not retune the failed transfer gates
 
 The [v3 transfer run](NEXUS_SEED_V3_HEADROOM_TRANSFER_RESULTS.md) failed
 Gate 2: capped `φ` mean 31.625 is not half of untrained 31.0. Untruncated

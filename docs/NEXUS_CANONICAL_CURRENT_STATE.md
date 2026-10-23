@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — v3_headroom Set A → Set B transfer (results)
+## Current — stepwise residual search (results)
+
+[Protocol](NEXUS_SEED_V3_STEPWISE_RESIDUAL_PROTOCOL.md),
+[results](NEXUS_SEED_V3_STEPWISE_RESIDUAL_RESULTS.md). Implementation
+`f8c4c83` on `cursor/seed-v3-stepwise-residual` (base `9b4468b`).
+Verifier `valid: true`. Zero neural calls. Zero ledger debit.
+Wall 2.139 s. Gate 2 fail (`stepwise` 23.250 calls vs half of
+untrained 15.5; solve 3/8 vs flat φ 4/8). Depth 4 0.75 vs φ 0.25;
+Depth 3 0.00 vs φ 0.75. `9b4468b` artifact untouched. Transfer not
+established. Ledger
+**3128.309460455996 used / 471.690539544004 remaining**.
+
+## Previous — v3_headroom Set A → Set B transfer (results)
 
 [Protocol](NEXUS_SEED_V3_HEADROOM_TRANSFER_PROTOCOL.md),
 [results](NEXUS_SEED_V3_HEADROOM_TRANSFER_RESULTS.md). Implementation
