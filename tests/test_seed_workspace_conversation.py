@@ -176,6 +176,25 @@ def test_ordinary_chat_is_not_forced_into_sum_rows_schema(pair):
     assert 'Workspace state (generated from the store' in prompt
 
 
+def test_new_request_supersedes_pending_clarification(pair):
+    first = send(pair, 'Implement slug(left, right) as a hyphen join.')
+    assert first['chat']['context']['workspace']['pending_clarification']['kind'] == 'coding_workspace'
+    listed = send(pair, 'List coding workspaces instead.')
+    assert 'allowed coding workspaces' in listed['text'].lower()
+    send(pair, 'Implement slug(left, right) as a hyphen join.')
+    cancelled = send(pair, 'Never mind.')
+    assert cancelled['chat']['context']['workspace']['pending_clarification'] is None
+    assert 'dropped' in cancelled['text'].lower()
+    send(pair, 'Implement slug(left, right) as a hyphen join.')
+    flight = send(pair, 'Book me a flight to Paris tomorrow morning.')
+    assert flight['chat']['context']['workspace']['pending_clarification'] is None
+    assert 'outside the supported' in flight['text'].lower()
+    send(pair, 'Implement slug(left, right) as a hyphen join.')
+    state = send(pair, 'What file is selected?')
+    assert state['chat']['context']['workspace']['pending_clarification'] is None
+    assert 'selected resource' in state['text'].lower() or 'none' in state['text'].lower()
+
+
 def test_missing_coding_workspace_asks_the_needed_question(pair):
     result = send(pair, 'Implement midpoint(a, b) as the average of the two numbers.')
     assert result['chat']['messages'][-1]['status'] == 'clarification'

@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — six-area comparison (results)
+## Current — interrupt, bottleneck and fresh transfer (implementation)
+
+Branch `cursor/seed-interrupt-and-transfer` from reviewed `99c7341`. Protocol
+[NEXUS_SEED_INTERRUPT_TRANSFER_PROTOCOL.md](NEXUS_SEED_INTERRUPT_TRANSFER_PROTOCOL.md).
+New requests supersede pending clarification. Non-unique `old_text` may fall
+back to a complete-file replace. Docs may omit `doc_id`. Fixed investigation
+policy stays the default. Scoring is blocked until this protocol is committed.
+Ledger unchanged:
+**2369.450522455996 used / 1230.549477544004 remaining**.
+
+## Previous — six-area comparison (results)
 
 [Protocol](NEXUS_SEED_SIX_AREA_COMPARISON_PROTOCOL.md),
 [results](NEXUS_SEED_SIX_AREA_COMPARISON_RESULTS.md). Implementation `b50a642`

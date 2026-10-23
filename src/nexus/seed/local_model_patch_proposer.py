@@ -143,6 +143,19 @@ def node_indent(source: str, node: ast.AST) -> str:
     return line[: len(line) - len(line.lstrip())]
 
 
+def looks_complete_source(text: str, path: str) -> bool:
+    """True when new_text is a whole-file replacement, not a snippet."""
+    if not text or not text.strip():
+        return False
+    if path.endswith(".py"):
+        try:
+            tree = ast.parse(text)
+        except SyntaxError:
+            return False
+        return any(isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) for n in tree.body)
+    return len(text) >= 8
+
+
 def inserted_definition_name(new_text: str) -> str | None:
     match = re.search(r"^\s*(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", new_text, flags=re.M)
     return match.group(1) if match else None
@@ -247,7 +260,10 @@ def validate_patch(payload: dict[str, Any], files: dict[str, str]) -> dict[str, 
                 raise ValueError(f"missing_target_file:{path}")
             if old_text:
                 if files[path].count(old_text) != 1:
-                    raise ValueError(f"old_text_not_unique:{path}")
+                    if looks_complete_source(new_text, path) and new_text != files[path]:
+                        old_text = ""
+                    else:
+                        raise ValueError(f"old_text_not_unique:{path}")
             elif new_text == files[path]:
                 raise ValueError("no_op_replace")
             source = new_text if not old_text else files[path].replace(old_text, new_text, 1)

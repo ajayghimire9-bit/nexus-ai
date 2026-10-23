@@ -490,11 +490,11 @@ class SymbioticAgentLoop:
         if task.docs:
             t0 = time.perf_counter()
             kr = KnowledgeAndDocRetriever()
-            for d in task.docs:
+            for i, d in enumerate(task.docs):
                 kr.register_document(
-                    doc_id=d["doc_id"],
-                    title=d["title"],
-                    content=d["content"],
+                    doc_id=str(d.get("doc_id") or d.get("title") or f"doc_{i}"),
+                    title=d.get("title") or str(d.get("doc_id") or f"doc_{i}"),
+                    content=d.get("content") or "",
                     version=d.get("version", "1.0.0"),
                     grounded_bindings=d.get("grounded_bindings", {}),
                 )

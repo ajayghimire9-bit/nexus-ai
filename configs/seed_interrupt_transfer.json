@@ -1,0 +1,145 @@
+{
+  "id": "seed-interrupt-transfer-1",
+  "artifact_stem": "seed_interrupt_transfer",
+  "base_sha": "99c734187e02dc7f182083eb6ddf1a6de9fb962d",
+  "parent_protocol_commit": "99c734187e02dc7f182083eb6ddf1a6de9fb962d",
+  "carried_used_s": 2369.450522455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_policy_promoted": false,
+  "seeds": [87101],
+  "source_tasks": 2,
+  "assessment_tasks": 2,
+  "out_of_grammar_tasks": 0,
+  "operators": ["reverse", "increment", "double", "abs_val", "filter_even", "unique_stable"],
+  "program_lengths": [2, 3],
+  "controller": {
+    "shortlist_limit": 3,
+    "allow_questions": true,
+    "max_questions_per_task": 2,
+    "probe_min_disagreement_ratio": 0.15,
+    "max_candidates_checked": 24,
+    "max_constructed_probes": 4,
+    "enable_widening": false
+  },
+  "probes": [[2, 2], [4, 4], [6, 6], [2, 4], [4, 6], [2, 6], [-3, 0, 2, 2, 5], [-4, -1, 0, 3, 3]],
+  "source_validation": [[-21, 0, 14, 14, 23], [25, -27, 0, 25]],
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_budget_steps": 4,
+  "expected_grid": {
+    "investigation_episodes": 4,
+    "coding_cells": 3,
+    "transfer_cells": 15,
+    "language_cells": 8
+  },
+  "diagnose_coding": [
+    {
+      "id": "py_slug_join",
+      "family": "missing_function",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function slug(left, right) that lowercases both strings and joins them with one hyphen.",
+      "files": {"text.py": "def echo(text):\n    return text\n"},
+      "public": [{"entry": "text.slug", "input": ["Src", "Alpha"], "unpack_args": true, "expected": "src-alpha"}],
+      "assessment": [
+        {"entry": "text.slug", "input": ["A", "B"], "unpack_args": true, "expected": "a-b"}
+      ]
+    },
+    {
+      "id": "py_levy_then_credit",
+      "family": "multi_file",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Add the levy to the raw amount, then subtract the credit from that billed amount.",
+      "files": {
+        "levy.py": "def apply_levy(amount, rate):\n    return amount\n",
+        "bill.py": "from levy import apply_levy\ndef due(item):\n    billed = apply_levy(item['amount'], item['levy'])\n    return billed + item['credit']\n"
+      },
+      "public": [{"entry": "bill.due", "input": {"amount": 80, "levy": 0.25, "credit": 5}, "expected": 95.0}],
+      "assessment": [
+        {"entry": "bill.due", "input": {"amount": 40, "levy": 0.1, "credit": 1}, "expected": 43.0}
+      ]
+    },
+    {
+      "id": "py_retry_last",
+      "family": "documented_api",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Honor the documented retry_limit: the last attempt number equal to the limit is still allowed.",
+      "files": {"retry.py": "def allowed(item):\n    return item['attempt'] < item['retry_limit']\n"},
+      "docs": [{"title": "retry_limit", "content": "Attempts 1..retry_limit inclusive are allowed. attempt == retry_limit must return True."}],
+      "public": [{"entry": "retry.allowed", "input": {"attempt": 3, "retry_limit": 3}, "expected": true}],
+      "assessment": [
+        {"entry": "retry.allowed", "input": {"attempt": 3, "retry_limit": 3}, "expected": true},
+        {"entry": "retry.allowed", "input": {"attempt": 4, "retry_limit": 3}, "expected": false}
+      ]
+    }
+  ],
+  "transfer": {
+    "source": {
+      "id": "py_hi_inclusive_src",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow n equal to the maximum.",
+      "files": {"hi.py": "def keep(item):\n    return item['n'] < item['max']\n"},
+      "public": [{"entry": "hi.keep", "input": {"n": 4, "max": 4}, "expected": true}]
+    },
+    "later": [
+      {
+        "id": "py_width_ok",
+        "family": "comparison_boundary",
+        "reuse_appropriate": true,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Allow width equal to the bound.",
+        "files": {"width.py": "def ok(item):\n    return item['width'] < item['bound']\n"},
+        "public": [{"entry": "width.ok", "input": {"width": 6, "bound": 6}, "expected": true}],
+        "assessment": [
+          {"entry": "width.ok", "input": {"width": 6, "bound": 6}, "expected": true},
+          {"entry": "width.ok", "input": {"width": 7, "bound": 6}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_keep_exclusive",
+        "family": "comparison_boundary",
+        "reuse_appropriate": false,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Reject values equal to the cutoff; only strictly smaller values pass.",
+        "files": {"cut.py": "def pass_(item):\n    return item['v'] < item['cut']\n"},
+        "public": [{"entry": "cut.pass_", "input": {"v": 5, "cut": 5}, "expected": false}],
+        "assessment": [
+          {"entry": "cut.pass_", "input": {"v": 5, "cut": 5}, "expected": false},
+          {"entry": "cut.pass_", "input": {"v": 4, "cut": 5}, "expected": true}
+        ]
+      },
+      {
+        "id": "py_pair_label",
+        "family": "missing_function",
+        "reuse_appropriate": false,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Create function pair(a, b) that joins the two strings with a colon.",
+        "files": {"lab.py": "def echo(text):\n    return text\n"},
+        "public": [{"entry": "lab.pair", "input": ["x", "y"], "unpack_args": true, "expected": "x:y"}],
+        "assessment": [
+          {"entry": "lab.pair", "input": ["a", "b"], "unpack_args": true, "expected": "a:b"}
+        ]
+      }
+    ]
+  },
+  "conversation": [
+    {"id": "need_workspace", "text": "Implement slug(left, right) as a hyphen join.", "kind": "clarification", "rubric": "Asks which coding workspace."},
+    {"id": "list_instead", "text": "List coding workspaces instead.", "kind": "correction", "rubric": "Lists workspaces; does not keep asking the old question only."},
+    {"id": "need_again", "text": "Implement slug(left, right) as a hyphen join.", "kind": "clarification", "rubric": "Asks which coding workspace."},
+    {"id": "cancel", "text": "Never mind.", "kind": "cancel", "rubric": "Drops the pending question."},
+    {"id": "need_third", "text": "Implement slug(left, right) as a hyphen join.", "kind": "clarification", "rubric": "Asks which coding workspace."},
+    {"id": "flight", "text": "Book me a flight to Paris tomorrow morning.", "kind": "unsupported", "rubric": "Refuses; pending clarification is gone."},
+    {"id": "need_fourth", "text": "Implement slug(left, right) as a hyphen join.", "kind": "clarification", "rubric": "Asks which coding workspace."},
+    {"id": "topic_file", "text": "What file is selected?", "kind": "topic_change", "rubric": "Answers real state; does not re-ask the workspace question as the only act."}
+  ],
+  "gemini": "NOT_RUN"
+}

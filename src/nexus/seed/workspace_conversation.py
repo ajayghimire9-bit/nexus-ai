@@ -27,7 +27,9 @@ CHAT_SYSTEM = (
     'You cannot run tools or change files from this prompt. Do not claim a file was written, '
     'a program ran, or a procedure was saved. If the user wants a spreadsheet transform, say '
     'they should name a local CSV and ask for grouped totals or individual rows. '
-    'If the workspace header names a pending clarification, ask that question. '
+    'If the workspace header names a pending clarification AND the user is answering it, ask that question. '
+    'If the user changed topic, cancelled, corrected course, or made an unsupported request, '
+    'do not repeat the old clarification. '
     'Describe the actual selected file or coding workspace when asked; do not invent files.'
 )
 
@@ -102,6 +104,13 @@ def score_workspace_reply(text: str, ws: dict, header_meta: dict | None = None) 
     }
 UNSAFE = ('delete my', 'rm -', 'os.system', '__import__', 'buy stock', 'buy stocks',
           'send email', 'http://', 'https://', 'eval(', 'exec(', 'subprocess', 'format disk')
+OUTSIDE_TOOLS = (
+    'book me', 'book a flight', 'book a hotel', 'order a pizza', 'buy me a',
+)
+CANCEL_PENDING = (
+    'never mind', 'forget that', 'forget it', 'cancel that', 'drop that',
+    'stop asking', 'nevermind',
+)
 DATA_SUM = ('summarize', 'summary', 'totals', 'total ', 'grouped', 'group by', 'per region', 'by region')
 DATA_ROWS = ('individual', 'records', 'row-level', 'each row', 'line item', 'list the', 'list records')
 ORDER_ASC = ('smallest', 'ascending', 'low to high')
@@ -372,10 +381,18 @@ class WorkspaceTurn:
     def dispatch(self):
         if self.session.stopped or self.session.cancelled.is_set():
             raise ValueError('cancel_or_resume_required')
-        if any(p in self.text for p in UNSAFE):
+        if any(p in self.text for p in UNSAFE) or self._is_outside_tools():
             self.ws['pending_clarification'] = None
-            self.card('Unsupported request', dict(executed=False, source='workspace_policy'))
+            self.card('Unsupported request', dict(executed=False, source='workspace_policy',
+                                                 superseded_pending=True))
             return 'That request is outside the supported local tools. No file was changed and no program ran.', 'clarification', False
+        if self.ws.get('pending_clarification') and any(p in self.text for p in CANCEL_PENDING):
+            self.ws['pending_clarification'] = None
+            self.card('Pending clarification dropped', dict(executed=False, reason='cancel'))
+            return 'Okay, I dropped the pending question. Nothing ran.', 'reply', False
+        if self._new_request_supersedes_pending():
+            self.ws['pending_clarification'] = None
+            self.card('Pending clarification superseded', dict(executed=False, reason='new_request'))
         from .symbiotic_workbench import SymbioticWorkbenchController
         wb_ctrl = SymbioticWorkbenchController(self.store, self.session, session_id=self.conversation.session_id)
         wb_routed = wb_ctrl.try_handle_chat(self)
@@ -478,6 +495,52 @@ class WorkspaceTurn:
             return False
         return self.parsed.grain is not None or self.parsed.relation in ('fresh', 'repeat', 'correction') or self._looks_like_data()
 
+    def _is_outside_tools(self):
+        return any(p in self.text for p in OUTSIDE_TOOLS)
+
+    def _lists_coding_workspaces(self):
+        if self.text in ('list coding workspaces', 'show coding workspaces', 'list repos'):
+            return True
+        return 'list' in self.text and 'workspace' in self.text
+
+    def _answers_pending(self, pending):
+        kind = (pending or {}).get('kind')
+        if kind == 'coding_workspace':
+            if self.CODING_SELECT.search(self.raw.strip()) or self._lists_coding_workspaces():
+                return True
+            names = []
+            listing = getattr(self.store, 'list_coding_workspaces', None)
+            if callable(listing):
+                names = [str(n).lower() for n in (listing() or [])]
+            return self.text in names
+        if kind == 'file':
+            return bool(self.parsed.paths)
+        if kind in ('grain', 'constraint', 'conflict', 'order', 'reference'):
+            return bool(self.parsed.understood or self.parsed.relation in ('fresh', 'repeat', 'correction'))
+        return False
+
+    def _new_request_supersedes_pending(self):
+        pending = self.ws.get('pending_clarification')
+        if not pending:
+            return False
+        if self._is_outside_tools() or any(p in self.text for p in CANCEL_PENDING):
+            return True
+        if self._answers_pending(pending):
+            return False
+        looks_coding = any(p in self.text for p in self.CODING_TASK) or self.text.startswith((
+            'implement ', 'fix the', 'add a ', 'write a ', 'create a ',
+        ))
+        if pending.get('kind') == 'coding_workspace' and looks_coding:
+            return False
+        if any(p in self.text for p in (
+            'what file', 'what workspace', 'which workspace is selected',
+            'what is selected', "what's selected",
+        )):
+            return True
+        if self.parsed.relation == 'correction':
+            return True
+        return pending.get('kind') in {'coding_workspace', 'file', 'grain'}
+
     def clarify(self, kind, message):
         self.ws['pending_clarification'] = dict(kind=kind, detail=message[:400])
         self.card('Clarification needed', dict(kind=kind, executed=False))
@@ -563,7 +626,7 @@ class WorkspaceTurn:
         match = self.CODING_SELECT.search(self.raw.strip())
         if match:
             return self.select_coding_workspace(match.group(1))
-        if self.text in ('list coding workspaces', 'show coding workspaces', 'list repos'):
+        if self._lists_coding_workspaces():
             names = self.store.list_coding_workspaces()
             self.card('Allowed coding workspaces', dict(workspaces=names, executed=False))
             if not names:

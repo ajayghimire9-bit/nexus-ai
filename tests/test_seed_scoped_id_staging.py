@@ -46,6 +46,27 @@ def test_insert_function_and_after_symbol():
     ast.parse(patched["math_util.py"])
 
 
+def test_non_unique_old_text_falls_back_to_complete_file_replace():
+    files = {"levy.py": "def apply_levy(amount, rate):\n    return amount\n"}
+    validated = validate_patch({"edits": [{
+        "path": "levy.py", "action": "replace",
+        "old_text": "amount",
+        "new_text": "def apply_levy(amount, rate):\n    return amount + rate\n",
+    }]}, files)
+    patched = apply_patch(files, validated)
+    ast.parse(patched["levy.py"])
+    assert "amount + rate" in patched["levy.py"]
+    try:
+        validate_patch({"edits": [{
+            "path": "levy.py", "action": "replace",
+            "old_text": "amount",
+            "new_text": "amount + rate",
+        }]}, files)
+        raise AssertionError("snippet fallback accepted")
+    except ValueError as exc:
+        assert "old_text_not_unique" in str(exc)
+
+
 def test_stale_source_hash_and_duplicate_definition_rejected():
     files = {"m.py": "def add(a, b):\n    return a + b\n"}
     try:
@@ -93,6 +114,34 @@ def test_generic_insert_function_is_not_handwritten_midpoint():
     assert "return None" in bodies or "return a" in bodies or "return a + b" in bodies
     assert "(a + b) / 2" not in bodies
     assert "return (a + b) / 2" not in bodies
+
+
+def test_docs_without_doc_id_do_not_crash_the_loop(tmp_path):
+    class Boom:
+        def complete(self, prompt, schema, max_tokens=None):
+            return dict(
+                content=json.dumps({"edits": [{
+                    "path": "retry.py", "action": "replace",
+                    "new_text": "def allowed(item):\n    return item['attempt'] <= item['retry_limit']\n",
+                }]}),
+                telemetry=dict(inference_ran=True, generated_tokens=4, input_tokens=4, request_wall_s=0.01),
+            )
+
+    task = AgentTaskPublicView(
+        "retry_doc", "development", "python_repo", "python",
+        "Honor the documented retry_limit.",
+        {"retry.py": "def allowed(item):\n    return item['attempt'] < item['retry_limit']\n"},
+        [{"entry": "retry.allowed", "input": {"attempt": 3, "retry_limit": 3}, "expected": True}],
+        [{"title": "retry_limit", "content": "attempt == retry_limit must return True."}],
+        budget_steps=2,
+    )
+    loop = SymbioticAgentLoop(
+        tmp_path / "doc", local_runtime=Boom(), allow_acquired_memory=False,
+        proposal_sources=("local_model",),
+    )
+    res = loop.solve(task)
+    assert res["outcome_category"] in {"solved", "failed"}
+    assert res.get("model_trace")
 
 
 def test_revision_queue_executes_appended_candidate(tmp_path):
