@@ -628,6 +628,8 @@ class WorkspaceTurn:
             return self.select_coding_workspace(match.group(1))
         if self._lists_coding_workspaces():
             names = self.store.list_coding_workspaces()
+            if (self.ws.get('pending_clarification') or {}).get('kind') == 'coding_workspace':
+                self.ws['pending_clarification'] = None
             self.card('Allowed coding workspaces', dict(workspaces=names, executed=False))
             if not names:
                 return 'No allowed coding workspaces are registered under this local store.', 'clarification', False

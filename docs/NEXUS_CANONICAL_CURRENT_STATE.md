@@ -1,14 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — interrupt, bottleneck and fresh transfer (implementation)
+## Current — interrupt, bottleneck and fresh transfer (results)
 
-Branch `cursor/seed-interrupt-and-transfer` from reviewed `99c7341`. Protocol
-[NEXUS_SEED_INTERRUPT_TRANSFER_PROTOCOL.md](NEXUS_SEED_INTERRUPT_TRANSFER_PROTOCOL.md).
-New requests supersede pending clarification. Non-unique `old_text` may fall
-back to a complete-file replace. Docs may omit `doc_id`. Fixed investigation
-policy stays the default. Scoring is blocked until this protocol is committed.
-Ledger unchanged:
-**2369.450522455996 used / 1230.549477544004 remaining**.
+[Protocol](NEXUS_SEED_INTERRUPT_TRANSFER_PROTOCOL.md),
+[results](NEXUS_SEED_INTERRUPT_TRANSFER_RESULTS.md). Implementation `8fa9864`
+on `cursor/seed-interrupt-and-transfer`. Verifier `valid: true`. Cancel,
+unsupported and topic-change turns now clear pending clarification. Documented
+retry passed after the `doc_id` crash fix; levy still dies on invalid edits;
+slug still omits the new function. Repair memory passed the appropriate later
+instance, failed the exclusive counterexample, and did not apply to a
+different family. Fixed investigation policy stays the default: learned used
+fewer calls here and matched worse. No promotion. Ledger
+**2395.682841455996 used / 1204.317158544004 remaining**.
 
 ## Previous — six-area comparison (results)
 
