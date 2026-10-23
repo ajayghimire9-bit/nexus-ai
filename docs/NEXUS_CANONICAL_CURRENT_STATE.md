@@ -1,21 +1,19 @@
 # NEXUS Seed — Current State
 
-## Current — scoped identification, charged index, insertion and staging (implementation)
+## Current — scoped identification / staging development pilot (results)
 
-Branch `cursor/seed-scoped-id-staging` from reviewed `0a8df5d`. Protocol
-[NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md](NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md).
-Publish requires a hash-bound passing test receipt; in-place staged mutation
-invalidates it. Class-scope insertion, insert-after a class symbol, and
-in-scope duplicates are enforced. Per-file generation passes earlier staged
-edits into later prompts. Repair memory stores parameterized AST transforms,
-acquires them only from genuine public-passing source solves, and reports
-memory vs exact-cache vs ordinary-template vs none. The verifier requires the
-expected assessment grid (30 investigation / 18 coding / 2 transfer / 3
-conversation), replays `final_files`, and reconstructs completions and costs
-from raw traces. `identified` counts only `identified_within_catalogue`.
-Closed `local_model_runtime.py` hash unchanged. Scoring is blocked until this
-protocol is committed. Ledger unchanged:
-**2259.632103455996 used / 1340.367896544004 remaining**.
+[Protocol](NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md),
+[results](NEXUS_SEED_SCOPED_ID_STAGING_RESULTS.md). Implementation `a646f88`
+on `cursor/seed-scoped-id-staging` from reviewed `0a8df5d`. Verifier
+`valid: true` on the expected grid (30 investigation / 18 coding / 2 transfer /
+3 conversation); 20 final patches replayed. Widening removed false certainty
+(7 → 0) and still identified 0 catalogue programs. Installed Qwen 0.5B proposed
+live patches: first-round private pass on `py_score_gate` (single) and
+`py_inclusive_window_src` (per-file); fail→revise on label-join and both
+null-default tasks did not recover. Genuine source-acquired repair tied the
+ordinary template (2/2) and beat the exact cache (0/2); one transfer cell also
+passes unpatched. Learning-to-learn unestablished. No promotion. Ledger
+**2314.297441455996 used / 1285.702558544004 remaining**.
 
 ## Previous — widening/coding development pilot (protocol before scoring)
 
