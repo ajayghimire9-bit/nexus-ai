@@ -1,6 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — slot-3 copy / KeyError trigger (results)
+## Current — diagnostic-only revision (results)
+
+[Protocol](NEXUS_SEED_DIAGNOSTIC_REVISION_PROTOCOL.md),
+[results](NEXUS_SEED_DIAGNOSTIC_REVISION_RESULTS.md). Implementation
+`a36c3d2` on `cursor/seed-worker-div-confirm` (base `3b88ed3`).
+Verifier `valid: true`. Live public 3/4, private 3/4 (`box` first-shot
+projected sum; `quota` and `meet` pass; `lane` C2 is `/lab/` after
+KeyError diagnostics with no C1 echo). Four cells finished; RSS
+stayed ~2080 MiB. Historical scores untouched. Ledger
+**3506.581022455996 used / 93.418977544004 remaining**.
+
+## Previous — slot-3 copy / KeyError trigger (results)
 
 [Protocol](NEXUS_SEED_SLOT3_COPY_PROTOCOL.md),
 [results](NEXUS_SEED_SLOT3_COPY_RESULTS.md). Implementation

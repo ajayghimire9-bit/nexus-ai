@@ -1,10 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — the 1.5B coder ignores a used structural slot
+## Current next — missing-field tag after diagnostic KeyError
 
-Protocol [NEXUS_SEED_DIAGNOSTIC_REVISION_PROTOCOL.md](NEXUS_SEED_DIAGNOSTIC_REVISION_PROTOCOL.md)
-is locked. Live scoring has not run. The
-[slot-3 copy run](NEXUS_SEED_SLOT3_COPY_RESULTS.md) passed
+The [diagnostic-revision run](NEXUS_SEED_DIAGNOSTIC_REVISION_RESULTS.md)
+passed public 3/4 and private 3/4. C2 no longer pastes the failed C1
+source; `lane` wrote `/lab/` instead of echoing the f-string. Bag-sum
+passed on the first completion of a fresh id. Completions stayed at
+2 per task and the fourth cell finished. Do not plant `.get`. Do not
+resume ranking or memory. Ledger
+**3506.581022455996 used / 93.418977544004 remaining**.
+
+## Previous next — the 1.5B coder ignores a used structural slot
+
+The [slot-3 copy run](NEXUS_SEED_SLOT3_COPY_RESULTS.md) passed
 public 1/4 and private 1/4. Slot 3 now fires on an AST-identical
 KeyError copy and was used on `py_post_slash`; the coder recopied
 the bare subscript. Bag-sum still repeats `sum(container or [0])`
