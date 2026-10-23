@@ -1,11 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — one bounded Metal Best-of-4 smoke, then stop
+## Current next — do not retune after a failed Metal smoke
 
-The [Metal smoke protocol](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_PROTOCOL.md)
-is locked. After the protocol commit, run exactly one 2-cell live
-batch under `ExplicitMetalGrant(authorized=True)`. Do not debit the
-CPU 3564.568 s ledger. Do not retune stepwise. Ranking stays paused.
+The [Metal Best-of-4 smoke](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_RESULTS.md)
+ran under the grant and failed both cells: four identical code
+bodies and four identical uncited sentences. Do not widen
+temperature, plant `.get`, or reopen closed CPU artifacts. Ranking
+stays paused. CPU ledger **3564.568 s** remains frozen.
 
 ## Previous next — do not retune stepwise after a failed call gate
 
