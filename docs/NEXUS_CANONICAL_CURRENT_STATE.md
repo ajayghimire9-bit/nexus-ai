@@ -1,6 +1,37 @@
 # NEXUS Seed — Current State
 
-## Current — guarded-template reuse on fresh cases (results)
+## Current — four-bottleneck architecture & live-model benchmark (`seed-bottleneck-breaker-1`)
+
+[Protocol](NEXUS_SEED_BOTTLENECK_BREAKER_PROTOCOL.md),
+[results](NEXUS_SEED_BOTTLENECK_BREAKER_RESULTS.md). Pre-registered protocol
+`a686b71` on `codex/seed-bottleneck-breaker-v1` (from `33b9fde`). Verifier
+`valid: true` (`279` metered `EventMeter` execution events).
+1. **Bottleneck 1 (Proposer Interface)**: Upgrading `Qwen2.5-0.5B-Instruct` from
+   `starved_128` to symbol-targeted AST (`max_tokens=512`, `insert_function`,
+   `replace_function`, cross-file symbol routing, and call/return trace hints)
+   raised structural edit validity from `3/7` (`42.9%`) to **`11/11` (`100.0%`)**.
+2. **Bottleneck 2 (Pretrained Code Capacity + Grounded Conversation)**:
+   Upgrading from `Qwen2.5-0.5B-Instruct` to `Qwen2.5-Coder-1.5B-Instruct`
+   (`40` live GGUF completions, `25,061` input / `2,484` generated tokens)
+   doubled private pass rate on fresh coding tasks (`1/4` $\to$ `2/4`, `3/4`
+   public), and `1.5B-Coder` + closed-loop AST reached **`4/4` public / `3/4`
+   (`75.0%`) private pass**. Grounded workspace conversation met **`6/6`
+   rubrics** with `KnowledgeAndDocRetriever` document grounding on `3` turns.
+3. **Bottleneck 3 (Unseen Tasks via Test-Time Compute)**: Multi-round
+   `Interpret -> Plan -> Execute -> Inspect -> Revise` with call/return `locals`
+   tracing solved **`3/3` (`100%`)** unseen tasks on public and private tests.
+4. **Bottleneck 4 (Process-Level Learning-to-Learn via $\phi_{\text{diag}}$)**:
+   Trained on `6` disjoint source coding tasks (`py_bb_src_*`) and evaluated on
+   `6` unseen assessment repositories (`py_bb_eval_*`),
+   `learned_diag_policy_capsules_cleared` (with `RepairSchemaStore` and
+   `OrdinaryExactCache` cleared, `0` memory reuses, `0` cache hits) solved
+   **`6/6`** on private tests in **`14` metered worker evaluations** vs **`41`**
+   for `fixed_default_order` (**`65.9%` fewer worker executions**), reverting to
+   `41` under `diag_policy_reset_control` and `22` under
+   `diag_policy_shuffled_control` (`process_level_learning_to_learn_established: true`).
+Ledger **2668.864910455996 used / 931.135089544004 remaining**.
+
+## Previous — guarded-template reuse on fresh cases (results)
 
 [Protocol](NEXUS_SEED_GUARDED_TEMPLATE_REUSE_PROTOCOL.md),
 [results](NEXUS_SEED_GUARDED_TEMPLATE_REUSE_RESULTS.md). Implementation
