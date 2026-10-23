@@ -18,7 +18,8 @@ KIND='seed_conversation_turn'
 WORKSPACE=dict(selected_file=None,last_procedure_id=None,last_intent=None,last_output_path=None,
     last_correction=None,last_source_sha=None,pending_clarification=None,last_saved_explicit=False,
     last_program=None,last_bindings=None,last_request_kind=None,
-    selected_coding_workspace=None,last_coding_request=None,coding_allow_acquired=False)
+    selected_coding_workspace=None,last_coding_request=None,coding_allow_acquired=False,
+    selected_document_id=None,last_topic=None,last_user_status=None,last_executed_action=None)
 INITIAL=dict(active_name=None,lab='coding',pending=None,last_teaching=None,workspace=WORKSPACE)
 
 
@@ -145,9 +146,11 @@ def validate_turn(p,session):
     w=c['workspace']
     if type(w) is not dict or set(w)!=set(WORKSPACE):raise ValueError('chat_workspace_schema')
     for key in ('selected_file','last_output_path','last_correction','last_source_sha',
-                'selected_coding_workspace','last_coding_request'):
+                'selected_coding_workspace','last_coding_request','last_topic','last_executed_action'):
         val=w[key]
         if val is not None and (type(val) is not str or not 1<=len(val)<=500 or '\x00' in val):raise ValueError('chat_workspace_text')
+    if w['selected_document_id'] is not None and (type(w['selected_document_id']) is not str or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}',w['selected_document_id'])):raise ValueError('chat_workspace_document')
+    if w['last_user_status'] is not None and w['last_user_status'] not in ('Draft','Running','Executed','Tests passed','Needs clarification','Failed'):raise ValueError('chat_workspace_status')
     if type(w['coding_allow_acquired']) is not bool:raise ValueError('chat_workspace_flag')
     if w['last_procedure_id'] is not None and (type(w['last_procedure_id']) is not str or not re.fullmatch(r'[a-f0-9]{12,32}',w['last_procedure_id'])):raise ValueError('chat_workspace_procedure')
     if type(w['last_saved_explicit']) is not bool:raise ValueError('chat_workspace_flag')
@@ -161,10 +164,10 @@ def validate_turn(p,session):
         if any(type(step) is not dict or type(step.get('op')) is not str for step in w['last_program']):raise ValueError('chat_workspace_program')
     if w['last_bindings'] is not None:
         if type(w['last_bindings']) is not dict or len(json.dumps(w['last_bindings'],allow_nan=False))>800:raise ValueError('chat_workspace_bindings')
-    if w['last_request_kind'] is not None and w['last_request_kind'] not in ('fresh','repeat','correction','reuse','coding'):raise ValueError('chat_workspace_kind')
+    if w['last_request_kind'] is not None and w['last_request_kind'] not in ('fresh','repeat','correction','reuse','coding','ordinary','document','reasoning','knowledge'):raise ValueError('chat_workspace_kind')
     pending_w=w['pending_clarification']
     if pending_w is not None:
-        if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order','constraint','conflict','coding_workspace') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
+        if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order','constraint','conflict','coding_workspace','document') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
         if pending_w.get('detail') is not None and (type(pending_w['detail']) is not str or len(pending_w['detail'])>400):raise ValueError('chat_workspace_pending')
     s=lib.state(session);known={e.fingerprint for e in session.journal.snapshot()}
     if type(p['evidence_refs']) is not list or len(p['evidence_refs'])>8 or any(v not in known for v in p['evidence_refs']):raise ValueError('chat_evidence_reference')
@@ -194,10 +197,16 @@ class Conversation:
         scope='Finite authored concepts, bounded list/relation programs and known-grid movement.'
         runtime=None
         if self.store is not None:
-            scope+=' Local CSV grouped-totals and row listing through vetted adapters; reusable saved procedures. Optional owned local model for ordinary chat and structured tool parse.'
+            scope+=' Local CSV grouped-totals and row listing through vetted adapters; reusable saved procedures. Optional owned local model for ordinary chat and structured tool parse. Explicit document vault and coding sandbox.'
             runtime=self.store.runtime_status()
-        return dict(messages=rows,context=context(self.session),state=self.brain.inspect(),stopped=self.session.stopped,
-            limits=dict(turns=160,text_characters=3000),supported_scope=scope,local_runtime=runtime)
+        ctx=context(self.session)
+        extra={}
+        if self.store is not None:
+            from .unified_chat import inspector_payload,knowledge_snapshot,recover_selected_resources
+            extra=dict(knowledge=knowledge_snapshot(self.store),inspector=inspector_payload(self.store,ctx.get('workspace')),
+                       recovery=recover_selected_resources(self.store,ctx.get('workspace') or {}))
+        return dict(messages=rows,context=ctx,state=self.brain.inspect(),stopped=self.session.stopped,
+            limits=dict(turns=160,text_characters=3000),supported_scope=scope,local_runtime=runtime,**extra)
 
     def send(self,text,identifier):
         if type(identifier) is not str or not re.fullmatch('[a-f0-9]{32}',identifier):raise ValueError('chat_request_id')
@@ -210,6 +219,8 @@ class Conversation:
         cards=[];status='reply';save=False
         def card(title,data):cards.append(dict(title=title,data=data))
         try:
+            if intent.kind not in ('stop','resume') and (self.session.stopped or self.session.cancelled.is_set()):
+                raise ValueError('cancel_or_resume_required')
             reply,status,save=self.execute(intent,ctx,card,text)
         except (ValueError,TypeError,KeyError,TimeoutError) as exc:
             reply=self.friendly_error(str(exc));status='clarification' if str(exc).startswith('clarify_') else 'error';card('What happened',dict(reason=str(exc),previous_verified_skills_retained=True))

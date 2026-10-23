@@ -346,15 +346,18 @@ saved-data only. [Guide](NEXUS_LOCAL_ASSISTANT_RUNTIME.md),
 
 - Chat: seed/conversation.py parses bounded intents and delegates to SharedBrain.
   Messages/pending references are Session/E1 Journal events, saved by the existing
-  storage. No second knowledge store. seed/workspace_conversation.py handles
-  local CSV tools and explicit capsules on that same turn context; it reuses
+  storage. seed/workspace_conversation.py handles local CSV tools, coding
+  workspaces and explicit capsules on that same turn context; it reuses
   assistant_benchmark_v2 / ParameterizedAdapterTemplate / PersistentLocalRuntime
-  rather than a parallel executor. Fresh requests do not inherit filters; save
-  stores the executed AST. seed/conversation_capability.py only orchestrates
-  those existing tools plus config_repair and Session world probes.
-  seed/lab.py routes typed chat requests;
-  web/learning-lab/chat.* renders replies/cards with textContent. Supporting
-  views share the same Session ID. [Guide](NEXUS_SEED_CONVERSATION_WORKSPACE.md).
+  rather than a parallel executor. seed/unified_chat.py is a product
+  orchestration layer over that path plus KnowledgeVault / LexicalCapsuleStore
+  for explicit document save/retrieve. It does not replace RepairSchemaStore or
+  add a second journal. Fresh requests do not inherit filters; save stores the
+  executed AST or an explicit vault row. Persistence is not learning-to-learn.
+  seed/conversation_capability.py only orchestrates those existing tools plus
+  config_repair and Session world probes. seed/lab.py routes typed chat and
+  knowledge drawer requests; web/learning-lab/chat.* is the single local chat
+  page. [Guide](NEXUS_SEED_CONVERSATION_WORKSPACE.md).
 
 - Shared labs: seed/shared_brain.py is an adapter over Session, not another agent
   state store. seed/skill_library.py derives typed skill revisions and source-only

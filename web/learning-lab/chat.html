@@ -1,207 +1,85 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NEXUS Seed · Unified Master Workspace</title><link rel="stylesheet" href="/chat.css"><script src="/chat.js" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NEXUS Seed</title><link rel="stylesheet" href="/chat.css"><script src="/chat.js" defer></script></head>
 <body>
 <div class="shell">
 <button class="backdrop" id="backdrop" aria-label="Close sidebar" hidden></button>
-<aside class="sidebar" id="sidebar" aria-label="Conversations and memory">
- <a class="brand" href="/chat" aria-label="NEXUS Seed home"><span class="brand-mark" aria-hidden="true">✦</span><span>NEXUS <b>Seed</b><small>Unified Master Architecture</small></span></a>
- <button id="new" class="new-button"><span aria-hidden="true">＋</span> New conversation <span class="keycap">↗</span></button>
- <div class="side-heading">WORKSPACE VIEWS</div>
- <div class="nav-pills" role="tablist" aria-label="Unified workspace views">
-  <button id="tab-chat" class="nav-pill active" data-view="chat" role="tab" aria-selected="true">💬 Chat &amp; Dialogue</button>
-  <button id="tab-master" class="nav-pill" data-view="master" role="tab" aria-selected="false">🧠 15-Component Hub</button>
-  <button id="tab-labs" class="nav-pill" data-view="labs" role="tab" aria-selected="false">🧪 4 Labs &amp; 6×6 World</button>
-  <button id="tab-workbench" class="nav-pill" data-view="workbench" role="tab" aria-selected="false">📊 Phase 1–7 &amp; Ledger</button>
+<aside class="sidebar" id="sidebar" aria-label="Conversations and knowledge">
+ <a class="brand" href="/chat" aria-label="NEXUS Seed home"><span class="brand-mark" aria-hidden="true">✦</span><span>NEXUS <b>Seed</b><small>Local conversation</small></span></a>
+ <button id="new" class="new-button"><span aria-hidden="true">＋</span> New chat</button>
+ <div class="side-heading">CONVERSATIONS <span id="conversation-count">0</span></div>
+ <div id="conversations" class="conversations"><p class="side-empty">Saved conversations stay on this device.</p></div>
+ <details class="knowledge-drawer" id="knowledge-drawer">
+  <summary>Knowledge <span id="knowledge-count">0</span></summary>
+  <p class="side-empty">Documents, bindings and saved procedures. Saving is explicit.</p>
+  <div id="knowledge-docs"></div>
+  <div id="knowledge-capsules"></div>
+  <div id="knowledge-procedures"></div>
+ </details>
+ <div class="sidebar-bottom">
+  <div class="local-note"><span class="status-dot"></span> Local workspace <button id="evidence" class="quiet-button" type="button">Inspector</button></div>
  </div>
- <div class="side-heading">YOUR CONVERSATIONS <span id="conversation-count">0</span></div><div id="conversations" class="conversations"><p class="side-empty">Saved conversations stay on this device.</p></div>
- <div class="side-heading">SHARED MEMORY <span id="memory-count">0</span></div><div id="memory" class="memory"><p class="side-empty">A new word. A useful little skill.<br>What will you teach me first?</p></div>
- <details class="world-panel" id="world-panel" open><summary><span>◈ &nbsp; Our object world</span><span class="world-size">6 × 6</span></summary><div id="world-grid" class="world-grid" aria-label="Authored six by six world"></div><div id="world-objects" class="world-objects"></div><button id="show-world" class="quiet-button">Explore in conversation →</button></details>
- <div class="sidebar-bottom"><details><summary>Standalone lab pages <span>↗</span></summary><nav aria-label="Supporting labs"><a href="/labs#language" target="_blank" rel="noopener">Language Lab</a><a href="/labs#coding" target="_blank" rel="noopener">Coding Lab</a><a href="/labs#reasoning" target="_blank" rel="noopener">Reasoning Lab</a><a href="/labs#world" target="_blank" rel="noopener">World Lab</a><a href="/foundation" target="_blank" rel="noopener">Foundation Page</a><a href="/seed" target="_blank" rel="noopener">Classic Seed Page</a></nav></details><div class="local-note"><span class="status-dot"></span> Local workspace <a href="/experimental" target="_blank" rel="noopener" aria-label="Open research evidence">Evidence ↗</a></div></div>
 </aside>
 <main id="main">
  <header class="topbar">
   <div class="topbar-left">
    <button id="toggle-sidebar" class="icon-button" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebar">☰</button>
-   <span class="workspace-title">NEXUS Seed Unified Workspace <span class="header-badge">MASTER v1</span></span>
-   <div class="top-tabs" aria-label="Quick view switcher">
-    <button class="top-tab active" data-view="chat">Chat</button>
-    <button class="top-tab" data-view="master">Master Hub (15)</button>
-    <button class="top-tab" data-view="labs">Labs &amp; World</button>
-    <button class="top-tab" data-view="workbench">Workbench &amp; Ledger</button>
-   </div>
+   <span class="workspace-title" id="workspace-title">New conversation</span>
   </div>
-  <div class="topbar-actions"><span id="save-state" class="save-state">New conversation</span><button id="save" class="subtle-button">Save</button><button id="restore" class="icon-button" aria-label="Restore a saved conversation" title="Restore a saved conversation">↶</button><button id="speak" class="subtle-button" aria-label="Read the last reply with a local voice">Read aloud</button><button id="evidence" class="icon-button" aria-label="Open evidence details" title="Evidence details">ⓘ</button></div>
+  <div class="topbar-actions">
+   <span id="save-state" class="save-state">New conversation</span>
+   <button id="rename" class="subtle-button" type="button">Rename</button>
+   <button id="save" class="subtle-button" type="button">Save</button>
+   <button id="delete-chat" class="subtle-button danger" type="button">Delete</button>
+  </div>
  </header>
-
- <!-- VIEW 1: CHAT & NATURAL DIALOGUE -->
  <div id="view-chat" class="workspace-view">
   <div id="chat-scroll" class="chat-scroll" tabindex="-1">
-   <section id="welcome" class="welcome" aria-labelledby="welcome-title"><div class="welcome-symbol" aria-hidden="true">✦<span class="orbit orbit-one"></span><span class="orbit orbit-two"></span></div><div class="eyebrow">UNIFIED COGNITIVE ARCHITECTURE · 15 COMPONENTS ACTIVE</div><h1 id="welcome-title">Let’s learn something<br><span>new, together.</span></h1><p>Chat naturally (“How are you?”), teach a concept or skill, reason across relations and math,<br class="desktop-break"> or run the bounded exact-motif program-prior reuse demo &amp; bounded multi-reasoner integration suite.</p>
-   <div class="suggestions" aria-label="Conversation starters">
-    <button data-prompt="How are you?"><span class="suggestion-icon language-icon">✦</span><strong>Talk naturally</strong><span>“How are you?” or “Who are you?”</span><i aria-hidden="true">↗</i></button>
-    <button data-prompt='&quot;Flip&quot; means reverse the order of a sequence.'><span class="suggestion-icon coding-icon">⌘</span><strong>Immediate concept learning</strong><span>“Flip” means reverse the order of a sequence.</span><i aria-hidden="true">↗</i></button>
-    <button data-prompt="If A is north of B and B is north of C, where is A relative to C?"><span class="suggestion-icon reasoning-icon">◇</span><strong>Relational &amp; math deduction</strong><span>If A is north of B and B is north of C…</span><i aria-hidden="true">↗</i></button>
-    <button data-prompt="Did we achieve learning to learn?"><span class="suggestion-icon world-icon">⚡</span><strong>Did we achieve learning to learn?</strong><span>Check bounded program-prior reuse vs. held-out learning-to-learn.</span><i aria-hidden="true">↗</i></button>
-    <button data-prompt="What local CSV tools can you run?"><span class="suggestion-icon coding-icon">▤</span><strong>Local CSV workspace</strong><span>Grouped totals or individual rows; save and reuse a procedure.</span><i aria-hidden="true">↗</i></button>
-    <button data-prompt="List coding workspaces"><span class="suggestion-icon coding-icon">⌘</span><strong>Coding workspace</strong><span>Select an allowed repo, describe a task, inspect public-test results.</span><i aria-hidden="true">↗</i></button>
-   </div>
-   <div class="quick-strip">
-    <button class="subtle-button" data-prompt="Could you arrange these from smallest to largest? [4, 1, 3, 2]">Sort [4, 1, 3, 2] ↗</button>
-    <button class="subtle-button" data-prompt="Solve 3*x + 7 = 22">Solve 3*x + 7 = 22 ↗</button>
-    <button class="subtle-button" data-prompt="Write code to sort and remove duplicates on [3, 1, 3, 2]">Synthesize &amp; run code ↗</button>
-    <button class="subtle-button" data-prompt="A dax means a red object.">Teach “dax” ↗</button>
-   </div>
-   <div class="welcome-footnote"><span class="tiny-spark">✧</span> Every claim is backed by explicit evidence and verified before acceptance.</div></section>
+   <section id="welcome" class="welcome" aria-labelledby="welcome-title">
+    <div class="welcome-symbol" aria-hidden="true">✦</div>
+    <div class="eyebrow">LOCAL CHAT · 1.5B MODEL WHEN AVAILABLE</div>
+    <h1 id="welcome-title">Let’s learn something<br><span>in one conversation.</span></h1>
+    <p>Ask a question, attach a document, paste code, or request a supported calculation. You do not need to choose a lab.</p>
+    <div class="suggestions" aria-label="Conversation starters">
+     <button data-prompt="Hello"><strong>Talk</strong><span>Ordinary conversation</span></button>
+     <button data-prompt="What do we know about photophosphorylation?"><strong>Ask a source</strong><span>Retrieve a stored document</span></button>
+     <button data-prompt="Explain this code:&#10;```python&#10;def add(a, b):&#10;    return a + b&#10;```"><strong>Discuss code</strong><span>Pasted snippet, not executed</span></button>
+     <button data-prompt="Solve 3*x + 7 = 22"><strong>Check a calculation</strong><span>Routed to a local tool</span></button>
+    </div>
+   </section>
    <section id="messages" class="messages" aria-label="Conversation" role="log" aria-live="polite" aria-relevant="additions"></section>
-   <div id="thinking" class="thinking" role="status" hidden><span class="avatar">✦</span><span>Checking your request<span class="loading-dots" aria-hidden="true">…</span></span></div>
+   <div id="thinking" class="thinking" role="status" hidden><span class="avatar">✦</span><span>Working<span class="loading-dots" aria-hidden="true">…</span></span></div>
   </div>
-  <div class="composer-region"><div id="notice" class="notice" role="status" aria-live="polite"></div><form id="composer-form" class="composer"><label class="sr-only" for="message">Message NEXUS Seed</label><textarea id="message" rows="1" maxlength="3000" placeholder="Ask anything, name a local CSV, or teach a concept/skill…" aria-describedby="composer-help"></textarea><div class="composer-tools"><span class="composer-hint">✦ &nbsp; Chat · CSV · Coding repo · Teach</span><div><button id="stop" class="stop-button" type="button" hidden>■ &nbsp; Stop</button><button id="send" type="submit" aria-label="Send message" disabled>↑</button></div></div></form><p id="composer-help" class="composer-help">Local workspace. Model text is not an executed result. <span>Enter to send · Shift + Enter for a new line</span></p></div>
- </div>
-
- <!-- VIEW 2: 15-COMPONENT MASTER ARCHITECTURE HUB -->
- <div id="view-master" class="workspace-view panel-scroll" hidden>
-  <div class="hub-container">
-   <div class="hub-header">
-    <div>
-     <span class="eyebrow">NEXUS SEED MASTER ARCHITECTURE</span>
-     <h2>15-Component Cognitive Control &amp; Integration Center</h2>
-     <p>Inspect and execute every subsystem live over your current Session and SharedBrain.</p>
+  <div class="composer-region">
+   <div id="notice" class="notice" role="status" aria-live="polite"></div>
+   <div id="attach-chip" class="attach-chip" hidden></div>
+   <form id="composer-form" class="composer">
+    <label class="sr-only" for="message">Message NEXUS Seed</label>
+    <textarea id="message" rows="1" maxlength="3000" placeholder="Message NEXUS Seed…" aria-describedby="composer-help"></textarea>
+    <div class="composer-tools">
+     <div class="composer-left">
+      <label class="attach-button" for="attach-input">Attach<input id="attach-input" type="file" accept=".txt,.md,.py,.csv,.json,.ts" hidden></label>
+      <select id="workspace-select" aria-label="Allowed workspace" hidden></select>
+     </div>
+     <div>
+      <button id="stop" class="stop-button" type="button" hidden>Stop</button>
+      <button id="send" type="submit" aria-label="Send message" disabled>↑</button>
+     </div>
     </div>
-    <div class="hub-actions">
-     <button id="run-general-suite" class="primary-button">⚡ Run Bounded Exact-Motif Program-Prior Reuse Demo &amp; Bounded Multi-Reasoner Integration Suite</button>
-     <button id="refresh-master" class="subtle-button">↻ Refresh State</button>
-    </div>
-   </div>
-   <div id="suite-banner" class="suite-banner" hidden></div>
-   <div class="hub-grid">
-    <section class="hub-card">
-     <h3>1. Neural Grounding &amp; 2. Shared Belief Workspace</h3>
-     <p>Test the 128-D BiGRU / hybrid grounding layer and inspect the resulting <code>GroundedObservation</code> and <code>BeliefState</code>.</p>
-     <div class="inline-controls">
-      <input id="ground-input" type="text" value="Could you arrange these from smallest to largest? [9, 2, 7, 1]" aria-label="Grounding input text">
-      <button id="run-grounding" class="subtle-button">Ground &amp; Build Belief</button>
-     </div>
-     <pre id="ground-output" class="hub-pre">Click “Ground &amp; Build Belief” to inspect observation &amp; belief state.</pre>
-    </section>
-
-    <section class="hub-card">
-     <h3>6 &amp; 7. Verifiable Reasoning Portfolio &amp; Router</h3>
-     <p>Execute any of the 8 specialized reasoners with step-by-step proof traces.</p>
-     <div class="inline-controls">
-      <button class="subtle-button reason-btn" data-rkind="relational">Relational (North)</button>
-      <button class="subtle-button reason-btn" data-rkind="csp">Constraint CSP</button>
-      <button class="subtle-button reason-btn" data-rkind="math">Math Equation</button>
-      <button class="subtle-button reason-btn" data-rkind="causal">Causal do(X)</button>
-      <button class="subtle-button reason-btn" data-rkind="analogical">Analogical Map</button>
-      <button class="subtle-button reason-btn" data-rkind="voi">Active VOI</button>
-     </div>
-     <pre id="reason-output" class="hub-pre">Select a reasoner above to run and view its proof trace.</pre>
-    </section>
-
-    <section class="hub-card">
-     <h3>5. Hybrid World Model &amp; 9. Cognitive Meta-Controller</h3>
-     <p>Combine symbolic mechanisms with neural residuals and test disagreement triggers $D_t$ and meta-controller $J(c)$.</p>
-     <div class="inline-controls">
-      <button id="run-world-low" class="subtle-button">Low Disagreement Step</button>
-      <button id="run-world-high" class="subtle-button">High Disagreement Trigger</button>
-      <button id="run-meta-score" class="subtle-button">Score 9 Meta-Operations</button>
-     </div>
-     <pre id="world-meta-output" class="hub-pre">Test low vs. high world-model disagreement or score J(c).</pre>
-    </section>
-
-    <section class="hub-card">
-     <h3>8. Coding Synthesis, Execution Sandbox &amp; Debugger</h3>
-     <p>Synthesize verified list programs or run the automated debugging loop to repair broken code and extract a <code>DebuggingSkill</code>.</p>
-     <div class="inline-controls">
-      <button id="run-code-synth" class="subtle-button">Synthesize Sort+Unique</button>
-      <button id="run-code-debug" class="subtle-button">Auto-Debug Broken Code</button>
-     </div>
-     <pre id="code-output" class="hub-pre">Run synthesis or auto-debugger to inspect sandbox verification.</pre>
-    </section>
-
-    <section class="hub-card">
-     <h3>4, 10 &amp; 11. 6-Tier Memory, 3 Learning Timescales &amp; Gate</h3>
-     <p>Teach an immediate concept, consolidate an adapter through the 5-check <code>LearningAcceptanceGate</code>, or inspect all 6 memory projections.</p>
-     <div class="inline-controls">
-      <button id="run-learn-immediate" class="subtle-button">Teach “Scarlet” (Immediate)</button>
-      <button id="run-consolidate" class="subtle-button">Run Acceptance Gate</button>
-      <button id="run-inspect-memory" class="subtle-button">Inspect 6 Memory Tiers</button>
-     </div>
-     <pre id="memory-gate-output" class="hub-pre">Inspect the 6 memory views or run the acceptance gate.</pre>
-    </section>
-
-    <section class="hub-card">
-     <h3>14 &amp; 15. Knowledge Acquisition &amp; Mac/Mobile Compute Tiers</h3>
-     <p>Ingest structured facts, run sparse retrieval without full memory scans, and test 8-bit/4-bit weight quantization.</p>
-     <div class="inline-controls">
-      <button id="run-acquire" class="subtle-button">Ingest &amp; Sparse Retrieve</button>
-      <button id="run-compute-tier" class="subtle-button">Test Compute &amp; Quantization</button>
-     </div>
-     <pre id="acquire-compute-output" class="hub-pre">Run sparse knowledge retrieval or compute tier quantization.</pre>
-    </section>
-   </div>
-  </div>
- </div>
-
- <!-- VIEW 3: 4 SHARED LABS & 6x6 OBJECT WORLD -->
- <div id="view-labs" class="workspace-view panel-scroll" hidden>
-  <div class="hub-container">
-   <div class="hub-header">
-    <div>
-     <span class="eyebrow">SHARED LEARNING LABS &amp; AUTHORED WORLD</span>
-     <h2>Interactive Labs &amp; 6×6 Object World Controller</h2>
-     <p>Control the 6×6 grid world and test skills across Language, Coding, Reasoning, and World labs in one place.</p>
-    </div>
-   </div>
-   <div class="hub-grid">
-    <section class="hub-card">
-     <h3>6×6 Authored Object World</h3>
-     <div id="large-world-grid" class="world-grid large-grid"></div>
-     <p id="large-world-objects" class="world-objects"></p>
-     <div class="inline-controls">
-      <button class="subtle-button world-move-btn" data-cmd="Move o1 right 1">Move o1 Right</button>
-      <button class="subtle-button world-move-btn" data-cmd="Move o1 down 1">Move o1 Down</button>
-      <button class="subtle-button world-move-btn" data-cmd="Move o1 left 1">Move o1 Left</button>
-      <button class="subtle-button world-move-btn" data-cmd="Move o1 up 1">Move o1 Up</button>
-      <button class="subtle-button world-move-btn" data-cmd="Move o1 to top-right corner">o1 → Top-Right</button>
-     </div>
-    </section>
-    <section class="hub-card">
-     <h3>Quick Lab Actions (Same Session Journal)</h3>
-     <p>Trigger guided workflows directly in your active conversation session:</p>
-     <div class="inline-controls">
-      <button class="subtle-button lab-jump-btn" data-prompt="A dax means a red object.">Language: Teach “dax”</button>
-      <button class="subtle-button lab-jump-btn" data-prompt="Write code to reverse then increment on [1, 2, 3]">Coding: Reverse + Increment</button>
-      <button class="subtle-button lab-jump-btn" data-prompt="If Alice is older than Bob and Bob is older than Charlie, where is Alice relative to Charlie?">Reasoning: Transitive Older</button>
-      <button class="subtle-button lab-jump-btn" data-prompt="What have you learned?">Inspect Shared Skill Library</button>
-     </div>
-     <pre id="lab-state-output" class="hub-pre">Select an action above or move objects on the 6×6 grid.</pre>
-    </section>
-   </div>
-  </div>
- </div>
-
- <!-- VIEW 4: PHASE 1-7 WORKBENCH & SCIENTIFIC LEDGER -->
- <div id="view-workbench" class="workspace-view panel-scroll" hidden>
-  <div class="hub-container">
-   <div class="hub-header">
-    <div>
-     <span class="eyebrow">PHASE 1–7 WORKBENCH &amp; SYMBIOTIC MULTI-BACKEND</span>
-     <h2>Executable Foundation, Multi-Backend Workbench &amp; Scientific Ledger</h2>
-     <p>Inspect all 7 bounded foundation phases, run Z3 / SymPy / Stateful Program Editor / Capsule Exchange, and audit the scientific ledger.</p>
-    </div>
-    <div class="hub-actions">
-     <button id="load-workbench" class="subtle-button">Load Phase 1–7 Workbench</button>
-     <button id="load-symbiotic" class="subtle-button">Inspect Symbiotic Workbench</button>
-     <button id="issue-curriculum" class="subtle-button">Generate 4 Practice Lessons</button>
-     <button id="load-ledger" class="primary-button">Load Scientific Ledger &amp; Studies</button>
-    </div>
-   </div>
-   <pre id="workbench-output" class="hub-pre large-pre">Click “Load Phase 1–7 Workbench” or “Load Scientific Ledger &amp; Studies” above.</pre>
+   </form>
+   <p id="composer-help" class="composer-help">Local workspace. Model text is not an executed result. <span>Enter to send · Shift + Enter for a new line</span></p>
   </div>
  </div>
 </main>
 </div>
-<dialog id="details-dialog" aria-labelledby="details-title"><div class="dialog-head"><div><span class="eyebrow">BEHIND THE CONVERSATION</span><h2 id="details-title">Evidence &amp; details</h2></div><button id="close-details" class="icon-button" aria-label="Close evidence details">×</button></div><p>These are actual stored records and authored outcomes. Separate user checks verify a supported program; they are not scientific confirmation.</p><button id="structure-view" class="subtle-button">Inspect experimental structured model</button><button id="foundation-open" class="subtle-button">Open Phase 1–7 workbench</button><button id="investigation-results" class="subtle-button">Latest investigation results</button><div id="details-content"></div></dialog>
-<dialog id="restore-dialog" aria-labelledby="restore-title"><div class="dialog-head"><h2 id="restore-title">Pick up where you left off</h2><button id="close-restore" class="icon-button" aria-label="Close saved conversations">×</button></div><p>Restore a local saved revision. Messages and world state return without sending your old requests again.</p><div id="restore-list"></div></dialog>
+<dialog id="details-dialog" aria-labelledby="details-title">
+ <div class="dialog-head"><div><span class="eyebrow">INSPECTOR</span><h2 id="details-title">Technical details</h2></div>
+ <button id="close-details" class="icon-button" aria-label="Close inspector">×</button></div>
+ <p>Runtime, citations and resource notes. These are not ordinary conversation.</p>
+ <div id="details-content"></div>
+</dialog>
+<dialog id="preview-dialog" aria-labelledby="preview-title">
+ <div class="dialog-head"><h2 id="preview-title">Source preview</h2>
+ <button id="close-preview" class="icon-button" aria-label="Close source preview">×</button></div>
+ <div id="preview-content"></div>
+</dialog>
 </body></html>

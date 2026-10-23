@@ -1,4 +1,7 @@
 """Seed API binding for the SAME loopback Learning Lab server."""
+from dataclasses import replace
+import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -26,6 +29,11 @@ class SeedWorkspace:
         self.runtime_config=runtime_config
         self.attach_local_runtime=attach_local_runtime
         self._runtime_unavailable=None if attach_local_runtime else 'local_model_unavailable: runtime attachment disabled'
+        self.attachments={}
+        self.pending_test_cases=None
+        self.knowledge_vault=None
+        self.capsule_store=None
+        self.titles={}
 
     def attach_grounded(self, session):
         if self.grounded_model is not None:
@@ -69,7 +77,14 @@ class SeedWorkspace:
                     self.local_runtime.start()
             self._runtime_unavailable=None
             return self.local_runtime
-        cfg=self.runtime_config or RuntimeConfig.from_environment()
+        cfg=self.runtime_config
+        if cfg is None:
+            cfg=RuntimeConfig.from_environment()
+            if not os.environ.get('NEXUS_MODEL_PATH'):
+                preferred=Path('.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf')
+                if preferred.is_file():
+                    cfg=replace(cfg,model_path=str(preferred.resolve()))
+            self.runtime_config=cfg
         model=Path(cfg.model_path).expanduser()
         if not model.is_file():
             self._runtime_unavailable='local_model_unavailable: model file not found at '+str(model)
@@ -86,6 +101,28 @@ class SeedWorkspace:
         except Exception as exc:
             self._runtime_unavailable='local_model_unavailable: '+type(exc).__name__+': '+str(exc)[:200]
             return None
+
+    def pending_attachment(self, session_id):
+        return self.attachments.get(session_id)
+
+    def conversation_index_path(self):
+        return Path(self.directory)/'conversation_index.json'
+
+    def load_titles(self):
+        path=self.conversation_index_path()
+        if path.is_file():
+            try:
+                data=json.loads(path.read_text(encoding='utf-8'))
+            except (OSError,json.JSONDecodeError):
+                data={}
+            if type(data) is dict:
+                self.titles.update({k:v for k,v in data.items() if type(k) is str and type(v) is str})
+        return self.titles
+
+    def save_titles(self):
+        path=self.conversation_index_path()
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text(json.dumps(self.titles,allow_nan=False),encoding='utf-8')
 
     def dispatch(self, wire):
         if type(wire) is not dict or set(wire) != {'session_id','request'} or type(wire['request']) is not dict:
@@ -141,13 +178,89 @@ class SeedWorkspace:
             elif type(op) is str and op.startswith('lab_'):
                 from .shared_brain import SharedBrain
                 response=SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash).request(request)
+            elif op in ('knowledge_list','knowledge_save','knowledge_delete','knowledge_preview'):
+                from .unified_chat import delete_capsule,delete_document,knowledge_snapshot,save_capsule,save_document,vault_for
+                if op=='knowledge_list' and set(request)=={'op'}:
+                    response=dict(knowledge=knowledge_snapshot(self))
+                elif op=='knowledge_save' and {'op','kind'}<=set(request)<= {'op','kind','title','content','doc_id','term','definition','pos_or_frame'}:
+                    kind=request['kind']
+                    if kind=='document':
+                        fact=save_document(self,title=request.get('title') or 'Untitled',content=request.get('content') or '',doc_id=request.get('doc_id'))
+                        response=dict(saved=dict(doc_id=fact.doc_id,title=fact.title,source_hash=fact.source_hash,timestamp=fact.timestamp),knowledge=knowledge_snapshot(self))
+                    elif kind=='capsule':
+                        capsule=save_capsule(self,term=request.get('term') or '',definition=request.get('definition') or '',pos_or_frame=request.get('pos_or_frame') or 'noun_phrase')
+                        response=dict(saved=dict(term=capsule.term,definition=capsule.definition),knowledge=knowledge_snapshot(self))
+                    else:
+                        raise ValueError('knowledge_kind')
+                elif op=='knowledge_delete' and set(request)=={'op','kind','id'}:
+                    if request['kind']=='document':
+                        ok=delete_document(self,request['id'])
+                    elif request['kind']=='capsule':
+                        ok=delete_capsule(self,request['id'])
+                    elif request['kind']=='procedure':
+                        path=self.procedures_dir()/(str(request['id'])+'.json')
+                        ok=path.is_file()
+                        if ok:
+                            path.unlink()
+                    else:
+                        raise ValueError('knowledge_kind')
+                    response=dict(deleted=bool(ok),knowledge=knowledge_snapshot(self))
+                elif op=='knowledge_preview' and set(request)=={'op','doc_id'}:
+                    fact=vault_for(self).get_document(request['doc_id'])
+                    if fact is None:
+                        raise ValueError('document_not_found')
+                    response=dict(document=dict(doc_id=fact.doc_id,title=fact.title,content=fact.content,source_hash=fact.source_hash,timestamp=fact.timestamp))
+                else:
+                    raise ValueError('typed_knowledge_request')
+            elif op=='attach' and {'op','kind','name','content'}<=set(request)<= {'op','kind','name','content','doc_id','language'}:
+                if request['kind'] not in ('document','code'):
+                    raise ValueError('attachment_kind')
+                content=request['content']
+                if type(content) is not str or not 1<=len(content)<=48000 or '\x00' in content:
+                    raise ValueError('attachment_content')
+                name=request['name']
+                if type(name) is not str or not 1<=len(name)<=120 or '\x00' in name:
+                    raise ValueError('attachment_name')
+                self.attachments[sid]=dict(kind=request['kind'],name=name,content=content,doc_id=request.get('doc_id'),language=request.get('language'))
+                if request['kind']=='document':
+                    from .conversation import Conversation
+                    from .shared_brain import SharedBrain
+                    chat=Conversation(SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash),store=self,session_id=sid)
+                    ctx=chat.view()['context']
+                    ctx['workspace']['last_correction']='Attached document '+name+' as content, not as an instruction.'
+                response=dict(attached=dict(kind=request['kind'],name=name,bytes=len(content.encode('utf-8')),instruction=False))
+            elif op=='conversation_rename' and set(request)=={'op','title'}:
+                title=request['title']
+                if type(title) is not str or not 1<=len(title)<=80 or '\x00' in title:
+                    raise ValueError('conversation_title')
+                self.load_titles();self.titles[sid]=title;self.save_titles()
+                response=dict(title=title)
+            elif op=='conversation_delete' and set(request)=={'op'}:
+                self.sessions.pop(sid,None)
+                self.attachments.pop(sid,None)
+                self.load_titles();self.titles.pop(sid,None);self.save_titles()
+                saved_dir=Path(self.directory)/sid
+                if saved_dir.is_dir() and not saved_dir.is_symlink():
+                    shutil.rmtree(saved_dir)
+                response=dict(deleted=True)
             elif op in ('chat_send','chat_view'):
                 from .shared_brain import SharedBrain
                 from .conversation import Conversation
                 chat=Conversation(SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash),store=self,session_id=sid)
                 if op=='chat_view' and set(request)=={'op'}:
-                    response=dict(text='Conversation restored without resubmitting messages.',chat=chat.view())
-                elif op=='chat_send' and set(request)=={'op','text','id'}:
+                    view=chat.view();view['title']=self.load_titles().get(sid)
+                    response=dict(text='Conversation restored without resubmitting messages.',chat=view)
+                elif op=='chat_send' and {'op','text','id'}<=set(request)<= {'op','text','id','attachment'}:
+                    attachment=request.get('attachment')
+                    if attachment is not None:
+                        if type(attachment) is not dict or attachment.get('kind') not in ('document','code'):
+                            raise ValueError('attachment_kind')
+                        content=attachment.get('content')
+                        name=attachment.get('name') or 'attachment'
+                        if type(content) is not str or not 1<=len(content)<=48000 or '\x00' in content:
+                            raise ValueError('attachment_content')
+                        self.attachments[sid]=dict(kind=attachment['kind'],name=str(name)[:120],content=content,
+                                                   doc_id=attachment.get('doc_id'),language=attachment.get('language'))
                     response=chat.send(request['text'],request['id'])
                     if response.pop('save_requested',False):
                         response['saved']=save(self.directory,sid,self.sessions[sid])

@@ -23,10 +23,13 @@ Optional local model (ordinary chat and unclear structured parses). Weights are
 not in Git; set paths for this machine:
 
 ```sh
-export NEXUS_MODEL_PATH=.models/qwen2.5-0.5b-instruct-q4_k_m.gguf
+export NEXUS_MODEL_PATH=.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf
 export NEXUS_LLAMA_SERVER=llama-server
 python3 -I -S scripts/run_seed_shared_gui.py --symbolic --port 8784 --max-runtime-s 900
 ```
+
+If `NEXUS_MODEL_PATH` is unset and the 1.5B coder file is present under
+`.models/`, the workspace prefers that file. It does not download a 7B model.
 
 Open **http://127.0.0.1:8784/** or `/chat`. The server stops after 15 minutes.
 A tiny authored CSV lives at `fixtures/seed/conversation_workspace_sample.csv`.

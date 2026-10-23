@@ -41,7 +41,7 @@ def test_same_envelope_origin_and_body_limits_apply(host):
         assert exc.value.code==400
     with pytest.raises(HTTPError) as exc:post(dict(session_id=sid,request={'op':'chat_view'}),headers={**headers,'Origin':'https://untrusted.example'})
     assert exc.value.code==403
-    with pytest.raises(HTTPError) as exc:post({'large':'x'*17000})
+    with pytest.raises(HTTPError) as exc:post({'large':'x'*70000})
     assert exc.value.code==400
     assert server.seed_workspace.sessions[sid].counts['sandbox_actions']==0
 

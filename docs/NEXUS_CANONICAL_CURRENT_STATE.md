@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — interface audit and coding diagnostic (prepared)
+## Current — local chat workspace (interface)
+
+One conversational page on `cursor/seed-lexicon-knowledge-vault` reuses
+Conversation, `workspace_conversation`, KnowledgeVault, LexicalCapsuleStore
+and the existing `/api/seed` server. Users do not choose a lab. Document
+answers cite current SQLite rows; pasted code is not treated as tested
+unless the sandbox ran; ordinary model text is labeled Draft. Persistence is
+explicit save, not learning-to-learn. CPU ledger **3564.568 s / 0 s debit**.
+Pinned `local_model_runtime.py` unchanged. Ranking stays paused.
+
+## Previous — interface audit and coding diagnostic (prepared)
 
 [Interface audit](NEXUS_SEED_GENERATION_INTERFACE_AUDIT.md),
 [coding diagnostic protocol](NEXUS_SEED_CODING_CAPACITY_DIAGNOSTIC_PROTOCOL.md).

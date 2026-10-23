@@ -396,8 +396,13 @@ class WorkspaceTurn:
             return 'That request is outside the supported local tools. No file was changed and no program ran.', 'clarification', False
         if self.ws.get('pending_clarification') and any(p in self.text for p in CANCEL_PENDING):
             self.ws['pending_clarification'] = None
+            self.ws['last_user_status'] = 'Draft'
             self.card('Pending clarification dropped', dict(executed=False, reason='cancel'))
             return 'Okay, I dropped the pending question. Nothing ran.', 'reply', False
+        from .unified_chat import apply_topic_change, classify_turn
+        topic = apply_topic_change(self.ws, self.raw)
+        if topic['changed'] and classify_turn(self.raw, self.ws).flow == 'topic':
+            self.card('Topic changed', dict(executed=False, cleared=topic['cleared'], inherited=False))
         if self._new_request_supersedes_pending():
             self.ws['pending_clarification'] = None
             self.card('Pending clarification superseded', dict(executed=False, reason='new_request'))
@@ -409,6 +414,9 @@ class WorkspaceTurn:
         answered = self._answer_clarification()
         if answered:
             return answered
+        product = self._product_routes()
+        if product is not None:
+            return product
         if any(p in self.text for p in SAVE_PROC):
             return self.save_procedure()
         if any(p in self.text for p in INSPECT_PROC):
@@ -459,6 +467,90 @@ class WorkspaceTurn:
             return self.execute_intent(parsed, self.ws['selected_file'], request_kind='fresh',
                                        order_defaulted=parsed.get('order') == 'desc')
         return self.ordinary_chat()
+
+    def _product_routes(self):
+        from .unified_chat import (
+            answer_document_question, classify_turn, delete_document, execute_pasted_python,
+            explain_pasted_code, extract_code, save_document, user_status,
+        )
+        classified = classify_turn(self.raw, self.ws)
+        if classified.flow == 'knowledge' and classified.reason == 'explicit_save':
+            pending = getattr(self.store, 'pending_attachment', lambda _sid: None)(self.conversation.session_id)
+            content = (pending or {}).get('content')
+            title = (pending or {}).get('name') or 'Chat attachment'
+            if not content:
+                return self.clarify('document', 'Attach or paste a document first, then ask to save it. Chat text is not stored as a verified fact.')
+            fact = save_document(self.store, title=title, content=content, doc_id=(pending or {}).get('doc_id'))
+            self.ws['selected_document_id'] = fact.doc_id
+            self.ws['last_request_kind'] = 'knowledge'
+            self.ws['last_user_status'] = 'Executed'
+            self.ws['last_executed_action'] = 'Saved document '+fact.doc_id
+            self.card('Saved document', dict(doc_id=fact.doc_id, source_hash=fact.source_hash,
+                                             executed=False, explicit=True, learning_to_learn=False))
+            return (
+                'Saved '+fact.title+' as ['+fact.doc_id+']. Persistence is an explicit store, not learning-to-learn.'
+            ), 'success', False
+        if classified.flow == 'knowledge' and classified.reason == 'explicit_delete':
+            doc_id = self.ws.get('selected_document_id')
+            if not doc_id:
+                return self.clarify('document', 'Which stored document should I delete? Select one first.')
+            deleted = delete_document(self.store, doc_id)
+            if deleted:
+                self.ws['selected_document_id'] = None
+                self.ws['last_request_kind'] = 'knowledge'
+                self.ws['last_user_status'] = 'Executed'
+                self.card('Deleted document', dict(doc_id=doc_id, executed=False))
+                return 'Deleted stored document ['+doc_id+'].', 'success', False
+            return 'That document is not in the vault.', 'clarification', False
+        if classified.flow == 'document':
+            answered = answer_document_question(self.store, self.raw, self.ws)
+            if answered is None:
+                return None
+            self.ws['last_request_kind'] = 'document'
+            self.ws['last_user_status'] = answered['user_status']
+            self.card('Source preview', dict(
+                source=answered.get('source'), citations=answered.get('citations'), facts=answered.get('facts'),
+                executed=False, model_generated=bool(answered.get('model_generated')),
+                stale_doc_ids=answered.get('stale_doc_ids') or [],
+                verification=answered.get('verification'),
+            ))
+            return answered['reply'], answered['status'], False
+        if classified.flow == 'coding' and classified.reason == 'pasted_code' and not classified.execute:
+            explained = explain_pasted_code(self.raw)
+            self.ws['last_request_kind'] = 'coding'
+            self.ws['last_user_status'] = explained['user_status']
+            self.card('Pasted code', dict(source='pasted_code_explanation', executed=False,
+                                          language=explained.get('language'), code=explained.get('code')))
+            return explained['reply'], explained['status'], False
+        if classified.flow == 'coding' and classified.reason == 'pasted_code' and classified.execute:
+            language, code = extract_code(self.raw)
+            pending = getattr(self.store, 'pending_attachment', lambda _sid: None)(self.conversation.session_id)
+            if not code and pending and pending.get('kind') == 'code':
+                code = pending.get('content') or ''
+                language = pending.get('language') or language
+            if not code:
+                return self.clarify('document', 'Paste a Python function or attach a file before asking me to run tests.')
+            cases = getattr(self.store, 'pending_test_cases', None)
+            if not cases:
+                self.ws['last_user_status'] = user_status(needs_clarification=True)
+                self.card('Public tests needed', dict(executed=False, source='python_sandbox'))
+                return (
+                    'I will not describe unexecuted code as tested. Supply public test cases '
+                    'or select an allowed workspace. The pasted draft is still available to discuss.'
+                ), 'clarification', False
+            ran = execute_pasted_python({'snippet.py': code}, cases)
+            self.ws['last_request_kind'] = 'coding'
+            self.ws['last_user_status'] = ran['user_status']
+            self.ws['last_executed_action'] = 'python_sandbox:'+str(ran.get('user_status'))
+            self.card('Public-test outcome', dict(
+                source='python_sandbox', executed=True, public_tests_passed=ran.get('public_tests_passed'),
+                complete_correctness=False, result=ran.get('result'),
+            ))
+            return ran['reply'], ran['status'], False
+        if classified.flow == 'topic':
+            self.ws['last_user_status'] = 'Draft'
+            return 'New topic noted. I will not reuse the last filter, coding task, or pending question unless you ask to do the same.', 'reply', False
+        return None
 
     def reject_incomplete(self):
         reasons = self.parsed.unsupported + self.parsed.conflicts
@@ -831,11 +923,13 @@ class WorkspaceTurn:
         reply = self.complete(runtime, prompt, None)
         text = reply['content'].strip() or 'I do not have a completion for that.'
         scored = score_workspace_reply(text, self.ws, header_meta)
+        self.ws['last_request_kind'] = 'ordinary'
+        self.ws['last_user_status'] = 'Draft'
         self.card('Model-generated reply', dict(
             source='model_generated', executed=False, inference_ran=reply['telemetry'].get('inference_ran'),
             application_cache_hit=reply['telemetry'].get('application_cache_hit'),
             workspace_header=header_meta, workspace_score=scored,
-            header_consumes_input_tokens=True))
+            header_consumes_input_tokens=True, user_status='Draft'))
         return text + '\n\n(This is model-generated text, not an executed file result.)', 'reply', False
 
     def model_intent(self, path_text):

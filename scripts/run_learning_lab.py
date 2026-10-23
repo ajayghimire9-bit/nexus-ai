@@ -214,7 +214,7 @@ class LabHandler(BaseHTTPRequestHandler):
             if not getattr(self.server,'seed_workspace',None):return self.send_json(403,{'error':'seed_not_enabled'})
             try:
                 length=int(self.headers.get('Content-Length','0'))
-                if not 0<length<=16384 or self.headers.get('Content-Type')!='application/json':raise ValueError('small_json_body_required')
+                if not 0<length<=65536 or self.headers.get('Content-Type')!='application/json':raise ValueError('small_json_body_required')
                 return self.send_json(200,self.server.seed_workspace.dispatch(json.loads(self.rfile.read(length))))
             except (ValueError,TypeError,KeyError,OSError) as e:return self.send_json(400,{'error':str(e)})
         if self.path!='/api/fixture':return self.send_json(404,{'error':'unknown_route'})
