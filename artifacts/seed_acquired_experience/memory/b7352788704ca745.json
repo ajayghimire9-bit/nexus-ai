@@ -1,0 +1,37 @@
+{
+  "schema_id": "b7352788704ca745",
+  "family": "comparison_boundary",
+  "trigger": "Allow score equal to the limit in accept(item).",
+  "transformation": "compare_op_swap",
+  "applicability": {
+    "kind": "compare_op_swap",
+    "from_op": "Lt",
+    "to_op": "LtE",
+    "require_unique_matching_compare": true
+  },
+  "supporting_tests": [
+    {
+      "entry": "hold.accept",
+      "input": {
+        "score": 5,
+        "limit": 5
+      },
+      "expected": true
+    }
+  ],
+  "counterexamples": [],
+  "failure_to_fix": [],
+  "acquisition_cost": {
+    "wall_s": 0.000772,
+    "model_calls": 0,
+    "tools": 1
+  },
+  "bindings": {
+    "kind": "compare_op_swap",
+    "from_op": "Lt",
+    "to_op": "LtE"
+  },
+  "preconditions": {
+    "require_unique_matching_compare": true
+  }
+}

@@ -1,6 +1,21 @@
 # NEXUS Seed — Current State
 
-## Current — capability routes (results)
+## Current — acquired experience (results)
+
+[Protocol](NEXUS_SEED_ACQUIRED_EXPERIENCE_PROTOCOL.md),
+[results](NEXUS_SEED_ACQUIRED_EXPERIENCE_RESULTS.md).
+Protocol `aab3477`. Artifact
+`f6dc938d2328ecbda9d2d2f350414a40ee86b81332b0a7ea5907538519a46101`.
+Verifier 36/36. Later private: scratch 3/5, template 2/5, acquired
+3/5, reset 3/5, exact cache 1/5, irrelevant 1/5. Harmful transfer 0.
+D applied Lt→LtE and the held-out Gt→GtE rebound; C cannot rebound.
+Weights
+`cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046`
+unchanged. 12 calls, 43.089 s, frozen debit **0**. Verdict
+**inconclusive** — not a unique NEXUS learning advantage, not
+learning-to-learn. Routes grid not rescored.
+
+## Previous — capability routes (results)
 
 [Protocol](NEXUS_SEED_CAPABILITY_ROUTES_PROTOCOL.md),
 [results](NEXUS_SEED_CAPABILITY_ROUTES_RESULTS.md).

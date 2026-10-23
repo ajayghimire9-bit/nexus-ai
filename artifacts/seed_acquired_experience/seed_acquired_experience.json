@@ -1,0 +1,2804 @@
+{
+  "kind": "seed_acquired_experience",
+  "representation": {
+    "store": "RepairSchemaStore",
+    "abstraction": "infer_ast_transform + apply_make_inclusive",
+    "retrieval": "family then trigger, then same-family non-literal schema",
+    "gates": "classify_boundary_requirement on public request+tests",
+    "ordinary_template": "Lt\u2192LtE only; D may rebound Gt\u2192GtE",
+    "collapse_c_and_d": false,
+    "development_ids": [
+      "dev_capture_lt"
+    ],
+    "source_ids": [
+      "src_allow_limit",
+      "src_null_tag"
+    ],
+    "chosen_before_target_outcomes": true,
+    "programmer_supplied": true
+  },
+  "acquired": [
+    {
+      "task_id": "src_allow_limit",
+      "family": "comparison_boundary",
+      "usable": true,
+      "schema": {
+        "schema_id": "b7352788704ca745",
+        "family": "comparison_boundary",
+        "trigger": "Allow score equal to the limit in accept(item).",
+        "transformation": "compare_op_swap",
+        "applicability": {
+          "kind": "compare_op_swap",
+          "from_op": "Lt",
+          "to_op": "LtE",
+          "require_unique_matching_compare": true
+        },
+        "supporting_tests": [
+          {
+            "entry": "hold.accept",
+            "input": {
+              "score": 5,
+              "limit": 5
+            },
+            "expected": true
+          }
+        ],
+        "counterexamples": [],
+        "failure_to_fix": [],
+        "acquisition_cost": {
+          "wall_s": 0.000772,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "bindings": {
+          "kind": "compare_op_swap",
+          "from_op": "Lt",
+          "to_op": "LtE"
+        },
+        "preconditions": {
+          "require_unique_matching_compare": true
+        }
+      },
+      "episode": {
+        "request": "Allow score equal to the limit in accept(item).",
+        "contract": {
+          "symbol": "accept",
+          "fields": [
+            {
+              "name": "score",
+              "type": "int",
+              "presence": "required",
+              "path": [
+                "score"
+              ]
+            },
+            {
+              "name": "limit",
+              "type": "int",
+              "presence": "required",
+              "path": [
+                "limit"
+              ]
+            }
+          ],
+          "behavior": "boolean gate",
+          "output_type": "bool",
+          "allowed_values": null,
+          "transform_symbol": "_accept_transform",
+          "programmer_supplied_extraction": true,
+          "learned_schema_understanding": false,
+          "contract_source": "benchmark_supplied"
+        },
+        "initial_proposal": {
+          "hold.py": "def accept(item):\n    return item['score'] < item['limit']\n"
+        },
+        "public_failure": {
+          "public_passed": false,
+          "exception": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [
+              {
+                "entry": "hold.accept",
+                "actual": false,
+                "expected": true,
+                "passed": false,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 0.00043408299097791314,
+            "tests_s": 7.166003342717886e-06,
+            "internal_s": 0.0004415829898789525,
+            "wall_s": 0.0004474580055102706,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          }
+        },
+        "revision_actions": [
+          "apply_make_inclusive"
+        ],
+        "resulting_program": {
+          "hold.py": "def accept(item):\n    return item['score'] <= item['limit']\n"
+        },
+        "public_validation": {
+          "public_passed": true,
+          "private_passed": false,
+          "public": {
+            "status": "passed",
+            "compilation_passed": true,
+            "all_passed": true,
+            "results": [
+              {
+                "entry": "hold.accept",
+                "actual": true,
+                "expected": true,
+                "passed": true,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 4.5666994992643595e-05,
+            "tests_s": 4.0000013541430235e-06,
+            "internal_s": 4.979199729859829e-05,
+            "wall_s": 5.062500713393092e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "private": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [],
+            "compilation_s": 3.637498593889177e-05,
+            "tests_s": 5.00003807246685e-07,
+            "internal_s": 3.695799387060106e-05,
+            "wall_s": 3.7541991332545877e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "output_contract_violations": []
+        },
+        "cost": {
+          "wall_s": 0.000772,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "private_tests_used": false,
+        "task_id_features": false,
+        "handwritten_answer": false
+      }
+    },
+    {
+      "task_id": "src_null_tag",
+      "family": "null_default",
+      "usable": true,
+      "schema": {
+        "schema_id": "c544a74a91ade6d8",
+        "family": "null_default",
+        "trigger": "Keep an empty tag; only replace a missing tag.",
+        "transformation": "or_to_explicit_none",
+        "applicability": {
+          "kind": "or_to_explicit_none",
+          "require_unique_or": true
+        },
+        "supporting_tests": [
+          {
+            "entry": "tag.tag_of",
+            "input": {
+              "tag": "ok"
+            },
+            "expected": "ok"
+          },
+          {
+            "entry": "tag.tag_of",
+            "input": {
+              "tag": ""
+            },
+            "expected": ""
+          }
+        ],
+        "counterexamples": [],
+        "failure_to_fix": [],
+        "acquisition_cost": {
+          "wall_s": 0.000539,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "bindings": {
+          "kind": "or_to_explicit_none"
+        },
+        "preconditions": {
+          "require_unique_or": true
+        }
+      },
+      "episode": {
+        "request": "Keep an empty tag; only replace a missing tag.",
+        "contract": {
+          "symbol": "tag_of",
+          "fields": [
+            {
+              "name": "tag",
+              "type": "str",
+              "presence": "optional",
+              "path": [
+                "tag"
+              ]
+            }
+          ],
+          "behavior": "empty stays empty",
+          "output_type": "str",
+          "allowed_values": null,
+          "transform_symbol": "_tag_of_transform",
+          "programmer_supplied_extraction": true,
+          "learned_schema_understanding": false,
+          "contract_source": "benchmark_supplied"
+        },
+        "initial_proposal": {
+          "tag.py": "def tag_of(item):\n    return item.get('tag') or 'missing'\n"
+        },
+        "public_failure": {
+          "public_passed": false,
+          "exception": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [
+              {
+                "entry": "tag.tag_of",
+                "actual": "ok",
+                "expected": "ok",
+                "passed": true,
+                "error": null,
+                "calls": []
+              },
+              {
+                "entry": "tag.tag_of",
+                "actual": "missing",
+                "expected": "",
+                "passed": false,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 0.00024491699878126383,
+            "tests_s": 5.125009920448065e-06,
+            "internal_s": 0.0002501669805496931,
+            "wall_s": 0.0002509579935576767,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          }
+        },
+        "revision_actions": [
+          "apply_or_to_explicit_none"
+        ],
+        "resulting_program": {
+          "tag.py": "def tag_of(item):\n    return 'missing' if item.get('tag') is None else item.get('tag')\n"
+        },
+        "public_validation": {
+          "public_passed": true,
+          "private_passed": false,
+          "public": {
+            "status": "passed",
+            "compilation_passed": true,
+            "all_passed": true,
+            "results": [
+              {
+                "entry": "tag.tag_of",
+                "actual": "ok",
+                "expected": "ok",
+                "passed": true,
+                "error": null,
+                "calls": []
+              },
+              {
+                "entry": "tag.tag_of",
+                "actual": "",
+                "expected": "",
+                "passed": true,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 5.0708011258393526e-05,
+            "tests_s": 3.583991201594472e-06,
+            "internal_s": 5.441601388156414e-05,
+            "wall_s": 5.500001134350896e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "private": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [],
+            "compilation_s": 4.037498729303479e-05,
+            "tests_s": 4.169996827840805e-07,
+            "internal_s": 4.087499110028148e-05,
+            "wall_s": 4.1332998080179095e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "output_contract_violations": []
+        },
+        "cost": {
+          "wall_s": 0.000539,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "private_tests_used": false,
+        "task_id_features": false,
+        "handwritten_answer": false
+      }
+    }
+  ],
+  "retention": [
+    {
+      "task_id": "src_allow_limit",
+      "private_passed": true,
+      "decision": "apply"
+    }
+  ],
+  "cells": [
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] >= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.543248,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 3e-06,
+          "contract_s": 3e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.542547,
+          "validation_s": 0.000136,
+          "total_s": 3.543239,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 2.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 9.4e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 8.2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] >= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.544023,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.543626,
+          "validation_s": 0.000137,
+          "total_s": 3.544015,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 2.1e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.597397,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.597019,
+          "validation_s": 0.000126,
+          "total_s": 3.59739,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] > item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 2.3e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "transform_not_applicable",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] > item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 4e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 0.000103,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.599262,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.598855,
+          "validation_s": 0.000141,
+          "total_s": 3.599253,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] > item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 2.2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut'] and item['n'] >= 0 and item['cut'] >= 0\n"
+      },
+      "cost": {
+        "wall_s": 3.945291,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.94482,
+          "validation_s": 0.000177,
+          "total_s": 3.945284,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 2.2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 1.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.6e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut'] and item['n'] >= 0 and item['cut'] >= 0\n"
+      },
+      "cost": {
+        "wall_s": 3.947339,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.946879,
+          "validation_s": 0.000176,
+          "total_s": 3.947332,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 1.9e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "scratch",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n\ndef label_of(item):\n    return left + '-' + right\n"
+      },
+      "cost": {
+        "wall_s": 3.418312,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.41609,
+          "validation_s": 0.00201,
+          "total_s": 3.418304,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "exact_cache",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 2.3e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "ordinary_template",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "template_family_unsupported",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 1.1e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "acquired",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 9e-06,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "acquired_reset",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n\ndef label_of(item):\n    return left + '-' + right\n"
+      },
+      "cost": {
+        "wall_s": 3.415153,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.414514,
+          "validation_s": 0.000427,
+          "total_s": 3.415146,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "irrelevant_memory",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] >= item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 3.513398,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.513003,
+          "validation_s": 0.000137,
+          "total_s": 3.513391,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 2.3e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 3.8e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] >= item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 3.512982,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.512606,
+          "validation_s": 0.000132,
+          "total_s": 3.512975,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] >= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 3.524689,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.524295,
+          "validation_s": 0.000139,
+          "total_s": 3.52468,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "exact_cache_hit",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] <= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 2.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] <= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 8.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] <= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 8.6e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] >= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 3.517039,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.516672,
+          "validation_s": 0.000128,
+          "total_s": 3.517032,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] < item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 1.9e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    }
+  ],
+  "later": [
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] >= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.543248,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 3e-06,
+          "contract_s": 3e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.542547,
+          "validation_s": 0.000136,
+          "total_s": 3.543239,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 2.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 9.4e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 8.2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] >= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.544023,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.543626,
+          "validation_s": 0.000137,
+          "total_s": 3.544015,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_rename_layout",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "gate.py": "def fit(item):\n    return item['width'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 2.1e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.597397,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.597019,
+          "validation_s": 0.000126,
+          "total_s": 3.59739,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] > item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 2.3e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "transform_not_applicable",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] > item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 4e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 0.000103,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.599262,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.598855,
+          "validation_s": 0.000141,
+          "total_s": 3.599253,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_gt_floor",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "rise.py": "def rise(item):\n    return item['height'] > item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 2.2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut'] and item['n'] >= 0 and item['cut'] >= 0\n"
+      },
+      "cost": {
+        "wall_s": 3.945291,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.94482,
+          "validation_s": 0.000177,
+          "total_s": 3.945284,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 2.2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 1.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.6e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut'] and item['n'] >= 0 and item['cut'] >= 0\n"
+      },
+      "cost": {
+        "wall_s": 3.947339,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.946879,
+          "validation_s": 0.000176,
+          "total_s": 3.947332,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_strict_cut",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "clip.py": "def clip(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 1.9e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "scratch",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n\ndef label_of(item):\n    return left + '-' + right\n"
+      },
+      "cost": {
+        "wall_s": 3.418312,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.41609,
+          "validation_s": 0.00201,
+          "total_s": 3.418304,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "exact_cache",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 2.3e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "ordinary_template",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "template_family_unsupported",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 1.1e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "acquired",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 9e-06,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "acquired_reset",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n\ndef label_of(item):\n    return left + '-' + right\n"
+      },
+      "cost": {
+        "wall_s": 3.415153,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.414514,
+          "validation_s": 0.000427,
+          "total_s": 3.415146,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_join_parts",
+      "method": "irrelevant_memory",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "lab.py": "def echo(text):\n    return text\n"
+      },
+      "cost": {
+        "wall_s": 2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] >= item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 3.513398,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.513003,
+          "validation_s": 0.000137,
+          "total_s": 3.513391,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "exact_cache_miss",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 2.3e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 3.8e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] >= item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 3.512982,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.512606,
+          "validation_s": 0.000132,
+          "total_s": 3.512975,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    },
+    {
+      "task_id": "tgt_near_bound",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "stay.py": "def stay(item):\n    return item['n'] < item['bound']\n"
+      },
+      "cost": {
+        "wall_s": 2e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      }
+    }
+  ],
+  "exact_repeats": [
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] >= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 3.524689,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.524295,
+          "validation_s": 0.000139,
+          "total_s": 3.52468,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "exact_cache_hit",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] <= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 2.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "ordinary_template",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] <= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 8.7e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "applied": true,
+      "public_passed": true,
+      "private_passed": true,
+      "harmful_transfer": false,
+      "applicability_correct": true,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] <= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 8.6e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "applied": false,
+      "public_passed": true,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] >= item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 3.517039,
+        "model_calls": 1,
+        "tools": 0,
+        "generation": {
+          "contract_source": "benchmark_supplied",
+          "contract_acquisition_measured": false,
+          "contract_construction_s": 1e-06,
+          "contract_s": 1e-06,
+          "extraction_s": 0.0,
+          "generation_s": 3.516672,
+          "validation_s": 0.000128,
+          "total_s": 3.517032,
+          "model_calls": 1,
+          "note": "wrapper and construction time do not measure obtaining the contract"
+        },
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    },
+    {
+      "task_id": "tgt_exact_limit",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "abstain",
+      "reason": "no_schema",
+      "applied": false,
+      "public_passed": false,
+      "private_passed": false,
+      "harmful_transfer": false,
+      "applicability_correct": false,
+      "files": {
+        "hold.py": "def accept(item):\n    return item['score'] < item['limit']\n"
+      },
+      "cost": {
+        "wall_s": 1.9e-05,
+        "model_calls": 0,
+        "tools": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      }
+    }
+  ],
+  "summary": {
+    "scratch": {
+      "later_private": 3,
+      "later_n": 5,
+      "harmful": 0,
+      "applicability": 0,
+      "model_calls": 5,
+      "wall_s": 18.017646
+    },
+    "exact_cache": {
+      "later_private": 1,
+      "later_n": 5,
+      "harmful": 0,
+      "applicability": 2,
+      "model_calls": 0,
+      "wall_s": 0.000118
+    },
+    "ordinary_template": {
+      "later_private": 2,
+      "later_n": 5,
+      "harmful": 0,
+      "applicability": 4,
+      "model_calls": 0,
+      "wall_s": 0.000182
+    },
+    "acquired": {
+      "later_private": 3,
+      "later_n": 5,
+      "harmful": 0,
+      "applicability": 5,
+      "model_calls": 0,
+      "wall_s": 0.000268
+    },
+    "acquired_reset": {
+      "later_private": 3,
+      "later_n": 5,
+      "harmful": 0,
+      "applicability": 0,
+      "model_calls": 5,
+      "wall_s": 18.018759
+    },
+    "irrelevant_memory": {
+      "later_private": 1,
+      "later_n": 5,
+      "harmful": 0,
+      "applicability": 2,
+      "model_calls": 0,
+      "wall_s": 0.000102
+    }
+  },
+  "verdict": "inconclusive",
+  "c_versus_d": {
+    "same_mechanism": false,
+    "ordinary_template": "Lt\u2192LtE only",
+    "acquired": "captured compare_op_swap; inclusive path uses apply_make_inclusive (Lt\u2192LtE or Gt\u2192GtE)",
+    "collapse": false
+  },
+  "claim_boundaries": {
+    "learning_to_learn": false,
+    "ranking_paused": true,
+    "public_tested_is_scoped": true,
+    "one_success_is_not_100_percent": true
+  },
+  "usage": {
+    "calls": 12,
+    "inference_ran": 12,
+    "wall_s": 43.08934,
+    "rss": {
+      "parent_pid": 59323,
+      "server_pid": null,
+      "parent_rss_mib": 37.188,
+      "server_rss_mib": null,
+      "combined_rss_mib": 37.188,
+      "source": "ps_rss_kib",
+      "weight_file_is_not_memory": true
+    },
+    "frozen_cpu_used_s": 3564.568,
+    "frozen_cpu_remaining_s": 35.432,
+    "frozen_debit_s": 0,
+    "product_chat_unused": true,
+    "metal_unused": true,
+    "ledger": "standing_local_cpu_grant"
+  },
+  "declared_ids": [
+    "src_allow_limit",
+    "src_null_tag",
+    "dev_capture_lt",
+    "tgt_rename_layout",
+    "tgt_gt_floor",
+    "tgt_strict_cut",
+    "tgt_join_parts",
+    "tgt_near_bound",
+    "tgt_exact_limit"
+  ],
+  "closed_cpu_untouched": true,
+  "hash": "f6dc938d2328ecbda9d2d2f350414a40ee86b81332b0a7ea5907538519a46101",
+  "startup": {
+    "status": "started",
+    "model": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "ngl": 0,
+    "device": "none",
+    "model_sha256": null
+  }
+}
