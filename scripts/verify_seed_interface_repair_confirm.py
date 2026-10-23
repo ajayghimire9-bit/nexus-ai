@@ -70,7 +70,8 @@ def verify(
             raise ValueError("duplicate_confirm")
         if {row["id"] for row in confirm} != set(ids):
             raise ValueError("task_coverage")
-        if any(int(row.get("calls_charged") or 0) > MAX_COMPLETIONS for row in confirm):
+        cap = int((freeze or {}).get("max_completions") or MAX_COMPLETIONS)
+        if any(int(row.get("calls_charged") or 0) > cap for row in confirm):
             raise ValueError("over_budget")
         specs = {spec["id"]: spec for spec in config["tasks"]}
         completes = [row for row in events if row.get("operation") == "complete"]
@@ -109,6 +110,13 @@ def verify(
 
 
 def _bundle(study_id):
+    if study_id == "seed-diagnostic-revision-confirm-1":
+        from nexus.seed.diagnostic_revision_study import (
+            CLOSED_TASK_IDS as closed, WORKER_PROMPT_FREEZE as freeze,
+            covers_varied as cover, replay_final as replay_fn, summarize as summarize_fn,
+        )
+        config = json.loads((ROOT / "configs/seed_diagnostic_revision_confirm.json").read_text())
+        return config, dict(closed=closed, freeze=freeze, cover=cover, summarize_fn=summarize_fn, replay_fn=replay_fn)
     if study_id == "seed-slot3-copy-confirm-1":
         from nexus.seed.slot3_copy_study import (
             CLOSED_TASK_IDS as closed, WORKER_PROMPT_FREEZE as freeze,

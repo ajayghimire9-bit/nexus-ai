@@ -1,0 +1,119 @@
+{
+  "id": "seed-diagnostic-revision-confirm-1",
+  "artifact_stem": "seed_diagnostic_revision_confirm",
+  "base_sha": "3b88ed3",
+  "parent_protocol_commit": "3b88ed3",
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "carried_used_s": 3451.157780455996,
+  "wall_s": 90,
+  "hard_deadline_s": 90,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "audit_cells": 1,
+    "confirm_cells": 4,
+    "methods": ["supplied"]
+  },
+  "tasks": [
+    {
+      "id": "py_box_tally",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tally(item) sums num on each box. Missing num is 0. Empty boxes is 0. Empty list and a missing num are public.",
+      "request": "Create function tally(item) that sums num on each dict in boxes. Missing num counts as 0. An empty list is 0.",
+      "docs": [{"title": "tally", "content": "tally(item) sums box num values. Missing num is 0. Empty boxes is 0."}],
+      "files": {"box.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "box.py", "symbol": "tally", "action": "insert_function"},
+      "public": [
+        {"entry": "box.tally", "input": {"boxes": [{"num": 2}, {"num": 7}]}, "expected": 9},
+        {"entry": "box.tally", "input": {"boxes": []}, "expected": 0},
+        {"entry": "box.tally", "input": {"boxes": [{"num": 4}, {}]}, "expected": 4}
+      ],
+      "assessment": [
+        {"entry": "box.tally", "input": {"boxes": [{"num": 6}]}, "expected": 6},
+        {"entry": "box.tally", "input": {"boxes": [{}, {}]}, "expected": 0},
+        {"entry": "box.tally", "input": {"boxes": [{"num": 1}, {"num": 1}, {}]}, "expected": 2}
+      ]
+    },
+    {
+      "id": "py_lane_slash",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tag(item) is lane and bay lowercased, joined by one slash. Missing lane or bay is an empty string. Those missing cases are public. A distinct missing-key case is private.",
+      "request": "Create function tag(item) that returns lane and bay in lowercase joined by one slash. A missing lane or bay is an empty string.",
+      "docs": [{"title": "tag", "content": "tag(item) is lane/bay lowercased. Missing fields are empty strings."}],
+      "files": {"lane.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "lane.py", "symbol": "tag", "action": "insert_function"},
+      "public": [
+        {"entry": "lane.tag", "input": {"lane": "Lab", "bay": "East"}, "expected": "lab/east"},
+        {"entry": "lane.tag", "input": {"bay": "East"}, "expected": "/east"},
+        {"entry": "lane.tag", "input": {"lane": "Lab"}, "expected": "lab/"}
+      ],
+      "assessment": [
+        {"entry": "lane.tag", "input": {"bay": "West"}, "expected": "/west"},
+        {"entry": "lane.tag", "input": {"lane": "Mix"}, "expected": "mix/"},
+        {"entry": "lane.tag", "input": {"lane": "Q", "bay": "w"}, "expected": "q/w"}
+      ]
+    },
+    {
+      "id": "py_quota_div",
+      "role": "insert",
+      "family": "arithmetic",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "quota(item) returns used divided by cap as a float using true division.",
+      "request": "Create function quota(item) that returns used divided by cap.",
+      "docs": [{"title": "quota", "content": "quota(item) is used / cap as a float."}],
+      "files": {"quota.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "quota.py", "symbol": "quota", "action": "insert_function"},
+      "public": [
+        {"entry": "quota.quota", "input": {"used": 6, "cap": 5}, "expected": 1.2},
+        {"entry": "quota.quota", "input": {"used": 0, "cap": 8}, "expected": 0.0}
+      ],
+      "assessment": [
+        {"entry": "quota.quota", "input": {"used": 13, "cap": 2}, "expected": 6.5},
+        {"entry": "quota.quota", "input": {"used": 1, "cap": 4}, "expected": 0.25}
+      ]
+    },
+    {
+      "id": "py_meet_pair",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "meet(item) is True only when hours >= need and mark >= line. A failing public case is included.",
+      "request": "Create function meet(item) that is True only when hours is at least need and mark is at least line.",
+      "docs": [{"title": "meet", "content": "meet(item) requires hours >= need AND mark >= line."}],
+      "files": {"meet.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "meet.py", "symbol": "meet", "action": "insert_function"},
+      "public": [
+        {"entry": "meet.meet", "input": {"hours": 5, "need": 4, "mark": 9, "line": 8}, "expected": true},
+        {"entry": "meet.meet", "input": {"hours": 3, "need": 4, "mark": 10, "line": 8}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "meet.meet", "input": {"hours": 8, "need": 4, "mark": 7, "line": 8}, "expected": false},
+        {"entry": "meet.meet", "input": {"hours": 4, "need": 4, "mark": 8, "line": 8}, "expected": true}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

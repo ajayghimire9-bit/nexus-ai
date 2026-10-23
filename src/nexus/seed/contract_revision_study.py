@@ -19,6 +19,7 @@ from .interrupt_transfer import _assess
 from .process_memory import sample_process_memory
 from .execution_feedback import layered_public_feedback
 from .public_failure import behavioral_feedback, comparison_ops, operator_hint_present
+from .diagnostic_revision import diagnostic_revision_prompt
 from .structural_revision import slot3_revision_prompt, structural_reject_detail
 from .sum_row_repair import (
     compact_behavioral_feedback,
@@ -94,6 +95,7 @@ def _trace(assembled, **extra):
 def propose_cell(
     runtime, spec, variant, meter, scope, *, wire_discovery, max_tokens=128,
     contract_block=None, contract_origin=None, asked=False, compact_prompts=False,
+    max_completions=None, diagnostic_revision=False,
 ):
     started = time.perf_counter()
     task = _task(spec)
@@ -120,6 +122,7 @@ def propose_cell(
             complete_wall_s=0, memory=sample_process_memory(runtime),
             discovery_blocked=True,
         )
+    cap = int(max_completions or MAX_COMPLETIONS)
     schema = schema_for_format(FORMAT)
     decoding = decoding_record(schema, max_tokens)
     if compact_prompts:
@@ -138,7 +141,7 @@ def propose_cell(
     )]
     format_attempted = False
     format_success = False
-    if (assembled.get("placeholder") or not assembled.get("syntax_valid")) and len(traces) < MAX_COMPLETIONS:
+    if (assembled.get("placeholder") or not assembled.get("syntax_valid")) and len(traces) < cap:
         format_attempted = True
         feedback = revision_feedback(assembled.get("placeholder") or assembled.get("raw_reason") or "malformed")
         if compact_prompts:
@@ -180,7 +183,7 @@ def propose_cell(
         public_passed = bool(public.get("all_passed"))
         if public_passed:
             behavior_success = True
-        elif len(traces) < MAX_COMPLETIONS:
+        elif len(traces) < cap:
             behavior_attempted = True
             prior_body = _body_excerpt(assembled)
             spec_text = " ".join([spec.get("requirement") or "", spec.get("request") or ""])
@@ -188,11 +191,15 @@ def propose_cell(
                 feedback = compact_behavioral_feedback(
                     public, spec.get("public") or [], prior_body, spec_text,
                 )
-                user3 = compact_revision_prompt(plan, prior_body, feedback)
             else:
                 feedback = layered_public_feedback(
                     public, spec.get("public") or [], spec_text, prior_body,
                 )
+            if diagnostic_revision:
+                user3 = diagnostic_revision_prompt(
+                    plan, spec, feedback, omitted_source=prior_body, public=public,
+                )
+            else:
                 user3 = compact_revision_prompt(plan, prior_body, feedback)
             three_point = bool(feedback.get("three_point_evidence"))
             prompt3, render3 = render_prompt(STYLE, user3)
@@ -216,7 +223,7 @@ def propose_cell(
             reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
             traces[-1]["unprojected_sum_rejected"] = bool(reject)
             traces[-1]["reject_reason"] = reject
-            if reject and len(traces) < MAX_COMPLETIONS:
+            if reject and len(traces) < cap:
                 feedback2 = {
                     "validation_error": "unprojected_sum",
                     "instruction": reject,
@@ -249,7 +256,7 @@ def propose_cell(
             )
             structural_reason = None if detail is None else detail["reason"]
             structural_codes = list((detail or {}).get("codes") or [])
-            if structural_reason and len(traces) < MAX_COMPLETIONS:
+            if structural_reason and len(traces) < cap:
                 structural_slot3_attempted = True
                 user5 = slot3_revision_prompt(
                     plan, prior_body, feedback or {}, _body_excerpt(assembled), structural_reason,
@@ -323,6 +330,8 @@ def propose_cell(
         normalized=assembled.get("normalized"),
         completions=len(traces),
         calls_charged=len(traces),
+        max_completions=cap,
+        diagnostic_revision=diagnostic_revision,
         format_repair_attempted=format_attempted,
         format_repair_success=format_success,
         behavioral_revision_attempted=behavior_attempted,

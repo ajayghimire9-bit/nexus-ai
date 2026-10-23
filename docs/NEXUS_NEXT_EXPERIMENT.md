@@ -2,7 +2,9 @@
 
 ## Current next — the 1.5B coder ignores a used structural slot
 
-The [slot-3 copy run](NEXUS_SEED_SLOT3_COPY_RESULTS.md) passed
+Protocol [NEXUS_SEED_DIAGNOSTIC_REVISION_PROTOCOL.md](NEXUS_SEED_DIAGNOSTIC_REVISION_PROTOCOL.md)
+is locked. Live scoring has not run. The
+[slot-3 copy run](NEXUS_SEED_SLOT3_COPY_RESULTS.md) passed
 public 1/4 and private 1/4. Slot 3 now fires on an AST-identical
 KeyError copy and was used on `py_post_slash`; the coder recopied
 the bare subscript. Bag-sum still repeats `sum(container or [0])`
