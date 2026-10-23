@@ -1,17 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — three-point boundary evidence, conversation state, one workflow
+## Current next — freeze the inclusive workflow on a project AST cannot solve
 
-The [capability milestone](NEXUS_SEED_CAPABILITY_MILESTONE_RESULTS.md)
-accepted `>=` on equality-only public tests, left `fees` unselected, and
-could not say whether the model produced no usable edit. Next: require
-teacher-labeled below/equal/above before accepting a boundary repair;
-update the selected file before answering “use fees instead”; record
-proposal lifecycle; make one development workflow measurable, then assess
-a frozen fresh project. Do not promote learned ranking. Do not rescore
-the closed milestone. Ledger
-**2474.568897455996 used / 1125.431102544004 remaining**.
-[Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md).
+The [boundary/state/workflow pilot](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_RESULTS.md)
+accepted teacher-labeled three-point `Lt→LtE`, refused equality-only
+public tests, and passed conversation state 4/4. The model produced no
+usable edit (validation), not a discarded usable proposal. Next: keep
+this recipe frozen and assess a fresh project the AST catalogue cannot
+repair, so model contribution is necessary. Do not promote learned
+ranking. Ledger
+**2490.426805455996 used / 1109.573194544004 remaining**.
 
 ## Current next — identified-among-checked stopping, not a larger catalogue sweep
 

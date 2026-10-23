@@ -7,8 +7,11 @@ tests label below, equal and above from the explicit requirement; equality
 alone must not accept. File-switch updates the selected resource before
 the next answer; document replies name their source. Proposal traces
 distinguish no usable edit from a discarded usable proposal. Learned
-ranking stays paused. Development only; not confirmation.
-[Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md).
+ranking stays paused. **Held on this development grid.** Three-point
+accepted `Lt→LtE` and passed private assessment; equality-only refused.
+Conversation 4/4. Model completions were invalid (`no_usable_edit`); AST
+solved both workflow cells. Not confirmation.
+[Results](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_RESULTS.md).
 
 ## Current — completeness-preserving widening vs false certainty
 

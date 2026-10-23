@@ -1,18 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — boundary evidence, conversation state and one workflow (protocol)
+## Current — boundary evidence, conversation state and one workflow (results)
 
-[Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md). Branch
-`cursor/seed-boundary-state-workflow` from reviewed tip `01a434b`.
-Development only. Do not rescore the closed capability-milestone grid.
-Teacher-labeled below/equal/above public checks are required before a
-boundary repair is accepted. “Use fees instead” must select the named
-file; a topic change ends the prior task; document answers name their
-source. Local-model proposals record inference, raw excerpt, parse,
-validation and queue insertion. One development workflow is frozen and
-then assessed on a fresh project. Learned ranking is not re-run and not
-promoted. Standing ledger
-**2474.568897455996 used / 1125.431102544004 remaining**.
+[Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md),
+[results](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_RESULTS.md). Implementation
+`765ffcd` on `cursor/seed-boundary-state-workflow`. Verifier `valid: true`.
+Three-point teacher labels accepted `Lt→LtE` and refused equality-only
+public tests. Conversation passed 4/4 after file-switch and source
+attribution. Both workflow cells recorded all six stages; the model
+produced no usable edit (validation), not a discarded usable proposal.
+AST supplied the accepted patch. `fixed_boundary` stays the default. No
+ranking promotion. Ledger
+**2490.426805455996 used / 1109.573194544004 remaining**.
 
 ## Previous — capability milestone (results)
 
