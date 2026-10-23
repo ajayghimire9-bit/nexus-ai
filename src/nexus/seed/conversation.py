@@ -17,7 +17,8 @@ from .working import current
 KIND='seed_conversation_turn'
 WORKSPACE=dict(selected_file=None,last_procedure_id=None,last_intent=None,last_output_path=None,
     last_correction=None,last_source_sha=None,pending_clarification=None,last_saved_explicit=False,
-    last_program=None,last_bindings=None,last_request_kind=None)
+    last_program=None,last_bindings=None,last_request_kind=None,
+    selected_coding_workspace=None,last_coding_request=None,coding_allow_acquired=False)
 INITIAL=dict(active_name=None,lab='coding',pending=None,last_teaching=None,workspace=WORKSPACE)
 
 
@@ -66,7 +67,7 @@ def interpret(text,ctx):
     if any(p in t for p in ('how are you','how are u','how r u','how is it going','how\'s it going','how do you feel','who are you','what are you','what is your name','tell me about yourself','introduce yourself')) or t in ('thanks','thank you','thx','ty','good job','great job','awesome'):return Intent('master_dialogue',dict(text=raw))
     if any(p in t for p in ('learning to learn','meta learning','meta-learning','general intelligence','are you agi','did we achieve','run general suite')):return Intent('master_dialogue',dict(text=raw))
     if t.startswith(('solve ','calculate ','compute ')) or re.fullmatch(r'[0-9x\+\-\*\/\(\)\.\s=]+',t) and any(op in t for op in ('+','-','*','/','=')):return Intent('master_dialogue',dict(text=raw))
-    if t.startswith(('z3 ','sympy ','lean4 ','lean ','program ','editor ','wikidata ','docs ','code ','typescript ','repo ','plan ','capsule ','agent ')):return Intent('unsupported')
+    if t.startswith(('z3 ','sympy ','lean4 ','lean ','program ','editor ','wikidata ','docs ','code ','typescript ','repo ','plan ','capsule ','agent ','use coding workspace','open coding workspace','select coding workspace','use repo ','open repo ','list coding workspaces','list repos','disable acquired coding memory','enable acquired coding memory','baseline coding mode')):return Intent('unsupported')
     if re.fullmatch(r'["“][a-z][a-z0-9_]{0,23}["”] means .+',t):return Intent('master_dialogue',dict(text=raw))
     if re.search(r'^if .+ is .+ (?:of|than) .+ and .+ is .+ (?:of|than) .+',t):return Intent('master_dialogue',dict(text=raw))
     if ('arrange' in t or 'sort' in t) and ('smallest to largest' in t or 'largest to smallest' in t):return Intent('master_dialogue',dict(text=raw))
@@ -139,9 +140,11 @@ def validate_turn(p,session):
     if type(c) is not dict or set(c)!=set(INITIAL) or c['lab'] not in lib.LABS or c['active_name'] is not None and (type(c['active_name']) is not str or not WORD.fullmatch(c['active_name'])):raise ValueError('chat_context_schema')
     w=c['workspace']
     if type(w) is not dict or set(w)!=set(WORKSPACE):raise ValueError('chat_workspace_schema')
-    for key in ('selected_file','last_output_path','last_correction','last_source_sha'):
+    for key in ('selected_file','last_output_path','last_correction','last_source_sha',
+                'selected_coding_workspace','last_coding_request'):
         val=w[key]
         if val is not None and (type(val) is not str or not 1<=len(val)<=500 or '\x00' in val):raise ValueError('chat_workspace_text')
+    if type(w['coding_allow_acquired']) is not bool:raise ValueError('chat_workspace_flag')
     if w['last_procedure_id'] is not None and (type(w['last_procedure_id']) is not str or not re.fullmatch(r'[a-f0-9]{12,32}',w['last_procedure_id'])):raise ValueError('chat_workspace_procedure')
     if type(w['last_saved_explicit']) is not bool:raise ValueError('chat_workspace_flag')
     intent=w['last_intent']
@@ -154,10 +157,10 @@ def validate_turn(p,session):
         if any(type(step) is not dict or type(step.get('op')) is not str for step in w['last_program']):raise ValueError('chat_workspace_program')
     if w['last_bindings'] is not None:
         if type(w['last_bindings']) is not dict or len(json.dumps(w['last_bindings'],allow_nan=False))>800:raise ValueError('chat_workspace_bindings')
-    if w['last_request_kind'] is not None and w['last_request_kind'] not in ('fresh','repeat','correction','reuse'):raise ValueError('chat_workspace_kind')
+    if w['last_request_kind'] is not None and w['last_request_kind'] not in ('fresh','repeat','correction','reuse','coding'):raise ValueError('chat_workspace_kind')
     pending_w=w['pending_clarification']
     if pending_w is not None:
-        if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order','constraint','conflict') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
+        if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order','constraint','conflict','coding_workspace') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
         if pending_w.get('detail') is not None and (type(pending_w['detail']) is not str or len(pending_w['detail'])>400):raise ValueError('chat_workspace_pending')
     s=lib.state(session);known={e.fingerprint for e in session.journal.snapshot()}
     if type(p['evidence_refs']) is not list or len(p['evidence_refs'])>8 or any(v not in known for v in p['evidence_refs']):raise ValueError('chat_evidence_reference')

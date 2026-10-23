@@ -2082,11 +2082,21 @@ class EqualizedControllerConfig:
     r"""Identical controller bounds enforced across ALL active policies in v2 so
     that comparisons isolate learned weights $(\phi_{\text{rank}}, \phi_{\text{probe}})$
     rather than shortlist or questioning asymmetries.
+
+    Widening fields default off so historical v2 / audit replay is unchanged.
+    When enabled, learned and fixed policies share the same completeness rules;
+    learned priors may change ranking order only.
     """
     shortlist_limit: int = 3
     allow_questions: bool = True
     max_questions_per_task: int = 2
     probe_min_disagreement_ratio: float = 0.15
+    enable_widening: bool = False
+    max_candidates_checked: int = 32
+    max_constructed_probes: int = 4
+    max_episode_candidate_calls: int | None = None
+    max_episode_wall_s: float | None = None
+    widen_batch_size: int = 4
 
 
 class EpisodeCallLedger:
@@ -3199,7 +3209,7 @@ class EqualizedInvestigationEngineV2:
                 if len(survivors) >= effective_shortlist:
                     break
 
-        if not survivors:
+        if not survivors and not ctrl_cfg.enable_widening:
             survivors = [ranked[0]]
 
         # Phase 2: Active Disagreement Probing & Questioning
@@ -3273,11 +3283,28 @@ class EqualizedInvestigationEngineV2:
             if len(survivors) <= 1:
                 break
 
-        selected_cid, selected_ops, selected_fn = survivors[0] if survivors else ranked[0]
+        from .investigation_widening import apply_completeness_preserving_fallback
+        widened = apply_completeness_preserving_fallback(
+            task=task,
+            ranked=ranked,
+            survivors=survivors,
+            used_probe_indices=used_probe_indices,
+            ledger=ledger,
+            active_env=active_env,
+            ctrl_cfg=ctrl_cfg,
+            started=t0,
+        )
+        survivors = widened["survivors"]
+        widening = widened["record"]
+
+        selected_cid, selected_ops, selected_fn = survivors[0] if survivors else (
+            ranked[0] if ranked else ("unresolved", (), lambda x: None)
+        )
 
         # If this is a source acquisition episode and it succeeded, consolidate as a versioned capsule
+        # Ambiguous / unresolved results are never stored as verified skills.
         capsule_registered = None
-        if consolidate_on_solve and survivors:
+        if consolidate_on_solve and survivors and widening.get("certainty_claimed"):
             cap = VersionedCapsule(
                 capsule_id=f"cap_{task.task_id}_{'_'.join(selected_ops)}",
                 name=selected_cid,
@@ -3305,6 +3332,14 @@ class EqualizedInvestigationEngineV2:
             "capsule_registered": capsule_registered,
             "candidate_call_log": ledger.candidate_call_log,
             "oracle_question_log": ledger.oracle_question_log,
+            "stopping_reason": widening.get("stopping_reason"),
+            "certainty_claimed": widening.get("certainty_claimed"),
+            "shortlist_agreement": widening.get("shortlist_agreement"),
+            "observational_equivalence_on_identified_evidence": widening.get(
+                "observational_equivalence_on_identified_evidence"
+            ),
+            "unresolved_alternatives": widening.get("unresolved_alternatives", []),
+            "widening": widening,
         }
 
     def evaluate_v2_episode(

@@ -1,5 +1,18 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Completeness-preserving widening and local-model coding loop
+
+`seed/investigation_widening.py` is called from `EqualizedInvestigationEngineV2.investigate_v2`
+when `EqualizedControllerConfig.enable_widening` is set. Defaults stay off so
+closed v2 / capability-audit replay is unchanged. Learned priors still only
+reorder `rank_candidates_v2`. `seed/local_model_patch_proposer.py` is a proposal
+source inside `SymbioticAgentLoop`, reusing `PersistentLocalRuntime`,
+`PolyglotCodingWorkbench`, `agent_loop_worker`, and `StigmergicCapsuleRegistry`.
+Workspace chat reuses `Conversation` / `SeedWorkspace` / `workspace_conversation.handle`.
+Pilot runner: `seed/capability_widening_coding.py`. Historical audit artifacts
+are fingerprint-checked, not rescored.
+[Protocol](NEXUS_SEED_CAPABILITY_WIDENING_CODING_PROTOCOL.md).
+
 ## Corrected capability evidence path
 
 `seed/capability_evidence.py` extends the existing EpisodeCallLedger and

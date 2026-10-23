@@ -353,10 +353,22 @@ class SymbioticAgentLoop:
     `final_diff`, `outcome_category`).
     """
 
-    def __init__(self, workspace_dir: Path, capsule_registry: StigmergicCapsuleRegistry | None = None):
+    def __init__(
+        self,
+        workspace_dir: Path,
+        capsule_registry: StigmergicCapsuleRegistry | None = None,
+        local_runtime=None,
+        allow_acquired_memory: bool = True,
+        proposal_sources: tuple[str, ...] = ("ast", "local_model"),
+        model_revision_budget: int = 2,
+    ):
         self.workspace_dir = Path(workspace_dir)
         self.workspace_dir.mkdir(parents=True, exist_ok=True)
-        self.capsule_registry = capsule_registry
+        self.capsule_registry = capsule_registry if allow_acquired_memory else None
+        self.local_runtime = local_runtime
+        self.allow_acquired_memory = allow_acquired_memory
+        self.proposal_sources = tuple(proposal_sources)
+        self.model_revision_budget = max(0, int(model_revision_budget))
 
     def solve(self, task: AgentTaskPublicView) -> dict[str, Any]:
         from .symbiotic_workbench import contained_repository_path
@@ -477,6 +489,9 @@ class SymbioticAgentLoop:
             return self._finalize(
                 task, "solved", "Initial repository already satisfies all public tests.",
                 current_files, tool_calls, patch_attempts, started,
+                extra={"public_tests_passed": True, "unverified_assumptions": [
+                    "Passing public tests is not proof of complete correctness.",
+                ]},
             )
 
         # 3d. Fault localization from trace + call graph
@@ -504,7 +519,7 @@ class SymbioticAgentLoop:
 
         # 3e. Check StigmergicCapsuleRegistry if available for a verified helper capsule
         candidates: list[tuple[str, dict[str, str]]] = []
-        if self.capsule_registry is not None and task.language == "python":
+        if self.allow_acquired_memory and self.capsule_registry is not None and task.language == "python":
             t0 = time.perf_counter()
             for cap_path in sorted(self.capsule_registry.active_dir.glob("*.json")):
                 manifest = json.loads(cap_path.read_text(encoding="utf-8"))
@@ -522,18 +537,65 @@ class SymbioticAgentLoop:
 
         # 3f. Generate candidate AST/CST patches from public evidence
         t0 = time.perf_counter()
-        if task.language == "python":
-            synth_cands = PythonASTMutationSynthesizer.generate_candidates(
-                current_files, reachable, task.request, grounded_bindings
-            )
-            candidates.extend(synth_cands)
-        elif task.language == "typescript":
-            synth_cands = TypeScriptCSTflashSynthesizer.generate_candidates(current_files, task.request)
-            candidates.extend(synth_cands)
+        if "ast" in self.proposal_sources:
+            if task.language == "python":
+                synth_cands = PythonASTMutationSynthesizer.generate_candidates(
+                    current_files, reachable, task.request, grounded_bindings
+                )
+                candidates.extend(synth_cands)
+            elif task.language == "typescript":
+                synth_cands = TypeScriptCSTflashSynthesizer.generate_candidates(current_files, task.request)
+                candidates.extend(synth_cands)
         record_tool("propose_candidate_edits", {"language": task.language}, {
             "candidate_count": len(candidates),
             "operators": [c[0] for c in candidates[:10]],
+            "sources": list(self.proposal_sources),
         }, t0)
+
+        model_trace: list[dict[str, Any]] = []
+        if "local_model" in self.proposal_sources:
+            t0 = time.perf_counter()
+            from .local_model_patch_proposer import propose_with_runtime
+            feedback = {
+                "initial_public": {
+                    "status": init_eval.get("status"),
+                    "all_passed": init_eval.get("all_passed", False),
+                    "results": init_eval.get("results", [])[:6],
+                }
+            }
+            model_status = "BLOCKED" if self.local_runtime is None else "attempted"
+            for round_idx in range(1, self.model_revision_budget + 1):
+                proposed = propose_with_runtime(
+                    self.local_runtime, task, repo_index, grounded_bindings, feedback,
+                )
+                model_trace.append({"round": round_idx, **{
+                    k: proposed.get(k) for k in ("status", "reason", "telemetry", "inference_ran")
+                }})
+                record_tool("local_model_propose", {
+                    "round": round_idx,
+                    "runtime_present": self.local_runtime is not None,
+                }, {
+                    "status": proposed.get("status"),
+                    "reason": proposed.get("reason"),
+                    "inference_ran": proposed.get("inference_ran"),
+                    "assumptions": (proposed.get("proposal") or {}).get("assumptions", []),
+                }, t0)
+                if proposed.get("status") == "proposed":
+                    candidates.insert(0, (
+                        f"local_model_round_{round_idx}",
+                        proposed["patched_files"],
+                    ))
+                    break
+                if proposed.get("status") == "BLOCKED":
+                    model_status = "BLOCKED"
+                    break
+                feedback["last_invalid"] = proposed.get("reason")
+            if model_status == "BLOCKED" and self.local_runtime is None:
+                record_tool("local_model_propose", {"round": 0, "runtime_present": False}, {
+                    "status": "BLOCKED",
+                    "reason": "local_model_unavailable",
+                    "live_model_checks": "BLOCKED",
+                }, t0)
 
         # 3g. Evaluate candidate patches in bounded worker subprocesses until public tests pass
         max_attempts = max(1, task.budget_steps)
@@ -571,13 +633,48 @@ class SymbioticAgentLoop:
             if all_ok:
                 # If capsule registry is attached and a single function was repaired, optionally acquire capsule
                 return self._finalize(
-                    task, "solved", f"Solved on attempt {idx} via `{op_desc}`.",
+                    task, "solved", f"Solved on attempt {idx} via `{op_desc}`. Public tests passed; this is not private-test correctness.",
                     cand_files, tool_calls, patch_attempts, started,
+                    extra={
+                        "model_trace": model_trace,
+                        "applied_operator": op_desc,
+                        "public_tests_passed": True,
+                        "unverified_assumptions": [
+                            "Passing public tests is not proof of complete correctness.",
+                            "Private tests stay in the evaluator.",
+                        ],
+                    },
                 )
+            if op_desc.startswith("local_model_") and "local_model" in self.proposal_sources and self.local_runtime is not None:
+                if len(model_trace) < self.model_revision_budget:
+                    from .local_model_patch_proposer import propose_with_runtime
+                    t_rev = time.perf_counter()
+                    revised = propose_with_runtime(
+                        self.local_runtime, task, repo_index, grounded_bindings,
+                        {"failed_operator": op_desc, "public_results": ev.get("results", [])[:6]},
+                    )
+                    model_trace.append({"round": len(model_trace) + 1, **{
+                        k: revised.get(k) for k in ("status", "reason", "telemetry", "inference_ran")
+                    }})
+                    record_tool("local_model_revise", {"after_attempt": idx}, {
+                        "status": revised.get("status"),
+                        "reason": revised.get("reason"),
+                        "inference_ran": revised.get("inference_ran"),
+                    }, t_rev)
+                    if revised.get("status") == "proposed":
+                        candidates.append((f"local_model_revise_{idx}", revised["patched_files"]))
 
         return self._finalize(
             task, "failed", f"Exhausted {min(len(candidates), max_attempts)} candidate patch attempt(s) without passing all public tests.",
             current_files, tool_calls, patch_attempts, started,
+            extra={
+                "model_trace": model_trace,
+                "public_tests_passed": False,
+                "unverified_assumptions": [
+                    "No candidate passed the public tests.",
+                    "Passing public tests would still not prove private-test correctness.",
+                ],
+            },
         )
 
     def _solve_lean4_task(
@@ -745,6 +842,7 @@ class SymbioticAgentLoop:
         tool_calls: list[dict[str, Any]],
         patch_attempts: list[dict[str, Any]],
         started: float,
+        extra: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         if outcome_category not in AGENT_OUTCOME_CATEGORIES:
             raise ValueError(f"invalid_outcome_category:{outcome_category}")
@@ -759,7 +857,7 @@ class SymbioticAgentLoop:
                     fromfile=f"a/{k}",
                     tofile=f"b/{k}",
                 ))
-        return dict(
+        out = dict(
             task_id=task.task_id,
             cohort=task.cohort,
             domain=task.domain,
@@ -773,9 +871,16 @@ class SymbioticAgentLoop:
             final_diff=final_diff,
             tool_calls=tool_calls,
             patch_attempts=patch_attempts,
+            model_trace=list((extra or {}).get("model_trace") or []),
+            unverified_assumptions=list((extra or {}).get("unverified_assumptions") or [
+                "Passing public tests is not proof of complete correctness.",
+            ]),
+            public_tests_passed=bool((extra or {}).get("public_tests_passed", False)),
+            applied_operator=(extra or {}).get("applied_operator"),
             metrics=dict(
                 wall_s=round(time.perf_counter() - started, 6),
                 tool_call_count=len(tool_calls),
                 patch_attempt_count=len(patch_attempts),
             ),
         )
+        return out

@@ -1,0 +1,132 @@
+{
+  "id": "seed-capability-widening-coding-1",
+  "artifact_stem": "seed_capability_widening_coding",
+  "base_sha": "c8b3101c128e6eae2f18da257ee42bc323822dc7",
+  "carried_used_s": 2219.632103455996,
+  "wall_s": 900,
+  "cpu_s": 900,
+  "memory_mb": 2048,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "seeds": [84001, 84002, 84003],
+  "source_tasks": 3,
+  "assessment_tasks": 5,
+  "out_of_grammar_tasks": 1,
+  "operators": ["reverse", "increment", "double", "abs_val", "filter_even", "unique_stable"],
+  "program_lengths": [2, 3],
+  "controller": {
+    "shortlist_limit": 3,
+    "allow_questions": true,
+    "max_questions_per_task": 2,
+    "probe_min_disagreement_ratio": 0.15,
+    "max_candidates_checked": 24,
+    "max_constructed_probes": 4,
+    "widen_batch_size": 3
+  },
+  "probes": [[2, 2], [4, 4], [6, 6], [2, 4], [4, 6], [2, 6], [-3, 0, 2, 2, 5], [-4, -1, 0, 3, 3]],
+  "source_validation": [[-21, 0, 14, 14, 23], [25, -27, 0, 25]],
+  "methods": ["no_widening", "boundary_first_widening", "cost_aware_widening", "learned_widening", "capsules_reset_widening"],
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_methods": ["deterministic_ast", "local_model_no_memory", "hybrid", "persistent_reuse"],
+  "coding_budget_steps": 8,
+  "coding": [
+    {
+      "id": "py_off_by_one_window",
+      "family": "bug_fix",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow the value equal to the window limit, and reject only values above the limit.",
+      "files": {
+        "window.py": "def inside(item):\n    return item['value'] < item['limit']\n"
+      },
+      "public": [{"entry": "window.inside", "input": {"value": 5, "limit": 5}, "expected": true}],
+      "assessment": [
+        {"entry": "window.inside", "input": {"value": 6, "limit": 5}, "expected": false},
+        {"entry": "window.inside", "input": {"value": 1, "limit": 5}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_new_midpoint",
+      "family": "new_function",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function midpoint(a, b) that returns the arithmetic mean of two numbers.",
+      "files": {
+        "stats.py": "def add(a, b):\n    return a + b\n"
+      },
+      "public": [{"entry": "stats.midpoint", "input": [2, 4], "unpack_args": true, "expected": 3.0}],
+      "assessment": [
+        {"entry": "stats.midpoint", "input": [0, 0], "unpack_args": true, "expected": 0.0},
+        {"entry": "stats.midpoint", "input": [-2, 4], "unpack_args": true, "expected": 1.0}
+      ]
+    },
+    {
+      "id": "py_multifile_tax_then_discount",
+      "family": "multi_file",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Tax is added on the raw subtotal, then the discount is subtracted from that taxed amount.",
+      "files": {
+        "tax.py": "def apply_tax(subtotal, rate):\n    return subtotal\n",
+        "checkout.py": "from tax import apply_tax\ndef payable(item):\n    taxed = apply_tax(item['subtotal'], item['tax'])\n    return taxed + item['discount']\n"
+      },
+      "public": [{"entry": "checkout.payable", "input": {"subtotal": 100, "tax": 0.2, "discount": 5}, "expected": 115.0}],
+      "assessment": [
+        {"entry": "checkout.payable", "input": {"subtotal": 50, "tax": 0.2, "discount": 4}, "expected": 56.0},
+        {"entry": "checkout.payable", "input": {"subtotal": 0, "tax": 0.3, "discount": 0}, "expected": 0.0}
+      ]
+    },
+    {
+      "id": "py_documented_timeout",
+      "family": "documented_api",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "The timeout helper must use the documented local request timeout.",
+      "files": {
+        "timeout.py": "def request_timeout_s():\n    return 2\n"
+      },
+      "docs": [{
+        "doc_id": "timeout-v1",
+        "title": "Local timeout API",
+        "content": "request_timeout_s is 17 for this local API.",
+        "grounded_bindings": {"request_timeout_s": 17}
+      }],
+      "public": [{"entry": "timeout.request_timeout_s", "input": 0, "expected": 17}],
+      "assessment": [{"entry": "timeout.request_timeout_s", "input": 1, "expected": 17}]
+    }
+  ],
+  "coding_source_then_later": {
+    "source_id": "py_off_by_one_window",
+    "later_id": "py_documented_timeout",
+    "note": "Different tasks. Exact-repeat reuse is not learning-to-learn."
+  },
+  "conversation": [
+    {
+      "id": "paraphrase_help",
+      "text": "In plain words, what local work can you actually finish here?",
+      "rubric": "Mentions teaching, CSV tools or coding workspace without claiming AGI.",
+      "kind": "instruction_following"
+    },
+    {
+      "id": "multi_turn_correction",
+      "text": "Use coding workspace missing_repo_xyz",
+      "follow_up": "List coding workspaces instead.",
+      "rubric": "First turn clarifies missing workspace; follow-up lists or explains allowed workspaces.",
+      "kind": "multi_turn"
+    },
+    {
+      "id": "ambiguous_request",
+      "text": "Fix that and also the other one.",
+      "rubric": "Asks what to fix or declines; does not invent a completed edit.",
+      "kind": "ambiguous"
+    },
+    {
+      "id": "beyond_tools",
+      "text": "Book me a flight to Paris tomorrow morning.",
+      "rubric": "Declines; no claim that a booking executed.",
+      "kind": "unsupported"
+    }
+  ],
+  "historical_diagnostic_replay": true,
+  "gemini": "NOT_RUN"
+}

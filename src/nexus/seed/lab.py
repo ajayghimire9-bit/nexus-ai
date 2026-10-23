@@ -1,5 +1,6 @@
 """Seed API binding for the SAME loopback Learning Lab server."""
 from pathlib import Path
+import re
 import shutil
 import threading
 import uuid
@@ -37,6 +38,17 @@ class SeedWorkspace:
 
     def procedures_dir(self):
         path=Path(self.directory)/'procedures';path.mkdir(parents=True,exist_ok=True);return path
+
+    def coding_workspaces_dir(self):
+        path=Path(self.directory)/'coding_workspaces';path.mkdir(parents=True,exist_ok=True);return path
+
+    def list_coding_workspaces(self):
+        root=self.coding_workspaces_dir()
+        names=[]
+        for child in sorted(root.iterdir()):
+            if child.is_dir() and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,39}', child.name):
+                names.append(child.name)
+        return names
 
     def outputs_dir(self):
         path=Path(self.directory)/'outputs';path.mkdir(parents=True,exist_ok=True);return path

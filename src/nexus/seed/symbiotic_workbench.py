@@ -2466,7 +2466,15 @@ class SymbioticWorkbenchController:
             docs=args.get("docs", []),
             budget_steps=int(args.get("budget_steps", 16)),
         )
-        loop = SymbioticAgentLoop(self.base_dir / "agent_runs", capsule_registry=self.registry)
+        allow_acquired = bool(args.get("allow_acquired_memory", True))
+        runtime = getattr(self.store, "local_runtime", None)
+        loop = SymbioticAgentLoop(
+            self.base_dir / "agent_runs",
+            capsule_registry=self.registry if allow_acquired else None,
+            local_runtime=runtime,
+            allow_acquired_memory=allow_acquired,
+            proposal_sources=tuple(args.get("proposal_sources") or ("ast", "local_model")),
+        )
         res = loop.solve(task_view)
         status_map = {
             "solved": "verified",
@@ -2511,24 +2519,12 @@ class SymbioticWorkbenchController:
             )
         except Exception as exc:
             return ws_turn.clarify("reference", f"Invalid agent request payload: {exc}")
+        spec["allow_acquired_memory"] = bool(getattr(ws_turn.ws, "get", lambda *_: False)("coding_allow_acquired"))
+        if isinstance(ws_turn.ws, dict):
+            spec["allow_acquired_memory"] = bool(ws_turn.ws.get("coding_allow_acquired"))
         out = self._handle_agent_solve_api(spec)
-        res = out["result"]
-        ws_turn.card("Autonomous Agent Loop Result", dict(
-            source="execution_backed",
-            executed=(res["outcome_category"] == "solved"),
-            outcome_category=res["outcome_category"],
-            tool_calls=res["tool_calls"],
-            patch_attempts=res["patch_attempts"],
-            final_diff=res["final_diff"],
-            proposal=out["proposal"],
-        ))
-        turn_status = "success" if res["outcome_category"] == "solved" else (
-            "clarification" if res["outcome_category"] in ("rejected", "blocked") else "error"
-        )
-        return (
-            f"Agent loop finished with outcome `{res['outcome_category']}`: {res['summary_message']} "
-            f"({len(res['tool_calls'])} tool call(s), {len(res['patch_attempts'])} patch attempt(s))."
-        ), turn_status, False
+        from .workspace_conversation import _present_coding_result
+        return _present_coding_result(ws_turn.card, out["result"], out.get("proposal"))
 
     def _handle_investigation_engine_api(self, args: dict[str, Any]) -> dict[str, Any]:
         sub = args.get("sub_op", "status")

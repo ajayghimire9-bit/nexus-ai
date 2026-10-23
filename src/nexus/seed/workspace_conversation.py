@@ -180,6 +180,78 @@ def publish_json(path, payload, cancelled=None, after_tmp=None):
         raise
 
 
+def _load_coding_workspace(root: Path):
+    files = {}
+    public_tests = []
+    docs = []
+    language = 'python'
+    for path in sorted(root.rglob('*')):
+        if not path.is_file() or path.name.startswith('.'):
+            continue
+        rel = str(path.relative_to(root)).replace('\\', '/')
+        if any(part.startswith('.') for part in Path(rel).parts):
+            continue
+        if path.stat().st_size > 20_000:
+            continue
+        text = path.read_text(encoding='utf-8')
+        if path.name == 'public_tests.json':
+            public_tests = json.loads(text)
+            continue
+        if path.name == 'docs.json':
+            docs = json.loads(text)
+            continue
+        files[rel] = text
+        if rel.endswith(('.ts', '.tsx')):
+            language = 'typescript'
+    return files, public_tests, docs, language
+
+
+def _present_coding_result(card, res, proposal=None):
+    model_calls = [c for c in res.get('tool_calls', []) if str(c.get('tool_name', '')).startswith('local_model')]
+    model_status = (model_calls[-1]['outcome_summary'] if model_calls else
+                    {'status': 'not_requested'})
+    public_passed = bool(res.get('public_tests_passed'))
+    card('Model proposal', dict(
+        source='coding_loop',
+        executed=False,
+        status=model_status.get('status'),
+        reason=model_status.get('reason'),
+        inference_ran=model_status.get('inference_ran'),
+        assumptions=model_status.get('assumptions', []),
+    ))
+    card('Applied workspace edit', dict(
+        source='coding_loop',
+        executed=bool(res.get('final_diff')),
+        operator=res.get('applied_operator'),
+        files=sorted(res.get('final_diff', {})),
+    ))
+    card('Public-test outcome', dict(
+        source='coding_loop',
+        executed=True,
+        outcome=res.get('outcome_category'),
+        public_tests_passed=public_passed,
+        complete_correctness=False,
+        attempts=len(res.get('patch_attempts', [])),
+        summary=res.get('summary_message', '')[:400],
+    ))
+    card('Unverified assumptions', dict(
+        assumptions=res.get('unverified_assumptions') or [
+            'Passing public tests is not proof of complete correctness.',
+        ],
+        executed=False,
+    ))
+    diffs = res.get('final_diff') or {}
+    truncated = {k: v[:800] for k, v in list(diffs.items())[:4]}
+    card('Final diff', dict(executed=bool(diffs), files=sorted(diffs), diff=truncated))
+    status = 'success' if res.get('outcome_category') == 'solved' else (
+        'clarification' if res.get('outcome_category') in ('rejected', 'blocked') else 'error'
+    )
+    return (
+        f"Coding loop finished with `{res.get('outcome_category')}`: {res.get('summary_message', '')} "
+        'Public tests are not a private-test proof. I did not claim an edit executed unless a worker applied it.'
+    ), status, False
+
+
 def handle(conversation, intent, ctx, card, text):
     """Return (reply, status, save) or None to keep the finite teaching path."""
     if conversation.store is None:
@@ -202,13 +274,14 @@ def _help(conversation, card):
         'Supported numeric filter: inclusive minimum only. Other comparisons are asked about, not guessed.',
         'A fresh request does not inherit the last threshold or sort. Say “do the same” to repeat.',
         'Save stores the executed AST. Restart keeps explicit saves. Persistence is not learning-to-learn.',
+        'Say “use coding workspace <name>” then describe a coding task. Public-test results are not complete correctness.',
     ])
     return (
         'I can teach finite object words and list programs, move objects on the 6×6 world, '
-        'and run two vetted CSV transforms (grouped totals or filtered rows) without changing '
-        'the source file. Only an inclusive minimum and one sort direction are executable '
+        'run two vetted CSV transforms, and run a bounded coding loop on an allowed repository '
+        'workspace. Only an inclusive minimum and one sort direction are executable CSV '
         'constraints. '+model+' Saving a procedure stores the executed AST; that is reuse, not '
-        'learning-to-learn.'
+        'learning-to-learn. Passing public tests is not proof of complete correctness.'
     ), 'reply', False
 
 
@@ -265,6 +338,9 @@ class WorkspaceTurn:
                                        request_kind='fresh', order_defaulted=not self.parsed.order_stated)
         if self.parsed.relation == 'file_only' and self.parsed.paths:
             return self.select_file(self.parsed.paths[0])
+        coding = self._maybe_handle_coding()
+        if coding is not None:
+            return coding
         if self._looks_like_data() and not self.ws['selected_file']:
             return self.clarify('file', 'I need a local CSV before I can group totals or list rows.')
         if self._looks_like_data() and self.ws['selected_file']:
@@ -400,6 +476,112 @@ class WorkspaceTurn:
         if not note:
             return 'No correction has been applied yet. I have not changed a procedure in this conversation.', 'reply', False
         return note + ' Model-generated chat is not listed here; only execution-backed procedure edits are.', 'reply', False
+
+    CODING_SELECT = re.compile(
+        r'^(?:use|open|select|load)\s+(?:coding\s+workspace|repo(?:sitory)?(?:\s+workspace)?)\s+([A-Za-z0-9][A-Za-z0-9_-]{0,39})\b',
+        re.I,
+    )
+    CODING_TASK = (
+        'implement', 'fix ', 'add a function', 'add function', 'write a function',
+        'create a function', 'patch ', 'edit the repo', 'modify ', 'make it ',
+        'handle empty', 'use the documented',
+    )
+
+    def _maybe_handle_coding(self):
+        match = self.CODING_SELECT.search(self.raw.strip())
+        if match:
+            return self.select_coding_workspace(match.group(1))
+        if self.text in ('list coding workspaces', 'show coding workspaces', 'list repos'):
+            names = self.store.list_coding_workspaces()
+            self.card('Allowed coding workspaces', dict(workspaces=names, executed=False))
+            if not names:
+                return 'No allowed coding workspaces are registered under this local store.', 'clarification', False
+            return 'Allowed coding workspaces: '+', '.join(names)+'. Say “use coding workspace <name>”.', 'reply', False
+        if self.text in ('disable acquired coding memory', 'baseline coding mode'):
+            self.ws['coding_allow_acquired'] = False
+            return 'Coding loop will not reuse acquired capsules. This is the baseline mode for later learning comparisons.', 'reply', False
+        if self.text in ('enable acquired coding memory',):
+            self.ws['coding_allow_acquired'] = True
+            return 'Coding loop may reuse previously acquired capsules. Saving a patch is still not learning-to-learn.', 'reply', False
+        selected = self.ws.get('selected_coding_workspace')
+        looks_coding = any(p in self.text for p in self.CODING_TASK) or self.text.startswith((
+            'implement ', 'fix the', 'add a ', 'write a ', 'create a ',
+        ))
+        follow_up = (
+            self.parsed.relation == 'correction' and self.ws.get('last_coding_request')
+            and selected
+        )
+        if selected and (looks_coding or follow_up):
+            request = self.raw.strip()
+            if follow_up and self.ws.get('last_coding_request'):
+                request = self.ws['last_coding_request'] + ' Correction: ' + self.raw.strip()
+            return self.run_coding_loop(request)
+        return None
+
+    def select_coding_workspace(self, name):
+        from .symbiotic_workbench import contained_repository_path
+        allowed = self.store.list_coding_workspaces()
+        if name not in allowed:
+            self.ws['pending_clarification'] = dict(kind='coding_workspace', detail=name[:80])
+            self.card('Coding workspace', dict(executed=False, allowed=allowed, requested=name))
+            return (
+                'That coding workspace is not in the allowed local list. '
+                + ('Registered: '+', '.join(allowed)+'.' if allowed else 'None are registered yet.')
+            ), 'clarification', False
+        root = contained_repository_path(self.store.coding_workspaces_dir(), name)
+        files = {}
+        for path in sorted(root.rglob('*')):
+            if not path.is_file() or path.name.startswith('.'):
+                continue
+            rel = str(path.relative_to(root)).replace('\\', '/')
+            if any(part.startswith('.') for part in Path(rel).parts):
+                continue
+            if path.stat().st_size > 20_000:
+                continue
+            files[rel] = path.read_text(encoding='utf-8')
+        self.ws['selected_coding_workspace'] = name
+        self.ws['pending_clarification'] = None
+        self.ws['last_request_kind'] = 'coding'
+        self.card('Selected coding workspace', dict(
+            workspace=name, files=sorted(files), executed=False,
+            baseline_no_acquired=not self.ws.get('coding_allow_acquired'),
+        ))
+        return (
+            'Using coding workspace '+name+' with '+str(len(files))+' file(s). '
+            'Describe a coding task. I will show the model proposal, applied edit, '
+            'public-test outcome, unverified assumptions and final diff separately. '
+            'Passing public tests is not complete correctness.'
+        ), 'reply', False
+
+    def run_coding_loop(self, request):
+        from .symbiotic_workbench import SymbioticWorkbenchController, contained_repository_path
+        if self.session.cancelled.is_set():
+            raise ValueError('cancel')
+        name = self.ws.get('selected_coding_workspace')
+        if not name:
+            return self.clarify('coding_workspace', 'Which allowed coding workspace should I use?')
+        root = contained_repository_path(self.store.coding_workspaces_dir(), name)
+        files, public_tests, docs, language = _load_coding_workspace(root)
+        if not files:
+            return self.clarify('coding_workspace', 'That workspace has no readable source files.')
+        ctrl = SymbioticWorkbenchController(self.store, self.session, session_id=self.conversation.session_id)
+        spec = dict(
+            task_id='ws_'+name,
+            domain='typescript_repo' if language == 'typescript' else 'python_repo',
+            language=language,
+            request=request[:500],
+            files=files,
+            public_tests=public_tests,
+            docs=docs,
+            budget_steps=8,
+            allow_acquired_memory=bool(self.ws.get('coding_allow_acquired')),
+        )
+        out = ctrl._handle_agent_solve_api(spec)
+        res = out['result']
+        self.ws['last_coding_request'] = request[:500]
+        self.ws['last_request_kind'] = 'coding'
+        self.ws['last_correction'] = 'Coding loop on '+name+' ended with '+res.get('outcome_category', 'unknown')+'.'
+        return _present_coding_result(self.card, res, out.get('proposal'))
 
     def ordinary_chat(self):
         runtime = self.store.ensure_runtime()
