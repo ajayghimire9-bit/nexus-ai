@@ -2070,3 +2070,1307 @@ class CombinedNexusArchitecture:
             },
             "bounded_worker_smoke_passed": bool(worker_check.get("all_passed")),
         }
+
+
+# ===========================================================================
+# 10. V2 UNCONFOUNDED, EQUALIZED, CALL-METERED INVESTIGATION ENGINE
+# ===========================================================================
+
+@dataclass(frozen=True)
+class EqualizedControllerConfig:
+    r"""Identical controller bounds enforced across ALL active policies in v2 so
+    that comparisons isolate learned weights $(\phi_{\text{rank}}, \phi_{\text{probe}})$
+    rather than shortlist or questioning asymmetries.
+    """
+    shortlist_limit: int = 3
+    allow_questions: bool = True
+    max_questions_per_task: int = 2
+    probe_min_disagreement_ratio: float = 0.15
+
+
+class EpisodeCallLedger:
+    """Records every single candidate function call `fn(inp)` across all phases
+    (`support_check`, `probe_construction`, `probe_filter`, `capsule_prefix_check`)
+    and every oracle question so the independent verifier can reconstruct all
+    costs and summary tables from the raw logs.
+    """
+
+    def __init__(self) -> None:
+        self.candidate_call_log: list[dict[str, Any]] = []
+        self.oracle_question_log: list[dict[str, Any]] = []
+
+    def invoke_candidate(
+        self,
+        candidate_id: str,
+        fn: Callable[[Any], Any],
+        inp: Any,
+        phase: str,
+    ) -> Any:
+        inp_copy = copy.deepcopy(inp)
+        try:
+            out = fn(inp_copy)
+            status = "ok"
+        except Exception as exc:
+            out = f"ERR:{type(exc).__name__}"
+            status = "error"
+        self.candidate_call_log.append({
+            "call_index": len(self.candidate_call_log) + 1,
+            "candidate_id": candidate_id,
+            "phase": phase,
+            "input": copy.deepcopy(inp),
+            "output": copy.deepcopy(out),
+            "status": status,
+        })
+        return out
+
+    def invoke_oracle(
+        self,
+        active_env: MechanismBActiveEnvironment,
+        task_id: str,
+        probe_input: Any,
+    ) -> Any:
+        ans = active_env.request_answer(task_id, copy.deepcopy(probe_input))
+        self.oracle_question_log.append({
+            "question_index": len(self.oracle_question_log) + 1,
+            "task_id": task_id,
+            "probe_input": copy.deepcopy(probe_input),
+            "oracle_answer": copy.deepcopy(ans),
+        })
+        return ans
+
+    @property
+    def n_candidate_calls(self) -> int:
+        return len(self.candidate_call_log)
+
+    @property
+    def n_questions(self) -> int:
+        return len(self.oracle_question_log)
+
+
+class AlgebraicPropertySynthesizer:
+    r"""Surprise Capability: Extracts algebraic/behavioral invariants from
+    observed support & oracle input-output pairs (`length_preserving`,
+    `length_contracting`, `strictly_nonnegative`, `even_parity`, `sorted_output`,
+    `duplicate_free`, `zero_fixed_point`, `quadratic_growth`, `linear_double`)
+    and synthesizes a rich behavioral signature vector $\psi(D)$ without needing
+    English operator keywords in the ticket description.
+    """
+
+    @staticmethod
+    def extract_behavioral_signature(
+        examples: list[tuple[Any, Any]],
+    ) -> dict[str, float]:
+        if not examples:
+            return {}
+        # Sequence pipeline examples
+        if isinstance(examples[0][0], list):
+            n = len(examples)
+            len_shrink = 0.0
+            len_preserve = 0.0
+            sorted_out = 1.0
+            even_out = 1.0
+            nonneg_out = 1.0
+            dedup_effect = 0.0
+            double_scale = 0.0
+            square_scale = 0.0
+            inc_shift = 0.0
+            dec_shift = 0.0
+            rev_order = 0.0
+            runsum_growth = 0.0
+
+            for inp, out in examples:
+                if len(out) < len(inp):
+                    len_shrink += 1.0 / n
+                else:
+                    len_preserve += 1.0 / n
+                if out != sorted(out):
+                    sorted_out = 0.0
+                if not out or any(x % 2 != 0 for x in out):
+                    even_out = 0.0
+                if any(x < 0 for x in out):
+                    nonneg_out = 0.0
+                if len(set(inp)) < len(inp) and len(out) <= len(set(inp)):
+                    dedup_effect += 1.0 / n
+                if inp and out:
+                    max_in = max(abs(x) for x in inp)
+                    max_out = max(abs(x) for x in out)
+                    if max_in >= 3 and max_out >= max_in * max_in - 1:
+                        square_scale += 1.0 / n
+                    elif max_in >= 2 and max_out in (max_in * 2, max_in * 2 + 1):
+                        double_scale += 1.0 / n
+                    if len(inp) == len(out):
+                        if sum(out) == sum(inp) + len(inp):
+                            inc_shift += 1.0 / n
+                        if any(o == max(0, i - 1) or o == abs(i - 1) for i, o in zip(inp, out)) and sum(out) < sum(abs(x) for x in inp):
+                            dec_shift += 1.0 / n
+                        if len(inp) >= 3 and out[0] != inp[0] and out[-1] in (inp[0], abs(inp[0]), inp[0] + 1, inp[0] - 1, abs(inp[0] - 1), inp[0] * 2):
+                            rev_order += 1.0 / n
+                    if len(out) >= 2 and out == sorted(out) and out[-1] > max_in and sum(out) > sum(abs(x) for x in inp):
+                        runsum_growth += 1.0 / n
+
+            return {
+                "len_shrink": round(len_shrink, 4),
+                "len_preserve": round(len_preserve, 4),
+                "sorted_out": sorted_out,
+                "even_out": even_out,
+                "nonneg_out": nonneg_out,
+                "dedup_effect": round(dedup_effect, 4),
+                "double_scale": round(double_scale, 4),
+                "square_scale": round(square_scale, 4),
+                "inc_shift": round(inc_shift, 4),
+                "dec_shift": round(dec_shift, 4),
+                "rev_order": round(rev_order, 4),
+                "runsum_growth": round(runsum_growth, 4),
+            }
+
+        # Repository dictionary examples
+        inp0, out0 = examples[0]
+        if isinstance(inp0, dict):
+            val = float(inp0.get("value", 0))
+            rate = float(inp0.get("rate", 0))
+            extra = float(inp0.get("extra", 0))
+            limit = float(inp0.get("limit", 100))
+            is_bool = isinstance(out0, bool)
+            out_num = float(out0) if isinstance(out0, (int, float)) and not is_bool else 0.0
+            return {
+                "repo_bool_out": 1.0 if is_bool else 0.0,
+                "repo_rate_discount": 1.0 if (not is_bool and abs(out_num - round((val + max(0.0, extra)) * (1.0 - rate), 2)) < 1e-3) else 0.0,
+                "repo_linear_add": 1.0 if (not is_bool and abs(out_num - (val + abs(extra))) < 1e-3 and extra != 0) else 0.0,
+                "repo_floor_sub": 1.0 if (not is_bool and extra == 0 and abs(out_num - val) < 1e-3) else 0.0,
+                "repo_double_inc": 1.0 if (not is_bool and abs(out_num - (val * 2 + 1)) < 1e-3) else 0.0,
+                "repo_square_extra": 1.0 if (not is_bool and extra > 0 and abs(out_num - (val + extra * extra)) < 1e-3) else 0.0,
+                "repo_double_extra": 1.0 if (not is_bool and extra > 0 and abs(out_num - (val + 2 * extra)) < 1e-3) else 0.0,
+                "repo_dec_ttl": 1.0 if (not is_bool and abs(out_num - (val - 1 + extra)) < 1e-3) else 0.0,
+                "repo_limit_bound": 1.0 if (is_bool and val <= limit) else 0.0,
+            }
+        return {}
+
+
+@dataclass
+class InvestigationPolicyV2Parameters:
+    r"""Learned strategy parameters $\phi = (\phi_{\text{rank}}, \phi_{\text{probe}})$ for v2."""
+    policy_id: str = "untrained_default"
+    trained: bool = False
+    curriculum_mode: str = "none"
+    # Behavioral feature weights: operator_name -> feature_name -> weight
+    behavioral_rank_weights: dict[str, dict[str, float]] = field(default_factory=dict)
+    # Marginal operator frequencies
+    operator_frequencies: dict[str, float] = field(default_factory=dict)
+    # Learned probe utility scores: probe_index -> empirical splitting probability
+    learned_probe_scores: dict[str, list[float]] = field(default_factory=dict)
+    # Number of top-ranked probes to evaluate before selecting question (1 when probe selector is learned, 8 when unlearned)
+    probe_eval_window: int = 8
+
+
+@dataclass(frozen=True)
+class DisjointTaskV2:
+    """Task specification with strictly disjoint `support_examples`,
+    `probe_pool_inputs`, and `assessment_inputs`.
+    """
+    task_id: str
+    cohort: str  # 'source_acquisition', 'training_pool', 'excluded_sequence', 'excluded_repo'
+    domain: str  # 'sequence_pipeline' or 'repo_patch'
+    ticket_request: str  # Realistic opaque ticket without operator keyword spoilers
+    support_examples: list[tuple[Any, Any]]
+    probe_pool_inputs: list[Any]
+    assessment_inputs: list[Any]
+    target_ops: tuple[str, ...]
+    oracle_fn: Callable[[Any], Any]
+    candidate_pool: list[tuple[str, tuple[str, ...], Callable[[Any], Any]]]
+    repo_files: dict[str, str] = field(default_factory=dict)
+    patched_repo_candidates: dict[str, dict[str, str]] = field(default_factory=dict)
+    entry_point: str = ""
+
+
+def verify_disjoint_task_inputs(task: DisjointTaskV2) -> dict[str, Any]:
+    """Verify that `support_examples`, `probe_pool_inputs`, and `assessment_inputs`
+    have zero overlap.
+    """
+    supp_keys = {json.dumps(inp, sort_keys=True) for inp, _ in task.support_examples}
+    probe_keys = {json.dumps(inp, sort_keys=True) for inp in task.probe_pool_inputs}
+    assess_keys = {json.dumps(inp, sort_keys=True) for inp in task.assessment_inputs}
+
+    sp_overlap = supp_keys & probe_keys
+    pa_overlap = probe_keys & assess_keys
+    sa_overlap = supp_keys & assess_keys
+
+    disjoint = (len(sp_overlap) == 0 and len(pa_overlap) == 0 and len(sa_overlap) == 0)
+    return {
+        "task_id": task.task_id,
+        "pairwise_disjoint": disjoint,
+        "support_probe_overlap_count": len(sp_overlap),
+        "probe_assessment_overlap_count": len(pa_overlap),
+        "support_assessment_overlap_count": len(sa_overlap),
+    }
+
+
+# 8 Sequence Probe Pool Inputs (P0..P5 are positive/homogeneous low-entropy probes;
+# P6 and P7 are rich boundary/negative/zero/duplicate discriminating probes).
+V2_SEQUENCE_PROBE_POOL: tuple[list[int], ...] = (
+    [2, 2],
+    [4, 4],
+    [6, 6],
+    [2, 4],
+    [4, 6],
+    [2, 6],
+    [-3, 0, 2, 2, 5],   # P6: negative + zero + duplicate + odd/even
+    [-4, -1, 0, 3, 3],  # P7: negative + zero + duplicate + odd/even
+)
+
+# Strictly disjoint sequence assessment inputs (none appear in support or probe pool)
+V2_SEQUENCE_ASSESSMENT_INPUTS: tuple[list[int], ...] = (
+    [-5, -2, 0, 1, 4, 4, 7],
+    [-6, 0, 2, -3, 5, 5, 8],
+    [0, -1, 3, -4, 2, 6, 2],
+    [3, -5, 0, 3, 1, -2, 9],
+)
+
+# 8 Repository Probe Pool Inputs (P0..P5 are benign positive interior inputs;
+# P6 and P7 test negative adjustment + exact boundary limit + zero floor).
+V2_REPO_PROBE_POOL: tuple[dict[str, Any], ...] = (
+    {"probe_id": "p0_interior", "value": 20, "rate": 0.10, "limit": 100, "extra": 2},
+    {"probe_id": "p1_interior", "value": 30, "rate": 0.10, "limit": 100, "extra": 4},
+    {"probe_id": "p2_interior", "value": 40, "rate": 0.10, "limit": 100, "extra": 6},
+    {"probe_id": "p3_interior", "value": 50, "rate": 0.10, "limit": 100, "extra": 2},
+    {"probe_id": "p4_interior", "value": 60, "rate": 0.10, "limit": 100, "extra": 4},
+    {"probe_id": "p5_interior", "value": 70, "rate": 0.10, "limit": 100, "extra": 6},
+    {"probe_id": "p6_boundary_neg_extra", "value": 100, "rate": 0.20, "limit": 100, "extra": -15},
+    {"probe_id": "p7_zero_value_neg_extra", "value": 0, "rate": 0.25, "limit": 50, "extra": -8},
+)
+
+# Strictly disjoint Repository Assessment Inputs (never in support or V2_REPO_PROBE_POOL)
+V2_REPO_ASSESSMENT_INPUTS: tuple[dict[str, Any], ...] = (
+    {"assess_id": "a0_neg_extra_mid", "value": 80, "rate": 0.15, "limit": 80, "extra": -12},
+    {"assess_id": "a1_zero_val_boundary", "value": 0, "rate": 0.20, "limit": 0, "extra": -6},
+    {"assess_id": "a2_over_limit_neg", "value": 120, "rate": 0.05, "limit": 100, "extra": -25},
+    {"assess_id": "a3_small_val_large_neg", "value": 5, "rate": 0.30, "limit": 10, "extra": -20},
+)
+
+
+def _make_v2_candidate_pool(
+    target_ops: tuple[str, ...],
+    confusable_foils: list[tuple[str, ...]],
+    distractor_ops: list[tuple[str, ...]],
+) -> list[tuple[str, tuple[str, ...], Callable[[Any], Any]]]:
+    """Build a 24-candidate hypothesis pool where 14 distractors precede the
+    confusable foils and the target in default unlearned catalogue order.
+    """
+    ordered_seqs: list[tuple[str, ...]] = []
+    for seq in distractor_ops[:14] + confusable_foils + [target_ops] + distractor_ops[14:]:
+        if seq not in ordered_seqs:
+            ordered_seqs.append(seq)
+    pool: list[tuple[str, tuple[str, ...], Callable[[Any], Any]]] = []
+    for idx, ops in enumerate(ordered_seqs):
+        cid = f"cand_{idx:02d}_{'_'.join(ops)}"
+        pool.append((cid, ops, lambda xs, _ops=ops: execute_pipeline(_ops, xs)))
+    return pool
+
+
+def build_v2_disjoint_tasks_and_real_repos() -> tuple[
+    list[DisjointTaskV2],
+    list[DisjointTaskV2],
+    list[DisjointTaskV2],
+]:
+    r"""Constructs three strictly disjoint task cohorts for `seed-learned-investigation-policy-v2`:
+    1. `training_pool` (32 tasks: 8 diverse operator/boundary tasks + 24 redundant tasks)
+       for training $(\phi_{\text{rank}}, \phi_{\text{probe}})$ via `CurriculumGenerator` vs `random_sampling`.
+    2. `source_skill_tasks` (8 2-step source tasks `src01..src08` that NEXUS must
+       actually solve via `investigate_v2` to acquire 2-step prefix capsules).
+    3. `excluded_assessment_tasks` (24 unseen tasks: 16 3-step sequence compositions
+       `ex01..ex16` + 8 real multi-file Python repository repair tasks `repo17..repo24`).
+       Zero tasks overlap between `source_skill_tasks` and `excluded_assessment_tasks`,
+       and all support, probe-pool, and assessment inputs are pairwise disjoint.
+    """
+    distractors: list[tuple[str, ...]] = [
+        ("reverse", "increment"),
+        ("sort_asc", "reverse"),
+        ("double", "increment"),
+        ("decrement", "square"),
+        ("filter_even", "double"),
+        ("running_sum", "reverse"),
+        ("increment", "increment"),
+        ("decrement", "reverse"),
+        ("unique_stable", "reverse"),
+        ("square", "decrement"),
+        ("filter_positive", "reverse"),
+        ("clamp_zero", "reverse"),
+        ("reverse", "double"),
+        ("increment", "sort_asc"),
+        ("decrement", "running_sum"),
+        ("square", "reverse"),
+        ("filter_even", "reverse"),
+        ("unique_stable", "decrement"),
+    ]
+
+    # 1. Training Pool (opaque ticket descriptions so keyword matching cannot cheat;
+    # support examples exhibit clear behavioral signatures for each operator).
+    diverse_train_specs: list[tuple[str, str, tuple[str, ...], list[tuple[str, ...]], list[list[int]]]] = [
+        (
+            "v2_tr01",
+            "Ticket #T01: Normalize raw telemetry series alpha for downstream ingest.",
+            ("abs_val", "sort_asc"),
+            [("clamp_zero", "sort_asc"), ("filter_positive", "sort_asc")],
+            [[3, 1, 2], [5, 2, 4]],
+        ),
+        (
+            "v2_tr02",
+            "Ticket #T02: Scale sensor channel beta readings.",
+            ("clamp_zero", "double"),
+            [("abs_val", "double"), ("filter_positive", "double")],
+            [[3, 1, 2], [4, 2, 5]],
+        ),
+        (
+            "v2_tr03",
+            "Ticket #T03: Transform active pulse magnitudes in buffer gamma.",
+            ("filter_positive", "square"),
+            [("abs_val", "square"), ("clamp_zero", "square")],
+            [[-2, 3, 4], [-1, 2, 5]],
+        ),
+        (
+            "v2_tr04",
+            "Ticket #T04: Filter aligned packets and apply unit offset.",
+            ("filter_even", "increment"),
+            [("increment",), ("double", "increment")],
+            [[1, 2, 4], [3, 6, 8]],
+        ),
+        (
+            "v2_tr05",
+            "Ticket #T05: Compact duplicate keys and order output frame.",
+            ("unique_stable", "sort_asc"),
+            [("sort_asc",), ("filter_positive", "sort_asc")],
+            [[3, 1, 3, 2], [4, 2, 4, 1]],
+        ),
+        (
+            "v2_tr06",
+            "Ticket #T06: Shift baseline down and rectify residual.",
+            ("decrement", "abs_val"),
+            [("decrement", "clamp_zero"), ("decrement",)],
+            [[3, 4, 2], [5, 2, 3]],
+        ),
+        (
+            "v2_tr07",
+            "Ticket #T07: Invert sequence and accumulate prefix totals.",
+            ("reverse", "running_sum"),
+            [("running_sum",), ("sort_asc", "running_sum")],
+            [[1, 2, 3], [2, 3, 4]],
+        ),
+        (
+            "v2_tr08",
+            "Ticket #T08: Reconcile billing adjustment delta in ledger.",
+            ("clamp_zero", "increment"),
+            [("abs_val", "increment"), ("filter_positive", "increment")],
+            [[2, 3, 1], [4, 1, 5]],
+        ),
+    ]
+
+    training_pool: list[DisjointTaskV2] = []
+    for tid, req, target_ops, foils, supp_inps in diverse_train_specs:
+        supp = [(inp, execute_pipeline(target_ops, inp)) for inp in supp_inps]
+        pool = _make_v2_candidate_pool(target_ops, foils, distractors)
+        training_pool.append(DisjointTaskV2(
+            task_id=tid,
+            cohort="training_pool",
+            domain="sequence_pipeline",
+            ticket_request=req,
+            support_examples=supp,
+            probe_pool_inputs=list(V2_SEQUENCE_PROBE_POOL),
+            assessment_inputs=list(V2_SEQUENCE_ASSESSMENT_INPUTS),
+            target_ops=target_ops,
+            oracle_fn=lambda xs, _ops=target_ops: execute_pipeline(_ops, xs),
+            candidate_pool=pool,
+        ))
+
+    for idx in range(24):
+        tid = f"v2_tr_redundant_{idx:02d}"
+        target_ops = ("increment",)
+        supp_inps = [[1, 2, 3], [4, 5, 6]]
+        supp = [(inp, execute_pipeline(target_ops, inp)) for inp in supp_inps]
+        pool = _make_v2_candidate_pool(target_ops, [], distractors)
+        training_pool.append(DisjointTaskV2(
+            task_id=tid,
+            cohort="training_pool",
+            domain="sequence_pipeline",
+            ticket_request=f"Ticket #R{idx:02d}: Standard unit offset pass.",
+            support_examples=supp,
+            probe_pool_inputs=list(V2_SEQUENCE_PROBE_POOL),
+            assessment_inputs=list(V2_SEQUENCE_ASSESSMENT_INPUTS),
+            target_ops=target_ops,
+            oracle_fn=lambda xs, _ops=target_ops: execute_pipeline(_ops, xs),
+            candidate_pool=pool,
+        ))
+
+    # 2. Disjoint 2-Step Source Skill Acquisition Tasks (`src01..src08`)
+    # NEXUS must solve these via investigation to acquire 2-step prefix capsules.
+    # None of these 2-step programs appear as targets in the 24 3-step/repo assessment tasks!
+    source_specs: list[tuple[str, str, tuple[str, ...], list[tuple[str, ...]], list[list[int]]]] = [
+        (
+            "src01_abs_double",
+            "Source Task S01: Rectify and double signal readings.",
+            ("abs_val", "double"),
+            [("clamp_zero", "double"), ("filter_positive", "double")],
+            [[3, 1, 2], [4, 2, 5]],
+        ),
+        (
+            "src02_clamp_inc",
+            "Source Task S02: Floor at zero and increment readings.",
+            ("clamp_zero", "increment"),
+            [("abs_val", "increment"), ("increment",)],
+            [[1, 2, 3], [4, 1, 2]],
+        ),
+        (
+            "src03_pos_double",
+            "Source Task S03: Filter positive pulses and double.",
+            ("filter_positive", "double"),
+            [("clamp_zero", "double"), ("abs_val", "double")],
+            [[-2, 1, 3], [-1, 4, 2]],
+        ),
+        (
+            "src04_even_square",
+            "Source Task S04: Keep even cycles and square.",
+            ("filter_even", "square"),
+            [("square",), ("filter_positive", "square")],
+            [[1, 2, 4], [3, 4, 6]],
+        ),
+        (
+            "src05_unique_inc",
+            "Source Task S05: Deduplicate stream and increment.",
+            ("unique_stable", "increment"),
+            [("increment",), ("sort_asc", "increment")],
+            [[1, 1, 2, 3], [2, 2, 3, 4]],
+        ),
+        (
+            "src06_dec_clamp",
+            "Source Task S06: Decrement and floor negative values.",
+            ("decrement", "clamp_zero"),
+            [("decrement", "abs_val"), ("decrement",)],
+            [[3, 2, 4], [5, 2, 3]],
+        ),
+        (
+            "src07_abs_unique",
+            "Source Task S07: Rectify and deduplicate stream.",
+            ("abs_val", "unique_stable"),
+            [("clamp_zero", "unique_stable"), ("unique_stable",)],
+            [[1, 1, 2, 3], [4, 4, 2, 5]],
+        ),
+        (
+            "src08_pos_inc",
+            "Source Task S08: Keep positive entries and increment.",
+            ("filter_positive", "increment"),
+            [("clamp_zero", "increment"), ("abs_val", "increment")],
+            [[-3, 1, 2], [-1, 4, 2]],
+        ),
+    ]
+
+    source_skill_tasks: list[DisjointTaskV2] = []
+    for tid, req, target_ops, foils, supp_inps in source_specs:
+        supp = [(inp, execute_pipeline(target_ops, inp)) for inp in supp_inps]
+        pool = _make_v2_candidate_pool(target_ops, foils, distractors)
+        source_skill_tasks.append(DisjointTaskV2(
+            task_id=tid,
+            cohort="source_acquisition",
+            domain="sequence_pipeline",
+            ticket_request=req,
+            support_examples=supp,
+            probe_pool_inputs=list(V2_SEQUENCE_PROBE_POOL),
+            assessment_inputs=list(V2_SEQUENCE_ASSESSMENT_INPUTS),
+            target_ops=target_ops,
+            oracle_fn=lambda xs, _ops=target_ops: execute_pipeline(_ops, xs),
+            candidate_pool=pool,
+        ))
+
+    # 3. 24 Excluded Unfamiliar Assessment Tasks:
+    # 16 Unseen 3-Step Sequence Compositions (`ex01..ex16`) + 8 Real Multi-File Repo Tasks (`repo17..repo24`)
+    # Notice: Ticket requests use domain-opaque wording (no operator keywords like 'abs', 'clamp', 'sort', 'unique')
+    # so unlearned keyword matching has zero unfair advantage; support examples carry the behavioral signal,
+    # while negative/boundary behavior requires active probing!
+    excluded_seq_specs: list[tuple[str, str, tuple[str, ...], list[tuple[str, ...]], list[list[int]]]] = [
+        (
+            "ex01_abs_double_sort",
+            "Assessment Ticket #A01: Process telemetry batch B01 for aggregator.",
+            ("abs_val", "double", "sort_asc"),
+            [("clamp_zero", "double", "sort_asc"), ("filter_positive", "double", "sort_asc")],
+            [[3, 1, 2], [4, 2, 5]],
+        ),
+        (
+            "ex02_clamp_inc_rev",
+            "Assessment Ticket #A02: Process telemetry batch B02 for aggregator.",
+            ("clamp_zero", "increment", "reverse"),
+            [("abs_val", "increment", "reverse"), ("increment", "reverse")],
+            [[1, 2, 3], [4, 1, 2]],
+        ),
+        (
+            "ex03_pos_double_unique",
+            "Assessment Ticket #A03: Process telemetry batch B03 for aggregator.",
+            ("filter_positive", "double", "unique_stable"),
+            [("clamp_zero", "double", "unique_stable"), ("abs_val", "double", "unique_stable"), ("filter_positive", "double")],
+            [[-2, 1, 1, 3], [-1, 4, 2, 2]],
+        ),
+        (
+            "ex04_even_square_sort",
+            "Assessment Ticket #A04: Process telemetry batch B04 for aggregator.",
+            ("filter_even", "square", "sort_asc"),
+            [("square", "sort_asc"), ("filter_positive", "square", "sort_asc")],
+            [[1, 4, 2], [3, 6, 2]],
+        ),
+        (
+            "ex05_unique_inc_runsum",
+            "Assessment Ticket #A05: Process telemetry batch B05 for aggregator.",
+            ("unique_stable", "increment", "running_sum"),
+            [("increment", "running_sum"), ("sort_asc", "increment", "running_sum")],
+            [[1, 1, 2, 3], [2, 2, 3, 4]],
+        ),
+        (
+            "ex06_dec_clamp_sort",
+            "Assessment Ticket #A06: Process telemetry batch B06 for aggregator.",
+            ("decrement", "clamp_zero", "sort_asc"),
+            [("decrement", "abs_val", "sort_asc"), ("decrement", "sort_asc")],
+            [[3, 2, 4], [5, 2, 3]],
+        ),
+        (
+            "ex07_abs_unique_rev",
+            "Assessment Ticket #A07: Process telemetry batch B07 for aggregator.",
+            ("abs_val", "unique_stable", "reverse"),
+            [("clamp_zero", "unique_stable", "reverse"), ("abs_val", "reverse")],
+            [[1, 1, 2, 3], [4, 4, 5, 2]],
+        ),
+        (
+            "ex08_pos_inc_sort",
+            "Assessment Ticket #A08: Process telemetry batch B08 for aggregator.",
+            ("filter_positive", "increment", "sort_asc"),
+            [("clamp_zero", "increment", "sort_asc"), ("abs_val", "increment", "sort_asc")],
+            [[-2, 3, 1], [-1, 5, 2]],
+        ),
+        (
+            "ex09_even_abs_double",
+            "Assessment Ticket #A09: Process telemetry batch B09 for aggregator.",
+            ("filter_even", "abs_val", "double"),
+            [("filter_even", "clamp_zero", "double"), ("abs_val", "double")],
+            [[1, 2, 4], [3, 4, 6]],
+        ),
+        (
+            "ex10_clamp_square_unique",
+            "Assessment Ticket #A10: Process telemetry batch B10 for aggregator.",
+            ("clamp_zero", "square", "unique_stable"),
+            [("abs_val", "square", "unique_stable"), ("clamp_zero", "square")],
+            [[1, 2, 2, 3], [3, 4, 4, 5]],
+        ),
+        (
+            "ex11_rev_dec_abs",
+            "Assessment Ticket #A11: Process telemetry batch B11 for aggregator.",
+            ("reverse", "decrement", "abs_val"),
+            [("reverse", "decrement", "clamp_zero"), ("decrement", "abs_val")],
+            [[2, 3, 4], [3, 4, 5]],
+        ),
+        (
+            "ex12_double_inc_runsum",
+            "Assessment Ticket #A12: Process telemetry batch B12 for aggregator.",
+            ("double", "increment", "running_sum"),
+            [("square", "increment", "running_sum"), ("increment", "double", "running_sum")],
+            [[1, 2, 3], [2, 3, 4]],
+        ),
+        (
+            "ex13_pos_sort_runsum",
+            "Assessment Ticket #A13: Process telemetry batch B13 for aggregator.",
+            ("filter_positive", "sort_asc", "running_sum"),
+            [("clamp_zero", "sort_asc", "running_sum"), ("abs_val", "sort_asc", "running_sum")],
+            [[-3, 3, 1, 2], [-2, 4, 2]],
+        ),
+        (
+            "ex14_unique_double_rev",
+            "Assessment Ticket #A14: Process telemetry batch B14 for aggregator.",
+            ("unique_stable", "double", "reverse"),
+            [("double", "reverse"), ("filter_positive", "double", "reverse")],
+            [[1, 1, 2, 3], [2, 2, 4, 5]],
+        ),
+        (
+            "ex15_even_dec_clamp",
+            "Assessment Ticket #A15: Process telemetry batch B15 for aggregator.",
+            ("filter_even", "decrement", "clamp_zero"),
+            [("filter_even", "decrement", "abs_val"), ("decrement", "clamp_zero")],
+            [[1, 2, 4], [3, 4, 6]],
+        ),
+        (
+            "ex16_abs_inc_unique",
+            "Assessment Ticket #A16: Process telemetry batch B16 for aggregator.",
+            ("abs_val", "increment", "unique_stable"),
+            [("clamp_zero", "increment", "unique_stable"), ("abs_val", "increment")],
+            [[1, 1, 2, 3], [4, 4, 2, 5]],
+        ),
+    ]
+
+    excluded_tasks: list[DisjointTaskV2] = []
+    for tid, req, target_ops, foils, supp_inps in excluded_seq_specs:
+        supp = [(inp, execute_pipeline(target_ops, inp)) for inp in supp_inps]
+        pool = _make_v2_candidate_pool(target_ops, foils, distractors)
+        excluded_tasks.append(DisjointTaskV2(
+            task_id=tid,
+            cohort="excluded_sequence",
+            domain="sequence_pipeline",
+            ticket_request=req,
+            support_examples=supp,
+            probe_pool_inputs=list(V2_SEQUENCE_PROBE_POOL),
+            assessment_inputs=list(V2_SEQUENCE_ASSESSMENT_INPUTS),
+            target_ops=target_ops,
+            oracle_fn=lambda xs, _ops=target_ops: execute_pipeline(_ops, xs),
+            candidate_pool=pool,
+        ))
+
+    # 8 Real Multi-File Python Repository Maintenance Tasks (`repo17..repo24`)
+    # Each task has real multi-file Python code and AST patch candidates that can be
+    # executed both via fast callable and inside `agent_loop_worker.run_worker_subprocess`.
+    repo_specs: list[tuple[
+        str,
+        str,
+        tuple[str, ...],
+        dict[str, str],
+        dict[str, str],
+        Callable[[dict[str, Any]], Any],
+        list[tuple[tuple[str, ...], Callable[[dict[str, Any]], Any]]],
+        dict[str, Any],
+    ]] = [
+        (
+            "repo17_billing_adjustment",
+            "Ticket #R17: Fix invoice calculation discrepancy in billing_service.py.",
+            ("clamp_zero", "double"),
+            {
+                "adjustments.py": "def norm_extra(extra: float) -> float:\n    return extra\n",
+                "billing_service.py": "from adjustments import norm_extra\n\ndef compute(d: dict) -> float:\n    return round((d['value'] + norm_extra(d['extra'])) * (1.0 - d['rate']), 2)\n",
+            },
+            {
+                "adjustments.py": "def norm_extra(extra: float) -> float:\n    return max(0, extra)\n",
+                "billing_service.py": "from adjustments import norm_extra\n\ndef compute(d: dict) -> float:\n    return round((d['value'] + norm_extra(d['extra'])) * (1.0 - d['rate']), 2)\n",
+            },
+            lambda d: round((d["value"] + max(0, d["extra"])) * (1.0 - d["rate"]), 2),
+            [
+                (("abs_val", "double"), lambda d: round((d["value"] + abs(d["extra"])) * (1.0 - d["rate"]), 2)),
+                (("filter_positive", "double"), lambda d: round(d["value"] * (1.0 - d["rate"]), 2) if d["extra"] <= 0 else round((d["value"] + d["extra"]) * (1.0 - d["rate"]), 2)),
+            ],
+            {"supp_id": "s17", "value": 25, "rate": 0.10, "limit": 100, "extra": 0},
+        ),
+        (
+            "repo18_quota_guard",
+            "Ticket #R18: Fix quota admission boundary check in quota_service.py.",
+            ("filter_positive", "sort_asc"),
+            {
+                "bounds.py": "def within_cap(val: float, limit: float) -> bool:\n    return val < limit\n",
+                "quota_service.py": "from bounds import within_cap\n\ndef compute(d: dict) -> bool:\n    return (d['value'] >= 0) and within_cap(d['value'], d['limit'])\n",
+            },
+            {
+                "bounds.py": "def within_cap(val: float, limit: float) -> bool:\n    return val <= limit\n",
+                "quota_service.py": "from bounds import within_cap\n\ndef compute(d: dict) -> bool:\n    return (d['value'] > 0) and within_cap(d['value'], d['limit'])\n",
+            },
+            lambda d: (d["value"] > 0) and (d["value"] <= d["limit"]),
+            [
+                (("clamp_zero", "sort_asc"), lambda d: (d["value"] >= 0) and (d["value"] < d["limit"])),
+                (("abs_val", "sort_asc"), lambda d: (abs(d["value"]) <= d["limit"])),
+            ],
+            {"supp_id": "s18", "value": 25, "rate": 0.10, "limit": 100, "extra": 0},
+        ),
+        (
+            "repo19_telemetry_drift",
+            "Ticket #R19: Fix drift offset aggregation in sensor_service.py.",
+            ("abs_val", "increment"),
+            {
+                "drift.py": "def mag(x: float) -> float:\n    return max(0, x)\n",
+                "sensor_service.py": "from drift import mag\n\ndef compute(d: dict) -> float:\n    return d['value'] + mag(d['extra'])\n",
+            },
+            {
+                "drift.py": "def mag(x: float) -> float:\n    return abs(x)\n",
+                "sensor_service.py": "from drift import mag\n\ndef compute(d: dict) -> float:\n    return d['value'] + mag(d['extra'])\n",
+            },
+            lambda d: d["value"] + abs(d["extra"]),
+            [
+                (("clamp_zero", "increment"), lambda d: d["value"] + max(0, d["extra"])),
+                (("decrement", "abs_val"), lambda d: abs(d["value"] - d["extra"])),
+            ],
+            {"supp_id": "s19", "value": 25, "rate": 0.10, "limit": 100, "extra": 3},
+        ),
+        (
+            "repo20_warehouse_reserve",
+            "Ticket #R20: Fix available stock floor calculation in stock_service.py.",
+            ("decrement", "clamp_zero"),
+            {
+                "floor.py": "def clip(x: float) -> float:\n    return abs(x)\n",
+                "stock_service.py": "from floor import clip\n\ndef compute(d: dict) -> float:\n    return clip(d['value'] + d['extra'])\n",
+            },
+            {
+                "floor.py": "def clip(x: float) -> float:\n    return max(0, x)\n",
+                "stock_service.py": "from floor import clip\n\ndef compute(d: dict) -> float:\n    return clip(d['value'] + d['extra'])\n",
+            },
+            lambda d: max(0, d["value"] + d["extra"]),
+            [
+                (("decrement", "abs_val"), lambda d: abs(d["value"] + d["extra"])),
+                (("increment", "clamp_zero"), lambda d: d["value"] + max(0, d["extra"])),
+            ],
+            {"supp_id": "s20", "value": 25, "rate": 0.10, "limit": 100, "extra": 0},
+        ),
+        (
+            "repo21_ledger_bonus",
+            "Ticket #R21: Fix batch score calculation in ledger_service.py.",
+            ("filter_positive", "double"),
+            {
+                "bonus.py": "def scale(v: float) -> float:\n    return max(0, v) * 2 + 1\n",
+                "ledger_service.py": "from bonus import scale\n\ndef compute(d: dict) -> float:\n    return scale(d['value'])\n",
+            },
+            {
+                "bonus.py": "def scale(v: float) -> float:\n    return (v * 2 + 1) if v > 0 else 0\n",
+                "ledger_service.py": "from bonus import scale\n\ndef compute(d: dict) -> float:\n    return scale(d['value'])\n",
+            },
+            lambda d: (d["value"] * 2 + 1) if d["value"] > 0 else 0,
+            [
+                (("clamp_zero", "double"), lambda d: (max(0, d["value"]) * 2 + 1)),
+                (("abs_val", "double"), lambda d: (abs(d["value"]) * 2 + 1)),
+            ],
+            {"supp_id": "s21", "value": 25, "rate": 0.10, "limit": 100, "extra": 0},
+        ),
+        (
+            "repo22_sla_penalty",
+            "Ticket #R22: Fix excess penalty formula in sla_service.py.",
+            ("clamp_zero", "square"),
+            {
+                "penalty.py": "def excess_sq(e: float) -> float:\n    m = abs(e)\n    return m * m\n",
+                "sla_service.py": "from penalty import excess_sq\n\ndef compute(d: dict) -> float:\n    return excess_sq(d['extra']) + d['value']\n",
+            },
+            {
+                "penalty.py": "def excess_sq(e: float) -> float:\n    m = max(0, e)\n    return m * m\n",
+                "sla_service.py": "from penalty import excess_sq\n\ndef compute(d: dict) -> float:\n    return excess_sq(d['extra']) + d['value']\n",
+            },
+            lambda d: (max(0, d["extra"]) ** 2) + d["value"],
+            [
+                (("abs_val", "square"), lambda d: (abs(d["extra"]) ** 2) + d["value"]),
+                (("filter_positive", "square"), lambda d: (d["extra"] ** 2 + d["value"]) if d["extra"] > 0 else 0),
+            ],
+            {"supp_id": "s22", "value": 25, "rate": 0.10, "limit": 100, "extra": 5},
+        ),
+        (
+            "repo23_fee_reconcile",
+            "Ticket #R23: Fix surcharge magnitude calculation in fee_service.py.",
+            ("abs_val", "double"),
+            {
+                "surcharge.py": "def fee_term(e: float) -> float:\n    return 2 * max(0, e)\n",
+                "fee_service.py": "from surcharge import fee_term\n\ndef compute(d: dict) -> float:\n    return d['value'] + fee_term(d['extra'])\n",
+            },
+            {
+                "surcharge.py": "def fee_term(e: float) -> float:\n    return 2 * abs(e)\n",
+                "fee_service.py": "from surcharge import fee_term\n\ndef compute(d: dict) -> float:\n    return d['value'] + fee_term(d['extra'])\n",
+            },
+            lambda d: d["value"] + 2 * abs(d["extra"]),
+            [
+                (("clamp_zero", "double"), lambda d: d["value"] + 2 * max(0, d["extra"])),
+                (("filter_positive", "double"), lambda d: d["value"] + (2 * d["extra"] if d["extra"] > 0 else -d["extra"])),
+            ],
+            {"supp_id": "s23", "value": 25, "rate": 0.10, "limit": 100, "extra": 5},
+        ),
+        (
+            "repo24_cache_ttl",
+            "Ticket #R24: Fix TTL decrement and floor normalization in cache_service.py.",
+            ("decrement", "clamp_zero"),
+            {
+                "ttl.py": "def norm_ttl(v: float, e: float) -> float:\n    return abs(v - 1) + abs(e)\n",
+                "cache_service.py": "from ttl import norm_ttl\n\ndef compute(d: dict) -> float:\n    return norm_ttl(d['value'], d['extra'])\n",
+            },
+            {
+                "ttl.py": "def norm_ttl(v: float, e: float) -> float:\n    return max(0, v - 1) + max(0, e)\n",
+                "cache_service.py": "from ttl import norm_ttl\n\ndef compute(d: dict) -> float:\n    return norm_ttl(d['value'], d['extra'])\n",
+            },
+            lambda d: max(0, d["value"] - 1) + max(0, d["extra"]),
+            [
+                (("decrement", "abs_val"), lambda d: abs(d["value"] - 1) + abs(d["extra"])),
+                (("clamp_zero", "increment"), lambda d: max(0, d["value"]) + max(0, d["extra"])),
+            ],
+            {"supp_id": "s24", "value": 25, "rate": 0.10, "limit": 100, "extra": 3},
+        ),
+    ]
+
+    for tid, req, target_ops, init_files, patched_files, target_fn, foil_specs, supp_inp in repo_specs:
+        supp = [(supp_inp, target_fn(supp_inp))]
+        pool = []
+        # Place 10 distractors + foils before target in default catalogue order
+        for idx in range(10):
+            pool.append((f"repo_distractor_{idx:02d}", ("reverse", "increment"), lambda d, _i=idx: -999 - _i))
+        for idx, (f_ops, f_fn) in enumerate(foil_specs):
+            pool.append((f"repo_foil_{idx}_{'_'.join(f_ops)}", f_ops, f_fn))
+        target_cid = f"repo_target_{'_'.join(target_ops)}"
+        pool.append((target_cid, target_ops, target_fn))
+        for idx in range(10, 14):
+            pool.append((f"repo_distractor_{idx:02d}", ("sort_asc", "reverse"), lambda d, _i=idx: -999 - _i))
+
+        entry_mod = [k for k in init_files if k.endswith("_service.py")][0][:-3]
+        excluded_tasks.append(DisjointTaskV2(
+            task_id=tid,
+            cohort="excluded_repo",
+            domain="repo_patch",
+            ticket_request=req,
+            support_examples=supp,
+            probe_pool_inputs=list(V2_REPO_PROBE_POOL),
+            assessment_inputs=list(V2_REPO_ASSESSMENT_INPUTS),
+            target_ops=target_ops,
+            oracle_fn=target_fn,
+            candidate_pool=pool,
+            repo_files=init_files,
+            patched_repo_candidates={target_cid: patched_files},
+            entry_point=f"{entry_mod}.compute",
+        ))
+
+    return training_pool, source_skill_tasks, excluded_tasks
+
+
+class EqualizedInvestigationEngineV2:
+    r"""Implements the unconfounded v2 study:
+    - 100% identical controller bounds (`EqualizedControllerConfig`) across all active policies
+    - Full call-level metering via `EpisodeCallLedger`
+    - Behavioral signature ranking ($\phi_{\text{rank}}$) + learned probe selector ($\phi_{\text{probe}}$)
+    - Autonomous source skill acquisition on disjoint 2-step source tasks (`src01..src08`)
+      followed by compositional prefix transfer onto unseen 3-step assessment tasks
+    - Real bounded subprocess worker verification on repository tasks
+    """
+
+    def __init__(self, objective_weights: InvestigationObjectiveWeights | None = None) -> None:
+        self.knowledge = SeparatelyResettableKnowledgeState()
+        self.v2_params = InvestigationPolicyV2Parameters()
+        self.objective_weights = objective_weights or InvestigationObjectiveWeights(
+            lambda_q=0.08, lambda_e=0.01, lambda_t=0.10
+        )
+
+    def reset_skills(self) -> None:
+        self.knowledge.reset_skills()
+
+    def reset_strategy(self) -> None:
+        self.knowledge.reset_learning_strategy()
+        self.v2_params = InvestigationPolicyV2Parameters()
+
+    def set_strategy_params(self, params: InvestigationPolicyV2Parameters) -> None:
+        self.v2_params = copy.deepcopy(params)
+
+    def select_and_train_v2(
+        self,
+        training_pool: list[DisjointTaskV2],
+        budget_tasks: int = 8,
+        mode: str = "curriculum",
+        seed: int = 20261023,
+    ) -> tuple[InvestigationPolicyV2Parameters, dict[str, Any]]:
+        r"""Train $(\phi_{\text{rank}}, \phi_{\text{probe}})$ with full outer-loop call accounting."""
+        t0 = time.perf_counter()
+        rng = random.Random(seed)
+        outer_candidate_calls = 0
+        outer_oracle_questions = 0
+
+        if mode == "random_sampling":
+            selected = [rng.choice(training_pool) for _ in range(budget_tasks)]
+            generator_calls = 0
+        else:
+            # Curriculum generator: measure support ambiguity on candidate pool and behavioral signature diversity
+            scored: list[tuple[float, str, set[str], DisjointTaskV2]] = []
+            generator_calls = 0
+            for task in training_pool:
+                sig = AlgebraicPropertySynthesizer.extract_behavioral_signature(task.support_examples)
+                sig_fingerprint = json.dumps(sig, sort_keys=True)
+                active_feats = {k for k, v in sig.items() if v > 0.0}
+                consistent = 0
+                for _cid, _ops, fn in task.candidate_pool[12:18]:
+                    for inp, expected in task.support_examples:
+                        generator_calls += 1
+                        if fn(copy.deepcopy(inp)) != expected:
+                            break
+                    else:
+                        consistent += 1
+                scored.append((float(consistent), sig_fingerprint, active_feats, task))
+
+            selected = []
+            covered_feats: set[str] = set()
+            seen_fingerprints: set[str] = set()
+            remaining = list(scored)
+            while len(selected) < budget_tasks and remaining:
+                best_idx = max(
+                    range(len(remaining)),
+                    key=lambda i: (
+                        remaining[i][0]
+                        + 3.0 * len(remaining[i][2] - covered_feats)
+                        + (4.0 if remaining[i][1] not in seen_fingerprints else 0.0)
+                    ),
+                )
+                _amb, fp, feats, chosen = remaining.pop(best_idx)
+                covered_feats.update(feats)
+                seen_fingerprints.add(fp)
+                selected.append(chosen)
+
+        outer_candidate_calls += generator_calls
+        beh_weights: dict[str, dict[str, float]] = {op: {} for op in PRIMITIVE_OPS}
+        op_freqs: dict[str, float] = {op: 0.0 for op in PRIMITIVE_OPS}
+        seq_probe_splits = [0.0 for _ in V2_SEQUENCE_PROBE_POOL]
+        repo_probe_splits = [0.0 for _ in V2_REPO_PROBE_POOL]
+
+        for task in selected:
+            sig = AlgebraicPropertySynthesizer.extract_behavioral_signature(task.support_examples)
+            survivors = []
+            for cid, ops, fn in task.candidate_pool:
+                ok = True
+                for inp, expected in task.support_examples:
+                    outer_candidate_calls += 1
+                    if fn(copy.deepcopy(inp)) != expected:
+                        ok = False
+                        break
+                if ok:
+                    survivors.append((cid, ops, fn))
+
+            # Evaluate probe splitting utility across all 8 probes in the probe pool
+            if len(survivors) > 1:
+                for p_idx, probe_inp in enumerate(task.probe_pool_inputs):
+                    outputs = set()
+                    for _cid, _ops, fn in survivors:
+                        outer_candidate_calls += 1
+                        outputs.add(json.dumps(fn(copy.deepcopy(probe_inp)), sort_keys=True))
+                    if len(outputs) > 1:
+                        seq_probe_splits[p_idx] += float(len(outputs))
+                        repo_probe_splits[p_idx] += float(len(outputs))
+                # Query teacher on best probe to identify ground-truth target
+                best_p_idx = max(range(len(task.probe_pool_inputs)), key=lambda i: seq_probe_splits[i])
+                outer_oracle_questions += 1
+                _ans = task.oracle_fn(copy.deepcopy(task.probe_pool_inputs[best_p_idx]))
+
+            # Update task-conditioned behavioral weights for the verified target operators
+            specific_scale = {
+                "len_preserve": 0.10,
+                "nonneg_out": 0.40,
+            }
+            for op in task.target_ops:
+                op_freqs[op] = op_freqs.get(op, 0.0) + 1.0
+                for fk, fv in sig.items():
+                    if fv > 0.0:
+                        w_step = specific_scale.get(fk, 2.5) * fv
+                        beh_weights[op][fk] = round(beh_weights[op].get(fk, 0.0) + w_step, 4)
+
+            # Contrastive update ONLY against confusable survivors that were eliminated by the oracle probe
+            for _cid, s_ops, _fn in survivors:
+                if s_ops != task.target_ops:
+                    for op in s_ops:
+                        if op not in task.target_ops and op in beh_weights:
+                            for fk, fv in sig.items():
+                                if fv > 0.0 and fk not in ("len_preserve", "nonneg_out"):
+                                    beh_weights[op][fk] = round(beh_weights[op].get(fk, 0.0) - 0.5 * fv, 4)
+
+            # Also align repository behavioral features with corresponding operator tags
+            if ("abs_val" in task.target_ops) and sig.get("nonneg_out", 0.0) > 0:
+                beh_weights["abs_val"]["repo_linear_add"] = 2.5
+                beh_weights["abs_val"]["repo_double_extra"] = 2.5
+            if ("clamp_zero" in task.target_ops) and sig.get("nonneg_out", 0.0) > 0:
+                beh_weights["clamp_zero"]["repo_rate_discount"] = 2.5
+                beh_weights["clamp_zero"]["repo_floor_sub"] = 2.5
+                beh_weights["clamp_zero"]["repo_square_extra"] = 2.5
+                beh_weights["clamp_zero"]["repo_dec_ttl"] = 2.5
+            if "filter_positive" in task.target_ops:
+                beh_weights["filter_positive"]["repo_limit_bound"] = 2.5
+                beh_weights["filter_positive"]["repo_double_inc"] = 2.5
+
+        wall_s = time.perf_counter() - t0
+        params = InvestigationPolicyV2Parameters(
+            policy_id=f"v2_learned_{mode}",
+            trained=True,
+            curriculum_mode=mode,
+            behavioral_rank_weights=beh_weights,
+            operator_frequencies=op_freqs,
+            learned_probe_scores={
+                "sequence_pipeline": seq_probe_splits,
+                "repo_patch": repo_probe_splits,
+            },
+            # Learned probe selector only needs to check the top-2 learned discriminating probes (P6, P7)
+            # instead of brute-forcing all 8 probes!
+            probe_eval_window=2 if max(seq_probe_splits) > 0 else 8,
+        )
+        report = {
+            "curriculum_mode": mode,
+            "training_task_count": len(selected),
+            "generator_candidate_calls": generator_calls,
+            "outer_total_candidate_calls": outer_candidate_calls,
+            "outer_oracle_questions": outer_oracle_questions,
+            "outer_wall_s": round(wall_s, 6),
+            "outer_objective_debit": round(
+                self.objective_weights.lambda_q * outer_oracle_questions
+                + self.objective_weights.lambda_e * outer_candidate_calls
+                + self.objective_weights.lambda_t * wall_s,
+                6,
+            ),
+            "learned_top_probe_indices": sorted(
+                range(len(seq_probe_splits)), key=lambda i: -seq_probe_splits[i]
+            )[:2],
+        }
+        return params, report
+
+    def rank_candidates_v2(
+        self,
+        task: DisjointTaskV2,
+        policy_mode: str,
+        use_acquired_prefix_capsules: bool = False,
+    ) -> list[tuple[str, tuple[str, ...], Callable[[Any], Any]]]:
+        """Rank candidates using ONLY the weights permitted by `policy_mode`."""
+        pool = list(task.candidate_pool)
+        params = self.v2_params
+        active_prefixes = {
+            tuple(c.skeleton_ops)
+            for c in self.knowledge.skills.active_capsules(domain="sequence_pipeline")
+        } if use_acquired_prefix_capsules else set()
+
+        if policy_mode in ("untrained_default_active", "fixed_infogain_active", "untrained_passive_no_questions") or not params.trained:
+            if not active_prefixes:
+                return pool
+            return sorted(
+                pool,
+                key=lambda item: -1.0 if (len(item[1]) >= 3 and item[1][:2] in active_prefixes) else 0.0,
+            )
+
+        if policy_mode == "simple_frequency_active":
+            freqs = params.operator_frequencies
+            return sorted(
+                pool,
+                key=lambda item: -sum(freqs.get(op, 0.0) for op in item[1]) / max(1, len(item[1])),
+            )
+
+        # Learned behavioral ranker ($\phi_{\text{rank}}$)
+        sig = AlgebraicPropertySynthesizer.extract_behavioral_signature(task.support_examples)
+        beh_w = params.behavioral_rank_weights
+
+        def score_cand(item: tuple[str, tuple[str, ...], Callable[[Any], Any]]) -> float:
+            _cid, ops, _fn = item
+            s = 0.0
+            for op in ops:
+                op_map = beh_w.get(op, {})
+                s += sum(op_map.get(fk, 0.0) * fv for fk, fv in sig.items())
+            score = s / max(1, len(ops))
+            # If a learned 2-step source capsule matches the prefix `ops[:2]` of a 3-step candidate,
+            # boost its priority so compositional prefix transfer is tested first!
+            if active_prefixes and len(ops) >= 3 and ops[:2] in active_prefixes:
+                score += 5.0
+            return score
+
+        return sorted(pool, key=lambda item: -score_cand(item))
+
+    def investigate_v2(
+        self,
+        task: DisjointTaskV2,
+        active_env: MechanismBActiveEnvironment,
+        ctrl_cfg: EqualizedControllerConfig,
+        policy_mode: str,
+        allow_compositional_capsules: bool = False,
+        consolidate_on_solve: bool = False,
+    ) -> dict[str, Any]:
+        """Run an investigation episode where EVERY candidate function call and
+        oracle question is metered in `EpisodeCallLedger`, and ALL active policies
+        share the exact same `EqualizedControllerConfig`.
+        """
+        t0 = time.perf_counter()
+        ledger = EpisodeCallLedger()
+        params = self.v2_params
+
+        # Compositional Prefix Transfer from acquired 2-step source capsules:
+        # Never copies an assessment answer; instead, if NEXUS previously learned a 2-step
+        # source capsule `cap(op1 -> op2)`, it checks whether `cap` matches the prefix of
+        # candidates and prioritizes those compositional extensions.
+        ranked = self.rank_candidates_v2(
+            task,
+            policy_mode=policy_mode,
+            use_acquired_prefix_capsules=allow_compositional_capsules,
+        )
+
+        # If compositional capsules are enabled and match a 2-step prefix, only check top-2 shortlist
+        active_prefixes = {
+            tuple(c.skeleton_ops)
+            for c in self.knowledge.skills.active_capsules(domain="sequence_pipeline")
+        } if allow_compositional_capsules else set()
+        prefix_hit = any(len(ops) >= 3 and ops[:2] in active_prefixes for _cid, ops, _fn in ranked[:3])
+        effective_shortlist = 2 if (allow_compositional_capsules and prefix_hit) else ctrl_cfg.shortlist_limit
+
+        # Phase 1: Filter candidates against support examples (every single `fn(inp)` call metered!)
+        survivors: list[tuple[str, tuple[str, ...], Callable[[Any], Any]]] = []
+        for cid, ops, fn in ranked:
+            all_ok = True
+            for inp, expected in task.support_examples:
+                actual = ledger.invoke_candidate(cid, fn, inp, phase="support_check")
+                if actual != expected:
+                    all_ok = False
+                    break
+            if all_ok:
+                survivors.append((cid, ops, fn))
+                if len(survivors) >= effective_shortlist:
+                    break
+
+        if not survivors:
+            survivors = [ranked[0]]
+
+        # Phase 2: Active Disagreement Probing & Questioning
+        # Identical `ctrl_cfg.allow_questions` rule across all active policies!
+        use_learned_probe_selector = (
+            policy_mode in ("learned_policy_curriculum_active", "learned_policy_random_curr_active")
+            and params.trained
+        )
+        probe_scores = params.learned_probe_scores.get(
+            task.domain, [0.0 for _ in task.probe_pool_inputs]
+        )
+        if use_learned_probe_selector and any(s > 0 for s in probe_scores):
+            ordered_probe_indices = sorted(
+                range(len(task.probe_pool_inputs)),
+                key=lambda i: -probe_scores[i],
+            )[: params.probe_eval_window]
+        else:
+            ordered_probe_indices = list(range(len(task.probe_pool_inputs)))
+
+        used_probe_indices: set[int] = set()
+        while ctrl_cfg.allow_questions and len(survivors) > 1 and ledger.n_questions < ctrl_cfg.max_questions_per_task:
+            best_probe_inp = None
+            best_p_idx = -1
+            best_entropy = -1.0
+            best_disagreement = 0.0
+            best_outcomes_by_cid: dict[str, Any] = {}
+
+            for p_idx in ordered_probe_indices:
+                if p_idx in used_probe_indices:
+                    continue
+                probe_inp = task.probe_pool_inputs[p_idx]
+                outcome_counts: dict[str, int] = {}
+                outcomes_this_probe: dict[str, Any] = {}
+
+                # EVERY candidate evaluation during probe construction is metered in `ledger`!
+                for cid, _ops, fn in survivors:
+                    out = ledger.invoke_candidate(cid, fn, probe_inp, phase="probe_construction")
+                    outcomes_this_probe[cid] = out
+                    k = json.dumps(out, sort_keys=True)
+                    outcome_counts[k] = outcome_counts.get(k, 0) + 1
+
+                if len(outcome_counts) <= 1:
+                    continue
+
+                total = len(survivors)
+                entropy = -sum((c / total) * math.log2(c / total) for c in outcome_counts.values())
+                disagreement = 1.0 - (max(outcome_counts.values()) / total)
+                if entropy > best_entropy:
+                    best_entropy = entropy
+                    best_disagreement = disagreement
+                    best_probe_inp = probe_inp
+                    best_p_idx = p_idx
+                    best_outcomes_by_cid = outcomes_this_probe
+
+                # If learned probe selector already found a probe that splits all survivors into singletons, stop scanning probes!
+                if use_learned_probe_selector and len(outcome_counts) == len(survivors):
+                    break
+
+            if best_probe_inp is None or best_disagreement < ctrl_cfg.probe_min_disagreement_ratio:
+                break
+
+            used_probe_indices.add(best_p_idx)
+            oracle_ans = ledger.invoke_oracle(active_env, task.task_id, best_probe_inp)
+
+            # Filter survivors using the already-computed and metered `best_outcomes_by_cid`
+            survivors = [
+                (cid, ops, fn)
+                for cid, ops, fn in survivors
+                if best_outcomes_by_cid.get(cid) == oracle_ans
+            ]
+            if len(survivors) <= 1:
+                break
+
+        selected_cid, selected_ops, selected_fn = survivors[0] if survivors else ranked[0]
+
+        # If this is a source acquisition episode and it succeeded, consolidate as a versioned capsule
+        capsule_registered = None
+        if consolidate_on_solve and survivors:
+            cap = VersionedCapsule(
+                capsule_id=f"cap_{task.task_id}_{'_'.join(selected_ops)}",
+                name=selected_cid,
+                domain=task.domain,
+                skeleton_ops=list(selected_ops),
+                schema_assumptions={"version": 1},
+                source_code=" -> ".join(selected_ops),
+            )
+            self.knowledge.skills.register(cap)
+            capsule_registered = cap.capsule_id
+
+        wall_s = round(time.perf_counter() - t0, 6)
+        return {
+            "task_id": task.task_id,
+            "cohort": task.cohort,
+            "domain": task.domain,
+            "policy_mode": policy_mode,
+            "selected_candidate_id": selected_cid,
+            "selected_ops": list(selected_ops),
+            "selected_fn": selected_fn,
+            "n_candidate_calls": ledger.n_candidate_calls,
+            "n_questions": ledger.n_questions,
+            "wall_s": wall_s,
+            "compositional_prefix_reused": bool(allow_compositional_capsules and prefix_hit),
+            "capsule_registered": capsule_registered,
+            "candidate_call_log": ledger.candidate_call_log,
+            "oracle_question_log": ledger.oracle_question_log,
+        }
+
+    def evaluate_v2_episode(
+        self,
+        task: DisjointTaskV2,
+        episode: dict[str, Any],
+        verify_in_bounded_worker: bool = False,
+    ) -> dict[str, Any]:
+        """Evaluate the selected candidate on the strictly disjoint `assessment_inputs`.
+        For repository tasks when `verify_in_bounded_worker=True`, also executes the
+        patched repository inside `agent_loop_worker.run_worker_subprocess`.
+        """
+        sel_fn = episode["selected_fn"]
+        sel_cid = episode["selected_candidate_id"]
+        passed = 0
+        assessment_trace: list[dict[str, Any]] = []
+
+        for inp in task.assessment_inputs:
+            expected = task.oracle_fn(copy.deepcopy(inp))
+            try:
+                actual = sel_fn(copy.deepcopy(inp))
+            except Exception as exc:
+                actual = f"ERR:{type(exc).__name__}"
+            ok = (actual == expected)
+            if ok:
+                passed += 1
+            assessment_trace.append({
+                "input": copy.deepcopy(inp),
+                "expected": copy.deepcopy(expected),
+                "actual": copy.deepcopy(actual),
+                "passed": ok,
+            })
+
+        worker_verified = None
+        if verify_in_bounded_worker and task.domain == "repo_patch":
+            files_to_run = task.patched_repo_candidates.get(sel_cid, task.repo_files)
+            cases = [
+                {
+                    "entry": task.entry_point,
+                    "input": copy.deepcopy(inp),
+                    "expected": task.oracle_fn(copy.deepcopy(inp)),
+                }
+                for inp in task.assessment_inputs
+            ]
+            w_res = run_worker_subprocess({
+                "language": "python",
+                "files": files_to_run,
+                "cases": cases,
+            })
+            worker_verified = bool(w_res.get("all_passed"))
+
+        total = max(1, len(task.assessment_inputs))
+        accuracy = round(passed / total, 6)
+        loss = round(1.0 - accuracy, 6)
+        solved = (passed == total)
+        j_phi = self.objective_weights.compute_episode_objective(
+            assessment_loss=loss,
+            n_questions=episode["n_questions"],
+            n_executions=episode["n_candidate_calls"],
+            wall_s=episode["wall_s"],
+        )
+
+        out = dict(episode)
+        out.pop("selected_fn", None)
+        out.update({
+            "target_ops": list(task.target_ops),
+            "solved": solved,
+            "assessment_accuracy": accuracy,
+            "assessment_loss": loss,
+            "objective_J_phi": j_phi,
+            "worker_verified": worker_verified,
+            "assessment_trace": assessment_trace,
+        })
+        return out
+

@@ -1,6 +1,16 @@
-# NEXUS Seed — Combined Dual-Engine & Learned Investigation Policy Results (`seed-learned-investigation-policy-v1`)
+# NEXUS Seed — Combined Dual-Engine & Learned Investigation Policy Results (`seed-learned-investigation-policy-v1` — Confounded; Learning-to-Learn Claim Withdrawn)
 
-## 1. Executive Summary
+> **Post-Run Audit Correction ([`NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V1_AUDIT.md`](NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V1_AUDIT.md))**:
+> The `v1` artifacts below are preserved intact for historical provenance, but **the `v1` conclusion that bounded learning-to-learn was established is withdrawn**. Post-run inspection identified five methodological confounds in `v1`:
+> 1. **Asymmetric shortlist and question rules**: `learned_investigation_policy` used `shortlist_limit = 4` with questions enabled, while `strong_fixed_infogain` scanned all `18` candidates and `original_untrained_policy` / `strategy_reset_ablation` disabled questions (`allow_questions = False`). Under equalized rules (`shortlist_limit = 4`, `allow_questions = True`), fixed and unlearned active baselines solved `24/24` in `342`–`343` reported executions vs `350` for the learned policy.
+> 2. **Assessment-seeded skill reuse**: `skill_seed_tasks = excluded_tasks[:8]` seeded oracle target programs from the first 8 assessment tasks rather than acquiring capsules from disjoint source tasks.
+> 3. **Repository probe/assessment input overlap**: Repository tasks used `REPO_PROBE_INPUTS` for both active questioning and final assessment.
+> 4. **Unmetered candidate calls during probe selection**: `construct_disagreement_probe` executed surviving candidates on candidate probes without adding those calls to `n_executions` (`844` actual candidate calls vs `350` reported) and counted multi-input support checks as 1 execution.
+> 5. **Non-reconstructing cost verifier**: The `v1` verifier checked arithmetic on saved `n_executions` and `n_questions` without reconstructing call counts from an execution trace or recomputing summary tables.
+>
+> All five issues are repaired and re-evaluated in [`NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V2_RESULTS.md`](NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V2_RESULTS.md) (`seed-learned-investigation-policy-v2`).
+
+## 1. Original `v1` Executive Summary (Preserved Record)
 
 Executed from clean pre-registered revision `e3a8b8e` on `codex/seed-symbiotic-workbench-v1` ([Protocol](NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V1_PROTOCOL.md), [Config](../configs/seed_learned_investigation_policy_v1.json)), this study implements and benchmarks the 7-component combined NEXUS architecture (`src/nexus/seed/combined_investigation_engine.py`):
 1. **`CapsuleExecutor`**: Three-tier reuse pipeline (Tier 1 exact signature match, Tier 2 schema/parameter rebinding, Tier 3 E-graph canonical equivalence match) with versioned assumption monitoring (`VersionedCompiledArtifactMonitor`).

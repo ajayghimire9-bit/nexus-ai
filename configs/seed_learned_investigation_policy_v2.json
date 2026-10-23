@@ -1,0 +1,46 @@
+{
+  "study_id": "seed-learned-investigation-policy-v2",
+  "supersedes_confounded_study": "seed-learned-investigation-policy-v1",
+  "v1_audit_doc": "docs/NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V1_AUDIT.md",
+  "protocol_doc": "docs/NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V2_PROTOCOL.md",
+  "results_doc": "docs/NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V2_RESULTS.md",
+  "artifact_json": "artifacts/seed_learned_investigation_policy_v2/seed_learned_investigation_policy_v2.json",
+  "artifact_jsonl": "artifacts/seed_learned_investigation_policy_v2/seed_learned_investigation_policy_v2.jsonl",
+  "equalized_controller": {
+    "shortlist_limit": 3,
+    "allow_questions": true,
+    "max_questions_per_task": 2,
+    "probe_min_disagreement_ratio": 0.15
+  },
+  "objective_weights": {
+    "lambda_q": 0.08,
+    "lambda_e": 0.01,
+    "lambda_t": 0.10
+  },
+  "equalized_active_policies": [
+    "untrained_default_active",
+    "simple_frequency_active",
+    "fixed_infogain_active",
+    "learned_ranker_only_active",
+    "learned_policy_random_curr_active",
+    "learned_policy_curriculum_active",
+    "strategy_reset_active"
+  ],
+  "passive_factorial_controls": [
+    "untrained_passive_no_questions",
+    "learned_ranker_passive_no_questions"
+  ],
+  "compositional_transfer_modes": [
+    "skills_only_untrained_active",
+    "strategy_only_capsules_cleared_active",
+    "combined_dual_engine_compositional_prefix_active"
+  ],
+  "training_budget_tasks": 8,
+  "source_acquisition_task_count": 8,
+  "excluded_assessment_task_count": 24,
+  "claim_discipline": {
+    "v1_learning_to_learn_withdrawn": true,
+    "v2_scope": "equalized_call_metered_active_investigation_and_compositional_prefix_transfer",
+    "agi": false
+  }
+}

@@ -13,6 +13,9 @@ from nexus.seed.combined_investigation_engine import (
     BoundedEGraphOrganizer,
     CombinedNexusArchitecture,
     ConformalCandidateCalibrator,
+    EqualizedControllerConfig,
+    EqualizedInvestigationEngineV2,
+    EvaluatorPrivateTaskOracle,
     IndependentEvaluator,
     InvestigationObjectiveWeights,
     MechanismBActiveEnvironment,
@@ -21,7 +24,9 @@ from nexus.seed.combined_investigation_engine import (
     VersionedCapsule,
     VersionedCompiledArtifactMonitor,
     build_training_and_excluded_tasks,
+    build_v2_disjoint_tasks_and_real_repos,
     execute_pipeline,
+    verify_disjoint_task_inputs,
 )
 from nexus.seed.lab import SeedWorkspace
 
@@ -220,6 +225,108 @@ def test_memory_reset_learning_to_learn_and_strategy_ablation(tmp_path: Path) ->
     assert "hashes" in api_res["result"]["result"]
 
 
+def test_v2_equalized_unconfounded_engine() -> None:
+    training_pool, source_tasks, excluded_tasks = build_v2_disjoint_tasks_and_real_repos()
+
+    # 1. Verify strict pairwise disjointness of support, probe pool, and assessment inputs
+    for task in training_pool + source_tasks + excluded_tasks:
+        d_check = verify_disjoint_task_inputs(task)
+        assert d_check["pairwise_disjoint"] is True, f"Overlap in {task.task_id}: {d_check}"
+
+    # 2. Verify zero task or target_ops overlap between source_tasks (2-step) and excluded_tasks (3-step/repo)
+    src_ids = {t.task_id for t in source_tasks}
+    ex_ids = {t.task_id for t in excluded_tasks}
+    assert len(src_ids & ex_ids) == 0
+    src_seq_targets = {t.target_ops for t in source_tasks}
+    ex_seq_targets = {t.target_ops for t in excluded_tasks if t.domain == "sequence_pipeline"}
+    assert len(src_seq_targets & ex_seq_targets) == 0
+
+    engine = EqualizedInvestigationEngineV2()
+    all_oracles = {
+        t.task_id: EvaluatorPrivateTaskOracle(
+            task_id=t.task_id,
+            target_ops=t.target_ops,
+            oracle_fn=t.oracle_fn,
+            assessment_inputs=t.assessment_inputs,
+            candidate_pool=t.candidate_pool,
+        )
+        for t in (source_tasks + excluded_tasks)
+    }
+
+    curr_params, curr_rep = engine.select_and_train_v2(training_pool, budget_tasks=8, mode="curriculum")
+    rand_params, rand_rep = engine.select_and_train_v2(training_pool, budget_tasks=8, mode="random_sampling")
+    assert curr_rep["outer_total_candidate_calls"] > 0
+
+    # Equalized active controller config: identical shortlist_limit=3 and allow_questions=True!
+    equal_ctrl = EqualizedControllerConfig(shortlist_limit=3, allow_questions=True, max_questions_per_task=2)
+
+    def run_policy(mode: str, params_to_set, allow_capsules: bool = False) -> list[dict]:
+        if not allow_capsules:
+            engine.reset_skills()
+        if params_to_set is None:
+            engine.reset_strategy()
+        else:
+            engine.set_strategy_params(params_to_set)
+        env = MechanismBActiveEnvironment(all_oracles)
+        out = []
+        for t in excluded_tasks:
+            ep = engine.investigate_v2(
+                t, env, equal_ctrl, policy_mode=mode, allow_compositional_capsules=allow_capsules
+            )
+            ev = engine.evaluate_v2_episode(t, ep, verify_in_bounded_worker=(t.domain == "repo_patch" and mode == "learned_policy_curriculum_active"))
+            assert ev["n_candidate_calls"] == len(ev["candidate_call_log"])
+            assert ev["n_questions"] == len(ev["oracle_question_log"])
+            out.append(ev)
+        return out
+
+    res_untrained = run_policy("untrained_default_active", None)
+    res_freq = run_policy("simple_frequency_active", curr_params)
+    res_infogain = run_policy("fixed_infogain_active", curr_params)
+    res_rank_only = run_policy("learned_ranker_only_active", curr_params)
+    res_rand_curr = run_policy("learned_policy_random_curr_active", rand_params)
+    res_curr = run_policy("learned_policy_curriculum_active", curr_params)
+
+    # Reset strategy while KEEPING equalized active controller (`allow_questions=True`, `shortlist=4`)
+    engine.set_strategy_params(curr_params)
+    engine.reset_strategy()
+    res_reset = run_policy("learned_policy_curriculum_active", None)
+
+    calls_untrained = sum(r["n_candidate_calls"] for r in res_untrained)
+    calls_freq = sum(r["n_candidate_calls"] for r in res_freq)
+    calls_infogain = sum(r["n_candidate_calls"] for r in res_infogain)
+    calls_rank_only = sum(r["n_candidate_calls"] for r in res_rank_only)
+    calls_rand_curr = sum(r["n_candidate_calls"] for r in res_rand_curr)
+    calls_curr = sum(r["n_candidate_calls"] for r in res_curr)
+    calls_reset = sum(r["n_candidate_calls"] for r in res_reset)
+
+    solved_curr = sum(1 for r in res_curr if r["solved"])
+    assert solved_curr == 24
+    assert all(r["worker_verified"] is True for r in res_curr if r["domain"] == "repo_patch")
+    assert calls_curr < calls_untrained
+    assert calls_curr < calls_freq
+    assert calls_curr < calls_infogain
+    assert calls_curr < calls_rank_only
+    assert calls_curr < calls_rand_curr
+    assert calls_reset == calls_untrained
+
+    # 3. Autonomous Source Skill Acquisition -> Compositional Prefix Transfer
+    engine.reset_skills()
+    engine.set_strategy_params(curr_params)
+    env_src = MechanismBActiveEnvironment(all_oracles)
+    for st in source_tasks:
+        ep_s = engine.investigate_v2(
+            st, env_src, equal_ctrl, policy_mode="learned_policy_curriculum_active", consolidate_on_solve=True
+        )
+        ev_s = engine.evaluate_v2_episode(st, ep_s)
+        assert ev_s["solved"] is True
+    assert len(engine.knowledge.skills.active_capsules()) == 8
+
+    res_dual = run_policy("learned_policy_curriculum_active", curr_params, allow_capsules=True)
+    calls_dual = sum(r["n_candidate_calls"] for r in res_dual)
+    assert sum(1 for r in res_dual if r["solved"]) == 24
+    assert calls_dual < calls_curr
+
+
 if __name__ == "__main__":
     import tempfile
 
@@ -227,5 +334,7 @@ if __name__ == "__main__":
     test_five_engineering_replacements()
     with tempfile.TemporaryDirectory() as td:
         test_memory_reset_learning_to_learn_and_strategy_ablation(Path(td))
-    print("ALL COMBINED INVESTIGATION ENGINE TESTS PASSED")
+    test_v2_equalized_unconfounded_engine()
+    print("ALL COMBINED INVESTIGATION ENGINE V1 + V2 TESTS PASSED")
+
 

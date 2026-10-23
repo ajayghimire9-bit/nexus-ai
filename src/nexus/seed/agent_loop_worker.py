@@ -96,7 +96,7 @@ def validate_and_compile_python_repo(files: dict[str, str]) -> dict[str, dict[st
             raise ValueError(f"unknown_module_import:{mod_name}")
         loading.add(mod_name)
         safe_b = dict(SAFE_BUILTINS)
-        safe_b["float"] = float
+        safe_b.update({"float": float, "dict": dict, "round": round, "bool": bool, "int": int, "list": list})
         namespace: dict[str, Any] = {"__builtins__": safe_b}
         body: list[ast.stmt] = []
         for stmt in py_modules[mod_name].body:
