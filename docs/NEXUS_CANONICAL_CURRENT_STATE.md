@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — compact sum-row TypeError repair (results)
+## Current — interface-repair development evaluation (results)
+
+[Protocol](NEXUS_SEED_INTERFACE_REPAIR_PROTOCOL.md),
+[results](NEXUS_SEED_INTERFACE_REPAIR_RESULTS.md). Implementation
+`8f2a8c1` on `cursor/seed-worker-div-confirm` (base `6259d55`).
+Verifier `valid: true`. Live 2/4 (`split`, `ready` pass; `tally`
+revises unprojected `sum` to `...`; `label` unwraps a nested
+envelope to `-lead`). Historical scores untouched. Ledger
+**3314.967351455996 used / 285.032648544004 remaining**.
+
+## Previous — compact sum-row TypeError repair (results)
 
 [Protocol](NEXUS_SEED_SUM_ROW_REPAIR_PROTOCOL.md),
 [results](NEXUS_SEED_SUM_ROW_REPAIR_RESULTS.md). Implementation

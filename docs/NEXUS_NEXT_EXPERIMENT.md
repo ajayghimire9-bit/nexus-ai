@@ -1,13 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — locked interface-repair evaluation (not yet scored)
+## Current next — spend the unused completion on post-behavior placeholders
 
-[Protocol](NEXUS_SEED_INTERFACE_REPAIR_PROTOCOL.md) on
-`cursor/seed-worker-div-confirm` (base `6259d55`). Envelope unwrap,
-`sum()` signature feedback, public list-schema, and shared f-string
-allowlist are locked. One 150 s hard-deadline live run after this
-commit. Ranking and memory stay paused. Ledger
-**3255.314914455996 used / 344.685085544004 remaining**.
+The [interface-repair run](NEXUS_SEED_INTERFACE_REPAIR_RESULTS.md)
+passed 2/4. Envelope unwrap and layered feedback worked; the coder
+still answered an accurate int+dict / `qty` schema with `...`, and
+hardcoded `-lead` after a `.lower()`-on-list error. A third
+completion remains unused when the behavior revision is a
+placeholder. Do not resume ranking or memory. Ledger
+**3314.967351455996 used / 285.032648544004 remaining**.
 
 ## Previous next — bag-sum projection is still unsolved; do not start experience
 
