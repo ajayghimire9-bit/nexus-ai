@@ -1,15 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — six-area comparison (implementation)
+## Current — six-area comparison (results)
 
-Branch `cursor/seed-six-area-comparison` from reviewed `a47c070`. Protocol
-[NEXUS_SEED_SIX_AREA_COMPARISON_PROTOCOL.md](NEXUS_SEED_SIX_AREA_COMPARISON_PROTOCOL.md).
-Compares unfamiliar coding, language, reasoning, knowledge reuse,
-learning-to-learn and retention under model+tools, ordinary cache, repair
-memory, learned investigation policy, and reset/shuffle controls. Closed
-scoped-id coding IDs are excluded. Scoring is blocked until this protocol is
-committed. Ledger unchanged:
-**2314.297441455996 used / 1285.702558544004 remaining**.
+[Protocol](NEXUS_SEED_SIX_AREA_COMPARISON_PROTOCOL.md),
+[results](NEXUS_SEED_SIX_AREA_COMPARISON_RESULTS.md). Implementation `b50a642`
+on `cursor/seed-six-area-comparison` from reviewed `a47c070`. Verifier
+`valid: true`. Learned investigation used more calls than the fixed policy at
+the same 1/2 assessment match; learning-to-learn unestablished. Repair memory
+transferred `py_clip_hi_src` → `py_age_cap` without a new complete(), but the
+local model also solved that later instance. Only the inclusive-maximum coding
+task passed private tests. New-function, multi-file and documented-API tasks
+failed. Authored reasoning programs executed. Conversation mixed; a pending
+clarification captured the unsupported-request turn. No promotion. Ledger
+**2369.450522455996 used / 1230.549477544004 remaining**.
 
 ## Previous — scoped identification / staging development pilot (results)
 

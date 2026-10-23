@@ -251,6 +251,7 @@ def run_coding(config, emit, meter, live_runtime=None):
                       private=private, none_private=none,
                       cache_hit=result.get("cache_hit"), reused=result.get("reused"),
                       path=result.get("path"), final_files=result.get("final_files"),
+                      model_trace=result.get("model_trace"),
                       complete_correctness=False, **trace_costs(result)))
         source = next(s for s in config["coding"] if s["id"] == source_id)
         for condition, files, name in (

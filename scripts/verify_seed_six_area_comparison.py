@@ -37,6 +37,12 @@ def reconstruct_costs(records):
     wall = 0.0
     for row in rows:
         traces = row.get("model_trace") or []
+        if not traces:
+            generated += int(row.get("generated_tokens") or 0)
+            input_tokens += int(row.get("input_tokens") or 0)
+            wall += float(row.get("request_wall_s") or 0)
+            completions += int(row.get("completions") or 0)
+            continue
         row_gen = row_in = row_comp = 0
         row_wall = 0.0
         for item in traces:
