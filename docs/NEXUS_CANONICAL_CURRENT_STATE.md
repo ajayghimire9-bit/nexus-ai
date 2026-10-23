@@ -1,14 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — selective reuse (implementation)
+## Current — selective reuse (results)
 
-Branch `cursor/seed-selective-reuse` from reviewed `e6515fa`. Protocol
-[NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md](NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md).
-Retrieved boundary repairs are proposals: inclusive applies, exclusive
-refuses, ambiguous asks. Structured edits prefer symbol-targeted actions;
-revisions see staged source and the validation error. Scoring is blocked
-until this protocol is committed. `fixed_boundary` stays the default. Ledger
-unchanged: **2395.682841455996 used / 1204.317158544004 remaining**.
+[Protocol](NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md),
+[results](NEXUS_SEED_SELECTIVE_REUSE_RESULTS.md). Implementation `6629d1b` on
+`cursor/seed-selective-reuse`. Verifier `valid: true`. Memory applied the
+inclusive repair, refused the exclusive one, abstained on the unrelated
+family and asked on the ambiguous cutoff (1 correct reuse, 0 harmful, 0
+unnecessary abstention). The ordinary template harmed exclusive and
+ambiguous instances. Valid-edit rate on slug/levy was 0/4; private tests
+still failed. `fixed_boundary` stays the default. No promotion. Ledger
+**2418.784083455996 used / 1181.215916544004 remaining**.
 
 ## Previous — interrupt, bottleneck and fresh transfer (results)
 
