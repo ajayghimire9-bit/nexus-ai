@@ -57,6 +57,15 @@ def test_placeholder_rejects_identifier_and_allows_return_none():
     )
     assert assembled["placeholder"] == "placeholder_body:bare_identifier:ok"
     assert assembled["structurally_valid"] is False
+    broken = assemble_format_proposal(
+        "json_body",
+        '{"body": "ok(item)."}',
+        "Allow level equal to the cap.",
+        {"level.py": "def ok(item):\n    return item['level'] < item['cap']\n"},
+        [{"entry": "level.ok", "input": {"level": 2, "cap": 2}, "expected": True}],
+    )
+    assert broken["structurally_valid"] is False
+    assert broken["syntax_valid"] is False
 
 
 def test_best_format_uses_predeclared_tie_break():

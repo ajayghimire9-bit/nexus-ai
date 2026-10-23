@@ -184,12 +184,14 @@ def assemble_format_proposal(
     notes: list[str] = []
     function_text = ""
     if raw_valid:
-        if fmt == "json_body":
+        try:
             function_text, notes = normalize_function(raw_text, plan.symbol, plan.args)
-            if "wrapped_body" not in notes:
+            if fmt == "json_body" and "wrapped_body" not in notes:
                 notes.append("wrapped_body")
-        else:
-            function_text, notes = normalize_function(raw_text, plan.symbol, plan.args)
+        except (SyntaxError, ValueError) as exc:
+            raw_valid = False
+            raw_reason = type(exc).__name__ + ": " + str(exc)[:160]
+            function_text = ""
     placeholder = placeholder_diagnostic(function_text, plan.symbol) if function_text else (
         "placeholder_body:empty" if not raw_valid else None
     )
