@@ -1,0 +1,117 @@
+{
+  "id": "seed-worker-div-confirm-1",
+  "artifact_stem": "seed_worker_div_confirm",
+  "base_sha": "e5d41fd",
+  "parent_protocol_commit": "e5d41fd",
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "carried_used_s": 3005.155682455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "audit_cells": 1,
+    "confirm_cells": 4
+  },
+  "tasks": [
+    {
+      "id": "py_bag_total",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "total(item) sums amount on each row. Missing amount is 0. Empty rows is 0. Empty list and a missing amount are public.",
+      "request": "Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.",
+      "docs": [{"title": "total", "content": "total(item) sums row amounts. Missing amount is 0. Empty rows is 0."}],
+      "files": {"bag.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "bag.py", "symbol": "total", "action": "insert_function"},
+      "public": [
+        {"entry": "bag.total", "input": {"rows": [{"amount": 4}, {"amount": 6}]}, "expected": 10},
+        {"entry": "bag.total", "input": {"rows": []}, "expected": 0},
+        {"entry": "bag.total", "input": {"rows": [{"amount": 2}, {}]}, "expected": 2}
+      ],
+      "assessment": [
+        {"entry": "bag.total", "input": {"rows": [{"amount": 7}]}, "expected": 7},
+        {"entry": "bag.total", "input": {"rows": [{}, {}]}, "expected": 0},
+        {"entry": "bag.total", "input": {"rows": [{"amount": 1}, {"amount": 1}, {}]}, "expected": 2}
+      ]
+    },
+    {
+      "id": "py_flag_absent",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "flag(item) is kind and name lowercased, joined by one colon. Missing kind or name is an empty string. Those missing cases are public.",
+      "request": "Create function flag(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.",
+      "docs": [{"title": "flag", "content": "flag(item) is kind:name lowercased. Missing fields are empty strings."}],
+      "files": {"flag.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "flag.py", "symbol": "flag", "action": "insert_function"},
+      "public": [
+        {"entry": "flag.flag", "input": {"kind": "Lab", "name": "One"}, "expected": "lab:one"},
+        {"entry": "flag.flag", "input": {"name": "One"}, "expected": ":one"},
+        {"entry": "flag.flag", "input": {"kind": "Lab"}, "expected": "lab:"}
+      ],
+      "assessment": [
+        {"entry": "flag.flag", "input": {"kind": "", "name": ""}, "expected": ":"},
+        {"entry": "flag.flag", "input": {"kind": "Z", "name": "q"}, "expected": "z:q"},
+        {"entry": "flag.flag", "input": {"kind": "Mix", "name": "Case", "extra": 1}, "expected": "mix:case"}
+      ]
+    },
+    {
+      "id": "py_rate_div",
+      "role": "insert",
+      "family": "arithmetic",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "rate(item) returns amount divided by unit as a float using true division.",
+      "request": "Create function rate(item) that returns amount divided by unit.",
+      "docs": [{"title": "rate", "content": "rate(item) is amount / unit as a float."}],
+      "files": {"pay.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "pay.py", "symbol": "rate", "action": "insert_function"},
+      "public": [
+        {"entry": "pay.rate", "input": {"amount": 10, "unit": 4}, "expected": 2.5},
+        {"entry": "pay.rate", "input": {"amount": 0, "unit": 2}, "expected": 0.0}
+      ],
+      "assessment": [
+        {"entry": "pay.rate", "input": {"amount": 9, "unit": 2}, "expected": 4.5},
+        {"entry": "pay.rate", "input": {"amount": 5, "unit": 2}, "expected": 2.5}
+      ]
+    },
+    {
+      "id": "py_enter_both",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "enter(item) is True only when age >= min_age and score >= floor. A failing public case is included.",
+      "request": "Create function enter(item) that is True only when age is at least min_age and score is at least floor.",
+      "docs": [{"title": "enter", "content": "enter(item) requires age >= min_age AND score >= floor."}],
+      "files": {"door.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "door.py", "symbol": "enter", "action": "insert_function"},
+      "public": [
+        {"entry": "door.enter", "input": {"age": 21, "min_age": 18, "score": 6, "floor": 5}, "expected": true},
+        {"entry": "door.enter", "input": {"age": 16, "min_age": 18, "score": 9, "floor": 5}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "door.enter", "input": {"age": 30, "min_age": 18, "score": 3, "floor": 5}, "expected": false},
+        {"entry": "door.enter", "input": {"age": 19, "min_age": 18, "score": 5, "floor": 5}, "expected": true}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

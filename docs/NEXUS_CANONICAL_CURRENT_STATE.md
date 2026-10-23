@@ -1,6 +1,19 @@
 # NEXUS Seed — Current State
 
-## Current — frozen recipe on harder features (results)
+## Current — worker division, public missing cases, then confirmation (protocol)
+
+[Protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md). Branch
+`cursor/seed-worker-div-confirm` from reviewed `e5d41fd`. Allow `ast.Div`
+in the existing worker, define numeric comparison and zero-division, and
+replay the saved `due` patch with no new inference. Public tests now
+include specified missing/empty cases. Historical `total`/`tag`/`fit`
+revisions are audited for feedback use. Fresh confirmation runs only
+after that freeze. The closed harder-feature 1/5
+(`31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2`) is
+not rescored. Ledger
+**3005.155682455996 used / 594.844317544004 remaining**.
+
+## Previous — frozen recipe on harder features (results)
 
 [Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md),
 [results](NEXUS_SEED_HARDER_FEATURES_RESULTS.md). Implementation

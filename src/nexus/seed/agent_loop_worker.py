@@ -43,6 +43,28 @@ FORBIDDEN_CALLS = {
     "getattr", "setattr", "delattr", "globals", "locals", "vars",
 }
 ALLOWED_STDLIB_IMPORTS = {"math", " typing"}
+# True division (`/`) is allowed here. Floor division was already in SAFE_AST_NODES.
+ALLOWED_WORKER_AST = SAFE_AST_NODES + (ast.Is, ast.IsNot, ast.ImportFrom, ast.alias, ast.Div)
+NUMERIC_TYPES = (int, float)
+FLOAT_ABS_TOL = 1e-6
+
+
+def compare_python_result(actual: Any, expected: Any) -> bool:
+    """Compare a worker result to an expected value.
+
+    bool is not treated as int. True division yields float; an expected float
+    matches int or float actual within FLOAT_ABS_TOL. An expected int requires
+    an int actual. Division by zero is not compared: it is a runtime exception.
+    """
+    if type(expected) is bool:
+        return type(actual) is bool and actual is expected
+    if type(expected) is float:
+        return type(actual) in NUMERIC_TYPES and type(actual) is not bool and (
+            abs(float(actual) - expected) <= FLOAT_ABS_TOL
+        )
+    if type(expected) is int:
+        return type(actual) is int and type(actual) is not bool and actual == expected
+    return type(actual) is type(expected) and actual == expected
 
 
 def validate_and_compile_python_repo(files: dict[str, str]) -> dict[str, dict[str, Any]]:
@@ -66,7 +88,7 @@ def validate_and_compile_python_repo(files: dict[str, str]) -> dict[str, dict[st
             raise ValueError(f"ast_size_exceeded:{filename}")
 
         for node in nodes:
-            if not isinstance(node, SAFE_AST_NODES + (ast.Is, ast.IsNot, ast.ImportFrom, ast.alias)):
+            if not isinstance(node, ALLOWED_WORKER_AST):
                 raise ValueError(f"forbidden_ast_node:{filename}:{type(node).__name__}")
             if isinstance(node, ast.Name) and node.id.startswith("__"):
                 raise ValueError(f"dunder_name_forbidden:{filename}:{node.id}")
@@ -176,10 +198,7 @@ def evaluate_python_payload(payload: dict[str, Any]) -> dict[str, Any]:
             else:
                 actual = fn(inp)
             expected = case["expected"]
-            if isinstance(expected, float) and isinstance(actual, (int, float)):
-                passed = abs(float(actual) - expected) <= 1e-6
-            else:
-                passed = (type(actual) is type(expected) and actual == expected)
+            passed = compare_python_result(actual, expected)
             results.append(dict(
                 entry=entry,
                 actual=actual,

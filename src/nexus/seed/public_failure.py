@@ -124,9 +124,21 @@ def behavioral_feedback(
     results = list((public or {}).get("results") or [])
     cases = list(public_tests or [])
     reports = []
+    compile_reason = None
+    if not results and (public or {}).get("reason"):
+        compile_reason = str(public.get("reason"))
     for index, case in enumerate(cases[:6]):
         row = results[index] if index < len(results) else {}
-        reports.append(case_report(case, row))
+        report = case_report(case, row)
+        if compile_reason and not report.get("exception"):
+            report["exception"] = compile_reason
+            report["passed"] = False
+        reports.append(report)
+    if not reports and compile_reason:
+        reports.append({
+            "input": None, "expected": None, "actual": None,
+            "exception": compile_reason, "passed": False, "band": None,
+        })
     failed = [row for row in reports if not row.get("passed")]
     bands = {row["band"] for row in reports if row.get("band")}
     three_point = bands >= {"below", "equal", "above"}

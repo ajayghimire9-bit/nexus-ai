@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — keep the recipe frozen; do not start experience yet
+## Current next — score the frozen worker after division and public missing cases
+
+The [worker-division protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md)
+locks `ast.Div`, numeric comparison, public missing/empty cases, and a
+read-only audit of historical `total`/`tag`/`fit` revisions. Score four
+new confirmation tasks on the frozen 1.5B recipe only after that
+implementation commit. Do not rescore the historical 1/5. Do not resume
+ranking or memory. Ledger
+**3005.155682455996 used / 594.844317544004 remaining**.
+
+## Previous next — keep the recipe frozen; do not start experience yet
 
 The [harder-feature run](NEXUS_SEED_HARDER_FEATURES_RESULTS.md) kept the
 1.5B recipe and failed the reliability gate (1/5 supplied private).
