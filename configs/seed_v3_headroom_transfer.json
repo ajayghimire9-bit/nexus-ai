@@ -1,0 +1,70 @@
+{
+  "id": "seed-v3-headroom-transfer-1",
+  "artifact_stem": "seed_v3_headroom_transfer",
+  "base_sha": "86836cb",
+  "parent_protocol_commit": "86836cb",
+  "benchmark": "v3_headroom",
+  "rescore_depth12": false,
+  "historical_v2_rescoring": false,
+  "call_budget": 35,
+  "shortlist_limit": 8,
+  "allow_questions": true,
+  "max_questions_per_task": 2,
+  "freeze_weights": true,
+  "live_neural_calls": 0,
+  "max_runner_wall_s": 15,
+  "hypothesis_count": 22464,
+  "methods": [
+    "untrained_default",
+    "simple_frequency_interleaved",
+    "name_indexed_ranker",
+    "invariant_phi_frozen",
+    "higher_order_skeletons_only",
+    "combined_invariant_phi_plus_skeletons"
+  ],
+  "controller": {
+    "shortlist_limit": 8,
+    "allow_questions": true,
+    "max_questions_per_task": 2,
+    "max_episode_candidate_calls": 35,
+    "enable_widening": true,
+    "widen_stop": "same_call_and_question_ceiling"
+  },
+  "set_a_tasks": [
+    {"id": "a_filter_d3", "cluster": "filter", "depth": 3, "target": ["keep_pos", "keep_even", "take_prefix_half"]},
+    {"id": "a_filter_d4", "cluster": "filter", "depth": 4, "target": ["keep_pos", "keep_pos", "keep_even", "take_prefix_half"]},
+    {"id": "a_mod_d3", "cluster": "mod", "depth": 3, "target": ["res_mod3", "add2_mod5", "mul2_mod7"]},
+    {"id": "a_mod_d4", "cluster": "mod", "depth": 4, "target": ["res_mod3", "res_mod3", "add2_mod5", "mul2_mod7"]},
+    {"id": "a_order_d3", "cluster": "order", "depth": 3, "target": ["rev", "rot_l", "sort_up"]},
+    {"id": "a_order_d4", "cluster": "order", "depth": 4, "target": ["rev", "rev", "rot_l", "sort_up"]},
+    {"id": "a_group_d3", "cluster": "group", "depth": 3, "target": ["sum_by_parity", "count_by_sign", "first_per_mod2"]},
+    {"id": "a_group_d4", "cluster": "group", "depth": 4, "target": ["sum_by_parity", "sum_by_parity", "count_by_sign", "first_per_mod2"]}
+  ],
+  "set_b_tasks": [
+    {"id": "b_filter_d3", "cluster": "filter", "depth": 3, "target": ["keep_odd", "drop_suffix_half", "keep_neg"]},
+    {"id": "b_filter_d4", "cluster": "filter", "depth": 4, "target": ["keep_neg", "keep_neg", "keep_neg", "keep_odd"]},
+    {"id": "b_mod_d3", "cluster": "mod", "depth": 3, "target": ["add3_mod8", "mul3_mod5", "res_mod4"]},
+    {"id": "b_mod_d4", "cluster": "mod", "depth": 4, "target": ["res_mod4", "res_mod4", "res_mod4", "add3_mod8"]},
+    {"id": "b_order_d3", "cluster": "order", "depth": 3, "target": ["sort_down", "swap_halves", "rot_r"]},
+    {"id": "b_order_d4", "cluster": "order", "depth": 4, "target": ["swap_halves", "swap_halves", "swap_halves", "rot_r"]},
+    {"id": "b_group_d3", "cluster": "group", "depth": 3, "target": ["last_per_mod2", "sum_by_mod3", "count_by_parity"]},
+    {"id": "b_group_d4", "cluster": "group", "depth": 4, "target": ["sum_by_mod3", "sum_by_mod3", "sum_by_mod3", "count_by_parity"]}
+  ],
+  "support_payloads": {
+    "filter": [5, -2, 4, 0, 1, -4, 2],
+    "mod": [2, 7, 3, 9, 1],
+    "order": [4, 1, 5, 2, 3],
+    "group": [1, -1, 2, 0, -2, 3]
+  },
+  "assessment_payloads": {
+    "filter": [3, -5, 8, 0, 2, -1],
+    "mod": [8, 1, 6, 4],
+    "order": [9, 2, 7, 0, 4],
+    "group": [-4, 5, 0, 5, -1]
+  },
+  "transfer_gate": "mean_calls(invariant_phi_frozen) <= 0.5 * mean_calls(untrained_default) AND solve_rate(phi) > solve_rate(untrained) AND solve_rate(phi) > solve_rate(name_indexed)",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learning_research_resumed": false,
+  "gemini": "NOT_RUN"
+}

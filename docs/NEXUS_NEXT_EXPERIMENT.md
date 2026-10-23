@@ -1,6 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — train invariant φ on Set A, freeze, measure Set B
+## Current next — score the locked Set A → Set B transfer
+
+The [transfer protocol](NEXUS_SEED_V3_HEADROOM_TRANSFER_PROTOCOL.md) is
+locked: six equalized methods, `B = 35`, frozen invariant φ, automatic
+Set B signatures. Score it with `--no-live-model` under 15 s. Do not
+retune gates. Ledger
+**3126.028358455996 used / 473.9716415440039 remaining**.
+
+## Previous next — train invariant φ on Set A, freeze, measure Set B
 
 The [v3_headroom lock](NEXUS_SEED_V3_HEADROOM_PROTOCOL.md) makes
 `simple_frequency` waste 3× extra calls on orthogonal regimes and puts

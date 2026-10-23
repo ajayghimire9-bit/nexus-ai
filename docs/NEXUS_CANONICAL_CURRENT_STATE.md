@@ -1,6 +1,14 @@
 # NEXUS Seed — Current State
 
-## Current — v3 high-headroom investigation benchmark (design lock)
+## Current — v3_headroom Set A → Set B transfer (protocol)
+
+[Protocol](NEXUS_SEED_V3_HEADROOM_TRANSFER_PROTOCOL.md). Branch
+`cursor/seed-v3-headroom` from `86836cb`. Six equalized methods, `B = 35`,
+φ frozen after Set A, Set B signatures from specialist probes only. Zero
+neural calls. Transfer not yet scored. Ledger
+**3126.028358455996 used / 473.9716415440039 remaining**.
+
+## Previous — v3 high-headroom investigation benchmark (design lock)
 
 [Protocol](NEXUS_SEED_V3_HEADROOM_PROTOCOL.md),
 [lock](NEXUS_SEED_V3_HEADROOM_RESULTS.md). Branch
