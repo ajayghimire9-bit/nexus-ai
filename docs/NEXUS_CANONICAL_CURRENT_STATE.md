@@ -1,6 +1,21 @@
 # NEXUS Seed — Current State
 
-## Current — independent capability/evidence audit supersedes broad v2 interpretations
+## Current — widening/coding development pilot (protocol before scoring)
+
+[Protocol](NEXUS_SEED_CAPABILITY_WIDENING_CODING_PROTOCOL.md),
+[results](NEXUS_SEED_CAPABILITY_WIDENING_CODING_RESULTS.md). Implementation
+`7a70072` on `cursor/seed-capability-widening-coding` from reviewed `c8b3101`.
+Closed audit artifacts unchanged. Completeness-preserving widening removed
+false certainty (8 → 0) including out-of-grammar claims, but every widening
+episode stopped `budget_exhausted` (24-candidate cap vs 252 programs) so
+claimed identification is 0. Assessment match did not improve (boundary/cost
+10/15, learned 9/15). Installed Qwen 0.5B actually proposed patches: window
+and documented-timeout private-pass; new-function and multi-file invalid
+proposals. Persistent later-task gain unestablished. Conversation rubrics
+mostly unmet. Verifier `valid: true`. Learning-to-learn unestablished. No
+promotion. Ledger **2259.632103455996 used / 1340.367896544004 remaining**.
+
+## Latest — independent capability/evidence audit supersedes broad v2 interpretations
 
 [Complete report](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md), [source/call-path audit](NEXUS_SEED_CAPABILITY_ARCHITECTURE_AUDIT.md).
 Protocol a88bd80; inherited-runtime correction/execution def0341. Strict common

@@ -1,6 +1,17 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
-## Current — investigation advantage after stronger boundary controls
+## Current — completeness-preserving widening vs false certainty
+
+Predeclared: shared widening/stopping reduces false certainty without
+privileged learned shortcuts, and a real local-model coding proposer can
+create behavior beyond the AST catalogue. **Mixed / negative on this grid.**
+False certainty 8 → 0, including out-of-grammar claims, but identification
+claims also fell to 0 (`budget_exhausted` at 24/252). Assessment match did
+not improve. The 0.5B model generated valid patches on 2/4 fresh coding
+tasks and invalid patches on new-function and multi-file tasks. Later-task
+retention benefit unestablished. [Results](NEXUS_SEED_CAPABILITY_WIDENING_CODING_RESULTS.md).
+
+## Latest — investigation advantage after stronger boundary controls
 
 Predeclared: source-answer-only learned ranking/probe priorities preserve accuracy
 and reduce calls >=5% against the strongest accurate fixed rule after equal

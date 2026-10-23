@@ -1,12 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current — widening/coding protocol registered, assessment not yet scored
+## Current next — identified-among-checked stopping, not a larger catalogue sweep
 
-Implementation and frozen protocol are on `cursor/seed-capability-widening-coding`
-from reviewed `c8b3101`. Closed capability-audit artifacts are not rescored.
-Official assessment has not been written. See
-[protocol](NEXUS_SEED_CAPABILITY_WIDENING_CODING_PROTOCOL.md). Latest carried
-ledger 2219.632103455996 used / 1380.367896544004 remaining.
+The [widening/coding pilot](NEXUS_SEED_CAPABILITY_WIDENING_CODING_RESULTS.md)
+removed false certainty but never claimed identification: every widening
+episode hit `budget_exhausted` because 24 checked candidates cannot exhaust
+252 programs. Next: stop as `identified_among_checked` when one survivor
+remains after checked batches, while still refusing certainty when the
+shortlist merely agrees and unchecked alternatives exist. Do not rescore this
+closed grid as confirmation. Ledger 2259.632103455996 used /
+1340.367896544004 remaining.
 
 ## Completed recommendation — completeness before certainty
 
