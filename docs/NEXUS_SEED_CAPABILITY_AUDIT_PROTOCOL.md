@@ -106,3 +106,15 @@ Supervisor preserves failures/partial records, does not retry, and disallows
 re-running a published attempt. Commit implementation/tests/config/protocol
 before outcomes; record exact execution SHA, config/protocol/raw hashes and a
 baseline manifest of every previously tracked artifact. Keep main untouched.
+
+### Pre-outcome registration correction
+
+The host rejected the first preflight before reservation or worker creation:
+`persistent_runtime_changed`. The config had copied the older runtime hash.
+Actual runtime `5b5b0aed...` is unchanged here and comes from ancestor c704ca1:
+it omits `json_schema` for schema-free calls and restricts truncation rejection
+to schema-constrained output. The live audit probe remains schema-constrained.
+No pilot outcome, inference or scientific attempt occurred. Preserve this
+rejection and conservatively debit 1 s for technical preflight; corrected carry
+2212.632103455996 s used /1387.367896544004 remaining. This correction must be
+committed before execution. Runtime source/weights are not modified.

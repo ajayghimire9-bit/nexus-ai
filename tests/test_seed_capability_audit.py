@@ -23,6 +23,11 @@ def config():
     return value
 
 
+def test_registered_runtime_hash_matches_actual_source():
+    from nexus.seed.local_model_runtime import file_hash
+    assert config()['runtime_source_sha256']==file_hash(ROOT/'src/nexus/seed/local_model_runtime.py')
+
+
 def test_public_view_has_no_reference_or_assessment():
     names={f.name for f in fields(PublicInvestigation)}
     assert not names & {'target_ops','assessment_inputs','oracle_fn','patched_repo_candidates'}
