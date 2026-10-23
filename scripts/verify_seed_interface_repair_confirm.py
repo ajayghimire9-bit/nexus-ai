@@ -109,6 +109,13 @@ def verify(
 
 
 def _bundle(study_id):
+    if study_id == "seed-slot3-copy-confirm-1":
+        from nexus.seed.slot3_copy_study import (
+            CLOSED_TASK_IDS as closed, WORKER_PROMPT_FREEZE as freeze,
+            covers_varied as cover, replay_final as replay_fn, summarize as summarize_fn,
+        )
+        config = json.loads((ROOT / "configs/seed_slot3_copy_confirm.json").read_text())
+        return config, dict(closed=closed, freeze=freeze, cover=cover, summarize_fn=summarize_fn, replay_fn=replay_fn)
     if study_id == "seed-slot3-repair-confirm-1":
         from nexus.seed.slot3_repair_study import (
             CLOSED_TASK_IDS as closed, WORKER_PROMPT_FREEZE as freeze,

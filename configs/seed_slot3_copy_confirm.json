@@ -1,0 +1,119 @@
+{
+  "id": "seed-slot3-copy-confirm-1",
+  "artifact_stem": "seed_slot3_copy_confirm",
+  "base_sha": "307bd89",
+  "parent_protocol_commit": "307bd89",
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "carried_used_s": 3379.081862455996,
+  "wall_s": 90,
+  "hard_deadline_s": 70,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "audit_cells": 1,
+    "confirm_cells": 4,
+    "methods": ["supplied"]
+  },
+  "tasks": [
+    {
+      "id": "py_crate_tally",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tally(item) sums n on each crate. Missing n is 0. Empty crates is 0. Empty list and a missing n are public.",
+      "request": "Create function tally(item) that sums n on each dict in crates. Missing n counts as 0. An empty list is 0.",
+      "docs": [{"title": "tally", "content": "tally(item) sums crate n values. Missing n is 0. Empty crates is 0."}],
+      "files": {"crate.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "crate.py", "symbol": "tally", "action": "insert_function"},
+      "public": [
+        {"entry": "crate.tally", "input": {"crates": [{"n": 2}, {"n": 7}]}, "expected": 9},
+        {"entry": "crate.tally", "input": {"crates": []}, "expected": 0},
+        {"entry": "crate.tally", "input": {"crates": [{"n": 4}, {}]}, "expected": 4}
+      ],
+      "assessment": [
+        {"entry": "crate.tally", "input": {"crates": [{"n": 6}]}, "expected": 6},
+        {"entry": "crate.tally", "input": {"crates": [{}, {}]}, "expected": 0},
+        {"entry": "crate.tally", "input": {"crates": [{"n": 1}, {"n": 1}, {}]}, "expected": 2}
+      ]
+    },
+    {
+      "id": "py_post_slash",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tag(item) is post and desk lowercased, joined by one slash. Missing post or desk is an empty string. Those missing cases are public. A distinct missing-key case is private.",
+      "request": "Create function tag(item) that returns post and desk in lowercase joined by one slash. A missing post or desk is an empty string.",
+      "docs": [{"title": "tag", "content": "tag(item) is post/desk lowercased. Missing fields are empty strings."}],
+      "files": {"post.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "post.py", "symbol": "tag", "action": "insert_function"},
+      "public": [
+        {"entry": "post.tag", "input": {"post": "Lab", "desk": "East"}, "expected": "lab/east"},
+        {"entry": "post.tag", "input": {"desk": "East"}, "expected": "/east"},
+        {"entry": "post.tag", "input": {"post": "Lab"}, "expected": "lab/"}
+      ],
+      "assessment": [
+        {"entry": "post.tag", "input": {"desk": "West"}, "expected": "/west"},
+        {"entry": "post.tag", "input": {"post": "Mix"}, "expected": "mix/"},
+        {"entry": "post.tag", "input": {"post": "Q", "desk": "w"}, "expected": "q/w"}
+      ]
+    },
+    {
+      "id": "py_ratio_div",
+      "role": "insert",
+      "family": "arithmetic",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "ratio(item) returns taken divided by total as a float using true division.",
+      "request": "Create function ratio(item) that returns taken divided by total.",
+      "docs": [{"title": "ratio", "content": "ratio(item) is taken / total as a float."}],
+      "files": {"ratio.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "ratio.py", "symbol": "ratio", "action": "insert_function"},
+      "public": [
+        {"entry": "ratio.ratio", "input": {"taken": 6, "total": 5}, "expected": 1.2},
+        {"entry": "ratio.ratio", "input": {"taken": 0, "total": 8}, "expected": 0.0}
+      ],
+      "assessment": [
+        {"entry": "ratio.ratio", "input": {"taken": 13, "total": 2}, "expected": 6.5},
+        {"entry": "ratio.ratio", "input": {"taken": 1, "total": 4}, "expected": 0.25}
+      ]
+    },
+    {
+      "id": "py_clear_pair",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "clear(item) is True only when age >= floor and score >= bar. A failing public case is included.",
+      "request": "Create function clear(item) that is True only when age is at least floor and score is at least bar.",
+      "docs": [{"title": "clear", "content": "clear(item) requires age >= floor AND score >= bar."}],
+      "files": {"clear.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "clear.py", "symbol": "clear", "action": "insert_function"},
+      "public": [
+        {"entry": "clear.clear", "input": {"age": 5, "floor": 4, "score": 9, "bar": 8}, "expected": true},
+        {"entry": "clear.clear", "input": {"age": 3, "floor": 4, "score": 10, "bar": 8}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "clear.clear", "input": {"age": 8, "floor": 4, "score": 7, "bar": 8}, "expected": false},
+        {"entry": "clear.clear", "input": {"age": 4, "floor": 4, "score": 8, "bar": 8}, "expected": true}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

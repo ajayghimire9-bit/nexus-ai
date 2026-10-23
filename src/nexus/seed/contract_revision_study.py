@@ -19,7 +19,7 @@ from .interrupt_transfer import _assess
 from .process_memory import sample_process_memory
 from .execution_feedback import layered_public_feedback
 from .public_failure import behavioral_feedback, comparison_ops, operator_hint_present
-from .structural_revision import slot3_revision_prompt, structural_reject_reason
+from .structural_revision import slot3_revision_prompt, structural_reject_detail
 from .sum_row_repair import (
     compact_behavioral_feedback,
     compact_initial_prompt,
@@ -170,6 +170,7 @@ def propose_cell(
     behavior_success = False
     structural_slot3_attempted = False
     structural_reason = None
+    structural_codes: list[str] = []
     three_point = False
     feedback = None
     prior_body = ""
@@ -243,7 +244,11 @@ def propose_cell(
                 reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
                 traces[-1]["unprojected_sum_rejected"] = bool(reject)
                 traces[-1]["reject_reason"] = reject
-            structural_reason = structural_reject_reason(assembled, plan)
+            detail = structural_reject_detail(
+                assembled, plan, prior_body=prior_body, public=public,
+            )
+            structural_reason = None if detail is None else detail["reason"]
+            structural_codes = list((detail or {}).get("codes") or [])
             if structural_reason and len(traces) < MAX_COMPLETIONS:
                 structural_slot3_attempted = True
                 user5 = slot3_revision_prompt(
@@ -265,12 +270,16 @@ def propose_cell(
                     operator_hint_in_revision=operator_hint_present(user5),
                     failed_cases=(feedback or {}).get("failed_cases"),
                     structural_reason=structural_reason,
+                    structural_codes=structural_codes,
                     compact_revision=True,
                 ))
                 reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
                 traces[-1]["unprojected_sum_rejected"] = bool(reject)
                 traces[-1]["reject_reason"] = reject
-                structural_reason = structural_reject_reason(assembled, plan)
+                after = structural_reject_detail(
+                    assembled, plan, prior_body=prior_body, public=public,
+                )
+                structural_reason = None if after is None else after["reason"]
             if assembled.get("structurally_valid") and assembled.get("patched_files"):
                 public = _eval_public(
                     meter, scope + ":rev", spec, assembled["patched_files"], spec["id"] + ":rev",
@@ -320,6 +329,7 @@ def propose_cell(
         behavioral_revision_success=behavior_success,
         structural_slot3_attempted=structural_slot3_attempted,
         structural_reason=structural_reason,
+        structural_codes=structural_codes,
         three_point_in_revision=three_point,
         operator_hint_in_revision=any(trace.get("operator_hint_in_revision") for trace in traces),
         uses_dict_fields=uses_dict_fields(body, keys),

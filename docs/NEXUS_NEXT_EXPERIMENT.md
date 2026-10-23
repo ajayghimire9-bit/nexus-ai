@@ -2,7 +2,9 @@
 
 ## Current next — missing-field KeyError after a parameterized copy
 
-The [slot-3 run](NEXUS_SEED_SLOT3_REPAIR_RESULTS.md) passed public
+Protocol [NEXUS_SEED_SLOT3_COPY_PROTOCOL.md](NEXUS_SEED_SLOT3_COPY_PROTOCOL.md)
+is locked. Live scoring has not run. The
+[slot-3 run](NEXUS_SEED_SLOT3_REPAIR_RESULTS.md) passed public
 3/4 and private 4/4. The unused-third-completion trigger is
 implemented and offline-proven; this live sample did not produce a
 placeholder or unbound name after behavior, so slot 3 stayed unused
