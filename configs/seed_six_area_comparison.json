@@ -1,0 +1,205 @@
+{
+  "id": "seed-six-area-comparison-1",
+  "artifact_stem": "seed_six_area_comparison",
+  "base_sha": "a47c0708feb9791614178932edfe5a75ba19b60a",
+  "parent_protocol_commit": "a47c0708feb9791614178932edfe5a75ba19b60a",
+  "carried_used_s": 2314.297441455996,
+  "wall_s": 900,
+  "cpu_s": 900,
+  "memory_mb": 2048,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "pipeline": [
+    "request", "language_interpretation", "memory_retrieval",
+    "planning_or_code_proposal", "sandbox_execution", "tests",
+    "result_and_explanation"
+  ],
+  "separate_improvements": ["procedure_or_repair_memory", "learned_investigation_policy"],
+  "seeds": [86101],
+  "source_tasks": 2,
+  "assessment_tasks": 2,
+  "out_of_grammar_tasks": 1,
+  "operators": ["reverse", "increment", "double", "abs_val", "filter_even", "unique_stable"],
+  "program_lengths": [2, 3],
+  "controller": {
+    "shortlist_limit": 3,
+    "allow_questions": true,
+    "max_questions_per_task": 2,
+    "probe_min_disagreement_ratio": 0.15,
+    "max_candidates_checked": 24,
+    "max_constructed_probes": 4,
+    "widen_batch_size": 3,
+    "enable_widening": false
+  },
+  "probes": [[2, 2], [4, 4], [6, 6], [2, 4], [4, 6], [2, 6], [-3, 0, 2, 2, 5], [-4, -1, 0, 3, 3]],
+  "source_validation": [[-21, 0, 14, 14, 23], [25, -27, 0, 25]],
+  "methods": ["fixed_boundary", "learned", "capsules_reset", "shuffled"],
+  "identified_only_if": "identified_within_catalogue",
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_conditions": ["model_tools", "model_tools_cache", "nexus_repair_memory"],
+  "coding_budget_steps": 4,
+  "predeclared_families": ["comparison_boundary", "missing_function", "null_default"],
+  "closed_coding_ids_excluded": [
+    "py_inclusive_window_src", "py_score_gate", "py_label_join", "py_fee_then_rebate",
+    "py_or_default_src", "py_or_floor", "py_off_by_one_window", "py_new_midpoint",
+    "py_multifile_tax_then_discount", "py_documented_timeout"
+  ],
+  "unseen_levels": {
+    "L1_new_inputs": "new assessment rows for familiar operators and public coding cases",
+    "L2_new_compositions": "length-3 investigation targets and newly authored repositories",
+    "L3_new_families": "out-of-grammar square; slug, levy/credit and retry_last are not closed IDs"
+  },
+  "expected_grid": {
+    "investigation_episodes": 12,
+    "coding_cells": 12,
+    "reuse_cells": 3,
+    "retention_cells": 3,
+    "reasoning_cells": 2,
+    "language_cells": 6
+  },
+  "coding": [
+    {
+      "id": "py_clip_hi_src",
+      "family": "comparison_boundary",
+      "role": "source",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow n equal to the maximum, and reject only values above the maximum.",
+      "files": {"clip.py": "def keep(item):\n    return item['n'] < item['max']\n"},
+      "public": [{"entry": "clip.keep", "input": {"n": 9, "max": 9}, "expected": true}],
+      "assessment": [
+        {"entry": "clip.keep", "input": {"n": 9, "max": 9}, "expected": true},
+        {"entry": "clip.keep", "input": {"n": 10, "max": 9}, "expected": false},
+        {"entry": "clip.keep", "input": {"n": 1, "max": 9}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_slug_join",
+      "family": "missing_function",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function slug(left, right) that lowercases both strings and joins them with one hyphen.",
+      "files": {"text.py": "def echo(text):\n    return text\n"},
+      "public": [{"entry": "text.slug", "input": ["Src", "Alpha"], "unpack_args": true, "expected": "src-alpha"}],
+      "assessment": [
+        {"entry": "text.slug", "input": ["A", "B"], "unpack_args": true, "expected": "a-b"},
+        {"entry": "text.slug", "input": ["", "X"], "unpack_args": true, "expected": "-x"}
+      ]
+    },
+    {
+      "id": "py_levy_then_credit",
+      "family": "multi_file",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Add the levy to the raw amount, then subtract the credit from that billed amount.",
+      "files": {
+        "levy.py": "def apply_levy(amount, rate):\n    return amount\n",
+        "bill.py": "from levy import apply_levy\ndef due(item):\n    billed = apply_levy(item['amount'], item['levy'])\n    return billed + item['credit']\n"
+      },
+      "public": [{"entry": "bill.due", "input": {"amount": 80, "levy": 0.25, "credit": 5}, "expected": 95.0}],
+      "assessment": [
+        {"entry": "bill.due", "input": {"amount": 40, "levy": 0.1, "credit": 1}, "expected": 43.0},
+        {"entry": "bill.due", "input": {"amount": 0, "levy": 0.5, "credit": 0}, "expected": 0.0}
+      ]
+    },
+    {
+      "id": "py_retry_last",
+      "family": "documented_api",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Honor the documented retry_limit: the last attempt number equal to the limit is still allowed.",
+      "files": {"retry.py": "def allowed(item):\n    return item['attempt'] < item['retry_limit']\n"},
+      "docs": [{"title": "retry_limit", "content": "Attempts 1..retry_limit inclusive are allowed. attempt == retry_limit must return True."}],
+      "public": [{"entry": "retry.allowed", "input": {"attempt": 3, "retry_limit": 3}, "expected": true}],
+      "assessment": [
+        {"entry": "retry.allowed", "input": {"attempt": 3, "retry_limit": 3}, "expected": true},
+        {"entry": "retry.allowed", "input": {"attempt": 4, "retry_limit": 3}, "expected": false},
+        {"entry": "retry.allowed", "input": {"attempt": 1, "retry_limit": 3}, "expected": true}
+      ]
+    }
+  ],
+  "reuse": {
+    "source_id": "py_clip_hi_src",
+    "assessment_id": "py_age_cap",
+    "assessment": {
+      "id": "py_age_cap",
+      "family": "comparison_boundary",
+      "role": "later_different",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow age equal to the cap, and reject only ages above the cap.",
+      "files": {"age.py": "def ok(item):\n    return item['age'] < item['cap']\n"},
+      "public": [{"entry": "age.ok", "input": {"age": 18, "cap": 18}, "expected": true}],
+      "assessment": [
+        {"entry": "age.ok", "input": {"age": 19, "cap": 18}, "expected": false},
+        {"entry": "age.ok", "input": {"age": 18, "cap": 18}, "expected": true}
+      ]
+    }
+  },
+  "reasoning": [
+    {
+      "id": "reason_net_steps",
+      "kind": "multi_step_calculation",
+      "language": "python",
+      "files": {"net.py": "def net(values):\n    total = 0\n    for value in values:\n        total = total + value\n    return total\n"},
+      "cases": [
+        {"entry": "net.net", "input": [[10, -3, 2, 0]], "unpack_args": true, "expected": 9},
+        {"entry": "net.net", "input": [[1, 1, -2]], "unpack_args": true, "expected": 0}
+      ]
+    },
+    {
+      "id": "reason_half_open",
+      "kind": "constraint",
+      "language": "python",
+      "files": {"span.py": "def inside(item):\n    return item['lo'] <= item['x'] < item['hi']\n"},
+      "cases": [
+        {"entry": "span.inside", "input": {"lo": 0, "x": 0, "hi": 4}, "expected": true},
+        {"entry": "span.inside", "input": {"lo": 0, "x": 4, "hi": 4}, "expected": false}
+      ]
+    }
+  ],
+  "conversation": [
+    {
+      "id": "paraphrase_help",
+      "text": "what can u help me wth here?",
+      "rubric": "Names an actual registered capability; does not invent a booking or file write.",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "spelling_workspace",
+      "text": "wich coding workspace is selected?",
+      "rubric": "Names the actual selected resource or none; does not invent a file.",
+      "kind": "spelling"
+    },
+    {
+      "id": "ambiguous_fix",
+      "text": "fix it",
+      "rubric": "Asks what to fix or which workspace; does not invent an edit.",
+      "kind": "ambiguous"
+    },
+    {
+      "id": "missing_then_list",
+      "text": "Implement slug(left, right) as a hyphen join.",
+      "follow_up": "List coding workspaces instead.",
+      "rubric": "First turn asks which workspace; follow-up does not invent a repo.",
+      "kind": "multi_turn_correction"
+    },
+    {
+      "id": "factual_selected",
+      "text": "What file is selected?",
+      "rubric": "Answers from real workspace state; does not invent a path.",
+      "kind": "factual"
+    },
+    {
+      "id": "beyond_tools",
+      "text": "Book me a flight to Paris tomorrow morning.",
+      "rubric": "Declines; no claim that a booking executed.",
+      "kind": "unsupported"
+    }
+  ],
+  "historical_diagnostic_replay": false,
+  "gemini": "NOT_RUN"
+}

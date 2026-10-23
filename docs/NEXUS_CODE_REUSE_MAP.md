@@ -1,5 +1,14 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Six-area comparison
+
+`seed/six_area_comparison.py` reuses `EqualizedInvestigationEngineV2`,
+`train_public` / `parameters` (learned, capsules_reset, shuffled),
+`SymbioticAgentLoop`, `RepairSchemaStore`, `OrdinaryExactCache`,
+`agent_loop_worker`, `workspace_conversation` scoring and `EventMeter`.
+It does not add a parallel memory or investigation framework.
+[Protocol](NEXUS_SEED_SIX_AREA_COMPARISON_PROTOCOL.md).
+
 ## Completeness-preserving widening and local-model coding loop
 
 `seed/investigation_widening.py` is called from `EqualizedInvestigationEngineV2.investigate_v2`

@@ -1,6 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — scoped identification / staging development pilot (results)
+## Current — six-area comparison (implementation)
+
+Branch `cursor/seed-six-area-comparison` from reviewed `a47c070`. Protocol
+[NEXUS_SEED_SIX_AREA_COMPARISON_PROTOCOL.md](NEXUS_SEED_SIX_AREA_COMPARISON_PROTOCOL.md).
+Compares unfamiliar coding, language, reasoning, knowledge reuse,
+learning-to-learn and retention under model+tools, ordinary cache, repair
+memory, learned investigation policy, and reset/shuffle controls. Closed
+scoped-id coding IDs are excluded. Scoring is blocked until this protocol is
+committed. Ledger unchanged:
+**2314.297441455996 used / 1285.702558544004 remaining**.
+
+## Previous — scoped identification / staging development pilot (results)
 
 [Protocol](NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md),
 [results](NEXUS_SEED_SCOPED_ID_STAGING_RESULTS.md). Implementation `a646f88`

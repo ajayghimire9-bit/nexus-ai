@@ -412,6 +412,7 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
             "raw_content": raw.get("content", "")[:800],
             "telemetry": telemetry,
             "completion_stop": stop,
+            "inference_ran": bool(telemetry.get("inference_ran")),
             "truncation_claimed_as_cause": False,
         }
     return {
