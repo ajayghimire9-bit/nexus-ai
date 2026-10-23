@@ -69,7 +69,7 @@ def test_offline_compare_records_unique_outputs_and_cost(tmp_path: Path):
         return [FAIL, FAIL, FAIL, SAFE][plan.index]
 
     def sentence_sampler(prompt, plan):
-        if "Verifier feedback" in prompt or plan.index == 1:
+        if "The previous sentence failed" in prompt or plan.index == 1:
             return SENT_PASS
         return SENT_FAIL
 

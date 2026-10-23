@@ -1,11 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not retune after a failed live compare
+## Current next — run the coding diagnostic only when a stronger local GGUF is present
 
-The [live compare](NEXUS_SEED_METAL_LIVE_COMPARE_RESULTS.md) used the
-full 4-call budget on both arms and passed nothing. Unique revision
-strings are not success. Do not plant `.get` or reopen closed CPU
-artifacts. Ranking stays paused.
+The [capacity protocol](NEXUS_SEED_CODING_CAPACITY_DIAGNOSTIC_PROTOCOL.md)
+is prepared. Do not score a 1.5B-only live grid as a model comparison.
+Do not treat vault writes as learning. Later knowledge conditions are
+relevant / none / irrelevant. Ranking stays paused.
 
 ## Previous next — do not retune stepwise after a failed call gate
 

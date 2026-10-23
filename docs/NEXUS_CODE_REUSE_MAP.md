@@ -23,7 +23,11 @@ stay fail-closed. The Metal ledger must not mix with the frozen CPU
 `verify_composed_response(..., vault=)` refreshes citations from live
 SQLite so an old draft cannot keep a current `doc_id`. The Metal grant
 charges `guarded_call` wall only; `user_total_s` is the complete
-assistant cost.
+assistant cost. Structured fact rendering is deterministic.
+`generation_interface_audit.py` reconstructs ChatML, schema, feedback
+placement and stop-reason uncertainty from saved drafts. The coding
+capacity diagnostic is prepared, not scored, until a stronger local
+coder file exists.
 
 ## v3 stepwise residual search
 

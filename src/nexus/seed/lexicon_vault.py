@@ -365,6 +365,37 @@ def verify_composed_response(
     )
 
 
+def render_structured_binding(capsule: LexicalCapsule, fact: FactSnippet) -> str:
+    """Deterministic term + current fact + citation. Not model generation."""
+    content = (fact.content or "").strip()
+    if not capsule.term or not fact.doc_id or not content:
+        raise ValueError("structured_render_missing_fields")
+    return f"{capsule.term} [{fact.doc_id}]: {content}"
+
+
+def verify_structured_render(
+    text: str,
+    capsule: LexicalCapsule,
+    fact: FactSnippet,
+) -> VerificationResult:
+    expected = render_structured_binding(capsule, fact)
+    reasons: list[str] = []
+    if (text or "").strip() != expected:
+        reasons.append("structured_render:not_deterministic")
+    if fact.doc_id not in CITATION.findall(text or ""):
+        reasons.append("structured_render:citation_missing")
+    if capsule.term.lower() not in (text or "").lower():
+        reasons.append("structured_render:term_missing")
+    if fact.content.strip() not in (text or ""):
+        reasons.append("structured_render:stale_or_missing_content")
+    return VerificationResult(
+        passed=not reasons,
+        reasons=tuple(reasons),
+        cited_doc_ids=tuple(CITATION.findall(text or "")),
+        targeted_term=capsule.term,
+    )
+
+
 def export_lora_sleep_dataset(path: str | Path, triples: Iterable[dict[str, Any]]) -> int:
     """Write only verifier-passing prompt/context/response triples."""
     target = Path(path)

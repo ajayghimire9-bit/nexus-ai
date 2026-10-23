@@ -501,6 +501,7 @@ class PersistentMetalRuntime:
                 temperature=float(temperature),
                 seed=int(seed),
                 cache_prompt=bool(self.config.prompt_cache),
+                stop=["<|im_end|>"],
             )
             if schema is not None:
                 payload["json_schema"] = schema
@@ -529,17 +530,28 @@ class PersistentMetalRuntime:
                 if type(raw.get("content")) is not str:
                     raise ValueError("missing metal completion content")
                 timings = raw.get("timings")
+                predicted = raw.get("tokens_predicted")
+                hit_cap = raw.get("truncated") is True or (
+                    predicted is not None and int(predicted) >= int(self.config.max_tokens)
+                )
                 request_record["content"] = raw["content"]
+                request_record["truncated"] = raw.get("truncated")
+                request_record["stop_type"] = raw.get("stop_type")
+                request_record["hit_token_cap"] = bool(hit_cap)
+                request_record["termination"] = "hit_token_cap" if hit_cap else "natural_or_stop"
                 request_record["telemetry"] = dict(
                     inference_ran=True,
                     temperature=payload["temperature"],
                     seed=payload["seed"],
                     n_gpu_layers=self.grant.n_gpu_layers,
                     input_tokens=raw.get("tokens_evaluated"),
-                    generated_tokens=raw.get("tokens_predicted"),
+                    generated_tokens=predicted,
                     prompt_cache_tokens=(timings or {}).get("cache_n"),
                     runtime_timings=timings,
                     request_wall_s=time.perf_counter() - start,
+                    truncated=raw.get("truncated"),
+                    hit_token_cap=bool(hit_cap),
+                    termination=request_record["termination"],
                 )
                 self.request_log.append(request_record)
                 return dict(content=raw["content"], telemetry=request_record["telemetry"], request=request_record)

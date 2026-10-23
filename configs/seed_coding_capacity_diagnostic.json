@@ -1,0 +1,85 @@
+{
+  "id": "seed_coding_capacity_diagnostic",
+  "scientific": false,
+  "kind": "source_development_coding_capacity_not_confirmation",
+  "format": "json_body",
+  "prompt_style": "chatml",
+  "max_tokens": 192,
+  "stop": ["<|im_end|>"],
+  "cpu_ledger_used_s": 3564.568,
+  "cpu_ledger_debit_s": 0,
+  "interface": {
+    "chatml": true,
+    "schema": "json_body",
+    "feedback_channel": "Public execution feedback",
+    "record_termination": true,
+    "no_planted_get": true
+  },
+  "models": {
+    "current": {
+      "label": "coder15",
+      "path": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046"
+    },
+    "stronger": {
+      "label": "local_stronger_coder",
+      "path": ".models/qwen2.5-coder-7b-instruct-q4_k_m.gguf",
+      "sha256": null,
+      "required_for_comparison": true
+    }
+  },
+  "tasks": [
+    {
+      "family": "field_access",
+      "request": "Create function name_of(item) that returns the name field in lowercase.",
+      "files": {"tag.py": "def echo(text):\n    return text\n"},
+      "public": [
+        {"entry": "tag.name_of", "input": {"name": "Ada"}, "expected": "ada"}
+      ],
+      "private": [
+        {"entry": "tag.name_of", "input": {"name": "Lin"}, "expected": "lin"}
+      ]
+    },
+    {
+      "family": "missing_values",
+      "request": "Create function mark(item) that returns room and shelf in lowercase joined by one slash.",
+      "files": {"shelf.py": "def echo(text):\n    return text\n"},
+      "public": [
+        {"entry": "shelf.mark", "input": {"room": "East", "shelf": "B2"}, "expected": "east/b2"},
+        {"entry": "shelf.mark", "input": {"shelf": "B2"}, "expected": "/b2"},
+        {"entry": "shelf.mark", "input": {"room": "East"}, "expected": "east/"}
+      ],
+      "private": [
+        {"entry": "shelf.mark", "input": {"room": "West", "shelf": "C9"}, "expected": "west/c9"},
+        {"entry": "shelf.mark", "input": {"shelf": "C9"}, "expected": "/c9"},
+        {"entry": "shelf.mark", "input": {"room": "West"}, "expected": "west/"}
+      ]
+    },
+    {
+      "family": "aggregation",
+      "request": "Create function total(item) that returns the sum of the numbers in amounts.",
+      "files": {"sum.py": "def echo(text):\n    return text\n"},
+      "public": [
+        {"entry": "sum.total", "input": {"amounts": [1, 2, 3]}, "expected": 6}
+      ],
+      "private": [
+        {"entry": "sum.total", "input": {"amounts": [4, 5]}, "expected": 9}
+      ]
+    },
+    {
+      "family": "composition",
+      "request": "Create function pair(item) that returns left and right in lowercase joined by one slash by calling join_parts.",
+      "files": {
+        "pair.py": "def join_parts(left, right):\n    return left + '/' + right\n"
+      },
+      "public": [
+        {"entry": "pair.pair", "input": {"left": "On", "right": "Off"}, "expected": "on/off"}
+      ],
+      "private": [
+        {"entry": "pair.pair", "input": {"left": "In", "right": "Out"}, "expected": "in/out"}
+      ]
+    }
+  ],
+  "knowledge_conditions_later": ["relevant", "none", "irrelevant"],
+  "vault_retention_is_not_acquired_knowledge": true
+}

@@ -177,6 +177,17 @@ def sentence_error_feedback(checked) -> dict[str, Any]:
     return dict(reasons=list(checked.reasons), instruction="Keep the required term, required tokens, and [doc_id] citation.")
 
 
+def revision_sentence_prompt(initial_prompt: str, checked) -> str:
+    """Keep verifier notes out of the answer schema. Do not dump JSON to echo."""
+    reasons = "; ".join(checked.reasons) if checked.reasons else "unspecified"
+    note = (
+        "Write one new English sentence only. Do not repeat or quote this note.\n"
+        f"The previous sentence failed: {reasons}.\n"
+        "Include the required term, the required tokens, and a [doc_id] citation.\n"
+    )
+    return initial_prompt + "\n" + note
+
+
 def run_revision_sentence(
     sampler: Callable,
     initial_prompt: str,
@@ -198,8 +209,7 @@ def run_revision_sentence(
         )
         if checked.passed:
             break
-        extra = json.dumps(sentence_error_feedback(checked), allow_nan=False)
-        prompt = initial_prompt + "\nVerifier feedback:\n" + extra + "\n"
+        prompt = revision_sentence_prompt(initial_prompt, checked)
     scored = score_sentence_candidates(
         drafts, targeted_capsule=targeted_capsule, retrieved_facts=retrieved_facts, vault=vault,
     )

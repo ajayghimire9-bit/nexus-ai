@@ -1,6 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — Metal independent-vs-revision (results)
+## Current — interface audit and coding diagnostic (prepared)
+
+[Interface audit](NEXUS_SEED_GENERATION_INTERFACE_AUDIT.md),
+[coding diagnostic protocol](NEXUS_SEED_CODING_CAPACITY_DIAGNOSTIC_PROTOCOL.md).
+ChatML and `json_body` were in place; sentence revision dumped JSON
+that the model echoed; the truncated `.get` is malformed, not a proven
+128-token hit. Structured rendering is deterministic. The stronger
+local coder file is absent, so the capacity comparison is NOT_RUN.
+Vault retention is not acquired-knowledge. CPU ledger **3564.568 s /
+0 s debit**. Ranking stays paused.
+
+## Previous — Metal independent-vs-revision (results)
 
 [Protocol](NEXUS_SEED_METAL_LIVE_COMPARE_PROTOCOL.md),
 [results](NEXUS_SEED_METAL_LIVE_COMPARE_RESULTS.md). Protocol

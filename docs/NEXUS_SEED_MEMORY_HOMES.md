@@ -18,3 +18,10 @@ Restart test: close the SQLite connections, reopen the same paths, load
 `get_document(doc_id)` and `LexicalCapsuleStore.get(term)`, and check
 `source_hash` / timestamp / required tokens. Provenance is the SQLite
 row, not the Metal ledger.
+
+Retention is not an acquired-knowledge benefit. A later study must
+compare fresh tasks with relevant stored knowledge, without it, and
+with irrelevant knowledge.
+
+Checked facts use `render_structured_binding` (deterministic). Free-form
+explanations stay on `verify_composed_response`.
