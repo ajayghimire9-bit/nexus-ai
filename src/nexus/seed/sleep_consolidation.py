@@ -5,27 +5,31 @@ Reuses ``export_lora_sleep_dataset``. Does not edit
 Baking verified episodes into weights is not learning-to-learn until
 an independent holdout beats a frozen baseline.
 
-This host refuses GPU execution: there is no memory-enforcement
-backend, and the standing grant is CPU-only.
+Metal LoRA runs only under ``ExplicitMetalGrant(authorized=True)`` and
+``MetalGrantEnforcer``. Without that grant the host stays fail-closed.
+The Metal ledger is separate from the frozen CPU 3564.568 s ledger.
 """
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
-from .best_of_n_verify import GPU_REFUSED
 from .lexicon_vault import export_lora_sleep_dataset
+from .metal_model_runtime import (
+    GPU_REFUSED,
+    ExplicitMetalGrant,
+    MetalGrantEnforcer,
+    metal_runtime_status,
+    run_metal_lora as execute_metal_lora,
+)
 
 
-def metal_lora_status() -> dict[str, Any]:
-    return dict(
-        available=False,
-        trainer="mlx-lm",
-        device="cpu",
-        reason=GPU_REFUSED,
-        learning_to_learn=False,
-    )
+def metal_lora_status(grant: ExplicitMetalGrant | None = None) -> dict[str, Any]:
+    status = metal_runtime_status(grant)
+    status["trainer"] = "mlx-lm"
+    status["learning_to_learn"] = False
+    return status
 
 
 def collect_sleep_triples(
@@ -64,7 +68,16 @@ def run_metal_lora(
     *,
     output_dir: str | Path,
     steps: int = 50,
+    grant: ExplicitMetalGrant | None = None,
+    trainer: Callable[..., dict[str, Any]] | None = None,
+    enforcer: MetalGrantEnforcer | None = None,
 ) -> dict[str, Any]:
-    """Reserved mlx-lm Metal trainer. This host refuses GPU execution."""
-    del dataset_path, output_dir, steps
-    raise ValueError(GPU_REFUSED)
+    """mlx-lm Metal trainer. Fail-closed unless an explicit grant is passed."""
+    return execute_metal_lora(
+        dataset_path,
+        output_dir=output_dir,
+        steps=steps,
+        grant=grant,
+        trainer=trainer,
+        enforcer=enforcer,
+    )

@@ -2,24 +2,32 @@
 
 Reuses ``assemble_format_proposal``, ``evaluate_python_payload``, and
 ``verify_composed_response``. Does not edit ``local_model_runtime.py``.
-The pinned runtime is temperature=0 with a fixed seed, so four live
-``complete`` calls would be identical. This module therefore scores
-supplied candidates in the existing CPU sandbox. Metal sampling is
-refused until a GPU enforcement backend exists.
+The pinned CPU runtime stays temperature=0. Diverse Best-of-4 sampling
+lives in ``metal_model_runtime.py`` and runs only under
+``ExplicitMetalGrant(authorized=True)`` plus ``MetalGrantEnforcer``.
+Without that grant this module still scores supplied CPU candidates
+and refuses Metal sampling.
 
 Best-of-N is test-time selection. It is not learning-to-learn.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Callable
 
 from .agent_loop_worker import evaluate_python_payload
 from .function_format import assemble_format_proposal
 from .lexicon_vault import FactSnippet, LexicalCapsule, verify_composed_response
+from .metal_model_runtime import (
+    GPU_REFUSED,
+    ExplicitMetalGrant,
+    MetalGrantEnforcer,
+    MetalSamplePlan,
+    metal_runtime_status,
+    sample_metal_candidates as generate_metal_candidates,
+)
 
 
-GPU_REFUSED = "gpu_memory_enforcement_backend_unavailable_no_execution"
 MAX_CANDIDATES = 4
 
 
@@ -44,20 +52,23 @@ class BestOfNResult:
     learning_to_learn: bool = False
 
 
-def metal_sampler_status() -> dict[str, Any]:
-    return dict(
-        available=False,
-        device="cpu",
-        reason=GPU_REFUSED,
-        pinned_runtime_temperature=0,
-        parallel_samples_supported=False,
+def metal_sampler_status(grant: ExplicitMetalGrant | None = None) -> dict[str, Any]:
+    return metal_runtime_status(grant)
+
+
+def sample_metal_candidates(
+    prompt: str,
+    n: int = 4,
+    temperature: float = 0.7,
+    *,
+    grant: ExplicitMetalGrant | None = None,
+    sampler: Callable[[str, MetalSamplePlan], str] | None = None,
+    enforcer: MetalGrantEnforcer | None = None,
+) -> list[str]:
+    """Metal Best-of-4. Fail-closed unless an explicit grant is passed."""
+    return generate_metal_candidates(
+        prompt, n=n, temperature=temperature, grant=grant, sampler=sampler, enforcer=enforcer,
     )
-
-
-def sample_metal_candidates(prompt: str, n: int = 4, temperature: float = 0.7) -> list[str]:
-    """Reserved Metal path. This host refuses GPU execution."""
-    del prompt, n, temperature
-    raise ValueError(GPU_REFUSED)
 
 
 def _public_payload(spec: dict[str, Any], files: dict[str, str]) -> dict[str, Any]:
@@ -65,12 +76,24 @@ def _public_payload(spec: dict[str, Any], files: dict[str, str]) -> dict[str, An
 
 
 def score_code_candidates(
-    candidates: list[str],
+    candidates: list[str] | None,
     spec: dict[str, Any],
     plan,
     *,
     fmt: str = "json_body",
+    prompt: str | None = None,
+    metal_grant: ExplicitMetalGrant | None = None,
+    metal_sampler: Callable[[str, MetalSamplePlan], str] | None = None,
+    metal_enforcer: MetalGrantEnforcer | None = None,
 ) -> BestOfNResult:
+    if prompt is not None:
+        candidates = sample_metal_candidates(
+            prompt,
+            n=MAX_CANDIDATES,
+            grant=metal_grant,
+            sampler=metal_sampler,
+            enforcer=metal_enforcer,
+        )
     if not candidates or len(candidates) > MAX_CANDIDATES:
         raise ValueError("best_of_n_width")
     scores: list[CandidateScore] = []
@@ -107,11 +130,23 @@ def score_code_candidates(
 
 
 def score_sentence_candidates(
-    drafts: list[str],
+    drafts: list[str] | None = None,
     *,
     targeted_capsule: LexicalCapsule | None = None,
     retrieved_facts: list[FactSnippet] | None = None,
+    prompt: str | None = None,
+    metal_grant: ExplicitMetalGrant | None = None,
+    metal_sampler: Callable[[str, MetalSamplePlan], str] | None = None,
+    metal_enforcer: MetalGrantEnforcer | None = None,
 ) -> BestOfNResult:
+    if prompt is not None:
+        drafts = sample_metal_candidates(
+            prompt,
+            n=MAX_CANDIDATES,
+            grant=metal_grant,
+            sampler=metal_sampler,
+            enforcer=metal_enforcer,
+        )
     if not drafts or len(drafts) > MAX_CANDIDATES:
         raise ValueError("best_of_n_width")
     scores: list[CandidateScore] = []
