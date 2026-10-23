@@ -44,9 +44,20 @@ FORBIDDEN_CALLS = {
 }
 ALLOWED_STDLIB_IMPORTS = {"math", " typing"}
 # True division (`/`) is allowed here. Floor division was already in SAFE_AST_NODES.
-ALLOWED_WORKER_AST = SAFE_AST_NODES + (ast.Is, ast.IsNot, ast.ImportFrom, ast.alias, ast.Div)
+# Row projection for sum(...) needs ListComp / GeneratorExp / comprehension;
+# Lambda is worker-only so map(lambda r: ..., rows) can compile.
+ALLOWED_WORKER_AST = SAFE_AST_NODES + (
+    ast.Is, ast.IsNot, ast.ImportFrom, ast.alias, ast.Div,
+    ast.ListComp, ast.GeneratorExp, ast.comprehension, ast.Lambda,
+)
+WORKER_BUILTINS = dict(SAFE_BUILTINS, map=map)
 NUMERIC_TYPES = (int, float)
 FLOAT_ABS_TOL = 1e-6
+
+
+def compile_check(files: dict[str, str]) -> dict[str, dict[str, Any]]:
+    """Validate the worker AST allowlist and load modules. No model calls."""
+    return validate_and_compile_python_repo(files)
 
 
 def compare_python_result(actual: Any, expected: Any) -> bool:
@@ -118,7 +129,7 @@ def validate_and_compile_python_repo(files: dict[str, str]) -> dict[str, dict[st
         if mod_name not in py_modules:
             raise ValueError(f"unknown_module_import:{mod_name}")
         loading.add(mod_name)
-        safe_b = dict(SAFE_BUILTINS)
+        safe_b = dict(WORKER_BUILTINS)
         safe_b.update({"float": float, "dict": dict, "round": round, "bool": bool, "int": int, "list": list})
         namespace: dict[str, Any] = {"__builtins__": safe_b}
         body: list[ast.stmt] = []

@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — improve the repair loop; do not start experience yet
+## Current next — locked sum-row TypeError repair confirmation (not yet scored)
+
+[Protocol](NEXUS_SEED_SUM_ROW_REPAIR_PROTOCOL.md) on
+`cursor/seed-worker-div-confirm` (base `490ab00`). Offline tests cover
+worker projection compile, compact int+dict shape feedback, and
+no-op / unprojected `sum(...)` reject. Live 1.5B scoring on fresh IDs
+is not run until this protocol is committed. Ranking and memory stay
+paused. Historical `31713e4d…` and `490ab00` stay closed. Ledger
+**3128.309460455996 used / 471.690539544004 remaining**.
+
+## Previous next — improve the repair loop; do not start experience yet
 
 The [worker-division confirmation](NEXUS_SEED_WORKER_DIV_CONFIRM_RESULTS.md)
 passed 3/4 after allowing `Div` and putting missing/empty cases in

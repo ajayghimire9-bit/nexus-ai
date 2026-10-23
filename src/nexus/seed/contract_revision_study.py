@@ -18,6 +18,12 @@ from .input_contract import (
 from .interrupt_transfer import _assess
 from .process_memory import sample_process_memory
 from .public_failure import behavioral_feedback, comparison_ops, operator_hint_present
+from .sum_row_repair import (
+    compact_behavioral_feedback,
+    compact_revision_prompt,
+    is_int_dict_sum_failure,
+    reject_unprojected_sum,
+)
 from .target_discovery import discover_edit_target, plan_from_discovery, score_discovery
 
 
@@ -157,9 +163,18 @@ def propose_cell(
             behavior_success = True
         elif len(traces) < MAX_COMPLETIONS:
             behavior_attempted = True
-            feedback = behavioral_feedback(public, spec.get("public") or [])
+            prior_body = _body_excerpt(assembled)
+            if is_int_dict_sum_failure(public):
+                feedback = compact_behavioral_feedback(
+                    public, spec.get("public") or [], prior_body,
+                )
+                user3 = compact_revision_prompt(plan, prior_body, feedback)
+            else:
+                feedback = behavioral_feedback(public, spec.get("public") or [])
+                user3 = build_user_prompt(
+                    variant, task, plan, feedback, contract_block=contract_block,
+                )
             three_point = bool(feedback.get("three_point_evidence"))
-            user3 = build_user_prompt(variant, task, plan, feedback, contract_block=contract_block)
             prompt3, render3 = render_prompt(STYLE, user3)
             raw3 = _complete(runtime, prompt3, schema, meter, scope, spec["id"] + ":behavior")
             if type(raw3) is not dict:
@@ -176,9 +191,47 @@ def propose_cell(
                 operator_hint_in_revision=operator_hint_present(user3),
                 operator_supplied=feedback.get("operator_supplied"),
                 failed_cases=feedback.get("failed_cases"),
+                compact_revision=is_int_dict_sum_failure(public),
             ))
-            if assembled.get("structurally_valid") and assembled.get("patched_files"):
-                public = _eval_public(meter, scope + ":rev", spec, assembled["patched_files"], spec["id"] + ":rev")
+            reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
+            traces[-1]["unprojected_sum_rejected"] = bool(reject)
+            traces[-1]["reject_reason"] = reject
+            if reject and len(traces) < MAX_COMPLETIONS:
+                feedback2 = {
+                    "validation_error": "unprojected_sum",
+                    "instruction": reject,
+                    "failed_expression": prior_body.replace("\n", " ").strip()[:200],
+                    "failed_cases": feedback.get("failed_cases") or [],
+                }
+                user4 = compact_revision_prompt(plan, _body_excerpt(assembled), feedback2)
+                prompt4, render4 = render_prompt(STYLE, user4)
+                raw4 = _complete(
+                    runtime, prompt4, schema, meter, scope, spec["id"] + ":behavior_reject",
+                )
+                if type(raw4) is not dict:
+                    raw4 = {"content": "", "telemetry": {}}
+                assembled = _assemble(raw4.get("content") or "", spec, plan)
+                traces.append(_trace(
+                    assembled, round=len(traces) + 1, stage="behavior_reject",
+                    revision_of="unprojected_sum", user_prompt=user4,
+                    prompt_reached_model=prompt4, render=render4, decoding=decoding,
+                    raw_content=(raw4.get("content") or "")[:800],
+                    telemetry=raw4.get("telemetry"),
+                    operator_hint_in_revision=operator_hint_present(user4),
+                    failed_cases=feedback2.get("failed_cases"),
+                    compact_revision=True,
+                ))
+                reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
+                traces[-1]["unprojected_sum_rejected"] = bool(reject)
+                traces[-1]["reject_reason"] = reject
+            if (
+                not reject
+                and assembled.get("structurally_valid")
+                and assembled.get("patched_files")
+            ):
+                public = _eval_public(
+                    meter, scope + ":rev", spec, assembled["patched_files"], spec["id"] + ":rev",
+                )
                 executed = True
                 public_passed = bool(public.get("all_passed"))
                 behavior_success = public_passed

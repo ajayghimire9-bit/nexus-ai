@@ -145,6 +145,31 @@ def behavioral_feedback(
     instruction = (
         "Public tests failed. Each case lists input, expected, and actual or exception."
     )
+    if any(
+        "TypeError" in str(row.get("exception") or "")
+        and "int" in str(row.get("exception") or "")
+        and "dict" in str(row.get("exception") or "")
+        for row in failed
+    ):
+        keys = []
+        for row in failed:
+            inp = row.get("input")
+            if type(inp) is dict:
+                for value in inp.values():
+                    if type(value) is list:
+                        for item in value:
+                            if type(item) is dict:
+                                keys = [str(key) for key in item.keys()]
+                                break
+                    if keys:
+                        break
+            if keys:
+                break
+        shown = keys or ["amount"]
+        instruction += (
+            f" sum() added int and dict. List elements are dicts (keys {shown}); "
+            "extract a numeric field per element inside sum(...), default missing to 0."
+        )
     if three_point:
         instruction += (
             " Below, equal and above the limit are included. Use that evidence; "

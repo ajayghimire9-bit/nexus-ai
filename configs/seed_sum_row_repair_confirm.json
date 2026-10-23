@@ -1,0 +1,118 @@
+{
+  "id": "seed-sum-row-repair-confirm-1",
+  "artifact_stem": "seed_sum_row_repair_confirm",
+  "base_sha": "490ab00",
+  "parent_protocol_commit": "490ab00",
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_div_confirm_sha256": "490ab00",
+  "historical_supplied_private_correct": 1,
+  "carried_used_s": 3128.309460455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "audit_cells": 1,
+    "confirm_cells": 4
+  },
+  "tasks": [
+    {
+      "id": "py_kit_sum",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "total(item) sums amount on each row. Missing amount is 0. Empty rows is 0. Empty list and a missing amount are public.",
+      "request": "Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.",
+      "docs": [{"title": "total", "content": "total(item) sums row amounts. Missing amount is 0. Empty rows is 0."}],
+      "files": {"kit.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "kit.py", "symbol": "total", "action": "insert_function"},
+      "public": [
+        {"entry": "kit.total", "input": {"rows": [{"amount": 3}, {"amount": 5}]}, "expected": 8},
+        {"entry": "kit.total", "input": {"rows": []}, "expected": 0},
+        {"entry": "kit.total", "input": {"rows": [{"amount": 4}, {}]}, "expected": 4}
+      ],
+      "assessment": [
+        {"entry": "kit.total", "input": {"rows": [{"amount": 8}]}, "expected": 8},
+        {"entry": "kit.total", "input": {"rows": [{}, {}]}, "expected": 0},
+        {"entry": "kit.total", "input": {"rows": [{"amount": 2}, {"amount": 2}, {}]}, "expected": 4}
+      ]
+    },
+    {
+      "id": "py_mark_empty",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "mark(item) is kind and name lowercased, joined by one colon. Missing kind or name is an empty string. Those missing cases are public.",
+      "request": "Create function mark(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.",
+      "docs": [{"title": "mark", "content": "mark(item) is kind:name lowercased. Missing fields are empty strings."}],
+      "files": {"mark.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "mark.py", "symbol": "mark", "action": "insert_function"},
+      "public": [
+        {"entry": "mark.mark", "input": {"kind": "Lab", "name": "Two"}, "expected": "lab:two"},
+        {"entry": "mark.mark", "input": {"name": "Two"}, "expected": ":two"},
+        {"entry": "mark.mark", "input": {"kind": "Lab"}, "expected": "lab:"}
+      ],
+      "assessment": [
+        {"entry": "mark.mark", "input": {"kind": "", "name": ""}, "expected": ":"},
+        {"entry": "mark.mark", "input": {"kind": "Y", "name": "p"}, "expected": "y:p"},
+        {"entry": "mark.mark", "input": {"kind": "Mix", "name": "Case", "extra": 1}, "expected": "mix:case"}
+      ]
+    },
+    {
+      "id": "py_share_div",
+      "role": "insert",
+      "family": "arithmetic",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "share(item) returns amount divided by unit as a float using true division.",
+      "request": "Create function share(item) that returns amount divided by unit.",
+      "docs": [{"title": "share", "content": "share(item) is amount / unit as a float."}],
+      "files": {"share.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "share.py", "symbol": "share", "action": "insert_function"},
+      "public": [
+        {"entry": "share.share", "input": {"amount": 12, "unit": 5}, "expected": 2.4},
+        {"entry": "share.share", "input": {"amount": 0, "unit": 3}, "expected": 0.0}
+      ],
+      "assessment": [
+        {"entry": "share.share", "input": {"amount": 7, "unit": 2}, "expected": 3.5},
+        {"entry": "share.share", "input": {"amount": 9, "unit": 4}, "expected": 2.25}
+      ]
+    },
+    {
+      "id": "py_pass_both",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "admit(item) is True only when age >= min_age and score >= floor. A failing public case is included.",
+      "request": "Create function admit(item) that is True only when age is at least min_age and score is at least floor.",
+      "docs": [{"title": "admit", "content": "admit(item) requires age >= min_age AND score >= floor."}],
+      "files": {"gate.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "gate.py", "symbol": "admit", "action": "insert_function"},
+      "public": [
+        {"entry": "gate.admit", "input": {"age": 22, "min_age": 18, "score": 7, "floor": 5}, "expected": true},
+        {"entry": "gate.admit", "input": {"age": 15, "min_age": 18, "score": 8, "floor": 5}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "gate.admit", "input": {"age": 40, "min_age": 18, "score": 4, "floor": 5}, "expected": false},
+        {"entry": "gate.admit", "input": {"age": 18, "min_age": 18, "score": 5, "floor": 5}, "expected": true}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}
