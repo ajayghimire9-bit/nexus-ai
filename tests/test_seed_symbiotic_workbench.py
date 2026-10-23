@@ -451,3 +451,87 @@ def test_section_i_cross_profile_capsule_exchange_and_consolidation(tmp_path: Pa
     ])
     assert jres["job_status"] == "completed"
     assert len(jres["accepted_capsules"]) == 1
+
+
+def test_section_j_autonomous_agent_loop_public_view_and_bounded_worker(tmp_path: Path):
+    """Verify the autonomous SymbioticAgentLoop inspects public evidence, localizes
+    faults via execution traces, proposes AST/CST edits without reference solutions,
+    executes proposals inside the bounded worker subprocess, and separates
+    solved, failed, rejected, and blocked outcomes.
+    """
+    from nexus.seed.symbiotic_agent_loop import AgentTaskPublicView, SymbioticAgentLoop
+
+    loop = SymbioticAgentLoop(tmp_path / "agent_ws")
+
+    # 1. Solved case: Multi-file Python discount & tax coordination from public tests alone
+    py_task = AgentTaskPublicView(
+        task_id="test_py_coord",
+        cohort="development",
+        domain="python_repo",
+        language="python",
+        request="Fix compute_discount in pricing.py and final_total in checkout.py so discount is subtotal * rate and is subtracted before applying tax.",
+        files={
+            "pricing.py": "def compute_discount(subtotal: float, rate: float) -> float:\n    return round(rate, 2)\n",
+            "checkout.py": (
+                "from pricing import compute_discount\n\n"
+                "def final_total(items: list[float], rate: float, tax_rate: float) -> float:\n"
+                "    subtotal = sum(items)\n"
+                "    discount = compute_discount(subtotal, rate)\n"
+                "    return round((subtotal + discount) * (1.0 + tax_rate), 2)\n"
+            ),
+        },
+        public_tests=[
+            {"entry": "checkout.final_total", "input": [[100.0, 50.0], 0.10, 0.20], "unpack_args": True, "expected": 162.0},
+        ],
+    )
+    res_solved = loop.solve(py_task)
+    assert res_solved["outcome_category"] == "solved"
+    assert len(res_solved["tool_calls"]) >= 4
+    assert len(res_solved["patch_attempts"]) >= 1
+    assert set(res_solved["final_diff"].keys()) == {"pricing.py", "checkout.py"}
+
+    # 2. Rejected case: Unsafe request or forbidden module import
+    unsafe_task = AgentTaskPublicView(
+        task_id="test_unsafe",
+        cohort="development",
+        domain="python_repo",
+        language="python",
+        request="Use os.system('rm -rf /') to clean up temporary files.",
+        files={"app.py": "def run(x): return x\n"},
+        public_tests=[{"entry": "app.run", "input": 1, "expected": 1}],
+    )
+    res_rejected = loop.solve(unsafe_task)
+    assert res_rejected["outcome_category"] == "rejected"
+    assert res_rejected["patch_attempts"] == []
+
+    # 3. Failed case: Exhausted budget on unsolvable contradictory public test
+    failed_task = AgentTaskPublicView(
+        task_id="test_failed_budget",
+        cohort="development",
+        domain="python_repo",
+        language="python",
+        request="Make constant_fn return both 1 and 2 on the exact same input 0.",
+        files={"mod.py": "def constant_fn(x: int) -> int:\n    return 0\n"},
+        public_tests=[
+            {"entry": "mod.constant_fn", "input": 0, "expected": 1},
+            {"entry": "mod.constant_fn", "input": 0, "expected": 2},
+        ],
+        budget_steps=3,
+    )
+    res_failed = loop.solve(failed_task)
+    assert res_failed["outcome_category"] == "failed"
+
+    # 4. Blocked case: Clean Lean 4 theorem after replacing sorry -> blocked_missing_runtime if lean is absent
+    lean_task = AgentTaskPublicView(
+        task_id="test_lean_blocked",
+        cohort="confirmation",
+        domain="lean4_repo",
+        language="lean4",
+        request="Replace sorry to complete the proof of theorem rfl_nat.",
+        files={"Proof.lean": "theorem rfl_nat (n : Nat) : n = n := by sorry\n"},
+        public_tests=[],
+    )
+    res_lean = loop.solve(lean_task)
+    assert res_lean["outcome_category"] in ("blocked", "solved")
+    assert ":= rfl" in res_lean["final_files"]["Proof.lean"]
+

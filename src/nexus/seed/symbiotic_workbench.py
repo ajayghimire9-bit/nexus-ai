@@ -1858,6 +1858,8 @@ class SymbioticWorkbenchController:
             return self._handle_knowledge_api(args)
         if op == "workbench_capsules":
             return self._handle_capsules_api(args)
+        if op == "workbench_agent_solve":
+            return self._handle_agent_solve_api(args)
         raise ValueError(f"unknown_workbench_op:{op}")
 
     def _handle_editor_api(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -2176,6 +2178,10 @@ class SymbioticWorkbenchController:
         if lower.startswith("capsule "):
             return self._chat_capsule(ws_turn, raw)
 
+        # 9. Autonomous Symbiotic Agent Loop via chat
+        if lower.startswith("agent "):
+            return self._chat_agent_loop(ws_turn, raw)
+
         return None
 
     def _chat_z3(self, ws_turn, raw: str) -> tuple[str, str, bool]:
@@ -2425,6 +2431,83 @@ class SymbioticWorkbenchController:
             ws_turn.card("Capsule Consolidation", dict(source="execution_backed", executed=True, result=res, proposal=prop))
             return f"Consolidated capsules: kept active={res['kept_active']}, moved to cold={res['moved_to_cold']}.", "success", False
         return ws_turn.clarify("procedure", "Use `capsule consolidate` or `/api/seed` `workbench_capsules` operations.")
+
+    def _handle_agent_solve_api(self, args: dict[str, Any]) -> dict[str, Any]:
+        from .symbiotic_agent_loop import AgentTaskPublicView, SymbioticAgentLoop
+        task_view = AgentTaskPublicView(
+            task_id=args.get("task_id", "api_agent_task"),
+            cohort=args.get("cohort", "development"),
+            domain=args.get("domain", "python_repo"),
+            language=args.get("language", "python"),
+            request=args["request"],
+            files=args["files"],
+            public_tests=args.get("public_tests", []),
+            docs=args.get("docs", []),
+            budget_steps=int(args.get("budget_steps", 16)),
+        )
+        loop = SymbioticAgentLoop(self.base_dir / "agent_runs", capsule_registry=self.registry)
+        res = loop.solve(task_view)
+        status_map = {
+            "solved": "verified",
+            "failed": "failed",
+            "rejected": "rejected",
+            "blocked": "blocked_missing_runtime",
+        }
+        prop = TypedActionProposal(
+            proposal_id=digest([task_view.task_id, res["final_files_sha256"]])[:16],
+            intent="agent_autonomous_solve",
+            backend="symbiotic_agent_loop",
+            target=task_view.task_id,
+            input_type="AgentTaskPublicView",
+            output_type="ReplayableAgentTrajectory",
+            preconditions=["bounded_worker_subprocess"],
+            expected_effects=[f"outcome_{res['outcome_category']}"],
+            dependencies=[],
+            version_id="v1",
+            resource_limits=dict(budget_steps=task_view.budget_steps),
+            execution_status=status_map.get(res["outcome_category"], "executed"),
+            provenance_kind="observed_execution",
+            rollback_semantics="isolated_worktree",
+            evidence=dict(
+                outcome_category=res["outcome_category"],
+                tool_call_count=len(res["tool_calls"]),
+                patch_attempt_count=len(res["patch_attempts"]),
+            ),
+        )
+        self._save_state("symbiotic_agent_loop", prop)
+        return dict(proposal=prop.validate(), result=res)
+
+    def _chat_agent_loop(self, ws_turn, raw: str) -> tuple[str, str, bool]:
+        body = raw[6:].strip()
+        try:
+            spec = json.loads(body) if body.startswith("{") else dict(
+                task_id="chat_agent_task",
+                domain="python_repo",
+                language="python",
+                request=body,
+                files=self.coding.files,
+                public_tests=[],
+            )
+        except Exception as exc:
+            return ws_turn.clarify("reference", f"Invalid agent request payload: {exc}")
+        out = self._handle_agent_solve_api(spec)
+        res = out["result"]
+        ws_turn.card("Autonomous Agent Loop Result", dict(
+            source="execution_backed",
+            executed=(res["outcome_category"] == "solved"),
+            outcome_category=res["outcome_category"],
+            tool_calls=res["tool_calls"],
+            patch_attempts=res["patch_attempts"],
+            final_diff=res["final_diff"],
+            proposal=out["proposal"],
+        ))
+        turn_status = "success" if res["outcome_category"] == "solved" else (
+            "clarification" if res["outcome_category"] in ("rejected", "blocked") else "error"
+        )
+        return (
+            f"Agent loop finished with outcome `{res['outcome_category']}`: {res['summary_message']} "
+            f"({len(res['tool_calls'])} tool call(s), {len(res['patch_attempts'])} patch attempt(s))."
+        ), turn_status, False
 
     def _record_chat_proposal(self, intent: str, backend: str, target: str, prov: str,
                               evidence: dict[str, Any], status: str = "committed") -> dict[str, Any]:
