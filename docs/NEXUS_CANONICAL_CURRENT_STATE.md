@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — capability follow-up (results)
+## Current — capability routes (protocol locked)
+
+[Protocol](NEXUS_SEED_CAPABILITY_ROUTES_PROTOCOL.md). Branch
+`cursor/seed-capability-routes` from `db20cb1`. Provenance keeps an
+explicit unresolved-conflict outcome on fresh documents. Math keeps
+the calculator for straightforward work and splits interpretation,
+execution and answer. API-ID assembly is frozen offline first, then
+live-scored with selection, bindings and execution separate.
+Coordinated edits use a staged multi-file publish gate. The map and
+follow-up are not rescored. API selection is not generally solved.
+Frozen debit **0**. Live scoring follows this protocol commit.
+
+## Previous — capability follow-up (results)
 
 [Protocol](NEXUS_SEED_CAPABILITY_FOLLOWUP_PROTOCOL.md),
 [results](NEXUS_SEED_CAPABILITY_FOLLOWUP_RESULTS.md).

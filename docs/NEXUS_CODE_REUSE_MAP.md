@@ -1,5 +1,18 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Capability routes
+
+`seed/knowledge_provenance.py` now labels `unresolved_conflict` when
+version metadata is missing, two authorities disagree, or two later
+rows both supersede the same document. `seed/math_interpretation.py`
+requires an unknown only when the task has one and reports
+interpretation, execution and answer separately.
+`seed/coordinated_stage.py` writes each function to its own file and
+publishes only after helper behavior, caller behavior and the required
+call pass. API-ID assembly reuses `assemble_id_wiring` and
+`contract_ids`. Selection is not treated as generally solved.
+[Protocol](NEXUS_SEED_CAPABILITY_ROUTES_PROTOCOL.md).
+
 ## Capability follow-up
 
 `seed/knowledge_provenance.py` resolves retrieved rows with subject,

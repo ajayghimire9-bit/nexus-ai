@@ -62,17 +62,26 @@ def expression_constants(expr: str) -> list[float]:
     return out
 
 
+def _missing_names(statement: dict[str, Any]) -> list[str]:
+    raw = statement.get("missing")
+    if isinstance(raw, str):
+        return [raw.strip()] if raw.strip() else []
+    if isinstance(raw, list):
+        return [str(item).strip() for item in raw if str(item).strip()]
+    return []
+
+
 def validate_statement(statement: dict[str, Any] | None, task: dict[str, Any]) -> dict[str, Any]:
     if not statement:
         return dict(ok=False, clarify=False, errors=["missing_statement"])
-    missing = [str(item) for item in (statement.get("missing") or []) if str(item).strip()]
+    missing = _missing_names(statement)
     if missing or task.get("must_clarify"):
         return dict(ok=False, clarify=True, errors=["underspecified"], missing=missing)
     quantities = statement.get("quantities") or []
     errors = []
     if not quantities:
         errors.append("no_quantities")
-    if not statement.get("unknown"):
+    if task.get("has_unknown") and not statement.get("unknown"):
         errors.append("no_unknown")
     if not statement.get("relationships") and not statement.get("expression"):
         errors.append("no_relationship_or_expression")
@@ -151,6 +160,9 @@ def score_interpreted(task: dict[str, Any], statement: dict[str, Any] | None,
         return dict(
             passed=asked,
             clarification=asked,
+            interpretation_ok=bool(checked.get("clarify")),
+            execution_ok=False,
+            answer_ok=False,
             statement=statement,
             validation=checked,
             compiled=compiled,
@@ -158,25 +170,29 @@ def score_interpreted(task: dict[str, Any], statement: dict[str, Any] | None,
         )
     tool = compiled or {}
     value = tool.get("value")
-    ok = (
-        checked.get("ok")
-        and tool.get("ok")
-        and value is not None
+    interpretation_ok = bool(checked.get("ok"))
+    execution_ok = bool(tool.get("ok"))
+    answer_ok = (
+        value is not None
+        and task.get("answer") is not None
         and abs(float(value) - float(task["answer"])) < 1e-6
-        and bool(tool.get("expression_represents_problem"))
     )
+    represents = bool(tool.get("expression_represents_problem"))
     unit_ok = True
     if task.get("unit"):
         unit = (statement or {}).get("unit") or raw
         unit_ok = task["unit"].lower() in str(unit).lower()
     return dict(
-        passed=bool(ok and unit_ok),
+        passed=bool(interpretation_ok and execution_ok and answer_ok and represents and unit_ok),
+        interpretation_ok=interpretation_ok,
+        execution_ok=execution_ok,
+        answer_ok=answer_ok,
         value=value,
         unit_ok=unit_ok,
         statement=statement,
         validation=checked,
         compiled=tool,
-        expression_represents_problem=bool(tool.get("expression_represents_problem")),
+        expression_represents_problem=represents,
         inspectable=True,
         unaided_value=None,
         tool_assisted=True,
@@ -197,9 +213,12 @@ def score_direct_calculator(task: dict[str, Any], text: str, expr: str | None) -
         constants = set(expression_constants(expr))
         needed = {float(value) for value in task["must_use_values"]}
         represents = represents and needed <= constants
-    ok = value is not None and abs(float(value) - float(task["answer"])) < 1e-6
+    answer_ok = value is not None and abs(float(value) - float(task["answer"])) < 1e-6
     return dict(
-        passed=bool(ok and (represents if expr else False)),
+        passed=bool(answer_ok and (represents if expr else False)),
+        interpretation_ok=None,
+        execution_ok=bool(tool.get("ok")),
+        answer_ok=answer_ok,
         value=value,
         tool=tool,
         expression=expr,

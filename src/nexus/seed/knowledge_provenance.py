@@ -11,6 +11,9 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 
+UNRESOLVED_CONFLICT = "unresolved_conflict"
+
+
 @dataclass(frozen=True)
 class ProvenanceRecord:
     doc_id: str
@@ -20,6 +23,7 @@ class ProvenanceRecord:
     source_version: int | None = None
     effective_date: str | None = None
     supersedes: str | None = None
+    authority: bool = False
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -31,8 +35,18 @@ def records_conflict(left: ProvenanceRecord, right: ProvenanceRecord) -> bool:
     return (left.content or "").strip() != (right.content or "").strip()
 
 
+def mutual_supersession(left: ProvenanceRecord, right: ProvenanceRecord) -> bool:
+    return (
+        left.supersedes == right.doc_id
+        and right.supersedes == left.doc_id
+        and left.doc_id != right.doc_id
+    )
+
+
 def replacement_of(newer: ProvenanceRecord, older: ProvenanceRecord) -> bool:
     if newer.subject != older.subject:
+        return False
+    if mutual_supersession(newer, older):
         return False
     if newer.supersedes == older.doc_id:
         return True
@@ -49,16 +63,17 @@ def replacement_of(newer: ProvenanceRecord, older: ProvenanceRecord) -> bool:
 
 
 def dump_all(rows: list[ProvenanceRecord]) -> dict[str, Any]:
-    return dict(
-        method="dump_all",
-        selected=[row.doc_id for row in rows],
-        conflict=False,
-        conflict_ids=[],
-        dropped=[],
-        reason="return_retrieved_rows",
-        programmer_supplied=True,
-        used_ingestion_timestamp_as_freshness=False,
-    )
+        return dict(
+            method="dump_all",
+            outcome="selected" if rows else "no_subject_match",
+            selected=[row.doc_id for row in rows],
+            conflict=False,
+            conflict_ids=[],
+            dropped=[],
+            reason="return_retrieved_rows",
+            programmer_supplied=True,
+            used_ingestion_timestamp_as_freshness=False,
+        )
 
 
 def timestamp_sort(rows: list[ProvenanceRecord], subject: str | None = None) -> dict[str, Any]:
@@ -66,15 +81,16 @@ def timestamp_sort(rows: list[ProvenanceRecord], subject: str | None = None) -> 
     ordered = sorted(scoped, key=lambda row: row.ingested_at, reverse=True)
     chosen = ordered[0] if ordered else None
     return dict(
-        method="timestamp_sort",
-        selected=[chosen.doc_id] if chosen else [],
-        conflict=False,
-        conflict_ids=[],
-        dropped=[row.doc_id for row in ordered[1:]],
-        reason="newest_ingestion_timestamp",
-        programmer_supplied=True,
-        used_ingestion_timestamp_as_freshness=True,
-    )
+            method="timestamp_sort",
+            outcome="selected" if chosen else "no_subject_match",
+            selected=[chosen.doc_id] if chosen else [],
+            conflict=False,
+            conflict_ids=[],
+            dropped=[row.doc_id for row in ordered[1:]],
+            reason="newest_ingestion_timestamp",
+            programmer_supplied=True,
+            used_ingestion_timestamp_as_freshness=True,
+        )
 
 
 def provenance_resolve(rows: list[ProvenanceRecord], subject: str) -> dict[str, Any]:
@@ -83,6 +99,7 @@ def provenance_resolve(rows: list[ProvenanceRecord], subject: str) -> dict[str, 
     if not scoped:
         return dict(
             method="provenance_resolve",
+            outcome="no_subject_match",
             selected=[],
             conflict=False,
             conflict_ids=[],
@@ -107,14 +124,16 @@ def provenance_resolve(rows: list[ProvenanceRecord], subject: str) -> dict[str, 
     conflicts = []
     for index, left in enumerate(current):
         for right in current[index + 1:]:
-            if records_conflict(left, right) and not (
-                replacement_of(left, right) or replacement_of(right, left)
+            if mutual_supersession(left, right) or (
+                records_conflict(left, right)
+                and not (replacement_of(left, right) or replacement_of(right, left))
             ):
                 conflicts.extend([left.doc_id, right.doc_id])
     conflicts = sorted(set(conflicts))
     if conflicts:
         return dict(
             method="provenance_resolve",
+            outcome=UNRESOLVED_CONFLICT,
             selected=[],
             conflict=True,
             conflict_ids=conflicts,
@@ -125,6 +144,7 @@ def provenance_resolve(rows: list[ProvenanceRecord], subject: str) -> dict[str, 
         )
     return dict(
         method="provenance_resolve",
+        outcome="selected",
         selected=[row.doc_id for row in current],
         conflict=False,
         conflict_ids=[],
@@ -137,14 +157,14 @@ def provenance_resolve(rows: list[ProvenanceRecord], subject: str) -> dict[str, 
 
 def render_resolution(rows: list[ProvenanceRecord], resolved: dict[str, Any]) -> str:
     by_id = {row.doc_id: row for row in rows}
-    if resolved.get("conflict"):
+    if resolved.get("outcome") == UNRESOLVED_CONFLICT or resolved.get("conflict"):
         parts = []
         for doc_id in resolved.get("conflict_ids") or []:
             fact = by_id.get(doc_id)
             if fact:
                 parts.append(f"{fact.doc_id}: {fact.content}")
         return (
-            "These sources conflict on the same subject and neither supersedes the other: "
+            "unresolved conflict: these sources disagree and neither is a clear replacement: "
             + " | ".join(parts)
         )
     parts = []
@@ -165,20 +185,25 @@ def score_knowledge_resolution(task: dict[str, Any], resolved: dict[str, Any],
     conflict_ok = bool(resolved.get("conflict")) == bool(task.get("must_conflict"))
     if task.get("must_conflict"):
         select_ok = selected == []
+    outcome_ok = True
+    if task.get("expected_outcome"):
+        outcome_ok = resolved.get("outcome") == task["expected_outcome"]
     fact_ok = True
     if task.get("expected_fact"):
         fact_ok = task["expected_fact"].lower() in (text or "").lower()
     if task.get("forbidden_fact"):
         fact_ok = fact_ok and task["forbidden_fact"].lower() not in (text or "").lower()
-    passed = bool(select_ok and stale_ok and conflict_ok and fact_ok)
+    passed = bool(select_ok and stale_ok and conflict_ok and fact_ok and outcome_ok)
     return dict(
         passed=passed,
         select_ok=select_ok,
         stale_ok=stale_ok,
         conflict_ok=conflict_ok,
+        outcome_ok=outcome_ok,
         fact_ok=fact_ok,
         selected=selected,
         conflict=bool(resolved.get("conflict")),
+        outcome=resolved.get("outcome"),
         conflict_ids=list(resolved.get("conflict_ids") or []),
         text=text,
         method=resolved.get("method"),
