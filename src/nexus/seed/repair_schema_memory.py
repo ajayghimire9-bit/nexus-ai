@@ -38,6 +38,44 @@ def digest(value: Any) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, default=str).encode()).hexdigest()
 
 
+INCLUSIVE_CUES = (
+    "allow n equal",
+    "allow width equal",
+    "allow equality",
+    "inclusive",
+    "at least",
+    "or equal",
+    "including the",
+    "still allowed",
+    "equal to the maximum",
+    "equal to the bound",
+    "equal to the limit",
+)
+EXCLUSIVE_CUES = (
+    "strictly smaller",
+    "strictly less",
+    "strictly below",
+    "exclusive",
+    "reject values equal",
+    "only strictly",
+    "not including",
+    "below the cutoff",
+)
+
+
+@dataclass
+class RepairProposal:
+    """A retrieved repair is a proposal. Applying it is a later decision."""
+
+    decision: str
+    reason: str
+    requirement: str
+    schema_id: str | None = None
+    files: dict[str, str] | None = None
+    question: str | None = None
+    used_private_tests: bool = False
+
+
 @dataclass
 class RepairSchema:
     schema_id: str
@@ -140,6 +178,96 @@ class OrdinaryExactCache:
 
     def put(self, request: str, files: dict[str, str], patched: dict[str, str]) -> None:
         self.store[digest([request, files])] = copy.deepcopy(patched)
+
+
+def public_equality_signal(public_tests: list[dict[str, Any]]) -> str | None:
+    """Use public tests only. Equal numeric fields plus expected True/False."""
+    for case in public_tests or []:
+        inp = case.get("input")
+        if type(inp) is not dict:
+            continue
+        nums = [
+            value for value in inp.values()
+            if isinstance(value, (int, float)) and not isinstance(value, bool)
+        ]
+        if len(nums) >= 2 and len(set(nums)) == 1:
+            if case.get("expected") is True:
+                return "inclusive"
+            if case.get("expected") is False:
+                return "exclusive"
+    return None
+
+
+def classify_boundary_requirement(
+    request: str,
+    public_tests: list[dict[str, Any]],
+    private_tests: list[dict[str, Any]] | None = None,
+) -> str:
+    """Inclusive and exclusive must differ. Private tests are ignored."""
+    del private_tests
+    text = (request or "").lower()
+    from_text = None
+    if any(cue in text for cue in EXCLUSIVE_CUES):
+        from_text = "exclusive"
+    elif any(cue in text for cue in INCLUSIVE_CUES):
+        from_text = "inclusive"
+    from_public = public_equality_signal(public_tests)
+    if from_text and from_public and from_text != from_public:
+        return "ambiguous"
+    return from_text or from_public or "ambiguous"
+
+
+def propose_retrieved_repair(
+    schema: RepairSchema | None,
+    request: str,
+    files: dict[str, str],
+    public_tests: list[dict[str, Any]],
+    private_tests: list[dict[str, Any]] | None = None,
+) -> RepairProposal:
+    """Check the current requirement and public tests before applying."""
+    del private_tests
+    if schema is None:
+        return RepairProposal("abstain", "no_schema", "other")
+    family = infer_family(request, public_tests)
+    if family and family != schema.family:
+        return RepairProposal(
+            "abstain", "family_mismatch", "other", schema.schema_id,
+        )
+    if schema.transformation == "compare_op_swap":
+        requirement = classify_boundary_requirement(request, public_tests)
+        from_op = schema.applicability.get("from_op") or schema.bindings.get("from_op")
+        to_op = schema.applicability.get("to_op") or schema.bindings.get("to_op")
+        inclusive_transform = from_op == "Lt" and to_op == "LtE"
+        if requirement == "inclusive":
+            if not inclusive_transform:
+                return RepairProposal(
+                    "refuse", "schema_direction_mismatch", requirement, schema.schema_id,
+                )
+            patched = apply_compare_op_swap(files, schema)
+            if patched is None:
+                return RepairProposal(
+                    "abstain", "transform_not_applicable", requirement, schema.schema_id,
+                )
+            return RepairProposal(
+                "apply", "requirement_inclusive", requirement, schema.schema_id, patched,
+            )
+        if requirement == "exclusive":
+            return RepairProposal(
+                "refuse", "requirement_exclusive_blocks_inclusive_repair",
+                requirement, schema.schema_id,
+            )
+        return RepairProposal(
+            "ask", "requirement_ambiguous", "ambiguous", schema.schema_id,
+            question="Should values equal to the bound pass (inclusive) or fail (exclusive)?",
+        )
+    patched = RepairSchemaStore().apply(schema, files)
+    if patched is None:
+        return RepairProposal(
+            "abstain", "transform_not_applicable", family or "other", schema.schema_id,
+        )
+    return RepairProposal(
+        "apply", "family_matched", family or "other", schema.schema_id, patched,
+    )
 
 
 def infer_family(request: str, public_tests: list[dict[str, Any]]) -> str | None:

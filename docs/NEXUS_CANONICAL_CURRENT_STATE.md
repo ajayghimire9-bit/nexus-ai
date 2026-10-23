@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — interrupt, bottleneck and fresh transfer (results)
+## Current — selective reuse (implementation)
+
+Branch `cursor/seed-selective-reuse` from reviewed `e6515fa`. Protocol
+[NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md](NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md).
+Retrieved boundary repairs are proposals: inclusive applies, exclusive
+refuses, ambiguous asks. Structured edits prefer symbol-targeted actions;
+revisions see staged source and the validation error. Scoring is blocked
+until this protocol is committed. `fixed_boundary` stays the default. Ledger
+unchanged: **2395.682841455996 used / 1204.317158544004 remaining**.
+
+## Previous — interrupt, bottleneck and fresh transfer (results)
 
 [Protocol](NEXUS_SEED_INTERRUPT_TRANSFER_PROTOCOL.md),
 [results](NEXUS_SEED_INTERRUPT_TRANSFER_RESULTS.md). Implementation `8fa9864`

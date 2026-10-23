@@ -1,5 +1,12 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Selective reuse
+
+`seed/selective_reuse.py` reuses `RepairSchemaStore`, `ordinary_template_apply`,
+`SymbioticAgentLoop`, `local_model_patch_proposer` and `EventMeter`. The new
+`propose_retrieved_repair` gate sits in front of `apply`; it does not add a
+second memory store. [Protocol](NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md).
+
 ## Six-area comparison
 
 `seed/six_area_comparison.py` reuses `EqualizedInvestigationEngineV2`,

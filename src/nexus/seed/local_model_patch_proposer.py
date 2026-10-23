@@ -143,8 +143,35 @@ def node_indent(source: str, node: ast.AST) -> str:
     return line[: len(line) - len(line.lstrip())]
 
 
-def looks_complete_source(text: str, path: str) -> bool:
-    """True when new_text is a whole-file replacement, not a snippet."""
+def top_level_definition_names(source: str) -> set[str]:
+    tree = ast.parse(source)
+    return {
+        node.name for node in tree.body
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+    }
+
+
+def single_definition_source(text: str) -> bool:
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return False
+    defs = [
+        node for node in tree.body
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+    ]
+    return len(defs) == 1 and len(tree.body) == 1
+
+
+def node_source(source: str, node: ast.AST) -> str:
+    lines = source.splitlines(True)
+    start = max(0, getattr(node, "lineno", 1) - 1)
+    end = _node_end_lineno(source, node)
+    return "".join(lines[start:end])
+
+
+def looks_complete_source(text: str, path: str, original: str | None = None) -> bool:
+    """True only for a whole module that keeps the original top-level names."""
     if not text or not text.strip():
         return False
     if path.endswith(".py"):
@@ -152,8 +179,52 @@ def looks_complete_source(text: str, path: str) -> bool:
             tree = ast.parse(text)
         except SyntaxError:
             return False
-        return any(isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) for n in tree.body)
+        defs = [
+            node for node in tree.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+        ]
+        if not defs:
+            return False
+        if original:
+            try:
+                original_names = top_level_definition_names(original)
+            except SyntaxError:
+                original_names = set()
+            new_names = {node.name for node in defs}
+            if original_names and not original_names.issubset(new_names):
+                return False
+        return True
     return len(text) >= 8
+
+
+def prefer_symbol_targeted_edit(raw: dict[str, Any], files: dict[str, str]) -> dict[str, Any]:
+    """Rewrite a replace into insert_function or a unique symbol replace when possible."""
+    path = contained_path(raw.get("path", ""))
+    action = raw.get("action")
+    new_text = raw.get("new_text") or ""
+    current = files.get(path, "")
+    if action != "replace" or path not in files or type(new_text) is not str:
+        return raw
+    name = inserted_definition_name(new_text)
+    if not name or not single_definition_source(new_text):
+        return raw
+    scope = str(raw.get("scope") or "module")
+    try:
+        present = names_in_scope(current, scope, str(raw.get("symbol") or ""))
+    except (ValueError, SyntaxError):
+        return raw
+    rewritten = dict(raw)
+    rewritten["symbol"] = name
+    rewritten["scope"] = scope
+    if name not in present:
+        rewritten["action"] = "insert_function"
+        rewritten["old_text"] = ""
+        return rewritten
+    node = locate_symbol(current, name, scope)
+    if node is None:
+        return raw
+    rewritten["old_text"] = node_source(current, node)
+    return rewritten
 
 
 def inserted_definition_name(new_text: str) -> str | None:
@@ -236,6 +307,7 @@ def validate_patch(payload: dict[str, Any], files: dict[str, str]) -> dict[str, 
     for raw in payload["edits"]:
         if type(raw) is not dict:
             raise ValueError("edit_not_object")
+        raw = prefer_symbol_targeted_edit(raw, files)
         path = contained_path(raw.get("path", ""))
         action = raw.get("action")
         if action not in ("replace", "create", "insert_function", "insert_after_symbol"):
@@ -260,7 +332,7 @@ def validate_patch(payload: dict[str, Any], files: dict[str, str]) -> dict[str, 
                 raise ValueError(f"missing_target_file:{path}")
             if old_text:
                 if files[path].count(old_text) != 1:
-                    if looks_complete_source(new_text, path) and new_text != files[path]:
+                    if looks_complete_source(new_text, path, files[path]) and new_text != files[path]:
                         old_text = ""
                     else:
                         raise ValueError(f"old_text_not_unique:{path}")
@@ -364,9 +436,19 @@ def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
         docs.append(f"{doc.get('title', '')}: {str(doc.get('content', ''))[:400]}")
     tests = json.dumps(list(getattr(task, "public_tests", []) or [])[:6], allow_nan=False)[:1200]
     feedback = json.dumps(public_feedback or {}, allow_nan=False)[:1200]
+    validation = ""
+    if public_feedback and public_feedback.get("validation_error"):
+        validation = (
+            f"Last validation error on the current staged source: {public_feedback['validation_error']}\n"
+            "Revise that staged source. Prefer insert_function or insert_after_symbol "
+            "for a new definition. For replace, old_text must occur exactly once. "
+            "Do not send an incomplete snippet as a whole module.\n"
+        )
     return (
         "Propose a JSON patch for this local repository. Use only public tests and docs.\n"
+        "Prefer symbol-targeted insert_function, insert_after_symbol, or a unique symbol replace.\n"
         "Return edits with explicit paths. Do not claim private tests passed.\n"
+        f"{validation}"
         f"Request: {getattr(task, 'request', '')}\n"
         f"File source_sha256: {json.dumps({p: source_sha256(s) for p, s in files.items()})}\n"
         f"Language: {getattr(task, 'language', 'python')}\n"

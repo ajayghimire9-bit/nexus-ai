@@ -611,6 +611,7 @@ class SymbioticAgentLoop:
             for round_idx in range(1, self.model_revision_budget + 1):
                 proposed = propose_with_runtime(
                     self.local_runtime, task, repo_index, grounded_bindings, feedback,
+                    files_override=current_files,
                 )
                 model_trace.append({"round": round_idx, **{
                     k: proposed.get(k) for k in (
@@ -636,6 +637,7 @@ class SymbioticAgentLoop:
                     model_status = "BLOCKED"
                     break
                 feedback["last_invalid"] = proposed.get("reason")
+                feedback["validation_error"] = proposed.get("reason")
             if model_status == "BLOCKED" and self.local_runtime is None:
                 record_tool("local_model_propose", {"round": 0, "runtime_present": False}, {
                     "status": "BLOCKED",
@@ -674,6 +676,7 @@ class SymbioticAgentLoop:
         from .staging_workspace import StagingWorkspace
         from .repair_schema_memory import (
             RepairSchemaStore, capture_from_success, infer_family,
+            propose_retrieved_repair,
         )
         queue: list[tuple[str, dict[str, str]]] = list(candidates)
         max_attempts = max(1, task.budget_steps)
@@ -693,9 +696,22 @@ class SymbioticAgentLoop:
                             schema = stored
                             break
                 if schema is not None:
-                    reused = repair_store.apply(schema, current_files)
-                    if reused is not None:
-                        queue.insert(0, (f"repair_schema:{schema.schema_id}", reused))
+                    proposal = propose_retrieved_repair(
+                        schema, task.request, current_files, task.public_tests,
+                    )
+                    if proposal.decision == "apply" and proposal.files is not None:
+                        queue.insert(0, (f"repair_schema:{schema.schema_id}", proposal.files))
+                    else:
+                        record_tool("repair_schema_proposal", {
+                            "schema_id": schema.schema_id,
+                            "decision": proposal.decision,
+                        }, {
+                            "reason": proposal.reason,
+                            "requirement": proposal.requirement,
+                            "question": proposal.question,
+                            "applied": False,
+                            "used_private_tests": False,
+                        }, time.perf_counter())
         while idx < len(queue) and idx < max_attempts:
             op_desc, cand_files = queue[idx]
             idx += 1
@@ -785,8 +801,15 @@ class SymbioticAgentLoop:
                     t_rev = time.perf_counter()
                     revised = propose_with_runtime(
                         self.local_runtime, task, repo_index, grounded_bindings,
-                        {"failed_operator": op_desc, "public_results": ev.get("results", [])[:6],
-                         "staged_files": list(staging.staged)},
+                        {
+                            "failed_operator": op_desc,
+                            "public_results": ev.get("results", [])[:6],
+                            "staged_files": list(staging.staged),
+                            "validation_error": (
+                                "public tests failed on the current staged source; "
+                                "revise that source"
+                            ),
+                        },
                         files_override=staging.staged,
                     )
                     model_trace.append({"round": len(model_trace) + 1, **{
