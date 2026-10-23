@@ -1,15 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — proper ChatML, then equality-failure revision and fresh functions
+## Current next — keep ChatML; revise after placeholder; require dict fields
 
-The [format comparison](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_RESULTS.md) used
-raw `/completion` prompts. Next: compare that raw user text with Qwen2.5
-ChatML, give inclusive replace the exact equal-to-limit failure without
-supplying `<=`, and retest three fresh functions. Score target discovery
-separately. Measure parent plus server RSS. Do not resume ranking or
+The [chat-template run](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_RESULTS.md) made
+ChatML the request wrapper and showed a 1.5B `<`→`<=` repair when the
+equal-to-limit sentence reached the model. The 0.5B model never saw that
+sentence because a placeholder used the one revision. Fresh functions
+failed 0/3 on both models, usually by ignoring dict fields. Next: keep
+ChatML, allow one public-failure revision after a placeholder, and score
+dict-field access on the same fresh family. Do not resume ranking or
 memory. Ledger
-**2566.777111455996 used / 1033.222888544004 remaining**.
-[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md).
+**2696.503148455996 used / 903.496851544004 remaining**.
 
 ## Previous next — keep json_body on the coder for inclusive replace
 

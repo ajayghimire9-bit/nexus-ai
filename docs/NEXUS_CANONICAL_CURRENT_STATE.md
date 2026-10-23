@@ -1,14 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — chat template, equality revision, fresh functions (protocol)
+## Current — chat template, equality revision, fresh functions (results)
 
-[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md). Branch
-`cursor/seed-chat-template-repair` from reviewed tip `5b460e7`. Compare raw
-`/completion` prompts with Qwen2.5 ChatML on `json_body`, give the inclusive
-replace the exact equal-to-limit failure, and retest three fresh functions.
-Discovery is scored from files and the request only; it is not wired into
-the assembler. Memory is parent plus `llama-server` RSS. Ledger
-**2566.777111455996 used / 1033.222888544004 remaining**.
+[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md),
+[results](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_RESULTS.md). Implementation
+`26f3347` on `cursor/seed-chat-template-repair`. Verifier `valid: true`.
+ChatML user text matched the raw prompt; the GGUF declares that template.
+Best 0.5B style was `chatml` on a tie. Raw 1.5B changed `<` to `<=` after
+the equal-to-limit sentence; 0.5B never saw it (placeholder used the
+revision). Fresh functions failed 0/3 on both models. Discovery 6/6,
+not wired. Combined RSS ~856 MiB (0.5B) and ~2146 MiB (1.5B). Ledger
+**2696.503148455996 used / 903.496851544004 remaining**.
 
 ## Previous — function-output formats and placeholder rejection (results)
 

@@ -3,11 +3,12 @@
 ## Current — raw prompt versus Qwen chat template
 
 Predeclared: the last coding scores describe raw `/completion` prompts, not
-either model’s ceiling. ChatML with the official system line, the same
-`json_body` user text and budget, a concrete equal-to-limit revision, and
-three fresh functions separate interface from coding. Discovery is measured
-from files and the request only. Not confirmation.
-[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md).
+either model’s ceiling. **Mixed.** ChatML is the better wrapper (tie on
+0.5B; 1.5B `mark` passed only under ChatML). Raw 1.5B repaired `<`→`<=`
+after the equal-to-limit sentence, which did not name the operator. 0.5B
+never saw that sentence. Fresh functions failed 6/6. Discovery 6/6 and
+not wired. Combined RSS ~856 MiB vs ~2146 MiB. Not a coding ceiling.
+[Results](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_RESULTS.md).
 
 ## Current — decoding/interface versus coding capability
 
