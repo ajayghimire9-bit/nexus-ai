@@ -1,16 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — constrained function edits and generated-code feature (protocol)
+## Current — constrained function edits and generated-code feature (results)
 
-[Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md). Branch
-`cursor/seed-constrained-edit-workflow` from reviewed tip `aa2b015`.
-NEXUS supplies path, symbol and replace-versus-insert; the model returns
-only the function. Raw validity, normalization and semantic correctness
-are scored separately. The formatted-identifier feature is locked before
-outcomes and must be inexpressible by the AST catalogue. Conversation
-must explain source contents, change the operation, leave and return.
-Learned ranking and memory comparison stay paused. Ledger
-**2490.426805455996 used / 1109.573194544004 remaining**.
+[Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md),
+[results](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_RESULTS.md). Implementation
+`e4cbc0d` on `cursor/seed-constrained-edit-workflow`. Verifier
+`valid: true`. NEXUS-planned replace/insert queued model functions; the
+bodies were wrapped identifiers (`ok`, `echo`) and failed three-point
+and tag tests. AST cannot express `py_tag_colon_feature` (0/2).
+Conversation passed 4/4 on contents, operation change, leave and return.
+Learned ranking and memory stay paused. Ledger
+**2499.393603455996 used / 1100.606396544004 remaining**.
 
 ## Previous — boundary evidence, conversation state and one workflow (results)
 

@@ -1,15 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — constrained function text, then one catalogue-inexpressible feature
+## Current next — refuse wrapped identifiers, then re-measure semantic bodies
 
-The [boundary/state/workflow pilot](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_RESULTS.md)
-queued no model edit because the model chose path and insert-versus-replace.
-Next: NEXUS supplies those; measure raw validity, normalization and
-semantic correctness separately; run `py_tag_colon_feature` only after
-showing the AST catalogue cannot pass it. Do not resume learned ranking
-or memory comparison. Ledger
-**2490.426805455996 used / 1109.573194544004 remaining**.
-[Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md).
+The [constrained-edit pilot](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_RESULTS.md)
+queued replace/insert functions and still failed semantics: the model
+returned `"ok"` / `"echo"` and wrap-body made those parse. Next: treat a
+bare identifier as not a function body, keep raw-valid / normalized /
+semantic scores separate, and do not resume ranking or memory until a
+generated solution executes and revises. Ledger
+**2499.393603455996 used / 1100.606396544004 remaining**.
 
 ## Current next — freeze the inclusive workflow on a project AST cannot solve
 

@@ -4,11 +4,11 @@
 
 Predeclared: removing path, symbol and insert-versus-replace from the
 model raises usable-edit rate on a three-point replace and is required
-before claiming a generated-code feature. The formatted-identifier
-family is locked as catalogue-inexpressible. Conversation must be
-source-backed, not name-only. Learned ranking and memory stay paused.
-Development only; not confirmation.
-[Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md).
+before claiming a generated-code feature. **Mixed.** Queueing succeeded;
+semantic correctness failed. Completions were `function: "ok"` and
+`function: "echo"`, wrapped into no-op bodies. Catalogue cannot complete
+the tag feature (0/2). Conversation 4/4. Learning research not resumed.
+[Results](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_RESULTS.md).
 
 ## Current — teacher-labeled three-point evidence before boundary accept
 
