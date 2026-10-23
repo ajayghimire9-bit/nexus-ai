@@ -19,11 +19,11 @@ from .capability_routes_tasks import (
 )
 from .coordinated_stage import stage_pair
 from .chat_template import render_prompt
+from .api_id_bindings import apply_validated_proposal, score_binding_tracks
 from .extraction_api_wiring import (
-    assemble_id_wiring, complete_with_schema, contract_ids, parse_id_selection,
+    complete_with_schema, contract_ids, parse_id_selection,
     selection_id_schema, selection_prompt,
 )
-from .extraction_contract import wrap_transform
 from .extraction_path import generate_direct
 from .function_contracts import score_bound_task
 from .knowledge_provenance import (
@@ -55,38 +55,27 @@ def caller_path(task: dict[str, Any]) -> str:
 
 
 def apply_id_proposal(task: dict[str, Any], proposal: dict[str, Any] | None) -> dict[str, Any]:
-    ids = contract_ids(task, task["files"])
-    if not proposal:
-        return dict(assembled=dict(ok=False, error="missing_proposal", source=""), files=dict(task["files"]))
-    assembled = assemble_id_wiring(proposal, ids, task["contract"])
-    files = dict(task["files"])
-    if assembled.get("ok"):
-        files[caller_path(task)] = wrap_transform(task["contract"], assembled["source"])
-    return dict(assembled=assembled, files=files, ids=ids)
+    return apply_validated_proposal(task, proposal, caller_path(task))
 
 
 def score_id_cell(task: dict[str, Any], proposal: dict[str, Any] | None,
                   files: dict[str, str], assembled: dict[str, Any]) -> dict[str, Any]:
     gold = task["gold_selection"]
-    selection_correct = bool(proposal) and proposal.get("api_id") == gold.get("api_id")
-    bindings_correct = bool(proposal) and list(proposal.get("bindings") or []) == list(gold.get("bindings") or [])
-    assembled_ok = bool(assembled.get("ok"))
+    tracks = score_binding_tracks(proposal, gold, assembled)
     scored = score_bound_task(task, files) if task.get("function_contracts") else None
     if scored is None:
         from .capability_map import score_coding
         scored = score_coding(task, files)
     return dict(
-        selection_correct=selection_correct,
-        bindings_correct=bindings_correct,
-        assembled_ok=assembled_ok,
+        **tracks,
+        assembled_ok=tracks["assembly_valid"],
         public_passed=scored.get("public_passed"),
         private_passed=scored.get("private_passed"),
         required_call=scored.get("required_call"),
-        passed=bool(scored.get("private_passed") and assembled_ok),
+        passed=bool(scored.get("private_passed") and tracks["assembly_valid"]),
         files=files,
         proposal=proposal,
         assembled=assembled,
-        selection_not_generally_solved=True,
     )
 
 
