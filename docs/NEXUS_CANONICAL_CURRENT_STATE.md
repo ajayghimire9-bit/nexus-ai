@@ -1,6 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — constrained function edits and generated-code feature (results)
+## Current — function-output formats and placeholder rejection (protocol)
+
+[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md). Branch
+`cursor/seed-function-format-compare` from reviewed tip `b6b70cf`. Record
+the raw `/completion` request (no chat template, no stop, `n_predict`
+128). Compare plain-code, JSON-function and JSON-body on the same two
+development tasks. Reject placeholder bodies, then one revision. Repeat
+the best 0.5B format on installed qwen2.5-coder-1.5b. Target discovery
+from the request is not implemented. Ledger
+**2499.393603455996 used / 1100.606396544004 remaining**.
+
+## Previous — constrained function edits and generated-code feature (results)
 
 [Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md),
 [results](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_RESULTS.md). Implementation

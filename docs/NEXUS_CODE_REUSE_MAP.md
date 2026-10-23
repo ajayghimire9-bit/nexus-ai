@@ -1,5 +1,13 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Function-output formats
+
+`seed/function_format.py` reuses `plan_constrained_edit`, `validate_patch`
+and `apply_patch`. It does not edit `local_model_runtime.py`. The study
+calls `/completion` with format-specific schema or none. Target still
+comes from the public-test entry.
+[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md).
+
 ## Constrained function edits
 
 `seed/constrained_edit.py` plans replace-versus-insert from the public

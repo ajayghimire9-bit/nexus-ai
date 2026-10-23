@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next — three function formats, then the 1.5B coder on the best one
+
+The [constrained-edit pilot](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_RESULTS.md)
+queued `"ok"` / `"echo"` under a JSON `function` string. Next: inspect the
+raw request; compare plain-code, JSON-function and JSON-body; reject
+placeholders; repeat the best format on installed qwen2.5-coder-1.5b.
+Do not resume ranking or memory. Ledger
+**2499.393603455996 used / 1100.606396544004 remaining**.
+[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md).
+
 ## Current next — refuse wrapped identifiers, then re-measure semantic bodies
 
 The [constrained-edit pilot](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_RESULTS.md)

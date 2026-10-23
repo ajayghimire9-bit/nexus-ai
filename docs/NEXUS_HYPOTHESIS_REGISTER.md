@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Current — decoding/interface versus coding capability
+
+Predeclared: the one-word `function` completions were a request/schema
+effect. Three formats on the same tasks and budget distinguish that from
+inadequate coding. Placeholder bodies are rejected; `return None` is
+not. The best 0.5B format is repeated on the installed 1.5B coder.
+Development only; not confirmation.
+[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md).
+
 ## Current — constrained function text versus path/action choice
 
 Predeclared: removing path, symbol and insert-versus-replace from the

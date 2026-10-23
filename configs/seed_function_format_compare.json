@@ -1,0 +1,71 @@
+{
+  "id": "seed-function-format-compare-1",
+  "artifact_stem": "seed_function_format_compare",
+  "base_sha": "b6b70cf4136002a55cd335c5b7ae0d842d9b933d",
+  "parent_protocol_commit": "b6b70cf4136002a55cd335c5b7ae0d842d9b933d",
+  "carried_used_s": 2499.393603455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "not_implemented",
+  "model_max_tokens": 128,
+  "models": {
+    "qwen05": {
+      "label": "qwen2.5-0.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+      "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+      "bytes": 491400032
+    },
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "format_cells": 6,
+    "coder_cells": 2
+  },
+  "tasks": [
+    {
+      "id": "py_level_three_point",
+      "role": "replace",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow level equal to the cap.",
+      "files": {"level.py": "def ok(item):\n    return item['level'] < item['cap']\n"},
+      "public": [
+        {"entry": "level.ok", "input": {"level": 1, "cap": 2}, "expected": true},
+        {"entry": "level.ok", "input": {"level": 2, "cap": 2}, "expected": true},
+        {"entry": "level.ok", "input": {"level": 3, "cap": 2}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "level.ok", "input": {"level": 2, "cap": 2}, "expected": true},
+        {"entry": "level.ok", "input": {"level": 3, "cap": 2}, "expected": false}
+      ]
+    },
+    {
+      "id": "py_code_colon",
+      "role": "insert",
+      "family": "formatted_identifier",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function code(item) that returns the kind and name in lowercase, joined by one colon.",
+      "docs": [{"title": "code", "content": "code(item) is kind and name, lowercased, joined by one colon."}],
+      "files": {"echo.py": "def echo(text):\n    return text\n"},
+      "public": [
+        {"entry": "echo.code", "input": {"kind": "Src", "name": "Beta"}, "expected": "src:beta"}
+      ],
+      "assessment": [
+        {"entry": "echo.code", "input": {"kind": "A", "name": "B"}, "expected": "a:b"}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}
