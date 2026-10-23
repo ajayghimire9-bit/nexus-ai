@@ -122,7 +122,7 @@ def compact_behavioral_feedback(
     failed_expression: str = "",
 ) -> dict[str, Any]:
     failed = compact_failed_cases(public, public_tests)
-    if is_int_dict_sum_failure(public):
+    if is_int_dict_sum_failure(public) or sum_lacks_element_projection(failed_expression):
         instruction = int_dict_sum_instruction(public_tests, failed)
     else:
         instruction = "Public tests failed. Repair the failed body using the failed cases only."
@@ -157,6 +157,16 @@ def compact_supplied_contract(plan, public_tests: list[dict[str, Any]] | None) -
     )
 
 
+def compact_initial_prompt(plan, spec: dict[str, Any]) -> str:
+    contract = compact_supplied_contract(plan, spec.get("public") or [])
+    symbol = getattr(plan, "symbol", "fn")
+    return (
+        contract
+        + f'Return JSON {{"body": "..."}} for {symbol}. Include return. No def line.\n'
+        + f'Request: {spec.get("request") or ""}\n'
+    )
+
+
 def compact_revision_prompt(plan, failed_expression: str, feedback: dict[str, Any]) -> str:
     symbol = getattr(plan, "symbol", "fn")
     args = getattr(plan, "args", None) or "item"
@@ -170,12 +180,19 @@ def compact_revision_prompt(plan, failed_expression: str, feedback: dict[str, An
     )
 
 
+def needs_compact_sum_repair(public: dict[str, Any] | None, body: str) -> bool:
+    """Compact revision for int+dict TypeError or any unprojected sum(...) body."""
+    if is_int_dict_sum_failure(public):
+        return True
+    return "sum(" in (body or "") and sum_lacks_element_projection(body)
+
+
 def reject_unprojected_sum(
     prior_body: str,
     new_body: str,
     public: dict[str, Any] | None,
 ) -> str | None:
-    if not is_int_dict_sum_failure(public):
+    if not needs_compact_sum_repair(public, prior_body):
         return None
     if "sum(" not in (prior_body or ""):
         return None

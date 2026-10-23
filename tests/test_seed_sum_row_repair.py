@@ -8,7 +8,9 @@ from nexus.seed.agent_loop_worker import compile_check, evaluate_python_payload
 from nexus.seed.sum_row_repair import (
     UNPROJECTED_SUM_MESSAGE,
     compact_behavioral_feedback,
+    compact_initial_prompt,
     compact_revision_prompt,
+    needs_compact_sum_repair,
     normalized_expr_dump,
     reject_unprojected_sum,
     sum_lacks_element_projection,
@@ -18,6 +20,7 @@ from nexus.seed.sum_row_repair import (
 ROOT = Path(__file__).resolve().parents[1]
 PROJECTED = "return sum((r.get('amount') or 0) for r in (item.get('rows') or []))"
 BARE = "return sum(item['rows'] or [0])"
+KEYWORD = "return sum(item['rows'], default=0)"
 GUARD_ONLY = "return sum(item['rows'] if item.get('rows') else [0])"
 BAG_PUBLIC = [
     {"entry": "bag.total", "input": {"rows": [{"amount": 4}, {"amount": 6}]}, "expected": 10},
@@ -58,6 +61,12 @@ def test_compile_check_allows_generator_projection_and_passes_bag_cases():
     compile_check(mapped)
     mapped_eval = evaluate_python_payload({"language": "python", "files": mapped, "cases": BAG_PUBLIC})
     assert mapped_eval["all_passed"] is True
+    keyword_files = {"bag.py": "def total(item):\n    " + KEYWORD + "\n"}
+    compile_check(keyword_files)
+    keyword_eval = evaluate_python_payload({"language": "python", "files": keyword_files, "cases": BAG_PUBLIC[:1]})
+    assert keyword_eval["compilation_passed"] is True
+    assert keyword_eval["all_passed"] is False
+    assert "TypeError" in str(keyword_eval["results"][0].get("error"))
 
 
 def test_compact_feedback_names_dict_element_keys():
@@ -83,8 +92,18 @@ def test_reject_noop_and_unprojected_sum_revisions():
     assert reject_unprojected_sum(BARE, BARE, TYPEERROR_PUBLIC) == UNPROJECTED_SUM_MESSAGE
     assert reject_unprojected_sum(BARE, GUARD_ONLY, TYPEERROR_PUBLIC) == UNPROJECTED_SUM_MESSAGE
     assert reject_unprojected_sum(BARE, PROJECTED, TYPEERROR_PUBLIC) is None
+    compile_public = {"results": [], "reason": "ValueError:forbidden_ast_node:kit.py:keyword"}
+    assert needs_compact_sum_repair(compile_public, KEYWORD) is True
+    assert reject_unprojected_sum(KEYWORD, KEYWORD, compile_public) == UNPROJECTED_SUM_MESSAGE
     ok_public = {"results": [{"passed": False, "error": "AssertionError"}]}
-    assert reject_unprojected_sum(BARE, BARE, ok_public) is None
+    assert reject_unprojected_sum(PROJECTED, PROJECTED, ok_public) is None
+    prompt0 = compact_initial_prompt(
+        type("P", (), {"symbol": "total", "args": "item"})(),
+        {"request": "sum amount", "public": BAG_PUBLIC},
+    )
+    assert "list[dict:amount:int]" in prompt0
+    assert "Representative" not in prompt0
+    assert "Public tests:" not in prompt0
 
 
 def test_fresh_confirm_ids_are_closed_against_prior_families():

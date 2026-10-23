@@ -47,7 +47,7 @@ ALLOWED_STDLIB_IMPORTS = {"math", " typing"}
 # Row projection for sum(...) needs ListComp / GeneratorExp / comprehension;
 # Lambda is worker-only so map(lambda r: ..., rows) can compile.
 ALLOWED_WORKER_AST = SAFE_AST_NODES + (
-    ast.Is, ast.IsNot, ast.ImportFrom, ast.alias, ast.Div,
+    ast.Is, ast.IsNot, ast.ImportFrom, ast.alias, ast.Div, ast.keyword,
     ast.ListComp, ast.GeneratorExp, ast.comprehension, ast.Lambda,
 )
 WORKER_BUILTINS = dict(SAFE_BUILTINS, map=map)

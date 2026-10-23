@@ -20,8 +20,9 @@ from .process_memory import sample_process_memory
 from .public_failure import behavioral_feedback, comparison_ops, operator_hint_present
 from .sum_row_repair import (
     compact_behavioral_feedback,
+    compact_initial_prompt,
     compact_revision_prompt,
-    is_int_dict_sum_failure,
+    needs_compact_sum_repair,
     reject_unprojected_sum,
 )
 from .target_discovery import discover_edit_target, plan_from_discovery, score_discovery
@@ -88,7 +89,7 @@ def _trace(assembled, **extra):
 
 def propose_cell(
     runtime, spec, variant, meter, scope, *, wire_discovery, max_tokens=128,
-    contract_block=None, contract_origin=None, asked=False,
+    contract_block=None, contract_origin=None, asked=False, compact_prompts=False,
 ):
     started = time.perf_counter()
     task = _task(spec)
@@ -117,7 +118,10 @@ def propose_cell(
         )
     schema = schema_for_format(FORMAT)
     decoding = decoding_record(schema, max_tokens)
-    user_prompt = build_user_prompt(variant, task, plan, contract_block=contract_block)
+    if compact_prompts:
+        user_prompt = compact_initial_prompt(plan, spec)
+    else:
+        user_prompt = build_user_prompt(variant, task, plan, contract_block=contract_block)
     prompt, render = render_prompt(STYLE, user_prompt)
     raw = _complete(runtime, prompt, schema, meter, scope, spec["id"] + ":0")
     if type(raw) is not dict:
@@ -133,7 +137,13 @@ def propose_cell(
     if (assembled.get("placeholder") or not assembled.get("syntax_valid")) and len(traces) < MAX_COMPLETIONS:
         format_attempted = True
         feedback = revision_feedback(assembled.get("placeholder") or assembled.get("raw_reason") or "malformed")
-        user2 = build_user_prompt(variant, task, plan, feedback, contract_block=contract_block)
+        if compact_prompts:
+            user2 = compact_revision_prompt(plan, "", {
+                "instruction": "JSON body was empty or invalid. Return {\"body\": \"...\"} only.",
+                "failed_cases": [],
+            })
+        else:
+            user2 = build_user_prompt(variant, task, plan, feedback, contract_block=contract_block)
         prompt2, render2 = render_prompt(STYLE, user2)
         raw2 = _complete(runtime, prompt2, schema, meter, scope, spec["id"] + ":format")
         if type(raw2) is not dict:
@@ -164,7 +174,7 @@ def propose_cell(
         elif len(traces) < MAX_COMPLETIONS:
             behavior_attempted = True
             prior_body = _body_excerpt(assembled)
-            if is_int_dict_sum_failure(public):
+            if compact_prompts or needs_compact_sum_repair(public, prior_body):
                 feedback = compact_behavioral_feedback(
                     public, spec.get("public") or [], prior_body,
                 )
@@ -191,7 +201,7 @@ def propose_cell(
                 operator_hint_in_revision=operator_hint_present(user3),
                 operator_supplied=feedback.get("operator_supplied"),
                 failed_cases=feedback.get("failed_cases"),
-                compact_revision=is_int_dict_sum_failure(public),
+                compact_revision=compact_prompts or needs_compact_sum_repair(public, prior_body),
             ))
             reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
             traces[-1]["unprojected_sum_rejected"] = bool(reject)

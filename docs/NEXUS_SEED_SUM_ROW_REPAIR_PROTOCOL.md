@@ -33,6 +33,19 @@ fresh IDs (`py_kit_sum`, `py_mark_empty`, `py_share_div`,
 division, and compound threshold. Frozen 1.5B recipe. Request timeout
 20 s. Target ledger debit < 25 s.
 
+## Amendment after first live attempt (partial)
+
+The first live cell wrote `sum(item['rows'], default=0)`, which the
+worker rejected as `forbidden_ast_node:keyword`. Compact TypeError
+feedback did not fire, the long fallback revision timed out at 20 s,
+and the remaining cells returned empty bodies after the server died.
+That run is kept as
+`artifacts/seed_sum_row_repair_confirm/seed_sum_row_repair_confirm_partial.json`
+(sha256 `d7a41905de0e72a4f9ad9996e7ed99bd44386d4f5e4ab8fd191c740ec6f68efe`).
+Before re-scoring: allow `ast.keyword`; send compact prompts on any
+unprojected `sum(...)` (not only int+dict); use a compact initial
+prompt so CPU prefill stays under 5 s. Fresh IDs unchanged.
+
 ## Gates
 
 `fixed_boundary` remains the default. No ranking or memory promotion.

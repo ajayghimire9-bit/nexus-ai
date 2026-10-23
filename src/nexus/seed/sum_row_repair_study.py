@@ -29,6 +29,7 @@ WORKER_PROMPT_FREEZE = dict(
     worker_allows_div=True,
     numeric_compare="compare_python_result",
     compact_sum_row_repair=True,
+    worker_allows_keyword=True,
 )
 
 
@@ -98,7 +99,7 @@ def record_model(config, emit, meter, runtime):
             runtime, spec, "contract", meter, "coder15:supplied:" + spec["id"],
             wire_discovery=True, max_tokens=max_tokens,
             contract_block=compact_supplied_contract(plan, spec.get("public") or []),
-            contract_origin="supplied", asked=False,
+            contract_origin="supplied", asked=False, compact_prompts=True,
         )
         bodies = _bodies(result)
         row = dict(
