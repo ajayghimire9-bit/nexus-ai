@@ -1,0 +1,2460 @@
+{
+  "kind": "seed_capability_map",
+  "confirmation": false,
+  "aggregate_score": false,
+  "learning_to_learn_established": false,
+  "config": {
+    "id": "seed-capability-map-1",
+    "artifact_stem": "seed_capability_map",
+    "base_sha": "76ee5439d2b5c59037533193e7f954d6b65cd9cf",
+    "product_parent_sha": "e3d21b6",
+    "mode": "authored_source_development_screen_not_confirmation",
+    "aggregate_score": false,
+    "weighting": null,
+    "learning_to_learn_established": false,
+    "ranking_policy_resumed": false,
+    "acquired_solution_memory": false,
+    "areas": [
+      "conversation",
+      "mathematics",
+      "logic",
+      "coding",
+      "knowledge"
+    ],
+    "tasks_per_area": 6,
+    "methods": [
+      "model_alone",
+      "tools_cache",
+      "nexus"
+    ],
+    "model_path": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "decoding": {
+      "endpoint": "/completion",
+      "temperature": 0,
+      "seed": 42,
+      "ngl": 0,
+      "device": "none",
+      "max_tokens": 192,
+      "runtime_module": "local_model_runtime.py",
+      "runtime_edited": false
+    },
+    "budgets": {
+      "wall_s": 900,
+      "cpu_s": 900,
+      "model_calls": 180,
+      "real_environment_steps": 0,
+      "frozen_cpu_debit_s": 0,
+      "product_chat_usage": false,
+      "metal": false
+    },
+    "expected_grid": {
+      "areas": 5,
+      "tasks": 30,
+      "methods": 3,
+      "cells": 90
+    },
+    "closed_ids_unused": [
+      "py_clip_hi_src",
+      "py_slug_join",
+      "py_levy_then_credit",
+      "py_retry_last",
+      "py_age_cap",
+      "csv_easy_sum",
+      "dev_clip_span",
+      "dev_coord_within",
+      "dev_use_scale"
+    ],
+    "programmer_supplied": [
+      "arithmetic_ast_calculator",
+      "eligible_always_extract_route",
+      "vault_retrieve_and_cite",
+      "ordinary_exact_cache",
+      "contract_id_schema_not_used_in_this_screen"
+    ],
+    "future_experience_transfer": "docs/NEXUS_SEED_EXPERIENCE_TRANSFER_NEXT.md"
+  },
+  "rows": [
+    {
+      "task_id": "conv_follow",
+      "area": "conversation",
+      "family": "follow_up",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "A tide pool is a collection of marine life that forms on the shore during high tide, where the water level is higher than the surrounding land.",
+          "A rock pool is a collection of marine life that forms on the shore during low tide, where the water level is lower than the surrounding land."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "model_alone"
+      },
+      "wall_s": 3.228839
+    },
+    {
+      "task_id": "conv_follow",
+      "area": "conversation",
+      "family": "follow_up",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "A tide pool is a collection of marine life that forms on the shore during high tide, where the water level is higher than the surrounding land.",
+          "A rock pool is a collection of marine life that forms on the shore during low tide, where the water level is lower than the surrounding land."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache"
+      },
+      "wall_s": 3.299025
+    },
+    {
+      "task_id": "conv_follow",
+      "area": "conversation",
+      "family": "follow_up",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "A tide pool is a collection of marine life that forms on the shore during high tide, where the water level is higher than the surrounding land.",
+          "A rock pool is a collection of marine life that forms on the shore during low tide, where the water level is lower than the surrounding land."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache",
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "conv_paraphrase",
+      "area": "conversation",
+      "family": "paraphrase",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "checks": {
+          "addresses_topic": false
+        },
+        "replies": [
+          "A estuary is where a river meets the ocean."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "model_alone"
+      },
+      "wall_s": 1.006029
+    },
+    {
+      "task_id": "conv_paraphrase",
+      "area": "conversation",
+      "family": "paraphrase",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "checks": {
+          "addresses_topic": false
+        },
+        "replies": [
+          "A estuary is where a river meets the ocean."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache"
+      },
+      "wall_s": 0.99955
+    },
+    {
+      "task_id": "conv_paraphrase",
+      "area": "conversation",
+      "family": "paraphrase",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "checks": {
+          "addresses_topic": false
+        },
+        "replies": [
+          "A estuary is where a river meets the ocean."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache",
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "conv_correct",
+      "area": "conversation",
+      "family": "correction",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "uses_correction": true,
+          "dropped_old": true
+        },
+        "replies": [
+          "The lighthouse is on the north cliff.",
+          "The lighthouse is on the south cliff."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "model_alone"
+      },
+      "wall_s": 2.077727
+    },
+    {
+      "task_id": "conv_correct",
+      "area": "conversation",
+      "family": "correction",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "uses_correction": true,
+          "dropped_old": true
+        },
+        "replies": [
+          "The lighthouse is on the north cliff.",
+          "The lighthouse is on the south cliff."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache"
+      },
+      "wall_s": 2.071798
+    },
+    {
+      "task_id": "conv_correct",
+      "area": "conversation",
+      "family": "correction",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "uses_correction": true,
+          "dropped_old": true
+        },
+        "replies": [
+          "The lighthouse is on the north cliff.",
+          "The lighthouse is on the south cliff."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache",
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "conv_return",
+      "area": "conversation",
+      "family": "topic_return",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "The harbor bird is the harbor pigeon.",
+          "2 + 2 equals 4.",
+          "The harbor pigeon is a type of bird that is commonly found in coastal areas."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "model_alone"
+      },
+      "wall_s": 3.54474
+    },
+    {
+      "task_id": "conv_return",
+      "area": "conversation",
+      "family": "topic_return",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "The harbor bird is the harbor pigeon.",
+          "2 + 2 equals 4.",
+          "The harbor pigeon is a type of bird that is commonly found in coastal areas."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache"
+      },
+      "wall_s": 3.438173
+    },
+    {
+      "task_id": "conv_return",
+      "area": "conversation",
+      "family": "topic_return",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "The harbor bird is the harbor pigeon.",
+          "2 + 2 equals 4.",
+          "The harbor pigeon is a type of bird that is commonly found in coastal areas."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache",
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "conv_beginner",
+      "area": "conversation",
+      "family": "beginner",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "Salinity is a measure of the amount of dissolved salt in water. It is a chemical property of water that affects its taste, appearance, and behavior. Salinity is often used to describe the concentration of salt in seawater, but it can also be found in other types of water, such as lake water or river water. Salinity is important for many living organisms, as it helps them to survive and thrive in their environment."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "model_alone"
+      },
+      "wall_s": 2.726026
+    },
+    {
+      "task_id": "conv_beginner",
+      "area": "conversation",
+      "family": "beginner",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "Salinity is a measure of the amount of dissolved salt in water. It is a chemical property of water that affects its taste, appearance, and behavior. Salinity is often used to describe the concentration of salt in seawater, but it can also be found in other types of water, such as lake water or river water. Salinity is important for many living organisms, as it helps them to survive and thrive in their environment."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache"
+      },
+      "wall_s": 2.724181
+    },
+    {
+      "task_id": "conv_beginner",
+      "area": "conversation",
+      "family": "beginner",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "checks": {
+          "addresses_topic": true
+        },
+        "replies": [
+          "Salinity is a measure of the amount of dissolved salt in water. It is a chemical property of water that affects its taste, appearance, and behavior. Salinity is often used to describe the concentration of salt in seawater, but it can also be found in other types of water, such as lake water or river water. Salinity is important for many living organisms, as it helps them to survive and thrive in their environment."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache",
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "conv_clarify",
+      "area": "conversation",
+      "family": "ambiguous",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "checks": {
+          "asks": false
+        },
+        "replies": [
+          "I apologize, but I cannot assist with that request."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "model_alone"
+      },
+      "wall_s": 0.82462
+    },
+    {
+      "task_id": "conv_clarify",
+      "area": "conversation",
+      "family": "ambiguous",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "checks": {
+          "asks": false
+        },
+        "replies": [
+          "I apologize, but I cannot assist with that request."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache"
+      },
+      "wall_s": 0.819932
+    },
+    {
+      "task_id": "conv_clarify",
+      "area": "conversation",
+      "family": "ambiguous",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "checks": {
+          "asks": false
+        },
+        "replies": [
+          "I apologize, but I cannot assist with that request."
+        ],
+        "pending_human_review": true,
+        "keyword_quality_score": false,
+        "scoring": "explicit_rubric_acts; full_replies_preserved; human_review_pending",
+        "cache_hit": false,
+        "method": "tools_cache",
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "math_units",
+      "area": "mathematics",
+      "family": "arithmetic_units",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "value": 1.0,
+        "unaided_value": 1.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "cache_hit": false
+      },
+      "wall_s": 3.725297
+    },
+    {
+      "task_id": "math_units",
+      "area": "mathematics",
+      "family": "arithmetic_units",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "value": 2500.0,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 2500.0
+        },
+        "expression_represents_problem": true,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false
+      },
+      "wall_s": 3.486618
+    },
+    {
+      "task_id": "math_units",
+      "area": "mathematics",
+      "family": "arithmetic_units",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "value": 2500.0,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 2500.0
+        },
+        "expression_represents_problem": true,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "math_algebra",
+      "area": "mathematics",
+      "family": "algebra",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "value": 3.0,
+        "unaided_value": 3.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "cache_hit": false
+      },
+      "wall_s": 5.180679
+    },
+    {
+      "task_id": "math_algebra",
+      "area": "mathematics",
+      "family": "algebra",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "value": 3.0,
+        "unaided_value": 3.0,
+        "tool_assisted": false,
+        "tool": {
+          "ok": false,
+          "error": "SyntaxError",
+          "value": null
+        },
+        "expression_represents_problem": false,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false
+      },
+      "wall_s": 2.210329
+    },
+    {
+      "task_id": "math_algebra",
+      "area": "mathematics",
+      "family": "algebra",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "value": 3.0,
+        "unaided_value": 3.0,
+        "tool_assisted": false,
+        "tool": {
+          "ok": false,
+          "error": "SyntaxError",
+          "value": null
+        },
+        "expression_represents_problem": false,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "math_word",
+      "area": "mathematics",
+      "family": "word",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "value": 1.0,
+        "unaided_value": 1.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "cache_hit": false
+      },
+      "wall_s": 4.545248
+    },
+    {
+      "task_id": "math_word",
+      "area": "mathematics",
+      "family": "word",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "value": 1.0,
+        "unaided_value": 1.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false
+      },
+      "wall_s": 5.393463
+    },
+    {
+      "task_id": "math_word",
+      "area": "mathematics",
+      "family": "word",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "value": 1.0,
+        "unaided_value": 1.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "math_percent",
+      "area": "mathematics",
+      "family": "percent",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "value": 15.0,
+        "unaided_value": 15.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "cache_hit": false
+      },
+      "wall_s": 5.081061
+    },
+    {
+      "task_id": "math_percent",
+      "area": "mathematics",
+      "family": "percent",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "value": 15.0,
+        "unaided_value": 15.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false
+      },
+      "wall_s": 5.237837
+    },
+    {
+      "task_id": "math_percent",
+      "area": "mathematics",
+      "family": "percent",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "value": 15.0,
+        "unaided_value": 15.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "math_steps",
+      "area": "mathematics",
+      "family": "multi_step",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "value": 1.0,
+        "unaided_value": 1.0,
+        "tool_assisted": false,
+        "tool": null,
+        "expression_represents_problem": null,
+        "unit_ok": true,
+        "cache_hit": false
+      },
+      "wall_s": 4.355073
+    },
+    {
+      "task_id": "math_steps",
+      "area": "mathematics",
+      "family": "multi_step",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "value": 25.2,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 25.2
+        },
+        "expression_represents_problem": false,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false
+      },
+      "wall_s": 4.779614
+    },
+    {
+      "task_id": "math_steps",
+      "area": "mathematics",
+      "family": "multi_step",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "value": 25.2,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 25.2
+        },
+        "expression_represents_problem": false,
+        "unit_ok": true,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "math_underspec",
+      "area": "mathematics",
+      "family": "underspecified",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "tool": null,
+        "unaided_value": 100.0,
+        "cache_hit": false
+      },
+      "wall_s": 5.247002
+    },
+    {
+      "task_id": "math_underspec",
+      "area": "mathematics",
+      "family": "underspecified",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "tool": null,
+        "unaided_value": null,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false
+      },
+      "wall_s": 5.307087
+    },
+    {
+      "task_id": "math_underspec",
+      "area": "mathematics",
+      "family": "underspecified",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "tool": null,
+        "unaided_value": null,
+        "programmer_supplied_calculator": true,
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "logic_relate",
+      "area": "logic",
+      "family": "relation",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "text": "Bo is the shortest.",
+        "expected": "cy",
+        "cache_hit": false
+      },
+      "wall_s": 0.811619
+    },
+    {
+      "task_id": "logic_relate",
+      "area": "logic",
+      "family": "relation",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "text": "Bo is the shortest.",
+        "expected": "cy",
+        "cache_hit": false
+      },
+      "wall_s": 0.809427
+    },
+    {
+      "task_id": "logic_relate",
+      "area": "logic",
+      "family": "relation",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "text": "Bo is the shortest.",
+        "expected": "cy",
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "logic_order",
+      "area": "logic",
+      "family": "ordering",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "text": "Reed, Moss, Kelp.",
+        "expected": "reed, moss, kelp",
+        "cache_hit": false
+      },
+      "wall_s": 0.916027
+    },
+    {
+      "task_id": "logic_order",
+      "area": "logic",
+      "family": "ordering",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "text": "Reed, Moss, Kelp.",
+        "expected": "reed, moss, kelp",
+        "cache_hit": false
+      },
+      "wall_s": 0.916424
+    },
+    {
+      "task_id": "logic_order",
+      "area": "logic",
+      "family": "ordering",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "text": "Reed, Moss, Kelp.",
+        "expected": "reed, moss, kelp",
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "logic_counter",
+      "area": "logic",
+      "family": "counterexample",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "text": "The claim \"every even number greater than 2 is divisible by 4\" is true. This is because any even number greater than 2 can be written in the form \\(2k\\) where \\(k\\) is an integer. Since \\(2k\\) is clearly divisible by 2, it is also divisible by 4. \n\nOne counterexample to this claim is the number 3. The number 3 is an odd number, not an even number. Therefore, it cannot be divisible by 4.",
+        "expected": "6",
+        "cache_hit": false
+      },
+      "wall_s": 3.228569
+    },
+    {
+      "task_id": "logic_counter",
+      "area": "logic",
+      "family": "counterexample",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "text": "The claim \"every even number greater than 2 is divisible by 4\" is true. This is because any even number greater than 2 can be written in the form \\(2k\\) where \\(k\\) is an integer. Since \\(2k\\) is clearly divisible by 2, it is also divisible by 4. \n\nOne counterexample to this claim is the number 3. The number 3 is an odd number, not an even number. Therefore, it cannot be divisible by 4.",
+        "expected": "6",
+        "cache_hit": false
+      },
+      "wall_s": 3.226577
+    },
+    {
+      "task_id": "logic_counter",
+      "area": "logic",
+      "family": "counterexample",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "text": "The claim \"every even number greater than 2 is divisible by 4\" is true. This is because any even number greater than 2 can be written in the form \\(2k\\) where \\(k\\) is an integer. Since \\(2k\\) is clearly divisible by 2, it is also divisible by 4. \n\nOne counterexample to this claim is the number 3. The number 3 is an odd number, not an even number. Therefore, it cannot be divisible by 4.",
+        "expected": "6",
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "logic_contradict",
+      "area": "logic",
+      "family": "contradiction",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "text": "Yes, both sentences can be true.",
+        "expected": "no",
+        "cache_hit": false
+      },
+      "wall_s": 0.903047
+    },
+    {
+      "task_id": "logic_contradict",
+      "area": "logic",
+      "family": "contradiction",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "text": "Yes, both sentences can be true.",
+        "expected": "no",
+        "cache_hit": false
+      },
+      "wall_s": 0.898613
+    },
+    {
+      "task_id": "logic_contradict",
+      "area": "logic",
+      "family": "contradiction",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "text": "Yes, both sentences can be true.",
+        "expected": "no",
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "logic_plan",
+      "area": "logic",
+      "family": "resource_plan",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "text": "Yes, you can visit both A and B today.",
+        "expected": "no",
+        "cache_hit": false
+      },
+      "wall_s": 1.131389
+    },
+    {
+      "task_id": "logic_plan",
+      "area": "logic",
+      "family": "resource_plan",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "text": "Yes, you can visit both A and B today.",
+        "expected": "no",
+        "cache_hit": false
+      },
+      "wall_s": 1.133003
+    },
+    {
+      "task_id": "logic_plan",
+      "area": "logic",
+      "family": "resource_plan",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "text": "Yes, you can visit both A and B today.",
+        "expected": "no",
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "logic_unknown",
+      "area": "logic",
+      "family": "missing_evidence",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "text": "I cannot determine the weight of the hidden box without additional information.",
+        "cache_hit": false
+      },
+      "wall_s": 1.001164
+    },
+    {
+      "task_id": "logic_unknown",
+      "area": "logic",
+      "family": "missing_evidence",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "text": "I cannot determine the weight of the hidden box without additional information.",
+        "cache_hit": false
+      },
+      "wall_s": 1.001477
+    },
+    {
+      "task_id": "logic_unknown",
+      "area": "logic",
+      "family": "missing_evidence",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "text": "I cannot determine the weight of the hidden box without additional information.",
+        "cache_hit": false,
+        "identical_to": "tools_cache",
+        "reused": true
+      },
+      "wall_s": 2e-06
+    },
+    {
+      "task_id": "code_new",
+      "area": "coding",
+      "family": "new_function",
+      "method": "model_alone",
+      "scored": {
+        "public_passed": true,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "wage",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "wage",
+              "module": "",
+              "source": "named"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "pay.py": "def echo(text):\n    return text\n\ndef net_pay(item):\n    return item['wage'] - item['tax']\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.554199
+    },
+    {
+      "task_id": "code_new",
+      "area": "coding",
+      "family": "new_function",
+      "method": "tools_cache",
+      "scored": {
+        "public_passed": true,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "wage",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "wage",
+              "module": "",
+              "source": "named"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "pay.py": "def echo(text):\n    return text\n\ndef net_pay(item):\n    return item['wage'] - item['tax']\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.551348
+    },
+    {
+      "task_id": "code_new",
+      "area": "coding",
+      "family": "new_function",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "wage",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "wage",
+              "module": "",
+              "source": "named"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "pay.py": "def echo(text):\n    return text\n"
+        },
+        "route": "eligible_always_extract",
+        "programmer_supplied_extraction": true
+      },
+      "wall_s": 3.641247
+    },
+    {
+      "task_id": "code_missing",
+      "area": "coding",
+      "family": "missing_value",
+      "method": "model_alone",
+      "scored": {
+        "public_passed": true,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": true,
+        "files": {
+          "tag.py": "def echo(text):\n    return text\n\ndef shelf_of(item):\n    return item.get('shelf', '')\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.680837
+    },
+    {
+      "task_id": "code_missing",
+      "area": "coding",
+      "family": "missing_value",
+      "method": "tools_cache",
+      "scored": {
+        "public_passed": true,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": true,
+        "files": {
+          "tag.py": "def echo(text):\n    return text\n\ndef shelf_of(item):\n    return item.get('shelf', '')\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.616643
+    },
+    {
+      "task_id": "code_missing",
+      "area": "coding",
+      "family": "missing_value",
+      "method": "nexus",
+      "scored": {
+        "public_passed": true,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": true,
+        "files": {
+          "tag.py": "def echo(text):\n    return text\n\ndef shelf_of(item):\n    return item.get('shelf', '')\n"
+        },
+        "route": "direct_fallback:ineligible_optional_or_nullable",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.621993
+    },
+    {
+      "task_id": "code_nested",
+      "area": "coding",
+      "family": "nested_list",
+      "method": "model_alone",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "crew",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "crew",
+              "module": "",
+              "source": "named"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "crew.py": "def echo(text):\n    return text\n\ndef low_names(item):\n    return [name.lower() for name in item['names']]\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.498325
+    },
+    {
+      "task_id": "code_nested",
+      "area": "coding",
+      "family": "nested_list",
+      "method": "tools_cache",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "crew",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "crew",
+              "module": "",
+              "source": "named"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "crew.py": "def echo(text):\n    return text\n\ndef low_names(item):\n    return [name.lower() for name in item['names']]\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.492544
+    },
+    {
+      "task_id": "code_nested",
+      "area": "coding",
+      "family": "nested_list",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "crew",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "crew",
+              "module": "",
+              "source": "named"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "crew.py": "def echo(text):\n    return text\n"
+        },
+        "route": "eligible_always_extract",
+        "programmer_supplied_extraction": true
+      },
+      "wall_s": 3.423168
+    },
+    {
+      "task_id": "code_bug",
+      "area": "coding",
+      "family": "bug_repair",
+      "method": "model_alone",
+      "scored": {
+        "public_passed": true,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": true,
+        "files": {
+          "gate.py": "def keep(item):\n    return item['n'] <= item['cap']\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.482076
+    },
+    {
+      "task_id": "code_bug",
+      "area": "coding",
+      "family": "bug_repair",
+      "method": "tools_cache",
+      "scored": {
+        "public_passed": true,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": true,
+        "files": {
+          "gate.py": "def keep(item):\n    return item['n'] <= item['cap']\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 3.483057
+    },
+    {
+      "task_id": "code_bug",
+      "area": "coding",
+      "family": "bug_repair",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": true,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": true,
+        "files": {
+          "gate.py": "def keep(item):\n    return item['n'] < item['cap']\n"
+        },
+        "route": "eligible_always_extract",
+        "programmer_supplied_extraction": true
+      },
+      "wall_s": 4.007868
+    },
+    {
+      "task_id": "code_api",
+      "area": "coding",
+      "family": "documented_api",
+      "method": "model_alone",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "trim_span",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n\ndef total_trim(item):\n    return sum(trim_span(bin.vals))\n",
+          "measures.py": "def trim_span(nums, lo, hi):\n    return [lo if n < lo else hi if n > hi else n for n in nums]\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 4.046014
+    },
+    {
+      "task_id": "code_api",
+      "area": "coding",
+      "family": "documented_api",
+      "method": "tools_cache",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "trim_span",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n\ndef total_trim(item):\n    return sum(trim_span(bin.vals))\n",
+          "measures.py": "def trim_span(nums, lo, hi):\n    return [lo if n < lo else hi if n > hi else n for n in nums]\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 4.044958
+    },
+    {
+      "task_id": "code_api",
+      "area": "coding",
+      "family": "documented_api",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [],
+            "files": [],
+            "apis": [
+              {
+                "name": "trim_span",
+                "module": "",
+                "source": "named"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "trim_span",
+              "module": "",
+              "source": "named"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "measures.py": "def trim_span(nums, lo, hi):\n    return [lo if n < lo else hi if n > hi else n for n in nums]\n"
+        },
+        "route": "eligible_always_extract",
+        "programmer_supplied_extraction": true
+      },
+      "wall_s": 4.411003
+    },
+    {
+      "task_id": "code_coord",
+      "area": "coding",
+      "family": "coordinated_edit",
+      "method": "model_alone",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.pass_gate": {
+            "entry": "app.pass_gate",
+            "symbol": "pass_gate",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.above": {
+            "entry": "util.above",
+            "symbol": "above",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "above",
+                "file": "util.py",
+                "args": "value, floor"
+              },
+              {
+                "symbol": "pass_gate",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "above",
+                "module": "util",
+                "source": "add"
+              },
+              {
+                "name": "above",
+                "module": "",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "above",
+              "file": "util.py",
+              "args": "value, floor"
+            },
+            {
+              "symbol": "pass_gate",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [
+            {
+              "name": "above",
+              "module": "",
+              "source": "use"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 5.800078
+    },
+    {
+      "task_id": "code_coord",
+      "area": "coding",
+      "family": "coordinated_edit",
+      "method": "tools_cache",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.pass_gate": {
+            "entry": "app.pass_gate",
+            "symbol": "pass_gate",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.above": {
+            "entry": "util.above",
+            "symbol": "above",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "above",
+                "file": "util.py",
+                "args": "value, floor"
+              },
+              {
+                "symbol": "pass_gate",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "above",
+                "module": "util",
+                "source": "add"
+              },
+              {
+                "name": "above",
+                "module": "",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "above",
+              "file": "util.py",
+              "args": "value, floor"
+            },
+            {
+              "symbol": "pass_gate",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [
+            {
+              "name": "above",
+              "module": "",
+              "source": "use"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "route": "direct",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 5.801043
+    },
+    {
+      "task_id": "code_coord",
+      "area": "coding",
+      "family": "coordinated_edit",
+      "method": "nexus",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.pass_gate": {
+            "entry": "app.pass_gate",
+            "symbol": "pass_gate",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.above": {
+            "entry": "util.above",
+            "symbol": "above",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "above",
+                "file": "util.py",
+                "args": "value, floor"
+              },
+              {
+                "symbol": "pass_gate",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "above",
+                "module": "util",
+                "source": "add"
+              },
+              {
+                "name": "above",
+                "module": "",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "above",
+              "file": "util.py",
+              "args": "value, floor"
+            },
+            {
+              "symbol": "pass_gate",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [
+            {
+              "name": "above",
+              "module": "",
+              "source": "use"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "route": "direct_fallback:ineligible_optional_or_nullable",
+        "programmer_supplied_extraction": false
+      },
+      "wall_s": 5.799561
+    },
+    {
+      "task_id": "know_direct",
+      "area": "knowledge",
+      "family": "direct",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "fact_ok": false,
+        "citation_ok": true,
+        "citations": [],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false
+      },
+      "wall_s": 0.954469
+    },
+    {
+      "task_id": "know_direct",
+      "area": "knowledge",
+      "family": "direct",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "harbor-current",
+          "harbor-stale"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "programmer_supplied_retrieval": true,
+        "cache_hit": false
+      },
+      "wall_s": 1.824609
+    },
+    {
+      "task_id": "know_direct",
+      "area": "knowledge",
+      "family": "direct",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "harbor-current",
+          "harbor-stale"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "source": "vault_cite",
+        "programmer_supplied_retrieval": true
+      },
+      "wall_s": 0.000254
+    },
+    {
+      "task_id": "know_combine",
+      "area": "knowledge",
+      "family": "combine",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false
+      },
+      "wall_s": 0.686276
+    },
+    {
+      "task_id": "know_combine",
+      "area": "knowledge",
+      "family": "combine",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "buoy-red",
+          "buoy-depth"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "programmer_supplied_retrieval": true,
+        "cache_hit": false
+      },
+      "wall_s": 1.494824
+    },
+    {
+      "task_id": "know_combine",
+      "area": "knowledge",
+      "family": "combine",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "buoy-red",
+          "buoy-depth"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "source": "vault_cite",
+        "programmer_supplied_retrieval": true
+      },
+      "wall_s": 0.000217
+    },
+    {
+      "task_id": "know_compete",
+      "area": "knowledge",
+      "family": "compete",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "fact_ok": false,
+        "citation_ok": true,
+        "citations": [],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false
+      },
+      "wall_s": 0.871322
+    },
+    {
+      "task_id": "know_compete",
+      "area": "knowledge",
+      "family": "compete",
+      "method": "tools_cache",
+      "scored": {
+        "passed": false,
+        "fact_ok": false,
+        "citation_ok": true,
+        "citations": [
+          "competing-a",
+          "competing-b"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "programmer_supplied_retrieval": true,
+        "cache_hit": false
+      },
+      "wall_s": 1.514971
+    },
+    {
+      "task_id": "know_compete",
+      "area": "knowledge",
+      "family": "compete",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "competing-a",
+          "competing-b"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "source": "vault_cite",
+        "programmer_supplied_retrieval": true
+      },
+      "wall_s": 0.00028
+    },
+    {
+      "task_id": "know_fresh",
+      "area": "knowledge",
+      "family": "freshness",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "fact_ok": false,
+        "citation_ok": true,
+        "citations": [],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false
+      },
+      "wall_s": 1.343882
+    },
+    {
+      "task_id": "know_fresh",
+      "area": "knowledge",
+      "family": "freshness",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "harbor-current",
+          "harbor-stale"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "programmer_supplied_retrieval": true,
+        "cache_hit": false
+      },
+      "wall_s": 1.699597
+    },
+    {
+      "task_id": "know_fresh",
+      "area": "knowledge",
+      "family": "freshness",
+      "method": "nexus",
+      "scored": {
+        "passed": false,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "harbor-current",
+          "harbor-stale"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": false,
+        "token_overlap_score": false,
+        "source": "vault_cite",
+        "programmer_supplied_retrieval": true
+      },
+      "wall_s": 0.000238
+    },
+    {
+      "task_id": "know_cite",
+      "area": "knowledge",
+      "family": "citation",
+      "method": "model_alone",
+      "scored": {
+        "passed": false,
+        "fact_ok": false,
+        "citation_ok": false,
+        "citations": [],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false
+      },
+      "wall_s": 2.140601
+    },
+    {
+      "task_id": "know_cite",
+      "area": "knowledge",
+      "family": "citation",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "harbor-current",
+          "harbor-stale"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "programmer_supplied_retrieval": true,
+        "cache_hit": false
+      },
+      "wall_s": 1.857124
+    },
+    {
+      "task_id": "know_cite",
+      "area": "knowledge",
+      "family": "citation",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "fact_ok": true,
+        "citation_ok": true,
+        "citations": [
+          "harbor-current",
+          "harbor-stale"
+        ],
+        "supported_by_allowed": true,
+        "freshness_ok": true,
+        "token_overlap_score": false,
+        "source": "vault_cite",
+        "programmer_supplied_retrieval": true
+      },
+      "wall_s": 0.000232
+    },
+    {
+      "task_id": "know_unknown",
+      "area": "knowledge",
+      "family": "unsupported",
+      "method": "model_alone",
+      "scored": {
+        "passed": true,
+        "citations": [],
+        "token_overlap_score": false
+      },
+      "wall_s": 1.384718
+    },
+    {
+      "task_id": "know_unknown",
+      "area": "knowledge",
+      "family": "unsupported",
+      "method": "tools_cache",
+      "scored": {
+        "passed": true,
+        "citations": [],
+        "token_overlap_score": false,
+        "programmer_supplied_retrieval": true,
+        "cache_hit": false
+      },
+      "wall_s": 1.125725
+    },
+    {
+      "task_id": "know_unknown",
+      "area": "knowledge",
+      "family": "unsupported",
+      "method": "nexus",
+      "scored": {
+        "passed": true,
+        "citations": [],
+        "token_overlap_score": false,
+        "source": "vault_miss",
+        "identical_tools_to": "tools_cache"
+      },
+      "wall_s": 0.000198
+    }
+  ],
+  "summary": {
+    "conversation": {
+      "model_alone": {
+        "n": 6,
+        "passed": 4,
+        "pending_human_review": true
+      },
+      "tools_cache": {
+        "n": 6,
+        "passed": 4,
+        "pending_human_review": true
+      },
+      "nexus": {
+        "n": 6,
+        "passed": 4,
+        "pending_human_review": true
+      }
+    },
+    "mathematics": {
+      "model_alone": {
+        "n": 6,
+        "passed": 1,
+        "pending_human_review": false
+      },
+      "tools_cache": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      },
+      "nexus": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      }
+    },
+    "logic": {
+      "model_alone": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      },
+      "tools_cache": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      },
+      "nexus": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      }
+    },
+    "coding": {
+      "model_alone": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      },
+      "tools_cache": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      },
+      "nexus": {
+        "n": 6,
+        "passed": 2,
+        "pending_human_review": false
+      }
+    },
+    "knowledge": {
+      "model_alone": {
+        "n": 6,
+        "passed": 1,
+        "pending_human_review": false
+      },
+      "tools_cache": {
+        "n": 6,
+        "passed": 5,
+        "pending_human_review": false
+      },
+      "nexus": {
+        "n": 6,
+        "passed": 5,
+        "pending_human_review": false
+      }
+    }
+  },
+  "usage": {
+    "kind": "capability_map_cpu_usage",
+    "backend": "cpu",
+    "gpu_used": false,
+    "metal_used": false,
+    "product_chat_usage_used": false,
+    "research_cpu_ledger_frozen_s": 3564.568,
+    "research_cpu_ledger_remaining_s": 35.432,
+    "research_cpu_ledger_debit_s": 0.0,
+    "model_calls": 74,
+    "inference_ran": 70,
+    "wall_s": 187.184,
+    "cap_s": 900.0,
+    "call_cap": 180,
+    "cache_hits": 0,
+    "memory": {
+      "parent_pid": 53804,
+      "server_pid": 53836,
+      "parent_rss_mib": 43.062,
+      "server_rss_mib": 2082.797,
+      "combined_rss_mib": 2125.859,
+      "source": "ps_rss_kib",
+      "weight_file_is_not_memory": true
+    },
+    "acquired_solution_memory": false,
+    "ranking_policy_resumed": false,
+    "learning_to_learn_established": false,
+    "partial": false
+  },
+  "events": 90,
+  "api_audit_preserved": true,
+  "hash": "f3b2d0e8a66832154f19f5ade8ab2c02b34fc393a44eaedb42a95e417d305edc",
+  "startup": {
+    "status": "started",
+    "model": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "ngl": 0,
+    "device": "none",
+    "model_sha256": null
+  }
+}

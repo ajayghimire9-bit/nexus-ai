@@ -1,13 +1,15 @@
 # NEXUS Seed — Current State
 
-## Current — five-area capability map (protocol locked)
+## Current — five-area capability map (results)
 
-[Protocol](NEXUS_SEED_CAPABILITY_MAP_PROTOCOL.md). Branch
-`cursor/seed-capability-map` from `76ee543` / product `e3d21b6`.
-Thirty fresh tasks × three methods. B/C reuse is declared for
-conversation, mathematics and logic. Coding and knowledge differ.
-Acquired memory empty. Ranking policy paused. Frozen debit **0**.
-Not learning-to-learn. Live scoring follows this protocol commit.
+[Protocol](NEXUS_SEED_CAPABILITY_MAP_PROTOCOL.md),
+[results](NEXUS_SEED_CAPABILITY_MAP_RESULTS.md).
+Protocol `9906be6`. Artifact
+`f3b2d0e8a66832154f19f5ade8ab2c02b34fc393a44eaedb42a95e417d305edc`.
+Verifier 90/90. Knowledge 1/6 vs 5/6 with tools. Math 1/6 vs 2/6.
+Logic 2/6. Coding 2/6. Conversation 4/6 automatic, human review
+pending. B/C reused on conversation/math/logic. 74 calls, 187.184 s,
+frozen debit **0**. Not learning-to-learn. Not AGI.
 
 ## Previous — proposal diagnoses, ID schema, independent coverage
 
