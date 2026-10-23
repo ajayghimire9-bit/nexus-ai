@@ -1,12 +1,14 @@
 # NEXUS Seed — Current State
 
-## Current — Metal compare protocol locked (live NOT_RUN)
+## Current — Metal independent-vs-revision (results)
 
-[Protocol](NEXUS_SEED_METAL_LIVE_COMPARE_PROTOCOL.md). Independent
-versus error-guided revision on fresh hall/gate and dockbinding
-tasks, equal `k=4` / 128-token caps. Stubbed call-2 vs call-4 is not
-a live advantage. Report grant wall and complete assistant cost.
-CPU ledger **3564.568 s / 0 s debit**. Ranking stays paused.
+[Protocol](NEXUS_SEED_METAL_LIVE_COMPARE_PROTOCOL.md),
+[results](NEXUS_SEED_METAL_LIVE_COMPARE_RESULTS.md). Protocol
+`f072270`. Verifier `valid: true`. Both arms used 4/4 calls and
+failed independently replayed checks. User-total assistant cost
+**14.519 s**; grant wall **12.011 s**. Stubbed call-2 is not a live
+advantage. CPU ledger **3564.568 s / 0 s debit**. Ranking stays
+paused.
 
 ## Previous — Metal Best-of-4 smoke (results)
 

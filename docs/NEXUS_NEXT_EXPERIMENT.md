@@ -1,12 +1,11 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — one frozen live compare, then stop
+## Current next — do not retune after a failed live compare
 
-The [compare protocol](NEXUS_SEED_METAL_LIVE_COMPARE_PROTOCOL.md) is
-locked. After the protocol commit, run exactly one live
-independent-versus-revision batch. Do not treat the stubbed call-2
-result as an advantage. Report user-total assistant cost as well as
-grant seconds. Ranking stays paused.
+The [live compare](NEXUS_SEED_METAL_LIVE_COMPARE_RESULTS.md) used the
+full 4-call budget on both arms and passed nothing. Unique revision
+strings are not success. Do not plant `.get` or reopen closed CPU
+artifacts. Ranking stays paused.
 
 ## Previous next — do not retune stepwise after a failed call gate
 

@@ -1,0 +1,307 @@
+{
+  "study_id": "seed_metal_live_compare",
+  "scientific": false,
+  "kind": "source_development_metal_compare_not_confirmation",
+  "config_hash": "70711292e61726051bc4d5ce414bb1496536993ccf69cf6237634baf8127155f",
+  "blocked_step": null,
+  "model_metadata": {
+    "model_sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+    "model_file": "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "model_file_bytes": 1117320768,
+    "quantization": "Q4_K_M",
+    "gguf_file_type": 15,
+    "runtime_version": "version: 0.7.0 (build 11669, commit 620d2225c)\nbuilt with AppleClang 21.0.0.21000334 for Darwin arm64",
+    "executable_sha256": "9dc31a8a15f81b8f252e68d1918419e0bbbf5008bd42d00dd8721a58834e384a",
+    "hardware": "arm64",
+    "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "n_gpu_layers": -1,
+    "metal": true,
+    "settings": {
+      "model_path": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "executable": "llama-server",
+      "host": "127.0.0.1",
+      "port": 0,
+      "context_size": 2048,
+      "threads": 2,
+      "backend": "llama_cpp_server",
+      "request_timeout_s": 8.0,
+      "startup_timeout_s": 25.0,
+      "max_tokens": 128,
+      "seed": 42,
+      "application_cache": false,
+      "prompt_cache": false
+    },
+    "cold_startup_s": 1.0820293330034474
+  },
+  "records": [
+    {
+      "kind": "code_independent",
+      "prompt": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of label(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: foyer.py\nSymbol: label\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function label(item) that returns hall and gate in lowercase joined by one slash.\nDocs: none\nPublic tests: [{\"entry\": \"foyer.label\", \"input\": {\"hall\": \"Atrium\", \"gate\": \"North\"}, \"expected\": \"atrium/north\"}, {\"entry\": \"foyer.label\", \"input\": {\"gate\": \"North\"}, \"expected\": \"/north\"}, {\"entry\": \"foyer.label\", \"input\": {\"hall\": \"Atrium\"}, \"expected\": \"atrium/\"}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n<|im_end|>\n<|im_start|>assistant\n",
+      "arm": "independent",
+      "n_calls": 4,
+      "budget": 4,
+      "candidates": [
+        "{\n  \"body\": \"return hall.lower() + '/' + gate.lower()\"\n}",
+        "{\n  \"body\": \"return hall.lower() + '/' + gate.lower()\"\n}",
+        "{\n  \"body\": \"return hall.lower() + '/' + gate.lower()\"\n}",
+        "{\n  \"body\": \"return hall.lower() + '/' + gate.lower()\"\n}"
+      ],
+      "selected_index": null,
+      "public_passed": false,
+      "unique_outputs": 1,
+      "schedule": [
+        {
+          "index": 0,
+          "temperature": 0.0,
+          "seed": 42
+        },
+        {
+          "index": 1,
+          "temperature": 0.35,
+          "seed": 43
+        },
+        {
+          "index": 2,
+          "temperature": 0.35,
+          "seed": 44
+        },
+        {
+          "index": 3,
+          "temperature": 0.35,
+          "seed": 45
+        }
+      ],
+      "private": null
+    },
+    {
+      "kind": "code_revision",
+      "prompt": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of label(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: foyer.py\nSymbol: label\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function label(item) that returns hall and gate in lowercase joined by one slash.\nDocs: none\nPublic tests: [{\"entry\": \"foyer.label\", \"input\": {\"hall\": \"Atrium\", \"gate\": \"North\"}, \"expected\": \"atrium/north\"}, {\"entry\": \"foyer.label\", \"input\": {\"gate\": \"North\"}, \"expected\": \"/north\"}, {\"entry\": \"foyer.label\", \"input\": {\"hall\": \"Atrium\"}, \"expected\": \"atrium/\"}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n<|im_end|>\n<|im_start|>assistant\n",
+      "arm": "revision",
+      "n_calls": 4,
+      "budget": 4,
+      "candidates": [
+        "{\n  \"body\": \"return hall.lower() + '/' + gate.lower()\"\n}",
+        "{\n  \"body\": \"return hall.lower() + '/' + gate.lower()\"\n}",
+        "{\n  \"body\": \"return f'{item.get(\\\"hall\\\", \\\\\" }",
+        "{\n  \"body\": \"return (item['hall'].lower() + '/' + item['gate'].lower()).strip()\"\n}"
+      ],
+      "feedbacks": [
+        {
+          "undefined_names": [
+            "gate",
+            "hall"
+          ],
+          "public_input_keys": [
+            "gate",
+            "hall"
+          ],
+          "instruction": "Those undefined names are not bare variables. They are keys on the public input mapping passed as item."
+        },
+        {
+          "undefined_names": [
+            "gate",
+            "hall"
+          ],
+          "public_input_keys": [
+            "gate",
+            "hall"
+          ],
+          "instruction": "Those undefined names are not bare variables. They are keys on the public input mapping passed as item."
+        },
+        {
+          "undefined_names": [],
+          "public_input_keys": [
+            "gate",
+            "hall"
+          ],
+          "instruction": "Those undefined names are not bare variables. They are keys on the public input mapping passed as item."
+        },
+        {
+          "undefined_names": [],
+          "public_input_keys": [
+            "gate",
+            "hall"
+          ],
+          "instruction": "Those undefined names are not bare variables. They are keys on the public input mapping passed as item."
+        }
+      ],
+      "selected_index": null,
+      "public_passed": false,
+      "schedule": [
+        {
+          "index": 0,
+          "temperature": 0.0,
+          "seed": 42
+        },
+        {
+          "index": 1,
+          "temperature": 0.35,
+          "seed": 43
+        },
+        {
+          "index": 2,
+          "temperature": 0.35,
+          "seed": 44
+        },
+        {
+          "index": 3,
+          "temperature": 0.35,
+          "seed": 45
+        }
+      ],
+      "planted_solution": false,
+      "unique_outputs": 3,
+      "private": null
+    },
+    {
+      "kind": "sentence_independent",
+      "prompt": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nWrite one complete English sentence that uses the word dockbinding, includes the tokens catalog, crate, ends with a period, and cites [seed-compare-1]. Use only numbers that appear in the fact. Reply with the sentence only.\nFact [seed-compare-1]: In 2026 the Seed dock catalog lists a verified binding for each stored crate label.\nTerm: dockbinding \u2014 a Seed-lab name for a stored crate label\n<|im_end|>\n<|im_start|>assistant\n",
+      "doc_id": "seed-compare-1",
+      "arm": "independent",
+      "n_calls": 4,
+      "budget": 4,
+      "candidates": [
+        "In 2026, the Seed dock catalog lists a verified binding for each stored crate label.",
+        "In 2026, the Seed dock catalog lists a verified binding for each stored crate label.",
+        "In 2026, the Seed dock catalog lists a verified binding for each stored crate label.",
+        "In 2026, the Seed dock catalog includes a verified binding for each stored crate label."
+      ],
+      "selected_index": null,
+      "sentence_passed": false,
+      "unique_outputs": 2,
+      "schedule": [
+        {
+          "index": 0,
+          "temperature": 0.0,
+          "seed": 42
+        },
+        {
+          "index": 1,
+          "temperature": 0.35,
+          "seed": 43
+        },
+        {
+          "index": 2,
+          "temperature": 0.35,
+          "seed": 44
+        },
+        {
+          "index": 3,
+          "temperature": 0.35,
+          "seed": 45
+        }
+      ]
+    },
+    {
+      "kind": "sentence_revision",
+      "prompt": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nWrite one complete English sentence that uses the word dockbinding, includes the tokens catalog, crate, ends with a period, and cites [seed-compare-1]. Use only numbers that appear in the fact. Reply with the sentence only.\nFact [seed-compare-1]: In 2026 the Seed dock catalog lists a verified binding for each stored crate label.\nTerm: dockbinding \u2014 a Seed-lab name for a stored crate label\n<|im_end|>\n<|im_start|>assistant\n",
+      "doc_id": "seed-compare-1",
+      "arm": "revision",
+      "n_calls": 4,
+      "budget": 4,
+      "candidates": [
+        "In 2026, the Seed dock catalog lists a verified binding for each stored crate label.",
+        "{\"reasons\": [\"lexical_frame:term_missing\", \"lexical_frame:frame_mismatch\", \"fact_attribution:missing_citation:seed-compare-1\"], \"instruction\": \"Keep the required term, required tokens, and [doc_id] citation.\"}\n{\"reasons\": [\"lexical_frame:term_missing\", \"lexical_frame:frame_mismatch\", \"fact_attribution:missing_citation:seed-compare-1\"], \"instruction\": \"Keep the required term, required tokens, and [doc_id] citation.\"}\n{\"reasons\": [\"lexical_frame:term_missing\", \"lexical_frame:frame_mismatch\", \"fact_attribution",
+        "{\"reasons\": [\"lexical_frame:incomplete_sentence\", \"lexical_frame:term_missing\", \"lexical_frame:frame_mismatch\", \"fact_attribution:unknown_citation:doc_id\", \"fact_attribution:unknown_citation:doc_id\", \"fact_attribution:ungrounded_number:1\"], \"instruction\": \"Keep the required term, required tokens, and [doc_id] citation.\"}",
+        "{\"reasons\": [\"lexical_frame:incomplete_sentence\", \"lexical_frame:term_missing\", \"lexical_frame:frame_mismatch\", \"fact_attribution:unknown_citation:doc_id\", \"fact_attribution:ungrounded_number:1\"], \"instruction\": \"Keep the required term, required tokens, and [doc_id] citation.\"}"
+      ],
+      "selected_index": null,
+      "sentence_passed": false,
+      "unique_outputs": 4
+    }
+  ],
+  "metal_ledger": {
+    "calls": [
+      {
+        "after_rss_mib": 1479.828,
+        "before_rss_mib": 1476.875,
+        "wall_s": 2.131382
+      },
+      {
+        "after_rss_mib": 1485.391,
+        "before_rss_mib": 1479.828,
+        "wall_s": 2.456004
+      },
+      {
+        "after_rss_mib": 1483.641,
+        "before_rss_mib": 1486.359,
+        "wall_s": 1.932837
+      },
+      {
+        "after_rss_mib": 1479.422,
+        "before_rss_mib": 1483.641,
+        "wall_s": 5.491126
+      }
+    ],
+    "cpu_ledger_forbidden": true,
+    "cpu_ledger_used_s_must_remain": 3564.568,
+    "kind": "metal_session_ledger",
+    "max_session_metal_seconds": 600.0,
+    "peak_rss_mib": 1486.359,
+    "used_s": 12.011348582993378
+  },
+  "summary": {
+    "code_independent_calls": 4,
+    "code_revision_calls": 4,
+    "code_independent_unique": 1,
+    "code_revision_unique": 3,
+    "code_independent_public": false,
+    "code_revision_public": false,
+    "code_independent_private": false,
+    "code_revision_private": false,
+    "sentence_independent_calls": 4,
+    "sentence_revision_calls": 4,
+    "sentence_independent_unique": 2,
+    "sentence_revision_unique": 4,
+    "sentence_independent_passed": false,
+    "sentence_revision_passed": false,
+    "stubbed_call2_vs_call4_is_not_live_advantage": true,
+    "live_advantage_claimed": false,
+    "metal_used_s": 12.011348582993378,
+    "metal_peak_rss_mib": 1486.359,
+    "assistant_cost": {
+      "startup_s": 1.565490624998347,
+      "inference_s": 11.993226168007823,
+      "retrieval_s": 0.0010187910083914176,
+      "execution_s": 0.0,
+      "verification_s": 0.0,
+      "teardown_s": 0.037141875000088476,
+      "grant_charged_s": 12.011348582993378,
+      "input_tokens": 3544,
+      "generated_tokens": 546,
+      "accounted_s": 13.596877,
+      "user_total_s": 14.518988,
+      "unallocated_s": 0.92211,
+      "grant_includes": "MetalGrantEnforcer.guarded_call wall only",
+      "process_rss_is_not_metal_heap": true,
+      "user_total_is_complete_assistant_cost": true
+    },
+    "cpu_ledger_used_s": 3564.568,
+    "cpu_ledger_debit_s": 0,
+    "local_model_runtime_unchanged": true,
+    "learning_to_learn": false,
+    "confirmation": false
+  },
+  "resources": {
+    "wall_s": 14.518988,
+    "assistant_cost": {
+      "startup_s": 1.565490624998347,
+      "inference_s": 11.993226168007823,
+      "retrieval_s": 0.0010187910083914176,
+      "execution_s": 0.0,
+      "verification_s": 0.0,
+      "teardown_s": 0.037141875000088476,
+      "grant_charged_s": 12.011348582993378,
+      "input_tokens": 3544,
+      "generated_tokens": 546,
+      "accounted_s": 13.596877,
+      "user_total_s": 14.518988,
+      "unallocated_s": 0.92211,
+      "grant_includes": "MetalGrantEnforcer.guarded_call wall only",
+      "process_rss_is_not_metal_heap": true,
+      "user_total_is_complete_assistant_cost": true
+    }
+  },
+  "learning_to_learn": false,
+  "agi": false
+}
