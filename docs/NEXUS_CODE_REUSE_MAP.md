@@ -190,7 +190,10 @@ saved-data only. [Guide](NEXUS_LOCAL_ASSISTANT_RUNTIME.md),
   storage. No second knowledge store. seed/workspace_conversation.py handles
   local CSV tools and explicit capsules on that same turn context; it reuses
   assistant_benchmark_v2 / ParameterizedAdapterTemplate / PersistentLocalRuntime
-  rather than a parallel executor. seed/lab.py routes typed chat requests;
+  rather than a parallel executor. Fresh requests do not inherit filters; save
+  stores the executed AST. seed/conversation_capability.py only orchestrates
+  those existing tools plus config_repair and Session world probes.
+  seed/lab.py routes typed chat requests;
   web/learning-lab/chat.* renders replies/cards with textContent. Supporting
   views share the same Session ID. [Guide](NEXUS_SEED_CONVERSATION_WORKSPACE.md).
 

@@ -16,7 +16,8 @@ from .working import current
 
 KIND='seed_conversation_turn'
 WORKSPACE=dict(selected_file=None,last_procedure_id=None,last_intent=None,last_output_path=None,
-    last_correction=None,last_source_sha=None,pending_clarification=None,last_saved_explicit=False)
+    last_correction=None,last_source_sha=None,pending_clarification=None,last_saved_explicit=False,
+    last_program=None,last_bindings=None,last_request_kind=None)
 INITIAL=dict(active_name=None,lab='coding',pending=None,last_teaching=None,workspace=WORKSPACE)
 
 
@@ -147,9 +148,15 @@ def validate_turn(p,session):
         if type(intent) is not dict or set(intent)!={'op','min','order'} or intent['op'] not in ('sum','rows') or intent['order'] not in ('asc','desc'):raise ValueError('chat_workspace_intent')
         x=intent['min']
         if x is not None and (type(x) not in (int,float) or not -10000<=x<=10000):raise ValueError('chat_workspace_intent')
+    if w['last_program'] is not None:
+        if type(w['last_program']) is not list or len(json.dumps(w['last_program'],allow_nan=False))>3500:raise ValueError('chat_workspace_program')
+        if any(type(step) is not dict or type(step.get('op')) is not str for step in w['last_program']):raise ValueError('chat_workspace_program')
+    if w['last_bindings'] is not None:
+        if type(w['last_bindings']) is not dict or len(json.dumps(w['last_bindings'],allow_nan=False))>800:raise ValueError('chat_workspace_bindings')
+    if w['last_request_kind'] is not None and w['last_request_kind'] not in ('fresh','repeat','correction','reuse'):raise ValueError('chat_workspace_kind')
     pending_w=w['pending_clarification']
     if pending_w is not None:
-        if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
+        if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order','constraint','conflict') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
         if pending_w.get('detail') is not None and (type(pending_w['detail']) is not str or len(pending_w['detail'])>400):raise ValueError('chat_workspace_pending')
     s=lib.state(session);known={e.fingerprint for e in session.journal.snapshot()}
     if type(p['evidence_refs']) is not list or len(p['evidence_refs'])>8 or any(v not in known for v in p['evidence_refs']):raise ValueError('chat_evidence_reference')

@@ -9,8 +9,11 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import os
 import re
+import secrets
 import threading
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from nexus.evolution1.catalogue import digest
@@ -29,8 +32,8 @@ UNSAFE = ('delete my', 'rm -', 'os.system', '__import__', 'buy stock', 'buy stoc
           'send email', 'http://', 'https://', 'eval(', 'exec(', 'subprocess', 'format disk')
 DATA_SUM = ('summarize', 'summary', 'totals', 'total ', 'grouped', 'group by', 'per region', 'by region')
 DATA_ROWS = ('individual', 'records', 'row-level', 'each row', 'line item', 'list the', 'list records')
-ORDER_ASC = ('smallest', 'ascending', 'low to high', 'asc')
-ORDER_DESC = ('largest', 'descending', 'high to low', 'desc')
+ORDER_ASC = ('smallest', 'ascending', 'low to high')
+ORDER_DESC = ('largest', 'descending', 'high to low')
 REPEAT = ('same for', 'do the same', 'same thing', 'again for', 'same procedure', 'repeat that', 'repeat it')
 CHANGED = ('what did you change', 'what changed', 'what did you do differently', 'what did we change')
 SAVE_PROC = ('save this procedure', 'save the procedure', 'save that procedure', 'keep this procedure')
@@ -42,6 +45,139 @@ DELETE_PROC = ('delete the procedure', 'delete the saved procedure', 'delete sav
                'remove the saved procedure', 'remove the procedure')
 FILE_HINT = ('use file', 'open file', 'load file', 'select file', 'this file', 'that file', 'other file')
 PATH_RE = re.compile(r'"([^"\n]+\.csv)"|\'([^\'\n]+\.csv)\'|(\S+\.csv)', re.I)
+SUPPORTED_MIN = re.compile(r'(?:at least|minimum|min(?:imum)?(?: of)?|no less than)\s+(-?\d+(?:\.\d+)?)')
+UNSUPPORTED_PATTERNS = (
+    (r'\bbelow\b', 'below/under comparison'),
+    (r'\bunder\b', 'below/under comparison'),
+    (r'\bless than\b', 'less-than comparison'),
+    (r'\bat most\b', 'maximum comparison'),
+    (r'\bno more than\b', 'maximum comparison'),
+    (r'\bgreater than\b', 'exclusive greater-than comparison'),
+    (r'\bmore than\b', 'exclusive greater-than comparison'),
+    (r'\babove\b', 'exclusive greater-than comparison'),
+    (r'\bbetween\b', 'range comparison'),
+    (r'\bexcept\b', 'negation/exclusion'),
+    (r'\bwithout\b', 'negation/exclusion'),
+    (r'\bexcluding\b', 'negation/exclusion'),
+    (r'\bnot\b', 'negation'),
+    (r'\bmaximum\b', 'maximum comparison'),
+    (r'\bequal to\b', 'equality filter'),
+)
+CORRECTION_PREFIX = ('actually', 'instead', 'no,', 'wait', 'no ')
+
+
+@dataclass
+class ParsedRequest:
+    relation: str
+    grain: str | None = None
+    minimum: float | None = None
+    minimum_stated: bool = False
+    order: str | None = None
+    order_stated: bool = False
+    unsupported: list[str] = field(default_factory=list)
+    conflicts: list[str] = field(default_factory=list)
+    paths: list[str] = field(default_factory=list)
+    understood: bool = False
+
+
+def parse_request(text, last_intent=None):
+    """Parse supported constraints explicitly. Keyword grain is not sufficient understanding."""
+    raw = text.strip()
+    t = re.sub(r'\s+', ' ', raw.lower()).strip(' .!?')
+    paths = []
+    for match in PATH_RE.finditer(raw):
+        token = next(group for group in match.groups() if group)
+        paths.append(token)
+    unsupported = [label for token, label in UNSUPPORTED_PATTERNS if re.search(token, t)]
+    unsupported = list(dict.fromkeys(unsupported))
+    grain = None
+    if any(p in t for p in DATA_ROWS) or ('rows' in t and 'group' not in t):
+        grain = 'rows'
+    elif any(p in t for p in DATA_SUM):
+        grain = 'sum'
+    order = None
+    has_asc = any(p in t for p in ORDER_ASC) or re.search(r'\basc\b', t)
+    has_desc = any(p in t for p in ORDER_DESC) or re.search(r'\bdesc\b', t)
+    conflicts = []
+    if has_asc and has_desc:
+        conflicts.append('conflicting_order')
+    elif has_asc:
+        order = 'asc'
+    elif has_desc:
+        order = 'desc'
+    minimum = None
+    bound = SUPPORTED_MIN.search(t)
+    if bound:
+        minimum = float(bound.group(1))
+    if len(paths) > 1 and not any(p in t for p in REPEAT):
+        conflicts.append('multiple_files')
+    repeating = any(p in t for p in REPEAT)
+    correcting = t.startswith(CORRECTION_PREFIX) or (
+        last_intent is not None and grain is None and (order is not None or bound is not None)
+        and not repeating)
+    file_only = bool(paths) and grain is None and not repeating and not correcting and (
+        any(p in t for p in FILE_HINT) or t.endswith('.csv') or t.startswith(('use ', 'open ', 'load ', 'select ')))
+    if repeating:
+        relation = 'repeat'
+    elif correcting:
+        relation = 'correction'
+    elif grain is not None:
+        relation = 'fresh'
+    elif file_only:
+        relation = 'file_only'
+    else:
+        relation = 'unknown'
+    understood = (
+        not unsupported and not conflicts and (
+            relation in ('repeat', 'correction', 'file_only') or
+            (relation == 'fresh' and grain in ('sum', 'rows'))))
+    return ParsedRequest(relation=relation, grain=grain, minimum=minimum, minimum_stated=bound is not None,
+                         order=order, order_stated=order is not None, unsupported=unsupported,
+                         conflicts=conflicts, paths=paths, understood=understood)
+
+
+def abstract_executed_ast(ops, bindings):
+    """Turn the executed program into a reusable parameterized AST. Does not rebuild a skeleton."""
+    reverse = {}
+    if bindings:
+        if bindings.get('metric_col'):
+            reverse[str(bindings['metric_col'])] = '$METRIC_COL'
+        if bindings.get('key_col'):
+            reverse[str(bindings['key_col'])] = '$KEY_COL'
+
+    def walk(value, parent=None):
+        if type(value) is dict:
+            return {key: ('$THRESHOLD' if key == 'threshold' else walk(child, key)) for key, child in value.items()}
+        if type(value) is list:
+            return [walk(item, parent) for item in value]
+        return reverse.get(value, value) if type(value) is str else value
+
+    return walk(ops)
+
+
+def publish_json(path, payload, cancelled=None, after_tmp=None):
+    """Write to a temporary file, then atomically publish. Remove temps on cancel/error.
+
+    Cancellation after os.replace has committed the output; the caller must not
+    describe that as an undone action.
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + '.tmp-' + secrets.token_hex(4))
+    try:
+        if cancelled and cancelled():
+            raise ValueError('cancel')
+        tmp.write_text(json.dumps(payload, allow_nan=False, indent=2), encoding='utf-8')
+        if after_tmp is not None:
+            after_tmp(tmp)
+        if cancelled and cancelled():
+            raise ValueError('cancel')
+        os.replace(tmp, path)
+        return 'committed'
+    except Exception:
+        if tmp.exists():
+            tmp.unlink()
+        raise
 
 
 def handle(conversation, intent, ctx, card, text):
@@ -63,14 +199,15 @@ def _help(conversation, card):
     )
     card('Supported workspace actions', [
         'Name a local CSV, then ask for grouped totals or individual rows.',
-        'Correct the last transform (order or minimum) or apply it to another file.',
-        'Save, inspect, reuse or delete a procedure. Restart keeps explicit saves.',
-        'Ask a question in ordinary language; model text is not an executed result.',
+        'Supported numeric filter: inclusive minimum only. Other comparisons are asked about, not guessed.',
+        'A fresh request does not inherit the last threshold or sort. Say “do the same” to repeat.',
+        'Save stores the executed AST. Restart keeps explicit saves. Persistence is not learning-to-learn.',
     ])
     return (
         'I can teach finite object words and list programs, move objects on the 6×6 world, '
         'and run two vetted CSV transforms (grouped totals or filtered rows) without changing '
-        'the source file. '+model+' Saving a procedure stores its AST; that is reuse, not '
+        'the source file. Only an inclusive minimum and one sort direction are executable '
+        'constraints. '+model+' Saving a procedure stores the executed AST; that is reuse, not '
         'learning-to-learn.'
     ), 'reply', False
 
@@ -85,6 +222,7 @@ class WorkspaceTurn:
         self.card = card
         self.raw = text
         self.text = re.sub(r'\s+', ' ', text.strip().lower()).strip(' .!?')
+        self.parsed = parse_request(text, self.ws.get('last_intent'))
 
     def dispatch(self):
         if self.session.stopped or self.session.cancelled.is_set():
@@ -106,104 +244,86 @@ class WorkspaceTurn:
             return self.delete_procedure()
         if any(p in self.text for p in CHANGED):
             return self.what_changed()
-        paths = self.paths()
-        repeating = any(p in self.text for p in REPEAT)
-        correcting = self._is_correction()
-        intent = self.heuristic_intent()
-        if repeating:
-            return self.repeat(paths)
-        if correcting and self.ws['last_intent'] is not None:
-            return self.correct(paths)
-        if paths and (intent or self._looks_like_file_only(paths)):
-            if intent:
-                return self.execute_intent(intent, paths[0], change='Selected '+Path(paths[0]).name+' and ran the requested transform.')
-            return self.select_file(paths[0])
-        if intent:
-            if not self.ws['selected_file']:
+        if self._constraint_blocks():
+            return self.reject_incomplete()
+        if self.parsed.relation == 'repeat':
+            return self.repeat(self.parsed.paths)
+        if self.parsed.relation == 'correction' and self.ws['last_intent'] is not None:
+            return self.correct(self.parsed.paths)
+        if self.parsed.relation == 'fresh' and self.parsed.understood:
+            target = self.parsed.paths[0] if self.parsed.paths else self.ws['selected_file']
+            if not target:
                 return self.clarify('file', 'Which local CSV should I use? Name the file; I will not guess.')
-            return self.execute_intent(intent, self.ws['selected_file'])
-        if paths:
-            return self.select_file(paths[0])
+            intent = dict(op=self.parsed.grain, min=self.parsed.minimum if self.parsed.minimum_stated else None,
+                          order=self.parsed.order or 'desc')
+            return self.execute_intent(intent, target, change='Fresh request on '+Path(target).name+'.',
+                                       request_kind='fresh', order_defaulted=not self.parsed.order_stated)
+        if self.parsed.relation == 'file_only' and self.parsed.paths:
+            return self.select_file(self.parsed.paths[0])
         if self._looks_like_data() and not self.ws['selected_file']:
             return self.clarify('file', 'I need a local CSV before I can group totals or list rows.')
         if self._looks_like_data() and self.ws['selected_file']:
             parsed = self.model_intent(self.ws['selected_file'])
             if parsed is None:
-                return self.clarify('grain', 'Should I compute grouped totals or list individual rows? I can also apply a minimum or sort order.')
+                return self.clarify('grain', 'Should I compute grouped totals or individual rows? I can also apply an inclusive minimum or sort order. Other comparisons are not guessed.')
             if parsed['op'] in ('clarify', 'unsupported'):
                 self.ws['pending_clarification'] = dict(kind='grain', detail='totals_or_rows')
-                status = 'clarification' if parsed['op'] == 'clarify' else 'clarification'
-                return ('Please say whether you want grouped totals or individual rows, and any minimum or sort order.'
+                return ('Please say whether you want grouped totals or individual rows, and any inclusive minimum or sort order.'
                         if parsed['op'] == 'clarify' else
-                        'That data request is outside the two supported CSV operations. Nothing ran.'), status, False
-            return self.execute_intent(parsed, self.ws['selected_file'])
+                        'That data request is outside the two supported CSV operations. Nothing ran.'), 'clarification', False
+            return self.execute_intent(parsed, self.ws['selected_file'], request_kind='fresh',
+                                       order_defaulted=parsed.get('order') == 'desc')
         return self.ordinary_chat()
+
+    def reject_incomplete(self):
+        reasons = self.parsed.unsupported + self.parsed.conflicts
+        kind = 'conflict' if self.parsed.conflicts else 'constraint'
+        self.ws['pending_clarification'] = dict(kind=kind, detail=', '.join(reasons)[:400])
+        self.card('Ununderstood constraints', dict(
+            executed=False, recognized_grain=self.parsed.grain, unsupported=self.parsed.unsupported,
+            conflicts=self.parsed.conflicts, inherited=False))
+        if 'multiple_files' in self.parsed.conflicts:
+            return 'I see more than one file. Which one should I use? Nothing ran.', 'clarification', False
+        if 'conflicting_order' in self.parsed.conflicts:
+            return 'That request asks for both smallest-first and largest-first. Which order should I use? Nothing ran.', 'clarification', False
+        return (
+            'I recognized a possible data request but not every constraint. Supported executable '
+            'filters are an inclusive minimum and one sort direction. '
+            + '; '.join(reasons) + ' is not silently applied. Nothing ran.'
+        ), 'clarification', False
 
     def _answer_clarification(self):
         pending = self.ws['pending_clarification']
         if not pending:
             return None
-        if pending['kind'] == 'file':
-            paths = self.paths()
-            if not paths:
-                return None
-            self.ws['pending_clarification'] = None
-            intent = self.heuristic_intent() or self.ws['last_intent']
-            if intent:
-                return self.execute_intent(intent, paths[0], change='Applied the pending request to '+Path(paths[0]).name+'.')
-            return self.select_file(paths[0])
-        if pending['kind'] in ('grain', 'order'):
-            intent = self.heuristic_intent()
-            if not intent:
-                return None
-            self.ws['pending_clarification'] = None
-            target = self.paths()[0] if self.paths() else self.ws['selected_file']
-            if not target:
-                return self.clarify('file', 'Which local CSV should I use?')
-            return self.execute_intent(intent, target)
+        if self._constraint_blocks():
+            return self.reject_incomplete()
+        if pending['kind'] in ('file', 'constraint', 'conflict', 'grain', 'order', 'reference'):
+            if self.parsed.relation == 'fresh' and self.parsed.understood:
+                self.ws['pending_clarification'] = None
+                target = self.parsed.paths[0] if self.parsed.paths else self.ws['selected_file']
+                if not target:
+                    return self.clarify('file', 'Which local CSV should I use?')
+                intent = dict(op=self.parsed.grain, min=self.parsed.minimum if self.parsed.minimum_stated else None,
+                              order=self.parsed.order or 'desc')
+                return self.execute_intent(intent, target, request_kind='fresh',
+                                           order_defaulted=not self.parsed.order_stated)
+            if pending['kind'] == 'file' and self.parsed.paths:
+                self.ws['pending_clarification'] = None
+                if self.ws['last_intent'] and self.parsed.relation in ('repeat', 'unknown'):
+                    return self.execute_intent(self.ws['last_intent'], self.parsed.paths[0],
+                                               change='Applied the pending request to '+Path(self.parsed.paths[0]).name+'.',
+                                               request_kind='repeat')
+                return self.select_file(self.parsed.paths[0])
         return None
-
-    def _looks_like_file_only(self, paths):
-        return bool(paths) and not self.heuristic_intent() and (
-            any(p in self.text for p in FILE_HINT) or self.text.endswith('.csv') or self.text.startswith(('use ', 'open ', 'load ', 'select ')))
 
     def _looks_like_data(self):
         return any(p in self.text for p in DATA_SUM + DATA_ROWS + ('amount', 'csv', 'filter', 'minimum', 'at least', 'region'))
 
-    def _is_correction(self):
-        if self.text.startswith(('actually', 'instead', 'no,', 'wait')):
-            return True
-        return self.ws['last_intent'] is not None and (
-            any(p in self.text for p in ORDER_ASC + ORDER_DESC) or
-            re.search(r'(?:at least|minimum|min(?:imum)?(?: of)?)\s+-?\d+', self.text))
-
-    def paths(self):
-        found = []
-        for match in PATH_RE.finditer(self.raw):
-            token = next(g for g in match.groups() if g)
-            found.append(token)
-        return found
-
-    def heuristic_intent(self):
-        op = None
-        if any(p in self.text for p in DATA_ROWS) or ('rows' in self.text and 'group' not in self.text):
-            op = 'rows'
-        elif any(p in self.text for p in DATA_SUM):
-            op = 'sum'
-        order = None
-        if any(p in self.text for p in ORDER_ASC):
-            order = 'asc'
-        elif any(p in self.text for p in ORDER_DESC):
-            order = 'desc'
-        minimum = None
-        bound = re.search(r'(?:at least|minimum|min(?:imum)?(?: of)?)\s+(-?\d+(?:\.\d+)?)', self.text)
-        if bound:
-            minimum = float(bound.group(1))
-        if op is None:
-            return None
-        prior = self.ws['last_intent'] or {}
-        return dict(op=op, min=minimum if minimum is not None else prior.get('min'),
-                    order=order or prior.get('order') or 'desc')
+    def _constraint_blocks(self):
+        if not (self.parsed.unsupported or self.parsed.conflicts):
+            return False
+        return self.parsed.grain is not None or self.parsed.relation in ('fresh', 'repeat', 'correction') or self._looks_like_data()
 
     def clarify(self, kind, message):
         self.ws['pending_clarification'] = dict(kind=kind, detail=message[:400])
@@ -240,37 +360,37 @@ class WorkspaceTurn:
     def repeat(self, paths):
         if self.ws['last_intent'] is None and self.ws['last_procedure_id'] is None:
             return self.clarify('reference', 'I do not have a last procedure to repeat. Name a CSV and a supported transform first.')
+        if len(paths) > 1:
+            return self.clarify('file', 'I see more than one file. Which one should I use?')
         target = paths[0] if paths else self.ws['selected_file']
         if not target:
             return self.clarify('file', 'Which other file should I apply the last procedure to?')
-        if len(paths) > 1:
-            return self.clarify('file', 'I see more than one file. Which one should I use?')
         intent = self.ws['last_intent']
         if intent is None:
             return self.reuse_procedure(path_text=target)
-        note = 'Applied the same procedure to '+Path(target).name+'.'
-        return self.execute_intent(intent, target, change=note)
+        note = 'Repeated the last procedure on '+Path(target).name+'. Threshold and order were inherited because you asked to do the same.'
+        return self.execute_intent(intent, target, change=note, request_kind='repeat')
 
     def correct(self, paths):
+        if self.ws['last_intent'] is None:
+            return self.clarify('reference', 'There is no last procedure to correct.')
         intent = dict(self.ws['last_intent'])
-        if any(p in self.text for p in ORDER_ASC):
-            intent['order'] = 'asc'
-        elif any(p in self.text for p in ORDER_DESC):
-            intent['order'] = 'desc'
-        bound = re.search(r'(?:at least|minimum|min(?:imum)?(?: of)?)\s+(-?\d+(?:\.\d+)?)', self.text)
-        if bound:
-            intent['min'] = float(bound.group(1))
+        if self.parsed.order_stated:
+            intent['order'] = self.parsed.order
+        if self.parsed.minimum_stated:
+            intent['min'] = self.parsed.minimum
         target = paths[0] if paths else self.ws['selected_file']
         if not target:
             return self.clarify('file', 'Which file should I apply that correction to?')
-        note = 'Changed last procedure to op={op}, min={min}, order={order}.'.format(**intent)
-        return self.execute_intent(intent, target, change=note)
+        note = 'Corrected the last procedure to op={op}, min={min}, order={order}.'.format(**intent)
+        return self.execute_intent(intent, target, change=note, request_kind='correction')
 
     def what_changed(self):
         note = self.ws['last_correction']
         data = dict(last_correction=note, last_intent=self.ws['last_intent'],
                     selected_file=self.ws['selected_file'], last_output_path=self.ws['last_output_path'],
-                    last_procedure_id=self.ws['last_procedure_id'], executed=False)
+                    last_procedure_id=self.ws['last_procedure_id'], last_request_kind=self.ws.get('last_request_kind'),
+                    executed=False)
         self.card('Workspace changes', data)
         if not note:
             return 'No correction has been applied yet. I have not changed a procedure in this conversation.', 'reply', False
@@ -347,9 +467,16 @@ class WorkspaceTurn:
         profiles = SchemaProfileAndBindingValidator.compute_compact_column_profiles(rows)
         return rows, profiles
 
-    def execute_intent(self, intent, path_text, change=None, capsule=None, saved_explicit=None):
+    def _checkpoint(self, stage):
+        hook = getattr(self.store, 'execution_checkpoint', None)
+        if hook is not None:
+            hook(stage, self)
         if self.session.stopped or self.session.cancelled.is_set():
             raise ValueError('cancel')
+
+    def execute_intent(self, intent, path_text, change=None, capsule=None, saved_explicit=None,
+                       request_kind='fresh', order_defaulted=False):
+        self._checkpoint('start')
         path = self.resolve_source(path_text)
         if path is None:
             return self.clarify('file', 'I could not open that CSV. Nothing ran.')
@@ -359,7 +486,7 @@ class WorkspaceTurn:
         try:
             intent = validate_intent(dict(op=intent['op'], min=intent.get('min'), order=intent.get('order', 'desc')))
         except ValueError:
-            return self.clarify('grain', 'I need grouped totals or individual rows, with an optional minimum and sort order.')
+            return self.clarify('grain', 'I need grouped totals or individual rows, with an optional inclusive minimum and sort order.')
         if intent['op'] in ('clarify', 'unsupported'):
             self.ws['pending_clarification'] = dict(kind='grain', detail='totals_or_rows')
             return 'Please specify grouped totals or individual rows. Nothing ran.', 'clarification', False
@@ -377,25 +504,38 @@ class WorkspaceTurn:
         else:
             ops = skeleton(intent)
             program = ParameterizedAdapterTemplate('ephemeral', digest((intent['op'], intent['min'] is not None, intent['order'])), ops).instantiate(bindings, intent['min'] or 0)
-        preview_ops = [step.get('op') for step in program.ops]
-        self.card('Requested transformation preview', dict(
-            source='transformation_preview', operations=preview_ops, intent=intent,
-            input_file=path.name, source_file_unchanged=True, executed=False))
-        if self.session.cancelled.is_set():
-            raise ValueError('cancel')
+        inherited = request_kind in ('repeat', 'correction', 'reuse')
+        preview = dict(
+            source='transformation_preview', operations=[step.get('op') for step in program.ops],
+            intent=intent, input_file=path.name, source_file_unchanged=True, executed=False,
+            request_kind=request_kind, inherited_constraints=inherited, order_defaulted=bool(order_defaulted),
+            resolved=dict(op=intent['op'], inclusive_minimum=intent['min'], order=intent['order'],
+                          inheritance='inherited' if inherited else 'stated_or_tool_default'))
+        self.card('Requested transformation preview', preview)
+        self._checkpoint('after_preview')
         output = program.execute(rows)
+        self._checkpoint('after_execute')
         json.dumps(output, allow_nan=False)
         if type(output) is not list or any(type(row) is not dict for row in output):
             return 'The adapter returned an invalid result shape. The source file is unchanged.', 'error', False
         source_sha = hashlib.sha256(path.read_bytes()).hexdigest()
         output_path = self.store.outputs_dir() / (path.stem + '-' + digest(output)[:10] + '.json')
-        output_path.write_text(json.dumps(output, allow_nan=False, indent=2), encoding='utf-8')
+        try:
+            publish_json(output_path, output, cancelled=lambda: self.session.cancelled.is_set() or self.session.stopped,
+                         after_tmp=lambda _tmp: self._checkpoint('after_tmp'))
+        except ValueError as exc:
+            if str(exc) == 'cancel':
+                raise
+            raise
+        self._checkpoint('after_commit')
         receipt = digest(output)
         rendered = ExecutionBackedResponseRenderer.render(path.stem, output, receipt)
+        compact_bindings = {key: bindings[key] for key in ('key_col', 'metric_col', 'status_col', 'required_output_columns') if key in bindings}
         self.ws.update(selected_file=str(path), last_intent=intent, last_output_path=str(output_path),
                        last_source_sha=source_sha, pending_clarification=None,
                        last_correction=change or ('Executed '+intent['op']+' on '+path.name+'.'),
-                       last_saved_explicit=bool(capsule and capsule.get('saved_explicitly')))
+                       last_saved_explicit=bool(capsule and capsule.get('saved_explicitly')),
+                       last_program=program.ops, last_bindings=compact_bindings, last_request_kind=request_kind)
         if saved_explicit is not None:
             self.ws['last_saved_explicit'] = saved_explicit
         if capsule and capsule.get('saved_explicitly'):
@@ -404,7 +544,7 @@ class WorkspaceTurn:
             source='execution_backed', executed=True, row_count=len(output), preview=output[:5],
             output_path=str(output_path), source_file=str(path), source_file_unchanged=True,
             receipt=receipt, response=rendered, saved_explicitly=bool(capsule and capsule.get('saved_explicitly')),
-            autonomously_discovered=False))
+            autonomously_discovered=False, request_kind=request_kind))
         return (
             rendered + ' Wrote '+str(output_path)+'. The source CSV was not modified. '
             'This result is execution-backed, not model-generated.'
@@ -427,43 +567,46 @@ class WorkspaceTurn:
         return True, 'validated_compatible'
 
     def save_procedure(self):
-        if self.ws['last_intent'] is None or not self.ws['selected_file']:
+        if self.ws.get('last_program') is None or self.ws.get('last_bindings') is None or self.ws.get('last_intent') is None:
             return 'There is no executed procedure to save yet. Run a CSV transform first. Nothing was stored.', 'clarification', False
         intent = self.ws['last_intent']
         shape = [intent['op'], intent['min'] is not None, intent['order']]
-        ops = skeleton(intent)
-        identifier = digest(['explicit', shape, self.ws['last_source_sha']])[:16]
+        ops = abstract_executed_ast(self.ws['last_program'], self.ws['last_bindings'])
+        identifier = digest(['explicit', ops, self.ws['last_source_sha']])[:16]
         record = dict(
             id=identifier, name=intent['op']+'-'+intent['order'], saved_explicitly=True,
             autonomously_discovered=False, task_kind=intent['op'], shape=shape, skeleton_ops=ops,
             types=dict(key='text', metric='numeric'),
-            preconditions=dict(format='csv', unique_text_column=True, unique_numeric_column=True),
+            preconditions=dict(format='csv', unique_text_column=True, unique_numeric_column=True,
+                               supported_filter='inclusive_minimum_ge', supported_order=('asc', 'desc')),
             provenance=dict(session_id=self.conversation.session_id, source_sha256=self.ws['last_source_sha'],
-                            source_file=str(Path(self.ws['selected_file']).name), revision='explicit_save'),
-            validation_scope='Same-schema CSV with one text and one numeric column; grain, filter presence and order must match the saved shape.',
-            intent=intent, learning_to_learn=False)
+                            source_file=str(Path(self.ws['selected_file']).name), revision='explicit_save_executed_ast',
+                            request_kind=self.ws.get('last_request_kind')),
+            validation_scope='Same-schema CSV with one text and one numeric column; grain, filter presence and order must match the saved shape. AST is the abstracted executed program, not a reconstructed planner skeleton.',
+            intent=intent, bindings=self.ws['last_bindings'], learning_to_learn=False)
         path = self.store.procedures_dir() / (identifier + '.json')
         path.write_text(json.dumps(record, allow_nan=False, indent=2), encoding='utf-8')
         self.ws['last_procedure_id'] = identifier
         self.ws['last_saved_explicit'] = True
-        self.ws['last_correction'] = 'Explicitly saved procedure '+identifier+'. This is stored reuse, not an autonomously discovered abstraction or learning-to-learn.'
+        self.ws['last_correction'] = 'Explicitly saved the executed AST as '+identifier+'. This is stored reuse, not an autonomously discovered abstraction or learning-to-learn.'
         self.card('Saved procedure', dict(id=identifier, path=str(path), saved_explicitly=True,
-                                          autonomously_discovered=False, skeleton_ops=ops, executed=False))
-        return 'Saved procedure '+identifier+' with its actual AST. Persistence is reuse, not learning-to-learn.', 'success', False
+                                          autonomously_discovered=False, skeleton_ops=ops, executed=False,
+                                          source='executed_ast'))
+        return 'Saved procedure '+identifier+' from the executed AST. Persistence is reuse, not learning-to-learn.', 'success', False
 
     def _load_capsule(self, identifier=None):
         identifier = identifier or self.ws['last_procedure_id']
         if not identifier:
-            explicit=[]
+            explicit = []
             for path in self.store.procedures_dir().glob('*.json'):
                 try:
-                    data=json.loads(path.read_text(encoding='utf-8'))
+                    data = json.loads(path.read_text(encoding='utf-8'))
                 except (OSError, json.JSONDecodeError):
                     continue
                 if data.get('saved_explicitly') and data.get('id'):
                     explicit.append(data['id'])
-            if len(explicit)==1:
-                identifier=explicit[0]
+            if len(explicit) == 1:
+                identifier = explicit[0]
             else:
                 return None
         path = self.store.procedures_dir() / (identifier + '.json')
@@ -501,11 +644,11 @@ class WorkspaceTurn:
             return self.clarify('procedure', 'No saved procedure is selected. Save one first, or inspect stored procedures.')
         if not capsule.get('saved_explicitly'):
             return 'That record is not an explicitly saved procedure. I will not treat an autonomous abstraction as a user save.', 'clarification', False
-        target = path_text or (self.paths()[0] if self.paths() else self.ws['selected_file'])
+        target = path_text or (self.parsed.paths[0] if self.parsed.paths else self.ws['selected_file'])
         if not target:
             return self.clarify('file', 'Which CSV should I apply the saved procedure to?')
         return self.execute_intent(capsule['intent'], target, change='Reused explicitly saved procedure '+capsule['id']+'.',
-                                   capsule=capsule, saved_explicit=True)
+                                   capsule=capsule, saved_explicit=True, request_kind='reuse')
 
     def delete_procedure(self):
         capsule = self._load_capsule()

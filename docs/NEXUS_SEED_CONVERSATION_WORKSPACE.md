@@ -189,11 +189,14 @@ are in the public receipt. No scientific ledger debit or efficacy claim follows.
 ## Current limitations
 
 Supported CSV tools are the two already-vetted operations: grouped totals and
-filtered/sorted individual rows on a one-text, one-numeric table. There is no
-arbitrary generated-Python execution. Ambiguous file or grain references ask
-before acting. Stop/cancel does not write an output. Explicit procedure saves
-store the actual AST plus types, preconditions, provenance and validation
-scope; reuse checks compatibility first.
+filtered/sorted individual rows on a one-text, one-numeric table. The only
+executable numeric filter is an inclusive minimum. Comparisons such as
+“below”, negation, conflicting sort, or two files are clarified, not guessed.
+A fresh request does not inherit the previous threshold or order; “do the
+same” may inherit; a correction edits the last procedure. Cancel is checked
+after adapter execution and before an atomic output publish; temps are
+removed. Explicit save abstracts the executed AST, not a reconstructed
+planner skeleton. There is no arbitrary generated-Python execution.
 
 This is still a finite conversational interface. It does not understand
 arbitrary prose, noisy data, unrestricted coding, file uploads or general tool

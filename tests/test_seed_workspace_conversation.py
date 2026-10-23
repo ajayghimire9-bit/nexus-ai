@@ -243,6 +243,109 @@ def model_ready():
     return Path(cfg.model_path).expanduser().is_file() and which(cfg.executable) is not None
 
 
+def test_unsupported_modifier_is_not_silently_dropped(pair, tmp_path):
+    path = write_csv(tmp_path / 'regions.csv', SAMPLE_A)
+    result = send(pair, 'Summarize amounts below 10 using '+str(path))
+    assert result['chat']['messages'][-1]['status'] == 'clarification'
+    assert 'Nothing ran' in result['text']
+    assert not any(card['data'].get('executed') for card in cards(result))
+    assert not list(pair[0].outputs_dir().glob('*.json'))
+
+
+def test_fresh_request_does_not_inherit_threshold_or_order(pair, tmp_path):
+    path = write_csv(tmp_path / 'regions.csv', SAMPLE_A)
+    first = send(pair, 'Summarize amounts by region at least 5, smallest first, using '+str(path))
+    assert first['chat']['context']['workspace']['last_intent'] == {'op': 'sum', 'min': 5.0, 'order': 'asc'}
+    fresh = send(pair, 'Summarize amounts by region using '+str(path))
+    intent = fresh['chat']['context']['workspace']['last_intent']
+    assert intent['min'] is None
+    assert intent['order'] == 'desc'
+    preview = next(card['data'] for card in cards(fresh) if card['data'].get('source') == 'transformation_preview')
+    assert preview['request_kind'] == 'fresh'
+    assert preview['inherited_constraints'] is False
+    assert preview['resolved']['inclusive_minimum'] is None
+
+
+def test_conflicting_order_and_two_files_clarify(pair, tmp_path):
+    first = write_csv(tmp_path / 'east.csv', SAMPLE_A)
+    second = write_csv(tmp_path / 'south.csv', SAMPLE_B)
+    clash = send(pair, 'Summarize amounts by region smallest first and largest first using '+str(first))
+    assert clash['chat']['messages'][-1]['status'] == 'clarification'
+    assert 'Nothing ran' in clash['text']
+    both = send(pair, 'Summarize amounts by region using '+str(first)+' and '+str(second))
+    assert both['chat']['messages'][-1]['status'] == 'clarification'
+    assert 'more than one file' in both['text']
+
+
+def test_cancellation_after_execute_does_not_commit(pair, tmp_path):
+    path = write_csv(tmp_path / 'regions.csv', SAMPLE_A)
+    workspace, sid, _ = pair
+
+    def hook(stage, turn):
+        if stage == 'after_execute':
+            turn.session.cancelled.set()
+
+    workspace.execution_checkpoint = hook
+    result = send(pair, 'Summarize amounts by region using '+str(path))
+    assert result['chat']['messages'][-1]['status'] == 'error'
+    assert not list(workspace.outputs_dir().glob('*.json'))
+    assert not list(workspace.outputs_dir().glob('*.tmp-*'))
+
+
+def test_atomic_publish_removes_temp_on_cancel(tmp_path):
+    from nexus.seed.workspace_conversation import publish_json
+    target = tmp_path / 'out.json'
+    cancelled = {'flag': False}
+
+    def after_tmp(_):
+        cancelled['flag'] = True
+
+    try:
+        publish_json(target, [{'ok': 1}], cancelled=lambda: cancelled['flag'], after_tmp=after_tmp)
+    except ValueError as exc:
+        assert str(exc) == 'cancel'
+    else:
+        raise AssertionError('expected cancel')
+    assert not target.exists()
+    assert not list(tmp_path.glob('*.tmp-*'))
+
+
+def test_save_persists_executed_ast_not_prescribed_skeleton(tmp_path):
+    from nexus.seed.conversation import Conversation, WORKSPACE, INITIAL
+    from nexus.seed.core import Session
+    from nexus.seed.shared_brain import SharedBrain
+    from nexus.seed.assistant_benchmark_v2 import skeleton
+    from nexus.seed.workspace_conversation import WorkspaceTurn, abstract_executed_ast
+    path = write_csv(tmp_path / 'regions.csv', SAMPLE_A)
+    store = SeedWorkspace(tmp_path, attach_local_runtime=False)
+    conv = Conversation(SharedBrain(Session()), store=store, session_id='ab'*16)
+    ctx = deepcopy(INITIAL)
+    ctx['workspace'] = deepcopy(WORKSPACE)
+    unusual = [
+        dict(op='ParseNumberField', field='amount', target_field='amount', num_type='float', on_error='drop_row'),
+        dict(op='NormalizeTextField', field='region', target_field='region', ops=['strip', 'lower']),
+        dict(op='NormalizeTextField', field='region', target_field='region', ops=['strip']),
+        dict(op='GroupByField', key_field='region'),
+        dict(op='AggregateGroups', key_field='region', aggregations=[dict(out_col='total', agg_fn='sum', src_col='amount')]),
+        dict(op='OrderByFields', keys=[dict(field='total', direction='DESC'), dict(field='region', direction='ASC')]),
+    ]
+    bindings = dict(key_col='region', metric_col='amount', status_col='region', required_output_columns=['region', 'total'])
+    ctx['workspace'].update(selected_file=str(path), last_intent=dict(op='sum', min=None, order='desc'),
+                            last_program=unusual, last_bindings=bindings, last_source_sha='a'*64,
+                            last_request_kind='fresh')
+    collected = []
+    reply, status, _ = WorkspaceTurn(conv, ctx, lambda title, data: collected.append(dict(title=title, data=data)),
+                                     'Save this procedure.').save_procedure()
+    assert status == 'success'
+    identifier = ctx['workspace']['last_procedure_id']
+    saved = json.loads((store.procedures_dir() / (identifier + '.json')).read_text())
+    abstracted = abstract_executed_ast(unusual, bindings)
+    assert saved['skeleton_ops'] == abstracted
+    assert saved['skeleton_ops'] != skeleton(dict(op='sum', min=None, order='desc'))
+    assert saved['provenance']['revision'] == 'explicit_save_executed_ast'
+    assert 'executed AST' in reply or 'executed AST' in json.dumps(collected)
+
+
 def test_live_model_probe_or_explicit_unavailable(tmp_path):
     """Live inference only when the configured local model is actually present."""
     report = dict(kind='development_smoke_not_confirmation', live_inference=False, reason=None)

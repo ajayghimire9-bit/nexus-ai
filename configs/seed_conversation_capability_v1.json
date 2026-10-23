@@ -1,0 +1,41 @@
+{
+  "study_id": "seed-conversation-capability-v1",
+  "protocol": "docs/NEXUS_SEED_CONVERSATION_CAPABILITY_PROTOCOL.md",
+  "scientific": false,
+  "kind": "source_development_evaluation",
+  "aggregate_score": false,
+  "weighting": null,
+  "methods": ["tools", "ordinary_cache", "nexus_procedures"],
+  "reset_control": "nexus_reset",
+  "order_seed": 20261023,
+  "cold_repetitions": 1,
+  "budgets": {
+    "wall_s": 900,
+    "cpu_s": 900,
+    "model_calls": 8,
+    "real_environment_steps": 64
+  },
+  "csv_tasks": [
+    {"id": "csv_easy_sum", "family": "exact_repeat", "file": "alpha", "request": "Summarize amounts by region using {path}", "expected": {"op": "sum", "min": null, "order": "desc"}},
+    {"id": "csv_missing_values", "family": "new_composition", "file": "missing", "request": "Summarize amounts by region using {path}", "expected": {"op": "sum", "min": null, "order": "desc"}},
+    {"id": "csv_unfamiliar_names", "family": "renamed_schema", "file": "renamed", "request": "Summarize amounts by region using {path}", "expected": {"op": "sum", "min": null, "order": "desc"}},
+    {"id": "csv_transfer_same", "family": "exact_repeat", "file": "beta", "request": "Now do the same for {path}", "expected": {"op": "sum", "min": null, "order": "desc"}, "requires_prior": "csv_easy_sum"},
+    {"id": "csv_inappropriate", "family": "inappropriate_reuse", "file": "wide", "request": "Reuse the saved procedure on {path}", "expected": {"op": "clarify", "min": null, "order": "desc"}},
+    {"id": "csv_unsupported_below", "family": "unsupported", "file": "alpha", "request": "Summarize amounts below 10 using {path}", "expected": {"op": "unsupported", "min": null, "order": "desc"}},
+    {"id": "csv_fresh_no_inherit", "family": "new_composition", "file": "alpha", "request": "Summarize amounts by region using {path}", "expected": {"op": "sum", "min": null, "order": "desc"}, "prior_request": "Summarize amounts by region at least 5 using {path}"}
+  ],
+  "files": [
+    {"id": "alpha", "key": "region", "value": "amount", "rows": [[" East ", "12"], ["WEST", "8"], ["north", "17"], [" East ", "4"]]},
+    {"id": "beta", "key": "region", "value": "amount", "rows": [["SOUTH", "3"], ["SOUTH", "9"], ["west", "20"]]},
+    {"id": "missing", "key": "region", "value": "amount", "rows": [["east", "N/A"], ["west", "6"], ["east", "10"]]},
+    {"id": "renamed", "key": "zone", "value": "qty", "rows": [["north", "5"], ["south", "15"], ["north", "1"]]},
+    {"id": "wide", "key": "region", "value": "amount", "extra": "score", "rows": [["east", "4", "9"], ["west", "5", "1"]]}
+  ],
+  "coverage_probes": [
+    {"id": "json_api_sum", "environment": "json", "integration": "api_only"},
+    {"id": "sqlite_api_read", "environment": "sqlite", "integration": "api_only"},
+    {"id": "repair_api_null_default", "environment": "repair", "integration": "api_only"},
+    {"id": "world_chat_goal", "environment": "world", "integration": "chat_integrated"},
+    {"id": "conversation_restart", "environment": "conversation", "integration": "chat_integrated"}
+  ]
+}
