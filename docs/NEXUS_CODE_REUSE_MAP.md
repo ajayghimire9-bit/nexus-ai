@@ -1,5 +1,19 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Capability follow-up
+
+`seed/knowledge_provenance.py` resolves retrieved rows with subject,
+source version, effective date and `supersedes`. It does not treat
+ingestion timestamp as freshness and does not edit the FTS5 vault
+schema. `seed/math_interpretation.py` validates a structured statement
+then compiles through the existing `eval_arithmetic` calculator.
+`seed/unresolved_referent.py` asks when an action names “the later one”
+with no prior options. `seed/conversation_review.py` scores frozen
+capability-map replies on five dimensions. Coding reuses
+`generate_direct`, extract routing, `score_coding` and independent
+helper/caller flags. The original map artifact is not rewritten.
+[Protocol](NEXUS_SEED_CAPABILITY_FOLLOWUP_PROTOCOL.md).
+
 ## Lexicon vault and living capsules
 
 `seed/lexicon_vault.py` adds an on-disk SQLite FTS5 fact store and a
