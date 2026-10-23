@@ -50,17 +50,24 @@ INCLUSIVE_CUES = (
     "equal to the maximum",
     "equal to the bound",
     "equal to the limit",
+    "equal to the cap",
+    "equal to the floor",
+    "allow score equal",
+    "allow span equal",
 )
 EXCLUSIVE_CUES = (
     "strictly smaller",
     "strictly less",
     "strictly below",
+    "strictly greater",
     "exclusive",
     "reject values equal",
     "only strictly",
     "not including",
     "below the cutoff",
 )
+INCLUSIVE_SWAPS = {("Lt", "LtE"), ("Gt", "GtE")}
+MAKE_INCLUSIVE = {"Lt": "LtE", "Gt": "GtE"}
 
 
 @dataclass
@@ -234,31 +241,15 @@ def propose_retrieved_repair(
             "abstain", "family_mismatch", "other", schema.schema_id,
         )
     if schema.transformation == "compare_op_swap":
-        requirement = classify_boundary_requirement(request, public_tests)
         from_op = schema.applicability.get("from_op") or schema.bindings.get("from_op")
         to_op = schema.applicability.get("to_op") or schema.bindings.get("to_op")
-        inclusive_transform = from_op == "Lt" and to_op == "LtE"
-        if requirement == "inclusive":
-            if not inclusive_transform:
-                return RepairProposal(
-                    "refuse", "schema_direction_mismatch", requirement, schema.schema_id,
-                )
-            patched = apply_compare_op_swap(files, schema)
-            if patched is None:
-                return RepairProposal(
-                    "abstain", "transform_not_applicable", requirement, schema.schema_id,
-                )
-            return RepairProposal(
-                "apply", "requirement_inclusive", requirement, schema.schema_id, patched,
-            )
-        if requirement == "exclusive":
-            return RepairProposal(
-                "refuse", "requirement_exclusive_blocks_inclusive_repair",
-                requirement, schema.schema_id,
-            )
-        return RepairProposal(
-            "ask", "requirement_ambiguous", "ambiguous", schema.schema_id,
-            question="Should values equal to the bound pass (inclusive) or fail (exclusive)?",
+        inclusive_transform = (from_op, to_op) in INCLUSIVE_SWAPS
+        return _boundary_decision(
+            request, public_tests, schema.schema_id, inclusive_transform,
+            lambda: (
+                apply_make_inclusive(files) if inclusive_transform
+                else apply_compare_op_swap(files, schema)
+            ),
         )
     patched = RepairSchemaStore().apply(schema, files)
     if patched is None:
@@ -268,6 +259,61 @@ def propose_retrieved_repair(
     return RepairProposal(
         "apply", "family_matched", family or "other", schema.schema_id, patched,
     )
+
+
+def _boundary_decision(
+    request: str,
+    public_tests: list[dict[str, Any]],
+    schema_id: str | None,
+    inclusive_transform: bool,
+    apply_fn,
+) -> RepairProposal:
+    requirement = classify_boundary_requirement(request, public_tests)
+    if requirement == "exclusive":
+        return RepairProposal(
+            "refuse", "requirement_exclusive_blocks_inclusive_repair",
+            requirement, schema_id,
+        )
+    if requirement == "ambiguous":
+        return RepairProposal(
+            "ask", "requirement_ambiguous", "ambiguous", schema_id,
+            question="Should values equal to the bound pass (inclusive) or fail (exclusive)?",
+        )
+    if requirement == "inclusive" and not inclusive_transform:
+        return RepairProposal(
+            "refuse", "schema_direction_mismatch", requirement, schema_id,
+        )
+    patched = apply_fn()
+    if patched is None:
+        return RepairProposal(
+            "abstain", "transform_not_applicable", requirement, schema_id,
+        )
+    return RepairProposal(
+        "apply", "requirement_inclusive", requirement, schema_id, patched,
+    )
+
+
+def propose_guarded_template(
+    family: str,
+    request: str,
+    files: dict[str, str],
+    public_tests: list[dict[str, Any]],
+    private_tests: list[dict[str, Any]] | None = None,
+) -> RepairProposal:
+    """Ordinary family template under the same public-requirement gate as memory."""
+    del private_tests
+    inferred = infer_family(request, public_tests) or family
+    if inferred not in {"comparison_boundary", "null_default"}:
+        return RepairProposal("abstain", "template_family_unsupported", "other")
+    if inferred == "comparison_boundary":
+        return _boundary_decision(
+            request, public_tests, "template_lt_to_lte", True,
+            lambda: ordinary_template_apply("comparison_boundary", files),
+        )
+    patched = ordinary_template_apply(inferred, files)
+    if patched is None:
+        return RepairProposal("abstain", "transform_not_applicable", inferred)
+    return RepairProposal("apply", "template_family_matched", inferred, files=patched)
 
 
 def infer_family(request: str, public_tests: list[dict[str, Any]]) -> str | None:
@@ -327,6 +373,32 @@ def _has_explicit_none(tree: ast.AST) -> bool:
             if any(isinstance(op, ast.Is) for op in node.test.ops):
                 return True
     return False
+
+
+def apply_make_inclusive(files: dict[str, str]) -> dict[str, str] | None:
+    """Rebound an acquired inclusive swap onto the exclusive op in these files."""
+    patched = dict(files)
+    applied = 0
+    for path, source in list(patched.items()):
+        if not path.endswith(".py"):
+            continue
+        try:
+            tree = ast.parse(source)
+        except SyntaxError:
+            continue
+        matches = [
+            node for node in ast.walk(tree)
+            if isinstance(node, ast.Compare) and len(node.ops) == 1
+            and type(node.ops[0]).__name__ in MAKE_INCLUSIVE
+        ]
+        if len(matches) != 1:
+            continue
+        target = COMPARE_OPS[MAKE_INCLUSIVE[type(matches[0].ops[0]).__name__]]
+        matches[0].ops = [target()]
+        ast.fix_missing_locations(tree)
+        patched[path] = ast.unparse(tree) + "\n"
+        applied += 1
+    return patched if applied else None
 
 
 def apply_compare_op_swap(files: dict[str, str], schema: RepairSchema) -> dict[str, str] | None:

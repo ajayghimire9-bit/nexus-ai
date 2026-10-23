@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — selective reuse (results)
+## Current — guarded-template reuse on fresh cases (implementation)
+
+Branch `cursor/seed-guarded-template-reuse` from reviewed `e00b96c`. Protocol
+[NEXUS_SEED_GUARDED_TEMPLATE_REUSE_PROTOCOL.md](NEXUS_SEED_GUARDED_TEMPLATE_REUSE_PROTOCOL.md).
+Memory and the ordinary `Lt→LtE` template share the inclusive/exclusive/ask
+gate. Memory may rebind an acquired inclusive swap onto `>` as well as `<`.
+Scoring is blocked until this protocol is committed. `fixed_boundary` stays
+the default. Ledger unchanged:
+**2418.784083455996 used / 1181.215916544004 remaining**.
+
+## Previous — selective reuse (results)
 
 [Protocol](NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md),
 [results](NEXUS_SEED_SELECTIVE_REUSE_RESULTS.md). Implementation `6629d1b` on

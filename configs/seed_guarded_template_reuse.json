@@ -1,0 +1,116 @@
+{
+  "id": "seed-guarded-template-reuse-1",
+  "artifact_stem": "seed_guarded_template_reuse",
+  "base_sha": "e00b96c4f923377680f084946eb9b665a8430d76",
+  "parent_protocol_commit": "e00b96c4f923377680f084946eb9b665a8430d76",
+  "carried_used_s": 2418.784083455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_policy_promoted": false,
+  "equally_guarded_template": true,
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_budget_steps": 4,
+  "expected_grid": {
+    "transfer_source_cells": 1,
+    "transfer_cells": 15
+  },
+  "closed_task_ids_excluded": [
+    "py_width_ok",
+    "py_keep_exclusive",
+    "py_pair_label",
+    "py_cutoff_ambiguous",
+    "py_hi_inclusive_src",
+    "py_slug_join",
+    "py_levy_then_credit"
+  ],
+  "transfer": {
+    "source": {
+      "id": "py_cap_inclusive_src",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow n equal to the cap.",
+      "files": {"cap.py": "def keep(item):\n    return item['n'] < item['cap']\n"},
+      "public": [{"entry": "cap.keep", "input": {"n": 8, "cap": 8}, "expected": true}]
+    },
+    "later": [
+      {
+        "id": "py_span_ok",
+        "family": "comparison_boundary",
+        "reuse_role": "same_repair",
+        "reuse_appropriate": true,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Allow span equal to the limit.",
+        "files": {"span.py": "def ok(item):\n    return item['span'] < item['limit']\n"},
+        "public": [{"entry": "span.ok", "input": {"span": 9, "limit": 9}, "expected": true}],
+        "assessment": [
+          {"entry": "span.ok", "input": {"span": 9, "limit": 9}, "expected": true},
+          {"entry": "span.ok", "input": {"span": 10, "limit": 9}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_floor_ok",
+        "family": "comparison_boundary",
+        "reuse_role": "same_repair",
+        "reuse_appropriate": true,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Allow score equal to the floor.",
+        "files": {"floor.py": "def ok(item):\n    return item['score'] > item['floor']\n"},
+        "public": [{"entry": "floor.ok", "input": {"score": 3, "floor": 3}, "expected": true}],
+        "assessment": [
+          {"entry": "floor.ok", "input": {"score": 3, "floor": 3}, "expected": true},
+          {"entry": "floor.ok", "input": {"score": 2, "floor": 3}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_reject_floor",
+        "family": "comparison_boundary",
+        "reuse_role": "opposite",
+        "reuse_appropriate": false,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Reject values equal to the floor; only strictly greater values pass.",
+        "files": {"rej.py": "def pass_(item):\n    return item['score'] > item['floor']\n"},
+        "public": [{"entry": "rej.pass_", "input": {"score": 3, "floor": 3}, "expected": false}],
+        "assessment": [
+          {"entry": "rej.pass_", "input": {"score": 3, "floor": 3}, "expected": false},
+          {"entry": "rej.pass_", "input": {"score": 4, "floor": 3}, "expected": true}
+        ]
+      },
+      {
+        "id": "py_note_join",
+        "family": "missing_function",
+        "reuse_role": "unrelated",
+        "reuse_appropriate": false,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Create function note(a, b) that joins the two strings with a slash.",
+        "files": {"note.py": "def echo(text):\n    return text\n"},
+        "public": [{"entry": "note.note", "input": ["x", "y"], "unpack_args": true, "expected": "x/y"}],
+        "assessment": [
+          {"entry": "note.note", "input": ["a", "b"], "unpack_args": true, "expected": "a/b"}
+        ]
+      },
+      {
+        "id": "py_threshold_fix",
+        "family": "comparison_boundary",
+        "reuse_role": "clarification",
+        "reuse_appropriate": false,
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Adjust the threshold check.",
+        "files": {"thr.py": "def keep(item):\n    return item['n'] < item['max']\n"},
+        "public": [{"entry": "thr.keep", "input": {"n": 1, "max": 4}, "expected": true}],
+        "assessment": [
+          {"entry": "thr.keep", "input": {"n": 1, "max": 4}, "expected": true},
+          {"entry": "thr.keep", "input": {"n": 4, "max": 4}, "expected": false}
+        ]
+      }
+    ]
+  },
+  "gemini": "NOT_RUN"
+}

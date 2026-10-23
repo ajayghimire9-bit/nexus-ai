@@ -1,5 +1,12 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Guarded-template reuse
+
+`seed/guarded_reuse.py` reuses `propose_retrieved_repair`, the new
+`propose_guarded_template` gate, `RepairSchemaStore` and `EventMeter`. It does
+not add a second memory store. Closed selective-reuse IDs are refused.
+[Protocol](NEXUS_SEED_GUARDED_TEMPLATE_REUSE_PROTOCOL.md).
+
 ## Selective reuse
 
 `seed/selective_reuse.py` reuses `RepairSchemaStore`, `ordinary_template_apply`,
