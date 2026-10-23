@@ -1,5 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next — three-point boundary evidence, conversation state, one workflow
+
+The [capability milestone](NEXUS_SEED_CAPABILITY_MILESTONE_RESULTS.md)
+accepted `>=` on equality-only public tests, left `fees` unselected, and
+could not say whether the model produced no usable edit. Next: require
+teacher-labeled below/equal/above before accepting a boundary repair;
+update the selected file before answering “use fees instead”; record
+proposal lifecycle; make one development workflow measurable, then assess
+a frozen fresh project. Do not promote learned ranking. Do not rescore
+the closed milestone. Ledger
+**2474.568897455996 used / 1125.431102544004 remaining**.
+[Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md).
+
 ## Current next — identified-among-checked stopping, not a larger catalogue sweep
 
 The [widening/coding pilot](NEXUS_SEED_CAPABILITY_WIDENING_CODING_RESULTS.md)

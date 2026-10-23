@@ -1,5 +1,16 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Boundary evidence, conversation state and one workflow
+
+`seed/reliable_workflow.py` reuses `SymbioticAgentLoop`, `EventMeter`,
+`agent_loop_worker` assessment and workspace chat. `seed/boundary_evidence.py`
+labels below/equal/above from the explicit requirement and public tests;
+it does not invent an answer from candidate disagreement or private
+tests. `seed/proposal_trace.py` records the existing local-model propose
+path; it is not a second proposer. File-switch and source attribution
+stay inside `workspace_conversation`. Learned ranking is not invoked.
+[Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md).
+
 ## Capability milestone
 
 `seed/capability_milestone.py` reuses `SymbioticAgentLoop`,

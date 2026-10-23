@@ -621,11 +621,15 @@ class SymbioticAgentLoop:
                     max_tokens=self.model_max_tokens,
                     interface=self.proposal_interface,
                 )
+                queued = proposed.get("status") == "proposed"
+                from .proposal_trace import proposal_lifecycle
+                life = proposal_lifecycle(proposed, queued=queued)
                 model_trace.append({"round": round_idx, **{
                     k: proposed.get(k) for k in (
                         "status", "reason", "telemetry", "inference_ran", "completion_stop",
+                        "raw_content",
                     )
-                }, "truncation_claimed_as_cause": False})
+                }, "lifecycle": life, "truncation_claimed_as_cause": False})
                 record_tool("local_model_propose", {
                     "round": round_idx,
                     "runtime_present": self.local_runtime is not None,
@@ -633,9 +637,11 @@ class SymbioticAgentLoop:
                     "status": proposed.get("status"),
                     "reason": proposed.get("reason"),
                     "inference_ran": proposed.get("inference_ran"),
+                    "queued": queued,
+                    "lifecycle": life,
                     "assumptions": (proposed.get("proposal") or {}).get("assumptions", []),
                 }, t0)
-                if proposed.get("status") == "proposed":
+                if queued:
                     candidates.insert(0, (
                         f"local_model_round_{round_idx}",
                         proposed["patched_files"],
@@ -780,6 +786,14 @@ class SymbioticAgentLoop:
             }, t_att)
 
             if all_ok:
+                from .boundary_evidence import competing_boundary_resolved, is_boundary_operator
+                if is_boundary_operator(op_desc):
+                    evidence = competing_boundary_resolved(task.request, task.public_tests)
+                    if not evidence.get("resolved"):
+                        att_rec["accepted"] = False
+                        att_rec["incomplete_boundary_evidence"] = evidence
+                        record_tool("reject_incomplete_boundary", {"operator": op_desc}, evidence, t_att)
+                        continue
                 published = staging.publish()
                 if self.allow_acquired_memory and repair_store is not None:
                     family = infer_family(task.request, task.public_tests)
@@ -836,7 +850,10 @@ class SymbioticAgentLoop:
                         "completion_stop": revised.get("completion_stop"),
                         "revised_from_staged": True,
                     }, t_rev)
-                    if revised.get("status") == "proposed":
+                    from .proposal_trace import proposal_lifecycle
+                    rev_queued = revised.get("status") == "proposed"
+                    model_trace[-1]["lifecycle"] = proposal_lifecycle(revised, queued=rev_queued)
+                    if rev_queued:
                         staging.revise_from_staged(ev.get("results", [])[:6], revised["patched_files"])
                         queue.append((f"local_model_revise_{idx}", revised["patched_files"]))
 

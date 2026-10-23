@@ -1,0 +1,123 @@
+{
+  "id": "seed-boundary-state-workflow-1",
+  "artifact_stem": "seed_boundary_state_workflow",
+  "base_sha": "01a434b802b461874686e43c0a156bf20ff94432",
+  "parent_protocol_commit": "01a434b802b461874686e43c0a156bf20ff94432",
+  "carried_used_s": 2474.568897455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_budget_steps": 6,
+  "expected_grid": {
+    "boundary_cells": 2,
+    "workflow_cells": 2,
+    "language_cells": 4
+  },
+  "boundary": [
+    {
+      "id": "py_span_three_point",
+      "role": "complete_teacher_labels",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow span equal to the limit.",
+      "files": {"span.py": "def ok(item):\n    return item['span'] < item['limit']\n"},
+      "public": [
+        {"entry": "span.ok", "input": {"span": 4, "limit": 5}, "expected": true},
+        {"entry": "span.ok", "input": {"span": 5, "limit": 5}, "expected": true},
+        {"entry": "span.ok", "input": {"span": 6, "limit": 5}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "span.ok", "input": {"span": 5, "limit": 5}, "expected": true},
+        {"entry": "span.ok", "input": {"span": 6, "limit": 5}, "expected": false}
+      ]
+    },
+    {
+      "id": "py_span_equal_only",
+      "role": "incomplete_public",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow span equal to the limit.",
+      "files": {"span.py": "def ok(item):\n    return item['span'] < item['limit']\n"},
+      "public": [
+        {"entry": "span.ok", "input": {"span": 5, "limit": 5}, "expected": true}
+      ],
+      "assessment": [
+        {"entry": "span.ok", "input": {"span": 5, "limit": 5}, "expected": true},
+        {"entry": "span.ok", "input": {"span": 6, "limit": 5}, "expected": false}
+      ]
+    }
+  ],
+  "workflow": {
+    "development": {
+      "id": "py_width_three_point_dev",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow width equal to the bound.",
+      "files": {"width.py": "def ok(item):\n    return item['width'] < item['bound']\n"},
+      "public": [
+        {"entry": "width.ok", "input": {"width": 2, "bound": 3}, "expected": true},
+        {"entry": "width.ok", "input": {"width": 3, "bound": 3}, "expected": true},
+        {"entry": "width.ok", "input": {"width": 4, "bound": 3}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "width.ok", "input": {"width": 3, "bound": 3}, "expected": true},
+        {"entry": "width.ok", "input": {"width": 4, "bound": 3}, "expected": false}
+      ]
+    },
+    "fresh": {
+      "id": "py_height_three_point_fresh",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow height equal to the cap.",
+      "files": {"height.py": "def ok(item):\n    return item['height'] < item['cap']\n"},
+      "public": [
+        {"entry": "height.ok", "input": {"height": 1, "cap": 2}, "expected": true},
+        {"entry": "height.ok", "input": {"height": 2, "cap": 2}, "expected": true},
+        {"entry": "height.ok", "input": {"height": 3, "cap": 2}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "height.ok", "input": {"height": 2, "cap": 2}, "expected": true},
+        {"entry": "height.ok", "input": {"height": 3, "cap": 2}, "expected": false}
+      ]
+    }
+  },
+  "conversation_files": [
+    {"id": "notes", "key": "region", "value": "amount", "rows": [["east", 4], ["west", 8], ["east", 2]]},
+    {"id": "fees", "key": "region", "value": "amount", "rows": [["north", 1], ["south", 3]]}
+  ],
+  "conversation": [
+    {
+      "id": "explain",
+      "kind": "explanation",
+      "text": "What did you just change?",
+      "expected": {"facts": ["notes"], "selected": "notes", "pending_after": null}
+    },
+    {
+      "id": "use_fees",
+      "kind": "correction",
+      "text": "Not the notes file. Use file \"{fees}\" instead.",
+      "expected": {"facts": ["fees"], "selected": "fees", "pending_after": null}
+    },
+    {
+      "id": "doc_q",
+      "kind": "document_question",
+      "text": "What did the last tool result say, and which file did it use?",
+      "expected": {"facts": ["fees"], "attribution": "fees", "selected": "fees"}
+    },
+    {
+      "id": "topic",
+      "kind": "topic_change",
+      "text": "What file is selected?",
+      "expected": {"facts": ["fees"], "selected": "fees", "pending_after": null}
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

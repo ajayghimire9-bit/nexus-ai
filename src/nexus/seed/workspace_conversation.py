@@ -116,7 +116,10 @@ DATA_ROWS = ('individual', 'records', 'row-level', 'each row', 'line item', 'lis
 ORDER_ASC = ('smallest', 'ascending', 'low to high')
 ORDER_DESC = ('largest', 'descending', 'high to low')
 REPEAT = ('same for', 'do the same', 'same thing', 'again for', 'same procedure', 'repeat that', 'repeat it')
-CHANGED = ('what did you change', 'what changed', 'what did you do differently', 'what did we change')
+CHANGED = (
+    'what did you change', 'what did you just change', 'what changed',
+    'what did you do differently', 'what did we change',
+)
 SAVE_PROC = ('save this procedure', 'save the procedure', 'save that procedure', 'keep this procedure')
 INSPECT_PROC = ('inspect the procedure', 'show the procedure', 'show saved procedure', 'inspect saved procedure',
                 'list procedures', 'list saved procedures')
@@ -411,6 +414,11 @@ class WorkspaceTurn:
             return self.delete_procedure()
         if any(p in self.text for p in CHANGED):
             return self.what_changed()
+        if self._explicit_file_switch():
+            return self.select_file(self.parsed.paths[-1])
+        source_reply = self._attributed_source_reply()
+        if source_reply:
+            return source_reply
         if self._constraint_blocks():
             return self.reject_incomplete()
         if self.parsed.relation == 'repeat':
@@ -466,6 +474,9 @@ class WorkspaceTurn:
         pending = self.ws['pending_clarification']
         if not pending:
             return None
+        if self._explicit_file_switch():
+            self.ws['pending_clarification'] = None
+            return self.select_file(self.parsed.paths[-1])
         if self._constraint_blocks():
             return self.reject_incomplete()
         if pending['kind'] in ('file', 'constraint', 'conflict', 'grain', 'order', 'reference'):
@@ -486,6 +497,25 @@ class WorkspaceTurn:
                                                request_kind='repeat')
                 return self.select_file(self.parsed.paths[0])
         return None
+
+    def _explicit_file_switch(self):
+        if not self.parsed.paths:
+            return False
+        return any(token in self.text for token in FILE_HINT + ('instead',)) or self.text.startswith((
+            'use ', 'not the ', 'not that',
+        ))
+
+    def _attributed_source_reply(self):
+        if not any(token in self.text for token in (
+            'last tool', 'last result', 'which file did', 'what did the last',
+            'source file', 'which file was',
+        )):
+            return None
+        path = self.ws.get('selected_file')
+        name = Path(path).name if path else 'none'
+        last = self.ws.get('last_correction') or 'none'
+        self.card('Attributed tool result', dict(source_file=name, last_correction=last, executed=False))
+        return 'Source file: '+name+'. Last tool result: '+last, 'reply', False
 
     def _looks_like_data(self):
         return any(p in self.text for p in DATA_SUM + DATA_ROWS + ('amount', 'csv', 'filter', 'minimum', 'at least', 'region'))
@@ -525,6 +555,8 @@ class WorkspaceTurn:
             return False
         if self._is_outside_tools() or any(p in self.text for p in CANCEL_PENDING):
             return True
+        if self._explicit_file_switch():
+            return True
         if self._answers_pending(pending):
             return False
         looks_coding = any(p in self.text for p in self.CODING_TASK) or self.text.startswith((
@@ -553,6 +585,7 @@ class WorkspaceTurn:
         prior = self.ws['selected_file']
         self.ws['selected_file'] = str(path)
         self.ws['pending_clarification'] = None
+        self.ws['last_coding_request'] = None
         self.ws['last_correction'] = 'Selected '+path.name+('.' if prior is None else ' Replaced '+Path(prior).name+'.')
         self.card('Selected file', dict(path=str(path), source_unchanged=True, executed=False))
         return 'Using '+path.name+'. Ask for grouped totals or individual rows; I will not overwrite this file.', 'reply', False
@@ -608,9 +641,16 @@ class WorkspaceTurn:
                     last_procedure_id=self.ws['last_procedure_id'], last_request_kind=self.ws.get('last_request_kind'),
                     executed=False)
         self.card('Workspace changes', data)
+        selected = Path(self.ws['selected_file']).name if self.ws.get('selected_file') else 'none'
         if not note:
-            return 'No correction has been applied yet. I have not changed a procedure in this conversation.', 'reply', False
-        return note + ' Model-generated chat is not listed here; only execution-backed procedure edits are.', 'reply', False
+            return (
+                'No correction has been applied yet. Selected file: '+selected+'. '
+                'I have not changed a procedure in this conversation.'
+            ), 'reply', False
+        return (
+            note + ' Selected file: '+selected+'. '
+            'Model-generated chat is not listed here; only execution-backed procedure edits are.'
+        ), 'reply', False
 
     CODING_SELECT = re.compile(
         r'^(?:use|open|select|load)\s+(?:coding\s+workspace|repo(?:sitory)?(?:\s+workspace)?)\s+([A-Za-z0-9][A-Za-z0-9_-]{0,39})\b',
@@ -729,6 +769,8 @@ class WorkspaceTurn:
             'what file is selected', 'current workspace', 'workspace state',
         ))
         if asked_state:
+            self.ws['pending_clarification'] = None
+            self.ws['last_coding_request'] = None
             pending = self.ws.get('pending_clarification')
             selected = self.ws.get('selected_coding_workspace') or self.ws.get('selected_file') or 'none'
             question = ''

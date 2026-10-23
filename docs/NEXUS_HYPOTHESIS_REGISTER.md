@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Current — teacher-labeled three-point evidence before boundary accept
+
+Predeclared: an inclusive upper-bound repair is accepted only when public
+tests label below, equal and above from the explicit requirement; equality
+alone must not accept. File-switch updates the selected resource before
+the next answer; document replies name their source. Proposal traces
+distinguish no usable edit from a discarded usable proposal. Learned
+ranking stays paused. Development only; not confirmation.
+[Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md).
+
 ## Current — completeness-preserving widening vs false certainty
 
 Predeclared: shared widening/stopping reduces false certainty without
