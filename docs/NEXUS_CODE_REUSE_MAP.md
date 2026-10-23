@@ -1,5 +1,19 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Lexicon vault and living capsules
+
+`seed/lexicon_vault.py` adds an on-disk SQLite FTS5 fact store and a
+lexical capsule table. It reuses `digest` only. It does not replace
+`RepairSchemaStore`, stigmergic coding capsules, or the investigation
+engines, and it does not edit `local_model_runtime.py`.
+
+`seed/best_of_n_verify.py` scores up to four supplied code or sentence
+candidates in the existing worker sandbox / lexicon verifier. It does
+not edit the temperature-0 runtime. `seed/sleep_consolidation.py`
+writes verified JSONL for a future mlx-lm pass; Metal sampling and
+LoRA both raise the existing GPU-enforcement refusal. Best-of-N and
+LoRA export are not learning-to-learn.
+
 ## v3 stepwise residual search
 
 `seed/v3_stepwise_residual.py` reuses `apply_v3`, `execute_v3`,
