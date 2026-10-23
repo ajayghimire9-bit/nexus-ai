@@ -19,6 +19,14 @@ From this feature checkout, no API key is needed:
 python3 -I -S scripts/run_seed_shared_gui.py --symbolic --port 8784 --max-runtime-s 900
 ```
 
+Ordinary greetings, follow-ups and topic changes use that local model. Only
+“Explain how NEXUS works” (and close architecture phrases) opens the
+15-component inspector. Daily chat writes `chat_usage.json` in the seed
+directory. That file is the product CPU budget; it does not debit the frozen
+research CPU ledger and does not write `metal_ledger.json`. The attached
+runtime is CPU (`-ngl 0 --device none`). A separate Metal backend in the
+tree is unused unless a later explicit grant attaches it.
+
 Optional local model (ordinary chat and unclear structured parses). Weights are
 not in Git; set paths for this machine:
 

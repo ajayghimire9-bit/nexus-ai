@@ -351,9 +351,13 @@ saved-data only. [Guide](NEXUS_LOCAL_ASSISTANT_RUNTIME.md),
   assistant_benchmark_v2 / ParameterizedAdapterTemplate / PersistentLocalRuntime
   rather than a parallel executor. seed/unified_chat.py is a product
   orchestration layer over that path plus KnowledgeVault / LexicalCapsuleStore
-  for explicit document save/retrieve. It does not replace RepairSchemaStore or
-  add a second journal. Fresh requests do not inherit filters; save stores the
-  executed AST or an explicit vault row. Persistence is not learning-to-learn.
+  for explicit document save/retrieve. seed/chat_usage.py is the daily product
+  CPU ledger (`chat_usage.json`); it is not the frozen 3564.568 s research
+  allowance and not `metal_ledger.json`. The GUI attaches
+  PersistentLocalRuntime only (`-ngl 0 --device none`). It does not replace
+  RepairSchemaStore or add a second journal. Fresh requests do not inherit
+  filters; save stores the executed AST or an explicit vault row. Persistence
+  is not learning-to-learn.
   seed/conversation_capability.py only orchestrates those existing tools plus
   config_repair and Session world probes. seed/lab.py routes typed chat and
   knowledge drawer requests; web/learning-lab/chat.* is the single local chat

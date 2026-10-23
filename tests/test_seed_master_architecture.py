@@ -483,18 +483,23 @@ def test_component14_and_15_knowledge_acquisition_and_tiered_compute():
 
 
 def test_natural_conversation_and_workable_learning_to_learn_suite(tmp_path):
-    w = SeedWorkspace(tmp_path)
+    w = SeedWorkspace(tmp_path, attach_local_runtime=False)
     sid = w.dispatch(dict(session_id=None, request={"op": "new"}))["session_id"]
 
-    # Natural check-ins ("how are u", "who are you", "thanks", "solve 3*x + 7 = 22")
     how = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="how are u?", id=uuid.uuid4().hex)))["response"]
-    assert "doing well" in how["text"] and "15-component" in how["text"]
+    assert "15-component" not in how["text"]
+    assert "not a template" in how["text"]
 
     who = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Who are you?", id=uuid.uuid4().hex)))["response"]
-    assert "NEXUS Seed" in who["text"]
+    assert "15-component" not in who["text"]
+    assert "not a template" in who["text"]
 
     thx = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Thank you!", id=uuid.uuid4().hex)))["response"]
-    assert "welcome" in thx["text"].lower()
+    assert "15-component" not in thx["text"]
+    assert "not a template" in thx["text"]
+
+    arch = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Explain how NEXUS works.", id=uuid.uuid4().hex)))["response"]
+    assert "15" in arch["text"] and "architecture" in arch["text"].lower()
 
     math_reply = w.dispatch(dict(session_id=sid, request=dict(op="chat_send", text="Solve 3*x + 7 = 22", id=uuid.uuid4().hex)))["response"]
     assert "5" in math_reply["text"]

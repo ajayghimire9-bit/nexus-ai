@@ -1,6 +1,23 @@
 # NEXUS Seed — Current State
 
-## Current — local chat workspace (interface)
+## Current — ordinary-chat routing and product CPU budget (interface)
+
+Greetings, follow-ups and topic changes stay on ordinary local-model chat.
+Only “Explain how NEXUS works” and close architecture phrases open the
+15-component inspector. Daily product chat writes `chat_usage.json` in the
+seed directory. It does not debit the frozen research CPU ledger
+**3564.568 s / 0 s debit** and does not write `metal_ledger.json`. The GUI
+default is CPU (`PersistentLocalRuntime`, `-ngl 0 --device none`). A Metal
+backend existing in the tree does not mean the GUI is using the GPU.
+Live CPU smoke on Qwen2.5-Coder-1.5B: wall **12.009 s**, two live
+completions (`inference_ran` true), one cited document answer, one
+unexecuted pasted-code explain, one mid-generation Stop that set
+`cancelled`, charged `cancelled=1`, and left `process is None`. Product
+ledger **10.849 s / 3 calls**; research CPU debit **0**; Metal ledgers
+unchanged. Not confirmation. Pinned `local_model_runtime.py` unchanged.
+Ranking stays paused.
+
+## Previous — local chat workspace (interface)
 
 One conversational page on `cursor/seed-lexicon-knowledge-vault` reuses
 Conversation, `workspace_conversation`, KnowledgeVault, LexicalCapsuleStore

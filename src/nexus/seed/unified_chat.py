@@ -98,6 +98,19 @@ def classify_turn(text: str, workspace: dict | None = None) -> TurnClass:
         re.fullmatch(r"[0-9x+\-*/().\s=]+", lowered) and any(op in lowered for op in "+-*/=")
     ):
         return TurnClass("reasoning", "tool_math")
+    if lowered in (
+        "explain how nexus works",
+        "explain how nexus seed works",
+        "how does nexus work",
+        "how does nexus seed work",
+        "explain the nexus architecture",
+        "explain nexus architecture",
+        "explain the architecture",
+        "show master architecture",
+        "master architecture",
+        "inspect master",
+    ):
+        return TurnClass("architecture", "explicit_architecture")
     return TurnClass("ordinary", "model_or_finite")
 
 
@@ -471,17 +484,29 @@ def execute_pasted_python(files: dict[str, str], cases: list[dict[str, Any]]) ->
 
 
 def inspector_payload(store, workspace: dict | None = None) -> dict[str, Any]:
+    from .chat_usage import FROZEN_RESEARCH_CPU_S, ledger_for
     status = store.runtime_status() if hasattr(store, "runtime_status") else {}
     cfg = getattr(getattr(store, "local_runtime", None), "config", None) or getattr(store, "runtime_config", None)
     model = getattr(cfg, "model_path", None) or os.environ.get("NEXUS_MODEL_PATH") or str(PREFERRED_MODEL)
     backend = getattr(cfg, "backend", None) or "llama_cpp_server"
+    usage = ledger_for(store).snapshot() if hasattr(store, "directory") else {}
     return dict(
         model_path=model,
         backend=backend,
+        product_backend="cpu",
+        gpu_used=False,
+        gpu_offload=False,
+        ngl=0,
+        device="none",
+        metal_backend_exists=True,
+        metal_used=False,
+        metal_grant_separate=True,
         runtime_available=bool(status.get("available")),
         runtime_reason=status.get("reason"),
-        cpu_ledger_frozen_s=3564.568,
-        metal_grant_separate=True,
+        cpu_ledger_frozen_s=FROZEN_RESEARCH_CPU_S,
+        research_cpu_ledger_debit_s=0.0,
+        consumes_closed_research_allowance=False,
+        chat_usage=usage,
         workspace=dict(
             selected_file=(workspace or {}).get("selected_file"),
             selected_coding_workspace=(workspace or {}).get("selected_coding_workspace"),

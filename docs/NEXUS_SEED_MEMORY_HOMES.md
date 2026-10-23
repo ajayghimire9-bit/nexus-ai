@@ -10,6 +10,7 @@ Knowledge Vault.
 | Sleep export | JSONL via `write_sleep_jsonl` | Only verifier-passing triples. Failed drafts stay out. |
 | Metal grant accounting | `metal_ledger.json` | Wall of `guarded_call` only. Not a memory store. |
 | Frozen CPU ledger | documented 3564.568 s | Must not mix with the Metal file. |
+| Daily product chat | `chat_usage.json` in the seed directory | GUI CPU wall/calls only. Not the frozen research allowance and not Metal. |
 | Saved lab procedures | `Lab.procedures_dir()` JSON files | Conversation/workspace transforms |
 | Repair schemas | `RepairSchemaStore` JSON | Coding repair families, not lexicon terms |
 | Investigation procedures | existing investigation / capsule engines | Not stored in the lexicon vault |

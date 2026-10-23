@@ -63,9 +63,9 @@ def interpret(text,ctx):
     if t in ('show me some examples','show examples','examples','give me an example'):return Intent('examples')
     if t in ('show foundation','show curriculum','foundation','curriculum'):return Intent('foundation')
     if t in ('show phases','show all phases','open workbench'):return Intent('workbench')
-    if t in ('show master architecture','master architecture','inspect master'):return Intent('master_inspect')
+    if t in ('show master architecture','master architecture','inspect master','explain how nexus works','explain how nexus seed works','how does nexus work','how does nexus seed work','explain the nexus architecture','explain nexus architecture','explain the architecture'):return Intent('master_inspect')
     if t in ('generate lessons','give me lessons','create curriculum'):return Intent('curriculum_generate')
-    if any(p in t for p in ('how are you','how are u','how r u','how is it going','how\'s it going','how do you feel','who are you','what are you','what is your name','tell me about yourself','introduce yourself')) or t in ('thanks','thank you','thx','ty','good job','great job','awesome'):return Intent('master_dialogue',dict(text=raw))
+    if any(p in t for p in ('how are you','how are u','how r u','how is it going','how\'s it going','how do you feel','who are you','what are you','what is your name','tell me about yourself','introduce yourself')) or t in ('thanks','thank you','thx','ty','good job','great job','awesome'):return Intent('unsupported')
     if any(p in t for p in ('learning to learn','meta learning','meta-learning','general intelligence','are you agi','did we achieve','run general suite')):return Intent('master_dialogue',dict(text=raw))
     if t.startswith(('solve ','calculate ','compute ')) or re.fullmatch(r'[0-9x\+\-\*\/\(\)\.\s=]+',t) and any(op in t for op in ('+','-','*','/','=')):return Intent('master_dialogue',dict(text=raw))
     if t.startswith(('z3 ','sympy ','lean4 ','lean ','program ','editor ','wikidata ','docs ','code ','typescript ','repo ','plan ','capsule ','agent ','use coding workspace','open coding workspace','select coding workspace','use repo ','open repo ','list coding workspaces','list repos','disable acquired coding memory','enable acquired coding memory','baseline coding mode')):return Intent('unsupported')
@@ -164,7 +164,7 @@ def validate_turn(p,session):
         if any(type(step) is not dict or type(step.get('op')) is not str for step in w['last_program']):raise ValueError('chat_workspace_program')
     if w['last_bindings'] is not None:
         if type(w['last_bindings']) is not dict or len(json.dumps(w['last_bindings'],allow_nan=False))>800:raise ValueError('chat_workspace_bindings')
-    if w['last_request_kind'] is not None and w['last_request_kind'] not in ('fresh','repeat','correction','reuse','coding','ordinary','document','reasoning','knowledge'):raise ValueError('chat_workspace_kind')
+    if w['last_request_kind'] is not None and w['last_request_kind'] not in ('fresh','repeat','correction','reuse','coding','ordinary','document','reasoning','knowledge','architecture'):raise ValueError('chat_workspace_kind')
     pending_w=w['pending_clarification']
     if pending_w is not None:
         if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order','constraint','conflict','coding_workspace','document') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
@@ -285,6 +285,7 @@ class Conversation:
             from .master.runtime import MasterSeedArchitecture
             arch=MasterSeedArchitecture(self.session,self.brain)
             if k=='master_inspect':
+                ctx['workspace']['last_request_kind']='architecture'
                 info=arch.inspect()
                 card('Master architecture (15 components)',dict(schema=info['architecture_schema'],components=info['components_implemented'],scientific_claim=info['scientific_claim']))
                 return 'All 15 NEXUS Seed master architecture components are active over this Session and SharedBrain. This is a bounded research architecture, not a claim of AGI or learning-to-learn.','reply',False
@@ -347,7 +348,11 @@ class Conversation:
             result=request(self.session,dict(op='foundation_ingest',args=dict(source='conversation',text=v['text'])))['result']
             card('Attributed source text',dict(ref=result['ref'],sha256=result['sha256'],units=len(result['units'])))
             return 'I retained the text and its source. Recognized facts remain attributed assertions; conflicts are preserved, and this text cannot execute commands.','success',False
-        if k=='hello':return 'Hello! I’m NEXUS Seed. Teach me a word or a small skill, explore a pattern, or move something in our object world. What shall we try?','reply',False
+        if k=='hello':
+            if self.store is not None and self.store.local_runtime is not None:
+                from .workspace_conversation import WorkspaceTurn
+                return WorkspaceTurn(self,ctx,card,text).ordinary_chat()
+            return 'Hello! I’m NEXUS Seed. Teach me a word or a small skill, explore a pattern, or move something in our object world. What shall we try?','reply',False
         if k=='help':return 'I can learn finite object meanings and small list programs from examples, check them separately, remember verified skills, and move objects on a 6×6 grid. Try “A dax means a red object” or “Teach you a skill from examples.” I don’t use an external language model.','reply',False
         if k=='save':return 'Save requested. The local revision receipt will confirm when it is safely stored.','reply',True
         if k in ('stop','resume'):

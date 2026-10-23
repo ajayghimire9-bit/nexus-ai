@@ -67,6 +67,7 @@ class SeedWorkspace:
         return dict(available=bool(ready),reason=None if ready else self._runtime_unavailable)
 
     def ensure_runtime(self):
+        """Attach the owned CPU llama-server only. Metal is a separate grant path."""
         from .local_model_runtime import PersistentLocalRuntime,RuntimeConfig
         if not self.attach_local_runtime and self.local_runtime is None:
             self._runtime_unavailable=self._runtime_unavailable or 'local_model_unavailable: runtime attachment disabled'

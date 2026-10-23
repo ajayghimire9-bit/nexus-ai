@@ -5,6 +5,12 @@ import json
 from pathlib import Path
 import uuid
 
+from copy import deepcopy
+
+import pytest
+
+from nexus.seed.chat_usage import ChatUsageLedger, FROZEN_RESEARCH_CPU_S
+from nexus.seed.conversation import INITIAL, interpret
 from nexus.seed.lab import SeedWorkspace
 from nexus.seed.storage import load
 from nexus.seed.unified_chat import classify_turn, user_status
@@ -36,18 +42,71 @@ def test_user_status_labels_are_honest():
     assert classify_turn("Run this\n```python\nprint(1)\n```").execute is True
 
 
+def test_ordinary_chat_routing_keeps_architecture_explicit():
+    assert interpret("how are you", deepcopy(INITIAL)).kind == "unsupported"
+    assert interpret("Who are you?", deepcopy(INITIAL)).kind == "unsupported"
+    assert interpret("thanks", deepcopy(INITIAL)).kind == "unsupported"
+    assert interpret("Hello!", deepcopy(INITIAL)).kind == "hello"
+    assert interpret("how does this work", deepcopy(INITIAL)).kind == "help"
+    assert interpret("Explain how NEXUS works.", deepcopy(INITIAL)).kind == "master_inspect"
+    assert interpret("How does NEXUS work?", deepcopy(INITIAL)).kind == "master_inspect"
+    assert classify_turn("How are you?").flow == "ordinary"
+    assert classify_turn("New topic. What about tea?").flow == "topic"
+    assert classify_turn("Explain how NEXUS works.").flow == "architecture"
+
+
 def test_greeting_and_ordinary_follow_up(tmp_path):
-    pair = _pair(tmp_path, chat=["A notebook per project is a simple local habit."])
-    hello = send(pair, "Hello")
-    assert hello["chat"]["messages"][-1]["assistant"].startswith("Hello")
+    pair = _pair(tmp_path, chat=[
+        "I am well. This is a short local greeting.",
+        "A notebook per project is a simple local habit.",
+    ])
+    hello = send(pair, "How are you?")
+    assert "15-component" not in hello["text"]
+    assert "well" in hello["text"].lower()
+    cards = hello["chat"]["messages"][-1]["cards"]
+    assert any(c["data"].get("source") == "model_generated" for c in cards)
     follow = send(pair, "Any advice for local notebook habits?")
     assert "notebook" in follow["text"].lower()
     cards = follow["chat"]["messages"][-1]["cards"]
     assert any(c["data"].get("source") == "model_generated" for c in cards)
     assert any(c["data"].get("executed") is False for c in cards)
     assert follow["chat"]["context"]["workspace"]["last_user_status"] == "Draft"
-    assert follow["chat"]["inspector"]["cpu_ledger_frozen_s"] == 3564.568
-    assert follow["chat"]["inspector"]["learning_to_learn_established"] is False
+    inspector = follow["chat"]["inspector"]
+    assert inspector["cpu_ledger_frozen_s"] == FROZEN_RESEARCH_CPU_S
+    assert inspector["product_backend"] == "cpu"
+    assert inspector["gpu_used"] is False
+    assert inspector["metal_used"] is False
+    assert inspector["consumes_closed_research_allowance"] is False
+    assert inspector["chat_usage"]["calls"] == 2
+    assert inspector["chat_usage"]["research_cpu_ledger_debit_s"] == 0.0
+    assert inspector["learning_to_learn_established"] is False
+    assert (tmp_path / "chat_usage.json").is_file()
+    assert not (tmp_path / "metal_ledger.json").exists()
+
+
+def test_canned_hello_without_attached_runtime(tmp_path):
+    workspace = SeedWorkspace(tmp_path, attach_local_runtime=False)
+    sid = workspace.dispatch(dict(session_id=None, request={"op": "new"}))["session_id"]
+    hello = workspace.dispatch(dict(session_id=sid, request=dict(
+        op="chat_send", text="Hello", id="a" * 32)))["response"]
+    assert hello["text"].startswith("Hello")
+    assert "15-component" not in hello["text"]
+
+
+def test_daily_chat_budget_is_separate_and_can_exhaust(tmp_path):
+    ledger = ChatUsageLedger(tmp_path / "chat_usage.json", daily_cap_s=1.0, daily_calls=1)
+    ledger.charge(0.4, inference_ran=True)
+    with pytest.raises(ValueError, match="chat_budget_exhausted"):
+        ledger.allow()
+    workspace = SeedWorkspace(tmp_path, local_runtime=ScriptedRuntime(chat=["should not run"]))
+    workspace.chat_usage = ChatUsageLedger(tmp_path / "chat_usage.json", daily_cap_s=1.0, daily_calls=1)
+    sid = workspace.dispatch(dict(session_id=None, request={"op": "new"}))["session_id"]
+    refused = workspace.dispatch(dict(session_id=sid, request=dict(
+        op="chat_send", text="How are you?", id="b" * 32)))["response"]
+    assert refused["chat"]["messages"][-1]["status"] == "clarification"
+    assert "budget" in refused["text"].lower()
+    assert workspace.chat_usage.snapshot()["calls"] == 1
+    assert workspace.chat_usage.snapshot()["research_cpu_ledger_debit_s"] == 0.0
 
 
 def test_document_retrieval_with_citation_and_preview(tmp_path):
@@ -182,6 +241,8 @@ def test_model_unavailable_stays_inspectable(tmp_path):
     assert result["chat"]["local_runtime"]["available"] is False
     assert result["chat"]["inspector"]["runtime_available"] is False
     assert result["chat"]["inspector"]["metal_grant_separate"] is True
+    assert result["chat"]["inspector"]["product_backend"] == "cpu"
+    assert result["chat"]["inspector"]["gpu_used"] is False
 
 
 def test_no_execution_claim_when_none_occurred(tmp_path):

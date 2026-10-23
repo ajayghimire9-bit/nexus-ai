@@ -13,6 +13,7 @@ import os
 import re
 import secrets
 import threading
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -902,11 +903,24 @@ class WorkspaceTurn:
                 + (', '.join(header_meta.get('allowed_coding_workspaces') or []) or 'none')
                 + '.' + question
             ), 'reply', False
+        from .chat_usage import ledger_for
+        ledger = ledger_for(self.store)
+        try:
+            ledger.allow()
+        except ValueError:
+            snap = ledger.snapshot()
+            self.card('Chat usage budget exhausted', dict(
+                executed=False, source='chat_usage', product_backend='cpu', gpu_used=False, **snap))
+            return (
+                "Today's local chat budget is used up. Daily conversation has its own CPU "
+                'allowance and does not take from the closed research CPU ledger or a Metal grant.'
+            ), 'clarification', False
         runtime = self.store.ensure_runtime()
         if runtime is None:
             reason = self.store.runtime_status()['reason'] or 'local_model_unavailable'
             self.card('Local model unavailable', dict(source='runtime_status', reason=reason, executed=False,
-                                                      workspace_header=header_meta))
+                                                      workspace_header=header_meta, product_backend='cpu',
+                                                      gpu_used=False, chat_usage=ledger.snapshot()))
             return (
                 'No local pretrained model is available, so I cannot run live ordinary chat. '
                 + reason + ' Teaching words/skills and the two CSV tools still work. '
@@ -920,7 +934,25 @@ class WorkspaceTurn:
         if history:
             prompt += '<|im_start|>user\nRecent conversation:\n'+'\n'.join(history)+'<|im_end|>\n'
         prompt += '<|im_start|>user\n'+self.raw.strip()+'<|im_end|>\n<|im_start|>assistant\n'
-        reply = self.complete(runtime, prompt, None)
+        started = time.perf_counter()
+        try:
+            reply = self.complete(runtime, prompt, None)
+        except Exception as exc:
+            wall = time.perf_counter() - started
+            cancelled = self.session.cancelled.is_set() or any(
+                token in str(exc).lower() for token in ('cancel', 'timeout', 'timed out'))
+            ledger.charge(wall, inference_ran=False, cancelled=cancelled)
+            if cancelled:
+                raise ValueError('cancel') from exc
+            raise
+        wall = reply['telemetry'].get('request_wall_s')
+        if wall is None:
+            wall = time.perf_counter() - started
+        usage = ledger.charge(
+            wall,
+            inference_ran=bool(reply['telemetry'].get('inference_ran')),
+            cancelled=False,
+        )
         text = reply['content'].strip() or 'I do not have a completion for that.'
         scored = score_workspace_reply(text, self.ws, header_meta)
         self.ws['last_request_kind'] = 'ordinary'
@@ -929,7 +961,8 @@ class WorkspaceTurn:
             source='model_generated', executed=False, inference_ran=reply['telemetry'].get('inference_ran'),
             application_cache_hit=reply['telemetry'].get('application_cache_hit'),
             workspace_header=header_meta, workspace_score=scored,
-            header_consumes_input_tokens=True, user_status='Draft'))
+            header_consumes_input_tokens=True, user_status='Draft',
+            product_backend='cpu', gpu_used=False, chat_usage=usage))
         return text + '\n\n(This is model-generated text, not an executed file result.)', 'reply', False
 
     def model_intent(self, path_text):
