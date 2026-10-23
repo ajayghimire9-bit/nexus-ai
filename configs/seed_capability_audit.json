@@ -1,0 +1,42 @@
+{
+  "id": "seed-capability-evidence-audit-1",
+  "artifact_stem": "seed_capability_audit",
+  "adapter": "capability_audit",
+  "base_sha": "79c65d9ea959da0346027c5f72c717a2550e7d4d",
+  "reviewed_sha": "8033e0612fb26dc71a26f184513715e005aced5b",
+  "runtime_source_sha256": "967842923d5e43c64732094f8e829d9b6995f07e80dce60ca1ce4c76ca0b3fda",
+  "carried_used_s": 2211.632103455996,
+  "wall_s": 120,
+  "cpu_s": 120,
+  "memory_mb": 2048,
+  "real_steps": 0,
+  "mode": "authored_source_development_capability_pilot",
+  "seeds": [73141, 73142, 73143],
+  "source_tasks": 4,
+  "assessment_tasks": 8,
+  "operators": ["reverse", "increment", "double", "abs_val", "filter_even", "unique_stable"],
+  "program_lengths": [2, 3],
+  "controller": {"shortlist_limit": 3, "allow_questions": true, "max_questions_per_task": 2, "probe_min_disagreement_ratio": 0.15},
+  "probes": [[2,2], [4,4], [6,6], [2,4], [4,6], [2,6], [-3,0,2,2,5], [-4,-1,0,3,3]],
+  "source_validation": [[-21,0,14,14,23], [25,-27,0,25]],
+  "methods": ["tools", "cache", "learned", "capsules_reset", "prior_reset", "shuffled", "frequency", "fixed_infogain", "boundary_first", "cost_aware"],
+  "practical_screen": {"minimum_call_reduction": 0.05, "allow_accuracy_regression": false, "require_positive_seed_interval": true},
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding": [
+    {"id":"py_multifile_fee", "domain":"python_repo", "language":"python", "request":"Apply the fractional fee to the subtotal, and then subtract that fee in the caller.", "files":{"rates.py":"def fee(base, rate):\n    return round(rate, 2)\n", "invoice.py":"from rates import fee\ndef total(item):\n    return item['base'] + fee(item['base'], item['rate'])\n"}, "public":[{"entry":"invoice.total","input":{"base":60,"rate":0.2},"expected":48}], "assessment":[{"entry":"invoice.total","input":{"base":90,"rate":0.1},"expected":81},{"entry":"invoice.total","input":{"base":0,"rate":0.3},"expected":0}]},
+    {"id":"py_new_rotation", "domain":"python_repo", "language":"python", "request":"Implement left rotation by k positions modulo list length; empty lists remain empty. Return a new list.", "files":{"rotate.py":"def rotate(item):\n    return item['xs']\n"}, "public":[{"entry":"rotate.rotate","input":{"xs":[1,2,3],"k":1},"expected":[2,3,1]}], "assessment":[{"entry":"rotate.rotate","input":{"xs":[7,8,9,10],"k":6},"expected":[9,10,7,8]},{"entry":"rotate.rotate","input":{"xs":[],"k":3},"expected":[]}]},
+    {"id":"py_documented_quota", "domain":"python_repo", "language":"python", "request":"The quota endpoint must use the documented request ceiling.", "files":{"quota.py":"def ceiling(x):\n    return 12\n"}, "docs":[{"doc_id":"quota-v4","title":"Quota API v4","content":"request_ceiling is 37 for this local API.","grounded_bindings":{"request_ceiling":37}}], "public":[{"entry":"quota.ceiling","input":0,"expected":37}], "assessment":[{"entry":"quota.ceiling","input":5,"expected":37}]},
+    {"id":"py_retention_boundary", "domain":"python_repo", "language":"python", "request":"Allow values equal to the limit, and preserve values over the limit as rejected.", "files":{"gate.py":"def allowed(item):\n    return item['value'] < item['limit']\n"}, "public":[{"entry":"gate.allowed","input":{"value":4,"limit":4},"expected":true}], "assessment":[{"entry":"gate.allowed","input":{"value":9,"limit":4},"expected":false},{"entry":"gate.allowed","input":{"value":1,"limit":4},"expected":true}]},
+    {"id":"ts_credit", "domain":"typescript_repo", "language":"typescript", "request":"Credit adds to the opening balance.", "files":{"ledger.ts":"export function credit(x: {balance: number, amount: number}): number { return x.balance - x.amount; }\n"}, "public":[{"entry":"ledger.credit","input":{"balance":10,"amount":3},"expected":13}], "assessment":[{"entry":"ledger.credit","input":{"balance":7,"amount":4},"expected":11},{"entry":"ledger.credit","input":{"balance":0,"amount":0},"expected":0}]},
+    {"id":"ts_unique_feature", "domain":"typescript_repo", "language":"typescript", "request":"Return the distinct numbers in first-occurrence order, without modifying the input.", "files":{"dedupe.ts":"export function unique(xs: number[]): number[] { return xs; }\n"}, "public":[{"entry":"dedupe.unique","input":[1,1,2],"expected":[1,2]}], "assessment":[{"entry":"dedupe.unique","input":[3,4,3,4,5],"expected":[3,4,5]},{"entry":"dedupe.unique","input":[],"expected":[]}]}
+  ],
+  "chat": [
+    {"id":"capabilities", "text":"What can you actually do?"},
+    {"id":"unfamiliar_paraphrase", "text":"Could you devise a stable rotation routine for arbitrary lists?"},
+    {"id":"negation", "text":"Do not move any objects. Explain your evidence instead."},
+    {"id":"ambiguous_reference", "text":"Change that to the other one."},
+    {"id":"conflicting_order", "text":"Sort the same rows both ascending and descending."},
+    {"id":"factual_provenance", "text":"What is the verified source for your claim about today's weather?"}
+  ]
+}

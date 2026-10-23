@@ -359,6 +359,10 @@ class SymbioticAgentLoop:
         self.capsule_registry = capsule_registry
 
     def solve(self, task: AgentTaskPublicView) -> dict[str, Any]:
+        from .symbiotic_workbench import contained_repository_path
+        contained_repository_path(self.workspace_dir, task.task_id)
+        for name in task.files:
+            contained_repository_path(self.workspace_dir / task.task_id, name)
         started = time.perf_counter()
         tool_calls: list[dict[str, Any]] = []
         patch_attempts: list[dict[str, Any]] = []

@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
@@ -49,6 +50,29 @@ from scripts.run_seed_learned_investigation_policy_v2 import summarize_v2_episod
 
 def verify_v2_payload(payload: dict[str, Any]) -> tuple[bool, list[str]]:
     mismatches: list[str] = []
+    locked = json.loads((ROOT/'configs/seed_learned_investigation_policy_v2.json').read_text())
+    if payload.get('equalized_controller') != locked['equalized_controller']:
+        return False, ['controller_not_locked_configuration']
+    if payload.get('objective_weights') != locked['objective_weights']:
+        return False, ['weights_not_locked_configuration']
+    expected_groups = {
+        'equalized_active_capsules_cleared': locked['equalized_active_policies'],
+        'passive_factorial_control': locked['passive_factorial_controls'],
+        'compositional_transfer_experiment': locked['compositional_transfer_modes'],
+    }
+    # Do not derive the expected grid from produced records or saved summaries.
+    _, _, locked_tasks = build_v2_disjoint_tasks_and_real_repos()
+    expected = {(group, method, task.task_id) for group, methods in expected_groups.items()
+                for method in methods for task in locked_tasks}
+    cells = [(row.get('experiment'), row.get('configuration'), row.get('task_id'))
+             for row in payload.get('records', []) if row.get('kind') == 'episode_v2']
+    if len(cells) != len(set(cells)) or set(cells) != expected:
+        return False, ['missing_duplicate_or_unexpected_grid_cell']
+    for key, group in [('equalized_active_comparison','equalized_active_capsules_cleared'),
+                       ('passive_factorial_controls','passive_factorial_control'),
+                       ('compositional_transfer_experiment','compositional_transfer_experiment')]:
+        if set(payload.get(key, {})) != set(expected_groups[group]):
+            return False, ['missing_or_unexpected_summary_configuration']
 
     if payload.get("study_id") != "seed-learned-investigation-policy-v2":
         mismatches.append("invalid_study_id")
@@ -193,6 +217,11 @@ def verify_v2_payload(payload: dict[str, Any]) -> tuple[bool, list[str]]:
             allow_compositional_capsules=allow_caps,
             consolidate_on_solve=False,
         )
+        for field in ('candidate_call_log', 'oracle_question_log', 'selected_candidate_id', 'selected_ops'):
+            if ep.get(field) != sim_ep[field]:
+                mismatches.append(f'controller_trace_mismatch:{tid}:{cfg_name}:{field}')
+        if type(ep.get('wall_s')) not in (int, float) or not 0 < ep['wall_s'] < 900:
+            mismatches.append(f'invalid_wall_time:{tid}:{cfg_name}')
         if ep.get("n_candidate_calls") != sim_ep["n_candidate_calls"]:
             mismatches.append(
                 f"forged_or_mismatched_call_count:{tid}:{cfg_name}:saved={ep.get('n_candidate_calls')}!=sim={sim_ep['n_candidate_calls']}"

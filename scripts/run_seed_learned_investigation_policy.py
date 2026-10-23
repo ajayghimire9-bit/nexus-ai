@@ -52,6 +52,7 @@ def _summarize_episodes(episodes: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def run_benchmark() -> dict[str, Any]:
+    raise RuntimeError('closed_confounded_v1_study: preserved artifacts only; use a separately registered audit')
     t0 = time.perf_counter()
     r0 = resource.getrusage(resource.RUSAGE_SELF)
 
@@ -232,7 +233,7 @@ def run_benchmark() -> dict[str, Any]:
         "study_id": cfg["study_id"],
         "protocol": cfg["protocol_doc"],
         "agi": False,
-        "bounded_learning_to_learn_established": True,
+        "bounded_learning_to_learn_established": False,
         "outer_training": {
             "curriculum": train_curr_report,
             "random_sampling": train_rand_report,

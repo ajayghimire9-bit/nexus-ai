@@ -2049,6 +2049,7 @@ class CombinedNexusArchitecture:
         })
 
         return {
+            "evidence_scope": "synthetic_engineering_fixtures_not_live_proposal_coverage",
             "conformal_calibration": conformal_report,
             "egraph_organization": {
                 "equivalence_class_size": len(eq_class),
@@ -2925,9 +2926,13 @@ class EqualizedInvestigationEngineV2:
     - Real bounded subprocess worker verification on repository tasks
     """
 
-    def __init__(self, objective_weights: InvestigationObjectiveWeights | None = None) -> None:
+    def __init__(self, objective_weights: InvestigationObjectiveWeights | None = None,
+                 *, ledger_factory=None, strict_controller_bounds=False) -> None:
         self.knowledge = SeparatelyResettableKnowledgeState()
         self.v2_params = InvestigationPolicyV2Parameters()
+        # Opt-in corrected audit path; historical replay retains its original semantics.
+        self.ledger_factory = ledger_factory or EpisodeCallLedger
+        self.strict_controller_bounds = strict_controller_bounds
         self.objective_weights = objective_weights or InvestigationObjectiveWeights(
             lambda_q=0.08, lambda_e=0.01, lambda_t=0.10
         )
@@ -3158,7 +3163,7 @@ class EqualizedInvestigationEngineV2:
         share the exact same `EqualizedControllerConfig`.
         """
         t0 = time.perf_counter()
-        ledger = EpisodeCallLedger()
+        ledger = self.ledger_factory()
         params = self.v2_params
 
         # Compositional Prefix Transfer from acquired 2-step source capsules:
@@ -3177,7 +3182,8 @@ class EqualizedInvestigationEngineV2:
             for c in self.knowledge.skills.active_capsules(domain="sequence_pipeline")
         } if allow_compositional_capsules else set()
         prefix_hit = any(len(ops) >= 3 and ops[:2] in active_prefixes for _cid, ops, _fn in ranked[:3])
-        effective_shortlist = 2 if (allow_compositional_capsules and prefix_hit) else ctrl_cfg.shortlist_limit
+        effective_shortlist = (ctrl_cfg.shortlist_limit if self.strict_controller_bounds else
+                               2 if (allow_compositional_capsules and prefix_hit) else ctrl_cfg.shortlist_limit)
 
         # Phase 1: Filter candidates against support examples (every single `fn(inp)` call metered!)
         survivors: list[tuple[str, tuple[str, ...], Callable[[Any], Any]]] = []
@@ -3249,7 +3255,7 @@ class EqualizedInvestigationEngineV2:
                     best_outcomes_by_cid = outcomes_this_probe
 
                 # If learned probe selector already found a probe that splits all survivors into singletons, stop scanning probes!
-                if use_learned_probe_selector and len(outcome_counts) == len(survivors):
+                if (use_learned_probe_selector or self.strict_controller_bounds) and len(outcome_counts) == len(survivors):
                     break
 
             if best_probe_inp is None or best_disagreement < ctrl_cfg.probe_min_disagreement_ratio:

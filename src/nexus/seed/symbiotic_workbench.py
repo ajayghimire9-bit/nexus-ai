@@ -714,6 +714,18 @@ class MultiFormatDataBackend:
 # SECTION E: CODING BACKENDS (Python + TypeScript with Tree-Sitter CST/AST)
 # ============================================================================
 
+def contained_repository_path(root: Path, name: str) -> Path:
+    """Reject escapes before writing even an authored proposal. Not an OS sandbox."""
+    if (type(name) is not str or not name or '\\' in name or '\x00' in name
+            or Path(name).is_absolute() or any(p in ('..', '.') for p in name.split('/'))
+            or any(not p for p in name.split('/'))):
+        raise ValueError('unsafe_repository_path')
+    path = (root / name).resolve()
+    if not path.is_relative_to(root.resolve()) or path == root.resolve():
+        raise ValueError('repository_path_escape')
+    return path
+
+
 class PolyglotCodingWorkbench:
     """Disposable isolated coding workspace supporting Python and TypeScript:
     - Tree-sitter CST/AST parsing (`tree-sitter-python` and `tree-sitter-typescript`)
@@ -734,11 +746,12 @@ class PolyglotCodingWorkbench:
         self.repo_model = RepositoryModel()
 
     def load_repository(self, files: dict[str, str]) -> dict[str, Any]:
+        paths = {name: contained_repository_path(self.workspace_dir, name) for name in files}
         self.files = copy.deepcopy(files)
         self.initial_files = copy.deepcopy(files)
         self.edit_history = []
         for rel_path, content in self.files.items():
-            full = self.workspace_dir / rel_path
+            full = paths[rel_path]
             full.parent.mkdir(parents=True, exist_ok=True)
             full.write_text(content, encoding="utf-8")
         return self.index_repository()
@@ -836,11 +849,11 @@ class PolyglotCodingWorkbench:
         return diffs
 
     def apply_patch(self, path: str, new_content: str, edit_id: str | None = None, reason: str = "patch") -> dict[str, Any]:
+        full = contained_repository_path(self.workspace_dir, path)
         old_content = self.files.get(path, "")
         diff = self.propose_diff({path: new_content})[path]
         eid = edit_id or f"edit_{len(self.edit_history) + 1}"
         self.files[path] = new_content
-        full = self.workspace_dir / path
         full.parent.mkdir(parents=True, exist_ok=True)
         full.write_text(new_content, encoding="utf-8")
         rec = dict(
@@ -869,7 +882,7 @@ class PolyglotCodingWorkbench:
             # Check if we can cleanly reverse-apply only `target_edit` or if there is a conflict
             raise ValueError(f"conflicting_later_edit_on_file:{path}:{later_same_file[0]['edit_id']}")
         self.files[path] = target_edit["previous_content"]
-        (self.workspace_dir / path).write_text(target_edit["previous_content"], encoding="utf-8")
+        contained_repository_path(self.workspace_dir, path).write_text(target_edit["previous_content"], encoding="utf-8")
         target_edit["undone"] = True
         return dict(undone_edit_id=edit_id, file=path, restored=True)
 

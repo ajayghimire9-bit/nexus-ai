@@ -46,6 +46,7 @@ ALLOWED_STDLIB_IMPORTS = {"math", " typing"}
 
 
 def validate_and_compile_python_repo(files: dict[str, str]) -> dict[str, dict[str, Any]]:
+    validate_repository_names(files)
     """Validate AST safety across all `.py` files in `files` and load them into
     isolated module namespaces with inter-module `from <mod> import <sym>` support.
     """
@@ -213,6 +214,7 @@ def evaluate_python_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def evaluate_typescript_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    validate_repository_names(payload.get('files', {}))
     started = time.perf_counter()
     files: dict[str, str] = payload["files"]
     cases: list[dict[str, Any]] = payload.get("cases", [])
@@ -332,6 +334,8 @@ def evaluate_typescript_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
 def run_worker_subprocess(payload: dict[str, Any], timeout_s: float = 10.0) -> dict[str, Any]:
     """Invoke this module in an isolated child process with resource bounds."""
+    # Validate before any worker can materialize a path. The child also checks it.
+    validate_repository_names(payload.get('files', {}))
     started = time.perf_counter()
     raw_in = json.dumps(payload, allow_nan=False)
     proc = subprocess.run(
@@ -356,11 +360,20 @@ def run_worker_subprocess(payload: dict[str, Any], timeout_s: float = 10.0) -> d
     return out
 
 
+def validate_repository_names(files):
+    for name in files:
+        if (type(name) is not str or not name or Path(name).is_absolute()
+                or '\\' in name or '\x00' in name or name.startswith('-')
+                or any(p in ('', '.', '..') for p in name.split('/'))):
+            raise ValueError('unsafe_repository_path')
+
+
 if __name__ == "__main__":
     resource.setrlimit(resource.RLIMIT_CPU, (5, 5))
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     resource.setrlimit(resource.RLIMIT_FSIZE, (2 * 1024 * 1024, 2 * 1024 * 1024))
     payload = json.loads(sys.stdin.read(200000))
+    validate_repository_names(payload.get('files', {}))
     lang = payload.get("language", "python")
     if lang == "python":
         print(json.dumps(evaluate_python_payload(payload), allow_nan=False))
