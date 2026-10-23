@@ -118,9 +118,11 @@ def prompt_for_format(
             f"Public execution feedback: {feedback}\n"
         )
     return (
-        "Return JSON {\"body\": \"...\"}. The value must be executable Python "
+        "Return a JSON object with a string field named body. "
+        "The body value must be executable Python "
         f"statements for the body of {plan.symbol}({plan.args}), including return. "
-        "Do not include the def line. Do not set body to a single identifier.\n"
+        "Do not include the def line. Do not set body to a placeholder, ellipsis, "
+        "or a single identifier.\n"
         f"{shared}"
         f"Public execution feedback: {feedback}\n"
     )

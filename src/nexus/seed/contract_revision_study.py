@@ -19,6 +19,7 @@ from .interrupt_transfer import _assess
 from .process_memory import sample_process_memory
 from .execution_feedback import layered_public_feedback
 from .public_failure import behavioral_feedback, comparison_ops, operator_hint_present
+from .structural_revision import slot3_revision_prompt, structural_reject_reason
 from .sum_row_repair import (
     compact_behavioral_feedback,
     compact_initial_prompt,
@@ -142,7 +143,7 @@ def propose_cell(
         feedback = revision_feedback(assembled.get("placeholder") or assembled.get("raw_reason") or "malformed")
         if compact_prompts:
             user2 = compact_revision_prompt(plan, "", {
-                "instruction": "JSON body was empty or invalid. Return {\"body\": \"...\"} only.",
+                "instruction": "JSON body was empty or invalid. Return executable Python statements in the body field.",
                 "failed_cases": [],
             })
         else:
@@ -167,7 +168,11 @@ def propose_cell(
     public_passed = False
     behavior_attempted = False
     behavior_success = False
+    structural_slot3_attempted = False
+    structural_reason = None
     three_point = False
+    feedback = None
+    prior_body = ""
     if assembled.get("structurally_valid") and assembled.get("patched_files"):
         public = _eval_public(meter, scope, spec, assembled["patched_files"])
         executed = public.get("status") not in {"blocked_missing_runtime", "rejected"}
@@ -238,11 +243,35 @@ def propose_cell(
                 reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
                 traces[-1]["unprojected_sum_rejected"] = bool(reject)
                 traces[-1]["reject_reason"] = reject
-            if (
-                not reject
-                and assembled.get("structurally_valid")
-                and assembled.get("patched_files")
-            ):
+            structural_reason = structural_reject_reason(assembled, plan)
+            if structural_reason and len(traces) < MAX_COMPLETIONS:
+                structural_slot3_attempted = True
+                user5 = slot3_revision_prompt(
+                    plan, prior_body, feedback or {}, _body_excerpt(assembled), structural_reason,
+                )
+                prompt5, render5 = render_prompt(STYLE, user5)
+                raw5 = _complete(
+                    runtime, prompt5, schema, meter, scope, spec["id"] + ":structural",
+                )
+                if type(raw5) is not dict:
+                    raw5 = {"content": "", "telemetry": {}}
+                assembled = _assemble(raw5.get("content") or "", spec, plan)
+                traces.append(_trace(
+                    assembled, round=len(traces) + 1, stage="structural",
+                    revision_of="post_behavior_placeholder", user_prompt=user5,
+                    prompt_reached_model=prompt5, render=render5, decoding=decoding,
+                    raw_content=(raw5.get("content") or "")[:800],
+                    telemetry=raw5.get("telemetry"),
+                    operator_hint_in_revision=operator_hint_present(user5),
+                    failed_cases=(feedback or {}).get("failed_cases"),
+                    structural_reason=structural_reason,
+                    compact_revision=True,
+                ))
+                reject = reject_unprojected_sum(prior_body, _body_excerpt(assembled), public)
+                traces[-1]["unprojected_sum_rejected"] = bool(reject)
+                traces[-1]["reject_reason"] = reject
+                structural_reason = structural_reject_reason(assembled, plan)
+            if assembled.get("structurally_valid") and assembled.get("patched_files"):
                 public = _eval_public(
                     meter, scope + ":rev", spec, assembled["patched_files"], spec["id"] + ":rev",
                 )
@@ -289,6 +318,8 @@ def propose_cell(
         format_repair_success=format_success,
         behavioral_revision_attempted=behavior_attempted,
         behavioral_revision_success=behavior_success,
+        structural_slot3_attempted=structural_slot3_attempted,
+        structural_reason=structural_reason,
         three_point_in_revision=three_point,
         operator_hint_in_revision=any(trace.get("operator_hint_in_revision") for trace in traces),
         uses_dict_fields=uses_dict_fields(body, keys),

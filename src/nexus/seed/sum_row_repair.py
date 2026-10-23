@@ -149,26 +149,33 @@ def compact_supplied_contract(plan, public_tests: list[dict[str, Any]] | None) -
 
 
 def compact_initial_prompt(plan, spec: dict[str, Any]) -> str:
+    from .structural_revision import JSON_BODY_ASK
+
     contract = compact_supplied_contract(plan, spec.get("public") or [])
     symbol = getattr(plan, "symbol", "fn")
     return (
         contract
-        + f'Return JSON {{"body": "..."}} for {symbol}. Include return. No def line.\n'
+        + f"{JSON_BODY_ASK} for {symbol}.\n"
         + f'Request: {spec.get("request") or ""}\n'
     )
 
 
 def compact_revision_prompt(plan, failed_expression: str, feedback: dict[str, Any]) -> str:
+    from .structural_revision import JSON_BODY_ASK
+
     symbol = getattr(plan, "symbol", "fn")
     args = getattr(plan, "args", None) or "item"
     body = (failed_expression or "").replace("\n", " ").strip()[:200]
-    return (
+    text = (
         f"Signature: def {symbol}({args})\n"
-        'Return JSON {"body": "..."}. Include return. No def line.\n'
+        f"{JSON_BODY_ASK}\n"
         f"Failed body: {body}\n"
         f"{feedback.get('instruction')}\n"
         f"Failed cases: {json.dumps(feedback.get('failed_cases') or [], allow_nan=False)}\n"
     )
+    if '{"body": "..."}' in text:
+        raise ValueError("ellipsis_hint_in_revision_prompt")
+    return text
 
 
 def needs_compact_sum_repair(public: dict[str, Any] | None, body: str) -> bool:

@@ -1,0 +1,119 @@
+{
+  "id": "seed-slot3-repair-confirm-1",
+  "artifact_stem": "seed_slot3_repair_confirm",
+  "base_sha": "c94addb",
+  "parent_protocol_commit": "c94addb",
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "carried_used_s": 3314.967351455996,
+  "wall_s": 180,
+  "hard_deadline_s": 150,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "audit_cells": 1,
+    "confirm_cells": 4,
+    "methods": ["supplied"]
+  },
+  "tasks": [
+    {
+      "id": "py_lot_count",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tally(item) sums count on each lot. Missing count is 0. Empty lots is 0. Empty list and a missing count are public.",
+      "request": "Create function tally(item) that sums count on each dict in lots. Missing count counts as 0. An empty list is 0.",
+      "docs": [{"title": "tally", "content": "tally(item) sums lot counts. Missing count is 0. Empty lots is 0."}],
+      "files": {"lot.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "lot.py", "symbol": "tally", "action": "insert_function"},
+      "public": [
+        {"entry": "lot.tally", "input": {"lots": [{"count": 1}, {"count": 8}]}, "expected": 9},
+        {"entry": "lot.tally", "input": {"lots": []}, "expected": 0},
+        {"entry": "lot.tally", "input": {"lots": [{"count": 3}, {}]}, "expected": 3}
+      ],
+      "assessment": [
+        {"entry": "lot.tally", "input": {"lots": [{"count": 5}]}, "expected": 5},
+        {"entry": "lot.tally", "input": {"lots": [{}, {}]}, "expected": 0},
+        {"entry": "lot.tally", "input": {"lots": [{"count": 2}, {"count": 2}, {}]}, "expected": 4}
+      ]
+    },
+    {
+      "id": "py_job_slash",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tag(item) is job and unit lowercased, joined by one slash. Missing job or unit is an empty string. Those missing cases are public.",
+      "request": "Create function tag(item) that returns job and unit in lowercase joined by one slash. A missing job or unit is an empty string.",
+      "docs": [{"title": "tag", "content": "tag(item) is job/unit lowercased. Missing fields are empty strings."}],
+      "files": {"job.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "job.py", "symbol": "tag", "action": "insert_function"},
+      "public": [
+        {"entry": "job.tag", "input": {"job": "Lab", "unit": "East"}, "expected": "lab/east"},
+        {"entry": "job.tag", "input": {"unit": "East"}, "expected": "/east"},
+        {"entry": "job.tag", "input": {"job": "Lab"}, "expected": "lab/"}
+      ],
+      "assessment": [
+        {"entry": "job.tag", "input": {"job": "", "unit": ""}, "expected": "/"},
+        {"entry": "job.tag", "input": {"job": "Q", "unit": "w"}, "expected": "q/w"},
+        {"entry": "job.tag", "input": {"job": "Mix", "unit": "Case", "extra": 3}, "expected": "mix/case"}
+      ]
+    },
+    {
+      "id": "py_part_div",
+      "role": "insert",
+      "family": "arithmetic",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "part(item) returns part divided by whole as a float using true division.",
+      "request": "Create function part(item) that returns part divided by whole.",
+      "docs": [{"title": "part", "content": "part(item) is part / whole as a float."}],
+      "files": {"frac.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "frac.py", "symbol": "part", "action": "insert_function"},
+      "public": [
+        {"entry": "frac.part", "input": {"part": 6, "whole": 5}, "expected": 1.2},
+        {"entry": "frac.part", "input": {"part": 0, "whole": 8}, "expected": 0.0}
+      ],
+      "assessment": [
+        {"entry": "frac.part", "input": {"part": 13, "whole": 2}, "expected": 6.5},
+        {"entry": "frac.part", "input": {"part": 1, "whole": 4}, "expected": 0.25}
+      ]
+    },
+    {
+      "id": "py_ok_pair",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "ok(item) is True only when tenure >= min and grade >= cut. A failing public case is included.",
+      "request": "Create function ok(item) that is True only when tenure is at least min and grade is at least cut.",
+      "docs": [{"title": "ok", "content": "ok(item) requires tenure >= min AND grade >= cut."}],
+      "files": {"ok.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "ok.py", "symbol": "ok", "action": "insert_function"},
+      "public": [
+        {"entry": "ok.ok", "input": {"tenure": 5, "min": 4, "grade": 9, "cut": 8}, "expected": true},
+        {"entry": "ok.ok", "input": {"tenure": 3, "min": 4, "grade": 10, "cut": 8}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "ok.ok", "input": {"tenure": 8, "min": 4, "grade": 7, "cut": 8}, "expected": false},
+        {"entry": "ok.ok", "input": {"tenure": 4, "min": 4, "grade": 8, "cut": 8}, "expected": true}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

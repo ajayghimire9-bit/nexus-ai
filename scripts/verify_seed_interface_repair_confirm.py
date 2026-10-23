@@ -19,7 +19,11 @@ from nexus.seed.interface_repair_study import (
 )
 
 
-def verify(payload, config, root=ROOT):
+def verify(
+    payload, config, root=ROOT, *,
+    closed=CLOSED_TASK_IDS, freeze=WORKER_PROMPT_FREEZE,
+    cover=public_covers_varied, summarize_fn=summarize, replay_fn=replay_final,
+):
     if config.get("default_investigation_policy") != "fixed_boundary":
         raise ValueError("fixed_policy_not_default")
     if config.get("learned_ranking_promoted") or config.get("learning_research_resumed"):
@@ -27,7 +31,7 @@ def verify(payload, config, root=ROOT):
     ids = [row["id"] for row in config["tasks"]]
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate_task")
-    if set(ids) & CLOSED_TASK_IDS:
+    if set(ids) & closed:
         raise ValueError("closed_task_reused")
     hist = root / "artifacts/seed_harder_features/seed_harder_features.json"
     if hashlib.sha256(hist.read_bytes()).hexdigest() != HISTORICAL_HARDER_SHA256:
@@ -47,7 +51,7 @@ def verify(payload, config, root=ROOT):
     if len(manifest) != 1 or manifest[0]["config_hash"] != digest(config):
         raise ValueError("config_manifest")
     inspect = [row for row in records if row.get("category") == "inspect"]
-    if len(inspect) != 1 or inspect[0].get("frozen_recipe") != WORKER_PROMPT_FREEZE:
+    if len(inspect) != 1 or inspect[0].get("frozen_recipe") != freeze:
         raise ValueError("inspect")
     audit = [row for row in records if row.get("category") == "audit"]
     if len(audit) != 1 or len(audit[0].get("tasks") or []) != 3:
@@ -57,7 +61,7 @@ def verify(payload, config, root=ROOT):
     methods = [row.get("method") for row in confirm]
     if methods and set(methods) != set(grid["methods"]):
         raise ValueError("method_coverage")
-    if not all(public_covers_varied(spec) for spec in config["tasks"]):
+    if not all(cover(spec) for spec in config["tasks"]):
         raise ValueError("public_missing_not_present")
     if payload.get("blocked_step") is None:
         if len(confirm) != grid["confirm_cells"]:
@@ -74,12 +78,19 @@ def verify(payload, config, root=ROOT):
         if charged != len(completes):
             raise ValueError("completion_count_mismatch")
         for row in confirm:
-            replayed = replay_final(row, specs[row["id"]])
+            matched = [
+                event for event in completes
+                if str(event.get("identity") or "").startswith(row["id"] + ":")
+            ]
+            if len(matched) != int(row.get("calls_charged") or 0):
+                raise ValueError("completion_chain_mismatch:" + row["id"])
+        for row in confirm:
+            replayed = replay_fn(row, specs[row["id"]])
             if bool(row.get("public_passed")) != replayed["public_all_passed"]:
                 raise ValueError("public_replay_mismatch:" + row["id"])
             if bool(row.get("semantic_correct")) != replayed["private_all_passed"]:
                 raise ValueError("private_replay_mismatch:" + row["id"])
-    rebuilt = summarize(records, config)
+    rebuilt = summarize_fn(records, config)
     if rebuilt["historical_supplied_private_correct"] != 1:
         raise ValueError("summary_rewrote_history")
     if rebuilt["confirm_rows"] != payload["summary"]["confirm_rows"]:
@@ -97,10 +108,22 @@ def verify(payload, config, root=ROOT):
     )
 
 
+def _bundle(study_id):
+    if study_id == "seed-slot3-repair-confirm-1":
+        from nexus.seed.slot3_repair_study import (
+            CLOSED_TASK_IDS as closed, WORKER_PROMPT_FREEZE as freeze,
+            public_covers_varied as cover, replay_final as replay_fn, summarize as summarize_fn,
+        )
+        config = json.loads((ROOT / "configs/seed_slot3_repair_confirm.json").read_text())
+        return config, dict(closed=closed, freeze=freeze, cover=cover, summarize_fn=summarize_fn, replay_fn=replay_fn)
+    config = json.loads((ROOT / "configs/seed_interface_repair_confirm.json").read_text())
+    return config, {}
+
+
 def main(path: Path):
     payload = json.loads(path.read_text(encoding="utf-8"))
-    config = json.loads((ROOT / "configs/seed_interface_repair_confirm.json").read_text())
-    out = verify(payload, config)
+    config, extras = _bundle(payload.get("study_id"))
+    out = verify(payload, config, **extras)
     print(json.dumps(out, indent=2))
     return out
 

@@ -2,7 +2,9 @@
 
 ## Current next — spend the unused completion on post-behavior placeholders
 
-The [interface-repair run](NEXUS_SEED_INTERFACE_REPAIR_RESULTS.md)
+Protocol [NEXUS_SEED_SLOT3_REPAIR_PROTOCOL.md](NEXUS_SEED_SLOT3_REPAIR_PROTOCOL.md)
+is locked. Offline unit tests passed (0 model calls). Live scoring
+has not run. The [interface-repair run](NEXUS_SEED_INTERFACE_REPAIR_RESULTS.md)
 passed 2/4. Envelope unwrap and layered feedback worked; the coder
 still answered an accurate int+dict / `qty` schema with `...`, and
 hardcoded `-lead` after a `.lower()`-on-list error. A third
