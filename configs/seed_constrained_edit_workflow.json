@@ -1,0 +1,86 @@
+{
+  "id": "seed-constrained-edit-workflow-1",
+  "artifact_stem": "seed_constrained_edit_workflow",
+  "base_sha": "aa2b01503358af598cb3d4b66ddb86c285a366b9",
+  "parent_protocol_commit": "aa2b01503358af598cb3d4b66ddb86c285a366b9",
+  "carried_used_s": 2490.426805455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_budget_steps": 6,
+  "feature_budget_steps": 6,
+  "expected_grid": {
+    "semantic_cells": 1,
+    "feature_cells": 2,
+    "language_cells": 4
+  },
+  "semantic": {
+    "id": "py_depth_three_point",
+    "family": "comparison_boundary",
+    "domain": "python_repo",
+    "language": "python",
+    "request": "Allow depth equal to the max.",
+    "files": {"depth.py": "def ok(item):\n    return item['depth'] < item['max']\n"},
+    "public": [
+      {"entry": "depth.ok", "input": {"depth": 1, "max": 2}, "expected": true},
+      {"entry": "depth.ok", "input": {"depth": 2, "max": 2}, "expected": true},
+      {"entry": "depth.ok", "input": {"depth": 3, "max": 2}, "expected": false}
+    ],
+    "assessment": [
+      {"entry": "depth.ok", "input": {"depth": 2, "max": 2}, "expected": true},
+      {"entry": "depth.ok", "input": {"depth": 3, "max": 2}, "expected": false}
+    ]
+  },
+  "feature": {
+    "id": "py_tag_colon_feature",
+    "family": "formatted_identifier",
+    "domain": "python_repo",
+    "language": "python",
+    "request": "Create function tag(item) that returns the kind and name in lowercase, joined by one colon.",
+    "docs": [{"title": "tag", "content": "tag(item) is kind and name, lowercased, joined by one colon."}],
+    "files": {"echo.py": "def echo(text):\n    return text\n"},
+    "public": [
+      {"entry": "echo.tag", "input": {"kind": "Src", "name": "Beta"}, "expected": "src:beta"}
+    ],
+    "assessment": [
+      {"entry": "echo.tag", "input": {"kind": "A", "name": "B"}, "expected": "a:b"},
+      {"entry": "echo.tag", "input": {"kind": "East", "name": "End"}, "expected": "east:end"}
+    ]
+  },
+  "conversation_files": [
+    {"id": "notes", "key": "region", "value": "amount", "rows": [["east", 4], ["west", 8], ["east", 2]]},
+    {"id": "fees", "key": "region", "value": "amount", "rows": [["north", 1], ["south", 3]]}
+  ],
+  "conversation": [
+    {
+      "id": "explain_contents",
+      "kind": "content_explanation",
+      "text": "What does the selected file contain? Name the regions and amounts.",
+      "expected": {"facts": ["north", "south", "1", "3"], "attribution": "fees", "selected": "fees", "pending_after": null}
+    },
+    {
+      "id": "change_operation",
+      "kind": "operation_correction",
+      "text": "List the individual rows instead.",
+      "expected": {"facts": ["fees"], "attribution": "fees", "selected": "fees", "last_op": "rows", "pending_after": null}
+    },
+    {
+      "id": "topic",
+      "kind": "topic_change",
+      "text": "What file is selected?",
+      "expected": {"facts": ["fees"], "selected": "fees", "pending_after": null}
+    },
+    {
+      "id": "return_file",
+      "kind": "return_to_file",
+      "text": "Go back to the file \"{fees}\" and summarize totals grouped by region.",
+      "expected": {"facts": ["fees"], "attribution": "fees", "selected": "fees", "last_op": "sum", "pending_after": null}
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

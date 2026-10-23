@@ -627,7 +627,7 @@ class SymbioticAgentLoop:
                 model_trace.append({"round": round_idx, **{
                     k: proposed.get(k) for k in (
                         "status", "reason", "telemetry", "inference_ran", "completion_stop",
-                        "raw_content",
+                        "raw_content", "raw_valid", "normalized", "preview", "plan",
                     )
                 }, "lifecycle": life, "truncation_claimed_as_cause": False})
                 record_tool("local_model_propose", {

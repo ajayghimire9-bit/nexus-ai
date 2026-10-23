@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — boundary evidence, conversation state and one workflow (results)
+## Current — constrained function edits and generated-code feature (protocol)
+
+[Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md). Branch
+`cursor/seed-constrained-edit-workflow` from reviewed tip `aa2b015`.
+NEXUS supplies path, symbol and replace-versus-insert; the model returns
+only the function. Raw validity, normalization and semantic correctness
+are scored separately. The formatted-identifier feature is locked before
+outcomes and must be inexpressible by the AST catalogue. Conversation
+must explain source contents, change the operation, leave and return.
+Learned ranking and memory comparison stay paused. Ledger
+**2490.426805455996 used / 1109.573194544004 remaining**.
+
+## Previous — boundary evidence, conversation state and one workflow (results)
 
 [Protocol](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_PROTOCOL.md),
 [results](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_RESULTS.md). Implementation

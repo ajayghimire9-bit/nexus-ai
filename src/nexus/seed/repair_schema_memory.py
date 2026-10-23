@@ -52,9 +52,11 @@ INCLUSIVE_CUES = (
     "equal to the limit",
     "equal to the cap",
     "equal to the floor",
+    "equal to the max",
     "allow score equal",
     "allow span equal",
     "allow height equal",
+    "allow depth equal",
 )
 EXCLUSIVE_CUES = (
     "strictly smaller",

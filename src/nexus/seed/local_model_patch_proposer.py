@@ -488,18 +488,27 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
     from .staging_workspace import CompletionInspector, inspect_completion_stop
     files = files_override if files_override is not None else task.files
     inspector = CompletionInspector(runtime)
-    prompt = public_prompt(task, repo_index, grounded, public_feedback, interface=interface)
-    if files_override is not None:
-        prompt = public_prompt(
-            type("T", (), {"files": files, "request": getattr(task, "request", ""),
-                           "public_tests": getattr(task, "public_tests", []),
-                           "docs": getattr(task, "docs", [])})(),
-            repo_index, grounded, public_feedback, interface=interface,
+    schema = PATCH_SCHEMA
+    if interface == "constrained":
+        from .constrained_edit import CONSTRAINED_SCHEMA, constrained_prompt, plan_constrained_edit
+        plan = plan_constrained_edit(
+            getattr(task, "request", ""), files, list(getattr(task, "public_tests", []) or []),
         )
+        prompt = constrained_prompt(task, plan, public_feedback)
+        schema = CONSTRAINED_SCHEMA
+    else:
+        prompt = public_prompt(task, repo_index, grounded, public_feedback, interface=interface)
+        if files_override is not None:
+            prompt = public_prompt(
+                type("T", (), {"files": files, "request": getattr(task, "request", ""),
+                               "public_tests": getattr(task, "public_tests", []),
+                               "docs": getattr(task, "docs", [])})(),
+                repo_index, grounded, public_feedback, interface=interface,
+            )
     try:
-        raw = runtime.complete(prompt, PATCH_SCHEMA, max_tokens=max_tokens)
+        raw = runtime.complete(prompt, schema, max_tokens=max_tokens)
     except TypeError:
-        raw = runtime.complete(prompt, PATCH_SCHEMA)
+        raw = runtime.complete(prompt, schema)
     except Exception as exc:
         return {
             "status": "BLOCKED",
@@ -512,9 +521,21 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
     telemetry = dict(raw.get("telemetry") or {})
     telemetry["completion_stop"] = stop
     try:
-        parsed = parse_model_patch(raw["content"])
-        validated = validate_patch(parsed, files, interface=interface)
-        patched = apply_patch(files, validated)
+        if interface == "constrained":
+            from .constrained_edit import assemble_constrained_proposal
+            assembled = assemble_constrained_proposal(
+                raw.get("content", ""), getattr(task, "request", ""), files,
+                list(getattr(task, "public_tests", []) or []),
+            )
+            if not assembled.get("structurally_valid"):
+                raise ValueError(assembled.get("raw_reason") or "constrained_not_structurally_valid")
+            validated = assembled["validated"]
+            patched = assembled["patched_files"]
+        else:
+            parsed = parse_model_patch(raw["content"])
+            validated = validate_patch(parsed, files, interface=interface)
+            patched = apply_patch(files, validated)
+            assembled = None
     except Exception as exc:
         return {
             "status": "invalid_proposal",
@@ -525,6 +546,17 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
             "completion_stop": stop,
             "inference_ran": bool(telemetry.get("inference_ran")),
             "truncation_claimed_as_cause": False,
+            "raw_valid": False,
+            "normalized": [],
+        }
+    extra = {}
+    if interface == "constrained" and assembled is not None:
+        extra = {
+            "raw_valid": assembled.get("raw_valid"),
+            "raw_reason": assembled.get("raw_reason"),
+            "normalized": assembled.get("normalized") or [],
+            "preview": assembled.get("preview"),
+            "plan": assembled.get("plan"),
         }
     return {
         "status": "proposed",
@@ -536,6 +568,7 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
         "completion_stop": stop,
         "inference_ran": bool(telemetry.get("inference_ran")),
         "truncation_claimed_as_cause": False,
+        **extra,
     }
 
 

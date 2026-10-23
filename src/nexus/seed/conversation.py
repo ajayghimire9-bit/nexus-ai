@@ -92,6 +92,10 @@ def interpret(text,ctx):
         except ValueError:return Intent('unsupported')
         return Intent('compose_code',dict(ops=[aliases[p] for p in parts],input=value))
     if t.startswith('remember text:'):return Intent('ingest',dict(text=raw.split(':',1)[1].strip()))
+    if any(p in t for p in (
+        'selected file contain', 'what is in the selected file', 'what does the file contain',
+        'name the regions', 'explain the contents', 'what rows are in', 'what is in that file',
+    )):return Intent('unsupported')
     m=re.fullmatch(r'(?:what does|what is) (?:the )?(.+?)(?: mean)?',t)
     if m:return Intent('meaning',{'name':m[1]})
     m=re.fullmatch(r'(?:a |an )?([a-z][a-z0-9]{0,23}) (?:means|is) (?:an object that is |a |an )?(.+?)(?: object)?',t)

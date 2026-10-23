@@ -1,5 +1,14 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Constrained function edits
+
+`seed/constrained_edit.py` plans replace-versus-insert from the public
+entry and existing symbols, then reuses `validate_patch` / `apply_patch`.
+It is not a second proposer. `seed/constrained_workflow.py` reuses
+`SymbioticAgentLoop`, `EventMeter` and workspace chat. Learned ranking
+and acquired-memory comparison are not invoked.
+[Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md).
+
 ## Boundary evidence, conversation state and one workflow
 
 `seed/reliable_workflow.py` reuses `SymbioticAgentLoop`, `EventMeter`,

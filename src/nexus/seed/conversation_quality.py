@@ -38,8 +38,14 @@ def score_conversation_quality(
         last_ok = bool(last_tool) and any(
             token.lower() in lowered for token in expected.get("facts") or []
         )
+    want_op = expected.get("last_op")
+    last_intent = state.get("last_intent") if isinstance(state, dict) else None
+    op_ok = True if not want_op else (
+        isinstance(last_intent, dict) and last_intent.get("op") == want_op
+    )
     passed = (
-        not missing and not invented and attributed and pending_ok and selected_ok and last_ok
+        not missing and not invented and attributed and pending_ok
+        and selected_ok and last_ok and op_ok
     )
     return {
         "facts_ok": not missing,
@@ -51,6 +57,7 @@ def score_conversation_quality(
         "pending_ok": pending_ok,
         "selected_ok": selected_ok,
         "last_tool_ok": last_ok,
+        "op_ok": op_ok,
         "passed": passed,
         "scoring": "factual_content_attribution_and_state; not_keyword_presence",
     }

@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next — constrained function text, then one catalogue-inexpressible feature
+
+The [boundary/state/workflow pilot](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_RESULTS.md)
+queued no model edit because the model chose path and insert-versus-replace.
+Next: NEXUS supplies those; measure raw validity, normalization and
+semantic correctness separately; run `py_tag_colon_feature` only after
+showing the AST catalogue cannot pass it. Do not resume learned ranking
+or memory comparison. Ledger
+**2490.426805455996 used / 1109.573194544004 remaining**.
+[Protocol](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_PROTOCOL.md).
+
 ## Current next — freeze the inclusive workflow on a project AST cannot solve
 
 The [boundary/state/workflow pilot](NEXUS_SEED_BOUNDARY_STATE_WORKFLOW_RESULTS.md)

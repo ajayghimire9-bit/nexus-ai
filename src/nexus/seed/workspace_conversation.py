@@ -120,6 +120,11 @@ CHANGED = (
     'what did you change', 'what did you just change', 'what changed',
     'what did you do differently', 'what did we change',
 )
+CONTENTS = (
+    'what does the selected file contain', 'what is in the selected file',
+    'what does the file contain', 'name the regions', 'explain the contents',
+    'what rows are in', 'what is in that file',
+)
 SAVE_PROC = ('save this procedure', 'save the procedure', 'save that procedure', 'keep this procedure')
 INSPECT_PROC = ('inspect the procedure', 'show the procedure', 'show saved procedure', 'inspect saved procedure',
                 'list procedures', 'list saved procedures')
@@ -419,6 +424,8 @@ class WorkspaceTurn:
         source_reply = self._attributed_source_reply()
         if source_reply:
             return source_reply
+        if any(token in self.text for token in CONTENTS):
+            return self.explain_contents()
         if self._constraint_blocks():
             return self.reject_incomplete()
         if self.parsed.relation == 'repeat':
@@ -516,6 +523,27 @@ class WorkspaceTurn:
         last = self.ws.get('last_correction') or 'none'
         self.card('Attributed tool result', dict(source_file=name, last_correction=last, executed=False))
         return 'Source file: '+name+'. Last tool result: '+last, 'reply', False
+
+    def explain_contents(self):
+        path = self.resolve_source(self.ws.get('selected_file') or '')
+        if path is None:
+            return self.clarify('file', 'I need a selected local CSV before I can describe its contents.')
+        rows, profiles = self.load_table(path)
+        if rows is None:
+            return 'Source file: '+path.name+'. The CSV is empty or unreadable.', 'error', False
+        parts = []
+        for row in rows[:12]:
+            parts.append(', '.join(str(key)+'='+str(row.get(key)) for key in row))
+        columns = list(rows[0].keys()) if rows else []
+        self.card('File contents', dict(
+            source_file=path.name, columns=columns, rows=rows[:12], executed=False,
+            from_source_csv=True,
+        ))
+        return (
+            'Source file: '+path.name+'. Columns: '+', '.join(columns)+'. '
+            'Rows: '+'; '.join(parts)+'. These values were read from the selected CSV, '
+            'not invented.'
+        ), 'reply', False
 
     def _looks_like_data(self):
         return any(p in self.text for p in DATA_SUM + DATA_ROWS + ('amount', 'csv', 'filter', 'minimum', 'at least', 'region'))
