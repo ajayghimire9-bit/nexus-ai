@@ -26,8 +26,80 @@ CHAT_SYSTEM = (
     'You are NEXUS Seed, a local assistant. Answer conversationally from this prompt only. '
     'You cannot run tools or change files from this prompt. Do not claim a file was written, '
     'a program ran, or a procedure was saved. If the user wants a spreadsheet transform, say '
-    'they should name a local CSV and ask for grouped totals or individual rows.'
+    'they should name a local CSV and ask for grouped totals or individual rows. '
+    'If the workspace header names a pending clarification, ask that question. '
+    'Describe the actual selected file or coding workspace when asked; do not invent files.'
 )
+
+
+def workspace_context_header(store, ws) -> tuple[str, dict]:
+    """Build a header from registered capabilities and live workspace state.
+
+    The header costs no generation tokens. It still consumes model input tokens.
+    """
+    capabilities = [
+        'finite object teaching',
+        'CSV grouped totals or individual rows',
+        'bounded coding loop on an allowed workspace',
+    ]
+    coding = []
+    runtime = {'available': False, 'reason': None}
+    if store is not None:
+        listing = getattr(store, 'list_coding_workspaces', None)
+        if callable(listing):
+            coding = list(listing() or [])
+        status = getattr(store, 'runtime_status', None)
+        if callable(status):
+            runtime = status() or runtime
+    pending = ws.get('pending_clarification') if isinstance(ws, dict) else None
+    selected_file = (ws or {}).get('selected_file') if isinstance(ws, dict) else None
+    selected_coding = (ws or {}).get('selected_coding_workspace') if isinstance(ws, dict) else None
+    last_tool = (ws or {}).get('last_correction') if isinstance(ws, dict) else None
+    header = (
+        'Workspace state (generated from the store, not model output):\n'
+        '- registered capabilities: '+', '.join(capabilities)+'\n'
+        '- local model available: '+str(bool(runtime.get('available')))+'\n'
+        '- selected file: '+(selected_file or 'none')+'\n'
+        '- selected coding workspace: '+(selected_coding or 'none')+'\n'
+        '- allowed coding workspaces: '+(', '.join(coding) if coding else 'none')+'\n'
+        '- pending clarification: '+(json.dumps(pending) if pending else 'none')+'\n'
+        '- last tool result: '+(str(last_tool) if last_tool else 'none')+'\n'
+    )
+    words = max(1, len(header.split()))
+    return header, {
+        'generated_from': 'registered_capabilities_and_workspace',
+        'input_token_estimate': words,
+        'generation_tokens': 0,
+        'consumes_model_input_tokens': True,
+        'selected_file': selected_file,
+        'selected_coding_workspace': selected_coding,
+        'pending_clarification': pending,
+        'allowed_coding_workspaces': coding,
+    }
+
+
+def score_workspace_reply(text: str, ws: dict, header_meta: dict | None = None) -> dict:
+    """Score real-state description and the needed question, not a header keyword."""
+    text = text or ''
+    lowered = text.lower()
+    selected = (ws or {}).get('selected_coding_workspace') or (ws or {}).get('selected_file')
+    pending = (ws or {}).get('pending_clarification') or {}
+    needed = None
+    if isinstance(pending, dict):
+        needed = pending.get('detail') or pending.get('kind')
+    names_selected = bool(selected) and str(selected) in text
+    asks_needed = bool(needed) and (
+        str(needed).lower() in lowered or
+        ('which' in lowered and ('workspace' in lowered or 'file' in lowered or 'csv' in lowered))
+    )
+    repeats_header_keyword = 'workspace state (generated' in lowered
+    return {
+        'names_selected_resource': names_selected,
+        'asks_needed_question': asks_needed if needed else None,
+        'repeats_header_keyword_only': repeats_header_keyword and not names_selected and not asks_needed,
+        'header_input_token_estimate': (header_meta or {}).get('input_token_estimate'),
+        'scoring': 'real_state_and_needed_question; not_header_keyword',
+    }
 UNSAFE = ('delete my', 'rm -', 'os.system', '__import__', 'buy stock', 'buy stocks',
           'send email', 'http://', 'https://', 'eval(', 'exec(', 'subprocess', 'format disk')
 DATA_SUM = ('summarize', 'summary', 'totals', 'total ', 'grouped', 'group by', 'per region', 'by region')
@@ -511,6 +583,8 @@ class WorkspaceTurn:
             self.parsed.relation == 'correction' and self.ws.get('last_coding_request')
             and selected
         )
+        if looks_coding and not selected:
+            return self.clarify('coding_workspace', 'Which allowed coding workspace should I use?')
         if selected and (looks_coding or follow_up):
             request = self.raw.strip()
             if follow_up and self.ws.get('last_coding_request'):
@@ -584,10 +658,28 @@ class WorkspaceTurn:
         return _present_coding_result(self.card, res, out.get('proposal'))
 
     def ordinary_chat(self):
+        header, header_meta = workspace_context_header(self.store, self.ws)
+        asked_state = any(p in self.text for p in (
+            'what workspace', 'which workspace', 'what is selected', "what's selected",
+            'what file is selected', 'current workspace', 'workspace state',
+        ))
+        if asked_state:
+            pending = self.ws.get('pending_clarification')
+            selected = self.ws.get('selected_coding_workspace') or self.ws.get('selected_file') or 'none'
+            question = ''
+            if isinstance(pending, dict) and pending.get('detail'):
+                question = ' Needed question: '+str(pending['detail'])
+            self.card('Workspace context', dict(executed=False, **header_meta, scored_as='real_state'))
+            return (
+                'Selected resource: '+str(selected)+'. Allowed coding workspaces: '
+                + (', '.join(header_meta.get('allowed_coding_workspaces') or []) or 'none')
+                + '.' + question
+            ), 'reply', False
         runtime = self.store.ensure_runtime()
         if runtime is None:
             reason = self.store.runtime_status()['reason'] or 'local_model_unavailable'
-            self.card('Local model unavailable', dict(source='runtime_status', reason=reason, executed=False))
+            self.card('Local model unavailable', dict(source='runtime_status', reason=reason, executed=False,
+                                                      workspace_header=header_meta))
             return (
                 'No local pretrained model is available, so I cannot run live ordinary chat. '
                 + reason + ' Teaching words/skills and the two CSV tools still work. '
@@ -597,15 +689,18 @@ class WorkspaceTurn:
         for turn in self.conversation.view()['messages'][-4:]:
             history.append('User: '+turn['user'][:400])
             history.append('Assistant: '+turn['assistant'][:400])
-        prompt = ('<|im_start|>system\n'+CHAT_SYSTEM+'<|im_end|>\n')
+        prompt = ('<|im_start|>system\n'+CHAT_SYSTEM+'\n\n'+header+'<|im_end|>\n')
         if history:
             prompt += '<|im_start|>user\nRecent conversation:\n'+'\n'.join(history)+'<|im_end|>\n'
         prompt += '<|im_start|>user\n'+self.raw.strip()+'<|im_end|>\n<|im_start|>assistant\n'
         reply = self.complete(runtime, prompt, None)
         text = reply['content'].strip() or 'I do not have a completion for that.'
+        scored = score_workspace_reply(text, self.ws, header_meta)
         self.card('Model-generated reply', dict(
             source='model_generated', executed=False, inference_ran=reply['telemetry'].get('inference_ran'),
-            application_cache_hit=reply['telemetry'].get('application_cache_hit')))
+            application_cache_hit=reply['telemetry'].get('application_cache_hit'),
+            workspace_header=header_meta, workspace_score=scored,
+            header_consumes_input_tokens=True))
         return text + '\n\n(This is model-generated text, not an executed file result.)', 'reply', False
 
     def model_intent(self, path_text):

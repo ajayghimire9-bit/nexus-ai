@@ -97,6 +97,9 @@ def run_investigation(config, emit, meter):
                 lock = dict(kind="choice", scope=scope, selected=episode["selected_candidate_id"],
                             selected_ops=episode["selected_ops"],
                             stopping_reason=episode.get("stopping_reason"),
+                            identification_status=episode.get("identification_status"),
+                            halt_cause=episode.get("widening", {}).get("halt_cause") if episode.get("widening") else None,
+                            unchecked_remaining=episode.get("unchecked_remaining"),
                             certainty_claimed=episode.get("certainty_claimed"),
                             family=family)
                 emit(lock)
@@ -109,18 +112,28 @@ def run_investigation(config, emit, meter):
                     outs.append(actual)
                     meter.call(scope, "assessment_candidate", episode["selected_candidate_id"],
                                lambda _: actual, x)
-                identified = bool(episode.get("certainty_claimed")) and refs == outs
+                identified = (
+                    episode.get("identification_status") == "identified_within_catalogue"
+                    and refs == outs
+                )
                 false_certainty = bool(episode.get("certainty_claimed")) and (
                     refs != outs or bool(episode.get("unresolved_alternatives"))
                 )
                 emit(dict(kind="episode", scope=scope, seed=seed, method=method,
                           task=task.task_id, family=family, identified=identified,
                           assessment_match=refs == outs,
+                          identification_status=episode.get("identification_status"),
+                          halt_cause=(episode.get("widening") or {}).get("halt_cause"),
+                          unchecked_remaining=episode.get("unchecked_remaining"),
+                          unique_among_checked_not_identified=(
+                              episode.get("identification_status") == "unique_among_checked"
+                          ),
                           certainty_claimed=bool(episode.get("certainty_claimed")),
                           false_certainty=false_certainty,
                           stopping_reason=episode.get("stopping_reason"),
                           n_candidate_calls=episode["n_candidate_calls"],
                           n_questions=episode["n_questions"],
+                          index_events=(episode.get("widening") or {}).get("index_events", 0),
                           wall_s=round(time.perf_counter() - started, 6),
                           widening_expansions=len((episode.get("widening") or {}).get("expansions", [])),
                           training_cost_charged_separately=True))
@@ -235,11 +248,17 @@ def summarize(records, config):
         by_method[method] = dict(
             tasks=len(rows),
             identified=sum(1 for r in in_g if r.get("identified")),
+            unique_among_checked=sum(1 for r in rows if r.get("identification_status") == "unique_among_checked"),
+            ambiguous=sum(1 for r in rows if r.get("identification_status") == "ambiguous"),
+            no_checked_candidate_fits=sum(1 for r in rows if r.get("identification_status") == "no_checked_candidate_fits"),
+            catalogue_inconsistent=sum(1 for r in rows if r.get("identification_status") == "catalogue_inconsistent"),
             assessment_match=sum(1 for r in in_g if r.get("assessment_match")),
             in_grammar=len(in_g),
             false_certainty=sum(1 for r in rows if r.get("false_certainty")),
-            unresolved=sum(1 for r in rows if str(r.get("stopping_reason", "")).startswith("unresolved")
-                           or r.get("stopping_reason") in ("no_answer_source", "budget_exhausted")),
+            unresolved=sum(1 for r in rows if r.get("identification_status") in {
+                "unique_among_checked", "ambiguous", "no_checked_candidate_fits",
+                "catalogue_inconsistent",
+            } or r.get("halt_cause") in ("budget_exhausted", "candidate_check_limit", "no_answer_source")),
             questions=sum(r.get("n_questions", 0) for r in rows),
             candidate_calls=sum(r.get("n_candidate_calls", 0) for r in rows),
             wall_s=round(sum(r.get("wall_s", 0) for r in rows), 6),

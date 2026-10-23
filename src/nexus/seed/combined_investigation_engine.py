@@ -2097,6 +2097,7 @@ class EqualizedControllerConfig:
     max_episode_candidate_calls: int | None = None
     max_episode_wall_s: float | None = None
     widen_batch_size: int = 4
+    widen_strategy: str = "ranked"  # ranked | stratified; stratified does not eliminate sibling programs
 
 
 class EpisodeCallLedger:
@@ -2109,6 +2110,16 @@ class EpisodeCallLedger:
     def __init__(self) -> None:
         self.candidate_call_log: list[dict[str, Any]] = []
         self.oracle_question_log: list[dict[str, Any]] = []
+        self.index_log: list[dict[str, Any]] = []
+
+    def record_index(self, kind: str, identity: str, detail: dict[str, Any] | None = None) -> None:
+        """Charge index construction/maintenance. This is not a candidate execution."""
+        self.index_log.append({
+            "index_event": len(self.index_log) + 1,
+            "kind": kind,
+            "identity": identity,
+            "detail": detail or {},
+        })
 
     def invoke_candidate(
         self,
@@ -3333,6 +3344,9 @@ class EqualizedInvestigationEngineV2:
             "candidate_call_log": ledger.candidate_call_log,
             "oracle_question_log": ledger.oracle_question_log,
             "stopping_reason": widening.get("stopping_reason"),
+            "identification_status": widening.get("identification_status"),
+            "catalogue_exhausted": widening.get("catalogue_exhausted"),
+            "unchecked_remaining": widening.get("unchecked_remaining"),
             "certainty_claimed": widening.get("certainty_claimed"),
             "shortlist_agreement": widening.get("shortlist_agreement"),
             "observational_equivalence_on_identified_evidence": widening.get(

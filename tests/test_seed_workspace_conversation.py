@@ -171,6 +171,27 @@ def test_ordinary_chat_is_not_forced_into_sum_rows_schema(pair):
     assert card['source'] == 'model_generated'
     assert card['executed'] is False
     assert 'not an executed file result' in result['text']
+    assert card.get('workspace_header', {}).get('consumes_model_input_tokens') is True
+    prompt = pair[2].calls[-1]['prompt']
+    assert 'Workspace state (generated from the store' in prompt
+
+
+def test_missing_coding_workspace_asks_the_needed_question(pair):
+    result = send(pair, 'Implement midpoint(a, b) as the average of the two numbers.')
+    assert result['chat']['messages'][-1]['status'] == 'clarification'
+    assert 'coding workspace' in result['text'].lower()
+    pending = result['chat']['context']['workspace']['pending_clarification']
+    assert pending['kind'] == 'coding_workspace'
+
+
+def test_workspace_state_question_names_the_selected_resource(pair, tmp_path):
+    root = tmp_path / 'coding_workspaces' / 'demo_mid'
+    root.mkdir(parents=True)
+    (root / 'm.py').write_text('def noop(x):\n    return x\n', encoding='utf-8')
+    send(pair, 'use coding workspace demo_mid')
+    result = send(pair, 'What workspace is selected?')
+    assert result['chat']['messages'][-1]['status'] == 'reply'
+    assert 'demo_mid' in result['text']
 
 
 def test_model_unavailable_is_reported_not_templated(tmp_path):

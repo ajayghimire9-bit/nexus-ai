@@ -114,13 +114,21 @@ def apply_completeness_preserving_fallback(
         "shortlist_agreement": False,
         "observational_equivalence_on_identified_evidence": False,
         "stopping_reason": "legacy_shortlist_stop",
+        "identification_status": "legacy_shortlist_stop",
+        "halt_cause": None,
+        "catalogue_exhausted": False,
+        "unchecked_remaining": 0,
         "expansions": [],
         "candidates_checked": [],
+        "candidates_statically_eliminated": [],
         "constructed_probes": [],
         "unresolved_alternatives": [],
         "certainty_claimed": True,
         "oracle_unavailable": False,
+        "widen_strategy": getattr(ctrl_cfg, "widen_strategy", "ranked"),
+        "family_representative_eliminates_siblings": False,
         "identified_evidence_count": len(task.support_examples) + ledger.n_questions,
+        "index_events": 0,
     }
     if not ctrl_cfg.enable_widening:
         if survivors:
@@ -139,7 +147,27 @@ def apply_completeness_preserving_fallback(
             used_inputs.add(_key(task.probe_pool_inputs[idx]))
 
     def remaining_ranked() -> list[Candidate]:
-        return [item for item in ranked if item[0] not in checked_ids]
+        leftover = [item for item in ranked if item[0] not in checked_ids]
+        from .behavioral_index import BehavioralIndex, input_key
+        index = getattr(ledger, "_behavioral_index", None)
+        if index is None:
+            index = BehavioralIndex()
+            ledger._behavioral_index = index
+            if hasattr(ledger, "record_index"):
+                ledger.record_index("index_construct", task.task_id, {"never_discards": True})
+        seen: set[tuple[str, str]] = set()
+        for row in ledger.candidate_call_log:
+            token = (row["candidate_id"], input_key(row.get("input")))
+            if token in seen:
+                continue
+            seen.add(token)
+            index.remember_execution(row["candidate_id"], row.get("input"), row.get("output"))
+        if hasattr(ledger, "record_index"):
+            ledger.record_index("fingerprint_prioritize", task.task_id, {
+                "remaining": len(leftover),
+                "never_discards": True,
+            })
+        return index.prioritize(leftover, task.support_examples)
 
     def shortlist_splits_on_remaining_probes() -> bool:
         if len(survivors) <= 1:
@@ -231,10 +259,20 @@ def apply_completeness_preserving_fallback(
             halt = "budget_exhausted"
             break
         if len(checked_ids) >= ctrl_cfg.max_candidates_checked and remaining_ranked():
-            halt = "budget_exhausted"
+            halt = "candidate_check_limit"
             break
 
-        batch = remaining_ranked()[: max(1, ctrl_cfg.widen_batch_size)]
+        remaining = remaining_ranked()
+        strategy = getattr(ctrl_cfg, "widen_strategy", "ranked")
+        if strategy == "stratified":
+            from .behavioral_index import stratified_representatives
+            batch, family_note = stratified_representatives(remaining, max(1, ctrl_cfg.widen_batch_size))
+            record["family_representative_eliminates_siblings"] = False
+            record["expansions"].append({"kind": "stratified_batch", **family_note})
+            if hasattr(ledger, "record_index"):
+                ledger.record_index("stratified_batch", task.task_id, family_note)
+        else:
+            batch = remaining[: max(1, ctrl_cfg.widen_batch_size)]
         if batch:
             added: list[str] = []
             rejected: list[str] = []
@@ -243,8 +281,18 @@ def apply_completeness_preserving_fallback(
                     halt = "budget_exhausted"
                     break
                 if len(checked_ids) >= ctrl_cfg.max_candidates_checked:
-                    halt = "budget_exhausted"
+                    halt = "candidate_check_limit"
                     break
+                from .behavioral_index import sound_static_elimination
+                eliminated, why = sound_static_elimination(ops, task.support_examples)
+                if hasattr(ledger, "record_index"):
+                    ledger.record_index("static_length", cid, {"eliminated": eliminated, "reason": why})
+                if eliminated:
+                    checked_ids.add(cid)
+                    record["candidates_checked"].append(cid)
+                    record["candidates_statically_eliminated"].append({"id": cid, "reason": why})
+                    rejected.append(cid)
+                    continue
                 ok = _consistent_with_evidence(
                     cid, fn, ledger, task.support_examples, ledger.oracle_question_log,
                     phase="widening_support",
@@ -282,22 +330,27 @@ def apply_completeness_preserving_fallback(
     unique_checked = list(dict.fromkeys(record["candidates_checked"]))
     record["candidates_checked"] = unique_checked
     record["identified_evidence_count"] = len(task.support_examples) + ledger.n_questions
+    remaining = remaining_ranked()
+    record["unchecked_remaining"] = len(remaining)
+    record["catalogue_exhausted"] = not remaining
+    record["halt_cause"] = halt
+    record["index_events"] = len(getattr(ledger, "index_log", []) or [])
 
     if record["oracle_unavailable"] or halt == "no_answer_source":
-        record["stopping_reason"] = "no_answer_source"
-        record["certainty_claimed"] = False
-    elif halt == "budget_exhausted" or (
-        remaining_ranked() and len(checked_ids) >= ctrl_cfg.max_candidates_checked
-    ):
-        record["stopping_reason"] = "budget_exhausted"
+        status = "ambiguous" if len(survivors) > 1 else (
+            "unique_among_checked" if len(survivors) == 1 else "no_checked_candidate_fits"
+        )
         record["certainty_claimed"] = False
     elif not survivors:
-        record["stopping_reason"] = "unresolved_out_of_grammar"
+        status = "catalogue_inconsistent" if not remaining else "no_checked_candidate_fits"
         record["certainty_claimed"] = False
-    elif len(survivors) == 1 and not remaining_ranked():
-        record["stopping_reason"] = "identified"
+    elif len(survivors) == 1 and not remaining:
+        status = "identified_within_catalogue"
         record["certainty_claimed"] = True
-    elif len(survivors) > 1:
+    elif len(survivors) == 1:
+        status = "unique_among_checked"
+        record["certainty_claimed"] = False
+    else:
         equivalent = True
         identified = [inp for inp, _expected in task.support_examples]
         identified.extend(row["probe_input"] for row in ledger.oracle_question_log)
@@ -307,13 +360,12 @@ def apply_completeness_preserving_fallback(
                 equivalent = False
                 break
         record["observational_equivalence_on_identified_evidence"] = equivalent
-        record["stopping_reason"] = "unresolved_equivalent" if equivalent else "unresolved"
+        status = "ambiguous"
         record["certainty_claimed"] = False
         record["unresolved_alternatives"] = [cid for cid, _ops, _fn in survivors]
-    else:
-        record["stopping_reason"] = "unresolved"
-        record["certainty_claimed"] = False
 
+    record["identification_status"] = status
+    record["stopping_reason"] = status
     if not record["certainty_claimed"]:
         record["unresolved_alternatives"] = record["unresolved_alternatives"] or [
             cid for cid, _ops, _fn in survivors

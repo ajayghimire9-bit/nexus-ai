@@ -282,6 +282,27 @@ class PythonASTMutationSynthesizer:
                         ast.fix_missing_locations(new_tree)
                         variants.append((f"{node.name}:or_to_explicit_none", ast.unparse(new_tree) + "\n"))
 
+        # Generic function construction: extract a name/args cue and insert a stub.
+        # The learner must still discover the body; no handwritten midpoint.
+        existing_names = {n.name for n in tree.body if isinstance(n, ast.FunctionDef)}
+        for name, args in cls._requested_functions(req_lower):
+            if name in existing_names or name in {"if", "for", "while", "return"}:
+                continue
+            arg_list = [a.strip() for a in args.split(",") if a.strip()] or ["x"]
+            sig = ", ".join(arg_list)
+            stubs = [
+                (f"insert_function:{name}:return_none", f"def {name}({sig}):\n    return None\n"),
+                (f"insert_function:{name}:return_first", f"def {name}({sig}):\n    return {arg_list[0]}\n"),
+            ]
+            if len(arg_list) >= 2:
+                stubs.append((
+                    f"insert_function:{name}:generic_add",
+                    f"def {name}({sig}):\n    return {arg_list[0]} + {arg_list[1]}\n",
+                ))
+            for desc, body in stubs:
+                new_src = original_source.rstrip() + "\n\n" + body
+                variants.append((desc, new_src if new_src.endswith("\n") else new_src + "\n"))
+
         # Deduplicate while preserving order
         unique_variants: list[tuple[str, str]] = []
         seen_src = {original_source.strip()}
@@ -290,6 +311,29 @@ class PythonASTMutationSynthesizer:
                 seen_src.add(src.strip())
                 unique_variants.append((desc, src))
         return unique_variants
+
+    @staticmethod
+    def _requested_functions(req_lower: str) -> list[tuple[str, str]]:
+        found: list[tuple[str, str]] = []
+        for match in re.finditer(
+            r"\b(?:add|create|implement|insert|write)\s+(?:a\s+)?(?:function\s+)?([a-z_][a-z0-9_]*)\s*\(([^)]*)\)",
+            req_lower,
+        ):
+            found.append((match.group(1), match.group(2)))
+        if not found:
+            for match in re.finditer(r"\b([a-z_][a-z0-9_]*)\s*\(([a-z_][a-z0-9_,\s]*)\)", req_lower):
+                name = match.group(1)
+                if name in {"if", "for", "while", "return", "max", "min", "len", "print"}:
+                    continue
+                found.append((name, match.group(2)))
+        seen: set[str] = set()
+        unique: list[tuple[str, str]] = []
+        for name, args in found:
+            if name in seen:
+                continue
+            seen.add(name)
+            unique.append((name, args))
+        return unique
 
 
 class TypeScriptCSTflashSynthesizer:
@@ -569,8 +613,10 @@ class SymbioticAgentLoop:
                     self.local_runtime, task, repo_index, grounded_bindings, feedback,
                 )
                 model_trace.append({"round": round_idx, **{
-                    k: proposed.get(k) for k in ("status", "reason", "telemetry", "inference_ran")
-                }})
+                    k: proposed.get(k) for k in (
+                        "status", "reason", "telemetry", "inference_ran", "completion_stop",
+                    )
+                }, "truncation_claimed_as_cause": False})
                 record_tool("local_model_propose", {
                     "round": round_idx,
                     "runtime_present": self.local_runtime is not None,
@@ -597,17 +643,64 @@ class SymbioticAgentLoop:
                     "live_model_checks": "BLOCKED",
                 }, t0)
 
-        # 3g. Evaluate candidate patches in bounded worker subprocesses until public tests pass
+        # 3g. Evaluate candidates from a growing work queue. A revision appended
+        # during iteration must still execute; a precomputed slice would drop it.
+        from .staging_workspace import StagingWorkspace
+        from .repair_schema_memory import (
+            RepairSchemaStore, capture_from_success, infer_family,
+        )
+        queue: list[tuple[str, dict[str, str]]] = list(candidates)
         max_attempts = max(1, task.budget_steps)
-        for idx, (op_desc, cand_files) in enumerate(candidates[:max_attempts], start=1):
+        idx = 0
+        staging_trace: list[dict[str, Any]] = []
+        repair_store = getattr(self, "repair_schema_store", None)
+        if self.allow_acquired_memory and repair_store is None:
+            repair_store = RepairSchemaStore()
+            self.repair_schema_store = repair_store
+        if self.allow_acquired_memory and repair_store is not None:
+            family = infer_family(task.request, task.public_tests)
+            if family:
+                schema = repair_store.lookup(family, task.request)
+                if schema is None:
+                    for stored in repair_store.schemas.values():
+                        if stored.family == family and stored.transformation != "none":
+                            schema = stored
+                            break
+                if schema is not None:
+                    reused = repair_store.apply(schema, current_files)
+                    if reused is not None:
+                        queue.insert(0, (f"repair_schema:{schema.schema_id}", reused))
+        while idx < len(queue) and idx < max_attempts:
+            op_desc, cand_files = queue[idx]
+            idx += 1
             t_att = time.perf_counter()
+            staging = StagingWorkspace(current_files)
+            staging.propose_coordinated(op_desc, sorted(set(cand_files) | set(current_files)))
+            staging.staged = dict(cand_files)
+            syntax = staging.validate_syntax()
+            staging_trace.append({"attempt": idx, "operator": op_desc, "syntax": syntax})
+            if not syntax["ok"]:
+                att_rec = asdict(PatchAttemptRecord(
+                    attempt_index=idx,
+                    operator_name=op_desc,
+                    target_files=sorted(cand_files),
+                    unified_diff={},
+                    worker_status="syntax_error",
+                    public_passed=False,
+                    passed_count=0,
+                    total_count=len(task.public_tests),
+                    wall_s=round(time.perf_counter() - t_att, 6),
+                ))
+                patch_attempts.append(att_rec)
+                record_tool("stage_syntax", {"attempt_index": idx, "operator": op_desc}, syntax, t_att)
+                continue
             diff_map = cwb.propose_diff(cand_files)
-            ev = run_worker_subprocess({
+            ev = staging.run_tests(lambda files: run_worker_subprocess({
                 "language": task.language,
-                "files": cand_files,
+                "files": files,
                 "cases": task.public_tests,
                 "trace": False,
-            })
+            }))
             passed_cnt = sum(1 for r in ev.get("results", []) if r.get("passed"))
             total_cnt = len(task.public_tests)
             all_ok = bool(ev.get("all_passed", False))
@@ -628,17 +721,29 @@ class SymbioticAgentLoop:
                 "public_passed": all_ok,
                 "passed_count": passed_cnt,
                 "total_count": total_cnt,
+                "published": False,
             }, t_att)
 
             if all_ok:
-                # If capsule registry is attached and a single function was repaired, optionally acquire capsule
+                published = staging.publish()
+                if self.allow_acquired_memory and repair_store is not None:
+                    family = infer_family(task.request, task.public_tests)
+                    if family:
+                        schema = capture_from_success(
+                            family, task.request, current_files, published, task.public_tests,
+                            {"wall_s": att_rec["wall_s"], "attempt": idx},
+                        )
+                        if schema is not None:
+                            repair_store.remember(schema)
                 return self._finalize(
                     task, "solved", f"Solved on attempt {idx} via `{op_desc}`. Public tests passed; this is not private-test correctness.",
-                    cand_files, tool_calls, patch_attempts, started,
+                    published, tool_calls, patch_attempts, started,
                     extra={
                         "model_trace": model_trace,
                         "applied_operator": op_desc,
                         "public_tests_passed": True,
+                        "staging_trace": staging_trace,
+                        "published_after_validation": True,
                         "unverified_assumptions": [
                             "Passing public tests is not proof of complete correctness.",
                             "Private tests stay in the evaluator.",
@@ -651,25 +756,34 @@ class SymbioticAgentLoop:
                     t_rev = time.perf_counter()
                     revised = propose_with_runtime(
                         self.local_runtime, task, repo_index, grounded_bindings,
-                        {"failed_operator": op_desc, "public_results": ev.get("results", [])[:6]},
+                        {"failed_operator": op_desc, "public_results": ev.get("results", [])[:6],
+                         "staged_files": list(staging.staged)},
+                        files_override=staging.staged,
                     )
                     model_trace.append({"round": len(model_trace) + 1, **{
-                        k: revised.get(k) for k in ("status", "reason", "telemetry", "inference_ran")
-                    }})
+                        k: revised.get(k) for k in (
+                            "status", "reason", "telemetry", "inference_ran", "completion_stop",
+                        )
+                    }, "truncation_claimed_as_cause": False})
                     record_tool("local_model_revise", {"after_attempt": idx}, {
                         "status": revised.get("status"),
                         "reason": revised.get("reason"),
                         "inference_ran": revised.get("inference_ran"),
+                        "completion_stop": revised.get("completion_stop"),
+                        "revised_from_staged": True,
                     }, t_rev)
                     if revised.get("status") == "proposed":
-                        candidates.append((f"local_model_revise_{idx}", revised["patched_files"]))
+                        staging.revise_from_staged(ev.get("results", [])[:6], revised["patched_files"])
+                        queue.append((f"local_model_revise_{idx}", revised["patched_files"]))
 
         return self._finalize(
-            task, "failed", f"Exhausted {min(len(candidates), max_attempts)} candidate patch attempt(s) without passing all public tests.",
+            task, "failed", f"Exhausted {idx} candidate patch attempt(s) without passing all public tests.",
             current_files, tool_calls, patch_attempts, started,
             extra={
                 "model_trace": model_trace,
                 "public_tests_passed": False,
+                "staging_trace": staging_trace,
+                "published_after_validation": False,
                 "unverified_assumptions": [
                     "No candidate passed the public tests.",
                     "Passing public tests would still not prove private-test correctness.",

@@ -129,8 +129,10 @@ def test_constructed_probe_splits_agreeing_shortlist():
     ev = _run(task, widening=True, shortlist=2)
     assert ev["widening"]["constructed_probes"] or ev["n_questions"] >= 0
     assert ev["stopping_reason"] in {
-        "identified", "unresolved_equivalent", "unresolved", "budget_exhausted",
+        "identified_within_catalogue", "unique_among_checked", "ambiguous",
+        "no_checked_candidate_fits", "catalogue_inconsistent",
     }
+    assert ev.get("identification_status") == ev["stopping_reason"]
 
 
 def test_new_oracle_contradicts_preferred_shortlist():
@@ -164,7 +166,8 @@ def test_observational_equivalence_is_not_certainty():
     )
     ev = _run(task, widening=True, shortlist=2, max_checked=4)
     assert ev["certainty_claimed"] is False
-    assert ev["stopping_reason"] in {"unresolved_equivalent", "unresolved"}
+    assert ev["identification_status"] == "ambiguous"
+    assert ev["stopping_reason"] == "ambiguous"
     assert ev["capsule_registered"] is None
     assert len(ev["unresolved_alternatives"]) >= 1
 
@@ -190,7 +193,8 @@ def test_target_outside_grammar_is_unresolved():
     )
     ev = _run(task, widening=True, shortlist=2, max_checked=4)
     assert ev["certainty_claimed"] is False
-    assert ev["stopping_reason"] in {"unresolved_out_of_grammar", "unresolved", "budget_exhausted"}
+    assert ev["identification_status"] == "catalogue_inconsistent"
+    assert ev["widening"]["catalogue_exhausted"] is True
     assert ev["capsule_registered"] is None
 
 
@@ -207,7 +211,10 @@ def test_no_answer_source_does_not_claim_certainty():
     )
     ev = _run(task, widening=True, oracle=False, shortlist=2)
     assert ev["certainty_claimed"] is False
-    assert ev["stopping_reason"] in {"no_answer_source", "unresolved", "budget_exhausted"}
+    assert ev["widening"]["halt_cause"] == "no_answer_source"
+    assert ev["identification_status"] in {
+        "unique_among_checked", "ambiguous", "no_checked_candidate_fits",
+    }
 
 
 def test_budget_expires_without_certainty():
@@ -222,7 +229,8 @@ def test_budget_expires_without_certainty():
     )
     ev = _run(task, widening=True, shortlist=1, max_checked=8, max_calls=4)
     assert ev["certainty_claimed"] is False
-    assert ev["stopping_reason"] == "budget_exhausted"
+    assert ev["widening"]["halt_cause"] == "budget_exhausted"
+    assert ev["identification_status"] != "identified_within_catalogue"
     assert ev["n_candidate_calls"] <= 8
 
 
@@ -258,3 +266,70 @@ def test_constructed_probes_do_not_use_assessment_rows():
     used = {__import__("json").dumps(x, sort_keys=True) for x in ([[1, 2], [3, 4], [99, 100, 101]])}
     built = construct_probe_candidates(task, used)
     assert [99, 100, 101] not in built
+
+
+def test_unique_among_checked_is_not_catalogue_identification():
+    target = ("increment",)
+    extras = [("double",), ("reverse",), ("abs_val",), ("filter_even",)]
+    pool = [_cand(target)] + [_cand(ops) for ops in extras]
+    task = _task("partial_check", target, pool, support=[[1], [2]], probes=[[3], [4]])
+    ev = _run(task, widening=True, shortlist=1, max_checked=2)
+    assert ev["certainty_claimed"] is False
+    if ev["identification_status"] == "unique_among_checked":
+        assert ev["widening"]["unchecked_remaining"] >= 1
+        assert ev["widening"]["catalogue_exhausted"] is False
+    assert ev.get("identified") is not True
+
+
+def test_zero_survivors_with_remainder_is_not_out_of_grammar():
+    hidden = ("square",)
+
+    def hidden_fn(xs):
+        return [x * x for x in xs]
+
+    extras = [("reverse",), ("increment",), ("double",), ("abs_val",)]
+    pool = [_cand(ops) for ops in extras]
+    task = TinyTask(
+        task_id="partial_oog",
+        cohort="development",
+        domain="sequence_pipeline",
+        ticket_request="Infer the observed list transform.",
+        support_examples=[([2], [4]), ([3], [9])],
+        probe_pool_inputs=[[1], [0]],
+        assessment_inputs=[[5]],
+        target_ops=hidden,
+        oracle_fn=hidden_fn,
+        candidate_pool=pool,
+    )
+    ev = _run(task, widening=True, shortlist=1, max_checked=2)
+    assert ev["certainty_claimed"] is False
+    assert ev["identification_status"] == "no_checked_candidate_fits"
+    assert ev["widening"]["unchecked_remaining"] >= 1
+    assert ev["widening"]["catalogue_exhausted"] is False
+
+
+def test_static_length_elimination_is_charged_and_sound():
+    from nexus.seed.behavioral_index import (
+        appears_monotonic_on_support,
+        produces_sorted_list,
+        sound_static_elimination,
+    )
+    support = [([1, -2, 3], [1, 3])]
+    eliminated, why = sound_static_elimination(("reverse", "increment"), support)
+    assert eliminated is True
+    assert why == "length_preserving_cannot_produce_shorter_output"
+    kept, _ = sound_static_elimination(("filter_even",), support)
+    assert kept is False
+    sorted_only = [([1, 4], [2, 3]), ([2, 5], [0, 6])]
+    assert produces_sorted_list(sorted_only) is True
+    assert appears_monotonic_on_support(sorted_only) is False
+
+
+def test_fingerprint_prioritize_never_drops():
+    from nexus.seed.behavioral_index import BehavioralIndex
+    index = BehavioralIndex()
+    items = [("a", ("reverse",), None), ("b", ("increment",), None)]
+    index.remember_execution("a", [1], [1])
+    ordered = index.prioritize(items, [([1], [1])])
+    assert {row[0] for row in ordered} == {"a", "b"}
+    assert len(ordered) == 2

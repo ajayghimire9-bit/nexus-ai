@@ -1,6 +1,23 @@
 # NEXUS Seed — Current State
 
-## Current — widening/coding development pilot (protocol before scoring)
+## Current — scoped identification, charged index, insertion and staging (implementation)
+
+Branch `cursor/seed-scoped-id-staging` from reviewed `0a8df5d`. Protocol
+[NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md](NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md).
+Development tests pass. No new scored assessment has been collected.
+`identified` counts only `identified_within_catalogue`. `unique_among_checked`
+is not a win. Zero survivors among a 24-check cap with remainder is
+`no_checked_candidate_fits`, not out-of-grammar. Behavioral index charges
+construction and never discards on fingerprints. Symbol insertion uses a
+source hash and an explicit missing-`end_lineno` fallback. The revision loop
+is a growing queue; staging publishes only after validation. Repair-schema
+families are predeclared; one success is not 100%. Workspace headers come from
+registered store state and still consume input tokens. Closed
+`local_model_runtime.py` hash unchanged. Scoring is blocked until this
+protocol is committed. Ledger unchanged:
+**2259.632103455996 used / 1340.367896544004 remaining**.
+
+## Previous — widening/coding development pilot (protocol before scoring)
 
 [Protocol](NEXUS_SEED_CAPABILITY_WIDENING_CODING_PROTOCOL.md),
 [results](NEXUS_SEED_CAPABILITY_WIDENING_CODING_RESULTS.md). Implementation
