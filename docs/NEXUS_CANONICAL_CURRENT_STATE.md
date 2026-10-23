@@ -1,6 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — worker division, public missing cases, then confirmation (results)
+## Current — compact sum-row TypeError repair (results)
+
+[Protocol](NEXUS_SEED_SUM_ROW_REPAIR_PROTOCOL.md),
+[results](NEXUS_SEED_SUM_ROW_REPAIR_RESULTS.md). Implementation
+`fc5ae21` / `791a231` / `b953201` on `cursor/seed-worker-div-confirm`.
+Verifier `valid: true`. Confirmation 2/4 (`share`, `admit` pass;
+`total` revises `sum(..., default=0)` to `{'body': '...'}`; `mark`
+revises to a forbidden f-string). Historical 1/5 and prior 3/4
+untouched. Ledger
+**3255.314914455996 used / 344.685085544004 remaining**.
+
+## Previous — worker division, public missing cases, then confirmation (results)
 
 [Protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md),
 [results](NEXUS_SEED_WORKER_DIV_CONFIRM_RESULTS.md). Implementation

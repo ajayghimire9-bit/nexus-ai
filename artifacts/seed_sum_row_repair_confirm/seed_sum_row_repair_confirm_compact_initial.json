@@ -1,0 +1,2786 @@
+{
+  "study_id": "seed-sum-row-repair-confirm-1",
+  "scientific": false,
+  "kind": "source_development_evaluation_not_confirmation",
+  "blocked_step": null,
+  "model_metadata": {
+    "coder15": {
+      "model_sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "model_file": "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "model_file_bytes": 1117320768,
+      "quantization": "Q4_K_M",
+      "gguf_file_type": 15,
+      "quantization_source": "GGUF general.file_type metadata",
+      "runtime_version": "version: 0.7.0 (build 11669, commit 620d2225c)\nbuilt with AppleClang 21.0.0.21000334 for Darwin arm64",
+      "executable_sha256": "9dc31a8a15f81b8f252e68d1918419e0bbbf5008bd42d00dd8721a58834e384a",
+      "hardware": "arm64",
+      "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+      "cpu_count": 10,
+      "settings": {
+        "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+        "executable": "llama-server",
+        "host": "127.0.0.1",
+        "port": 0,
+        "context_size": 2048,
+        "threads": 1,
+        "backend": "llama_cpp_server",
+        "request_timeout_s": 20,
+        "startup_timeout_s": 30,
+        "max_tokens": 128,
+        "seed": 42,
+        "application_cache": false,
+        "prompt_cache": false
+      },
+      "cold_startup_s": 1.3737555830011843
+    }
+  },
+  "historical_fingerprints": {
+    "artifacts/seed_capability_audit.json": "4e7c2fcd4db63bd04021397a1dee89855c4c7d8b4e7dac61f2f2ca4247f61661",
+    "artifacts/seed_capability_audit_verified_v2.json": "e38c37478022615215ece6c55b1df84e229ebd12bb9212be926dc234d6d0cd95",
+    "artifacts/seed_capability_audit_raw.jsonl": "8823ce572749c6b83aa6dd671461df29bae5fbdf0e37d42833ac11980c996b4f"
+  },
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "resources": {
+    "wall_s": 28.526798
+  },
+  "records": [
+    {
+      "kind": "audit_manifest",
+      "config_hash": "2e25c32f4c248fefcc2640859f52e269afd15bb0b0ba38d5cd191e560e5951b8",
+      "default_investigation_policy": "fixed_boundary",
+      "learned_ranking_promoted": false,
+      "learned_policy_promoted": false,
+      "learning_research_resumed": false,
+      "frozen_recipe": {
+        "model": "coder15",
+        "prompt_style": "chatml",
+        "format": "json_body",
+        "prompt_variant": "contract",
+        "wire_discovery": true,
+        "max_completions": 3,
+        "two_stage_revision": true,
+        "worker_allows_div": true,
+        "numeric_compare": "compare_python_result",
+        "compact_sum_row_repair": true,
+        "worker_allows_keyword": true
+      },
+      "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+      "historical_div_confirm_sha256": "490ab00",
+      "historical_supplied_private_correct": 1,
+      "historical_rescoring": false,
+      "gemini": "NOT_RUN",
+      "result_label": "authored_source_development_pilot_not_confirmation",
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      }
+    },
+    {
+      "kind": "request_inspect",
+      "category": "inspect",
+      "id": "py_kit_sum",
+      "frozen_recipe": {
+        "model": "coder15",
+        "prompt_style": "chatml",
+        "format": "json_body",
+        "prompt_variant": "contract",
+        "wire_discovery": true,
+        "max_completions": 3,
+        "two_stage_revision": true,
+        "worker_allows_div": true,
+        "numeric_compare": "compare_python_result",
+        "compact_sum_row_repair": true,
+        "worker_allows_keyword": true
+      },
+      "supplied_contract": "Signature: def total(item)\nInput contract: item: {\"rows\": list[dict:amount:int]}\nitem is a dictionary. Read fields by name.\n",
+      "public_includes_missing_or_empty": true,
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "max_completions": 3,
+      "worker_allows_div": true,
+      "compact_sum_row_repair": true
+    },
+    {
+      "kind": "revision_audit",
+      "category": "audit",
+      "tasks": [
+        {
+          "id": "py_rows_sum",
+          "origin": "supplied",
+          "first_body": "def total(item):\n    return sum(item['rows'] or [0])\n",
+          "revision_body": "def total(item):\n    return sum(item['rows'] if 'rows' in item else [])\n",
+          "first_return": "return sum(item['rows'] or [0])",
+          "revision_return": "return sum(item['rows'] if 'rows' in item else [])",
+          "revision_attempted": true,
+          "body_changed": true,
+          "return_changed": true,
+          "failed_case_count": 1,
+          "exceptions_in_feedback": [
+            "TypeError:unsupported operand type(s) for +: 'int' and 'dict'"
+          ],
+          "mismatches_in_feedback": [],
+          "saw_exception": true,
+          "saw_mismatch": false,
+          "compilation_reason": null,
+          "feedback_omitted_compile_reason": false,
+          "same_failing_expression": false,
+          "still_sums_row_dicts": true,
+          "still_uses_fstring": false,
+          "public_passed": false,
+          "semantic_correct": false
+        },
+        {
+          "id": "py_mark_absent",
+          "origin": "supplied",
+          "first_body": "def tag(item):\n    return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'\n",
+          "revision_body": "def tag(item):\n    return f'{item['kind'].lower()}:{item['name'].lower()}'\n",
+          "first_return": "return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'",
+          "revision_return": "return f'{item['kind'].lower()}:{item['name'].lower()}'",
+          "revision_attempted": true,
+          "body_changed": true,
+          "return_changed": true,
+          "failed_case_count": 1,
+          "exceptions_in_feedback": [],
+          "mismatches_in_feedback": [],
+          "saw_exception": false,
+          "saw_mismatch": false,
+          "compilation_reason": "ValueError:forbidden_ast_node:mark.py:JoinedStr",
+          "feedback_omitted_compile_reason": true,
+          "same_failing_expression": false,
+          "still_sums_row_dicts": false,
+          "still_uses_fstring": true,
+          "public_passed": false,
+          "semantic_correct": false
+        },
+        {
+          "id": "py_inside_span",
+          "origin": "supplied",
+          "first_body": "def fit(item):\n    return item['value'] >= item['lo'] and item['value'] <= item['hi']\n",
+          "revision_body": "",
+          "first_return": "return item['value'] >= item['lo'] and item['value'] <= item['hi']",
+          "revision_return": null,
+          "revision_attempted": false,
+          "body_changed": false,
+          "return_changed": false,
+          "failed_case_count": 0,
+          "exceptions_in_feedback": [],
+          "mismatches_in_feedback": [],
+          "saw_exception": false,
+          "saw_mismatch": false,
+          "compilation_reason": null,
+          "feedback_omitted_compile_reason": false,
+          "same_failing_expression": false,
+          "still_sums_row_dicts": false,
+          "still_uses_fstring": false,
+          "public_passed": true,
+          "semantic_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "execution",
+      "index": 1,
+      "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+      "scope": "coder15:supplied:py_kit_sum",
+      "operation": "complete",
+      "identity": "py_kit_sum:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"{\\\"total\\\": 0}\"\n}",
+        "request_sha256": "6039da8ad6430cc5a939151f0013967bd5deb7bbd29b3a05bd5f3262a4e99a31",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 107,
+          "generated_tokens": 15,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 107,
+            "prompt_ms": 2742.597,
+            "prompt_per_token_ms": 25.631747663551405,
+            "prompt_per_second": 39.01411691181752,
+            "predicted_n": 15,
+            "predicted_ms": 652.188,
+            "predicted_per_token_ms": 46.58485714285714,
+            "predicted_per_second": 21.46620299668194
+          },
+          "request_wall_s": 3.3965287909959443,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 3.3965649580059107,
+      "hash": "d3334cd8859775036bcdbaf3d013b301033f874d0b4735adea2b35a8869bef62"
+    },
+    {
+      "kind": "execution",
+      "index": 2,
+      "previous": "d3334cd8859775036bcdbaf3d013b301033f874d0b4735adea2b35a8869bef62",
+      "scope": "coder15:supplied:py_kit_sum",
+      "operation": "worker",
+      "identity": "py_kit_sum",
+      "argument": {
+        "language": "python",
+        "files": {
+          "kit.py": "def echo(text):\n    return text\n\ndef total(item):\n    {\"total\": 0}\n"
+        },
+        "cases": [
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 3
+                },
+                {
+                  "amount": 5
+                }
+              ]
+            },
+            "expected": 8
+          },
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": []
+            },
+            "expected": 0
+          },
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 4
+                },
+                {}
+              ]
+            },
+            "expected": 4
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 8,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 0,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 4,
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.187500108964741e-05,
+        "tests_s": 8.417002391070127e-06,
+        "internal_s": 0.00010070799908135086,
+        "wall_s": 0.033853250002721325
+      },
+      "status": "ok",
+      "elapsed_s": 0.033916458996827714,
+      "hash": "1c9ee459e5760706d107512eb2953088aa63b2dd8eaa348621552d5879536c1a"
+    },
+    {
+      "kind": "execution",
+      "index": 3,
+      "previous": "1c9ee459e5760706d107512eb2953088aa63b2dd8eaa348621552d5879536c1a",
+      "scope": "coder15:supplied:py_kit_sum",
+      "operation": "complete",
+      "identity": "py_kit_sum:behavior",
+      "argument": null,
+      "output": {
+        "content": "{ \"body\": \"{'total': 0}\" }",
+        "request_sha256": "a3bc17cd591a166ca07be0c8026d50278e7d8862607740d0754ce122ca17b7a3",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 140,
+          "generated_tokens": 13,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 140,
+            "prompt_ms": 3565.996,
+            "prompt_per_token_ms": 25.4714,
+            "prompt_per_second": 39.25971874337492,
+            "predicted_n": 13,
+            "predicted_ms": 527.128,
+            "predicted_per_token_ms": 43.92733333333334,
+            "predicted_per_second": 22.764869253767586
+          },
+          "request_wall_s": 4.093763625001884,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 4.093786625002394,
+      "hash": "59e6e9de66fe08d7a6d54ad2943b3e4e27ff28293ffa91b99fb117e51a9a4c06"
+    },
+    {
+      "kind": "execution",
+      "index": 4,
+      "previous": "59e6e9de66fe08d7a6d54ad2943b3e4e27ff28293ffa91b99fb117e51a9a4c06",
+      "scope": "coder15:supplied:py_kit_sum:rev",
+      "operation": "worker",
+      "identity": "py_kit_sum:rev",
+      "argument": {
+        "language": "python",
+        "files": {
+          "kit.py": "def echo(text):\n    return text\n\ndef total(item):\n    {'total': 0}\n"
+        },
+        "cases": [
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 3
+                },
+                {
+                  "amount": 5
+                }
+              ]
+            },
+            "expected": 8
+          },
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": []
+            },
+            "expected": 0
+          },
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 4
+                },
+                {}
+              ]
+            },
+            "expected": 4
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 8,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 0,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 4,
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00010208399908151478,
+        "tests_s": 9.291994501836598e-06,
+        "internal_s": 0.0001119170046877116,
+        "wall_s": 0.0376627079967875
+      },
+      "status": "ok",
+      "elapsed_s": 0.03772779200517107,
+      "hash": "c57da46f7b6f6d654af046ea8a4a43a8eca135890601529eb8bb906b5138c7ca"
+    },
+    {
+      "kind": "execution",
+      "index": 5,
+      "previous": "c57da46f7b6f6d654af046ea8a4a43a8eca135890601529eb8bb906b5138c7ca",
+      "scope": "coder15:supplied:py_kit_sum",
+      "operation": "assessment_worker",
+      "identity": "py_kit_sum",
+      "argument": {
+        "language": "python",
+        "files": {
+          "kit.py": "def echo(text):\n    return text\n\ndef total(item):\n    {'total': 0}\n"
+        },
+        "cases": [
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            "expected": 8
+          },
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": [
+                {},
+                {}
+              ]
+            },
+            "expected": 0
+          },
+          {
+            "entry": "kit.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 2
+                },
+                {
+                  "amount": 2
+                },
+                {}
+              ]
+            },
+            "expected": 4
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 8,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 0,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 4,
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00010024999210145324,
+        "tests_s": 8.457995136268437e-06,
+        "internal_s": 0.00010912500147242099,
+        "wall_s": 0.03302187500230502
+      },
+      "status": "ok",
+      "elapsed_s": 0.03312137500324752,
+      "hash": "31f808e951b491b39d43f2d2743565a3981c5e0cda358983fb211efa476737ad"
+    },
+    {
+      "kind": "capability",
+      "area": "sum_row_repair_confirm",
+      "id": "py_kit_sum",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "list_records",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "attempt_bodies": [
+        "def total(item):\n    {\"total\": 0}\n",
+        "def total(item):\n    {'total': 0}\n"
+      ],
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "kit.py",
+          "symbol": "total",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "kit.py",
+          "symbol": "total",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "kit.py",
+        "symbol": "total",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "{\"total\": 0}",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "kit.py",
+            "symbol": "total",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def total(item):\n    {\"total\": 0}\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def total(item)\nInput contract: item: {\"rows\": list[dict:amount:int]}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for total. Include return. No def line.\nRequest: Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def total(item)\nInput contract: item: {\"rows\": list[dict:amount:int]}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for total. Include return. No def line.\nRequest: Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"{\\\"total\\\": 0}\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 107,
+            "generated_tokens": 15,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 107,
+              "prompt_ms": 2742.597,
+              "prompt_per_token_ms": 25.631747663551405,
+              "prompt_per_second": 39.01411691181752,
+              "predicted_n": 15,
+              "predicted_ms": 652.188,
+              "predicted_per_token_ms": 46.58485714285714,
+              "predicted_per_second": 21.46620299668194
+            },
+            "request_wall_s": 3.3965287909959443,
+            "creation_request_sha256": null
+          }
+        },
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "{'total': 0}",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "kit.py",
+            "symbol": "total",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def total(item):\n    {'total': 0}\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 2,
+          "stage": "behavior",
+          "revision_of": "public_failure",
+          "user_prompt": "Signature: def total(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: def total(item):     {\"total\": 0}\nPublic tests failed. Repair the failed body using the failed cases only.\nFailed cases: [{\"input\": {\"rows\": [{\"amount\": 3}, {\"amount\": 5}]}, \"expected\": 8, \"actual\": null, \"exception\": null}, {\"input\": {\"rows\": []}, \"expected\": 0, \"actual\": null, \"exception\": null}]\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def total(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: def total(item):     {\"total\": 0}\nPublic tests failed. Repair the failed body using the failed cases only.\nFailed cases: [{\"input\": {\"rows\": [{\"amount\": 3}, {\"amount\": 5}]}, \"expected\": 8, \"actual\": null, \"exception\": null}, {\"input\": {\"rows\": []}, \"expected\": 0, \"actual\": null, \"exception\": null}]\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{ \"body\": \"{'total': 0}\" }",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 140,
+            "generated_tokens": 13,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 140,
+              "prompt_ms": 3565.996,
+              "prompt_per_token_ms": 25.4714,
+              "prompt_per_second": 39.25971874337492,
+              "predicted_n": 13,
+              "predicted_ms": 527.128,
+              "predicted_per_token_ms": 43.92733333333334,
+              "predicted_per_second": 22.764869253767586
+            },
+            "request_wall_s": 4.093763625001884,
+            "creation_request_sha256": null
+          },
+          "three_point_evidence": false,
+          "bands_present": null,
+          "operator_hint_in_revision": false,
+          "operator_supplied": false,
+          "failed_cases": [
+            {
+              "input": {
+                "rows": [
+                  {
+                    "amount": 3
+                  },
+                  {
+                    "amount": 5
+                  }
+                ]
+              },
+              "expected": 8,
+              "actual": null,
+              "exception": null
+            },
+            {
+              "input": {
+                "rows": []
+              },
+              "expected": 0,
+              "actual": null,
+              "exception": null
+            }
+          ],
+          "compact_revision": true,
+          "unprojected_sum_rejected": false,
+          "reject_reason": null
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": null,
+      "syntax_valid": true,
+      "executed": true,
+      "public_passed": false,
+      "public": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 8,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 0,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 4,
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00010208399908151478,
+        "tests_s": 9.291994501836598e-06,
+        "internal_s": 0.0001119170046877116,
+        "wall_s": 0.0376627079967875
+      },
+      "private": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 8,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 0,
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "kit.total",
+            "actual": null,
+            "expected": 4,
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00010024999210145324,
+        "tests_s": 8.457995136268437e-06,
+        "internal_s": 0.00010912500147242099,
+        "wall_s": 0.03302187500230502
+      },
+      "semantic_correct": false,
+      "structurally_valid": true,
+      "executable_code": true,
+      "final_files": {
+        "kit.py": "def echo(text):\n    return text\n\ndef total(item):\n    {'total': 0}\n"
+      },
+      "raw_valid": true,
+      "normalized": [
+        "wrapped_body"
+      ],
+      "completions": 2,
+      "calls_charged": 2,
+      "format_repair_attempted": false,
+      "format_repair_success": true,
+      "behavioral_revision_attempted": true,
+      "behavioral_revision_success": false,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": false,
+      "comparison_ops_first": [],
+      "comparison_ops_last": [],
+      "comparison_changed": false,
+      "cell_wall_s": 7.596226,
+      "complete_wall_s": 7.490292,
+      "memory": {
+        "parent_pid": 28313,
+        "server_pid": 28335,
+        "parent_rss_mib": 36.172,
+        "server_rss_mib": 2061.766,
+        "combined_rss_mib": 2097.938,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "execution",
+      "index": 6,
+      "previous": "31f808e951b491b39d43f2d2743565a3981c5e0cda358983fb211efa476737ad",
+      "scope": "coder15:supplied:py_mark_empty",
+      "operation": "complete",
+      "identity": "py_mark_empty:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"kind:name\"\n}",
+        "request_sha256": "0c815d9d6622b16f32430f99500408719883121fb1fcc0c76c7362c8719d8d32",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 106,
+          "generated_tokens": 11,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 106,
+            "prompt_ms": 2686.172,
+            "prompt_per_token_ms": 25.341245283018868,
+            "prompt_per_second": 39.461359883134804,
+            "predicted_n": 11,
+            "predicted_ms": 463.944,
+            "predicted_per_token_ms": 46.394400000000005,
+            "predicted_per_second": 21.554325522045765
+          },
+          "request_wall_s": 3.150940499996068,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 3.150961040999391,
+      "hash": "bdb5aeaac6e0d657722a1a6b1993e550600b7b14bdab097921a0970ba7f5a199"
+    },
+    {
+      "kind": "execution",
+      "index": 7,
+      "previous": "bdb5aeaac6e0d657722a1a6b1993e550600b7b14bdab097921a0970ba7f5a199",
+      "scope": "coder15:supplied:py_mark_empty",
+      "operation": "worker",
+      "identity": "py_mark_empty",
+      "argument": {
+        "language": "python",
+        "files": {
+          "mark.py": "def echo(text):\n    return text\n\ndef mark(item):\n    kind:name\n"
+        },
+        "cases": [
+          {
+            "entry": "mark.mark",
+            "input": {
+              "kind": "Lab",
+              "name": "Two"
+            },
+            "expected": "lab:two"
+          },
+          {
+            "entry": "mark.mark",
+            "input": {
+              "name": "Two"
+            },
+            "expected": ":two"
+          },
+          {
+            "entry": "mark.mark",
+            "input": {
+              "kind": "Lab"
+            },
+            "expected": "lab:"
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "lab:two",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": ":two",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "lab:",
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.691600280348212e-05,
+        "tests_s": 9.291994501836598e-06,
+        "internal_s": 0.00010658300016075373,
+        "wall_s": 0.0359068340039812
+      },
+      "status": "ok",
+      "elapsed_s": 0.03597250000166241,
+      "hash": "1eddeda77fcd6792547dbe56cf72ce5f5363e7b401bd04e9036a5f8c1826ca37"
+    },
+    {
+      "kind": "execution",
+      "index": 8,
+      "previous": "1eddeda77fcd6792547dbe56cf72ce5f5363e7b401bd04e9036a5f8c1826ca37",
+      "scope": "coder15:supplied:py_mark_empty",
+      "operation": "complete",
+      "identity": "py_mark_empty:behavior",
+      "argument": null,
+      "output": {
+        "content": "{\"body\": \"lab:two\"}",
+        "request_sha256": "bfabb8102973578347deb981aeeb6f318238b8470fc72b857180066600ba82f5",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 136,
+          "generated_tokens": 9,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 136,
+            "prompt_ms": 3503.315,
+            "prompt_per_token_ms": 25.75966911764706,
+            "prompt_per_second": 38.82037441680237,
+            "predicted_n": 9,
+            "predicted_ms": 346.992,
+            "predicted_per_token_ms": 43.374,
+            "predicted_per_second": 23.055286577212154
+          },
+          "request_wall_s": 3.8511129160033306,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 3.8511324170103762,
+      "hash": "8fae1071335b33cddfd4c77585c0a84433d81763bf1612fb098fc962e32775a8"
+    },
+    {
+      "kind": "execution",
+      "index": 9,
+      "previous": "8fae1071335b33cddfd4c77585c0a84433d81763bf1612fb098fc962e32775a8",
+      "scope": "coder15:supplied:py_mark_empty:rev",
+      "operation": "worker",
+      "identity": "py_mark_empty:rev",
+      "argument": {
+        "language": "python",
+        "files": {
+          "mark.py": "def echo(text):\n    return text\n\ndef mark(item):\n    lab:two\n"
+        },
+        "cases": [
+          {
+            "entry": "mark.mark",
+            "input": {
+              "kind": "Lab",
+              "name": "Two"
+            },
+            "expected": "lab:two"
+          },
+          {
+            "entry": "mark.mark",
+            "input": {
+              "name": "Two"
+            },
+            "expected": ":two"
+          },
+          {
+            "entry": "mark.mark",
+            "input": {
+              "kind": "Lab"
+            },
+            "expected": "lab:"
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "lab:two",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": ":two",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "lab:",
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.375000081490725e-05,
+        "tests_s": 9.000010322779417e-06,
+        "internal_s": 0.00010316699626855552,
+        "wall_s": 0.033802541001932696
+      },
+      "status": "ok",
+      "elapsed_s": 0.033882624993566424,
+      "hash": "52a2eeacb06bdbcbf498d3b68bc2e2fedc91c45975cbfc8d9b50cf77f3aed3ea"
+    },
+    {
+      "kind": "execution",
+      "index": 10,
+      "previous": "52a2eeacb06bdbcbf498d3b68bc2e2fedc91c45975cbfc8d9b50cf77f3aed3ea",
+      "scope": "coder15:supplied:py_mark_empty",
+      "operation": "assessment_worker",
+      "identity": "py_mark_empty",
+      "argument": {
+        "language": "python",
+        "files": {
+          "mark.py": "def echo(text):\n    return text\n\ndef mark(item):\n    lab:two\n"
+        },
+        "cases": [
+          {
+            "entry": "mark.mark",
+            "input": {
+              "kind": "",
+              "name": ""
+            },
+            "expected": ":"
+          },
+          {
+            "entry": "mark.mark",
+            "input": {
+              "kind": "Y",
+              "name": "p"
+            },
+            "expected": "y:p"
+          },
+          {
+            "entry": "mark.mark",
+            "input": {
+              "kind": "Mix",
+              "name": "Case",
+              "extra": 1
+            },
+            "expected": "mix:case"
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": ":",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "y:p",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "mix:case",
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.616700117476285e-05,
+        "tests_s": 8.957998943515122e-06,
+        "internal_s": 0.00010554199980106205,
+        "wall_s": 0.03372708299139049
+      },
+      "status": "ok",
+      "elapsed_s": 0.03380208399903495,
+      "hash": "cecef16a66252184a699235718f79400a2d63c07c219199a0ad8c7c0562cd038"
+    },
+    {
+      "kind": "capability",
+      "area": "sum_row_repair_confirm",
+      "id": "py_mark_empty",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "missing_fields",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "attempt_bodies": [
+        "def mark(item):\n    kind:name\n",
+        "def mark(item):\n    lab:two\n"
+      ],
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "mark.py",
+          "symbol": "mark",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "mark.py",
+          "symbol": "mark",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "mark.py",
+        "symbol": "mark",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "kind:name",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "mark.py",
+            "symbol": "mark",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def mark(item):\n    kind:name\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def mark(item)\nInput contract: item: {\"kind\": str, \"name\": str}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for mark. Include return. No def line.\nRequest: Create function mark(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def mark(item)\nInput contract: item: {\"kind\": str, \"name\": str}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for mark. Include return. No def line.\nRequest: Create function mark(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"kind:name\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 106,
+            "generated_tokens": 11,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 106,
+              "prompt_ms": 2686.172,
+              "prompt_per_token_ms": 25.341245283018868,
+              "prompt_per_second": 39.461359883134804,
+              "predicted_n": 11,
+              "predicted_ms": 463.944,
+              "predicted_per_token_ms": 46.394400000000005,
+              "predicted_per_second": 21.554325522045765
+            },
+            "request_wall_s": 3.150940499996068,
+            "creation_request_sha256": null
+          }
+        },
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "lab:two",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "mark.py",
+            "symbol": "mark",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def mark(item):\n    lab:two\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 2,
+          "stage": "behavior",
+          "revision_of": "public_failure",
+          "user_prompt": "Signature: def mark(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: def mark(item):     kind:name\nPublic tests failed. Repair the failed body using the failed cases only.\nFailed cases: [{\"input\": {\"kind\": \"Lab\", \"name\": \"Two\"}, \"expected\": \"lab:two\", \"actual\": null, \"exception\": null}, {\"input\": {\"name\": \"Two\"}, \"expected\": \":two\", \"actual\": null, \"exception\": null}]\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def mark(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: def mark(item):     kind:name\nPublic tests failed. Repair the failed body using the failed cases only.\nFailed cases: [{\"input\": {\"kind\": \"Lab\", \"name\": \"Two\"}, \"expected\": \"lab:two\", \"actual\": null, \"exception\": null}, {\"input\": {\"name\": \"Two\"}, \"expected\": \":two\", \"actual\": null, \"exception\": null}]\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\"body\": \"lab:two\"}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 136,
+            "generated_tokens": 9,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 136,
+              "prompt_ms": 3503.315,
+              "prompt_per_token_ms": 25.75966911764706,
+              "prompt_per_second": 38.82037441680237,
+              "predicted_n": 9,
+              "predicted_ms": 346.992,
+              "predicted_per_token_ms": 43.374,
+              "predicted_per_second": 23.055286577212154
+            },
+            "request_wall_s": 3.8511129160033306,
+            "creation_request_sha256": null
+          },
+          "three_point_evidence": false,
+          "bands_present": null,
+          "operator_hint_in_revision": false,
+          "operator_supplied": false,
+          "failed_cases": [
+            {
+              "input": {
+                "kind": "Lab",
+                "name": "Two"
+              },
+              "expected": "lab:two",
+              "actual": null,
+              "exception": null
+            },
+            {
+              "input": {
+                "name": "Two"
+              },
+              "expected": ":two",
+              "actual": null,
+              "exception": null
+            }
+          ],
+          "compact_revision": true,
+          "unprojected_sum_rejected": false,
+          "reject_reason": null
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": null,
+      "syntax_valid": true,
+      "executed": true,
+      "public_passed": false,
+      "public": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "lab:two",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": ":two",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "lab:",
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.375000081490725e-05,
+        "tests_s": 9.000010322779417e-06,
+        "internal_s": 0.00010316699626855552,
+        "wall_s": 0.033802541001932696
+      },
+      "private": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": ":",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "y:p",
+            "passed": false,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "mark.mark",
+            "actual": null,
+            "expected": "mix:case",
+            "passed": false,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.616700117476285e-05,
+        "tests_s": 8.957998943515122e-06,
+        "internal_s": 0.00010554199980106205,
+        "wall_s": 0.03372708299139049
+      },
+      "semantic_correct": false,
+      "structurally_valid": true,
+      "executable_code": true,
+      "final_files": {
+        "mark.py": "def echo(text):\n    return text\n\ndef mark(item):\n    lab:two\n"
+      },
+      "raw_valid": true,
+      "normalized": [
+        "wrapped_body"
+      ],
+      "completions": 2,
+      "calls_charged": 2,
+      "format_repair_attempted": false,
+      "format_repair_success": true,
+      "behavioral_revision_attempted": true,
+      "behavioral_revision_success": false,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": false,
+      "comparison_ops_first": [],
+      "comparison_ops_last": [],
+      "comparison_changed": false,
+      "cell_wall_s": 7.106609,
+      "complete_wall_s": 7.002053,
+      "memory": {
+        "parent_pid": 28313,
+        "server_pid": 28335,
+        "parent_rss_mib": 36.25,
+        "server_rss_mib": 2102.406,
+        "combined_rss_mib": 2138.656,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "execution",
+      "index": 11,
+      "previous": "cecef16a66252184a699235718f79400a2d63c07c219199a0ad8c7c0562cd038",
+      "scope": "coder15:supplied:py_share_div",
+      "operation": "complete",
+      "identity": "py_share_div:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"The amount divided by unit is \" }",
+        "request_sha256": "df720534f491a8f2c22b1d391f667e81b7a4b04680ca468cd56762cd53db7bd7",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 91,
+          "generated_tokens": 16,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 91,
+            "prompt_ms": 2335.642,
+            "prompt_per_token_ms": 25.666395604395603,
+            "prompt_per_second": 38.96145042776248,
+            "predicted_n": 16,
+            "predicted_ms": 681.278,
+            "predicted_per_token_ms": 45.418533333333336,
+            "predicted_per_second": 22.017443686718195
+          },
+          "request_wall_s": 3.0178567910043057,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 3.017876583006,
+      "hash": "560f0e85f4d70e8ead51cebfcbed5beeeb8bfe76ae03586327cac7f234b3a98d"
+    },
+    {
+      "kind": "execution",
+      "index": 12,
+      "previous": "560f0e85f4d70e8ead51cebfcbed5beeeb8bfe76ae03586327cac7f234b3a98d",
+      "scope": "coder15:supplied:py_share_div",
+      "operation": "complete",
+      "identity": "py_share_div:format",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"...\"\n}",
+        "request_sha256": "75103427c2a1ca821eb0fdd138a0d0f8414b6decbbc9f7dc6222e42e70e50e38",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 73,
+          "generated_tokens": 9,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 73,
+            "prompt_ms": 1904.49,
+            "prompt_per_token_ms": 26.08890410958904,
+            "prompt_per_second": 38.330471674831585,
+            "predicted_n": 9,
+            "predicted_ms": 343.469,
+            "predicted_per_token_ms": 42.933625,
+            "predicted_per_second": 23.29176723372415
+          },
+          "request_wall_s": 2.2486521669925423,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 2.248663291000412,
+      "hash": "25d0ad3507e3e5c812a953bbb0fc90f69820d8ad8fe107612660a018c6ca7b08"
+    },
+    {
+      "kind": "execution",
+      "index": 13,
+      "previous": "25d0ad3507e3e5c812a953bbb0fc90f69820d8ad8fe107612660a018c6ca7b08",
+      "scope": "coder15:supplied:py_share_div",
+      "operation": "assessment_worker",
+      "identity": "py_share_div",
+      "argument": {
+        "language": "python",
+        "files": {
+          "share.py": "def echo(text):\n    return text\n"
+        },
+        "cases": [
+          {
+            "entry": "share.share",
+            "input": {
+              "amount": 7,
+              "unit": 2
+            },
+            "expected": 3.5
+          },
+          {
+            "entry": "share.share",
+            "input": {
+              "amount": 9,
+              "unit": 4
+            },
+            "expected": 2.25
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "share.share",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:share.share",
+            "calls": []
+          },
+          {
+            "entry": "share.share",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:share.share",
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00024270900757983327,
+        "tests_s": 6.7920045694336295e-06,
+        "internal_s": 0.00025016700965352356,
+        "wall_s": 0.06991175000439398
+      },
+      "status": "ok",
+      "elapsed_s": 0.0699892910051858,
+      "hash": "3494be8b1631a22fa10e534a4005a754eec7a6b0fc0d68c22a8dba5debde709b"
+    },
+    {
+      "kind": "capability",
+      "area": "sum_row_repair_confirm",
+      "id": "py_share_div",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "arithmetic",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "attempt_bodies": [
+        "The amount divided by unit is",
+        "def share(item):\n    ...\n"
+      ],
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "share.py",
+          "symbol": "share",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "share.py",
+          "symbol": "share",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "share.py",
+        "symbol": "share",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": false,
+          "raw_reason": "SyntaxError: invalid syntax (<unknown>, line 2)",
+          "raw_excerpt": "The amount divided by unit is",
+          "normalized": [],
+          "placeholder": "placeholder_body:empty",
+          "syntax_valid": false,
+          "structurally_valid": false,
+          "preview": {
+            "action": "insert_function",
+            "path": "share.py",
+            "symbol": "share",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def share(item)\nInput contract: item: {\"amount\": int, \"unit\": int}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for share. Include return. No def line.\nRequest: Create function share(item) that returns amount divided by unit.\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def share(item)\nInput contract: item: {\"amount\": int, \"unit\": int}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for share. Include return. No def line.\nRequest: Create function share(item) that returns amount divided by unit.\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"The amount divided by unit is \" }",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 91,
+            "generated_tokens": 16,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 91,
+              "prompt_ms": 2335.642,
+              "prompt_per_token_ms": 25.666395604395603,
+              "prompt_per_second": 38.96145042776248,
+              "predicted_n": 16,
+              "predicted_ms": 681.278,
+              "predicted_per_token_ms": 45.418533333333336,
+              "predicted_per_second": 22.017443686718195
+            },
+            "request_wall_s": 3.0178567910043057,
+            "creation_request_sha256": null
+          }
+        },
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "...",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": "placeholder_body:ellipsis",
+          "syntax_valid": false,
+          "structurally_valid": false,
+          "preview": {
+            "action": "insert_function",
+            "path": "share.py",
+            "symbol": "share",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def share(item):\n    ...\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 2,
+          "stage": "format",
+          "revision_of": "format",
+          "user_prompt": "Signature: def share(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: \nJSON body was empty or invalid. Return {\"body\": \"...\"} only.\nFailed cases: []\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def share(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: \nJSON body was empty or invalid. Return {\"body\": \"...\"} only.\nFailed cases: []\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"...\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 73,
+            "generated_tokens": 9,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 73,
+              "prompt_ms": 1904.49,
+              "prompt_per_token_ms": 26.08890410958904,
+              "prompt_per_second": 38.330471674831585,
+              "predicted_n": 9,
+              "predicted_ms": 343.469,
+              "predicted_per_token_ms": 42.933625,
+              "predicted_per_second": 23.29176723372415
+            },
+            "request_wall_s": 2.2486521669925423,
+            "creation_request_sha256": null
+          },
+          "operator_hint_in_revision": false
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": "placeholder_body:ellipsis",
+      "syntax_valid": false,
+      "executed": false,
+      "public_passed": false,
+      "public": null,
+      "private": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "share.share",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:share.share",
+            "calls": []
+          },
+          {
+            "entry": "share.share",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:share.share",
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00024270900757983327,
+        "tests_s": 6.7920045694336295e-06,
+        "internal_s": 0.00025016700965352356,
+        "wall_s": 0.06991175000439398
+      },
+      "semantic_correct": false,
+      "structurally_valid": false,
+      "executable_code": false,
+      "final_files": {
+        "share.py": "def echo(text):\n    return text\n"
+      },
+      "raw_valid": true,
+      "normalized": [
+        "wrapped_body"
+      ],
+      "completions": 2,
+      "calls_charged": 2,
+      "format_repair_attempted": true,
+      "format_repair_success": false,
+      "behavioral_revision_attempted": false,
+      "behavioral_revision_success": false,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": false,
+      "comparison_ops_first": [],
+      "comparison_ops_last": [],
+      "comparison_changed": false,
+      "cell_wall_s": 5.337091,
+      "complete_wall_s": 5.266509,
+      "memory": {
+        "parent_pid": 28313,
+        "server_pid": 28335,
+        "parent_rss_mib": 36.25,
+        "server_rss_mib": 2102.5,
+        "combined_rss_mib": 2138.75,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "execution",
+      "index": 14,
+      "previous": "3494be8b1631a22fa10e534a4005a754eec7a6b0fc0d68c22a8dba5debde709b",
+      "scope": "coder15:supplied:py_pass_both",
+      "operation": "complete",
+      "identity": "py_pass_both:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"Admit\"\n}",
+        "request_sha256": "4f7bec15a7daa8b5365ecb2fc5ba30d5e72fafad7e2999153eda1b4f5e303f35",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 113,
+          "generated_tokens": 11,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 113,
+            "prompt_ms": 3088.495,
+            "prompt_per_token_ms": 27.331814159292033,
+            "prompt_per_second": 36.587399364415354,
+            "predicted_n": 11,
+            "predicted_ms": 519.309,
+            "predicted_per_token_ms": 51.930899999999994,
+            "predicted_per_second": 19.256357967992084
+          },
+          "request_wall_s": 3.609353583000484,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 3.6093865830043796,
+      "hash": "d58a4068f296ea7d5717e4ede7c25541456be2aa4a96cf2072cbbec54efb609d"
+    },
+    {
+      "kind": "execution",
+      "index": 15,
+      "previous": "d58a4068f296ea7d5717e4ede7c25541456be2aa4a96cf2072cbbec54efb609d",
+      "scope": "coder15:supplied:py_pass_both",
+      "operation": "complete",
+      "identity": "py_pass_both:format",
+      "argument": null,
+      "output": {
+        "content": "{\"body\": \"Failed body: JSON body was empty or invalid. Return {\"}",
+        "request_sha256": "b20ec94a75b90bbbfd6472f95dab621bb1a350540e8dd9ebe9cbd0b8714a6010",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 73,
+          "generated_tokens": 18,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 73,
+            "prompt_ms": 2095.357,
+            "prompt_per_token_ms": 28.703520547945207,
+            "prompt_per_second": 34.83893198151914,
+            "predicted_n": 18,
+            "predicted_ms": 784.205,
+            "predicted_per_token_ms": 46.129705882352944,
+            "predicted_per_second": 21.678005113458852
+          },
+          "request_wall_s": 2.880459082996822,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 2.8804743329965277,
+      "hash": "87065e429a31ada4072c9afa358f2532b7aca99ef66b3f700940725ea9d805c7"
+    },
+    {
+      "kind": "execution",
+      "index": 16,
+      "previous": "87065e429a31ada4072c9afa358f2532b7aca99ef66b3f700940725ea9d805c7",
+      "scope": "coder15:supplied:py_pass_both",
+      "operation": "assessment_worker",
+      "identity": "py_pass_both",
+      "argument": {
+        "language": "python",
+        "files": {
+          "gate.py": "def echo(text):\n    return text\n"
+        },
+        "cases": [
+          {
+            "entry": "gate.admit",
+            "input": {
+              "age": 40,
+              "min_age": 18,
+              "score": 4,
+              "floor": 5
+            },
+            "expected": false
+          },
+          {
+            "entry": "gate.admit",
+            "input": {
+              "age": 18,
+              "min_age": 18,
+              "score": 5,
+              "floor": 5
+            },
+            "expected": true
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "gate.admit",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:gate.admit",
+            "calls": []
+          },
+          {
+            "entry": "gate.admit",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:gate.admit",
+            "calls": []
+          }
+        ],
+        "compilation_s": 8.712499402463436e-05,
+        "tests_s": 4.62500611320138e-06,
+        "internal_s": 9.208300616592169e-05,
+        "wall_s": 0.04601224999350961
+      },
+      "status": "ok",
+      "elapsed_s": 0.04609729100775439,
+      "hash": "0b54834ed959a236c8cfc398040899f9cf21aabac12e0dd517249b3cae3ae5cd"
+    },
+    {
+      "kind": "capability",
+      "area": "sum_row_repair_confirm",
+      "id": "py_pass_both",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "interacting_predicates",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "attempt_bodies": [
+        "def admit(item):\n    Admit\n",
+        "Failed body: JSON body was empty or invalid. Return {"
+      ],
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "gate.py",
+          "symbol": "admit",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "gate.py",
+          "symbol": "admit",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "gate.py",
+        "symbol": "admit",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "Admit",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": "placeholder_body:bare_identifier:Admit",
+          "syntax_valid": false,
+          "structurally_valid": false,
+          "preview": {
+            "action": "insert_function",
+            "path": "gate.py",
+            "symbol": "admit",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def admit(item):\n    Admit\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def admit(item)\nInput contract: item: {\"age\": int, \"min_age\": int, \"score\": int, \"floor\": int}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for admit. Include return. No def line.\nRequest: Create function admit(item) that is True only when age is at least min_age and score is at least floor.\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def admit(item)\nInput contract: item: {\"age\": int, \"min_age\": int, \"score\": int, \"floor\": int}\nitem is a dictionary. Read fields by name.\nReturn JSON {\"body\": \"...\"} for admit. Include return. No def line.\nRequest: Create function admit(item) that is True only when age is at least min_age and score is at least floor.\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"Admit\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 113,
+            "generated_tokens": 11,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 113,
+              "prompt_ms": 3088.495,
+              "prompt_per_token_ms": 27.331814159292033,
+              "prompt_per_second": 36.587399364415354,
+              "predicted_n": 11,
+              "predicted_ms": 519.309,
+              "predicted_per_token_ms": 51.930899999999994,
+              "predicted_per_second": 19.256357967992084
+            },
+            "request_wall_s": 3.609353583000484,
+            "creation_request_sha256": null
+          }
+        },
+        {
+          "raw_valid": false,
+          "raw_reason": "SyntaxError: invalid syntax (<unknown>, line 2)",
+          "raw_excerpt": "Failed body: JSON body was empty or invalid. Return {",
+          "normalized": [],
+          "placeholder": "placeholder_body:empty",
+          "syntax_valid": false,
+          "structurally_valid": false,
+          "preview": {
+            "action": "insert_function",
+            "path": "gate.py",
+            "symbol": "admit",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 2,
+          "stage": "format",
+          "revision_of": "format",
+          "user_prompt": "Signature: def admit(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: \nJSON body was empty or invalid. Return {\"body\": \"...\"} only.\nFailed cases: []\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def admit(item)\nReturn JSON {\"body\": \"...\"}. Include return. No def line.\nFailed body: \nJSON body was empty or invalid. Return {\"body\": \"...\"} only.\nFailed cases: []\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\"body\": \"Failed body: JSON body was empty or invalid. Return {\"}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 73,
+            "generated_tokens": 18,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 73,
+              "prompt_ms": 2095.357,
+              "prompt_per_token_ms": 28.703520547945207,
+              "prompt_per_second": 34.83893198151914,
+              "predicted_n": 18,
+              "predicted_ms": 784.205,
+              "predicted_per_token_ms": 46.129705882352944,
+              "predicted_per_second": 21.678005113458852
+            },
+            "request_wall_s": 2.880459082996822,
+            "creation_request_sha256": null
+          },
+          "operator_hint_in_revision": false
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": "placeholder_body:empty",
+      "syntax_valid": false,
+      "executed": false,
+      "public_passed": false,
+      "public": null,
+      "private": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "gate.admit",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:gate.admit",
+            "calls": []
+          },
+          {
+            "entry": "gate.admit",
+            "actual": null,
+            "passed": false,
+            "error": "missing_entry:gate.admit",
+            "calls": []
+          }
+        ],
+        "compilation_s": 8.712499402463436e-05,
+        "tests_s": 4.62500611320138e-06,
+        "internal_s": 9.208300616592169e-05,
+        "wall_s": 0.04601224999350961
+      },
+      "semantic_correct": false,
+      "structurally_valid": false,
+      "executable_code": false,
+      "final_files": {
+        "gate.py": "def echo(text):\n    return text\n"
+      },
+      "raw_valid": false,
+      "normalized": [],
+      "completions": 2,
+      "calls_charged": 2,
+      "format_repair_attempted": true,
+      "format_repair_success": false,
+      "behavioral_revision_attempted": false,
+      "behavioral_revision_success": false,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": false,
+      "comparison_ops_first": [],
+      "comparison_ops_last": [],
+      "comparison_changed": false,
+      "cell_wall_s": 6.536686,
+      "complete_wall_s": 6.489813,
+      "memory": {
+        "parent_pid": 28313,
+        "server_pid": 28335,
+        "parent_rss_mib": 32.625,
+        "server_rss_mib": 2019.359,
+        "combined_rss_mib": 2051.984,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "model_resources",
+      "category": "resources",
+      "model": "coder15",
+      "block": "confirm",
+      "wall_s": 26.606322,
+      "memory_before": {
+        "parent_pid": 28313,
+        "server_pid": 28335,
+        "parent_rss_mib": 35.781,
+        "server_rss_mib": 2015.672,
+        "combined_rss_mib": 2051.453,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "memory_after": {
+        "parent_pid": 28313,
+        "server_pid": 28335,
+        "parent_rss_mib": 32.672,
+        "server_rss_mib": 2019.359,
+        "combined_rss_mib": 2052.031,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "per_task": [
+        {
+          "id": "py_kit_sum",
+          "cell_wall_s": 7.596226,
+          "calls_charged": 2,
+          "combined_rss_mib": 2097.938,
+          "attempt_bodies": [
+            "def total(item):\n    {\"total\": 0}\n",
+            "def total(item):\n    {'total': 0}\n"
+          ]
+        },
+        {
+          "id": "py_mark_empty",
+          "cell_wall_s": 7.106609,
+          "calls_charged": 2,
+          "combined_rss_mib": 2138.656,
+          "attempt_bodies": [
+            "def mark(item):\n    kind:name\n",
+            "def mark(item):\n    lab:two\n"
+          ]
+        },
+        {
+          "id": "py_share_div",
+          "cell_wall_s": 5.337091,
+          "calls_charged": 2,
+          "combined_rss_mib": 2138.75,
+          "attempt_bodies": [
+            "The amount divided by unit is",
+            "def share(item):\n    ...\n"
+          ]
+        },
+        {
+          "id": "py_pass_both",
+          "cell_wall_s": 6.536686,
+          "calls_charged": 2,
+          "combined_rss_mib": 2051.984,
+          "attempt_bodies": [
+            "def admit(item):\n    Admit\n",
+            "Failed body: JSON body was empty or invalid. Return {"
+          ]
+        }
+      ],
+      "model_bytes": 1117320768,
+      "weight_file_is_not_memory": true
+    }
+  ],
+  "summary": {
+    "default_investigation_policy": "fixed_boundary",
+    "learned_ranking_promoted": false,
+    "learning_research_resumed": false,
+    "historical_supplied_private_correct": 1,
+    "historical_rescoring": false,
+    "frozen_recipe": {
+      "model": "coder15",
+      "prompt_style": "chatml",
+      "format": "json_body",
+      "prompt_variant": "contract",
+      "wire_discovery": true,
+      "max_completions": 3,
+      "two_stage_revision": true,
+      "worker_allows_div": true,
+      "numeric_compare": "compare_python_result",
+      "compact_sum_row_repair": true,
+      "worker_allows_keyword": true
+    },
+    "revision_audit": [
+      {
+        "id": "py_rows_sum",
+        "origin": "supplied",
+        "first_body": "def total(item):\n    return sum(item['rows'] or [0])\n",
+        "revision_body": "def total(item):\n    return sum(item['rows'] if 'rows' in item else [])\n",
+        "first_return": "return sum(item['rows'] or [0])",
+        "revision_return": "return sum(item['rows'] if 'rows' in item else [])",
+        "revision_attempted": true,
+        "body_changed": true,
+        "return_changed": true,
+        "failed_case_count": 1,
+        "exceptions_in_feedback": [
+          "TypeError:unsupported operand type(s) for +: 'int' and 'dict'"
+        ],
+        "mismatches_in_feedback": [],
+        "saw_exception": true,
+        "saw_mismatch": false,
+        "compilation_reason": null,
+        "feedback_omitted_compile_reason": false,
+        "same_failing_expression": false,
+        "still_sums_row_dicts": true,
+        "still_uses_fstring": false,
+        "public_passed": false,
+        "semantic_correct": false
+      },
+      {
+        "id": "py_mark_absent",
+        "origin": "supplied",
+        "first_body": "def tag(item):\n    return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'\n",
+        "revision_body": "def tag(item):\n    return f'{item['kind'].lower()}:{item['name'].lower()}'\n",
+        "first_return": "return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'",
+        "revision_return": "return f'{item['kind'].lower()}:{item['name'].lower()}'",
+        "revision_attempted": true,
+        "body_changed": true,
+        "return_changed": true,
+        "failed_case_count": 1,
+        "exceptions_in_feedback": [],
+        "mismatches_in_feedback": [],
+        "saw_exception": false,
+        "saw_mismatch": false,
+        "compilation_reason": "ValueError:forbidden_ast_node:mark.py:JoinedStr",
+        "feedback_omitted_compile_reason": true,
+        "same_failing_expression": false,
+        "still_sums_row_dicts": false,
+        "still_uses_fstring": true,
+        "public_passed": false,
+        "semantic_correct": false
+      },
+      {
+        "id": "py_inside_span",
+        "origin": "supplied",
+        "first_body": "def fit(item):\n    return item['value'] >= item['lo'] and item['value'] <= item['hi']\n",
+        "revision_body": "",
+        "first_return": "return item['value'] >= item['lo'] and item['value'] <= item['hi']",
+        "revision_return": null,
+        "revision_attempted": false,
+        "body_changed": false,
+        "return_changed": false,
+        "failed_case_count": 0,
+        "exceptions_in_feedback": [],
+        "mismatches_in_feedback": [],
+        "saw_exception": false,
+        "saw_mismatch": false,
+        "compilation_reason": null,
+        "feedback_omitted_compile_reason": false,
+        "same_failing_expression": false,
+        "still_sums_row_dicts": false,
+        "still_uses_fstring": false,
+        "public_passed": true,
+        "semantic_correct": false
+      }
+    ],
+    "confirm_rows": [
+      {
+        "id": "py_kit_sum",
+        "target_correct": true,
+        "executable_code": true,
+        "behavioral_revision_attempted": true,
+        "public_passed": false,
+        "semantic_correct": false,
+        "calls_charged": 2,
+        "cell_wall_s": 7.596226,
+        "combined_rss_mib": 2097.938,
+        "attempt_bodies": [
+          "def total(item):\n    {\"total\": 0}\n",
+          "def total(item):\n    {'total': 0}\n"
+        ]
+      },
+      {
+        "id": "py_mark_empty",
+        "target_correct": true,
+        "executable_code": true,
+        "behavioral_revision_attempted": true,
+        "public_passed": false,
+        "semantic_correct": false,
+        "calls_charged": 2,
+        "cell_wall_s": 7.106609,
+        "combined_rss_mib": 2138.656,
+        "attempt_bodies": [
+          "def mark(item):\n    kind:name\n",
+          "def mark(item):\n    lab:two\n"
+        ]
+      },
+      {
+        "id": "py_share_div",
+        "target_correct": true,
+        "executable_code": false,
+        "behavioral_revision_attempted": false,
+        "public_passed": false,
+        "semantic_correct": false,
+        "calls_charged": 2,
+        "cell_wall_s": 5.337091,
+        "combined_rss_mib": 2138.75,
+        "attempt_bodies": [
+          "The amount divided by unit is",
+          "def share(item):\n    ...\n"
+        ]
+      },
+      {
+        "id": "py_pass_both",
+        "target_correct": true,
+        "executable_code": false,
+        "behavioral_revision_attempted": false,
+        "public_passed": false,
+        "semantic_correct": false,
+        "calls_charged": 2,
+        "cell_wall_s": 6.536686,
+        "combined_rss_mib": 2051.984,
+        "attempt_bodies": [
+          "def admit(item):\n    Admit\n",
+          "Failed body: JSON body was empty or invalid. Return {"
+        ]
+      }
+    ],
+    "resources": [
+      {
+        "model": "coder15",
+        "block": "confirm",
+        "wall_s": 26.606322,
+        "combined_rss_mib_after": 2052.031,
+        "model_bytes": 1117320768,
+        "weight_file_is_not_memory": true
+      }
+    ],
+    "learning_to_learn_established": false,
+    "verdict": "DEVELOPMENT_PILOT_ONLY"
+  },
+  "learning_to_learn": false,
+  "agi": false,
+  "gemini": "NOT_RUN"
+}
