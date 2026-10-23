@@ -1,15 +1,15 @@
 # NEXUS Seed — Current State
 
-## Current — frozen recipe on harder features (protocol)
+## Current — frozen recipe on harder features (results)
 
-[Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md). Branch
-`cursor/seed-harder-features-acquisition` from reviewed tip `b23e49f`.
-Freeze 1.5B / ChatML / contract / two-stage / wired discovery. Assess
-five harder tasks (lists, missing fields, empty inputs, interacting
-predicates, two-file). Measure supplied vs inferred vs asked contracts.
-Experience comparison runs only if supplied private pass is at least 4/5
-including the list and two-file tasks. Ledger
-**2806.847834455996 used / 793.152165544004 remaining**.
+[Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md),
+[results](NEXUS_SEED_HARDER_FEATURES_RESULTS.md). Implementation
+`5f34a17` on `cursor/seed-harder-features-acquisition`. Verifier
+`valid: true`. Frozen 1.5B recipe. Supplied private pass 1/5 (`admit`
+only). List sum, missing fields, two-file `Div`, and missing-value
+window failed. Inferred matched supplied; one ask fired. Experience
+comparison NOT_RUN (gate 4/5 missed). Ledger
+**3005.155682455996 used / 594.844317544004 remaining**.
 
 ## Previous — input contract, two-stage revision, wired e2e (results)
 

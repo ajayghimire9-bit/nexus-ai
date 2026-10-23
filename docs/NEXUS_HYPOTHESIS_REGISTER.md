@@ -3,12 +3,12 @@
 ## Current — frozen recipe on harder features and self-acquired contracts
 
 Predeclared: the 1.5B ChatML contract recipe is frozen. Fresh harder
-tasks (lists, missing fields, empty inputs, interacting predicates,
-two-file) test whether that recipe generalizes. Contract origin
-(supplied / inferred / asked) is recorded separately. Experience
-comparison is gated on 4/5 supplied private passes including list and
-two-file. Not confirmation.
-[Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md).
+tasks test whether it generalizes; contract origin is recorded;
+experience is gated. **Negative on reliability.** Supplied private 1/5
+(`admit` only). Inferred matched supplied. One ask fired. List, missing
+fields, worker-forbidden `Div`, and missing value failed. Experience
+NOT_RUN. Not a coding ceiling. Not confirmation.
+[Results](NEXUS_SEED_HARDER_FEATURES_RESULTS.md).
 
 ## Current — explicit input contract and reserved revision stages
 

@@ -1,14 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — freeze the recipe; assess harder features and contract origin
+## Current next — keep the recipe frozen; do not start experience yet
 
-The [contract / two-stage run](NEXUS_SEED_CONTRACT_TWO_STAGE_RESULTS.md)
-passed a small e2e set on the 1.5B coder. Next: freeze that recipe,
-assess five harder tasks, record whether contracts were supplied,
-inferred or asked, and run acquired-experience comparison only if the
-supplied gate passes. Do not promote ranking. Ledger
-**2806.847834455996 used / 793.152165544004 remaining**.
-[Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md).
+The [harder-feature run](NEXUS_SEED_HARDER_FEATURES_RESULTS.md) kept the
+1.5B recipe and failed the reliability gate (1/5 supplied private).
+Lists, missing fields and a worker-rejected division are still open.
+Contract inference equaled the benchmark examples; asking still used the
+teacher. Do not compare acquired experience until fresh success is
+reliable. Do not promote ranking. Ledger
+**3005.155682455996 used / 594.844317544004 remaining**.
 
 ## Previous next — keep contract + wired discovery on the coder
 
