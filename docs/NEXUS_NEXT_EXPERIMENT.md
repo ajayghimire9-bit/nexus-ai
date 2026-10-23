@@ -1,10 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — missing-field tag after diagnostic KeyError
+## Current next — missing-field tag after an item-anchored KeyError summary
 
-Protocol [NEXUS_SEED_TAG_LITERAL_PROTOCOL.md](NEXUS_SEED_TAG_LITERAL_PROTOCOL.md)
-is locked. Live scoring has not run. The
-[diagnostic-revision run](NEXUS_SEED_DIAGNOSTIC_REVISION_RESULTS.md)
+The [tag-literal run](NEXUS_SEED_TAG_LITERAL_RESULTS.md) passed
+public 3/4 and private 3/4. C2 no longer echoes `/lab/`; it wrote a
+parameterized `{item['zone']}/{item['path']}` set-division that still
+KeyErrors on omitted fields. Do not plant `.get`. Do not resume
+ranking or memory. Ledger
+**3564.568345455996 used / 35.431654544004 remaining**.
+
+## Previous next — missing-field tag after diagnostic KeyError
+
+The [diagnostic-revision run](NEXUS_SEED_DIAGNOSTIC_REVISION_RESULTS.md)
 passed public 3/4 and private 3/4. C2 no longer pastes the failed C1
 source; `lane` wrote `/lab/` instead of echoing the f-string. Bag-sum
 passed on the first completion of a fresh id. Completions stayed at

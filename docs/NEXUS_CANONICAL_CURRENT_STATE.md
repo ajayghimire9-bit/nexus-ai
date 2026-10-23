@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — diagnostic-only revision (results)
+## Current — item-anchored KeyError revision (results)
+
+[Protocol](NEXUS_SEED_TAG_LITERAL_PROTOCOL.md),
+[results](NEXUS_SEED_TAG_LITERAL_RESULTS.md). Implementation
+`666071b` on `cursor/seed-worker-div-confirm` (base `30127b2`).
+Verifier `valid: true`. Live public 3/4, private 3/4 (`sack`, `load`,
+`hold` pass; `path` C2 uses `item` but is `{a}/{b}` set division).
+C2 no longer echoes `/lab/`. Historical scores untouched. Ledger
+**3564.568345455996 used / 35.431654544004 remaining**.
+
+## Previous — diagnostic-only revision (results)
 
 [Protocol](NEXUS_SEED_DIAGNOSTIC_REVISION_PROTOCOL.md),
 [results](NEXUS_SEED_DIAGNOSTIC_REVISION_RESULTS.md). Implementation
