@@ -1,10 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — spend the unused completion on post-behavior placeholders
+## Current next — missing-field KeyError after a parameterized copy
 
-Protocol [NEXUS_SEED_SLOT3_REPAIR_PROTOCOL.md](NEXUS_SEED_SLOT3_REPAIR_PROTOCOL.md)
-is locked. Offline unit tests passed (0 model calls). Live scoring
-has not run. The [interface-repair run](NEXUS_SEED_INTERFACE_REPAIR_RESULTS.md)
+The [slot-3 run](NEXUS_SEED_SLOT3_REPAIR_RESULTS.md) passed public
+3/4 and private 4/4. The unused-third-completion trigger is
+implemented and offline-proven; this live sample did not produce a
+placeholder or unbound name after behavior, so slot 3 stayed unused
+by design. `py_job_slash` still `KeyError`s on missing `job`/`unit`
+after copying a parameterized body. Do not plant `.get`. Do not
+resume ranking or memory. Ledger
+**3379.081862455996 used / 220.918137544004 remaining**.
+
+## Previous next — spend the unused completion on post-behavior placeholders
+
+The [interface-repair run](NEXUS_SEED_INTERFACE_REPAIR_RESULTS.md)
 passed 2/4. Envelope unwrap and layered feedback worked; the coder
 still answered an accurate int+dict / `qty` schema with `...`, and
 hardcoded `-lead` after a `.lower()`-on-list error. A third

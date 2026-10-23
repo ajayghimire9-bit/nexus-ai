@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — interface-repair development evaluation (results)
+## Current — slot-3 structural repair (results)
+
+[Protocol](NEXUS_SEED_SLOT3_REPAIR_PROTOCOL.md),
+[results](NEXUS_SEED_SLOT3_REPAIR_RESULTS.md). Implementation
+`45bdbea` on `cursor/seed-worker-div-confirm` (base `c94addb`).
+Verifier `valid: true`. Live public 3/4, private 4/4 (`lot` repairs
+list`.get` on C2; `part` and `ok` pass on C1; `job` keeps a
+parameterized `item['job']`/`item['unit']` body). Slot-3 did not
+fire on this sample because C2 was never a placeholder or unbound
+name. Historical scores untouched. Ledger
+**3379.081862455996 used / 220.918137544004 remaining**.
+
+## Previous — interface-repair development evaluation (results)
 
 [Protocol](NEXUS_SEED_INTERFACE_REPAIR_PROTOCOL.md),
 [results](NEXUS_SEED_INTERFACE_REPAIR_RESULTS.md). Implementation
