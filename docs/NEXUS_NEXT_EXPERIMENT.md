@@ -1,12 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — score the locked Set A → Set B transfer
+## Current next — do not retune the failed transfer gates
 
-The [transfer protocol](NEXUS_SEED_V3_HEADROOM_TRANSFER_PROTOCOL.md) is
-locked: six equalized methods, `B = 35`, frozen invariant φ, automatic
-Set B signatures. Score it with `--no-live-model` under 15 s. Do not
-retune gates. Ledger
-**3126.028358455996 used / 473.9716415440039 remaining**.
+The [v3 transfer run](NEXUS_SEED_V3_HEADROOM_TRANSFER_RESULTS.md) failed
+Gate 2: capped `φ` mean 31.625 is not half of untrained 31.0. Untruncated
+means (96 vs 394) are diagnostic only. Next work must keep these gates
+or pre-register a new study; do not promote ranking from a failed call
+criterion. Ledger
+**3128.309460455996 used / 471.690539544004 remaining**.
 
 ## Previous next — train invariant φ on Set A, freeze, measure Set B
 

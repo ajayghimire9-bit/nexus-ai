@@ -3,10 +3,10 @@
 ## v3 high-headroom investigation benchmark
 
 `seed/v3_headroom.py` adds a typed 24-operator catalogue and specialist
-probes. It reuses `digest` / EventMeter hashing and does not edit
-`apply_primitive_op`, `PRIMITIVE_OPS`, or the v1/v2 engines. φ stores
-`(support_io_invariant, automatic_signature)` weights, not `op_name`.
-[Protocol](NEXUS_SEED_V3_HEADROOM_PROTOCOL.md).
+probes. `seed/v3_headroom_transfer.py` trains and freezes φ on Set A,
+then scores six equalized Set B methods under `B = 35`. It reuses
+`digest` and does not edit `apply_primitive_op` or the v1/v2 engines.
+[Protocol](NEXUS_SEED_V3_HEADROOM_TRANSFER_PROTOCOL.md).
 
 ## Harder features and contract acquisition
 

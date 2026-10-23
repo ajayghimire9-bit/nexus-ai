@@ -1,6 +1,16 @@
 # NEXUS Seed — Research Registry
 
-## Current — v3 high-headroom investigation benchmark (design lock)
+## Current — v3_headroom Set A → Set B transfer, gates failed
+
+`seed-v3-headroom-transfer-1`, protocol `3190714`, artifact sha256
+`4324e5d51f085c9738c1867002da10ef6f5daa47ea664377b66e7e33a62dd596`.
+Zero neural calls. Gate 1 fail, Gate 2 fail (31.625 vs 15.5).
+Name-index identical to untrained. Transfer not established. Ledger
+**3128.309460455996 used / 471.690539544004 remaining**.
+[Protocol](NEXUS_SEED_V3_HEADROOM_TRANSFER_PROTOCOL.md),
+[results](NEXUS_SEED_V3_HEADROOM_TRANSFER_RESULTS.md).
+
+## Previous — v3 high-headroom investigation benchmark (design lock)
 
 `seed-v3-headroom-1`, branch `cursor/seed-v3-headroom`. Structural
 certificate only: four orthogonal clusters, `|H| = 22464`, `B = 35`,
