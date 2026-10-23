@@ -16,13 +16,11 @@ def verify(artifact: Path) -> dict:
     csv_rows = [row for row in payload['records'] if row.get('kind') == 'csv_trial']
     for row in csv_rows:
         scored = row['scored']
-        expected = None
-        # Reconstruct from recorded reference_output / executed flag only.
         if scored['expected_status'] in ('clarify', 'unsupported'):
-            ok = (not scored['executed']) and scored['correct'] is True
+            ok = (not scored['executed'])
         else:
-            ok = scored['reference_output'] == scored['output'] if scored['executed'] else scored['correct'] is False or scored['expected_status'] in ('clarify', 'unsupported')
-        if bool(ok) != bool(scored['correct']) and scored['expected_status'] not in ('clarify', 'unsupported'):
+            ok = bool(scored['executed']) and scored['output'] == scored['reference_output']
+        if bool(ok) != bool(scored['correct']):
             mismatches.append(row['task_id'] + ':' + row['method'])
     rebuilt = {}
     for row in csv_rows:

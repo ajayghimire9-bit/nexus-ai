@@ -1,5 +1,17 @@
 # NEXUS Seed — Current State
 
+## Latest — conversation correctness and capability matrix v1
+
+Engineering fixes on `cursor/seed-conversation-correctness-matrix`: unsupported
+comparisons clarify, fresh requests do not inherit filters, cancel is atomic,
+explicit save stores the executed AST. Development evaluation
+`seed-conversation-capability-v1` (protocol `14a19f9`) scored tools /
+ordinary_cache / nexus_procedures **7/7** each; reset follow-up **0/1**; no
+procedure benefit. JSON/SQLite/repair remain API-only, not chat.
+[Results](NEXUS_SEED_CONVERSATION_CAPABILITY_RESULTS.md). Not confirmation,
+not learning-to-learn, not AGI. Closed studies untouched. Ledger carry
+unchanged: 2193.632103455996 s used / 1406.367896544004 s remaining.
+
 ## Latest — complete cheap configuration-repair baseline
 
 Pre-run `d2eaec0a12a82c591142ae325b892d40eb52cfc5`,

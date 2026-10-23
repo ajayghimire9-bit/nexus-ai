@@ -1,0 +1,1037 @@
+{
+  "study_id": "seed-conversation-capability-v1",
+  "scientific": false,
+  "kind": "source_development_evaluation_not_confirmation",
+  "records": [
+    {
+      "kind": "startup",
+      "study_id": "seed-conversation-capability-v1",
+      "methods": [
+        "tools",
+        "ordinary_cache",
+        "nexus_procedures"
+      ],
+      "aggregate_score": false
+    },
+    {
+      "kind": "csv_trial",
+      "method": "tools",
+      "task_id": "csv_easy_sum",
+      "family": "exact_repeat",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0037930419930489734,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "tools",
+      "task_id": "csv_missing_values",
+      "family": "new_composition",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "east",
+            "total": 10.0
+          },
+          {
+            "region": "west",
+            "total": 6.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "east",
+            "total": 10.0
+          },
+          {
+            "region": "west",
+            "total": 6.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.000850207987241447,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "tools",
+      "task_id": "csv_unfamiliar_names",
+      "family": "renamed_schema",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "zone": "south",
+            "total": 15.0
+          },
+          {
+            "zone": "north",
+            "total": 6.0
+          }
+        ],
+        "reference_output": [
+          {
+            "zone": "south",
+            "total": 15.0
+          },
+          {
+            "zone": "north",
+            "total": 6.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0008138339908327907,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "tools",
+      "task_id": "csv_transfer_same",
+      "family": "exact_repeat",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "west",
+            "total": 20.0
+          },
+          {
+            "region": "south",
+            "total": 12.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "west",
+            "total": 20.0
+          },
+          {
+            "region": "south",
+            "total": 12.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0008760000055190176,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "tools",
+      "task_id": "csv_inappropriate",
+      "family": "inappropriate_reuse",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "clarify",
+        "observed_status": "clarification",
+        "executed": false,
+        "output": null,
+        "reference_output": null,
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0006152910063974559,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "tools",
+      "task_id": "csv_unsupported_below",
+      "family": "unsupported",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "unsupported",
+        "observed_status": "unsupported",
+        "executed": false,
+        "output": null,
+        "reference_output": null,
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.000571374999708496,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "tools",
+      "task_id": "csv_fresh_no_inherit",
+      "family": "new_composition",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0019269999902462587,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "ordinary_cache",
+      "task_id": "csv_easy_sum",
+      "family": "exact_repeat",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0007707090117037296,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "ordinary_cache",
+      "task_id": "csv_missing_values",
+      "family": "new_composition",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "east",
+            "total": 10.0
+          },
+          {
+            "region": "west",
+            "total": 6.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "east",
+            "total": 10.0
+          },
+          {
+            "region": "west",
+            "total": 6.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0007837500015739352,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "ordinary_cache",
+      "task_id": "csv_unfamiliar_names",
+      "family": "renamed_schema",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "zone": "south",
+            "total": 15.0
+          },
+          {
+            "zone": "north",
+            "total": 6.0
+          }
+        ],
+        "reference_output": [
+          {
+            "zone": "south",
+            "total": 15.0
+          },
+          {
+            "zone": "north",
+            "total": 6.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.001029582999763079,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "ordinary_cache",
+      "task_id": "csv_transfer_same",
+      "family": "exact_repeat",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "west",
+            "total": 20.0
+          },
+          {
+            "region": "south",
+            "total": 12.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "west",
+            "total": 20.0
+          },
+          {
+            "region": "south",
+            "total": 12.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0010358339932281524,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "ordinary_cache",
+      "task_id": "csv_inappropriate",
+      "family": "inappropriate_reuse",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "clarify",
+        "observed_status": "clarification",
+        "executed": false,
+        "output": null,
+        "reference_output": null,
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0005579160060733557,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "ordinary_cache",
+      "task_id": "csv_unsupported_below",
+      "family": "unsupported",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "unsupported",
+        "observed_status": "unsupported",
+        "executed": false,
+        "output": null,
+        "reference_output": null,
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0005699999892385677,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "ordinary_cache",
+      "task_id": "csv_fresh_no_inherit",
+      "family": "new_composition",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": true
+      },
+      "wall_s": 0.0010159590019611642,
+      "library_bytes": 0,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_procedures",
+      "task_id": "csv_easy_sum",
+      "family": "exact_repeat",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0012672090088017285,
+      "library_bytes": 2104,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_procedures",
+      "task_id": "csv_missing_values",
+      "family": "new_composition",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "east",
+            "total": 10.0
+          },
+          {
+            "region": "west",
+            "total": 6.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "east",
+            "total": 10.0
+          },
+          {
+            "region": "west",
+            "total": 6.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0008269579993793741,
+      "library_bytes": 2104,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_procedures",
+      "task_id": "csv_unfamiliar_names",
+      "family": "renamed_schema",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "zone": "south",
+            "total": 15.0
+          },
+          {
+            "zone": "north",
+            "total": 6.0
+          }
+        ],
+        "reference_output": [
+          {
+            "zone": "south",
+            "total": 15.0
+          },
+          {
+            "zone": "north",
+            "total": 6.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0008914579957490787,
+      "library_bytes": 2104,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_procedures",
+      "task_id": "csv_transfer_same",
+      "family": "exact_repeat",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "west",
+            "total": 20.0
+          },
+          {
+            "region": "south",
+            "total": 12.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "west",
+            "total": 20.0
+          },
+          {
+            "region": "south",
+            "total": 12.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0008829170110402629,
+      "library_bytes": 2104,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_procedures",
+      "task_id": "csv_inappropriate",
+      "family": "inappropriate_reuse",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "clarify",
+        "observed_status": "clarification",
+        "executed": false,
+        "output": null,
+        "reference_output": null,
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0006869170028949156,
+      "library_bytes": 2104,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_procedures",
+      "task_id": "csv_unsupported_below",
+      "family": "unsupported",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "unsupported",
+        "observed_status": "unsupported",
+        "executed": false,
+        "output": null,
+        "reference_output": null,
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0006081669998820871,
+      "library_bytes": 2104,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_procedures",
+      "task_id": "csv_fresh_no_inherit",
+      "family": "new_composition",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": true,
+        "expected_status": "executed",
+        "observed_status": "success",
+        "executed": true,
+        "output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "reference_output": [
+          {
+            "region": "north",
+            "total": 17.0
+          },
+          {
+            "region": "east",
+            "total": 16.0
+          },
+          {
+            "region": "west",
+            "total": 8.0
+          }
+        ],
+        "last_intent": {
+          "min": null,
+          "op": "sum",
+          "order": "desc"
+        },
+        "cache_hit": false
+      },
+      "wall_s": 0.0022202499967534095,
+      "library_bytes": 2104,
+      "model_calls": 0
+    },
+    {
+      "kind": "csv_trial",
+      "method": "nexus_reset",
+      "task_id": "csv_transfer_same",
+      "family": "exact_repeat",
+      "integration": "chat_integrated",
+      "environment": "csv",
+      "scored": {
+        "correct": false,
+        "expected_status": "executed",
+        "observed_status": "clarification",
+        "executed": false,
+        "output": null,
+        "reference_output": [
+          {
+            "region": "west",
+            "total": 20.0
+          },
+          {
+            "region": "south",
+            "total": 12.0
+          }
+        ],
+        "last_intent": null
+      },
+      "wall_s": 0.0002731669956119731,
+      "library_bytes": 0,
+      "model_calls": 0,
+      "capsules_available": false
+    },
+    {
+      "kind": "coverage",
+      "id": "json_api_sum",
+      "environment": "json",
+      "integration": "api_only",
+      "chat_supported": false,
+      "executed": true,
+      "output": [
+        {
+          "region": "east",
+          "total": 10.0
+        }
+      ],
+      "model_calls": 0,
+      "supplied": "JSON list + two-op adapter",
+      "inferred": "column roles"
+    },
+    {
+      "kind": "coverage",
+      "id": "sqlite_api_read",
+      "environment": "sqlite",
+      "integration": "api_only",
+      "chat_supported": false,
+      "executed": true,
+      "output": [
+        {
+          "region": "west",
+          "total": 8.0
+        },
+        {
+          "region": "east",
+          "total": 4.0
+        }
+      ],
+      "model_calls": 0,
+      "join_through_chat": false,
+      "supplied": "one-table SQLite + adapter",
+      "inferred": "column roles; null amounts dropped by ParseNumberField"
+    },
+    {
+      "kind": "coverage",
+      "id": "repair_api_null_default",
+      "environment": "repair",
+      "integration": "api_only",
+      "chat_supported": false,
+      "executed": true,
+      "public_passed": true,
+      "cache_hit": false,
+      "model_calls": 0,
+      "supplied": "public tests + RepositoryModel + source-free AST edits",
+      "inferred": "null/default contract from public tests"
+    },
+    {
+      "kind": "coverage",
+      "id": "world_chat_goal",
+      "environment": "world",
+      "integration": "chat_integrated",
+      "chat_supported": true,
+      "executed": true,
+      "correct": true,
+      "position": [
+        5,
+        0
+      ],
+      "model_calls": 0,
+      "supplied": "authored 6x6 world and move/goal grammar",
+      "inferred": "object id o1"
+    },
+    {
+      "kind": "coverage",
+      "id": "conversation_restart",
+      "environment": "conversation",
+      "integration": "chat_integrated",
+      "chat_supported": true,
+      "executed": true,
+      "saved_explicitly": true,
+      "model_calls": 0,
+      "supplied": "session journal + executed AST capsule",
+      "inferred": "last_procedure_id after reload"
+    }
+  ],
+  "summary": {
+    "csv_correctness": {
+      "tools": {
+        "correct": 7,
+        "n": 7
+      },
+      "ordinary_cache": {
+        "correct": 7,
+        "n": 7
+      },
+      "nexus_procedures": {
+        "correct": 7,
+        "n": 7
+      },
+      "nexus_reset": {
+        "correct": 0,
+        "n": 1
+      }
+    },
+    "coverage": [
+      {
+        "id": "json_api_sum",
+        "environment": "json",
+        "integration": "api_only",
+        "chat_supported": false,
+        "executed": true,
+        "correct": null
+      },
+      {
+        "id": "sqlite_api_read",
+        "environment": "sqlite",
+        "integration": "api_only",
+        "chat_supported": false,
+        "executed": true,
+        "correct": null
+      },
+      {
+        "id": "repair_api_null_default",
+        "environment": "repair",
+        "integration": "api_only",
+        "chat_supported": false,
+        "executed": true,
+        "correct": null
+      },
+      {
+        "id": "world_chat_goal",
+        "environment": "world",
+        "integration": "chat_integrated",
+        "chat_supported": true,
+        "executed": true,
+        "correct": true
+      },
+      {
+        "id": "conversation_restart",
+        "environment": "conversation",
+        "integration": "chat_integrated",
+        "chat_supported": true,
+        "executed": true,
+        "correct": null
+      }
+    ],
+    "aggregate_score": null,
+    "learning_to_learn": false,
+    "agi": false
+  },
+  "learning_to_learn": false,
+  "agi": false
+}
