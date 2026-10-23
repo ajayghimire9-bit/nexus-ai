@@ -138,6 +138,7 @@ def score_sentence_candidates(
     metal_grant: ExplicitMetalGrant | None = None,
     metal_sampler: Callable[[str, MetalSamplePlan], str] | None = None,
     metal_enforcer: MetalGrantEnforcer | None = None,
+    vault=None,
 ) -> BestOfNResult:
     if prompt is not None:
         drafts = sample_metal_candidates(
@@ -153,7 +154,7 @@ def score_sentence_candidates(
     selected: CandidateScore | None = None
     for index, draft in enumerate(drafts):
         checked = verify_composed_response(
-            draft, targeted_capsule=targeted_capsule, retrieved_facts=retrieved_facts,
+            draft, targeted_capsule=targeted_capsule, retrieved_facts=retrieved_facts, vault=vault,
         )
         score = CandidateScore(
             index=index,

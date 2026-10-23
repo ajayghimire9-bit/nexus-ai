@@ -117,6 +117,22 @@ class KnowledgeVault:
     def ingest_conversation_fact(self, doc_id: str, title: str, content: str, **kwargs: Any) -> FactSnippet:
         return self.ingest_document(doc_id, title, content, **kwargs)
 
+    def get_document(self, doc_id: str) -> FactSnippet | None:
+        """Load one stored fact by id. This is SQLite, not metal_ledger.json."""
+        row = self.conn.execute(
+            "SELECT doc_id, title, content, source_hash, timestamp FROM facts WHERE doc_id = ?",
+            (doc_id,),
+        ).fetchone()
+        if row is None:
+            return None
+        return FactSnippet(
+            doc_id=row["doc_id"],
+            title=row["title"],
+            content=row["content"],
+            source_hash=row["source_hash"],
+            timestamp=row["timestamp"],
+        )
+
     def retrieve_grounded_facts(self, query: str, top_k: int = 3) -> list[FactSnippet]:
         match = _fts_query(query)
         if not match or top_k < 1:
@@ -275,16 +291,28 @@ def _snippet_tokens(facts: Iterable[FactSnippet]) -> dict[str, set[str]]:
     return {fact.doc_id: set(_tokens(f"{fact.title} {fact.content}")) for fact in facts}
 
 
+def _current_facts(facts: list[FactSnippet], vault: KnowledgeVault | None) -> list[FactSnippet]:
+    """Replace retrieved rows with the live SQLite version of the same doc_id."""
+    if vault is None:
+        return facts
+    current: list[FactSnippet] = []
+    for fact in facts:
+        live = vault.get_document(fact.doc_id)
+        current.append(live if live is not None else fact)
+    return current
+
+
 def verify_composed_response(
     draft: str,
     *,
     targeted_capsule: LexicalCapsule | None = None,
     retrieved_facts: list[FactSnippet] | None = None,
     store: LexicalCapsuleStore | None = None,
+    vault: KnowledgeVault | None = None,
 ) -> VerificationResult:
     """Deterministic lexical-frame and fact-attribution gate. Target < 1 ms."""
     reasons: list[str] = []
-    facts = list(retrieved_facts or [])
+    facts = _current_facts(list(retrieved_facts or []), vault)
     cited = tuple(CITATION.findall(draft or ""))
     if targeted_capsule is not None:
         if not _complete_sentence(draft):

@@ -60,6 +60,7 @@ def collect_sleep_triples(
 
 
 def write_sleep_jsonl(path: str | Path, triples: Iterable[dict[str, Any]]) -> int:
+    """Write verifier-passing triples only. Failed local drafts stay out."""
     return export_lora_sleep_dataset(path, triples)
 
 

@@ -18,6 +18,12 @@ llama-server (`-ngl -1`). Without that grant Metal sampling and LoRA
 stay fail-closed. The Metal ledger must not mix with the frozen CPU
 3564.568 s ledger. Best-of-N and LoRA export are not learning-to-learn.
 [Protocol](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_PROTOCOL.md).
+[Memory homes](NEXUS_SEED_MEMORY_HOMES.md).
+[Compare protocol](NEXUS_SEED_METAL_LIVE_COMPARE_PROTOCOL.md).
+`verify_composed_response(..., vault=)` refreshes citations from live
+SQLite so an old draft cannot keep a current `doc_id`. The Metal grant
+charges `guarded_call` wall only; `user_total_s` is the complete
+assistant cost.
 
 ## v3 stepwise residual search
 

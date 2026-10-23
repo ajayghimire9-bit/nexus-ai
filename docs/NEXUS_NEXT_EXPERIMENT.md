@@ -1,12 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not retune after a failed Metal smoke
+## Current next — one frozen live compare, then stop
 
-The [Metal Best-of-4 smoke](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_RESULTS.md)
-ran under the grant and failed both cells: four identical code
-bodies and four identical uncited sentences. Do not widen
-temperature, plant `.get`, or reopen closed CPU artifacts. Ranking
-stays paused. CPU ledger **3564.568 s** remains frozen.
+The [compare protocol](NEXUS_SEED_METAL_LIVE_COMPARE_PROTOCOL.md) is
+locked. After the protocol commit, run exactly one live
+independent-versus-revision batch. Do not treat the stubbed call-2
+result as an advantage. Report user-total assistant cost as well as
+grant seconds. Ranking stays paused.
 
 ## Previous next — do not retune stepwise after a failed call gate
 

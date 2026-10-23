@@ -390,6 +390,7 @@ class PersistentMetalRuntime:
         self._connection = None
         self._cancel = threading.Event()
         self._log = None
+        self.request_log: list[dict[str, Any]] = []
 
     def start(self) -> dict[str, Any]:
         if self.process is not None and self.process.poll() is None:
@@ -497,12 +498,26 @@ class PersistentMetalRuntime:
             payload = dict(
                 prompt=prompt,
                 n_predict=self.config.max_tokens,
-                temperature=temperature,
-                seed=seed,
-                cache_prompt=True,
+                temperature=float(temperature),
+                seed=int(seed),
+                cache_prompt=bool(self.config.prompt_cache),
             )
             if schema is not None:
                 payload["json_schema"] = schema
+            posted = json.dumps(payload, sort_keys=True, allow_nan=False)
+            request_record = dict(
+                path="/completion",
+                temperature=payload["temperature"],
+                seed=payload["seed"],
+                n_predict=payload["n_predict"],
+                cache_prompt=payload["cache_prompt"],
+                application_cache=bool(self.config.application_cache),
+                application_cache_consulted=False,
+                has_json_schema=schema is not None,
+                n_gpu_layers=self.grant.n_gpu_layers,
+                payload_sha256=hashlib.sha256(posted.encode()).hexdigest(),
+                prompt_sha256=hashlib.sha256(prompt.encode()).hexdigest(),
+            )
             self._cancel.clear()
             timer = threading.Timer(self.config.request_timeout_s, self._abort_request)
             timer.daemon = True
@@ -514,20 +529,20 @@ class PersistentMetalRuntime:
                 if type(raw.get("content")) is not str:
                     raise ValueError("missing metal completion content")
                 timings = raw.get("timings")
-                return dict(
-                    content=raw["content"],
-                    telemetry=dict(
-                        inference_ran=True,
-                        temperature=temperature,
-                        seed=seed,
-                        n_gpu_layers=self.grant.n_gpu_layers,
-                        input_tokens=raw.get("tokens_evaluated"),
-                        generated_tokens=raw.get("tokens_predicted"),
-                        prompt_cache_tokens=(timings or {}).get("cache_n"),
-                        runtime_timings=timings,
-                        request_wall_s=time.perf_counter() - start,
-                    ),
+                request_record["content"] = raw["content"]
+                request_record["telemetry"] = dict(
+                    inference_ran=True,
+                    temperature=payload["temperature"],
+                    seed=payload["seed"],
+                    n_gpu_layers=self.grant.n_gpu_layers,
+                    input_tokens=raw.get("tokens_evaluated"),
+                    generated_tokens=raw.get("tokens_predicted"),
+                    prompt_cache_tokens=(timings or {}).get("cache_n"),
+                    runtime_timings=timings,
+                    request_wall_s=time.perf_counter() - start,
                 )
+                self.request_log.append(request_record)
+                return dict(content=raw["content"], telemetry=request_record["telemetry"], request=request_record)
             finally:
                 timer.cancel()
 
@@ -560,6 +575,26 @@ def bind_live_metal_sampler(runtime: PersistentMetalRuntime, schema=None):
         return out["content"]
 
     return sampler
+
+
+def audit_request_log(records: list[Mapping[str, Any]]) -> dict[str, Any]:
+    """Describe posted generation requests. Identical texts are not a sampler bug."""
+    payloads = [row.get("payload_sha256") for row in records]
+    temps = [row.get("temperature") for row in records]
+    seeds = [row.get("seed") for row in records]
+    texts = [row.get("content") for row in records]
+    return dict(
+        n_requests=len(records),
+        distinct_payload_sha256=len(set(payloads)),
+        distinct_temperature_seed=len(set(zip(temps, seeds))),
+        distinct_raw_texts=len(set(texts)),
+        application_cache_consulted=any(row.get("application_cache_consulted") for row in records),
+        temperatures=tuple(temps),
+        seeds=tuple(seeds),
+        payload_sha256=tuple(payloads),
+        identical_drafts_do_not_prove_sampler_bug=True,
+        four_distinct_requests=len(records) == 4 and len(set(payloads)) == 4,
+    )
 
 
 def local_runtime_sha256(path: str | Path | None = None) -> str:

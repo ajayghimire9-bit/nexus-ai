@@ -1,6 +1,14 @@
 # NEXUS Seed — Current State
 
-## Current — Metal Best-of-4 smoke (results)
+## Current — Metal compare protocol locked (live NOT_RUN)
+
+[Protocol](NEXUS_SEED_METAL_LIVE_COMPARE_PROTOCOL.md). Independent
+versus error-guided revision on fresh hall/gate and dockbinding
+tasks, equal `k=4` / 128-token caps. Stubbed call-2 vs call-4 is not
+a live advantage. Report grant wall and complete assistant cost.
+CPU ledger **3564.568 s / 0 s debit**. Ranking stays paused.
+
+## Previous — Metal Best-of-4 smoke (results)
 
 [Protocol](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_PROTOCOL.md),
 [results](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_RESULTS.md). Protocol
@@ -9,7 +17,9 @@
 **1511.594 MiB**. Both cells produced four identical failing drafts;
 no public or sentence winner; sleep export 0. CPU ledger **3564.568 s
 used / 0 s debit**. Pinned `local_model_runtime.py` unchanged. Ranking
-stays paused. Learning-to-learn is not established.
+stays paused. Learning-to-learn is not established. Grant wall and
+runner wall are different numbers; process RSS is not Metal heap.
+Facts live in SQLite, not `metal_ledger.json`.
 
 ## Previous — stepwise residual search (results)
 

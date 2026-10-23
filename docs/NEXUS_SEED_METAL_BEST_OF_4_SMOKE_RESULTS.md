@@ -10,20 +10,35 @@ CPU ledger **3564.568 s used / 0 s debit**.
 `local_model_runtime.py` hash unchanged
 `5b5b0aed48c9f1e0809f53b6cfc66a6d73ccc11b35798ad3ff6c99e8d48ce781`.
 
-## Metal ledger
+## Metal ledger and resource claims
 
-| field | value |
-| --- | --- |
-| kind | `metal_session_ledger` |
-| used_s | **2.545** |
-| remaining_s | 597.455 / 600 |
-| peak RSS | **1511.594 MiB** (cap 4096) |
-| cell 1 wall | 1.312 s |
-| cell 2 wall | 1.232 s |
-| runner wall | 5.232 s |
+The grant charges only `MetalGrantEnforcer.guarded_call` wall: the two
+Best-of-4 generation batches. That sum is **2.545 s**. Runner wall is
+**5.232 s** and also includes llama-server cold start (1.234 s),
+sandbox scoring, SQLite ingest, verifier time, and teardown. Startup
+and CPU scoring are **not** Metal-grant seconds and are **not** CPU
+scientific-ledger seconds (CPU debit remains 0; frozen used
+**3564.568 s**).
 
-Both batches sat under the 30 s call cap and the 15 s Metal-wall
-target. The CPU 3564.568 s ledger was not mixed in.
+| field | value | in the grant? |
+| --- | --- | --- |
+| kind | `metal_session_ledger` | yes (file only) |
+| grant-charged wall | **2.545 s** | yes |
+| remaining grant | 597.455 / 600 s | yes |
+| cell 1 generation | 1.312 s | yes |
+| cell 2 generation | 1.232 s | yes |
+| runner wall | **5.232 s** | no; report separately |
+| cold start | 1.234 s | no |
+| sampled process RSS | **1511.594 MiB** | ceiling check only |
+
+RSS is parent-plus-llama-server process RSS, sampled immediately
+before and after each `guarded_call`. That cannot prove the absence of
+a transient spike between the two samples, and process RSS is not
+total Metal / unified-memory allocation.
+
+The smoke artifact did not log per-request `/completion` payloads.
+Identical drafts therefore do not prove that temperature or seed were
+dropped. A later sampling audit records those posted fields.
 
 ## Cell 1 — missing-key `mark(item)`
 
@@ -44,7 +59,12 @@ All four drafts were identical:
 
 Verifier reasons: `term_missing` (`metalvault`), `frame_mismatch`,
 `missing_citation:seed-metal-1`. Promoted winner: **none**.
-`write_sleep_jsonl` wrote **0** rows.
+`write_sleep_jsonl` wrote **0** rows. That empty export is correct:
+failed drafts must not become training examples merely because they
+were generated locally.
+
+Facts and the `metalvault` binding from this cell live in
+`vault.sqlite` and `capsules.sqlite`, not in `metal_ledger.json`.
 
 ## Claims
 
