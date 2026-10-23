@@ -1,6 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — stepwise residual search (results)
+## Current — Metal Best-of-4 smoke (protocol locked, live NOT_RUN)
+
+[Protocol](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_PROTOCOL.md). Branch
+`cursor/seed-lexicon-knowledge-vault` from `7e70564`. Explicit Metal
+grant plus `MetalGrantEnforcer` for one 2-cell Best-of-4 smoke. CPU
+ledger stays **3564.568 s used / 0 s debit**. Pinned
+`local_model_runtime.py` must stay hash
+`5b5b0aed48c9f1e0809f53b6cfc66a6d73ccc11b35798ad3ff6c99e8d48ce781`.
+Live collection is NOT_RUN until the protocol commit. Ranking stays
+paused. Learning-to-learn is not established.
+
+## Previous — stepwise residual search (results)
 
 [Protocol](NEXUS_SEED_V3_STEPWISE_RESIDUAL_PROTOCOL.md),
 [results](NEXUS_SEED_V3_STEPWISE_RESIDUAL_RESULTS.md). Implementation

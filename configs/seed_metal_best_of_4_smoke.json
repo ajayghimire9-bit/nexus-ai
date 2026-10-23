@@ -1,0 +1,59 @@
+{
+  "id": "seed_metal_best_of_4_smoke",
+  "scientific": false,
+  "kind": "source_development_metal_smoke_not_confirmation",
+  "cpu_ledger_used_s": 3564.568,
+  "cpu_ledger_debit_s": 0,
+  "k": 4,
+  "format": "json_body",
+  "prompt_style": "chatml",
+  "max_tokens": 128,
+  "request_timeout_s": 8,
+  "startup_timeout_s": 25,
+  "threads": 2,
+  "target_total_metal_wall_s": 15.0,
+  "local_model_runtime_sha256": "5b5b0aed48c9f1e0809f53b6cfc66a6d73ccc11b35798ad3ff6c99e8d48ce781",
+  "metal_grant": {
+    "authorized": true,
+    "owner": "explicit-metal-smoke",
+    "reason": "one bounded 2-cell Apple Silicon Metal Best-of-4 smoke",
+    "max_rss_mib": 4096,
+    "max_wall_seconds_per_call": 30.0,
+    "max_session_metal_seconds": 600.0,
+    "seed": 42,
+    "n_gpu_layers": -1,
+    "ledger_path": "artifacts/seed_metal_best_of_4_smoke/metal_ledger.json"
+  },
+  "model": {
+    "label": "coder15",
+    "path": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046"
+  },
+  "cell1": {
+    "id": "py_yard_slip_missing_key",
+    "request": "Create function mark(item) that returns yard and slip in lowercase joined by one slash.",
+    "files": {
+      "dock.py": "def echo(text):\n    return text\n"
+    },
+    "public": [
+      {"entry": "dock.mark", "input": {"yard": "North", "slip": "A3"}, "expected": "north/a3"},
+      {"entry": "dock.mark", "input": {"slip": "A3"}, "expected": "/a3"},
+      {"entry": "dock.mark", "input": {"yard": "North"}, "expected": "north/"}
+    ],
+    "private": [
+      {"entry": "dock.mark", "input": {"yard": "Cove", "slip": "K9"}, "expected": "cove/k9"},
+      {"entry": "dock.mark", "input": {"slip": "K9"}, "expected": "/k9"},
+      {"entry": "dock.mark", "input": {"yard": "Cove"}, "expected": "cove/"}
+    ]
+  },
+  "cell2": {
+    "doc_id": "seed-metal-1",
+    "title": "Seed Metal vault note",
+    "fact": "In 2026 the Seed lab stores verified lexicon sentences in the knowledge vault.",
+    "term": "metalvault",
+    "definition": "the Seed-lab store of verified lexicon sentences",
+    "pos_or_frame": "noun_phrase",
+    "required_tokens": ["vault", "sentence"],
+    "retrieve_query": "verified lexicon sentences vault"
+  }
+}

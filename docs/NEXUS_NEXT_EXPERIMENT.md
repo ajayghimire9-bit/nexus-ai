@@ -1,6 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not retune stepwise after a failed call gate
+## Current next — one bounded Metal Best-of-4 smoke, then stop
+
+The [Metal smoke protocol](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_PROTOCOL.md)
+is locked. After the protocol commit, run exactly one 2-cell live
+batch under `ExplicitMetalGrant(authorized=True)`. Do not debit the
+CPU 3564.568 s ledger. Do not retune stepwise. Ranking stays paused.
+
+## Previous next — do not retune stepwise after a failed call gate
 
 The [stepwise residual run](NEXUS_SEED_V3_STEPWISE_RESIDUAL_RESULTS.md)
 cut capped mean calls from 31.625 to 23.250 and raised Depth 4 solve

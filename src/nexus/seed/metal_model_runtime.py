@@ -19,10 +19,19 @@ import os
 import platform
 import resource
 import time
-from dataclasses import dataclass
+from copy import deepcopy
+from dataclasses import asdict, dataclass
+import hashlib
+import http.client
+import secrets
+import shutil
+import socket
+import subprocess
+import threading
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from .local_model_runtime import RuntimeConfig, file_hash, gguf_file_type
 from .process_memory import sample_process_memory
 
 
@@ -203,6 +212,7 @@ class MetalGrantEnforcer:
         hardware_probe: Callable[[], bool] | None = None,
         rss_reader: Callable[[], float | None] | None = None,
         clock: Callable[[], float] = time.perf_counter,
+        runtime: Any = None,
     ) -> None:
         if not grant.authorized:
             raise ValueError(GPU_REFUSED)
@@ -216,13 +226,23 @@ class MetalGrantEnforcer:
         self.rss_reader = rss_reader
         self.clock = clock
         self.hardware = hardware
+        self.runtime = runtime
 
     def remaining_session_s(self) -> float:
         ledger = load_metal_ledger(self.ledger_path, self.grant.max_session_metal_seconds)
         return float(self.grant.max_session_metal_seconds) - float(ledger.get("used_s") or 0.0)
 
     def check_rss(self) -> float:
-        rss = current_process_rss_mib(self.rss_reader)
+        if self.rss_reader is not None:
+            rss = current_process_rss_mib(self.rss_reader)
+        else:
+            mem = sample_process_memory(self.runtime)
+            rss = mem.get("combined_rss_mib")
+            if rss is None:
+                rss = mem.get("parent_rss_mib")
+            if rss is None:
+                raise ValueError("metal_rss_unreadable")
+            rss = float(rss)
         if rss > self.grant.max_rss_mib:
             raise ValueError(f"metal_rss_exceeded:{rss}")
         return rss
@@ -263,6 +283,8 @@ class MetalGrantEnforcer:
             )
         )
         ledger["calls"] = calls
+        peaks = [value for value in (before_rss, after_rss, ledger.get("peak_rss_mib")) if value is not None]
+        ledger["peak_rss_mib"] = max(peaks) if peaks else None
         write_metal_ledger(self.ledger_path, ledger)
 
 
@@ -347,3 +369,199 @@ def metal_runtime_status(grant: ExplicitMetalGrant | None = None) -> dict[str, A
         max_session_metal_seconds=resolved.max_session_metal_seconds,
         learning_to_learn=False,
     )
+
+
+class PersistentMetalRuntime:
+    """Owned llama-server with Metal offload. Does not edit the CPU runtime."""
+
+    def __init__(self, config: RuntimeConfig, grant: ExplicitMetalGrant, log_path=None):
+        if not grant.authorized:
+            raise ValueError(GPU_REFUSED)
+        config.validate()
+        self.config = config
+        self.grant = grant
+        self.log_path = log_path
+        self.process = None
+        self.metadata = None
+        self.port = 0
+        self._api_key = secrets.token_urlsafe(24)
+        self._lock = threading.Lock()
+        self._close_lock = threading.Lock()
+        self._connection = None
+        self._cancel = threading.Event()
+        self._log = None
+
+    def start(self) -> dict[str, Any]:
+        if self.process is not None and self.process.poll() is None:
+            return deepcopy(self.metadata)
+        begin = time.perf_counter()
+        model = Path(self.config.model_path).expanduser().resolve(strict=True)
+        binary = shutil.which(self.config.executable)
+        if not binary:
+            raise FileNotFoundError("llama-server executable not found")
+        if self.config.port:
+            self.port = self.config.port
+            with socket.socket() as sock:
+                sock.bind((self.config.host, self.port))
+        else:
+            with socket.socket() as sock:
+                sock.bind((self.config.host, 0))
+                self.port = sock.getsockname()[1]
+        version = subprocess.run(
+            [binary, "--version"], capture_output=True, text=True, timeout=5, check=True,
+        )
+        weights_hash = file_hash(model)
+        quantization_id = gguf_file_type(model)
+        args = [
+            binary, "-m", str(model), "--host", self.config.host, "--port", str(self.port),
+            "-c", str(self.config.context_size), "-t", str(self.config.threads),
+            "-tb", str(self.config.threads), "-np", "1",
+            "-ngl", str(self.grant.n_gpu_layers),
+            "--offline", "--no-webui", "--cache-ram", "0", "--api-key", self._api_key,
+        ]
+        self._log = open(self.log_path, "ab") if self.log_path else open(os.devnull, "ab")
+        self.process = subprocess.Popen(
+            args, stdout=self._log, stderr=self._log,
+            env=dict(os.environ, OMP_NUM_THREADS=str(self.config.threads)),
+        )
+        self._cancel.clear()
+        try:
+            deadline = time.monotonic() + self.config.startup_timeout_s
+            while time.monotonic() < deadline:
+                if self.process.poll() is not None:
+                    raise RuntimeError(
+                        "metal server exited during startup (return code "
+                        + str(self.process.poll())
+                        + "); inspect server log"
+                    )
+                try:
+                    if self._http("GET", "/health", None, timeout=0.3).get("status") == "ok":
+                        break
+                except (OSError, ValueError, RuntimeError, http.client.HTTPException):
+                    pass
+                self._cancel.wait(0.05)
+            else:
+                raise TimeoutError("metal model readiness deadline exceeded")
+            self.metadata = dict(
+                model_sha256=weights_hash,
+                model_file=model.name,
+                model_file_bytes=model.stat().st_size,
+                quantization="Q4_K_M" if quantization_id == 15 else "GGUF file type " + str(quantization_id),
+                gguf_file_type=quantization_id,
+                runtime_version=(version.stdout + version.stderr).strip(),
+                executable_sha256=file_hash(binary),
+                hardware=platform.machine(),
+                os=platform.platform(),
+                n_gpu_layers=self.grant.n_gpu_layers,
+                metal=True,
+                settings=asdict(self.config),
+                cold_startup_s=time.perf_counter() - begin,
+            )
+            return deepcopy(self.metadata)
+        except BaseException:
+            self.close()
+            raise
+
+    def _http(self, method, path, payload, timeout):
+        conn = http.client.HTTPConnection(self.config.host, self.port, timeout=timeout)
+        self._connection = conn
+        try:
+            body = None if payload is None else json.dumps(payload, allow_nan=False)
+            conn.request(
+                method, path, body,
+                {"Content-Type": "application/json", "Authorization": "Bearer " + self._api_key},
+            )
+            response = conn.getresponse()
+            raw = response.read(1_000_001)
+            if response.status != 200 or len(raw) > 1_000_000:
+                raise RuntimeError("metal runtime HTTP failure or oversized response")
+            return json.loads(raw)
+        finally:
+            conn.close()
+            self._connection = None
+
+    def _abort_request(self) -> None:
+        self._cancel.set()
+        conn = self._connection
+        if conn and conn.sock:
+            try:
+                conn.sock.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
+
+    def complete(self, prompt: str, schema, *, temperature: float, seed: int) -> dict[str, Any]:
+        with self._lock:
+            start = time.perf_counter()
+            if self.process is None or self.process.poll() is not None:
+                raise RuntimeError("metal runtime must be started explicitly")
+            payload = dict(
+                prompt=prompt,
+                n_predict=self.config.max_tokens,
+                temperature=temperature,
+                seed=seed,
+                cache_prompt=True,
+            )
+            if schema is not None:
+                payload["json_schema"] = schema
+            self._cancel.clear()
+            timer = threading.Timer(self.config.request_timeout_s, self._abort_request)
+            timer.daemon = True
+            timer.start()
+            try:
+                raw = self._http("POST", "/completion", payload, self.config.request_timeout_s)
+                if self._cancel.is_set():
+                    raise TimeoutError("metal inference cancelled or timed out")
+                if type(raw.get("content")) is not str:
+                    raise ValueError("missing metal completion content")
+                timings = raw.get("timings")
+                return dict(
+                    content=raw["content"],
+                    telemetry=dict(
+                        inference_ran=True,
+                        temperature=temperature,
+                        seed=seed,
+                        n_gpu_layers=self.grant.n_gpu_layers,
+                        input_tokens=raw.get("tokens_evaluated"),
+                        generated_tokens=raw.get("tokens_predicted"),
+                        prompt_cache_tokens=(timings or {}).get("cache_n"),
+                        runtime_timings=timings,
+                        request_wall_s=time.perf_counter() - start,
+                    ),
+                )
+            finally:
+                timer.cancel()
+
+    def close(self) -> None:
+        with self._close_lock:
+            if self.process is not None:
+                if self.process.poll() is None:
+                    self.process.terminate()
+                    try:
+                        self.process.wait(timeout=2)
+                    except subprocess.TimeoutExpired:
+                        self.process.kill()
+                        self.process.wait(timeout=2)
+                self.process = None
+            if self._log:
+                self._log.close()
+                self._log = None
+
+    def __enter__(self):
+        self.start()
+        return self
+
+    def __exit__(self, *_):
+        self.close()
+
+
+def bind_live_metal_sampler(runtime: PersistentMetalRuntime, schema=None):
+    def sampler(prompt: str, plan: MetalSamplePlan) -> str:
+        out = runtime.complete(prompt, schema, temperature=plan.temperature, seed=plan.seed)
+        return out["content"]
+
+    return sampler
+
+
+def local_runtime_sha256(path: str | Path | None = None) -> str:
+    target = Path(path) if path is not None else Path(__file__).with_name("local_model_runtime.py")
+    return hashlib.sha256(target.read_bytes()).hexdigest()

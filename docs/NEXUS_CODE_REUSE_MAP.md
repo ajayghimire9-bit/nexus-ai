@@ -12,10 +12,12 @@ candidates in the existing worker sandbox / lexicon verifier. It does
 not edit the temperature-0 runtime. Diverse Best-of-4 sampling lives in
 `seed/metal_model_runtime.py` and runs only under
 `ExplicitMetalGrant(authorized=True)` plus `MetalGrantEnforcer`
-(4096 MiB RSS, 30 s/call, 600 s Metal ledger). Without that grant
-Metal sampling and LoRA stay fail-closed. The Metal ledger must not
-mix with the frozen CPU 3564.568 s ledger. Best-of-N and LoRA export
-are not learning-to-learn.
+(4096 MiB RSS, 30 s/call, 600 s Metal ledger). The 2-cell smoke in
+`seed/metal_best_of_4_smoke.py` reuses those scorers and a Metal
+llama-server (`-ngl -1`). Without that grant Metal sampling and LoRA
+stay fail-closed. The Metal ledger must not mix with the frozen CPU
+3564.568 s ledger. Best-of-N and LoRA export are not learning-to-learn.
+[Protocol](NEXUS_SEED_METAL_BEST_OF_4_SMOKE_PROTOCOL.md).
 
 ## v3 stepwise residual search
 
