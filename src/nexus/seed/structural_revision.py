@@ -163,6 +163,14 @@ def structural_reject_detail(
             f"return statements that use parameter '{param}'."
         )
         return {"code": "unbound_name", "codes": ["unbound_name"], "reason": text}
+    from .diagnostic_revision import is_constant_string_literal
+
+    if is_constant_string_literal(excerpt, param):
+        text = (
+            f"Previous revision was a constant string literal that did not "
+            f"reference '{param}'; return an expression that uses '{param}'."
+        )
+        return {"code": "constant_literal_no_item", "codes": ["constant_literal_no_item"], "reason": text}
     if not references_parameter(excerpt, param):
         text = (
             f"Previous revision did not reference '{param}'; "

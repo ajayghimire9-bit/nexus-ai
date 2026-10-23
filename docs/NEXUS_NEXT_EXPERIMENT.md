@@ -2,7 +2,9 @@
 
 ## Current next — missing-field tag after diagnostic KeyError
 
-The [diagnostic-revision run](NEXUS_SEED_DIAGNOSTIC_REVISION_RESULTS.md)
+Protocol [NEXUS_SEED_TAG_LITERAL_PROTOCOL.md](NEXUS_SEED_TAG_LITERAL_PROTOCOL.md)
+is locked. Live scoring has not run. The
+[diagnostic-revision run](NEXUS_SEED_DIAGNOSTIC_REVISION_RESULTS.md)
 passed public 3/4 and private 3/4. C2 no longer pastes the failed C1
 source; `lane` wrote `/lab/` instead of echoing the f-string. Bag-sum
 passed on the first completion of a fresh id. Completions stayed at

@@ -110,6 +110,13 @@ def verify(
 
 
 def _bundle(study_id):
+    if study_id == "seed-tag-literal-confirm-1":
+        from nexus.seed.tag_literal_study import (
+            CLOSED_TASK_IDS as closed, WORKER_PROMPT_FREEZE as freeze,
+            covers_varied as cover, replay_final as replay_fn, summarize as summarize_fn,
+        )
+        config = json.loads((ROOT / "configs/seed_tag_literal_confirm.json").read_text())
+        return config, dict(closed=closed, freeze=freeze, cover=cover, summarize_fn=summarize_fn, replay_fn=replay_fn)
     if study_id == "seed-diagnostic-revision-confirm-1":
         from nexus.seed.diagnostic_revision_study import (
             CLOSED_TASK_IDS as closed, WORKER_PROMPT_FREEZE as freeze,

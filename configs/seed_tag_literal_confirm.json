@@ -1,0 +1,119 @@
+{
+  "id": "seed-tag-literal-confirm-1",
+  "artifact_stem": "seed_tag_literal_confirm",
+  "base_sha": "30127b2",
+  "parent_protocol_commit": "30127b2",
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "carried_used_s": 3506.581022455996,
+  "wall_s": 90,
+  "hard_deadline_s": 75,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "audit_cells": 1,
+    "confirm_cells": 4,
+    "methods": ["supplied"]
+  },
+  "tasks": [
+    {
+      "id": "py_sack_tally",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tally(item) sums size on each sack. Missing size is 0. Empty sacks is 0. Empty list and a missing size are public.",
+      "request": "Create function tally(item) that sums size on each dict in sacks. Missing size counts as 0. An empty list is 0.",
+      "docs": [{"title": "tally", "content": "tally(item) sums sack size values. Missing size is 0. Empty sacks is 0."}],
+      "files": {"sack.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "sack.py", "symbol": "tally", "action": "insert_function"},
+      "public": [
+        {"entry": "sack.tally", "input": {"sacks": [{"size": 2}, {"size": 7}]}, "expected": 9},
+        {"entry": "sack.tally", "input": {"sacks": []}, "expected": 0},
+        {"entry": "sack.tally", "input": {"sacks": [{"size": 4}, {}]}, "expected": 4}
+      ],
+      "assessment": [
+        {"entry": "sack.tally", "input": {"sacks": [{"size": 6}]}, "expected": 6},
+        {"entry": "sack.tally", "input": {"sacks": [{}, {}]}, "expected": 0},
+        {"entry": "sack.tally", "input": {"sacks": [{"size": 1}, {"size": 1}, {}]}, "expected": 2}
+      ]
+    },
+    {
+      "id": "py_path_slash",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tag(item) is path and zone lowercased, joined by one slash. Missing path or zone is an empty string. Those missing cases are public. A distinct missing-key case is private.",
+      "request": "Create function tag(item) that returns path and zone in lowercase joined by one slash. A missing path or zone is an empty string.",
+      "docs": [{"title": "tag", "content": "tag(item) is path/zone lowercased. Missing fields are empty strings."}],
+      "files": {"path.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "path.py", "symbol": "tag", "action": "insert_function"},
+      "public": [
+        {"entry": "path.tag", "input": {"path": "Lab", "zone": "East"}, "expected": "lab/east"},
+        {"entry": "path.tag", "input": {"zone": "East"}, "expected": "/east"},
+        {"entry": "path.tag", "input": {"path": "Lab"}, "expected": "lab/"}
+      ],
+      "assessment": [
+        {"entry": "path.tag", "input": {"zone": "West"}, "expected": "/west"},
+        {"entry": "path.tag", "input": {"path": "Mix"}, "expected": "mix/"},
+        {"entry": "path.tag", "input": {"path": "Q", "zone": "w"}, "expected": "q/w"}
+      ]
+    },
+    {
+      "id": "py_load_div",
+      "role": "insert",
+      "family": "arithmetic",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "load(item) returns load divided by span as a float using true division.",
+      "request": "Create function load(item) that returns load divided by span.",
+      "docs": [{"title": "load", "content": "load(item) is load / span as a float."}],
+      "files": {"load.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "load.py", "symbol": "load", "action": "insert_function"},
+      "public": [
+        {"entry": "load.load", "input": {"load": 6, "span": 5}, "expected": 1.2},
+        {"entry": "load.load", "input": {"load": 0, "span": 8}, "expected": 0.0}
+      ],
+      "assessment": [
+        {"entry": "load.load", "input": {"load": 13, "span": 2}, "expected": 6.5},
+        {"entry": "load.load", "input": {"load": 1, "span": 4}, "expected": 0.25}
+      ]
+    },
+    {
+      "id": "py_hold_pair",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "hold(item) is True only when days >= wait and rank >= step. A failing public case is included.",
+      "request": "Create function hold(item) that is True only when days is at least wait and rank is at least step.",
+      "docs": [{"title": "hold", "content": "hold(item) requires days >= wait AND rank >= step."}],
+      "files": {"hold.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "hold.py", "symbol": "hold", "action": "insert_function"},
+      "public": [
+        {"entry": "hold.hold", "input": {"days": 5, "wait": 4, "rank": 9, "step": 8}, "expected": true},
+        {"entry": "hold.hold", "input": {"days": 3, "wait": 4, "rank": 10, "step": 8}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "hold.hold", "input": {"days": 8, "wait": 4, "rank": 7, "step": 8}, "expected": false},
+        {"entry": "hold.hold", "input": {"days": 4, "wait": 4, "rank": 8, "step": 8}, "expected": true}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

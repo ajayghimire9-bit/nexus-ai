@@ -212,6 +212,10 @@ def assemble_format_proposal(
     placeholder = placeholder_diagnostic(function_text, plan.symbol) if function_text else (
         "placeholder_body:empty" if not raw_valid else None
     )
+    if placeholder in {None, "placeholder_body:empty"}:
+        from .diagnostic_revision import looks_like_output_literal
+        if looks_like_output_literal(raw_text):
+            placeholder = "constant_literal_no_item"
     syntax_valid = False
     patched = None
     validated = None
@@ -260,6 +264,13 @@ def placeholder_diagnostic(function_text: str, symbol: str) -> str | None:
     if len(defs) != 1:
         return None
     stmts = list(defs[0].body)
+    if (
+        len(stmts) == 1
+        and isinstance(stmts[0], ast.Expr)
+        and isinstance(stmts[0].value, ast.Constant)
+        and isinstance(stmts[0].value.value, str)
+    ):
+        return "constant_literal_no_item"
     if stmts and isinstance(stmts[0], ast.Expr) and isinstance(stmts[0].value, ast.Constant):
         if isinstance(stmts[0].value.value, str):
             stmts = stmts[1:]
@@ -276,6 +287,10 @@ def placeholder_diagnostic(function_text: str, symbol: str) -> str | None:
         return "placeholder_body:bare_identifier:" + stmt.value.id
     if isinstance(stmt, ast.Return) and isinstance(stmt.value, ast.Name) and stmt.value.id == symbol:
         return "placeholder_body:returns_own_name:" + symbol
+    if isinstance(stmt, ast.Return) and isinstance(stmt.value, ast.Constant) and isinstance(stmt.value.value, str):
+        return "constant_literal_no_item"
+    if isinstance(stmt, ast.Expr) and isinstance(stmt.value, ast.Constant) and isinstance(stmt.value.value, str):
+        return "constant_literal_no_item"
     return None
 
 
