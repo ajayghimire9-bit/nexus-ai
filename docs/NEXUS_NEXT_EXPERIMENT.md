@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — bag-sum projection is still unsolved; do not start experience
+## Current next — locked interface-repair evaluation (not yet scored)
+
+[Protocol](NEXUS_SEED_INTERFACE_REPAIR_PROTOCOL.md) on
+`cursor/seed-worker-div-confirm` (base `6259d55`). Envelope unwrap,
+`sum()` signature feedback, public list-schema, and shared f-string
+allowlist are locked. One 150 s hard-deadline live run after this
+commit. Ranking and memory stay paused. Ledger
+**3255.314914455996 used / 344.685085544004 remaining**.
+
+## Previous next — bag-sum projection is still unsolved; do not start experience
 
 The [sum-row repair confirmation](NEXUS_SEED_SUM_ROW_REPAIR_RESULTS.md)
 passed 2/4. Compact revision named `amount` and finished in 5.7 s, but

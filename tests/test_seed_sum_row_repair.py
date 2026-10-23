@@ -73,8 +73,7 @@ def test_compact_feedback_names_dict_element_keys():
     feedback = compact_behavioral_feedback(TYPEERROR_PUBLIC, BAG_PUBLIC, BARE)
     assert "dicts" in feedback["instruction"]
     assert "amount" in feedback["instruction"]
-    assert "sum(" in feedback["instruction"]
-    assert "0" in feedback["instruction"]
+    assert "sum()" in feedback["instruction"]
     assert feedback["failed_expression"] == BARE
     assert len(feedback["failed_cases"]) == 2
     assert all(case.get("exception") for case in feedback["failed_cases"])

@@ -120,20 +120,11 @@ def compact_behavioral_feedback(
     public: dict[str, Any] | None,
     public_tests: list[dict[str, Any]] | None,
     failed_expression: str = "",
+    spec_text: str = "",
 ) -> dict[str, Any]:
-    failed = compact_failed_cases(public, public_tests)
-    if is_int_dict_sum_failure(public) or sum_lacks_element_projection(failed_expression):
-        instruction = int_dict_sum_instruction(public_tests, failed)
-    else:
-        instruction = "Public tests failed. Repair the failed body using the failed cases only."
-    return {
-        "validation_error": "public_tests_failed",
-        "stage": "behavior",
-        "instruction": instruction,
-        "failed_expression": (failed_expression or "").strip()[:240],
-        "failed_cases": failed,
-        "operator_supplied": False,
-    }
+    from .execution_feedback import layered_public_feedback
+
+    return layered_public_feedback(public, public_tests, spec_text, failed_expression)
 
 
 def compact_supplied_contract(plan, public_tests: list[dict[str, Any]] | None) -> str:

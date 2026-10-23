@@ -15,6 +15,7 @@ from .constrained_edit import (
     preview_constrained_edit, wrap_constrained_edit,
 )
 from .local_model_patch_proposer import apply_patch, validate_patch
+from .response_envelope import unwrap_extracted
 
 
 FORMATS = ("plain_code", "json_function", "json_body")
@@ -183,6 +184,18 @@ def assemble_format_proposal(
     target_from = "discovery" if plan is not None else "public_test_entry_or_existing_symbol"
     plan = plan or plan_constrained_edit(request, files, public_tests)
     raw_text, raw_valid, raw_reason = extract_format_text(fmt, content)
+    extracted_text = raw_text
+    envelope = unwrap_extracted(raw_text)
+    envelope_ops = list(envelope.get("ops") or [])
+    if envelope.get("reject"):
+        raw_valid = False
+        raw_reason = str(envelope["reject"])
+        raw_text = str(envelope.get("text") or raw_text)
+    elif envelope.get("text") is not None:
+        raw_text = str(envelope["text"])
+        if envelope_ops:
+            raw_valid = bool(raw_text.strip())
+            raw_reason = "envelope_unwrapped" if raw_valid else "empty_body"
     notes: list[str] = []
     function_text = ""
     if raw_valid:
@@ -221,6 +234,8 @@ def assemble_format_proposal(
         "raw_valid": raw_valid,
         "raw_reason": raw_reason,
         "raw_excerpt": (raw_text or "")[:400],
+        "extracted_text": (extracted_text or "")[:400],
+        "envelope_ops": envelope_ops,
         "normalized": notes,
         "placeholder": placeholder,
         "syntax_valid": syntax_valid,

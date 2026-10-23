@@ -17,6 +17,7 @@ from .input_contract import (
 )
 from .interrupt_transfer import _assess
 from .process_memory import sample_process_memory
+from .execution_feedback import layered_public_feedback
 from .public_failure import behavioral_feedback, comparison_ops, operator_hint_present
 from .sum_row_repair import (
     compact_behavioral_feedback,
@@ -82,6 +83,8 @@ def _trace(assembled, **extra):
         "raw_valid", "raw_reason", "raw_excerpt", "normalized", "placeholder",
         "syntax_valid", "structurally_valid", "preview",
     )}
+    row["extracted_text"] = assembled.get("extracted_text")
+    row["envelope_ops"] = assembled.get("envelope_ops") or []
     row["comparison_ops"] = comparison_ops(_body_excerpt(assembled))
     row.update(extra)
     return row
@@ -174,16 +177,17 @@ def propose_cell(
         elif len(traces) < MAX_COMPLETIONS:
             behavior_attempted = True
             prior_body = _body_excerpt(assembled)
+            spec_text = " ".join([spec.get("requirement") or "", spec.get("request") or ""])
             if compact_prompts or needs_compact_sum_repair(public, prior_body):
                 feedback = compact_behavioral_feedback(
-                    public, spec.get("public") or [], prior_body,
+                    public, spec.get("public") or [], prior_body, spec_text,
                 )
                 user3 = compact_revision_prompt(plan, prior_body, feedback)
             else:
-                feedback = behavioral_feedback(public, spec.get("public") or [])
-                user3 = build_user_prompt(
-                    variant, task, plan, feedback, contract_block=contract_block,
+                feedback = layered_public_feedback(
+                    public, spec.get("public") or [], spec_text, prior_body,
                 )
+                user3 = compact_revision_prompt(plan, prior_body, feedback)
             three_point = bool(feedback.get("three_point_evidence"))
             prompt3, render3 = render_prompt(STYLE, user3)
             raw3 = _complete(runtime, prompt3, schema, meter, scope, spec["id"] + ":behavior")

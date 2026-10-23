@@ -1,0 +1,119 @@
+{
+  "id": "seed-interface-repair-confirm-1",
+  "artifact_stem": "seed_interface_repair_confirm",
+  "base_sha": "6259d55",
+  "parent_protocol_commit": "6259d55",
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "carried_used_s": 3255.314914455996,
+  "wall_s": 180,
+  "hard_deadline_s": 150,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "audit_cells": 1,
+    "confirm_cells": 4,
+    "methods": ["supplied"]
+  },
+  "tasks": [
+    {
+      "id": "py_bin_tally",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tally(item) sums qty on each bin. Missing qty is 0. Empty bins is 0. Empty list and a missing qty are public.",
+      "request": "Create function tally(item) that sums qty on each dict in bins. Missing qty counts as 0. An empty list is 0.",
+      "docs": [{"title": "tally", "content": "tally(item) sums bin qty values. Missing qty is 0. Empty bins is 0."}],
+      "files": {"crate.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "crate.py", "symbol": "tally", "action": "insert_function"},
+      "public": [
+        {"entry": "crate.tally", "input": {"bins": [{"qty": 2}, {"qty": 9}]}, "expected": 11},
+        {"entry": "crate.tally", "input": {"bins": []}, "expected": 0},
+        {"entry": "crate.tally", "input": {"bins": [{"qty": 5}, {}]}, "expected": 5}
+      ],
+      "assessment": [
+        {"entry": "crate.tally", "input": {"bins": [{"qty": 6}]}, "expected": 6},
+        {"entry": "crate.tally", "input": {"bins": [{}, {}]}, "expected": 0},
+        {"entry": "crate.tally", "input": {"bins": [{"qty": 1}, {"qty": 4}, {}]}, "expected": 5}
+      ]
+    },
+    {
+      "id": "py_role_dash",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "label(item) is role and title lowercased, joined by one dash. Missing role or title is an empty string. Those missing cases are public.",
+      "request": "Create function label(item) that returns role and title in lowercase joined by one dash. A missing role or title is an empty string.",
+      "docs": [{"title": "label", "content": "label(item) is role-title lowercased. Missing fields are empty strings."}],
+      "files": {"role.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "role.py", "symbol": "label", "action": "insert_function"},
+      "public": [
+        {"entry": "role.label", "input": {"role": "Lab", "title": "Lead"}, "expected": "lab-lead"},
+        {"entry": "role.label", "input": {"title": "Lead"}, "expected": "-lead"},
+        {"entry": "role.label", "input": {"role": "Lab"}, "expected": "lab-"}
+      ],
+      "assessment": [
+        {"entry": "role.label", "input": {"role": "", "title": ""}, "expected": "-"},
+        {"entry": "role.label", "input": {"role": "X", "title": "k"}, "expected": "x-k"},
+        {"entry": "role.label", "input": {"role": "Mix", "title": "Case", "extra": 2}, "expected": "mix-case"}
+      ]
+    },
+    {
+      "id": "py_split_num",
+      "role": "insert",
+      "family": "arithmetic",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "split(item) returns num divided by den as a float using true division.",
+      "request": "Create function split(item) that returns num divided by den.",
+      "docs": [{"title": "split", "content": "split(item) is num / den as a float."}],
+      "files": {"ratio.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "ratio.py", "symbol": "split", "action": "insert_function"},
+      "public": [
+        {"entry": "ratio.split", "input": {"num": 8, "den": 5}, "expected": 1.6},
+        {"entry": "ratio.split", "input": {"num": 0, "den": 4}, "expected": 0.0}
+      ],
+      "assessment": [
+        {"entry": "ratio.split", "input": {"num": 11, "den": 2}, "expected": 5.5},
+        {"entry": "ratio.split", "input": {"num": 3, "den": 4}, "expected": 0.75}
+      ]
+    },
+    {
+      "id": "py_years_bar",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "ready(item) is True only when years >= need and rating >= bar. A failing public case is included.",
+      "request": "Create function ready(item) that is True only when years is at least need and rating is at least bar.",
+      "docs": [{"title": "ready", "content": "ready(item) requires years >= need AND rating >= bar."}],
+      "files": {"ready.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "ready.py", "symbol": "ready", "action": "insert_function"},
+      "public": [
+        {"entry": "ready.ready", "input": {"years": 4, "need": 3, "rating": 8, "bar": 7}, "expected": true},
+        {"entry": "ready.ready", "input": {"years": 2, "need": 3, "rating": 9, "bar": 7}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "ready.ready", "input": {"years": 9, "need": 3, "rating": 6, "bar": 7}, "expected": false},
+        {"entry": "ready.ready", "input": {"years": 3, "need": 3, "rating": 7, "bar": 7}, "expected": true}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

@@ -92,6 +92,8 @@ SAFE_AST_NODES = (
     ast.Pass,
     ast.Break,
     ast.Continue,
+    ast.JoinedStr,
+    ast.FormattedValue,
 )
 
 SAFE_BUILTINS = {
