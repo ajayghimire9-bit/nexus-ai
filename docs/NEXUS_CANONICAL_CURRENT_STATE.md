@@ -1,14 +1,15 @@
 # NEXUS Seed — Current State
 
-## Current — input contract, two-stage revision, wired e2e (protocol)
+## Current — input contract, two-stage revision, wired e2e (results)
 
-[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md). Branch
-`cursor/seed-contract-two-stage` from reviewed tip `7f9fbac`. Compare the
-existing prompt with an explicit `item: {"field": type}` contract. Reserve
-separate format and behavioral revisions under three charged `complete`
-calls. End-to-end cells wire discovery into the assembler and include
-count/clamp tasks. Ledger
-**2696.503148455996 used / 903.496851544004 remaining**.
+[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md),
+[results](NEXUS_SEED_CONTRACT_TWO_STAGE_RESULTS.md). Implementation
+`403fc15` on `cursor/seed-contract-two-stage`. Verifier `valid: true`.
+Best prompt was `contract`. 1.5B read `item['text']` only with that
+block and passed the wired e2e set (inclusive replace, nonempty count,
+floor clamp). 0.5B reached behavioral feedback and still copied `<`.
+Discovery 6/6 and wired. Ledger
+**2806.847834455996 used / 793.152165544004 remaining**.
 
 ## Previous — chat template, equality revision, fresh functions (results)
 

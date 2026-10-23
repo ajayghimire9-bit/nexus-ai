@@ -1,16 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — explicit input contract, two revision stages, then wired e2e
+## Current next — keep contract + wired discovery on the coder
 
-The [chat-template run](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_RESULTS.md) showed
-dict-as-string failures and a placeholder consuming the only revision.
-Next: compare the existing prompt with an explicit input contract; reserve
-format and behavioral revisions under three charged calls; give every
-failed public case input/expected/actual-or-exception plus below/equal/above
-evidence; then run a fresh end-to-end set with discovery wired. Do not
-resume ranking or memory. Ledger
-**2696.503148455996 used / 903.496851544004 remaining**.
-[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md).
+The [contract / two-stage run](NEXUS_SEED_CONTRACT_TWO_STAGE_RESULTS.md)
+made the input contract the better prompt and passed a three-task e2e
+set on the 1.5B coder, including count and clamp. The 0.5B model reached
+below/equal/above feedback and still copied `<`. Next: keep this recipe
+on a slightly broader feature family, still measuring target, executable
+code, revision and private correctness separately. Do not resume ranking
+or memory. Ledger
+**2806.847834455996 used / 793.152165544004 remaining**.
 
 ## Previous next — keep ChatML; revise after placeholder; require dict fields
 

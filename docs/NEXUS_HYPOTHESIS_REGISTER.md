@@ -3,11 +3,12 @@
 ## Current — explicit input contract and reserved revision stages
 
 Predeclared: fresh failures treated a dict as a string, and a placeholder
-consumed the only revision. An explicit input contract, separate format
-and behavioral slots under three charged calls, and full public-case
-feedback (including below/equal/above) separate interface from coding.
-End-to-end cells then wire discovery. Not confirmation.
-[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md).
+consumed the only revision. **Mixed / held on 1.5B e2e.** The contract
+block made 1.5B read `item['text']`; existing did not. Two-stage revision
+gave 0.5B below/equal/above evidence; it still copied `<`. Wired
+discovery 6/6. 1.5B passed count and clamp as well as inclusive replace.
+0.5B: executable 3/3 e2e, private 0/3.
+[Results](NEXUS_SEED_CONTRACT_TWO_STAGE_RESULTS.md).
 
 ## Current — raw prompt versus Qwen chat template
 
