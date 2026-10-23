@@ -124,6 +124,16 @@ not add a second memory store. Closed selective-reuse IDs are refused.
 `propose_retrieved_repair` gate sits in front of `apply`; it does not add a
 second memory store. [Protocol](NEXUS_SEED_SELECTIVE_REUSE_PROTOCOL.md).
 
+## Five-area capability map
+
+`seed/capability_map.py` reuses `PersistentLocalRuntime`, ChatML,
+`KnowledgeVault` / `retrieve_for_question`, `generate_direct` /
+`generate_extract` / `decide_workspace_extraction`,
+`score_bound_task`, `requirement_coverage`, `EventMeter` and
+`sample_process_memory`. It does not edit `local_model_runtime.py`,
+resume the ranking policy, or add a second assistant stack.
+[Protocol](NEXUS_SEED_CAPABILITY_MAP_PROTOCOL.md).
+
 ## Six-area comparison
 
 `seed/six_area_comparison.py` reuses `EqualizedInvestigationEngineV2`,
@@ -369,6 +379,61 @@ saved-data only. [Guide](NEXUS_LOCAL_ASSISTANT_RUNTIME.md),
   `seed/recovery_policy.py` is regularized linear scoring, not the
   failed symbolic investigation φ and not an LM fine-tune.
   [Protocol](NEXUS_SEED_RECOVERY_POLICY_PROTOCOL.md).
+  `seed/recovery_failure_bank.py` reconstructs the two live traces and
+  compares equal-budget revise versus fresh generation on a frozen
+  genuine-failure bank. It reuses the same prompt, contract, public
+  feedback and CPU runtime. It does not add a second controller.
+  [Failure-bank protocol](NEXUS_SEED_RECOVERY_FAILURE_BANK_PROTOCOL.md).
+  `seed/public_failure.py` now serializes exception type/message and
+  `not_returned` instead of JSON null. `seed/recovery_feedback_diagnostic.py`
+  pairs legacy vs exception-complete feedback on the frozen development
+  bank only. Assessment stays closed unless development locks a winner.
+  [Feedback protocol](NEXUS_SEED_RECOVERY_FEEDBACK_DIAGNOSTIC_PROTOCOL.md).
+  `seed/recovery_representation.py` compares dict-item versus explicit
+  scalar arguments on matched required-field tasks. Scalar extraction
+  is programmer-supplied. First-attempt and recovery are separate
+  metrics. Opened `assess_place` / `assess_order` are not reused.
+  [Representation protocol](NEXUS_SEED_RECOVERY_REPRESENTATION_PROTOCOL.md).
+  `seed/extraction_contract.py` and `seed/extraction_path.py` add an
+  optional extract → transform → wrap generation path from an explicit
+  required-field contract. Optional/nullable fields stay on direct
+  generation. The preview shows the mapping; tests score the wrapped
+  item function. [Extraction protocol](NEXUS_SEED_EXTRACTION_PATH_PROTOCOL.md).
+  `seed/extraction_systems.py` freezes
+  `extract_if_required_and_list_or_nested` and compares that routed
+  system with always-direct and eligible-always-extract. Output
+  contracts reject Booleans without conversion. Contracts are
+  benchmark-supplied. [Systems protocol](NEXUS_SEED_EXTRACTION_SYSTEMS_PROTOCOL.md).
+  `seed/extraction_acquire.py` freezes eligible-always-extract as the
+  next candidate baseline, keeps direct for optional/nullable fields,
+  measures nested contract acquisition from source/docs/examples, and
+  injects requirement-derived “at least” equality cases. Shared
+  `INCLUSIVE_CUES` and historical system outcomes stay unchanged.
+  Inform-next is not confirmation.
+  [Acquisition protocol](NEXUS_SEED_EXTRACTION_ACQUIRE_PROTOCOL.md).
+  `seed/extraction_pipelines.py` compares direct, extract, and
+  extract-plus-programmer-supplied output assembly. A Boolean helper
+  plus identity yes/no labels; non-Booleans are rejected without
+  truthiness. List any/all/count/sum tasks do not receive chosen
+  operators. [Pipelines protocol](NEXUS_SEED_EXTRACTION_PIPELINES_PROTOCOL.md).
+  `seed/extraction_workspace.py` uses eligible-always-extract in the
+  coding workspace, shows the inferred mapping, and asks when the
+  contract is uncertain. `seed/extraction_limits.py` measures a broader
+  fresh split and bills shared extract/assemble candidates once.
+  Host-side assembly reports `expected Boolean`. Acquisition remains
+  programmed inspection. [Limits protocol](NEXUS_SEED_EXTRACTION_LIMITS_PROTOCOL.md).
+  `seed/requirement_coverage.py` checks request-named files, functions
+  and API calls alongside behavior. `seed/extraction_api_context.py`
+  diagnoses omitted library source, compares existing docs with a
+  compact interface derived from those docs, and adds one coordinated
+  two-file edit. [API-context protocol](NEXUS_SEED_EXTRACTION_API_CONTEXT_PROTOCOL.md).
+  `seed/function_contracts.py` binds each entry to its own signature
+  and return type, builds caller revision context, and reports helper,
+  caller, required call, types and behavior independently.
+  `seed/extraction_api_wiring.py` separates model API selection from
+  programmer-supplied import/call assembly, diagnoses saved free-string
+  proposals, and offers API/field IDs as constrained choices.
+  [Wiring protocol](NEXUS_SEED_EXTRACTION_API_WIRING_PROTOCOL.md).
 
 - Shared labs: seed/shared_brain.py is an adapter over Session, not another agent
   state store. seed/skill_library.py derives typed skill revisions and source-only

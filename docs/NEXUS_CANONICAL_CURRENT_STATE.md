@@ -1,6 +1,156 @@
 # NEXUS Seed — Current State
 
-## Current — recovery-action policy (negative offline, live blocked)
+## Current — five-area capability map (protocol locked)
+
+[Protocol](NEXUS_SEED_CAPABILITY_MAP_PROTOCOL.md). Branch
+`cursor/seed-capability-map` from `76ee543` / product `e3d21b6`.
+Thirty fresh tasks × three methods. B/C reuse is declared for
+conversation, mathematics and logic. Coding and knowledge differ.
+Acquired memory empty. Ranking policy paused. Frozen debit **0**.
+Not learning-to-learn. Live scoring follows this protocol commit.
+
+## Previous — proposal diagnoses, ID schema, independent coverage
+
+[Protocol](NEXUS_SEED_EXTRACTION_API_WIRING_PROTOCOL.md),
+[results](NEXUS_SEED_EXTRACTION_API_WIRING_RESULTS.md).
+Saved proposals: `total_clip` is wrong selection; `labels.join_marks`
+is a qualified API name; dotted paths that name the right fields are
+unsupported notation; `pack.loads` is the wrong argument shape.
+Coverage now reports helper, caller, required call, per-function types
+and behavior separately. A missing caller does not clear the helper.
+The next schema uses API and field IDs only; that narrows the output
+space and is not schema learning. No new live scoring. Frozen debit
+**0**. Not learning-to-learn.
+
+## Previous — API context, coverage and one coordinated edit
+
+[Protocol](NEXUS_SEED_EXTRACTION_API_CONTEXT_PROTOCOL.md),
+[results](NEXUS_SEED_EXTRACTION_API_CONTEXT_RESULTS.md).
+The extract prompt never showed sibling library source; it kept the
+field note. Equal-budget compact interface vs existing docs: both
+0/2 complete-private; locked existing docs; fresh library unopened.
+Requirement coverage follows the public request only. Historical
+multi-file extract passes fail that coverage. Coordinated two-step
+wrote `util.within` and still did not call it from `accept`. 7 CPU
+completions, 35.395 s, frozen debit **0**. Not learning-to-learn.
+
+## Previous — extraction in the workspace; broader limits
+
+[Protocol](NEXUS_SEED_EXTRACTION_LIMITS_PROTOCOL.md),
+[results](NEXUS_SEED_EXTRACTION_LIMITS_RESULTS.md).
+Frozen `eligible_always_extract` is used for eligible coding-workspace
+contracts; uncertain contracts ask; optional stays on the existing
+loop. Host assembly reports `expected Boolean` (no `None + result`).
+Acquisition is programmed inspection, not learned. Broader fresh
+private: extract 4/5 and 4/5 versus direct 2/5 and 1/5. Unfamiliar
+APIs failed; multi-file behavior passed without the second-file
+helper. Shared candidates billed once (24 completions, not 30).
+128.829 s, frozen debit **0**. A prior 5/5 list split is not broad
+reliability. Not learning-to-learn.
+
+## Previous — extract vs extract-plus-output-assembly vs direct
+
+[Protocol](NEXUS_SEED_EXTRACTION_PIPELINES_PROTOCOL.md),
+[results](NEXUS_SEED_EXTRACTION_PIPELINES_RESULTS.md).
+Programmer-supplied output assembly: Boolean helper, identity
+`"yes"` / `"no"` labels, no truthiness. Fresh any / all / count / sum
+tasks; operators not chosen for the model. Development private:
+direct 1/5, extract 5/5, extract-assemble 5/5. Assessment: 0/5, 5/5,
+5/5. List semantics succeeded after extraction; assembly tied extract
+and did not add solves. Acquisition 10/10, 0 questions. 26 CPU
+completions, 131.045 s, frozen debit **0**. Not schema learning. Not
+learning-to-learn.
+
+## Previous — eligible-always-extract baseline; acquisition measured
+
+[Protocol](NEXUS_SEED_EXTRACTION_ACQUIRE_PROTOCOL.md),
+[results](NEXUS_SEED_EXTRACTION_ACQUIRE_RESULTS.md).
+Candidate baseline `eligible_always_extract`: extract iff every field
+is required, else direct. Fresh tasks only. Nested examples and docs
+recovered supplied contracts 6/6 without questions (18 inspections).
+Development private 1/3 both arms; inform-next 2/3 both arms.
+Inform-next may inform the next version and cannot confirm it.
+“At least” public tests gained a requirement-derived equality case;
+expected labels came from the teacher, not private tests or the
+candidate. Historical `any_hot` unchanged. 12 CPU completions,
+57.548 s, frozen debit **0**. Not schema learning. Not
+learning-to-learn.
+
+## Previous — frozen route vs always-direct vs always-extract
+
+[Protocol](NEXUS_SEED_EXTRACTION_SYSTEMS_PROTOCOL.md),
+[results](NEXUS_SEED_EXTRACTION_SYSTEMS_RESULTS.md).
+Output contract rejects Booleans without conversion. Frozen rule
+`extract_if_required_and_list_or_nested` uses only the supplied
+contract. Development private: routed 2/3, always-direct 1/3,
+eligible-extract 2/3. Assessment compositions: 2/3, 0/3, 3/3.
+Contracts benchmark-supplied; acquisition not measured. 12 CPU
+completions, 55.976 s, frozen debit **0**. Representation can help
+this 1.5B; discovering representations is unsolved. Not
+learning-to-learn.
+
+## Previous — optional extract path for required-field contracts
+
+[Protocol](NEXUS_SEED_EXTRACTION_PATH_PROTOCOL.md),
+[results](NEXUS_SEED_EXTRACTION_PATH_RESULTS.md).
+Explicit contract; wrap and test the item function; preview shows the
+mapping. Development first-attempt private: extract 4/4 vs direct 2/4
+(list and nested). Assessment: 3/4 vs 2/4; both failed `gate`. Cost
+tied (generation dominates). Optional/nullable fields stay direct; no
+silent defaults. Locked extract as optional; keep direct on ties.
+16 CPU completions, 56.960 s, frozen debit **0**. Not schema learning.
+Not learning-to-learn.
+
+## Previous — scalar extraction workflow locked
+
+[Protocol](NEXUS_SEED_RECOVERY_REPRESENTATION_PROTOCOL.md),
+[results](NEXUS_SEED_RECOVERY_REPRESENTATION_RESULTS.md).
+Matched required-field pairs (lowercase, increment, join). First-attempt
+private: scalar 3/3 vs dict 0/3 on development, then 3/3 vs 0/3 on
+reserved assessment. Dict recovery 0/3 both splits. Scalar had no
+failures, so this is not a revision gain. Programmer extraction plus
+assembly passed the original dict tests 6/6. Locked
+`scalar_extraction_workflow`. Not schema learning. Not
+learning-to-learn. 24 CPU completions, 103.428 s, frozen debit **0**.
+`assess_place` / `assess_order` unused.
+
+## Previous — exception-complete feedback locked on development
+
+[Protocol](NEXUS_SEED_RECOVERY_FEEDBACK_DIAGNOSTIC_PROTOCOL.md),
+[results](NEXUS_SEED_RECOVERY_FEEDBACK_DIAGNOSTIC_RESULTS.md).
+Revision feedback now carries exception type/message and
+`not_returned` instead of JSON null. Offline prompts keep
+AttributeError, TypeError and KeyError. On the six frozen development
+failures, exception-complete 2/6 private versus legacy 0/6. Locked
+`exception_complete`. Assessment then 0/2. 26 CPU completions,
+144.898 s, frozen debit **0**. Development evidence, not confirmation.
+No capability-ceiling claim. Next: dict argument vs explicit scalars.
+Not learning-to-learn.
+
+## Previous — failure bank: neither revise nor fresh recovers
+
+[Protocol](NEXUS_SEED_RECOVERY_FAILURE_BANK_PROTOCOL.md),
+[results](NEXUS_SEED_RECOVERY_FAILURE_BANK_RESULTS.md).
+Reconstructed `live_schema` / `live_add1`: `item.lower()` and
+`item + 1`; revisions repeat or add `.lower()`. Token cap not hit.
+Frozen bank: 14 collected, 8 failures, development 6, assessment 2.
+Equal-budget revise and fresh both 0/6 private. Locked procedure
+`neither`. Assessment not recovered. 48 CPU completions, 216.117 s,
+frozen debit **0**. Two episodes were too few; this bank is still
+small. Do not add another controller. Next: exception text in
+revision feedback, same bank. Not learning-to-learn.
+
+## Previous — recovery baseline is inspect-first; 1.5B revise did not help
+
+Reset matched all-cheap-first because zero weights tie and
+`sorted(tied)[0]` is `INSPECT_SCHEMA`. That order is built into the
+controller. Distinguishing now requires a teacher and leftover
+ambiguity. Live CPU compare on Qwen2.5-Coder-1.5B: 12 completions,
+52.568 s, two genuine failures; immediate and all-cheap-first both
+0/2. API and assume passed on the first draft. Learned selection not
+re-run. Frozen CPU debit **0**. Not learning-to-learn.
+
+## Previous — recovery-action policy (negative offline, live blocked)
 
 Reviewed baseline `e3d21b6`. Branch `cursor/seed-recovery-policy`.
 Authored recovery fixtures, equal-access tools, and a linear action
