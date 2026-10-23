@@ -4,7 +4,12 @@
 
 Branch `cursor/seed-scoped-id-staging` from reviewed `0a8df5d`. Protocol
 [NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md](NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md).
-Development tests pass. No new scored assessment has been collected.
+Corrections: publish now requires a hash-bound passing test
+receipt; class-scope insertion and in-scope duplicates are enforced;
+repair memory stores parameterized AST transforms with persistence;
+`configs/seed_scoped_id_staging.json` and
+`scripts/verify_seed_scoped_id_staging.py` are registered. Development
+tests pass. No new scored assessment has been collected.
 `identified` counts only `identified_within_catalogue`. `unique_among_checked`
 is not a win. Zero survivors among a 24-check cap with remainder is
 `no_checked_candidate_fits`, not out-of-grammar. Behavioral index charges

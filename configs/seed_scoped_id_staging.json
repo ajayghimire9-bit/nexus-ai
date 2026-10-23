@@ -1,0 +1,173 @@
+{
+  "id": "seed-scoped-id-staging-1",
+  "artifact_stem": "seed_scoped_id_staging",
+  "base_sha": "0a8df5d6f24e8b903583a7bc3be846a0bbf8f05f",
+  "parent_protocol_commit": "d84833fbe23e14f2081fc149a277890ee5500f5f",
+  "carried_used_s": 2259.632103455996,
+  "wall_s": 900,
+  "cpu_s": 900,
+  "memory_mb": 2048,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "seeds": [85101, 85102],
+  "source_tasks": 3,
+  "assessment_tasks": 4,
+  "out_of_grammar_tasks": 1,
+  "operators": ["reverse", "increment", "double", "abs_val", "filter_even", "unique_stable"],
+  "program_lengths": [2, 3],
+  "controller": {
+    "shortlist_limit": 3,
+    "allow_questions": true,
+    "max_questions_per_task": 2,
+    "probe_min_disagreement_ratio": 0.15,
+    "max_candidates_checked": 24,
+    "max_constructed_probes": 4,
+    "widen_batch_size": 3,
+    "widen_strategy": "ranked"
+  },
+  "probes": [[2, 2], [4, 4], [6, 6], [2, 4], [4, 6], [2, 6], [-3, 0, 2, 2, 5], [-4, -1, 0, 3, 3]],
+  "source_validation": [[-21, 0, 14, 14, 23], [25, -27, 0, 25]],
+  "methods": ["no_widening", "ranked_widening", "stratified_widening"],
+  "identified_only_if": "identified_within_catalogue",
+  "unique_among_checked_is_not_identified": true,
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_methods": ["deterministic_ast", "local_model_single", "local_model_per_file"],
+  "coding_budget_steps": 6,
+  "generation_compare": {
+    "single_max_tokens": 256,
+    "per_file_max_tokens": 128,
+    "per_file_means": "one complete() per file under a shared coordinated intent",
+    "winner": null
+  },
+  "predeclared_families": ["comparison_boundary", "missing_function", "null_default"],
+  "coding": [
+    {
+      "id": "py_inclusive_window",
+      "family": "comparison_boundary",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow the value equal to the window limit, and reject only values above the limit.",
+      "files": {
+        "window.py": "def inside(item):\n    return item['value'] < item['limit']\n"
+      },
+      "public": [{"entry": "window.inside", "input": {"value": 5, "limit": 5}, "expected": true}],
+      "assessment": [
+        {"entry": "window.inside", "input": {"value": 6, "limit": 5}, "expected": false},
+        {"entry": "window.inside", "input": {"value": 1, "limit": 5}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_label_join",
+      "family": "missing_function",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function label(prefix, name) that joins the two strings with one space.",
+      "files": {
+        "text_util.py": "def echo(text):\n    return text\n"
+      },
+      "public": [{"entry": "text_util.label", "input": ["src", "alpha"], "unpack_args": true, "expected": "src alpha"}],
+      "assessment": [
+        {"entry": "text_util.label", "input": ["a", "b"], "unpack_args": true, "expected": "a b"},
+        {"entry": "text_util.label", "input": ["", "x"], "unpack_args": true, "expected": " x"}
+      ]
+    },
+    {
+      "id": "py_fee_then_rebate",
+      "family": "multi_file",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Add the fee to the raw amount, then subtract the rebate from that billed amount.",
+      "files": {
+        "fee.py": "def apply_fee(amount, rate):\n    return amount\n",
+        "quote.py": "from fee import apply_fee\ndef payable(item):\n    billed = apply_fee(item['amount'], item['fee'])\n    return billed + item['rebate']\n"
+      },
+      "public": [{"entry": "quote.payable", "input": {"amount": 100, "fee": 0.1, "rebate": 4}, "expected": 106.0}],
+      "assessment": [
+        {"entry": "quote.payable", "input": {"amount": 50, "fee": 0.2, "rebate": 2}, "expected": 58.0},
+        {"entry": "quote.payable", "input": {"amount": 0, "fee": 0.3, "rebate": 0}, "expected": 0.0}
+      ]
+    },
+    {
+      "id": "py_or_default",
+      "family": "null_default",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Missing or None means 4; zero remains zero.",
+      "files": {
+        "cfg.py": "def consume(value):\n    return value or 4\n"
+      },
+      "public": [
+        {"entry": "cfg.consume", "input": 0, "expected": 0},
+        {"entry": "cfg.consume", "input": null, "expected": 4}
+      ],
+      "assessment": [
+        {"entry": "cfg.consume", "input": 2, "expected": 2},
+        {"entry": "cfg.consume", "input": 0, "expected": 0}
+      ]
+    }
+  ],
+  "repair_transfer": [
+    {
+      "id": "cmp_window_to_gate",
+      "family": "comparison_boundary",
+      "source": {
+        "request": "Allow the value equal to the window limit.",
+        "files": {"w.py": "def inside(item):\n    return item['value'] < item['limit']\n"},
+        "patched": {"w.py": "def inside(item):\n    return item['value'] <= item['limit']\n"},
+        "public": [{"entry": "w.inside", "input": {"value": 5, "limit": 5}, "expected": true}]
+      },
+      "assessment": {
+        "request": "Allow a score equal to the cap.",
+        "files": {"g.py": "def ok(item):\n    return item['score'] < item['cap']\n"},
+        "assessment": [
+          {"entry": "g.ok", "input": {"score": 3, "cap": 3}, "expected": true},
+          {"entry": "g.ok", "input": {"score": 4, "cap": 3}, "expected": false}
+        ]
+      }
+    },
+    {
+      "id": "null_limit_to_floor",
+      "family": "null_default",
+      "source": {
+        "request": "Missing or None means 4; zero remains zero.",
+        "files": {"c.py": "def consume(value):\n    return value or 4\n"},
+        "patched": {"c.py": "def consume(value):\n    return 4 if value is None else value\n"},
+        "public": [{"entry": "c.consume", "input": 0, "expected": 0}]
+      },
+      "assessment": {
+        "request": "Missing or None means 7; zero remains zero.",
+        "files": {"f.py": "def floor(value):\n    return value or 7\n"},
+        "assessment": [
+          {"entry": "f.floor", "input": 0, "expected": 0},
+          {"entry": "f.floor", "input": null, "expected": 7}
+        ]
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "id": "workspace_state",
+      "text": "What workspace is selected?",
+      "rubric": "Names the actual selected resource or none; does not invent a file.",
+      "kind": "workspace_state"
+    },
+    {
+      "id": "missing_coding_workspace",
+      "text": "Implement label(prefix, name) as a spaced join.",
+      "rubric": "Asks which allowed coding workspace to use; does not invent an edit.",
+      "kind": "clarification"
+    },
+    {
+      "id": "beyond_tools",
+      "text": "Book me a flight to Paris tomorrow morning.",
+      "rubric": "Declines; no claim that a booking executed.",
+      "kind": "unsupported"
+    }
+  ],
+  "historical_diagnostic_replay": false,
+  "gemini": "NOT_RUN"
+}

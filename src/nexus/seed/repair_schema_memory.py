@@ -1,20 +1,20 @@
-"""Repair-schema memory. One success is not a 100% success rate.
+"""Parameterized repair-schema memory. One success is not a 100% success rate.
 
-Store the trigger, transformation, applicability conditions, supporting tests,
-counterexamples and failure-to-fix traces. Acquisition is charged. Memory may
-save time or tokens when accuracy ties.
-
-Families are chosen before scoring. Patterns are acquired on source tasks, then
-assessed on new instances against ordinary templates and exact caches. Do not
-select assessment tasks because a baseline already failed them.
+Store the trigger, AST transformation, bindings, preconditions, supporting
+tests, counterexamples and failure-to-fix traces. Acquisition is charged.
+Families are chosen before scoring. Persist to JSON. Compare with ordinary
+exact caches and templates. Do not select assessment tasks because a baseline
+already failed them.
 """
 from __future__ import annotations
 
+import ast
 import copy
 import hashlib
 import json
 import time
 from dataclasses import asdict, dataclass, field
+from pathlib import Path
 from typing import Any
 
 
@@ -23,6 +23,15 @@ PREDECLARED_FAMILIES = (
     "missing_function",
     "null_default",
 )
+
+COMPARE_OPS = {
+    "Lt": ast.Lt,
+    "LtE": ast.LtE,
+    "Gt": ast.Gt,
+    "GtE": ast.GtE,
+    "Eq": ast.Eq,
+    "NotEq": ast.NotEq,
+}
 
 
 def digest(value: Any) -> str:
@@ -40,6 +49,8 @@ class RepairSchema:
     counterexamples: list[dict[str, Any]] = field(default_factory=list)
     failure_to_fix: list[dict[str, Any]] = field(default_factory=list)
     acquisition_cost: dict[str, Any] = field(default_factory=dict)
+    bindings: dict[str, Any] = field(default_factory=dict)
+    preconditions: dict[str, Any] = field(default_factory=dict)
 
 
 class RepairSchemaStore:
@@ -47,16 +58,17 @@ class RepairSchemaStore:
         self.schemas: dict[str, RepairSchema] = {}
         self.acquisition_events: list[dict[str, Any]] = []
 
-    def remember(self, schema: RepairSchema) -> None:
+    def remember(self, schema: RepairSchema, charged: bool = True) -> None:
         if schema.family not in PREDECLARED_FAMILIES:
             raise ValueError(f"undeclared_family:{schema.family}")
         self.schemas[schema.schema_id] = copy.deepcopy(schema)
-        self.acquisition_events.append({
-            "schema_id": schema.schema_id,
-            "family": schema.family,
-            "charged": True,
-            "cost": dict(schema.acquisition_cost),
-        })
+        if charged:
+            self.acquisition_events.append({
+                "schema_id": schema.schema_id,
+                "family": schema.family,
+                "charged": True,
+                "cost": dict(schema.acquisition_cost),
+            })
 
     def remember_failure(self, family: str, trigger: str, trace: dict[str, Any]) -> None:
         ident = digest(["fail", family, trigger, trace])[:16]
@@ -78,20 +90,37 @@ class RepairSchemaStore:
         for schema in self.schemas.values():
             if schema.family == family and schema.trigger == trigger and schema.transformation != "none":
                 return copy.deepcopy(schema)
+        for schema in self.schemas.values():
+            if schema.family == family and schema.transformation not in {"none", "single_file_replace"}:
+                return copy.deepcopy(schema)
         return None
 
     def apply(self, schema: RepairSchema, files: dict[str, str]) -> dict[str, str] | None:
-        """Replay a stored textual transformation. Never invent a midpoint body."""
-        old = schema.applicability.get("old_text")
-        new = schema.applicability.get("new_text")
-        path = schema.applicability.get("path")
-        if not path or path not in files or type(old) is not str or type(new) is not str:
-            return None
-        if files[path].count(old) != 1:
-            return None
-        patched = dict(files)
-        patched[path] = files[path].replace(old, new, 1)
-        return patched
+        if schema.transformation == "compare_op_swap":
+            return apply_compare_op_swap(files, schema)
+        if schema.transformation == "or_to_explicit_none":
+            return apply_or_to_explicit_none(files, schema)
+        return apply_exact_text(files, schema)
+
+    def save(self, directory: Path) -> Path:
+        root = Path(directory)
+        root.mkdir(parents=True, exist_ok=True)
+        for schema in self.schemas.values():
+            (root / f"{schema.schema_id}.json").write_text(
+                json.dumps(asdict(schema), indent=2, default=str), encoding="utf-8",
+            )
+        return root
+
+    @classmethod
+    def load(cls, directory: Path) -> "RepairSchemaStore":
+        store = cls()
+        root = Path(directory)
+        if not root.is_dir():
+            return store
+        for path in sorted(root.glob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            store.remember(RepairSchema(**data), charged=False)
+        return store
 
 
 class OrdinaryExactCache:
@@ -115,16 +144,151 @@ class OrdinaryExactCache:
 
 def infer_family(request: str, public_tests: list[dict[str, Any]]) -> str | None:
     text = request.lower()
-    if any(word in text for word in ("midpoint", "create function", "add function", "implement ")):
+    if any(word in text for word in ("create function", "add function", "implement ", "write function")):
         return "missing_function"
-    if any(word in text for word in ("equal to", "inclusive", "at least", "greater or equal", "window")):
+    if any(word in text for word in ("equal to", "inclusive", "at least", "greater or equal", "window", "boundary")):
         return "comparison_boundary"
     if any(word in text for word in ("none", "null", "missing", "default")):
         return "null_default"
     entries = " ".join(str(c.get("entry", "")) for c in public_tests)
-    if "midpoint" in entries:
+    if "midpoint" in entries or "label" in entries or "title" in entries:
         return "missing_function"
     return None
+
+
+def _compare_ops(tree: ast.AST) -> list[str]:
+    found = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Compare) and len(node.ops) == 1:
+            found.append(type(node.ops[0]).__name__)
+    return found
+
+
+def infer_ast_transform(original: dict[str, str], patched: dict[str, str]) -> dict[str, Any] | None:
+    for path in sorted(set(original) | set(patched)):
+        if not path.endswith(".py"):
+            continue
+        try:
+            old_tree = ast.parse(original.get(path, ""))
+            new_tree = ast.parse(patched.get(path, ""))
+        except SyntaxError:
+            continue
+        old_ops, new_ops = _compare_ops(old_tree), _compare_ops(new_tree)
+        if len(old_ops) == 1 and len(new_ops) == 1 and old_ops[0] != new_ops[0]:
+            return {
+                "kind": "compare_op_swap",
+                "from_op": old_ops[0],
+                "to_op": new_ops[0],
+                "require_unique_matching_compare": True,
+            }
+        if _has_or_default(old_tree) and _has_explicit_none(new_tree):
+            return {"kind": "or_to_explicit_none", "require_unique_or": True}
+    return None
+
+
+def _has_or_default(tree: ast.AST) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.BoolOp) and isinstance(node.op, ast.Or) and len(node.values) == 2:
+            return True
+    return False
+
+
+def _has_explicit_none(tree: ast.AST) -> bool:
+    for node in ast.walk(tree):
+        if isinstance(node, ast.IfExp) and isinstance(node.test, ast.Compare):
+            if any(isinstance(op, ast.Is) for op in node.test.ops):
+                return True
+    return False
+
+
+def apply_compare_op_swap(files: dict[str, str], schema: RepairSchema) -> dict[str, str] | None:
+    from_op = schema.applicability.get("from_op") or schema.bindings.get("from_op")
+    to_op = schema.applicability.get("to_op") or schema.bindings.get("to_op")
+    target = COMPARE_OPS.get(str(to_op))
+    if from_op not in COMPARE_OPS or target is None:
+        return None
+    require_unique = schema.preconditions.get(
+        "require_unique_matching_compare",
+        schema.applicability.get("require_unique_matching_compare", True),
+    )
+    patched = dict(files)
+    applied = 0
+    for path, source in list(patched.items()):
+        if not path.endswith(".py"):
+            continue
+        try:
+            tree = ast.parse(source)
+        except SyntaxError:
+            continue
+        matches = [
+            node for node in ast.walk(tree)
+            if isinstance(node, ast.Compare) and len(node.ops) == 1
+            and type(node.ops[0]).__name__ == from_op
+        ]
+        if require_unique and len(matches) != 1:
+            continue
+        if not matches:
+            continue
+        for node in matches:
+            node.ops = [target()]
+        ast.fix_missing_locations(tree)
+        patched[path] = ast.unparse(tree) + "\n"
+        applied += 1
+    return patched if applied else None
+
+
+def apply_or_to_explicit_none(files: dict[str, str], schema: RepairSchema) -> dict[str, str] | None:
+    patched = dict(files)
+    applied = 0
+    for path, source in list(patched.items()):
+        if not path.endswith(".py"):
+            continue
+        try:
+            tree = ast.parse(source)
+        except SyntaxError:
+            continue
+        changed = False
+        for node in ast.walk(tree):
+            if not (isinstance(node, ast.BoolOp) and isinstance(node.op, ast.Or) and len(node.values) == 2):
+                continue
+            if schema.preconditions.get("require_unique_or", True):
+                ors = [n for n in ast.walk(tree) if isinstance(n, ast.BoolOp) and isinstance(n.op, ast.Or)]
+                if len(ors) != 1:
+                    continue
+            replacement = ast.IfExp(
+                test=ast.Compare(left=copy.deepcopy(node.values[0]), ops=[ast.Is()],
+                                 comparators=[ast.Constant(value=None)]),
+                body=copy.deepcopy(node.values[1]),
+                orelse=copy.deepcopy(node.values[0]),
+            )
+            for parent in ast.walk(tree):
+                for field_name, field_val in ast.iter_fields(parent):
+                    if field_val is node:
+                        setattr(parent, field_name, replacement)
+                        changed = True
+                    elif isinstance(field_val, list):
+                        for idx, item in enumerate(field_val):
+                            if item is node:
+                                field_val[idx] = replacement
+                                changed = True
+        if changed:
+            ast.fix_missing_locations(tree)
+            patched[path] = ast.unparse(tree) + "\n"
+            applied += 1
+    return patched if applied else None
+
+
+def apply_exact_text(files: dict[str, str], schema: RepairSchema) -> dict[str, str] | None:
+    old = schema.applicability.get("old_text")
+    new = schema.applicability.get("new_text")
+    path = schema.applicability.get("path")
+    if not path or path not in files or type(old) is not str or type(new) is not str:
+        return None
+    if files[path].count(old) != 1:
+        return None
+    patched = dict(files)
+    patched[path] = files[path].replace(old, new, 1)
+    return patched
 
 
 def capture_from_success(
@@ -135,6 +299,20 @@ def capture_from_success(
     public_tests: list[dict[str, Any]],
     cost: dict[str, Any],
 ) -> RepairSchema | None:
+    inferred = infer_ast_transform(original, patched)
+    if inferred is not None:
+        return RepairSchema(
+            schema_id=digest([family, inferred])[:16],
+            family=family,
+            trigger=request,
+            transformation=inferred["kind"],
+            applicability=dict(inferred),
+            bindings={k: inferred[k] for k in inferred if k.endswith("_op") or k == "kind"},
+            preconditions={k: inferred[k] for k in inferred if k.startswith("require_")},
+            supporting_tests=list(public_tests),
+            counterexamples=[],
+            acquisition_cost=dict(cost),
+        )
     diffs = []
     for path in sorted(set(original) | set(patched)):
         old, new = original.get(path, ""), patched.get(path, "")

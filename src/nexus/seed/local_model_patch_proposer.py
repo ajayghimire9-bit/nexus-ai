@@ -82,6 +82,74 @@ def _node_end_lineno(source: str, node: ast.AST) -> int:
     return last + 1
 
 
+def parse_scope(scope: str | None, symbol: str = "") -> tuple[str, str | None]:
+    if scope and scope.startswith("class:"):
+        return "class", scope.split(":", 1)[1]
+    if symbol and "." in symbol:
+        return "class", symbol.split(".")[-2]
+    return "module", None
+
+
+def locate_class(source: str, class_name: str) -> ast.ClassDef | None:
+    tree = ast.parse(source)
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and node.name == class_name:
+            return node
+    return None
+
+
+def names_in_scope(source: str, scope: str | None, symbol: str = "") -> set[str]:
+    kind, class_name = parse_scope(scope, symbol)
+    tree = ast.parse(source)
+    if kind == "module":
+        return {
+            n.name for n in tree.body
+            if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+        }
+    cls = locate_class(source, class_name or "")
+    if cls is None:
+        raise ValueError(f"scope_not_found:{class_name}")
+    return {
+        n.name for n in cls.body
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+    }
+
+
+def _dedent(text: str) -> str:
+    lines = text.strip("\n").split("\n")
+    indents = [len(line) - len(line.lstrip()) for line in lines if line.strip()]
+    base = min(indents) if indents else 0
+    return "\n".join(line[base:] if line.strip() else "" for line in lines)
+
+
+def indent_block(text: str, indent: str) -> str:
+    body = _dedent(text)
+    return "\n".join((indent + line) if line.strip() else "" for line in body.split("\n")) + "\n"
+
+
+def node_indent(source: str, node: ast.AST) -> str:
+    lines = source.splitlines()
+    idx = max(0, getattr(node, "lineno", 1) - 1)
+    if idx >= len(lines):
+        return ""
+    line = lines[idx]
+    return line[: len(line) - len(line.lstrip())]
+
+
+def inserted_definition_name(new_text: str) -> str | None:
+    match = re.search(r"^\s*(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", new_text, flags=re.M)
+    return match.group(1) if match else None
+
+
+def insert_into_class(source: str, class_name: str, new_text: str) -> str:
+    cls = locate_class(source, class_name)
+    if cls is None:
+        raise ValueError(f"scope_not_found:{class_name}")
+    target = cls.body[-1] if cls.body else cls
+    indent = node_indent(source, target) if cls.body else node_indent(source, cls) + "    "
+    return insert_after_node(source, target, indent_block(new_text, indent))
+
+
 def locate_symbol(source: str, symbol: str, scope: str | None = None) -> ast.AST | None:
     tree = ast.parse(source)
     name = symbol.split(".")[-1]
@@ -114,14 +182,6 @@ def insert_after_node(source: str, node: ast.AST, new_text: str) -> str:
     if prefix and not prefix.endswith("\n"):
         prefix += "\n"
     return prefix + "\n" + block + suffix
-
-
-def function_names(source: str) -> set[str]:
-    try:
-        tree = ast.parse(source)
-    except SyntaxError:
-        return set()
-    return {n.name for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))}
 
 
 def contained_path(name: str) -> str:
@@ -168,10 +228,13 @@ def validate_patch(payload: dict[str, Any], files: dict[str, str]) -> dict[str, 
             raise ValueError("invalid_old_text")
         symbol = str(raw.get("symbol") or "")
         scope = str(raw.get("scope") or "module")
-        claimed_hash = raw.get("source_sha256")
         current = files.get(path, "")
-        if claimed_hash and path in files and claimed_hash != source_sha256(current):
-            raise ValueError(f"stale_source:{path}")
+        expected_hash = source_sha256(current) if path in files else None
+        claimed_hash = raw.get("source_sha256")
+        if expected_hash is not None:
+            if claimed_hash and claimed_hash != expected_hash:
+                raise ValueError(f"stale_source:{path}")
+            claimed_hash = expected_hash
         if action == "replace":
             if path not in files:
                 raise ValueError(f"missing_target_file:{path}")
@@ -188,21 +251,25 @@ def validate_patch(payload: dict[str, Any], files: dict[str, str]) -> dict[str, 
         else:
             if path not in files:
                 raise ValueError(f"missing_target_file:{path}")
-            inserted_name = None
-            match = re.search(r"def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", new_text)
-            if match:
-                inserted_name = match.group(1)
-            if inserted_name and inserted_name in function_names(current):
+            inserted_name = inserted_definition_name(new_text)
+            if inserted_name and inserted_name in names_in_scope(current, scope, symbol):
                 raise ValueError(f"duplicate_definition:{inserted_name}")
+            kind, class_name = parse_scope(scope, symbol)
             if action == "insert_after_symbol":
                 if not symbol:
                     raise ValueError("missing_symbol")
                 node = locate_symbol(current, symbol, scope)
                 if node is None:
                     raise ValueError(f"symbol_not_found:{symbol}")
-                source = insert_after_node(current, node, new_text)
+                block = new_text
+                if kind == "class":
+                    block = indent_block(new_text, node_indent(current, node))
+                source = insert_after_node(current, node, block)
+            elif kind == "class":
+                source = insert_into_class(current, class_name or "", new_text)
             else:
-                source = current.rstrip() + "\n\n" + (new_text if new_text.endswith("\n") else new_text + "\n")
+                block = new_text if new_text.endswith("\n") else new_text + "\n"
+                source = current.rstrip() + "\n\n" + block
         if path.endswith(".py"):
             ast.parse(source)
         edits.append({
@@ -223,6 +290,9 @@ def apply_patch(files: dict[str, str], validated: dict[str, Any]) -> dict[str, s
     patched = dict(files)
     for edit in validated["edits"]:
         path = edit["path"]
+        if path in files and edit.get("source_sha256"):
+            if edit["source_sha256"] != source_sha256(files[path]):
+                raise ValueError(f"stale_source:{path}")
         action = edit["action"]
         current = patched.get(path, "")
         if action == "create" and not edit["old_text"]:
@@ -231,11 +301,18 @@ def apply_patch(files: dict[str, str], validated: dict[str, Any]) -> dict[str, s
             node = locate_symbol(current, edit.get("symbol") or "", edit.get("scope") or "module")
             if node is None:
                 raise ValueError(f"patch_not_applicable:{path}")
-            patched[path] = insert_after_node(current, node, edit["new_text"])
+            block = edit["new_text"]
+            if parse_scope(edit.get("scope"), edit.get("symbol") or "")[0] == "class":
+                block = indent_block(edit["new_text"], node_indent(current, node))
+            patched[path] = insert_after_node(current, node, block)
         elif action == "insert_function":
-            patched[path] = current.rstrip() + "\n\n" + (
-                edit["new_text"] if edit["new_text"].endswith("\n") else edit["new_text"] + "\n"
-            )
+            kind, class_name = parse_scope(edit.get("scope"), edit.get("symbol") or "")
+            if kind == "class":
+                patched[path] = insert_into_class(current, class_name or "", edit["new_text"])
+            else:
+                patched[path] = current.rstrip() + "\n\n" + (
+                    edit["new_text"] if edit["new_text"].endswith("\n") else edit["new_text"] + "\n"
+                )
         elif edit["old_text"]:
             if current.count(edit["old_text"]) != 1:
                 raise ValueError(f"patch_not_applicable:{path}")
@@ -262,6 +339,7 @@ def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
         "Propose a JSON patch for this local repository. Use only public tests and docs.\n"
         "Return edits with explicit paths. Do not claim private tests passed.\n"
         f"Request: {getattr(task, 'request', '')}\n"
+        f"File source_sha256: {json.dumps({p: source_sha256(s) for p, s in files.items()})}\n"
         f"Language: {getattr(task, 'language', 'python')}\n"
         f"Symbols: {json.dumps(list(repo_index.get('symbols', []) or [])[:20], default=str)}\n"
         f"Docs: {' | '.join(docs) or 'none'}\n"
@@ -332,5 +410,64 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
         "telemetry": telemetry,
         "completion_stop": stop,
         "inference_ran": bool(telemetry.get("inference_ran")),
+        "truncation_claimed_as_cause": False,
+    }
+
+
+def propose_coordinated_per_file(runtime, task, repo_index: dict[str, Any], grounded: dict[str, Any],
+                                 public_feedback: dict[str, Any] | None = None,
+                                 max_tokens_per_file: int = 128) -> dict[str, Any]:
+    """One complete() per file under a shared coordinated intent.
+
+    This is actual per-file generation, not apply_per_file staging helpers.
+    """
+    files = dict(getattr(task, "files", {}))
+    traces = []
+    patched = dict(files)
+    generated = 0
+    input_tokens = 0
+    wall = 0.0
+    for path, source in sorted(files.items()):
+        single = type("T", (), {
+            "files": {path: source},
+            "request": f"{getattr(task, 'request', '')} Coordinated edit: change only {path}.",
+            "public_tests": getattr(task, "public_tests", []),
+            "docs": getattr(task, "docs", []),
+            "language": getattr(task, "language", "python"),
+        })()
+        proposed = propose_with_runtime(
+            runtime, single, repo_index, grounded, public_feedback,
+            max_tokens=max_tokens_per_file,
+        )
+        tel = proposed.get("telemetry") or {}
+        generated += int(tel.get("generated_tokens") or 0)
+        input_tokens += int(tel.get("input_tokens") or 0)
+        wall += float(tel.get("request_wall_s") or 0)
+        traces.append({
+            "path": path,
+            "status": proposed.get("status"),
+            "reason": proposed.get("reason"),
+            "completion_stop": proposed.get("completion_stop"),
+            "inference_ran": proposed.get("inference_ran"),
+        })
+        if proposed.get("status") == "proposed":
+            patched[path] = proposed["patched_files"][path]
+    statuses = {row["status"] for row in traces}
+    status = "proposed" if "proposed" in statuses else (
+        "BLOCKED" if statuses == {"BLOCKED"} else "invalid_proposal"
+    )
+    return {
+        "status": status,
+        "mode": "coordinated_per_file_generation",
+        "model_generated_per_file": True,
+        "completions": len(traces),
+        "patched_files": patched,
+        "traces": traces,
+        "telemetry": {
+            "generated_tokens": generated,
+            "input_tokens": input_tokens,
+            "request_wall_s": wall,
+            "completions": len(traces),
+        },
         "truncation_claimed_as_cause": False,
     }

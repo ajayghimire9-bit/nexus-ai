@@ -5,7 +5,18 @@ Branch `cursor/seed-scoped-id-staging`. Authored source-development work, never
 confirmation. Closed audit artifacts stay unread as new scores. Do not edit
 `src/nexus/seed/local_model_runtime.py` (hash-pinned).
 
-Executable source of truth: `configs/seed_scoped_id_staging.json` once registered.
+Executable source of truth: `configs/seed_scoped_id_staging.json`.
+Verifier: `scripts/verify_seed_scoped_id_staging.py`.
+Runner: `scripts/run_seed_scoped_id_staging.py`.
+
+`identified` counts only `identified_within_catalogue`. Publishing a staged
+repository requires a passing test receipt bound to the exact staged-file
+hashes. Repair memory stores parameterized AST transforms and persists them.
+`local_model_per_file` is one `complete()` per file under a shared intent, not
+`apply_per_file` helpers. Families were chosen before scoring:
+`comparison_boundary`, `missing_function`, `null_default`. Assessment instances
+are new members of those families, not historical failures selected after the
+fact.
 
 ## Questions
 

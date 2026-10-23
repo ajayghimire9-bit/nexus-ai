@@ -643,6 +643,31 @@ class SymbioticAgentLoop:
                     "live_model_checks": "BLOCKED",
                 }, t0)
 
+        if "local_model_per_file" in self.proposal_sources:
+            t0 = time.perf_counter()
+            from .local_model_patch_proposer import propose_coordinated_per_file
+            per_file = propose_coordinated_per_file(
+                self.local_runtime, task, repo_index, grounded_bindings,
+                {"initial_public": init_eval.get("results", [])[:6]},
+            )
+            model_trace.append({
+                "round": "per_file",
+                "mode": "coordinated_per_file_generation",
+                "status": per_file.get("status"),
+                "completions": per_file.get("completions"),
+                "traces": per_file.get("traces"),
+                "telemetry": per_file.get("telemetry"),
+                "model_generated_per_file": True,
+                "truncation_claimed_as_cause": False,
+            })
+            record_tool("local_model_per_file", {"files": sorted(task.files)}, {
+                "status": per_file.get("status"),
+                "completions": per_file.get("completions"),
+                "model_generated_per_file": True,
+            }, t0)
+            if per_file.get("status") == "proposed":
+                candidates.insert(0, ("local_model_per_file", per_file["patched_files"]))
+
         # 3g. Evaluate candidates from a growing work queue. A revision appended
         # during iteration must still execute; a precomputed slice would drop it.
         from .staging_workspace import StagingWorkspace
@@ -676,9 +701,12 @@ class SymbioticAgentLoop:
             t_att = time.perf_counter()
             staging = StagingWorkspace(current_files)
             staging.propose_coordinated(op_desc, sorted(set(cand_files) | set(current_files)))
-            staging.staged = dict(cand_files)
+            staging.replace_staged(cand_files)
             syntax = staging.validate_syntax()
-            staging_trace.append({"attempt": idx, "operator": op_desc, "syntax": syntax})
+            staging_trace.append({
+                "attempt": idx, "operator": op_desc, "syntax": syntax,
+                "receipt_matches": staging.receipt_matches(),
+            })
             if not syntax["ok"]:
                 att_rec = asdict(PatchAttemptRecord(
                     attempt_index=idx,

@@ -133,23 +133,65 @@ def test_revision_queue_executes_appended_candidate(tmp_path):
     assert any(att["operator_name"].startswith("local_model_revise") for att in res["patch_attempts"])
 
 
-def test_staging_publishes_only_after_validation():
-    staging = StagingWorkspace({"a.py": "def run(x):\n    return x\n", "b.py": "def other(x):\n    return x\n"})
-    staging.propose_coordinated("pair", ["a.py", "b.py"])
+def test_class_scope_insert_and_duplicate_method():
+    files = {"c.py": "class A:\n    def f(self):\n        return 1\n"}
+    validated = validate_patch({"edits": [{
+        "path": "c.py", "action": "insert_function", "scope": "class:A",
+        "new_text": "def g(self):\n    return 2\n",
+    }]}, files)
+    patched = apply_patch(files, validated)
+    tree = ast.parse(patched["c.py"])
+    cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "A")
+    names = {n.name for n in cls.body if isinstance(n, ast.FunctionDef)}
+    assert names == {"f", "g"}
+    assert not any(isinstance(n, ast.FunctionDef) and n.name == "g" for n in tree.body)
+    try:
+        validate_patch({"edits": [{
+            "path": "c.py", "action": "insert_after_symbol", "symbol": "f",
+            "scope": "class:A", "new_text": "def f(self):\n    return 3\n",
+        }]}, files)
+        raise AssertionError("class duplicate accepted")
+    except ValueError as exc:
+        assert "duplicate_definition" in str(exc)
+    assert validated["edits"][0]["source_sha256"] == source_sha256(files["c.py"])
+
+
+def test_staging_requires_matching_passing_receipt():
+    staging = StagingWorkspace({"a.py": "def run(x):\n    return x\n"})
     staging.apply_edits({"edits": [{
         "path": "a.py", "action": "replace", "old_text": "",
         "new_text": "def run(x):\n    return x + 1\n",
     }]})
-    syntax = staging.validate_syntax()
-    assert syntax["ok"] is True
+    try:
+        staging.publish()
+        raise AssertionError("published without receipt")
+    except ValueError as exc:
+        assert "passing_receipt" in str(exc)
+    staging.run_tests(lambda files: {"all_passed": False, "status": "failed"})
+    try:
+        staging.publish()
+        raise AssertionError("published after failed tests")
+    except ValueError as exc:
+        assert "passing_receipt" in str(exc)
+    staging.run_tests(lambda files: {"all_passed": True, "status": "ok"})
     published = staging.publish()
     assert staging.published is True
     assert "return x + 1" in published["a.py"]
+    staging.apply_edits({"edits": [{
+        "path": "a.py", "action": "replace", "old_text": "",
+        "new_text": "def run(x):\n    return x + 2\n",
+    }]})
+    assert staging.receipt_matches() is False
+    try:
+        staging.publish()
+        raise AssertionError("published after edit invalidated receipt")
+    except ValueError as exc:
+        assert "passing_receipt" in str(exc)
     staging2 = StagingWorkspace({"a.py": "def run(x):\n    return x\n"})
     staging2.staged["a.py"] = "def run(x)\n"
     try:
         staging2.publish()
-        raise AssertionError("invalid publish")
+        raise AssertionError("invalid syntax published")
     except ValueError:
         assert staging2.published is False
 
@@ -167,7 +209,7 @@ def test_completion_stop_is_recorded_not_blamed():
     assert stop["truncation_claimed_as_cause"] is False
 
 
-def test_repair_schema_fair_transfer_is_not_one_success_equals_100():
+def test_repair_schema_fair_transfer_is_not_one_success_equals_100(tmp_path):
     assert "missing_function" in PREDECLARED_FAMILIES
     store = RepairSchemaStore()
     cache = OrdinaryExactCache()
@@ -185,8 +227,13 @@ def test_repair_schema_fair_transfer_is_not_one_success_equals_100():
     cache.put("Allow the value equal to the window limit.", source_files, patched)
     later = {"w.py": "def inside(item):\n    return item['score'] < item['cap']\n"}
     reused = store.apply(schema, later)
-    assert reused is None
+    assert reused is not None
+    assert "<=" in reused["w.py"]
+    assert schema.transformation == "compare_op_swap"
     assert cache.get("new instance", later) is None
+    store.save(tmp_path / "repair")
+    loaded = RepairSchemaStore.load(tmp_path / "repair")
+    assert loaded.apply(next(iter(loaded.schemas.values())), later) is not None
     rates = transfer_success_rate([True])
     assert rates["rate"] is None
     assert rates["one_success_is_not_100_percent"] is True
