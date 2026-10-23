@@ -1,0 +1,220 @@
+{
+  "study_id": "seed-v3-headroom-1",
+  "scientific": false,
+  "kind": "source_design_lock_not_confirmation",
+  "config_hash": "a531dd0b1d7ccf5c9e71a342a64c55104c73b23013953126504ccf241cff42a5",
+  "certificate": {
+    "benchmark": "v3_headroom",
+    "default_investigation_policy": "fixed_boundary",
+    "learned_ranking_promoted": false,
+    "learning_to_learn_established": false,
+    "historical_depth12_rescoring": false,
+    "orthogonal": true,
+    "orthogonality_a": {
+      "set_id": "A",
+      "rows": [
+        {
+          "probe_cluster": "filter",
+          "probe": [
+            1,
+            0,
+            2,
+            -1,
+            4,
+            0,
+            3
+          ],
+          "native_partitions": 7,
+          "foreign_partitions": {
+            "mod": 1,
+            "order": 1,
+            "group": 1
+          },
+          "zero_foreign_disagreement": true
+        },
+        {
+          "probe_cluster": "mod",
+          "probe": [
+            2,
+            1,
+            4,
+            3,
+            6,
+            5
+          ],
+          "native_partitions": 82,
+          "foreign_partitions": {
+            "filter": 1,
+            "order": 1,
+            "group": 1
+          },
+          "zero_foreign_disagreement": true
+        },
+        {
+          "probe_cluster": "order",
+          "probe": [
+            3,
+            1,
+            4,
+            2
+          ],
+          "native_partitions": 6,
+          "foreign_partitions": {
+            "filter": 1,
+            "mod": 1,
+            "group": 1
+          },
+          "zero_foreign_disagreement": true
+        },
+        {
+          "probe_cluster": "group",
+          "probe": [
+            4,
+            -2,
+            2,
+            -3,
+            3,
+            0
+          ],
+          "native_partitions": 16,
+          "foreign_partitions": {
+            "filter": 1,
+            "mod": 1,
+            "order": 1
+          },
+          "zero_foreign_disagreement": true
+        }
+      ],
+      "all_specialists_orthogonal": true
+    },
+    "orthogonality_b": {
+      "set_id": "B",
+      "rows": [
+        {
+          "probe_cluster": "filter",
+          "probe": [
+            1,
+            0,
+            2,
+            -1,
+            4,
+            0,
+            3
+          ],
+          "native_partitions": 4,
+          "foreign_partitions": {
+            "mod": 1,
+            "order": 1,
+            "group": 1
+          },
+          "zero_foreign_disagreement": true
+        },
+        {
+          "probe_cluster": "mod",
+          "probe": [
+            2,
+            1,
+            4,
+            3,
+            6,
+            5
+          ],
+          "native_partitions": 77,
+          "foreign_partitions": {
+            "filter": 1,
+            "order": 1,
+            "group": 1
+          },
+          "zero_foreign_disagreement": true
+        },
+        {
+          "probe_cluster": "order",
+          "probe": [
+            3,
+            1,
+            4,
+            2
+          ],
+          "native_partitions": 3,
+          "foreign_partitions": {
+            "filter": 1,
+            "mod": 1,
+            "group": 1
+          },
+          "zero_foreign_disagreement": true
+        },
+        {
+          "probe_cluster": "group",
+          "probe": [
+            4,
+            -2,
+            2,
+            -3,
+            3,
+            0
+          ],
+          "native_partitions": 19,
+          "foreign_partitions": {
+            "filter": 1,
+            "mod": 1,
+            "order": 1
+          },
+          "zero_foreign_disagreement": true
+        }
+      ],
+      "all_specialists_orthogonal": true
+    },
+    "frequency_waste": {
+      "cluster": "filter",
+      "simple_frequency_calls": 429,
+      "query_conditioned_calls": 108,
+      "ratio": 3.9722222222222223,
+      "extra_factor": 2.9722222222222223,
+      "guarantees_3x_more": true
+    },
+    "operator_sets": {
+      "a_count": 12,
+      "b_count": 12,
+      "name_overlap": [],
+      "disjoint": true,
+      "a_signatures": [
+        "length_contracting_select",
+        "length_preserving_permute",
+        "length_preserving_residue",
+        "structure_grouping"
+      ],
+      "b_signatures": [
+        "length_contracting_select",
+        "length_preserving_permute",
+        "length_preserving_residue",
+        "structure_grouping"
+      ],
+      "signature_classes_match": true
+    },
+    "coverage": {
+      "hypothesis_count": 22464,
+      "min_required": 2500,
+      "above_floor": true,
+      "call_budget": 35,
+      "brute_force_fraction": 0.001558048433048433,
+      "below_30pct_if_one_call_per_program": true,
+      "templates_required_for_widening": [
+        "filter(P) -> map(F)"
+      ]
+    },
+    "phi_key_example": [
+      "length_contracting",
+      "length_contracting_select"
+    ],
+    "phi_key_uses_operator_name": false,
+    "ready_for_transfer_experiment": false,
+    "transfer_gate": "set_B_calls <= 0.5 * untrained_default_calls",
+    "config_hash": "891bdb961fd14216a5d078f54a1705c79400b6b59df35f83151b680bf144e277"
+  },
+  "transfer_run": "NOT_RUN",
+  "learning_to_learn": false,
+  "agi": false,
+  "resources": {
+    "wall_s": 0.160268
+  }
+}

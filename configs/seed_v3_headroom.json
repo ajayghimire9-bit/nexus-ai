@@ -1,0 +1,36 @@
+{
+  "id": "seed-v3-headroom-1",
+  "artifact_stem": "seed_v3_headroom",
+  "base_sha": "490ab00",
+  "benchmark": "v3_headroom",
+  "rescore_depth12": false,
+  "historical_v2_rescoring": false,
+  "conversation_capability_rescoring": false,
+  "call_budget": 35,
+  "program_lengths": [3, 4],
+  "min_hypotheses": 2500,
+  "clusters": ["filter", "mod", "order", "group"],
+  "set_a": [
+    "keep_pos", "keep_even", "take_prefix_half",
+    "res_mod3", "add2_mod5", "mul2_mod7",
+    "rev", "rot_l", "sort_up",
+    "sum_by_parity", "count_by_sign", "first_per_mod2"
+  ],
+  "set_b": [
+    "keep_neg", "keep_odd", "drop_suffix_half",
+    "res_mod4", "add3_mod8", "mul3_mod5",
+    "swap_halves", "rot_r", "sort_down",
+    "sum_by_mod3", "count_by_parity", "last_per_mod2"
+  ],
+  "phi_key": ["support_io_invariant", "operator_algebraic_signature"],
+  "phi_forbids_operator_name": true,
+  "transfer_gate": "set_B_calls <= 0.5 * untrained_default_calls",
+  "transfer_run": "NOT_RUN",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "templates": ["filter(P) -> map(F)"],
+  "mode": "authored_source_design_lock_not_confirmation",
+  "gemini": "NOT_RUN"
+}

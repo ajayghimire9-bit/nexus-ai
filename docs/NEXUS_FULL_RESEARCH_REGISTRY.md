@@ -1,6 +1,15 @@
 # NEXUS Seed — Research Registry
 
-## Current — worker division and public missing-case confirmation
+## Current — v3 high-headroom investigation benchmark (design lock)
+
+`seed-v3-headroom-1`, branch `cursor/seed-v3-headroom`. Structural
+certificate only: four orthogonal clusters, `|H| = 22464`, `B = 35`,
+invariant φ keys, disjoint A/B. Transfer **NOT_RUN**. Not
+learning-to-learn. Depth 1–2 grids untouched. Ledger unchanged at
+**3126.028358455996 used / 473.9716415440039 remaining**.
+[Protocol](NEXUS_SEED_V3_HEADROOM_PROTOCOL.md).
+
+## Previous — worker division and public missing-case confirmation
 
 `seed-worker-div-confirm-1`, protocol `5ab1d1f`, scored artifact
 sha256 `55df4229dba2b44100468d5f5fb6ad404212b974cebf31354d95ae22c508b89b`.

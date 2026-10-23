@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — worker division, public missing cases, then confirmation (results)
+## Current — v3 high-headroom investigation benchmark (design lock)
+
+[Protocol](NEXUS_SEED_V3_HEADROOM_PROTOCOL.md),
+[lock](NEXUS_SEED_V3_HEADROOM_RESULTS.md). Branch
+`cursor/seed-v3-headroom` from reviewed `490ab00`. Depth 1–2 tools /
+`ordinary_cache` / `simple_frequency` grids are not rescored. Four
+orthogonal specialist regimes, `|H| = 22 464` at depth 3–4, `B = 35`,
+and φ keyed by `(support I/O invariant, automatic operator signature)`
+on disjoint Sets A and B. Transfer is **NOT_RUN**. Learning-to-learn
+is not established. Ledger
+**3126.028358455996 used / 473.9716415440039 remaining**.
+
+## Previous — worker division, public missing cases, then confirmation (results)
 
 [Protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md),
 [results](NEXUS_SEED_WORKER_DIV_CONFIRM_RESULTS.md). Implementation

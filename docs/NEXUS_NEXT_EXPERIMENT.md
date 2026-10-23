@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — improve the repair loop; do not start experience yet
+## Current next — train invariant φ on Set A, freeze, measure Set B
+
+The [v3_headroom lock](NEXUS_SEED_V3_HEADROOM_PROTOCOL.md) makes
+`simple_frequency` waste 3× extra calls on orthogonal regimes and puts
+`|H|` above 2 500 under `B = 35`. Next: train φ on Set A only, freeze
+it, and compare Set B candidate calls to `untrained_default`. The gate
+is half the untrained calls. Do not test that learner on Depth 1–2.
+Do not promote ranking if the gate fails. Ledger
+**3126.028358455996 used / 473.9716415440039 remaining**.
+
+## Previous next — improve the repair loop; do not start experience yet
 
 The [worker-division confirmation](NEXUS_SEED_WORKER_DIV_CONFIRM_RESULTS.md)
 passed 3/4 after allowing `Div` and putting missing/empty cases in
