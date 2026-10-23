@@ -80,7 +80,10 @@ def _trace(assembled, **extra):
     return row
 
 
-def propose_cell(runtime, spec, variant, meter, scope, *, wire_discovery, max_tokens=128):
+def propose_cell(
+    runtime, spec, variant, meter, scope, *, wire_discovery, max_tokens=128,
+    contract_block=None, contract_origin=None, asked=False,
+):
     started = time.perf_counter()
     task = _task(spec)
     discovered = discover_edit_target(spec["request"], spec["files"], spec.get("docs") or [])
@@ -94,6 +97,7 @@ def propose_cell(runtime, spec, variant, meter, scope, *, wire_discovery, max_to
     if plan is None:
         return dict(
             format=FORMAT, prompt_style=STYLE, prompt_variant=variant,
+            contract_origin=contract_origin, asked=asked,
             target_from=target_from, wire_discovery=wire_discovery,
             discovery=discovery, plan=None, traces=[],
             placeholder="discovery_abstain", syntax_valid=False, executed=False,
@@ -107,7 +111,7 @@ def propose_cell(runtime, spec, variant, meter, scope, *, wire_discovery, max_to
         )
     schema = schema_for_format(FORMAT)
     decoding = decoding_record(schema, max_tokens)
-    user_prompt = build_user_prompt(variant, task, plan)
+    user_prompt = build_user_prompt(variant, task, plan, contract_block=contract_block)
     prompt, render = render_prompt(STYLE, user_prompt)
     raw = _complete(runtime, prompt, schema, meter, scope, spec["id"] + ":0")
     if type(raw) is not dict:
@@ -123,7 +127,7 @@ def propose_cell(runtime, spec, variant, meter, scope, *, wire_discovery, max_to
     if (assembled.get("placeholder") or not assembled.get("syntax_valid")) and len(traces) < MAX_COMPLETIONS:
         format_attempted = True
         feedback = revision_feedback(assembled.get("placeholder") or assembled.get("raw_reason") or "malformed")
-        user2 = build_user_prompt(variant, task, plan, feedback)
+        user2 = build_user_prompt(variant, task, plan, feedback, contract_block=contract_block)
         prompt2, render2 = render_prompt(STYLE, user2)
         raw2 = _complete(runtime, prompt2, schema, meter, scope, spec["id"] + ":format")
         if type(raw2) is not dict:
@@ -155,7 +159,7 @@ def propose_cell(runtime, spec, variant, meter, scope, *, wire_discovery, max_to
             behavior_attempted = True
             feedback = behavioral_feedback(public, spec.get("public") or [])
             three_point = bool(feedback.get("three_point_evidence"))
-            user3 = build_user_prompt(variant, task, plan, feedback)
+            user3 = build_user_prompt(variant, task, plan, feedback, contract_block=contract_block)
             prompt3, render3 = render_prompt(STYLE, user3)
             raw3 = _complete(runtime, prompt3, schema, meter, scope, spec["id"] + ":behavior")
             if type(raw3) is not dict:
@@ -188,6 +192,8 @@ def propose_cell(runtime, spec, variant, meter, scope, *, wire_discovery, max_to
         format=FORMAT,
         prompt_style=STYLE,
         prompt_variant=variant,
+        contract_origin=contract_origin or ("supplied" if variant == "contract" else None),
+        asked=asked,
         target_from=target_from,
         wire_discovery=wire_discovery,
         discovery=discovery,

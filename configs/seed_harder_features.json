@@ -1,0 +1,162 @@
+{
+  "id": "seed-harder-features-1",
+  "artifact_stem": "seed_harder_features",
+  "base_sha": "b23e49f66ed12be8bc775b1e4d96a08fa43b2b83",
+  "parent_protocol_commit": "b23e49f66ed12be8bc775b1e4d96a08fa43b2b83",
+  "carried_used_s": 2806.847834455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired",
+  "model_max_tokens": 128,
+  "models": {
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "supplied_cells": 5,
+    "acquire_cells": 5,
+    "transfer_cells_if_gate": 2
+  },
+  "tasks": [
+    {
+      "id": "py_rows_sum",
+      "phase": "harder",
+      "role": "insert",
+      "family": "list_records",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "total(item) sums amount on each row in rows. Missing amount is 0. Empty rows is 0.",
+      "request": "Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.",
+      "docs": [{"title": "total", "content": "total(item) sums row amounts. Missing amount is 0. Empty rows is 0."}],
+      "files": {"sheet.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "sheet.py", "symbol": "total", "action": "insert_function"},
+      "public": [
+        {"entry": "sheet.total", "input": {"rows": [{"amount": 2}, {"amount": 3}]}, "expected": 5}
+      ],
+      "assessment": [
+        {"entry": "sheet.total", "input": {"rows": []}, "expected": 0},
+        {"entry": "sheet.total", "input": {"rows": [{"amount": 1}, {}]}, "expected": 1},
+        {"entry": "sheet.total", "input": {"rows": [{"amount": 0}]}, "expected": 0}
+      ]
+    },
+    {
+      "id": "py_mark_absent",
+      "phase": "harder",
+      "role": "insert",
+      "family": "missing_fields",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "tag(item) is kind and name lowercased, joined by one colon. Missing kind or name is an empty string.",
+      "request": "Create function tag(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.",
+      "docs": [{"title": "tag", "content": "tag(item) is kind:name lowercased. Missing fields are empty strings."}],
+      "files": {"mark.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "mark.py", "symbol": "tag", "action": "insert_function"},
+      "public": [
+        {"entry": "mark.tag", "input": {"kind": "Src", "name": "Beta"}, "expected": "src:beta"}
+      ],
+      "assessment": [
+        {"entry": "mark.tag", "input": {"name": "Beta"}, "expected": ":beta"},
+        {"entry": "mark.tag", "input": {"kind": "Src"}, "expected": "src:"},
+        {"entry": "mark.tag", "input": {"kind": "", "name": ""}, "expected": ":"}
+      ]
+    },
+    {
+      "id": "py_admit_pair",
+      "phase": "harder",
+      "role": "insert",
+      "family": "interacting_predicates",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "admit(item) is True only when age >= min_age and score >= floor. Both conditions required.",
+      "request": "Create function admit(item) that is True only when age is at least min_age and score is at least floor.",
+      "docs": [{"title": "admit", "content": "admit(item) requires age >= min_age AND score >= floor."}],
+      "files": {"gate.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "gate.py", "symbol": "admit", "action": "insert_function"},
+      "public": [
+        {"entry": "gate.admit", "input": {"age": 18, "min_age": 18, "score": 5, "floor": 5}, "expected": true}
+      ],
+      "assessment": [
+        {"entry": "gate.admit", "input": {"age": 17, "min_age": 18, "score": 9, "floor": 5}, "expected": false},
+        {"entry": "gate.admit", "input": {"age": 20, "min_age": 18, "score": 4, "floor": 5}, "expected": false},
+        {"entry": "gate.admit", "input": {"age": 21, "min_age": 18, "score": 8, "floor": 5}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_due_quote",
+      "phase": "harder",
+      "role": "insert",
+      "family": "two_file",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "due(item) lives on quote.py and returns cents/100 as a float. prices.fee is a sibling, not the target.",
+      "request": "Create function due(item) on quote.py that returns cents divided by 100.",
+      "docs": [{"title": "due", "content": "due(item) is cents/100 on quote.py."}],
+      "files": {
+        "prices.py": "def fee(item):\n    return item['cents']\n",
+        "quote.py": "def echo(text):\n    return text\n"
+      },
+      "gold_target": {"path": "quote.py", "symbol": "due", "action": "insert_function"},
+      "public": [
+        {"entry": "quote.due", "input": {"cents": 250}, "expected": 2.5}
+      ],
+      "assessment": [
+        {"entry": "quote.due", "input": {"cents": 0}, "expected": 0.0},
+        {"entry": "quote.due", "input": {"cents": 100}, "expected": 1.0}
+      ]
+    },
+    {
+      "id": "py_inside_span",
+      "phase": "harder",
+      "role": "replace",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "hide_examples_from_inference": true,
+      "requirement": "fit(item) is True when value is on or between lo and hi. Missing value is False.",
+      "request": "Allow value on or between lo and hi. Missing value is False.",
+      "files": {"span.py": "def fit(item):\n    return item['value'] < item['hi']\n"},
+      "gold_target": {"path": "span.py", "symbol": "fit", "action": "replace_function"},
+      "public": [
+        {"entry": "span.fit", "input": {"value": 2, "lo": 1, "hi": 3}, "expected": true},
+        {"entry": "span.fit", "input": {"value": 1, "lo": 1, "hi": 3}, "expected": true},
+        {"entry": "span.fit", "input": {"value": 3, "lo": 1, "hi": 3}, "expected": true}
+      ],
+      "assessment": [
+        {"entry": "span.fit", "input": {"value": 0, "lo": 1, "hi": 3}, "expected": false},
+        {"entry": "span.fit", "input": {"lo": 1, "hi": 3}, "expected": false},
+        {"entry": "span.fit", "input": {"value": 2, "lo": 2, "hi": 2}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_width_room",
+      "phase": "transfer",
+      "role": "replace",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "requirement": "Held-out inclusive replace: width may equal room. Run only if the supplied gate passes.",
+      "request": "Allow width equal to the room.",
+      "files": {"room.py": "def fit(item):\n    return item['width'] < item['room']\n"},
+      "gold_target": {"path": "room.py", "symbol": "fit", "action": "replace_function"},
+      "public": [
+        {"entry": "room.fit", "input": {"width": 1, "room": 2}, "expected": true},
+        {"entry": "room.fit", "input": {"width": 2, "room": 2}, "expected": true},
+        {"entry": "room.fit", "input": {"width": 3, "room": 2}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "room.fit", "input": {"width": 2, "room": 2}, "expected": true},
+        {"entry": "room.fit", "input": {"width": 3, "room": 2}, "expected": false}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

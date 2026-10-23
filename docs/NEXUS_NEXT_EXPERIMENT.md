@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — keep contract + wired discovery on the coder
+## Current next — freeze the recipe; assess harder features and contract origin
+
+The [contract / two-stage run](NEXUS_SEED_CONTRACT_TWO_STAGE_RESULTS.md)
+passed a small e2e set on the 1.5B coder. Next: freeze that recipe,
+assess five harder tasks, record whether contracts were supplied,
+inferred or asked, and run acquired-experience comparison only if the
+supplied gate passes. Do not promote ranking. Ledger
+**2806.847834455996 used / 793.152165544004 remaining**.
+[Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md).
+
+## Previous next — keep contract + wired discovery on the coder
 
 The [contract / two-stage run](NEXUS_SEED_CONTRACT_TWO_STAGE_RESULTS.md)
 made the input contract the better prompt and passed a three-task e2e

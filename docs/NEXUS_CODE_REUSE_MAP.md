@@ -1,5 +1,13 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Harder features and contract acquisition
+
+`seed/harder_feature_study.py` reuses `propose_cell`, `acquire_contract`,
+wired discovery and the frozen 1.5B recipe. It does not edit
+`local_model_runtime.py`. Gated experience reuses `capture_from_success`
+and `propose_retrieved_repair`; it does not add a second memory store.
+[Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md).
+
 ## Input contract and two-stage revision
 
 `seed/input_contract.py` wraps the existing `json_body` user prompt with

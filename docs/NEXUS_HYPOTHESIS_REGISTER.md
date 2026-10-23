@@ -1,5 +1,15 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Current — frozen recipe on harder features and self-acquired contracts
+
+Predeclared: the 1.5B ChatML contract recipe is frozen. Fresh harder
+tasks (lists, missing fields, empty inputs, interacting predicates,
+two-file) test whether that recipe generalizes. Contract origin
+(supplied / inferred / asked) is recorded separately. Experience
+comparison is gated on 4/5 supplied private passes including list and
+two-file. Not confirmation.
+[Protocol](NEXUS_SEED_HARDER_FEATURES_PROTOCOL.md).
+
 ## Current — explicit input contract and reserved revision stages
 
 Predeclared: fresh failures treated a dict as a string, and a placeholder
