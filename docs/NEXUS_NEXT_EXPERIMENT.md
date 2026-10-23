@@ -1,5 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next implementation — completeness before certainty
+
+[The corrected pilot](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md) failed: learned
+19/24 versus boundary-first 24/24. Four learned failures issue no question when
+all three shortlisted candidates agree on both prioritized probes. Implement an
+equivalence-aware, completeness-preserving fallback that widens the evidence-
+consistent hypothesis set before treating that agreement as certainty. Give
+learned and fixed controllers the same fallback. Then separately register new
+whole-family exclusions; do not tune/re-score this closed pilot. This one next
+implementation is proposed, not executed. Broader general coding/conversation,
+curriculum and transferable learning remain open. No architecture sweep,
+confirmation or main merge. Latest carried ledger 2219.632103455996 used /
+1380.367896544004 remaining. Older scheduling entries below are historical.
+
 ## Current next recommendation — public validation overhead and state isolation
 
 The [fixed configuration-repair baseline](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md)

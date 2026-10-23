@@ -1,5 +1,18 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Corrected capability evidence path
+
+`seed/capability_evidence.py` extends the existing EpisodeCallLedger and
+EqualizedInvestigationEngineV2 through opt-in instrumentation/strict bounds; it
+reuses VersionedCapsule, the existing public coding loop/worker, Conversation,
+data adapters, local runtime and E1/Sandbox host. It does not replace the older
+`seed/capability_audit.py` world diagnostics or create another learner framework.
+`verify_seed_capability_audit.py` combines an elementary independent output
+reference with source/controller replay and exact grid/hash checks.
+`replay_seed_capability_tools.py` re-executes saved authored final patches only.
+The focused read-only `/experimental?study=capability_audit` view avoids loading
+all history and can never start a run. [Findings](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md).
+
 ## Configuration repair and real Python validation
 
 `seed/config_repair_baseline.py` reuses `master.coding.RepositoryModel`, with

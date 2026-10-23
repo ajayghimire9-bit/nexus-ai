@@ -59,7 +59,7 @@ class LabHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-Type','text/html; charset=utf-8')
                 self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
                 self.end_headers();return self.wfile.write(body)
-            if parsed.path=='/experimental' and not parsed.query:
+            if parsed.path=='/experimental' and parsed.query in ('','study=capability_audit'):
                 body=(ROOT/'web/learning-lab/experimental.html').read_bytes();self.send_response(200)
                 self.send_header('Content-Type','text/html; charset=utf-8')
                 self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'")
@@ -79,9 +79,18 @@ class LabHandler(BaseHTTPRequestHandler):
             if parsed.path=='/api/question-headroom' and not parsed.query:
                 from nexus.seed.question_headroom import saved_replay
                 return self.send_json(200,saved_replay(ROOT))
+            if parsed.path=='/api/experimental' and parsed.query=='study=capability_audit':
+                from nexus.seed.capability_evidence import saved_replay as capability_replay
+                item=capability_replay(ROOT)
+                return self.send_json(200,dict(experiments=[item],incumbent=None,grants=[],
+                    charged_wall_s=item['resources']['charged_wall_s']))
             if parsed.path=='/api/experimental' and not parsed.query:
                 from nexus.seed.experimental import Sandbox
                 state=Sandbox(ROOT,getattr(self.server,'experimental_directory',None)).view()
+                if (ROOT/'artifacts/seed_capability_audit_verified_v2.json').exists():
+                    from nexus.seed.capability_evidence import saved_replay as capability_replay
+                    item=capability_replay(ROOT)
+                    state['experiments']=[r for r in state['experiments'] if r['id']!=item['id']]+[item]
                 if (ROOT/'artifacts/seed_investigation_transfer.json').exists():
                     from nexus.seed.investigation_transfer import saved_replay as investigation_replay
                     investigation=investigation_replay(ROOT)

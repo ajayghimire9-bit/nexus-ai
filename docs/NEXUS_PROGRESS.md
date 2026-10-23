@@ -1,5 +1,18 @@
 # NEXUS progress log
 
+## Current — capability/evidence audit completed without promotion
+
+Execution def0341, 240 episodes, negative screen: learned 19/24 vs boundary-first
+24/24, capsules-reset 20/24 and shuffled 21/24. Real Python/TypeScript tests pass
+3/6 projects; all six saved final patches independently replay. Fixed shortlist,
+early stopping, source-label boundary, metering/grid verification and path
+containment have regression coverage. 149 relevant tests passed in 4.92 s.
+889 historical artifact blobs/five Seed checkpoint hashes intact. Pilot
+5.385016 s wall, 5.810909 s child CPU, 922.578125 MiB sampled RSS, 7 s debit;
+ledger after documented reconciliations 2219.632103455996 used /
+1380.367896544004 remaining. [Report](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md).
+No useful learning-to-learn, general coding or broad conversation claim.
+
 ## Latest — fixed configuration-repair baseline complete
 
 Execution `d2eaec0a12a82c591142ae325b892d40eb52cfc5`: 12/12 projects repaired;

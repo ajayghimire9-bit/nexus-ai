@@ -62,7 +62,7 @@ def verify_records(records, config, summary=None):
     if len(keys)!=len(set(keys)) or set(keys)!=expected: raise ValueError('episode_grid')
     locks = [r for r in records if r.get('kind')=='choice']
     if len(locks)!=len(episodes) or len({r['scope'] for r in locks})!=len(locks): raise ValueError('choice_grid')
-    if any(not row['frozen_capsules'] for row in locks): raise ValueError('capsule_mutation')
+    if any(row['frozen_capsules'] is not True for row in locks): raise ValueError('capsule_mutation')
     # No target, assessment or answer-derived candidate payload in learner locks.
     for row in locks:
         if set(row)!={'kind','scope','selected','selected_ops','policy_hash','capsule_hash','frozen_capsules'}:
@@ -117,7 +117,7 @@ def verify_records(records, config, summary=None):
         learned = train_public([t for t,_,_ in source], answers, meter, seed, config)
         expected_state = dict(weights=learned[0],frequencies=learned[1],probe_credit=learned[2],capsules=[asdict(c) for c in learned[3]])
         saved = next(r for r in states if r['seed']==seed)
-        if saved['state']!=expected_state or saved['state_hash']!=digest(expected_state) or not saved['restart_equal']:
+        if saved['state']!=expected_state or saved['state_hash']!=digest(expected_state) or saved['restart_equal'] is not True:
             raise ValueError('source_feedback_or_state')
         for i in range(config['assessment_tasks']):
             task, target, _ = make_task(config,seed,'assessment',i,meter)
@@ -144,6 +144,12 @@ def verify_records(records, config, summary=None):
     ids = [r['id'] for r in records if r.get('kind')=='capability']
     expected_ids = {r['id'] for r in config['coding']+config['chat']}|{'json','sqlite','restart','live_model','z3','sympy'}
     if len(ids)!=len(set(ids)) or set(ids)!=expected_ids: raise ValueError('capability_grid')
+    if summary is not None:
+        expected_fields=dict(declared_complete=True,methods=metrics,
+            training_operations=dict(Counter(e['operation'] for e in events if ':train:' in e['scope'])),
+            all_operations=dict(Counter(e['operation'] for e in events)),
+            learning_to_learn_established=False,verdict='DEVELOPMENT_PILOT_ONLY',capability_ids=ids)
+        if summary!=expected_fields: raise ValueError('aggregate_fields_tampered')
     # Tool success comes from actual per-case evidence, not "solved" counters.
     for spec in config['coding']:
         scope='coding:'+spec['id']
@@ -161,6 +167,11 @@ def verify_records(records, config, summary=None):
             for case,row in zip(spec['assessment'],results):
                 if row.get('passed')!=(row.get('actual')==case['expected'] and not row.get('error')):
                     raise ValueError('forged_case_outcome')
+            if out.get('all_passed') is not all(r.get('passed') is True for r in results):
+                raise ValueError('worker_summary_tamper')
+        cap=next(r for r in records if r.get('kind')=='capability' and r['id']==spec['id'])
+        if (cap['outcome']!=agent['outcome_category'] or cap['attempts']!=len(agent['patch_attempts'])
+                or cap['final']!=out): raise ValueError('capability_summary_tamper')
         expected_cases=[dict(kind='worker_case',scope=scope,index=j,result=row,execution_hash=e['hash'])
                         for e in scoped if e['operation']=='worker' and isinstance(e['output'],dict)
                         for j,row in enumerate(e['output'].get('results',[]))]
@@ -173,17 +184,21 @@ def verify_records(records, config, summary=None):
     strongest = min(required, key=lambda m:metrics[m]['candidate_calls']) if required else None
     difference = paired([(raw_seed[strongest,s]['calls']-raw_seed['learned',s]['calls'])/config['assessment_tasks']
                          for s in config['seeds']]) if strongest else None
-    screen = bool(strongest and metrics['learned']['candidate_calls']<=.95*metrics[strongest]['candidate_calls']
+    screen = bool(strongest and metrics['learned']['correct']>=metrics[strongest]['correct']
+                  and metrics['learned']['candidate_calls']<=.95*metrics[strongest]['candidate_calls']
                   and difference['interval'][0]>0)
     training = Counter(e['operation'] for e in events if ':train:' in e['scope'])
     train_cost = sum(training[k] for k in ('support_check','probe_construction','source_validation'))
     saving = difference['mean'] if difference else 0
     return dict(valid=True, methods=metrics, primary_comparator=strongest, paired_calls_saved=difference,
                 practical_screen_passed=screen, source_training_calls=train_cost,
-                break_even_tasks_per_trained_policy=(train_cost/len(config['seeds'])/saving if saving>0 else None),
-                additional_trusted_log_primitive_invocations=primitive_invocations,
+                break_even_tasks_per_trained_policy=(train_cost/len(config['seeds'])/saving if screen else None),
+                break_even_status='NOT_ESTABLISHED' if not screen else 'candidate_call_units_only_not_wall_or_energy',
+                assessment_task_candidate_primitive_invocations=primitive_invocations,
                 source_operations=dict(training), all_operations=dict(Counter(e['operation'] for e in events)),
                 seed_metrics=[dict(method=m,seed=s,**row) for (m,s),row in raw_seed.items()],
+                paired_accuracy_difference=paired([(raw_seed['learned',s]['correct']-raw_seed[strongest,s]['correct'])/config['assessment_tasks']
+                                                  for s in config['seeds']]) if strongest else None,
                 learning_to_learn_established=False, confirmation=False,
                 trust_boundary='instrumented-log consistency plus deterministic replay; not execution attestation')
 
@@ -199,7 +214,28 @@ def main():
     audit = verify_records(records,config,payload['summary'])
     audit['source_sha'] = payload['registration']['source_sha']
     audit['raw_sha256'] = payload['raw_sha256']
-    output=ROOT/'artifacts/seed_capability_audit_verified.json'
+    audit['audit_version']=2
+    audit['analysis_correction']='Explicit no-accuracy-regression gate and suppress invalid amortization claim; raw outcomes unchanged.'
+    audit['verifier_source_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    # Verify all original artifact blobs in one git process, not only summaries.
+    import subprocess
+    registration=json.loads((ROOT/'artifacts/seed_capability_audit_registration.json').read_text())
+    tree=subprocess.check_output(['git','ls-tree','-r',registration['base_sha'],'artifacts/'],cwd=ROOT,text=True)
+    prior=[(line.split('\t',1)[1],line.split()[2]) for line in tree.splitlines() if ' blob ' in line]
+    hashed=subprocess.check_output(['git','hash-object','--stdin-paths'],cwd=ROOT,text=True,
+                                  input='\n'.join(name for name,_ in prior)+'\n').splitlines()
+    if hashed!=[sha for _,sha in prior]:raise ValueError('historical_artifact_changed_or_missing')
+    audit['historical_artifact_blobs_preserved']=len(prior)
+    checkpoint_rows=[]
+    parent=json.loads((ROOT/'artifacts/seed_grounded_pilot.json').read_text())
+    readouts=json.loads((ROOT/'artifacts/seed_readout_manifest.json').read_text())
+    for row in parent['models']+readouts['heads']:
+        checkpoint=ROOT/row['checkpoint']
+        actual=hashlib.sha256(checkpoint.read_bytes()).hexdigest()
+        if actual!=row['sha256']:raise ValueError('frozen_seed_checkpoint_mismatch')
+        checkpoint_rows.append(dict(path=row['checkpoint'],sha256=actual,verified=True))
+    audit['frozen_seed_checkpoints']=checkpoint_rows
+    output=ROOT/'artifacts/seed_capability_audit_verified_v2.json'
     with output.open('x') as f: json.dump(audit,f,indent=2,allow_nan=False)
     print(json.dumps(audit,indent=2))
 

@@ -351,3 +351,18 @@ def summarize(records, config):
                 all_operations=dict(Counter(e['operation'] for e in events)),
                 learning_to_learn_established=False, verdict='DEVELOPMENT_PILOT_ONLY',
                 capability_ids=[r['id'] for r in records if r.get('kind')=='capability'])
+
+
+def saved_replay(root):
+    """Read-only presentation; never executes a task or starts a runtime."""
+    root=Path(root)
+    result=json.loads((root/'artifacts/seed_capability_audit.json').read_text())
+    audit=json.loads((root/'artifacts/seed_capability_audit_verified_v2.json').read_text())
+    raw_hash=hashlib.sha256((root/'artifacts/seed_capability_audit_raw.jsonl').read_bytes()).hexdigest()
+    if raw_hash!=result['raw_sha256'] or raw_hash!=audit['raw_sha256'] or result['summary']['methods']!=audit['methods']:
+        raise ValueError('capability_evidence_hash_or_summary_mismatch')
+    return dict(id='seed-capability-evidence-audit-1',mode='source_development_pilot_not_confirmation',
+                status='valid_negative_screen' if not audit['practical_screen_passed'] else 'development_screen_passed',
+                failure=None,revision=result['registration']['source_sha'],wall_s=result['resources']['wall_s'],
+                memory_mb=result['resources']['peak_sampled_aggregate_rss_mb'],resources=result['resources'],
+                capability_audit=audit)

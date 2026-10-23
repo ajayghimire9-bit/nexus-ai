@@ -72,6 +72,16 @@ def test_training_only_observed_answers_no_legacy_label_trainer():
     assert any(e['operation']=='oracle' for e in events)
 
 
+def test_excluded_metadata_cannot_change_source_parameters():
+    from scripts.verify_seed_capability_audit import reference
+    cfg=config();task,ops,_=make_task(cfg,1,'source',0)
+    answers={task.task_id:lambda x:reference(ops,x),'excluded':lambda _:1/0}
+    first=train_public([task],answers,EventMeter(lambda _:None),1,cfg)
+    changed=deepcopy(cfg);changed['assessment_tasks']=99999;changed['coding']=[{'private':'poison'}]
+    second=train_public([task],answers,EventMeter(lambda _:None),1,changed)
+    assert digest(first[:3])==digest(second[:3])
+
+
 def test_strict_controller_same_stop_and_shortlist_with_capsules():
     cfg=config(); task,ops,_=make_task(cfg,1,'assessment',0)
     from scripts.verify_seed_capability_audit import reference
@@ -161,3 +171,48 @@ def test_old_verifier_grid_from_locked_config():
     partial=dict(equalized_controller=cfg['equalized_controller'],objective_weights=cfg['objective_weights'],records=[])
     valid,errors=verify_v2_payload(partial)
     assert not valid and errors==['missing_duplicate_or_unexpected_grid_cell']
+
+
+@pytest.mark.parametrize('field,value',[('declared_complete',False),('learning_to_learn_established',True),
+    ('training_operations',{}),('all_operations',{}),('capability_ids',[])])
+def test_all_aggregate_fields_checked(field,value):
+    from scripts.verify_seed_capability_audit import verify_records
+    cfg,records,summary=tiny_records()
+    summary[field]=value
+    with pytest.raises(ValueError):verify_records(records,cfg,summary)
+
+
+def test_withdrawn_study_cannot_reissue_hardcoded_claim():
+    from scripts.run_seed_learned_investigation_policy import run_benchmark
+    with pytest.raises(RuntimeError,match='closed_confounded'):run_benchmark()
+
+
+def test_saved_dashboard_payload_is_read_only():
+    from nexus.seed.capability_evidence import saved_replay
+    if not (ROOT/'artifacts/seed_capability_audit_verified_v2.json').exists():
+        pytest.skip('post-run saved evidence test; no scientific execution')
+    with patch('nexus.seed.capability_evidence.run',side_effect=AssertionError('must not run')):
+        row=saved_replay(ROOT)
+    assert row['status']=='valid_negative_screen'
+    assert row['capability_audit']['methods']['boundary_first']['correct']==24
+
+
+def test_gui_endpoint_serves_saved_evidence(tmp_path):
+    import http.client
+    import threading
+    from http.server import ThreadingHTTPServer
+    from scripts.run_learning_lab import LabHandler
+    if not (ROOT/'artifacts/seed_capability_audit_verified_v2.json').exists():
+        pytest.skip('post-run saved evidence test; no scientific execution')
+    server=ThreadingHTTPServer(('127.0.0.1',0),LabHandler)
+    server.experimental_directory=tmp_path/'empty-host-journal'
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    conn=http.client.HTTPConnection('127.0.0.1',server.server_port,timeout=5)
+    try:
+        conn.request('GET','/api/experimental?study=capability_audit')
+        response=conn.getresponse();body=json.loads(response.read())
+        assert response.status==200
+        row=next(r for r in body['experiments'] if r['id']=='seed-capability-evidence-audit-1')
+        assert row['status']=='valid_negative_screen'
+    finally:
+        conn.close();server.shutdown();server.server_close();thread.join()

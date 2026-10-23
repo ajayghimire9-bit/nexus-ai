@@ -1,5 +1,24 @@
 # NEXUS Seed — Current State
 
+## Current — independent capability/evidence audit supersedes broad v2 interpretations
+
+[Complete report](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md), [source/call-path audit](NEXUS_SEED_CAPABILITY_ARCHITECTURE_AUDIT.md).
+Protocol a88bd80; inherited-runtime correction/execution def0341. Strict common
+shortlist/early stopping, shuffled probe positions, target-independent 252-program
+space and source-answer-only training: learned 19/24, capsule reset 20/24,
+shuffled 21/24, fixed boundary-first/cost-aware 24/24. Improvement screen FAILED.
+Calls saved/task +4.167 [-102.196,+110.529], n3 policy/task seeds, conditional on
+one supplied grammar. No general learning-to-learn evidence or break-even.
+Actual runnable coding 3/6 projects pass private checks; separate Qwen structured
+intent, JSON/SQLite, solver and restart paths work. Ordinary conversation was
+runtime-disabled in this pilot and is not measured by the live intent probe.
+Historical v2 arithmetic still replays, but target-tailored candidate menus,
+source program labels and handwritten repo mappings limit its interpretation.
+No old artifact is rewritten; 889 old blobs and five Seed checkpoint hashes
+verify. Latest ledger **2219.632103455996 used /1380.367896544004 remaining**.
+149 relevant tests pass; no promotion/main merge. Next: completeness-preserving
+investigation fallback; no further experiment started.
+
 ## Latest — equalized, call-metered learned investigation policy v2 (`seed-learned-investigation-policy-v2`) & `v1` audit correction
 
 Pre-registered at `c35252a` on `codex/seed-symbiotic-workbench-v1` ([`v1` Audit](NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V1_AUDIT.md), [`v2` Protocol](NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V2_PROTOCOL.md), [`v2` Results](NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V2_RESULTS.md)):

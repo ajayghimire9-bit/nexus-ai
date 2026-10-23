@@ -1,0 +1,167 @@
+{
+  "status": "NOT_RUN",
+  "reason": "No authorized Gemini interface/credential and spending allocation established",
+  "controlled": {
+    "allowed_patch_attempts": 16,
+    "public_tests_only": true,
+    "private_tests_accessible": false,
+    "tool": "nexus.seed.agent_loop_worker.run_worker_subprocess",
+    "response_schema": {
+      "files": "mapping of repository-relative paths to complete source strings"
+    },
+    "tasks": [
+      {
+        "id": "py_multifile_fee",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Apply the fractional fee to the subtotal, and then subtract that fee in the caller.",
+        "files": {
+          "rates.py": "def fee(base, rate):\n    return round(rate, 2)\n",
+          "invoice.py": "from rates import fee\ndef total(item):\n    return item['base'] + fee(item['base'], item['rate'])\n"
+        },
+        "public": [
+          {
+            "entry": "invoice.total",
+            "input": {
+              "base": 60,
+              "rate": 0.2
+            },
+            "expected": 48
+          }
+        ]
+      },
+      {
+        "id": "py_new_rotation",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Implement left rotation by k positions modulo list length; empty lists remain empty. Return a new list.",
+        "files": {
+          "rotate.py": "def rotate(item):\n    return item['xs']\n"
+        },
+        "public": [
+          {
+            "entry": "rotate.rotate",
+            "input": {
+              "xs": [
+                1,
+                2,
+                3
+              ],
+              "k": 1
+            },
+            "expected": [
+              2,
+              3,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "py_documented_quota",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "The quota endpoint must use the documented request ceiling.",
+        "files": {
+          "quota.py": "def ceiling(x):\n    return 12\n"
+        },
+        "docs": [
+          {
+            "doc_id": "quota-v4",
+            "title": "Quota API v4",
+            "content": "request_ceiling is 37 for this local API.",
+            "grounded_bindings": {
+              "request_ceiling": 37
+            }
+          }
+        ],
+        "public": [
+          {
+            "entry": "quota.ceiling",
+            "input": 0,
+            "expected": 37
+          }
+        ]
+      },
+      {
+        "id": "py_retention_boundary",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Allow values equal to the limit, and preserve values over the limit as rejected.",
+        "files": {
+          "gate.py": "def allowed(item):\n    return item['value'] < item['limit']\n"
+        },
+        "public": [
+          {
+            "entry": "gate.allowed",
+            "input": {
+              "value": 4,
+              "limit": 4
+            },
+            "expected": true
+          }
+        ]
+      },
+      {
+        "id": "ts_credit",
+        "domain": "typescript_repo",
+        "language": "typescript",
+        "request": "Credit adds to the opening balance.",
+        "files": {
+          "ledger.ts": "export function credit(x: {balance: number, amount: number}): number { return x.balance - x.amount; }\n"
+        },
+        "public": [
+          {
+            "entry": "ledger.credit",
+            "input": {
+              "balance": 10,
+              "amount": 3
+            },
+            "expected": 13
+          }
+        ]
+      },
+      {
+        "id": "ts_unique_feature",
+        "domain": "typescript_repo",
+        "language": "typescript",
+        "request": "Return the distinct numbers in first-occurrence order, without modifying the input.",
+        "files": {
+          "dedupe.ts": "export function unique(xs: number[]): number[] { return xs; }\n"
+        },
+        "public": [
+          {
+            "entry": "dedupe.unique",
+            "input": [
+              1,
+              1,
+              2
+            ],
+            "expected": [
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "practical": {
+    "tasks": "same requests/files/public tests",
+    "tools": "normal supported workflow; record tool availability and information differences",
+    "scoring": "same excluded evaluator tests after final files lock; never feed failures back"
+  },
+  "required_metadata": [
+    "exact model/version",
+    "UTC date",
+    "system/user prompts",
+    "sampling settings",
+    "public tool traces",
+    "retry and failure counts",
+    "input/output/cache tokens",
+    "observed latency",
+    "monetary spend",
+    "request IDs"
+  ],
+  "run_command": "Use separately authorized Gemini SDK/UI to submit each public task; save returned files, run public tests in the existing bounded worker, allow at most 16 revisions, lock final files. No API is invoked by this bundle."
+}

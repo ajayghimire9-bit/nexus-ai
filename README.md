@@ -1,5 +1,12 @@
 # NEXUS Seed
 
+**Latest: [capability/evidence audit](docs/NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md).**
+The corrected pilot failed its improvement screen: learned investigation solved
+19/24 tasks versus fixed boundary-first 24/24. Actual Python/TypeScript coverage
+passed 3/6 projects; live local intent inference and restart checks passed.
+[Actual call paths and capability limits](docs/NEXUS_SEED_CAPABILITY_ARCHITECTURE_AUDIT.md).
+No general learning-to-learn claim. Prior results below remain historical.
+
 **Latest repair baseline:** [fixed multi-file configuration workload](docs/NEXUS_SEED_CONFIG_REPAIR_RESULTS.md)
 repaired **12/12 projects** and passed all final/retention checks. Discovery was
 **0.56 ms**, only **0.96%** of repair wall; subprocess overhead dominated.

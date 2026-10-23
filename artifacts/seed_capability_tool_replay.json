@@ -1,0 +1,165 @@
+{
+  "valid": true,
+  "projects": 6,
+  "case_calls": 11,
+  "results": [
+    {
+      "id": "py_multifile_fee",
+      "files_sha256": "1113d851f8714531f36c5512d20f01ba529123129797c1e098f7f1bf620f2aa5",
+      "status": "failed",
+      "all_passed": false,
+      "results": [
+        {
+          "entry": "invoice.total",
+          "actual": 90.1,
+          "expected": 81,
+          "passed": false,
+          "error": null,
+          "calls": []
+        },
+        {
+          "entry": "invoice.total",
+          "actual": 0.3,
+          "expected": 0,
+          "passed": false,
+          "error": null,
+          "calls": []
+        }
+      ]
+    },
+    {
+      "id": "py_new_rotation",
+      "files_sha256": "75c8213b8873bf8fb993fc5e7329e405447f079bd16d860e50670d07aec5ba8f",
+      "status": "failed",
+      "all_passed": false,
+      "results": [
+        {
+          "entry": "rotate.rotate",
+          "actual": [
+            7,
+            8,
+            9,
+            10
+          ],
+          "expected": [
+            9,
+            10,
+            7,
+            8
+          ],
+          "passed": false,
+          "error": null,
+          "calls": []
+        },
+        {
+          "entry": "rotate.rotate",
+          "actual": [],
+          "expected": [],
+          "passed": true,
+          "error": null,
+          "calls": []
+        }
+      ]
+    },
+    {
+      "id": "py_documented_quota",
+      "files_sha256": "ecc55f32fc51282bbcc6b8a5906256565cb58ebe2b464e5c982a1b0537c42071",
+      "status": "passed",
+      "all_passed": true,
+      "results": [
+        {
+          "entry": "quota.ceiling",
+          "actual": 37,
+          "expected": 37,
+          "passed": true,
+          "error": null,
+          "calls": []
+        }
+      ]
+    },
+    {
+      "id": "py_retention_boundary",
+      "files_sha256": "8b9f0311938009d578e6b9148e6841aed1cc354746915a5e41112b5712b598b3",
+      "status": "passed",
+      "all_passed": true,
+      "results": [
+        {
+          "entry": "gate.allowed",
+          "actual": false,
+          "expected": false,
+          "passed": true,
+          "error": null,
+          "calls": []
+        },
+        {
+          "entry": "gate.allowed",
+          "actual": true,
+          "expected": true,
+          "passed": true,
+          "error": null,
+          "calls": []
+        }
+      ]
+    },
+    {
+      "id": "ts_credit",
+      "files_sha256": "f4ac66ab7f5348cf3cdaaf30c4dd7c019760b0936f9834511ede90d721e8ec17",
+      "status": "passed",
+      "all_passed": true,
+      "results": [
+        {
+          "entry": "ledger.credit",
+          "actual": 11,
+          "expected": 11,
+          "passed": true,
+          "error": null
+        },
+        {
+          "entry": "ledger.credit",
+          "actual": 0,
+          "expected": 0,
+          "passed": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "ts_unique_feature",
+      "files_sha256": "0406c4def7afb3aa0694aea0e9c60fe627888127f9e336ce2510afe1aef3b8d2",
+      "status": "failed",
+      "all_passed": false,
+      "results": [
+        {
+          "entry": "dedupe.unique",
+          "actual": [
+            3,
+            4,
+            3,
+            4,
+            5
+          ],
+          "expected": [
+            3,
+            4,
+            5
+          ],
+          "passed": false,
+          "error": null
+        },
+        {
+          "entry": "dedupe.unique",
+          "actual": [],
+          "expected": [],
+          "passed": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "wall_s": 0.6126424579997547,
+  "child_cpu_s": 0.764932,
+  "accounting": "assessment-only consistency replay; not another scientific comparison",
+  "model_calls": 0,
+  "new_environment_steps": 0,
+  "raw_sha256": "8823ce572749c6b83aa6dd671461df29bae5fbdf0e37d42833ac11980c996b4f"
+}

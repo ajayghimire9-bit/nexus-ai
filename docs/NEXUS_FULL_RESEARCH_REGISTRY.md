@@ -1,5 +1,16 @@
 # NEXUS Seed — Research Registry
 
+## Current — corrected capability/evidence audit
+
+`seed-capability-evidence-audit-1`, execution def0341, full 240-cell pilot.
+Learned 19/24 vs strong fixed 24/24: practical improvement FAILED. Three policy/
+task-generation seeds, supplied grammar; not broad confirmation. Runnable coding
+3/6, separate live model intent, tools/solvers/restart checks; raw event logs,
+independent verification and saved-patch replay available. 7 s experiment debit,
+with explicit prior-ledger/preflight reconciliation. Latest carry
+2219.632103455996 used /1380.367896544004 remaining.
+[Protocol](NEXUS_SEED_CAPABILITY_AUDIT_PROTOCOL.md), [report](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md).
+
 ## Latest — configuration-repair baseline, complete negative headroom screen
 
 `seed-config-repair-baseline-1`, pre-run `d2eaec0a12a82c591142ae325b892d40eb52cfc5`:

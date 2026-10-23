@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Current — investigation advantage after stronger boundary controls
+
+Predeclared: source-answer-only learned ranking/probe priorities preserve accuracy
+and reduce calls >=5% against the strongest accurate fixed rule after equal
+shortlists/stopping and shuffled probe positions. **FAILED**: 19/24 learned vs
+24/24 boundary-first, 3.79% call reduction, uncertainty includes zero; clearing
+capsules does not fix accuracy. Four learned failures ask no question while their
+shortlisted candidates agree on both tested probes. This supports investigating
+false certainty in truncated hypotheses, not adding capacity or claiming causal
+proof. [Full pilot and scope limits](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md).
+
 ## Latest — practical discovery cost in multi-file configuration repair
 
 Hypothesis: discovery remains meaningful after strong direct contract tools,

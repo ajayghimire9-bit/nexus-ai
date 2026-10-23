@@ -1,5 +1,21 @@
 # NEXUS Seed — Master Context
 
+## Current — corrected capability audit, complete negative development pilot
+
+[Results](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md), [actual architecture](NEXUS_SEED_CAPABILITY_ARCHITECTURE_AUDIT.md).
+From descendant base 79c65d9, precommitted execution def0341: equal singleton
+stopping and capsule shortlists, shuffled probe positions, fixed boundary-first
+and cost-aware controls, no target-label training or handwritten repository
+mappings. Learned 19/24 versus fixed 24/24; capsules-reset 20/24 and shuffled
+21/24. Screen FAILED; fewer calls with worse accuracy are not improvement.
+Real coding coverage 3/6; separate actual Qwen intent, data, solver and restart
+checks passed. Ordinary-model conversation, broad family transfer and useful
+learning-to-learn remain unmeasured/unestablished. 889 historical artifacts and
+five Seed checkpoint hashes preserved. Ledger 2219.632103455996 s used /
+1380.367896544004 remaining; no main merge or live promotion. One next
+implementation: completeness-preserving investigation fallback before declaring
+certainty from an uninformative shortlist. Older chronology remains unchanged.
+
 ## Latest — configuration repair works; discovery remains cheap
 
 [Fixed repair baseline](NEXUS_SEED_CONFIG_REPAIR_RESULTS.md): 12/12 three-module
