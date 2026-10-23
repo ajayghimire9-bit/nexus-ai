@@ -405,6 +405,9 @@ class SymbioticAgentLoop:
         allow_acquired_memory: bool = True,
         proposal_sources: tuple[str, ...] = ("ast", "local_model"),
         model_revision_budget: int = 2,
+        candidate_ranker=None,
+        proposal_interface: str = "symbol",
+        model_max_tokens: int = 128,
     ):
         self.workspace_dir = Path(workspace_dir)
         self.workspace_dir.mkdir(parents=True, exist_ok=True)
@@ -413,6 +416,9 @@ class SymbioticAgentLoop:
         self.allow_acquired_memory = allow_acquired_memory
         self.proposal_sources = tuple(proposal_sources)
         self.model_revision_budget = max(0, int(model_revision_budget))
+        self.candidate_ranker = candidate_ranker
+        self.proposal_interface = proposal_interface
+        self.model_max_tokens = max(16, int(model_max_tokens))
 
     def solve(self, task: AgentTaskPublicView) -> dict[str, Any]:
         from .symbiotic_workbench import contained_repository_path
@@ -612,6 +618,8 @@ class SymbioticAgentLoop:
                 proposed = propose_with_runtime(
                     self.local_runtime, task, repo_index, grounded_bindings, feedback,
                     files_override=current_files,
+                    max_tokens=self.model_max_tokens,
+                    interface=self.proposal_interface,
                 )
                 model_trace.append({"round": round_idx, **{
                     k: proposed.get(k) for k in (
@@ -712,6 +720,8 @@ class SymbioticAgentLoop:
                             "applied": False,
                             "used_private_tests": False,
                         }, time.perf_counter())
+        if self.candidate_ranker is not None:
+            queue = self.candidate_ranker(list(queue), task)
         while idx < len(queue) and idx < max_attempts:
             op_desc, cand_files = queue[idx]
             idx += 1
@@ -811,6 +821,8 @@ class SymbioticAgentLoop:
                             ),
                         },
                         files_override=staging.staged,
+                        max_tokens=self.model_max_tokens,
+                        interface=self.proposal_interface,
                     )
                     model_trace.append({"round": len(model_trace) + 1, **{
                         k: revised.get(k) for k in (

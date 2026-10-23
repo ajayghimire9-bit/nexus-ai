@@ -1,5 +1,14 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Capability milestone
+
+`seed/capability_milestone.py` reuses `SymbioticAgentLoop`,
+`RepairSchemaStore` gates, `EventMeter`, `agent_loop_worker` replay and
+workspace chat. `seed/operator_family.py` labels existing AST operators; it
+does not add a second ranker framework. Conversation quality sits beside
+`score_workspace_reply` and does not replace it.
+[Protocol](NEXUS_SEED_CAPABILITY_MILESTONE_PROTOCOL.md).
+
 ## Guarded-template reuse
 
 `seed/guarded_reuse.py` reuses `propose_retrieved_repair`, the new

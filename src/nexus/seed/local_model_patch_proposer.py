@@ -302,16 +302,22 @@ def parse_model_patch(content: str) -> dict[str, Any]:
     return payload
 
 
-def validate_patch(payload: dict[str, Any], files: dict[str, str]) -> dict[str, Any]:
+def validate_patch(payload: dict[str, Any], files: dict[str, str],
+                   interface: str = "symbol") -> dict[str, Any]:
     edits = []
     for raw in payload["edits"]:
         if type(raw) is not dict:
             raise ValueError("edit_not_object")
-        raw = prefer_symbol_targeted_edit(raw, files)
+        if interface == "symbol":
+            raw = prefer_symbol_targeted_edit(raw, files)
+        elif interface != "raw":
+            raise ValueError("invalid_proposal_interface")
         path = contained_path(raw.get("path", ""))
         action = raw.get("action")
         if action not in ("replace", "create", "insert_function", "insert_after_symbol"):
             raise ValueError("invalid_edit_action")
+        if interface == "raw" and action in {"insert_function", "insert_after_symbol"}:
+            raise ValueError("raw_interface_rejects_symbol_action")
         new_text = raw.get("new_text")
         if type(new_text) is not str or len(new_text) > MAX_NEW_TEXT:
             raise ValueError("invalid_new_text")
@@ -426,7 +432,8 @@ def apply_patch(files: dict[str, str], validated: dict[str, Any]) -> dict[str, s
 
 
 def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
-                  public_feedback: dict[str, Any] | None = None) -> str:
+                  public_feedback: dict[str, Any] | None = None,
+                  interface: str = "symbol") -> str:
     files = getattr(task, "files", {})
     listed = []
     for path, source in sorted(files.items())[:8]:
@@ -444,9 +451,14 @@ def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
             "for a new definition. For replace, old_text must occur exactly once. "
             "Do not send an incomplete snippet as a whole module.\n"
         )
+    interface_line = (
+        "Prefer symbol-targeted insert_function, insert_after_symbol, or a unique symbol replace.\n"
+        if interface != "raw" else
+        "Use only replace or create. Do not use insert_function or insert_after_symbol.\n"
+    )
     return (
         "Propose a JSON patch for this local repository. Use only public tests and docs.\n"
-        "Prefer symbol-targeted insert_function, insert_after_symbol, or a unique symbol replace.\n"
+        f"{interface_line}"
         "Return edits with explicit paths. Do not claim private tests passed.\n"
         f"{validation}"
         f"Request: {getattr(task, 'request', '')}\n"
@@ -464,7 +476,8 @@ def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
 def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: dict[str, Any],
                          public_feedback: dict[str, Any] | None = None,
                          max_tokens: int = 256,
-                         files_override: dict[str, str] | None = None) -> dict[str, Any]:
+                         files_override: dict[str, str] | None = None,
+                         interface: str = "symbol") -> dict[str, Any]:
     if runtime is None:
         return {
             "status": "BLOCKED",
@@ -475,13 +488,13 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
     from .staging_workspace import CompletionInspector, inspect_completion_stop
     files = files_override if files_override is not None else task.files
     inspector = CompletionInspector(runtime)
-    prompt = public_prompt(task, repo_index, grounded, public_feedback)
+    prompt = public_prompt(task, repo_index, grounded, public_feedback, interface=interface)
     if files_override is not None:
         prompt = public_prompt(
             type("T", (), {"files": files, "request": getattr(task, "request", ""),
                            "public_tests": getattr(task, "public_tests", []),
                            "docs": getattr(task, "docs", [])})(),
-            repo_index, grounded, public_feedback,
+            repo_index, grounded, public_feedback, interface=interface,
         )
     try:
         raw = runtime.complete(prompt, PATCH_SCHEMA, max_tokens=max_tokens)
@@ -500,7 +513,7 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
     telemetry["completion_stop"] = stop
     try:
         parsed = parse_model_patch(raw["content"])
-        validated = validate_patch(parsed, files)
+        validated = validate_patch(parsed, files, interface=interface)
         patched = apply_patch(files, validated)
     except Exception as exc:
         return {

@@ -1,0 +1,177 @@
+{
+  "id": "seed-capability-milestone-1",
+  "artifact_stem": "seed_capability_milestone",
+  "base_sha": "33b9fdec78410ab9d43140c66c66baea283cf9c8",
+  "parent_protocol_commit": "33b9fdec78410ab9d43140c66c66baea283cf9c8",
+  "carried_used_s": 2433.667484455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_policy_promoted": false,
+  "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "coding_budget_steps": 4,
+  "feature_budget_steps": 6,
+  "expected_grid": {
+    "ranking_source_cells": 2,
+    "ranking_cells": 9,
+    "token_cells": 4,
+    "feature_cells": 1,
+    "language_cells": 5
+  },
+  "ranking": {
+    "source": [
+      {
+        "id": "py_src_cap_ok",
+        "family": "comparison_boundary",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Allow n equal to the cap.",
+        "files": {"cap.py": "def keep(item):\n    return item['n'] < item['cap']\n"},
+        "public": [{"entry": "cap.keep", "input": {"n": 7, "cap": 7}, "expected": true}],
+        "assessment": [
+          {"entry": "cap.keep", "input": {"n": 7, "cap": 7}, "expected": true},
+          {"entry": "cap.keep", "input": {"n": 8, "cap": 7}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_src_title_ok",
+        "family": "null_default",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Treat a missing title as the default none, not an empty string.",
+        "files": {"title.py": "def label(item):\n    return item['title'] or 'none'\n"},
+        "public": [{"entry": "title.label", "input": {"title": null}, "expected": "none"}],
+        "assessment": [
+          {"entry": "title.label", "input": {"title": null}, "expected": "none"},
+          {"entry": "title.label", "input": {"title": ""}, "expected": ""}
+        ]
+      }
+    ],
+    "assessment": [
+      {
+        "id": "py_mix_span",
+        "cue": "mixed",
+        "family": "comparison_boundary",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Allow span equal to the limit. You may also think about adding helper(x) later.",
+        "files": {"span.py": "def ok(item):\n    return item['span'] < item['limit']\n"},
+        "public": [{"entry": "span.ok", "input": {"span": 5, "limit": 5}, "expected": true}],
+        "assessment": [
+          {"entry": "span.ok", "input": {"span": 5, "limit": 5}, "expected": true},
+          {"entry": "span.ok", "input": {"span": 6, "limit": 5}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_doc_lie",
+        "cue": "misleading_doc",
+        "family": "comparison_boundary",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Honor the documented window.",
+        "files": {"win.py": "def inside(item):\n    return item['n'] < item['max']\n"},
+        "docs": [{"title": "window", "content": "The window is exclusive. Values equal to max must fail."}],
+        "public": [{"entry": "win.inside", "input": {"n": 4, "max": 4}, "expected": true}],
+        "assessment": [
+          {"entry": "win.inside", "input": {"n": 4, "max": 4}, "expected": true},
+          {"entry": "win.inside", "input": {"n": 5, "max": 4}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_two_bugs",
+        "cue": "multi_defect",
+        "family": "comparison_boundary",
+        "domain": "python_repo",
+        "language": "python",
+        "request": "Allow n equal to the cap, and treat a missing title as the default none.",
+        "files": {
+          "cap.py": "def keep(item):\n    return item['n'] < item['cap']\n",
+          "title.py": "def label(item):\n    return item['title'] or 'none'\n"
+        },
+        "public": [
+          {"entry": "cap.keep", "input": {"n": 2, "cap": 2}, "expected": true},
+          {"entry": "title.label", "input": {"title": null}, "expected": "none"}
+        ],
+        "assessment": [
+          {"entry": "cap.keep", "input": {"n": 2, "cap": 2}, "expected": true},
+          {"entry": "title.label", "input": {"title": ""}, "expected": ""}
+        ]
+      }
+    ]
+  },
+  "token_task": {
+    "id": "py_mark_join",
+    "family": "missing_function",
+    "domain": "python_repo",
+    "language": "python",
+    "request": "Create function mark(left, right) that lowercases both strings and joins them with one colon.",
+    "files": {"mark.py": "def echo(text):\n    return text\n"},
+    "public": [{"entry": "mark.mark", "input": ["Src", "Beta"], "unpack_args": true, "expected": "src:beta"}],
+    "assessment": [
+      {"entry": "mark.mark", "input": ["A", "B"], "unpack_args": true, "expected": "a:b"}
+    ]
+  },
+  "feature": {
+    "id": "py_invoice_slug_feature",
+    "family": "multi_file",
+    "domain": "python_repo",
+    "language": "python",
+    "request": "Discover the repository files. Create function slug(left, right) that lowercases both strings and joins them with one hyphen. Add the levy to the raw amount, then subtract the credit. Honor the documented retry_limit: the last attempt number equal to the limit is still allowed.",
+    "required_parts": ["file_discovery", "new_function", "coordinated_edits", "public_test_revision", "independent_checks"],
+    "files": {
+      "text.py": "def echo(text):\n    return text\n",
+      "levy.py": "def apply_levy(amount, rate):\n    return amount\n",
+      "bill.py": "from levy import apply_levy\ndef due(item):\n    billed = apply_levy(item['amount'], item['levy'])\n    return billed + item['credit']\n",
+      "retry.py": "def allowed(item):\n    return item['attempt'] < item['retry_limit']\n"
+    },
+    "docs": [{"title": "retry_limit", "content": "Attempts 1..retry_limit inclusive are allowed. attempt == retry_limit must return True."}],
+    "public": [
+      {"entry": "text.slug", "input": ["Src", "Id"], "unpack_args": true, "expected": "src-id"},
+      {"entry": "bill.due", "input": {"amount": 80, "levy": 0.25, "credit": 5}, "expected": 95.0},
+      {"entry": "retry.allowed", "input": {"attempt": 3, "retry_limit": 3}, "expected": true}
+    ],
+    "assessment": [
+      {"entry": "text.slug", "input": ["A", "B"], "unpack_args": true, "expected": "a-b"},
+      {"entry": "bill.due", "input": {"amount": 40, "levy": 0.1, "credit": 1}, "expected": 43.0},
+      {"entry": "retry.allowed", "input": {"attempt": 4, "retry_limit": 3}, "expected": false}
+    ]
+  },
+  "conversation_files": [
+    {"id": "notes", "key": "region", "value": "amount", "rows": [["east", 4], ["west", 8], ["east", 2]]},
+    {"id": "fees", "key": "region", "value": "amount", "rows": [["north", 1], ["south", 3]]}
+  ],
+  "conversation": [
+    {
+      "id": "explain",
+      "kind": "explanation",
+      "text": "What did you just change?",
+      "expected": {"facts": ["notes"], "forbidden": ["fees.csv"], "pending_after": null, "selected": "notes", "must_use_last_tool": true}
+    },
+    {
+      "id": "paraphrase",
+      "kind": "paraphrase",
+      "text": "In other words, give me the regional totals for the file that is already selected.",
+      "expected": {"facts": ["notes"], "forbidden": ["sales.csv"], "selected": "notes"}
+    },
+    {
+      "id": "correct",
+      "kind": "correction",
+      "text": "Not the notes file. Use file \"{fees}\" instead.",
+      "expected": {"facts": ["fees"], "forbidden": [], "selected": "fees", "pending_after": null}
+    },
+    {
+      "id": "doc_q",
+      "kind": "document_question",
+      "text": "What did the last tool result say, and which file did it use?",
+      "expected": {"facts": ["fees"], "attribution": "fees", "selected": "fees"}
+    },
+    {
+      "id": "topic",
+      "kind": "topic_change",
+      "text": "What file is selected?",
+      "expected": {"facts": ["fees"], "forbidden": ["booked a flight"], "selected": "fees", "pending_after": null}
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

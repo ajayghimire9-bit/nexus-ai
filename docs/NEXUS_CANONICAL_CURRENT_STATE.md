@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — guarded-template reuse on fresh cases (results)
+## Current — capability milestone (implementation)
+
+Branch `cursor/seed-capability-milestone` from reviewed `33b9fde`. Protocol
+[NEXUS_SEED_CAPABILITY_MILESTONE_PROTOCOL.md](NEXUS_SEED_CAPABILITY_MILESTONE_PROTOCOL.md).
+Operator families update from public outcomes; ranking uses fixed diagnostic
+and source-frequency baselines on fresh mixed repos; raw vs symbol editing is
+compared at 128 and 512 tokens with a matched revision budget; one repository
+feature records model vs operator attribution; conversation scoring checks
+facts, attribution and state. Scoring is blocked until this protocol is
+committed. `fixed_boundary` stays the default. Ledger unchanged:
+**2433.667484455996 used / 1166.332515544004 remaining**.
+
+## Previous — guarded-template reuse on fresh cases (results)
 
 [Protocol](NEXUS_SEED_GUARDED_TEMPLATE_REUSE_PROTOCOL.md),
 [results](NEXUS_SEED_GUARDED_TEMPLATE_REUSE_RESULTS.md). Implementation
