@@ -1,5 +1,15 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Chat template and target discovery
+
+`seed/chat_template.py` renders Qwen2.5 ChatML around the existing
+`json_body` user prompt and still calls `/completion`. It does not edit
+`local_model_runtime.py`. `seed/public_failure.py` adds the equal-to-limit
+sentence without an operator. `seed/target_discovery.py` reuses
+`existing_definitions` / `requested_functions` and ignores public tests.
+`seed/process_memory.py` samples parent and server RSS from `ps`.
+[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md).
+
 ## Function-output formats
 
 `seed/function_format.py` reuses `plan_constrained_edit`, `validate_patch`

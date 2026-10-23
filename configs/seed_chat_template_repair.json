@@ -1,0 +1,156 @@
+{
+  "id": "seed-chat-template-repair-1",
+  "artifact_stem": "seed_chat_template_repair",
+  "base_sha": "5b460e7391690a2ec3e54fda3672dc175173762b",
+  "parent_protocol_commit": "5b460e7391690a2ec3e54fda3672dc175173762b",
+  "carried_used_s": 2566.777111455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "measured_separately_not_wired_to_assembler",
+  "model_max_tokens": 128,
+  "models": {
+    "qwen05": {
+      "label": "qwen2.5-0.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+      "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+      "bytes": 491400032
+    },
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "template_cells": 8,
+    "fresh_cells": 6,
+    "discovery_cells": 6
+  },
+  "tasks": [
+    {
+      "id": "py_score_three_point",
+      "phase": "template",
+      "role": "replace",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow score equal to the limit.",
+      "files": {"score.py": "def fit(item):\n    return item['score'] < item['limit']\n"},
+      "gold_target": {"path": "score.py", "symbol": "fit", "action": "replace_function"},
+      "public": [
+        {"entry": "score.fit", "input": {"score": 1, "limit": 2}, "expected": true},
+        {"entry": "score.fit", "input": {"score": 2, "limit": 2}, "expected": true},
+        {"entry": "score.fit", "input": {"score": 3, "limit": 2}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "score.fit", "input": {"score": 2, "limit": 2}, "expected": true},
+        {"entry": "score.fit", "input": {"score": 3, "limit": 2}, "expected": false},
+        {"entry": "score.fit", "input": {"score": 0, "limit": 0}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_mark_dash",
+      "phase": "template",
+      "role": "insert",
+      "family": "formatted_identifier",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function mark(item) that returns the kind in uppercase, a dash, then the name unchanged.",
+      "docs": [{"title": "mark", "content": "mark(item) is KIND-name. Kind is uppercased. Name is unchanged."}],
+      "files": {"echo.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "echo.py", "symbol": "mark", "action": "insert_function"},
+      "public": [
+        {"entry": "echo.mark", "input": {"kind": "Src", "name": "Beta"}, "expected": "SRC-Beta"}
+      ],
+      "assessment": [
+        {"entry": "echo.mark", "input": {"kind": "", "name": "z"}, "expected": "-z"},
+        {"entry": "echo.mark", "input": {"kind": "ab", "name": "Cd"}, "expected": "AB-Cd"}
+      ]
+    },
+    {
+      "id": "py_slug_space",
+      "phase": "fresh",
+      "role": "insert",
+      "family": "formatted_identifier",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function slug(item) that lowercases text and replaces each space with one underscore.",
+      "docs": [{"title": "slug", "content": "slug(item) lowercases item text and replaces each space with one underscore. Consecutive spaces stay consecutive underscores."}],
+      "files": {"note.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "note.py", "symbol": "slug", "action": "insert_function"},
+      "public": [
+        {"entry": "note.slug", "input": {"text": "Hello World"}, "expected": "hello_world"}
+      ],
+      "assessment": [
+        {"entry": "note.slug", "input": {"text": ""}, "expected": ""},
+        {"entry": "note.slug", "input": {"text": "A  B"}, "expected": "a__b"},
+        {"entry": "note.slug", "input": {"text": "MiXeD Case"}, "expected": "mixed_case"}
+      ]
+    },
+    {
+      "id": "py_ready_status",
+      "phase": "fresh",
+      "role": "insert",
+      "family": "status_predicate",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function ready(item) that is True only when status equals ready, ignoring case. Do not trim spaces.",
+      "docs": [{"title": "ready", "content": "ready(item) is True iff status.lower() == 'ready'. Leading or trailing spaces make it False."}],
+      "files": {"gate.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "gate.py", "symbol": "ready", "action": "insert_function"},
+      "public": [
+        {"entry": "gate.ready", "input": {"status": "Ready"}, "expected": true}
+      ],
+      "assessment": [
+        {"entry": "gate.ready", "input": {"status": ""}, "expected": false},
+        {"entry": "gate.ready", "input": {"status": "READY"}, "expected": true},
+        {"entry": "gate.ready", "input": {"status": "done"}, "expected": false},
+        {"entry": "gate.ready", "input": {"status": "ready "}, "expected": false}
+      ]
+    },
+    {
+      "id": "py_pair_slash",
+      "phase": "fresh",
+      "role": "insert",
+      "family": "formatted_identifier",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function pair(item) that joins left and right with one slash. Empty strings are allowed.",
+      "docs": [{"title": "pair", "content": "pair(item) returns left + '/' + right. Do not change case. Empty left or right is allowed."}],
+      "files": {"join.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "join.py", "symbol": "pair", "action": "insert_function"},
+      "public": [
+        {"entry": "join.pair", "input": {"left": "A", "right": "b"}, "expected": "A/b"}
+      ],
+      "assessment": [
+        {"entry": "join.pair", "input": {"left": "", "right": "x"}, "expected": "/x"},
+        {"entry": "join.pair", "input": {"left": "Hi", "right": ""}, "expected": "Hi/"}
+      ]
+    },
+    {
+      "id": "py_discover_two_files",
+      "phase": "discovery",
+      "role": "discovery_only",
+      "family": "target_selection",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow hold equal to the cap.",
+      "files": {
+        "alpha.py": "def keep(item):\n    return item['n'] < item['cap']\n",
+        "beta.py": "def hold(item):\n    return item['n'] < item['cap']\n"
+      },
+      "gold_target": {"path": "beta.py", "symbol": "hold", "action": "replace_function"},
+      "public": [
+        {"entry": "alpha.keep", "input": {"n": 1, "cap": 1}, "expected": true}
+      ],
+      "assessment": []
+    }
+  ],
+  "gemini": "NOT_RUN"
+}

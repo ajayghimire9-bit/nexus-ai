@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — function-output formats and placeholder rejection (results)
+## Current — chat template, equality revision, fresh functions (protocol)
+
+[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md). Branch
+`cursor/seed-chat-template-repair` from reviewed tip `5b460e7`. Compare raw
+`/completion` prompts with Qwen2.5 ChatML on `json_body`, give the inclusive
+replace the exact equal-to-limit failure, and retest three fresh functions.
+Discovery is scored from files and the request only; it is not wired into
+the assembler. Memory is parent plus `llama-server` RSS. Ledger
+**2566.777111455996 used / 1033.222888544004 remaining**.
+
+## Previous — function-output formats and placeholder rejection (results)
 
 [Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md),
 [results](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_RESULTS.md). Implementation

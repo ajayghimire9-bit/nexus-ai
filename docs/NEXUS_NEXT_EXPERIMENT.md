@@ -1,6 +1,17 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — keep json_body on the coder for inclusive replace
+## Current next — proper ChatML, then equality-failure revision and fresh functions
+
+The [format comparison](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_RESULTS.md) used
+raw `/completion` prompts. Next: compare that raw user text with Qwen2.5
+ChatML, give inclusive replace the exact equal-to-limit failure without
+supplying `<=`, and retest three fresh functions. Score target discovery
+separately. Measure parent plus server RSS. Do not resume ranking or
+memory. Ledger
+**2566.777111455996 used / 1033.222888544004 remaining**.
+[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md).
+
+## Previous next — keep json_body on the coder for inclusive replace
 
 The [format comparison](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_RESULTS.md)
 showed `json_body` as the better interface and a 1.5B success on a new

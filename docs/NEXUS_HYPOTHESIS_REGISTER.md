@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Current — raw prompt versus Qwen chat template
+
+Predeclared: the last coding scores describe raw `/completion` prompts, not
+either model’s ceiling. ChatML with the official system line, the same
+`json_body` user text and budget, a concrete equal-to-limit revision, and
+three fresh functions separate interface from coding. Discovery is measured
+from files and the request only. Not confirmation.
+[Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md).
+
 ## Current — decoding/interface versus coding capability
 
 Predeclared: the one-word `function` completions were a request/schema
