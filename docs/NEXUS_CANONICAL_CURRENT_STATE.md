@@ -1,6 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — slot-3 structural repair (results)
+## Current — slot-3 copy / KeyError trigger (results)
+
+[Protocol](NEXUS_SEED_SLOT3_COPY_PROTOCOL.md),
+[results](NEXUS_SEED_SLOT3_COPY_RESULTS.md). Implementation
+`f850122` on `cursor/seed-worker-div-confirm` (base `307bd89`).
+Verifier `valid: true`. Live public 1/4, private 1/4 (`ratio` passes;
+`post` fires slot 3 on a duplicated KeyError subscript and recopies;
+`crate` spends C3 on an unprojected-sum reject; `clear` is empty at
+deadline). Historical scores untouched. Ledger
+**3451.157780455996 used / 148.842219544004 remaining**.
+
+## Previous — slot-3 structural repair (results)
 
 [Protocol](NEXUS_SEED_SLOT3_REPAIR_PROTOCOL.md),
 [results](NEXUS_SEED_SLOT3_REPAIR_RESULTS.md). Implementation
