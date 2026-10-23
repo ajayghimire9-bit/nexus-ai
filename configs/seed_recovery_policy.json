@@ -1,0 +1,38 @@
+{
+  "id": "seed_recovery_policy",
+  "kind": "source_development_recovery_not_confirmation",
+  "baseline_sha": "e3d21b66785408a357d8f108231264ced4c0964b",
+  "model": "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+  "prompt_style": "chatml",
+  "format": "json_body",
+  "live_inference": false,
+  "cpu_ledger_used_s": 3564.568,
+  "cpu_ledger_remaining_s": 35.432,
+  "cpu_ledger_debit_s": 0,
+  "cpu_ledger_frozen": true,
+  "product_chat_usage_forbidden": true,
+  "metal_forbidden": true,
+  "max_actions": 4,
+  "max_revises": 2,
+  "l2": 1.0,
+  "methods": [
+    "immediate_revise",
+    "fixed_diagnostic",
+    "source_frequency",
+    "learned",
+    "reset_policy",
+    "shuffled_policy",
+    "all_cheap_first"
+  ],
+  "splits": {
+    "source": ["src_schema_a", "src_schema_b", "src_missing_a", "src_api_a", "src_assume_a", "src_multi_a", "src_immediate_a", "src_stop_a"],
+    "development": ["dev_schema_c", "dev_missing_b", "dev_api_b", "dev_multi_b", "dev_immediate_b", "dev_misleading_a"],
+    "retention": ["ret_schema_a", "ret_immediate_a"],
+    "assessment_locked": ["assess_comp_schema_api", "assess_family_order", "assess_assume_b", "assess_stop_b"]
+  },
+  "unit_of_analysis": "task",
+  "primary_metric": "identifiable_private_correct",
+  "secondary_metrics": ["tool_executions", "teacher_queries", "wall_s", "confident_errors", "appropriate_stop"],
+  "confidence_interval": "not_applicable_offline_fixture_census",
+  "acceptance": "learned identifiable private accuracy strictly above the strongest simple baseline, or tied accuracy with fewer tool executions"
+}

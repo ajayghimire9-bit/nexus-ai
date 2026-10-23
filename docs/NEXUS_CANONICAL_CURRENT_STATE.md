@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — ordinary-chat routing and product CPU budget (interface)
+## Current — recovery-action policy (negative offline, live blocked)
+
+Reviewed baseline `e3d21b6`. Branch `cursor/seed-recovery-policy`.
+Authored recovery fixtures, equal-access tools, and a linear action
+scorer. Development: all-cheap-first 6/6, learned 6/6 same 25 tools,
+reset 6/6, shuffle 0/6, immediate 1/6. **Retain all-cheap-first.**
+Live 1.5B assessment **BLOCKED_BUDGET** (closed CPU leftover 35.432 s,
+frozen 0 debit). Not learning-to-learn. Product chat routing and
+`chat_usage.json` unchanged. Pinned `local_model_runtime.py` unchanged.
+
+## Previous — ordinary-chat routing and product CPU budget (interface)
 
 Greetings, follow-ups and topic changes stay on ordinary local-model chat.
 Only “Explain how NEXUS works” and close architecture phrases open the

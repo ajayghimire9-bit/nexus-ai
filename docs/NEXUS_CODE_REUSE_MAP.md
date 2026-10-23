@@ -363,6 +363,13 @@ saved-data only. [Guide](NEXUS_LOCAL_ASSISTANT_RUNTIME.md),
   knowledge drawer requests; web/learning-lab/chat.* is the single local chat
   page. [Guide](NEXUS_SEED_CONVERSATION_WORKSPACE.md).
 
+- Recovery actions: `seed/recovery_actions.py` reuses
+  `evaluate_python_payload`, `input_contract`, `public_failure`,
+  `plan_constrained_edit` and vault `retrieve_for_question`.
+  `seed/recovery_policy.py` is regularized linear scoring, not the
+  failed symbolic investigation φ and not an LM fine-tune.
+  [Protocol](NEXUS_SEED_RECOVERY_POLICY_PROTOCOL.md).
+
 - Shared labs: seed/shared_brain.py is an adapter over Session, not another agent
   state store. seed/skill_library.py derives typed skill revisions and source-only
   rule feedback from that SAME E1 Journal; existing storage saves them.
