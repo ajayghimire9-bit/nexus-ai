@@ -658,6 +658,7 @@ class SymbioticAgentLoop:
                 "traces": per_file.get("traces"),
                 "telemetry": per_file.get("telemetry"),
                 "model_generated_per_file": True,
+                "used_prior_staged_context": per_file.get("used_prior_staged_context"),
                 "truncation_claimed_as_cause": False,
             })
             record_tool("local_model_per_file", {"files": sorted(task.files)}, {

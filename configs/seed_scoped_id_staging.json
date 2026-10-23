@@ -2,7 +2,7 @@
   "id": "seed-scoped-id-staging-1",
   "artifact_stem": "seed_scoped_id_staging",
   "base_sha": "0a8df5d6f24e8b903583a7bc3be846a0bbf8f05f",
-  "parent_protocol_commit": "d84833fbe23e14f2081fc149a277890ee5500f5f",
+  "parent_protocol_commit": "49179f07113f7c0fb30482fe970434e7027ad9f6",
   "carried_used_s": 2259.632103455996,
   "wall_s": 900,
   "cpu_s": 900,
@@ -40,11 +40,17 @@
     "winner": null
   },
   "predeclared_families": ["comparison_boundary", "missing_function", "null_default"],
+  "expected_grid": {
+    "investigation_episodes": 30,
+    "coding_cells": 18,
+    "repair_transfer_cells": 2,
+    "conversation_cells": 3
+  },
   "coding": [
     {
-      "id": "py_inclusive_window",
+      "id": "py_inclusive_window_src",
       "family": "comparison_boundary",
-      "role": "assessment",
+      "role": "source",
       "domain": "python_repo",
       "language": "python",
       "request": "Allow the value equal to the window limit, and reject only values above the limit.",
@@ -55,6 +61,22 @@
       "assessment": [
         {"entry": "window.inside", "input": {"value": 6, "limit": 5}, "expected": false},
         {"entry": "window.inside", "input": {"value": 1, "limit": 5}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_score_gate",
+      "family": "comparison_boundary",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow a score equal to the cap, and reject only scores above the cap.",
+      "files": {
+        "gate.py": "def ok(item):\n    return item['score'] < item['cap']\n"
+      },
+      "public": [{"entry": "gate.ok", "input": {"score": 3, "cap": 3}, "expected": true}],
+      "assessment": [
+        {"entry": "gate.ok", "input": {"score": 4, "cap": 3}, "expected": false},
+        {"entry": "gate.ok", "input": {"score": 1, "cap": 3}, "expected": true}
       ]
     },
     {
@@ -91,9 +113,9 @@
       ]
     },
     {
-      "id": "py_or_default",
+      "id": "py_or_default_src",
       "family": "null_default",
-      "role": "assessment",
+      "role": "source",
       "domain": "python_repo",
       "language": "python",
       "request": "Missing or None means 4; zero remains zero.",
@@ -108,44 +130,39 @@
         {"entry": "cfg.consume", "input": 2, "expected": 2},
         {"entry": "cfg.consume", "input": 0, "expected": 0}
       ]
+    },
+    {
+      "id": "py_or_floor",
+      "family": "null_default",
+      "role": "assessment",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Missing or None means 7; zero remains zero.",
+      "files": {
+        "floor.py": "def floor(value):\n    return value or 7\n"
+      },
+      "public": [
+        {"entry": "floor.floor", "input": 0, "expected": 0},
+        {"entry": "floor.floor", "input": null, "expected": 7}
+      ],
+      "assessment": [
+        {"entry": "floor.floor", "input": 2, "expected": 2},
+        {"entry": "floor.floor", "input": 0, "expected": 0}
+      ]
     }
   ],
   "repair_transfer": [
     {
       "id": "cmp_window_to_gate",
       "family": "comparison_boundary",
-      "source": {
-        "request": "Allow the value equal to the window limit.",
-        "files": {"w.py": "def inside(item):\n    return item['value'] < item['limit']\n"},
-        "patched": {"w.py": "def inside(item):\n    return item['value'] <= item['limit']\n"},
-        "public": [{"entry": "w.inside", "input": {"value": 5, "limit": 5}, "expected": true}]
-      },
-      "assessment": {
-        "request": "Allow a score equal to the cap.",
-        "files": {"g.py": "def ok(item):\n    return item['score'] < item['cap']\n"},
-        "assessment": [
-          {"entry": "g.ok", "input": {"score": 3, "cap": 3}, "expected": true},
-          {"entry": "g.ok", "input": {"score": 4, "cap": 3}, "expected": false}
-        ]
-      }
+      "source_id": "py_inclusive_window_src",
+      "assessment_id": "py_score_gate"
     },
     {
       "id": "null_limit_to_floor",
       "family": "null_default",
-      "source": {
-        "request": "Missing or None means 4; zero remains zero.",
-        "files": {"c.py": "def consume(value):\n    return value or 4\n"},
-        "patched": {"c.py": "def consume(value):\n    return 4 if value is None else value\n"},
-        "public": [{"entry": "c.consume", "input": 0, "expected": 0}]
-      },
-      "assessment": {
-        "request": "Missing or None means 7; zero remains zero.",
-        "files": {"f.py": "def floor(value):\n    return value or 7\n"},
-        "assessment": [
-          {"entry": "f.floor", "input": 0, "expected": 0},
-          {"entry": "f.floor", "input": null, "expected": 7}
-        ]
-      }
+      "source_id": "py_or_default_src",
+      "assessment_id": "py_or_floor"
     }
   ],
   "conversation": [

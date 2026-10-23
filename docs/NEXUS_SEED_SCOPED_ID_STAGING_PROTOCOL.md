@@ -13,10 +13,19 @@ Runner: `scripts/run_seed_scoped_id_staging.py`.
 repository requires a passing test receipt bound to the exact staged-file
 hashes. Repair memory stores parameterized AST transforms and persists them.
 `local_model_per_file` is one `complete()` per file under a shared intent, not
-`apply_per_file` helpers. Families were chosen before scoring:
-`comparison_boundary`, `missing_function`, `null_default`. Assessment instances
-are new members of those families, not historical failures selected after the
-fact.
+`apply_per_file` helpers. Later `complete()` calls see earlier staged file
+contents. Repair transfer acquires schemas only from genuine public-passing
+source solves; handwritten `patched` fields are forbidden. Baselines are the
+ordinary exact cache, a family template with no acquisition, and the unpatched
+files. Families were chosen before scoring: `comparison_boundary`,
+`missing_function`, `null_default`. Assessment instances are new members of
+those families, not historical failures selected after the fact.
+
+Expected grid: 30 investigation episodes (2 seeds × (4 assessment + 1
+out-of-grammar) × 3 methods), 18 coding cells (6 specs × 3 methods), 2 repair
+transfer records, 3 conversation cells. The verifier requires that grid,
+replays `final_files` against assessment cases, and reconstructs completion
+counts, tokens and request wall time from raw `model_trace`.
 
 ## Questions
 
@@ -43,9 +52,11 @@ fact.
    failures. Compare per-file generation with a larger single-response budget
    under comparable total token/time.
 5. Does repair-schema memory transfer to new instances of predeclared families
-   better than ordinary exact caches, after charging acquisition? Families are
-   chosen before scoring. One success is not a 100% rate. Do not pick
-   assessment tasks because a baseline already failed them.
+   better than an ordinary exact cache and a no-acquisition family template,
+   after charging genuine source acquisition? Families are chosen before
+   scoring. One success is not a 100% rate. Do not pick assessment tasks
+   because a baseline already failed them. Do not seed the store with
+   handwritten patched files.
 6. Does a workspace header generated from registered capabilities, active
    files, pending clarification and tool results make replies describe real
    state and ask the needed question? Missing coding-workspace selection must

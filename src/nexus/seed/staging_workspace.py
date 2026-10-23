@@ -30,23 +30,52 @@ def bundle_sha256(files: dict[str, str]) -> str:
     ).hexdigest()
 
 
+class _StagedFiles(dict):
+    """In-place edits invalidate any passing receipt."""
+
+    def __init__(self, owner: "StagingWorkspace", files: dict[str, str]) -> None:
+        super().__init__(files)
+        self._owner = owner
+        self._frozen = False
+
+    def _touch(self) -> None:
+        if not self._frozen:
+            self._owner._invalidate_receipt()
+
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        self._touch()
+
+    def __delitem__(self, key):
+        super().__delitem__(key)
+        self._touch()
+
+    def update(self, *args, **kwargs):
+        super().update(*args, **kwargs)
+        self._touch()
+
+    def clear(self):
+        super().clear()
+        self._touch()
+
+
 class StagingWorkspace:
     """In-memory staged repository. Publish requires a matching passing receipt."""
 
     def __init__(self, files: dict[str, str]) -> None:
         self.original = dict(files)
-        self.staged = dict(files)
         self.history: list[dict[str, Any]] = []
         self.published = False
         self.last_validation: dict[str, Any] | None = None
         self.test_receipt: dict[str, Any] | None = None
+        self.staged = _StagedFiles(self, files)
 
     def _invalidate_receipt(self) -> None:
         self.test_receipt = None
         self.published = False
 
     def replace_staged(self, files: dict[str, str]) -> None:
-        self.staged = dict(files)
+        self.staged = _StagedFiles(self, files)
         self._invalidate_receipt()
 
     def propose_coordinated(self, intent: str, files: list[str] | None = None) -> dict[str, Any]:
@@ -60,9 +89,8 @@ class StagingWorkspace:
         return proposal
 
     def apply_edits(self, payload: dict[str, Any]) -> dict[str, Any]:
-        validated = payload if payload.get("structurally_valid") else validate_patch(payload, self.staged)
-        self.staged = apply_patch(self.staged, validated)
-        self._invalidate_receipt()
+        validated = payload if payload.get("structurally_valid") else validate_patch(payload, dict(self.staged))
+        self.replace_staged(apply_patch(dict(self.staged), validated))
         syntax: dict[str, str] = {}
         for edit in validated.get("edits", []):
             path = edit["path"]
@@ -98,8 +126,8 @@ class StagingWorkspace:
         return result
 
     def run_tests(self, runner: Callable[[dict[str, str]], dict[str, Any]]) -> dict[str, Any]:
-        snapshot = files_sha256(self.staged)
-        result = runner(copy.deepcopy(self.staged))
+        snapshot = files_sha256(dict(self.staged))
+        result = runner(copy.deepcopy(dict(self.staged)))
         passed = bool(result.get("all_passed"))
         if passed:
             self.test_receipt = {

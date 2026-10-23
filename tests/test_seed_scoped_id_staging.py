@@ -133,6 +133,20 @@ def test_revision_queue_executes_appended_candidate(tmp_path):
     assert any(att["operator_name"].startswith("local_model_revise") for att in res["patch_attempts"])
 
 
+def test_insert_after_class_symbol_stays_inside_class():
+    files = {"c.py": "class A:\n    def f(self):\n        return 1\n\ndef helper():\n    return 0\n"}
+    validated = validate_patch({"edits": [{
+        "path": "c.py", "action": "insert_after_symbol", "symbol": "A",
+        "scope": "module", "new_text": "def g(self):\n    return 2\n",
+    }]}, files)
+    patched = apply_patch(files, validated)
+    tree = ast.parse(patched["c.py"])
+    cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "A")
+    names = {n.name for n in cls.body if isinstance(n, ast.FunctionDef)}
+    assert names == {"f", "g"}
+    assert not any(isinstance(n, ast.FunctionDef) and n.name == "g" for n in tree.body)
+
+
 def test_class_scope_insert_and_duplicate_method():
     files = {"c.py": "class A:\n    def f(self):\n        return 1\n"}
     validated = validate_patch({"edits": [{
@@ -185,6 +199,14 @@ def test_staging_requires_matching_passing_receipt():
     try:
         staging.publish()
         raise AssertionError("published after edit invalidated receipt")
+    except ValueError as exc:
+        assert "passing_receipt" in str(exc)
+    staging.run_tests(lambda files: {"all_passed": True, "status": "ok"})
+    staging.staged["a.py"] = "def run(x):\n    return x + 9\n"
+    assert staging.receipt_matches() is False
+    try:
+        staging.publish()
+        raise AssertionError("published after in-place mutation")
     except ValueError as exc:
         assert "passing_receipt" in str(exc)
     staging2 = StagingWorkspace({"a.py": "def run(x):\n    return x\n"})
@@ -267,3 +289,71 @@ def test_workspace_header_uses_real_state_not_keyword():
     assert scored_ok["names_selected_resource"] is True
     assert scored_ok["asks_needed_question"] is True
     assert locate_symbol("def add(a, b):\n    return a + b\n", "add") is not None
+
+
+def test_per_file_later_prompt_contains_earlier_staged_edit():
+    from nexus.seed.local_model_patch_proposer import propose_coordinated_per_file
+
+    class Scripted:
+        def __init__(self):
+            self.prompts = []
+
+        def complete(self, prompt, schema, max_tokens=None):
+            self.prompts.append(prompt)
+            marker = "STAGED_FEE_MARKER"
+            if "change only fee.py" in prompt:
+                body = "def apply_fee(amount, rate):\n    return amount + rate  # " + marker + "\n"
+                path = "fee.py"
+            else:
+                body = "from fee import apply_fee\ndef payable(item):\n    return apply_fee(item['amount'], item['fee'])\n"
+                path = "quote.py"
+            return dict(
+                content=json.dumps({"edits": [{"path": path, "action": "replace", "new_text": body}],
+                                    "assumptions": []}),
+                request_sha256="0" * 64,
+                telemetry=dict(inference_ran=True, generated_tokens=6, input_tokens=4, request_wall_s=0.01),
+            )
+
+    runtime = Scripted()
+    task = AgentTaskPublicView(
+        "pf", "development", "python_repo", "python",
+        "Add the fee, then subtract the rebate.",
+        {
+            "fee.py": "def apply_fee(amount, rate):\n    return amount\n",
+            "quote.py": "from fee import apply_fee\ndef payable(item):\n    return apply_fee(item['amount'], item['fee'])\n",
+        },
+        [],
+        budget_steps=2,
+    )
+    result = propose_coordinated_per_file(runtime, task, {"symbols": []}, {}, None)
+    assert result["model_generated_per_file"] is True
+    assert result["used_prior_staged_context"] is True
+    assert len(runtime.prompts) == 2
+    assert "STAGED_FEE_MARKER" in runtime.prompts[1]
+    assert result["traces"][1]["used_prior_staged_context"] is True
+    assert "STAGED_FEE_MARKER" in result["traces"][1]["prompt_excerpt"]
+
+
+def test_ordinary_template_and_genuine_capture_without_handwritten_patched():
+    from nexus.seed.repair_schema_memory import ordinary_template_apply
+    source = {"w.py": "def inside(item):\n    return item['value'] < item['limit']\n"}
+    solved = {"w.py": "def inside(item):\n    return item['value'] <= item['limit']\n"}
+    schema = capture_from_success(
+        "comparison_boundary", "Allow equality at the limit.",
+        source, solved,
+        [{"entry": "w.inside", "input": {"value": 5, "limit": 5}, "expected": True}],
+        {"wall_s": 0.01, "phase": "genuine_source"},
+    )
+    assert schema is not None
+    later = {"g.py": "def ok(item):\n    return item['score'] < item['cap']\n"}
+    store = RepairSchemaStore()
+    store.remember(schema)
+    transferred = store.apply(schema, later)
+    assert transferred is not None
+    assert "<=" in transferred["g.py"]
+    template = ordinary_template_apply("comparison_boundary", later)
+    assert template is not None
+    assert "<=" in template["g.py"]
+    cache = OrdinaryExactCache()
+    cache.put("Allow equality at the limit.", source, solved)
+    assert cache.get("new request", later) is None

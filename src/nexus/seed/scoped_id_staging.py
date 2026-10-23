@@ -15,7 +15,8 @@ from .combined_investigation_engine import (
     EqualizedControllerConfig, EqualizedInvestigationEngineV2, execute_pipeline,
 )
 from .repair_schema_memory import (
-    OrdinaryExactCache, RepairSchemaStore, capture_from_success, transfer_success_rate,
+    OrdinaryExactCache, RepairSchemaStore, capture_from_success,
+    ordinary_template_apply, transfer_success_rate,
 )
 from .symbiotic_agent_loop import AgentTaskPublicView, SymbioticAgentLoop
 from .agent_loop_worker import run_worker_subprocess
@@ -128,11 +129,40 @@ def _sources(method):
     }[method]
 
 
+def trace_costs(result: dict) -> dict:
+    traces = result.get("model_trace") or []
+    generated = input_tokens = completions = 0
+    wall = 0.0
+    prior = False
+    for row in traces:
+        tel = row.get("telemetry") or {}
+        generated += int(tel.get("generated_tokens") or 0)
+        input_tokens += int(tel.get("input_tokens") or 0)
+        wall += float(tel.get("request_wall_s") or 0)
+        if row.get("completions"):
+            completions += int(row["completions"])
+        elif row.get("traces"):
+            completions += len(row["traces"])
+        elif row.get("inference_ran"):
+            completions += 1
+        if row.get("used_prior_staged_context"):
+            prior = True
+        for sub in row.get("traces") or []:
+            if sub.get("used_prior_staged_context"):
+                prior = True
+    return dict(
+        generated_tokens=generated, input_tokens=input_tokens,
+        request_wall_s=round(wall, 6), completions=completions,
+        used_prior_staged_context=prior,
+    )
+
+
 def run_coding(config, emit, meter, live_runtime=None):
     from unittest.mock import patch
     with tempfile.TemporaryDirectory() as tmp:
         store = RepairSchemaStore()
         cache = OrdinaryExactCache()
+        solved_source: dict[str, dict] = {}
         for spec in config["coding"]:
             for method in config["coding_methods"]:
                 if method == "repair_schema_transfer":
@@ -164,62 +194,76 @@ def run_coding(config, emit, meter, live_runtime=None):
                                      lambda payload: run_worker_subprocess(payload, 10),
                                      dict(language=spec["language"], files=result["final_files"],
                                           cases=spec["assessment"]))
-                revised = any(
-                    str(att.get("operator_name", "")).startswith("local_model_revise")
-                    for att in result.get("patch_attempts", [])
-                )
+                costs = trace_costs(result)
+                if spec.get("role") == "source" and result.get("public_tests_passed") and method == "deterministic_ast":
+                    schema = capture_from_success(
+                        spec["family"], spec["request"], spec["files"], result["final_files"],
+                        spec["public"], {"wall_s": costs["request_wall_s"], "phase": "genuine_source"},
+                    )
+                    if schema is not None:
+                        store.remember(schema)
+                        cache.put(spec["request"], spec["files"], result["final_files"])
+                        solved_source[spec["id"]] = dict(schema=schema, files=spec["files"],
+                                                         request=spec["request"])
                 emit(dict(kind="capability", id=spec["id"], method=method, category="coding",
                           family=spec["family"], role=spec.get("role", "assessment"),
                           outcome=result.get("outcome_category"),
                           public_passed=result.get("public_tests_passed"),
                           private=private, model_trace=result.get("model_trace"),
                           attempts=len(result.get("patch_attempts", [])),
-                          revised=revised,
+                          revised=any(str(att.get("operator_name", "")).startswith("local_model_revise")
+                                      for att in result.get("patch_attempts", [])),
                           published_after_validation=result.get("published_after_validation"),
                           model_generated_per_file=method == "local_model_per_file",
                           complete_correctness=False,
                           final_files=result.get("final_files"),
                           inference_ran=any(
                               (row or {}).get("inference_ran") for row in (result.get("model_trace") or [])
-                          )))
-        run_repair_transfer(config, emit, meter, store, cache, Path(tmp) / "repair")
+                          ),
+                          **costs))
+        run_repair_transfer(config, emit, meter, store, cache, solved_source, Path(tmp) / "repair")
 
 
-def run_repair_transfer(config, emit, meter, store, cache, persist_dir):
+def run_repair_transfer(config, emit, meter, store, cache, solved_source, persist_dir):
+    by_id = {spec["id"]: spec for spec in config["coding"]}
     for spec in config.get("repair_transfer", []):
         family = spec["family"]
-        source = spec["source"]
-        assess = spec["assessment"]
+        source_spec = by_id[spec["source_id"]]
+        assess = by_id[spec["assessment_id"]]
         started = time.perf_counter()
-        schema = capture_from_success(
-            family, source["request"], source["files"], source["patched"],
-            source["public"], {"wall_s": 0.0, "phase": "acquisition"},
-        )
-        if schema is not None:
-            store.remember(schema)
-            cache.put(source["request"], source["files"], source["patched"])
-        acquired = time.perf_counter() - started
+        acquired = solved_source.get(spec["source_id"])
+        schema = acquired["schema"] if acquired else store.lookup(family, source_spec["request"])
+        acquisition_wall = time.perf_counter() - started
         reused = store.apply(schema, assess["files"]) if schema is not None else None
         cached = cache.get(assess["request"], assess["files"])
-        private = None
-        if reused is not None:
-            private = meter.call("repair:" + spec["id"], "assessment_worker", spec["id"],
-                                 lambda payload: run_worker_subprocess(payload, 10),
-                                 dict(language="python", files=reused, cases=assess["assessment"]))
+        template = ordinary_template_apply(family, assess["files"])
+        def assess_files(files, name):
+            if files is None:
+                return None
+            return meter.call("repair:" + spec["id"] + ":" + name, "assessment_worker", spec["id"],
+                              lambda payload: run_worker_subprocess(payload, 10),
+                              dict(language="python", files=files, cases=assess["assessment"]))
         emit(dict(kind="capability", id=spec["id"], method="repair_schema_transfer",
                   category="coding", family=family, role="transfer",
+                  source_id=spec["source_id"], assessment_id=spec["assessment_id"],
                   transformation=getattr(schema, "transformation", None),
+                  genuine_source_acquisition=acquired is not None,
                   cache_hit=cached is not None,
                   reused=reused is not None,
-                  private=private,
+                  private=assess_files(reused, "memory"),
+                  cache_private=assess_files(cached, "cache"),
+                  template_private=assess_files(template, "template"),
+                  none_private=assess_files(assess["files"], "none"),
+                  final_files=reused,
                   acquisition_charged=True,
-                  acquisition_wall_s=round(acquired, 6),
+                  acquisition_wall_s=round(acquisition_wall, 6),
                   one_success_is_not_100_percent=True,
                   complete_correctness=False))
     store.save(persist_dir)
     loaded = RepairSchemaStore.load(persist_dir)
     emit(dict(kind="repair_store", persisted=len(store.schemas), reloaded=len(loaded.schemas),
-              acquisition_events=len(store.acquisition_events)))
+              acquisition_events=len(store.acquisition_events),
+              genuine_sources=sorted(solved_source)))
 
 
 def run_conversation(config, emit, meter, live_runtime=None):
@@ -272,11 +316,24 @@ def summarize(records, config):
         "n": len(transfer),
         "reused": sum(1 for r in transfer if r.get("reused")),
         "cache_hits": sum(1 for r in transfer if r.get("cache_hit")),
+        "genuine_source_acquisition": sum(1 for r in transfer if r.get("genuine_source_acquisition")),
+        "memory_private_pass": sum(1 for r in transfer if (r.get("private") or {}).get("all_passed")),
+        "template_private_pass": sum(1 for r in transfer if (r.get("template_private") or {}).get("all_passed")),
+        "cache_private_pass": sum(1 for r in transfer if (r.get("cache_private") or {}).get("all_passed")),
+        "none_private_pass": sum(1 for r in transfer if (r.get("none_private") or {}).get("all_passed")),
         "rates": transfer_success_rate([bool((r.get("private") or {}).get("all_passed")) for r in transfer]),
         "acquisition_charged": all(r.get("acquisition_charged") for r in transfer) if transfer else True,
     }
+    model_rows = [r for r in coding if r.get("method") in {"local_model_single", "local_model_per_file"}]
+    out["reconstructed_costs"] = {
+        "completions": sum(int(r.get("completions") or 0) for r in model_rows),
+        "generated_tokens": sum(int(r.get("generated_tokens") or 0) for r in model_rows),
+        "input_tokens": sum(int(r.get("input_tokens") or 0) for r in model_rows),
+        "request_wall_s": round(sum(float(r.get("request_wall_s") or 0) for r in model_rows), 6),
+    }
     out["per_file_generation"] = [
-        {"id": r["id"], "completions_recorded": r.get("model_generated_per_file")}
+        {"id": r["id"], "completions_recorded": r.get("completions"),
+         "used_prior_staged_context": r.get("used_prior_staged_context")}
         for r in coding if r.get("method") == "local_model_per_file"
     ]
     out["learning_to_learn_established"] = False

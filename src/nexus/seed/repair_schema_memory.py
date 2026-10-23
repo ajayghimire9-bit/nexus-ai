@@ -332,6 +332,32 @@ def capture_from_success(
     )
 
 
+def ordinary_template_apply(family: str, files: dict[str, str]) -> dict[str, str] | None:
+    """Strong simple baseline: a generic family template, no source acquisition."""
+    if family == "comparison_boundary":
+        schema = RepairSchema(
+            schema_id="template_lt_to_lte",
+            family=family,
+            trigger="ordinary_template",
+            transformation="compare_op_swap",
+            applicability={"from_op": "Lt", "to_op": "LtE", "require_unique_matching_compare": True},
+            bindings={"from_op": "Lt", "to_op": "LtE"},
+            preconditions={"require_unique_matching_compare": True},
+        )
+        return apply_compare_op_swap(files, schema)
+    if family == "null_default":
+        schema = RepairSchema(
+            schema_id="template_or_to_none",
+            family=family,
+            trigger="ordinary_template",
+            transformation="or_to_explicit_none",
+            applicability={"kind": "or_to_explicit_none"},
+            preconditions={"require_unique_or": True},
+        )
+        return apply_or_to_explicit_none(files, schema)
+    return None
+
+
 def transfer_success_rate(outcomes: list[bool]) -> dict[str, Any]:
     """Never report 100% from a single success."""
     n = len(outcomes)

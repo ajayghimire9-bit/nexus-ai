@@ -82,11 +82,18 @@ def _node_end_lineno(source: str, node: ast.AST) -> int:
     return last + 1
 
 
-def parse_scope(scope: str | None, symbol: str = "") -> tuple[str, str | None]:
-    if scope and scope.startswith("class:"):
-        return "class", scope.split(":", 1)[1]
+def parse_scope(scope: str | None, symbol: str = "", source: str | None = None) -> tuple[str, str | None]:
+    raw = (scope or "module").strip()
+    if raw.startswith("class:"):
+        return "class", raw.split(":", 1)[1].strip()
     if symbol and "." in symbol:
         return "class", symbol.split(".")[-2]
+    if source and raw not in {"", "module"}:
+        try:
+            if locate_class(source, raw) is not None:
+                return "class", raw
+        except SyntaxError:
+            pass
     return "module", None
 
 
@@ -99,7 +106,7 @@ def locate_class(source: str, class_name: str) -> ast.ClassDef | None:
 
 
 def names_in_scope(source: str, scope: str | None, symbol: str = "") -> set[str]:
-    kind, class_name = parse_scope(scope, symbol)
+    kind, class_name = parse_scope(scope, symbol, source)
     tree = ast.parse(source)
     if kind == "module":
         return {
@@ -254,17 +261,20 @@ def validate_patch(payload: dict[str, Any], files: dict[str, str]) -> dict[str, 
             inserted_name = inserted_definition_name(new_text)
             if inserted_name and inserted_name in names_in_scope(current, scope, symbol):
                 raise ValueError(f"duplicate_definition:{inserted_name}")
-            kind, class_name = parse_scope(scope, symbol)
+            kind, class_name = parse_scope(scope, symbol, current)
             if action == "insert_after_symbol":
                 if not symbol:
                     raise ValueError("missing_symbol")
-                node = locate_symbol(current, symbol, scope)
+                node = locate_symbol(current, symbol, f"class:{class_name}" if kind == "class" else scope)
                 if node is None:
                     raise ValueError(f"symbol_not_found:{symbol}")
-                block = new_text
-                if kind == "class":
-                    block = indent_block(new_text, node_indent(current, node))
-                source = insert_after_node(current, node, block)
+                if isinstance(node, ast.ClassDef):
+                    source = insert_into_class(current, node.name, new_text)
+                else:
+                    block = new_text
+                    if kind == "class":
+                        block = indent_block(new_text, node_indent(current, node))
+                    source = insert_after_node(current, node, block)
             elif kind == "class":
                 source = insert_into_class(current, class_name or "", new_text)
             else:
@@ -301,12 +311,15 @@ def apply_patch(files: dict[str, str], validated: dict[str, Any]) -> dict[str, s
             node = locate_symbol(current, edit.get("symbol") or "", edit.get("scope") or "module")
             if node is None:
                 raise ValueError(f"patch_not_applicable:{path}")
-            block = edit["new_text"]
-            if parse_scope(edit.get("scope"), edit.get("symbol") or "")[0] == "class":
-                block = indent_block(edit["new_text"], node_indent(current, node))
-            patched[path] = insert_after_node(current, node, block)
+            if isinstance(node, ast.ClassDef):
+                patched[path] = insert_into_class(current, node.name, edit["new_text"])
+            else:
+                block = edit["new_text"]
+                if parse_scope(edit.get("scope"), edit.get("symbol") or "", current)[0] == "class":
+                    block = indent_block(edit["new_text"], node_indent(current, node))
+                patched[path] = insert_after_node(current, node, block)
         elif action == "insert_function":
-            kind, class_name = parse_scope(edit.get("scope"), edit.get("symbol") or "")
+            kind, class_name = parse_scope(edit.get("scope"), edit.get("symbol") or "", current)
             if kind == "class":
                 patched[path] = insert_into_class(current, class_name or "", edit["new_text"])
             else:
@@ -417,20 +430,27 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
 def propose_coordinated_per_file(runtime, task, repo_index: dict[str, Any], grounded: dict[str, Any],
                                  public_feedback: dict[str, Any] | None = None,
                                  max_tokens_per_file: int = 128) -> dict[str, Any]:
-    """One complete() per file under a shared coordinated intent.
+    """One complete() per file. Later prompts see earlier staged edits.
 
     This is actual per-file generation, not apply_per_file staging helpers.
     """
+    from .staging_workspace import StagingWorkspace, files_sha256
     files = dict(getattr(task, "files", {}))
+    staging = StagingWorkspace(files)
+    staging.propose_coordinated(getattr(task, "request", ""), sorted(files))
     traces = []
-    patched = dict(files)
     generated = 0
     input_tokens = 0
     wall = 0.0
-    for path, source in sorted(files.items()):
+    prior: list[str] = []
+    for path in sorted(files):
+        staged_now = dict(staging.staged)
         single = type("T", (), {
-            "files": {path: source},
-            "request": f"{getattr(task, 'request', '')} Coordinated edit: change only {path}.",
+            "files": staged_now,
+            "request": (
+                f"{getattr(task, 'request', '')} Coordinated edit: change only {path}. "
+                f"Earlier staged files are already applied and must be kept: {prior or 'none'}."
+            ),
             "public_tests": getattr(task, "public_tests", []),
             "docs": getattr(task, "docs", []),
             "language": getattr(task, "language", "python"),
@@ -443,25 +463,37 @@ def propose_coordinated_per_file(runtime, task, repo_index: dict[str, Any], grou
         generated += int(tel.get("generated_tokens") or 0)
         input_tokens += int(tel.get("input_tokens") or 0)
         wall += float(tel.get("request_wall_s") or 0)
+        prompt = public_prompt(single, repo_index, grounded, public_feedback)
         traces.append({
             "path": path,
             "status": proposed.get("status"),
             "reason": proposed.get("reason"),
             "completion_stop": proposed.get("completion_stop"),
             "inference_ran": proposed.get("inference_ran"),
+            "prior_staged": list(prior),
+            "prompt_file_count": len(staged_now),
+            "prompt_excerpt": prompt[:2400],
+            "prior_staged_excerpts": {p: staged_now[p][:400] for p in prior if p in staged_now},
+            "staged_sha_before": files_sha256(staged_now),
+            "used_prior_staged_context": bool(prior),
         })
-        if proposed.get("status") == "proposed":
-            patched[path] = proposed["patched_files"][path]
+        if proposed.get("status") == "proposed" and path in proposed.get("patched_files", {}):
+            merged = dict(staging.staged)
+            merged[path] = proposed["patched_files"][path]
+            staging.replace_staged(merged)
+            prior.append(path)
     statuses = {row["status"] for row in traces}
     status = "proposed" if "proposed" in statuses else (
-        "BLOCKED" if statuses == {"BLOCKED"} else "invalid_proposal"
+        "BLOCKED" if statuses == {"BLOCKED"} or not statuses else "invalid_proposal"
     )
+    used_prior = any(row.get("used_prior_staged_context") for row in traces)
     return {
         "status": status,
         "mode": "coordinated_per_file_generation",
         "model_generated_per_file": True,
+        "used_prior_staged_context": used_prior,
         "completions": len(traces),
-        "patched_files": patched,
+        "patched_files": dict(staging.staged),
         "traces": traces,
         "telemetry": {
             "generated_tokens": generated,

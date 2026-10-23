@@ -4,21 +4,16 @@
 
 Branch `cursor/seed-scoped-id-staging` from reviewed `0a8df5d`. Protocol
 [NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md](NEXUS_SEED_SCOPED_ID_STAGING_PROTOCOL.md).
-Corrections: publish now requires a hash-bound passing test
-receipt; class-scope insertion and in-scope duplicates are enforced;
-repair memory stores parameterized AST transforms with persistence;
-`configs/seed_scoped_id_staging.json` and
-`scripts/verify_seed_scoped_id_staging.py` are registered. Development
-tests pass. No new scored assessment has been collected.
-`identified` counts only `identified_within_catalogue`. `unique_among_checked`
-is not a win. Zero survivors among a 24-check cap with remainder is
-`no_checked_candidate_fits`, not out-of-grammar. Behavioral index charges
-construction and never discards on fingerprints. Symbol insertion uses a
-source hash and an explicit missing-`end_lineno` fallback. The revision loop
-is a growing queue; staging publishes only after validation. Repair-schema
-families are predeclared; one success is not 100%. Workspace headers come from
-registered store state and still consume input tokens. Closed
-`local_model_runtime.py` hash unchanged. Scoring is blocked until this
+Publish requires a hash-bound passing test receipt; in-place staged mutation
+invalidates it. Class-scope insertion, insert-after a class symbol, and
+in-scope duplicates are enforced. Per-file generation passes earlier staged
+edits into later prompts. Repair memory stores parameterized AST transforms,
+acquires them only from genuine public-passing source solves, and reports
+memory vs exact-cache vs ordinary-template vs none. The verifier requires the
+expected assessment grid (30 investigation / 18 coding / 2 transfer / 3
+conversation), replays `final_files`, and reconstructs completions and costs
+from raw traces. `identified` counts only `identified_within_catalogue`.
+Closed `local_model_runtime.py` hash unchanged. Scoring is blocked until this
 protocol is committed. Ledger unchanged:
 **2259.632103455996 used / 1340.367896544004 remaining**.
 
