@@ -1,6 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — chat template, equality revision, fresh functions (results)
+## Current — input contract, two-stage revision, wired e2e (protocol)
+
+[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md). Branch
+`cursor/seed-contract-two-stage` from reviewed tip `7f9fbac`. Compare the
+existing prompt with an explicit `item: {"field": type}` contract. Reserve
+separate format and behavioral revisions under three charged `complete`
+calls. End-to-end cells wire discovery into the assembler and include
+count/clamp tasks. Ledger
+**2696.503148455996 used / 903.496851544004 remaining**.
+
+## Previous — chat template, equality revision, fresh functions (results)
 
 [Protocol](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_PROTOCOL.md),
 [results](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_RESULTS.md). Implementation

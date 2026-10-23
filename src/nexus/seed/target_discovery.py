@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .constrained_edit import existing_definitions, requested_functions
+from .constrained_edit import ConstrainedPlan, existing_definitions, requested_functions
 from .local_model_patch_proposer import locate_symbol, node_source, source_sha256
 
 
@@ -112,3 +112,18 @@ def score_discovery(discovered: dict[str, Any], gold: dict[str, Any]) -> dict[st
             "action": gold.get("action"),
         },
     }
+
+
+def plan_from_discovery(discovered: dict[str, Any]) -> ConstrainedPlan | None:
+    if discovered.get("action") not in {"replace_function", "insert_function"}:
+        return None
+    if not discovered.get("path") or not discovered.get("symbol"):
+        return None
+    return ConstrainedPlan(
+        discovered["action"],
+        discovered["path"],
+        discovered["symbol"],
+        discovered.get("args") or "item",
+        discovered.get("source_sha256") or "",
+        discovered.get("existing_source") or "",
+    )

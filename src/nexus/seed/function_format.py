@@ -178,8 +178,10 @@ def assemble_format_proposal(
     request: str,
     files: dict[str, str],
     public_tests: list[dict[str, Any]] | None = None,
+    plan: ConstrainedPlan | None = None,
 ) -> dict[str, Any]:
-    plan = plan_constrained_edit(request, files, public_tests)
+    target_from = "discovery" if plan is not None else "public_test_entry_or_existing_symbol"
+    plan = plan or plan_constrained_edit(request, files, public_tests)
     raw_text, raw_valid, raw_reason = extract_format_text(fmt, content)
     notes: list[str] = []
     function_text = ""
@@ -214,7 +216,7 @@ def assemble_format_proposal(
             **{k: getattr(plan, k) for k in (
                 "action", "path", "symbol", "args", "source_sha256", "existing_source",
             )},
-            "target_from": "public_test_entry_or_existing_symbol",
+            "target_from": target_from,
         },
         "raw_valid": raw_valid,
         "raw_reason": raw_reason,

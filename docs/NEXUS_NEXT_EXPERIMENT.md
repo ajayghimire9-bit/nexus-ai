@@ -1,6 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — keep ChatML; revise after placeholder; require dict fields
+## Current next — explicit input contract, two revision stages, then wired e2e
+
+The [chat-template run](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_RESULTS.md) showed
+dict-as-string failures and a placeholder consuming the only revision.
+Next: compare the existing prompt with an explicit input contract; reserve
+format and behavioral revisions under three charged calls; give every
+failed public case input/expected/actual-or-exception plus below/equal/above
+evidence; then run a fresh end-to-end set with discovery wired. Do not
+resume ranking or memory. Ledger
+**2696.503148455996 used / 903.496851544004 remaining**.
+[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md).
+
+## Previous next — keep ChatML; revise after placeholder; require dict fields
 
 The [chat-template run](NEXUS_SEED_CHAT_TEMPLATE_REPAIR_RESULTS.md) made
 ChatML the request wrapper and showed a 1.5B `<`→`<=` repair when the

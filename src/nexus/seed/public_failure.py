@@ -73,6 +73,86 @@ def public_revision_feedback(
     }
 
 
+VALUE_FIELDS = ("score", "weight", "mass", "n", "value", "level", "hold")
+LIMIT_FIELDS = ("limit", "cap", "hi", "max", "floor")
+
+
+def _pair(inp: Any) -> tuple[Any, Any] | None:
+    if type(inp) is not dict:
+        return None
+    value = next((inp[key] for key in VALUE_FIELDS if key in inp), None)
+    limit = next((inp[key] for key in LIMIT_FIELDS if key in inp), None)
+    if value is None or limit is None:
+        nums = [item for item in inp.values() if type(item) in (int, float)]
+        if len(nums) >= 2:
+            return nums[0], nums[1]
+        return None
+    return value, limit
+
+
+def comparison_band(inp: Any) -> str | None:
+    pair = _pair(inp)
+    if pair is None:
+        return None
+    value, limit = pair
+    if type(value) not in (int, float) or type(limit) not in (int, float):
+        return None
+    if value < limit:
+        return "below"
+    if value == limit:
+        return "equal"
+    return "above"
+
+
+def case_report(case: dict[str, Any], row: dict[str, Any] | None) -> dict[str, Any]:
+    row = row or {}
+    error = row.get("error")
+    return {
+        "input": case.get("input"),
+        "expected": case.get("expected"),
+        "actual": None if error else row.get("actual"),
+        "exception": error,
+        "passed": row.get("passed"),
+        "band": comparison_band(case.get("input")),
+    }
+
+
+def behavioral_feedback(
+    public: dict[str, Any] | None,
+    public_tests: list[dict[str, Any]] | None,
+) -> dict[str, Any]:
+    results = list((public or {}).get("results") or [])
+    cases = list(public_tests or [])
+    reports = []
+    for index, case in enumerate(cases[:6]):
+        row = results[index] if index < len(results) else {}
+        reports.append(case_report(case, row))
+    failed = [row for row in reports if not row.get("passed")]
+    bands = {row["band"] for row in reports if row.get("band")}
+    three_point = bands >= {"below", "equal", "above"}
+    instruction = (
+        "Public tests failed. Each case lists input, expected, and actual or exception."
+    )
+    if three_point:
+        instruction += (
+            " Below, equal and above the limit are included. Use that evidence; "
+            "do not assume one failed case is enough."
+        )
+    if operator_hint_present(instruction):
+        raise ValueError("operator_hint_in_revision_instruction")
+    return {
+        "validation_error": "public_tests_failed",
+        "placeholder_rejected": False,
+        "stage": "behavior",
+        "instruction": instruction,
+        "failed_cases": failed,
+        "all_cases": reports,
+        "three_point_evidence": three_point,
+        "bands_present": sorted(band for band in bands if band),
+        "operator_supplied": False,
+    }
+
+
 def comparison_ops(function_text: str) -> list[str]:
     if not (function_text or "").strip():
         return []

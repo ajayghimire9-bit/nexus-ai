@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Current — explicit input contract and reserved revision stages
+
+Predeclared: fresh failures treated a dict as a string, and a placeholder
+consumed the only revision. An explicit input contract, separate format
+and behavioral slots under three charged calls, and full public-case
+feedback (including below/equal/above) separate interface from coding.
+End-to-end cells then wire discovery. Not confirmation.
+[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md).
+
 ## Current — raw prompt versus Qwen chat template
 
 Predeclared: the last coding scores describe raw `/completion` prompts, not

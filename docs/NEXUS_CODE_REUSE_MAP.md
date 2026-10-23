@@ -1,5 +1,15 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Input contract and two-stage revision
+
+`seed/input_contract.py` wraps the existing `json_body` user prompt with
+signature, field types and public examples. `seed/public_failure.py`
+adds case-level input/expected/actual-or-exception and below/equal/above
+bands without an operator. `seed/contract_revision_study.py` reuses
+ChatML, `assemble_format_proposal(plan=...)` and `plan_from_discovery`.
+End-to-end cells wire discovery; contract cells do not.
+[Protocol](NEXUS_SEED_CONTRACT_TWO_STAGE_PROTOCOL.md).
+
 ## Chat template and target discovery
 
 `seed/chat_template.py` renders Qwen2.5 ChatML around the existing

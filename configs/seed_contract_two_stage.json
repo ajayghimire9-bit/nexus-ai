@@ -1,0 +1,140 @@
+{
+  "id": "seed-contract-two-stage-1",
+  "artifact_stem": "seed_contract_two_stage",
+  "base_sha": "7f9fbac65546971596091f594b12774e20d5c9ae",
+  "parent_protocol_commit": "7f9fbac65546971596091f594b12774e20d5c9ae",
+  "carried_used_s": 2696.503148455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_ranking_promoted": false,
+  "learned_policy_promoted": false,
+  "learning_research_resumed": false,
+  "target_discovery": "wired_on_e2e_only",
+  "model_max_tokens": 128,
+  "models": {
+    "qwen05": {
+      "label": "qwen2.5-0.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+      "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+      "bytes": 491400032
+    },
+    "coder15": {
+      "label": "qwen2.5-coder-1.5b-instruct-q4_k_m",
+      "path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "bytes": 1117320768
+    }
+  },
+  "expected_grid": {
+    "inspect_cells": 1,
+    "contract_cells": 8,
+    "e2e_cells": 6
+  },
+  "tasks": [
+    {
+      "id": "py_title_space",
+      "phase": "contract",
+      "role": "insert",
+      "family": "formatted_identifier",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function title(item) that lowercases text and replaces each space with one underscore.",
+      "docs": [{"title": "title", "content": "title(item) lowercases item text and replaces each space with one underscore."}],
+      "files": {"note.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "note.py", "symbol": "title", "action": "insert_function"},
+      "public": [
+        {"entry": "note.title", "input": {"text": "Hello World"}, "expected": "hello_world"}
+      ],
+      "assessment": [
+        {"entry": "note.title", "input": {"text": ""}, "expected": ""},
+        {"entry": "note.title", "input": {"text": "A  B"}, "expected": "a__b"},
+        {"entry": "note.title", "input": {"text": "MiXeD Case"}, "expected": "mixed_case"}
+      ]
+    },
+    {
+      "id": "py_mass_three_point",
+      "phase": "contract",
+      "role": "replace",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow mass equal to the limit.",
+      "files": {"mass.py": "def fit(item):\n    return item['mass'] < item['limit']\n"},
+      "gold_target": {"path": "mass.py", "symbol": "fit", "action": "replace_function"},
+      "public": [
+        {"entry": "mass.fit", "input": {"mass": 1, "limit": 2}, "expected": true},
+        {"entry": "mass.fit", "input": {"mass": 2, "limit": 2}, "expected": true},
+        {"entry": "mass.fit", "input": {"mass": 3, "limit": 2}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "mass.fit", "input": {"mass": 2, "limit": 2}, "expected": true},
+        {"entry": "mass.fit", "input": {"mass": 3, "limit": 2}, "expected": false},
+        {"entry": "mass.fit", "input": {"mass": 0, "limit": 0}, "expected": true}
+      ]
+    },
+    {
+      "id": "py_hold_inclusive",
+      "phase": "e2e",
+      "role": "replace",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Allow hold equal to the cap.",
+      "files": {
+        "alpha.py": "def keep(item):\n    return item['n'] < item['cap']\n",
+        "beta.py": "def hold(item):\n    return item['n'] < item['cap']\n"
+      },
+      "gold_target": {"path": "beta.py", "symbol": "hold", "action": "replace_function"},
+      "decoy_entry": "alpha.keep",
+      "public": [
+        {"entry": "beta.hold", "input": {"n": 1, "cap": 2}, "expected": true},
+        {"entry": "beta.hold", "input": {"n": 2, "cap": 2}, "expected": true},
+        {"entry": "beta.hold", "input": {"n": 3, "cap": 2}, "expected": false}
+      ],
+      "assessment": [
+        {"entry": "beta.hold", "input": {"n": 2, "cap": 2}, "expected": true},
+        {"entry": "beta.hold", "input": {"n": 3, "cap": 2}, "expected": false}
+      ]
+    },
+    {
+      "id": "py_span_filled",
+      "phase": "e2e",
+      "role": "insert",
+      "family": "count_nonempty",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function span(item) that returns how many of a, b and c are non-empty strings.",
+      "docs": [{"title": "span", "content": "span(item) counts how many of a, b, c are non-empty strings. Empty string does not count."}],
+      "files": {"parts.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "parts.py", "symbol": "span", "action": "insert_function"},
+      "public": [
+        {"entry": "parts.span", "input": {"a": "x", "b": "", "c": "z"}, "expected": 2}
+      ],
+      "assessment": [
+        {"entry": "parts.span", "input": {"a": "", "b": "", "c": ""}, "expected": 0},
+        {"entry": "parts.span", "input": {"a": "A", "b": "B", "c": "C"}, "expected": 3}
+      ]
+    },
+    {
+      "id": "py_clip_floor",
+      "phase": "e2e",
+      "role": "insert",
+      "family": "numeric_clamp",
+      "domain": "python_repo",
+      "language": "python",
+      "request": "Create function clip(item) that returns value if it is at least floor, otherwise floor.",
+      "docs": [{"title": "clip", "content": "clip(item) is max(value, floor)."}],
+      "files": {"bound.py": "def echo(text):\n    return text\n"},
+      "gold_target": {"path": "bound.py", "symbol": "clip", "action": "insert_function"},
+      "public": [
+        {"entry": "bound.clip", "input": {"value": 3, "floor": 5}, "expected": 5}
+      ],
+      "assessment": [
+        {"entry": "bound.clip", "input": {"value": 8, "floor": 5}, "expected": 8},
+        {"entry": "bound.clip", "input": {"value": 5, "floor": 5}, "expected": 5}
+      ]
+    }
+  ],
+  "gemini": "NOT_RUN"
+}
