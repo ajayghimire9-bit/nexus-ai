@@ -1,16 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — capability milestone (implementation)
+## Current — capability milestone (results)
 
-Branch `cursor/seed-capability-milestone` from reviewed `33b9fde`. Protocol
-[NEXUS_SEED_CAPABILITY_MILESTONE_PROTOCOL.md](NEXUS_SEED_CAPABILITY_MILESTONE_PROTOCOL.md).
-Operator families update from public outcomes; ranking uses fixed diagnostic
-and source-frequency baselines on fresh mixed repos; raw vs symbol editing is
-compared at 128 and 512 tokens with a matched revision budget; one repository
-feature records model vs operator attribution; conversation scoring checks
-facts, attribution and state. Scoring is blocked until this protocol is
-committed. `fixed_boundary` stays the default. Ledger unchanged:
-**2433.667484455996 used / 1166.332515544004 remaining**.
+[Protocol](NEXUS_SEED_CAPABILITY_MILESTONE_PROTOCOL.md),
+[results](NEXUS_SEED_CAPABILITY_MILESTONE_RESULTS.md). Implementation
+`7a654f4` on `cursor/seed-capability-milestone`. Verifier `valid: true`.
+Learned ranking tied fixed diagnostic and source-frequency on public tests
+and failed the same private bound (`>=` vs `<=`). Symbol editing produced a
+valid revision at both 128 and 512 tokens; raw did not; neither passed
+private tests. The invoice/slug feature failed; AST operators ran, the model
+did not queue a patch. Conversation quality passed 1/5 (paraphrase).
+`fixed_boundary` stays the default. No promotion. Ledger
+**2474.568897455996 used / 1125.431102544004 remaining**.
 
 ## Previous — guarded-template reuse on fresh cases (results)
 
