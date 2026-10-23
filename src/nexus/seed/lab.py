@@ -1,4 +1,6 @@
 """Seed API binding for the SAME loopback Learning Lab server."""
+from pathlib import Path
+import shutil
 import threading
 import uuid
 from .core import Session
@@ -6,7 +8,7 @@ from .storage import load, save
 
 
 class SeedWorkspace:
-    def __init__(self, directory, *, language_encoder=None, meta_questions=False, grounded_model=None, grounded_hash=None, action_readout=None,plasticity_controller=None,plasticity_hash=None,surprise_gate=None,shared_model=None,shared_hash=None):
+    def __init__(self, directory, *, language_encoder=None, meta_questions=False, grounded_model=None, grounded_hash=None, action_readout=None,plasticity_controller=None,plasticity_hash=None,surprise_gate=None,shared_model=None,shared_hash=None,local_runtime=None,runtime_config=None,attach_local_runtime=True):
         self.directory = directory
         self.sessions = {}
         self.lock = threading.RLock()
@@ -19,6 +21,10 @@ class SeedWorkspace:
         self.plasticity_controller=plasticity_controller;self.plasticity_hash=plasticity_hash
         self.surprise_gate=surprise_gate
         self.shared_model=shared_model;self.shared_hash=shared_hash
+        self.local_runtime=local_runtime
+        self.runtime_config=runtime_config
+        self.attach_local_runtime=attach_local_runtime
+        self._runtime_unavailable=None if attach_local_runtime else 'local_model_unavailable: runtime attachment disabled'
 
     def attach_grounded(self, session):
         if self.grounded_model is not None:
@@ -28,6 +34,46 @@ class SeedWorkspace:
             import copy
             session.grounded_agent=GroundedAgent(self.grounded_model,self.grounded_hash,self.action_readout,adaptive,self.plasticity_hash,copy.deepcopy(self.surprise_gate))
             session.grounded_agent.restore_state(session)
+
+    def procedures_dir(self):
+        path=Path(self.directory)/'procedures';path.mkdir(parents=True,exist_ok=True);return path
+
+    def outputs_dir(self):
+        path=Path(self.directory)/'outputs';path.mkdir(parents=True,exist_ok=True);return path
+
+    def runtime_status(self):
+        ready=self.local_runtime is not None and (not hasattr(self.local_runtime,'process') or (
+            getattr(self.local_runtime,'process',None) is not None and self.local_runtime.process.poll() is None))
+        return dict(available=bool(ready),reason=None if ready else self._runtime_unavailable)
+
+    def ensure_runtime(self):
+        from .local_model_runtime import PersistentLocalRuntime,RuntimeConfig
+        if not self.attach_local_runtime and self.local_runtime is None:
+            self._runtime_unavailable=self._runtime_unavailable or 'local_model_unavailable: runtime attachment disabled'
+            return None
+        if self.local_runtime is not None:
+            if isinstance(self.local_runtime,PersistentLocalRuntime):
+                if self.local_runtime.process is None or self.local_runtime.process.poll() is not None:
+                    self.local_runtime.start()
+            self._runtime_unavailable=None
+            return self.local_runtime
+        cfg=self.runtime_config or RuntimeConfig.from_environment()
+        model=Path(cfg.model_path).expanduser()
+        if not model.is_file():
+            self._runtime_unavailable='local_model_unavailable: model file not found at '+str(model)
+            return None
+        if not shutil.which(cfg.executable):
+            self._runtime_unavailable='local_model_unavailable: llama-server executable not found'
+            return None
+        try:
+            runtime=PersistentLocalRuntime(cfg)
+            runtime.start()
+            self.local_runtime=runtime
+            self._runtime_unavailable=None
+            return runtime
+        except Exception as exc:
+            self._runtime_unavailable='local_model_unavailable: '+type(exc).__name__+': '+str(exc)[:200]
+            return None
 
     def dispatch(self, wire):
         if type(wire) is not dict or set(wire) != {'session_id','request'} or type(wire['request']) is not dict:
@@ -82,7 +128,7 @@ class SeedWorkspace:
             elif op in ('chat_send','chat_view'):
                 from .shared_brain import SharedBrain
                 from .conversation import Conversation
-                chat=Conversation(SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash))
+                chat=Conversation(SharedBrain(self.sessions[sid],self.shared_model,self.shared_hash),store=self,session_id=sid)
                 if op=='chat_view' and set(request)=={'op'}:
                     response=dict(text='Conversation restored without resubmitting messages.',chat=chat.view())
                 elif op=='chat_send' and set(request)=={'op','text','id'}:

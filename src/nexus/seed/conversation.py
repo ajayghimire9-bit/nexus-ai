@@ -1,7 +1,9 @@
 """Bounded conversational adapter over SharedBrain and the SAME Session journal.
 
-Parsing, execution and rendering are separate. No LLM, new learner or store.
-Saved turns are validated as data, never dispatched again on restoration.
+Parsing, execution and rendering are separate. No second learner or store.
+Local pretrained inference is optional and owned by SeedWorkspace; it does not
+replace the finite teaching path. Saved turns are validated as data, never
+dispatched again on restoration.
 """
 from dataclasses import dataclass,field
 import copy
@@ -13,7 +15,9 @@ from . import skill_programs as ir
 from .working import current
 
 KIND='seed_conversation_turn'
-INITIAL=dict(active_name=None,lab='coding',pending=None,last_teaching=None)
+WORKSPACE=dict(selected_file=None,last_procedure_id=None,last_intent=None,last_output_path=None,
+    last_correction=None,last_source_sha=None,pending_clarification=None,last_saved_explicit=False)
+INITIAL=dict(active_name=None,lab='coding',pending=None,last_teaching=None,workspace=WORKSPACE)
 
 
 @dataclass(frozen=True)
@@ -23,9 +27,22 @@ class Intent:
 
 
 def turns(session):return [json.loads(e.payload_json) for e in session.journal.snapshot() if e.kind==KIND]
+
+
+def normalize_workspace_context(ctx):
+    """Fill the workspace blob so restored pre-workspace journals can accept a new turn."""
+    ctx=copy.deepcopy(ctx)
+    blank=copy.deepcopy(WORKSPACE)
+    current=ctx.get('workspace')
+    if type(current) is dict:
+        blank.update({k:current[k] for k in blank if k in current})
+    ctx['workspace']=blank
+    return ctx
+
+
 def context(session):
     rows=turns(session)
-    return copy.deepcopy(rows[-1]['context'] if rows else INITIAL)
+    return normalize_workspace_context(rows[-1]['context'] if rows else INITIAL)
 
 
 def interpret(text,ctx):
@@ -118,6 +135,22 @@ def validate_turn(p,session):
     if any(type(p[k]) is not str or not 1<=len(p[k])<=5000 for k in ('user','assistant')) or p['status'] not in ('reply','clarification','success','error'):raise ValueError('chat_turn_text')
     c=p['context']
     if type(c) is not dict or set(c)!=set(INITIAL) or c['lab'] not in lib.LABS or c['active_name'] is not None and (type(c['active_name']) is not str or not WORD.fullmatch(c['active_name'])):raise ValueError('chat_context_schema')
+    w=c['workspace']
+    if type(w) is not dict or set(w)!=set(WORKSPACE):raise ValueError('chat_workspace_schema')
+    for key in ('selected_file','last_output_path','last_correction','last_source_sha'):
+        val=w[key]
+        if val is not None and (type(val) is not str or not 1<=len(val)<=500 or '\x00' in val):raise ValueError('chat_workspace_text')
+    if w['last_procedure_id'] is not None and (type(w['last_procedure_id']) is not str or not re.fullmatch(r'[a-f0-9]{12,32}',w['last_procedure_id'])):raise ValueError('chat_workspace_procedure')
+    if type(w['last_saved_explicit']) is not bool:raise ValueError('chat_workspace_flag')
+    intent=w['last_intent']
+    if intent is not None:
+        if type(intent) is not dict or set(intent)!={'op','min','order'} or intent['op'] not in ('sum','rows') or intent['order'] not in ('asc','desc'):raise ValueError('chat_workspace_intent')
+        x=intent['min']
+        if x is not None and (type(x) not in (int,float) or not -10000<=x<=10000):raise ValueError('chat_workspace_intent')
+    pending_w=w['pending_clarification']
+    if pending_w is not None:
+        if type(pending_w) is not dict or pending_w.get('kind') not in ('file','grain','reference','procedure','order') or set(pending_w)-{'kind','detail'}:raise ValueError('chat_workspace_pending')
+        if pending_w.get('detail') is not None and (type(pending_w['detail']) is not str or len(pending_w['detail'])>400):raise ValueError('chat_workspace_pending')
     s=lib.state(session);known={e.fingerprint for e in session.journal.snapshot()}
     if type(p['evidence_refs']) is not list or len(p['evidence_refs'])>8 or any(v not in known for v in p['evidence_refs']):raise ValueError('chat_evidence_reference')
     if c['last_teaching'] is not None and c['last_teaching'] not in s['teaching']:raise ValueError('chat_teaching_reference')
@@ -138,12 +171,18 @@ def validate_turn(p,session):
 
 
 class Conversation:
-    def __init__(self,brain):self.brain=brain;self.session=brain.session
+    def __init__(self,brain,store=None,session_id=None):
+        self.brain=brain;self.session=brain.session;self.store=store;self.session_id=session_id
 
     def view(self):
         rows=turns(self.session)
+        scope='Finite authored concepts, bounded list/relation programs and known-grid movement.'
+        runtime=None
+        if self.store is not None:
+            scope+=' Local CSV grouped-totals and row listing through vetted adapters; reusable saved procedures. Optional owned local model for ordinary chat and structured tool parse.'
+            runtime=self.store.runtime_status()
         return dict(messages=rows,context=context(self.session),state=self.brain.inspect(),stopped=self.session.stopped,
-            limits=dict(turns=160,text_characters=3000),supported_scope='Finite authored concepts, bounded list/relation programs and known-grid movement; no external LLM.')
+            limits=dict(turns=160,text_characters=3000),supported_scope=scope,local_runtime=runtime)
 
     def send(self,text,identifier):
         if type(identifier) is not str or not re.fullmatch('[a-f0-9]{32}',identifier):raise ValueError('chat_request_id')
@@ -156,7 +195,7 @@ class Conversation:
         cards=[];status='reply';save=False
         def card(title,data):cards.append(dict(title=title,data=data))
         try:
-            reply,status,save=self.execute(intent,ctx,card)
+            reply,status,save=self.execute(intent,ctx,card,text)
         except (ValueError,TypeError,KeyError,TimeoutError) as exc:
             reply=self.friendly_error(str(exc));status='clarification' if str(exc).startswith('clarify_') else 'error';card('What happened',dict(reason=str(exc),previous_verified_skills_retained=True))
         row=dict(id=identifier,user=text,assistant=reply,status=status,cards=cards,context=ctx,
@@ -210,7 +249,11 @@ class Conversation:
         card('Separate check — you supply the answer',{'input_suggestion':[9,3,1,9]} if schema=='list' else {'input_suggestion':{'first':examples()[0],'second':examples()[3]}})
         return f'One program fits {name}. Give a different input and its expected output as a separate check. I won’t train on this check.','clarification',False
 
-    def execute(self,intent,ctx,card):
+    def execute(self,intent,ctx,card,text=''):
+        if self.store is not None:
+            from .workspace_conversation import handle as workspace_handle
+            routed=workspace_handle(self,intent,ctx,card,text)
+            if routed is not None:return routed
         k=intent.kind;v=intent.values;s=lib.state(self.session)
         if k in ('master_inspect','master_dialogue'):
             from .master.runtime import MasterSeedArchitecture

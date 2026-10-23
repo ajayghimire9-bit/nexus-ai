@@ -187,7 +187,10 @@ saved-data only. [Guide](NEXUS_LOCAL_ASSISTANT_RUNTIME.md),
 
 - Chat: seed/conversation.py parses bounded intents and delegates to SharedBrain.
   Messages/pending references are Session/E1 Journal events, saved by the existing
-  storage. No second knowledge store. seed/lab.py routes typed chat requests;
+  storage. No second knowledge store. seed/workspace_conversation.py handles
+  local CSV tools and explicit capsules on that same turn context; it reuses
+  assistant_benchmark_v2 / ParameterizedAdapterTemplate / PersistentLocalRuntime
+  rather than a parallel executor. seed/lab.py routes typed chat requests;
   web/learning-lab/chat.* renders replies/cards with textContent. Supporting
   views share the same Session ID. [Guide](NEXUS_SEED_CONVERSATION_WORKSPACE.md).
 

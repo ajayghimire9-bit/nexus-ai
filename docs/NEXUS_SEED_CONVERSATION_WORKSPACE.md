@@ -1,20 +1,40 @@
 # NEXUS Seed conversation workspace
 
-Feature branch **codex/seed-conversation-workspace**, starting from fetched GitHub
-**9080b075a43ba37c7dd47d608c7a77e0ae2f1016**. This includes and preserves the
-newer failed ten-feature question-utility study beyond reviewed8f404db. Main and
-unrelated root-checkout changes are not modified. This is interface engineering,
-not a scientific experiment or evidence of improved learning-to-learn.
+The original chat/Session interface remains the only conversational application.
+This checkout adds a local file/procedure workspace on that same Conversation,
+SeedWorkspace and E1 journal path, plus an optional owned pretrained runtime.
+It is interface engineering, not a scientific experiment or evidence of
+learning-to-learn. Closed assistant-benchmark artifacts stay untouched.
+
+Feature branch **cursor/seed-local-conversation-workspace**, starting from
+reviewed repair **codex/seed-config-repair-baseline**
+`e178b6d250f02c4958802c895aa29da1e6220c87`. Historical experiments are
+preserved. Main is not modified.
 
 ## Open it
 
-From this feature checkout, no dependencies or API key are needed:
+From this feature checkout, no API key is needed:
 
 ```sh
 python3 -I -S scripts/run_seed_shared_gui.py --symbolic --port 8784 --max-runtime-s 900
 ```
 
-Open **http://127.0.0.1:8784/** or `/chat`. The server stops after15minutes.
+Optional local model (ordinary chat and unclear structured parses). Weights are
+not in Git; set paths for this machine:
+
+```sh
+export NEXUS_MODEL_PATH=.models/qwen2.5-0.5b-instruct-q4_k_m.gguf
+export NEXUS_LLAMA_SERVER=llama-server
+python3 -I -S scripts/run_seed_shared_gui.py --symbolic --port 8784 --max-runtime-s 900
+```
+
+Open **http://127.0.0.1:8784/** or `/chat`. The server stops after 15 minutes.
+A tiny authored CSV lives at `fixtures/seed/conversation_workspace_sample.csv`.
+Name that path in chat, then ask for grouped totals or individual rows. Results
+are written under the Seed directory `outputs/` and never overwrite the source.
+Say “save this procedure”, restart, restore the conversation, then reuse it.
+If the model file or `llama-server` is missing, ordinary chat reports
+`local_model_unavailable` instead of substituting a template.
 The existing `nexus serve --mode symbolic` launcher also serves chat at its root.
 To use the original owner-hash-verified shared encoder, omit `--symbolic` and
 use the existing optional dependencies/checkpoint launcher. The UI QA used the
@@ -56,9 +76,15 @@ the guided typed JSON pair format or the supporting Reasoning Lab.
 
 `seed/conversation.py` defines an explicit Intent and validated turn/context
 wire format. Its parser is pure; its executor delegates to SharedBrain's
-lab_teach/check/run/goal operations. There is no second memory, learner, server,
-database, neural model or agent framework. Knowledge stays in skill_library;
-objects use existing Session resolution and symbolic working memory.
+lab_teach/check/run/goal operations. File/procedure turns reuse
+`assistant_benchmark_v2` skeletons, `ParameterizedAdapterTemplate` capsules and
+`PersistentLocalRuntime` when a local model is configured. There is no second
+memory, learner, server, database or agent framework. Knowledge stays in
+skill_library and explicit procedure files beside the existing Session store.
+Objects use existing Session resolution and symbolic working memory. Ordinary
+chat is not forced through the sum/rows intent schema. Model text is labeled
+separately from execution-backed adapter output. Saving a capsule is reuse, not
+an autonomously discovered abstraction or learning-to-learn.
 
 Messages and pending dialogue are append-only `seed_conversation_turn` events
 in the SAME Session/E1 Journal. Existing storage saves the entire journal and
@@ -162,7 +188,14 @@ are in the public receipt. No scientific ledger debit or efficacy claim follows.
 
 ## Current limitations
 
-This is a finite, deterministic conversational interface. It does not understand
+Supported CSV tools are the two already-vetted operations: grouped totals and
+filtered/sorted individual rows on a one-text, one-numeric table. There is no
+arbitrary generated-Python execution. Ambiguous file or grain references ask
+before acting. Stop/cancel does not write an output. Explicit procedure saves
+store the actual AST plus types, preconditions, provenance and validation
+scope; reuse checks compatibility first.
+
+This is still a finite conversational interface. It does not understand
 arbitrary prose, noisy data, unrestricted coding, file uploads or general tool
 use. JSON examples remain necessary for complex relations. Name/skill references
 are resolved only from explicit current context; ambiguous references request
@@ -170,3 +203,4 @@ clarification. A checked user-authored example is not independent scientific
 confirmation. World planning is the existing known-grid reference, not newly
 improved neural control. Useful learned question selection and learning-to-learn
 remain unestablished; the latest failed research findings are unchanged.
+Development smokes are not a new assistant-benchmark protocol.

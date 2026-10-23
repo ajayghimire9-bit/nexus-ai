@@ -207,8 +207,10 @@ class PersistentLocalRuntime:
                     input_tokens=0, generated_tokens=0, request_wall_s=time.perf_counter()-start,
                     runtime_timings=None, creation_request_sha256=prior['request_sha256']),
                     request_sha256=key)
-            payload = dict(prompt=prompt, json_schema=schema, n_predict=self.config.max_tokens,
+            payload = dict(prompt=prompt, n_predict=self.config.max_tokens,
                            temperature=0, seed=self.config.seed, cache_prompt=self.config.prompt_cache)
+            if schema is not None:
+                payload['json_schema'] = schema
             timer = threading.Timer(self.config.request_timeout_s, self.cancel)
             timer.daemon = True
             timer.start()
@@ -216,7 +218,9 @@ class PersistentLocalRuntime:
                 raw = self._http('POST', '/completion', payload, self.config.request_timeout_s)
                 if self._cancel.is_set():
                     raise TimeoutError('inference cancelled or timed out')
-                if type(raw.get('content')) is not str or raw.get('truncated') is True:
+                if type(raw.get('content')) is not str:
+                    raise ValueError('missing completion content')
+                if schema is not None and raw.get('truncated') is True:
                     raise ValueError('missing/truncated structured completion')
                 # No invented zero for unavailable telemetry. Save exact runtime fields.
                 timings = raw.get('timings')

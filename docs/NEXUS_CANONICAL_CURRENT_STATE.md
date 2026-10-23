@@ -202,9 +202,12 @@ claim. Base5a554a5853cec039d1e3ab6eaefb0c1265d86cec; old evidence stays closed.
 
 The new [conversation workspace](NEXUS_SEED_CONVERSATION_WORKSPACE.md) is an
 engineering interface over the same SharedBrain, verified library and Session
-journal. Guided teaching, correction, fresh checks, skill use, world goals and
-local save/restore work through chat; original four labs remain supporting views.
-No new scientific study, neural fitting or learning-efficacy claim follows.
+journal. Guided teaching, correction, fresh checks, skill use, world goals,
+local CSV grouped-totals/rows, explicit procedure reuse and local save/restore
+work through chat; original four labs remain supporting views. An optional
+owned local model may serve ordinary chat; missing weights are reported, not
+replaced by templates. No new scientific study, neural fitting or
+learning-efficacy claim follows.
 
 Shared-labs engineering adds one common Session/skill interface for language,
 coding, reasoning and world tasks. Skills require separate authored checks;
