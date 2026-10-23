@@ -1,16 +1,17 @@
 # NEXUS Seed — Current State
 
-## Current — capability routes (protocol locked)
+## Current — capability routes (results)
 
-[Protocol](NEXUS_SEED_CAPABILITY_ROUTES_PROTOCOL.md). Branch
-`cursor/seed-capability-routes` from `db20cb1`. Provenance keeps an
-explicit unresolved-conflict outcome on fresh documents. Math keeps
-the calculator for straightforward work and splits interpretation,
-execution and answer. API-ID assembly is frozen offline first, then
-live-scored with selection, bindings and execution separate.
-Coordinated edits use a staged multi-file publish gate. The map and
-follow-up are not rescored. API selection is not generally solved.
-Frozen debit **0**. Live scoring follows this protocol commit.
+[Protocol](NEXUS_SEED_CAPABILITY_ROUTES_PROTOCOL.md),
+[results](NEXUS_SEED_CAPABILITY_ROUTES_RESULTS.md).
+Protocol `7fd62fe`. Artifact
+`10f7e0de3580a068d46d55405f84dd985a0ce93db4c5d5539a4f499ef7039534`.
+Verifier 24/24. Provenance 4/4 versus timestamp 0/4, including
+unresolved conflicts. Math 3/4 on the calculator; algebra still
+fails. API-ID selection 2/2, bindings 0/2, execution 0/2 — not a
+general solve. Staged pairs wrote a helper and refused to publish
+a non-calling caller. 18 calls, 64.934 s, frozen debit **0**.
+Map and follow-up not rescored. Not learning-to-learn.
 
 ## Previous — capability follow-up (results)
 

@@ -1,0 +1,1375 @@
+{
+  "kind": "seed_capability_routes",
+  "confirmation": false,
+  "aggregate_score": false,
+  "learning_to_learn_established": false,
+  "api_selection_generally_solved": false,
+  "config": {
+    "id": "seed-capability-routes-1",
+    "base": "db20cb1",
+    "product_parent": "e3d21b6",
+    "original_map_rescored": false,
+    "followup_rescored": false,
+    "methods": {
+      "knowledge": [
+        "timestamp_sort",
+        "provenance"
+      ],
+      "mathematics": [
+        "calculator_direct",
+        "routed"
+      ],
+      "coding_api": [
+        "direct",
+        "id_select_assemble"
+      ],
+      "coding_coord": [
+        "direct",
+        "staged_pair"
+      ]
+    },
+    "expected_grid": {
+      "knowledge_cells": 8,
+      "mathematics_cells": 8,
+      "coding_api_cells": 4,
+      "coding_coord_cells": 4,
+      "live_cells": 16
+    },
+    "wall_cap_s": 900,
+    "call_cap": 80,
+    "backend": "cpu",
+    "ngl": 0,
+    "device": "none",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 192,
+    "frozen_cpu_debit_s": 0,
+    "acquired_solution_memory": false,
+    "ranking_policy_resumed": false,
+    "learning_to_learn_established": false,
+    "api_selection_generally_solved": false,
+    "api_audit_preserved": true
+  },
+  "rows": [
+    {
+      "task_id": "know_rt_missing_meta",
+      "track": "knowledge",
+      "family": "missing_version",
+      "method": "timestamp_sort",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": false,
+        "conflict_ok": false,
+        "outcome_ok": false,
+        "fact_ok": false,
+        "selected": [
+          "quay-note-b"
+        ],
+        "conflict": false,
+        "outcome": "selected",
+        "conflict_ids": [],
+        "text": "The east quay gate opens at 08:45. [quay-note-b]",
+        "method": "timestamp_sort",
+        "used_ingestion_timestamp_as_freshness": true,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_rt_missing_meta",
+      "track": "knowledge",
+      "family": "missing_version",
+      "method": "provenance",
+      "scored": {
+        "passed": true,
+        "select_ok": true,
+        "stale_ok": true,
+        "conflict_ok": true,
+        "outcome_ok": true,
+        "fact_ok": true,
+        "selected": [],
+        "conflict": true,
+        "outcome": "unresolved_conflict",
+        "conflict_ids": [
+          "quay-note-a",
+          "quay-note-b"
+        ],
+        "text": "unresolved conflict: these sources disagree and neither is a clear replacement: quay-note-a: The east quay gate opens at 05:15. | quay-note-b: The east quay gate opens at 08:45.",
+        "method": "provenance_resolve",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_rt_dual_authority",
+      "track": "knowledge",
+      "family": "conflicting_authority",
+      "method": "timestamp_sort",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": false,
+        "conflict_ok": false,
+        "outcome_ok": false,
+        "fact_ok": false,
+        "selected": [
+          "tide-auth-west"
+        ],
+        "conflict": false,
+        "outcome": "selected",
+        "conflict_ids": [],
+        "text": "The official gauge reads 2.4 m at noon. [tide-auth-west]",
+        "method": "timestamp_sort",
+        "used_ingestion_timestamp_as_freshness": true,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_rt_dual_authority",
+      "track": "knowledge",
+      "family": "conflicting_authority",
+      "method": "provenance",
+      "scored": {
+        "passed": true,
+        "select_ok": true,
+        "stale_ok": true,
+        "conflict_ok": true,
+        "outcome_ok": true,
+        "fact_ok": true,
+        "selected": [],
+        "conflict": true,
+        "outcome": "unresolved_conflict",
+        "conflict_ids": [
+          "tide-auth-east",
+          "tide-auth-west"
+        ],
+        "text": "unresolved conflict: these sources disagree and neither is a clear replacement: tide-auth-east: The official gauge reads 1.2 m at noon. | tide-auth-west: The official gauge reads 2.4 m at noon.",
+        "method": "provenance_resolve",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_rt_ambiguous_super",
+      "track": "knowledge",
+      "family": "ambiguous_supersession",
+      "method": "timestamp_sort",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": false,
+        "conflict_ok": false,
+        "outcome_ok": false,
+        "fact_ok": false,
+        "selected": [
+          "sheet-blue"
+        ],
+        "conflict": false,
+        "outcome": "selected",
+        "conflict_ids": [],
+        "text": "Berth 4 is blue. [sheet-blue]",
+        "method": "timestamp_sort",
+        "used_ingestion_timestamp_as_freshness": true,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_rt_ambiguous_super",
+      "track": "knowledge",
+      "family": "ambiguous_supersession",
+      "method": "provenance",
+      "scored": {
+        "passed": true,
+        "select_ok": true,
+        "stale_ok": true,
+        "conflict_ok": true,
+        "outcome_ok": true,
+        "fact_ok": true,
+        "selected": [],
+        "conflict": true,
+        "outcome": "unresolved_conflict",
+        "conflict_ids": [
+          "sheet-blue",
+          "sheet-red"
+        ],
+        "text": "unresolved conflict: these sources disagree and neither is a clear replacement: sheet-blue: Berth 4 is blue. | sheet-red: Berth 4 is red.",
+        "method": "provenance_resolve",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_rt_clear_update",
+      "track": "knowledge",
+      "family": "clear_replacement",
+      "method": "timestamp_sort",
+      "scored": {
+        "passed": false,
+        "select_ok": false,
+        "stale_ok": false,
+        "conflict_ok": true,
+        "outcome_ok": true,
+        "fact_ok": false,
+        "selected": [
+          "crane-v1"
+        ],
+        "conflict": false,
+        "outcome": "selected",
+        "conflict_ids": [],
+        "text": "The yard crane limit is 8 tonnes. [crane-v1]",
+        "method": "timestamp_sort",
+        "used_ingestion_timestamp_as_freshness": true,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "know_rt_clear_update",
+      "track": "knowledge",
+      "family": "clear_replacement",
+      "method": "provenance",
+      "scored": {
+        "passed": true,
+        "select_ok": true,
+        "stale_ok": true,
+        "conflict_ok": true,
+        "outcome_ok": true,
+        "fact_ok": true,
+        "selected": [
+          "crane-v3"
+        ],
+        "conflict": false,
+        "outcome": "selected",
+        "conflict_ids": [],
+        "text": "The yard crane limit is 11 tonnes. [crane-v3]",
+        "method": "provenance_resolve",
+        "used_ingestion_timestamp_as_freshness": false,
+        "token_overlap_score": false
+      },
+      "live": false
+    },
+    {
+      "task_id": "math_rt_units",
+      "track": "mathematics",
+      "family": "straightforward",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": true,
+        "interpretation_ok": null,
+        "execution_ok": true,
+        "answer_ok": true,
+        "value": 4500.0,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 4500.0
+        },
+        "expression": "4.5 * 1000",
+        "expression_represents_problem": true,
+        "inspectable": false,
+        "tool_assisted": true,
+        "programmer_supplied_calculator": true,
+        "raw": "```json\n{\n  \"expression\": \"4.5 * 1000\",\n  \"unit\": \"grams\",\n  \"clarification\": \"To convert kilograms to grams, multiply the number of kilograms by 1000.\"\n}\n```",
+        "route": "calculator"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_rt_units",
+      "track": "mathematics",
+      "family": "straightforward",
+      "method": "routed",
+      "scored": {
+        "passed": true,
+        "interpretation_ok": null,
+        "execution_ok": true,
+        "answer_ok": true,
+        "value": 4500.0,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 4500.0
+        },
+        "expression": "4.5 * 1000",
+        "expression_represents_problem": true,
+        "inspectable": false,
+        "tool_assisted": true,
+        "programmer_supplied_calculator": true,
+        "raw": "```json\n{\n  \"expression\": \"4.5 * 1000\",\n  \"unit\": \"grams\",\n  \"clarification\": \"To convert kilograms to grams, multiply the number of kilograms by 1000.\"\n}\n```",
+        "route": "calculator"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_rt_percent",
+      "track": "mathematics",
+      "family": "straightforward",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": true,
+        "interpretation_ok": null,
+        "execution_ok": true,
+        "answer_ok": true,
+        "value": 9.0,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 9.0
+        },
+        "expression": "90 * 0.1",
+        "expression_represents_problem": true,
+        "inspectable": false,
+        "tool_assisted": true,
+        "programmer_supplied_calculator": true,
+        "raw": "To find 10 percent of 90, we can use the following expression:\n\n```json\n{\n  \"expression\": \"90 * 0.1\",\n  \"unit\": \"dollars\",\n  \"clarification\": \"This expression multiplies 90 by 0.1 to get the result in dollars.\"\n}\n```\n\nThis expression calculates 10 percent of 90, which is 9 dollars.",
+        "route": "calculator"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_rt_percent",
+      "track": "mathematics",
+      "family": "straightforward",
+      "method": "routed",
+      "scored": {
+        "passed": true,
+        "interpretation_ok": null,
+        "execution_ok": true,
+        "answer_ok": true,
+        "value": 9.0,
+        "tool": {
+          "ok": true,
+          "error": null,
+          "value": 9.0
+        },
+        "expression": "90 * 0.1",
+        "expression_represents_problem": true,
+        "inspectable": false,
+        "tool_assisted": true,
+        "programmer_supplied_calculator": true,
+        "raw": "To find 10 percent of 90, we can use the following expression:\n\n```json\n{\n  \"expression\": \"90 * 0.1\",\n  \"unit\": \"dollars\",\n  \"clarification\": \"This expression multiplies 90 by 0.1 to get the result in dollars.\"\n}\n```\n\nThis expression calculates 10 percent of 90, which is 9 dollars.",
+        "route": "calculator"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_rt_algebra",
+      "track": "mathematics",
+      "family": "unknown_variable",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": false,
+        "interpretation_ok": null,
+        "execution_ok": false,
+        "answer_ok": false,
+        "value": null,
+        "tool": {
+          "ok": false,
+          "error": "SyntaxError",
+          "value": null
+        },
+        "expression": "5n + 2 = 27",
+        "expression_represents_problem": false,
+        "inspectable": false,
+        "tool_assisted": false,
+        "programmer_supplied_calculator": true,
+        "raw": "Here is the solution in JSON format:\n\n```json\n{\n  \"expression\": \"5n + 2 = 27\",\n  \"unit\": \"n\",\n  \"clarification\": \"Solve for n in the equation 5n + 2 = 27.\"\n}\n```",
+        "route": "calculator"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_rt_algebra",
+      "track": "mathematics",
+      "family": "unknown_variable",
+      "method": "routed",
+      "scored": {
+        "passed": false,
+        "interpretation_ok": false,
+        "execution_ok": false,
+        "answer_ok": false,
+        "value": null,
+        "unit_ok": true,
+        "statement": null,
+        "validation": {
+          "ok": false,
+          "clarify": false,
+          "errors": [
+            "missing_statement"
+          ]
+        },
+        "compiled": {},
+        "expression_represents_problem": false,
+        "inspectable": true,
+        "unaided_value": null,
+        "tool_assisted": true,
+        "raw": "```json\n{\n  \"quantities\": [\n    {\n      \"name\": \"n\",\n      \"value\": 5\n    }\n  ],\n  \"relationships\": [\n    {\n      \"name\": \"addition\",\n      \"operands\": [\n        {\n          \"name\": \"5n\",\n          \"value\": 5 * 5\n        },\n        {\n          \"name\": \"2\",\n          \"value\": 2\n        }\n      ],\n      \"result\": 27\n    }\n  ],\n  \"unknown\": \"n\",\n  \"unit\": \"\",\n  \"missing\": [],\n  \"expression\": \"5n + 2 = 27\"\n}\n```",
+        "route": "interpret"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_rt_under",
+      "track": "mathematics",
+      "family": "underspecified",
+      "method": "calculator_direct",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "expression": null,
+        "inspectable": false,
+        "raw": "To determine how far the barge will travel at its current speed, we need to know the speed of the barge and the time it will travel. Let's assume the speed of the barge is \\( v \\) meters per second and the time it will travel is \\( t \\) seconds.\n\nThe distance \\( d \\) traveled by the barge can be calculated using the formula:\n\\[ d = v \\times t \\]\n\nSince the problem does not provide specific values for \\( v \\) and \\( t \\), I will express the distance in terms of these variables. The distance will be in meters.\n\nTherefore, the distance the barge will travel is:\n\\[ \\boxed{v \\times t} \\]\n\nThe unit of the distance is meters, and there is no clarification needed as the distance is directly given by the product of the speed and the time.",
+        "route": "calculator"
+      },
+      "live": true
+    },
+    {
+      "task_id": "math_rt_under",
+      "track": "mathematics",
+      "family": "underspecified",
+      "method": "routed",
+      "scored": {
+        "passed": true,
+        "clarification": true,
+        "expression": null,
+        "inspectable": false,
+        "raw": "To determine how far the barge will travel at its current speed, we need to know the speed of the barge and the time it will travel. Let's assume the speed of the barge is \\( v \\) meters per second and the time it will travel is \\( t \\) seconds.\n\nThe distance \\( d \\) traveled by the barge can be calculated using the formula:\n\\[ d = v \\times t \\]\n\nSince the problem does not provide specific values for \\( v \\) and \\( t \\), I will express the distance in terms of these variables. The distance will be in meters.\n\nTherefore, the distance the barge will travel is:\n\\[ \\boxed{v \\times t} \\]\n\nThe unit of the distance is meters, and there is no clarification needed as the distance is directly given by the product of the speed and the time.",
+        "route": "calculator"
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_id_floor",
+      "track": "coding_api",
+      "family": "id_assembly",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [
+              {
+                "symbol": "low_cut",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [
+              {
+                "name": "floor_cut",
+                "module": "span",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef low_cut(item):\n    return floor_cut(item['crate']['nums'], item['crate']['lo'])\n",
+          "span.py": "def floor_cut(nums, lo):\n    return [lo if n < lo else n for n in nums]\n"
+        },
+        "selection_correct": null,
+        "bindings_correct": null,
+        "assembled_ok": false,
+        "route": "direct",
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_id_floor",
+      "track": "coding_api",
+      "family": "id_assembly",
+      "method": "id_select_assemble",
+      "scored": {
+        "selection_correct": true,
+        "bindings_correct": false,
+        "assembled_ok": true,
+        "public_passed": false,
+        "private_passed": false,
+        "required_call": true,
+        "passed": false,
+        "files": {
+          "work.py": "from span import floor_cut\ndef _low_cut_transform(nums, lo):\n    return all(floor_cut(nums, element, lo) for element in nums)\ndef low_cut(item):\n    nums = item[\"crate\"][\"nums\"]\n    lo = item[\"crate\"][\"lo\"]\n    return _low_cut_transform(nums, lo)\n",
+          "span.py": "def floor_cut(nums, lo):\n    return [lo if n < lo else n for n in nums]\n"
+        },
+        "proposal": {
+          "api_id": "span.floor_cut",
+          "bindings": [
+            "field.nums",
+            "elem.nums",
+            "field.lo"
+          ]
+        },
+        "assembled": {
+          "ok": true,
+          "source": "from span import floor_cut\ndef _low_cut_transform(nums, lo):\n    return all(floor_cut(nums, element, lo) for element in nums)\n",
+          "error": null,
+          "import_line": "from span import floor_cut",
+          "call": "floor_cut(nums, element, lo)",
+          "accesses": [
+            "item[\"crate\"][\"nums\"]",
+            "item[\"crate\"][\"nums\"]",
+            "item[\"crate\"][\"lo\"]"
+          ],
+          "programmer_supplied": true,
+          "learned_assembly": false,
+          "learned_schema_discovery": false,
+          "output_space_narrowed": true
+        },
+        "selection_not_generally_solved": true,
+        "route": "id_select_assemble",
+        "raw": "{\n  \"api_id\": \"span.floor_cut\",\n  \"bindings\": [\"field.nums\", \"elem.nums\", \"field.lo\"]\n}",
+        "learned_schema_discovery": false
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_id_stitch",
+      "track": "coding_api",
+      "family": "id_assembly",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "note_of",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [
+              {
+                "name": "stitch",
+                "module": "marks",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [
+            {
+              "name": "stitch",
+              "module": "marks",
+              "source": "use"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef note_of(item):\n    return '/'.join(item.parts)\n",
+          "marks.py": "def stitch(parts, glue):\n    text = ''\n    first = True\n    for part in parts:\n        text = part if first else text + glue + part\n        first = False\n    return text\n"
+        },
+        "selection_correct": null,
+        "bindings_correct": null,
+        "assembled_ok": false,
+        "route": "direct",
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_id_stitch",
+      "track": "coding_api",
+      "family": "id_assembly",
+      "method": "id_select_assemble",
+      "scored": {
+        "selection_correct": true,
+        "bindings_correct": false,
+        "assembled_ok": true,
+        "public_passed": false,
+        "private_passed": false,
+        "required_call": true,
+        "passed": false,
+        "files": {
+          "work.py": "from marks import stitch\ndef _note_of_transform(parts, glue):\n    return all(stitch(parts, element, glue) for element in parts)\ndef note_of(item):\n    parts = item[\"note\"][\"parts\"]\n    glue = item[\"note\"][\"glue\"]\n    return _note_of_transform(parts, glue)\n",
+          "marks.py": "def stitch(parts, glue):\n    text = ''\n    first = True\n    for part in parts:\n        text = part if first else text + glue + part\n        first = False\n    return text\n"
+        },
+        "proposal": {
+          "api_id": "marks.stitch",
+          "bindings": [
+            "field.parts",
+            "elem.parts",
+            "field.glue"
+          ]
+        },
+        "assembled": {
+          "ok": true,
+          "source": "from marks import stitch\ndef _note_of_transform(parts, glue):\n    return all(stitch(parts, element, glue) for element in parts)\n",
+          "error": null,
+          "import_line": "from marks import stitch",
+          "call": "stitch(parts, element, glue)",
+          "accesses": [
+            "item[\"note\"][\"parts\"]",
+            "item[\"note\"][\"parts\"]",
+            "item[\"note\"][\"glue\"]"
+          ],
+          "programmer_supplied": true,
+          "learned_assembly": false,
+          "learned_schema_discovery": false,
+          "output_space_narrowed": true
+        },
+        "selection_not_generally_solved": true,
+        "route": "id_select_assemble",
+        "raw": "{\n  \"api_id\": \"marks.stitch\",\n  \"bindings\": [\"field.parts\", \"elem.parts\", \"field.glue\"]\n}",
+        "learned_schema_discovery": false
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_rt_over",
+      "track": "coding_coord",
+      "family": "staged_pair",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.hold_ok": {
+            "entry": "app.hold_ok",
+            "symbol": "hold_ok",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.over": {
+            "entry": "util.over",
+            "symbol": "over",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "over",
+                "file": "util.py",
+                "args": "value, floor"
+              },
+              {
+                "symbol": "hold_ok",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "over",
+                "module": "util",
+                "source": "add"
+              },
+              {
+                "name": "over",
+                "module": "",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "over",
+              "file": "util.py",
+              "args": "value, floor"
+            },
+            {
+              "symbol": "hold_ok",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [
+            {
+              "name": "over",
+              "module": "",
+              "source": "use"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "published": false,
+        "route": "direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_rt_over",
+      "track": "coding_coord",
+      "family": "staged_pair",
+      "method": "staged_pair",
+      "scored": {
+        "route": "staged_pair",
+        "programmer_supplied_staging": true,
+        "published": false,
+        "publish_gate": {
+          "ready": false,
+          "helper_present": true,
+          "caller_present": true,
+          "required_call": false,
+          "helper_behavior": true,
+          "caller_behavior": false,
+          "private_passed": true,
+          "scored": {
+            "public_passed": false,
+            "private_passed": true,
+            "public": {
+              "status": "failed",
+              "compilation_passed": true,
+              "all_passed": false,
+              "results": [
+                {
+                  "entry": "app.hold_ok",
+                  "actual": "yes",
+                  "expected": "yes",
+                  "passed": true,
+                  "error": null,
+                  "calls": []
+                },
+                {
+                  "entry": "app.hold_ok",
+                  "actual": "yes",
+                  "expected": "no",
+                  "passed": false,
+                  "error": null,
+                  "calls": []
+                },
+                {
+                  "entry": "util.over",
+                  "actual": true,
+                  "expected": true,
+                  "passed": true,
+                  "error": null,
+                  "calls": []
+                }
+              ],
+              "compilation_s": 6.983298226259649e-05,
+              "tests_s": 4.291010554879904e-06,
+              "internal_s": 7.420798647217453e-05,
+              "wall_s": 7.483400986529887e-05,
+              "tool_executions": 1,
+              "output_contract_violations": [],
+              "output_assembly_errors": []
+            },
+            "private": {
+              "status": "passed",
+              "compilation_passed": true,
+              "all_passed": true,
+              "results": [
+                {
+                  "entry": "app.hold_ok",
+                  "actual": "yes",
+                  "expected": "yes",
+                  "passed": true,
+                  "error": null,
+                  "calls": []
+                },
+                {
+                  "entry": "util.over",
+                  "actual": false,
+                  "expected": false,
+                  "passed": true,
+                  "error": null,
+                  "calls": []
+                }
+              ],
+              "compilation_s": 6.670897710137069e-05,
+              "tests_s": 2.542015863582492e-06,
+              "internal_s": 6.937500438652933e-05,
+              "wall_s": 6.983301136642694e-05,
+              "tool_executions": 1,
+              "output_contract_violations": [],
+              "output_assembly_errors": []
+            },
+            "requirement_coverage": {
+              "passed": false,
+              "required": {
+                "functions": [
+                  {
+                    "symbol": "over",
+                    "file": "util.py",
+                    "args": "value, floor"
+                  },
+                  {
+                    "symbol": "hold_ok",
+                    "file": "app.py",
+                    "args": "item"
+                  }
+                ],
+                "files": [
+                  "util.py",
+                  "app.py"
+                ],
+                "apis": [
+                  {
+                    "name": "over",
+                    "module": "util",
+                    "source": "add"
+                  },
+                  {
+                    "name": "over",
+                    "module": "",
+                    "source": "use"
+                  }
+                ],
+                "imposed_implementation": false
+              },
+              "missing_files": [],
+              "missing_functions": [],
+              "missing_apis": [
+                {
+                  "name": "over",
+                  "module": "",
+                  "source": "use"
+                }
+              ],
+              "imposed_implementation": false
+            },
+            "coverage_passed": false,
+            "helper_present": true,
+            "caller_present": true,
+            "required_call": false,
+            "real_call": false,
+            "functions": {
+              "app.hold_ok": {
+                "entry": "app.hold_ok",
+                "symbol": "hold_ok",
+                "role": "caller",
+                "present": true,
+                "types_ok": true,
+                "behavior_public": false,
+                "behavior_private": true
+              },
+              "util.over": {
+                "entry": "util.over",
+                "symbol": "over",
+                "role": "helper",
+                "present": true,
+                "types_ok": true,
+                "behavior_public": true,
+                "behavior_private": true
+              }
+            },
+            "types_ok": true,
+            "complete_private": false,
+            "output_contract_violations": [],
+            "bound_contracts": true,
+            "independent_coverage": true
+          }
+        },
+        "steps": [
+          {
+            "role": "helper",
+            "path": "util.py",
+            "symbol": "over"
+          },
+          {
+            "role": "caller",
+            "path": "app.py",
+            "symbol": "hold_ok"
+          }
+        ],
+        "staged_files": {
+          "app.py": "def echo(text):\n    return text\n\ndef hold_ok(item):\n    return 'yes'\n",
+          "util.py": "def echo(text):\n    return text\n\ndef over(value, floor):\n    return value > floor\n"
+        },
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": false,
+        "public_passed": false,
+        "private_passed": false,
+        "functions": {
+          "app.hold_ok": {
+            "entry": "app.hold_ok",
+            "symbol": "hold_ok",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.over": {
+            "entry": "util.over",
+            "symbol": "over",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "passed": false,
+        "wall_s": 7.897295
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_rt_mark",
+      "track": "coding_coord",
+      "family": "staged_pair",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": false,
+        "coverage_passed": false,
+        "types_ok": false,
+        "functions": {
+          "app.card_of": {
+            "entry": "app.card_of",
+            "symbol": "card_of",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.mark": {
+            "entry": "util.mark",
+            "symbol": "mark",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "requirement_coverage": {
+          "passed": false,
+          "required": {
+            "functions": [
+              {
+                "symbol": "mark",
+                "file": "util.py",
+                "args": "name"
+              },
+              {
+                "symbol": "card_of",
+                "file": "app.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "util.py",
+              "app.py"
+            ],
+            "apis": [
+              {
+                "name": "mark",
+                "module": "util",
+                "source": "add"
+              },
+              {
+                "name": "mark",
+                "module": "",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [
+            {
+              "symbol": "mark",
+              "file": "util.py",
+              "args": "name"
+            },
+            {
+              "symbol": "card_of",
+              "file": "app.py",
+              "args": "item"
+            }
+          ],
+          "missing_apis": [
+            {
+              "name": "mark",
+              "module": "",
+              "source": "use"
+            }
+          ],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "app.py": "def echo(text):\n    return text\n\ndef mark(item):\n    return item['name']\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "published": false,
+        "route": "direct"
+      },
+      "live": true
+    },
+    {
+      "task_id": "coord_rt_mark",
+      "track": "coding_coord",
+      "family": "staged_pair",
+      "method": "staged_pair",
+      "scored": {
+        "route": "staged_pair",
+        "programmer_supplied_staging": true,
+        "published": false,
+        "publish_gate": {
+          "ready": false,
+          "helper_present": true,
+          "caller_present": true,
+          "required_call": false,
+          "helper_behavior": true,
+          "caller_behavior": false,
+          "private_passed": false,
+          "scored": {
+            "public_passed": false,
+            "private_passed": false,
+            "public": {
+              "status": "failed",
+              "compilation_passed": true,
+              "all_passed": false,
+              "results": [
+                {
+                  "entry": "app.card_of",
+                  "actual": null,
+                  "expected": "*ada",
+                  "passed": false,
+                  "error": "KeyError:'name'",
+                  "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"app.py\", line 5, in card_of\nKeyError: 'name'\n",
+                  "calls": []
+                },
+                {
+                  "entry": "util.mark",
+                  "actual": "*bo",
+                  "expected": "*bo",
+                  "passed": true,
+                  "error": null,
+                  "calls": []
+                }
+              ],
+              "compilation_s": 8.845800766721368e-05,
+              "tests_s": 9.437499102205038e-05,
+              "internal_s": 0.00018295799964107573,
+              "wall_s": 0.0001837919990066439,
+              "tool_executions": 1,
+              "output_contract_violations": [],
+              "output_assembly_errors": []
+            },
+            "private": {
+              "status": "failed",
+              "compilation_passed": true,
+              "all_passed": false,
+              "results": [
+                {
+                  "entry": "app.card_of",
+                  "actual": null,
+                  "expected": "*cy",
+                  "passed": false,
+                  "error": "KeyError:'name'",
+                  "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"app.py\", line 5, in card_of\nKeyError: 'name'\n",
+                  "calls": []
+                },
+                {
+                  "entry": "util.mark",
+                  "actual": "*d",
+                  "expected": "*d",
+                  "passed": true,
+                  "error": null,
+                  "calls": []
+                }
+              ],
+              "compilation_s": 7.829198148101568e-05,
+              "tests_s": 8.112500654533505e-05,
+              "internal_s": 0.00015949999215081334,
+              "wall_s": 0.00016008300008252263,
+              "tool_executions": 1,
+              "output_contract_violations": [],
+              "output_assembly_errors": []
+            },
+            "requirement_coverage": {
+              "passed": false,
+              "required": {
+                "functions": [
+                  {
+                    "symbol": "mark",
+                    "file": "util.py",
+                    "args": "name"
+                  },
+                  {
+                    "symbol": "card_of",
+                    "file": "app.py",
+                    "args": "item"
+                  }
+                ],
+                "files": [
+                  "util.py",
+                  "app.py"
+                ],
+                "apis": [
+                  {
+                    "name": "mark",
+                    "module": "util",
+                    "source": "add"
+                  },
+                  {
+                    "name": "mark",
+                    "module": "",
+                    "source": "use"
+                  }
+                ],
+                "imposed_implementation": false
+              },
+              "missing_files": [],
+              "missing_functions": [],
+              "missing_apis": [
+                {
+                  "name": "mark",
+                  "module": "",
+                  "source": "use"
+                }
+              ],
+              "imposed_implementation": false
+            },
+            "coverage_passed": false,
+            "helper_present": true,
+            "caller_present": true,
+            "required_call": false,
+            "real_call": false,
+            "functions": {
+              "app.card_of": {
+                "entry": "app.card_of",
+                "symbol": "card_of",
+                "role": "caller",
+                "present": true,
+                "types_ok": true,
+                "behavior_public": false,
+                "behavior_private": false
+              },
+              "util.mark": {
+                "entry": "util.mark",
+                "symbol": "mark",
+                "role": "helper",
+                "present": true,
+                "types_ok": true,
+                "behavior_public": true,
+                "behavior_private": true
+              }
+            },
+            "types_ok": true,
+            "complete_private": false,
+            "output_contract_violations": [],
+            "bound_contracts": true,
+            "independent_coverage": true
+          }
+        },
+        "steps": [
+          {
+            "role": "helper",
+            "path": "util.py",
+            "symbol": "mark"
+          },
+          {
+            "role": "caller",
+            "path": "app.py",
+            "symbol": "card_of"
+          }
+        ],
+        "staged_files": {
+          "app.py": "def echo(text):\n    return text\n\ndef card_of(item):\n    return str(item['name'])\n",
+          "util.py": "def echo(text):\n    return text\n\ndef mark(name):\n    return '*' + name\n"
+        },
+        "files": {
+          "app.py": "def echo(text):\n    return text\n",
+          "util.py": "def echo(text):\n    return text\n"
+        },
+        "helper_present": false,
+        "caller_present": false,
+        "required_call": false,
+        "public_passed": false,
+        "private_passed": false,
+        "functions": {
+          "app.card_of": {
+            "entry": "app.card_of",
+            "symbol": "card_of",
+            "role": "caller",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          },
+          "util.mark": {
+            "entry": "util.mark",
+            "symbol": "mark",
+            "role": "helper",
+            "present": false,
+            "types_ok": null,
+            "behavior_public": false,
+            "behavior_private": false
+          }
+        },
+        "passed": false,
+        "wall_s": 6.84284
+      },
+      "live": true
+    }
+  ],
+  "summary": {
+    "knowledge": {
+      "timestamp_sort": {
+        "n": 4,
+        "passed": 0
+      },
+      "provenance": {
+        "n": 4,
+        "passed": 4
+      }
+    },
+    "mathematics": {
+      "calculator_direct": {
+        "n": 4,
+        "passed": 3,
+        "separate": {
+          "interpretation": 0,
+          "execution": 2,
+          "answer": 2
+        }
+      },
+      "routed": {
+        "n": 4,
+        "passed": 3,
+        "separate": {
+          "interpretation": 0,
+          "execution": 2,
+          "answer": 2
+        }
+      }
+    },
+    "coding_api": {
+      "direct": {
+        "n": 2,
+        "passed": 0
+      },
+      "id_select_assemble": {
+        "n": 2,
+        "passed": 0,
+        "separate": {
+          "selection": 2,
+          "bindings": 0,
+          "assembled": 2,
+          "execution": 0
+        }
+      }
+    },
+    "coding_coord": {
+      "direct": {
+        "n": 2,
+        "passed": 0
+      },
+      "staged_pair": {
+        "n": 2,
+        "passed": 0
+      }
+    }
+  },
+  "usage": {
+    "kind": "capability_routes_cpu_usage",
+    "backend": "cpu",
+    "gpu_used": false,
+    "metal_used": false,
+    "product_chat_usage_used": false,
+    "research_cpu_ledger_frozen_s": 3564.568,
+    "research_cpu_ledger_remaining_s": 35.432,
+    "research_cpu_ledger_debit_s": 0.0,
+    "model_calls": 18,
+    "inference_ran": 18,
+    "wall_s": 64.934,
+    "cap_s": 900.0,
+    "call_cap": 80,
+    "memory": {
+      "parent_pid": 57370,
+      "server_pid": 57395,
+      "parent_rss_mib": 44.062,
+      "server_rss_mib": 2076.906,
+      "combined_rss_mib": 2120.969,
+      "source": "ps_rss_kib",
+      "weight_file_is_not_memory": true
+    },
+    "acquired_solution_memory": false,
+    "ranking_policy_resumed": false,
+    "learning_to_learn_established": false,
+    "original_map_rescored": false,
+    "followup_rescored": false,
+    "api_selection_generally_solved": false,
+    "partial": false
+  },
+  "events": 16,
+  "api_audit_preserved": true,
+  "hash": "10f7e0de3580a068d46d55405f84dd985a0ce93db4c5d5539a4f499ef7039534",
+  "startup": {
+    "status": "started",
+    "model": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "ngl": 0,
+    "device": "none",
+    "model_sha256": null
+  }
+}
