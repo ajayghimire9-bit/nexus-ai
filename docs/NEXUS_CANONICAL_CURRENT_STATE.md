@@ -1,17 +1,14 @@
 # NEXUS Seed — Current State
 
-## Current — worker division, public missing cases, then confirmation (protocol)
+## Current — worker division, public missing cases, then confirmation (results)
 
-[Protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md). Branch
-`cursor/seed-worker-div-confirm` from reviewed `e5d41fd`. Allow `ast.Div`
-in the existing worker, define numeric comparison and zero-division, and
-replay the saved `due` patch with no new inference. Public tests now
-include specified missing/empty cases. Historical `total`/`tag`/`fit`
-revisions are audited for feedback use. Fresh confirmation runs only
-after that freeze. The closed harder-feature 1/5
-(`31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2`) is
-not rescored. Ledger
-**3005.155682455996 used / 594.844317544004 remaining**.
+[Protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md),
+[results](NEXUS_SEED_WORKER_DIV_CONFIRM_RESULTS.md). Implementation
+`5ab1d1f` on `cursor/seed-worker-div-confirm`. Verifier `valid: true`.
+Saved `due` replay passes after allowing `ast.Div`. Historical 1/5
+untouched. Confirmation 3/4 (`flag`, `rate`, `enter` pass; `total`
+still sums row dicts after seeing `TypeError`). Ledger
+**3126.028358455996 used / 473.9716415440039 remaining**.
 
 ## Previous — frozen recipe on harder features (results)
 

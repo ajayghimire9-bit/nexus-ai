@@ -1,14 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — score the frozen worker after division and public missing cases
+## Current next — improve the repair loop; do not start experience yet
 
-The [worker-division protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md)
-locks `ast.Div`, numeric comparison, public missing/empty cases, and a
-read-only audit of historical `total`/`tag`/`fit` revisions. Score four
-new confirmation tasks on the frozen 1.5B recipe only after that
-implementation commit. Do not rescore the historical 1/5. Do not resume
-ranking or memory. Ledger
-**3005.155682455996 used / 594.844317544004 remaining**.
+The [worker-division confirmation](NEXUS_SEED_WORKER_DIV_CONFIRM_RESULTS.md)
+passed 3/4 after allowing `Div` and putting missing/empty cases in
+public tests. List-of-records sum still failed: the model saw
+`TypeError` on amounts and a missing amount and left
+`sum(item['rows'] or [0])` unchanged. Next: make revision actually use
+that exception, without resuming ranking or memory. Historical 1/5
+stays closed. Ledger
+**3126.028358455996 used / 473.9716415440039 remaining**.
 
 ## Previous next — keep the recipe frozen; do not start experience yet
 

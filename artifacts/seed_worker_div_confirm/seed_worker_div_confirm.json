@@ -1,0 +1,2602 @@
+{
+  "study_id": "seed-worker-div-confirm-1",
+  "scientific": false,
+  "kind": "source_development_evaluation_not_confirmation",
+  "blocked_step": null,
+  "model_metadata": {
+    "coder15": {
+      "model_sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "model_file": "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "model_file_bytes": 1117320768,
+      "quantization": "Q4_K_M",
+      "gguf_file_type": 15,
+      "quantization_source": "GGUF general.file_type metadata",
+      "runtime_version": "version: 0.7.0 (build 11669, commit 620d2225c)\nbuilt with AppleClang 21.0.0.21000334 for Darwin arm64",
+      "executable_sha256": "9dc31a8a15f81b8f252e68d1918419e0bbbf5008bd42d00dd8721a58834e384a",
+      "hardware": "arm64",
+      "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+      "cpu_count": 10,
+      "settings": {
+        "model_path": "/Users/ajayghimire/Projects/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+        "executable": "llama-server",
+        "host": "127.0.0.1",
+        "port": 0,
+        "context_size": 2048,
+        "threads": 1,
+        "backend": "llama_cpp_server",
+        "request_timeout_s": 45,
+        "startup_timeout_s": 30,
+        "max_tokens": 128,
+        "seed": 42,
+        "application_cache": false,
+        "prompt_cache": false
+      },
+      "cold_startup_s": 1.565359875006834
+    }
+  },
+  "historical_fingerprints": {
+    "artifacts/seed_capability_audit.json": "4e7c2fcd4db63bd04021397a1dee89855c4c7d8b4e7dac61f2f2ca4247f61661",
+    "artifacts/seed_capability_audit_verified_v2.json": "e38c37478022615215ece6c55b1df84e229ebd12bb9212be926dc234d6d0cd95",
+    "artifacts/seed_capability_audit_raw.jsonl": "8823ce572749c6b83aa6dd671461df29bae5fbdf0e37d42833ac11980c996b4f"
+  },
+  "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+  "historical_supplied_private_correct": 1,
+  "resources": {
+    "wall_s": 85.537099
+  },
+  "records": [
+    {
+      "kind": "audit_manifest",
+      "config_hash": "e4a6bb802ac7b9909e738facf000cebbae25310b56ffd1337032c9760758011a",
+      "default_investigation_policy": "fixed_boundary",
+      "learned_ranking_promoted": false,
+      "learned_policy_promoted": false,
+      "learning_research_resumed": false,
+      "frozen_recipe": {
+        "model": "coder15",
+        "prompt_style": "chatml",
+        "format": "json_body",
+        "prompt_variant": "contract",
+        "wire_discovery": true,
+        "max_completions": 3,
+        "two_stage_revision": true,
+        "worker_allows_div": true,
+        "numeric_compare": "compare_python_result"
+      },
+      "historical_harder_sha256": "31713e4d04ef63ca296ef4c78797ca11e4c87203ddce845ea82c3956646dbdc2",
+      "historical_supplied_private_correct": 1,
+      "historical_rescoring": false,
+      "gemini": "NOT_RUN",
+      "result_label": "authored_source_development_pilot_not_confirmation",
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      }
+    },
+    {
+      "kind": "request_inspect",
+      "category": "inspect",
+      "id": "py_bag_total",
+      "frozen_recipe": {
+        "model": "coder15",
+        "prompt_style": "chatml",
+        "format": "json_body",
+        "prompt_variant": "contract",
+        "wire_discovery": true,
+        "max_completions": 3,
+        "two_stage_revision": true,
+        "worker_allows_div": true,
+        "numeric_compare": "compare_python_result"
+      },
+      "supplied_contract": "Signature: def total(item)\nInput contract: item: {\"rows\": list}\nExample: item: {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}\nRepresentative public inputs: [{\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, {\"rows\": []}, {\"rows\": [{\"amount\": 2}, {}]}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\n",
+      "public_includes_missing_or_empty": true,
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "max_completions": 3,
+      "worker_allows_div": true
+    },
+    {
+      "kind": "revision_audit",
+      "category": "audit",
+      "tasks": [
+        {
+          "id": "py_rows_sum",
+          "origin": "supplied",
+          "first_body": "def total(item):\n    return sum(item['rows'] or [0])\n",
+          "revision_body": "def total(item):\n    return sum(item['rows'] if 'rows' in item else [])\n",
+          "first_return": "return sum(item['rows'] or [0])",
+          "revision_return": "return sum(item['rows'] if 'rows' in item else [])",
+          "revision_attempted": true,
+          "body_changed": true,
+          "return_changed": true,
+          "failed_case_count": 1,
+          "exceptions_in_feedback": [
+            "TypeError:unsupported operand type(s) for +: 'int' and 'dict'"
+          ],
+          "mismatches_in_feedback": [],
+          "saw_exception": true,
+          "saw_mismatch": false,
+          "compilation_reason": null,
+          "feedback_omitted_compile_reason": false,
+          "same_failing_expression": false,
+          "still_sums_row_dicts": true,
+          "still_uses_fstring": false,
+          "public_passed": false,
+          "semantic_correct": false
+        },
+        {
+          "id": "py_mark_absent",
+          "origin": "supplied",
+          "first_body": "def tag(item):\n    return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'\n",
+          "revision_body": "def tag(item):\n    return f'{item['kind'].lower()}:{item['name'].lower()}'\n",
+          "first_return": "return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'",
+          "revision_return": "return f'{item['kind'].lower()}:{item['name'].lower()}'",
+          "revision_attempted": true,
+          "body_changed": true,
+          "return_changed": true,
+          "failed_case_count": 1,
+          "exceptions_in_feedback": [],
+          "mismatches_in_feedback": [],
+          "saw_exception": false,
+          "saw_mismatch": false,
+          "compilation_reason": "ValueError:forbidden_ast_node:mark.py:JoinedStr",
+          "feedback_omitted_compile_reason": true,
+          "same_failing_expression": false,
+          "still_sums_row_dicts": false,
+          "still_uses_fstring": true,
+          "public_passed": false,
+          "semantic_correct": false
+        },
+        {
+          "id": "py_inside_span",
+          "origin": "supplied",
+          "first_body": "def fit(item):\n    return item['value'] >= item['lo'] and item['value'] <= item['hi']\n",
+          "revision_body": "",
+          "first_return": "return item['value'] >= item['lo'] and item['value'] <= item['hi']",
+          "revision_return": null,
+          "revision_attempted": false,
+          "body_changed": false,
+          "return_changed": false,
+          "failed_case_count": 0,
+          "exceptions_in_feedback": [],
+          "mismatches_in_feedback": [],
+          "saw_exception": false,
+          "saw_mismatch": false,
+          "compilation_reason": null,
+          "feedback_omitted_compile_reason": false,
+          "same_failing_expression": false,
+          "still_sums_row_dicts": false,
+          "still_uses_fstring": false,
+          "public_passed": true,
+          "semantic_correct": false
+        }
+      ]
+    },
+    {
+      "kind": "execution",
+      "index": 1,
+      "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+      "scope": "coder15:supplied:py_bag_total",
+      "operation": "complete",
+      "identity": "py_bag_total:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"def total(item):\\n    return sum(item['rows'] or [0])\"\n}",
+        "request_sha256": "53f179bd8200c88719280b91bd28bad6732808b4e561ea52a8850c9e2faad9ad",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 397,
+          "generated_tokens": 25,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 397,
+            "prompt_ms": 11537.43,
+            "prompt_per_token_ms": 29.061536523929473,
+            "prompt_per_second": 34.40974289768172,
+            "predicted_n": 25,
+            "predicted_ms": 1093.792,
+            "predicted_per_token_ms": 45.574666666666666,
+            "predicted_per_second": 21.942014569497676
+          },
+          "request_wall_s": 12.634689124999568,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 12.634736957988935,
+      "hash": "a9decbbe2a891b41d4d38b1d2ec3a61c5fa07d4b930523b5908f27bc894f583a"
+    },
+    {
+      "kind": "execution",
+      "index": 2,
+      "previous": "a9decbbe2a891b41d4d38b1d2ec3a61c5fa07d4b930523b5908f27bc894f583a",
+      "scope": "coder15:supplied:py_bag_total",
+      "operation": "worker",
+      "identity": "py_bag_total",
+      "argument": {
+        "language": "python",
+        "files": {
+          "bag.py": "def echo(text):\n    return text\n\ndef total(item):\n    return sum(item['rows'] or [0])\n"
+        },
+        "cases": [
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 4
+                },
+                {
+                  "amount": 6
+                }
+              ]
+            },
+            "expected": 10
+          },
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": []
+            },
+            "expected": 0
+          },
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 2
+                },
+                {}
+              ]
+            },
+            "expected": 2
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 10,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": 0,
+            "expected": 0,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 2,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00011391700536478311,
+        "tests_s": 0.0010618329979479313,
+        "internal_s": 0.0011762089998228475,
+        "wall_s": 0.04780654200294521
+      },
+      "status": "ok",
+      "elapsed_s": 0.04788316700432915,
+      "hash": "1624c3e65bf711a11a66b0b86daa49aa38c28742d4d27aff59f4371fa239426e"
+    },
+    {
+      "kind": "execution",
+      "index": 3,
+      "previous": "1624c3e65bf711a11a66b0b86daa49aa38c28742d4d27aff59f4371fa239426e",
+      "scope": "coder15:supplied:py_bag_total",
+      "operation": "complete",
+      "identity": "py_bag_total:behavior",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"def total(item):\\n    return sum(item['rows'] or [0])\"\n}",
+        "request_sha256": "0a2c1284994ea271fc71d4c8267435c55ee04dc0d4e802c379789a85db125058",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 742,
+          "generated_tokens": 25,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 742,
+            "prompt_ms": 21665.106,
+            "prompt_per_token_ms": 29.198256064690028,
+            "prompt_per_second": 34.24862080065521,
+            "predicted_n": 25,
+            "predicted_ms": 1192.172,
+            "predicted_per_token_ms": 49.673833333333334,
+            "predicted_per_second": 20.131323332539264
+          },
+          "request_wall_s": 22.85970025000279,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 22.859771167000872,
+      "hash": "72c2a1f25ad85899619ef0dd5b71ed53d795fe4d8d0f1576ed3bd968d284193c"
+    },
+    {
+      "kind": "execution",
+      "index": 4,
+      "previous": "72c2a1f25ad85899619ef0dd5b71ed53d795fe4d8d0f1576ed3bd968d284193c",
+      "scope": "coder15:supplied:py_bag_total:rev",
+      "operation": "worker",
+      "identity": "py_bag_total:rev",
+      "argument": {
+        "language": "python",
+        "files": {
+          "bag.py": "def echo(text):\n    return text\n\ndef total(item):\n    return sum(item['rows'] or [0])\n"
+        },
+        "cases": [
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 4
+                },
+                {
+                  "amount": 6
+                }
+              ]
+            },
+            "expected": 10
+          },
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": []
+            },
+            "expected": 0
+          },
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 2
+                },
+                {}
+              ]
+            },
+            "expected": 2
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 10,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": 0,
+            "expected": 0,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 2,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00017358300101477653,
+        "tests_s": 0.001156459009507671,
+        "internal_s": 0.00133050000295043,
+        "wall_s": 0.048224541998934
+      },
+      "status": "ok",
+      "elapsed_s": 0.04831562499748543,
+      "hash": "beb9adbf529c262aa081644a9792b6e63ae5f483fb829a47c000f73230c04c09"
+    },
+    {
+      "kind": "execution",
+      "index": 5,
+      "previous": "beb9adbf529c262aa081644a9792b6e63ae5f483fb829a47c000f73230c04c09",
+      "scope": "coder15:supplied:py_bag_total",
+      "operation": "assessment_worker",
+      "identity": "py_bag_total",
+      "argument": {
+        "language": "python",
+        "files": {
+          "bag.py": "def echo(text):\n    return text\n\ndef total(item):\n    return sum(item['rows'] or [0])\n"
+        },
+        "cases": [
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            "expected": 7
+          },
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": [
+                {},
+                {}
+              ]
+            },
+            "expected": 0
+          },
+          {
+            "entry": "bag.total",
+            "input": {
+              "rows": [
+                {
+                  "amount": 1
+                },
+                {
+                  "amount": 1
+                },
+                {}
+              ]
+            },
+            "expected": 2
+          }
+        ]
+      },
+      "output": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 7,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 0,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 2,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00011675000132527202,
+        "tests_s": 0.0008516659872839227,
+        "internal_s": 0.0009688330028438941,
+        "wall_s": 0.034510792000219226
+      },
+      "status": "ok",
+      "elapsed_s": 0.034602833999088034,
+      "hash": "343b82877f962cd9a19e063f323321a64ea74008aa6bfb9faa93c2e7696c5a31"
+    },
+    {
+      "kind": "capability",
+      "area": "worker_div_confirm",
+      "id": "py_bag_total",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "list_records",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "bag.py",
+          "symbol": "total",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "bag.py",
+          "symbol": "total",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "bag.py",
+        "symbol": "total",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "def total(item):\n    return sum(item['rows'] or [0])",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "bag.py",
+            "symbol": "total",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def total(item):\n    return sum(item['rows'] or [0])\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def total(item)\nInput contract: item: {\"rows\": list}\nExample: item: {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}\nRepresentative public inputs: [{\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, {\"rows\": []}, {\"rows\": [{\"amount\": 2}, {}]}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of total(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: bag.py\nSymbol: total\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.\nDocs: total: total(item) sums row amounts. Missing amount is 0. Empty rows is 0.\nPublic tests: [{\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10}, {\"entry\": \"bag.total\", \"input\": {\"rows\": []}, \"expected\": 0}, {\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def total(item)\nInput contract: item: {\"rows\": list}\nExample: item: {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}\nRepresentative public inputs: [{\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, {\"rows\": []}, {\"rows\": [{\"amount\": 2}, {}]}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of total(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: bag.py\nSymbol: total\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.\nDocs: total: total(item) sums row amounts. Missing amount is 0. Empty rows is 0.\nPublic tests: [{\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10}, {\"entry\": \"bag.total\", \"input\": {\"rows\": []}, \"expected\": 0}, {\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"def total(item):\\n    return sum(item['rows'] or [0])\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 397,
+            "generated_tokens": 25,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 397,
+              "prompt_ms": 11537.43,
+              "prompt_per_token_ms": 29.061536523929473,
+              "prompt_per_second": 34.40974289768172,
+              "predicted_n": 25,
+              "predicted_ms": 1093.792,
+              "predicted_per_token_ms": 45.574666666666666,
+              "predicted_per_second": 21.942014569497676
+            },
+            "request_wall_s": 12.634689124999568,
+            "creation_request_sha256": null
+          }
+        },
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "def total(item):\n    return sum(item['rows'] or [0])",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "bag.py",
+            "symbol": "total",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def total(item):\n    return sum(item['rows'] or [0])\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 2,
+          "stage": "behavior",
+          "revision_of": "public_failure",
+          "user_prompt": "Signature: def total(item)\nInput contract: item: {\"rows\": list}\nExample: item: {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}\nRepresentative public inputs: [{\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, {\"rows\": []}, {\"rows\": [{\"amount\": 2}, {}]}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of total(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: bag.py\nSymbol: total\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.\nDocs: total: total(item) sums row amounts. Missing amount is 0. Empty rows is 0.\nPublic tests: [{\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10}, {\"entry\": \"bag.total\", \"input\": {\"rows\": []}, \"expected\": 0}, {\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\nPublic execution feedback:\n{\"validation_error\": \"public_tests_failed\", \"placeholder_rejected\": false, \"stage\": \"behavior\", \"instruction\": \"Public tests failed. Each case lists input, expected, and actual or exception.\", \"failed_cases\": [{\"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}, {\"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}], \"all_cases\": [{\"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}, {\"input\": {\"rows\": []}, \"expected\": 0, \"actual\": 0, \"exception\": null, \"passed\": true, \"band\": null}, {\"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}], \"three_point_evidence\": false, \"bands_present\": [], \"operator_supplied\": false}\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def total(item)\nInput contract: item: {\"rows\": list}\nExample: item: {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}\nRepresentative public inputs: [{\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, {\"rows\": []}, {\"rows\": [{\"amount\": 2}, {}]}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of total(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: bag.py\nSymbol: total\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function total(item) that sums amount on each row in rows. Missing amount counts as 0. An empty list is 0.\nDocs: total: total(item) sums row amounts. Missing amount is 0. Empty rows is 0.\nPublic tests: [{\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10}, {\"entry\": \"bag.total\", \"input\": {\"rows\": []}, \"expected\": 0}, {\"entry\": \"bag.total\", \"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\nPublic execution feedback:\n{\"validation_error\": \"public_tests_failed\", \"placeholder_rejected\": false, \"stage\": \"behavior\", \"instruction\": \"Public tests failed. Each case lists input, expected, and actual or exception.\", \"failed_cases\": [{\"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}, {\"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}], \"all_cases\": [{\"input\": {\"rows\": [{\"amount\": 4}, {\"amount\": 6}]}, \"expected\": 10, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}, {\"input\": {\"rows\": []}, \"expected\": 0, \"actual\": 0, \"exception\": null, \"passed\": true, \"band\": null}, {\"input\": {\"rows\": [{\"amount\": 2}, {}]}, \"expected\": 2, \"actual\": null, \"exception\": \"TypeError:unsupported operand type(s) for +: 'int' and 'dict'\", \"passed\": false, \"band\": null}], \"three_point_evidence\": false, \"bands_present\": [], \"operator_supplied\": false}\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"def total(item):\\n    return sum(item['rows'] or [0])\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 742,
+            "generated_tokens": 25,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 742,
+              "prompt_ms": 21665.106,
+              "prompt_per_token_ms": 29.198256064690028,
+              "prompt_per_second": 34.24862080065521,
+              "predicted_n": 25,
+              "predicted_ms": 1192.172,
+              "predicted_per_token_ms": 49.673833333333334,
+              "predicted_per_second": 20.131323332539264
+            },
+            "request_wall_s": 22.85970025000279,
+            "creation_request_sha256": null
+          },
+          "three_point_evidence": false,
+          "bands_present": [],
+          "operator_hint_in_revision": false,
+          "operator_supplied": false,
+          "failed_cases": [
+            {
+              "input": {
+                "rows": [
+                  {
+                    "amount": 4
+                  },
+                  {
+                    "amount": 6
+                  }
+                ]
+              },
+              "expected": 10,
+              "actual": null,
+              "exception": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+              "passed": false,
+              "band": null
+            },
+            {
+              "input": {
+                "rows": [
+                  {
+                    "amount": 2
+                  },
+                  {}
+                ]
+              },
+              "expected": 2,
+              "actual": null,
+              "exception": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+              "passed": false,
+              "band": null
+            }
+          ]
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": null,
+      "syntax_valid": true,
+      "executed": true,
+      "public_passed": false,
+      "public": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 10,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": 0,
+            "expected": 0,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 2,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00017358300101477653,
+        "tests_s": 0.001156459009507671,
+        "internal_s": 0.00133050000295043,
+        "wall_s": 0.048224541998934
+      },
+      "private": {
+        "status": "failed",
+        "compilation_passed": true,
+        "all_passed": false,
+        "results": [
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 7,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 0,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          },
+          {
+            "entry": "bag.total",
+            "actual": null,
+            "expected": 2,
+            "passed": false,
+            "error": "TypeError:unsupported operand type(s) for +: 'int' and 'dict'",
+            "trace": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/Projects/nexus-ai/src/nexus/seed/agent_loop_worker.py\", line 199, in evaluate_python_payload\n    actual = fn(inp)\n  File \"bag.py\", line 5, in total\nTypeError: unsupported operand type(s) for +: 'int' and 'dict'\n",
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00011675000132527202,
+        "tests_s": 0.0008516659872839227,
+        "internal_s": 0.0009688330028438941,
+        "wall_s": 0.034510792000219226
+      },
+      "semantic_correct": false,
+      "structurally_valid": true,
+      "executable_code": true,
+      "final_files": {
+        "bag.py": "def echo(text):\n    return text\n\ndef total(item):\n    return sum(item['rows'] or [0])\n"
+      },
+      "raw_valid": true,
+      "normalized": [
+        "wrapped_body"
+      ],
+      "completions": 2,
+      "calls_charged": 2,
+      "format_repair_attempted": false,
+      "format_repair_success": true,
+      "behavioral_revision_attempted": true,
+      "behavioral_revision_success": false,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": true,
+      "comparison_ops_first": [],
+      "comparison_ops_last": [],
+      "comparison_changed": false,
+      "cell_wall_s": 35.627212,
+      "complete_wall_s": 35.494389,
+      "memory": {
+        "parent_pid": 24843,
+        "server_pid": 24864,
+        "parent_rss_mib": 23.781,
+        "server_rss_mib": 1969.156,
+        "combined_rss_mib": 1992.938,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "execution",
+      "index": 6,
+      "previous": "343b82877f962cd9a19e063f323321a64ea74008aa6bfb9faa93c2e7696c5a31",
+      "scope": "coder15:supplied:py_flag_absent",
+      "operation": "complete",
+      "identity": "py_flag_absent:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"return f'{item.get('kind', \\\\\\\\\" }",
+        "request_sha256": "3f17788d56c4c90d2b05c666346b8ee7ecd35bedaacb7d8ec8724ba45bdf55c3",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 379,
+          "generated_tokens": 20,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 379,
+            "prompt_ms": 10077.005,
+            "prompt_per_token_ms": 26.588403693931397,
+            "prompt_per_second": 37.6103812591142,
+            "predicted_n": 20,
+            "predicted_ms": 903.113,
+            "predicted_per_token_ms": 47.53226315789474,
+            "predicted_per_second": 21.038341824334275
+          },
+          "request_wall_s": 10.983406958010164,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 10.983428374995128,
+      "hash": "6e53e83f7d1bb4ad4a6a363a2d5282a374e7f76abc82d61ad96a811e2b151bca"
+    },
+    {
+      "kind": "execution",
+      "index": 7,
+      "previous": "6e53e83f7d1bb4ad4a6a363a2d5282a374e7f76abc82d61ad96a811e2b151bca",
+      "scope": "coder15:supplied:py_flag_absent",
+      "operation": "complete",
+      "identity": "py_flag_absent:format",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"return ':'.join([item.get('kind', ''), item.get('name', '')]).lower()\"\n}",
+        "request_sha256": "98f35020986b44f8e1dcaab7dec765f4f5e358e7d44e479505f266a386417551",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 442,
+          "generated_tokens": 28,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 442,
+            "prompt_ms": 12056.097,
+            "prompt_per_token_ms": 27.276237556561085,
+            "prompt_per_second": 36.66194789242323,
+            "predicted_n": 28,
+            "predicted_ms": 1411.834,
+            "predicted_per_token_ms": 52.29014814814815,
+            "predicted_per_second": 19.124061327323183
+          },
+          "request_wall_s": 13.470574666993343,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 13.470723959006136,
+      "hash": "85ea61b7c5264d091f190ddafc5be2a10501a8d410e6ea28379b6b48c031b520"
+    },
+    {
+      "kind": "execution",
+      "index": 8,
+      "previous": "85ea61b7c5264d091f190ddafc5be2a10501a8d410e6ea28379b6b48c031b520",
+      "scope": "coder15:supplied:py_flag_absent",
+      "operation": "worker",
+      "identity": "py_flag_absent",
+      "argument": {
+        "language": "python",
+        "files": {
+          "flag.py": "def echo(text):\n    return text\n\ndef flag(item):\n    return ':'.join([item.get('kind', ''), item.get('name', '')]).lower()\n"
+        },
+        "cases": [
+          {
+            "entry": "flag.flag",
+            "input": {
+              "kind": "Lab",
+              "name": "One"
+            },
+            "expected": "lab:one"
+          },
+          {
+            "entry": "flag.flag",
+            "input": {
+              "name": "One"
+            },
+            "expected": ":one"
+          },
+          {
+            "entry": "flag.flag",
+            "input": {
+              "kind": "Lab"
+            },
+            "expected": "lab:"
+          }
+        ]
+      },
+      "output": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "flag.flag",
+            "actual": "lab:one",
+            "expected": "lab:one",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": ":one",
+            "expected": ":one",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": "lab:",
+            "expected": "lab:",
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0001521660014986992,
+        "tests_s": 1.1540993000380695e-05,
+        "internal_s": 0.00016429100651293993,
+        "wall_s": 0.05484916600107681
+      },
+      "status": "ok",
+      "elapsed_s": 0.054951458994764835,
+      "hash": "5fe27f2a090783d469616f36b69963deaf6b930c2049127d353e53fdacde5534"
+    },
+    {
+      "kind": "execution",
+      "index": 9,
+      "previous": "5fe27f2a090783d469616f36b69963deaf6b930c2049127d353e53fdacde5534",
+      "scope": "coder15:supplied:py_flag_absent",
+      "operation": "assessment_worker",
+      "identity": "py_flag_absent",
+      "argument": {
+        "language": "python",
+        "files": {
+          "flag.py": "def echo(text):\n    return text\n\ndef flag(item):\n    return ':'.join([item.get('kind', ''), item.get('name', '')]).lower()\n"
+        },
+        "cases": [
+          {
+            "entry": "flag.flag",
+            "input": {
+              "kind": "",
+              "name": ""
+            },
+            "expected": ":"
+          },
+          {
+            "entry": "flag.flag",
+            "input": {
+              "kind": "Z",
+              "name": "q"
+            },
+            "expected": "z:q"
+          },
+          {
+            "entry": "flag.flag",
+            "input": {
+              "kind": "Mix",
+              "name": "Case",
+              "extra": 1
+            },
+            "expected": "mix:case"
+          }
+        ]
+      },
+      "output": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "flag.flag",
+            "actual": ":",
+            "expected": ":",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": "z:q",
+            "expected": "z:q",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": "mix:case",
+            "expected": "mix:case",
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0002288329997099936,
+        "tests_s": 2.391599991824478e-05,
+        "internal_s": 0.00025349999486934394,
+        "wall_s": 0.03797958399809431
+      },
+      "status": "ok",
+      "elapsed_s": 0.038071625007432885,
+      "hash": "30de50f8d7ccd90e3e4db9e8fda1caf6115355aba8801f1d61f692e2ea5e3d8a"
+    },
+    {
+      "kind": "capability",
+      "area": "worker_div_confirm",
+      "id": "py_flag_absent",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "missing_fields",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "flag.py",
+          "symbol": "flag",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "flag.py",
+          "symbol": "flag",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "flag.py",
+        "symbol": "flag",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": false,
+          "raw_reason": "SyntaxError: unexpected character after line continuation character (<unknown>, line 2)",
+          "raw_excerpt": "return f'{item.get('kind', \\\\",
+          "normalized": [],
+          "placeholder": "placeholder_body:empty",
+          "syntax_valid": false,
+          "structurally_valid": false,
+          "preview": {
+            "action": "insert_function",
+            "path": "flag.py",
+            "symbol": "flag",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def flag(item)\nInput contract: item: {\"kind\": str, \"name\": str}\nExample: item: {\"kind\": \"Lab\", \"name\": \"One\"}\nRepresentative public inputs: [{\"kind\": \"Lab\", \"name\": \"One\"}, {\"name\": \"One\"}, {\"kind\": \"Lab\"}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of flag(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: flag.py\nSymbol: flag\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function flag(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.\nDocs: flag: flag(item) is kind:name lowercased. Missing fields are empty strings.\nPublic tests: [{\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\", \"name\": \"One\"}, \"expected\": \"lab:one\"}, {\"entry\": \"flag.flag\", \"input\": {\"name\": \"One\"}, \"expected\": \":one\"}, {\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\"}, \"expected\": \"lab:\"}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def flag(item)\nInput contract: item: {\"kind\": str, \"name\": str}\nExample: item: {\"kind\": \"Lab\", \"name\": \"One\"}\nRepresentative public inputs: [{\"kind\": \"Lab\", \"name\": \"One\"}, {\"name\": \"One\"}, {\"kind\": \"Lab\"}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of flag(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: flag.py\nSymbol: flag\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function flag(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.\nDocs: flag: flag(item) is kind:name lowercased. Missing fields are empty strings.\nPublic tests: [{\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\", \"name\": \"One\"}, \"expected\": \"lab:one\"}, {\"entry\": \"flag.flag\", \"input\": {\"name\": \"One\"}, \"expected\": \":one\"}, {\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\"}, \"expected\": \"lab:\"}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"return f'{item.get('kind', \\\\\\\\\" }",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 379,
+            "generated_tokens": 20,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 379,
+              "prompt_ms": 10077.005,
+              "prompt_per_token_ms": 26.588403693931397,
+              "prompt_per_second": 37.6103812591142,
+              "predicted_n": 20,
+              "predicted_ms": 903.113,
+              "predicted_per_token_ms": 47.53226315789474,
+              "predicted_per_second": 21.038341824334275
+            },
+            "request_wall_s": 10.983406958010164,
+            "creation_request_sha256": null
+          }
+        },
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "return ':'.join([item.get('kind', ''), item.get('name', '')]).lower()",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "flag.py",
+            "symbol": "flag",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def flag(item):\n    return ':'.join([item.get('kind', ''), item.get('name', '')]).lower()\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 2,
+          "stage": "format",
+          "revision_of": "format",
+          "user_prompt": "Signature: def flag(item)\nInput contract: item: {\"kind\": str, \"name\": str}\nExample: item: {\"kind\": \"Lab\", \"name\": \"One\"}\nRepresentative public inputs: [{\"kind\": \"Lab\", \"name\": \"One\"}, {\"name\": \"One\"}, {\"kind\": \"Lab\"}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of flag(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: flag.py\nSymbol: flag\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function flag(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.\nDocs: flag: flag(item) is kind:name lowercased. Missing fields are empty strings.\nPublic tests: [{\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\", \"name\": \"One\"}, \"expected\": \"lab:one\"}, {\"entry\": \"flag.flag\", \"input\": {\"name\": \"One\"}, \"expected\": \":one\"}, {\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\"}, \"expected\": \"lab:\"}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\nPublic execution feedback:\n{\"validation_error\": \"placeholder_body:empty\", \"placeholder_rejected\": true, \"instruction\": \"The last completion was rejected as a placeholder. Write executable Python that implements the request. A function that returns None is allowed only when that is the intended result.\", \"public_results\": []}\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def flag(item)\nInput contract: item: {\"kind\": str, \"name\": str}\nExample: item: {\"kind\": \"Lab\", \"name\": \"One\"}\nRepresentative public inputs: [{\"kind\": \"Lab\", \"name\": \"One\"}, {\"name\": \"One\"}, {\"kind\": \"Lab\"}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of flag(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: flag.py\nSymbol: flag\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function flag(item) that returns kind and name in lowercase joined by one colon. A missing kind or name is an empty string.\nDocs: flag: flag(item) is kind:name lowercased. Missing fields are empty strings.\nPublic tests: [{\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\", \"name\": \"One\"}, \"expected\": \"lab:one\"}, {\"entry\": \"flag.flag\", \"input\": {\"name\": \"One\"}, \"expected\": \":one\"}, {\"entry\": \"flag.flag\", \"input\": {\"kind\": \"Lab\"}, \"expected\": \"lab:\"}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\nPublic execution feedback:\n{\"validation_error\": \"placeholder_body:empty\", \"placeholder_rejected\": true, \"instruction\": \"The last completion was rejected as a placeholder. Write executable Python that implements the request. A function that returns None is allowed only when that is the intended result.\", \"public_results\": []}\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"return ':'.join([item.get('kind', ''), item.get('name', '')]).lower()\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 442,
+            "generated_tokens": 28,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 442,
+              "prompt_ms": 12056.097,
+              "prompt_per_token_ms": 27.276237556561085,
+              "prompt_per_second": 36.66194789242323,
+              "predicted_n": 28,
+              "predicted_ms": 1411.834,
+              "predicted_per_token_ms": 52.29014814814815,
+              "predicted_per_second": 19.124061327323183
+            },
+            "request_wall_s": 13.470574666993343,
+            "creation_request_sha256": null
+          },
+          "operator_hint_in_revision": false
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": null,
+      "syntax_valid": true,
+      "executed": true,
+      "public_passed": true,
+      "public": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "flag.flag",
+            "actual": "lab:one",
+            "expected": "lab:one",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": ":one",
+            "expected": ":one",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": "lab:",
+            "expected": "lab:",
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0001521660014986992,
+        "tests_s": 1.1540993000380695e-05,
+        "internal_s": 0.00016429100651293993,
+        "wall_s": 0.05484916600107681
+      },
+      "private": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "flag.flag",
+            "actual": ":",
+            "expected": ":",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": "z:q",
+            "expected": "z:q",
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "flag.flag",
+            "actual": "mix:case",
+            "expected": "mix:case",
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0002288329997099936,
+        "tests_s": 2.391599991824478e-05,
+        "internal_s": 0.00025349999486934394,
+        "wall_s": 0.03797958399809431
+      },
+      "semantic_correct": true,
+      "structurally_valid": true,
+      "executable_code": true,
+      "final_files": {
+        "flag.py": "def echo(text):\n    return text\n\ndef flag(item):\n    return ':'.join([item.get('kind', ''), item.get('name', '')]).lower()\n"
+      },
+      "raw_valid": true,
+      "normalized": [
+        "wrapped_body"
+      ],
+      "completions": 2,
+      "calls_charged": 2,
+      "format_repair_attempted": true,
+      "format_repair_success": true,
+      "behavioral_revision_attempted": false,
+      "behavioral_revision_success": true,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": false,
+      "comparison_ops_first": [],
+      "comparison_ops_last": [],
+      "comparison_changed": false,
+      "cell_wall_s": 24.548656,
+      "complete_wall_s": 24.453982,
+      "memory": {
+        "parent_pid": 24843,
+        "server_pid": 24864,
+        "parent_rss_mib": 22.516,
+        "server_rss_mib": 1972.344,
+        "combined_rss_mib": 1994.859,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "execution",
+      "index": 10,
+      "previous": "30de50f8d7ccd90e3e4db9e8fda1caf6115355aba8801f1d61f692e2ea5e3d8a",
+      "scope": "coder15:supplied:py_rate_div",
+      "operation": "complete",
+      "identity": "py_rate_div:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"return item['amount'] / item['unit']\"\n}",
+        "request_sha256": "29d3d0f8e44e216367a8831a253a3bba09139255f2ef5ec8ad8b115b668d0d04",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 347,
+          "generated_tokens": 19,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 347,
+            "prompt_ms": 9225.001,
+            "prompt_per_token_ms": 26.585017291066283,
+            "prompt_per_second": 37.615172074236085,
+            "predicted_n": 19,
+            "predicted_ms": 806.685,
+            "predicted_per_token_ms": 44.81583333333333,
+            "predicted_per_second": 22.313542460811846
+          },
+          "request_wall_s": 10.034687082996243,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 10.034705790996668,
+      "hash": "37dc3e98959a4c1f23e839d048d48c30d9fdfa3e08735faeaad10591d1ffc05e"
+    },
+    {
+      "kind": "execution",
+      "index": 11,
+      "previous": "37dc3e98959a4c1f23e839d048d48c30d9fdfa3e08735faeaad10591d1ffc05e",
+      "scope": "coder15:supplied:py_rate_div",
+      "operation": "worker",
+      "identity": "py_rate_div",
+      "argument": {
+        "language": "python",
+        "files": {
+          "pay.py": "def echo(text):\n    return text\n\ndef rate(item):\n    return item['amount'] / item['unit']\n"
+        },
+        "cases": [
+          {
+            "entry": "pay.rate",
+            "input": {
+              "amount": 10,
+              "unit": 4
+            },
+            "expected": 2.5
+          },
+          {
+            "entry": "pay.rate",
+            "input": {
+              "amount": 0,
+              "unit": 2
+            },
+            "expected": 0.0
+          }
+        ]
+      },
+      "output": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "pay.rate",
+            "actual": 2.5,
+            "expected": 2.5,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "pay.rate",
+            "actual": 0.0,
+            "expected": 0.0,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.979101014323533e-05,
+        "tests_s": 9.334005881100893e-06,
+        "internal_s": 0.00010962500527966768,
+        "wall_s": 0.033859959003166296
+      },
+      "status": "ok",
+      "elapsed_s": 0.03391370800090954,
+      "hash": "6e8846b51ef2183c7ccc52ff9a1d8fa6a59c44f9f8ab39779b6f048e3ef4d006"
+    },
+    {
+      "kind": "execution",
+      "index": 12,
+      "previous": "6e8846b51ef2183c7ccc52ff9a1d8fa6a59c44f9f8ab39779b6f048e3ef4d006",
+      "scope": "coder15:supplied:py_rate_div",
+      "operation": "assessment_worker",
+      "identity": "py_rate_div",
+      "argument": {
+        "language": "python",
+        "files": {
+          "pay.py": "def echo(text):\n    return text\n\ndef rate(item):\n    return item['amount'] / item['unit']\n"
+        },
+        "cases": [
+          {
+            "entry": "pay.rate",
+            "input": {
+              "amount": 9,
+              "unit": 2
+            },
+            "expected": 4.5
+          },
+          {
+            "entry": "pay.rate",
+            "input": {
+              "amount": 5,
+              "unit": 2
+            },
+            "expected": 2.5
+          }
+        ]
+      },
+      "output": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "pay.rate",
+            "actual": 4.5,
+            "expected": 4.5,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "pay.rate",
+            "actual": 2.5,
+            "expected": 2.5,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0001560420059831813,
+        "tests_s": 1.0957999620586634e-05,
+        "internal_s": 0.00016720900021027774,
+        "wall_s": 0.03375220899761189
+      },
+      "status": "ok",
+      "elapsed_s": 0.03381612499651965,
+      "hash": "16b45aa5c72aa937745462e6a1eb8d401663ed9bf2455c2bd413f9491df367d4"
+    },
+    {
+      "kind": "capability",
+      "area": "worker_div_confirm",
+      "id": "py_rate_div",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "arithmetic",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "pay.py",
+          "symbol": "rate",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "pay.py",
+          "symbol": "rate",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "pay.py",
+        "symbol": "rate",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "return item['amount'] / item['unit']",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "pay.py",
+            "symbol": "rate",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def rate(item):\n    return item['amount'] / item['unit']\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def rate(item)\nInput contract: item: {\"amount\": int, \"unit\": int}\nExample: item: {\"amount\": 10, \"unit\": 4}\nRepresentative public inputs: [{\"amount\": 10, \"unit\": 4}, {\"amount\": 0, \"unit\": 2}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of rate(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: pay.py\nSymbol: rate\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function rate(item) that returns amount divided by unit.\nDocs: rate: rate(item) is amount / unit as a float.\nPublic tests: [{\"entry\": \"pay.rate\", \"input\": {\"amount\": 10, \"unit\": 4}, \"expected\": 2.5}, {\"entry\": \"pay.rate\", \"input\": {\"amount\": 0, \"unit\": 2}, \"expected\": 0.0}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def rate(item)\nInput contract: item: {\"amount\": int, \"unit\": int}\nExample: item: {\"amount\": 10, \"unit\": 4}\nRepresentative public inputs: [{\"amount\": 10, \"unit\": 4}, {\"amount\": 0, \"unit\": 2}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of rate(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: pay.py\nSymbol: rate\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function rate(item) that returns amount divided by unit.\nDocs: rate: rate(item) is amount / unit as a float.\nPublic tests: [{\"entry\": \"pay.rate\", \"input\": {\"amount\": 10, \"unit\": 4}, \"expected\": 2.5}, {\"entry\": \"pay.rate\", \"input\": {\"amount\": 0, \"unit\": 2}, \"expected\": 0.0}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"return item['amount'] / item['unit']\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 347,
+            "generated_tokens": 19,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 347,
+              "prompt_ms": 9225.001,
+              "prompt_per_token_ms": 26.585017291066283,
+              "prompt_per_second": 37.615172074236085,
+              "predicted_n": 19,
+              "predicted_ms": 806.685,
+              "predicted_per_token_ms": 44.81583333333333,
+              "predicted_per_second": 22.313542460811846
+            },
+            "request_wall_s": 10.034687082996243,
+            "creation_request_sha256": null
+          }
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": null,
+      "syntax_valid": true,
+      "executed": true,
+      "public_passed": true,
+      "public": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "pay.rate",
+            "actual": 2.5,
+            "expected": 2.5,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "pay.rate",
+            "actual": 0.0,
+            "expected": 0.0,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 9.979101014323533e-05,
+        "tests_s": 9.334005881100893e-06,
+        "internal_s": 0.00010962500527966768,
+        "wall_s": 0.033859959003166296
+      },
+      "private": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "pay.rate",
+            "actual": 4.5,
+            "expected": 4.5,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "pay.rate",
+            "actual": 2.5,
+            "expected": 2.5,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0001560420059831813,
+        "tests_s": 1.0957999620586634e-05,
+        "internal_s": 0.00016720900021027774,
+        "wall_s": 0.03375220899761189
+      },
+      "semantic_correct": true,
+      "structurally_valid": true,
+      "executable_code": true,
+      "final_files": {
+        "pay.py": "def echo(text):\n    return text\n\ndef rate(item):\n    return item['amount'] / item['unit']\n"
+      },
+      "raw_valid": true,
+      "normalized": [
+        "wrapped_body"
+      ],
+      "completions": 1,
+      "calls_charged": 1,
+      "format_repair_attempted": false,
+      "format_repair_success": true,
+      "behavioral_revision_attempted": false,
+      "behavioral_revision_success": true,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": true,
+      "comparison_ops_first": [],
+      "comparison_ops_last": [],
+      "comparison_changed": false,
+      "cell_wall_s": 10.102969,
+      "complete_wall_s": 10.034687,
+      "memory": {
+        "parent_pid": 24843,
+        "server_pid": 24864,
+        "parent_rss_mib": 23.578,
+        "server_rss_mib": 1986.719,
+        "combined_rss_mib": 2010.297,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "execution",
+      "index": 13,
+      "previous": "16b45aa5c72aa937745462e6a1eb8d401663ed9bf2455c2bd413f9491df367d4",
+      "scope": "coder15:supplied:py_enter_both",
+      "operation": "complete",
+      "identity": "py_enter_both:0",
+      "argument": null,
+      "output": {
+        "content": "{\n  \"body\": \"return item['age'] >= item['min_age'] and item['score'] >= item['floor']\"\n}",
+        "request_sha256": "896802a8923c12a9c622a3ea0bd8ce17c07a69d77df227e16ab542d0cec98a20",
+        "telemetry": {
+          "inference_ran": true,
+          "application_cache_hit": false,
+          "input_tokens": 437,
+          "generated_tokens": 30,
+          "prompt_cache_tokens": 0,
+          "runtime_timings": {
+            "cache_n": 0,
+            "prompt_n": 437,
+            "prompt_ms": 11724.942,
+            "prompt_per_token_ms": 26.83053089244851,
+            "prompt_per_second": 37.27097328072071,
+            "predicted_n": 30,
+            "predicted_ms": 1388.711,
+            "predicted_per_token_ms": 47.88658620689655,
+            "predicted_per_second": 20.882674652969552
+          },
+          "request_wall_s": 13.11518808400433,
+          "creation_request_sha256": null
+        }
+      },
+      "status": "ok",
+      "elapsed_s": 13.115212124990649,
+      "hash": "16b383b9118ea76b190a2d09e718f697b09a703067bf3968ce3d860ef00ffabe"
+    },
+    {
+      "kind": "execution",
+      "index": 14,
+      "previous": "16b383b9118ea76b190a2d09e718f697b09a703067bf3968ce3d860ef00ffabe",
+      "scope": "coder15:supplied:py_enter_both",
+      "operation": "worker",
+      "identity": "py_enter_both",
+      "argument": {
+        "language": "python",
+        "files": {
+          "door.py": "def echo(text):\n    return text\n\ndef enter(item):\n    return item['age'] >= item['min_age'] and item['score'] >= item['floor']\n"
+        },
+        "cases": [
+          {
+            "entry": "door.enter",
+            "input": {
+              "age": 21,
+              "min_age": 18,
+              "score": 6,
+              "floor": 5
+            },
+            "expected": true
+          },
+          {
+            "entry": "door.enter",
+            "input": {
+              "age": 16,
+              "min_age": 18,
+              "score": 9,
+              "floor": 5
+            },
+            "expected": false
+          }
+        ]
+      },
+      "output": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "door.enter",
+            "actual": true,
+            "expected": true,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "door.enter",
+            "actual": false,
+            "expected": false,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0001397079904563725,
+        "tests_s": 8.167000487446785e-06,
+        "internal_s": 0.00014837499475106597,
+        "wall_s": 0.0482912919978844
+      },
+      "status": "ok",
+      "elapsed_s": 0.04834333401231561,
+      "hash": "df9f3372a4eab59439d2fc92eeba8dcadee10434b89f6a1f9b779a2e629e89d3"
+    },
+    {
+      "kind": "execution",
+      "index": 15,
+      "previous": "df9f3372a4eab59439d2fc92eeba8dcadee10434b89f6a1f9b779a2e629e89d3",
+      "scope": "coder15:supplied:py_enter_both",
+      "operation": "assessment_worker",
+      "identity": "py_enter_both",
+      "argument": {
+        "language": "python",
+        "files": {
+          "door.py": "def echo(text):\n    return text\n\ndef enter(item):\n    return item['age'] >= item['min_age'] and item['score'] >= item['floor']\n"
+        },
+        "cases": [
+          {
+            "entry": "door.enter",
+            "input": {
+              "age": 30,
+              "min_age": 18,
+              "score": 3,
+              "floor": 5
+            },
+            "expected": false
+          },
+          {
+            "entry": "door.enter",
+            "input": {
+              "age": 19,
+              "min_age": 18,
+              "score": 5,
+              "floor": 5
+            },
+            "expected": true
+          }
+        ]
+      },
+      "output": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "door.enter",
+            "actual": false,
+            "expected": false,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "door.enter",
+            "actual": true,
+            "expected": true,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00013658299576491117,
+        "tests_s": 7.875001756474376e-06,
+        "internal_s": 0.00014495800132863224,
+        "wall_s": 0.03387383298831992
+      },
+      "status": "ok",
+      "elapsed_s": 0.03393966698786244,
+      "hash": "4e6eb800631bcaf57fa4959656dbc90d386a48031959d32334d0349a106a0bc1"
+    },
+    {
+      "kind": "capability",
+      "area": "worker_div_confirm",
+      "id": "py_enter_both",
+      "category": "confirm",
+      "method": "supplied",
+      "model": "coder15",
+      "family": "interacting_predicates",
+      "role": "insert",
+      "used_private_to_accept": false,
+      "complete_correctness": false,
+      "format": "json_body",
+      "prompt_style": "chatml",
+      "prompt_variant": "contract",
+      "contract_origin": "supplied",
+      "asked": false,
+      "target_from": "discovery",
+      "wire_discovery": true,
+      "discovery": {
+        "path_correct": true,
+        "symbol_correct": true,
+        "action_correct": true,
+        "target_correct": true,
+        "used_public_tests": false,
+        "reason": "request_names_missing_symbol",
+        "discovered": {
+          "path": "door.py",
+          "symbol": "enter",
+          "action": "insert_function"
+        },
+        "gold": {
+          "path": "door.py",
+          "symbol": "enter",
+          "action": "insert_function"
+        }
+      },
+      "plan": {
+        "action": "insert_function",
+        "path": "door.py",
+        "symbol": "enter",
+        "args": "item",
+        "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+        "existing_source": "",
+        "target_from": "discovery"
+      },
+      "traces": [
+        {
+          "raw_valid": true,
+          "raw_reason": "body_field",
+          "raw_excerpt": "return item['age'] >= item['min_age'] and item['score'] >= item['floor']",
+          "normalized": [
+            "wrapped_body"
+          ],
+          "placeholder": null,
+          "syntax_valid": true,
+          "structurally_valid": true,
+          "preview": {
+            "action": "insert_function",
+            "path": "door.py",
+            "symbol": "enter",
+            "source_sha256": "8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98",
+            "old_excerpt": "",
+            "new_excerpt": "def enter(item):\n    return item['age'] >= item['min_age'] and item['score'] >= item['floor']\n",
+            "supplied_by": "nexus_plan",
+            "model_chooses": [
+              "function_text"
+            ]
+          },
+          "comparison_ops": [
+            "GtE",
+            "GtE"
+          ],
+          "round": 1,
+          "stage": "initial",
+          "user_prompt": "Signature: def enter(item)\nInput contract: item: {\"age\": int, \"min_age\": int, \"score\": int, \"floor\": int}\nExample: item: {\"age\": 21, \"min_age\": 18, \"score\": 6, \"floor\": 5}\nRepresentative public inputs: [{\"age\": 21, \"min_age\": 18, \"score\": 6, \"floor\": 5}, {\"age\": 16, \"min_age\": 18, \"score\": 9, \"floor\": 5}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of enter(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: door.py\nSymbol: enter\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function enter(item) that is True only when age is at least min_age and score is at least floor.\nDocs: enter: enter(item) requires age >= min_age AND score >= floor.\nPublic tests: [{\"entry\": \"door.enter\", \"input\": {\"age\": 21, \"min_age\": 18, \"score\": 6, \"floor\": 5}, \"expected\": true}, {\"entry\": \"door.enter\", \"input\": {\"age\": 16, \"min_age\": 18, \"score\": 9, \"floor\": 5}, \"expected\": false}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n",
+          "prompt_reached_model": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nSignature: def enter(item)\nInput contract: item: {\"age\": int, \"min_age\": int, \"score\": int, \"floor\": int}\nExample: item: {\"age\": 21, \"min_age\": 18, \"score\": 6, \"floor\": 5}\nRepresentative public inputs: [{\"age\": 21, \"min_age\": 18, \"score\": 6, \"floor\": 5}, {\"age\": 16, \"min_age\": 18, \"score\": 9, \"floor\": 5}]\nitem is a dictionary. Read fields by name. Do not treat item as a string.\nReturn JSON {\"body\": \"...\"}. The value must be executable Python statements for the body of enter(item), including return. Do not include the def line. Do not set body to a single identifier.\nFile: door.py\nSymbol: enter\nArguments: item\nAction: insert_function\nsource_sha256: 8b550eff08e916e83a6c392244d34b0079cb8511bcf41cb6e4e9521e148c8a98\nRequest: Create function enter(item) that is True only when age is at least min_age and score is at least floor.\nDocs: enter: enter(item) requires age >= min_age AND score >= floor.\nPublic tests: [{\"entry\": \"door.enter\", \"input\": {\"age\": 21, \"min_age\": 18, \"score\": 6, \"floor\": 5}, \"expected\": true}, {\"entry\": \"door.enter\", \"input\": {\"age\": 16, \"min_age\": 18, \"score\": 9, \"floor\": 5}, \"expected\": false}]\nCurrent function:\n```python\n\n```\nPublic execution feedback: {}\n<|im_end|>\n<|im_start|>assistant\n",
+          "render": {
+            "style": "chatml",
+            "chat_template": "qwen2.5_instruct_chatml",
+            "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+            "rendered_has_im_start": true,
+            "user_equals_raw": true,
+            "endpoint": "/completion"
+          },
+          "decoding": {
+            "endpoint": "/completion",
+            "chat_template": null,
+            "prompt_field": "prompt",
+            "temperature": 0,
+            "seed": 42,
+            "stop": null,
+            "runtime_module": "local_model_runtime.py",
+            "runtime_edited": false,
+            "target_from": "public_test_entry_or_existing_symbol",
+            "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+            "json_schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+                }
+              },
+              "required": [
+                "body"
+              ]
+            },
+            "n_predict": 128,
+            "max_tokens": 128
+          },
+          "raw_content": "{\n  \"body\": \"return item['age'] >= item['min_age'] and item['score'] >= item['floor']\"\n}",
+          "telemetry": {
+            "inference_ran": true,
+            "application_cache_hit": false,
+            "input_tokens": 437,
+            "generated_tokens": 30,
+            "prompt_cache_tokens": 0,
+            "runtime_timings": {
+              "cache_n": 0,
+              "prompt_n": 437,
+              "prompt_ms": 11724.942,
+              "prompt_per_token_ms": 26.83053089244851,
+              "prompt_per_second": 37.27097328072071,
+              "predicted_n": 30,
+              "predicted_ms": 1388.711,
+              "predicted_per_token_ms": 47.88658620689655,
+              "predicted_per_second": 20.882674652969552
+            },
+            "request_wall_s": 13.11518808400433,
+            "creation_request_sha256": null
+          }
+        }
+      ],
+      "decoding": {
+        "endpoint": "/completion",
+        "chat_template": null,
+        "prompt_field": "prompt",
+        "temperature": 0,
+        "seed": 42,
+        "stop": null,
+        "runtime_module": "local_model_runtime.py",
+        "runtime_edited": false,
+        "target_from": "public_test_entry_or_existing_symbol",
+        "target_discovery": "not_implemented; appropriate_for_this_experiment_only",
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "Executable Python statements for the function body, including return. Do not include the def line. Not a single identifier."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "n_predict": 128,
+        "max_tokens": 128
+      },
+      "render": {
+        "style": "chatml",
+        "chat_template": "qwen2.5_instruct_chatml",
+        "system": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
+        "rendered_has_im_start": true,
+        "user_equals_raw": true,
+        "endpoint": "/completion"
+      },
+      "placeholder": null,
+      "syntax_valid": true,
+      "executed": true,
+      "public_passed": true,
+      "public": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "door.enter",
+            "actual": true,
+            "expected": true,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "door.enter",
+            "actual": false,
+            "expected": false,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.0001397079904563725,
+        "tests_s": 8.167000487446785e-06,
+        "internal_s": 0.00014837499475106597,
+        "wall_s": 0.0482912919978844
+      },
+      "private": {
+        "status": "passed",
+        "compilation_passed": true,
+        "all_passed": true,
+        "results": [
+          {
+            "entry": "door.enter",
+            "actual": false,
+            "expected": false,
+            "passed": true,
+            "error": null,
+            "calls": []
+          },
+          {
+            "entry": "door.enter",
+            "actual": true,
+            "expected": true,
+            "passed": true,
+            "error": null,
+            "calls": []
+          }
+        ],
+        "compilation_s": 0.00013658299576491117,
+        "tests_s": 7.875001756474376e-06,
+        "internal_s": 0.00014495800132863224,
+        "wall_s": 0.03387383298831992
+      },
+      "semantic_correct": true,
+      "structurally_valid": true,
+      "executable_code": true,
+      "final_files": {
+        "door.py": "def echo(text):\n    return text\n\ndef enter(item):\n    return item['age'] >= item['min_age'] and item['score'] >= item['floor']\n"
+      },
+      "raw_valid": true,
+      "normalized": [
+        "wrapped_body"
+      ],
+      "completions": 1,
+      "calls_charged": 1,
+      "format_repair_attempted": false,
+      "format_repair_success": true,
+      "behavioral_revision_attempted": false,
+      "behavioral_revision_success": true,
+      "three_point_in_revision": false,
+      "operator_hint_in_revision": false,
+      "uses_dict_fields": true,
+      "comparison_ops_first": [
+        "GtE",
+        "GtE"
+      ],
+      "comparison_ops_last": [
+        "GtE",
+        "GtE"
+      ],
+      "comparison_changed": false,
+      "cell_wall_s": 13.19807,
+      "complete_wall_s": 13.115188,
+      "memory": {
+        "parent_pid": 24843,
+        "server_pid": 24864,
+        "parent_rss_mib": 23.656,
+        "server_rss_mib": 1985.797,
+        "combined_rss_mib": 2009.453,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "discovery_blocked": false
+    },
+    {
+      "kind": "model_resources",
+      "category": "resources",
+      "model": "coder15",
+      "block": "confirm",
+      "wall_s": 83.50607,
+      "memory_before": {
+        "parent_pid": 24843,
+        "server_pid": 24864,
+        "parent_rss_mib": 26.125,
+        "server_rss_mib": 1943.578,
+        "combined_rss_mib": 1969.703,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "memory_after": {
+        "parent_pid": 24843,
+        "server_pid": 24864,
+        "parent_rss_mib": 23.656,
+        "server_rss_mib": 1985.797,
+        "combined_rss_mib": 2009.453,
+        "source": "ps_rss_kib",
+        "weight_file_is_not_memory": true
+      },
+      "per_task": [
+        {
+          "id": "py_bag_total",
+          "cell_wall_s": 35.627212,
+          "calls_charged": 2,
+          "combined_rss_mib": 1992.938
+        },
+        {
+          "id": "py_flag_absent",
+          "cell_wall_s": 24.548656,
+          "calls_charged": 2,
+          "combined_rss_mib": 1994.859
+        },
+        {
+          "id": "py_rate_div",
+          "cell_wall_s": 10.102969,
+          "calls_charged": 1,
+          "combined_rss_mib": 2010.297
+        },
+        {
+          "id": "py_enter_both",
+          "cell_wall_s": 13.19807,
+          "calls_charged": 1,
+          "combined_rss_mib": 2009.453
+        }
+      ],
+      "model_bytes": 1117320768,
+      "weight_file_is_not_memory": true
+    }
+  ],
+  "summary": {
+    "default_investigation_policy": "fixed_boundary",
+    "learned_ranking_promoted": false,
+    "learning_research_resumed": false,
+    "historical_supplied_private_correct": 1,
+    "historical_rescoring": false,
+    "frozen_recipe": {
+      "model": "coder15",
+      "prompt_style": "chatml",
+      "format": "json_body",
+      "prompt_variant": "contract",
+      "wire_discovery": true,
+      "max_completions": 3,
+      "two_stage_revision": true,
+      "worker_allows_div": true,
+      "numeric_compare": "compare_python_result"
+    },
+    "revision_audit": [
+      {
+        "id": "py_rows_sum",
+        "origin": "supplied",
+        "first_body": "def total(item):\n    return sum(item['rows'] or [0])\n",
+        "revision_body": "def total(item):\n    return sum(item['rows'] if 'rows' in item else [])\n",
+        "first_return": "return sum(item['rows'] or [0])",
+        "revision_return": "return sum(item['rows'] if 'rows' in item else [])",
+        "revision_attempted": true,
+        "body_changed": true,
+        "return_changed": true,
+        "failed_case_count": 1,
+        "exceptions_in_feedback": [
+          "TypeError:unsupported operand type(s) for +: 'int' and 'dict'"
+        ],
+        "mismatches_in_feedback": [],
+        "saw_exception": true,
+        "saw_mismatch": false,
+        "compilation_reason": null,
+        "feedback_omitted_compile_reason": false,
+        "same_failing_expression": false,
+        "still_sums_row_dicts": true,
+        "still_uses_fstring": false,
+        "public_passed": false,
+        "semantic_correct": false
+      },
+      {
+        "id": "py_mark_absent",
+        "origin": "supplied",
+        "first_body": "def tag(item):\n    return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'\n",
+        "revision_body": "def tag(item):\n    return f'{item['kind'].lower()}:{item['name'].lower()}'\n",
+        "first_return": "return f'{item['kind'].lower() if item['kind'] else ''}:{item['name'].lower() if item['name'] else ''}'",
+        "revision_return": "return f'{item['kind'].lower()}:{item['name'].lower()}'",
+        "revision_attempted": true,
+        "body_changed": true,
+        "return_changed": true,
+        "failed_case_count": 1,
+        "exceptions_in_feedback": [],
+        "mismatches_in_feedback": [],
+        "saw_exception": false,
+        "saw_mismatch": false,
+        "compilation_reason": "ValueError:forbidden_ast_node:mark.py:JoinedStr",
+        "feedback_omitted_compile_reason": true,
+        "same_failing_expression": false,
+        "still_sums_row_dicts": false,
+        "still_uses_fstring": true,
+        "public_passed": false,
+        "semantic_correct": false
+      },
+      {
+        "id": "py_inside_span",
+        "origin": "supplied",
+        "first_body": "def fit(item):\n    return item['value'] >= item['lo'] and item['value'] <= item['hi']\n",
+        "revision_body": "",
+        "first_return": "return item['value'] >= item['lo'] and item['value'] <= item['hi']",
+        "revision_return": null,
+        "revision_attempted": false,
+        "body_changed": false,
+        "return_changed": false,
+        "failed_case_count": 0,
+        "exceptions_in_feedback": [],
+        "mismatches_in_feedback": [],
+        "saw_exception": false,
+        "saw_mismatch": false,
+        "compilation_reason": null,
+        "feedback_omitted_compile_reason": false,
+        "same_failing_expression": false,
+        "still_sums_row_dicts": false,
+        "still_uses_fstring": false,
+        "public_passed": true,
+        "semantic_correct": false
+      }
+    ],
+    "confirm_rows": [
+      {
+        "id": "py_bag_total",
+        "target_correct": true,
+        "executable_code": true,
+        "behavioral_revision_attempted": true,
+        "public_passed": false,
+        "semantic_correct": false,
+        "calls_charged": 2,
+        "cell_wall_s": 35.627212,
+        "combined_rss_mib": 1992.938
+      },
+      {
+        "id": "py_flag_absent",
+        "target_correct": true,
+        "executable_code": true,
+        "behavioral_revision_attempted": false,
+        "public_passed": true,
+        "semantic_correct": true,
+        "calls_charged": 2,
+        "cell_wall_s": 24.548656,
+        "combined_rss_mib": 1994.859
+      },
+      {
+        "id": "py_rate_div",
+        "target_correct": true,
+        "executable_code": true,
+        "behavioral_revision_attempted": false,
+        "public_passed": true,
+        "semantic_correct": true,
+        "calls_charged": 1,
+        "cell_wall_s": 10.102969,
+        "combined_rss_mib": 2010.297
+      },
+      {
+        "id": "py_enter_both",
+        "target_correct": true,
+        "executable_code": true,
+        "behavioral_revision_attempted": false,
+        "public_passed": true,
+        "semantic_correct": true,
+        "calls_charged": 1,
+        "cell_wall_s": 13.19807,
+        "combined_rss_mib": 2009.453
+      }
+    ],
+    "resources": [
+      {
+        "model": "coder15",
+        "block": "confirm",
+        "wall_s": 83.50607,
+        "combined_rss_mib_after": 2009.453,
+        "model_bytes": 1117320768,
+        "weight_file_is_not_memory": true
+      }
+    ],
+    "learning_to_learn_established": false,
+    "verdict": "DEVELOPMENT_PILOT_ONLY"
+  },
+  "learning_to_learn": false,
+  "agi": false,
+  "gemini": "NOT_RUN"
+}

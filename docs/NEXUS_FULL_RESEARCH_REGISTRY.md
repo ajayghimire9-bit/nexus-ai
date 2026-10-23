@@ -1,6 +1,17 @@
 # NEXUS Seed — Research Registry
 
-## Current — corrected capability/evidence audit
+## Current — worker division and public missing-case confirmation
+
+`seed-worker-div-confirm-1`, protocol `5ab1d1f`, scored artifact
+sha256 `55df4229dba2b44100468d5f5fb6ad404212b974cebf31354d95ae22c508b89b`.
+Saved `due` replay passed. Historical harder-feature 1/5 preserved.
+Confirmation 3/4 private (`flag`, `rate`, `enter`; `total` unchanged
+after `TypeError`). Timeout partial kept. Ledger
+**3126.028358455996 used / 473.9716415440039 remaining**.
+[Protocol](NEXUS_SEED_WORKER_DIV_CONFIRM_PROTOCOL.md),
+[results](NEXUS_SEED_WORKER_DIV_CONFIRM_RESULTS.md).
+
+## Previous — corrected capability/evidence audit
 
 `seed-capability-evidence-audit-1`, execution def0341, full 240-cell pilot.
 Learned 19/24 vs strong fixed 24/24: practical improvement FAILED. Three policy/

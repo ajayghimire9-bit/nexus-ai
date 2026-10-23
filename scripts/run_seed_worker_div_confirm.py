@@ -24,7 +24,7 @@ def start_runtime(spec):
     if file_hash(model) != spec["sha256"]:
         raise ValueError("frozen_model_hash_mismatch:" + spec["label"])
     runtime = PersistentLocalRuntime(RuntimeConfig(
-        str(model), max_tokens=128, application_cache=False, request_timeout_s=20,
+        str(model), max_tokens=128, application_cache=False, request_timeout_s=45,
     ))
     return runtime, None, runtime.start()
 
