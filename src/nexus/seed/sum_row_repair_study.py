@@ -99,7 +99,7 @@ def record_model(config, emit, meter, runtime):
             runtime, spec, "contract", meter, "coder15:supplied:" + spec["id"],
             wire_discovery=True, max_tokens=max_tokens,
             contract_block=compact_supplied_contract(plan, spec.get("public") or []),
-            contract_origin="supplied", asked=False, compact_prompts=True,
+            contract_origin="supplied", asked=False, compact_prompts=False,
         )
         bodies = _bodies(result)
         row = dict(

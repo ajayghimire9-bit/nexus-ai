@@ -42,9 +42,11 @@ and the remaining cells returned empty bodies after the server died.
 That run is kept as
 `artifacts/seed_sum_row_repair_confirm/seed_sum_row_repair_confirm_partial.json`
 (sha256 `d7a41905de0e72a4f9ad9996e7ed99bd44386d4f5e4ab8fd191c740ec6f68efe`).
-Before re-scoring: allow `ast.keyword`; send compact prompts on any
-unprojected `sum(...)` (not only int+dict); use a compact initial
-prompt so CPU prefill stays under 5 s. Fresh IDs unchanged.
+Before re-scoring: allow `ast.keyword`; send compact **revision**
+prompts on any unprojected `sum(...)` (not only int+dict). Keep the
+frozen first-pass contract + public-test block; a compact initial
+prompt produced non-Python bodies (0/4) and is not used. Fresh IDs
+unchanged.
 
 ## Gates
 
