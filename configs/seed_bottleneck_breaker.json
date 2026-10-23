@@ -1,0 +1,577 @@
+{
+  "id": "seed-bottleneck-breaker-1",
+  "artifact_stem": "seed_bottleneck_breaker",
+  "base_sha": "33b9fdef26fd5212ef790bc110f5dc196a35216f",
+  "parent_protocol_commit": "33b9fdef26fd5212ef790bc110f5dc196a35216f",
+  "carried_used_s": 2433.667484455996,
+  "wall_s": 900,
+  "mode": "authored_source_development_pilot_not_confirmation",
+  "default_investigation_policy": "fixed_boundary",
+  "learned_policy_promoted": false,
+  "models": {
+    "qwen_0_5b": {
+      "model_path": "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.models/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+      "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+      "parameters_label": "Qwen2.5-0.5B-Instruct-Q4_K_M",
+      "threads": 4,
+      "request_timeout_s": 60.0,
+      "startup_timeout_s": 30.0,
+      "max_tokens": 512
+    },
+    "qwen_1_5b_coder": {
+      "model_path": "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/.models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+      "parameters_label": "Qwen2.5-Coder-1.5B-Instruct-Q4_K_M",
+      "threads": 4,
+      "request_timeout_s": 60.0,
+      "startup_timeout_s": 30.0,
+      "max_tokens": 512
+    }
+  },
+  "proposer_conditions": [
+    {
+      "id": "qwen_0_5b_starved_128",
+      "model_key": "qwen_0_5b",
+      "max_tokens": 128,
+      "interface_mode": "starved_128",
+      "revision_budget": 2
+    },
+    {
+      "id": "qwen_0_5b_symbol_512",
+      "model_key": "qwen_0_5b",
+      "max_tokens": 512,
+      "interface_mode": "symbol_512",
+      "proposal_sources": ["local_model", "local_model_per_file"],
+      "revision_budget": 2
+    },
+    {
+      "id": "qwen_1_5b_coder_symbol_512",
+      "model_key": "qwen_1_5b_coder",
+      "max_tokens": 512,
+      "interface_mode": "symbol_512",
+      "proposal_sources": ["local_model", "local_model_per_file"],
+      "revision_budget": 2
+    },
+    {
+      "id": "qwen_1_5b_coder_closed_loop_ast",
+      "model_key": "qwen_1_5b_coder",
+      "max_tokens": 512,
+      "interface_mode": "symbol_512_plus_ast",
+      "proposal_sources": ["local_model", "local_model_per_file", "ast"],
+      "revision_budget": 2
+    }
+  ],
+  "expected_grid": {
+    "coding_ablation_cells": 16,
+    "unseen_ttc_cells": 3,
+    "language_cells": 6,
+    "meta_source_episodes": 6,
+    "meta_assessment_cells": 30
+  },
+  "closed_coding_ids_excluded": [
+    "py_width_ok",
+    "py_keep_exclusive",
+    "py_pair_label",
+    "py_cutoff_ambiguous",
+    "py_hi_inclusive_src",
+    "py_slug_join",
+    "py_levy_then_credit",
+    "py_cap_inclusive_src",
+    "py_span_ok",
+    "py_floor_ok",
+    "py_reject_floor",
+    "py_note_join",
+    "py_threshold_fix"
+  ],
+  "coding_tasks": [
+    {
+      "id": "py_bb_kebab_pair",
+      "family": "missing_function",
+      "domain": "python_repo",
+      "language": "python",
+      "budget_steps": 6,
+      "request": "Create function kebab(left, right) that lowercases both strings and joins them with one hyphen.",
+      "files": {
+        "kebab_util.py": "def echo(text):\n    return text\n"
+      },
+      "public": [
+        {
+          "entry": "kebab_util.kebab",
+          "input": ["Foo", "Bar"],
+          "unpack_args": true,
+          "expected": "foo-bar"
+        }
+      ],
+      "assessment": [
+        {
+          "entry": "kebab_util.kebab",
+          "input": ["Hello", "World"],
+          "unpack_args": true,
+          "expected": "hello-world"
+        },
+        {
+          "entry": "kebab_util.kebab",
+          "input": ["Alpha", "Beta"],
+          "unpack_args": true,
+          "expected": "alpha-beta"
+        }
+      ]
+    },
+    {
+      "id": "py_bb_duty_then_rebate",
+      "family": "multi_file",
+      "domain": "python_repo",
+      "language": "python",
+      "budget_steps": 6,
+      "request": "Add the duty to the raw amount, then subtract the rebate from that billed amount.",
+      "files": {
+        "duty.py": "def apply_duty(amount, rate):\n    return amount\n",
+        "invoice.py": "from duty import apply_duty\ndef total_due(item):\n    billed = apply_duty(item['amount'], item['duty'])\n    return billed + item['rebate']\n"
+      },
+      "public": [
+        {
+          "entry": "invoice.total_due",
+          "input": {"amount": 80, "duty": 0.25, "rebate": 5},
+          "expected": 95.0
+        }
+      ],
+      "assessment": [
+        {
+          "entry": "invoice.total_due",
+          "input": {"amount": 40, "duty": 0.1, "rebate": 1},
+          "expected": 43.0
+        },
+        {
+          "entry": "invoice.total_due",
+          "input": {"amount": 100, "duty": 0.2, "rebate": 10},
+          "expected": 110.0
+        }
+      ]
+    },
+    {
+      "id": "py_bb_quota_inclusive",
+      "family": "comparison_boundary",
+      "domain": "python_repo",
+      "language": "python",
+      "budget_steps": 6,
+      "request": "Allow usage equal to the quota.",
+      "files": {
+        "quota.py": "def within_quota(item):\n    return item['usage'] < item['quota']\n"
+      },
+      "public": [
+        {
+          "entry": "quota.within_quota",
+          "input": {"usage": 12, "quota": 12},
+          "expected": true
+        }
+      ],
+      "assessment": [
+        {
+          "entry": "quota.within_quota",
+          "input": {"usage": 12, "quota": 12},
+          "expected": true
+        },
+        {
+          "entry": "quota.within_quota",
+          "input": {"usage": 13, "quota": 12},
+          "expected": false
+        }
+      ]
+    },
+    {
+      "id": "py_bb_doc_retry_backoff",
+      "family": "documented_api",
+      "domain": "python_repo",
+      "language": "python",
+      "budget_steps": 6,
+      "request": "Multiply attempt by the documented MAX_RETRY_MS constant from the retry guide instead of 100.",
+      "docs": [
+        {
+          "doc_id": "retry_guide_v2",
+          "text": "Retry Policy v2: set MAX_RETRY_MS = 450 for bounded backoff."
+        }
+      ],
+      "files": {
+        "backoff.py": "def retry_limit_ms(attempt):\n    return attempt * 100\n"
+      },
+      "public": [
+        {
+          "entry": "backoff.retry_limit_ms",
+          "input": 2,
+          "expected": 900
+        }
+      ],
+      "assessment": [
+        {
+          "entry": "backoff.retry_limit_ms",
+          "input": 1,
+          "expected": 450
+        },
+        {
+          "entry": "backoff.retry_limit_ms",
+          "input": 3,
+          "expected": 1350
+        }
+      ]
+    }
+  ],
+  "unseen_reasoning_tasks": [
+    {
+      "id": "py_bb_ttc_tiered_shipping",
+      "family": "multi_file",
+      "domain": "python_repo",
+      "language": "python",
+      "budget_steps": 8,
+      "request": "Add the handling rate to the parcel base cost, then subtract the loyalty coupon from that subtotal.",
+      "files": {
+        "handling.py": "def add_handling(base, rate):\n    return base\n",
+        "parcel.py": "from handling import add_handling\ndef shipping_charge(item):\n    sub = add_handling(item['base'], item['handling'])\n    return sub + item['coupon']\n"
+      },
+      "public": [
+        {
+          "entry": "parcel.shipping_charge",
+          "input": {"base": 50, "handling": 0.2, "coupon": 4},
+          "expected": 56.0
+        }
+      ],
+      "assessment": [
+        {
+          "entry": "parcel.shipping_charge",
+          "input": {"base": 100, "handling": 0.15, "coupon": 10},
+          "expected": 105.0
+        },
+        {
+          "entry": "parcel.shipping_charge",
+          "input": {"base": 80, "handling": 0.25, "coupon": 0},
+          "expected": 100.0
+        }
+      ]
+    },
+    {
+      "id": "py_bb_ttc_doc_sla_penalty",
+      "family": "documented_api",
+      "domain": "python_repo",
+      "language": "python",
+      "budget_steps": 8,
+      "request": "Multiply outage_minutes by the documented SLA_PENALTY_PER_MIN constant from the SLA contract instead of 5.",
+      "docs": [
+        {
+          "doc_id": "sla_contract_v3",
+          "text": "SLA Contract v3: set SLA_PENALTY_PER_MIN = 25 for outage credits."
+        }
+      ],
+      "files": {
+        "sla.py": "def penalty_credits(outage_minutes):\n    return outage_minutes * 5\n"
+      },
+      "public": [
+        {
+          "entry": "sla.penalty_credits",
+          "input": 4,
+          "expected": 100
+        }
+      ],
+      "assessment": [
+        {
+          "entry": "sla.penalty_credits",
+          "input": 2,
+          "expected": 50
+        },
+        {
+          "entry": "sla.penalty_credits",
+          "input": 10,
+          "expected": 250
+        }
+      ]
+    },
+    {
+      "id": "py_bb_ttc_null_rebate_ledger",
+      "family": "null_default",
+      "domain": "python_repo",
+      "language": "python",
+      "budget_steps": 8,
+      "request": "Treat a None adjustment as 0 when adding invoice_total and adjustment.",
+      "files": {
+        "ledger.py": "def settled_amount(entry):\n    return entry['invoice_total'] + entry['adjustment']\n"
+      },
+      "public": [
+        {
+          "entry": "ledger.settled_amount",
+          "input": {"invoice_total": 120, "adjustment": null},
+          "expected": 120
+        }
+      ],
+      "assessment": [
+        {
+          "entry": "ledger.settled_amount",
+          "input": {"invoice_total": 90, "adjustment": null},
+          "expected": 90
+        },
+        {
+          "entry": "ledger.settled_amount",
+          "input": {"invoice_total": 90, "adjustment": 15},
+          "expected": 105
+        }
+      ]
+    }
+  ],
+  "knowledge_docs": [
+    {
+      "doc_id": "nexus_seed_arch_v2",
+      "title": "NEXUS Seed Architecture & Bottleneck Guide",
+      "version": "2.4.0",
+      "content": "NEXUS combines a symbol-targeted local coding proposer (max_tokens=512), bounded subprocess worker verification with line-level call tracing, and a process-level diagnostic meta-policy phi_diag."
+    },
+    {
+      "doc_id": "retry_policy_handbook",
+      "title": "Service Retry & Timeout Policy",
+      "version": "1.2.0",
+      "content": "Production RPC services enforce DEFAULT_RPC_TIMEOUT_MS = 350 and MAX_BACKOFF_RETRIES = 4 across regional gateways."
+    }
+  ],
+  "conversation_turns": [
+    {
+      "id": "conv_help_capabilities",
+      "kind": "help_paraphrase",
+      "text": "What can you help me do in this workspace?",
+      "rubric": "Explains data/coding/reasoning workspace capabilities clearly",
+      "expected_any_substrings": ["workspace", "csv", "code", "table", "help", "task"]
+    },
+    {
+      "id": "conv_typo_workspace_state",
+      "kind": "workspace_state_typo",
+      "text": "wich coding workspace is selected right now?",
+      "rubric": "Answers workspace state accurately despite typo",
+      "expected_any_substrings": ["workspace", "selected", "none", "active", "coding"]
+    },
+    {
+      "id": "conv_grounded_doc_rpc",
+      "kind": "grounded_doc_qa",
+      "text": "According to the retry policy handbook, what is DEFAULT_RPC_TIMEOUT_MS?",
+      "rubric": "Retrieves grounded doc and reports 350",
+      "expected_any_substrings": ["350", "retry", "timeout"]
+    },
+    {
+      "id": "conv_grounded_doc_arch",
+      "kind": "grounded_doc_qa",
+      "text": "According to the NEXUS Seed Architecture guide, how are max_tokens and phi_diag configured?",
+      "rubric": "Retrieves grounded architecture doc",
+      "expected_any_substrings": ["512", "phi_diag", "symbol", "worker", "diagnostic"]
+    },
+    {
+      "id": "conv_ambiguous_fix_it",
+      "kind": "underspecified_coding_clarification",
+      "text": "fix it",
+      "rubric": "Asks clarifying question rather than hallucinating an edit",
+      "expected_any_substrings": ["which", "specify", "clarify", "file", "workspace", "what"]
+    },
+    {
+      "id": "conv_topic_shift_after_clarify",
+      "kind": "interrupt_and_state_query",
+      "text": "Never mind, cancel that.",
+      "rubric": "Clears pending clarification cleanly on cancel",
+      "expected_any_substrings": ["dropped", "pending", "nothing", "cancel", "clear"]
+    }
+  ],
+  "meta_learning": {
+    "source_tasks": [
+      {
+        "id": "py_bb_src_arith_margin",
+        "family": "arithmetic_operator",
+        "budget_steps": 14,
+        "request": "Subtract cost from revenue to compute net margin.",
+        "files": {
+          "ops.py": "def calc_margin(item):\n    return item['revenue'] + item['cost']\n\ndef check_gate(item):\n    return item['x'] < item['limit']\n"
+        },
+        "public": [
+          {"entry": "ops.calc_margin", "input": {"revenue": 120, "cost": 30}, "expected": 90}
+        ],
+        "assessment": [
+          {"entry": "ops.calc_margin", "input": {"revenue": 200, "cost": 45}, "expected": 155}
+        ]
+      },
+      {
+        "id": "py_bb_src_bound_ceiling",
+        "family": "comparison_boundary",
+        "budget_steps": 14,
+        "request": "Allow load equal to the ceiling.",
+        "files": {
+          "ops.py": "def adjust_delta(item):\n    return item['a'] + item['b']\n\ndef check_ceiling(item):\n    return item['load'] < item['ceiling']\n"
+        },
+        "public": [
+          {"entry": "ops.check_ceiling", "input": {"load": 15, "ceiling": 15}, "expected": true}
+        ],
+        "assessment": [
+          {"entry": "ops.check_ceiling", "input": {"load": 15, "ceiling": 15}, "expected": true},
+          {"entry": "ops.check_ceiling", "input": {"load": 16, "ceiling": 15}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_bb_src_doc_timeout",
+        "family": "documented_api",
+        "budget_steps": 14,
+        "request": "Use the documented DEFAULT_TIMEOUT_MS constant from the service spec instead of 50.",
+        "docs": [
+          {"doc_id": "svc_spec_1", "text": "Service Spec: use DEFAULT_TIMEOUT_MS = 350 for RPC calls."}
+        ],
+        "files": {
+          "ops.py": "def shift_val(item):\n    return item['a'] + item['b']\n\ndef check_flag(item):\n    return item['v'] < item['max']\n\ndef rpc_timeout(multiplier):\n    return multiplier * 50\n"
+        },
+        "public": [
+          {"entry": "ops.rpc_timeout", "input": 2, "expected": 700}
+        ],
+        "assessment": [
+          {"entry": "ops.rpc_timeout", "input": 1, "expected": 350},
+          {"entry": "ops.rpc_timeout", "input": 3, "expected": 1050}
+        ]
+      },
+      {
+        "id": "py_bb_src_null_bonus",
+        "family": "null_default",
+        "budget_steps": 14,
+        "request": "Treat a None bonus as 0 when adding base and bonus.",
+        "files": {
+          "ops.py": "def diff_pair(item):\n    return item['a'] - item['b']\n\ndef gate_ok(item):\n    return item['v'] < item['cap']\n\ndef total_comp(item):\n    return item['base'] + item['bonus']\n"
+        },
+        "public": [
+          {"entry": "ops.total_comp", "input": {"base": 100, "bonus": null}, "expected": 100}
+        ],
+        "assessment": [
+          {"entry": "ops.total_comp", "input": {"base": 75, "bonus": null}, "expected": 75},
+          {"entry": "ops.total_comp", "input": {"base": 75, "bonus": 25}, "expected": 100}
+        ]
+      },
+      {
+        "id": "py_bb_src_missing_colon",
+        "family": "missing_function",
+        "budget_steps": 14,
+        "request": "Create function pair_colon(left, right) that joins the two strings with a colon.",
+        "files": {
+          "ops.py": "def sum_ab(item):\n    return item['a'] + item['b']\n\ndef gate_ab(item):\n    return item['a'] < item['b']\n"
+        },
+        "public": [
+          {"entry": "ops.pair_colon", "input": ["ns", "key"], "unpack_args": true, "expected": "ns:key"}
+        ],
+        "assessment": [
+          {"entry": "ops.pair_colon", "input": ["env", "prod"], "unpack_args": true, "expected": "env:prod"}
+        ]
+      },
+      {
+        "id": "py_bb_src_multi_surcharge",
+        "family": "multi_file",
+        "budget_steps": 14,
+        "request": "Add the surcharge rate to the base price, then subtract the voucher from that subtotal.",
+        "files": {
+          "surcharge.py": "def apply_surcharge(price, rate):\n    return price\n",
+          "checkout.py": "from surcharge import apply_surcharge\ndef final_price(item):\n    subtotal = apply_surcharge(item['price'], item['surcharge'])\n    return subtotal + item['voucher']\n"
+        },
+        "public": [
+          {"entry": "checkout.final_price", "input": {"price": 100, "surcharge": 0.2, "voucher": 15}, "expected": 105.0}
+        ],
+        "assessment": [
+          {"entry": "checkout.final_price", "input": {"price": 50, "surcharge": 0.1, "voucher": 5}, "expected": 50.0}
+        ]
+      }
+    ],
+    "assessment_tasks": [
+      {
+        "id": "py_bb_eval_bound_seat_cap",
+        "family": "comparison_boundary",
+        "budget_steps": 14,
+        "request": "Allow seats equal to the capacity.",
+        "files": {
+          "seat_svc.py": "def adjust_fee(item):\n    return item['base'] + item['tax']\n\ndef rebalance_pool(item):\n    return item['left'] - item['right']\n\ndef seats_allowed(item):\n    return item['seats'] < item['capacity']\n"
+        },
+        "public": [
+          {"entry": "seat_svc.seats_allowed", "input": {"seats": 20, "capacity": 20}, "expected": true}
+        ],
+        "assessment": [
+          {"entry": "seat_svc.seats_allowed", "input": {"seats": 20, "capacity": 20}, "expected": true},
+          {"entry": "seat_svc.seats_allowed", "input": {"seats": 21, "capacity": 20}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_bb_eval_bound_min_tier",
+        "family": "comparison_boundary",
+        "budget_steps": 14,
+        "request": "Allow points equal to the minimum tier.",
+        "files": {
+          "tier_svc.py": "def calc_spread(item):\n    return item['high'] + item['low']\n\ndef net_offset(item):\n    return item['gross'] - item['fee']\n\ndef qualifies_tier(item):\n    return item['points'] > item['min_tier']\n"
+        },
+        "public": [
+          {"entry": "tier_svc.qualifies_tier", "input": {"points": 50, "min_tier": 50}, "expected": true}
+        ],
+        "assessment": [
+          {"entry": "tier_svc.qualifies_tier", "input": {"points": 50, "min_tier": 50}, "expected": true},
+          {"entry": "tier_svc.qualifies_tier", "input": {"points": 49, "min_tier": 50}, "expected": false}
+        ]
+      },
+      {
+        "id": "py_bb_eval_doc_burst_window",
+        "family": "documented_api",
+        "budget_steps": 14,
+        "request": "Use the documented BURST_WINDOW_SEC constant from the rate limit spec instead of 10.",
+        "docs": [
+          {"doc_id": "rate_limit_spec", "text": "Rate Limit Policy: set BURST_WINDOW_SEC = 60 for token buckets."}
+        ],
+        "files": {
+          "limiter.py": "def add_tokens(item):\n    return item['cur'] + item['refill']\n\ndef sub_tokens(item):\n    return item['cur'] - item['cost']\n\ndef below_cap(item):\n    return item['cur'] < item['max']\n\ndef window_seconds(buckets):\n    return buckets * 10\n"
+        },
+        "public": [
+          {"entry": "limiter.window_seconds", "input": 3, "expected": 180}
+        ],
+        "assessment": [
+          {"entry": "limiter.window_seconds", "input": 1, "expected": 60},
+          {"entry": "limiter.window_seconds", "input": 4, "expected": 240}
+        ]
+      },
+      {
+        "id": "py_bb_eval_null_shipping_tip",
+        "family": "null_default",
+        "budget_steps": 14,
+        "request": "Treat a None tip as 0 when adding subtotal and tip.",
+        "files": {
+          "shipping.py": "def sum_weights(item):\n    return item['box'] + item['pad']\n\ndef diff_weights(item):\n    return item['gross'] - item['tare']\n\ndef under_limit(item):\n    return item['wt'] < item['max_wt']\n\ndef order_total(item):\n    return item['subtotal'] + item['tip']\n"
+        },
+        "public": [
+          {"entry": "shipping.order_total", "input": {"subtotal": 45, "tip": null}, "expected": 45}
+        ],
+        "assessment": [
+          {"entry": "shipping.order_total", "input": {"subtotal": 80, "tip": null}, "expected": 80},
+          {"entry": "shipping.order_total", "input": {"subtotal": 80, "tip": 12}, "expected": 92}
+        ]
+      },
+      {
+        "id": "py_bb_eval_missing_slash_tag",
+        "family": "missing_function",
+        "budget_steps": 14,
+        "request": "Create function slash_tag(scope, name) that joins the two strings with a slash.",
+        "files": {
+          "tagging.py": "def add_counts(item):\n    return item['a'] + item['b']\n\ndef sub_counts(item):\n    return item['a'] - item['b']\n\ndef within_bound(item):\n    return item['a'] < item['b']\n"
+        },
+        "public": [
+          {"entry": "tagging.slash_tag", "input": ["team", "core"], "unpack_args": true, "expected": "team/core"}
+        ],
+        "assessment": [
+          {"entry": "tagging.slash_tag", "input": ["org", "seed"], "unpack_args": true, "expected": "org/seed"}
+        ]
+      },
+      {
+        "id": "py_bb_eval_multi_tariff_credit",
+        "family": "multi_file",
+        "budget_steps": 14,
+        "request": "Add the tariff to the raw amount, then subtract the credit from that customs total.",
+        "files": {
+          "tariff.py": "def apply_tariff(amount, rate):\n    return amount\n",
+          "customs.py": "from tariff import apply_tariff\ndef customs_due(item):\n    taxed = apply_tariff(item['amount'], item['tariff'])\n    return taxed + item['credit']\n"
+        },
+        "public": [
+          {"entry": "customs.customs_due", "input": {"amount": 200, "tariff": 0.15, "credit": 10}, "expected": 220.0}
+        ],
+        "assessment": [
+          {"entry": "customs.customs_due", "input": {"amount": 60, "tariff": 0.2, "credit": 4}, "expected": 68.0}
+        ]
+      }
+    ]
+  },
+  "gemini": "NOT_RUN"
+}

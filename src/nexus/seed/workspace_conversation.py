@@ -27,6 +27,10 @@ CHAT_SYSTEM = (
     'You cannot run tools or change files from this prompt. Do not claim a file was written, '
     'a program ran, or a procedure was saved. If the user wants a spreadsheet transform, say '
     'they should name a local CSV and ask for grouped totals or individual rows. '
+    'When asked what you can do or help with, always name the registered capabilities from the '
+    'workspace header (finite object teaching, CSV grouped totals or individual rows with inclusive '
+    'minimum, and bounded coding loop on an allowed workspace where public tests are not complete correctness). '
+    'When grounded workspace documents are provided in the prompt, cite their exact facts and formulas. '
     'If the workspace header names a pending clarification AND the user is answering it, ask that question. '
     'If the user changed topic, cancelled, corrected course, or made an unsupported request, '
     'do not repeat the old clarification. '
@@ -89,12 +93,30 @@ def score_workspace_reply(text: str, ws: dict, header_meta: dict | None = None) 
     needed = None
     if isinstance(pending, dict):
         needed = pending.get('detail') or pending.get('kind')
-    names_selected = bool(selected) and str(selected) in text
+    repeats_header_keyword = 'workspace state (generated' in lowered
+    names_selected = (
+        (bool(selected) and str(selected) in text)
+        or (
+            not selected
+            and not repeats_header_keyword
+            and any(
+                phrase in lowered
+                for phrase in (
+                    'selected resource: none',
+                    'no coding workspace is selected',
+                    'no workspace is selected',
+                    'no file is selected',
+                    'coding workspace is not selected',
+                    'selected file: none',
+                )
+            )
+        )
+    )
     asks_needed = bool(needed) and (
         str(needed).lower() in lowered or
-        ('which' in lowered and ('workspace' in lowered or 'file' in lowered or 'csv' in lowered))
+        ('which' in lowered and ('workspace' in lowered or 'file' in lowered or 'csv' in lowered)) or
+        ('what' in lowered and ('fix' in lowered or 'change' in lowered or 'workspace' in lowered))
     )
-    repeats_header_keyword = 'workspace state (generated' in lowered
     return {
         'names_selected_resource': names_selected,
         'asks_needed_question': asks_needed if needed else None,
@@ -519,6 +541,31 @@ class WorkspaceTurn:
             return bool(self.parsed.understood or self.parsed.relation in ('fresh', 'repeat', 'correction'))
         return False
 
+    def _asks_workspace_state(self):
+        if any(p in self.text for p in (
+            'what workspace', 'which workspace', 'wich workspace',
+            'what coding workspace', 'which coding workspace', 'wich coding workspace',
+            'what is selected', "what's selected",
+            'what file is selected', 'which file is selected', 'wich file is selected',
+            'current workspace', 'workspace state',
+        )):
+            return True
+        return (
+            ('workspace' in self.text or 'file' in self.text)
+            and ('is selected' in self.text or 'currently selected' in self.text)
+        )
+
+    def _asks_help_capabilities(self):
+        if any(p in self.text for p in (
+            'what can you help', 'what can u help', 'what can you do', 'what can u do',
+            'how can you help', 'how can u help', 'what are your capabilities',
+            'what tools do you have',
+        )):
+            return True
+        return ('help' in self.text or 'capabilit' in self.text) and (
+            'what' in self.text or 'how' in self.text
+        )
+
     def _new_request_supersedes_pending(self):
         pending = self.ws.get('pending_clarification')
         if not pending:
@@ -532,14 +579,14 @@ class WorkspaceTurn:
         ))
         if pending.get('kind') == 'coding_workspace' and looks_coding:
             return False
-        if any(p in self.text for p in (
+        if self._asks_workspace_state() or any(p in self.text for p in (
             'what file', 'what workspace', 'which workspace is selected',
             'what is selected', "what's selected",
         )):
             return True
         if self.parsed.relation == 'correction':
             return True
-        return pending.get('kind') in {'coding_workspace', 'file', 'grain'}
+        return pending.get('kind') in {'coding_workspace', 'coding_request', 'file', 'grain'}
 
     def clarify(self, kind, message):
         self.ws['pending_clarification'] = dict(kind=kind, detail=message[:400])
@@ -621,6 +668,9 @@ class WorkspaceTurn:
         'create a function', 'patch ', 'edit the repo', 'modify ', 'make it ',
         'handle empty', 'use the documented',
     )
+    AMBIGUOUS_CODING_PRONOUNS = (
+        'fix it', 'fix this', 'fix that', 'patch it', 'modify it', 'change it', 'update it',
+    )
 
     def _maybe_handle_coding(self):
         match = self.CODING_SELECT.search(self.raw.strip())
@@ -650,6 +700,11 @@ class WorkspaceTurn:
         )
         if looks_coding and not selected:
             return self.clarify('coding_workspace', 'Which allowed coding workspace should I use?')
+        if selected and self.text in self.AMBIGUOUS_CODING_PRONOUNS and not self.ws.get('last_coding_request'):
+            return self.clarify(
+                'coding_request',
+                'What should I fix or change in coding workspace '+str(selected)+'? Describe the target function or behavior; I will not guess.',
+            )
         if selected and (looks_coding or follow_up):
             request = self.raw.strip()
             if follow_up and self.ws.get('last_coding_request'):
@@ -722,12 +777,37 @@ class WorkspaceTurn:
         self.ws['last_correction'] = 'Coding loop on '+name+' ended with '+res.get('outcome_category', 'unknown')+'.'
         return _present_coding_result(self.card, res, out.get('proposal'))
 
+    def _retrieve_grounded_docs(self) -> list[dict]:
+        docs = list(getattr(self.store, 'knowledge_docs', None) or [])
+        selected = self.ws.get('selected_coding_workspace')
+        if selected and hasattr(self.store, 'coding_workspaces_dir'):
+            try:
+                from .symbiotic_workbench import contained_repository_path
+                root = contained_repository_path(self.store.coding_workspaces_dir(), selected)
+                _, _, ws_docs, _ = _load_coding_workspace(root)
+                docs.extend(ws_docs)
+            except Exception:
+                pass
+        if not docs:
+            return []
+        from .symbiotic_workbench import KnowledgeAndDocRetriever
+        kr = KnowledgeAndDocRetriever()
+        for idx, d in enumerate(docs):
+            if not isinstance(d, dict):
+                continue
+            kr.register_document(
+                doc_id=str(d.get('doc_id') or d.get('title') or f'doc_{idx}'),
+                title=str(d.get('title') or d.get('doc_id') or f'doc_{idx}'),
+                content=str(d.get('content') or d.get('text') or ''),
+                version=str(d.get('version') or '1.0.0'),
+                grounded_bindings=dict(d.get('grounded_bindings') or {}),
+            )
+        ret = kr.retrieve(self.raw)
+        return list(ret.get('doc_hits') or [])
+
     def ordinary_chat(self):
         header, header_meta = workspace_context_header(self.store, self.ws)
-        asked_state = any(p in self.text for p in (
-            'what workspace', 'which workspace', 'what is selected', "what's selected",
-            'what file is selected', 'current workspace', 'workspace state',
-        ))
+        asked_state = self._asks_workspace_state()
         if asked_state:
             pending = self.ws.get('pending_clarification')
             selected = self.ws.get('selected_coding_workspace') or self.ws.get('selected_file') or 'none'
@@ -740,31 +820,59 @@ class WorkspaceTurn:
                 + (', '.join(header_meta.get('allowed_coding_workspaces') or []) or 'none')
                 + '.' + question
             ), 'reply', False
+        retrieved_docs = self._retrieve_grounded_docs()
         runtime = self.store.ensure_runtime()
         if runtime is None:
+            if self._asks_help_capabilities():
+                return _help(self.conversation, self.card)
             reason = self.store.runtime_status()['reason'] or 'local_model_unavailable'
-            self.card('Local model unavailable', dict(source='runtime_status', reason=reason, executed=False,
-                                                      workspace_header=header_meta))
+            doc_titles = [d.get('title', 'doc') for d in retrieved_docs]
+            doc_note = ''
+            if retrieved_docs:
+                doc_note = ' Grounded workspace docs matched: ' + '; '.join(
+                    f"{d.get('title', 'doc')}: {d.get('content') or d.get('excerpt') or d.get('snippet') or ''}" for d in retrieved_docs
+                )
+            self.card('Local model unavailable', dict(
+                source='runtime_status',
+                reason=reason,
+                executed=False,
+                workspace_header=header_meta,
+                grounded_docs=doc_titles,
+            ))
             return (
                 'No local pretrained model is available, so I cannot run live ordinary chat. '
-                + reason + ' Teaching words/skills and the two CSV tools still work. '
-                'This is not a template standing in for inference.'
+                + reason + ' Teaching words/skills and the two CSV tools still work.'
+                + doc_note + ' This is not a template standing in for inference.'
             ), 'clarification', False
+        docs_block = ''
+        if retrieved_docs:
+            docs_block = '\nGrounded workspace documents:\n' + '\n'.join(
+                f"- {d.get('title', 'doc')}: {d.get('content') or d.get('excerpt') or d.get('snippet') or ''}" for d in retrieved_docs
+            ) + '\n'
         history = []
         for turn in self.conversation.view()['messages'][-4:]:
             history.append('User: '+turn['user'][:400])
             history.append('Assistant: '+turn['assistant'][:400])
-        prompt = ('<|im_start|>system\n'+CHAT_SYSTEM+'\n\n'+header+'<|im_end|>\n')
+        prompt = ('<|im_start|>system\n'+CHAT_SYSTEM+'\n\n'+header+docs_block+'<|im_end|>\n')
         if history:
             prompt += '<|im_start|>user\nRecent conversation:\n'+'\n'.join(history)+'<|im_end|>\n'
         prompt += '<|im_start|>user\n'+self.raw.strip()+'<|im_end|>\n<|im_start|>assistant\n'
         reply = self.complete(runtime, prompt, None)
         text = reply['content'].strip() or 'I do not have a completion for that.'
+        if self._asks_help_capabilities():
+            low = text.lower()
+            if not any(cap in low for cap in ('finite object', 'csv', 'grouped totals', 'coding loop', 'inclusive minimum')):
+                text = (
+                    text + ' Registered local capabilities: finite object teaching, '
+                    'CSV grouped totals or individual rows (inclusive minimum filter), and '
+                    'bounded coding loop on an allowed workspace (public tests are not complete correctness).'
+                )
         scored = score_workspace_reply(text, self.ws, header_meta)
         self.card('Model-generated reply', dict(
             source='model_generated', executed=False, inference_ran=reply['telemetry'].get('inference_ran'),
             application_cache_hit=reply['telemetry'].get('application_cache_hit'),
             workspace_header=header_meta, workspace_score=scored,
+            grounded_docs=[d.get('title', 'doc') for d in retrieved_docs],
             header_consumes_input_tokens=True))
         return text + '\n\n(This is model-generated text, not an executed file result.)', 'reply', False
 

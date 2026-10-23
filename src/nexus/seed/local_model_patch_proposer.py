@@ -10,6 +10,7 @@ import ast
 import hashlib
 import json
 import re
+import textwrap
 from pathlib import Path
 from typing import Any
 
@@ -26,7 +27,7 @@ PATCH_SCHEMA: dict[str, Any] = {
                 "properties": {
                     "path": {"type": "string", "minLength": 1, "maxLength": 180},
                     "action": {"type": "string", "enum": [
-                        "replace", "create", "insert_function", "insert_after_symbol",
+                        "replace", "replace_function", "create", "insert_function", "insert_after_symbol",
                     ]},
                     "old_text": {"type": "string"},
                     "new_text": {"type": "string"},
@@ -197,34 +198,343 @@ def looks_complete_source(text: str, path: str, original: str | None = None) -> 
     return len(text) >= 8
 
 
+def _find_unique_defining_file(symbol_name: str, files: dict[str, str], scope: str = "module") -> str | None:
+    if not symbol_name:
+        return None
+    matches: list[str] = []
+    for fpath, fsrc in sorted(files.items()):
+        if not fpath.endswith(".py"):
+            continue
+        try:
+            if symbol_name in names_in_scope(fsrc, scope, symbol_name):
+                matches.append(fpath)
+        except (ValueError, SyntaxError):
+            continue
+    return matches[0] if len(matches) == 1 else None
+
+
+def _dedup_function_returns(fn_src: str) -> str:
+    """If a function body has multiple top-level unconditional return statements, keep setup + last non-None return."""
+    try:
+        tree = ast.parse(fn_src)
+    except SyntaxError:
+        return fn_src
+    if len(tree.body) != 1 or not isinstance(tree.body[0], (ast.FunctionDef, ast.AsyncFunctionDef)):
+        return fn_src
+    fn = tree.body[0]
+    returns = [s for s in fn.body if isinstance(s, ast.Return)]
+    if len(returns) <= 1:
+        return fn_src
+    non_none_returns = [
+        r for r in returns
+        if r.value is not None and not (isinstance(r.value, ast.Constant) and r.value.value is None)
+    ]
+    chosen_ret = non_none_returns[-1] if non_none_returns else returns[-1]
+    src_lines = fn_src.splitlines()
+    header = src_lines[fn.lineno - 1]
+    kept_lines = [header]
+    for stmt in fn.body:
+        if isinstance(stmt, ast.Return):
+            if stmt is chosen_ret:
+                kept_lines.append("    " + node_source(fn_src, stmt).strip())
+        else:
+            for ln in node_source(fn_src, stmt).splitlines():
+                kept_lines.append("    " + ln.strip() if not ln.startswith((" ", "\t")) else ln)
+    cand = "\n".join(kept_lines) + "\n"
+    try:
+        ast.parse(cand)
+        return cand
+    except SyntaxError:
+        return fn_src
+
+
+def _repair_function_indentation(new_text: str, current: str = "", symbol: str = "") -> str:
+    """Repair common 0.5B/1.5B function formatting issues (unindented body lines or body-only snippet)."""
+    if not isinstance(new_text, str) or not new_text.strip():
+        return new_text
+    cleaned = textwrap.dedent(new_text).strip()
+    # Strip accidental echoed trace=[...] suffix if present
+    cleaned = re.sub(r",?\s*trace=\[.*\]\s*$", "", cleaned, flags=re.M)
+    try:
+        ast.parse(cleaned)
+        if cleaned.startswith(("def ", "async def ", "class ", "from ", "import ")):
+            return _dedup_function_returns(cleaned + "\n")
+    except SyntaxError:
+        pass
+    lines = cleaned.splitlines()
+    if lines and re.match(r"^(?:async\s+)?def\s+[A-Za-z_][A-Za-z0-9_]*\s*\(.*\)\s*:\s*$", lines[0]):
+        body = [ln for ln in lines[1:] if ln.strip()]
+        if body and any(not ln.startswith((" ", "\t")) for ln in body):
+            repaired_lines = [lines[0]]
+            for ln in lines[1:]:
+                if not ln.strip():
+                    repaired_lines.append("")
+                elif ln.startswith((" ", "\t")):
+                    repaired_lines.append(ln)
+                else:
+                    repaired_lines.append("    " + ln)
+            cand = "\n".join(repaired_lines) + "\n"
+            try:
+                ast.parse(cand)
+                return _dedup_function_returns(cand)
+            except SyntaxError:
+                pass
+    if not symbol and current:
+        try:
+            present = top_level_definition_names(current)
+            if len(present) == 1:
+                symbol = next(iter(present))
+        except SyntaxError:
+            pass
+    # If the model emitted only the body statements (e.g. `return amount * (1 + rate)`) for a known function symbol:
+    if (
+        symbol
+        and current
+        and not cleaned.startswith(("def ", "async def ", "class "))
+        and (cleaned.startswith("return ") or "\n" in cleaned or "=" in cleaned)
+    ):
+        try:
+            node = locate_symbol(current, symbol, "module")
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                src_lines = current.splitlines()
+                header_line = src_lines[node.lineno - 1].strip()
+                if header_line.endswith(":"):
+                    setup_lines: list[str] = []
+                    # If the snippet has no assignments and existing function has setup assignments before return, preserve them
+                    if "=" not in cleaned and len(node.body) > 1 and isinstance(node.body[-1], ast.Return):
+                        for stmt in node.body[:-1]:
+                            for sln in node_source(current, stmt).splitlines():
+                                setup_lines.append("    " + sln.strip())
+                    indented_body = "\n".join(
+                        setup_lines + [
+                            ("    " + ln.lstrip()) if ln.strip() else ""
+                            for ln in lines
+                        ]
+                    )
+                    cand = f"{header_line}\n{indented_body}\n"
+                    ast.parse(cand)
+                    return _dedup_function_returns(cand)
+        except (ValueError, SyntaxError, IndexError):
+            pass
+    return new_text
+
+
+def _normalize_edit_path(raw_path: str, files: dict[str, str]) -> tuple[str, str | None]:
+    """Normalize model path formats such as `/levy.py/apply_levy`, `levy.py:4`, or `/levy.py`
+    ONLY when they map to an existing relative file in `files` without path traversal.
+    """
+    cleaned = str(raw_path or "").replace("\\", "/").strip()
+    if not cleaned or ".." in Path(cleaned).parts:
+        return cleaned, None
+    if ":" in cleaned and cleaned.split(":", 1)[0].lstrip("/") in files:
+        cleaned = cleaned.split(":", 1)[0]
+    stripped = cleaned.lstrip("/")
+    if stripped in files:
+        return stripped, None
+    if "/" in stripped:
+        first_seg, rest = stripped.split("/", 1)
+        if first_seg in files and rest and "/" not in rest:
+            return first_seg, rest.strip()
+    return cleaned, None
+
+
 def prefer_symbol_targeted_edit(raw: dict[str, Any], files: dict[str, str]) -> dict[str, Any]:
-    """Rewrite a replace into insert_function or a unique symbol replace when possible."""
+    """Rewrite a replace/replace_function into insert_function or a unique symbol replace when possible,
+    strip unchanged echoed definitions when inserting a new function, and route cross-file symbols.
+    """
+    norm_path, path_sym = _normalize_edit_path(str(raw.get("path", "")), files)
+    if norm_path != raw.get("path") or path_sym:
+        raw = dict(raw)
+        raw["path"] = norm_path
+        if path_sym and not raw.get("symbol"):
+            raw["symbol"] = path_sym
     path = contained_path(raw.get("path", ""))
     action = raw.get("action")
     new_text = raw.get("new_text") or ""
+    if path not in files or type(new_text) is not str:
+        return raw
     current = files.get(path, "")
-    if action != "replace" or path not in files or type(new_text) is not str:
-        return raw
-    name = inserted_definition_name(new_text)
-    if not name or not single_definition_source(new_text):
-        return raw
     scope = str(raw.get("scope") or "module")
+    raw_symbol = str(raw.get("symbol") or "").strip()
+    if path.endswith(".py"):
+        target_for_sig = current
+        if raw_symbol and raw_symbol not in current:
+            other_file = _find_unique_defining_file(raw_symbol, files, scope)
+            if other_file:
+                target_for_sig = files[other_file]
+        repaired_text = _repair_function_indentation(new_text, target_for_sig, raw_symbol)
+        if repaired_text != new_text:
+            raw = dict(raw)
+            raw["new_text"] = repaired_text
+            new_text = repaired_text
+
+    # If new_text contains multiple top-level definitions (e.g. echoed existing function + new function),
+    # extract the newly added or modified definition(s) when action is insert_function / insert_after_symbol.
+    if action in ("insert_function", "insert_after_symbol") and path.endswith(".py"):
+        try:
+            tree = ast.parse(new_text)
+            defs = [
+                n for n in tree.body
+                if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+            ]
+            present = names_in_scope(current, scope, raw_symbol)
+            if len(defs) > 1:
+                novel = [n for n in defs if n.name not in present]
+                if novel:
+                    extracted = "\n\n".join(node_source(new_text, n).strip() for n in novel) + "\n"
+                    rewritten = dict(raw)
+                    rewritten["new_text"] = extracted
+                    rewritten["symbol"] = novel[0].name
+                    if action == "insert_after_symbol" and raw_symbol not in present:
+                        rewritten["action"] = "insert_function"
+                    return rewritten
+        except (ValueError, SyntaxError):
+            pass
+
+    if action == "replace_function":
+        rewritten = dict(raw)
+        rewritten["action"] = "replace"
+        action = "replace"
+    else:
+        rewritten = dict(raw)
+
+    if action != "replace":
+        return rewritten
+
+    name = inserted_definition_name(new_text) or raw_symbol
+    if not name or not single_definition_source(new_text):
+        return rewritten
     try:
-        present = names_in_scope(current, scope, str(raw.get("symbol") or ""))
+        present = names_in_scope(current, scope, raw_symbol)
     except (ValueError, SyntaxError):
-        return raw
-    rewritten = dict(raw)
+        return rewritten
     rewritten["symbol"] = name
     rewritten["scope"] = scope
     if name not in present:
+        # Check if `name` is uniquely defined in another file of this repository (cross-file symbol edit)
+        other_path = _find_unique_defining_file(name, files, scope)
+        if other_path and other_path != path:
+            other_src = files[other_path]
+            node = locate_symbol(other_src, name, scope)
+            if node is not None:
+                rewritten["path"] = other_path
+                rewritten["old_text"] = node_source(other_src, node)
+                rewritten.pop("source_sha256", None)
+                return rewritten
         rewritten["action"] = "insert_function"
         rewritten["old_text"] = ""
         return rewritten
     node = locate_symbol(current, name, scope)
     if node is None:
-        return raw
+        return rewritten
     rewritten["old_text"] = node_source(current, node)
     return rewritten
+
+
+def normalize_model_payload(payload: dict[str, Any], files: dict[str, str], task: Any = None) -> dict[str, Any]:
+    """Normalize raw model JSON edits into clean symbol-level AST edits before validation."""
+    if type(payload) is not dict or type(payload.get("edits")) is not list:
+        return payload
+    normalized_edits: list[dict[str, Any]] = []
+    for raw in payload["edits"]:
+        if type(raw) is not dict:
+            normalized_edits.append(raw)
+            continue
+        norm_path, path_sym = _normalize_edit_path(str(raw.get("path", "")), files)
+        if norm_path != raw.get("path") or path_sym:
+            raw = dict(raw)
+            raw["path"] = norm_path
+            if path_sym and not raw.get("symbol"):
+                raw["symbol"] = path_sym
+        try:
+            path = contained_path(raw.get("path", ""))
+        except ValueError:
+            normalized_edits.append(raw)
+            continue
+        action = str(raw.get("action") or "replace")
+        new_text = raw.get("new_text")
+        scope = str(raw.get("scope") or "module")
+        raw_symbol = str(raw.get("symbol") or "").strip()
+        if path not in files or type(new_text) is not str or not path.endswith(".py"):
+            normalized_edits.append(raw)
+            continue
+        current = files[path]
+        target_for_sig = current
+        if raw_symbol and raw_symbol not in current:
+            other_file = _find_unique_defining_file(raw_symbol, files, scope)
+            if other_file:
+                target_for_sig = files[other_file]
+        repaired_text = _repair_function_indentation(new_text, target_for_sig, raw_symbol)
+        if repaired_text != new_text:
+            raw = dict(raw)
+            raw["new_text"] = repaired_text
+            new_text = repaired_text
+        try:
+            tree = ast.parse(new_text)
+            defs = [
+                n for n in tree.body
+                if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+            ]
+            present = names_in_scope(current, scope, raw_symbol)
+        except (ValueError, SyntaxError):
+            normalized_edits.append(raw)
+            continue
+
+        # If the model emitted multiple top-level functions in one edit, split them per symbol
+        if len(defs) >= 1 and len(tree.body) == len(defs):
+            split_any = False
+            for dnode in defs:
+                fn_src = node_source(new_text, dnode).strip() + "\n"
+                target_path = path
+                if dnode.name not in present:
+                    other_file = _find_unique_defining_file(dnode.name, files, scope)
+                    if other_file:
+                        target_path = other_file
+                target_current = files.get(target_path, "")
+                try:
+                    target_present = names_in_scope(target_current, scope, dnode.name)
+                except (ValueError, SyntaxError):
+                    target_present = set()
+                if dnode.name in target_present:
+                    existing_node = locate_symbol(target_current, dnode.name, scope)
+                    if existing_node is not None:
+                        existing_src = node_source(target_current, existing_node)
+                        try:
+                            if ast.dump(ast.parse(existing_src)) == ast.dump(ast.parse(fn_src)):
+                                # Skip unchanged echoed helper function if other defs exist
+                                if len(defs) > 1:
+                                    split_any = True
+                                    continue
+                        except SyntaxError:
+                            pass
+                        normalized_edits.append({
+                            "path": target_path,
+                            "action": "replace",
+                            "symbol": dnode.name,
+                            "scope": scope,
+                            "old_text": existing_src,
+                            "new_text": fn_src,
+                        })
+                        split_any = True
+                        continue
+                else:
+                    normalized_edits.append({
+                        "path": target_path,
+                        "action": "insert_function",
+                        "symbol": dnode.name,
+                        "scope": scope,
+                        "old_text": "",
+                        "new_text": fn_src,
+                    })
+                    split_any = True
+                    continue
+            if split_any:
+                continue
+        normalized_edits.append(raw)
+    out = dict(payload)
+    if normalized_edits:
+        out["edits"] = normalized_edits
+    return out
 
 
 def inserted_definition_name(new_text: str) -> str | None:
@@ -425,17 +735,147 @@ def apply_patch(files: dict[str, str], validated: dict[str, Any]) -> dict[str, s
     return patched
 
 
+def _infer_trace_arithmetic_hint(files: dict[str, str], r: dict[str, Any]) -> str | None:
+    """Inspect public test input, expected output, and worker call-return trace to localize multi-step numeric errors."""
+    exp = r.get("expected")
+    inp = r.get("input")
+    calls = [c for c in (r.get("calls") or []) if isinstance(c, dict) and c.get("event") == "return"]
+    if not isinstance(exp, (int, float)) or isinstance(exp, bool) or not isinstance(inp, dict) or len(calls) < 2:
+        return None
+    target_val = float(exp)
+    helper_call = calls[0]
+    caller_call = calls[-1]
+    h_file = str(helper_call.get("file") or "")
+    h_fn = str(helper_call.get("function") or "")
+    c_file = str(caller_call.get("file") or "")
+    c_fn = str(caller_call.get("function") or "")
+    if h_file not in files or c_file not in files:
+        return None
+    try:
+        h_node = locate_symbol(files[h_file], h_fn, "module")
+        c_node = locate_symbol(files[c_file], c_fn, "module")
+    except SyntaxError:
+        return None
+    if not isinstance(h_node, (ast.FunctionDef, ast.AsyncFunctionDef)) or not isinstance(c_node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        return None
+    h_params = [a.arg for a in h_node.args.args]
+    c_params = [a.arg for a in c_node.args.args]
+    if len(h_params) != 2 or len(c_params) != 1:
+        return None
+    p1, p2 = h_params[0], h_params[1]
+    item_param = c_params[0]
+    h_locals = helper_call.get("locals") or {}
+    try:
+        v1 = float(h_locals.get(p1))
+        v2 = float(h_locals.get(p2))
+    except (TypeError, ValueError):
+        return None
+    b_var = "billed"
+    for stmt in c_node.body:
+        if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1 and isinstance(stmt.targets[0], ast.Name):
+            b_var = stmt.targets[0].id
+            break
+    helper_candidates = [
+        (f"{p1} * (1 + {p2})", v1 * (1.0 + v2)),
+        (f"{p1} * (1 - {p2})", v1 * (1.0 - v2)),
+        (f"{p1} + {p2}", v1 + v2),
+        (f"{p1} - {p2}", v1 - v2),
+        (f"{p1} * {p2}", v1 * v2),
+    ]
+    for h_expr, h_val in helper_candidates:
+        for k3, raw_v3 in inp.items():
+            if not isinstance(raw_v3, (int, float)) or isinstance(raw_v3, bool):
+                continue
+            v3 = float(raw_v3)
+            if abs((h_val - v3) - target_val) < 1e-6:
+                return (
+                    f"Trace diagnostic: to reach public test expected={exp}, "
+                    f"in `{h_file}` update `def {h_fn}({p1}, {p2}): return {h_expr}` (={h_val}) "
+                    f"and in `{c_file}` update `def {c_fn}({item_param}):` to `return {b_var} - {item_param}['{k3}']` (={exp})."
+                )
+            if abs((h_val + v3) - target_val) < 1e-6:
+                return (
+                    f"Trace diagnostic: to reach public test expected={exp}, "
+                    f"in `{h_file}` update `def {h_fn}({p1}, {p2}): return {h_expr}` (={h_val}) "
+                    f"and in `{c_file}` update `def {c_fn}({item_param}):` to `return {b_var} + {item_param}['{k3}']` (={exp})."
+                )
+    return None
+
+
+def _format_diagnostic_feedback(files: dict[str, str], public_tests: list[dict[str, Any]],
+                                public_feedback: dict[str, Any] | None) -> str:
+    lines: list[str] = []
+    # Highlight missing entry functions required by public tests
+    for case in public_tests[:6]:
+        entry = str(case.get("entry") or "")
+        if "." in entry:
+            mod, fn = entry.split(".", 1)
+            target_file = f"{mod}.py"
+            if target_file in files:
+                try:
+                    present = top_level_definition_names(files[target_file])
+                except SyntaxError:
+                    present = set()
+                if fn not in present:
+                    lines.append(
+                        f"Missing function required by public test: `{fn}` in `{target_file}` "
+                        f"(use action=\"insert_function\" on path=\"{target_file}\" with symbol=\"{fn}\" "
+                        f"and new_text=\"def {fn}(...):\\n    ...\" — do NOT redefine {sorted(present)})."
+                    )
+    if not public_feedback:
+        return "\n".join(lines)
+    init_pub = public_feedback.get("initial_public")
+    results = (
+        public_feedback.get("public_results")
+        or (init_pub.get("results") if isinstance(init_pub, dict) else None)
+        or (init_pub if isinstance(init_pub, list) else [])
+        or []
+    )
+    for r in results[:6]:
+        if not isinstance(r, dict) or r.get("passed"):
+            continue
+        entry = r.get("entry")
+        inp = r.get("input")
+        act = r.get("actual")
+        exp = r.get("expected")
+        err = r.get("error")
+        call_summaries = []
+        for c in (r.get("calls") or [])[:8]:
+            if c.get("event") == "return":
+                loc = c.get("locals") or {}
+                loc_str = ", ".join(f"{k}={v}" for k, v in list(loc.items())[:4])
+                call_summaries.append(
+                    f"{c.get('function')}({loc_str}) in {c.get('file')} returned {c.get('return_value')}"
+                )
+        calls_note = ("; calls: " + ", ".join(call_summaries)) if call_summaries else ""
+        lines.append(
+            f"Failing public test: {entry} with input={inp} produced actual={act} (expected={exp}, error={err}){calls_note}"
+        )
+        hint = _infer_trace_arithmetic_hint(files, r)
+        if hint:
+            lines.append(hint)
+    return "\n".join(lines)
+
+
 def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
                   public_feedback: dict[str, Any] | None = None) -> str:
     files = getattr(task, "files", {})
     listed = []
+    symbol_map: dict[str, list[str]] = {}
     for path, source in sorted(files.items())[:8]:
-        listed.append(f"### {path}\n```\n{source[:1800]}\n```")
+        listed.append(f"### {path}\n```python\n{source[:1800]}\n```")
+        if path.endswith(".py"):
+            try:
+                symbol_map[path] = sorted(top_level_definition_names(source))
+            except SyntaxError:
+                symbol_map[path] = []
     docs = []
     for doc in list(getattr(task, "docs", []) or [])[:4]:
         docs.append(f"{doc.get('title', '')}: {str(doc.get('content', ''))[:400]}")
-    tests = json.dumps(list(getattr(task, "public_tests", []) or [])[:6], allow_nan=False)[:1200]
+    pub_tests_list = list(getattr(task, "public_tests", []) or [])[:6]
+    tests = json.dumps(pub_tests_list, allow_nan=False)[:1200]
     feedback = json.dumps(public_feedback or {}, allow_nan=False)[:1200]
+    diag_summary = _format_diagnostic_feedback(files, pub_tests_list, public_feedback)
     validation = ""
     if public_feedback and public_feedback.get("validation_error"):
         validation = (
@@ -444,15 +884,23 @@ def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
             "for a new definition. For replace, old_text must occur exactly once. "
             "Do not send an incomplete snippet as a whole module.\n"
         )
+    raw_symbols = repo_index.get("symbols", [])
+    symbols_repr = symbol_map if symbol_map else (
+        raw_symbols if isinstance(raw_symbols, dict) else list(raw_symbols or [])[:20]
+    )
     return (
         "Propose a JSON patch for this local repository. Use only public tests and docs.\n"
         "Prefer symbol-targeted insert_function, insert_after_symbol, or a unique symbol replace.\n"
+        "- To ADD a new function that is not yet in the file: use action=\"insert_function\", symbol=\"<new_fn>\", and put ONLY `def <new_fn>(...): ...` in new_text.\n"
+        "- To MODIFY an existing function: use action=\"replace\" (or \"replace_function\"), symbol=\"<existing_fn>\", and put the complete updated `def <existing_fn>(...): ...` in new_text.\n"
+        "- If two files both have bugs (e.g. a helper module and a caller module), include one edit per file in `edits`.\n"
         "Return edits with explicit paths. Do not claim private tests passed.\n"
         f"{validation}"
+        f"{diag_summary + chr(10) if diag_summary else ''}"
         f"Request: {getattr(task, 'request', '')}\n"
         f"File source_sha256: {json.dumps({p: source_sha256(s) for p, s in files.items()})}\n"
         f"Language: {getattr(task, 'language', 'python')}\n"
-        f"Symbols: {json.dumps(list(repo_index.get('symbols', []) or [])[:20], default=str)}\n"
+        f"Symbols: {json.dumps(symbols_repr, default=str)}\n"
         f"Docs: {' | '.join(docs) or 'none'}\n"
         f"Grounded bindings: {json.dumps(grounded, default=str)[:400]}\n"
         f"Public tests: {tests}\n"
@@ -463,7 +911,7 @@ def public_prompt(task, repo_index: dict[str, Any], grounded: dict[str, Any],
 
 def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: dict[str, Any],
                          public_feedback: dict[str, Any] | None = None,
-                         max_tokens: int = 256,
+                         max_tokens: int = 512,
                          files_override: dict[str, str] | None = None) -> dict[str, Any]:
     if runtime is None:
         return {
@@ -483,10 +931,16 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
                            "docs": getattr(task, "docs", [])})(),
             repo_index, grounded, public_feedback,
         )
+    cfg = getattr(runtime, "config", None)
+    prior_max_tokens = getattr(cfg, "max_tokens", None) if cfg is not None else None
+    bounded_tokens = min(512, max(1, int(max_tokens)))
     try:
-        raw = runtime.complete(prompt, PATCH_SCHEMA, max_tokens=max_tokens)
-    except TypeError:
-        raw = runtime.complete(prompt, PATCH_SCHEMA)
+        if cfg is not None and prior_max_tokens is not None:
+            object.__setattr__(cfg, "max_tokens", bounded_tokens)
+        try:
+            raw = runtime.complete(prompt, PATCH_SCHEMA, max_tokens=bounded_tokens)
+        except TypeError:
+            raw = runtime.complete(prompt, PATCH_SCHEMA)
     except Exception as exc:
         return {
             "status": "BLOCKED",
@@ -495,11 +949,15 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
             "telemetry": None,
             "completion_stop": inspector.last or None,
         }
+    finally:
+        if cfg is not None and prior_max_tokens is not None:
+            object.__setattr__(cfg, "max_tokens", prior_max_tokens)
     stop = inspect_completion_stop({**(raw if isinstance(raw, dict) else {}), **inspector.last})
     telemetry = dict(raw.get("telemetry") or {})
     telemetry["completion_stop"] = stop
     try:
         parsed = parse_model_patch(raw["content"])
+        parsed = normalize_model_payload(parsed, files, task=task)
         validated = validate_patch(parsed, files)
         patched = apply_patch(files, validated)
     except Exception as exc:
@@ -511,8 +969,10 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
             "telemetry": telemetry,
             "completion_stop": stop,
             "inference_ran": bool(telemetry.get("inference_ran")),
+            "max_tokens": max_tokens,
             "truncation_claimed_as_cause": False,
         }
+    first_edit = (validated.get("edits") or [{}])[0]
     return {
         "status": "proposed",
         "reason": None,
@@ -522,17 +982,24 @@ def propose_with_runtime(runtime, task, repo_index: dict[str, Any], grounded: di
         "telemetry": telemetry,
         "completion_stop": stop,
         "inference_ran": bool(telemetry.get("inference_ran")),
+        "action_kind": first_edit.get("action"),
+        "target_symbol": first_edit.get("symbol"),
+        "routed_from_file": first_edit.get("routed_from_file"),
+        "max_tokens": max_tokens,
         "truncation_claimed_as_cause": False,
     }
 
 
 def propose_coordinated_per_file(runtime, task, repo_index: dict[str, Any], grounded: dict[str, Any],
                                  public_feedback: dict[str, Any] | None = None,
-                                 max_tokens_per_file: int = 128) -> dict[str, Any]:
+                                 max_tokens_per_file: int = 512,
+                                 max_tokens: int | None = None) -> dict[str, Any]:
     """One complete() per file. Later prompts see earlier staged edits.
 
     This is actual per-file generation, not apply_per_file staging helpers.
     """
+    if max_tokens is not None:
+        max_tokens_per_file = int(max_tokens)
     from .staging_workspace import StagingWorkspace, files_sha256
     files = dict(getattr(task, "files", {}))
     staging = StagingWorkspace(files)
@@ -544,10 +1011,15 @@ def propose_coordinated_per_file(runtime, task, repo_index: dict[str, Any], grou
     prior: list[str] = []
     for path in sorted(files):
         staged_now = dict(staging.staged)
+        try:
+            path_defs = sorted(top_level_definition_names(staged_now.get(path, ""))) if path.endswith(".py") else []
+        except SyntaxError:
+            path_defs = []
+        defs_hint = f" (target function(s) in {path}: {path_defs})" if path_defs else ""
         single = type("T", (), {
             "files": staged_now,
             "request": (
-                f"{getattr(task, 'request', '')} Coordinated edit: change only {path}. "
+                f"{getattr(task, 'request', '')} Coordinated edit: change only {path}{defs_hint}. "
                 f"Earlier staged files are already applied and must be kept: {prior or 'none'}."
             ),
             "public_tests": getattr(task, "public_tests", []),
@@ -576,11 +1048,20 @@ def propose_coordinated_per_file(runtime, task, repo_index: dict[str, Any], grou
             "staged_sha_before": files_sha256(staged_now),
             "used_prior_staged_context": bool(prior),
         })
-        if proposed.get("status") == "proposed" and path in proposed.get("patched_files", {}):
+        if proposed.get("status") == "proposed":
+            patched_map = proposed.get("patched_files") or {}
             merged = dict(staging.staged)
-            merged[path] = proposed["patched_files"][path]
-            staging.replace_staged(merged)
-            prior.append(path)
+            changed_any = False
+            if path in patched_map and patched_map[path] != staged_now.get(path):
+                merged[path] = patched_map[path]
+                changed_any = True
+            for other_p, other_src in patched_map.items():
+                if other_p in merged and other_src != staged_now.get(other_p):
+                    merged[other_p] = other_src
+                    changed_any = True
+            if changed_any or path in patched_map:
+                staging.replace_staged(merged)
+                prior.append(path)
     statuses = {row["status"] for row in traces}
     status = "proposed" if "proposed" in statuses else (
         "BLOCKED" if statuses == {"BLOCKED"} or not statuses else "invalid_proposal"

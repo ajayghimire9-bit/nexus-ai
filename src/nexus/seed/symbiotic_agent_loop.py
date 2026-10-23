@@ -168,8 +168,24 @@ class PythonASTMutationSynthesizer:
             arg_names = [a.arg for a in node.args.args]
 
             # Collect all sub-node mutation sites inside this FunctionDef
-            # Site type A: Return expression replaces bare parameter with product/difference of parameters
+            # Site type A: Return expression replaces bare parameter with product/rate-adjusted product of parameters
             for sub_idx, sub in enumerate(ast.walk(node)):
+                if isinstance(sub, ast.Return) and isinstance(sub.value, ast.Name) and len(arg_names) >= 2 and sub.value.id == arg_names[0]:
+                    new_tree_rate = copy.deepcopy(tree)
+                    target_fn_rate = new_tree_rate.body[fn_idx]
+                    target_sub_rate = list(ast.walk(target_fn_rate))[sub_idx]
+                    target_sub_rate.value = ast.BinOp(
+                        left=ast.Name(id=arg_names[0], ctx=ast.Load()),
+                        op=ast.Mult(),
+                        right=ast.BinOp(
+                            left=ast.Constant(value=1),
+                            op=ast.Add(),
+                            right=ast.Name(id=arg_names[1], ctx=ast.Load()),
+                        ),
+                    )
+                    ast.fix_missing_locations(new_tree_rate)
+                    variants.append((f"{node.name}:return_arg_rate_add", ast.unparse(new_tree_rate) + "\n"))
+
                 if isinstance(sub, ast.Call) and isinstance(sub.func, ast.Name) and sub.func.id == "round":
                     if len(sub.args) >= 1 and isinstance(sub.args[0], ast.Name) and len(arg_names) >= 2:
                         # e.g. round(rate, 2) -> round(subtotal * rate, 2)
@@ -257,7 +273,18 @@ class PythonASTMutationSynthesizer:
                             ast.fix_missing_locations(new_tree)
                             variants.append((f"{node.name}:bind_doc_{g_key}_{g_val}", ast.unparse(new_tree) + "\n"))
 
-                # Site type E: Null/None fallback (`value or default` -> `default if value is None else value`)
+                # Site type E: Null/None fallback (`value or default` -> `default if value is None else value` or `right or 0`)
+                if isinstance(sub, ast.BinOp) and isinstance(sub.op, (ast.Add, ast.Sub)) and isinstance(sub.right, ast.Subscript):
+                    new_tree_null = copy.deepcopy(tree)
+                    target_fn_null = new_tree_null.body[fn_idx]
+                    target_sub_null = list(ast.walk(target_fn_null))[sub_idx]
+                    target_sub_null.right = ast.BoolOp(
+                        op=ast.Or(),
+                        values=[copy.deepcopy(sub.right), ast.Constant(value=0)],
+                    )
+                    ast.fix_missing_locations(new_tree_null)
+                    variants.append((f"{node.name}:null_guard_zero", ast.unparse(new_tree_null) + "\n"))
+
                 if isinstance(sub, ast.BoolOp) and isinstance(sub.op, ast.Or) and len(sub.values) == 2:
                     if isinstance(sub.values[1], ast.Constant):
                         new_tree = copy.deepcopy(tree)
@@ -298,6 +325,18 @@ class PythonASTMutationSynthesizer:
                 stubs.append((
                     f"insert_function:{name}:generic_add",
                     f"def {name}({sig}):\n    return {arg_list[0]} + {arg_list[1]}\n",
+                ))
+                stubs.append((
+                    f"insert_function:{name}:join_colon",
+                    f"def {name}({sig}):\n    return {arg_list[0]} + ':' + {arg_list[1]}\n",
+                ))
+                stubs.append((
+                    f"insert_function:{name}:join_slash",
+                    f"def {name}({sig}):\n    return {arg_list[0]} + '/' + {arg_list[1]}\n",
+                ))
+                stubs.append((
+                    f"insert_function:{name}:join_hyphen_lower",
+                    f"def {name}({sig}):\n    return {arg_list[0]}.lower() + '-' + {arg_list[1]}.lower()\n",
                 ))
             for desc, body in stubs:
                 new_src = original_source.rstrip() + "\n\n" + body
@@ -405,6 +444,8 @@ class SymbioticAgentLoop:
         allow_acquired_memory: bool = True,
         proposal_sources: tuple[str, ...] = ("ast", "local_model"),
         model_revision_budget: int = 2,
+        proposer_max_tokens: int = 512,
+        diagnostic_policy: Any = None,
     ):
         self.workspace_dir = Path(workspace_dir)
         self.workspace_dir.mkdir(parents=True, exist_ok=True)
@@ -413,6 +454,8 @@ class SymbioticAgentLoop:
         self.allow_acquired_memory = allow_acquired_memory
         self.proposal_sources = tuple(proposal_sources)
         self.model_revision_budget = max(0, int(model_revision_budget))
+        self.proposer_max_tokens = max(1, min(512, int(proposer_max_tokens)))
+        self.diagnostic_policy = diagnostic_policy
 
     def solve(self, task: AgentTaskPublicView) -> dict[str, Any]:
         from .symbiotic_workbench import contained_repository_path
@@ -491,12 +534,20 @@ class SymbioticAgentLoop:
             t0 = time.perf_counter()
             kr = KnowledgeAndDocRetriever()
             for i, d in enumerate(task.docs):
+                doc_text = str(d.get("content") or d.get("text") or "")
+                inferred_bindings = dict(d.get("grounded_bindings", {}))
+                for m_bind in re.finditer(r"\b([A-Z][A-Z0-9_]{2,})\s*=\s*(-?\d+(?:\.\d+)?)\b", doc_text):
+                    raw_num = m_bind.group(2)
+                    inferred_bindings.setdefault(
+                        m_bind.group(1),
+                        float(raw_num) if "." in raw_num else int(raw_num),
+                    )
                 kr.register_document(
                     doc_id=str(d.get("doc_id") or d.get("title") or f"doc_{i}"),
                     title=d.get("title") or str(d.get("doc_id") or f"doc_{i}"),
-                    content=d.get("content") or "",
+                    content=doc_text,
                     version=d.get("version", "1.0.0"),
-                    grounded_bindings=d.get("grounded_bindings", {}),
+                    grounded_bindings=inferred_bindings,
                 )
             ret = kr.retrieve(task.request)
             grounded_bindings = dict(ret.get("grounded_executable_bindings", {}))
@@ -590,6 +641,25 @@ class SymbioticAgentLoop:
             elif task.language == "typescript":
                 synth_cands = TypeScriptCSTflashSynthesizer.generate_candidates(current_files, task.request)
                 candidates.extend(synth_cands)
+        if self.diagnostic_policy is not None and task.language == "python":
+            t_diag = time.perf_counter()
+            diag_out = self.diagnostic_policy.propose_and_rank_candidates(
+                task=task,
+                current_files=current_files,
+                reachable=reachable,
+                grounded_bindings=grounded_bindings,
+                init_eval=init_eval,
+                existing_candidates=candidates,
+            )
+            candidates = diag_out["candidates"]
+            record_tool("diagnostic_meta_policy", {
+                "policy_mode": diag_out.get("policy_mode"),
+                "signature": diag_out.get("signature"),
+            }, {
+                "candidate_count": len(candidates),
+                "top_operators": [c[0] for c in candidates[:6]],
+                "ranked_families": diag_out.get("ranked_families", []),
+            }, t_diag)
         record_tool("propose_candidate_edits", {"language": task.language}, {
             "candidate_count": len(candidates),
             "operators": [c[0] for c in candidates[:10]],
@@ -612,19 +682,24 @@ class SymbioticAgentLoop:
                 proposed = propose_with_runtime(
                     self.local_runtime, task, repo_index, grounded_bindings, feedback,
                     files_override=current_files,
+                    max_tokens=self.proposer_max_tokens,
                 )
                 model_trace.append({"round": round_idx, **{
                     k: proposed.get(k) for k in (
                         "status", "reason", "telemetry", "inference_ran", "completion_stop",
+                        "action_kind", "target_symbol", "routed_from_file", "max_tokens",
                     )
                 }, "truncation_claimed_as_cause": False})
                 record_tool("local_model_propose", {
                     "round": round_idx,
                     "runtime_present": self.local_runtime is not None,
+                    "max_tokens": self.proposer_max_tokens,
                 }, {
                     "status": proposed.get("status"),
                     "reason": proposed.get("reason"),
                     "inference_ran": proposed.get("inference_ran"),
+                    "action_kind": proposed.get("action_kind"),
+                    "target_symbol": proposed.get("target_symbol"),
                     "assumptions": (proposed.get("proposal") or {}).get("assumptions", []),
                 }, t0)
                 if proposed.get("status") == "proposed":
@@ -651,6 +726,7 @@ class SymbioticAgentLoop:
             per_file = propose_coordinated_per_file(
                 self.local_runtime, task, repo_index, grounded_bindings,
                 {"initial_public": init_eval.get("results", [])[:6]},
+                max_tokens=self.proposer_max_tokens,
             )
             model_trace.append({
                 "round": "per_file",
@@ -744,7 +820,7 @@ class SymbioticAgentLoop:
                 "language": task.language,
                 "files": files,
                 "cases": task.public_tests,
-                "trace": False,
+                "trace": True,
             }))
             passed_cnt = sum(1 for r in ev.get("results", []) if r.get("passed"))
             total_cnt = len(task.public_tests)
@@ -796,7 +872,8 @@ class SymbioticAgentLoop:
                     },
                 )
             if op_desc.startswith("local_model_") and "local_model" in self.proposal_sources and self.local_runtime is not None:
-                if len(model_trace) < self.model_revision_budget:
+                non_per_file_rounds = sum(1 for row in model_trace if row.get("round") != "per_file")
+                if non_per_file_rounds < self.model_revision_budget:
                     from .local_model_patch_proposer import propose_with_runtime
                     t_rev = time.perf_counter()
                     revised = propose_with_runtime(
@@ -811,17 +888,21 @@ class SymbioticAgentLoop:
                             ),
                         },
                         files_override=staging.staged,
+                        max_tokens=self.proposer_max_tokens,
                     )
                     model_trace.append({"round": len(model_trace) + 1, **{
                         k: revised.get(k) for k in (
                             "status", "reason", "telemetry", "inference_ran", "completion_stop",
+                            "action_kind", "target_symbol", "routed_from_file", "max_tokens",
                         )
                     }, "truncation_claimed_as_cause": False})
-                    record_tool("local_model_revise", {"after_attempt": idx}, {
+                    record_tool("local_model_revise", {"after_attempt": idx, "max_tokens": self.proposer_max_tokens}, {
                         "status": revised.get("status"),
                         "reason": revised.get("reason"),
                         "inference_ran": revised.get("inference_ran"),
                         "completion_stop": revised.get("completion_stop"),
+                        "action_kind": revised.get("action_kind"),
+                        "target_symbol": revised.get("target_symbol"),
                         "revised_from_staged": True,
                     }, t_rev)
                     if revised.get("status") == "proposed":

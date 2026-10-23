@@ -66,7 +66,7 @@ def validate_and_compile_python_repo(files: dict[str, str]) -> dict[str, dict[st
             raise ValueError(f"ast_size_exceeded:{filename}")
 
         for node in nodes:
-            if not isinstance(node, SAFE_AST_NODES + (ast.Is, ast.IsNot, ast.ImportFrom, ast.alias)):
+            if not isinstance(node, SAFE_AST_NODES + (ast.Is, ast.IsNot, ast.ImportFrom, ast.alias, ast.JoinedStr, ast.FormattedValue)):
                 raise ValueError(f"forbidden_ast_node:{filename}:{type(node).__name__}")
             if isinstance(node, ast.Name) and node.id.startswith("__"):
                 raise ValueError(f"dunder_name_forbidden:{filename}:{node.id}")
@@ -138,7 +138,19 @@ def evaluate_python_payload(payload: dict[str, Any]) -> dict[str, Any]:
     t_tests = time.perf_counter()
     results = []
     valid_filenames = set(payload["files"].keys())
+    file_lines_map = {
+        fname: src.splitlines() for fname, src in payload["files"].items() if isinstance(src, str)
+    }
     trace_enabled = bool(payload.get("trace", False))
+
+    def _safe_trace_val(val: Any) -> Any:
+        if isinstance(val, (int, float, bool, str)) or val is None:
+            return val if not isinstance(val, str) or len(val) <= 120 else val[:120]
+        if isinstance(val, (list, tuple)) and len(val) <= 8:
+            return [_safe_trace_val(x) for x in val]
+        if isinstance(val, dict) and len(val) <= 8:
+            return {str(k)[:40]: _safe_trace_val(v) for k, v in val.items()}
+        return repr(val)[:120]
 
     for case in payload.get("cases", []):
         entry = case["entry"]
@@ -146,9 +158,12 @@ def evaluate_python_payload(payload: dict[str, Any]) -> dict[str, Any]:
         if mod_name not in modules or fn_name.startswith("__") or fn_name not in modules[mod_name]:
             results.append(dict(
                 entry=entry,
+                input=case.get("input"),
                 actual=None,
+                expected=case.get("expected"),
                 passed=False,
                 error=f"missing_entry:{entry}",
+                failing_line=f"{mod_name}.py:missing_symbol:{fn_name}",
                 calls=[],
             ))
             continue
@@ -157,12 +172,25 @@ def evaluate_python_payload(payload: dict[str, Any]) -> dict[str, Any]:
         def profiler(frame, event, arg):
             if event in ("call", "return") and frame.f_code.co_filename in valid_filenames:
                 if len(calls) < 128:
-                    calls.append(dict(
-                        file=frame.f_code.co_filename,
+                    fname = frame.f_code.co_filename
+                    lineno = frame.f_lineno
+                    lines = file_lines_map.get(fname, [])
+                    src_line = lines[lineno - 1].strip() if 1 <= lineno <= len(lines) else ""
+                    rec: dict[str, Any] = dict(
+                        file=fname,
                         function=frame.f_code.co_name,
                         event=event,
-                        line=frame.f_lineno,
-                    ))
+                        line=lineno,
+                        source_line=src_line,
+                    )
+                    rec["locals"] = {
+                        str(k): _safe_trace_val(v)
+                        for k, v in frame.f_locals.items()
+                        if not str(k).startswith("__")
+                    }
+                    if event == "return":
+                        rec["return_value"] = _safe_trace_val(arg)
+                    calls.append(rec)
 
         try:
             if trace_enabled:
@@ -180,22 +208,36 @@ def evaluate_python_payload(payload: dict[str, Any]) -> dict[str, Any]:
                 passed = abs(float(actual) - expected) <= 1e-6
             else:
                 passed = (type(actual) is type(expected) and actual == expected)
+            ret_calls = [c for c in calls if c.get("event") == "return"]
+            failing_line = None
+            if not passed and ret_calls:
+                last_ret = ret_calls[-1]
+                failing_line = f"{last_ret['file']}:{last_ret['line']}: {last_ret.get('source_line', '')}"
             results.append(dict(
                 entry=entry,
+                input=inp,
                 actual=actual,
                 expected=expected,
                 passed=bool(passed),
                 error=None,
+                failing_line=failing_line,
                 calls=calls,
             ))
         except Exception as exc:
+            last_call = calls[-1] if calls else None
+            failing_line = (
+                f"{last_call['file']}:{last_call['line']}: {last_call.get('source_line', '')}"
+                if last_call else None
+            )
             results.append(dict(
                 entry=entry,
+                input=case.get("input"),
                 actual=None,
                 expected=case.get("expected"),
                 passed=False,
                 error=f"{type(exc).__name__}:{exc}",
                 trace=traceback.format_exc(limit=4),
+                failing_line=failing_line,
                 calls=calls,
             ))
         finally:
