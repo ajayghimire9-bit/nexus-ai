@@ -1,14 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — three function formats, then the 1.5B coder on the best one
+## Current next — keep json_body on the coder for inclusive replace
 
-The [constrained-edit pilot](NEXUS_SEED_CONSTRAINED_EDIT_WORKFLOW_RESULTS.md)
-queued `"ok"` / `"echo"` under a JSON `function` string. Next: inspect the
-raw request; compare plain-code, JSON-function and JSON-body; reject
-placeholders; repeat the best format on installed qwen2.5-coder-1.5b.
-Do not resume ranking or memory. Ledger
-**2499.393603455996 used / 1100.606396544004 remaining**.
-[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md).
+The [format comparison](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_RESULTS.md)
+showed `json_body` as the better interface and a 1.5B success on a new
+function. Inclusive `Lt→LtE` still copied `<` on both models. Next: keep
+`json_body` and the coder for a replace that must change the comparison,
+with the same placeholder rule. Do not resume ranking or memory. Ledger
+**2566.777111455996 used / 1033.222888544004 remaining**.
 
 ## Current next — refuse wrapped identifiers, then re-measure semantic bodies
 

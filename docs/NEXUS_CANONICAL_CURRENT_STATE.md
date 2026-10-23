@@ -1,15 +1,16 @@
 # NEXUS Seed — Current State
 
-## Current — function-output formats and placeholder rejection (protocol)
+## Current — function-output formats and placeholder rejection (results)
 
-[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md). Branch
-`cursor/seed-function-format-compare` from reviewed tip `b6b70cf`. Record
-the raw `/completion` request (no chat template, no stop, `n_predict`
-128). Compare plain-code, JSON-function and JSON-body on the same two
-development tasks. Reject placeholder bodies, then one revision. Repeat
-the best 0.5B format on installed qwen2.5-coder-1.5b. Target discovery
-from the request is not implemented. Ledger
-**2499.393603455996 used / 1100.606396544004 remaining**.
+[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md),
+[results](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_RESULTS.md). Implementation
+`0408f34` / `4fc3f9c` on `cursor/seed-function-format-compare`. Verifier
+`valid: true`. Raw `/completion` has no chat template or stop; JSON
+`minLength` 8 still admits `"ok(item)"`. Best 0.5B format was
+`json_body`. The 1.5B coder passed private tests on `code(item)` after
+revision; 0.5B only hardcoded the public string. Inclusive replace
+failed on both. Ledger
+**2566.777111455996 used / 1033.222888544004 remaining**.
 
 ## Previous — constrained function edits and generated-code feature (results)
 

@@ -4,10 +4,11 @@
 
 Predeclared: the one-word `function` completions were a request/schema
 effect. Three formats on the same tasks and budget distinguish that from
-inadequate coding. Placeholder bodies are rejected; `return None` is
-not. The best 0.5B format is repeated on the installed 1.5B coder.
-Development only; not confirmation.
-[Protocol](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_PROTOCOL.md).
+inadequate coding. **Mixed.** `minLength` 8 still admits `"ok(item)"`.
+`json_body` was best on 0.5B (one public-only hardcode). The 1.5B coder
+produced a general `code(item)` after revision; inclusive replace failed
+on both. Parent RSS unchanged; coder wall 33.7 s vs 0.5B 20.3 s.
+[Results](NEXUS_SEED_FUNCTION_FORMAT_COMPARE_RESULTS.md).
 
 ## Current — constrained function text versus path/action choice
 
