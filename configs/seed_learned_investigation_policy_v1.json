@@ -1,0 +1,53 @@
+{
+  "study_id": "seed-learned-investigation-policy-v1",
+  "protocol_doc": "docs/NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V1_PROTOCOL.md",
+  "results_doc": "docs/NEXUS_SEED_LEARNED_INVESTIGATION_POLICY_V1_RESULTS.md",
+  "artifact_json": "artifacts/seed_learned_investigation_policy_v1/seed_learned_investigation_policy_v1.json",
+  "artifact_jsonl": "artifacts/seed_learned_investigation_policy_v1/seed_learned_investigation_policy_v1.jsonl",
+  "objective_weights": {
+    "lambda_q": 0.08,
+    "lambda_e": 0.02,
+    "lambda_t": 0.10
+  },
+  "knowledge_stores": [
+    "skills",
+    "learning_strategy",
+    "language_knowledge"
+  ],
+  "components": [
+    "CapsuleExecutor",
+    "LocalNeuralProposer",
+    "LearnedInvestigationPolicy",
+    "EvidenceKernel",
+    "Consolidator",
+    "CurriculumGenerator",
+    "IndependentEvaluator"
+  ],
+  "engineering_replacements": [
+    "ConformalCandidateCalibrator",
+    "BoundedEGraphOrganizer",
+    "BoundedContractCounterexampleSearcher",
+    "AttributedClaimStore",
+    "VersionedCompiledArtifactMonitor"
+  ],
+  "memory_reset_comparison_policies": [
+    "original_untrained_policy",
+    "simple_frequency_prior",
+    "strong_fixed_infogain",
+    "learned_grammar_prior_only",
+    "learned_investigation_policy_random_curr",
+    "learned_investigation_policy_curriculum",
+    "strategy_reset_ablation"
+  ],
+  "dual_engine_comparison_modes": [
+    "skills_only_untrained_policy",
+    "strategy_only_capsules_cleared",
+    "combined_dual_engine_skills_plus_strategy"
+  ],
+  "training_budget_tasks": 8,
+  "excluded_assessment_task_count": 24,
+  "claim_discipline": {
+    "learning_to_learn_scope": "bounded_within_grammar_and_repository_repair_families",
+    "agi": false
+  }
+}

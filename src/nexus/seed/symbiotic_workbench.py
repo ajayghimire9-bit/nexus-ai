@@ -1790,6 +1790,8 @@ class SymbioticWorkbenchController:
             profile_id=self.state.get("profile_id", "profile_a"),
             storage_dir=Path(self.store.directory) / "capsules" / self.state.get("profile_id", "profile_a"),
         )
+        from .combined_investigation_engine import CombinedNexusArchitecture
+        self.combined_engine = CombinedNexusArchitecture()
 
     def _load_state(self) -> dict[str, Any]:
         if self.state_file.is_file():
@@ -1860,6 +1862,8 @@ class SymbioticWorkbenchController:
             return self._handle_capsules_api(args)
         if op == "workbench_agent_solve":
             return self._handle_agent_solve_api(args)
+        if op == "workbench_investigation_engine":
+            return self._handle_investigation_engine_api(args)
         raise ValueError(f"unknown_workbench_op:{op}")
 
     def _handle_editor_api(self, args: dict[str, Any]) -> dict[str, Any]:
@@ -2181,6 +2185,10 @@ class SymbioticWorkbenchController:
         # 9. Autonomous Symbiotic Agent Loop via chat
         if lower.startswith("agent "):
             return self._chat_agent_loop(ws_turn, raw)
+
+        # 10. Combined Dual-Engine & Learned Investigation Policy via chat
+        if lower.startswith("investigate "):
+            return self._chat_investigation_engine(ws_turn, raw)
 
         return None
 
@@ -2508,6 +2516,50 @@ class SymbioticWorkbenchController:
             f"Agent loop finished with outcome `{res['outcome_category']}`: {res['summary_message']} "
             f"({len(res['tool_calls'])} tool call(s), {len(res['patch_attempts'])} patch attempt(s))."
         ), turn_status, False
+
+    def _handle_investigation_engine_api(self, args: dict[str, Any]) -> dict[str, Any]:
+        sub = args.get("sub_op", "status")
+        if sub == "reset_skills":
+            self.combined_engine.knowledge.reset_skills()
+            res = dict(reset="skills", hashes=self.combined_engine.knowledge.snapshot_hashes())
+        elif sub == "reset_learning_strategy":
+            self.combined_engine.knowledge.reset_learning_strategy()
+            res = dict(reset="learning_strategy", hashes=self.combined_engine.knowledge.snapshot_hashes())
+        elif sub == "reset_language_knowledge":
+            self.combined_engine.knowledge.reset_language_knowledge()
+            res = dict(reset="language_knowledge", hashes=self.combined_engine.knowledge.snapshot_hashes())
+        elif sub == "engineering_replacements":
+            res = self.combined_engine.run_engineering_replacements_suite()
+        else:
+            res = dict(
+                hashes=self.combined_engine.knowledge.snapshot_hashes(),
+                active_capsules=len(self.combined_engine.knowledge.skills.active_capsules()),
+                policy_id=self.combined_engine.knowledge.learning_strategy.params.policy_id,
+                trained=self.combined_engine.knowledge.learning_strategy.params.trained,
+            )
+        prop = self._record_chat_proposal(f"investigation_{sub}", "combined_investigation_engine", sub, "observed_execution", res)
+        return dict(proposal=prop, result=res)
+
+    def _chat_investigation_engine(self, ws_turn, raw: str) -> tuple[str, str, bool]:
+        body = raw[len("investigate "):].strip().lower()
+        if body in ("reset skills", "clear skills"):
+            out = self._handle_investigation_engine_api({"sub_op": "reset_skills"})
+            ws_turn.card("Combined Engine Knowledge Reset", out["result"])
+            return "Cleared acquired skill capsules while retaining learning strategy and language knowledge.", "success", False
+        if body in ("reset strategy", "reset policy"):
+            out = self._handle_investigation_engine_api({"sub_op": "reset_learning_strategy"})
+            ws_turn.card("Combined Engine Strategy Reset", out["result"])
+            return "Reset investigation policy parameters to untrained default while retaining skills and language knowledge.", "success", False
+        if body in ("reset language",):
+            out = self._handle_investigation_engine_api({"sub_op": "reset_language_knowledge"})
+            ws_turn.card("Combined Engine Language Reset", out["result"])
+            return "Reset language proposer knowledge and calibration state to pretrained defaults.", "success", False
+        out = self._handle_investigation_engine_api({"sub_op": "status"})
+        ws_turn.card("Combined Investigation Engine Status", out["result"])
+        return (
+            f"Combined Investigation Engine ready (`policy_id={out['result']['policy_id']}`, "
+            f"`active_capsules={out['result']['active_capsules']}`)."
+        ), "success", False
 
     def _record_chat_proposal(self, intent: str, backend: str, target: str, prov: str,
                               evidence: dict[str, Any], status: str = "committed") -> dict[str, Any]:
