@@ -1,6 +1,13 @@
 # NEXUS progress log
 
-## Current — Wave-13 developmental/invalid (do not reuse w13f_*)
+## Current — Wave-14 piecewise archive (protocol in progress; Wave 13 closed)
+
+Wave 13 (`460a04a` → `a48001e`) is **Closed Developmental / Invalid
+(53/54 Accuracy & 0/3 Archive Reactivation; Preserved Unamended)**.
+Do not amend or reuse `w13f_*`.
+[Postmortem](NEXUS_WAVE13_FAILED_BLIND_RUN_POSTMORTEM.md).
+
+## Previous — Wave-13 developmental/invalid (do not reuse w13f_*)
 
 Protocol freeze `460a04a`. Artifact
 `f35215d7ba5a509e5a68c636a34f98d23d68ee4b9e9dcd13266a68da8b240ab6`.
