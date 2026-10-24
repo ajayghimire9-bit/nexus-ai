@@ -1,6 +1,19 @@
 # NEXUS Seed — Current State
 
-## Current — mechanism acquisition (results)
+## Current — continual Track A (results)
+
+[Protocol](NEXUS_SEED_MECHANISM_CONTINUAL_PROTOCOL.md),
+[results](NEXUS_SEED_MECHANISM_CONTINUAL_RESULTS.md).
+Protocol `7d71e24`. Artifact
+`fff9fde77348c340acd2697a112c9d8c9524a625140a80a6ee5b7a93d6928d30`.
+Verifier 184 cells. Inner 4/4; policy competence 4/4 × 3. Wave 2: every
+arm 9 useful + 3 `sign_pos` rejects. Memory does not beat typed+affine
+or template. Policy-only 84 vs 105 interactions at matched useful.
+Reserved retest 9/9. Track B and online stream not run. Priors
+`a37503d` and earlier mechanism grids not rescored. Frozen debit **0**.
+Not general learning-to-learn.
+
+## Previous — mechanism acquisition (results)
 
 [Protocol](NEXUS_SEED_MECHANISM_ACQUIRE_PROTOCOL.md),
 [results](NEXUS_SEED_MECHANISM_ACQUIRE_RESULTS.md).

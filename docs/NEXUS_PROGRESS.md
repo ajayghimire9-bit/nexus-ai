@@ -1,6 +1,15 @@
 # NEXUS progress log
 
-## Current — synthesis acquires unstored compositions; search ties it
+## Current — continual Track A: policy cheaper, memory does not transfer
+
+Protocol `7d71e24`, artifact
+`fff9fde77348c340acd2697a112c9d8c9524a625140a80a6ee5b7a93d6928d30`.
+Inner 4/4. Wave 2 all arms 9 useful + 3 rejects. Policy-only 84 vs 105
+interactions. Memory hits 0 on targets. Reserved retest 9/9. Track B
+not run. Frozen debit **0**.
+[Results](NEXUS_SEED_MECHANISM_CONTINUAL_RESULTS.md).
+
+## Previous — synthesis acquires unstored compositions; search ties it
 
 Protocol `11a08f6`, artifact
 `5fab96735f4a1a59a887189e87c3392ea8bee2b8615f421ae1ad6933e5c8b99b`.

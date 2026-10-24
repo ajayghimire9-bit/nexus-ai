@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore acquire; synthesis works, search does not help
+## Current next — do not rescore continual; memory did not transfer
+
+The [continual Track A run](NEXUS_SEED_MECHANISM_CONTINUAL_RESULTS.md)
+acquires scoped models, rejects `sign_pos`, and saves four Wave-1
+skills. Those skills do not improve unseen compositions over
+typed+affine synthesis. The source-trained policy matches that accuracy
+at lower interaction cost. Do not rescore this grid or `a37503d`. A
+later family must make the typed enumerator and affine fitter miss
+before memory can matter. Track B stays closed. Ranking stays paused.
+
+## Previous next — do not rescore acquire; synthesis works, search does not help
 
 The [acquire run](NEXUS_SEED_MECHANISM_ACQUIRE_RESULTS.md) shows the
 fixed synthesizer can compose `add1`/`add2`/`mul2`/`neg` into unstored
