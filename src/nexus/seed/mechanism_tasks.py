@@ -39,6 +39,12 @@ DECLARED = (
     dict(task_id="d_count_add", split="composition", family="composition", mechanism="count_then_add1", instance_seed=92),
     dict(task_id="e_delay", split="excluded_family", family="excluded", mechanism="delay", instance_seed=101),
     dict(task_id="e_threshold", split="excluded_family", family="excluded", mechanism="threshold", instance_seed=102),
+    dict(task_id="mm_abs", split="mismatch", family="mismatch", mechanism="abs_val", instance_seed=201),
+    dict(task_id="mm_mod3", split="mismatch", family="mismatch", mechanism="mod3", instance_seed=202),
+    dict(task_id="mm_clip0", split="mismatch", family="mismatch", mechanism="clip0", instance_seed=203),
+    dict(task_id="mm_prev", split="mismatch", family="mismatch", mechanism="prev_plus", instance_seed=204),
+    dict(task_id="ctl_neg", split="mismatch_control", family="stateless", mechanism="neg", instance_seed=211),
+    dict(task_id="ctl_toggle", split="mismatch_control", family="stateful", mechanism="toggle", instance_seed=212),
 )
 
 
@@ -52,8 +58,10 @@ def catalogue() -> list[dict[str, Any]]:
             raise ValueError("unknown_mechanism:" + raw["task_id"])
         elif raw["split"] == "excluded_family" and raw["mechanism"] not in EXCLUDED:
             raise ValueError("excluded_must_be_declared:" + raw["task_id"])
-        elif raw["split"] in ("within_family", "composition") and raw["mechanism"] not in LANGUAGE:
+        elif raw["split"] in ("within_family", "composition", "mismatch_control") and raw["mechanism"] not in LANGUAGE:
             raise ValueError("heldout_in_family_must_be_in_language:" + raw["task_id"])
+        elif raw["split"] == "mismatch" and raw["mechanism"] in LANGUAGE:
+            raise ValueError("mismatch_must_be_outside:" + raw["task_id"])
         rows.append(dict(raw, origin="authored_mechanism"))
     return rows
 
@@ -64,6 +72,10 @@ def tasks_for(split: str) -> list[dict[str, Any]]:
 
 def assessment_tasks() -> list[dict[str, Any]]:
     return [row for row in catalogue() if row["split"] in ("within_family", "composition", "excluded_family")]
+
+
+def mismatch_tasks() -> list[dict[str, Any]]:
+    return [row for row in catalogue() if row["split"] in ("mismatch", "mismatch_control")]
 
 
 def split_lock() -> dict[str, list[str]]:

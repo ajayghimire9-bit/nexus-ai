@@ -73,7 +73,8 @@ def test_redundant_mask_is_shared_and_allows_stateful_repeat():
     avail = available_actions({}, first, remain)
     assert avail["mask"] == REDUNDANT_MASK_ORIGIN
     assert "ACT_1" not in avail["actions"]
-    assert "STOP_IDENTIFY" in avail["actions"]
+    assert "STOP_UNRESOLVED" in avail["actions"]
+    assert "STOP_IDENTIFY" not in avail["actions"]
 
 
 def test_version_space_singleton_is_not_a_shortlist():

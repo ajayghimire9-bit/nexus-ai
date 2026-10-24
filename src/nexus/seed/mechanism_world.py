@@ -35,7 +35,10 @@ LANGUAGE = (
 EXCLUDED = ("delay", "threshold")
 # Outside the hypothesis language. Source/dev use identity/const0 to
 # supervise STOP_UNRESOLVED. Assessment E stays delay/threshold.
-OUTSIDE_LANGUAGE = ("const0", "const7", "delay", "threshold")
+OUTSIDE_LANGUAGE = (
+    "const0", "const7", "delay", "threshold",
+    "abs_val", "mod3", "clip0", "prev_plus",
+)
 
 
 def _stateless(fn: Callable[[int], int]) -> Callable[[dict[str, Any], int, bool], int]:
@@ -84,6 +87,12 @@ def _threshold(state: dict[str, Any], x: int, exact: bool) -> int:
     return int(int(x) > 1)
 
 
+def _prev_plus(state: dict[str, Any], x: int, exact: bool) -> int:
+    prev = int(state.get("prev") or 0)
+    state["prev"] = int(x)
+    return prev + 1
+
+
 EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "add1": _stateless(lambda x: x + 1),
     "add2": _stateless(lambda x: x + 2),
@@ -102,6 +111,10 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "threshold": _threshold,
     "const0": _stateless(lambda x: 0),
     "const7": _stateless(lambda x: 7),
+    "abs_val": _stateless(lambda x: abs(x)),
+    "mod3": _stateless(lambda x: int(x) % 3),
+    "clip0": _stateless(lambda x: max(int(x), 0)),
+    "prev_plus": _prev_plus,
 }
 
 
