@@ -78,6 +78,20 @@ DECLARED = (
     dict(task_id="w3r_add1", split="wave3_retain", family="affine", mechanism="add1", instance_seed=541, role="acquire"),
     dict(task_id="w3r_if_pos", split="wave3_retain", family="gate", mechanism="if_pos", instance_seed=542, role="acquire"),
     dict(task_id="w3r_sat_inc", split="wave3_retain", family="state", mechanism="sat_inc", instance_seed=543, role="acquire"),
+    dict(task_id="up_src_add1", split="up_source", family="affine", mechanism="add1", instance_seed=701, role="acquire"),
+    dict(task_id="up_src_mul2", split="up_source", family="affine", mechanism="mul2", instance_seed=702, role="acquire"),
+    dict(task_id="up_src_if_pos", split="up_source", family="gate", mechanism="if_pos", instance_seed=703, role="acquire"),
+    dict(task_id="up_src_sat_inc", split="up_source", family="state", mechanism="sat_inc", instance_seed=704, role="acquire"),
+    dict(task_id="up_src_pos_plus", split="up_source", family="branch_a_source", mechanism="up_src_pos_plus", instance_seed=705, role="acquire"),
+    dict(task_id="up_src_twice_pos", split="up_source", family="branch_a_source", mechanism="up_src_twice_pos", instance_seed=706, role="acquire"),
+    dict(task_id="up_src_neg_id", split="up_source", family="branch_b_source", mechanism="up_src_neg_id", instance_seed=707, role="acquire"),
+    dict(task_id="up_src_neg_dbl", split="up_source", family="branch_b_source", mechanism="up_src_neg_dbl", instance_seed=708, role="acquire"),
+    dict(task_id="up_hold_pos_plus2", split="up_holdout", family="branch_a", mechanism="up_pos_plus2", instance_seed=721, role="acquire"),
+    dict(task_id="up_hold_twice_plus1", split="up_holdout", family="branch_a", mechanism="up_twice_plus1", instance_seed=722, role="acquire"),
+    dict(task_id="up_hold_neg_gate", split="up_holdout", family="branch_b", mechanism="up_neg_gate", instance_seed=723, role="acquire"),
+    dict(task_id="up_hold_neg_twice", split="up_holdout", family="branch_b", mechanism="up_neg_twice", instance_seed=724, role="acquire"),
+    dict(task_id="up_ret_add1", split="up_retain", family="affine", mechanism="add1", instance_seed=741, role="acquire"),
+    dict(task_id="up_ret_if_pos", split="up_retain", family="gate", mechanism="if_pos", instance_seed=742, role="acquire"),
 )
 
 
@@ -140,6 +154,10 @@ def synthesis_holdout_tasks() -> list[dict[str, Any]]:
 
 
 def wave_tasks(*splits: str) -> list[dict[str, Any]]:
+    return [row for row in catalogue() if row["split"] in splits]
+
+
+def unfamiliar_policy_tasks(*splits: str) -> list[dict[str, Any]]:
     return [row for row in catalogue() if row["split"] in splits]
 
 

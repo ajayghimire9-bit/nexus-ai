@@ -43,6 +43,8 @@ OUTSIDE_LANGUAGE = (
     "add2_then_mul2", "neg_then_add2", "mul2_then_neg",
     "if_pos", "if_neg", "sat_inc", "sat_dec", "sign_pos",
     "if_pos_add1", "sat_inc_mul2", "if_neg_neg", "add1_if_pos",
+    "up_pos_plus2", "up_twice_plus1", "up_neg_gate", "up_neg_twice",
+    "up_src_pos_plus", "up_src_twice_pos", "up_src_neg_id", "up_src_neg_dbl",
 )
 
 
@@ -185,6 +187,14 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "sat_inc_mul2": _sat_inc_mul2,
     "if_neg_neg": _stateless(lambda x: -(x if x < 0 else 0)),
     "add1_if_pos": _stateless(lambda x: (x + 1) if (x + 1) > 0 else 0),
+    "up_pos_plus2": _stateless(lambda x: (x if x > 0 else 0) + 2),
+    "up_twice_plus1": _stateless(lambda x: (2 * x + 1) if x > 0 else 2),
+    "up_neg_gate": _stateless(lambda x: x if x < 0 else 0),
+    "up_neg_twice": _stateless(lambda x: (2 * x) if x < 0 else 0),
+    "up_src_pos_plus": _stateless(lambda x: (x if x > 0 else 0) + 4),
+    "up_src_twice_pos": _stateless(lambda x: (2 * x + 3) if x > 0 else 4),
+    "up_src_neg_id": _stateless(lambda x: x if x < 0 else 7),
+    "up_src_neg_dbl": _stateless(lambda x: (2 * x) if x < 0 else 7),
 }
 
 
