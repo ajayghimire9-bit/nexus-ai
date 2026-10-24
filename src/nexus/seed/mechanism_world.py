@@ -33,6 +33,9 @@ LANGUAGE = (
     "add1_then_mul2", "count_then_add1",
 )
 EXCLUDED = ("delay", "threshold")
+# Outside the hypothesis language. Source/dev use identity/const0 to
+# supervise STOP_UNRESOLVED. Assessment E stays delay/threshold.
+OUTSIDE_LANGUAGE = ("const0", "const7", "delay", "threshold")
 
 
 def _stateless(fn: Callable[[int], int]) -> Callable[[dict[str, Any], int, bool], int]:
@@ -97,6 +100,8 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "count_then_add1": _count_then_add1,
     "delay": _delay,
     "threshold": _threshold,
+    "const0": _stateless(lambda x: 0),
+    "const7": _stateless(lambda x: 7),
 }
 
 

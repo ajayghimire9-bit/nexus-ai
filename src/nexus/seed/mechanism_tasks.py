@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .mechanism_world import EXCLUDED, LANGUAGE
+from .mechanism_world import EXCLUDED, LANGUAGE, OUTSIDE_LANGUAGE
 
 # A source, B development, C within-family, D composition, E excluded family.
 DECLARED = (
@@ -24,12 +24,15 @@ DECLARED = (
     dict(task_id="src_sum_b", split="source", family="stateful", mechanism="sum", instance_seed=52),
     dict(task_id="src_noisy_a", split="source", family="noisy", mechanism="noisy_add1", instance_seed=61),
     dict(task_id="src_noisy_b", split="source", family="noisy", mechanism="noisy_add1", instance_seed=62),
+    dict(task_id="src_const7", split="source", family="unresolved", mechanism="const7", instance_seed=65),
+    dict(task_id="src_const0", split="source", family="unresolved", mechanism="const0", instance_seed=66),
     dict(task_id="dev_add3", split="development", family="stateless", mechanism="add3", instance_seed=71),
     dict(task_id="dev_neg", split="development", family="stateless", mechanism="neg", instance_seed=72),
     dict(task_id="dev_toggle", split="development", family="stateful", mechanism="toggle", instance_seed=73),
     dict(task_id="dev_sum", split="development", family="stateful", mechanism="sum", instance_seed=74),
     dict(task_id="dev_noisy", split="development", family="noisy", mechanism="noisy_add1", instance_seed=75),
     dict(task_id="dev_add2", split="development", family="stateless", mechanism="add2", instance_seed=76),
+    dict(task_id="dev_const7", split="development", family="unresolved", mechanism="const7", instance_seed=77),
     dict(task_id="c_add4", split="within_family", family="stateless", mechanism="add4", instance_seed=81),
     dict(task_id="c_count2", split="within_family", family="stateful", mechanism="count2", instance_seed=82),
     dict(task_id="d_add_mul", split="composition", family="composition", mechanism="add1_then_mul2", instance_seed=91),
@@ -42,10 +45,15 @@ DECLARED = (
 def catalogue() -> list[dict[str, Any]]:
     rows = []
     for raw in DECLARED:
-        if raw["split"] != "excluded_family" and raw["mechanism"] not in LANGUAGE:
-            raise ValueError("source_like_must_be_in_language:" + raw["task_id"])
-        if raw["split"] == "excluded_family" and raw["mechanism"] not in EXCLUDED:
+        if raw["mechanism"] in LANGUAGE:
+            if raw["split"] == "excluded_family":
+                raise ValueError("excluded_must_be_outside:" + raw["task_id"])
+        elif raw["mechanism"] not in OUTSIDE_LANGUAGE:
+            raise ValueError("unknown_mechanism:" + raw["task_id"])
+        elif raw["split"] == "excluded_family" and raw["mechanism"] not in EXCLUDED:
             raise ValueError("excluded_must_be_declared:" + raw["task_id"])
+        elif raw["split"] in ("within_family", "composition") and raw["mechanism"] not in LANGUAGE:
+            raise ValueError("heldout_in_family_must_be_in_language:" + raw["task_id"])
         rows.append(dict(raw, origin="authored_mechanism"))
     return rows
 

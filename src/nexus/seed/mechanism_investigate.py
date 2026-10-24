@@ -1,7 +1,9 @@
 """Version-space investigation over executed mechanisms.
 
-Completeness: STOP_IDENTIFY is correct only when the full language is a
-singleton. Shortlist agreement is not identification. Ties are randomized.
+Features must distinguish a still-informative query from one whose
+answer is already known. Completeness: STOP_IDENTIFY only when the full
+language is a singleton. The redundant-query mask is programmer-supplied
+and shared by every method.
 """
 from __future__ import annotations
 
@@ -11,28 +13,28 @@ from typing import Any
 
 from .capability_evidence import digest
 from .mechanism_world import (
-    ACTIONS, ACTION_COST, ACT_INPUTS, LANGUAGE, MAX_STEPS, ORACLE_COST,
+    ACTIONS, ACTION_COST, ACT_INPUTS, LANGUAGE, MAX_STEPS,
     advance_candidate, apply_hidden, blank_state, candidate_observation,
 )
 
+QUERY_ACTIONS = ("ACT_0", "ACT_1", "ACT_2", "ACT_NEG", "RESET", "MEASURE")
 FEATURE_NAMES = (
     "n_remaining_frac",
+    "n_remaining",
     "log_remaining",
-    "n_oracle",
     "n_actions",
-    "n_score_work",
-    "n_unique_obs",
-    "last_nonneg",
-    "last_zero",
     "budget_left_frac",
     "vs_empty",
     "vs_singleton",
-    "did_reset",
-    "did_measure",
-    "last_was_act",
+    "last_obs_scaled",
+    "last_obs_missing",
+    *(f"used_{name}" for name in QUERY_ACTIONS),
+    *(f"informative_{name}" for name in QUERY_ACTIONS),
+    *(f"last_{name}" for name in QUERY_ACTIONS),
 )
 DIAGNOSTIC_ORDER = ("ACT_1", "ACT_0", "ACT_2", "ACT_NEG", "RESET", "MEASURE")
 HIDDEN = {"task_id", "family", "mechanism", "split", "gold", "in_language"}
+REDUNDANT_MASK_ORIGIN = "programmer_supplied"
 
 
 def public_view(task: dict[str, Any]) -> dict[str, Any]:
@@ -42,20 +44,21 @@ def public_view(task: dict[str, Any]) -> dict[str, Any]:
         language=list(LANGUAGE),
         max_steps=MAX_STEPS,
         instance_seed=int(task["instance_seed"]),
+        redundant_mask=REDUNDANT_MASK_ORIGIN,
     )
 
 
 def filter_language(transcript: list[dict[str, Any]]) -> list[str]:
     remain = []
     for name in LANGUAGE:
-        states = {name: dict(s=0, prev=0)}
+        state = dict(s=0, prev=0)
         ok = True
         for row in transcript:
             action = row["action"]
             if action.startswith("STOP"):
                 continue
-            predicted = candidate_observation(name, states[name], action)
-            states[name] = advance_candidate(name, states[name], action)
+            predicted = candidate_observation(name, state, action)
+            state = advance_candidate(name, state, action)
             if predicted is None:
                 continue
             if int(row["observation"]) not in predicted:
@@ -66,42 +69,17 @@ def filter_language(transcript: list[dict[str, Any]]) -> list[str]:
     return remain
 
 
-def features(transcript: list[dict[str, Any]], remaining: list[str],
-             score_work: int, steps_left: int) -> dict[str, float]:
-    last = next((row for row in reversed(transcript) if row.get("observation") is not None), None)
-    last_y = None if last is None else int(last["observation"])
-    acts = [row["action"] for row in transcript]
-    return dict(
-        n_remaining_frac=len(remaining) / float(len(LANGUAGE)),
-        log_remaining=math.log2(len(remaining) + 1),
-        n_oracle=float(sum(int(row.get("oracle") or 0) for row in transcript)),
-        n_actions=float(len(transcript)),
-        n_score_work=float(score_work),
-        n_unique_obs=float(len({row["observation"] for row in transcript if row.get("observation") is not None})),
-        last_nonneg=float(last_y is not None and last_y >= 0),
-        last_zero=float(last_y == 0),
-        budget_left_frac=steps_left / float(MAX_STEPS),
-        vs_empty=float(not remaining),
-        vs_singleton=float(len(remaining) == 1),
-        did_reset=float("RESET" in acts),
-        did_measure=float("MEASURE" in acts),
-        last_was_act=float(bool(acts) and acts[-1] in ACT_INPUTS),
-    )
-
-
-def feature_vector(feats: dict[str, float]) -> list[float]:
-    return [float(feats[name]) for name in FEATURE_NAMES]
-
-
-def available_actions(_view: dict[str, Any], _transcript: list[dict[str, Any]],
-                      _remaining: list[str]) -> list[str]:
-    """Shared operational mask. Does not hide STOP_* or reveal the winner."""
-    return list(ACTIONS)
+def used_since_reset(transcript: list[dict[str, Any]], action: str) -> bool:
+    for row in reversed(transcript):
+        if row["action"] == "RESET":
+            return False
+        if row["action"] == action:
+            return True
+    return False
 
 
 def score_information_gain(remaining: list[str], transcript: list[dict[str, Any]],
                            action: str) -> dict[str, Any]:
-    """Expected remaining-set size. Charges one candidate execution per remaining hypothesis."""
     if action.startswith("STOP") or not remaining:
         return dict(score=float(len(remaining)), work=0, groups={})
     groups: dict[str, list[str]] = {}
@@ -116,8 +94,84 @@ def score_information_gain(remaining: list[str], transcript: list[dict[str, Any]
         work += 1
         key = "none" if predicted is None else ",".join(str(v) for v in sorted(predicted))
         groups.setdefault(key, []).append(name)
-    expected = sum(len(group) ** 2 for group in groups.values()) / float(len(remaining))
+    expected = sum(len(group) ** 2 for group in groups.values()) / float(max(len(remaining), 1))
     return dict(score=float(expected), work=work, groups=groups)
+
+
+def query_is_informative(remaining: list[str], transcript: list[dict[str, Any]],
+                         action: str) -> dict[str, Any]:
+    """True when remaining hypotheses do not all predict the same observation."""
+    scored = score_information_gain(remaining, transcript, action)
+    informative = bool(remaining) and scored["score"] < float(len(remaining)) - 1e-12
+    return dict(informative=informative, work=int(scored["work"]), groups=scored["groups"])
+
+
+def is_redundant(action: str, transcript: list[dict[str, Any]],
+                 remaining: list[str]) -> dict[str, Any]:
+    """Repeat of a deterministic query that cannot change the version space.
+
+    Programmer-supplied. Shared by every method. Repeats stay legal when any
+    remaining hypothesis still disagrees or would change under another act
+    (stateful / cheap-vs-exact).
+    """
+    if action.startswith("STOP") or action == "RESET":
+        return dict(redundant=False, work=0, informative=True)
+    checked = query_is_informative(remaining, transcript, action)
+    if not used_since_reset(transcript, action):
+        return dict(redundant=False, work=checked["work"], informative=checked["informative"])
+    return dict(
+        redundant=not checked["informative"],
+        work=checked["work"],
+        informative=checked["informative"],
+    )
+
+
+def available_actions(_view: dict[str, Any], transcript: list[dict[str, Any]],
+                      remaining: list[str]) -> dict[str, Any]:
+    """Shared mask. STOP_* stay available so uniqueness is not leaked."""
+    kept = []
+    work = 0
+    for action in ACTIONS:
+        checked = is_redundant(action, transcript, remaining)
+        work += int(checked["work"])
+        if not checked["redundant"]:
+            kept.append(action)
+    return dict(actions=kept, score_work=work, mask=REDUNDANT_MASK_ORIGIN)
+
+
+def features(transcript: list[dict[str, Any]], remaining: list[str],
+             score_work: int, steps_left: int) -> dict[str, Any]:
+    last = next((row for row in reversed(transcript) if row.get("observation") is not None), None)
+    last_y = None if last is None else int(last["observation"])
+    last_act = transcript[-1]["action"] if transcript else None
+    work = 0
+    informative = {}
+    used = {}
+    for action in QUERY_ACTIONS:
+        used[action] = used_since_reset(transcript, action)
+        checked = query_is_informative(remaining, transcript, action)
+        informative[action] = checked["informative"]
+        work += int(checked["work"])
+    feats = dict(
+        n_remaining_frac=len(remaining) / float(len(LANGUAGE)),
+        n_remaining=float(len(remaining)),
+        log_remaining=math.log2(len(remaining) + 1),
+        n_actions=float(len(transcript)),
+        budget_left_frac=steps_left / float(MAX_STEPS),
+        vs_empty=float(not remaining),
+        vs_singleton=float(len(remaining) == 1),
+        last_obs_scaled=0.0 if last_y is None else max(-8, min(8, last_y)) / 8.0,
+        last_obs_missing=float(last_y is None),
+    )
+    for action in QUERY_ACTIONS:
+        feats[f"used_{action}"] = float(used[action])
+        feats[f"informative_{action}"] = float(informative[action])
+        feats[f"last_{action}"] = float(last_act == action)
+    return dict(features=feats, score_work=work)
+
+
+def feature_vector(feats: dict[str, float]) -> list[float]:
+    return [float(feats[name]) for name in FEATURE_NAMES]
 
 
 def choose_information_gain(remaining: list[str], transcript: list[dict[str, Any]],
@@ -147,9 +201,8 @@ def choose_diagnostic(remaining: list[str], transcript: list[dict[str, Any]],
         return dict(action="STOP_IDENTIFY", score_work=0, reason="unique")
     if not remaining:
         return dict(action="STOP_UNRESOLVED", score_work=0, reason="empty")
-    used = {row["action"] for row in transcript}
     for action in DIAGNOSTIC_ORDER:
-        if action in available and action not in used:
+        if action in available:
             return dict(action=action, score_work=0, reason="diagnostic")
     return dict(action="STOP_UNRESOLVED", score_work=0, reason="diagnostic_exhausted")
 
@@ -160,9 +213,8 @@ def choose_frequency(remaining: list[str], available: list[str], order: list[str
         return dict(action="STOP_IDENTIFY", score_work=0, reason="unique")
     if not remaining:
         return dict(action="STOP_UNRESOLVED", score_work=0, reason="empty")
-    used = {row["action"] for row in transcript}
     for action in order:
-        if action in available and action not in used and not action.startswith("STOP"):
+        if action in available and not action.startswith("STOP"):
             return dict(action=action, score_work=0, reason="frequency")
     return dict(action="STOP_UNRESOLVED", score_work=0, reason="frequency_exhausted")
 
@@ -173,6 +225,8 @@ def choose_random(remaining: list[str], available: list[str], rng: random.Random
     if not remaining:
         return dict(action="STOP_UNRESOLVED", score_work=0, reason="empty")
     choices = [action for action in available if not action.startswith("STOP")]
+    if not choices:
+        return dict(action="STOP_UNRESOLVED", score_work=0, reason="random_empty")
     return dict(action=rng.choice(choices), score_work=0, reason="random")
 
 
@@ -210,17 +264,27 @@ def run_episode(task: dict[str, Any], chooser, rng: random.Random) -> dict[str, 
     actions = 0
     stopped = None
     identified = None
+    redundant_taken = 0
     for step in range(MAX_STEPS):
         remaining = filter_language(transcript)
-        feats = features(transcript, remaining, score_work, MAX_STEPS - step)
+        built = features(transcript, remaining, score_work, MAX_STEPS - step)
+        feats = built["features"]
+        score_work += int(built["score_work"])
         if set(feats) & HIDDEN:
             raise ValueError("hidden_feature")
         avail = available_actions(view, transcript, remaining)
+        score_work += int(avail["score_work"])
         choice = chooser(dict(
-            remaining=remaining, transcript=transcript, available=avail,
+            remaining=remaining, transcript=transcript, available=avail["actions"],
             features=feats, rng=rng, view=view,
         ))
         action = choice["action"]
+        if action not in avail["actions"]:
+            raise ValueError("chose_masked_action:" + action)
+        checked = is_redundant(action, transcript, remaining)
+        score_work += int(checked["work"])
+        if checked["redundant"]:
+            redundant_taken += 1
         score_work += int(choice.get("score_work") or 0)
         actions += ACTION_COST[action]
         if action == "STOP_IDENTIFY":
@@ -260,6 +324,8 @@ def run_episode(task: dict[str, Any], chooser, rng: random.Random) -> dict[str, 
         score_work=score_work,
         total_work=oracle + actions + score_work,
         stopped=stopped,
+        redundant_taken=redundant_taken,
+        redundant_mask=REDUNDANT_MASK_ORIGIN,
         **scored,
         language_hash=digest(list(LANGUAGE)),
         instance_seed=task["instance_seed"],

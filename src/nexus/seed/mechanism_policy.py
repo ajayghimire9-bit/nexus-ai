@@ -1,6 +1,7 @@
 """Regularized linear investigation scoring. Source-only updates. Not the failed symbolic φ.
 
-Ties are randomized. Alphabetical min is never used.
+Complete source trajectories supervise queries, evidence updates, stopping
+and unresolved outcomes. Ties are randomized.
 """
 from __future__ import annotations
 
@@ -81,20 +82,20 @@ def frequency_order(rows: list[dict[str, Any]]) -> list[str]:
     return sorted(ACTIONS, key=lambda action: (-counts[action], ACTIONS.index(action)))
 
 
-def training_rows(episode: dict[str, Any]) -> list[dict[str, Any]]:
-    """IG choices are training supervision, never assessment features."""
+def training_rows(episode: dict[str, Any], *, source: str = "information_gain") -> list[dict[str, Any]]:
+    """Every step, including STOP_IDENTIFY / STOP_UNRESOLVED. Off-actions are 0."""
     rows = []
     first = True
     for step in episode.get("transcript") or []:
-        action = step["action"]
-        if action.startswith("STOP"):
-            continue
-        rows.append(dict(
-            action=action,
-            features=dict(step["features"]),
-            label=1.0,
-            first_query=first,
-            supervision="information_gain",
-        ))
+        chosen = step["action"]
+        for action in ACTIONS:
+            rows.append(dict(
+                action=action,
+                features=dict(step["features"]),
+                label=1.0 if action == chosen else 0.0,
+                first_query=first and not chosen.startswith("STOP"),
+                chosen=chosen,
+                supervision=source,
+            ))
         first = False
     return rows
