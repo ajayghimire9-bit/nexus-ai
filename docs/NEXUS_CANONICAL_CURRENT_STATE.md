@@ -1,6 +1,19 @@
 # NEXUS Seed — Current State
 
-## Current — continual Track A (results)
+## Current — unfamiliar policy-only replication (results)
+
+[Protocol](NEXUS_UNFAMILIAR_POLICY_REPLICATION_PROTOCOL.md),
+[results](NEXUS_UNFAMILIAR_POLICY_REPLICATION_RESULTS.md).
+Protocol `18093a1`. Artifact
+`6f7437ede1a0b5f582a0b1e71bdf83881fa2067011b0ee902740c20512f532ff`.
+Verifier `valid: true` on 54 cells. Three memory-cleared arms. Held-out
+useful 12/12 and reserved 6/6 for all methods. Learned 21 vs 42
+untrained and 43 distilled environment interactions; total work 699 vs
+858 vs 908. Gates 1–3 pass on seeds 0, 1 and 2. Track B closed. Skill
+memory paused. Continual `b357b01` not rescored. Frozen debit **0**.
+Bounded investigation-strategy claim only. Not general learning-to-learn.
+
+## Previous — continual Track A (results)
 
 [Protocol](NEXUS_SEED_MECHANISM_CONTINUAL_PROTOCOL.md),
 [results](NEXUS_SEED_MECHANISM_CONTINUAL_RESULTS.md).

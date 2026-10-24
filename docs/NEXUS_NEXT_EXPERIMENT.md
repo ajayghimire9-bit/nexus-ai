@@ -1,6 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore continual; memory did not transfer
+## Current next — do not rescore the policy-only replication
+
+The [unfamiliar policy-only replication](NEXUS_UNFAMILIAR_POLICY_REPLICATION_RESULTS.md)
+supports a bounded claim: a source-trained adaptive probe policy beat
+both the untrained diagnostic checklist and a source-distilled static
+order on a fresh exclusive-or suite, at matched accuracy and lower
+total work. Do not rescore this grid, `b357b01`, or `a37503d`. The
+claim is not general learning-to-learn. A later family that lacks
+first-observation exclusive-or branching can still let a static
+checklist tie. Track B stays closed. Skill-memory retrieval stays
+paused. Ranking stays paused.
+
+## Previous next — do not rescore continual; memory did not transfer
 
 The [continual Track A run](NEXUS_SEED_MECHANISM_CONTINUAL_RESULTS.md)
 acquires scoped models, rejects `sign_pos`, and saves four Wave-1
