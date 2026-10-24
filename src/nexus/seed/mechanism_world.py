@@ -46,6 +46,7 @@ OUTSIDE_LANGUAGE = (
     "up_pos_plus2", "up_twice_plus1", "up_neg_gate", "up_neg_twice",
     "up_src_pos_plus", "up_src_twice_pos", "up_src_neg_id", "up_src_neg_dbl",
     "oob_pos_plus3", "oob_pos_mul3", "oob_neg_add1", "oob_even_add2",
+    "w3_even_mul3", "w3_even_sub1", "w3_odd_plus2",
 )
 
 
@@ -200,6 +201,9 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "oob_pos_mul3": _stateless(lambda x: (3 * x) if x > 0 else 6),
     "oob_neg_add1": _stateless(lambda x: (x + 1) if x < 0 else 8),
     "oob_even_add2": _stateless(lambda x: (x + 2) if (int(x) % 2 == 0) else int(x)),
+    "w3_even_mul3": _stateless(lambda x: (3 * x) if (int(x) % 2 == 0) else int(x)),
+    "w3_even_sub1": _stateless(lambda x: (int(x) - 1) if (int(x) % 2 == 0) else int(x)),
+    "w3_odd_plus2": _stateless(lambda x: (int(x) + 2) if (int(x) % 2 == 1) else int(x)),
 }
 
 

@@ -89,6 +89,8 @@ def apply_leaf(leaf: str, x: int) -> int:
         return int(x) * int(leaf[3:])
     if leaf.startswith("const"):
         return int(leaf[5:])
+    if leaf == "sub1":
+        return int(x) - 1
     raise ValueError("unknown_leaf:" + leaf)
 
 

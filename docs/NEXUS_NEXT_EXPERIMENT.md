@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore the beyond-catalog grid
+## Current next — Wave-3 continual assimilation (protocol locked)
+
+The [Wave-3 protocol](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_PROTOCOL.md)
+asks whether assimilating the Wave-2 `even_add2` invention (sub-clause
+plus parity probe priority) makes unseen Wave-3 parity compositions
+cheaper than a Wave-1 freeze, while true out-of-grammar `count`/`delay`
+stay abstentions and Wave-1/Wave-2 reserved items stay solved.
+Do not rescore `0d4596e`, `6e0df3a`, or `f2e8942`. The claim is not
+general learning-to-learn. Track B stays closed.
+
+## Previous next — do not rescore the beyond-catalog grid
 
 The [beyond-catalog run](NEXUS_UNFAMILIAR_BEYOND_CATALOG_RESULTS.md)
 solves 0%-bank holdouts with confirmatory probes: abductive 6876 vs

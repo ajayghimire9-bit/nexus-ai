@@ -28,15 +28,25 @@ A row may be Implemented and still Undemonstrated.
 | 2 | Ordinary conversation | Yes | No | Chat routing and ChatML runtime exist; not a general conversational agent |
 | 3 | Local GGUF inference | Yes | No | PersistentLocalRuntime CPU path runs; not learned improvement |
 | 4 | Mathematics (tools) | Yes | No | Calculator/expression path exists; capability map 1–2/6 |
-| 5 | Logic | Yes | No | Finite items run; capability map 2/6 |
-| 6 | Knowledge vault / retrieval | Yes | No | FTS5 vault runs; freshness/conflict unresolved |
+| 5 | Learning new concepts and mechanisms | Yes | Bounded | Verified `0d4596e` (`cursor/seed-unfamiliar-beyond-catalog`): On held-out mechanisms with `0%` coverage in the supplied candidate bank, `supplied_bank_only` detected catalog exhaustion (`12/12`) and abstained with `0` false positives, while `nexus_abductive_beyond_bank` solved `12/12` out-of-bank holdouts (verified via mandatory confirmatory probes) and `6/6` reserved retests, reducing total work from `8106` (untrained open grammar) and `7875` (learned policy + cleared open grammar) down to `6876` (`2292` vs `2625` / `2702` per seed across 3 seeds, including `even_add2` Type B fallback overhead). |
+| 6 | Compositional generalization | Yes | Bounded | Same `0d4596e` result as row 5; also `6e0df3a` sub-clause transfer. Knowledge vault/FTS5 still runs separately and is undemonstrated as general retrieval. |
 | 7 | Bounded coding / API-ID | Yes | No | Named-ID and apply-mode grids ran; task success 0 or tool-tie |
 | 8 | Mechanism investigation policy | Yes | Bounded | `f2e8942` cheaper probes at matched accuracy in one suite |
-| 9 | Efficient knowledge acquisition | Yes | Bounded | Bounded compositional sub-skill transfer demonstrated (`6e0df3a`): Decomposing verified Wave-1 mechanisms into reusable branch/leaf sub-clauses reduced holdout acquisition work from `699` (policy-only) and `858` (untrained) down to `624` (`208` vs `233` per seed across 3 seeds, `12/12` holdout, `6/6` reserved retest, `12` sub-skill hits, `0` whole-mechanism hits) after explicitly charging both Wave-1 distillation (`84`) and Wave-2 retrieval (`60`). |
+| 9 | Efficient knowledge acquisition | Yes | Bounded | Verified `0d4596e`: `6876` vs `8106` / `7875` on 0%-bank holdouts after confirmatory, distill, and retrieval charges (`2292` vs `2625` / `2702` per seed). Also `6e0df3a` (`624` vs `699` / `858`). |
 | 10 | Learning-to-learn / meta-learning | Yes | Bounded only | See row note below. General L2L unestablished |
-| 11 | Whole-task skill memory | Yes | No | Continual Wave-2 exact hits 0; no advantage over template |
-| 12 | Compositional generalization | Yes | Bounded | Bounded compositional sub-skill transfer demonstrated (`6e0df3a`): Decomposing verified Wave-1 mechanisms into reusable branch/leaf sub-clauses reduced holdout acquisition work from `699` (policy-only) and `858` (untrained) down to `624` (`208` vs `233` per seed across 3 seeds, `12/12` holdout, `6/6` reserved retest, `12` sub-skill hits, `0` whole-mechanism hits) after explicitly charging both Wave-1 distillation (`84`) and Wave-2 retrieval (`60`). |
-| 13 | Open-domain coding / Track B | No | No | Coder / Metal Best-of-4 / LoRA closed. Not established |
+| 11 | Handling unknowns | Yes | Bounded | Verified `0d4596e`: `supplied_bank_only` detected catalog exhaustion `12/12` and abstained with `0` false positives; out-of-bank claims required confirmatory probes. Whole-task Wave-2 cache hits remain 0. |
+| 12 | Compositional generalization | Yes | Bounded | Verified `0d4596e` and `6e0df3a`. Type A residual reuse beat full grammar; Type B `even_add2` fell back without a false library hit. |
+| 13 | Efficient knowledge acquisition / Track B | No | Bounded / No | Efficient acquisition is the `0d4596e` / `6e0df3a` bounded result (see rows 5 and 9). Open-domain coding / Track B remains closed. |
+
+**Beyond-catalog acquisition (`0d4596e`, rows 5, 6/12, 9/13, 11).**
+On held-out mechanisms with `0%` coverage in the supplied candidate
+bank, `supplied_bank_only` detected catalog exhaustion (`12/12`) and
+abstained with `0` false positives, while `nexus_abductive_beyond_bank`
+solved `12/12` out-of-bank holdouts (verified via mandatory
+confirmatory probes) and `6/6` reserved retests, reducing total work
+from `8106` (untrained open grammar) and `7875` (learned policy +
+cleared open grammar) down to `6876` (`2292` vs `2625` / `2702` per
+seed across 3 seeds, including `even_add2` Type B fallback overhead).
 
 **Compositional generalization / efficient acquisition (rows 9 and 12).**
 Bounded compositional sub-skill transfer demonstrated (`6e0df3a`):
