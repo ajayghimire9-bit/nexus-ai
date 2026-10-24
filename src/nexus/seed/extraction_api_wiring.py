@@ -147,12 +147,20 @@ def listed_functions(files: dict[str, str]) -> list[dict[str, Any]]:
             if not isinstance(node, ast.FunctionDef) or node.name in {"echo"} or node.name.startswith("_"):
                 continue
             kinds = infer_param_kinds(node)
+            optional_from = len(node.args.args) - len(node.args.defaults)
             rows.append(dict(
                 id=f"{module}.{node.name}",
                 module=module,
                 name=node.name,
                 path=path,
-                params=[dict(name=arg.arg, type=kinds[arg.arg]) for arg in node.args.args],
+                params=[
+                    dict(
+                        name=arg.arg,
+                        type=kinds[arg.arg],
+                        optional=index >= optional_from,
+                    )
+                    for index, arg in enumerate(node.args.args)
+                ],
             ))
     return rows
 
@@ -303,9 +311,13 @@ def assemble_id_wiring(proposal: dict[str, Any], ids: dict[str, Any],
         extra = sorted(set(raw_bindings) - {row["name"] for row in api["params"]})
         if extra:
             return dict(ok=False, source="", error="extra_bindings", extra=extra, programmer_supplied=True)
-        bindings = [raw_bindings.get(row["name"]) for row in api["params"]]
-        if any(item is None for item in bindings):
-            return dict(ok=False, source="", error="missing_required", programmer_supplied=True)
+        missing = [
+            row["name"] for row in api["params"]
+            if not row.get("optional") and not raw_bindings.get(row["name"])
+        ]
+        if missing:
+            return dict(ok=False, source="", error="missing_required", missing=missing, programmer_supplied=True)
+        bindings = [raw_bindings[row["name"]] for row in api["params"] if raw_bindings.get(row["name"])]
     else:
         bindings = list(raw_bindings or [])
     required = [row for row in api["params"] if not row.get("optional")]
