@@ -3,8 +3,9 @@
 ## Current next — do not rescore the sub-clause work-reduction grid
 
 The [sub-clause skill run](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md)
-matches policy-only accuracy at lower total work (540 vs 699) with
-non-zero compositional retrieval and zero whole-mechanism cache hits.
+matches policy-only accuracy at lower total work (624 vs 699, including
+distill and retrieval) with non-zero compositional retrieval and zero
+whole-mechanism cache hits.
 Do not rescore this grid or `f2e8942`. The claim is not general
 learning-to-learn. A later family without shared guard/leaf signatures
 can still make sub-clause retrieval miss. Track B stays closed.

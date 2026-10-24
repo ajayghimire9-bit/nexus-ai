@@ -2,11 +2,12 @@
 
 ## Current — sub-clause memory cuts total work at matched accuracy
 
-Protocol `4e57b37`, artifact
-`0350a8f122482dda7d33de607d43f409ae27ac06e539261cf5b8f3944dfad2aa`.
-Four-way holdout: memory 540 vs policy-only 699 vs untrained 858 vs
-distilled 908. Env 21 and policy evals 246 unchanged. Sub-clause hits
-12, whole-mechanism hits 0. Gates 1–3 pass. Frozen debit **0**.
+Protocol `b132bef`, artifact
+`a2cc77d66bcd80a3107e25542e8e96c94fea8348dd59b8c6496b3b568c1cabf2`.
+Four-way holdout: memory 624 (incl. distill 84 + retrieval 60) vs
+policy-only 699 vs untrained 858 vs distilled 908. Env 21 and policy
+evals 246 unchanged. Sub-clause hits 12, whole-mechanism hits 0.
+Gates 1–3 pass. Frozen debit **0**.
 [Results](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md).
 
 ## Previous — unfamiliar policy-only replication locked at f2e8942

@@ -14,10 +14,10 @@
   "open_domain_coding_established": false,
   "track_b_closed": true,
   "methods": [
-    "untrained_policy_no_memory",
-    "source_distilled_fixed_no_memory",
-    "learned_adaptive_policy_memory_cleared",
-    "learned_adaptive_policy_plus_subskill_memory"
+    "untrained_default_policy",
+    "source_distilled_fixed_order",
+    "source_learned_adaptive_policy",
+    "adaptive_policy_plus_compositional_subskills"
   ],
   "seeds": [
     0,
@@ -31,7 +31,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -285,6 +285,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -295,7 +296,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -549,6 +550,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -559,7 +561,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -852,6 +854,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -862,7 +865,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -1155,6 +1158,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -1165,7 +1169,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -1497,6 +1501,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -1507,7 +1512,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -1839,6 +1844,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -1849,7 +1855,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -2064,6 +2070,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -2074,7 +2081,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -2290,6 +2297,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -2300,7 +2308,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -2515,6 +2523,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -2525,7 +2534,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -2701,6 +2710,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -2711,7 +2721,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -2926,6 +2936,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -2936,7 +2947,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -3151,6 +3162,7 @@
       "gold_in_language": false,
       "policy_seed": 80,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -3161,7 +3173,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -3363,7 +3375,8 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 4,
-      "total_acquisition_work": 47,
+      "distill_cost": 28,
+      "total_acquisition_work": 75,
       "catalogue_identification": true,
       "predictive_competence": true,
       "exact_mechanism_identification": false,
@@ -3392,7 +3405,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -3554,6 +3567,7 @@
       "probe_feature_and_policy_evals": 16,
       "policy_evals": 16,
       "retrieval_evals": 4,
+      "distill_cost": 0,
       "total_acquisition_work": 29,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -3583,7 +3597,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -3786,6 +3800,7 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -3815,7 +3830,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -4018,6 +4033,7 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -4047,7 +4063,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -4262,6 +4278,7 @@
       "gold_in_language": true,
       "policy_seed": 90,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -4272,7 +4289,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -4487,6 +4504,7 @@
       "gold_in_language": false,
       "policy_seed": 90,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -4497,7 +4515,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -4712,6 +4730,7 @@
       "gold_in_language": true,
       "policy_seed": 90,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -4722,7 +4741,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -4937,6 +4956,7 @@
       "gold_in_language": false,
       "policy_seed": 90,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -4947,7 +4967,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -5123,6 +5143,7 @@
       "gold_in_language": true,
       "policy_seed": 90,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -5133,7 +5154,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -5309,6 +5330,7 @@
       "gold_in_language": false,
       "policy_seed": 90,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 0
@@ -5319,7 +5341,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -5489,6 +5511,7 @@
       "probe_feature_and_policy_evals": 17,
       "policy_evals": 17,
       "retrieval_evals": 2,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -5518,7 +5541,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -5682,6 +5705,7 @@
       "probe_feature_and_policy_evals": 16,
       "policy_evals": 16,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 35,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -5711,7 +5735,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -5965,6 +5989,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -5975,7 +6000,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -6229,6 +6254,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -6239,7 +6265,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -6532,6 +6558,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -6542,7 +6569,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -6835,6 +6862,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -6845,7 +6873,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -7177,6 +7205,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -7187,7 +7216,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -7519,6 +7548,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -7529,7 +7559,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -7744,6 +7774,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -7754,7 +7785,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -8009,6 +8040,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -8019,7 +8051,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -8234,6 +8266,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -8244,7 +8277,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -8420,6 +8453,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -8430,7 +8464,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -8645,6 +8679,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -8655,7 +8690,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -8870,6 +8905,7 @@
       "gold_in_language": false,
       "policy_seed": 81,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -8880,7 +8916,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -9082,7 +9118,8 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 4,
-      "total_acquisition_work": 47,
+      "distill_cost": 28,
+      "total_acquisition_work": 75,
       "catalogue_identification": true,
       "predictive_competence": true,
       "exact_mechanism_identification": false,
@@ -9111,7 +9148,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -9273,6 +9310,7 @@
       "probe_feature_and_policy_evals": 16,
       "policy_evals": 16,
       "retrieval_evals": 4,
+      "distill_cost": 0,
       "total_acquisition_work": 29,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -9302,7 +9340,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -9505,6 +9543,7 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -9534,7 +9573,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -9737,6 +9776,7 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -9766,7 +9806,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -9981,6 +10021,7 @@
       "gold_in_language": true,
       "policy_seed": 91,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -9991,7 +10032,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -10206,6 +10247,7 @@
       "gold_in_language": false,
       "policy_seed": 91,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -10216,7 +10258,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -10431,6 +10473,7 @@
       "gold_in_language": true,
       "policy_seed": 91,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -10441,7 +10484,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -10656,6 +10699,7 @@
       "gold_in_language": false,
       "policy_seed": 91,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -10666,7 +10710,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -10842,6 +10886,7 @@
       "gold_in_language": true,
       "policy_seed": 91,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -10852,7 +10897,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -11028,6 +11073,7 @@
       "gold_in_language": false,
       "policy_seed": 91,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 1
@@ -11038,7 +11084,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -11208,6 +11254,7 @@
       "probe_feature_and_policy_evals": 17,
       "policy_evals": 17,
       "retrieval_evals": 2,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -11237,7 +11284,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -11401,6 +11448,7 @@
       "probe_feature_and_policy_evals": 16,
       "policy_evals": 16,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 35,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -11430,7 +11478,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -11684,6 +11732,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -11694,7 +11743,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -11948,6 +11997,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -11958,7 +12008,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -12251,6 +12301,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -12261,7 +12312,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -12554,6 +12605,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -12564,7 +12616,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -12896,6 +12948,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -12906,7 +12959,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -13238,6 +13291,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -13248,7 +13302,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -13463,6 +13517,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -13473,7 +13528,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -13689,6 +13744,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -13699,7 +13755,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -13914,6 +13970,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -13924,7 +13981,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -14100,6 +14157,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -14110,7 +14168,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -14325,6 +14383,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -14335,7 +14394,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -14550,6 +14609,7 @@
       "gold_in_language": false,
       "policy_seed": 82,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -14560,7 +14620,7 @@
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -14762,7 +14822,8 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 4,
-      "total_acquisition_work": 47,
+      "distill_cost": 28,
+      "total_acquisition_work": 75,
       "catalogue_identification": true,
       "predictive_competence": true,
       "exact_mechanism_identification": false,
@@ -14791,7 +14852,7 @@
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -14953,6 +15014,7 @@
       "probe_feature_and_policy_evals": 16,
       "policy_evals": 16,
       "retrieval_evals": 4,
+      "distill_cost": 0,
       "total_acquisition_work": 29,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -14982,7 +15044,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -15185,6 +15247,7 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -15214,7 +15277,7 @@
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -15417,6 +15480,7 @@
       "probe_feature_and_policy_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -15446,7 +15510,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -15661,6 +15725,7 @@
       "gold_in_language": true,
       "policy_seed": 92,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -15671,7 +15736,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "transcript": [
         {
           "action": "ACT_1",
@@ -15886,6 +15951,7 @@
       "gold_in_language": false,
       "policy_seed": 92,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -15896,7 +15962,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -16111,6 +16177,7 @@
       "gold_in_language": true,
       "policy_seed": 92,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -16121,7 +16188,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "transcript": [
         {
           "action": "ACT_NEG",
@@ -16336,6 +16403,7 @@
       "gold_in_language": false,
       "policy_seed": 92,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -16346,7 +16414,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -16522,6 +16590,7 @@
       "gold_in_language": true,
       "policy_seed": 92,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -16532,7 +16601,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "transcript": [
         {
           "action": "ACT_2",
@@ -16708,6 +16777,7 @@
       "gold_in_language": false,
       "policy_seed": 92,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
       "source_seed": 2
@@ -16718,7 +16788,7 @@
       "split": "up_retain",
       "mechanism": "add1",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -16888,6 +16958,7 @@
       "probe_feature_and_policy_evals": 17,
       "policy_evals": 17,
       "retrieval_evals": 2,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -16917,7 +16988,7 @@
       "split": "up_retain",
       "mechanism": "if_pos",
       "role": "acquire",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "transcript": [
         {
           "action": "ACT_2",
@@ -17081,6 +17152,7 @@
       "probe_feature_and_policy_evals": 16,
       "policy_evals": 16,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 35,
       "catalogue_identification": true,
       "predictive_competence": true,
@@ -17220,11 +17292,12 @@
         "whole_hits": 2,
         "whole_misses": 4,
         "retrieval_evals": 28,
+        "distill_cost": 28,
         "exact_hits": 2,
         "exact_misses": 4
       },
       "assessment_totals": {
-        "untrained_policy_no_memory": {
+        "untrained_default_policy": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17233,11 +17306,12 @@
           "hypothesis_evals": 272,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 286,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "source_distilled_fixed_no_memory": {
+        "source_distilled_fixed_order": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17246,11 +17320,12 @@
           "hypothesis_evals": 282,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 296,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_memory_cleared": {
+        "source_learned_adaptive_policy": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17259,11 +17334,12 @@
           "hypothesis_evals": 144,
           "probe_feature_and_policy_evals": 82,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 233,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_plus_subskill_memory": {
+        "adaptive_policy_plus_compositional_subskills": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17272,13 +17348,14 @@
           "hypothesis_evals": 71,
           "probe_feature_and_policy_evals": 82,
           "retrieval_evals": 20,
-          "total_acquisition_work": 180,
+          "distill_cost": 28,
+          "total_acquisition_work": 208,
           "whole_mechanism_hits": 0,
           "subclause_hits": 4
         }
       },
       "retain_totals": {
-        "untrained_policy_no_memory": {
+        "untrained_default_policy": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17287,11 +17364,12 @@
           "hypothesis_evals": 80,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 84,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "source_distilled_fixed_no_memory": {
+        "source_distilled_fixed_order": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17300,11 +17378,12 @@
           "hypothesis_evals": 80,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 84,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_memory_cleared": {
+        "source_learned_adaptive_policy": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17313,11 +17392,12 @@
           "hypothesis_evals": 48,
           "probe_feature_and_policy_evals": 33,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 83,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_plus_subskill_memory": {
+        "adaptive_policy_plus_compositional_subskills": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17326,6 +17406,7 @@
           "hypothesis_evals": 36,
           "probe_feature_and_policy_evals": 33,
           "retrieval_evals": 8,
+          "distill_cost": 0,
           "total_acquisition_work": 79,
           "whole_mechanism_hits": 2,
           "subclause_hits": 1
@@ -17446,11 +17527,12 @@
         "whole_hits": 2,
         "whole_misses": 4,
         "retrieval_evals": 28,
+        "distill_cost": 28,
         "exact_hits": 2,
         "exact_misses": 4
       },
       "assessment_totals": {
-        "untrained_policy_no_memory": {
+        "untrained_default_policy": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17459,11 +17541,12 @@
           "hypothesis_evals": 272,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 286,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "source_distilled_fixed_no_memory": {
+        "source_distilled_fixed_order": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17472,11 +17555,12 @@
           "hypothesis_evals": 301,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 316,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_memory_cleared": {
+        "source_learned_adaptive_policy": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17485,11 +17569,12 @@
           "hypothesis_evals": 144,
           "probe_feature_and_policy_evals": 82,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 233,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_plus_subskill_memory": {
+        "adaptive_policy_plus_compositional_subskills": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17498,13 +17583,14 @@
           "hypothesis_evals": 71,
           "probe_feature_and_policy_evals": 82,
           "retrieval_evals": 20,
-          "total_acquisition_work": 180,
+          "distill_cost": 28,
+          "total_acquisition_work": 208,
           "whole_mechanism_hits": 0,
           "subclause_hits": 4
         }
       },
       "retain_totals": {
-        "untrained_policy_no_memory": {
+        "untrained_default_policy": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17513,11 +17599,12 @@
           "hypothesis_evals": 80,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 84,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "source_distilled_fixed_no_memory": {
+        "source_distilled_fixed_order": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17526,11 +17613,12 @@
           "hypothesis_evals": 80,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 84,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_memory_cleared": {
+        "source_learned_adaptive_policy": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17539,11 +17627,12 @@
           "hypothesis_evals": 48,
           "probe_feature_and_policy_evals": 33,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 83,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_plus_subskill_memory": {
+        "adaptive_policy_plus_compositional_subskills": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17552,6 +17641,7 @@
           "hypothesis_evals": 36,
           "probe_feature_and_policy_evals": 33,
           "retrieval_evals": 8,
+          "distill_cost": 0,
           "total_acquisition_work": 79,
           "whole_mechanism_hits": 2,
           "subclause_hits": 1
@@ -17672,11 +17762,12 @@
         "whole_hits": 2,
         "whole_misses": 4,
         "retrieval_evals": 28,
+        "distill_cost": 28,
         "exact_hits": 2,
         "exact_misses": 4
       },
       "assessment_totals": {
-        "untrained_policy_no_memory": {
+        "untrained_default_policy": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17685,11 +17776,12 @@
           "hypothesis_evals": 272,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 286,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "source_distilled_fixed_no_memory": {
+        "source_distilled_fixed_order": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17698,11 +17790,12 @@
           "hypothesis_evals": 282,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 296,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_memory_cleared": {
+        "source_learned_adaptive_policy": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17711,11 +17804,12 @@
           "hypothesis_evals": 144,
           "probe_feature_and_policy_evals": 82,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 233,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_plus_subskill_memory": {
+        "adaptive_policy_plus_compositional_subskills": {
           "n": 4,
           "useful_acquisition": 4,
           "predictive_competence": 4,
@@ -17724,13 +17818,14 @@
           "hypothesis_evals": 71,
           "probe_feature_and_policy_evals": 82,
           "retrieval_evals": 20,
-          "total_acquisition_work": 180,
+          "distill_cost": 28,
+          "total_acquisition_work": 208,
           "whole_mechanism_hits": 0,
           "subclause_hits": 4
         }
       },
       "retain_totals": {
-        "untrained_policy_no_memory": {
+        "untrained_default_policy": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17739,11 +17834,12 @@
           "hypothesis_evals": 80,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 84,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "source_distilled_fixed_no_memory": {
+        "source_distilled_fixed_order": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17752,11 +17848,12 @@
           "hypothesis_evals": 80,
           "probe_feature_and_policy_evals": 0,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 84,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_memory_cleared": {
+        "source_learned_adaptive_policy": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17765,11 +17862,12 @@
           "hypothesis_evals": 48,
           "probe_feature_and_policy_evals": 33,
           "retrieval_evals": 0,
+          "distill_cost": 0,
           "total_acquisition_work": 83,
           "whole_mechanism_hits": 0,
           "subclause_hits": 0
         },
-        "learned_adaptive_policy_plus_subskill_memory": {
+        "adaptive_policy_plus_compositional_subskills": {
           "n": 2,
           "useful_acquisition": 2,
           "predictive_competence": 2,
@@ -17778,6 +17876,7 @@
           "hypothesis_evals": 36,
           "probe_feature_and_policy_evals": 33,
           "retrieval_evals": 8,
+          "distill_cost": 0,
           "total_acquisition_work": 79,
           "whole_mechanism_hits": 2,
           "subclause_hits": 1
@@ -17791,11 +17890,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 3,
       "hypothesis_evals": 58,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 61,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17807,11 +17907,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 3,
       "hypothesis_evals": 58,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 61,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17823,11 +17924,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 4,
       "hypothesis_evals": 78,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 82,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17839,11 +17941,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 4,
       "hypothesis_evals": 78,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 82,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17855,11 +17958,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 5,
       "hypothesis_evals": 100,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 105,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17871,11 +17975,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 5,
       "hypothesis_evals": 100,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 105,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17887,11 +17992,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17903,11 +18009,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 42,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17919,11 +18026,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17935,11 +18043,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 16,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 41,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17951,11 +18060,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17967,11 +18077,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -17983,12 +18094,13 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 19,
       "policy_evals": 22,
       "retrieval_evals": 4,
-      "total_acquisition_work": 47,
+      "distill_cost": 28,
+      "total_acquisition_work": 75,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
       "solved": true,
@@ -17999,11 +18111,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 8,
       "policy_evals": 16,
       "retrieval_evals": 4,
+      "distill_cost": 0,
       "total_acquisition_work": 29,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18015,11 +18128,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18031,11 +18145,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18047,11 +18162,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18063,11 +18179,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18079,11 +18196,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18095,11 +18213,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18111,11 +18230,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 17,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18127,11 +18247,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 16,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 41,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18143,11 +18264,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 17,
       "retrieval_evals": 2,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "whole_mechanism_hits": 1,
       "subclause_hits": 0,
@@ -18159,11 +18281,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 12,
       "policy_evals": 16,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 35,
       "whole_mechanism_hits": 1,
       "subclause_hits": 1,
@@ -18175,11 +18298,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 3,
       "hypothesis_evals": 58,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 61,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18191,11 +18315,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 3,
       "hypothesis_evals": 58,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 61,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18207,11 +18332,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 4,
       "hypothesis_evals": 78,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 82,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18223,11 +18349,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 4,
       "hypothesis_evals": 78,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 82,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18239,11 +18366,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 5,
       "hypothesis_evals": 100,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 105,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18255,11 +18383,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 5,
       "hypothesis_evals": 100,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 105,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18271,11 +18400,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18287,11 +18417,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 3,
       "hypothesis_evals": 61,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18303,11 +18434,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18319,11 +18451,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 16,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 41,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18335,11 +18468,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18351,11 +18485,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18367,12 +18502,13 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 19,
       "policy_evals": 22,
       "retrieval_evals": 4,
-      "total_acquisition_work": 47,
+      "distill_cost": 28,
+      "total_acquisition_work": 75,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
       "solved": true,
@@ -18383,11 +18519,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 8,
       "policy_evals": 16,
       "retrieval_evals": 4,
+      "distill_cost": 0,
       "total_acquisition_work": 29,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18399,11 +18536,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18415,11 +18553,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18431,11 +18570,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18447,11 +18587,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18463,11 +18604,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18479,11 +18621,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18495,11 +18638,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 17,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18511,11 +18655,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 16,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 41,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18527,11 +18672,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 17,
       "retrieval_evals": 2,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "whole_mechanism_hits": 1,
       "subclause_hits": 0,
@@ -18543,11 +18689,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 12,
       "policy_evals": 16,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 35,
       "whole_mechanism_hits": 1,
       "subclause_hits": 1,
@@ -18559,11 +18706,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 3,
       "hypothesis_evals": 58,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 61,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18575,11 +18723,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 3,
       "hypothesis_evals": 58,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 61,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18591,11 +18740,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 4,
       "hypothesis_evals": 78,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 82,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18607,11 +18757,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 4,
       "hypothesis_evals": 78,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 82,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18623,11 +18774,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 5,
       "hypothesis_evals": 100,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 105,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18639,11 +18791,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 5,
       "hypothesis_evals": 100,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 105,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18655,11 +18808,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18671,11 +18825,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 42,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18687,11 +18842,12 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18703,11 +18859,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 16,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 41,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18719,11 +18876,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18735,11 +18893,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 22,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 64,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18751,12 +18910,13 @@
       "task_id": "up_hold_pos_plus2",
       "split": "up_holdout",
       "mechanism": "up_pos_plus2",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 19,
       "policy_evals": 22,
       "retrieval_evals": 4,
-      "total_acquisition_work": 47,
+      "distill_cost": 28,
+      "total_acquisition_work": 75,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
       "solved": true,
@@ -18767,11 +18927,12 @@
       "task_id": "up_hold_twice_plus1",
       "split": "up_holdout",
       "mechanism": "up_twice_plus1",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 8,
       "policy_evals": 16,
       "retrieval_evals": 4,
+      "distill_cost": 0,
       "total_acquisition_work": 29,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18783,11 +18944,12 @@
       "task_id": "up_hold_neg_gate",
       "split": "up_holdout",
       "mechanism": "up_neg_gate",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18799,11 +18961,12 @@
       "task_id": "up_hold_neg_twice",
       "split": "up_holdout",
       "mechanism": "up_neg_twice",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 2,
       "hypothesis_evals": 22,
       "policy_evals": 22,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 52,
       "whole_mechanism_hits": 0,
       "subclause_hits": 1,
@@ -18815,11 +18978,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18831,11 +18995,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "untrained_policy_no_memory",
+      "method": "untrained_default_policy",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18847,11 +19012,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18863,11 +19029,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "source_distilled_fixed_no_memory",
+      "method": "source_distilled_fixed_order",
       "env_interactions": 2,
       "hypothesis_evals": 40,
       "policy_evals": 0,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18879,11 +19046,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 17,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 42,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18895,11 +19063,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "learned_adaptive_policy_memory_cleared",
+      "method": "source_learned_adaptive_policy",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 16,
       "retrieval_evals": 0,
+      "distill_cost": 0,
       "total_acquisition_work": 41,
       "whole_mechanism_hits": 0,
       "subclause_hits": 0,
@@ -18911,11 +19080,12 @@
       "task_id": "up_ret_add1",
       "split": "up_retain",
       "mechanism": "add1",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 24,
       "policy_evals": 17,
       "retrieval_evals": 2,
+      "distill_cost": 0,
       "total_acquisition_work": 44,
       "whole_mechanism_hits": 1,
       "subclause_hits": 0,
@@ -18927,11 +19097,12 @@
       "task_id": "up_ret_if_pos",
       "split": "up_retain",
       "mechanism": "if_pos",
-      "method": "learned_adaptive_policy_plus_subskill_memory",
+      "method": "adaptive_policy_plus_compositional_subskills",
       "env_interactions": 1,
       "hypothesis_evals": 12,
       "policy_evals": 16,
       "retrieval_evals": 6,
+      "distill_cost": 0,
       "total_acquisition_work": 35,
       "whole_mechanism_hits": 1,
       "subclause_hits": 1,
@@ -18941,7 +19112,7 @@
   ],
   "totals": {
     "holdout": {
-      "untrained_policy_no_memory": {
+      "untrained_default_policy": {
         "n": 12,
         "useful_acquisition": 12,
         "predictive_competence": 12,
@@ -18950,11 +19121,12 @@
         "hypothesis_evals": 816,
         "probe_feature_and_policy_evals": 0,
         "retrieval_evals": 0,
+        "distill_cost": 0,
         "total_acquisition_work": 858,
         "whole_mechanism_hits": 0,
         "subclause_hits": 0
       },
-      "source_distilled_fixed_no_memory": {
+      "source_distilled_fixed_order": {
         "n": 12,
         "useful_acquisition": 12,
         "predictive_competence": 12,
@@ -18963,11 +19135,12 @@
         "hypothesis_evals": 865,
         "probe_feature_and_policy_evals": 0,
         "retrieval_evals": 0,
+        "distill_cost": 0,
         "total_acquisition_work": 908,
         "whole_mechanism_hits": 0,
         "subclause_hits": 0
       },
-      "learned_adaptive_policy_memory_cleared": {
+      "source_learned_adaptive_policy": {
         "n": 12,
         "useful_acquisition": 12,
         "predictive_competence": 12,
@@ -18976,11 +19149,12 @@
         "hypothesis_evals": 432,
         "probe_feature_and_policy_evals": 246,
         "retrieval_evals": 0,
+        "distill_cost": 0,
         "total_acquisition_work": 699,
         "whole_mechanism_hits": 0,
         "subclause_hits": 0
       },
-      "learned_adaptive_policy_plus_subskill_memory": {
+      "adaptive_policy_plus_compositional_subskills": {
         "n": 12,
         "useful_acquisition": 12,
         "predictive_competence": 12,
@@ -18989,13 +19163,14 @@
         "hypothesis_evals": 213,
         "probe_feature_and_policy_evals": 246,
         "retrieval_evals": 60,
-        "total_acquisition_work": 540,
+        "distill_cost": 84,
+        "total_acquisition_work": 624,
         "whole_mechanism_hits": 0,
         "subclause_hits": 12
       }
     },
     "retain": {
-      "untrained_policy_no_memory": {
+      "untrained_default_policy": {
         "n": 6,
         "useful_acquisition": 6,
         "predictive_competence": 6,
@@ -19004,11 +19179,12 @@
         "hypothesis_evals": 240,
         "probe_feature_and_policy_evals": 0,
         "retrieval_evals": 0,
+        "distill_cost": 0,
         "total_acquisition_work": 252,
         "whole_mechanism_hits": 0,
         "subclause_hits": 0
       },
-      "source_distilled_fixed_no_memory": {
+      "source_distilled_fixed_order": {
         "n": 6,
         "useful_acquisition": 6,
         "predictive_competence": 6,
@@ -19017,11 +19193,12 @@
         "hypothesis_evals": 240,
         "probe_feature_and_policy_evals": 0,
         "retrieval_evals": 0,
+        "distill_cost": 0,
         "total_acquisition_work": 252,
         "whole_mechanism_hits": 0,
         "subclause_hits": 0
       },
-      "learned_adaptive_policy_memory_cleared": {
+      "source_learned_adaptive_policy": {
         "n": 6,
         "useful_acquisition": 6,
         "predictive_competence": 6,
@@ -19030,11 +19207,12 @@
         "hypothesis_evals": 144,
         "probe_feature_and_policy_evals": 99,
         "retrieval_evals": 0,
+        "distill_cost": 0,
         "total_acquisition_work": 249,
         "whole_mechanism_hits": 0,
         "subclause_hits": 0
       },
-      "learned_adaptive_policy_plus_subskill_memory": {
+      "adaptive_policy_plus_compositional_subskills": {
         "n": 6,
         "useful_acquisition": 6,
         "predictive_competence": 6,
@@ -19043,6 +19221,7 @@
         "hypothesis_evals": 108,
         "probe_feature_and_policy_evals": 99,
         "retrieval_evals": 24,
+        "distill_cost": 0,
         "total_acquisition_work": 237,
         "whole_mechanism_hits": 6,
         "subclause_hits": 3
@@ -19058,7 +19237,7 @@
   },
   "usage": {
     "kind": "seed_unfamiliar_skill_work_reduction",
-    "elapsed_s": 0.18014295800821856,
+    "elapsed_s": 0.19671449999441393,
     "model_calls": 0,
     "metal_used": false,
     "frozen_debit_s": 0,
@@ -19066,11 +19245,11 @@
     "frozen_cpu_used_s": 3564.568,
     "frozen_cpu_remaining_s": 35.432,
     "rss": {
-      "parent_pid": 77407,
+      "parent_pid": 78041,
       "server_pid": null,
-      "parent_rss_mib": 39.359,
+      "parent_rss_mib": 39.297,
       "server_rss_mib": null,
-      "combined_rss_mib": 39.359,
+      "combined_rss_mib": 39.297,
       "source": "ps_rss_kib",
       "weight_file_is_not_memory": true
     },
@@ -19078,5 +19257,5 @@
     "f2e8942_artifact": "6f7437ede1a0b5f582a0b1e71bdf83881fa2067011b0ee902740c20512f532ff"
   },
   "language_hash": "257c71eea05404f976990efaaa4a28f8937aeef97940591bd450785a2937e216",
-  "hash": "0350a8f122482dda7d33de607d43f409ae27ac06e539261cf5b8f3944dfad2aa"
+  "hash": "a2cc77d66bcd80a3107e25542e8e96c94fea8348dd59b8c6496b3b568c1cabf2"
 }

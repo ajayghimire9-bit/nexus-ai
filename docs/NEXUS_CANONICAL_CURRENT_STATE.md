@@ -35,7 +35,7 @@ A row may be Implemented and still Undemonstrated.
 | 9 | Mechanism synthesis / acquisition | Yes | No | Synthesis works; search ties the fixed synthesizer |
 | 10 | Learning-to-learn / meta-learning | Yes | Bounded only | See row note below. General L2L unestablished |
 | 11 | Whole-task skill memory | Yes | No | Continual Wave-2 exact hits 0; no advantage over template |
-| 12 | Compositional sub-skill transfer | Yes | Pending / in test | Rung 2 on this branch; not general transfer |
+| 12 | Compositional sub-skill transfer | Yes | Bounded | This branch: 624 vs 699/858/908 with distill charged; not general transfer |
 | 13 | Open-domain coding / Track B | No | No | Coder / Metal Best-of-4 / LoRA closed. Not established |
 
 **Learning-to-learn / meta-learning (row 10).** Bounded claim at
@@ -51,12 +51,13 @@ and Wave-2 whole-task skill-memory transfer remain unestablished.
 
 [Protocol](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_PROTOCOL.md),
 [results](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md).
-Protocol `4e57b37`. Artifact
-`0350a8f122482dda7d33de607d43f409ae27ac06e539261cf5b8f3944dfad2aa`.
+Protocol `b132bef`. Artifact
+`a2cc77d66bcd80a3107e25542e8e96c94fea8348dd59b8c6496b3b568c1cabf2`.
 Verifier `valid: true` on 72 cells. Frozen `f2e8942` policy unchanged
 (21 env, 246 policy evals). Memory 12/12 useful, 0 whole-mechanism
-hits, 12 sub-clause hits. Total work 540 vs policy-only 699. Gates
-1–3 pass on seeds 0–2. Track B closed. Frozen debit **0**. Not general
+hits, 12 sub-clause hits. Distill cost 84. Total work 624 vs
+policy-only 699 / untrained 858 / distilled 908. Gates 1–3 pass on
+seeds 0–2. Track B closed. Frozen debit **0**. Not general
 learning-to-learn, not open-domain coding.
 
 ## Previous — unfamiliar policy-only replication (results)
