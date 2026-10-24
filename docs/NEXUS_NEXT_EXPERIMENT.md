@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore the policy-only replication
+## Current next — do not rescore the sub-clause work-reduction grid
+
+The [sub-clause skill run](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md)
+matches policy-only accuracy at lower total work (540 vs 699) with
+non-zero compositional retrieval and zero whole-mechanism cache hits.
+Do not rescore this grid or `f2e8942`. The claim is not general
+learning-to-learn. A later family without shared guard/leaf signatures
+can still make sub-clause retrieval miss. Track B stays closed.
+Ranking stays paused.
+
+## Previous next — do not rescore the policy-only replication
 
 The [unfamiliar policy-only replication](NEXUS_UNFAMILIAR_POLICY_REPLICATION_RESULTS.md)
 supports a bounded claim: a source-trained adaptive probe policy beat

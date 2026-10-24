@@ -1,17 +1,38 @@
 # NEXUS Seed — Current State
 
-## Current — unfamiliar policy-only replication (results)
+## Current — sub-clause skill work reduction (results)
+
+[Protocol](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_PROTOCOL.md),
+[results](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md).
+Protocol `4e57b37`. Artifact
+`0350a8f122482dda7d33de607d43f409ae27ac06e539261cf5b8f3944dfad2aa`.
+Verifier `valid: true` on 72 cells. Frozen `f2e8942` policy unchanged
+(21 env, 246 policy evals). Memory 12/12 useful, 0 whole-mechanism
+hits, 12 sub-clause hits. Total work 540 vs policy-only 699. Gates
+1–3 pass on seeds 0–2. Track B closed. Frozen debit **0**. Not general
+learning-to-learn, not open-domain coding.
+
+## Previous — unfamiliar policy-only replication (results)
 
 [Protocol](NEXUS_UNFAMILIAR_POLICY_REPLICATION_PROTOCOL.md),
 [results](NEXUS_UNFAMILIAR_POLICY_REPLICATION_RESULTS.md).
-Protocol `18093a1`. Artifact
-`6f7437ede1a0b5f582a0b1e71bdf83881fa2067011b0ee902740c20512f532ff`.
-Verifier `valid: true` on 54 cells. Three memory-cleared arms. Held-out
-useful 12/12 and reserved 6/6 for all methods. Learned 21 vs 42
-untrained and 43 distilled environment interactions; total work 699 vs
-858 vs 908. Gates 1–3 pass on seeds 0, 1 and 2. Track B closed. Skill
-memory paused. Continual `b357b01` not rescored. Frozen debit **0**.
-Bounded investigation-strategy claim only. Not general learning-to-learn.
+Locked results commit `f2e8942` on
+`cursor/seed-unfamiliar-policy-replication`. Protocol `18093a1`.
+Artifact
+`6f7437ede1a0b5f582a0b1e71bdf83881fa2067011b0ee902740c20512f532ff`
+(do not edit). Verifier `valid: true` on 54 cells.
+
+Bounded claim established (`f2e8942`): NEXUS learned an investigation
+strategy from source tasks that reduced the cost of acquiring
+unfamiliar mechanisms within the tested setting (env calls: 21 vs 42
+untrained / 43 source-distilled fixed order; total work: 699 vs 858
+untrained / 908 distilled across 3 seeds, 12/12 holdout, 6/6 reserved
+retest, N_breakeven = 163.5 vs untrained / 124.4 vs distilled).
+
+This study does **not** establish general learning-to-learn,
+open-domain coding, or Track B (coder / Metal Best-of-4 / LoRA).
+Skill-memory retrieval stayed paused. Continual `b357b01` not
+rescored. Frozen debit **0**.
 
 ## Previous — continual Track A (results)
 

@@ -1,12 +1,20 @@
 # NEXUS progress log
 
-## Current — unfamiliar policy-only replication: adaptive beats both static orders
+## Current — sub-clause memory cuts total work at matched accuracy
 
-Protocol `18093a1`, artifact
+Protocol `4e57b37`, artifact
+`0350a8f122482dda7d33de607d43f409ae27ac06e539261cf5b8f3944dfad2aa`.
+Four-way holdout: memory 540 vs policy-only 699 vs untrained 858 vs
+distilled 908. Env 21 and policy evals 246 unchanged. Sub-clause hits
+12, whole-mechanism hits 0. Gates 1–3 pass. Frozen debit **0**.
+[Results](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md).
+
+## Previous — unfamiliar policy-only replication locked at f2e8942
+
+Protocol `18093a1`, results `f2e8942`, artifact
 `6f7437ede1a0b5f582a0b1e71bdf83881fa2067011b0ee902740c20512f532ff`.
-Gates 1–3 pass on seeds 0–2. Holdout useful 12/12 all methods. Learned
-21 vs 42 vs 43 env interactions; total work 699 vs 858 vs 908.
-Reserved 6/6. Track B closed. Frozen debit **0**. Bounded claim only.
+Learned 21 vs 42 vs 43 env; total work 699 vs 858 vs 908. Bounded
+investigation-strategy claim only. Frozen debit **0**.
 [Results](NEXUS_UNFAMILIAR_POLICY_REPLICATION_RESULTS.md).
 
 ## Previous — continual Track A: policy cheaper, memory does not transfer
