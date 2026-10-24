@@ -1,11 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — Wave-7 cross-domain analogy (protocol locked)
+## Current next — do not rescore the Wave-7 cross-domain grid
 
-The [Wave-7 protocol](NEXUS_WAVE7_CROSS_DOMAIN_PROTOCOL.md) factors
-interface disambiguation and tests type-erased transfer into a
-symbolic sequence domain. Do not rescore `b590ca2` or earlier grids.
-Track B coding stays closed.
+The [Wave-7 run](NEXUS_WAVE7_CROSS_DOMAIN_RESULTS.md) factors
+`stamp`/`echo` away before synthesis and transfers type-erased
+schemas into an authored token-queue domain (factored 7200 vs coupled
+29187; evolving G3 2247 vs static 3744). Do not rescore this grid,
+`b590ca2`, `10f579d`, `f66ae34`, `c8bc5ad`, `0d4596e`, `6e0df3a`, or
+`f2e8942`. Track B coding stays closed. Not general learning-to-learn.
 
 ## Previous next — do not rescore the Wave-6 correspondence grid
 

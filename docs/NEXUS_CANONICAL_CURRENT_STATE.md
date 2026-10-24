@@ -124,7 +124,30 @@ and scratch `10326 / 1074`; every seed `3238 / 199` vs `3433 / 423`
 and `3442 / 358`. Wall 0.226 s, frozen debit 0. Mapping recovery on
 this interface, not general learning-to-learn.
 
-## Current — Wave-6 correspondence disambiguation (results)
+**Wave-7 cross-domain analogy (189 cells).** Protocol `c3a4b40`.
+Artifact
+`342ebf9021ce7242b00e102b5bf76f471ba2ce667baebc81b5753bdc782d1694`.
+Factored channel filters beat coupled scratch (suite 7200 vs 29187 /
+29373; every seed 2400 vs 9729 / 9791). Concrete integer clauses
+scored **0** hits on Domain B. Relational schemas cheapened Groups
+1+2 (1032 vs scratch 1320 / concrete 1428 / shuffled 2016). Compiling
+a verified palindrome predicate cheapened Group 3 (2247 / 1743 vs
+static 3744 / 3270) and portfolio 1–3 (3279 / 1791 vs 4776 / 3318).
+27/27 mapping and private; 0 false analogies; 3/3 amb; 3/3 OOG
+abstain; 3/3 Domain A retain. Wall 0.068 s, frozen debit 0. Authored
+token-queue transfer with one compiled predicate, not general
+learning-to-learn.
+
+## Current — Wave-7 cross-domain analogy (results)
+
+[Protocol](NEXUS_WAVE7_CROSS_DOMAIN_PROTOCOL.md),
+[results](NEXUS_WAVE7_CROSS_DOMAIN_RESULTS.md).
+Protocol `c3a4b40`. Artifact
+`342ebf9021ce7242b00e102b5bf76f471ba2ce667baebc81b5753bdc782d1694`.
+Verifier `valid: true` on 189 cells. See group tables in the results
+note above. Frozen debit **0**. Not general learning-to-learn.
+
+## Previous — Wave-6 correspondence disambiguation (results)
 
 [Protocol](NEXUS_WAVE6_CORRESPONDENCE_PROTOCOL.md),
 [results](NEXUS_WAVE6_CORRESPONDENCE_RESULTS.md).

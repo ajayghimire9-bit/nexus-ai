@@ -1,6 +1,16 @@
 # NEXUS progress log
 
-## Current — Wave-6: competing bindings recover identity+result
+## Current — Wave-7: factored interface + one compiled sequence predicate
+
+Protocol `c3a4b40`, artifact
+`342ebf9021ce7242b00e102b5bf76f471ba2ce667baebc81b5753bdc782d1694`.
+Factored scratch 7200 vs coupled 29187 / 29373. Concrete Domain B
+hits 0. Analogy G1+G2 1032 vs scratch 1320. Evolving G3 2247 vs
+static 3744. 27/27, 0 false analogies, 3/3 OOG abstain, 3/3 retain.
+Frozen debit **0**, wall 0.068 s.
+[Results](NEXUS_WAVE7_CROSS_DOMAIN_RESULTS.md).
+
+## Previous — Wave-6: competing bindings recover identity+result
 
 Protocol `aa34924`, artifact
 `a88765e9238d10d30a8b236c88115dafcf8b4ba5f651ffd741aa6d1d865fb031`.
