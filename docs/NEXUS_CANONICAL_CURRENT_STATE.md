@@ -1,6 +1,19 @@
 # NEXUS Seed — Current State
 
-## Current — model-mismatch challenge (results)
+## Current — varied-probe challenge (results)
+
+[Protocol](NEXUS_SEED_MECHANISM_VARIED_PROTOCOL.md),
+[results](NEXUS_SEED_MECHANISM_VARIED_RESULTS.md).
+Protocol `bf7ee42`. Artifact
+`79ffc21ac69e0507a08288cda8e74c90f7eebb23dd2a9be7c3fb1ad5fdb30467`.
+Verifier 147 cells; opened C/D/E/mismatch IDs rejected. Competence
+7/7 × 3 seeds. Diagnostic+MEASURE is the strongest fixed method: 9
+correct solutions, 3 false IDs (all twins), 9 inconsistencies. Trained
+9 / 4 / 8. Ordinary MEASURE 5/9 versus diagnostic+MEASURE 9/9 and
+diagnostic 0/9. Verdict **negative**. Priors `5575762`, `ff26a18`,
+`92d6f19` not rescored. Frozen debit **0**. Not learning-to-learn.
+
+## Previous — model-mismatch challenge (results)
 
 [Protocol](NEXUS_SEED_MECHANISM_MISMATCH_PROTOCOL.md),
 [results](NEXUS_SEED_MECHANISM_MISMATCH_RESULTS.md).

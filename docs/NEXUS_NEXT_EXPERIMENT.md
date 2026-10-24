@@ -1,6 +1,19 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore mismatch; leftover identity still fools cheap probes
+## Current next — do not rescore varied probes; twins still force false identity
+
+The [varied-probe run](NEXUS_SEED_MECHANISM_VARIED_RESULTS.md) is
+**negative** versus diagnostic-plus-MEASURE. That charged confirmation
+falsifies MEASURE-exposed and sequence-exposed mismatches and pays
+unnecessary MEASURE on every ordinary task. Trained copies some of
+that habit and still false-IDs one `plus_prev` plus every `add1_twin`.
+No method reported unresolved uncertainty on the twins. Do not rescore
+this grid or `5575762` / `ff26a18` / `92d6f19`. A later family must
+separate catalogue confirmation from independent support, or accept
+that observational twins cannot be solved in this action set. Ranking
+stays paused. Learning-to-learn remains unestablished.
+
+## Previous next — do not rescore mismatch; leftover identity still fools cheap probes
 
 The [mismatch run](NEXUS_SEED_MECHANISM_MISMATCH_RESULTS.md) is a
 useful investigation difference on this grid only: trained reports

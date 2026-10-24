@@ -1,6 +1,15 @@
 # NEXUS progress log
 
-## Current — model-mismatch challenge, useful investigation difference only
+## Current — varied-probe challenge, negative versus charged MEASURE
+
+Protocol `bf7ee42`, artifact
+`79ffc21ac69e0507a08288cda8e74c90f7eebb23dd2a9be7c3fb1ad5fdb30467`.
+Diagnostic+MEASURE is the missing baseline: 9 solutions, 3 false IDs
+(twins only), 9 inconsistencies. Trained 9 / 4 / 8. Ordinary MEASURE
+5/9 versus always-on 9/9 and never-on 0/9. Frozen debit **0**. Not
+learning-to-learn. [Results](NEXUS_SEED_MECHANISM_VARIED_RESULTS.md).
+
+## Previous — model-mismatch challenge, useful investigation difference only
 
 Protocol `578ba4d`, artifact
 `83847d410e9344712ea8435fe1f53305a7a79e0a85738bec7ed0d8b8c5ce746d`.
