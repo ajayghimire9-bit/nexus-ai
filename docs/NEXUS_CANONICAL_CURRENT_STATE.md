@@ -235,6 +235,17 @@ verifier `scripts/verify_wave11_typed_enumerator.py` (`"valid": true`, `lambda_c
   - **`nexus_typed_full`**: **`12098 / 13664`** (`4554.67 [4552..4556]`, `sub_macro_reused = 15`, `full_program_macro_reused = 3`, `cold_archive_reactivated = 3`, `gate_evals = 27`, `archive_lookup_evals = 46`, `compression_evals = 108`, `schema_distill_cost = 36`, `operator_compile_cost = 84`).
 - **Deep Compositional Scaling**: Composing evolved `SEQ_EQ(x, REVERSE(x))` + `APPEND_TOK(M_rot(x), '#')` at effective AST size `3` (`M_rot` has step cost `1`) instead of enumerating from scratch up to size `7` reduces `w11c_deep_compositional` `total_work` by **96.5%** (`710` vs `20148`) and `synthesis_evals` by **98.5%** (`294` vs `19824`). Track B remains closed (`0` model calls, `0 s` frozen debit, `learning_to_learn_established = false`).
 
+**Wave-14 Closed Developmental / Invalid (54/54 Accuracy & 3/3 Archive Reactivation; Suite Cost Lost to Abstaining Scratch/Memo; Preserved Unamended).**
+Protocol freeze `53e5317`. Artifact
+`a68e1c552dc74a5d4a028c75929b95c45ad38e913dfb38ef7a676581c963f80f`.
+Full `54/54`, work `414,925` / `1,051,271` prims vs scratch `45/54`,
+`276,378` / `758,274` and memo `45/54`, `241,527` / `662,359`.
+Whole-macro `54/54`, `439,930` / `1,126,232`. `0` false unique.
+Archive `3/3`. Subtree `40,125` beat whole-macro `56,683`. Pairwise-swap
+OOG spent `260,268` after the macro beam entered two-branch search
+(scratch `44,400`). Do not amend `53e5317`. Do not reuse `w14f_*`.
+[Results](NEXUS_WAVE14_PIECEWISE_ARCHIVE_RESULTS.md).
+
 **Wave-13 Closed Developmental / Invalid (53/54 Accuracy & 0/3 Archive Reactivation; Preserved Unamended).**
 `460a04a` → `a48001e`. Artifact
 `f35215d7ba5a509e5a68c636a34f98d23d68ee4b9e9dcd13266a68da8b240ab6`.

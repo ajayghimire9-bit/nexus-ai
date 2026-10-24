@@ -1,8 +1,15 @@
 # NEXUS progress log
 
-## Current — Wave-14 piecewise archive (protocol in progress; Wave 13 closed)
+## Current — Wave-14 developmental/invalid (do not reuse w14f_*)
 
-Wave 13 (`460a04a` → `a48001e`) is **Closed Developmental / Invalid
+Protocol freeze `53e5317`. Artifact
+`a68e1c552dc74a5d4a028c75929b95c45ad38e913dfb38ef7a676581c963f80f`.
+Single-shot gates failed (suite cost vs scratch/memo). Full accuracy
+`54/54`, archive `3/3`, `0` false unique. Frozen Commit 1 files
+untouched. Frozen debit **0**.
+[Results](NEXUS_WAVE14_PIECEWISE_ARCHIVE_RESULTS.md).
+
+Wave 13 (`460a04a` → `a48001e`) remains **Closed Developmental / Invalid
 (53/54 Accuracy & 0/3 Archive Reactivation; Preserved Unamended)**.
 Do not amend or reuse `w13f_*`.
 [Postmortem](NEXUS_WAVE13_FAILED_BLIND_RUN_POSTMORTEM.md).
