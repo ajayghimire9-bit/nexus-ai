@@ -32,11 +32,20 @@ A row may be Implemented and still Undemonstrated.
 | 6 | Knowledge vault / retrieval | Yes | No | FTS5 vault runs; freshness/conflict unresolved |
 | 7 | Bounded coding / API-ID | Yes | No | Named-ID and apply-mode grids ran; task success 0 or tool-tie |
 | 8 | Mechanism investigation policy | Yes | Bounded | `f2e8942` cheaper probes at matched accuracy in one suite |
-| 9 | Mechanism synthesis / acquisition | Yes | No | Synthesis works; search ties the fixed synthesizer |
+| 9 | Efficient knowledge acquisition | Yes | Bounded | Bounded compositional sub-skill transfer demonstrated (`6e0df3a`): Decomposing verified Wave-1 mechanisms into reusable branch/leaf sub-clauses reduced holdout acquisition work from `699` (policy-only) and `858` (untrained) down to `624` (`208` vs `233` per seed across 3 seeds, `12/12` holdout, `6/6` reserved retest, `12` sub-skill hits, `0` whole-mechanism hits) after explicitly charging both Wave-1 distillation (`84`) and Wave-2 retrieval (`60`). |
 | 10 | Learning-to-learn / meta-learning | Yes | Bounded only | See row note below. General L2L unestablished |
 | 11 | Whole-task skill memory | Yes | No | Continual Wave-2 exact hits 0; no advantage over template |
-| 12 | Compositional sub-skill transfer | Yes | Bounded | This branch: 624 vs 699/858/908 with distill charged; not general transfer |
+| 12 | Compositional generalization | Yes | Bounded | Bounded compositional sub-skill transfer demonstrated (`6e0df3a`): Decomposing verified Wave-1 mechanisms into reusable branch/leaf sub-clauses reduced holdout acquisition work from `699` (policy-only) and `858` (untrained) down to `624` (`208` vs `233` per seed across 3 seeds, `12/12` holdout, `6/6` reserved retest, `12` sub-skill hits, `0` whole-mechanism hits) after explicitly charging both Wave-1 distillation (`84`) and Wave-2 retrieval (`60`). |
 | 13 | Open-domain coding / Track B | No | No | Coder / Metal Best-of-4 / LoRA closed. Not established |
+
+**Compositional generalization / efficient acquisition (rows 9 and 12).**
+Bounded compositional sub-skill transfer demonstrated (`6e0df3a`):
+Decomposing verified Wave-1 mechanisms into reusable branch/leaf
+sub-clauses reduced holdout acquisition work from `699` (policy-only)
+and `858` (untrained) down to `624` (`208` vs `233` per seed across 3
+seeds, `12/12` holdout, `6/6` reserved retest, `12` sub-skill hits,
+`0` whole-mechanism hits) after explicitly charging both Wave-1
+distillation (`84`) and Wave-2 retrieval (`60`).
 
 **Learning-to-learn / meta-learning (row 10).** Bounded claim at
 `f2e8942`: a source-trained adaptive investigation policy reduced the

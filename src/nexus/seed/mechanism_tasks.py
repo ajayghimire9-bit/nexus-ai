@@ -92,6 +92,12 @@ DECLARED = (
     dict(task_id="up_hold_neg_twice", split="up_holdout", family="branch_b", mechanism="up_neg_twice", instance_seed=724, role="acquire"),
     dict(task_id="up_ret_add1", split="up_retain", family="affine", mechanism="add1", instance_seed=741, role="acquire"),
     dict(task_id="up_ret_if_pos", split="up_retain", family="gate", mechanism="if_pos", instance_seed=742, role="acquire"),
+    dict(task_id="oob_hold_pos_plus3", split="oob_holdout", family="type_a_pos", mechanism="oob_pos_plus3", instance_seed=801, role="acquire", unknown_kind="type_a"),
+    dict(task_id="oob_hold_pos_mul3", split="oob_holdout", family="type_a_pos", mechanism="oob_pos_mul3", instance_seed=802, role="acquire", unknown_kind="type_a"),
+    dict(task_id="oob_hold_neg_add1", split="oob_holdout", family="type_a_neg", mechanism="oob_neg_add1", instance_seed=803, role="acquire", unknown_kind="type_a"),
+    dict(task_id="oob_hold_even_add2", split="oob_holdout", family="type_b_novel", mechanism="oob_even_add2", instance_seed=804, role="acquire", unknown_kind="type_b"),
+    dict(task_id="oob_ret_add1", split="oob_retain", family="affine", mechanism="add1", instance_seed=821, role="acquire"),
+    dict(task_id="oob_ret_if_pos", split="oob_retain", family="gate", mechanism="if_pos", instance_seed=822, role="acquire"),
 )
 
 

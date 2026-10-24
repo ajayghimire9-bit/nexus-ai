@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore the sub-clause work-reduction grid
+## Current next — out-of-bank acquisition with calibrated unknowns
+
+Protocol
+[NEXUS_UNFAMILIAR_BEYOND_CATALOG_PROTOCOL.md](NEXUS_UNFAMILIAR_BEYOND_CATALOG_PROTOCOL.md).
+Holdout mechanisms have 0% coverage in `supplied_bank`. Bank-only must
+abstain with zero false positives. Open grammar must solve Type A and
+Type B. Abductive residual synthesis must beat cleared open grammar
+after distill, retrieval, confirmatory, and residual costs. Do not
+rescore `6e0df3a` or `f2e8942`. Track B stays closed.
+
+## Previous next — do not rescore the sub-clause work-reduction grid
 
 The [sub-clause skill run](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md)
 matches policy-only accuracy at lower total work (624 vs 699, including

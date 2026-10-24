@@ -189,6 +189,20 @@ class SubMechanismLibrary:
             self.sub_misses += 1
         return deepcopy(found)
 
+    def stored_guards(self) -> list[str]:
+        self.retrieval_evals += 1
+        return sorted({str(row.get("guard")) for row in self.clauses if row.get("guard")})
+
+    def lookup_guard(self, guard: str) -> list[dict[str, Any]]:
+        self.retrieval_evals += 1
+        found = [row for row in self.clauses if str(row.get("guard") or "") == str(guard)]
+        self.retrieval_evals += len(found)
+        if found:
+            self.sub_hits += 1
+        else:
+            self.sub_misses += 1
+        return deepcopy(found)
+
     def snapshot(self) -> dict[str, Any]:
         return dict(
             n_clauses=len(self.clauses),
