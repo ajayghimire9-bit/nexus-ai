@@ -1,6 +1,16 @@
 # NEXUS progress log
 
-## Current — Wave-3 assimilation cheapens the next parity family
+## Current — Wave-4 ablations: clause saves, probe-only does not
+
+Protocol `25cd50e`, artifact
+`486a0ae02bbfa6ebe30e9f1f1eba24494f8bb8da4bbc74029baa200ac67555e9`.
+Related: clause 3321 / both 3297 vs neither 13995; probe-only 14610.
+Lookalikes: even proposed and rejected 6/6, 0 parity locks. OOG 6/6
+abstain. Retention 18/18. Portfolio both 20586 vs 30855 / 29223 /
+28683. Frozen debit **0**.
+[Results](NEXUS_WAVE4_DIAGNOSTIC_ABLATIONS_RESULTS.md).
+
+## Previous — Wave-3 assimilation cheapens the next parity family
 
 Protocol `79c53a5`, artifact
 `ad9b569c4910c4084a3faa60625bf805bf175e472c083abcb920eb3d5fe933d6`.

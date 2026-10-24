@@ -81,7 +81,29 @@ learning-to-learn, open-ended acquisition beyond the primitive
 grammar, and Wave-2 whole-task skill-memory transfer remain
 unestablished.
 
-## Current — Wave-3 continual assimilation (results)
+**Wave-4 diagnostic ablations (270 cells).** Protocol `25cd50e`.
+Artifact
+`486a0ae02bbfa6ebe30e9f1f1eba24494f8bb8da4bbc74029baa200ac67555e9`.
+Related parity is cheap only when the even clause is kept (clause
+3321 / both 3297 vs neither 13995). Probe-only is worse than the
+Wave-1 freeze on that group (−205 per seed). Unrelated magnitude
+guards and `mod4`/`is_zero` lookalikes produce **0** false-positive
+parity locks; clause methods propose even and confirmatory `ACT_2`
+rejects it (6/6). True OOG 6/6 abstain. Retention 18/18. Combined
+A+B+C: both **20586** vs neither 30855 / learned 29223 / untrained
+28683 (`6862` vs `10285` / `9741` / `9561` per seed). Not general
+learning-to-learn.
+
+## Current — Wave-4 diagnostic ablations (results)
+
+[Protocol](NEXUS_WAVE4_DIAGNOSTIC_ABLATIONS_PROTOCOL.md),
+[results](NEXUS_WAVE4_DIAGNOSTIC_ABLATIONS_RESULTS.md).
+Protocol `25cd50e`. Artifact
+`486a0ae02bbfa6ebe30e9f1f1eba24494f8bb8da4bbc74029baa200ac67555e9`.
+Verifier `valid: true` on 270 cells. See group tables in the results
+note above. Frozen debit **0**. Not general learning-to-learn.
+
+## Previous — Wave-3 continual assimilation (results)
 
 [Protocol](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_PROTOCOL.md),
 [results](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_RESULTS.md).
