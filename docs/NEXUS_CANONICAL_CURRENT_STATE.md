@@ -1,13 +1,25 @@
 # NEXUS Seed — Current State
 
-## All 9 Master Audit Ledger Capabilities Demonstrated (Waves 18, 19 & 20)
+## Wave 21 Audit Reset — Honest Downgrade of `b63113f` Overclaims & Pre-Freeze Preparation
 
-See the full ledger and artifacts in [Wave 19–20 Results](NEXUS_WAVE19_20_CODING_AND_CONVERSATION_RESULTS.md) and [Wave 18 Results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md):
-1. **Capabilities 6 & 7 (Wave 18, `89c2e6b -> 5e9bf20`)**: `54/54` unseen `w18f_*` accuracy, `-83.972%` total work (`554,575` vs `3,459,996`) and `-80.690%` primitive op steps (`1,633,854` vs `8,461,249`) vs `nexus_whole_macro_only`.
-2. **Capability 8 (Wave 19 — Native Python `ast` Coding & Multi-File Repo Patching)**: `54/54` accuracy, `-70.97%` work (`18,294` vs `63,021`) and `-90.90%` primitive steps (`52,274` vs `574,663`) vs `nexus_whole_function_only`, plus `3/3` multi-file repository fault localization & unified-diff patches.
-3. **Capability 9 (Wave 20 — Grounded Natural Language Conversation & Cross-Domain Agent)**: `24/24` multi-turn English dialogue turns verified, `0` hallucinations, `3/3` cross-domain `CODE -> STATE` helper transfers, `3/3` active English epistemic clarifications, and `3/3` OOG abstentions.
+An external scientific audit flagged that commit `b63113f` ([Wave 19–20 Results](NEXUS_WAVE19_20_CODING_AND_CONVERSATION_RESULTS.md)) overclaimed "All 9 Capabilities Demonstrated" based on toy proxies:
+1. **`wave19_python_ast_code_evolver.py` was Bounded Expression Synthesis, NOT Open-Ended Coding**: It enumerated ~15 hardcoded 1-line expressions over sequences, and `b63113f` was committed in a single commit after editing code on the same benchmark rather than a two-commit blind freeze.
+2. **`wave20_grounded_nl_conversation_agent.py` was a Rule-Based Slot Parser, NOT Open-Ended Grounded Conversation**: It used keyword/regex matching and deterministic `f-string` templates; claiming "0 hallucinations" when no generative LLM was executed is scientifically invalid.
+3. **Waves 17–18 used Hand-Engineered Schema Tagging, NOT Independently Acquired Cross-Domain Mappings**: Waves 17–18 used 4 human-coded schema names (`GUARD_PARITY_TRANSFORM`, etc.) rather than discovering algebraic homomorphisms across unaligned black-box domains.
 
-## Wave18 Demonstrated — M4-GPU neuro-symbolic canonical evolution beats whole-macro by 84% work
+### Corrected Pre-Wave-21 Capability Status Table
+- **Waves 11–18 Symbolic DSL Capabilities (Probing, Symbolic OOG/Ambiguity, Pruning/Archive, Exact Cache, MDL Subtree Invention, M4 Symbolic Proposer)**: **`Demonstrated (Bounded Symbolic DSL Only)`** (`89c2e6b -> 5e9bf20`, `54/54` unseen `w18f_*` accuracy, `-83.972%` total work and `-80.690%` primitive op steps vs `nexus_whole_macro_only`).
+- **Cross-Domain Mapping Acquisition**: **`Partial — Hand-Coded Schema Tags in Wave 18; True Unaligned Homomorphism Discovery Required`**
+- **Open-Ended Coding (`wave19`)**: **`Developmental / Toy 1-Line Template Proxy (Single-Commit Preflight; Not Open-Ended Coding)`**
+- **Open-Ended Grounded Conversation & Anti-Hallucination (`wave20`)**: **`Developmental / Regex + Template Proxy (No Generative LLM Executed; Not Demonstrated)`**
+
+### Wave 21 Pre-Freeze Scope (Phase 1 — Before Commit 1 Freeze)
+Wave 21 implements three non-toy mechanisms under strict two-commit blind evaluation (`src/nexus/seed/mechanism_wave21_fresh_assessment.py` does not exist before Commit 1):
+1. `src/nexus/seed/wave21_unaligned_homomorphism_learner.py`: Autonomous algebraic probing (`involution`, `idempotence`, `state-change entropy`, pairwise `left-inverse` $I_{ij}$, `commutativity` $C_{ij}$, `guard-transform invariance` $G_{ab}$), relational distortion minimization $\mathcal{L}(\Phi, \Psi)$, active commutator disambiguation, and zero-shot cross-domain compilation across anonymous black-box operators (`anon_op_*`, `anon_guard_*`).
+2. `src/nexus/seed/wave21_imperative_python_synthesizer.py`: Execution-guided multi-statement imperative Python `ast.FunctionDef` synthesizer with live `locals()` prefix trace scoring on Apple Silicon M4 GPU (`mps`), synthesizing sequential statements (variable init, loops, conditionals, dict/set/list accumulation, post-loop transforms, MDL multi-statement helpers) and runtime call-trace bug localization & multi-statement repair across multi-file repositories.
+3. `src/nexus/seed/wave21_grounded_llm_epistemic_gate.py`: Real local pretrained LLM executed on Apple Silicon GPU (`mps` / Metal + `torch.device("mps")`) comparing `standalone_pretrained_llm_mps` directly against `nexus_epistemic_gated_llm_mps` (where candidate LLM claims and actions are verified against NEXUS's symbolic world-state and sandboxed code execution verifier, blocking unverified claims, asking clarifying questions on $\ge 2$ equally supported state transitions, and abstaining on domain constraint violations).
+
+## Wave18 Demonstrated (Bounded Symbolic DSL Only) — M4-GPU neuro-symbolic canonical evolution beats whole-macro by 84% work
 
 Freeze `89c2e6bc3265d0e9822ff2dd17e7254f665eaf07`; [results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md).
 Single-shot unseen `w18f_*` assessment (324 cells, standalone verifier `"valid": true`):
