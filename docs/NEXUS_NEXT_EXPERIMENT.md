@@ -1,6 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore the Wave-7 cross-domain grid
+## Current next — Wave-8 hierarchical gated evolution (protocol locked)
+
+The [Wave-8 protocol](NEXUS_WAVE8_HIERARCHICAL_PROTOCOL.md) stacks
+`L0→L1→L2`, gates compiled operators, and defers analogy behind a
+depth-1 fast path. Do not rescore `907db66` or earlier grids. Track B
+coding stays closed.
+
+## Previous next — do not rescore the Wave-7 cross-domain grid
 
 The [Wave-7 run](NEXUS_WAVE7_CROSS_DOMAIN_RESULTS.md) factors
 `stamp`/`echo` away before synthesis and transfers type-erased

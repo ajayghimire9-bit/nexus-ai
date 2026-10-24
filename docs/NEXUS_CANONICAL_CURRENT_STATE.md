@@ -124,19 +124,24 @@ and scratch `10326 / 1074`; every seed `3238 / 199` vs `3433 / 423`
 and `3442 / 358`. Wall 0.226 s, frozen debit 0. Mapping recovery on
 this interface, not general learning-to-learn.
 
-**Wave-7 cross-domain analogy (189 cells).** Protocol `c3a4b40`.
-Artifact
+**Wave-7 cross-domain analogy (189 cells, `907db66`).** Protocol
+`c3a4b40`. Artifact
 `342ebf9021ce7242b00e102b5bf76f471ba2ce667baebc81b5753bdc782d1694`.
-Factored channel filters beat coupled scratch (suite 7200 vs 29187 /
-29373; every seed 2400 vs 9729 / 9791). Concrete integer clauses
-scored **0** hits on Domain B. Relational schemas cheapened Groups
-1+2 (1032 vs scratch 1320 / concrete 1428 / shuffled 2016). Compiling
-a verified palindrome predicate cheapened Group 3 (2247 / 1743 vs
-static 3744 / 3270) and portfolio 1–3 (3279 / 1791 vs 4776 / 3318).
-27/27 mapping and private; 0 false analogies; 3/3 amb; 3/3 OOG
-abstain; 3/3 Domain A retain. Wall 0.068 s, frozen debit 0. Authored
-token-queue transfer with one compiled predicate, not general
-learning-to-learn.
+Factored causal channel pruning cut scratch suite work from `29,187 /
+29,373` (coupled) down to `7,200` (`27/27` mapping and private, `0`
+false locks). Cross-domain relational analogy (Domain A integers →
+Domain B token sequences, `0` concrete integer hits) reduced G1+G2
+work to `1,032` vs `1,320` (scratch) / `1,428` (concrete) / `2,016`
+(shuffled), and 1-step operator compilation cut G3 from `3,744`
+(static bank) to `2,247` (full suite `6,258`). Wall 0.068 s, frozen
+debit 0. Three limits remain: (1) single-layer authored invention —
+only flat `palindrome` was compiled (`L0→L1`), with no `L0→L1→L2`
+stacking and no unguided distractor pruning; (2) ungated vocabulary
+bloat on OOG Caesar (`2,217` vs `1,710`) because compiled operators
+expanded search on unsolvable tasks; (3) eager role-probe overhead on
+G1 (`534` vs `198`) because analogy ran before a depth-1 fast path.
+Authored token-queue transfer with one compiled predicate, not
+general learning-to-learn.
 
 ## Current — Wave-7 cross-domain analogy (results)
 
