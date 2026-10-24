@@ -1,6 +1,20 @@
 # NEXUS Seed — Current State
 
-## Wave 14 closed; Wave 15 source preparation
+## Wave 15 closed — valid execution, failed accuracy gate
+
+Freeze `4810ae6533ed970a330b09261b1ce4bf511b9a08`; 270/270 cells verified.
+[Results](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md): full 51/54 correct
+outcomes (45/48 solvable), work 60510, primitive steps 161604; all cost gates pass,
+but no-pruning solves 54/54. The same even-two-INIT distractor causes full to
+abstain across all seeds. OOG piecewise work is zero for every method; full
+archive reuse 3/3; false unique zero. **Developmental / Invalid (Failed
+Single-Shot Blind Gates; Preserved Unamended)**. No retries or Phase1 changes.
+Track B closed; frozen-ledger debit zero. End-to-end O(1) archive discovery is
+not implemented; the additional cached piecewise scheduling rule is disclosed.
+Next: one source-only grammar-completeness audit of pruning and unary composition,
+not another run on w15f_* or a learning-to-learn claim.
+
+## Previous — Wave 14 closed; Wave 15 source preparation
 
 Wave 14 (`53e5317`→`ea17608`) is **Closed Developmental / Invalid (54/54 Accuracy
 & 3/3 Archive Reactivation Passed; Failed Suite Cost Gate Due to Unaborted OOG
@@ -8,7 +22,7 @@ Piecewise Search)**. [Saved-evidence postmortem](NEXUS_WAVE14_FAILED_BLIND_RUN_P
 corrects task-only versus OOG+ambiguous bucket labels without rewriting results.
 Waves 12 and 13 also remain Developmental / Invalid (Failed Single-Shot Blind
 Gates; Preserved Unamended). No historical suite rerun, amend, reset or rebase.
-Wave 15 is preparation only until its physical pre-holdout code freeze. The owner
+At that preparation stage, Wave 15 awaited its physical pre-holdout code freeze. The owner
 clarified that the Phase-1 runner is allowed, but fresh holdout definitions are
 forbidden before Commit 1; an interleaved other-split task supplies the third
 archive-aging distractor while preserving 18 tasks/270 cells. Track B remains

@@ -1,5 +1,14 @@
 # NEXUS progress log
 
+## Current — Wave15 closed developmental/invalid
+
+Freeze `4810ae6`; [results](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md).
+All 270 cells verified; full 51/54, no-pruning 54/54. Full wins both suite cost
+metrics but fails accuracy. OOG piecewise cost zero, archive 3/3, false unique
+zero. Experiment CPU 1.613301 s / wall 1.618624 s; frozen-ledger debit zero.
+No Phase1 edits, retry, historical-result change or main merge. One next task:
+source-only completeness audit of active/cold/scratch unary compositions.
+
 ## Current — Wave-14 developmental/invalid (do not reuse w14f_*)
 
 Protocol freeze `53e5317`. Artifact

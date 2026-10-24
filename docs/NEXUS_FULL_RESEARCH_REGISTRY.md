@@ -1,5 +1,15 @@
 # NEXUS Seed — Research Registry
 
+## Latest — Wave15 valid execution, failed blind accuracy screen
+
+Freeze `4810ae6`; artifact SHA256
+`4158530927bfb789cff53b3cb2f27858e9ba5432e19ba5a91fc57b8c6f848992`.
+[Results](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md): 270/270 verified;
+full 51/54 versus no-pruning 54/54. Cost gates pass; accuracy fails. Closed
+Developmental / Invalid, no retries. Zero model calls / frozen-ledger debit.
+Carried registry balance unchanged: 3128.309460455996 used /
+471.690539544004 remaining. Actual symbolic CPU 1.613301 s reported separately.
+
 ## Current — v3 stepwise residual search, Gate 2 failed
 
 `seed-v3-stepwise-residual-1`, protocol `f8c4c83`, artifact sha256

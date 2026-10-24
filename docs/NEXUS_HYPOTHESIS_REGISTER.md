@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — Wave15 support-gated piecewise search: full screen failed
+
+Precommitted `4810ae6`: cached support/cover gating can suppress unsupported
+piecewise search while preserving all fresh solvable tasks and reducing both
+cost totals versus four baselines. [Outcome](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md):
+zero OOG piecewise cost and lower suite costs, but full 51/54 versus no-pruning
+54/54. Complete valid execution, failed accuracy gate; w15f_* closed. Cached
+piecewise scheduling is an additional intervention, not an isolated abort
+ablation. Linear archive discovery and channel ambiguity remain limitations.
+Proposed, unrun: pruning exposes an atomic size-3 unary generation hole.
+
 ## Current — frozen recipe on harder features and self-acquired contracts
 
 Predeclared: the 1.5B ChatML contract recipe is frozen. Fresh harder

@@ -1,5 +1,16 @@
 # NEXUS Seed — Master Context
 
+## Latest — Wave15 closed, accuracy screen failed
+
+[Wave15 results](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md), frozen code
+`4810ae6`: valid single-shot 270-cell execution; full 51/54 correct versus
+no-pruning 54/54. Full work 60510 and primitive steps 161604 beat all baselines;
+zero OOG piecewise cost does not override failed accuracy. Missing unary
+composition after pruning is the focused source-code diagnosis. Preserve w15f_*
+closed, all Phase1 files unchanged and Track B closed (zero calls/debit).
+No general learning-to-learn claim. Next is a source-only grammar-completeness
+audit, not executed. Older entries below retain their historical status.
+
 ## Current — corrected capability audit, complete negative development pilot
 
 [Results](NEXUS_SEED_CAPABILITY_AUDIT_RESULTS.md), [actual architecture](NEXUS_SEED_CAPABILITY_ARCHITECTURE_AUDIT.md).

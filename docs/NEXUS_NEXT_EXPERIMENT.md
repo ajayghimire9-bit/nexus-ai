@@ -1,5 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Current next — source-only grammar-completeness audit
+
+[Wave15](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md) failed fresh accuracy
+despite cost wins. Do not rerun w15f_* or modify its frozen code. Compare active,
+cold and scratch enumeration against independent bounded expression witnesses,
+especially unary-of-unary size-3 programs. Ask whether pruning changes
+constructibility rather than merely search cost. Use authored source fixtures,
+no neural calls or reopened holdouts. This is a recommendation, not an executed
+experiment or a new grant. Earlier next-step entries below are historical.
+
 ## Current next — do not rescore the Wave-8 hierarchical grid
 
 The [Wave-8 run](NEXUS_WAVE8_HIERARCHICAL_RESULTS.md) stacks
