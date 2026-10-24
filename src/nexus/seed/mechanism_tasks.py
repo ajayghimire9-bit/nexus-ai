@@ -150,6 +150,14 @@ DECLARED = (
     dict(task_id="w5e_unrel_abs", split="w5_event_unrelated", family="event_unrelated", mechanism="w5_abs_add4", instance_seed=1064, role="acquire", unknown_kind="unrelated_guard", w5_group="event_unrelated"),
     dict(task_id="w5e_oog_sum", split="w5_event_oog", family="event_oog", mechanism="sum", instance_seed=1065, role="reject", unknown_kind="oog", w5_group="event_oog"),
     dict(task_id="w5e_ret_even", split="w5_event_retain", family="event_retain", mechanism="oob_even_add2", instance_seed=1066, role="acquire", retain_wave="wave2", w5_group="event_retain"),
+    dict(task_id="w6c_stamp_even", split="w6_stamp", family="stamp_trap", mechanism="w5_even_add3", instance_seed=1101, role="acquire", record_mode="stamp_trap", w6_group="stamp", gold_status="unique", gold_field="result"),
+    dict(task_id="w6c_stamp_abs", split="w6_stamp", family="stamp_trap", mechanism="w5_abs_add4", instance_seed=1102, role="acquire", record_mode="stamp_trap", w6_group="stamp", gold_status="unique", gold_field="result"),
+    dict(task_id="w6c_echo_odd", split="w6_echo", family="echo_order", mechanism="w5_odd_mul2", instance_seed=1111, role="acquire", record_mode="echo_order", w6_group="echo", gold_status="unique", gold_field="result"),
+    dict(task_id="w6c_echo_even", split="w6_echo", family="echo_order", mechanism="w5_even_add3", instance_seed=1112, role="acquire", record_mode="echo_order", w6_group="echo", gold_status="unique", gold_field="result"),
+    dict(task_id="w6c_amb_alias", split="w6_ambiguous", family="true_ambiguity", mechanism="w5_even_add3", instance_seed=1121, role="acquire", record_mode="alias_ambiguous", w6_group="ambiguous", gold_status="ambiguous", gold_field="ambiguous"),
+    dict(task_id="w6c_amb_twin", split="w6_ambiguous", family="true_ambiguity", mechanism="w5_odd_mul2", instance_seed=1122, role="acquire", record_mode="alias_ambiguous", w6_group="ambiguous", gold_status="ambiguous", gold_field="ambiguous"),
+    dict(task_id="w6c_oog_sum", split="w6_oog", family="true_oog", mechanism="sum", instance_seed=1131, role="reject", record_mode="stamp_trap", w6_group="oog", unknown_kind="oog", gold_status="abstain", gold_field=None),
+    dict(task_id="w6c_ret_even", split="w6_retain", family="wave2", mechanism="oob_even_add2", instance_seed=1141, role="acquire", record_mode="stamp_trap", w6_group="retain", retain_wave="wave2", gold_status="unique", gold_field="result"),
 )
 
 
