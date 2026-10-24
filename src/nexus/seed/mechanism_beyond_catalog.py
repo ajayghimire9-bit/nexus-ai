@@ -102,6 +102,14 @@ def apply_guarded(guard: str, then_leaf: str, else_leaf: str, x: int) -> int:
         return apply_leaf(then_leaf, value) if value < 0 else apply_leaf(else_leaf, value)
     if guard == "even":
         return apply_leaf(then_leaf, value) if value % 2 == 0 else apply_leaf(else_leaf, value)
+    if guard == "abs_ge2":
+        return apply_leaf(then_leaf, value) if abs(value) >= 2 else apply_leaf(else_leaf, value)
+    if guard == "mag_gt0":
+        return apply_leaf(then_leaf, value) if abs(value) > 0 else apply_leaf(else_leaf, value)
+    if guard == "mod4_eq0":
+        return apply_leaf(then_leaf, value) if value % 4 == 0 else apply_leaf(else_leaf, value)
+    if guard == "is_zero":
+        return apply_leaf(then_leaf, value) if value == 0 else apply_leaf(else_leaf, value)
     return apply_leaf(then_leaf, value)
 
 
@@ -237,6 +245,14 @@ def _uses_then(guard: str, x: int) -> bool:
         return x < 0
     if guard == "even":
         return x % 2 == 0
+    if guard == "abs_ge2":
+        return abs(x) >= 2
+    if guard == "mag_gt0":
+        return abs(x) > 0
+    if guard == "mod4_eq0":
+        return x % 4 == 0
+    if guard == "is_zero":
+        return x == 0
     return True
 
 

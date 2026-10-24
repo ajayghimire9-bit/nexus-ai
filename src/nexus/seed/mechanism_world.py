@@ -47,6 +47,9 @@ OUTSIDE_LANGUAGE = (
     "up_src_pos_plus", "up_src_twice_pos", "up_src_neg_id", "up_src_neg_dbl",
     "oob_pos_plus3", "oob_pos_mul3", "oob_neg_add1", "oob_even_add2",
     "w3_even_mul3", "w3_even_sub1", "w3_odd_plus2",
+    "w4_abs_plus3", "w4_abs_sub1", "w4_mag_mul3",
+    "w4_even_add4", "w4_even_mul2", "w4_odd_add3",
+    "w4_mod4_add2", "w4_zero_add2",
 )
 
 
@@ -204,6 +207,14 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "w3_even_mul3": _stateless(lambda x: (3 * x) if (int(x) % 2 == 0) else int(x)),
     "w3_even_sub1": _stateless(lambda x: (int(x) - 1) if (int(x) % 2 == 0) else int(x)),
     "w3_odd_plus2": _stateless(lambda x: (int(x) + 2) if (int(x) % 2 == 1) else int(x)),
+    "w4_abs_plus3": _stateless(lambda x: (int(x) + 3) if abs(int(x)) >= 2 else int(x)),
+    "w4_abs_sub1": _stateless(lambda x: (int(x) - 1) if abs(int(x)) >= 2 else int(x)),
+    "w4_mag_mul3": _stateless(lambda x: (3 * int(x)) if abs(int(x)) > 0 else int(x)),
+    "w4_even_add4": _stateless(lambda x: (int(x) + 4) if (int(x) % 2 == 0) else int(x)),
+    "w4_even_mul2": _stateless(lambda x: (2 * int(x)) if (int(x) % 2 == 0) else int(x)),
+    "w4_odd_add3": _stateless(lambda x: (int(x) + 3) if (int(x) % 2 == 1) else int(x)),
+    "w4_mod4_add2": _stateless(lambda x: (int(x) + 2) if (int(x) % 4 == 0) else int(x)),
+    "w4_zero_add2": _stateless(lambda x: (int(x) + 2) if int(x) == 0 else int(x)),
 }
 
 

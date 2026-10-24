@@ -111,6 +111,21 @@ DECLARED = (
     dict(task_id="w3a_ret_w1_if_pos", split="w3_retain", family="wave1", mechanism="if_pos", instance_seed=942, role="acquire", retain_wave="wave1"),
     dict(task_id="w3a_ret_w2_even", split="w3_retain", family="wave2", mechanism="oob_even_add2", instance_seed=943, role="acquire", retain_wave="wave2"),
     dict(task_id="w3a_ret_w2_pos", split="w3_retain", family="wave2", mechanism="oob_pos_plus3", instance_seed=944, role="acquire", retain_wave="wave2"),
+    dict(task_id="w4d_rel_even_add4", split="w4_related_parity", family="related_parity", mechanism="w4_even_add4", instance_seed=961, role="acquire", unknown_kind="related_parity", w4_group="related_parity"),
+    dict(task_id="w4d_rel_even_mul2", split="w4_related_parity", family="related_parity", mechanism="w4_even_mul2", instance_seed=962, role="acquire", unknown_kind="related_parity", w4_group="related_parity"),
+    dict(task_id="w4d_rel_odd_add3", split="w4_related_parity", family="related_parity", mechanism="w4_odd_add3", instance_seed=963, role="acquire", unknown_kind="related_parity", w4_group="related_parity"),
+    dict(task_id="w4d_unrel_abs_plus3", split="w4_unrelated_guard", family="unrelated_guard", mechanism="w4_abs_plus3", instance_seed=964, role="acquire", unknown_kind="unrelated_guard", w4_group="unrelated_guard"),
+    dict(task_id="w4d_unrel_abs_sub1", split="w4_unrelated_guard", family="unrelated_guard", mechanism="w4_abs_sub1", instance_seed=965, role="acquire", unknown_kind="unrelated_guard", w4_group="unrelated_guard"),
+    dict(task_id="w4d_look_mod4_add2", split="w4_misleading_lookalike", family="misleading_lookalike", mechanism="w4_mod4_add2", instance_seed=966, role="acquire", unknown_kind="misleading_lookalike", w4_group="misleading_lookalike"),
+    dict(task_id="w4d_look_zero_add2", split="w4_misleading_lookalike", family="misleading_lookalike", mechanism="w4_zero_add2", instance_seed=967, role="acquire", unknown_kind="misleading_lookalike", w4_group="misleading_lookalike"),
+    dict(task_id="w4d_oog_count", split="w4_oog", family="true_oog", mechanism="count", instance_seed=971, role="reject", unknown_kind="oog", w4_group="true_oog"),
+    dict(task_id="w4d_oog_delay", split="w4_oog", family="true_oog", mechanism="delay", instance_seed=972, role="reject", unknown_kind="oog", w4_group="true_oog"),
+    dict(task_id="w4d_ret_w1_add1", split="w4_retain", family="wave1", mechanism="add1", instance_seed=981, role="acquire", retain_wave="wave1", w4_group="retain"),
+    dict(task_id="w4d_ret_w1_if_pos", split="w4_retain", family="wave1", mechanism="if_pos", instance_seed=982, role="acquire", retain_wave="wave1", w4_group="retain"),
+    dict(task_id="w4d_ret_w2_even", split="w4_retain", family="wave2", mechanism="oob_even_add2", instance_seed=983, role="acquire", retain_wave="wave2", w4_group="retain"),
+    dict(task_id="w4d_ret_w2_pos", split="w4_retain", family="wave2", mechanism="oob_pos_plus3", instance_seed=984, role="acquire", retain_wave="wave2", w4_group="retain"),
+    dict(task_id="w4d_ret_w3_mul3", split="w4_retain", family="wave3", mechanism="w3_even_mul3", instance_seed=985, role="acquire", retain_wave="wave3", w4_group="retain"),
+    dict(task_id="w4d_ret_w3_odd", split="w4_retain", family="wave3", mechanism="w3_odd_plus2", instance_seed=986, role="acquire", retain_wave="wave3", w4_group="retain"),
 )
 
 

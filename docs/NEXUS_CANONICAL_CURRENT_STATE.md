@@ -28,25 +28,28 @@ A row may be Implemented and still Undemonstrated.
 | 2 | Ordinary conversation | Yes | No | Chat routing and ChatML runtime exist; not a general conversational agent |
 | 3 | Local GGUF inference | Yes | No | PersistentLocalRuntime CPU path runs; not learned improvement |
 | 4 | Mathematics (tools) | Yes | No | Calculator/expression path exists; capability map 1–2/6 |
-| 5 | Learning new concepts and mechanisms | Yes | Bounded | Verified Wave-3 `cursor/seed-continual-wave3-assimilation`: after assimilating Wave-2 `even_add2`, continual solved 9/9 unseen parity compositions at 2841 vs 7113 / 6513 / 6846 and abstained on 6/6 true out-of-grammar tasks with 0 false positives, while retaining 12/12 Wave-1/Wave-2 retests. Prior `0d4596e`: 0% bank coverage; bank-only 12/12 exhaust, 0 FP; abductive 12/12 + 6/6 at 6876 vs 8106 / 7875 (`2292` vs `2625` / `2702` per seed). |
-| 6 | Compositional generalization | Yes | Bounded | Same Wave-3 and `0d4596e` results as row 5; also `6e0df3a` sub-clause transfer. Knowledge vault/FTS5 still runs separately and is undemonstrated as general retrieval. |
+| 5 | Learning new concepts and mechanisms | Yes | Bounded | Verified `c8bc5ad` (`cursor/seed-continual-wave3-assimilation`, 156 verified cells): Assimilating Wave-2's Type B fallback discovery (`even_add2`) reduced Wave-3 expressible acquisition work from `7113` (Wave-1 freeze), `6513` (learned open), and `6846` (untrained) down to `2841` (`947` vs `2371 / 2171 / 2282` per seed across 3 seeds, `env+synth` `813` vs `2213 / 2045 / 2102`) after charging distill (`90`) and retrieval (`9`), while achieving `6/6` calibrated abstentions (`0` false positives) on true out-of-grammar mechanisms (`count`/`delay`) and `12/12` Wave-1 + Wave-2 retention (`even_add2` retest cost reduced from `844` to `280`). |
+| 6 | Compositional generalization | Yes | Bounded | Same `c8bc5ad` result as row 5; also `0d4596e` and `6e0df3a`. Knowledge vault/FTS5 still runs separately and is undemonstrated as general retrieval. |
 | 7 | Bounded coding / API-ID | Yes | No | Named-ID and apply-mode grids ran; task success 0 or tool-tie |
 | 8 | Mechanism investigation policy | Yes | Bounded | `f2e8942` cheaper probes at matched accuracy in one suite |
-| 9 | Efficient knowledge acquisition | Yes | Bounded | Verified Wave-3: continual 2841 vs frozen 7113 / learned-open 6513 / untrained 6846 on unseen parity compositions after distill 90 + retrieval 9 (`947` vs `2371` / `2171` / `2282` per seed). Also `0d4596e` (`6876` vs `8106` / `7875`) and `6e0df3a` (`624` vs `699` / `858`). |
+| 9 | Continual improvement without forgetting | Yes | Bounded | Verified `c8bc5ad` (`cursor/seed-continual-wave3-assimilation`, 156 verified cells): Assimilating Wave-2's Type B fallback discovery (`even_add2`) reduced Wave-3 expressible acquisition work from `7113` (Wave-1 freeze), `6513` (learned open), and `6846` (untrained) down to `2841` (`947` vs `2371 / 2171 / 2282` per seed across 3 seeds, `env+synth` `813` vs `2213 / 2045 / 2102`) after charging distill (`90`) and retrieval (`9`), while achieving `6/6` calibrated abstentions (`0` false positives) on true out-of-grammar mechanisms (`count`/`delay`) and `12/12` Wave-1 + Wave-2 retention (`even_add2` retest cost reduced from `844` to `280`). |
 | 10 | Learning-to-learn / meta-learning | Yes | Bounded only | Wave-3: Wave-2 even invention made the next parity family cheaper (947 vs 2371 frozen). General L2L unestablished |
-| 11 | Handling unknowns | Yes | Bounded | Verified Wave-3: all methods abstained on true out-of-grammar `count`/`delay` (`6/6`, 0 FP). Prior `0d4596e`: bank-only 12/12 exhaust, 0 FP. Whole-task Wave-2 cache hits remain 0. |
-| 12 | Compositional generalization | Yes | Bounded | Verified Wave-3 Type A even-residual reuse on `even_mul3`/`even_sub1`/`odd_plus2`; also `0d4596e` and `6e0df3a`. Type B `even_add2` still fell back without a false library hit. |
-| 13 | Efficient knowledge acquisition / Track B | No | Bounded / No | Efficient acquisition is the Wave-3 / `0d4596e` / `6e0df3a` bounded result (see rows 5 and 9). Open-domain coding / Track B remains closed. |
+| 11 | Handling unknowns | Yes | Bounded | Verified `c8bc5ad`: `6/6` calibrated abstentions (`0` false positives) on true out-of-grammar `count`/`delay`. Prior `0d4596e`: bank-only 12/12 exhaust, 0 FP. Whole-task Wave-2 cache hits remain 0. |
+| 12 | Compositional generalization | Yes | Bounded | Same `c8bc5ad` result as row 5; Type A even-residual reuse on `even_mul3`/`even_sub1`/`odd_plus2`. Also `0d4596e` and `6e0df3a`. |
+| 13 | Efficient knowledge acquisition | Yes | Bounded | Verified `c8bc5ad` (`cursor/seed-continual-wave3-assimilation`, 156 verified cells): Assimilating Wave-2's Type B fallback discovery (`even_add2`) reduced Wave-3 expressible acquisition work from `7113` (Wave-1 freeze), `6513` (learned open), and `6846` (untrained) down to `2841` (`947` vs `2371 / 2171 / 2282` per seed across 3 seeds, `env+synth` `813` vs `2213 / 2045 / 2102`) after charging distill (`90`) and retrieval (`9`), while achieving `6/6` calibrated abstentions (`0` false positives) on true out-of-grammar mechanisms (`count`/`delay`) and `12/12` Wave-1 + Wave-2 retention (`even_add2` retest cost reduced from `844` to `280`). Track B remains closed. |
 
-**Continual Wave-3 assimilation (rows 5, 6/12, 9/13, 10, 11).**
-After Wave-2 invented `even_add2` by Type B fallback, continual
-assimilated the even guard and parity probes. On unseen Wave-3 parity
-compositions it spent `2841` versus `7113` (Wave-1 freeze), `6513`
-(learned open), and `6846` (untrained), or `947` versus `2371` /
-`2171` / `2282` per seed, after charging distill 90 and retrieval 9.
-True out-of-grammar `count`/`delay` were 6/6 abstentions with 0 false
-positives. Reserved Wave-1 and Wave-2 retests were 12/12. Artifact
+**Continual Wave-3 assimilation (`c8bc5ad`, rows 5, 6/12, 9, 11, 13).**
+Verified 156 cells. Assimilating Wave-2's Type B fallback discovery
+(`even_add2`) reduced Wave-3 expressible acquisition work from `7113`
+(Wave-1 freeze), `6513` (learned open), and `6846` (untrained) down to
+`2841` (`947` vs `2371 / 2171 / 2282` per seed across 3 seeds,
+`env+synth` `813` vs `2213 / 2045 / 2102`) after charging distill
+(`90`) and retrieval (`9`), while achieving `6/6` calibrated
+abstentions (`0` false positives) on true out-of-grammar mechanisms
+(`count`/`delay`) and `12/12` Wave-1 + Wave-2 retention (`even_add2`
+retest cost reduced from `844` to `280`). Artifact
 `ad9b569c4910c4084a3faa60625bf805bf175e472c083abcb920eb3d5fe933d6`.
+Do not rescore `c8bc5ad`, `0d4596e`, `6e0df3a`, or `f2e8942`.
 Not general learning-to-learn.
 
 **Beyond-catalog acquisition (`0d4596e`, rows 5, 6/12, 9/13, 11).**

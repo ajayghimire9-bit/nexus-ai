@@ -134,6 +134,7 @@ class SubMechanismLibrary:
         self.whole_misses = 0
         self.retrieval_evals = 0
         self.distill_cost = 0
+        self.leaves: list[dict[str, Any]] = []
 
     def reset(self) -> None:
         self.clauses = []
@@ -145,6 +146,7 @@ class SubMechanismLibrary:
         self.whole_misses = 0
         self.retrieval_evals = 0
         self.distill_cost = 0
+        self.leaves = []
 
     def remember_whole(self, mechanism: str, transcript: list[dict[str, Any]]) -> None:
         evidence = [
@@ -203,10 +205,34 @@ class SubMechanismLibrary:
             self.sub_misses += 1
         return deepcopy(found)
 
+    def remember_leaf(self, leaf: str, source: str | None = None) -> dict[str, Any]:
+        name = str(leaf)
+        for row in self.leaves:
+            if str(row.get("leaf")) == name:
+                return row
+        stored = dict(leaf=name, source_mechanism=source, clause_kind="leaf")
+        self.leaves.append(stored)
+        return stored
+
+    def stored_leaves(self) -> list[str]:
+        self.retrieval_evals += 1
+        return sorted({str(row.get("leaf")) for row in self.leaves if row.get("leaf")})
+
+    def lookup_leaf(self, leaf: str) -> list[dict[str, Any]]:
+        self.retrieval_evals += 1
+        found = [row for row in self.leaves if str(row.get("leaf") or "") == str(leaf)]
+        self.retrieval_evals += len(found)
+        if found:
+            self.sub_hits += 1
+        else:
+            self.sub_misses += 1
+        return deepcopy(found)
+
     def snapshot(self) -> dict[str, Any]:
         return dict(
             n_clauses=len(self.clauses),
             clauses=deepcopy(self.clauses),
+            leaves=deepcopy(self.leaves),
             signatures=sorted(self.by_signature),
             sub_hits=self.sub_hits,
             sub_misses=self.sub_misses,

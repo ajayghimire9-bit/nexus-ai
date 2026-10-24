@@ -1,6 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore the Wave-3 assimilation grid
+## Current next — Wave-4 diagnostic ablations (protocol locked)
+
+The [Wave-4 protocol](NEXUS_WAVE4_DIAGNOSTIC_ABLATIONS_PROTOCOL.md)
+separates the Wave-2 even clause from the Wave-2 parity probe
+strategy on related, unrelated, lookalike, and out-of-grammar tasks.
+Do not rescore `c8bc5ad`, `0d4596e`, `6e0df3a`, or `f2e8942`. The
+claim is not general learning-to-learn. Track B stays closed.
+
+## Previous next — do not rescore the Wave-3 assimilation grid
 
 The [Wave-3 run](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_RESULTS.md)
 assimilates Wave-2 `even_add2` and cheapens unseen parity compositions
