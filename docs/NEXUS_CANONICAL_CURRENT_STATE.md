@@ -170,6 +170,26 @@ from `4cac886`:
    engineer-written mechanisms. Wall 0.066 s, frozen debit 0. Not general
    learning-to-learn.
 
+**Wave-8 deconfounded equal-capability evolution (252 cells across 3 permuted-order seeds, protocol `4a5a5f8`).**
+[Protocol](NEXUS_WAVE8_DECONFOUNDED_PROTOCOL.md),
+[Results](NEXUS_WAVE8_DECONFOUNDED_RESULTS.md), artifact
+`artifacts/seed_wave8_deconfounded_equal_capability.json` (`611461d475f5dcb8fd7b1ae3a9be365419793800241b8b035658571cc973d586`),
+reconstructing I/O & AST verifier `scripts/verify_wave8_deconfounded_equal_capability.py` (`"valid": true`, `252` rows re-executed on public and private I/O pairs, AST-verified `solve_unfamiliar_task(self, env, public_budget)` with zero stage/split/task_id labels).
+- **All 6 equal-capability methods solve `42/42` (`100%` mapping and private accuracy)**: Removing the L2 catalog restriction eliminates the `30/36` vs `36/36` accuracy gap from `4cac886`.
+- **Suite totals (`codegen_plus_synthesis / total_work`, per-seed `mean [min..max]`)**:
+  - `equal_scratch`: `2268 / 3414` (`1138.0 [1138..1138]`)
+  - `ordinary_persistent_memoization`: `2300 / 3446` (`1148.67 [1147..1150]`, `memoized_program_reused = 3`)
+  - `persistent_nexus_hierarchy_disabled`: `2019 / 3444` (`1148.0 [1133..1159]`, `l1_sub_predicate_reused = 13`, `l2_full_skill_reused = 0`)
+  - `persistent_nexus_gate_disabled`: `1804 / 3238` (`1079.33 [1062..1095]`, `l1_sub_predicate_reused = 13`, `l2_full_skill_reused = 3`)
+  - `persistent_nexus_pruning_disabled`: `1603 / 3128` (`1042.67 [996..1082]`, `l1_sub_predicate_reused = 16`, `l2_full_skill_reused = 3`)
+  - `persistent_nexus_full`: `1733 / 3250` (`1083.33 [1071..1107]`, `l1_sub_predicate_reused = 13`, `l2_full_skill_reused = 3`, `schema_distill_cost = 36`, `role_probe_cost = 168`, `gate_evals = 83`)
+- **Honest Tradeoffs Disclosed**:
+  - On **G1 (`234` vs `358`)** and **G1+G2 total work (`645` vs `675`)**, `equal_scratch` beats `persistent_nexus_full` once `schema_distill_cost` (`36`) and `role_probe_cost` (`168`) are charged in raw rows and L1/L2 tasks precede G1/G2 in permuted seeds.
+  - On **Exact L2 Reuse (`w8d_l2_reuse_full_rotate_bang`)**, `ordinary_persistent_memoization` ties `persistent_nexus_full` (`5` synthesis evals each) with `0` gate overhead; `persistent_nexus_full` wins only when a sub-predicate (`palindrome_pred`) is re-composed with a *different* transform (`w8d_l1_reuse_palindrome_q`, `w8d_l2_compose_pal_rotate_q`), yielding `946` vs `1194` `codegen_plus_synthesis` on L1+L2.
+  - On **Delayed Reuse After Pruning (`w8d_delayed_first_last_hash`)**, `usage_age_prune` drops `first_eq_last` before the delayed task in Seeds 0 and 2, forcing re-invention (`316` vs `144` work on `delayed`), so `persistent_nexus_pruning_disabled` beats `persistent_nexus_full` on suite-wide total work (`3128` vs `3250`).
+  - On **OOG (`w8d_oog_caesar`)**, the prerequisite gate beats `persistent_nexus_gate_disabled` (`376` vs `434` total work, `282` vs `353` `codegen+syn`), though across all 14 tasks the `83` cumulative gate checks leave `persistent_nexus_full` `12` work units behind `persistent_nexus_gate_disabled` (`3250` vs `3238`) while `71` units ahead on `codegen_plus_synthesis` (`1733` vs `1804`).
+- **Scope**: Engineer-written symbolic synthesis, relational schema distillation, prerequisite gating, and usage/age pruning (`learning_to_learn_established = false`, Track B closed, `0` model calls, `0 s` frozen debit).
+
 ## Current — Wave-8 hierarchical gated evolution (results)
 
 [Protocol](NEXUS_WAVE8_HIERARCHICAL_PROTOCOL.md),
