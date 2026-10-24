@@ -320,6 +320,29 @@ def propose_guarded_template(
     return RepairProposal("apply", "template_family_matched", inferred, files=patched)
 
 
+def propose_inclusive_tool(
+    request: str,
+    files: dict[str, str],
+    public_tests: list[dict[str, Any]],
+    private_tests: list[dict[str, Any]] | None = None,
+) -> RepairProposal:
+    """Generic inclusive repair: same gates as memory, Lt or Gt rebound.
+
+    Programmer-supplied. No source acquisition. This is the equally
+    capable simple baseline for acquired inclusive schemas.
+    """
+    del private_tests
+    inferred = infer_family(request, public_tests)
+    if inferred == "missing_function":
+        return RepairProposal("abstain", "inclusive_tool_family_unsupported", "other")
+    if inferred == "null_default":
+        return RepairProposal("abstain", "inclusive_tool_family_unsupported", "other")
+    return _boundary_decision(
+        request, public_tests, "inclusive_tool", True,
+        lambda: apply_make_inclusive(files),
+    )
+
+
 def infer_family(request: str, public_tests: list[dict[str, Any]]) -> str | None:
     text = request.lower()
     if any(word in text for word in ("create function", "add function", "implement ", "write function")):
