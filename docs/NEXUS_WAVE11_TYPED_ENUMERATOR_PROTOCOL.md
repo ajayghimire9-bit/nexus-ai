@@ -13,18 +13,21 @@
    - Recovered the exact 3-line patch (`git diff 9afb110 16bb044 -- src/nexus/seed/wave10_atomic_self_evolving_learner.py`).
    - Reconstructed and saved the unamended failure artifact at `artifacts/seed_wave10_pre_amend_failed_run.json` (`hash`: `6a8493a609fd7480f45deaf9061334f81442a5de5d49aa59ac6f5fa830761562`).
    - Reclassified `16bb044 -> f253be1` in `docs/NEXUS_WAVE10_ATOMIC_SELF_EVOLVING_RESULTS.md` and `docs/NEXUS_CANONICAL_CURRENT_STATE.md` as **Developmental / Post-Amend Run (1 local commit amendment after initial run failure)**.
-2. **Commit 1 (`Pre-Assessment Code Freeze`):**
-   - Commits the Wave-10 forensic recovery artifact and updated docs, `src/nexus/seed/wave11_typed_program_enumerator.py`, `src/nexus/seed/mechanism_wave11_fresh_assessment.py`, `scripts/run_wave11_typed_assessment.py`, `scripts/verify_wave11_typed_enumerator.py`, `tests/test_seed_wave11_typed_enumerator.py`, and this protocol document **before** `scripts/run_wave11_typed_assessment.py` is ever executed.
+2. **Commit 1a (`c72a690`) -> Commit 2a (`ffa43de`, Closed `w11f_*` Attempt Without Amending):**
+   - In `c72a690`, `src/nexus/seed/wave11_typed_program_enumerator.py` and `src/nexus/seed/mechanism_wave11_fresh_assessment.py` ran cleanly and produced `artifacts/seed_wave11_typed_program_enumerator.json` (`hash`: `3bd32ab59b10797fb76b13060a61a402e4fe44c547835f5db954626a15097f07`, `gates.passed == True`, `48/48` solved across all 4 methods), but the CLI wrapper `scripts/run_wave11_typed_assessment.py` raised `KeyError: 'suite_totals'` (`payload["totals"]["suite"]` vs `payload["suite_totals"]`).
+   - Pursuant to the Part-3 Unconditional No-Amend Rule, `c72a690` was **never amended**; the `w11f_*` artifact was committed and closed as `"developmental / closed"` in `ffa43de`, and a brand-new unseen 16-task assessment suite `src/nexus/seed/mechanism_wave11b_fresh_assessment.py` (`w11b_*`) was constructed while keeping `src/nexus/seed/wave11_typed_program_enumerator.py` (`70076ef08dc310399878372710387da9833ba295d0374a2a031249e2987ae86a`) 100% untouched.
+3. **Commit 1b (`Pre-Assessment Code Freeze for mechanism_wave11b_fresh_assessment.py`):**
    - SHA-256 digests recorded in `scripts/verify_wave11_typed_enumerator.py`:
      - `src/nexus/seed/deconfounded_equal_capability.py`: `ef0bceb9e10d9f14febdb0df75a6516a9413878f3aa2d63177dda212de37fe1e`
      - `src/nexus/seed/wave9_learned_abstraction_meta_control.py`: `3be126c6470fc45d29a35863aea9d68ca30497756f9ef4ebbdd02c1662677143`
      - `src/nexus/seed/wave10_atomic_self_evolving_learner.py`: `3ee0a80e757f00b00bc7b73edbb2c665ac83109a59543b5a6b6b5646e62389d0`
      - `src/nexus/seed/wave11_typed_program_enumerator.py`: `70076ef08dc310399878372710387da9833ba295d0374a2a031249e2987ae86a`
      - `src/nexus/seed/mechanism_wave11_fresh_assessment.py`: `ec99f31b07f01f4aa0dedf92584e1354a6ddf34b59984b8641b9462d015411a7`
-3. **Commit 2 (`Single-Shot Assessment Run & Results Report`):**
-   - Runs `scripts/run_wave11_typed_assessment.py` once and verifies `artifacts/seed_wave11_typed_enumerator.json` with `scripts/verify_wave11_typed_enumerator.py`.
+     - `src/nexus/seed/mechanism_wave11b_fresh_assessment.py`: `adc0d49581b2d81c1b464c6f4185e77f5e2ded6460d0ef9a24cdca5799d0738e`
+4. **Commit 2b (`Single-Shot Assessment Run & Results Report`):**
+   - Runs `scripts/run_wave11_typed_assessment.py` (`mechanism_wave11b_fresh_assessment.py`) once and verifies `artifacts/seed_wave11b_typed_program_enumerator.json` with `scripts/verify_wave11_typed_enumerator.py`.
    - **NEVER** uses `git commit --amend`.
-   - `git diff Commit_1 -- src/ scripts/ tests/` must remain **100% empty**.
+   - `git diff Commit_1b -- src/ scripts/ tests/` must remain **100% empty**.
 
 ---
 

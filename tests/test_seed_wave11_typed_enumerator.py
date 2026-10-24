@@ -274,9 +274,9 @@ def test_wave11_artifact_verification_when_present() -> None:
     import sys
 
     root = Path(__file__).resolve().parents[1]
-    artifact_path = root / "artifacts" / "seed_wave11_typed_enumerator.json"
+    artifact_path = root / "artifacts" / "seed_wave11b_typed_program_enumerator.json"
     if not artifact_path.exists():
-        pytest.skip("Wave-11 assessment artifact not yet generated (Pre-Commit-1 freeze)")
+        pytest.skip("Wave-11b assessment artifact not yet generated (Pre-Commit-1b freeze)")
 
     if str(root / "scripts") not in sys.path:
         sys.path.insert(0, str(root / "scripts"))
@@ -285,4 +285,5 @@ def test_wave11_artifact_verification_when_present() -> None:
     report = verify_wave11_artifact(root)
     assert report["valid"] is True, f"Verification failed: {report}"
     assert report["replayed_rows"] == 192
+
 
