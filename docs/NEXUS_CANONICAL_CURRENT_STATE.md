@@ -1,5 +1,19 @@
 # NEXUS Seed — Current State
 
+## Wave 14 closed; Wave 15 source preparation
+
+Wave 14 (`53e5317`→`ea17608`) is **Closed Developmental / Invalid (54/54 Accuracy
+& 3/3 Archive Reactivation Passed; Failed Suite Cost Gate Due to Unaborted OOG
+Piecewise Search)**. [Saved-evidence postmortem](NEXUS_WAVE14_FAILED_BLIND_RUN_POSTMORTEM.md)
+corrects task-only versus OOG+ambiguous bucket labels without rewriting results.
+Waves 12 and 13 also remain Developmental / Invalid (Failed Single-Shot Blind
+Gates; Preserved Unamended). No historical suite rerun, amend, reset or rebase.
+Wave 15 is preparation only until its physical pre-holdout code freeze. The owner
+clarified that the Phase-1 runner is allowed, but fresh holdout definitions are
+forbidden before Commit 1; an interleaved other-split task supplies the third
+archive-aging distractor while preserving 18 tasks/270 cells. Track B remains
+closed, local_model_runtime.py untouched, zero model calls/frozen-ledger debit.
+
 ## Central Research Gap
 
 NEXUS must reliably encounter something unfamiliar, learn a useful
