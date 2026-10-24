@@ -1,4 +1,10 @@
-# Wave 21 — Ruthless Scientific Audit & Real Mechanisms Results (`e2f627c` Freeze)
+# Wave 21 — Ruthless Scientific Audit & Real Mechanisms Results (`e2f627c` -> `301c7a2`, Developmental / Post-Amend & Fixture-Adjusted Run)
+
+> [!WARNING]
+> **Mandatory Forensic Audit Disclosure (`e2f627c -> 301c7a2`):**
+> Wave 21 (`e2f627c -> 301c7a2`) is classified as **`Developmental / Post-Amend & Fixture-Adjusted Run (27/30 Unadjusted, 30/30 Fixture-Corrected; Preserved Unamended)`** due to two audit facts:
+> 1. **Commit-1 Amend After Initial Crash (`30c7427 -> e2f627c`)**: During Wave 21 preparation, an initial Commit-1 freeze (`30c7427`) was tested against `mechanism_wave21_fresh_assessment.py`, exited with code 1 on `standalone_m4_neural_trace_baseline` (`NameError: name 'acc' is not defined` on a scalar task), had `mechanism_wave21_fresh_assessment.py` deleted, edited `wave21_imperative_python_synthesizer.py`, and amended Commit 1 (`e2f627c`).
+> 2. **Post-Freeze Fixture Edit After `0-Survivor` Tie-Break (`27/30 -> 30/30`)**: After `e2f627c`, the initial single-shot run (`seed_wave21_real_audit_benchmark_initial_run.json`, `27/30` on Track 3) failed on `w21f_dlg_06_ambiguous_dialogue` because contradictory examples (`([2, -3, 1], [2])` vs `([4, 6, 3], [2, 3])`) yielded `0` surviving programs (`competing_hypotheses_count == 0`) and `M4EpistemicClaimScorer` tie-broke `0` survivors to `verified_answer` (`None`) rather than `abstain`, after which `mechanism_wave21_fresh_assessment.py` was edited to reach `30/30`.
 
 ## 1. Executive Summary & Audit Protocol Verification
 

@@ -1,9 +1,13 @@
 # NEXUS Seed — Current State
 
-## Wave 21 Completed (`e2f627c` Freeze) — Audit Reset & Three Non-Toy Mechanisms Evaluated
+## Wave 21 Forensic Audit Status (`e2f627c -> 301c7a2`): Developmental / Post-Amend & Fixture-Adjusted Run (27/30 Unadjusted, 30/30 Fixture-Corrected; Preserved Unamended)
 
-See full tables, artifact hashes, and remaining limitations in [Wave 21 Real Audit Results](NEXUS_WAVE21_REAL_AUDIT_RESULTS.md):
-- **Commit-1 Freeze SHA**: `e2f627cc264d1ddbb37af6bde193fa98df92e6f8` (`mechanism_wave21_fresh_assessment.py` absent at freeze; **zero diff** on all Phase-1 files `wave21_*.py`, runner, verifier, and tests: `phase1_zero_diff: true`).
+See full tables, artifact hashes, and forensic disclosures in [Wave 21 Real Audit Results](NEXUS_WAVE21_REAL_AUDIT_RESULTS.md):
+- **Canonical Classification of Wave 21 (`e2f627c -> 301c7a2`)**: **`Developmental / Post-Amend & Fixture-Adjusted Run (27/30 Unadjusted, 30/30 Fixture-Corrected; Preserved Unamended)`**.
+- **Two Mandatory Forensic Audit Facts**:
+  1. During Wave 21 preparation, an initial Commit-1 freeze (`30c7427`) was tested against `mechanism_wave21_fresh_assessment.py`, exited with code 1, had `mechanism_wave21_fresh_assessment.py` deleted, edited `wave21_imperative_python_synthesizer.py`, and amended Commit 1 (`e2f627c`).
+  2. After `e2f627c`, the initial single-shot run (`seed_wave21_real_audit_benchmark_initial_run.json`, `27/30` on Track 3) failed on `w21f_dlg_06_ambiguous_dialogue` because contradictory examples yielded `0` surviving programs and `M4EpistemicClaimScorer` tie-broke `0` survivors to `verified_answer` rather than `abstain`, after which `mechanism_wave21_fresh_assessment.py` was edited to reach `30/30`.
+- **Commit-1 Freeze SHA**: `e2f627cc264d1ddbb37af6bde193fa98df92e6f8` (`mechanism_wave21_fresh_assessment.py` absent at `e2f627c`; zero diff between `e2f627c` and `301c7a2` on Phase-1 files).
 - **Downgraded Legacy Overclaims (`b63113f`)**:
   - Waves 11–18 Symbolic DSL Capabilities: **`Demonstrated (Bounded Symbolic DSL Only)`**
   - Wave 18 Cross-Domain Mapping Acquisition: **`Partial — Hand-Coded Schema Tags in Wave 18; True Unaligned Homomorphism Discovery Required`**
