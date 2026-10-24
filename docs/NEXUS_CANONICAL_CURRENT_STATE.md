@@ -143,20 +143,32 @@ G1 (`534` vs `198`) because analogy ran before a depth-1 fast path.
 Authored token-queue transfer with one compiled predicate, not
 general learning-to-learn.
 
-**Wave-8 hierarchical gated evolution (216 cells, protocol
-`561a563`).** Artifact
-`ec06a9508d6138b78d6ef2a06ca374925b71b33967c29594c7fff5530722a8c2`.
-Lazy depth-1 search cut G1 to `201` vs Wave-7-style eager `558`
-while G1+G2 stayed at `756` vs scratch `1,650`. Hierarchical
-`L0→L1→L2` compile (L2 AST invokes compiled `palindrome_pred`) cut
-G3 to `2,202` / `1,359` vs flat-gated L1 `6,069` / `5,223` and
-scratch `9,186` / `8,781`. The alphabet-closed activation gate kept
-OOG Caesar at `1,269` vs ungated Wave-7-style `5,427` and
-hierarchical-ungated `3,912` (scratch `2,295`). Suite `4,989` /
-`3,228` vs flat-gated `8,865` / `7,092`. NEXUS `36/36` mapping and
-private; `0` false locks; `3/3` amb/OOG/retain. Wall 0.066 s, frozen
-debit 0. Authored hierarchical catalog plus a hand-specified I/O
-gate, not general learning-to-learn.
+**Wave-8 hierarchical gated evolution (`4cac886`, 216 cells, protocol
+`561a563` — CONFOUNDED; superseded by deconfounded equal-capability
+Wave-8 below).** Artifact
+`ec06a9508d6138b78d6ef2a06ca374925b71b33967c29594c7fff5530722a8c2`
+(preserved untouched). Post-run code inspection of `4cac886` identified
+four implementation confounds that invalidate strong comparative claims
+from `4cac886`:
+1. **Label Leakage**: `run_domain_b` passed `stage = task["stage"]`
+   (`"g1"`, `"g2"`, `"l1"`, `"l2"`, `"oog"`) directly into
+   `synthesize_wave8` and gated `allow_micro = stage in {"l1", "l2", "oog"}`.
+2. **Unequal Catalogs on `"l2"`**: On `stage == "l2"`, NEXUS searched a
+   2-item `_l2_catalog()`, while `scratch` and `static` were denied the L2
+   extension path (`30/36` vs `36/36` resulted from unequal catalog access,
+   not learned hierarchy).
+3. **Unequal Catalogs on `"oog"`**: On `stage == "oog"`, ungated controls
+   were handed an enlarged `MICRO_CANDIDATES + DEEP_L2_L0` catalog.
+4. **Omitted Schema Cost, Misnamed Pruning & Non-Reconstructing Verifier**:
+   `schema_distill_cost` recorded `0` in raw rows for `NEXUS` and
+   `FLAT_GATED`; `mdl_prune()` was actually a **usage-based pruning
+   heuristic (`age/use-count`)** rather than MDL; L2 tasks reused the L1
+   sub-predicate `palindrome_pred` rather than the complete L2 rotate skill;
+   and `verify_wave8_hierarchical_gated_evolution.py` checked arithmetic
+   sums/flags without re-executing saved programs on saved I/O observations.
+   Furthermore, the compilation, gating, and pruning rules themselves are
+   engineer-written mechanisms. Wall 0.066 s, frozen debit 0. Not general
+   learning-to-learn.
 
 ## Current — Wave-8 hierarchical gated evolution (results)
 
