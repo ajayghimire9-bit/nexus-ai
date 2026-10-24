@@ -1,14 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — out-of-bank acquisition with calibrated unknowns
+## Current next — do not rescore the beyond-catalog grid
 
-Protocol
-[NEXUS_UNFAMILIAR_BEYOND_CATALOG_PROTOCOL.md](NEXUS_UNFAMILIAR_BEYOND_CATALOG_PROTOCOL.md).
-Holdout mechanisms have 0% coverage in `supplied_bank`. Bank-only must
-abstain with zero false positives. Open grammar must solve Type A and
-Type B. Abductive residual synthesis must beat cleared open grammar
-after distill, retrieval, confirmatory, and residual costs. Do not
-rescore `6e0df3a` or `f2e8942`. Track B stays closed.
+The [beyond-catalog run](NEXUS_UNFAMILIAR_BEYOND_CATALOG_RESULTS.md)
+solves 0%-bank holdouts with confirmatory probes: abductive 6876 vs
+cleared open 7875 vs untrained 8106, while bank-only abstains 12/12
+with 0 false positives. Type B misses stored guards and still solves.
+Do not rescore this grid, `6e0df3a`, or `f2e8942`. The claim is not
+general learning-to-learn. A later unknown outside the supplied
+primitive grammar must still abstain. Track B stays closed.
 
 ## Previous next — do not rescore the sub-clause work-reduction grid
 

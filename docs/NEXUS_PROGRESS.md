@@ -1,6 +1,16 @@
 # NEXUS progress log
 
-## Current — sub-clause memory cuts total work at matched accuracy
+## Current — beyond-catalog abduction beats cleared open grammar
+
+Protocol `8554c04`, artifact
+`1a4132bb400209ee3877e06739e2436b8a828ccf76dd2755361456c2a5cecc07`.
+0% bank coverage. Bank-only 12/12 exhaust, 0 FP. Open methods 12/12 +
+6/6. Abductive 6876 vs learned-open 7875 vs untrained 8106 after
+distill 78 + retrieval 24. Type B 0 sub-hits, still solved. Frozen
+debit **0**.
+[Results](NEXUS_UNFAMILIAR_BEYOND_CATALOG_RESULTS.md).
+
+## Previous — sub-clause memory cuts total work at matched accuracy
 
 Protocol `b132bef`, artifact
 `a2cc77d66bcd80a3107e25542e8e96c94fea8348dd59b8c6496b3b568c1cabf2`.

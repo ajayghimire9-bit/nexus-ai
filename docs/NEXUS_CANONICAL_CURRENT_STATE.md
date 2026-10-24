@@ -56,7 +56,20 @@ seeds; \(N_{\text{breakeven}} = 124.4\)–\(163.5\)). General
 learning-to-learn, open-ended acquisition beyond supplied candidates,
 and Wave-2 whole-task skill-memory transfer remain unestablished.
 
-## Current — sub-clause skill work reduction (results)
+## Current — beyond-catalog abductive acquisition (results)
+
+[Protocol](NEXUS_UNFAMILIAR_BEYOND_CATALOG_PROTOCOL.md),
+[results](NEXUS_UNFAMILIAR_BEYOND_CATALOG_RESULTS.md).
+Protocol `8554c04`. Artifact
+`1a4132bb400209ee3877e06739e2436b8a828ccf76dd2755361456c2a5cecc07`.
+Verifier `valid: true` on 72 cells. Holdout coverage in `supplied_bank`
+is 0%. Bank-only abstains 12/12 with 0 false positives. Open grammar
+solves 12/12 + 6/6. Learned open 7875 vs untrained 8106. Abductive
+6876 vs cleared 7875 after distill 78 + retrieval 24 + confirmatory 12.
+Type B misses the library (0 sub-hits) and still solves. Frozen debit
+**0**. Not general learning-to-learn, not open-domain coding.
+
+## Previous — sub-clause skill work reduction (results)
 
 [Protocol](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_PROTOCOL.md),
 [results](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_RESULTS.md).
