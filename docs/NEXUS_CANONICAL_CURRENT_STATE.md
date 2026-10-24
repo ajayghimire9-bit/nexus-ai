@@ -1,8 +1,16 @@
 # NEXUS Seed — Current State
 
-## Wave 22 (`NEXUS-OMEGA`) Demonstrated (Single-Shot Blind Freeze `c1b1a19`, Zero Amends): Sinkhorn Partial Homomorphism, Wake-Sleep Code Dreaming & Epistemic World Compiler
+## Wave 22 Forensic Audit Status (`c1b1a19 -> bf6e747`): Developmental / In-Memory Screened Small Suite & Conflated OOG/Contradiction States (Preserved Unamended)
 
-See full tables, artifact hashes, and forensic verification in [Wave 22 NEXUS-OMEGA Protocol](NEXUS_WAVE22_OMEGA_PROTOCOL.md) and [Wave 22 NEXUS-OMEGA Results](NEXUS_WAVE22_OMEGA_RESULTS.md):
+See full tables, artifact hashes, and forensic disclosures in [Wave 22 NEXUS-OMEGA Protocol](NEXUS_WAVE22_OMEGA_PROTOCOL.md) and [Wave 22 NEXUS-OMEGA Results](NEXUS_WAVE22_OMEGA_RESULTS.md):
+- **Canonical Classification of Wave 22 (`c1b1a19 -> bf6e747`)**: **`Developmental / In-Memory Screened Small Suite & Conflated OOG/Contradiction States (Preserved Unamended)`**.
+- **Six Mandatory External Audit Disclosures**:
+  1. **In-Memory Pre-Screening:** Although `wave22_nexus_omega_engine.py` was frozen at `c1b1a19` without `git commit --amend`, the 12 Track-2 and 12 Track-3 tasks in `mechanism_wave22_fresh_assessment.py` were authored after Commit 1 and tested in Python memory before writing the assessment file to disk.
+  2. **Out-of-Grammar vs. Contradiction Conflation:** `[2, -3, 1] -> [2]` and `[4, 6, 3] -> [2, 3]` have distinct inputs and are satisfied by valid functions (`[v // 2 if v > 2 else v for v in x if v > 0 and v % 2 == 0]` and `[v - 3 if v > 4 else 2 for v in x if v > 0 and v % 2 == 0]`). Having `0` surviving programs in a bounded grammar means `NO_PROGRAM_IN_BOUNDED_GRAMMAR`, NOT a mathematical contradiction.
+  3. **Supplied Compound Loop Boxes:** Wave 22's `STATEMENT_OPERATORS` included pre-written compound loop blocks (`LOOP_SCALAR_POS_ODD_SUM`, `LOOP_UNIQUE_FREQ1_SQUARE`) rather than assembling loops from elementary AST statements.
+  4. **Three-State Witness-Pair Requirement:** Failing to find a second program before budget exhaustion does not prove uniqueness; uniqueness reporting must distinguish `AMBIGUOUS_WITNESS_FOUND`, `UNIQUE_IN_BOUNDED_SPACE`, and `UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED`.
+  5. **Public Validation vs. Private Assessment in Cross-Domain Mapping:** Multi-step transitions used to filter or select a Sinkhorn-GW mapping are **Public Validation** data; **Private Assessment** outcomes must never influence mapping selection.
+  6. **Independent Task Counts vs. Evaluation Cells:** Always report the exact number of independent tasks $N_{\text{tasks}}$ separately from total `tasks × methods × seeds` evaluation cells (`6` Track-1 tasks / `72` cells; `12` Track-2 tasks / `216` cells + `3` repo tasks / `9` cells; `12` Track-3 dialogue turns / `72` cells).
 - **Pre-Assessment Code Freeze Commit**: `c1b1a1988dc54397714fbe400bf2d02ff018f6ee` (`c1b1a19`, following `21d1740`).
 - **Forensic & Git Verification (`scripts/verify_wave22_nexus_omega.py --freeze-commit c1b1a1988dc54397714fbe400bf2d02ff018f6ee`)**:
   - `valid = True`, `errors = []`
