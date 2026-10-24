@@ -1,0 +1,748 @@
+{
+  "kind": "seed_api_apply_modes",
+  "confirmation": false,
+  "learning_to_learn_established": false,
+  "ranking_paused": true,
+  "broader_learning_paused": true,
+  "selection_not_generally_solved": true,
+  "opened_prior_not_rescored": true,
+  "declared_ids": [
+    "api_ap_omit_badge",
+    "api_ap_omit_wrap",
+    "api_ap_use_tone",
+    "api_ap_use_bonus",
+    "api_ap_list_stretch",
+    "api_ap_list_join",
+    "api_ap_elem_tall",
+    "api_ap_elem_wide",
+    "api_ap_ask_limit"
+  ],
+  "rows": [
+    {
+      "task_id": "api_ap_omit_badge",
+      "role": "optional_omitted",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "labels.py": "def badge(name, tag=''):\n    return tag + name\n",
+          "other.py": "def dump(name):\n    return name\n"
+        },
+        "raw": "{\n  \"body\": \"badge_of(item) = badge(item.name, item.title)\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_omit_badge",
+      "role": "optional_omitted",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "labels.py": "def badge(name, tag=''):\n    return tag + name\n",
+          "other.py": "def dump(name):\n    return name\n"
+        },
+        "proposal": {
+          "api_id": "labels.badge",
+          "bindings": {
+            "param": "field.title"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\n  \"api_id\": \"labels.badge\",\n  \"bindings\": {\n    \"param\": \"field.title\"\n  },\n  \"apply\": \"direct\"\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_omit_wrap",
+      "role": "optional_omitted",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef wrap_of(item):\n    notes.wrap(item, pad='.')\n",
+          "notes.py": "def wrap(body, pad='.'):\n    return pad + body + pad\n",
+          "other.py": "def dump(body):\n    return body\n"
+        },
+        "raw": "{\n  \"body\": \"notes.wrap(item, pad='.')\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_omit_wrap",
+      "role": "optional_omitted",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "notes.py": "def wrap(body, pad='.'):\n    return pad + body + pad\n",
+          "other.py": "def dump(body):\n    return body\n"
+        },
+        "proposal": {
+          "api_id": "notes.wrap",
+          "bindings": {
+            "param": "field.body",
+            "field": "field.head"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\"api_id\":\"notes.wrap\",\"bindings\":{\"param\":\"field.body\",\"field\":\"field.head\"},\"apply\":\"direct\"}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_use_tone",
+      "role": "optional_supplied",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef tint_of(item):\n    return paint.tint(item['title'], item['tone'])\n",
+          "paint.py": "def tint(text, tone='grey'):\n    return tone + ':' + text\n",
+          "other.py": "def dump(text):\n    return text\n"
+        },
+        "raw": "{\n  \"body\": \"def tint_of(item):\\n    return paint.tint(item['title'], item['tone'])\\n\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_use_tone",
+      "role": "optional_supplied",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "paint.py": "def tint(text, tone='grey'):\n    return tone + ':' + text\n",
+          "other.py": "def dump(text):\n    return text\n"
+        },
+        "proposal": {
+          "api_id": "paint.tint",
+          "bindings": {
+            "param": "field.tone"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\n  \"api_id\": \"paint.tint\",\n  \"bindings\": {\n    \"param\": \"field.tone\"\n  },\n  \"apply\": \"direct\"\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_use_bonus",
+      "role": "optional_supplied",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef lift_of(item):\n    return item['bonus'] + item['fee']\n",
+          "mathx.py": "def shift(n, extra=0):\n    return n + extra\n",
+          "other.py": "def dump(n):\n    return n\n"
+        },
+        "raw": "{\n  \"body\": \"def lift_of(item):\\n    return item['bonus'] + item['fee']\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_use_bonus",
+      "role": "optional_supplied",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "mathx.py": "def shift(n, extra=0):\n    return n + extra\n",
+          "other.py": "def dump(n):\n    return n\n"
+        },
+        "proposal": {
+          "api_id": "mathx.shift",
+          "bindings": {
+            "param": "field.count"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\n  \"api_id\": \"mathx.shift\",\n  \"bindings\": {\n    \"param\": \"field.count\"\n  },\n  \"apply\": \"direct\"\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_list_stretch",
+      "role": "whole_list",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef grow(item):\n    nums = item['nums']\n    gain = item['gain']\n    return [n * gain for n in nums]\n",
+          "stats.py": "def stretch(nums, gain):\n    return [n * gain for n in nums]\n",
+          "other.py": "def dump(nums):\n    return list(nums)\n"
+        },
+        "raw": "{\n  \"body\": \"def grow(item):\\n    nums = item['nums']\\n    gain = item['gain']\\n    return [n * gain for n in nums]\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_list_stretch",
+      "role": "whole_list",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "stats.py": "def stretch(nums, gain):\n    return [n * gain for n in nums]\n",
+          "other.py": "def dump(nums):\n    return list(nums)\n"
+        },
+        "proposal": {
+          "api_id": "stats.stretch",
+          "bindings": {
+            "gain": "field.gain"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\"api_id\":\"stats.stretch\",\"bindings\":{\"gain\":\"field.gain\"},\"apply\":\"direct\"}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_list_join",
+      "role": "whole_list",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef tape_of(item):\n    parts = item['parts']\n    glue = item['glue']\n    return ''.join(parts) + glue\n",
+          "bags.py": "def join_all(parts, glue):\n    text = ''\n    first = True\n    for part in parts:\n        text = part if first else text + glue + part\n        first = False\n    return text\n",
+          "other.py": "def dump(parts):\n    return list(parts)\n"
+        },
+        "raw": "{\n  \"body\": \"def tape_of(item):\\n    parts = item['parts']\\n    glue = item['glue']\\n    return ''.join(parts) + glue\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_list_join",
+      "role": "whole_list",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "bags.py": "def join_all(parts, glue):\n    text = ''\n    first = True\n    for part in parts:\n        text = part if first else text + glue + part\n        first = False\n    return text\n",
+          "other.py": "def dump(parts):\n    return list(parts)\n"
+        },
+        "proposal": {
+          "api_id": "bags.join_all",
+          "bindings": {
+            "param": "field.parts",
+            "field": "elem.parts"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\n  \"api_id\": \"bags.join_all\",\n  \"bindings\": {\n    \"param\": \"field.parts\",\n    \"field\": \"elem.parts\"\n  },\n  \"apply\": \"direct\"\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_elem_tall",
+      "role": "element_wise",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef tall_ok(item):\n    return over(item['heights'], item['bar'])\n",
+          "gate.py": "def over(n, bar):\n    return n > bar\n",
+          "other.py": "def dump(n):\n    return n\n"
+        },
+        "raw": "{\n  \"body\": \"return over(item['heights'], item['bar'])\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_elem_tall",
+      "role": "element_wise",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "gate.py": "def over(n, bar):\n    return n > bar\n",
+          "other.py": "def dump(n):\n    return n\n"
+        },
+        "proposal": {
+          "api_id": "gate.over",
+          "bindings": {
+            "param": "field.heights",
+            "field": "elem.heights"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\"api_id\":\"gate.over\",\"bindings\":{\"param\":\"field.heights\",\"field\":\"elem.heights\"},\"apply\":\"direct\"}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_elem_wide",
+      "role": "element_wise",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef wide_ok(item):\n    return wide(item['planks']) >= item['need']\n",
+          "check.py": "def wide(span, need):\n    return span >= need\n",
+          "other.py": "def dump(span):\n    return span\n"
+        },
+        "raw": "{\n  \"body\": \"return wide(item['planks']) >= item['need']\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_elem_wide",
+      "role": "element_wise",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "type_mismatch",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": true,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "check.py": "def wide(span, need):\n    return span >= need\n",
+          "other.py": "def dump(span):\n    return span\n"
+        },
+        "proposal": {
+          "api_id": "check.wide",
+          "bindings": {
+            "span": "field.planks",
+            "need": "field.need"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "type_mismatch",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\n  \"api_id\": \"check.wide\",\n  \"bindings\": {\n    \"span\": \"field.planks\",\n    \"need\": \"field.need\"\n  },\n  \"apply\": \"direct\"\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_ask_limit",
+      "role": "ambiguous_ask",
+      "method": "direct",
+      "scored": {
+        "structural_ok": null,
+        "type_valid": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "asked": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef ok(item):\n    return item['scores'][0] > item['loft'] and item['scores'][0] < item['width']\n",
+          "gate.py": "def over(n, bar):\n    return n > bar\n",
+          "other.py": "def dump(n):\n    return n\n"
+        },
+        "raw": "{\n  \"body\": \"def ok(item):\\n    return item['scores'][0] > item['loft'] and item['scores'][0] < item['width']\\n\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_ap_ask_limit",
+      "role": "ambiguous_ask",
+      "method": "named_id",
+      "scored": {
+        "structural_ok": true,
+        "type_valid": false,
+        "type_error": "binding_names",
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "asked": false,
+        "selection_correct": false,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "gate.py": "def over(n, bar):\n    return n > bar\n",
+          "other.py": "def dump(n):\n    return n\n"
+        },
+        "proposal": {
+          "api_id": "gate.over",
+          "bindings": {
+            "param": "field.scores",
+            "field": "elem.scores"
+          },
+          "apply": "direct"
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "binding_names",
+          "executable": false,
+          "type_valid": false,
+          "programmer_supplied": true
+        },
+        "raw": "{\"api_id\":\"gate.over\",\"bindings\":{\"param\":\"field.scores\",\"field\":\"elem.scores\"},\"apply\":\"direct\"}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    }
+  ],
+  "summary": {
+    "methods": {
+      "direct": {
+        "n": 9,
+        "structural_ok": 0,
+        "type_valid": 0,
+        "bindings_correct": 0,
+        "task_satisfied": 0,
+        "model_calls": 9
+      },
+      "named_id": {
+        "n": 9,
+        "structural_ok": 9,
+        "type_valid": 0,
+        "bindings_correct": 0,
+        "task_satisfied": 0,
+        "model_calls": 9
+      }
+    },
+    "roles": {
+      "optional_omitted": {
+        "n": 2,
+        "structural_ok": 2,
+        "type_valid": 0,
+        "bindings_correct": 0,
+        "task_satisfied": 0
+      },
+      "optional_supplied": {
+        "n": 2,
+        "structural_ok": 2,
+        "type_valid": 0,
+        "bindings_correct": 0,
+        "task_satisfied": 0
+      },
+      "whole_list": {
+        "n": 2,
+        "structural_ok": 2,
+        "type_valid": 0,
+        "bindings_correct": 0,
+        "task_satisfied": 0
+      },
+      "element_wise": {
+        "n": 2,
+        "structural_ok": 2,
+        "type_valid": 0,
+        "bindings_correct": 0,
+        "task_satisfied": 0
+      },
+      "ambiguous_ask": {
+        "n": 1,
+        "structural_ok": 1,
+        "type_valid": 0,
+        "bindings_correct": 0,
+        "task_satisfied": 0
+      }
+    }
+  },
+  "usage": {
+    "calls": 18,
+    "inference_ran": 18,
+    "wall_s": 151.204059,
+    "rss": {
+      "parent_pid": 67622,
+      "server_pid": null,
+      "parent_rss_mib": 34.375,
+      "server_rss_mib": null,
+      "combined_rss_mib": 34.375,
+      "source": "ps_rss_kib",
+      "weight_file_is_not_memory": true
+    },
+    "frozen_cpu_used_s": 3564.568,
+    "frozen_cpu_remaining_s": 35.432,
+    "frozen_debit_s": 0,
+    "product_chat_unused": true,
+    "metal_unused": true,
+    "ledger": "standing_local_cpu_grant",
+    "partial": false,
+    "calls_per_cell": 1
+  },
+  "claim_boundaries": {
+    "learning_to_learn": false,
+    "apply_mode_is_programmer_supplied": true
+  },
+  "hash": "bddb543efa3c8e41323a60289a45edf951507a08783d2bde061d8e7d01cfd56a",
+  "startup": {
+    "status": "started",
+    "model": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "ngl": 0,
+    "device": "none",
+    "model_sha256": null
+  }
+}

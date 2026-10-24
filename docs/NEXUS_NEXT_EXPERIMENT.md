@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — run the coding diagnostic only when a stronger local GGUF is present
+## Current next — constrain binding keys; do not rescore apply modes
+
+The [apply-mode grid](NEXUS_SEED_API_APPLY_MODES_RESULTS.md) is
+structural 9/9 and type/bindings/task 0/9. Eight cells invented
+binding keys; one legal-key cell was a scalar/list mismatch. Do
+not rescore that grid. A new frozen grid may constrain generation
+keys to the selected API’s parameters so omit/supply and
+whole-list/element become visible. Broader learning stays paused.
+Ranking stays paused.
+
+## Previous next — run the coding diagnostic only when a stronger local GGUF is present
 
 The [capacity protocol](NEXUS_SEED_CODING_CAPACITY_DIAGNOSTIC_PROTOCOL.md)
 is prepared. Do not score a 1.5B-only live grid as a model comparison.

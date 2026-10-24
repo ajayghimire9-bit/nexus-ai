@@ -1,6 +1,20 @@
 # NEXUS Seed — Current State
 
-## Current — named API-ID schema (results)
+## Current — API apply modes (results)
+
+[Protocol](NEXUS_SEED_API_APPLY_MODES_PROTOCOL.md),
+[results](NEXUS_SEED_API_APPLY_MODES_RESULTS.md).
+Protocol `4fdc5ec`. Artifact
+`bddb543efa3c8e41323a60289a45edf951507a08783d2bde061d8e7d01cfd56a`.
+Verifier 18/18. Named-ID: structural 9/9, type 0/9, bindings 0/9,
+task 0/9. Direct with the same interface: 0/9. Eight type misses
+were invented or incomplete binding keys; `api_ap_elem_wide` bound
+`field.planks` to scalar `span` (`type_mismatch`, not executed).
+Every named proposal used `apply=direct`; the ask cell guessed.
+18 calls, 151.204 s, frozen debit **0**. Broader learning paused.
+Opened named and positional cells not rescored. Not learning-to-learn.
+
+## Previous — named API-ID schema (results)
 
 [Protocol](NEXUS_SEED_NAMED_API_ID_PROTOCOL.md),
 [results](NEXUS_SEED_NAMED_API_ID_RESULTS.md).
