@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — Wave17 exact correctness retained; cost-domination hypothesis fails
+
+Predeclared freeze `4f4deaa` required full accuracy, exact replay, genuine cold
+reuse and lower suite work/opcodes than all four controls. [Fresh result](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md):
+correctness passes, both comparisons against whole-macro fail (+0.424453%
+work/+0.722348% opcodes). Complete valid execution, failed scientific screen;
+not a partial run or invalid mask replay. The intended common loop subtree
+was not consistently exposed by the learned literal AST factorizations.
+This diagnosis is from saved traces only, not a new fitted explanation or
+universal-equivalence claim. Preserve the negative result and closed w17f_*.
+
 ## Latest — Wave17 source-only exactness/efficiency preparation
 
 After the owner-requested three fixes, source108/108 tests pass; full54/54,

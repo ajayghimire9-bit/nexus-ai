@@ -1,5 +1,15 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Wave17 completed ownership boundary
+
+`wave17_exact_cache_boundary_learner.py`, its runner/verifier and tests are
+frozen at `4f4deaa`. `mechanism_wave17_fresh_assessment.py` is evaluator-only,
+authored after freeze, executed once and now closed. Saved rows replay validly;
+the strict efficiency screen failed against whole-macro caching. No live
+integration or historical-module changes. Future source canonicalization work
+must preserve this frozen version and reuse the existing AST/MDL owner rather
+than introduce a parallel learner. [Results](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md).
+
 ## Wave17 source extension — optional, blocked before assessment
 
 `seed/wave17_exact_cache_boundary_learner.py` reuses Wave14's immutable AST,

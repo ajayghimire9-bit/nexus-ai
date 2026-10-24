@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest recommendation — source-only guarded canonicalization audit
+
+[Wave17](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md) completed validly but
+failed cost domination against whole-macro caching. Do not rerun w17f_* or
+modify its frozen implementation. Audit whether guarded, boundary-safe
+canonicalization can expose common subtrees across alternative factorizations
+before MDL extraction. Use saved AST traces and synthetic source witnesses;
+require exact semantic preservation on guards and empty/boundary inputs.
+This is the single proposed next milestone, not an executed experiment or a
+claim that it will improve cost. Older next-step entries below are superseded.
+
 ## Latest — Wave17 Phase1 fixes, then the unchanged entry gate
 
 Source entry now passes108/108 tests. Create the physical freeze commit using

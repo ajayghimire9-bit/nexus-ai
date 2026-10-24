@@ -1,5 +1,16 @@
 # NEXUS Seed — Master Context
 
+## Latest — Wave17 complete, correctness passes but efficiency fails
+
+[Results](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md), freeze `4f4deaa`:
+108 tests pass;270/270 saved cells independently valid. Full54/54, zero mask
+errors, delayed archive3/3 and OOG piecewise0. Full costs exceed whole-macro
+by0.424453% work /0.722348% opcodes; the registered screen FAILED. No fresh
+retry or frozen-code edit. Preserve all prior studies and Track B. Source
+success did not transfer to the required fresh cost comparison. Next proposed:
+source-only guarded canonicalization audit before MDL extraction; not executed.
+Older preparation/status entries below are chronological snapshots.
+
 ## Latest — Wave17 pre-freeze development continues
 
 Revised source gates now pass:108/108 tests (174.91 s), full54/54, zero mask

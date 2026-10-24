@@ -1,5 +1,23 @@
 # NEXUS Seed — Current State
 
+## Wave17 closed — valid replay, failed efficiency screen
+
+Freeze `4f4deaa6978292d6f2f1e74c8f6c38b4bf215ed6`; [results](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md).
+108/108 pre-freeze tests pass; single-shot270/270 cells and independent replay
+are valid. Full54/54, mask errors0, false uniques0, delayed archive3/3, OOG
+piecewise work0. Full3693757/10793719 work/opcodes exceeds whole-macro
+3678145/10716310: strict efficiency screen FAILED. **Closed Developmental /
+Invalid (Failed Single-Shot Blind Gates; Preserved Unamended)** denotes the
+overall failed improvement gate, not invalid semantic replay. No retry or
+post-freeze implementation change. Earlier preparation entries below are
+historical snapshots, superseded by this completed report.
+
+Assessment165.303840 CPU seconds; newly measured symbolic CPU174.777243s
+including fixture validation/verifier, separately disclosed. Track B0 calls/debit;
+frozen ledger3128.309460455996/471.690539544004 unchanged. One next proposed
+source-only audit: guarded boundary-safe canonicalization before MDL extraction.
+Not executed. No learning-to-learn or general-intelligence claim.
+
 ## Wave17 Phase1 revision — no exception to the freeze gate
 
 All108 Wave8–17 tests now pass (174.91 s). Source full54/54, nine genuine cold

@@ -1,5 +1,17 @@
 # NEXUS Seed — Research Registry
 
+## Latest — Wave17 closed with valid replay and failed efficiency
+
+Base8738029; freeze `4f4deaa6978292d6f2f1e74c8f6c38b4bf215ed6`.
+[Report](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md),
+[hash/resource manifest](../artifacts/seed_wave17_results_summary.json).
+108/108 tests pass;270/270 fresh cells independently valid. Full54/54,
+zero mask errors, delayed archive3/3; both cost contrasts against whole-macro
+fail. Closed Developmental / Invalid (Failed Single-Shot Blind Gates;
+Preserved Unamended); semantic execution itself is valid. No retry.
+New symbolic CPU174.777243s, cumulative Wave15–17 measured188.041673s;
+Track B0 calls/0 debit, frozen3128.309460455996/471.690539544004 unchanged.
+
 ## Latest — Wave17 remains in pre-freeze source development
 
 Revised [source receipts](../artifacts/seed_wave17_source_preflight.json): all108

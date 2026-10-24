@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Wave17 completed once — preserve failed fresh efficiency gate
+
+Freeze `4f4deaa`; [report](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md).
+All108 source regressions pass. Fresh270-cell execution and independent
+verification are valid; full54/54, mask errors0, genuine delayed archive3/3.
+Full work3693757/opcodes10793719 loses to whole3678145/10716310. Failed screen,
+no retry or Phase1 edit. Assessment165.303840 CPU/165.577548 wall seconds;
+fixture validation plus verifier brings new measured symbolic CPU to174.777243s.
+Track B zero calls/debit; historical frozen ledger unchanged. No merge.
+
 ## Wave17 Phase1 revised before any freeze
 
 Revised source regression:108/108 pass in174.91 s; full54/54 and nine cold flags,
