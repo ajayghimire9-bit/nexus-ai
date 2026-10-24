@@ -81,17 +81,21 @@ learning-to-learn, open-ended acquisition beyond the primitive
 grammar, and Wave-2 whole-task skill-memory transfer remain
 unestablished.
 
-**Wave-4 diagnostic ablations (270 cells).** Protocol `25cd50e`.
-Artifact
+**Wave-4 diagnostic ablations (270 cells, `f66ae34`).** Protocol
+`25cd50e`. Artifact
 `486a0ae02bbfa6ebe30e9f1f1eba24494f8bb8da4bbc74029baa200ac67555e9`.
-Related parity is cheap only when the even clause is kept (clause
-3321 / both 3297 vs neither 13995). Probe-only is worse than the
-Wave-1 freeze on that group (−205 per seed). Unrelated magnitude
-guards and `mod4`/`is_zero` lookalikes produce **0** false-positive
-parity locks; clause methods propose even and confirmatory `ACT_2`
-rejects it (6/6). True OOG 6/6 abstain. Retention 18/18. Combined
-A+B+C: both **20586** vs neither 30855 / learned 29223 / untrained
-28683 (`6862` vs `10285` / `9741` / `9561` per seed). Not general
+The full system reduced combined A+B+C work to **20,586** versus
+neither 30,855 / learned-open 29,223 / untrained 28,683 (`6,862` vs
+`10,285` / `9,741` / `9,561` per seed). Related-parity savings came
+mainly from the acquired even clause (clause 3,321 / both 3,297 vs
+neither 13,995). Probe-only adaptation did not reduce total
+related-parity work (14,610 vs 13,995). That gap is an observed cost
+difference; a claim that static synthesis order caused it is a
+hypothesis, not a verified mechanism. Misleading lookalikes were
+rejected (even proposed and confirmatory-rejected 6/6; 0 false-positive
+parity locks). Tested OOG `count`/`delay` were declined (6/6 abstain,
+0 FP). Reserved Wave-1/2/3 retests passed (18/18). Transfer remains
+bounded to the tested mechanism language. Not general
 learning-to-learn.
 
 ## Current — Wave-4 diagnostic ablations (results)

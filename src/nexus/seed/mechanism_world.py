@@ -50,6 +50,8 @@ OUTSIDE_LANGUAGE = (
     "w4_abs_plus3", "w4_abs_sub1", "w4_mag_mul3",
     "w4_even_add4", "w4_even_mul2", "w4_odd_add3",
     "w4_mod4_add2", "w4_zero_add2",
+    "w5_even_add3", "w5_odd_mul2", "w5_mod4_add4", "w5_zero_add3",
+    "w5_abs_add4", "w5_abs_id",
 )
 
 
@@ -215,6 +217,12 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "w4_odd_add3": _stateless(lambda x: (int(x) + 3) if (int(x) % 2 == 1) else int(x)),
     "w4_mod4_add2": _stateless(lambda x: (int(x) + 2) if (int(x) % 4 == 0) else int(x)),
     "w4_zero_add2": _stateless(lambda x: (int(x) + 2) if int(x) == 0 else int(x)),
+    "w5_even_add3": _stateless(lambda x: (int(x) + 3) if (int(x) % 2 == 0) else int(x)),
+    "w5_odd_mul2": _stateless(lambda x: (2 * int(x)) if (int(x) % 2 == 1) else int(x)),
+    "w5_mod4_add4": _stateless(lambda x: (int(x) + 4) if (int(x) % 4 == 0) else int(x)),
+    "w5_zero_add3": _stateless(lambda x: (int(x) + 3) if int(x) == 0 else int(x)),
+    "w5_abs_add4": _stateless(lambda x: (int(x) + 4) if abs(int(x)) >= 2 else int(x)),
+    "w5_abs_id": _stateless(lambda x: 0 if abs(int(x)) >= 2 else int(x)),
 }
 
 

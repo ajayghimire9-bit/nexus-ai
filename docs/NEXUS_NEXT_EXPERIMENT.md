@@ -1,6 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore the Wave-4 diagnostic ablations
+## Current next — Wave-5 prior and event-record transfer (protocol locked)
+
+The [Wave-5 protocol](NEXUS_WAVE5_PRIOR_TRANSFER_PROTOCOL.md) trains a
+frozen grammar-operator prior on a disclosed development source and
+tests it on fresh compositions plus an event-record mapping split.
+Do not rescore `f66ae34`, `c8bc5ad`, `0d4596e`, `6e0df3a`, or
+`f2e8942`. Track B coding stays closed. Not general learning-to-learn.
+
+## Previous next — do not rescore the Wave-4 diagnostic ablations
 
 The [Wave-4 run](NEXUS_WAVE4_DIAGNOSTIC_ABLATIONS_RESULTS.md) shows
 the even clause, not the probe strategy, is what cheapens related
