@@ -1,12 +1,12 @@
 # NEXUS progress log
 
-## Wave18 Phase-1 complete — source efficiency gate passed
+## Wave18 completed — single-shot fresh assessment passed (`54/54`, `-83.97%` work)
 
-134 Wave 8–18 unit tests, real MPS smoke tests, and the 324-cell source
-comparison pass (`nexus_m4_neuro_symbolic_full`: `54/54` accuracy, `573,165`
-work = `-76.031%` vs `nexus_whole_macro_only`, `1,694,043` primitive steps =
-`-79.743%` vs `nexus_whole_macro_only`). [Preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md).
-Ready for Commit 1 pre-assessment code freeze.
+Freeze `89c2e6bc3265d0e9822ff2dd17e7254f665eaf07`; [report](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md).
+All 324 unseen `w18f_*` cells verified (`"valid": true`, `0` errors).
+`nexus_m4_neuro_symbolic_full`: `54/54` accuracy, `554,575` work (`-83.972%` vs
+`nexus_whole_macro_only`), `1,633,854` primitive steps (`-80.690%` vs
+`nexus_whole_macro_only`).
 
 ## Wave17 completed once — preserve failed fresh efficiency gate
 

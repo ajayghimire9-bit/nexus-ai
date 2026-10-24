@@ -1,13 +1,14 @@
 # NEXUS Seed — Master Context
 
-## Latest — Wave18 M4-GPU source efficiency gate passed; ready for Commit 1 freeze
+## Latest — Wave18 M4-GPU neuro-symbolic canonical evolution Demonstrated (`89c2e6b`)
 
-[Preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md): real M4/MPS encoding, online updates,
-and dynamic macro head expansion pass. `nexus_m4_neuro_symbolic_full` achieves `54/54`
-on the 324-cell source comparison with `573,165` work (`-76.031%` vs `nexus_whole_macro_only`'s
-`2,391,261`) and `1,694,043` primitive steps (`-79.743%` vs `8,362,941`), strictly beating
-`nexus_typed_without_pruning` (`611,019` work, `2,393,481` primitive steps). All 134
-Wave 8–18 unit tests pass.
+[Results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md), freeze `89c2e6b`:
+`nexus_m4_neuro_symbolic_full` achieves `54/54` (`100%`) private accuracy on the
+single-shot unseen `w18f_*` assessment (324 cells) with `554,575` total work
+(`-83.972%` vs `nexus_whole_macro_only`'s `3,459,996`, **6.24x less work**) and
+`1,633,854` primitive op steps (`-80.690%` vs `8,461,249`, **5.18x fewer steps**),
+with `0` false unique locks, `3/3` ambiguous intent declarations, `9` cold archive
+reactivations, and standalone verifier `"valid": true`.
 
 ## Latest — Wave17 complete, correctness passes but efficiency fails
 

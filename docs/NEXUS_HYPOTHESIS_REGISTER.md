@@ -1,13 +1,12 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
-## Wave18 source hypothesis — source efficiency gate passed
+## Wave18 Demonstrated — M4-GPU neuro-symbolic + canonical core evolution confirmed
 
-The M4/MPS neuro-symbolic proposer and outward-affix canonical enumerator achieve
-`54/54` on the 324-cell source gate while reducing total work by `76.031%`
-(`573,165` vs `2,391,261`) and primitive op steps by `79.743%` (`1,694,043` vs
-`8,362,941`) relative to `nexus_whole_macro_only`, and beating `nexus_typed_without_pruning`
-(`611,019` / `2,393,481`). [Saved evidence](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md).
-Ready for Commit 1 code freeze and single-shot fresh `w18f_*` assessment.
+Freeze `89c2e6bc3265d0e9822ff2dd17e7254f665eaf07`: on the unseen `w18f_*` suite
+(324 cells), `nexus_m4_neuro_symbolic_full` achieves `54/54` accuracy while
+reducing total work by `83.972%` (`554,575` vs `3,459,996`) and primitive op
+steps by `80.690%` (`1,633,854` vs `8,461,249`) relative to `nexus_whole_macro_only`.
+[Results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md).
 
 ## Latest — Wave17 exact correctness retained; cost-domination hypothesis fails
 

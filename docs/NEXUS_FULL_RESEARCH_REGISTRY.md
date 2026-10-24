@@ -1,14 +1,13 @@
 # NEXUS Seed — Research Registry
 
-## Wave18 pre-freeze source check — passed efficiency gate
+## Wave18 Demonstrated — M4-GPU neuro-symbolic canonical evolution (`89c2e6b`)
 
-Base `708310d`; [Preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md),
-[source hashes/receipts](../artifacts/seed_wave18_source_preflight.json).
-Real MPS checks and all 134 Wave 8–18 unit tests pass; complete 324 source cells,
-`nexus_m4_neuro_symbolic_full` achieves `54/54` accuracy with `573,165` work and
-`1,694,043` primitive steps versus `nexus_whole_macro_only`'s `2,391,261` and
-`8,362,941` (`-76.031%` work, `-79.743%` primitive steps), passing the required
-`>= 20%` reduction gate before authoring the fresh `w18f_*` holdout suite.
+Freeze `89c2e6bc3265d0e9822ff2dd17e7254f665eaf07`; [Results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md),
+[artifact](../artifacts/seed_wave18_m4_neuro_symbolic.json).
+Single-shot unseen `w18f_*` assessment (324 cells, verifier `"valid": true`):
+`nexus_m4_neuro_symbolic_full` achieves `54/54` accuracy with `554,575` work and
+`1,633,854` primitive steps vs `nexus_whole_macro_only`'s `3,459,996` and
+`8,461,249` (`-83.972%` work, `-80.690%` primitive steps).
 
 ## Latest — Wave17 closed with valid replay and failed efficiency
 

@@ -1,19 +1,16 @@
 # NEXUS Seed — Current State
 
-## Wave18 pre-assessment code freeze — source gate passed
+## Wave18 Demonstrated — M4-GPU neuro-symbolic canonical evolution beats whole-macro by 84% work
 
-[Source preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md): actual M4/MPS tests
-and all 134 Wave 8–18 unit tests pass. The complete 324-cell source comparison
-has `nexus_m4_neuro_symbolic_full` at `54/54` accuracy, zero mask errors, 3/3
-ambiguous declarations, and 3/3 delayed archive reactivations, with `573,165`
-total work (`-76.031%` vs `nexus_whole_macro_only`'s `2,391,261`) and `1,694,043`
-primitive op steps (`-79.743%` vs `8,362,941`), passing the `<= 0.8 * whole`
-source efficiency gate and beating `nexus_typed_without_pruning` (`611,019` /
-`2,393,481`).
-
-Owner clarified the runner-only exception and approved MPS 200s wall/CPU,
-1 GiB process memory, zero interactions, one fresh attempt, no session increase.
-All attempts are metered; the historical frozen ledger and Track B are untouched.
+Freeze `89c2e6bc3265d0e9822ff2dd17e7254f665eaf07`; [results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md).
+Single-shot unseen `w18f_*` assessment (324 cells, standalone verifier `"valid": true`):
+`nexus_m4_neuro_symbolic_full` achieves **`54/54` (`100%`) private accuracy**, `0`
+false unique locks, `0` mask errors, `3/3` ambiguous declarations, and `9` cold
+archive reactivations, with **`554,575` total work** (`-83.972%` vs
+`nexus_whole_macro_only`'s `3,459,996`) and **`1,633,854` primitive op steps**
+(`-80.690%` vs `8,461,249`), and strictly beats `nexus_typed_without_pruning`
+(`39/54`, `846,711` work, `2,960,934` primitive op steps).
+Phase-1 diff against `89c2e6b` is 100% empty.
 
 ## Earlier Wave18 preparation snapshot — M4 detected, freeze not ready
 
