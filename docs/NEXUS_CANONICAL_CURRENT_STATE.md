@@ -1,5 +1,12 @@
 # NEXUS Seed — Current State
 
+## All 9 Master Audit Ledger Capabilities Demonstrated (Waves 18, 19 & 20)
+
+See the full ledger and artifacts in [Wave 19–20 Results](NEXUS_WAVE19_20_CODING_AND_CONVERSATION_RESULTS.md) and [Wave 18 Results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md):
+1. **Capabilities 6 & 7 (Wave 18, `89c2e6b -> 5e9bf20`)**: `54/54` unseen `w18f_*` accuracy, `-83.972%` total work (`554,575` vs `3,459,996`) and `-80.690%` primitive op steps (`1,633,854` vs `8,461,249`) vs `nexus_whole_macro_only`.
+2. **Capability 8 (Wave 19 — Native Python `ast` Coding & Multi-File Repo Patching)**: `54/54` accuracy, `-70.97%` work (`18,294` vs `63,021`) and `-90.90%` primitive steps (`52,274` vs `574,663`) vs `nexus_whole_function_only`, plus `3/3` multi-file repository fault localization & unified-diff patches.
+3. **Capability 9 (Wave 20 — Grounded Natural Language Conversation & Cross-Domain Agent)**: `24/24` multi-turn English dialogue turns verified, `0` hallucinations, `3/3` cross-domain `CODE -> STATE` helper transfers, `3/3` active English epistemic clarifications, and `3/3` OOG abstentions.
+
 ## Wave18 Demonstrated — M4-GPU neuro-symbolic canonical evolution beats whole-macro by 84% work
 
 Freeze `89c2e6bc3265d0e9822ff2dd17e7254f665eaf07`; [results](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_RESULTS.md).

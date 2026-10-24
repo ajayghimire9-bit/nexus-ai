@@ -1,0 +1,97 @@
+{
+  "kind": "seed_wave19_python_ast_coding",
+  "cells": 324,
+  "totals": {
+    "standalone_m4_neural_code_baseline": {
+      "private_correct": 0,
+      "total_work": 7335,
+      "total_primitive_op_steps": 1575,
+      "helper_function_invented": 0,
+      "helper_function_reused": 0,
+      "cold_archive_reactivated": 0,
+      "ambiguous_correctly_declared": 0
+    },
+    "equal_ast_scratch": {
+      "private_correct": 54,
+      "total_work": 62883,
+      "total_primitive_op_steps": 574531,
+      "helper_function_invented": 0,
+      "helper_function_reused": 0,
+      "cold_archive_reactivated": 0,
+      "ambiguous_correctly_declared": 3
+    },
+    "ordinary_ast_memoization": {
+      "private_correct": 54,
+      "total_work": 62883,
+      "total_primitive_op_steps": 574531,
+      "helper_function_invented": 0,
+      "helper_function_reused": 0,
+      "cold_archive_reactivated": 0,
+      "ambiguous_correctly_declared": 3
+    },
+    "nexus_whole_function_only": {
+      "private_correct": 54,
+      "total_work": 63021,
+      "total_primitive_op_steps": 574663,
+      "helper_function_invented": 0,
+      "helper_function_reused": 0,
+      "cold_archive_reactivated": 3,
+      "ambiguous_correctly_declared": 3
+    },
+    "nexus_ast_without_pruning": {
+      "private_correct": 54,
+      "total_work": 26307,
+      "total_primitive_op_steps": 101567,
+      "helper_function_invented": 3,
+      "helper_function_reused": 12,
+      "cold_archive_reactivated": 0,
+      "ambiguous_correctly_declared": 3
+    },
+    "nexus_m4_python_ast_full": {
+      "private_correct": 54,
+      "total_work": 18294,
+      "total_primitive_op_steps": 52274,
+      "helper_function_invented": 3,
+      "helper_function_reused": 9,
+      "cold_archive_reactivated": 3,
+      "ambiguous_correctly_declared": 3
+    }
+  },
+  "repo_patching": [
+    {
+      "seed": 0,
+      "patched": true,
+      "localized_file": "pkg/normalizer.py",
+      "localized_function": "normalize_tokens",
+      "private_correct": 1,
+      "synthesis_evals": 2,
+      "primitive_op_steps": 28,
+      "unified_diff": "--- a/pkg/normalizer.py\n+++ b/pkg/normalizer.py\n@@ -1,2 +1,2 @@\n def normalize_tokens(x):\n-    return tuple(x)[::-1]\n+    return tuple(x)[:-1][1:] + tuple(x)[:-1][:1] if tuple(x)[:-1] else ()"
+    },
+    {
+      "seed": 1,
+      "patched": true,
+      "localized_file": "pkg/normalizer.py",
+      "localized_function": "normalize_tokens",
+      "private_correct": 1,
+      "synthesis_evals": 2,
+      "primitive_op_steps": 28,
+      "unified_diff": "--- a/pkg/normalizer.py\n+++ b/pkg/normalizer.py\n@@ -1,2 +1,2 @@\n def normalize_tokens(x):\n-    return tuple(x)[::-1]\n+    return tuple(x)[:-1][1:] + tuple(x)[:-1][:1] if tuple(x)[:-1] else ()"
+    },
+    {
+      "seed": 2,
+      "patched": true,
+      "localized_file": "pkg/normalizer.py",
+      "localized_function": "normalize_tokens",
+      "private_correct": 1,
+      "synthesis_evals": 2,
+      "primitive_op_steps": 28,
+      "unified_diff": "--- a/pkg/normalizer.py\n+++ b/pkg/normalizer.py\n@@ -1,2 +1,2 @@\n def normalize_tokens(x):\n-    return tuple(x)[::-1]\n+    return tuple(x)[:-1][1:] + tuple(x)[:-1][:1] if tuple(x)[:-1] else ()"
+    }
+  ],
+  "gates": {
+    "passed": true,
+    "repo_patches_solved": 3,
+    "repo_patches_total": 3
+  }
+}
