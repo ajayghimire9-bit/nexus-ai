@@ -1,6 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — constrain binding keys; do not rescore apply modes
+## Current next — need an accuracy gap, not another scoring-cost curve
+
+The [mechanism investigation run](NEXUS_SEED_MECHANISM_L2L_RESULTS.md)
+is **negative**. Frequency already solved development; the trained
+policy never stopped. Do not rescore that grid. Do not resume API
+schema work. A later family must make cheap fixed policies miss
+tasks, not merely spend less than information-gain scoring.
+Ranking stays paused.
+
+## Previous next — constrain binding keys; do not rescore apply modes
 
 The [apply-mode grid](NEXUS_SEED_API_APPLY_MODES_RESULTS.md) is
 structural 9/9 and type/bindings/task 0/9. Eight cells invented

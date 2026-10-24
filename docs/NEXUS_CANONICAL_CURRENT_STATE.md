@@ -1,6 +1,19 @@
 # NEXUS Seed — Current State
 
-## Current — API apply modes (results)
+## Current — mechanism investigation policy (results)
+
+[Protocol](NEXUS_SEED_MECHANISM_L2L_PROTOCOL.md),
+[results](NEXUS_SEED_MECHANISM_L2L_RESULTS.md).
+Protocol `11b934d`. Artifact
+`5606f869222d62f9acb0b8b62357756b2ab5508444e96d8ba998f014e5b4e4fb`.
+Verifier 132 cells. Development: all four fixed methods 6/6;
+frequency mean work 3.33 versus IG 100 (scoring). Assessment:
+trained 6/18 (0 correct IDs) versus frequency 15/18. Within-family
+and composition negative. Source retention trained 0/12. Verdict
+**negative**. Pilot. Frozen debit **0**. API grids not rescored.
+Coding interface paused. Not learning-to-learn.
+
+## Previous — API apply modes (results)
 
 [Protocol](NEXUS_SEED_API_APPLY_MODES_PROTOCOL.md),
 [results](NEXUS_SEED_API_APPLY_MODES_RESULTS.md).
