@@ -98,7 +98,29 @@ parity locks). Tested OOG `count`/`delay` were declined (6/6 abstain,
 bounded to the tested mechanism language. Not general
 learning-to-learn.
 
-## Current — Wave-4 diagnostic ablations (results)
+**Wave-5 prior and event-record transfer (504 cells).** Protocol
+`d2c0105`. Artifact
+`c489a6357e1a1fd2aa0d4d05af24671a45a1fc30bc7991d3e42ecaa44f876866`.
+On fresh integer compositions the residual heuristic and source
+frequency beat the learned prior; full+static-clauses (2355) beat
+full+prior (2649) on related. Lookalikes: 0 false even locks; clause
+methods rejected even 6/6 on these cases (5316 / 5058, not the
+historical 9975). OOG 6/6 abstain. Retain 12/12. Event-record
+**supplied** mapping reused even (`even|add3|id`); skills-only 2220 vs
+scratch 2634. **Acquired** mapping 0/6 correct — not established.
+Wall 1.316 s, frozen debit 0. Heuristic tie, not general
+learning-to-learn.
+
+## Current — Wave-5 prior and event-record transfer (results)
+
+[Protocol](NEXUS_WAVE5_PRIOR_TRANSFER_PROTOCOL.md),
+[results](NEXUS_WAVE5_PRIOR_TRANSFER_RESULTS.md).
+Protocol `d2c0105`. Artifact
+`c489a6357e1a1fd2aa0d4d05af24671a45a1fc30bc7991d3e42ecaa44f876866`.
+Verifier `valid: true` on 504 cells. See group tables above. Frozen
+debit **0**. Not general learning-to-learn.
+
+## Previous — Wave-4 diagnostic ablations (results)
 
 [Protocol](NEXUS_WAVE4_DIAGNOSTIC_ABLATIONS_PROTOCOL.md),
 [results](NEXUS_WAVE4_DIAGNOSTIC_ABLATIONS_RESULTS.md).

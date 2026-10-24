@@ -1,12 +1,12 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — Wave-5 prior and event-record transfer (protocol locked)
+## Current next — do not rescore the Wave-5 prior/transfer grid
 
-The [Wave-5 protocol](NEXUS_WAVE5_PRIOR_TRANSFER_PROTOCOL.md) trains a
-frozen grammar-operator prior on a disclosed development source and
-tests it on fresh compositions plus an event-record mapping split.
-Do not rescore `f66ae34`, `c8bc5ad`, `0d4596e`, `6e0df3a`, or
-`f2e8942`. Track B coding stays closed. Not general learning-to-learn.
+The [Wave-5 run](NEXUS_WAVE5_PRIOR_TRANSFER_RESULTS.md) found a
+heuristic/frequency tie on construction order and supplied-only
+event-record transfer. Do not rescore this grid, `f66ae34`,
+`c8bc5ad`, `0d4596e`, `6e0df3a`, or `f2e8942`. Acquired mapping is
+unsolved. Track B coding stays closed. Not general learning-to-learn.
 
 ## Previous next — do not rescore the Wave-4 diagnostic ablations
 

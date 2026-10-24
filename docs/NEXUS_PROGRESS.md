@@ -1,6 +1,16 @@
 # NEXUS progress log
 
-## Current — Wave-4 ablations: clause saves, probe-only does not
+## Current — Wave-5: heuristic tie; supplied mapping only
+
+Protocol `d2c0105`, artifact
+`c489a6357e1a1fd2aa0d4d05af24671a45a1fc30bc7991d3e42ecaa44f876866`.
+Learned grammar prior did not beat frequency or residual heuristic
+on related compositions. Event-record supplied mapping reused even
+structure; acquired mapping 0/6. OOG abstain, retain 12/12. Frozen
+debit **0**, wall 1.316 s.
+[Results](NEXUS_WAVE5_PRIOR_TRANSFER_RESULTS.md).
+
+## Previous — Wave-4 ablations: clause saves, probe-only does not
 
 Protocol `25cd50e`, artifact
 `486a0ae02bbfa6ebe30e9f1f1eba24494f8bb8da4bbc74029baa200ac67555e9`.
