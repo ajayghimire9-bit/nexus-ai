@@ -1,6 +1,14 @@
 # NEXUS progress log
 
-## Current — varied-probe challenge, negative versus charged MEASURE
+## Current — synthesis acquires unstored compositions; search ties it
+
+Protocol `11a08f6`, artifact
+`5fab96735f4a1a59a887189e87c3392ea8bee2b8615f421ae1ad6933e5c8b99b`.
+Gate 3/3 predictive, catalogue 0/3. Holdout trained 9/9 equals
+fixed_synthesis. Exact identity never awarded. Frozen debit **0**. Not
+learning-to-learn. [Results](NEXUS_SEED_MECHANISM_ACQUIRE_RESULTS.md).
+
+## Previous — varied-probe challenge, negative versus charged MEASURE
 
 Protocol `bf7ee42`, artifact
 `79ffc21ac69e0507a08288cda8e74c90f7eebb23dd2a9be7c3fb1ad5fdb30467`.

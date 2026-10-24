@@ -1,6 +1,19 @@
 # NEXUS Seed — Current State
 
-## Current — varied-probe challenge (results)
+## Current — mechanism acquisition (results)
+
+[Protocol](NEXUS_SEED_MECHANISM_ACQUIRE_PROTOCOL.md),
+[results](NEXUS_SEED_MECHANISM_ACQUIRE_RESULTS.md).
+Protocol `11a08f6`. Artifact
+`5fab96735f4a1a59a887189e87c3392ea8bee2b8615f421ae1ad6933e5c8b99b`.
+Verifier 60 cells. Three claims separated; exact identity never awarded.
+Synthesis gate 3/3 versus catalogue 0/3. Holdout trained 9/9 ties
+fixed_synthesis 9/9 on accuracy and interactions. Catalogue-only 0/9.
+Verdict **synthesis works**, then **fixed-baseline tie**. Priors
+`7ae2432`, `5575762`, `ff26a18`, `92d6f19` not rescored. Frozen debit
+**0**. Not learning-to-learn.
+
+## Previous — varied-probe challenge (results)
 
 [Protocol](NEXUS_SEED_MECHANISM_VARIED_PROTOCOL.md),
 [results](NEXUS_SEED_MECHANISM_VARIED_RESULTS.md).

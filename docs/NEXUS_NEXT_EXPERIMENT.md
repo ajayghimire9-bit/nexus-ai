@@ -1,6 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore varied probes; twins still force false identity
+## Current next — do not rescore acquire; synthesis works, search does not help
+
+The [acquire run](NEXUS_SEED_MECHANISM_ACQUIRE_RESULTS.md) shows the
+fixed synthesizer can compose `add1`/`add2`/`mul2`/`neg` into unstored
+hypotheses and predict new cases. Source-trained search ties that
+synthesizer 9/9. Exact identity stays unresolved. Do not rescore this
+grid or `7ae2432` / `5575762` / `ff26a18` / `92d6f19`. A later family
+must make the fixed length-2 enumerator miss before experience can
+matter. Ranking stays paused. Learning-to-learn remains unestablished.
+
+## Previous next — do not rescore varied probes; twins still force false identity
 
 The [varied-probe run](NEXUS_SEED_MECHANISM_VARIED_RESULTS.md) is
 **negative** versus diagnostic-plus-MEASURE. That charged confirmation
