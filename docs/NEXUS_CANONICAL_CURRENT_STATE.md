@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — equal inclusive baseline and fresh API-ID (results)
+## Current — named API-ID schema (results)
+
+[Protocol](NEXUS_SEED_NAMED_API_ID_PROTOCOL.md),
+[results](NEXUS_SEED_NAMED_API_ID_RESULTS.md).
+Protocol `443c2e9`. Artifact
+`26bc50700d2f001d1ed46bd2575694613d743c318fd50b0b5cd33aa7ecffa8d5`.
+Verifier 8/8. Named-ID: schema 4/4, bindings 2/4, assembled task 2/4.
+Direct with the same interface: 0/4. Optional `mark` was wrongly bound;
+list-vs-element `field.loads` was rejected, not executed. 8 calls,
+57.520 s, frozen debit **0**. Broader learning paused. Prior API cells
+not rescored. Not learning-to-learn.
+
+## Previous — equal inclusive baseline and fresh API-ID (results)
 
 [Protocol](NEXUS_SEED_EQUAL_INCLUSIVE_PROTOCOL.md),
 [results](NEXUS_SEED_EQUAL_INCLUSIVE_RESULTS.md).

@@ -1,0 +1,374 @@
+{
+  "kind": "seed_named_api_id",
+  "confirmation": false,
+  "learning_to_learn_established": false,
+  "ranking_paused": true,
+  "broader_learning_paused": true,
+  "selection_not_generally_solved": true,
+  "opened_prior_not_rescored": true,
+  "declared_ids": [
+    "api_nb_band",
+    "api_nb_stamp",
+    "api_nb_over",
+    "api_nb_scale"
+  ],
+  "rows": [
+    {
+      "task_id": "api_nb_band",
+      "family": "multi_numeric",
+      "method": "direct",
+      "scored": {
+        "schema_ok": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "selection_correct": null,
+        "binding_valid": null,
+        "assembly_valid": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef band_of(item):\n    return [clip_band(item.vals, item.lo, item.hi) for item in pack.vals]\n",
+          "clip.py": "def clip_band(vals, lo, hi):\n    return [lo if n < lo else hi if n > hi else n for n in vals]\n",
+          "other.py": "def dump(vals):\n    return list(vals)\n"
+        },
+        "raw": "{\n  \"body\": \"return [clip_band(item.vals, item.lo, item.hi) for item in pack.vals]\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_nb_band",
+      "family": "multi_numeric",
+      "method": "named_id",
+      "scored": {
+        "schema_ok": true,
+        "bindings_correct": true,
+        "task_satisfied": true,
+        "selection_correct": true,
+        "binding_valid": true,
+        "assembly_valid": true,
+        "selection_not_generally_solved": true,
+        "public_passed": true,
+        "private_passed": true,
+        "files": {
+          "work.py": "from clip import clip_band\ndef _band_of_transform(vals, lo, hi):\n    return clip_band(vals, lo, hi)\ndef band_of(item):\n    vals = item[\"pack\"][\"vals\"]\n    lo = item[\"pack\"][\"lo\"]\n    hi = item[\"pack\"][\"hi\"]\n    return _band_of_transform(vals, lo, hi)\n",
+          "clip.py": "def clip_band(vals, lo, hi):\n    return [lo if n < lo else hi if n > hi else n for n in vals]\n",
+          "other.py": "def dump(vals):\n    return list(vals)\n"
+        },
+        "proposal": {
+          "api_id": "clip.clip_band",
+          "bindings": {
+            "vals": "field.vals",
+            "lo": "field.lo",
+            "hi": "field.hi"
+          }
+        },
+        "assembled": {
+          "ok": true,
+          "source": "from clip import clip_band\ndef _band_of_transform(vals, lo, hi):\n    return clip_band(vals, lo, hi)\n",
+          "error": null,
+          "import_line": "from clip import clip_band",
+          "call": "clip_band(vals, lo, hi)",
+          "accesses": [
+            "item[\"pack\"][\"vals\"]",
+            "item[\"pack\"][\"lo\"]",
+            "item[\"pack\"][\"hi\"]"
+          ],
+          "programmer_supplied": true,
+          "learned_assembly": false,
+          "learned_schema_discovery": false,
+          "output_space_narrowed": true,
+          "executable": true,
+          "binding_valid": true
+        },
+        "raw": "{\n  \"api_id\": \"clip.clip_band\",\n  \"bindings\": {\n    \"vals\": \"field.vals\",\n    \"lo\": \"field.lo\",\n    \"hi\": \"field.hi\"\n  }\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_nb_stamp",
+      "family": "optional_param",
+      "method": "direct",
+      "scored": {
+        "schema_ok": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "selection_correct": null,
+        "binding_valid": null,
+        "assembly_valid": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef card_of(item):\n    return stamp(item.text, '')\n",
+          "labels.py": "def stamp(text, mark=''):\n    return mark + text\n",
+          "other.py": "def dump(text):\n    return text\n"
+        },
+        "raw": "{\n  \"body\": \"return stamp(item.text, '')\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_nb_stamp",
+      "family": "optional_param",
+      "method": "named_id",
+      "scored": {
+        "schema_ok": true,
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "selection_correct": true,
+        "binding_valid": true,
+        "assembly_valid": true,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "from labels import stamp\ndef _card_of_transform(text):\n    return stamp(text, text)\ndef card_of(item):\n    text = item[\"card\"][\"text\"]\n    return _card_of_transform(text)\n",
+          "labels.py": "def stamp(text, mark=''):\n    return mark + text\n",
+          "other.py": "def dump(text):\n    return text\n"
+        },
+        "proposal": {
+          "api_id": "labels.stamp",
+          "bindings": {
+            "text": "field.text",
+            "mark": "field.text"
+          }
+        },
+        "assembled": {
+          "ok": true,
+          "source": "from labels import stamp\ndef _card_of_transform(text):\n    return stamp(text, text)\n",
+          "error": null,
+          "import_line": "from labels import stamp",
+          "call": "stamp(text, text)",
+          "accesses": [
+            "item[\"card\"][\"text\"]",
+            "item[\"card\"][\"text\"]"
+          ],
+          "programmer_supplied": true,
+          "learned_assembly": false,
+          "learned_schema_discovery": false,
+          "output_space_narrowed": true,
+          "executable": true,
+          "binding_valid": true
+        },
+        "raw": "{\n  \"api_id\": \"labels.stamp\",\n  \"bindings\": {\n    \"text\": \"field.text\",\n    \"mark\": \"field.text\"\n  }\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_nb_over",
+      "family": "elem_vs_list",
+      "method": "direct",
+      "scored": {
+        "schema_ok": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "selection_correct": null,
+        "binding_valid": null,
+        "assembly_valid": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef hold_ok(item):\n    return above(item, field.floor)\n",
+          "util.py": "def above(value, floor):\n    return value > floor\n",
+          "other.py": "def dump(value):\n    return value\n"
+        },
+        "raw": "{\n  \"body\": \"return above(item, field.floor)\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_nb_over",
+      "family": "elem_vs_list",
+      "method": "named_id",
+      "scored": {
+        "schema_ok": true,
+        "bindings_correct": false,
+        "task_satisfied": false,
+        "selection_correct": true,
+        "binding_valid": false,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "util.py": "def above(value, floor):\n    return value > floor\n",
+          "other.py": "def dump(value):\n    return value\n"
+        },
+        "proposal": {
+          "api_id": "util.above",
+          "bindings": {
+            "value": "field.loads",
+            "floor": "field.floor"
+          }
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "type_mismatch",
+          "programmer_supplied": true,
+          "executable": false,
+          "binding_valid": false,
+          "invented_arguments": false,
+          "extras_dropped": false
+        },
+        "raw": "{\n  \"api_id\": \"util.above\",\n  \"bindings\": {\n    \"value\": \"field.loads\",\n    \"floor\": \"field.floor\"\n  }\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_nb_scale",
+      "family": "list_not_elem",
+      "method": "direct",
+      "scored": {
+        "schema_ok": null,
+        "bindings_correct": null,
+        "task_satisfied": false,
+        "selection_correct": null,
+        "binding_valid": null,
+        "assembly_valid": false,
+        "public_passed": false,
+        "private_passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "mathx.py": "def scale(vals, factor):\n    return [n * factor for n in vals]\n",
+          "other.py": "def dump(vals):\n    return list(vals)\n"
+        },
+        "raw": "{\n  \"body\": \"import mathx\\n\\ndef grow(item):\\n    return mathx.scale(item['bag']['vals'], item['bag']['factor'])\\n\"\n}",
+        "route": "direct",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1,
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_nb_scale",
+      "family": "list_not_elem",
+      "method": "named_id",
+      "scored": {
+        "schema_ok": true,
+        "bindings_correct": true,
+        "task_satisfied": true,
+        "selection_correct": true,
+        "binding_valid": true,
+        "assembly_valid": true,
+        "selection_not_generally_solved": true,
+        "public_passed": true,
+        "private_passed": true,
+        "files": {
+          "work.py": "from mathx import scale\ndef _grow_transform(vals, factor):\n    return scale(vals, factor)\ndef grow(item):\n    vals = item[\"bag\"][\"vals\"]\n    factor = item[\"bag\"][\"factor\"]\n    return _grow_transform(vals, factor)\n",
+          "mathx.py": "def scale(vals, factor):\n    return [n * factor for n in vals]\n",
+          "other.py": "def dump(vals):\n    return list(vals)\n"
+        },
+        "proposal": {
+          "api_id": "mathx.scale",
+          "bindings": {
+            "vals": "field.vals",
+            "factor": "field.factor"
+          }
+        },
+        "assembled": {
+          "ok": true,
+          "source": "from mathx import scale\ndef _grow_transform(vals, factor):\n    return scale(vals, factor)\n",
+          "error": null,
+          "import_line": "from mathx import scale",
+          "call": "scale(vals, factor)",
+          "accesses": [
+            "item[\"bag\"][\"vals\"]",
+            "item[\"bag\"][\"factor\"]"
+          ],
+          "programmer_supplied": true,
+          "learned_assembly": false,
+          "learned_schema_discovery": false,
+          "output_space_narrowed": true,
+          "executable": true,
+          "binding_valid": true
+        },
+        "raw": "{\n  \"api_id\": \"mathx.scale\",\n  \"bindings\": {\n    \"vals\": \"field.vals\",\n    \"factor\": \"field.factor\"\n  }\n}",
+        "route": "named_id",
+        "same_interface": true,
+        "same_call_budget": 1,
+        "model_calls": 1
+      },
+      "live": true
+    }
+  ],
+  "summary": {
+    "direct": {
+      "n": 4,
+      "schema_ok": 0,
+      "bindings_correct": 0,
+      "task_satisfied": 0,
+      "model_calls": 4
+    },
+    "named_id": {
+      "n": 4,
+      "schema_ok": 4,
+      "bindings_correct": 2,
+      "task_satisfied": 2,
+      "model_calls": 4
+    }
+  },
+  "usage": {
+    "calls": 8,
+    "inference_ran": 8,
+    "wall_s": 57.519855,
+    "rss": {
+      "parent_pid": 66806,
+      "server_pid": null,
+      "parent_rss_mib": 34.328,
+      "server_rss_mib": null,
+      "combined_rss_mib": 34.328,
+      "source": "ps_rss_kib",
+      "weight_file_is_not_memory": true
+    },
+    "frozen_cpu_used_s": 3564.568,
+    "frozen_cpu_remaining_s": 35.432,
+    "frozen_debit_s": 0,
+    "product_chat_unused": true,
+    "metal_unused": true,
+    "ledger": "standing_local_cpu_grant",
+    "partial": false,
+    "calls_per_cell": 1
+  },
+  "claim_boundaries": {
+    "learning_to_learn": false,
+    "named_schema_is_programmer_supplied": true
+  },
+  "hash": "26bc50700d2f001d1ed46bd2575694613d743c318fd50b0b5cd33aa7ecffa8d5",
+  "startup": {
+    "status": "started",
+    "model": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "ngl": 0,
+    "device": "none",
+    "model_sha256": null
+  }
+}
