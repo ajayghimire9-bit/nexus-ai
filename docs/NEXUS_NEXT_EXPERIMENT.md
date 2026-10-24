@@ -1,10 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — Wave-6 correspondence disambiguation (protocol locked)
+## Current next — do not rescore the Wave-6 correspondence grid
 
-The [Wave-6 protocol](NEXUS_WAVE6_CORRESPONDENCE_PROTOCOL.md) isolates
-acquired slot/field mapping from the frozen Wave-5 grammar. Do not
-rescore `10f579d` or earlier grids. Track B coding stays closed.
+The [Wave-6 run](NEXUS_WAVE6_CORRESPONDENCE_RESULTS.md) recovers
+identity+`result` with competing bindings and a public validation
+gate (fixed and plus-clauses 12/12 ident; greedy stamp-lock 0/12).
+Do not rescore this grid, `10f579d`, `f66ae34`, `c8bc5ad`,
+`0d4596e`, `6e0df3a`, or `f2e8942`. Track B coding stays closed.
+Not general learning-to-learn.
 
 ## Previous next — do not rescore the Wave-5 prior/transfer grid
 

@@ -1,6 +1,16 @@
 # NEXUS progress log
 
-## Current — Wave-5: heuristic tie; supplied mapping only
+## Current — Wave-6: competing bindings recover identity+result
+
+Protocol `aa34924`, artifact
+`a88765e9238d10d30a8b236c88115dafcf8b4ba5f651ffd741aa6d1d865fb031`.
+Greedy locked `stamp` 24/24. Fixed and plus-clauses 12/12
+identifiable mapping/private, 6/6 ambiguous (0 false unique), 3/3
+OOG abstain, 3/3 retain. Plus-clauses 9714 / 597 vs fixed 10299 /
+1269 and scratch 10326 / 1074. Frozen debit **0**, wall 0.226 s.
+[Results](NEXUS_WAVE6_CORRESPONDENCE_RESULTS.md).
+
+## Previous — Wave-5: heuristic tie; supplied mapping only
 
 Protocol `d2c0105`, artifact
 `c489a6357e1a1fd2aa0d4d05af24671a45a1fc30bc7991d3e42ecaa44f876866`.

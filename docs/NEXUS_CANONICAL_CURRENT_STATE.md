@@ -111,7 +111,29 @@ scratch 2634. **Acquired** mapping 0/6 correct — not established.
 Wall 1.316 s, frozen debit 0. Heuristic tie, not general
 learning-to-learn.
 
-## Current — Wave-5 prior and event-record transfer (results)
+**Wave-6 correspondence disambiguation (120 cells).** Protocol
+`aa34924`. Artifact
+`a88765e9238d10d30a8b236c88115dafcf8b4ba5f651ffd741aa6d1d865fb031`.
+Grammar prior not retrained. Greedy first-fit locked `stamp` on
+`24/24` cells (`0/12` identifiable). Competing bindings + public
+validation recovered identity+`result`: fixed and plus-clauses
+`12/12` mapping and private on stamp/echo traps, `6/6` `ambiguous`
+(`0` false unique) on `result`≡`alias`, `3/3` OOG abstain, `3/3`
+retention. Plus-clauses suite `9714 / 597` vs fixed `10299 / 1269`
+and scratch `10326 / 1074`; every seed `3238 / 199` vs `3433 / 423`
+and `3442 / 358`. Wall 0.226 s, frozen debit 0. Mapping recovery on
+this interface, not general learning-to-learn.
+
+## Current — Wave-6 correspondence disambiguation (results)
+
+[Protocol](NEXUS_WAVE6_CORRESPONDENCE_PROTOCOL.md),
+[results](NEXUS_WAVE6_CORRESPONDENCE_RESULTS.md).
+Protocol `aa34924`. Artifact
+`a88765e9238d10d30a8b236c88115dafcf8b4ba5f651ffd741aa6d1d865fb031`.
+Verifier `valid: true` on 120 cells. See group tables in the results
+note above. Frozen debit **0**. Not general learning-to-learn.
+
+## Previous — Wave-5 prior and event-record transfer (results)
 
 [Protocol](NEXUS_WAVE5_PRIOR_TRANSFER_PROTOCOL.md),
 [results](NEXUS_WAVE5_PRIOR_TRANSFER_RESULTS.md).
