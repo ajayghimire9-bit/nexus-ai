@@ -1,14 +1,15 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — Wave-3 continual assimilation (protocol locked)
+## Current next — do not rescore the Wave-3 assimilation grid
 
-The [Wave-3 protocol](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_PROTOCOL.md)
-asks whether assimilating the Wave-2 `even_add2` invention (sub-clause
-plus parity probe priority) makes unseen Wave-3 parity compositions
-cheaper than a Wave-1 freeze, while true out-of-grammar `count`/`delay`
-stay abstentions and Wave-1/Wave-2 reserved items stay solved.
-Do not rescore `0d4596e`, `6e0df3a`, or `f2e8942`. The claim is not
-general learning-to-learn. Track B stays closed.
+The [Wave-3 run](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_RESULTS.md)
+assimilates Wave-2 `even_add2` and cheapens unseen parity compositions
+(2841 vs 7113 freeze / 6513 learned-open / 6846 untrained) while
+abstaining on true out-of-grammar `count`/`delay` (6/6, 0 FP) and
+retaining Wave-1/Wave-2 items (12/12). Do not rescore this grid,
+`0d4596e`, `6e0df3a`, or `f2e8942`. The claim is not general
+learning-to-learn. A later novel guard that does not reuse the even
+residual can still force Type B fallback. Track B stays closed.
 
 ## Previous next — do not rescore the beyond-catalog grid
 

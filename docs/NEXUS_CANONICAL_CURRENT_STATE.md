@@ -28,15 +28,26 @@ A row may be Implemented and still Undemonstrated.
 | 2 | Ordinary conversation | Yes | No | Chat routing and ChatML runtime exist; not a general conversational agent |
 | 3 | Local GGUF inference | Yes | No | PersistentLocalRuntime CPU path runs; not learned improvement |
 | 4 | Mathematics (tools) | Yes | No | Calculator/expression path exists; capability map 1–2/6 |
-| 5 | Learning new concepts and mechanisms | Yes | Bounded | Verified `0d4596e` (`cursor/seed-unfamiliar-beyond-catalog`): On held-out mechanisms with `0%` coverage in the supplied candidate bank, `supplied_bank_only` detected catalog exhaustion (`12/12`) and abstained with `0` false positives, while `nexus_abductive_beyond_bank` solved `12/12` out-of-bank holdouts (verified via mandatory confirmatory probes) and `6/6` reserved retests, reducing total work from `8106` (untrained open grammar) and `7875` (learned policy + cleared open grammar) down to `6876` (`2292` vs `2625` / `2702` per seed across 3 seeds, including `even_add2` Type B fallback overhead). |
-| 6 | Compositional generalization | Yes | Bounded | Same `0d4596e` result as row 5; also `6e0df3a` sub-clause transfer. Knowledge vault/FTS5 still runs separately and is undemonstrated as general retrieval. |
+| 5 | Learning new concepts and mechanisms | Yes | Bounded | Verified Wave-3 `cursor/seed-continual-wave3-assimilation`: after assimilating Wave-2 `even_add2`, continual solved 9/9 unseen parity compositions at 2841 vs 7113 / 6513 / 6846 and abstained on 6/6 true out-of-grammar tasks with 0 false positives, while retaining 12/12 Wave-1/Wave-2 retests. Prior `0d4596e`: 0% bank coverage; bank-only 12/12 exhaust, 0 FP; abductive 12/12 + 6/6 at 6876 vs 8106 / 7875 (`2292` vs `2625` / `2702` per seed). |
+| 6 | Compositional generalization | Yes | Bounded | Same Wave-3 and `0d4596e` results as row 5; also `6e0df3a` sub-clause transfer. Knowledge vault/FTS5 still runs separately and is undemonstrated as general retrieval. |
 | 7 | Bounded coding / API-ID | Yes | No | Named-ID and apply-mode grids ran; task success 0 or tool-tie |
 | 8 | Mechanism investigation policy | Yes | Bounded | `f2e8942` cheaper probes at matched accuracy in one suite |
-| 9 | Efficient knowledge acquisition | Yes | Bounded | Verified `0d4596e`: `6876` vs `8106` / `7875` on 0%-bank holdouts after confirmatory, distill, and retrieval charges (`2292` vs `2625` / `2702` per seed). Also `6e0df3a` (`624` vs `699` / `858`). |
-| 10 | Learning-to-learn / meta-learning | Yes | Bounded only | See row note below. General L2L unestablished |
-| 11 | Handling unknowns | Yes | Bounded | Verified `0d4596e`: `supplied_bank_only` detected catalog exhaustion `12/12` and abstained with `0` false positives; out-of-bank claims required confirmatory probes. Whole-task Wave-2 cache hits remain 0. |
-| 12 | Compositional generalization | Yes | Bounded | Verified `0d4596e` and `6e0df3a`. Type A residual reuse beat full grammar; Type B `even_add2` fell back without a false library hit. |
-| 13 | Efficient knowledge acquisition / Track B | No | Bounded / No | Efficient acquisition is the `0d4596e` / `6e0df3a` bounded result (see rows 5 and 9). Open-domain coding / Track B remains closed. |
+| 9 | Efficient knowledge acquisition | Yes | Bounded | Verified Wave-3: continual 2841 vs frozen 7113 / learned-open 6513 / untrained 6846 on unseen parity compositions after distill 90 + retrieval 9 (`947` vs `2371` / `2171` / `2282` per seed). Also `0d4596e` (`6876` vs `8106` / `7875`) and `6e0df3a` (`624` vs `699` / `858`). |
+| 10 | Learning-to-learn / meta-learning | Yes | Bounded only | Wave-3: Wave-2 even invention made the next parity family cheaper (947 vs 2371 frozen). General L2L unestablished |
+| 11 | Handling unknowns | Yes | Bounded | Verified Wave-3: all methods abstained on true out-of-grammar `count`/`delay` (`6/6`, 0 FP). Prior `0d4596e`: bank-only 12/12 exhaust, 0 FP. Whole-task Wave-2 cache hits remain 0. |
+| 12 | Compositional generalization | Yes | Bounded | Verified Wave-3 Type A even-residual reuse on `even_mul3`/`even_sub1`/`odd_plus2`; also `0d4596e` and `6e0df3a`. Type B `even_add2` still fell back without a false library hit. |
+| 13 | Efficient knowledge acquisition / Track B | No | Bounded / No | Efficient acquisition is the Wave-3 / `0d4596e` / `6e0df3a` bounded result (see rows 5 and 9). Open-domain coding / Track B remains closed. |
+
+**Continual Wave-3 assimilation (rows 5, 6/12, 9/13, 10, 11).**
+After Wave-2 invented `even_add2` by Type B fallback, continual
+assimilated the even guard and parity probes. On unseen Wave-3 parity
+compositions it spent `2841` versus `7113` (Wave-1 freeze), `6513`
+(learned open), and `6846` (untrained), or `947` versus `2371` /
+`2171` / `2282` per seed, after charging distill 90 and retrieval 9.
+True out-of-grammar `count`/`delay` were 6/6 abstentions with 0 false
+positives. Reserved Wave-1 and Wave-2 retests were 12/12. Artifact
+`ad9b569c4910c4084a3faa60625bf805bf175e472c083abcb920eb3d5fe933d6`.
+Not general learning-to-learn.
 
 **Beyond-catalog acquisition (`0d4596e`, rows 5, 6/12, 9/13, 11).**
 On held-out mechanisms with `0%` coverage in the supplied candidate
@@ -57,16 +68,28 @@ seeds, `12/12` holdout, `6/6` reserved retest, `12` sub-skill hits,
 `0` whole-mechanism hits) after explicitly charging both Wave-1
 distillation (`84`) and Wave-2 retrieval (`60`).
 
-**Learning-to-learn / meta-learning (row 10).** Bounded claim at
-`f2e8942`: a source-trained adaptive investigation policy reduced the
-cost of acquiring unfamiliar mechanisms in the tested exclusive-or
-suite (env calls 21 vs 42 untrained / 43 source-distilled fixed
-order; total work 699 vs 858 untrained / 908 distilled across 3
-seeds; \(N_{\text{breakeven}} = 124.4\)–\(163.5\)). General
-learning-to-learn, open-ended acquisition beyond supplied candidates,
-and Wave-2 whole-task skill-memory transfer remain unestablished.
+**Learning-to-learn / meta-learning (row 10).** Bounded Wave-3 claim:
+assimilating a verified Wave-2 Type B invention made the next
+unfamiliar parity family cheaper than a Wave-1 freeze (947 vs 2371
+per seed) after full cost accounting. Also `f2e8942`: a source-trained
+adaptive investigation policy reduced exclusive-or acquisition cost
+(env 21 vs 42 / 43; total work 699 vs 858 / 908). General
+learning-to-learn, open-ended acquisition beyond the primitive
+grammar, and Wave-2 whole-task skill-memory transfer remain
+unestablished.
 
-## Current — beyond-catalog abductive acquisition (results)
+## Current — Wave-3 continual assimilation (results)
+
+[Protocol](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_PROTOCOL.md),
+[results](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_RESULTS.md).
+Protocol `79c53a5`. Artifact
+`ad9b569c4910c4084a3faa60625bf805bf175e472c083abcb920eb3d5fe933d6`.
+Verifier `valid: true` on 156 cells. Continual Wave-3 expressible
+2841 vs freeze 7113 / learned-open 6513 / untrained 6846. OOG 6/6
+abstain, 0 FP. Retention 12/12. Frozen debit **0**. Not general
+learning-to-learn, not open-domain coding.
+
+## Previous — beyond-catalog abductive acquisition (results)
 
 [Protocol](NEXUS_UNFAMILIAR_BEYOND_CATALOG_PROTOCOL.md),
 [results](NEXUS_UNFAMILIAR_BEYOND_CATALOG_RESULTS.md).

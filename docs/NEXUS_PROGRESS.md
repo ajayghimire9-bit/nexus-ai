@@ -1,6 +1,16 @@
 # NEXUS progress log
 
-## Current — beyond-catalog abduction beats cleared open grammar
+## Current — Wave-3 assimilation cheapens the next parity family
+
+Protocol `79c53a5`, artifact
+`ad9b569c4910c4084a3faa60625bf805bf175e472c083abcb920eb3d5fe933d6`.
+Continual 9/9 Wave-3 parity compositions at 2841 vs freeze 7113 /
+learned-open 6513 / untrained 6846 (`947` vs `2371` / `2171` / `2282`
+per seed) after distill 90 + retrieval 9. True OOG 6/6 abstain, 0 FP.
+Retention 12/12. Frozen debit **0**.
+[Results](NEXUS_CONTINUAL_WAVE3_ASSIMILATION_RESULTS.md).
+
+## Previous — beyond-catalog abduction beats cleared open grammar
 
 Protocol `8554c04`, artifact
 `1a4132bb400209ee3877e06739e2436b8a828ccf76dd2755361456c2a5cecc07`.
