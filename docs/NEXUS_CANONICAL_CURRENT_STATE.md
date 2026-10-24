@@ -1,5 +1,15 @@
 # NEXUS Seed — Current State
 
+## Wave16 source preparation; Wave15 remains closed
+
+Wave15 (`4810ae65`→`9db4dc94`) is **Closed Developmental / Invalid (Cost
+Domination & 0 OOG Piecewise Evals Passed; Failed Full Accuracy 51/54 vs 54/54
+Without Pruning)**. [Postmortem](NEXUS_WAVE15_FAILED_BLIND_RUN_POSTMORTEM.md).
+Wave16 addresses cold one-step composition reachability and atomic unary
+completeness. No fresh Wave16 definitions exist before its physical code freeze.
+Three historical tests now verify their original freeze commits; no old
+assessment or result is altered. Track B and all w12f_*–w15f_* suites stay closed.
+
 ## Wave 15 closed — valid execution, failed accuracy gate
 
 Freeze `4810ae6533ed970a330b09261b1ce4bf511b9a08`; 270/270 cells verified.

@@ -322,6 +322,7 @@ def test_synthetic_payload_matches_runner_and_verifier_schema() -> None:
     from verify_wave13_bounded_subtree_enumerator import (
         inspect_wave13_learner_ast,
         verify_commit1_blindness,
+        find_commit1_sha,
         verify_payload,
     )
 
@@ -330,7 +331,10 @@ def test_synthetic_payload_matches_runner_and_verifier_schema() -> None:
     )
     assert ast_check["valid"] is True, ast_check
     assert ast_check["lambda_count"] == 0
-    blindness = verify_commit1_blindness(None)
+    # Verify the immutable original freeze, not a later post-assessment checkout.
+    freeze = find_commit1_sha()
+    assert freeze is not None
+    blindness = verify_commit1_blindness(freeze)
     assert blindness["valid"] is True, blindness
 
     assessment = []
