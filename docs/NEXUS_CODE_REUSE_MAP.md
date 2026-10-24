@@ -1,5 +1,16 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Wave17 source extension — optional, blocked before assessment
+
+`seed/wave17_exact_cache_boundary_learner.py` reuses Wave14's immutable AST,
+macro/MDL owner, reactivation and report contracts. It extends opcodes locally,
+adds exact task/boundary caches, metered loops, INT/StateRecord inputs and active
+clarification. `scripts/run_wave17_exact_cache_assessment.py` is the shared
+observation-only evaluator; the verifier replays saved source payloads.
+The owner-requested Phase1 revision preserves the failed source receipts and
+requires the unchanged gate to pass before freeze. No fresh definitions,
+default integration, model calls or historical module changes.
+
 ## Capability routes
 
 `seed/knowledge_provenance.py` now labels `unresolved_conflict` when

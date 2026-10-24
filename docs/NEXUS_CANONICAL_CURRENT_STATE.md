@@ -1,5 +1,26 @@
 # NEXUS Seed — Current State
 
+## Wave17 Phase1 revision — no exception to the freeze gate
+
+All108 Wave8–17 tests now pass (174.91 s). Source full54/54, nine genuine cold
+flags, zero mask errors; work2247543/opcodes7923381 strictly beat all four
+baselines. [Protocol](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_PROTOCOL.md) records the
+tested hashes. The physical freeze is now permitted; fresh definitions and
+results are still absent. Prior failed source receipts remain unchanged.
+
+The owner declined a blocked-preparation commit. Implement lock-only archive
+restoration, genuine multi-task MDL tenure, observation-gated bounded loops and
+duplicate-free exact caches; revise source Task3 to require a wrapped internal
+subtree rather than invert a cached whole-task wrapper. All source gates must
+pass before Commit1. Earlier failed source receipts remain preserved; the
+premature results draft is deleted. No fresh definitions or assessment exists
+before freeze. Track B, historical ledgers and closed results stay unchanged.
+
+Wave16 (`23e9ad94`→`8738029a`) remains **Closed Developmental / Invalid
+(48/54 Accuracy, 9 Cached Coverage Mask Errors on Empty/Boundary Tokens,
+2 Fixture Empty-Input Specification Errors; Preserved Unamended)**.
+Its original report/artifacts and all Waves12–15 evidence remain unchanged.
+
 ## Wave16 closed — complete grid, invalid semantic replay
 
 Freeze `23e9ad949770dbc64721f3e233f2f239de723968`; 270/270 cells completed once.

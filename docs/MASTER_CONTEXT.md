@@ -1,5 +1,20 @@
 # NEXUS Seed — Master Context
 
+## Latest — Wave17 pre-freeze development continues
+
+Revised source gates now pass:108/108 tests (174.91 s), full54/54, zero mask
+errors and strictly lower work/opcodes than all four controls. See the
+[freeze protocol](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_PROTOCOL.md). Only now may
+the physical first commit precede fresh task creation. No results file yet.
+
+Earlier source cost failures remain in the source receipts. The owner declined
+an exception commit and requested lock-only archive restoration, multi-task MDL
+tenure, bounded observation-gated loops and a genuine wrapped-subtree reuse
+fixture. The unchanged efficiency rule still gates Commit1. No fresh suite,
+assessment or results document may precede that freeze. This is bounded source
+engineering, not general intelligence or learning-to-learn. Waves12–16 and
+Track B remain closed and unchanged.
+
 ## Latest — Wave16 complete but invalid; preserve without retry
 
 [Wave16 results](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md), freeze `23e9ad9`:

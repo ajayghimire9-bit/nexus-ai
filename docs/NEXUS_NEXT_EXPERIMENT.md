@@ -1,5 +1,24 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest — Wave17 Phase1 fixes, then the unchanged entry gate
+
+Source entry now passes108/108 tests. Create the physical freeze commit using
+the [tested protocol](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_PROTOCOL.md), then only
+afterward author the new18-task assessment and execute once. Preserve any
+negative/invalid/incomplete outcome and leave all Phase1 code unchanged.
+
+The [earlier source preparation](../artifacts/seed_wave17_source_preflight.json) has full
+54/54 correctness and exact mask replay, but fails strict cost domination over
+whole-macro caching. Wave8–17 tests107 pass/1 fail. No Wave17 scientific freeze,
+fresh definitions or assessment run is permitted from this snapshot.
+
+The owner requested three surgical pre-freeze fixes, not an exception commit:
+lock-only restoration and MDL tenure, bounded observation-gated loops, and a
+Task3 requiring a new wrapper around the internal core. Only after all108
+tests pass may the physical freeze occur, followed by one new assessment and
+unchanged Phase1 files. No results draft before freeze. All previous studies
+remain closed; Track B and frozen ledger are unchanged.
+
 ## Latest next — source-only differential semantic audit
 
 [Wave16](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md) completed but failed

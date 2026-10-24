@@ -1,5 +1,21 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — Wave17 source-only exactness/efficiency preparation
+
+After the owner-requested three fixes, source108/108 tests pass; full54/54,
+exact mask replay and both strict cost gates versus all four baselines pass.
+The [protocol](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_PROTOCOL.md) freezes the rule
+before any new assessment. Source success does not imply fresh success.
+
+Hypothesis: exact interpreter masks, typed bounded loops and archive composition
+can preserve correctness while lowering both suite costs versus every baseline.
+[Earlier source receipts](../artifacts/seed_wave17_source_preflight.json): full54/54,
+mask replay valid, genuine cold reuse; cost domination fails against whole-macro
+caching. Preserve that failure. Before freeze, the owner requested lock-only
+archive restoration, multi-task MDL tenure, bounded observation-gated loops
+and wrapped internal reuse. Rerun the same strict entry gate; no exception,
+fresh study or results document is authorized before a passing physical freeze.
+
 ## Latest — Wave16 cold composition/unary completeness: invalid assessment
 
 Predeclared `23e9ad9`: restore active/cold one-step reachability and reduce both

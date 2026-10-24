@@ -1,5 +1,20 @@
 # NEXUS progress log
 
+## Wave17 Phase1 revised before any freeze
+
+Revised source regression:108/108 pass in174.91 s; full54/54 and nine cold flags,
+zero masks/false uniques/OOG piecewise work. Full2247543/7923381 work/opcodes
+beats whole2391261/8362941, no-pruning2250756/7936737 and both fixed baselines.
+The [protocol](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_PROTOCOL.md) records exact file
+hashes. Fresh assessment has not been created or executed at this snapshot.
+
+The previous source run107 passed/1 failed (226.13 s); its two whole-macro cost
+failures are preserved in source receipts. No exception commit was authorized.
+Apply the three owner-requested source fixes and rerun all108 tests without
+weakening the gate. The premature results draft is removed. Fresh definitions,
+assessment and results remain prohibited before a passing physical freeze.
+Track B0 calls/debit; earlier engineering CPU remains unavailable, not zero.
+
 ## Latest — Wave16 invalid completed single-shot run
 
 Freeze `23e9ad9`; [results](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md).

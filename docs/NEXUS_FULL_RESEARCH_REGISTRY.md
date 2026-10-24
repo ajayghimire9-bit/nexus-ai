@@ -1,5 +1,18 @@
 # NEXUS Seed — Research Registry
 
+## Latest — Wave17 remains in pre-freeze source development
+
+Revised [source receipts](../artifacts/seed_wave17_source_preflight.json): all108
+tests pass (174.91 s), full54/54 and both strict cost gates pass. Current tested
+hashes and the physical first-commit rule are in the
+[protocol](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_PROTOCOL.md). No fresh outcomes yet.
+
+Base8738029. [Earlier receipts](../artifacts/seed_wave17_source_preflight.json)
+preserve full54/54 with failed efficiency gates (107 passed/1 failed).
+The owner declined an exception and requested three surgical source changes.
+No fresh definitions, assessment, premature results document or freeze commit.
+Track B and frozen3128.309460455996/471.690539544004 ledger remain unchanged.
+
 ## Latest — Wave16 closed invalid; semantic replay failed
 
 Freeze `23e9ad9`; artifact SHA256
