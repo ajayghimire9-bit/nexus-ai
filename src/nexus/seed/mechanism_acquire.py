@@ -294,13 +294,14 @@ def run_method(tasks: list[dict[str, Any]], method: str, weights: dict[str, list
     return rows
 
 
-def acquire_training_rows(episode: dict[str, Any]) -> list[dict[str, Any]]:
+def acquire_training_rows(episode: dict[str, Any],
+                         primitives: tuple[str, ...] | None = None) -> list[dict[str, Any]]:
     rows = []
     first = True
     prefix: list[dict[str, Any]] = []
     rng = random.Random(3)
     for step in episode.get("transcript") or []:
-        compose_remain = filter_compositions(prefix)
+        compose_remain = filter_compositions(prefix, primitives=primitives)
         avail = acquire_available(prefix, filter_language(prefix), compose_remain)
         expert = choose_composition_ig(compose_remain, prefix, avail["actions"], rng)
         for action in list(QUERY_ACTIONS) + list(ACQUIRE_STOPS):

@@ -19,10 +19,12 @@ HOLDOUT_PROBES = ("ACT_0", "ACT_1", "ACT_2", "ACT_NEG", "MEASURE")
 PRIMITIVE_ORIGIN = "programmer_supplied"
 
 
-def compositions(max_len: int = MAX_COMPOSE) -> list[tuple[str, ...]]:
+def compositions(max_len: int = MAX_COMPOSE,
+                 primitives: tuple[str, ...] | None = None) -> list[tuple[str, ...]]:
+    names = primitives or PRIMITIVES
     rows: list[tuple[str, ...]] = []
     for length in range(1, max_len + 1):
-        rows.extend(product(PRIMITIVES, repeat=length))
+        rows.extend(product(names, repeat=length))
     return rows
 
 
@@ -62,9 +64,10 @@ def hidden_signature(name: str) -> tuple[tuple[str, int | None], ...]:
     return tuple(rows)
 
 
-def filter_compositions(transcript: list[dict[str, Any]]) -> list[tuple[str, ...]]:
+def filter_compositions(transcript: list[dict[str, Any]],
+                        primitives: tuple[str, ...] | None = None) -> list[tuple[str, ...]]:
     kept = []
-    for parts in compositions():
+    for parts in compositions(primitives=primitives):
         state = dict(s=0, prev=0)
         ok = True
         for row in transcript:
@@ -90,19 +93,20 @@ def observational_class(members: list[tuple[str, ...]]) -> list[list[str]]:
     return [sorted(group) for group in groups.values()]
 
 
-def class_for_hidden(name: str) -> list[str]:
+def class_for_hidden(name: str, primitives: tuple[str, ...] | None = None) -> list[str]:
     target = hidden_signature(name)
     found = []
-    for parts in compositions():
+    for parts in compositions(primitives=primitives):
         if signature(parts) == target:
             found.append(pipe_name(parts))
     return sorted(found)
 
 
-def synthesize(transcript: list[dict[str, Any]]) -> dict[str, Any]:
-    remaining = filter_compositions(transcript)
+def synthesize(transcript: list[dict[str, Any]],
+               primitives: tuple[str, ...] | None = None) -> dict[str, Any]:
+    remaining = filter_compositions(transcript, primitives=primitives)
     classes = observational_class(remaining)
-    work = len(compositions())
+    work = len(compositions(primitives=primitives))
     representative = remaining[0] if remaining else None
     return dict(
         remaining=[pipe_name(parts) for parts in remaining],

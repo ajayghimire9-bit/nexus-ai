@@ -41,6 +41,8 @@ OUTSIDE_LANGUAGE = (
     "id_exact0", "mod2", "plus_prev", "add1_twin",
     "mul2_then_add1", "add1_then_neg", "neg_then_add1",
     "add2_then_mul2", "neg_then_add2", "mul2_then_neg",
+    "if_pos", "if_neg", "sat_inc", "sat_dec", "sign_pos",
+    "if_pos_add1", "sat_inc_mul2", "if_neg_neg", "add1_if_pos",
 )
 
 
@@ -116,6 +118,32 @@ def _add1_twin(state: dict[str, Any], x: int, exact: bool) -> int:
     return int(x) + 1
 
 
+def _if_pos(state: dict[str, Any], x: int, exact: bool) -> int:
+    return int(x) if int(x) > 0 else 0
+
+
+def _if_neg(state: dict[str, Any], x: int, exact: bool) -> int:
+    return int(x) if int(x) < 0 else 0
+
+
+def _sat_inc(state: dict[str, Any], x: int, exact: bool) -> int:
+    state["s"] = min(int(state.get("s") or 0) + 1, 2)
+    return int(state["s"])
+
+
+def _sat_dec(state: dict[str, Any], x: int, exact: bool) -> int:
+    state["s"] = max(int(state.get("s") or 0) - 1, 0)
+    return int(state["s"])
+
+
+def _sign_pos(state: dict[str, Any], x: int, exact: bool) -> int:
+    return 1 if int(x) > 0 else 0
+
+
+def _sat_inc_mul2(state: dict[str, Any], x: int, exact: bool) -> int:
+    return 2 * _sat_inc(state, x, exact)
+
+
 EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "add1": _stateless(lambda x: x + 1),
     "add2": _stateless(lambda x: x + 2),
@@ -148,6 +176,15 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "add2_then_mul2": _stateless(lambda x: 2 * (x + 2)),
     "neg_then_add2": _stateless(lambda x: -x + 2),
     "mul2_then_neg": _stateless(lambda x: -2 * x),
+    "if_pos": _if_pos,
+    "if_neg": _if_neg,
+    "sat_inc": _sat_inc,
+    "sat_dec": _sat_dec,
+    "sign_pos": _sign_pos,
+    "if_pos_add1": _stateless(lambda x: (x if x > 0 else 0) + 1),
+    "sat_inc_mul2": _sat_inc_mul2,
+    "if_neg_neg": _stateless(lambda x: -(x if x < 0 else 0)),
+    "add1_if_pos": _stateless(lambda x: (x + 1) if (x + 1) > 0 else 0),
 }
 
 

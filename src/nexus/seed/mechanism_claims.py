@@ -34,7 +34,7 @@ def score_claims(
         for row in holdout
     )
     exact_mechanism_identification = False
-    gold_class = class_for_hidden(gold)
+    gold_class = class_for_hidden(gold, primitives=task.get("primitives"))
     reported = list((synthesized or {}).get("remaining") or [])
     if not reported and catalogue_identification:
         reported = list(remaining_language)
@@ -51,7 +51,11 @@ def score_claims(
         )
         if (reported or catalogue_identification) else "unresolved"
     )
-    useful_acquisition = bool(predictive_competence and not guessed_generator)
+    useful_acquisition = bool(
+        predictive_competence and not guessed_generator and task.get("role") != "reject"
+    )
+    correct_reject = bool(task.get("role") == "reject" and not predictive_competence
+                          and not guessed_generator and not claimed_exact)
     return dict(
         catalogue_identification=catalogue_identification,
         predictive_competence=predictive_competence,
@@ -64,5 +68,8 @@ def score_claims(
         claimed_exact=claimed_exact,
         guessed_generator=guessed_generator,
         useful_acquisition=useful_acquisition,
+        correct_reject=correct_reject,
+        demonstrated_inconsistency=bool(not remaining_language and not reported),
+        unresolved_uncertainty=bool((remaining_language or reported) and not predictive_competence),
         gold_in_language=in_language,
     )

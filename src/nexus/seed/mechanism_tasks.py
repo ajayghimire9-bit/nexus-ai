@@ -62,6 +62,22 @@ DECLARED = (
     dict(task_id="acq_hold_add2_mul", split="synthesis_holdout", family="unstored", mechanism="add2_then_mul2", instance_seed=421),
     dict(task_id="acq_hold_neg_add2", split="synthesis_holdout", family="unstored", mechanism="neg_then_add2", instance_seed=422),
     dict(task_id="acq_hold_mul_neg", split="synthesis_holdout", family="unstored", mechanism="mul2_then_neg", instance_seed=423),
+    dict(task_id="w1_add1", split="wave1_source", family="affine", mechanism="add1", instance_seed=501, role="acquire"),
+    dict(task_id="w1_mul2", split="wave1_source", family="affine", mechanism="mul2", instance_seed=502, role="acquire"),
+    dict(task_id="w1_if_pos", split="wave1_source", family="gate", mechanism="if_pos", instance_seed=503, role="acquire"),
+    dict(task_id="w1_sat_inc", split="wave1_source", family="state", mechanism="sat_inc", instance_seed=504, role="acquire"),
+    dict(task_id="w1d_add2", split="wave1_dev", family="affine", mechanism="add2", instance_seed=511, role="acquire"),
+    dict(task_id="w1d_neg", split="wave1_dev", family="affine", mechanism="neg", instance_seed=512, role="acquire"),
+    dict(task_id="w1d_if_neg", split="wave1_dev", family="gate", mechanism="if_neg", instance_seed=513, role="acquire"),
+    dict(task_id="w1d_sat_dec", split="wave1_dev", family="state", mechanism="sat_dec", instance_seed=514, role="acquire"),
+    dict(task_id="w2_if_pos_add1", split="wave2_target", family="gate_transform", mechanism="if_pos_add1", instance_seed=521, role="acquire"),
+    dict(task_id="w2_sat_inc_mul2", split="wave2_target", family="state_transform", mechanism="sat_inc_mul2", instance_seed=522, role="acquire"),
+    dict(task_id="w2_if_neg_neg", split="wave2_target", family="gate_transform", mechanism="if_neg_neg", instance_seed=523, role="acquire"),
+    dict(task_id="w2_sign_pos", split="wave2_reject", family="cross_rep", mechanism="sign_pos", instance_seed=524, role="reject"),
+    dict(task_id="w3_add1_if_pos", split="wave3_compose", family="transform_gate", mechanism="add1_if_pos", instance_seed=531, role="acquire"),
+    dict(task_id="w3r_add1", split="wave3_retain", family="affine", mechanism="add1", instance_seed=541, role="acquire"),
+    dict(task_id="w3r_if_pos", split="wave3_retain", family="gate", mechanism="if_pos", instance_seed=542, role="acquire"),
+    dict(task_id="w3r_sat_inc", split="wave3_retain", family="state", mechanism="sat_inc", instance_seed=543, role="acquire"),
 )
 
 
@@ -82,7 +98,8 @@ def catalogue() -> list[dict[str, Any]]:
             raise ValueError("heldout_in_family_must_be_in_language:" + raw["task_id"])
         elif raw["split"] in (
             "mismatch", "varied_measure", "varied_sequence", "varied_indistinct",
-            "synthesis_gate", "synthesis_holdout",
+            "synthesis_gate", "synthesis_holdout", "wave2_target", "wave2_reject",
+            "wave3_compose",
         ) and raw["mechanism"] in LANGUAGE:
             raise ValueError("mismatch_must_be_outside:" + raw["task_id"])
         rows.append(dict(raw, origin="authored_mechanism"))
@@ -120,6 +137,10 @@ def synthesis_gate_tasks() -> list[dict[str, Any]]:
 
 def synthesis_holdout_tasks() -> list[dict[str, Any]]:
     return tasks_for("synthesis_holdout")
+
+
+def wave_tasks(*splits: str) -> list[dict[str, Any]]:
+    return [row for row in catalogue() if row["split"] in splits]
 
 
 def split_lock() -> dict[str, list[str]]:
