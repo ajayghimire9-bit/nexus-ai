@@ -133,6 +133,7 @@ class SubMechanismLibrary:
         self.whole_hits = 0
         self.whole_misses = 0
         self.retrieval_evals = 0
+        self.distill_cost = 0
 
     def reset(self) -> None:
         self.clauses = []
@@ -143,6 +144,7 @@ class SubMechanismLibrary:
         self.whole_hits = 0
         self.whole_misses = 0
         self.retrieval_evals = 0
+        self.distill_cost = 0
 
     def remember_whole(self, mechanism: str, transcript: list[dict[str, Any]]) -> None:
         evidence = [
@@ -197,6 +199,7 @@ class SubMechanismLibrary:
             whole_hits=self.whole_hits,
             whole_misses=self.whole_misses,
             retrieval_evals=self.retrieval_evals,
+            distill_cost=self.distill_cost,
             exact_hits=self.exact.hits,
             exact_misses=self.exact.misses,
         )

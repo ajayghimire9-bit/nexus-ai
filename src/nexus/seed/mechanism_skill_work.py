@@ -36,15 +36,16 @@ PRIOR_CLOSED = (
 )
 OPENED_IDS = set(PRIOR_OPENED)
 METHODS = (
-    "untrained_policy_no_memory",
-    "source_distilled_fixed_no_memory",
-    "learned_adaptive_policy_memory_cleared",
-    "learned_adaptive_policy_plus_subskill_memory",
+    "untrained_default_policy",
+    "source_distilled_fixed_order",
+    "source_learned_adaptive_policy",
+    "adaptive_policy_plus_compositional_subskills",
 )
+MEMORY_METHOD = "adaptive_policy_plus_compositional_subskills"
 CLEARED_TO_FROZEN = {
-    "untrained_policy_no_memory": "untrained_default_policy",
-    "source_distilled_fixed_no_memory": "source_distilled_fixed_order",
-    "learned_adaptive_policy_memory_cleared": "source_learned_adaptive_policy",
+    "untrained_default_policy": "untrained_default_policy",
+    "source_distilled_fixed_order": "source_distilled_fixed_order",
+    "source_learned_adaptive_policy": "source_learned_adaptive_policy",
 }
 POS_SIGNATURE = "1,0"
 NEG_SIGNATURE = "0,1"
@@ -138,6 +139,7 @@ class SkillWorkMeter(WorkMeter):
     def __init__(self) -> None:
         super().__init__()
         self.retrieval_evals = 0
+        self.distill_cost = 0
 
     def as_dict(self) -> dict[str, int]:
         return dict(
@@ -146,6 +148,7 @@ class SkillWorkMeter(WorkMeter):
             probe_feature_and_policy_evals=int(self.probe_feature_and_policy_evals),
             policy_evals=int(self.probe_feature_and_policy_evals),
             retrieval_evals=int(self.retrieval_evals),
+            distill_cost=int(self.distill_cost),
             total_acquisition_work=int(self.total_acquisition_work),
         )
 
@@ -156,19 +159,25 @@ class SkillWorkMeter(WorkMeter):
             + int(self.hypothesis_evals)
             + int(self.probe_feature_and_policy_evals)
             + int(self.retrieval_evals)
+            + int(self.distill_cost)
         )
 
 
-def populate_library(source_rows: list[dict[str, Any]]) -> SubMechanismLibrary:
+def populate_library(source_rows: list[dict[str, Any]]) -> tuple[SubMechanismLibrary, int]:
     library = SubMechanismLibrary()
+    distill_cost = 0
     for episode in source_rows:
         if not episode.get("useful_acquisition"):
             continue
         library.remember_whole(episode["mechanism"], episode.get("transcript") or [])
+        distill_cost += 1
         clause = decompose_verified(episode)
+        distill_cost += 1
         if clause:
+            distill_cost += 2
             library.remember_subclause(clause)
-    return library
+    library.distill_cost = distill_cost
+    return library, distill_cost
 
 
 def run_memory_episode(task: dict[str, Any], weights: dict[str, list[float]],
@@ -252,7 +261,7 @@ def run_memory_episode(task: dict[str, Any], weights: dict[str, list[float]],
         split=task["split"],
         mechanism=task["mechanism"],
         role=task.get("role"),
-        method="learned_adaptive_policy_plus_subskill_memory",
+        method=MEMORY_METHOD,
         transcript=transcript,
         synthesized=synthesized,
         holdout=holdout,
@@ -279,6 +288,7 @@ def _relabel(row: dict[str, Any], method: str) -> dict[str, Any]:
     out = dict(row)
     out["method"] = method
     out.setdefault("retrieval_evals", 0)
+    out.setdefault("distill_cost", 0)
     out.setdefault("whole_mechanism_hits", 0)
     out.setdefault("subclause_hits", 0)
     out["total_acquisition_work"] = (
@@ -286,6 +296,7 @@ def _relabel(row: dict[str, Any], method: str) -> dict[str, Any]:
         + int(out.get("hypothesis_evals") or 0)
         + int(out.get("probe_feature_and_policy_evals") or 0)
         + int(out.get("retrieval_evals") or 0)
+        + int(out.get("distill_cost") or 0)
     )
     return out
 
@@ -297,7 +308,7 @@ def _method_totals(rows: list[dict[str, Any]]) -> dict[str, Any]:
             n=0, useful_acquisition=0, predictive_competence=0,
             exact_mechanism_identification=0,
             env_interactions=0, hypothesis_evals=0,
-            probe_feature_and_policy_evals=0, retrieval_evals=0,
+            probe_feature_and_policy_evals=0, retrieval_evals=0, distill_cost=0,
             total_acquisition_work=0, whole_mechanism_hits=0, subclause_hits=0,
         ))
         cell["n"] += 1
@@ -305,20 +316,23 @@ def _method_totals(rows: list[dict[str, Any]]) -> dict[str, Any]:
             cell[key] += int(bool(row.get(key)))
         for key in (
             "env_interactions", "hypothesis_evals", "probe_feature_and_policy_evals",
-            "retrieval_evals", "total_acquisition_work", "whole_mechanism_hits", "subclause_hits",
+            "retrieval_evals", "distill_cost", "total_acquisition_work",
+            "whole_mechanism_hits", "subclause_hits",
         ):
             cell[key] += int(row.get(key) or 0)
     return out
 
 
 def reconstruct_work(episode: dict[str, Any], library: SubMechanismLibrary | None = None) -> dict[str, int]:
-    if episode["method"] != "learned_adaptive_policy_plus_subskill_memory":
+    if episode["method"] != MEMORY_METHOD:
         from .mechanism_policy_replication import reconstruct_work as frozen_reconstruct
         rebuilt = frozen_reconstruct(dict(episode, method=CLEARED_TO_FROZEN.get(episode["method"], episode["method"])))
         rebuilt["retrieval_evals"] = int(episode.get("retrieval_evals") or 0)
+        rebuilt["distill_cost"] = int(episode.get("distill_cost") or 0)
         rebuilt["total_acquisition_work"] = (
             rebuilt["env_interactions"] + rebuilt["hypothesis_evals"]
             + rebuilt["probe_feature_and_policy_evals"] + rebuilt["retrieval_evals"]
+            + rebuilt["distill_cost"]
         )
         return rebuilt
     meter = SkillWorkMeter()
@@ -359,6 +373,7 @@ def reconstruct_work(episode: dict[str, Any], library: SubMechanismLibrary | Non
                 bank = sorted(set(compatible_names(str(signature))) | set(observed))
             retrieved = True
     filter_named_bank(prefix, bank, meter)
+    meter.distill_cost = int(episode.get("distill_cost") or 0)
     return meter.as_dict()
 
 
@@ -382,15 +397,22 @@ def evaluate_gates(seed_blocks: list[dict[str, Any]]) -> dict[str, Any]:
         if not (r_useful[0] == r_useful[1] == r_useful[2] == r_useful[3] == 2):
             gate1 = False
             notes.append("gate1_retain_seed_{0}".format(block["seed"]))
-        memory = totals.get("learned_adaptive_policy_plus_subskill_memory") or {}
+        memory = totals.get(MEMORY_METHOD) or {}
         if int(memory.get("whole_mechanism_hits") or 0) != 0:
             gate2 = False
             notes.append("gate2_whole_hit_seed_{0}".format(block["seed"]))
         if int(memory.get("subclause_hits") or 0) <= 0:
             gate2 = False
             notes.append("gate2_no_sub_hit_seed_{0}".format(block["seed"]))
-        cleared = totals.get("learned_adaptive_policy_memory_cleared") or {}
-        if int(memory.get("total_acquisition_work") or 10**9) >= int(cleared.get("total_acquisition_work") or 0):
+        untrained = totals.get("untrained_default_policy") or {}
+        distilled = totals.get("source_distilled_fixed_order") or {}
+        cleared = totals.get("source_learned_adaptive_policy") or {}
+        mem_work = int(memory.get("total_acquisition_work") or 10**9)
+        if not (
+            mem_work < int(cleared.get("total_acquisition_work") or 0)
+            and mem_work < int(distilled.get("total_acquisition_work") or 0)
+            and mem_work < int(untrained.get("total_acquisition_work") or 0)
+        ):
             gate3 = False
             notes.append("gate3_seed_{0}".format(block["seed"]))
     return dict(
@@ -414,6 +436,7 @@ def per_task_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             hypothesis_evals=int(row["hypothesis_evals"]),
             policy_evals=int(row.get("probe_feature_and_policy_evals") or 0),
             retrieval_evals=int(row.get("retrieval_evals") or 0),
+            distill_cost=int(row.get("distill_cost") or 0),
             total_acquisition_work=int(row["total_acquisition_work"]),
             whole_mechanism_hits=int(row.get("whole_mechanism_hits") or 0),
             subclause_hits=int(row.get("subclause_hits") or 0),
@@ -452,11 +475,11 @@ def run_skill_work(directory: Path) -> dict[str, Any]:
         weights = fit_acquire(supervised)
         frozen = policy_hash({action: weights.get(action, [0.0] * len(FEATURE_NAMES)) for action in ACTIONS})
         order = distill_order(teacher)
-        library = populate_library(own)
+        library, distill_cost = populate_library(own)
         hold_rows = []
         retain_rows = []
         for public, frozen_name in CLEARED_TO_FROZEN.items():
-            used = zero_acquire() if "learned" not in public else _with_stops(weights)
+            used = zero_acquire() if public != "source_learned_adaptive_policy" else _with_stops(weights)
             for row in run_method(holdout, frozen_name, used, order, seed=80 + seed):
                 hold_rows.append(dict(_relabel(row, public), source_seed=seed))
             for row in run_method(retain, frozen_name, used, order, seed=90 + seed):
@@ -466,6 +489,9 @@ def run_skill_work(directory: Path) -> dict[str, Any]:
             episode = run_memory_episode(task, _with_stops(weights), order, rng, library)
             episode["source_seed"] = seed
             episode["policy_seed"] = 80 + seed
+            extra = distill_cost if index == 0 else 0
+            episode["distill_cost"] = extra
+            episode["total_acquisition_work"] = int(episode["total_acquisition_work"]) + extra
             hold_rows.append(episode)
         for index, task in enumerate(retain):
             rng = random.Random((90 + seed) * 1009 + index * 17 + 11)
@@ -569,13 +595,13 @@ def verify_payload(payload: dict[str, Any]) -> dict[str, Any]:
         reconstructed = reconstruct_work(row, libraries.get(seed))
         for key in (
             "env_interactions", "hypothesis_evals", "probe_feature_and_policy_evals",
-            "retrieval_evals", "total_acquisition_work",
+            "retrieval_evals", "distill_cost", "total_acquisition_work",
         ):
             if reconstructed.get(key) != row.get(key):
                 ok = False
                 notes.append("reconstruct:" + row["task_id"] + ":" + row["method"] + ":" + key)
                 break
-    cleared = saved.get("learned_adaptive_policy_memory_cleared") or {}
+    cleared = saved.get("source_learned_adaptive_policy") or {}
     if int(cleared.get("env_interactions") or 0) != HOLDOUT_ENV_TARGET:
         ok = False
         notes.append("cleared_env_changed")
@@ -585,7 +611,7 @@ def verify_payload(payload: dict[str, Any]) -> dict[str, Any]:
     if int(cleared.get("total_acquisition_work") or 0) != HOLDOUT_CLEARED_WORK:
         ok = False
         notes.append("cleared_work_changed")
-    memory = saved.get("learned_adaptive_policy_plus_subskill_memory") or {}
+    memory = saved.get(MEMORY_METHOD) or {}
     if int(memory.get("env_interactions") or 0) != HOLDOUT_ENV_TARGET:
         ok = False
         notes.append("memory_env_changed")

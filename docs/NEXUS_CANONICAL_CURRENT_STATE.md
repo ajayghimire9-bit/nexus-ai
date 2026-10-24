@@ -1,5 +1,52 @@
 # NEXUS Seed — Current State
 
+## Central Research Gap
+
+NEXUS must reliably encounter something unfamiliar, learn a useful
+model or skill for it, and use that experience to become a better
+learner on the next unfamiliar problem—while reducing total resource
+cost (counting source training, probing, hypothesis evaluation, policy
+inference, verification, and retrieval overhead, not merely cheap
+reuse after caching).
+
+## 3-pillar evaluation rule
+
+1. **Implemented** means a mechanism runs. It is not a capability claim.
+2. **Demonstrated** means a measured net advantage over strong fixed
+   baselines under fair tests and full cost accounting.
+3. **Learning-to-learn** requires the Central Research Gap: transfer
+   that makes the next unfamiliar problem cheaper in total work, not
+   only a cached replay of the same task.
+
+A row may be Implemented and still Undemonstrated.
+
+## 13-row audit scorecard
+
+| # | Capability | Implemented | Demonstrated | Evidence |
+| ---: | --- | --- | --- | --- |
+| 1 | Finite symbolic teaching | Yes | No | Authored object-world checker runs; not unrestricted language |
+| 2 | Ordinary conversation | Yes | No | Chat routing and ChatML runtime exist; not a general conversational agent |
+| 3 | Local GGUF inference | Yes | No | PersistentLocalRuntime CPU path runs; not learned improvement |
+| 4 | Mathematics (tools) | Yes | No | Calculator/expression path exists; capability map 1–2/6 |
+| 5 | Logic | Yes | No | Finite items run; capability map 2/6 |
+| 6 | Knowledge vault / retrieval | Yes | No | FTS5 vault runs; freshness/conflict unresolved |
+| 7 | Bounded coding / API-ID | Yes | No | Named-ID and apply-mode grids ran; task success 0 or tool-tie |
+| 8 | Mechanism investigation policy | Yes | Bounded | `f2e8942` cheaper probes at matched accuracy in one suite |
+| 9 | Mechanism synthesis / acquisition | Yes | No | Synthesis works; search ties the fixed synthesizer |
+| 10 | Learning-to-learn / meta-learning | Yes | Bounded only | See row note below. General L2L unestablished |
+| 11 | Whole-task skill memory | Yes | No | Continual Wave-2 exact hits 0; no advantage over template |
+| 12 | Compositional sub-skill transfer | Yes | Pending / in test | Rung 2 on this branch; not general transfer |
+| 13 | Open-domain coding / Track B | No | No | Coder / Metal Best-of-4 / LoRA closed. Not established |
+
+**Learning-to-learn / meta-learning (row 10).** Bounded claim at
+`f2e8942`: a source-trained adaptive investigation policy reduced the
+cost of acquiring unfamiliar mechanisms in the tested exclusive-or
+suite (env calls 21 vs 42 untrained / 43 source-distilled fixed
+order; total work 699 vs 858 untrained / 908 distilled across 3
+seeds; \(N_{\text{breakeven}} = 124.4\)–\(163.5\)). General
+learning-to-learn, open-ended acquisition beyond supplied candidates,
+and Wave-2 whole-task skill-memory transfer remain unestablished.
+
 ## Current — sub-clause skill work reduction (results)
 
 [Protocol](NEXUS_UNFAMILIAR_SKILL_WORK_REDUCTION_PROTOCOL.md),

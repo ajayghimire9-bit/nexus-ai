@@ -42,12 +42,17 @@ def test_skill_work_run_passes_verifier_and_keeps_policy_cost():
     checked = verify_payload(payload)
     assert checked["valid"] is True
     hold = payload["totals"]["holdout"]
-    cleared = hold["learned_adaptive_policy_memory_cleared"]
-    memory = hold["learned_adaptive_policy_plus_subskill_memory"]
+    cleared = hold["source_learned_adaptive_policy"]
+    memory = hold["adaptive_policy_plus_compositional_subskills"]
+    untrained = hold["untrained_default_policy"]
+    distilled = hold["source_distilled_fixed_order"]
     assert cleared["env_interactions"] == memory["env_interactions"] == 21
     assert cleared["probe_feature_and_policy_evals"] == memory["probe_feature_and_policy_evals"] == 246
     assert cleared["total_acquisition_work"] == 699
+    assert memory["distill_cost"] > 0
     assert memory["total_acquisition_work"] < 699
+    assert memory["total_acquisition_work"] < untrained["total_acquisition_work"]
+    assert memory["total_acquisition_work"] < distilled["total_acquisition_work"]
     assert memory["whole_mechanism_hits"] == 0
     assert memory["subclause_hits"] > 0
     assert payload["usage"]["model_calls"] == 0
