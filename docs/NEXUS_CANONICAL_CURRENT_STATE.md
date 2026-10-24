@@ -190,6 +190,22 @@ reconstructing I/O & AST verifier `scripts/verify_wave8_deconfounded_equal_capab
   - On **OOG (`w8d_oog_caesar`)**, the prerequisite gate beats `persistent_nexus_gate_disabled` (`376` vs `434` total work, `282` vs `353` `codegen+syn`), though across all 14 tasks the `83` cumulative gate checks leave `persistent_nexus_full` `12` work units behind `persistent_nexus_gate_disabled` (`3250` vs `3238`) while `71` units ahead on `codegen_plus_synthesis` (`1733` vs `1804`).
 - **Scope**: Engineer-written symbolic synthesis, relational schema distillation, prerequisite gating, and usage/age pruning (`learning_to_learn_established = false`, Track B closed, `0` model calls, `0 s` frozen debit).
 
+**Wave-9 frozen-fresh 4-method comparison and pre-registered self-adaptive evaluation (`210` cells across 3 permuted-order seeds, protocol lock `f5741a6`).**
+[Protocol](NEXUS_WAVE9_FROZEN_FRESH_AND_ADAPTIVE_PROTOCOL.md),
+[Results](NEXUS_WAVE9_FROZEN_FRESH_AND_ADAPTIVE_RESULTS.md), artifact
+`artifacts/seed_wave9_frozen_fresh_and_adaptive.json` (`40dc63d4a39f4921b71fda579e3fd066eb66df2552127d947771aeebf31c7e11`),
+verifier `scripts/verify_wave9_frozen_fresh_comparison.py` (`"valid": true`, `210` rows replayed on saved public and private I/O pairs, `deconfounded_equal_capability.py` verified untouched at `bf66447` SHA-256 `ef0bceb9e10d9f14febdb0df75a6516a9413878f3aa2d63177dda212de37fe1e`, and `git diff f5741a6 -- src/ scripts/ tests/` verified empty after the single-shot scoring run).
+- **All 5 methods achieve `42/42` (`100%` mapping and private accuracy)** on the unseen 14-task `w9f_*` holdout suite.
+- **Suite totals (`codegen_plus_synthesis / total_work`, per-seed `mean [min..max]`)**:
+  - `equal_scratch` (frozen `bf66447`): `2379 / 3525` (`1175.0 [1175..1175]`)
+  - `ordinary_persistent_memoization` (frozen `bf66447`): `2409 / 3555` (`1185.0 [1184..1187]`, `memoized_program_reused = 3`)
+  - `persistent_nexus_pruning_disabled` (frozen `bf66447`): **`1903 / 3428`** (`1142.67 [1087..1209]`, `l1_sub_predicate_reused = 15`, `l2_full_skill_reused = 3`)
+  - `persistent_nexus_full` (frozen `bf66447`): `2069 / 3586` (`1195.33 [1180..1211]`, `l1_sub_predicate_reused = 12`, `l2_full_skill_reused = 3`)
+  - `wave9_self_adaptive_nexus` (pre-registered Wave-9): `2097 / 3743` (`1247.67 [1217..1291]`, `gate_evals = 26`, `micro_codegen_evals = 159`, `archive_lookup_evals = 18`, `compression_evals = 198`, `cold_archive_reactivated = 3`)
+- **Single-Shot Findings**:
+  - Frozen `persistent_nexus_full` achieves the lowest `codegen_plus_synthesis` (`995`) and lowest `total_work` (`1662`) of all 5 methods on **L1+L2 invention, reuse, and composition** (`995 / 1662` vs `1014 / 1683` for `pruning_disabled`, `1238 / 1724` for `ordinary_persistent_memoization`, and `1338 / 1824` for `equal_scratch`), while losing to `equal_scratch` on **G1+G2** (`875` vs `621`) and losing to `persistent_nexus_pruning_disabled` on **Delayed Post-Prune Reuse** (`361` vs `152`).
+  - `wave9_self_adaptive_nexus` successfully reactivates demoted operators from its Cold Signature Archive (`cold_archive_reactivated = 3`, reducing `micro_codegen_evals` from `200` to `159`, `operator_compile_cost` from `84` to `72`, and `delayed` work from `262 / 361` to `240 / 350`) and cuts `gate_evals` by `68.7%` (`26` vs `83`), but its explicitly metered `compression_evals` (`198`) and single-use macro demotion in Seed 2 (`l2_full_skill_reused = 2` vs `3`) leave its total work higher (`3743`).
+
 ## Current — Wave-8 hierarchical gated evolution (results)
 
 [Protocol](NEXUS_WAVE8_HIERARCHICAL_PROTOCOL.md),
