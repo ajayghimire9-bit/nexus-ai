@@ -1,6 +1,13 @@
 # NEXUS progress log
 
-## Current — Wave-12 developmental/invalid (do not reuse w12f_*)
+## Current — Wave-13 bounded subtree (protocol in progress; Wave 12 closed)
+
+Wave 12 (`e940b82` → `6bdf9ae`) is **Closed Developmental / Invalid
+(Blind Holdout Failed Gates; Preserved Unamended)**. Do not amend or
+reuse `w12f_*`.
+[Postmortem](NEXUS_WAVE12_FAILED_BLIND_RUN_POSTMORTEM.md).
+
+## Previous — Wave-12 developmental/invalid (do not reuse w12f_*)
 
 Protocol freeze `e940b82`. Artifact
 `a6b8ba055930c36b9302aba9eae11d89d7b3c1df2879a6f80e883a5cfb037da0`.
