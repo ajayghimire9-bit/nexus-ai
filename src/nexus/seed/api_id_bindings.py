@@ -268,3 +268,209 @@ def score_named_tracks(proposal: dict[str, Any] | None, gold: dict[str, Any],
         assembly_valid=tracks["assembly_valid"],
         selection_not_generally_solved=True,
     )
+
+
+APPLY_MODES = ("direct", "whole_list", "element")
+
+
+def apply_binding_schema(ids: dict[str, Any]) -> dict[str, Any]:
+    """Named bindings plus an explicit apply mode, or an ask."""
+    named = named_binding_schema(ids)
+    named["properties"] = dict(named["properties"])
+    named["properties"]["apply"] = {"type": "string", "enum": list(APPLY_MODES)}
+    named["required"] = ["api_id", "bindings", "apply"]
+    ask = {
+        "type": "object",
+        "properties": {
+            "ask": {"type": "boolean", "enum": [True]},
+            "question": {"type": "string", "minLength": 4, "maxLength": 200},
+        },
+        "required": ["ask", "question"],
+        "additionalProperties": False,
+    }
+    return {"anyOf": [named, ask]}
+
+
+def apply_generation_schema(ids: dict[str, Any]) -> dict[str, Any]:
+    """Constrained decoding form. Scoring still uses apply_binding_schema."""
+    named = named_binding_schema(ids)
+    return {
+        "type": "object",
+        "properties": {
+            "api_id": named["properties"]["api_id"],
+            "bindings": named["properties"]["bindings"],
+            "apply": {"type": "string", "enum": list(APPLY_MODES)},
+            "ask": {"type": "boolean"},
+            "question": {"type": "string", "minLength": 0, "maxLength": 200},
+        },
+        "additionalProperties": False,
+    }
+
+
+def parse_apply_selection(content: str) -> dict[str, Any] | None:
+    raw = (content or "").strip()
+    if "{" not in raw or "}" not in raw:
+        return None
+    try:
+        payload = json.loads(raw[raw.find("{"): raw.rfind("}") + 1])
+    except Exception:
+        return None
+    if type(payload) is not dict:
+        return None
+    if payload.get("ask") is True:
+        question = payload.get("question")
+        if type(question) is not str or len(question.strip()) < 4:
+            return None
+        return dict(ask=True, question=question.strip())
+    named = parse_named_selection(json.dumps(payload))
+    if named is None:
+        return None
+    apply = payload.get("apply")
+    if apply not in APPLY_MODES:
+        named["apply"] = apply
+        return named
+    named["apply"] = apply
+    return named
+
+
+def request_satisfies_apply_schema(payload: dict[str, Any] | None,
+                                   schema: dict[str, Any]) -> bool:
+    if not payload:
+        return False
+    if payload.get("ask") is True:
+        return type(payload.get("question")) is str and len(payload.get("question") or "") >= 4
+    named = next((row for row in schema.get("anyOf") or [] if "apply" in (row.get("properties") or {})), None)
+    if named is None:
+        return False
+    if payload.get("apply") not in APPLY_MODES:
+        return False
+    binding_schema = {
+        "type": "object",
+        "properties": {k: named["properties"][k] for k in ("api_id", "bindings")},
+        "required": ["api_id", "bindings"],
+        "additionalProperties": False,
+    }
+    return request_satisfies_schema(
+        {k: payload[k] for k in ("api_id", "bindings") if k in payload},
+        binding_schema,
+    )
+
+
+def compatible_field_ids(param: dict[str, Any], ids: dict[str, Any]) -> list[str]:
+    want = param.get("type")
+    return [row["id"] for row in ids.get("fields") or [] if field_shape(row) == want]
+
+
+def type_validity(proposal: dict[str, Any] | None, ids: dict[str, Any]) -> dict[str, Any]:
+    """Type and apply-mode checks. Separate from structural schema fit."""
+    if not proposal:
+        return dict(type_valid=False, error="missing_proposal")
+    if proposal.get("ask") is True:
+        return dict(type_valid=True, error=None, asked=True)
+    api = _api(ids, proposal.get("api_id"))
+    if api is None:
+        return dict(type_valid=False, error="unknown_api_id")
+    mode = proposal.get("apply")
+    if mode not in APPLY_MODES:
+        return dict(type_valid=False, error="unknown_apply")
+    mapped = normalize_named_bindings(proposal, api)
+    if mapped["extra"] or mapped["missing"]:
+        return dict(type_valid=False, error="binding_names")
+    uses_elem = False
+    uses_list_field = False
+    raw = proposal.get("bindings")
+    if isinstance(raw, dict):
+        paired = [(raw[row["name"]], row) for row in api["params"] if raw.get(row["name"])]
+    else:
+        paired = list(zip(mapped["ordered"], api["params"]))
+    for field_id, param in paired:
+        field = _field(ids, field_id)
+        if field is None:
+            return dict(type_valid=False, error="unknown_field_id")
+        got = field_shape(field)
+        if param["type"] != got:
+            return dict(type_valid=False, error="type_mismatch", expected=param["type"], actual=got)
+        if field.get("kind") == "elem":
+            uses_elem = True
+            if param["type"] == "list":
+                return dict(type_valid=False, error="elem_on_list_param")
+        if field.get("kind") == "field" and field.get("type") == "list":
+            uses_list_field = True
+    if mode == "element" and not uses_elem:
+        return dict(type_valid=False, error="element_apply_needs_elem")
+    if mode == "whole_list" and uses_elem:
+        return dict(type_valid=False, error="whole_list_forbids_elem")
+    if mode == "whole_list" and not uses_list_field:
+        return dict(type_valid=False, error="whole_list_needs_list_field")
+    if mode == "direct" and uses_elem:
+        return dict(type_valid=False, error="direct_forbids_elem")
+    return dict(type_valid=True, error=None, asked=False)
+
+
+def apply_selection_prompt(task: dict[str, Any], files: dict[str, str]) -> str:
+    return (
+        "Choose an API and bind parameter names to field IDs. "
+        "Do not write the function body.\n"
+        'Return JSON {"api_id":"...","bindings":{"param":"field.id"},'
+        '"apply":"direct"|"whole_list"|"element"}.\n'
+        'If two type-compatible fields fit and the request does not say which, '
+        'return {"ask":true,"question":"..."}. Do not guess.\n'
+        "Omit an optional parameter to keep its documented default. "
+        "Never invent a field for every parameter.\n"
+        "apply=direct: no list iteration. "
+        "apply=whole_list: pass a list field to a list parameter. "
+        "apply=element: bind a scalar parameter to elem.LIST and iterate that list.\n"
+        f"Request: {task['request']}\n"
+        + interface_brief(task, files)
+    )
+
+
+def score_apply_tracks(proposal: dict[str, Any] | None, gold: dict[str, Any],
+                       assembled: dict[str, Any], schema: dict[str, Any],
+                       ids: dict[str, Any], private_passed: bool) -> dict[str, Any]:
+    structural_ok = request_satisfies_apply_schema(proposal, schema)
+    typed = type_validity(proposal, ids)
+    asked = bool((proposal or {}).get("ask"))
+    gold_ask = bool(gold.get("ask"))
+    if gold_ask:
+        bindings_correct = asked
+        task_satisfied = asked
+    else:
+        gold_bind = dict(gold.get("bindings") or {})
+        proposed = dict((proposal or {}).get("bindings") or {})
+        apply_ok = (proposal or {}).get("apply") == gold.get("apply")
+        bindings_correct = (not asked) and proposed == gold_bind and apply_ok
+        task_satisfied = bool(private_passed and assembled.get("executable") and not asked)
+    return dict(
+        structural_ok=structural_ok,
+        type_valid=bool(typed.get("type_valid")),
+        type_error=typed.get("error"),
+        bindings_correct=bindings_correct,
+        task_satisfied=task_satisfied,
+        asked=asked,
+        selection_correct=(
+            asked if gold_ask else
+            bool(proposal) and proposal.get("api_id") == gold.get("api_id")
+        ),
+        assembly_valid=bool(assembled.get("ok") and assembled.get("source")),
+        selection_not_generally_solved=True,
+    )
+
+
+def assemble_apply_proposal(task: dict[str, Any], proposal: dict[str, Any] | None,
+                            caller: str) -> dict[str, Any]:
+    ids = contract_ids(task, task["files"])
+    if proposal and proposal.get("ask") is True:
+        return dict(
+            assembled=dict(ok=False, source="", error="asked", executable=False,
+                           asked=True, programmer_supplied=True),
+            files=dict(task["files"]), ids=ids,
+        )
+    typed = type_validity(proposal, ids)
+    if not typed.get("type_valid"):
+        return dict(
+            assembled=dict(ok=False, source="", error=typed.get("error"),
+                           executable=False, type_valid=False, programmer_supplied=True),
+            files=dict(task["files"]), ids=ids,
+        )
+    return apply_validated_proposal(task, proposal, caller)
