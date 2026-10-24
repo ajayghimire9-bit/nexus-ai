@@ -114,3 +114,89 @@ class MechanismSkillStore:
             exact_hits=self.exact.hits,
             exact_misses=self.exact.misses,
         )
+
+
+class SubMechanismLibrary:
+    """Verified guard/transform sub-clauses, not whole-task cache.
+
+    Reuses OrdinaryExactCache for exact whole-mechanism lookup (expected
+    miss on unseen compositions) and a signature index for sub-clauses.
+    Independently resettable from policy weights.
+    """
+
+    def __init__(self) -> None:
+        self.clauses: list[dict[str, Any]] = []
+        self.by_signature: dict[str, list[dict[str, Any]]] = {}
+        self.exact = OrdinaryExactCache()
+        self.sub_hits = 0
+        self.sub_misses = 0
+        self.whole_hits = 0
+        self.whole_misses = 0
+        self.retrieval_evals = 0
+
+    def reset(self) -> None:
+        self.clauses = []
+        self.by_signature = {}
+        self.exact = OrdinaryExactCache()
+        self.sub_hits = 0
+        self.sub_misses = 0
+        self.whole_hits = 0
+        self.whole_misses = 0
+        self.retrieval_evals = 0
+
+    def remember_whole(self, mechanism: str, transcript: list[dict[str, Any]]) -> None:
+        evidence = [
+            (row["action"], row.get("observation"))
+            for row in transcript if not str(row["action"]).startswith("STOP")
+        ]
+        self.exact.put(digest(evidence), {}, {"mechanism": mechanism})
+
+    def remember_subclause(self, record: dict[str, Any]) -> dict[str, Any]:
+        stored = dict(record)
+        stored.setdefault("skill_id", digest([
+            record.get("clause"), record.get("signature"), record.get("source_mechanism"),
+        ]))
+        stored.setdefault("preconditions", dict(signature=record.get("signature")))
+        stored.setdefault("uncertainty", "scoped_subclause")
+        stored.setdefault("failures", [])
+        self.clauses.append(stored)
+        key = str(record["signature"])
+        self.by_signature.setdefault(key, []).append(stored)
+        return stored
+
+    def lookup_whole(self, transcript: list[dict[str, Any]]) -> str | None:
+        self.retrieval_evals += 1
+        evidence = [
+            (row["action"], row.get("observation"))
+            for row in transcript if not str(row["action"]).startswith("STOP")
+        ]
+        row = self.exact.get(digest(evidence), {})
+        if row:
+            self.whole_hits += 1
+            return row.get("mechanism")
+        self.whole_misses += 1
+        return None
+
+    def lookup_subclause(self, signature: str) -> list[dict[str, Any]]:
+        self.retrieval_evals += 1
+        found = list(self.by_signature.get(str(signature)) or [])
+        self.retrieval_evals += len(found)
+        if found:
+            self.sub_hits += 1
+        else:
+            self.sub_misses += 1
+        return deepcopy(found)
+
+    def snapshot(self) -> dict[str, Any]:
+        return dict(
+            n_clauses=len(self.clauses),
+            clauses=deepcopy(self.clauses),
+            signatures=sorted(self.by_signature),
+            sub_hits=self.sub_hits,
+            sub_misses=self.sub_misses,
+            whole_hits=self.whole_hits,
+            whole_misses=self.whole_misses,
+            retrieval_evals=self.retrieval_evals,
+            exact_hits=self.exact.hits,
+            exact_misses=self.exact.misses,
+        )
