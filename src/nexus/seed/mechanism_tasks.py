@@ -45,6 +45,13 @@ DECLARED = (
     dict(task_id="mm_prev", split="mismatch", family="mismatch", mechanism="prev_plus", instance_seed=204),
     dict(task_id="ctl_neg", split="mismatch_control", family="stateless", mechanism="neg", instance_seed=211),
     dict(task_id="ctl_toggle", split="mismatch_control", family="stateful", mechanism="toggle", instance_seed=212),
+    dict(task_id="vp_id0", split="varied_measure", family="measure_exposed", mechanism="id_exact0", instance_seed=301),
+    dict(task_id="vp_mod2", split="varied_sequence", family="sequence_exposed", mechanism="mod2", instance_seed=302),
+    dict(task_id="vp_plus", split="varied_sequence", family="sequence_exposed", mechanism="plus_prev", instance_seed=303),
+    dict(task_id="vp_twin", split="varied_indistinct", family="indistinguishable", mechanism="add1_twin", instance_seed=304),
+    dict(task_id="vp_add2", split="varied_ordinary", family="stateless", mechanism="add2", instance_seed=311),
+    dict(task_id="vp_neg", split="varied_ordinary", family="stateless", mechanism="neg", instance_seed=312),
+    dict(task_id="vp_count", split="varied_ordinary", family="stateful", mechanism="count", instance_seed=313),
 )
 
 
@@ -58,9 +65,13 @@ def catalogue() -> list[dict[str, Any]]:
             raise ValueError("unknown_mechanism:" + raw["task_id"])
         elif raw["split"] == "excluded_family" and raw["mechanism"] not in EXCLUDED:
             raise ValueError("excluded_must_be_declared:" + raw["task_id"])
-        elif raw["split"] in ("within_family", "composition", "mismatch_control") and raw["mechanism"] not in LANGUAGE:
+        elif raw["split"] in (
+            "within_family", "composition", "mismatch_control", "varied_ordinary",
+        ) and raw["mechanism"] not in LANGUAGE:
             raise ValueError("heldout_in_family_must_be_in_language:" + raw["task_id"])
-        elif raw["split"] == "mismatch" and raw["mechanism"] in LANGUAGE:
+        elif raw["split"] in (
+            "mismatch", "varied_measure", "varied_sequence", "varied_indistinct",
+        ) and raw["mechanism"] in LANGUAGE:
             raise ValueError("mismatch_must_be_outside:" + raw["task_id"])
         rows.append(dict(raw, origin="authored_mechanism"))
     return rows
@@ -76,6 +87,15 @@ def assessment_tasks() -> list[dict[str, Any]]:
 
 def mismatch_tasks() -> list[dict[str, Any]]:
     return [row for row in catalogue() if row["split"] in ("mismatch", "mismatch_control")]
+
+
+def varied_tasks() -> list[dict[str, Any]]:
+    return [
+        row for row in catalogue()
+        if row["split"] in (
+            "varied_measure", "varied_sequence", "varied_indistinct", "varied_ordinary",
+        )
+    ]
 
 
 def split_lock() -> dict[str, list[str]]:

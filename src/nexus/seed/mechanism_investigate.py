@@ -13,7 +13,7 @@ from typing import Any
 
 from .capability_evidence import digest
 from .mechanism_world import (
-    ACTIONS, ACTION_COST, ACT_INPUTS, LANGUAGE, MAX_STEPS,
+    ACTIONS, ACTION_COST, ACT_INPUTS, LANGUAGE, MAX_STEPS, ORACLE_COST,
     advance_candidate, apply_hidden, blank_state, candidate_observation,
 )
 
@@ -228,6 +228,59 @@ def choose_information_gain(remaining: list[str], transcript: list[dict[str, Any
     return dict(action=rng.choice(tied), score_work=work, reason="ig_tie" if len(tied) > 1 else "ig")
 
 
+def probe_charge(action: str) -> int:
+    """Oracle cost, or one step when the oracle charge is zero (RESET)."""
+    return int(ORACLE_COST.get(action) or ACTION_COST.get(action) or 1)
+
+
+def choose_cost_aware_ig(remaining: list[str], transcript: list[dict[str, Any]],
+                         available: list[str], rng: random.Random) -> dict[str, Any]:
+    """Information gain per charged cost. MEASURE is used only if it pays."""
+    if len(remaining) == 1 and "STOP_IDENTIFY" in available:
+        return dict(action="STOP_IDENTIFY", score_work=0, reason="unique")
+    if not remaining:
+        return dict(action="STOP_UNRESOLVED", score_work=0, reason="empty")
+    scored = []
+    work = 0
+    for action in available:
+        if action.startswith("STOP"):
+            continue
+        row = score_information_gain(remaining, transcript, action)
+        work += int(row["work"])
+        gain = float(len(remaining)) - float(row["score"])
+        scored.append((gain / float(probe_charge(action)), gain, action))
+    if len(remaining) == 1:
+        cheap = [action for action in available if not action.startswith("STOP")]
+        if not cheap:
+            return dict(action="STOP_UNRESOLVED", score_work=work, reason="no_confirm")
+        charged = [(probe_charge(action), action) for action in cheap]
+        best = min(cost for cost, _action in charged)
+        tied = [action for cost, action in charged if cost == best]
+        return dict(action=rng.choice(tied), score_work=work, reason="confirm_cheap")
+    if not scored or max(gain for _ratio, gain, _action in scored) < 1e-12:
+        return dict(action="STOP_UNRESOLVED", score_work=work, reason="no_split")
+    best = max(ratio for ratio, _gain, _action in scored)
+    tied = [action for ratio, _gain, action in scored if abs(ratio - best) < 1e-12]
+    return dict(action=rng.choice(tied), score_work=work,
+                reason="cost_ig_tie" if len(tied) > 1 else "cost_ig")
+
+
+def choose_diagnostic_measure(remaining: list[str], transcript: list[dict[str, Any]],
+                              available: list[str]) -> dict[str, Any]:
+    """Diagnostic order, then a confirmation MEASURE charged at full cost."""
+    if not remaining:
+        return dict(action="STOP_UNRESOLVED", score_work=0, reason="empty")
+    if len(remaining) == 1:
+        if "MEASURE" in available and not used_since_reset(transcript, "MEASURE"):
+            return dict(action="MEASURE", score_work=0, reason="confirm_measure")
+        if "STOP_IDENTIFY" in available:
+            return dict(action="STOP_IDENTIFY", score_work=0, reason="unique")
+    for action in DIAGNOSTIC_ORDER:
+        if action in available:
+            return dict(action=action, score_work=0, reason="diagnostic_measure")
+    return dict(action="STOP_UNRESOLVED", score_work=0, reason="diagnostic_measure_exhausted")
+
+
 def choose_diagnostic(remaining: list[str], transcript: list[dict[str, Any]],
                       available: list[str]) -> dict[str, Any]:
     if len(remaining) == 1 and "STOP_IDENTIFY" in available:
@@ -274,6 +327,8 @@ def outcome(task: dict[str, Any], remaining: list[str], stopped: str | None,
     correct_unresolved = bool(unresolved and not in_language)
     premature = stopped == "STOP_IDENTIFY" and not supported
     wrong_id = bool(identified is not None and identified != gold)
+    demonstrated_inconsistency = bool(not remaining) and unresolved
+    unresolved_uncertainty = bool(remaining) and unresolved
     success = correct_id or correct_unresolved
     return dict(
         success=success,
@@ -282,6 +337,8 @@ def outcome(task: dict[str, Any], remaining: list[str], stopped: str | None,
         premature=premature,
         wrong_id=wrong_id,
         unresolved=unresolved,
+        demonstrated_inconsistency=demonstrated_inconsistency,
+        unresolved_uncertainty=unresolved_uncertainty,
         identified=identified,
         gold_in_language=in_language,
         remaining=list(remaining),
@@ -362,6 +419,7 @@ def run_episode(task: dict[str, Any], chooser, rng: random.Random) -> dict[str, 
         redundant_taken=redundant_taken,
         redundant_mask=REDUNDANT_MASK_ORIGIN,
         **scored,
+        measured=any(step["action"] == "MEASURE" for step in transcript),
         language_hash=digest(list(LANGUAGE)),
         instance_seed=task["instance_seed"],
     )

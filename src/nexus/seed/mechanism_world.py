@@ -38,6 +38,7 @@ EXCLUDED = ("delay", "threshold")
 OUTSIDE_LANGUAGE = (
     "const0", "const7", "delay", "threshold",
     "abs_val", "mod3", "clip0", "prev_plus",
+    "id_exact0", "mod2", "plus_prev", "add1_twin",
 )
 
 
@@ -93,6 +94,26 @@ def _prev_plus(state: dict[str, Any], x: int, exact: bool) -> int:
     return prev + 1
 
 
+def _id_exact0(state: dict[str, Any], x: int, exact: bool) -> int:
+    if exact:
+        return 0
+    return int(x)
+
+
+def _mod2(state: dict[str, Any], x: int, exact: bool) -> int:
+    return int(x) % 2
+
+
+def _plus_prev(state: dict[str, Any], x: int, exact: bool) -> int:
+    prev = int(state.get("prev") or 0)
+    state["prev"] = int(x)
+    return prev + int(x)
+
+
+def _add1_twin(state: dict[str, Any], x: int, exact: bool) -> int:
+    return int(x) + 1
+
+
 EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "add1": _stateless(lambda x: x + 1),
     "add2": _stateless(lambda x: x + 2),
@@ -115,6 +136,10 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "mod3": _stateless(lambda x: int(x) % 3),
     "clip0": _stateless(lambda x: max(int(x), 0)),
     "prev_plus": _prev_plus,
+    "id_exact0": _id_exact0,
+    "mod2": _mod2,
+    "plus_prev": _plus_prev,
+    "add1_twin": _add1_twin,
 }
 
 

@@ -15,7 +15,8 @@ from typing import Any, Callable
 from .capability_evidence import digest
 from .mechanism_investigate import (
     FEATURE_NAMES, HIDDEN, REDUNDANT_MASK_ORIGIN, available_actions,
-    choose_diagnostic, choose_frequency, choose_information_gain, choose_random,
+    choose_cost_aware_ig, choose_diagnostic, choose_diagnostic_measure,
+    choose_frequency, choose_information_gain, choose_random,
     filter_language, run_episode,
 )
 from .mechanism_policy import (
@@ -41,8 +42,12 @@ def _chooser(method: str, weights: dict[str, list[float]], order: list[str]) -> 
         )
         if method == "information_gain":
             return choose_information_gain(remaining, transcript, available, rng)
+        if method == "cost_aware_ig":
+            return choose_cost_aware_ig(remaining, transcript, available, rng)
         if method == "fixed_diagnostic":
             return choose_diagnostic(remaining, transcript, available)
+        if method == "fixed_diagnostic_measure":
+            return choose_diagnostic_measure(remaining, transcript, available)
         if method == "source_frequency":
             return choose_frequency(remaining, available, order, transcript)
         if method == "random":
