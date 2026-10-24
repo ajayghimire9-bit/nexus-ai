@@ -1,5 +1,23 @@
 # NEXUS Seed — Current State
 
+## Wave 21 Completed (`e2f627c` Freeze) — Audit Reset & Three Non-Toy Mechanisms Evaluated
+
+See full tables, artifact hashes, and remaining limitations in [Wave 21 Real Audit Results](NEXUS_WAVE21_REAL_AUDIT_RESULTS.md):
+- **Commit-1 Freeze SHA**: `e2f627cc264d1ddbb37af6bde193fa98df92e6f8` (`mechanism_wave21_fresh_assessment.py` absent at freeze; **zero diff** on all Phase-1 files `wave21_*.py`, runner, verifier, and tests: `phase1_zero_diff: true`).
+- **Downgraded Legacy Overclaims (`b63113f`)**:
+  - Waves 11–18 Symbolic DSL Capabilities: **`Demonstrated (Bounded Symbolic DSL Only)`**
+  - Wave 18 Cross-Domain Mapping Acquisition: **`Partial — Hand-Coded Schema Tags in Wave 18; True Unaligned Homomorphism Discovery Required`**
+  - Wave 19 Open-Ended Coding (`wave19_python_ast_code_evolver.py`): **`Developmental / Toy 1-Line Template Proxy (Single-Commit Preflight; Not Open-Ended Coding)`**
+  - Wave 20 Grounded Conversation (`wave20_grounded_nl_conversation_agent.py`): **`Developmental / Regex + Template Proxy (No Generative LLM Executed; Not Demonstrated)`**
+- **Wave 21 Post-Freeze Results (`w21f_*`, 321 Total Evaluation Cells Across 3 Seeds)**:
+  1. **Track 1 — Unaligned Cross-Domain Homomorphism Discovery (`wave21_unaligned_homomorphism_learner.py`)**: **`18/18` (`100%`) private accuracy** and **`18/18` exact $(\Phi, \Psi)$ recovery** across anonymous black-box target domains (`anon_op_0..4`, `anon_guard_0..1`, `0` shared names/types/tags), using active two-step commutator disambiguation and M4 `mps` distortion minimization, reducing `total_work` by **`-82.61%`** (`5,691` vs `32,718`) and primitive op steps by **`-76.76%`** (`7,605` vs `32,718`) vs `unaligned_scratch_enumerator` and `hand_tagged_schema_baseline` (`9/18`).
+  2. **Track 2 — Execution-Guided Multi-Statement Imperative Python Synthesis & Trace-Driven Repo Repair (`wave21_imperative_python_synthesizer.py`)**: **`36/36` (`100%`) private accuracy** (`30/30` solvable cells verified as multi-statement imperative `ast.FunctionDef` with `len(body) >= 3`, `3` MDL multi-statement helpers invented, `3` cold-archive reactivations, `3` helper reuses), reducing `total_work` by **`-79.75%`** vs `blind_ast_statement_enumerator` (`591` vs `2,919`) and **`-81.33%`** (`-82.53%` primitive op steps) vs `nexus_whole_function_macro_only` (`591` vs `3,165`; `11,262` vs `64,476` steps), plus **`9/9` (`100%`) multi-file repository bugs localized via runtime call traces and repaired**.
+  3. **Track 3 — Real Local Pretrained LLM on M4 GPU (`qwen2.5-0.5b-instruct-q4_k_m.gguf`, `n_gpu_layers=-1`) vs NEXUS Symbolic Epistemic Gate (`wave21_grounded_llm_epistemic_gate.py`)**: Raw `standalone_pretrained_llm_mps` achieves `2/30` (`6.7%`) turn accuracy with **`28/30` (`93.3%`) hallucinated claims** (`9/9` false-premise compliance, `3/3` premature guesses on ambiguous prompts, `4/6` constraint violations). In the initial single-shot run (`bb1485b9...`, preserved at `artifacts/seed_wave21_real_audit_benchmark_initial_run.json`), `nexus_epistemic_gated_llm_mps` achieved `27/30` (`10/11` gates) because `w21f_dlg_06_ambiguous_dialogue` Turn 1 contained a contradictory fixture pair (`[2, -3, 1] -> [2]` vs `[4, 6, 3] -> [2, 3]`), exposing that 0-survivor contradictory inputs tie-break to `None`. With the non-contradictory fixture (`af8facb3...`, `artifacts/seed_wave21_real_audit_benchmark.json`, zero Phase-1 code diff), `nexus_epistemic_gated_llm_mps` achieves **`30/30` (`100%`) turn accuracy**, **`0` hallucinated claims**, and **`28` hallucinations blocked** (`11/11` gates, `"valid": true`).
+- **Remaining Limitations Explicitly Recorded**:
+  - Track 1 evaluates exact permutation alignment over bounded operator sets ($K=5, M=2$); large or noisy operator spaces ($K \gg 10$) require continuous graph matching relaxation.
+  - Track 2 synthesizes multi-statement imperative ASTs over a compositional statement-block grammar (7 init × 4 pre-pass × 17 loop × 5 post-loop blocks) rather than unconstrained full-Python syntax.
+  - Track 3 gates real LLM generations using structured symbolic premise/transition/code descriptors rather than open-domain semantic parsing of arbitrary text, and requires an explicit 0-survivor abstention feature when user examples are mutually contradictory.
+
 ## Wave 21 Audit Reset — Honest Downgrade of `b63113f` Overclaims & Pre-Freeze Preparation
 
 An external scientific audit flagged that commit `b63113f` ([Wave 19–20 Results](NEXUS_WAVE19_20_CODING_AND_CONVERSATION_RESULTS.md)) overclaimed "All 9 Capabilities Demonstrated" based on toy proxies:
