@@ -1,6 +1,13 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore the Wave-6 correspondence grid
+## Current next — Wave-7 cross-domain analogy (protocol locked)
+
+The [Wave-7 protocol](NEXUS_WAVE7_CROSS_DOMAIN_PROTOCOL.md) factors
+interface disambiguation and tests type-erased transfer into a
+symbolic sequence domain. Do not rescore `b590ca2` or earlier grids.
+Track B coding stays closed.
+
+## Previous next — do not rescore the Wave-6 correspondence grid
 
 The [Wave-6 run](NEXUS_WAVE6_CORRESPONDENCE_RESULTS.md) recovers
 identity+`result` with competing bindings and a public validation
