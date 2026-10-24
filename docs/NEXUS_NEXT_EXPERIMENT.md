@@ -1,6 +1,18 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — do not rescore competence; excluded family still breaks IG
+## Current next — do not rescore mismatch; leftover identity still fools cheap probes
+
+The [mismatch run](NEXUS_SEED_MECHANISM_MISMATCH_RESULTS.md) is a
+useful investigation difference on this grid only: trained reports
+unresolved after MEASURE empties the language, while diagnostic and
+frequency name `noisy_add1` after cheap identity-matching probes.
+Do not rescore that grid, `ff26a18`, or `92d6f19`. A later family
+must include a mismatch that also survives MEASURE, or drop cheap
+identity leftovers, before treating unresolved as independently
+supported. Controls here were seen in development. Ranking stays
+paused. Learning-to-learn remains unestablished.
+
+## Previous next — do not rescore competence; excluded family still breaks IG
 
 The [competence run](NEXUS_SEED_MECHANISM_COMPETENCE_RESULTS.md) taught
 the policy to finish in-language investigations and tied the diagnostic

@@ -1,6 +1,20 @@
 # NEXUS Seed — Current State
 
-## Current — mechanism competence gate (results)
+## Current — model-mismatch challenge (results)
+
+[Protocol](NEXUS_SEED_MECHANISM_MISMATCH_PROTOCOL.md),
+[results](NEXUS_SEED_MECHANISM_MISMATCH_RESULTS.md).
+Protocol `578ba4d`. Artifact
+`83847d410e9344712ea8435fe1f53305a7a79e0a85738bec7ed0d8b8c5ce746d`.
+Verifier 108 cells; opened C/D/E IDs rejected. Saved-record diagnosis:
+first missed evidence on `e_threshold` is diagnostic `ACT_1 → 0` versus
+trained/IG `ACT_2` then catalogue-singleton `toggle`. Competence 7/7 × 3
+seeds. Assessment: trained 6 correct solutions, 0 false IDs, 12 correct
+unresolved versus diagnostic 6 / 9 / 3. Verdict **useful learned
+investigation advantage** on this grid only. Priors `ff26a18` and
+`92d6f19` not rescored. Frozen debit **0**. Not learning-to-learn.
+
+## Previous — mechanism competence gate (results)
 
 [Protocol](NEXUS_SEED_MECHANISM_COMPETENCE_PROTOCOL.md),
 [results](NEXUS_SEED_MECHANISM_COMPETENCE_RESULTS.md).

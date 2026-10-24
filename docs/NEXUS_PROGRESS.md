@@ -1,6 +1,17 @@
 # NEXUS progress log
 
-## Current — capability/evidence audit completed without promotion
+## Current — model-mismatch challenge, useful investigation difference only
+
+Protocol `578ba4d`, artifact
+`83847d410e9344712ea8435fe1f53305a7a79e0a85738bec7ed0d8b8c5ce746d`.
+Saved-record diagnosis: first missed evidence on `e_threshold` is
+`ACT_1 → 0`, not a later stop on the same observations. Trained 6
+correct solutions, 0 false IDs, 12 correct unresolved versus diagnostic
+6 / 9 / 3. MEASURE empties cheap-identity leftovers; an extra cheap
+probe does not. Frozen debit **0**. Not learning-to-learn.
+[Results](NEXUS_SEED_MECHANISM_MISMATCH_RESULTS.md).
+
+## Previous — capability/evidence audit completed without promotion
 
 Execution def0341, 240 episodes, negative screen: learned 19/24 vs boundary-first
 24/24, capsules-reset 20/24 and shuffled 21/24. Real Python/TypeScript tests pass
