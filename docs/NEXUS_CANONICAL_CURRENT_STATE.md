@@ -1,6 +1,20 @@
 # NEXUS Seed — Current State
 
-## Wave16 source preparation; Wave15 remains closed
+## Wave16 closed — complete grid, invalid semantic replay
+
+Freeze `23e9ad949770dbc64721f3e233f2f239de723968`; 270/270 cells completed once.
+[Results](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md): full raw48/54, work459630 /
+primitive steps1712487. Accuracy fails; verifier also fails nine cached-coverage
+and nine gate-snapshot replays. Empty-token fast wrappers disagree with the
+interpreter, and two authored fixtures mishandle empty sequence sentinels.
+These invalid outcomes do not establish an efficiency gain. The three cold
+flags are in a piecewise task, not delayed archive reuse. **Developmental /
+Invalid (Failed Single-Shot Blind Gates; Preserved Unamended)**. No frozen-code
+edit, fixture rewrite, relabeling or retry. Track B zero calls/debit. Source
+tests83/83 passed but missed this boundary. Next: one source-only differential
+semantic audit of caches/fixtures versus the typed interpreter.
+
+## Previous — Wave16 source preparation; Wave15 remains closed
 
 Wave15 (`4810ae65`→`9db4dc94`) is **Closed Developmental / Invalid (Cost
 Domination & 0 OOG Piecewise Evals Passed; Failed Full Accuracy 51/54 vs 54/54

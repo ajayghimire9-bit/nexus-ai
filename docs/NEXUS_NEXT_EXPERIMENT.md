@@ -1,5 +1,16 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest next — source-only differential semantic audit
+
+[Wave16](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md) completed but failed
+integrity. Keep its frozen code, fixture labels and outcomes unchanged.
+Before another blind suite, compare every fast cache and intended fixture
+expression against the typed interpreter on exhaustive short sequences and
+empty/nonempty token constants. Primary requirement: zero semantic mismatches,
+including no-op affixes and TOK_EQ sentinel rules. No fresh holdout outcomes,
+neural calls, new architecture or simulator are needed. This is a recommendation,
+not a second execution in the current Wave16 branch. Older plans follow.
+
 ## Current next — source-only grammar-completeness audit
 
 [Wave15](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md) failed fresh accuracy

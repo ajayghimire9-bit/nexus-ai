@@ -1,5 +1,15 @@
 # NEXUS progress log
 
+## Latest — Wave16 invalid completed single-shot run
+
+Freeze `23e9ad9`; [results](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md).
+83 pre-freeze Wave8–16 tests pass. Fresh grid270/270, raw full48/54, but verifier
+rejects cached empty-token coverage. Fixture/interpreter empty-input mismatch
+also invalidates the intended accuracy comparison. No cost success claim.
+Runtime11.651129 CPU /11.673473 wall seconds, Track B0 calls/debit. No Phase1
+edit, assessment rewrite, relabeling, retry or merge. Next: differential
+source-only semantics audit over empty/nonempty tokens and short sequences.
+
 ## Current — Wave15 closed developmental/invalid
 
 Freeze `4810ae6`; [results](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md).

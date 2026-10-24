@@ -1,5 +1,17 @@
 # NEXUS Seed — Research Registry
 
+## Latest — Wave16 closed invalid; semantic replay failed
+
+Freeze `23e9ad9`; artifact SHA256
+`b40fb724f999d5d80fb39cc00e7a328f2df15f4ecfd421e9e02100ca6528bbef`.
+[Results](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md): complete270-cell grid,
+raw full48/54; nine cached-coverage and nine gate-snapshot discrepancies.
+Fixture empty-input semantics also conflict with declared expressions. Invalid
+evidence, no cost-gain claim; no retry or Phase1 edit. CPU11.651129 s, wall
+11.673473 s. Track B0 calls /0 frozen debit. Carried frozen balance unchanged:
+3128.309460455996 used /471.690539544004 remaining. Measured Wave15+Wave16
+symbolic experiment CPU13.264430 s is separately preserved.
+
 ## Latest — Wave15 valid execution, failed blind accuracy screen
 
 Freeze `4810ae6`; artifact SHA256

@@ -1,5 +1,16 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Latest — Wave16 cold composition/unary completeness: invalid assessment
+
+Predeclared `23e9ad9`: restore active/cold one-step reachability and reduce both
+suite costs without losing accuracy. Source tests pass, but fresh assessment
+is **invalid**, not a valid rejection or confirmation: cached empty-token
+wrappers violate AST semantics, two fixture targets misstate empty-input
+semantics, full raw48/54 and replay fails. [Evidence](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md).
+Preserve all outcomes and original labels. No w16f_* rerun or post-result fix.
+One proposed next question: do all fast caches and fixture constructors exactly
+match the interpreter on exhaustively enumerated short source inputs?
+
 ## Latest — Wave15 support-gated piecewise search: full screen failed
 
 Precommitted `4810ae6`: cached support/cover gating can suppress unsupported

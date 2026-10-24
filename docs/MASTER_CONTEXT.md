@@ -1,5 +1,16 @@
 # NEXUS Seed — Master Context
 
+## Latest — Wave16 complete but invalid; preserve without retry
+
+[Wave16 results](NEXUS_WAVE16_PEELED_ARCHIVE_UNARY_RESULTS.md), freeze `23e9ad9`:
+270 cells completed once; raw full48/54, work459630, opcodes1712487. Verifier
+rejects nine coverage and nine gate-snapshot replays. Fast empty-token affixes
+and two authored empty-input fixtures disagree with interpreter semantics.
+Do not treat raw cost totals as valid improvement evidence or relabel the
+tasks. Phase1 files unchanged, all historical studies preserved, zero Track B
+calls/debit. Next is one source-only differential semantic audit, not a rerun
+or an architecture change. Learning-to-learn remains unestablished.
+
 ## Latest — Wave15 closed, accuracy screen failed
 
 [Wave15 results](NEXUS_WAVE15_SUPPORT_GATED_PIECEWISE_RESULTS.md), frozen code
