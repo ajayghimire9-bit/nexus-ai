@@ -1,5 +1,20 @@
 # NEXUS Seed — Current State
 
+## Wave 22 (`NEXUS-OMEGA`) Demonstrated (Single-Shot Blind Freeze `c1b1a19`, Zero Amends): Sinkhorn Partial Homomorphism, Wake-Sleep Code Dreaming & Epistemic World Compiler
+
+See full tables, artifact hashes, and forensic verification in [Wave 22 NEXUS-OMEGA Protocol](NEXUS_WAVE22_OMEGA_PROTOCOL.md) and [Wave 22 NEXUS-OMEGA Results](NEXUS_WAVE22_OMEGA_RESULTS.md):
+- **Pre-Assessment Code Freeze Commit**: `c1b1a1988dc54397714fbe400bf2d02ff018f6ee` (`c1b1a19`, following `21d1740`).
+- **Forensic & Git Verification (`scripts/verify_wave22_nexus_omega.py --freeze-commit c1b1a1988dc54397714fbe400bf2d02ff018f6ee`)**:
+  - `valid = True`, `errors = []`
+  - `zero_amend_on_branch = True` (`git reflog -n 50` verified zero `commit (amend)`, `rebase`, or `reset` entries on `cursor/seed-wave22-nexus-omega-wake-sleep-sinkhorn-world-engine`)
+  - `fresh_absent_at_freeze = True` (`src/nexus/seed/mechanism_wave22_fresh_assessment.py` did not exist at `c1b1a19`)
+  - `phase1_zero_diff = True` (zero diff on all Phase-1 files after `c1b1a19`)
+  - `well_posedness_valid = True` (`validate_wave22_suite_well_posedness` passed with `0` errors prior to execution)
+- **Single-Shot Post-Freeze Results (`w22f_*`, `369` Total Cells Across `3` Seeds, Benchmark SHA-256 `610457b436ddec32ec28b73d13164280167c1b451d7557426dd47a9c1ca79964`)**:
+  1. **Track 1 — Differentiable Sinkhorn Gromov-Wasserstein Partial Homomorphism with Distractors (`SinkhornHomomorphismEngine`, `72` Cells)**: Across $K_A = 6 \to K_B = 9$ (with 3 distractor operators) and $M_A = 2 \to M_B = 3$ (with 1 distractor guard), `nexus_omega_sinkhorn_homomorphism` achieves **`18/18` (`100%`) private accuracy**, **`15/15` exact $(\Phi^*, \Psi^*)$ recovery**, **`3/3` ambiguous declarations (`0` false uniques)**, and **`18` targeted higher-order commutator disambiguations**, reducing `total_work` by **`-95.02%`** vs `brute_force_factorial_baseline` (`7,710` vs `154,911`, `0/18`) and **`-95.56%`** vs `unaligned_scratch_enumerator` (`7,710` vs `173,727`, `9/18`).
+  2. **Track 2 — Open-Ended Execution-Guided Imperative Synthesis & Autonomous Wake-Sleep Dreaming (`WakeSleepCodeEvolver`, `216` Imperative Cells + `9` Multi-File Repo Repair Cells)**: `nexus_omega_full_wake_sleep` achieves **`36/36` (`100%`) private accuracy**, **`6` sleep dreaming cycles (`72` counterfactual dream programs consolidated on M4 `mps`)**, **`15` consolidated dream hits**, and **`6` cold-archive reactivations**, beating the explicit `nexus_wake_only_no_dreaming` ablation (`33/36` accuracy, `528` work, `13,491` primitive op steps) with **`453` total work (`-14.20%`) and `13,179` primitive op steps**, and reducing `total_work` by **`-89.44%`** vs `blind_ast_statement_enumerator` (`4,290`) and **`-90.22%`** vs `nexus_whole_function_macro_only` (`4,632`). Also achieves **`9/9` (`100%`)** 3-file repository trace localization and patch synthesis.
+  3. **Track 3 — Grounded Pretrained LLM (`Qwen2.5-0.5B-Instruct` on Metal GPU, `n_gpu_layers=-1`) + Compositional NL World Compiler & Epistemic Theorems (`OmegaEpistemicWorldAgent`, `72` Cells)**: `standalone_pretrained_llm_mps` achieves `2/36` (`5.56%`) turn accuracy with **`34/36` (`94.44%`) hallucinated claims** (`15` contradiction/false-premise compliances, `3` premature guesses on ambiguous prompts, `2` constraint violations), whereas `nexus_omega_epistemic_world_agent_mps` achieves **`36/36` (`100%`) turn accuracy**, **`0` hallucinated claims (`34` blocked)**, **`0` contradiction/false-premise compliances** (specifically resolving the Wave 21 `0-survivor` contradiction trap via Theorem 1), and **`9/9` (`100%`) cross-track skill reuses (`Track 1 + Track 2 -> Track 3`)**.
+
 ## Wave 21 Forensic Audit Status (`e2f627c -> 301c7a2`): Developmental / Post-Amend & Fixture-Adjusted Run (27/30 Unadjusted, 30/30 Fixture-Corrected; Preserved Unamended)
 
 See full tables, artifact hashes, and forensic disclosures in [Wave 21 Real Audit Results](NEXUS_WAVE21_REAL_AUDIT_RESULTS.md):
