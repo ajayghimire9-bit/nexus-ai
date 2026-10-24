@@ -1,5 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
+## Latest — Wave18 single-shot fresh assessment after Commit 1 freeze
+
+[Wave18 source preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md) passed all 134
+unit tests and the 324-cell M4-GPU source efficiency gate (`54/54`, `-76.031%`
+work and `-79.743%` primitive steps vs `nexus_whole_macro_only`). Next step:
+commit the Phase-1 freeze (`Commit 1`), author the 18-task unseen `w18f_*`
+suite (`src/nexus/seed/mechanism_wave18_fresh_assessment.py`), and execute the
+single-shot supervised M4-GPU assessment once.
+
 ## Latest recommendation — source-only guarded canonicalization audit
 
 [Wave17](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md) completed validly but

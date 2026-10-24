@@ -1,5 +1,15 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## Wave18 M4-GPU neuro-symbolic candidate — source gate passed
+
+`wave18_m4_gpu_neuro_symbolic_learner.py` reuses the frozen Wave17 interpreter,
+cache, macro/MDL owner and solver code through explicit task-local bindings.
+It adds an actual MPS proposer, optimizer-preserving macro head expansion,
+outward-affix canonical proposal ordering, and separately metered supervision.
+The runner/verifier reuse the historical public evaluator/independent replay
+with local adapters; the supervisor uses E1 Journal/write_new conventions.
+[Preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md).
+
 ## Wave17 completed ownership boundary
 
 `wave17_exact_cache_boundary_learner.py`, its runner/verifier and tests are

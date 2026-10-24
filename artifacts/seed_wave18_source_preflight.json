@@ -1,0 +1,173 @@
+{
+  "status": "PASSED_SOURCE_EFFICIENCY_GATE",
+  "base_sha": "708310d9ed0a156ba6f52b0ff378f4b222bb097a",
+  "physical_freeze_ready": true,
+  "fresh_definitions_created": false,
+  "fresh_assessment_attempts": 0,
+  "source_cells": 324,
+  "source_replay_valid": true,
+  "source_replay_errors": [],
+  "totals": {
+    "standalone_m4_neural_baseline": {
+      "private_correct": 24,
+      "total_work": 86874,
+      "total_primitive_op_steps": 189048,
+      "neural_proposer_work": 8253,
+      "n": 54,
+      "false_unique": 30,
+      "total_cell_wall_s": 0.4640562050335575,
+      "gpu_wall_ms": 217.22070800024085,
+      "delayed_reactivations": 0,
+      "ambiguous": 0,
+      "mask_errors": 0
+    },
+    "equal_typed_scratch": {
+      "private_correct": 51,
+      "total_work": 2747478,
+      "total_primitive_op_steps": 9274845,
+      "neural_proposer_work": 0,
+      "n": 54,
+      "false_unique": 0,
+      "total_cell_wall_s": 27.617003618826857,
+      "gpu_wall_ms": 0.0,
+      "delayed_reactivations": 0,
+      "ambiguous": 3,
+      "mask_errors": 0
+    },
+    "ordinary_persistent_memoization": {
+      "private_correct": 51,
+      "total_work": 2749230,
+      "total_primitive_op_steps": 9282090,
+      "neural_proposer_work": 0,
+      "n": 54,
+      "false_unique": 0,
+      "total_cell_wall_s": 27.942784790007863,
+      "gpu_wall_ms": 0.0,
+      "delayed_reactivations": 0,
+      "ambiguous": 3,
+      "mask_errors": 0
+    },
+    "nexus_whole_macro_only": {
+      "private_correct": 54,
+      "total_work": 2391261,
+      "total_primitive_op_steps": 8362941,
+      "neural_proposer_work": 0,
+      "n": 54,
+      "false_unique": 0,
+      "total_cell_wall_s": 24.720445831801044,
+      "gpu_wall_ms": 0.0,
+      "delayed_reactivations": 9,
+      "ambiguous": 3,
+      "mask_errors": 0
+    },
+    "nexus_typed_without_pruning": {
+      "private_correct": 54,
+      "total_work": 611019,
+      "total_primitive_op_steps": 2393481,
+      "neural_proposer_work": 173562,
+      "n": 54,
+      "false_unique": 0,
+      "total_cell_wall_s": 10.165798378031468,
+      "gpu_wall_ms": 526.5361210913397,
+      "delayed_reactivations": 0,
+      "ambiguous": 3,
+      "mask_errors": 0
+    },
+    "nexus_m4_neuro_symbolic_full": {
+      "private_correct": 54,
+      "total_work": 573165,
+      "total_primitive_op_steps": 1694043,
+      "neural_proposer_work": 97881,
+      "n": 54,
+      "false_unique": 0,
+      "total_cell_wall_s": 6.798427667963551,
+      "gpu_wall_ms": 439.20338194584474,
+      "delayed_reactivations": 9,
+      "ambiguous": 3,
+      "mask_errors": 0
+    }
+  },
+  "full_minus_whole": {
+    "total_work": {
+      "full": 573165,
+      "whole": 2391261,
+      "delta": -1818096,
+      "percent": -76.0308473228142
+    },
+    "total_primitive_op_steps": {
+      "full": 1694043,
+      "whole": 8362941,
+      "delta": -6668898,
+      "percent": -79.7434538878129
+    }
+  },
+  "source_gate_passed": true,
+  "source_gate_threshold": "at least 20% less work AND primitive steps versus whole-macro",
+  "gpu_totals": {
+    "gpu_forward_passes": 450,
+    "gpu_encoder_calls": 162,
+    "gpu_online_update_steps": 288,
+    "head_expansions": 45,
+    "dense_linear_macs": 597792
+  },
+  "provenance": {
+    "phase1_sha256": {
+      "scripts/run_wave18_m4_neuro_symbolic_assessment.py": "69a578f42c084e561b8cc9efabb9f482fa68f81ec23fef7097f3c6c2cda6434d",
+      "scripts/verify_wave18_m4_neuro_symbolic.py": "bc425467c5273e66c63db3803eae0f5629059c2c2ee31b5eba91dff7b4a44849",
+      "src/nexus/seed/wave18_m4_gpu_neuro_symbolic_learner.py": "4127f0063720180d4ac64a6b47d534d32e57d060346b0c1bf3568fe75dac3844",
+      "tests/test_seed_wave18_m4_neuro_symbolic.py": "3ef4e808a0ed29bba831f9cb26dcfa11f7a105caaf1d1cd5dc37e38637043600"
+    },
+    "raw_rows_sha256": "01e86d8b1dc8271d6b8d61d262504daaae014a5038c7c88598e3ac9fb8727680"
+  },
+  "ledger": {
+    "frozen_ledger_used_s": 3128.309460455996,
+    "frozen_ledger_remaining_s": 471.69053954400397,
+    "prior_symbolic_cpu_s": 188.041673,
+    "wave18_conservatively_charged_wall_s": 103.02200574902236,
+    "conservative_remaining_s": 180.6268607949816
+  },
+  "cost_decomposition": {
+    "standalone_m4_neural_baseline": {
+      "neural_proposer_work": 8253,
+      "compression_evals": 0,
+      "compression_primitive_op_steps": 0,
+      "synthesis_evals": 78189,
+      "synth_primitive_op_steps": 189048
+    },
+    "equal_typed_scratch": {
+      "neural_proposer_work": 0,
+      "compression_evals": 0,
+      "compression_primitive_op_steps": 0,
+      "synthesis_evals": 2745942,
+      "synth_primitive_op_steps": 9274665
+    },
+    "ordinary_persistent_memoization": {
+      "neural_proposer_work": 0,
+      "compression_evals": 0,
+      "compression_primitive_op_steps": 0,
+      "synthesis_evals": 2747694,
+      "synth_primitive_op_steps": 9281910
+    },
+    "nexus_whole_macro_only": {
+      "neural_proposer_work": 0,
+      "compression_evals": 108,
+      "compression_primitive_op_steps": 108,
+      "synthesis_evals": 2369283,
+      "synth_primitive_op_steps": 8259939
+    },
+    "nexus_typed_without_pruning": {
+      "neural_proposer_work": 173562,
+      "compression_evals": 171,
+      "compression_primitive_op_steps": 171,
+      "synthesis_evals": 434709,
+      "synth_primitive_op_steps": 2393130
+    },
+    "nexus_m4_neuro_symbolic_full": {
+      "neural_proposer_work": 97881,
+      "compression_evals": 171,
+      "compression_primitive_op_steps": 171,
+      "synthesis_evals": 458094,
+      "synth_primitive_op_steps": 1617657
+    }
+  }
+}

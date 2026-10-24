@@ -1,5 +1,14 @@
 # NEXUS Seed — Master Context
 
+## Latest — Wave18 M4-GPU source efficiency gate passed; ready for Commit 1 freeze
+
+[Preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md): real M4/MPS encoding, online updates,
+and dynamic macro head expansion pass. `nexus_m4_neuro_symbolic_full` achieves `54/54`
+on the 324-cell source comparison with `573,165` work (`-76.031%` vs `nexus_whole_macro_only`'s
+`2,391,261`) and `1,694,043` primitive steps (`-79.743%` vs `8,362,941`), strictly beating
+`nexus_typed_without_pruning` (`611,019` work, `2,393,481` primitive steps). All 134
+Wave 8–18 unit tests pass.
+
 ## Latest — Wave17 complete, correctness passes but efficiency fails
 
 [Results](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md), freeze `4f4deaa`:

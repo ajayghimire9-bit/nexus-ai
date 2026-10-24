@@ -1,5 +1,15 @@
 # NEXUS Seed — Research Registry
 
+## Wave18 pre-freeze source check — passed efficiency gate
+
+Base `708310d`; [Preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md),
+[source hashes/receipts](../artifacts/seed_wave18_source_preflight.json).
+Real MPS checks and all 134 Wave 8–18 unit tests pass; complete 324 source cells,
+`nexus_m4_neuro_symbolic_full` achieves `54/54` accuracy with `573,165` work and
+`1,694,043` primitive steps versus `nexus_whole_macro_only`'s `2,391,261` and
+`8,362,941` (`-76.031%` work, `-79.743%` primitive steps), passing the required
+`>= 20%` reduction gate before authoring the fresh `w18f_*` holdout suite.
+
 ## Latest — Wave17 closed with valid replay and failed efficiency
 
 Base8738029; freeze `4f4deaa6978292d6f2f1e74c8f6c38b4bf215ed6`.

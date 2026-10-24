@@ -1,5 +1,39 @@
 # NEXUS Seed — Current State
 
+## Wave18 pre-assessment code freeze — source gate passed
+
+[Source preflight](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md): actual M4/MPS tests
+and all 134 Wave 8–18 unit tests pass. The complete 324-cell source comparison
+has `nexus_m4_neuro_symbolic_full` at `54/54` accuracy, zero mask errors, 3/3
+ambiguous declarations, and 3/3 delayed archive reactivations, with `573,165`
+total work (`-76.031%` vs `nexus_whole_macro_only`'s `2,391,261`) and `1,694,043`
+primitive op steps (`-79.743%` vs `8,362,941`), passing the `<= 0.8 * whole`
+source efficiency gate and beating `nexus_typed_without_pruning` (`611,019` /
+`2,393,481`).
+
+Owner clarified the runner-only exception and approved MPS 200s wall/CPU,
+1 GiB process memory, zero interactions, one fresh attempt, no session increase.
+All attempts are metered; the historical frozen ledger and Track B are untouched.
+
+## Earlier Wave18 preparation snapshot — M4 detected, freeze not ready
+
+Starting from708310d on the requested separate Wave18 branch. Apple M4 and
+PyTorch2.14.1 MPS availability are verified using existing project dependencies.
+No neural training or fresh Wave18 assessment has run. The optional proposal/
+canonicalization extension is under source validation; read its
+[unfrozen protocol draft](NEXUS_WAVE18_M4_NEURO_SYMBOLIC_PROTOCOL.md).
+Runner filename contradiction, exact GPU allocation/enforcement and real MPS/
+complete source gates must be resolved before Commit1. No fresh definitions or
+results document may be created early. Do not interpret intended20% savings,
+under10s runtime or neural-baseline failures as observed facts.
+
+Wave17 (`4f4deaa6`→`708310d9`) is **Closed Developmental / Negative Efficiency
+Result (54/54 Accuracy, 0 Mask Errors, 3/3 Archive Reactivations; +0.424% Work /
++0.722% Primitive Steps vs Whole-Macro Due to Alternative AST Factorizations;
+165.30s CPU; Preserved Unamended)**. Its report/artifacts and original historical
+gate-failure wording below remain untouched. The factorization diagnosis is
+bounded evidence, not a proven complete causal explanation. Track B stays closed.
+
 ## Wave17 closed — valid replay, failed efficiency screen
 
 Freeze `4f4deaa6978292d6f2f1e74c8f6c38b4bf215ed6`; [results](NEXUS_WAVE17_EXACT_CACHE_BOUNDARY_RESULTS.md).

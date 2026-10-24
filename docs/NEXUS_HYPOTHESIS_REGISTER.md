@@ -1,5 +1,14 @@
 # NEXUS hypothesis register (V0.5–V0.8.9)
 
+## Wave18 source hypothesis — source efficiency gate passed
+
+The M4/MPS neuro-symbolic proposer and outward-affix canonical enumerator achieve
+`54/54` on the 324-cell source gate while reducing total work by `76.031%`
+(`573,165` vs `2,391,261`) and primitive op steps by `79.743%` (`1,694,043` vs
+`8,362,941`) relative to `nexus_whole_macro_only`, and beating `nexus_typed_without_pruning`
+(`611,019` / `2,393,481`). [Saved evidence](NEXUS_WAVE18_M4_SOURCE_PREFLIGHT.md).
+Ready for Commit 1 code freeze and single-shot fresh `w18f_*` assessment.
+
 ## Latest — Wave17 exact correctness retained; cost-domination hypothesis fails
 
 Predeclared freeze `4f4deaa` required full accuracy, exact replay, genuine cold
