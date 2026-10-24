@@ -1,6 +1,15 @@
 # NEXUS progress log
 
-## Current — Wave-8: hierarchical L0→L1→L2 + activation gate + lazy probe
+## Current — Wave-12 developmental/invalid (do not reuse w12f_*)
+
+Protocol freeze `e940b82`. Artifact
+`a6b8ba055930c36b9302aba9eae11d89d7b3c1df2879a6f80e883a5cfb037da0`.
+Single-shot gates failed. Full work `31955` lost to scratch `26793`.
+OOG interleave false-unique `3`. ROT wrap tasks abstained. Frozen
+Commit 1 files untouched. Frozen debit **0**.
+[Results](NEXUS_WAVE12_SUBTREE_OPCODE_RESULTS.md).
+
+## Previous — Wave-8: hierarchical L0→L1→L2 + activation gate + lazy probe
 
 Protocol `561a563`, artifact
 `ec06a9508d6138b78d6ef2a06ca374925b71b33967c29594c7fff5530722a8c2`.

@@ -235,6 +235,16 @@ verifier `scripts/verify_wave11_typed_enumerator.py` (`"valid": true`, `lambda_c
   - **`nexus_typed_full`**: **`12098 / 13664`** (`4554.67 [4552..4556]`, `sub_macro_reused = 15`, `full_program_macro_reused = 3`, `cold_archive_reactivated = 3`, `gate_evals = 27`, `archive_lookup_evals = 46`, `compression_evals = 108`, `schema_distill_cost = 36`, `operator_compile_cost = 84`).
 - **Deep Compositional Scaling**: Composing evolved `SEQ_EQ(x, REVERSE(x))` + `APPEND_TOK(M_rot(x), '#')` at effective AST size `3` (`M_rot` has step cost `1`) instead of enumerating from scratch up to size `7` reduces `w11c_deep_compositional` `total_work` by **96.5%** (`710` vs `20148`) and `synthesis_evals` by **98.5%** (`294` vs `19824`). Track B remains closed (`0` model calls, `0 s` frozen debit, `learning_to_learn_established = false`).
 
+**Wave-12 subtree invention and opcode accounting (270 cells, protocol freeze `e940b82`, results developmental/invalid).** Artifact
+`a6b8ba055930c36b9302aba9eae11d89d7b3c1df2879a6f80e883a5cfb037da0`.
+Commit 1 contained **zero** `mechanism_wave12_fresh_assessment.py`.
+The single-shot Commit 2 run exited non-zero (`gates.passed == false`).
+NEXUS did not beat scratch (`31955 / 391339` vs `26793 / 284967`).
+OOG interleave produced `3` false unique locks. ROT-left wrap tasks
+abstained (size-7 bound). Frozen files vs `e940b82` are empty. Track B
+`0` model calls, `0 s` debit. Not a successful Wave-12 demonstration.
+See [results](NEXUS_WAVE12_SUBTREE_OPCODE_RESULTS.md).
+
 ## Current — Wave-8 hierarchical gated evolution (results)
 
 [Protocol](NEXUS_WAVE8_HIERARCHICAL_PROTOCOL.md),
