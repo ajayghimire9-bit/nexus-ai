@@ -1,0 +1,1020 @@
+"""Wave-10 atomic self-evolving operators benchmark and evaluation runner.
+
+Evaluates 6 equal-capability methods starting from a strictly atomic depth-1
+catalog across 16 fresh ``w10a_*`` tasks and 3 permuted task arrival orderings
+(``288`` cells total = ``3 seeds x 6 methods x 16 tasks``):
+
+1. ``equal_atomic_scratch``
+2. ``ordinary_persistent_memoization``
+3. ``atomic_nexus_predicate_evolution_only``
+4. ``atomic_nexus_pruning_disabled``
+5. ``wave9_frozen_adaptive_rules``
+6. ``wave10_self_evolving_nexus``
+"""
+
+from __future__ import annotations
+
+import json
+import time
+from pathlib import Path
+from typing import Any, Dict, List, Mapping, Sequence, Tuple
+
+from .capability_evidence import digest
+from .correspondence_env import PUBLIC_SLOTS, RecordWorld, integer_rows
+from .cross_domain_analogy import SEQUENCE_MECHANISMS, Seq, as_seq
+from .hierarchical_gated_evolution import Wave8World
+from .mechanism_l2l import TRAIN_SEEDS
+from .mechanism_wave8_deconfounded import L2_PUBLIC_MAP
+from .mechanism_wave9_fresh_holdout import (
+    LEN_GE3_PUBLIC_MAP,
+    OPENED_IDS as W9F_PRIOR_OPENED,
+    WAVE9_FRESH_HOLDOUT_TASKS,
+)
+from .mechanism_world import language_hash
+from .process_memory import sample_process_memory
+from .recovery_evaluate import FROZEN_CPU_REMAINING_S, FROZEN_CPU_USED_S
+from .wave10_atomic_self_evolving_learner import (
+    WAVE10_METHODS,
+    AtomicEqualCapabilityLearner,
+    atomic_catalog_manifest,
+    execute_wave10_program_ast,
+)
+
+KIND = "seed_wave10_atomic_self_evolving_operators"
+PRIOR_CLOSED = (
+    "f2e8942",
+    "6e0df3a",
+    "0d4596e",
+    "c8bc5ad",
+    "25cd50e",
+    "f66ae34",
+    "d2c0105",
+    "10f579d",
+    "aa34924",
+    "b590ca2",
+    "c3a4b40",
+    "907db66",
+    "561a563",
+    "4cac886",
+    "4a5a5f8",
+    "bf66447",
+    "f5741a6",
+    "d0a8bb1",
+)
+OPENED_IDS = set(W9F_PRIOR_OPENED) | {
+    row["task_id"] for row in WAVE9_FRESH_HOLDOUT_TASKS
+}
+
+SPLIT_G1 = "w10a_g1_base"
+SPLIT_G2 = "w10a_g2_lookalike"
+SPLIT_STEP_PRED = "w10a_step_predicate_evolution"
+SPLIT_STEP_TF = "w10a_step_transform_evolution"
+SPLIT_DEEP = "w10a_deep_compositional"
+SPLIT_SPURIOUS = "w10a_spurious_once_used"
+SPLIT_DELAYED = "w10a_delayed_post_prune"
+SPLIT_AMB = "w10a_ambiguous"
+SPLIT_OOG = "w10a_oog"
+
+
+# Register Wave-10 sequence mechanisms in SEQUENCE_MECHANISMS
+def seq_head_eq_last_z(seq: Seq) -> Seq:
+    return seq + ("z",) if (len(seq) > 0 and seq[0] == seq[-1]) else seq
+
+
+def seq_len_ge3_q(seq: Seq) -> Seq:
+    return seq + ("q",) if len(seq) >= 3 else seq
+
+
+def seq_even_rotate_bang(seq: Seq) -> Seq:
+    if len(seq) % 2 == 0:
+        return (seq[1:] + seq[:1] + ("!",)) if seq else ("!",)
+    return seq
+
+
+def seq_odd_drop_head_bang(seq: Seq) -> Seq:
+    if len(seq) % 2 == 1:
+        return (seq[1:] + ("!",)) if len(seq) > 1 else seq + ("!",)
+    return seq
+
+
+def seq_pal_rotate_bang_w10(seq: Seq) -> Seq:
+    if seq == seq[::-1]:
+        return (seq[1:] + seq[:1] + ("!",)) if seq else ("!",)
+    return seq
+
+
+SEQUENCE_MECHANISMS["seq_head_eq_last_z"] = seq_head_eq_last_z
+SEQUENCE_MECHANISMS["seq_len_ge3_q"] = seq_len_ge3_q
+SEQUENCE_MECHANISMS["seq_even_rotate_bang"] = seq_even_rotate_bang
+SEQUENCE_MECHANISMS["seq_odd_drop_head_bang"] = seq_odd_drop_head_bang
+SEQUENCE_MECHANISMS["seq_pal_rotate_bang_w10"] = seq_pal_rotate_bang_w10
+
+HEAD_EQ_LAST_PUBLIC_MAP: Dict[str, Tuple[str, ...]] = {
+    "alpha": (),
+    "beta": ("a",),
+    "gamma": ("a", "b", "c", "a"),
+    "delta": ("a", "b"),
+}
+
+NONEMPTY_PAL_PUBLIC_MAP: Dict[str, Tuple[str, ...]] = {
+    "alpha": ("a",),
+    "beta": ("b", "b"),
+    "gamma": ("r", "a", "r"),
+    "delta": ("a", "b"),
+}
+
+ODD_DROP_PUBLIC_MAP: Dict[str, Tuple[str, ...]] = {
+    "alpha": (),
+    "beta": ("a", "b", "c"),
+    "gamma": ("a", "b"),
+    "delta": ("d",),
+}
+
+WAVE10_ATOMIC_TASKS: Tuple[Dict[str, Any], ...] = (
+    # 2 Base Depth-1 Tasks (G1)
+    dict(
+        task_id="w10a_g1_even_append",
+        split=SPLIT_G1,
+        domain="B",
+        mechanism="seq_even_append",
+        instance_seed=3001,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("m", "n", "p", "q"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("a", "b", "c", "d"),
+        },
+        record_mode="stamp_trap",
+    ),
+    dict(
+        task_id="w10a_g1_odd_dup",
+        split=SPLIT_G1,
+        domain="B",
+        mechanism="seq_odd_dup",
+        instance_seed=3002,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("k", "l", "m"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": ("w",),
+            "delta": ("a", "b", "c"),
+        },
+        record_mode="stamp_trap",
+    ),
+    # 2 Lookalike Boundary Tasks (G2)
+    dict(
+        task_id="w10a_g2_len2_append_q",
+        split=SPLIT_G2,
+        domain="B",
+        mechanism="seq_len2_append_q",
+        instance_seed=3011,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("p", "q", "r", "s"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("a", "b", "c", "d"),
+        },
+        record_mode="stamp_trap",
+    ),
+    dict(
+        task_id="w10a_g2_len0_append_hash",
+        split=SPLIT_G2,
+        domain="B",
+        mechanism="seq_len0_append_hash",
+        instance_seed=3012,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("p", "q", "r", "s"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("a", "b", "c", "d"),
+        },
+        record_mode="stamp_trap",
+    ),
+    # 4 Stepwise Operator-Evolution Tasks (L1-Pred & L1-Trans)
+    dict(
+        task_id="w10a_step_pred_pal_z",
+        split=SPLIT_STEP_PRED,
+        domain="B",
+        mechanism="seq_palindrome_z",
+        instance_seed=3021,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("k", "o", "k"),
+        private={
+            "alpha": ("n", "n"),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("c", "d", "c"),
+        },
+        record_mode="stamp_trap",
+        public_map=L2_PUBLIC_MAP,
+    ),
+    dict(
+        task_id="w10a_step_pred_pal_m_reuse",
+        split=SPLIT_STEP_PRED,
+        domain="B",
+        mechanism="seq_palindrome_m",
+        instance_seed=3022,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("a", "b", "c", "a"),
+        private={
+            "alpha": ("n", "n"),
+            "beta": ("u", "v"),
+            "gamma": ("d",),
+            "delta": ("p", "q", "p"),
+        },
+        record_mode="stamp_trap",
+        public_map=NONEMPTY_PAL_PUBLIC_MAP,
+    ),
+    dict(
+        task_id="w10a_step_tf_even_rot_bang",
+        split=SPLIT_STEP_TF,
+        domain="B",
+        mechanism="seq_even_rotate_bang",
+        instance_seed=3023,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("m", "n", "p", "q"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("a", "b", "c", "d"),
+        },
+        record_mode="stamp_trap",
+    ),
+    dict(
+        task_id="w10a_step_tf_odd_drop_bang",
+        split=SPLIT_STEP_TF,
+        domain="B",
+        mechanism="seq_odd_drop_head_bang",
+        instance_seed=3024,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("k", "l", "m"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": ("a", "b", "c"),
+            "delta": (),
+        },
+        record_mode="stamp_trap",
+        public_map=ODD_DROP_PUBLIC_MAP,
+    ),
+    # 3 Deep Multi-Operator Compositional Tasks (L2-Deep)
+    dict(
+        task_id="w10a_deep_pal_rot_bang",
+        split=SPLIT_DEEP,
+        domain="B",
+        mechanism="seq_pal_rotate_bang_w10",
+        instance_seed=3031,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("a", "b", "c", "a"),
+        private={
+            "alpha": ("n", "n"),
+            "beta": ("u", "v"),
+            "gamma": ("r", "a", "r"),
+            "delta": ("k",),
+        },
+        record_mode="stamp_trap",
+        public_map=NONEMPTY_PAL_PUBLIC_MAP,
+    ),
+    dict(
+        task_id="w10a_deep_pal_rot_bang_reuse",
+        split=SPLIT_DEEP,
+        domain="B",
+        mechanism="seq_pal_rotate_bang_w10",
+        instance_seed=3032,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("a", "b", "c", "a"),
+        private={
+            "alpha": ("p", "q", "p"),
+            "beta": ("u", "v"),
+            "gamma": ("b",),
+            "delta": ("c", "d", "c"),
+        },
+        record_mode="stamp_trap",
+        public_map=NONEMPTY_PAL_PUBLIC_MAP,
+    ),
+    dict(
+        task_id="w10a_deep_pal_drop_bang",
+        split=SPLIT_DEEP,
+        domain="B",
+        mechanism="seq_pal_drop_head_bang",
+        instance_seed=3033,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("a", "b", "c", "a"),
+        private={
+            "alpha": ("n", "n"),
+            "beta": ("u", "v"),
+            "gamma": ("r", "a", "r"),
+            "delta": ("m",),
+        },
+        record_mode="stamp_trap",
+        public_map=NONEMPTY_PAL_PUBLIC_MAP,
+    ),
+    # 2 Spurious Once-Used Operator Tasks (Spurious)
+    dict(
+        task_id="w10a_spurious_head_eq_last_z",
+        split=SPLIT_SPURIOUS,
+        domain="B",
+        mechanism="seq_head_eq_last_z",
+        instance_seed=3041,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("x", "y", "z", "x"),
+        private={
+            "alpha": ("a", "b", "a"),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("k", "l", "m", "k"),
+        },
+        record_mode="stamp_trap",
+        public_map=HEAD_EQ_LAST_PUBLIC_MAP,
+    ),
+    dict(
+        task_id="w10a_spurious_len_ge3_z",
+        split=SPLIT_SPURIOUS,
+        domain="B",
+        mechanism="seq_len_ge3_z",
+        instance_seed=3042,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("p", "q", "r", "s"),
+        private={
+            "alpha": ("a", "b", "c"),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("k", "l", "m", "n"),
+        },
+        record_mode="stamp_trap",
+        public_map=LEN_GE3_PUBLIC_MAP,
+    ),
+    # 1 Delayed Post-Prune Reuse Task (Delayed)
+    dict(
+        task_id="w10a_delayed_len_ge3_q",
+        split=SPLIT_DELAYED,
+        domain="B",
+        mechanism="seq_len_ge3_q",
+        instance_seed=3051,
+        gold_status="unique",
+        gold_field="result",
+        epsilon=("w", "x", "y", "z"),
+        private={
+            "alpha": ("a", "b", "c", "d"),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("m", "n", "p"),
+        },
+        record_mode="stamp_trap",
+        public_map=LEN_GE3_PUBLIC_MAP,
+    ),
+    # 2 Safety Tasks (Ambiguous + OOG)
+    dict(
+        task_id="w10a_amb_alias_odd",
+        split=SPLIT_AMB,
+        domain="B",
+        mechanism="seq_odd_dup",
+        instance_seed=3061,
+        gold_status="ambiguous",
+        gold_field="ambiguous",
+        epsilon=("k", "l", "m"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("p", "q"),
+        },
+        record_mode="alias_ambiguous",
+    ),
+    dict(
+        task_id="w10a_oog_vowel_shift",
+        split=SPLIT_OOG,
+        domain="B",
+        mechanism="seq_vowel_shift",
+        instance_seed=3062,
+        gold_status="abstain",
+        gold_field=None,
+        epsilon=("m", "n", "p", "q"),
+        private={
+            "alpha": ("d",),
+            "beta": ("u", "v"),
+            "gamma": (),
+            "delta": ("p", "q"),
+        },
+        record_mode="stamp_trap",
+        unknown_kind="oog",
+    ),
+)
+
+TASK_ORDERS_BY_SEED: Dict[int, Tuple[str, ...]] = {
+    0: (
+        "w10a_g1_even_append",
+        "w10a_spurious_head_eq_last_z",
+        "w10a_g1_odd_dup",
+        "w10a_g2_len2_append_q",
+        "w10a_g2_len0_append_hash",
+        "w10a_step_pred_pal_z",
+        "w10a_step_pred_pal_m_reuse",
+        "w10a_spurious_len_ge3_z",
+        "w10a_step_tf_even_rot_bang",
+        "w10a_deep_pal_rot_bang",
+        "w10a_deep_pal_rot_bang_reuse",
+        "w10a_step_tf_odd_drop_bang",
+        "w10a_deep_pal_drop_bang",
+        "w10a_delayed_len_ge3_q",
+        "w10a_amb_alias_odd",
+        "w10a_oog_vowel_shift",
+    ),
+    1: (
+        "w10a_spurious_head_eq_last_z",
+        "w10a_g2_len2_append_q",
+        "w10a_g2_len0_append_hash",
+        "w10a_step_pred_pal_z",
+        "w10a_step_pred_pal_m_reuse",
+        "w10a_spurious_len_ge3_z",
+        "w10a_step_tf_odd_drop_bang",
+        "w10a_deep_pal_drop_bang",
+        "w10a_step_tf_even_rot_bang",
+        "w10a_deep_pal_rot_bang",
+        "w10a_deep_pal_rot_bang_reuse",
+        "w10a_delayed_len_ge3_q",
+        "w10a_g1_even_append",
+        "w10a_g1_odd_dup",
+        "w10a_oog_vowel_shift",
+        "w10a_amb_alias_odd",
+    ),
+    2: (
+        "w10a_spurious_head_eq_last_z",
+        "w10a_spurious_len_ge3_z",
+        "w10a_g1_even_append",
+        "w10a_g1_odd_dup",
+        "w10a_step_pred_pal_z",
+        "w10a_step_tf_even_rot_bang",
+        "w10a_deep_pal_rot_bang",
+        "w10a_step_tf_odd_drop_bang",
+        "w10a_deep_pal_drop_bang",
+        "w10a_deep_pal_rot_bang_reuse",
+        "w10a_step_pred_pal_m_reuse",
+        "w10a_delayed_len_ge3_q",
+        "w10a_g2_len2_append_q",
+        "w10a_g2_len0_append_hash",
+        "w10a_amb_alias_odd",
+        "w10a_oog_vowel_shift",
+    ),
+}
+
+
+def ordered_tasks_for_seed(seed: int) -> List[Dict[str, Any]]:
+    by_id = {row["task_id"]: dict(row) for row in WAVE10_ATOMIC_TASKS}
+    order = TASK_ORDERS_BY_SEED.get(seed, TASK_ORDERS_BY_SEED[0])
+    return [by_id[tid] for tid in order]
+
+
+def _build_world_for_task(task: Mapping[str, Any]) -> Any:
+    if task["domain"] == "A":
+        return RecordWorld(
+            str(task["mechanism"]),
+            int(task["instance_seed"]),
+            str(task.get("record_mode") or "stamp_trap"),
+        )
+    return Wave8World(
+        str(task["mechanism"]),
+        int(task["instance_seed"]),
+        str(task.get("record_mode") or "stamp_trap"),
+        tuple(task["epsilon"]),
+        dict(task["private"]),
+        task.get("public_map"),
+    )
+
+
+def _mapping_correct(task: Mapping[str, Any], status: str, field: str | None) -> bool:
+    gold = task.get("gold_status")
+    if gold == "ambiguous":
+        return status == "ambiguous"
+    if gold == "abstain" or task.get("unknown_kind") == "oog":
+        return status == "abstain"
+    return status == "unique" and field == task.get("gold_field")
+
+
+def _false_analogy_lock(
+    task: Mapping[str, Any], program_ast: Mapping[str, Any], status: str
+) -> bool:
+    if task.get("split") != SPLIT_G2 or status != "unique":
+        return False
+    pred_id = str(program_ast.get("predicate_id") or "")
+    if task["mechanism"] in {"seq_len2_append_q", "seq_len0_append_hash"}:
+        return pred_id == "len_even"
+    return False
+
+
+def _evaluate_private_post_lock(
+    task: Mapping[str, Any],
+    status: str,
+    program_ast: Mapping[str, Any],
+    world: Any,
+    trace: List[Dict[str, Any]],
+) -> Tuple[bool, List[Dict[str, Any]]]:
+    gold = task.get("gold_status")
+    private_evals: List[Dict[str, Any]] = []
+    if gold in {"ambiguous", "abstain"}:
+        return (status == gold), private_evals
+    if status != "unique" or program_ast.get("kind") == "abstain":
+        return False, private_evals
+
+    all_ok = True
+    if task["domain"] == "A":
+        for slot in PUBLIC_SLOTS:
+            rec = world.private_read(slot)
+            trace.append(
+                {
+                    "phase": "private",
+                    "kind": "private_eval",
+                    "slot": slot,
+                    "before_lock": False,
+                }
+            )
+            rows = integer_rows(
+                [rec], dict(alpha=0, beta=1, gamma=2, delta=-1, output_field="result")
+            )
+            inp = int(rows[0]["x"])
+            gt = int(rows[0]["observation"])
+            pred = int(execute_wave10_program_ast(program_ast, inp))
+            match = pred == gt
+            if not match:
+                all_ok = False
+            private_evals.append(
+                {
+                    "slot": slot,
+                    "input": inp,
+                    "predicted_output": pred,
+                    "ground_truth_output": gt,
+                    "match": match,
+                }
+            )
+        return all_ok, private_evals
+
+    for slot in PUBLIC_SLOTS:
+        rec = world.private_read(slot)
+        trace.append(
+            {
+                "phase": "private",
+                "kind": "private_eval",
+                "slot": slot,
+                "before_lock": False,
+            }
+        )
+        inp_seq = as_seq(rec["payload"])
+        gt_seq = as_seq(rec["result"])
+        pred_seq = as_seq(execute_wave10_program_ast(program_ast, inp_seq))
+        match = pred_seq == gt_seq
+        if not match:
+            all_ok = False
+        private_evals.append(
+            {
+                "slot": slot,
+                "input": list(inp_seq),
+                "predicted_output": list(pred_seq),
+                "ground_truth_output": list(gt_seq),
+                "match": match,
+            }
+        )
+    return all_ok, private_evals
+
+
+def run_episode(
+    task: Mapping[str, Any],
+    learner: AtomicEqualCapabilityLearner,
+    arrival_index: int,
+    seed: int,
+) -> Dict[str, Any]:
+    """Run one task episode by passing ONLY ``(world, 10)`` to the learner."""
+    world = _build_world_for_task(task)
+    report = learner.solve_unfamiliar_task(world, 10)
+
+    private_before_lock = bool(world.private_opened and not world.locked)
+    world.lock()
+    trace = list(report.trace)
+    private_ok, private_evals = _evaluate_private_post_lock(
+        task, report.status, report.program_ast, world, trace
+    )
+
+    return dict(
+        source_seed=seed,
+        arrival_index=arrival_index,
+        task_id=task["task_id"],
+        split=task["split"],
+        domain=task["domain"],
+        mechanism=task["mechanism"],
+        method=learner.method,
+        gold_status=task.get("gold_status"),
+        status=report.status,
+        admitted_field=report.admitted_field,
+        program_ast=report.program_ast,
+        public_observations=report.public_observations,
+        private_evaluations=private_evals,
+        public_consistent=bool(report.public_consistent),
+        mapping_correct=_mapping_correct(task, report.status, report.admitted_field),
+        private_correct=bool(private_ok),
+        ambiguous=bool(report.ambiguous),
+        oog_abstained=bool(report.oog_abstained),
+        false_analogy_lock=_false_analogy_lock(
+            task, report.program_ast, report.status
+        ),
+        false_unique=bool(
+            task.get("gold_status") == "ambiguous" and report.status == "unique"
+        ),
+        private_before_lock=private_before_lock,
+        locked=bool(world.locked),
+        public_env_probes=int(report.public_env_probes),
+        public_validation_probes=int(report.public_validation_probes),
+        channel_invariance_evals=int(report.channel_invariance_evals),
+        schema_distill_cost=int(report.schema_distill_cost),
+        role_probe_cost=int(report.role_probe_cost),
+        gate_evals=int(report.gate_evals),
+        archive_lookup_evals=int(report.archive_lookup_evals),
+        compression_evals=int(report.compression_evals),
+        synthesis_evals=int(report.synthesis_evals),
+        micro_codegen_evals=int(report.micro_codegen_evals),
+        operator_compile_cost=int(report.operator_compile_cost),
+        codegen_plus_synthesis=int(report.codegen_plus_synthesis),
+        total_work=int(report.total_work),
+        schema_distilled=bool(report.schema_distilled),
+        used_operators=list(report.used_operators),
+        invented_l1=list(report.invented_l1),
+        invented_l2=list(report.invented_l2),
+        l1_sub_predicate_reused=bool(report.l1_sub_predicate_reused),
+        l2_full_skill_reused=bool(report.l2_full_skill_reused),
+        memoized_program_reused=bool(report.memoized_program_reused),
+        cold_archive_reactivated=bool(report.cold_archive_reactivated),
+        pruned_operators=list(report.pruned_operators),
+        active_library_size=int(report.active_library_size),
+        cold_archive_size=int(report.cold_archive_size),
+        catalog_audit=dict(report.catalog_audit),
+        trace=trace,
+    )
+
+
+COST_KEYS: Tuple[str, ...] = (
+    "public_env_probes",
+    "public_validation_probes",
+    "channel_invariance_evals",
+    "schema_distill_cost",
+    "role_probe_cost",
+    "gate_evals",
+    "archive_lookup_evals",
+    "compression_evals",
+    "synthesis_evals",
+    "micro_codegen_evals",
+    "operator_compile_cost",
+)
+
+
+def _totals(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+    out: Dict[str, Any] = {}
+    for method in WAVE10_METHODS:
+        subset = [r for r in rows if r["method"] == method]
+        out[method] = dict(
+            n=len(subset),
+            mapping_correct=sum(int(bool(r.get("mapping_correct"))) for r in subset),
+            private_correct=sum(int(bool(r.get("private_correct"))) for r in subset),
+            false_analogy_lock=sum(
+                int(bool(r.get("false_analogy_lock"))) for r in subset
+            ),
+            false_unique=sum(int(bool(r.get("false_unique"))) for r in subset),
+            ambiguous=sum(int(r.get("status") == "ambiguous") for r in subset),
+            abstain=sum(int(r.get("status") == "abstain") for r in subset),
+            schema_distill_cost=sum(
+                int(r.get("schema_distill_cost") or 0) for r in subset
+            ),
+            role_probe_cost=sum(int(r.get("role_probe_cost") or 0) for r in subset),
+            gate_evals=sum(int(r.get("gate_evals") or 0) for r in subset),
+            archive_lookup_evals=sum(
+                int(r.get("archive_lookup_evals") or 0) for r in subset
+            ),
+            compression_evals=sum(
+                int(r.get("compression_evals") or 0) for r in subset
+            ),
+            synthesis_evals=sum(int(r.get("synthesis_evals") or 0) for r in subset),
+            micro_codegen_evals=sum(
+                int(r.get("micro_codegen_evals") or 0) for r in subset
+            ),
+            operator_compile_cost=sum(
+                int(r.get("operator_compile_cost") or 0) for r in subset
+            ),
+            codegen_plus_synthesis=sum(
+                int(r.get("codegen_plus_synthesis") or 0) for r in subset
+            ),
+            total_work=sum(int(r.get("total_work") or 0) for r in subset),
+            l1_sub_predicate_reused=sum(
+                int(bool(r.get("l1_sub_predicate_reused"))) for r in subset
+            ),
+            l2_full_skill_reused=sum(
+                int(bool(r.get("l2_full_skill_reused"))) for r in subset
+            ),
+            memoized_program_reused=sum(
+                int(bool(r.get("memoized_program_reused"))) for r in subset
+            ),
+            cold_archive_reactivated=sum(
+                int(bool(r.get("cold_archive_reactivated"))) for r in subset
+            ),
+        )
+    return out
+
+
+def _seed_dispersion(
+    seed_blocks: Sequence[Mapping[str, Any]], group_key: str
+) -> Dict[str, Any]:
+    summary: Dict[str, Any] = {}
+    for method in WAVE10_METHODS:
+        work_vals = [int(b[group_key][method]["total_work"]) for b in seed_blocks]
+        code_vals = [
+            int(b[group_key][method]["codegen_plus_synthesis"]) for b in seed_blocks
+        ]
+        priv_vals = [int(b[group_key][method]["private_correct"]) for b in seed_blocks]
+        summary[method] = dict(
+            private_correct_per_seed=priv_vals,
+            total_work_mean=round(sum(work_vals) / max(len(work_vals), 1), 2),
+            total_work_min=min(work_vals),
+            total_work_max=max(work_vals),
+            codegen_plus_synthesis_mean=round(
+                sum(code_vals) / max(len(code_vals), 1), 2
+            ),
+            codegen_plus_synthesis_min=min(code_vals),
+            codegen_plus_synthesis_max=max(code_vals),
+        )
+    return summary
+
+
+def evaluate_gates(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    notes: List[str] = []
+    ok = True
+    rows = list(payload.get("assessment") or [])
+    totals = payload.get("totals") or {}
+
+    # Gate 1: Isolation, safety, equal atomic starting catalog
+    if any(r.get("private_before_lock") for r in rows):
+        ok = False
+        notes.append("private_before_lock")
+    if any(r.get("false_analogy_lock") for r in rows):
+        ok = False
+        notes.append("false_analogy_lock")
+    if any(r.get("false_unique") for r in rows):
+        ok = False
+        notes.append("false_unique")
+    if any(not r.get("mapping_correct") or not r.get("private_correct") for r in rows):
+        ok = False
+        notes.append("solve_mismatch")
+
+    # Gate 2: Fixes all 3 Wave-9 (d0a8bb1) overhead bottlenecks
+    g12_totals = totals.get("g12") or {}
+    delayed_totals = totals.get("delayed") or {}
+    suite_totals = totals.get("suite") or {}
+
+    w10_g12_code = int(
+        (g12_totals.get("wave10_self_evolving_nexus") or {}).get(
+            "codegen_plus_synthesis", -1
+        )
+    )
+    scratch_g12_code = int(
+        (g12_totals.get("equal_atomic_scratch") or {}).get(
+            "codegen_plus_synthesis", -2
+        )
+    )
+    if w10_g12_code > scratch_g12_code:
+        ok = False
+        notes.append(f"g12_beam_tax_not_eliminated:{w10_g12_code}>{scratch_g12_code}")
+
+    w10_delayed_code = int(
+        (delayed_totals.get("wave10_self_evolving_nexus") or {}).get(
+            "codegen_plus_synthesis", 999
+        )
+    )
+    w10_delayed_react = int(
+        (delayed_totals.get("wave10_self_evolving_nexus") or {}).get(
+            "cold_archive_reactivated", 0
+        )
+    )
+    if w10_delayed_code >= 90 or w10_delayed_react < 3:
+        ok = False
+        notes.append(
+            f"delayed_post_prune_not_pre_synthesis:{w10_delayed_code},react={w10_delayed_react}"
+        )
+
+    w10_comp = int(
+        (suite_totals.get("wave10_self_evolving_nexus") or {}).get(
+            "compression_evals", 999
+        )
+    )
+    w9_comp = int(
+        (suite_totals.get("wave9_frozen_adaptive_rules") or {}).get(
+            "compression_evals", 1
+        )
+    )
+    if w10_comp > 0.4 * w9_comp:
+        ok = False
+        notes.append(f"compression_tax_not_reduced:{w10_comp}_vs_{w9_comp}")
+
+    # Gate 3: Genuine self-evolving pareto win on codegen_plus_synthesis AND total_work
+    w10_suite_code = int(
+        (suite_totals.get("wave10_self_evolving_nexus") or {}).get(
+            "codegen_plus_synthesis", 999999
+        )
+    )
+    w10_suite_work = int(
+        (suite_totals.get("wave10_self_evolving_nexus") or {}).get(
+            "total_work", 999999
+        )
+    )
+    for other_m in WAVE10_METHODS:
+        if other_m == "wave10_self_evolving_nexus":
+            continue
+        other_code = int(
+            (suite_totals.get(other_m) or {}).get("codegen_plus_synthesis", 0)
+        )
+        other_work = int((suite_totals.get(other_m) or {}).get("total_work", 0))
+        if w10_suite_code >= other_code:
+            ok = False
+            notes.append(
+                f"not_lowest_codegen_plus_synthesis_vs_{other_m}:{w10_suite_code}>={other_code}"
+            )
+        if w10_suite_work >= other_work:
+            ok = False
+            notes.append(
+                f"not_lowest_total_work_vs_{other_m}:{w10_suite_work}>={other_work}"
+            )
+
+    gate1_ok = all(
+        t not in notes
+        for t in (
+            "private_before_lock",
+            "false_analogy_lock",
+            "false_unique",
+            "solve_mismatch",
+        )
+    )
+    gate2_ok = not any(
+        n.startswith(
+            (
+                "g12_beam_tax_not_eliminated",
+                "delayed_post_prune_not_pre_synthesis",
+                "compression_tax_not_reduced",
+            )
+        )
+        for n in notes
+    )
+    gate3_ok = not any(
+        n.startswith(
+            ("not_lowest_codegen_plus_synthesis_vs_", "not_lowest_total_work_vs_")
+        )
+        for n in notes
+    )
+
+    return dict(
+        gate1_equal_atomic_catalog_and_label_blind=gate1_ok,
+        gate2_fixes_all_three_d0a8bb1_overheads=gate2_ok,
+        gate3_self_evolving_pareto_win=gate3_ok,
+        passed=ok,
+        notes=notes,
+    )
+
+
+def run_wave10_atomic_self_evolving(directory: Path) -> Dict[str, Any]:
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    started = time.perf_counter()
+
+    if any(row["task_id"] in OPENED_IDS for row in WAVE10_ATOMIC_TASKS):
+        raise ValueError("opened_id_in_challenge")
+
+    assessment: List[Dict[str, Any]] = []
+    seed_blocks: List[Dict[str, Any]] = []
+
+    for seed in TRAIN_SEEDS:
+        ordered_tasks = ordered_tasks_for_seed(seed)
+        seed_rows: List[Dict[str, Any]] = []
+        for method in WAVE10_METHODS:
+            learner = AtomicEqualCapabilityLearner(method)
+            for idx, task in enumerate(ordered_tasks):
+                episode = run_episode(task, learner, idx, seed)
+                seed_rows.append(episode)
+        assessment.extend(seed_rows)
+        seed_blocks.append(
+            dict(
+                seed=seed,
+                task_order=[t["task_id"] for t in ordered_tasks],
+                g1=_totals([r for r in seed_rows if r["split"] == SPLIT_G1]),
+                g2=_totals([r for r in seed_rows if r["split"] == SPLIT_G2]),
+                g12=_totals(
+                    [r for r in seed_rows if r["split"] in {SPLIT_G1, SPLIT_G2}]
+                ),
+                step_pred=_totals(
+                    [r for r in seed_rows if r["split"] == SPLIT_STEP_PRED]
+                ),
+                step_tf=_totals(
+                    [r for r in seed_rows if r["split"] == SPLIT_STEP_TF]
+                ),
+                deep=_totals([r for r in seed_rows if r["split"] == SPLIT_DEEP]),
+                spurious=_totals(
+                    [r for r in seed_rows if r["split"] == SPLIT_SPURIOUS]
+                ),
+                delayed=_totals(
+                    [r for r in seed_rows if r["split"] == SPLIT_DELAYED]
+                ),
+                amb=_totals([r for r in seed_rows if r["split"] == SPLIT_AMB]),
+                oog=_totals([r for r in seed_rows if r["split"] == SPLIT_OOG]),
+                suite=_totals(seed_rows),
+            )
+        )
+
+    totals = dict(
+        g1=_totals([r for r in assessment if r["split"] == SPLIT_G1]),
+        g2=_totals([r for r in assessment if r["split"] == SPLIT_G2]),
+        g12=_totals([r for r in assessment if r["split"] in {SPLIT_G1, SPLIT_G2}]),
+        step_pred=_totals([r for r in assessment if r["split"] == SPLIT_STEP_PRED]),
+        step_tf=_totals([r for r in assessment if r["split"] == SPLIT_STEP_TF]),
+        deep=_totals([r for r in assessment if r["split"] == SPLIT_DEEP]),
+        spurious=_totals([r for r in assessment if r["split"] == SPLIT_SPURIOUS]),
+        delayed=_totals([r for r in assessment if r["split"] == SPLIT_DELAYED]),
+        amb=_totals([r for r in assessment if r["split"] == SPLIT_AMB]),
+        oog=_totals([r for r in assessment if r["split"] == SPLIT_OOG]),
+        suite=_totals(assessment),
+    )
+
+    seed_dispersion = {
+        group_key: _seed_dispersion(seed_blocks, group_key)
+        for group_key in (
+            "g1",
+            "g2",
+            "g12",
+            "step_pred",
+            "step_tf",
+            "deep",
+            "spurious",
+            "delayed",
+            "amb",
+            "oog",
+            "suite",
+        )
+    }
+
+    payload: Dict[str, Any] = dict(
+        kind=KIND,
+        prior_closed=list(PRIOR_CLOSED),
+        methods=list(WAVE10_METHODS),
+        confirmation=False,
+        learning_to_learn_established=False,
+        track_b_closed=True,
+        grammar_prior_retrained=False,
+        seeds=list(TRAIN_SEEDS),
+        task_orders_by_seed={str(k): list(v) for k, v in TASK_ORDERS_BY_SEED.items()},
+        atomic_catalog={
+            k: list(v) for k, v in atomic_catalog_manifest().items()
+        },
+        assessment=assessment,
+        seed_blocks=seed_blocks,
+        seed_dispersion=seed_dispersion,
+        totals=totals,
+        gates={},
+        usage=dict(
+            kind=KIND,
+            elapsed_s=0.0,
+            model_calls=0,
+            metal_used=False,
+            frozen_debit_s=0,
+            research_cpu_ledger_debit_s=0,
+            ledger_class="symbolic_standing_grant_cpu_not_frozen_1p5b",
+            frozen_cpu_used_s=FROZEN_CPU_USED_S,
+            frozen_cpu_remaining_s=FROZEN_CPU_REMAINING_S,
+            wall_time_s=0.0,
+            rss=sample_process_memory(),
+        ),
+        language_hash=language_hash(),
+    )
+    payload["gates"] = evaluate_gates(payload)
+    elapsed = time.perf_counter() - started
+    payload["usage"]["elapsed_s"] = elapsed
+    payload["usage"]["wall_time_s"] = elapsed
+    payload["hash"] = digest(
+        {key: payload[key] for key in ("kind", "assessment", "totals", "gates")}
+    )
+    (directory / "seed_wave10_atomic_self_evolving_operators.json").write_text(
+        json.dumps(payload, indent=2, default=str),
+        encoding="utf-8",
+    )
+    return payload
