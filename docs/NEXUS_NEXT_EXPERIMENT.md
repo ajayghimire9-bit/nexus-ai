@@ -1,11 +1,20 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — Wave-8 hierarchical gated evolution (protocol locked)
+## Current next — do not rescore the Wave-8 hierarchical grid
 
-The [Wave-8 protocol](NEXUS_WAVE8_HIERARCHICAL_PROTOCOL.md) stacks
-`L0→L1→L2`, gates compiled operators, and defers analogy behind a
-depth-1 fast path. Do not rescore `907db66` or earlier grids. Track B
-coding stays closed.
+The [Wave-8 run](NEXUS_WAVE8_HIERARCHICAL_RESULTS.md) stacks
+`L0→L1→L2`, gates compiled operators by an alphabet-closed invariant,
+and defers analogy behind a depth-1 fast path (suite 4989 vs
+flat-gated 8865 / Wave-7-ungated 20979 / scratch 13893). Do not
+rescore this grid, `907db66`, `b590ca2`, `10f579d`, `f66ae34`,
+`c8bc5ad`, `0d4596e`, `6e0df3a`, or `f2e8942`. Track B coding stays
+closed. Not general learning-to-learn.
+
+A bounded follow-up, if run, should keep the authored L2 rotate
+catalog frozen and test whether a second necessary invariant (length
+delta, not just alphabet closure) can gate a new distractor family
+without expanding OOG cost. Do not treat Wave-8 as an operator
+factory.
 
 ## Previous next — do not rescore the Wave-7 cross-domain grid
 

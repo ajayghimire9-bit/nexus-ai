@@ -1,6 +1,16 @@
 # NEXUS progress log
 
-## Current — Wave-7: factored interface + one compiled sequence predicate
+## Current — Wave-8: hierarchical L0→L1→L2 + activation gate + lazy probe
+
+Protocol `561a563`, artifact
+`ec06a9508d6138b78d6ef2a06ca374925b71b33967c29594c7fff5530722a8c2`.
+NEXUS 36/36. G1 201 vs eager 558. G1+G2 756 vs scratch 1650. G3
+2202 / 1359 vs flat-gated 6069 / 5223. OOG 1269 vs ungated 5427 /
+3912 and scratch 2295. Suite 4989 / 3228. Frozen debit **0**, wall
+0.066 s.
+[Results](NEXUS_WAVE8_HIERARCHICAL_RESULTS.md).
+
+## Previous — Wave-7: factored interface + one compiled sequence predicate
 
 Protocol `c3a4b40`, artifact
 `342ebf9021ce7242b00e102b5bf76f471ba2ce667baebc81b5753bdc782d1694`.

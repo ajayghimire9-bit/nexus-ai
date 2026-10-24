@@ -143,7 +143,31 @@ G1 (`534` vs `198`) because analogy ran before a depth-1 fast path.
 Authored token-queue transfer with one compiled predicate, not
 general learning-to-learn.
 
-## Current — Wave-7 cross-domain analogy (results)
+**Wave-8 hierarchical gated evolution (216 cells, protocol
+`561a563`).** Artifact
+`ec06a9508d6138b78d6ef2a06ca374925b71b33967c29594c7fff5530722a8c2`.
+Lazy depth-1 search cut G1 to `201` vs Wave-7-style eager `558`
+while G1+G2 stayed at `756` vs scratch `1,650`. Hierarchical
+`L0→L1→L2` compile (L2 AST invokes compiled `palindrome_pred`) cut
+G3 to `2,202` / `1,359` vs flat-gated L1 `6,069` / `5,223` and
+scratch `9,186` / `8,781`. The alphabet-closed activation gate kept
+OOG Caesar at `1,269` vs ungated Wave-7-style `5,427` and
+hierarchical-ungated `3,912` (scratch `2,295`). Suite `4,989` /
+`3,228` vs flat-gated `8,865` / `7,092`. NEXUS `36/36` mapping and
+private; `0` false locks; `3/3` amb/OOG/retain. Wall 0.066 s, frozen
+debit 0. Authored hierarchical catalog plus a hand-specified I/O
+gate, not general learning-to-learn.
+
+## Current — Wave-8 hierarchical gated evolution (results)
+
+[Protocol](NEXUS_WAVE8_HIERARCHICAL_PROTOCOL.md),
+[results](NEXUS_WAVE8_HIERARCHICAL_RESULTS.md).
+Protocol `561a563`. Artifact
+`ec06a9508d6138b78d6ef2a06ca374925b71b33967c29594c7fff5530722a8c2`.
+Verifier `valid: true` on 216 cells. See group tables in the results
+note above. Frozen debit **0**. Not general learning-to-learn.
+
+## Previous — Wave-7 cross-domain analogy (results)
 
 [Protocol](NEXUS_WAVE7_CROSS_DOMAIN_PROTOCOL.md),
 [results](NEXUS_WAVE7_CROSS_DOMAIN_RESULTS.md).
