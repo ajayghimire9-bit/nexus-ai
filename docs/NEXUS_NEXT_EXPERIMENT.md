@@ -1,6 +1,14 @@
 # Next NEXUS experiment (minimal, falsifiable)
 
-## Current next — need an accuracy gap, not another scoring-cost curve
+## Current next — do not rescore competence; excluded family still breaks IG
+
+The [competence run](NEXUS_SEED_MECHANISM_COMPETENCE_RESULTS.md) taught
+the policy to finish in-language investigations and tied the diagnostic
+on C/D. It still mis-identifies half of E, matching IG. Do not rescore
+that grid or `92d6f19`. A later family must make cheap fixed policies
+miss in-language tasks. Ranking stays paused.
+
+## Previous next — need an accuracy gap, not another scoring-cost curve
 
 The [mechanism investigation run](NEXUS_SEED_MECHANISM_L2L_RESULTS.md)
 is **negative**. Frequency already solved development; the trained

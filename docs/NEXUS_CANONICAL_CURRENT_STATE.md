@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Current — mechanism investigation policy (results)
+## Current — mechanism competence gate (results)
+
+[Protocol](NEXUS_SEED_MECHANISM_COMPETENCE_PROTOCOL.md),
+[results](NEXUS_SEED_MECHANISM_COMPETENCE_RESULTS.md).
+Protocol `13dfcac`. Artifact
+`e130dd828b8faa68a1f0c0b4e6ef5f41ce46f8c5533fcf16c3f6c6ac97e041b8`.
+Verifier 157 cells. Own-trajectory competence 7/7 on three seeds, so
+assessment opened. Trained 15/18 versus diagnostic 18/18. Within-family
+and composition 6/6 tie; excluded 3/6 (same wrong IDs as IG). Prior
+`92d6f19` not rescored. Verdict **negative** vs strongest fixed.
+Frozen debit **0**. Not learning-to-learn.
+
+## Previous — mechanism investigation policy (results)
 
 [Protocol](NEXUS_SEED_MECHANISM_L2L_PROTOCOL.md),
 [results](NEXUS_SEED_MECHANISM_L2L_RESULTS.md).
