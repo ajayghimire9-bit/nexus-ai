@@ -15,7 +15,7 @@ SRC_ROOT = REPO_ROOT / 'src'
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from nexus.seed.wave21_imperative_python_synthesizer import solve_multi_file_repo_repair
+from nexus.seed.wave21_imperative_python_synthesizer import TraceDrivenRepoRepairEngine
 from nexus.seed.wave22_nexus_omega_engine import (
     WAVE22_HOMOMORPHISM_METHODS,
     WAVE22_IMPERATIVE_METHODS,
@@ -165,8 +165,10 @@ def run_wave22_benchmark() -> dict[str, Any]:
     repo_rows: list[dict[str, Any]] = []
     for seed in SEEDS:
         for rspec in repo_specs:
-            r_res = solve_multi_file_repo_repair(rspec, seed=seed)
-            repo_rows.append(asdict(r_res))
+            r_res = TraceDrivenRepoRepairEngine.localize_and_repair_repository(rspec, seed=seed)
+            row_dict = asdict(r_res)
+            row_dict['all_contracts_passed'] = bool(r_res.public_passed and r_res.private_passed)
+            repo_rows.append(row_dict)
 
     repo_summary = {
         'cells': len(repo_rows),

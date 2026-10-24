@@ -138,3 +138,23 @@ def test_well_posedness_validator_catches_ill_posed_and_passes_valid() -> None:
     )
     assert bad_report['valid'] is False
     assert any('imp_unique_zero_survivors' in err for err in bad_report['errors'])
+
+
+def test_repo_repair_and_benchmark_runner_imports() -> None:
+    import importlib.util
+    from pathlib import Path
+    from nexus.seed.wave21_imperative_python_synthesizer import TraceDrivenRepoRepairEngine
+
+    _, _, repo_dev, _, _ = build_pre_freeze_wave22_dev_suite()
+    r_res = TraceDrivenRepoRepairEngine.localize_and_repair_repository(repo_dev[0], seed=0)
+    assert r_res.public_passed is True
+    assert r_res.private_passed is True
+    assert 'def unique_frequency_squares' in r_res.synthesized_replacement_source
+
+    repo_root = Path(__file__).resolve().parents[1]
+    for script_rel in ('scripts/run_wave22_nexus_omega_benchmark.py', 'scripts/verify_wave22_nexus_omega.py'):
+        spec = importlib.util.spec_from_file_location('mod_check', repo_root / script_rel)
+        assert spec is not None and spec.loader is not None
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
