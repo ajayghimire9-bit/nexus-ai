@@ -206,24 +206,20 @@ verifier `scripts/verify_wave9_frozen_fresh_comparison.py` (`"valid": true`, `21
   - Frozen `persistent_nexus_full` achieves the lowest `codegen_plus_synthesis` (`995`) and lowest `total_work` (`1662`) of all 5 methods on **L1+L2 invention, reuse, and composition** (`995 / 1662` vs `1014 / 1683` for `pruning_disabled`, `1238 / 1724` for `ordinary_persistent_memoization`, and `1338 / 1824` for `equal_scratch`), while losing to `equal_scratch` on **G1+G2** (`875` vs `621`) and losing to `persistent_nexus_pruning_disabled` on **Delayed Post-Prune Reuse** (`361` vs `152`).
   - `wave9_self_adaptive_nexus` successfully reactivates demoted operators from its Cold Signature Archive (`cold_archive_reactivated = 3`, reducing `micro_codegen_evals` from `200` to `159`, `operator_compile_cost` from `84` to `72`, and `delayed` work from `262 / 361` to `240 / 350`) and cuts `gate_evals` by `68.7%` (`26` vs `83`), but its explicitly metered `compression_evals` (`198`) and single-use macro demotion in Seed 2 (`l2_full_skill_reused = 2` vs `3`) leave its total work higher (`3743`).
 
-**Wave-10 atomic self-evolving operators and cost-ordered meta-control (`288` cells across 3 permuted-order seeds, protocol lock `16bb044`).**
+**Wave-10 atomic self-evolving operators and cost-ordered meta-control (`288` cells across 3 permuted-order seeds — Developmental / Post-Amend Run `9afb110 -> 16bb044 -> f253be1`).**
 [Protocol](NEXUS_WAVE10_ATOMIC_SELF_EVOLVING_PROTOCOL.md),
-[Results](NEXUS_WAVE10_ATOMIC_SELF_EVOLVING_RESULTS.md), artifact
-`artifacts/seed_wave10_atomic_self_evolving_operators.json` (`17656be31dcbfb23bc292ed1c021362eff236d8c851c6286039a9cd73aecdc0d`),
-verifier `scripts/verify_wave10_atomic_self_evolving.py` (`"valid": true`, `288` rows replayed on saved public and private I/O pairs, prior learner files verified untouched via SHA-256, and `git diff 16bb044 -- src/ scripts/ tests/` verified empty after the single-shot scoring run).
-- **All 6 methods start from a strictly atomic depth-1 catalog and achieve `48/48` (`100%` mapping and private accuracy)** across the 16-task `w10a_*` suite.
-- **Suite totals (`codegen_plus_synthesis / total_work`, per-seed `mean [min..max]`)**:
-  - `equal_atomic_scratch`: `5319 / 6630` (`2210.0 [2210..2210]`)
-  - `ordinary_persistent_memoization`: `4634 / 5945` (`1981.67 [1978..1986]`, `memoized_program_reused = 3`)
-  - `wave9_frozen_adaptive_rules`: `3601 / 5528` (`1842.67 [1807..1861]`, `compression_evals = 315`, `gate_evals = 37`)
-  - `atomic_nexus_predicate_evolution_only`: `3030 / 4548` (`1516.0 [1511..1524]`, `l1_sub_predicate_reused = 15`, `cold_archive_reactivated = 3`)
-  - `atomic_nexus_pruning_disabled`: `2493 / 4014` (`1338.0 [1335..1341]`, `l1_sub_predicate_reused = 15`, `l2_full_skill_reused = 3`)
-  - **`wave10_self_evolving_nexus`**: **`2354 / 3872`** (`1290.67 [1285..1295]`, `l1_sub_predicate_reused = 15`, `l2_full_skill_reused = 3`, `cold_archive_reactivated = 3`, `compression_evals = 84`, `gate_evals = 27`, `schema_distill_cost = 36`, `operator_compile_cost = 60`)
-- **All 3 `d0a8bb1` Overhead Bottlenecks Eliminated + Pareto Win**:
-  1. **Base-First Cost-Ordered Beam (`Tier 0 -> Tier 1`)**: Matches `equal_atomic_scratch` on `G1 + G2` `codegen_plus_synthesis` (`174` vs `174`, `0` gate evals on base tasks, vs `474` in `wave9_frozen_adaptive_rules`).
-  2. **Pre-Synthesis Cold Archive Lookup (`Tier 2` before `Tier 3`)**: Reactivates demoted operators on `Delayed Post-Prune Reuse` (`cold_archive_reactivated = 3/3`, `0` `micro_codegen_evals`) in `84` `codegen_plus_synthesis` (`< 90`, vs `324` in `wave9_frozen_adaptive_rules`).
-  3. **Event-Triggered Wake-Sleep MDL Consolidation**: Cuts suite-wide `compression_evals` by `73.3%` (`84` vs `315` in `wave9_frozen_adaptive_rules`, with `0` `compression_evals` on `G1`, `G2`, and `Delayed`).
-  4. **Self-Evolving Pareto Win**: `wave10_self_evolving_nexus` achieves the lowest `codegen_plus_synthesis` (`2354`) and lowest `total_work` (`3872`) of all 6 methods across the 48-episode stream, winning on every single seed (`max = 1295 < min = 1335` of runner-up `atomic_nexus_pruning_disabled`). Track B remains closed (`0` model calls, `0 s` frozen debit, `learning_to_learn_established = false`).
+[Results & Forensic Disclosure](NEXUS_WAVE10_ATOMIC_SELF_EVOLVING_RESULTS.md),
+pre-amend artifact `artifacts/seed_wave10_pre_amend_failed_run.json` (`6a8493a609fd7480f45deaf9061334f81442a5de5d49aa59ac6f5fa830761562`),
+post-amend artifact `artifacts/seed_wave10_atomic_self_evolving_operators.json` (`17656be31dcbfb23bc292ed1c021362eff236d8c851c6286039a9cd73aecdc0d`),
+verifier `scripts/verify_wave10_atomic_self_evolving.py` (`"valid": true` on post-amend artifact, `288` rows replayed on saved public and private I/O pairs).
+- **Classification & Forensic Disclosure**: Classified as **"Developmental / Post-Amend Run (1 local commit amendment after initial run failure)"** rather than a single-shot run. In the original pre-amend commit `9afb1101f42972289d7c89173487ff45d7c2d0da`, all `288` cells solved `100%` (`48/48` per method) and passed `Gate 1` and `Gate 3` (`wave10_self_evolving_nexus` achieved the lowest `codegen_plus_synthesis = 2354` and lowest `total_work = 3931`), but `Gate 2` failed with `compression_tax_not_reduced:143_vs_315` (`54.6%` reduction vs `> 60%` threshold) because `compress_solved_programs_mdl` (`wave10_atomic_self_evolving_learner.py:L441-447`) appended every Tier-0/1/2 solved program to `solved_program_history` before checking `structure_discovered`. Amending `9afb110 -> 16bb04407d608bf3707ca894be3a2ca8bf5f2dd9` moved `self.solved_program_history.append(latest_ast)` after the `structure_discovered` check and guarded on `use_predicate_evolution or use_transform_evolution`, reducing `compression_evals` from `143` to `84` (`-73.3%` vs `315`) while leaving all `288` synthesized programs, `codegen_plus_synthesis` (`2354`), and private outcomes (`48/48`) unchanged.
+- **Suite totals (`codegen_plus_synthesis / pre-amend total_work (9afb110) / post-amend total_work (16bb044)`)**:
+  - `equal_atomic_scratch`: `5319 / 6660 / 6630` (`compression_evals`: `30 -> 0`)
+  - `ordinary_persistent_memoization`: `4634 / 6143 / 5945` (`compression_evals`: `198 -> 0`, `memoized_program_reused = 3`)
+  - `wave9_frozen_adaptive_rules`: `3601 / 5528 / 5528` (`compression_evals = 315`, `gate_evals = 37`)
+  - `atomic_nexus_predicate_evolution_only`: `3030 / 4615 / 4548` (`compression_evals`: `175 -> 108`, `l1_sub_predicate_reused = 15`, `cold_archive_reactivated = 3`)
+  - `atomic_nexus_pruning_disabled`: `2493 / 4073 / 4014` (`compression_evals`: `143 -> 84`, `l1_sub_predicate_reused = 15`, `l2_full_skill_reused = 3`)
+  - **`wave10_self_evolving_nexus`**: **`2354 / 3931 / 3872`** (`compression_evals`: `143 -> 84`, `l1_sub_predicate_reused = 15`, `l2_full_skill_reused = 3`, `cold_archive_reactivated = 3`, `gate_evals = 27`, `schema_distill_cost = 36`, `operator_compile_cost = 60`). Track B remains closed (`0` model calls, `0 s` frozen debit, `learning_to_learn_established = false`).
 
 ## Current — Wave-8 hierarchical gated evolution (results)
 
