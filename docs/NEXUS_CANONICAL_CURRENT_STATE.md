@@ -221,6 +221,20 @@ verifier `scripts/verify_wave10_atomic_self_evolving.py` (`"valid": true` on pos
   - `atomic_nexus_pruning_disabled`: `2493 / 4073 / 4014` (`compression_evals`: `143 -> 84`, `l1_sub_predicate_reused = 15`, `l2_full_skill_reused = 3`)
   - **`wave10_self_evolving_nexus`**: **`2354 / 3931 / 3872`** (`compression_evals`: `143 -> 84`, `l1_sub_predicate_reused = 15`, `l2_full_skill_reused = 3`, `cold_archive_reactivated = 3`, `gate_evals = 27`, `schema_distill_cost = 36`, `operator_compile_cost = 60`). Track B remains closed (`0` model calls, `0 s` frozen debit, `learning_to_learn_established = false`).
 
+**Wave-11 bounded typed program enumerator & direct AST interpreter (`192` cells across 3 permuted-order seeds, freeze lock `4353a0c`, learner SHA-256 `70076ef08dc310399878372710387da9833ba295d0374a2a031249e2987ae86a` untouched since `c72a690`, `0` uses of `git commit --amend`).**
+[Protocol](NEXUS_WAVE11_TYPED_ENUMERATOR_PROTOCOL.md),
+[Results](NEXUS_WAVE11_TYPED_ENUMERATOR_RESULTS.md),
+artifact `artifacts/seed_wave11c_typed_program_enumerator.json` (`44a84d7d2a63b74c88b37c98b79be05ac519cc243b5d9923fa11ef3ff1c0f43b`),
+closed developmental suite artifacts `artifacts/seed_wave11_typed_program_enumerator.json` (`3bd32ab59b10797fb76b13060a61a402e4fe44c547835f5db954626a15097f07`, closed in `ffa43de`) and `artifacts/seed_wave11b_typed_program_enumerator.json` (`1ca3083196104a5075b4cb81cd6ede54abf43ef099ed606ca2b77340d902a3cf`, closed in `1d6a946`),
+verifier `scripts/verify_wave11_typed_enumerator.py` (`"valid": true`, `lambda_count: 0`, `prim_opcode_count: 14`, `192` rows replayed via `eval_expr_ast` on saved public and private I/O pairs across all 3 suites = `576` total cells, and `git diff 4353a0c -- src/ scripts/ tests/` verified 100% empty).
+- **Replaces handwritten composite candidate tuples and `lambda` callables** with a strongly typed algebraic expression tree (`ExprAST`: `VarNode`, `ConstNode`, `PrimOpNode`, `EvolvedMacroNode`) over `TypeTag = SEQ | TOK | INT | BOOL` and a direct recursive AST interpreter `eval_expr_ast`, shared identically across all 4 methods (`TypedProgramEnumerator`).
+- **Suite totals on `w11c_*` (`codegen_plus_synthesis / total_work`, per-seed `mean [min..max]`, `48/48` solved across all 4 methods)**:
+  - `equal_typed_scratch`: `32046 / 33357` (`11119.0 [11119..11119]`)
+  - `ordinary_persistent_memoization`: `26155 / 27466` (`9155.33 [9155..9156]`, `memoized_program_reused = 3`)
+  - `nexus_typed_without_pruning`: `12320 / 13889` (`4629.67 [4625..4633]`, `sub_macro_reused = 15`, `full_program_macro_reused = 3`)
+  - **`nexus_typed_full`**: **`12098 / 13664`** (`4554.67 [4552..4556]`, `sub_macro_reused = 15`, `full_program_macro_reused = 3`, `cold_archive_reactivated = 3`, `gate_evals = 27`, `archive_lookup_evals = 46`, `compression_evals = 108`, `schema_distill_cost = 36`, `operator_compile_cost = 84`).
+- **Deep Compositional Scaling**: Composing evolved `SEQ_EQ(x, REVERSE(x))` + `APPEND_TOK(M_rot(x), '#')` at effective AST size `3` (`M_rot` has step cost `1`) instead of enumerating from scratch up to size `7` reduces `w11c_deep_compositional` `total_work` by **96.5%** (`710` vs `20148`) and `synthesis_evals` by **98.5%** (`294` vs `19824`). Track B remains closed (`0` model calls, `0 s` frozen debit, `learning_to_learn_established = false`).
+
 ## Current — Wave-8 hierarchical gated evolution (results)
 
 [Protocol](NEXUS_WAVE8_HIERARCHICAL_PROTOCOL.md),
