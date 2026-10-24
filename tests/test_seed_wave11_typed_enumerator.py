@@ -249,12 +249,14 @@ def test_wave11_synthetic_tiers_and_deep_macro_composition() -> None:
 
 
 def test_wave10_pre_amend_forensic_artifact_verification() -> None:
+    import json
     import sys
 
     root = Path(__file__).resolve().parents[1]
     if str(root / "scripts") not in sys.path:
         sys.path.insert(0, str(root / "scripts"))
     from verify_wave11_typed_enumerator import (
+        _replay_and_verify_payload,
         inspect_wave11_learner_ast,
         verify_wave10_pre_amend_artifact,
     )
@@ -268,15 +270,32 @@ def test_wave10_pre_amend_forensic_artifact_verification() -> None:
     w10_report = verify_wave10_pre_amend_artifact(root)
     assert w10_report["valid"] is True, f"Failed: {w10_report}"
 
+    # Verify _replay_and_verify_payload schema against closed Wave-11a and Wave-11b artifacts
+    payload_a = json.loads(
+        (root / "artifacts" / "seed_wave11_typed_program_enumerator.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    n_a, reasons_a = _replay_and_verify_payload(payload_a, "wave11a_closed")
+    assert n_a == 192 and reasons_a == [], f"Failed replay a: {reasons_a}"
+
+    payload_b = json.loads(
+        (root / "artifacts" / "seed_wave11b_typed_program_enumerator.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    n_b, reasons_b = _replay_and_verify_payload(payload_b, "wave11b_closed")
+    assert n_b == 192 and reasons_b == [], f"Failed replay b: {reasons_b}"
+
 
 def test_wave11_artifact_verification_when_present() -> None:
     import pytest
     import sys
 
     root = Path(__file__).resolve().parents[1]
-    artifact_path = root / "artifacts" / "seed_wave11b_typed_program_enumerator.json"
+    artifact_path = root / "artifacts" / "seed_wave11c_typed_program_enumerator.json"
     if not artifact_path.exists():
-        pytest.skip("Wave-11b assessment artifact not yet generated (Pre-Commit-1b freeze)")
+        pytest.skip("Wave-11c assessment artifact not yet generated (Pre-Commit-1c freeze)")
 
     if str(root / "scripts") not in sys.path:
         sys.path.insert(0, str(root / "scripts"))
@@ -285,5 +304,6 @@ def test_wave11_artifact_verification_when_present() -> None:
     report = verify_wave11_artifact(root)
     assert report["valid"] is True, f"Verification failed: {report}"
     assert report["replayed_rows"] == 192
+
 
 

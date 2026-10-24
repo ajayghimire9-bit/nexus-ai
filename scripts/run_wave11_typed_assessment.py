@@ -11,12 +11,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from nexus.seed.mechanism_wave11b_fresh_assessment import run_wave11b_typed_assessment
+from nexus.seed.mechanism_wave11c_fresh_assessment import run_wave11c_typed_assessment
 
 
 def main() -> int:
     out_dir = ROOT / "artifacts"
-    payload = run_wave11b_typed_assessment(out_dir)
+    payload = run_wave11c_typed_assessment(out_dir)
     summary = {
         "kind": payload["kind"],
         "gates": payload["gates"],

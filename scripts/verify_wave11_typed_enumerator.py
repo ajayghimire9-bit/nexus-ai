@@ -8,14 +8,14 @@ import hashlib
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Mapping
+from typing import Any, Dict, List, Mapping, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
 from nexus.seed.capability_evidence import digest
-from nexus.seed.mechanism_wave11b_fresh_assessment import COST_KEYS
+from nexus.seed.mechanism_wave11c_fresh_assessment import COST_KEYS
 from nexus.seed.wave11_typed_program_enumerator import (
     ALLOWED_PRIM_OPCODES,
     execute_wave11_program_ast,
@@ -39,11 +39,17 @@ EXPECTED_WAVE11A_SUITE_SHA256 = (
 EXPECTED_WAVE11B_SUITE_SHA256 = (
     "adc0d49581b2d81c1b464c6f4185e77f5e2ded6460d0ef9a24cdca5799d0738e"
 )
+EXPECTED_WAVE11C_SUITE_SHA256 = (
+    "bfc08b30d39472d0c86efcdc5334a98f9e5866f6896cf1403e09664b32c0cccb"
+)
 EXPECTED_WAVE10_PRE_AMEND_HASH = (
     "6a8493a609fd7480f45deaf9061334f81442a5de5d49aa59ac6f5fa830761562"
 )
 EXPECTED_WAVE11A_CLOSED_HASH = (
     "3bd32ab59b10797fb76b13060a61a402e4fe44c547835f5db954626a15097f07"
+)
+EXPECTED_WAVE11B_CLOSED_HASH = (
+    "1ca3083196104a5075b4cb81cd6ede54abf43ef099ed606ca2b77340d902a3cf"
 )
 
 FORBIDDEN_SPLIT_LITERALS = {
@@ -62,6 +68,7 @@ FORBIDDEN_SPLIT_LITERALS = {
     "w10a_",
     "w11f_",
     "w11b_",
+    "w11c_",
 }
 
 
@@ -175,8 +182,7 @@ def _replay_and_verify_payload(
             reasons.append(f"{tid}:total_work_mismatch")
 
         expected_codegen = (
-            int(row.get("gate_evals", 0))
-            + int(row.get("archive_lookup_evals", 0))
+            int(row.get("archive_lookup_evals", 0))
             + int(row.get("synthesis_evals", 0))
         )
         if int(row.get("codegen_plus_synthesis", -1)) != expected_codegen:
@@ -191,7 +197,7 @@ def _replay_and_verify_payload(
         if status == "unique":
             for obs in row.get("public_observations", []):
                 inp = tuple(obs["input"])
-                expected_out = tuple(obs["output"])
+                expected_out = tuple(obs["observed_output"])
                 got = execute_wave11_program_ast(program_ast, inp)
                 if tuple(got) != expected_out:
                     reasons.append(f"{tid}:public_replay_mismatch")
@@ -213,6 +219,7 @@ def _replay_and_verify_payload(
 
 
 def verify_wave11_artifact(root: Path = ROOT) -> Dict[str, Any]:
+    artifact_c_path = root / "artifacts" / "seed_wave11c_typed_program_enumerator.json"
     artifact_b_path = root / "artifacts" / "seed_wave11b_typed_program_enumerator.json"
     artifact_a_path = root / "artifacts" / "seed_wave11_typed_program_enumerator.json"
     wave8_path = root / "src" / "nexus" / "seed" / "deconfounded_equal_capability.py"
@@ -229,9 +236,12 @@ def verify_wave11_artifact(root: Path = ROOT) -> Dict[str, Any]:
     suite_b_path = (
         root / "src" / "nexus" / "seed" / "mechanism_wave11b_fresh_assessment.py"
     )
+    suite_c_path = (
+        root / "src" / "nexus" / "seed" / "mechanism_wave11c_fresh_assessment.py"
+    )
 
-    if not artifact_b_path.exists():
-        return {"valid": False, "reason": "missing_wave11b_artifact"}
+    if not artifact_c_path.exists():
+        return {"valid": False, "reason": "missing_wave11c_artifact"}
 
     reasons: List[str] = []
 
@@ -241,6 +251,7 @@ def verify_wave11_artifact(root: Path = ROOT) -> Dict[str, Any]:
     w11_sha = _sha256_file(wave11_path)
     suite_a_sha = _sha256_file(suite_a_path)
     suite_b_sha = _sha256_file(suite_b_path)
+    suite_c_sha = _sha256_file(suite_c_path)
 
     if w8_sha != EXPECTED_WAVE8_LEARNER_SHA256:
         reasons.append(f"wave8_learner_modified:{w8_sha}")
@@ -254,6 +265,8 @@ def verify_wave11_artifact(root: Path = ROOT) -> Dict[str, Any]:
         reasons.append(f"wave11a_suite_modified:{suite_a_sha}")
     if suite_b_sha != EXPECTED_WAVE11B_SUITE_SHA256:
         reasons.append(f"wave11b_suite_modified:{suite_b_sha}")
+    if suite_c_sha != EXPECTED_WAVE11C_SUITE_SHA256:
+        reasons.append(f"wave11c_suite_modified:{suite_c_sha}")
 
     ast_check = inspect_wave11_learner_ast(wave11_path)
     if not ast_check["valid"]:
@@ -272,9 +285,18 @@ def verify_wave11_artifact(root: Path = ROOT) -> Dict[str, Any]:
         _, reasons_a = _replay_and_verify_payload(payload_a, "wave11a_closed")
         reasons.extend(reasons_a)
 
-    payload_b = json.loads(artifact_b_path.read_text(encoding="utf-8"))
-    replayed_rows, reasons_b = _replay_and_verify_payload(payload_b, "wave11b")
-    reasons.extend(reasons_b)
+    if not artifact_b_path.exists():
+        reasons.append("missing_closed_wave11b_artifact")
+    else:
+        payload_b = json.loads(artifact_b_path.read_text(encoding="utf-8"))
+        if payload_b.get("hash") != EXPECTED_WAVE11B_CLOSED_HASH:
+            reasons.append(f"unexpected_wave11b_hash:{payload_b.get('hash')}")
+        _, reasons_b = _replay_and_verify_payload(payload_b, "wave11b_closed")
+        reasons.extend(reasons_b)
+
+    payload_c = json.loads(artifact_c_path.read_text(encoding="utf-8"))
+    replayed_rows, reasons_c = _replay_and_verify_payload(payload_c, "wave11c")
+    reasons.extend(reasons_c)
 
     return {
         "valid": len(reasons) == 0,
@@ -286,13 +308,15 @@ def verify_wave11_artifact(root: Path = ROOT) -> Dict[str, Any]:
             "wave11_learner": w11_sha,
             "wave11a_suite": suite_a_sha,
             "wave11b_suite": suite_b_sha,
+            "wave11c_suite": suite_c_sha,
         },
         "ast_check": ast_check,
         "wave10_forensic_check": w10_forensic_check,
         "wave11a_closed_hash": EXPECTED_WAVE11A_CLOSED_HASH,
-        "gates": payload_b.get("gates", {}),
-        "suite_totals": (payload_b.get("totals") or {}).get("suite", {}),
-        "hash": payload_b.get("hash"),
+        "wave11b_closed_hash": EXPECTED_WAVE11B_CLOSED_HASH,
+        "gates": payload_c.get("gates", {}),
+        "suite_totals": (payload_c.get("totals") or {}).get("suite", {}),
+        "hash": payload_c.get("hash"),
         "reasons": reasons,
     }
 
