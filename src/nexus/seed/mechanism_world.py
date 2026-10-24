@@ -39,6 +39,8 @@ OUTSIDE_LANGUAGE = (
     "const0", "const7", "delay", "threshold",
     "abs_val", "mod3", "clip0", "prev_plus",
     "id_exact0", "mod2", "plus_prev", "add1_twin",
+    "mul2_then_add1", "add1_then_neg", "neg_then_add1",
+    "add2_then_mul2", "neg_then_add2", "mul2_then_neg",
 )
 
 
@@ -140,6 +142,12 @@ EXECUTORS: dict[str, Callable[[dict[str, Any], int, bool], int]] = {
     "mod2": _mod2,
     "plus_prev": _plus_prev,
     "add1_twin": _add1_twin,
+    "mul2_then_add1": _stateless(lambda x: 2 * x + 1),
+    "add1_then_neg": _stateless(lambda x: -(x + 1)),
+    "neg_then_add1": _stateless(lambda x: -x + 1),
+    "add2_then_mul2": _stateless(lambda x: 2 * (x + 2)),
+    "neg_then_add2": _stateless(lambda x: -x + 2),
+    "mul2_then_neg": _stateless(lambda x: -2 * x),
 }
 
 

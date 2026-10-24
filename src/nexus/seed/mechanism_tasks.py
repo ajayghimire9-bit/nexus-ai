@@ -52,6 +52,16 @@ DECLARED = (
     dict(task_id="vp_add2", split="varied_ordinary", family="stateless", mechanism="add2", instance_seed=311),
     dict(task_id="vp_neg", split="varied_ordinary", family="stateless", mechanism="neg", instance_seed=312),
     dict(task_id="vp_count", split="varied_ordinary", family="stateful", mechanism="count", instance_seed=313),
+    dict(task_id="acq_src_add1", split="synthesis_source", family="primitive", mechanism="add1", instance_seed=401),
+    dict(task_id="acq_src_add2", split="synthesis_source", family="primitive", mechanism="add2", instance_seed=402),
+    dict(task_id="acq_src_mul2", split="synthesis_source", family="primitive", mechanism="mul2", instance_seed=403),
+    dict(task_id="acq_src_neg", split="synthesis_source", family="primitive", mechanism="neg", instance_seed=404),
+    dict(task_id="acq_gate_mul_add", split="synthesis_gate", family="unstored", mechanism="mul2_then_add1", instance_seed=411),
+    dict(task_id="acq_gate_add_neg", split="synthesis_gate", family="unstored", mechanism="add1_then_neg", instance_seed=412),
+    dict(task_id="acq_gate_neg_add", split="synthesis_gate", family="unstored", mechanism="neg_then_add1", instance_seed=413),
+    dict(task_id="acq_hold_add2_mul", split="synthesis_holdout", family="unstored", mechanism="add2_then_mul2", instance_seed=421),
+    dict(task_id="acq_hold_neg_add2", split="synthesis_holdout", family="unstored", mechanism="neg_then_add2", instance_seed=422),
+    dict(task_id="acq_hold_mul_neg", split="synthesis_holdout", family="unstored", mechanism="mul2_then_neg", instance_seed=423),
 )
 
 
@@ -67,10 +77,12 @@ def catalogue() -> list[dict[str, Any]]:
             raise ValueError("excluded_must_be_declared:" + raw["task_id"])
         elif raw["split"] in (
             "within_family", "composition", "mismatch_control", "varied_ordinary",
+            "synthesis_source",
         ) and raw["mechanism"] not in LANGUAGE:
             raise ValueError("heldout_in_family_must_be_in_language:" + raw["task_id"])
         elif raw["split"] in (
             "mismatch", "varied_measure", "varied_sequence", "varied_indistinct",
+            "synthesis_gate", "synthesis_holdout",
         ) and raw["mechanism"] in LANGUAGE:
             raise ValueError("mismatch_must_be_outside:" + raw["task_id"])
         rows.append(dict(raw, origin="authored_mechanism"))
@@ -96,6 +108,18 @@ def varied_tasks() -> list[dict[str, Any]]:
             "varied_measure", "varied_sequence", "varied_indistinct", "varied_ordinary",
         )
     ]
+
+
+def synthesis_source_tasks() -> list[dict[str, Any]]:
+    return tasks_for("synthesis_source")
+
+
+def synthesis_gate_tasks() -> list[dict[str, Any]]:
+    return tasks_for("synthesis_gate")
+
+
+def synthesis_holdout_tasks() -> list[dict[str, Any]]:
+    return tasks_for("synthesis_holdout")
 
 
 def split_lock() -> dict[str, list[str]]:
