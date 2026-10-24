@@ -235,6 +235,16 @@ verifier `scripts/verify_wave11_typed_enumerator.py` (`"valid": true`, `lambda_c
   - **`nexus_typed_full`**: **`12098 / 13664`** (`4554.67 [4552..4556]`, `sub_macro_reused = 15`, `full_program_macro_reused = 3`, `cold_archive_reactivated = 3`, `gate_evals = 27`, `archive_lookup_evals = 46`, `compression_evals = 108`, `schema_distill_cost = 36`, `operator_compile_cost = 84`).
 - **Deep Compositional Scaling**: Composing evolved `SEQ_EQ(x, REVERSE(x))` + `APPEND_TOK(M_rot(x), '#')` at effective AST size `3` (`M_rot` has step cost `1`) instead of enumerating from scratch up to size `7` reduces `w11c_deep_compositional` `total_work` by **96.5%** (`710` vs `20148`) and `synthesis_evals` by **98.5%** (`294` vs `19824`). Track B remains closed (`0` model calls, `0 s` frozen debit, `learning_to_learn_established = false`).
 
+**Wave-13 Closed Developmental / Invalid (Blind Holdout Failed Gates; Preserved Unamended).**
+`460a04a` → Commit 2. Artifact
+`f35215d7ba5a509e5a68c636a34f98d23d68ee4b9e9dcd13266a68da8b240ab6`.
+`270` cells. Full `53/54` map/priv, `0` false unique, suite work
+`85339` / `208076` prims vs scratch `155868` / `419256`. Failed
+`full_accuracy` (seed-2 `w13f_piece_rot_odd` abstain) and
+`archive_reactivation` (`0/3`). Frozen files vs `460a04a` empty.
+Track B `0` model calls, `0 s` debit. Do not amend `460a04a`. Do not
+reuse `w13f_*`. [Results](NEXUS_WAVE13_BOUNDED_SUBTREE_RESULTS.md).
+
 **Wave-12 Closed Developmental / Invalid (Blind Holdout Failed Gates; Preserved Unamended).**
 `e940b82` → `6bdf9ae`. Artifact
 `a6b8ba055930c36b9302aba9eae11d89d7b3c1df2879a6f80e883a5cfb037da0`.

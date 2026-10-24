@@ -1,6 +1,15 @@
 # NEXUS progress log
 
-## Current — Wave-13 bounded subtree (protocol in progress; Wave 12 closed)
+## Current — Wave-13 developmental/invalid (do not reuse w13f_*)
+
+Protocol freeze `460a04a`. Artifact
+`f35215d7ba5a509e5a68c636a34f98d23d68ee4b9e9dcd13266a68da8b240ab6`.
+Single-shot gates failed (`full_accuracy`, `archive_reactivation`).
+Full work `85339` beat scratch `155868`; `0` false unique. Frozen
+Commit 1 files untouched. Frozen debit **0**.
+[Results](NEXUS_WAVE13_BOUNDED_SUBTREE_RESULTS.md).
+
+## Previous — Wave-13 bounded subtree (protocol in progress; Wave 12 closed)
 
 Wave 12 (`e940b82` → `6bdf9ae`) is **Closed Developmental / Invalid
 (Blind Holdout Failed Gates; Preserved Unamended)**. Do not amend or
