@@ -1,0 +1,39 @@
+{
+  "schema_id": "c544a74a91ade6d8",
+  "family": "null_default",
+  "trigger": "Keep an empty mark; only replace a missing mark.",
+  "transformation": "or_to_explicit_none",
+  "applicability": {
+    "kind": "or_to_explicit_none",
+    "require_unique_or": true
+  },
+  "supporting_tests": [
+    {
+      "entry": "mark.mark_of",
+      "input": {
+        "mark": "ok"
+      },
+      "expected": "ok"
+    },
+    {
+      "entry": "mark.mark_of",
+      "input": {
+        "mark": ""
+      },
+      "expected": ""
+    }
+  ],
+  "counterexamples": [],
+  "failure_to_fix": [],
+  "acquisition_cost": {
+    "wall_s": 0.000662,
+    "model_calls": 0,
+    "tools": 1
+  },
+  "bindings": {
+    "kind": "or_to_explicit_none"
+  },
+  "preconditions": {
+    "require_unique_or": true
+  }
+}

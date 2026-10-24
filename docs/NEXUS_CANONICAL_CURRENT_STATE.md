@@ -1,6 +1,20 @@
 # NEXUS Seed — Current State
 
-## Current — acquired experience (results)
+## Current — equal inclusive baseline and fresh API-ID (results)
+
+[Protocol](NEXUS_SEED_EQUAL_INCLUSIVE_PROTOCOL.md),
+[results](NEXUS_SEED_EQUAL_INCLUSIVE_RESULTS.md).
+Protocol `3481406`. Artifact
+`0aaaeaae391af92468f7adc1765684fad3eb4b99560b47b2ab0493ff81a30f7f`.
+Verifier 36+4. Later: inclusive tool and acquired both 3 solutions,
+2 clarify/refuse, 0 harm, 1 call. Scratch/reset/cache/irrelevant 2
+solutions and 5 calls. Verdict **tool-tie** — acquired adds nothing
+beyond `apply_make_inclusive`. Fresh API-ID selection 2/2, bindings
+0/2, assembled 0/2: missing required or extra `elem.*` now refuse to
+assemble. 29 calls, 103.799 s, frozen debit **0**. Broader learning
+paused. Prior grids not rescored. Not learning-to-learn.
+
+## Previous — acquired experience (results)
 
 [Protocol](NEXUS_SEED_ACQUIRED_EXPERIENCE_PROTOCOL.md),
 [results](NEXUS_SEED_ACQUIRED_EXPERIENCE_RESULTS.md).

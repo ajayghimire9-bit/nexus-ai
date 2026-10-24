@@ -1,0 +1,2884 @@
+{
+  "kind": "seed_equal_inclusive",
+  "representation": {
+    "store": "RepairSchemaStore",
+    "baseline": "propose_inclusive_tool = apply_make_inclusive + same gates",
+    "acquired": "captured compare_op_swap; inclusive path also apply_make_inclusive",
+    "fallback": "generate_direct on retrieval abstain only; refuse/ask do not fallback",
+    "collapse_if_identical": "report tool-tie rather than invent a distinction",
+    "development_ids": [
+      "dev_eq_lt"
+    ],
+    "source_ids": [
+      "src_eq_span",
+      "src_eq_null"
+    ],
+    "chosen_before_target_outcomes": true,
+    "programmer_supplied": true,
+    "ranking_paused": true,
+    "learning_to_learn": false
+  },
+  "acquired": [
+    {
+      "task_id": "src_eq_span",
+      "family": "comparison_boundary",
+      "usable": true,
+      "schema": {
+        "schema_id": "b7352788704ca745",
+        "family": "comparison_boundary",
+        "trigger": "Allow span equal to the cap in hold(item).",
+        "transformation": "compare_op_swap",
+        "applicability": {
+          "kind": "compare_op_swap",
+          "from_op": "Lt",
+          "to_op": "LtE",
+          "require_unique_matching_compare": true
+        },
+        "supporting_tests": [
+          {
+            "entry": "bin.hold",
+            "input": {
+              "span": 7,
+              "cap": 7
+            },
+            "expected": true
+          }
+        ],
+        "counterexamples": [],
+        "failure_to_fix": [],
+        "acquisition_cost": {
+          "wall_s": 0.000491,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "bindings": {
+          "kind": "compare_op_swap",
+          "from_op": "Lt",
+          "to_op": "LtE"
+        },
+        "preconditions": {
+          "require_unique_matching_compare": true
+        }
+      },
+      "episode": {
+        "request": "Allow span equal to the cap in hold(item).",
+        "contract": {
+          "symbol": "hold",
+          "fields": [
+            {
+              "name": "span",
+              "type": "int",
+              "presence": "required",
+              "path": [
+                "span"
+              ]
+            },
+            {
+              "name": "cap",
+              "type": "int",
+              "presence": "required",
+              "path": [
+                "cap"
+              ]
+            }
+          ],
+          "behavior": "boolean gate",
+          "output_type": "bool",
+          "allowed_values": null,
+          "transform_symbol": "_hold_transform",
+          "programmer_supplied_extraction": true,
+          "learned_schema_understanding": false,
+          "contract_source": "benchmark_supplied"
+        },
+        "initial_proposal": {
+          "bin.py": "def hold(item):\n    return item['span'] < item['cap']\n"
+        },
+        "public_failure": {
+          "public_passed": false,
+          "exception": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [
+              {
+                "entry": "bin.hold",
+                "actual": false,
+                "expected": true,
+                "passed": false,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 0.00015824998263269663,
+            "tests_s": 1.1958007235080004e-05,
+            "internal_s": 0.0001705419854260981,
+            "wall_s": 0.00017791701247915626,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          }
+        },
+        "revision_actions": [
+          "apply_make_inclusive"
+        ],
+        "resulting_program": {
+          "bin.py": "def hold(item):\n    return item['span'] <= item['cap']\n"
+        },
+        "public_validation": {
+          "public_passed": true,
+          "private_passed": false,
+          "public": {
+            "status": "passed",
+            "compilation_passed": true,
+            "all_passed": true,
+            "results": [
+              {
+                "entry": "bin.hold",
+                "actual": true,
+                "expected": true,
+                "passed": true,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 4.06669860240072e-05,
+            "tests_s": 3.7080026231706142e-06,
+            "internal_s": 4.449998959898949e-05,
+            "wall_s": 4.533299943432212e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "private": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [],
+            "compilation_s": 3.3082993468269706e-05,
+            "tests_s": 5.00003807246685e-07,
+            "internal_s": 3.3666990930214524e-05,
+            "wall_s": 3.420800203457475e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "output_contract_violations": []
+        },
+        "cost": {
+          "wall_s": 0.000491,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "private_tests_used": false,
+        "task_id_features": false,
+        "handwritten_answer": false
+      }
+    },
+    {
+      "task_id": "src_eq_null",
+      "family": "null_default",
+      "usable": true,
+      "schema": {
+        "schema_id": "c544a74a91ade6d8",
+        "family": "null_default",
+        "trigger": "Keep an empty mark; only replace a missing mark.",
+        "transformation": "or_to_explicit_none",
+        "applicability": {
+          "kind": "or_to_explicit_none",
+          "require_unique_or": true
+        },
+        "supporting_tests": [
+          {
+            "entry": "mark.mark_of",
+            "input": {
+              "mark": "ok"
+            },
+            "expected": "ok"
+          },
+          {
+            "entry": "mark.mark_of",
+            "input": {
+              "mark": ""
+            },
+            "expected": ""
+          }
+        ],
+        "counterexamples": [],
+        "failure_to_fix": [],
+        "acquisition_cost": {
+          "wall_s": 0.000662,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "bindings": {
+          "kind": "or_to_explicit_none"
+        },
+        "preconditions": {
+          "require_unique_or": true
+        }
+      },
+      "episode": {
+        "request": "Keep an empty mark; only replace a missing mark.",
+        "contract": {
+          "symbol": "mark_of",
+          "fields": [
+            {
+              "name": "mark",
+              "type": "str",
+              "presence": "optional",
+              "path": [
+                "mark"
+              ]
+            }
+          ],
+          "behavior": "empty stays empty",
+          "output_type": "str",
+          "allowed_values": null,
+          "transform_symbol": "_mark_of_transform",
+          "programmer_supplied_extraction": true,
+          "learned_schema_understanding": false,
+          "contract_source": "benchmark_supplied"
+        },
+        "initial_proposal": {
+          "mark.py": "def mark_of(item):\n    return item.get('mark') or 'none'\n"
+        },
+        "public_failure": {
+          "public_passed": false,
+          "exception": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [
+              {
+                "entry": "mark.mark_of",
+                "actual": "ok",
+                "expected": "ok",
+                "passed": true,
+                "error": null,
+                "calls": []
+              },
+              {
+                "entry": "mark.mark_of",
+                "actual": "none",
+                "expected": "",
+                "passed": false,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 7.429200923070312e-05,
+            "tests_s": 4.875008016824722e-06,
+            "internal_s": 7.929198909550905e-05,
+            "wall_s": 8.029199671000242e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          }
+        },
+        "revision_actions": [
+          "apply_or_to_explicit_none"
+        ],
+        "resulting_program": {
+          "mark.py": "def mark_of(item):\n    return 'none' if item.get('mark') is None else item.get('mark')\n"
+        },
+        "public_validation": {
+          "public_passed": true,
+          "private_passed": false,
+          "public": {
+            "status": "passed",
+            "compilation_passed": true,
+            "all_passed": true,
+            "results": [
+              {
+                "entry": "mark.mark_of",
+                "actual": "ok",
+                "expected": "ok",
+                "passed": true,
+                "error": null,
+                "calls": []
+              },
+              {
+                "entry": "mark.mark_of",
+                "actual": "",
+                "expected": "",
+                "passed": true,
+                "error": null,
+                "calls": []
+              }
+            ],
+            "compilation_s": 5.3750001825392246e-05,
+            "tests_s": 4.1669991333037615e-06,
+            "internal_s": 5.808300920762122e-05,
+            "wall_s": 5.887501174584031e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "private": {
+            "status": "failed",
+            "compilation_passed": true,
+            "all_passed": false,
+            "results": [],
+            "compilation_s": 4.4374988647177815e-05,
+            "tests_s": 4.580069798976183e-07,
+            "internal_s": 4.491698928177357e-05,
+            "wall_s": 4.545800038613379e-05,
+            "tool_executions": 1,
+            "output_contract_violations": []
+          },
+          "output_contract_violations": []
+        },
+        "cost": {
+          "wall_s": 0.000662,
+          "model_calls": 0,
+          "tools": 1
+        },
+        "private_tests_used": false,
+        "task_id_features": false,
+        "handwritten_answer": false
+      }
+    }
+  ],
+  "retention": [
+    {
+      "task_id": "src_eq_span",
+      "private_passed": true,
+      "decision": "apply"
+    }
+  ],
+  "cells": [
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.469358,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.58871,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 0.000351,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 0.000385,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.465505,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.475812,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.483911,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.491617,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 0.000305,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 0.000296,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.489236,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.488464,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.480529,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.604991,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 0.000279,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 0.000268,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.47563,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.532906,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "scratch",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.539267,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "exact_cache",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.460471,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "inclusive_tool",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "inclusive_tool_family_unsupported",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.440661,
+        "model_calls": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "acquired",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.40923,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "acquired_reset",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.433543,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "irrelevant_memory",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.409407,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.554016,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.702273,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 0.000503,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 0.000275,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.539515,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.573227,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] < item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 3.619111,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "exact_cache_hit",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] <= item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 0.000249,
+        "model_calls": 0,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] <= item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 0.000306,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] <= item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 0.000463,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] < item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 3.716991,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] < item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 3.764199,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    }
+  ],
+  "later": [
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.469358,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.58871,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 0.000351,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] <= item['max']\n"
+      },
+      "cost": {
+        "wall_s": 0.000385,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.465505,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_rename",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rename",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "case.py": "def pack(item):\n    return item['depth'] < item['max']\n"
+      },
+      "cost": {
+        "wall_s": 3.475812,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "renamed_identifiers": true,
+        "different_path": true,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.483911,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.491617,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 0.000305,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 0.000296,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.489236,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_gt",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "related_rebound",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "lift.py": "def lift(item):\n    return item['level'] >= item['floor']\n"
+      },
+      "cost": {
+        "wall_s": 3.488464,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Gt_to_GtE",
+        "operator_held_out": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.480529,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.604991,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 0.000279,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "refuse",
+      "reason": "requirement_exclusive_blocks_inclusive_repair",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 0.000268,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.47563,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_exclusive",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "harmful_if_applied",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "trim.py": "def trim(item):\n    return item['n'] < item['cut']\n"
+      },
+      "cost": {
+        "wall_s": 3.532906,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "would_harm",
+        "starter_already_correct": true,
+        "exact": false
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": true,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "scratch",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.539267,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "exact_cache",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.460471,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "inclusive_tool",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "inclusive_tool_family_unsupported",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.440661,
+        "model_calls": 1,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "acquired",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.40923,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "acquired_reset",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.433543,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_unrelated",
+      "method": "irrelevant_memory",
+      "family": "missing_function",
+      "reuse_role": "unrelated_abstain",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "pair.py": "def echo(text):\n    return text\n\ndef pair_of(item):\n    return head + ':' + tail\n"
+      },
+      "cost": {
+        "wall_s": 3.409407,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "missing_function",
+        "repair": null,
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.554016,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "exact_cache_miss",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.702273,
+        "model_calls": 1,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 0.000503,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "ask",
+      "reason": "requirement_ambiguous",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 0.000275,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": true,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.539515,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_ask",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "ambiguous_ask",
+      "exact_repeat": false,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": true,
+      "private_passed": false,
+      "files": {
+        "rest.py": "def rest(item):\n    return item['n'] < item['edge']\n"
+      },
+      "cost": {
+        "wall_s": 3.573227,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "ambiguous",
+        "exact": false
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    }
+  ],
+  "exact_repeats": [
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "scratch",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] < item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 3.619111,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "exact_cache",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "exact_cache_hit",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] <= item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 0.000249,
+        "model_calls": 0,
+        "retrieval_tokens": 8
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "inclusive_tool",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] <= item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 0.000306,
+        "model_calls": 0,
+        "retrieval_tokens": 24
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "acquired",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "apply",
+      "reason": "requirement_inclusive",
+      "used_fallback": false,
+      "public_passed": true,
+      "private_passed": true,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] <= item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 0.000463,
+        "model_calls": 0,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": true,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": true
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "acquired_reset",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch",
+      "reason": "generate_direct",
+      "used_fallback": false,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] < item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 3.716991,
+        "model_calls": 1,
+        "retrieval_tokens": 0
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    },
+    {
+      "task_id": "tgt_eq_repeat",
+      "method": "irrelevant_memory",
+      "family": "comparison_boundary",
+      "reuse_role": "exact_repeat",
+      "exact_repeat": true,
+      "decision": "scratch_fallback",
+      "reason": "no_schema",
+      "used_fallback": true,
+      "public_passed": false,
+      "private_passed": false,
+      "files": {
+        "bin.py": "def hold(item):\n    return item['span'] < item['cap']\n"
+      },
+      "cost": {
+        "wall_s": 3.764199,
+        "model_calls": 1,
+        "retrieval_tokens": 32
+      },
+      "overlap": {
+        "family": "comparison_boundary",
+        "repair": "Lt_to_LtE",
+        "exact": true
+      },
+      "correct_solution": false,
+      "correct_clarification_or_refusal": false,
+      "harmful_change": false,
+      "starter_private": false,
+      "files_changed": false
+    }
+  ],
+  "api_rows": [
+    {
+      "task_id": "api_eq_ceil",
+      "track": "coding_api",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [
+              {
+                "symbol": "high_cut",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [
+              {
+                "name": "cap_high",
+                "module": "clip",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef high_cut(item):\n    return cap_high(item)\n",
+          "clip.py": "def cap_high(vals, hi):\n    return [hi if n > hi else n for n in vals]\n",
+          "other.py": "def dump(vals):\n    return list(vals)\n"
+        },
+        "selection_correct": null,
+        "bindings_correct": null,
+        "assembled_ok": false,
+        "route": "direct",
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_eq_ceil",
+      "track": "coding_api",
+      "method": "id_select_assemble",
+      "scored": {
+        "selection_correct": true,
+        "binding_valid": false,
+        "bindings_correct": false,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "assembled_ok": false,
+        "public_passed": false,
+        "private_passed": false,
+        "required_call": false,
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "clip.py": "def cap_high(vals, hi):\n    return [hi if n > hi else n for n in vals]\n",
+          "other.py": "def dump(vals):\n    return list(vals)\n"
+        },
+        "proposal": {
+          "api_id": "clip.cap_high",
+          "bindings": [
+            "field.vals"
+          ]
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "missing_required",
+          "programmer_supplied": true,
+          "executable": false,
+          "binding_valid": false,
+          "invented_arguments": false,
+          "extras_dropped": false
+        },
+        "route": "id_select_assemble",
+        "raw": "{\n  \"api_id\": \"clip.cap_high\",\n  \"bindings\": [\"field.vals\"]\n}",
+        "learned_schema_discovery": false
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_eq_glue",
+      "track": "coding_api",
+      "method": "direct",
+      "scored": {
+        "public_passed": false,
+        "private_passed": false,
+        "helper_present": true,
+        "caller_present": true,
+        "required_call": true,
+        "coverage_passed": true,
+        "types_ok": null,
+        "functions": {},
+        "requirement_coverage": {
+          "passed": true,
+          "required": {
+            "functions": [
+              {
+                "symbol": "tape_of",
+                "file": "work.py",
+                "args": "item"
+              }
+            ],
+            "files": [
+              "work.py"
+            ],
+            "apis": [
+              {
+                "name": "glue_bits",
+                "module": "tape",
+                "source": "use"
+              }
+            ],
+            "imposed_implementation": false
+          },
+          "missing_files": [],
+          "missing_functions": [],
+          "missing_apis": [],
+          "imposed_implementation": false
+        },
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n\ndef tape_of(item):\n    return ''.join(glue_bits(item))\n",
+          "tape.py": "def glue_bits(bits, mark):\n    text = ''\n    first = True\n    for bit in bits:\n        text = bit if first else text + mark + bit\n        first = False\n    return text\n",
+          "other.py": "def dump(bits):\n    return list(bits)\n"
+        },
+        "selection_correct": null,
+        "bindings_correct": null,
+        "assembled_ok": false,
+        "route": "direct",
+        "selection_not_generally_solved": true
+      },
+      "live": true
+    },
+    {
+      "task_id": "api_eq_glue",
+      "track": "coding_api",
+      "method": "id_select_assemble",
+      "scored": {
+        "selection_correct": true,
+        "binding_valid": false,
+        "bindings_correct": false,
+        "assembly_valid": false,
+        "selection_not_generally_solved": true,
+        "assembled_ok": false,
+        "public_passed": false,
+        "private_passed": false,
+        "required_call": false,
+        "passed": false,
+        "files": {
+          "work.py": "def echo(text):\n    return text\n",
+          "tape.py": "def glue_bits(bits, mark):\n    text = ''\n    first = True\n    for bit in bits:\n        text = bit if first else text + mark + bit\n        first = False\n    return text\n",
+          "other.py": "def dump(bits):\n    return list(bits)\n"
+        },
+        "proposal": {
+          "api_id": "tape.glue_bits",
+          "bindings": [
+            "field.bits",
+            "elem.bits",
+            "field.mark"
+          ]
+        },
+        "assembled": {
+          "ok": false,
+          "source": "",
+          "error": "extra_bindings",
+          "programmer_supplied": true,
+          "executable": false,
+          "binding_valid": false,
+          "invented_arguments": false,
+          "extras_dropped": false
+        },
+        "route": "id_select_assemble",
+        "raw": "{\n  \"api_id\": \"tape.glue_bits\",\n  \"bindings\": [\"field.bits\", \"elem.bits\", \"field.mark\"]\n}",
+        "learned_schema_discovery": false
+      },
+      "live": true
+    }
+  ],
+  "summary": {
+    "scratch": {
+      "correct_solutions": 2,
+      "correct_clarification_or_refusal": 0,
+      "harmful_changes": 0,
+      "model_calls": 5,
+      "wall_s": 17.527081,
+      "later_n": 5,
+      "fallbacks": 0
+    },
+    "exact_cache": {
+      "correct_solutions": 2,
+      "correct_clarification_or_refusal": 0,
+      "harmful_changes": 0,
+      "model_calls": 5,
+      "wall_s": 17.848062,
+      "later_n": 5,
+      "fallbacks": 5
+    },
+    "inclusive_tool": {
+      "correct_solutions": 3,
+      "correct_clarification_or_refusal": 2,
+      "harmful_changes": 0,
+      "model_calls": 1,
+      "wall_s": 3.442099,
+      "later_n": 5,
+      "fallbacks": 1
+    },
+    "acquired": {
+      "correct_solutions": 3,
+      "correct_clarification_or_refusal": 2,
+      "harmful_changes": 0,
+      "model_calls": 1,
+      "wall_s": 3.410454,
+      "later_n": 5,
+      "fallbacks": 1
+    },
+    "acquired_reset": {
+      "correct_solutions": 2,
+      "correct_clarification_or_refusal": 0,
+      "harmful_changes": 0,
+      "model_calls": 5,
+      "wall_s": 17.403429,
+      "later_n": 5,
+      "fallbacks": 0
+    },
+    "irrelevant_memory": {
+      "correct_solutions": 2,
+      "correct_clarification_or_refusal": 0,
+      "harmful_changes": 0,
+      "model_calls": 5,
+      "wall_s": 17.479816,
+      "later_n": 5,
+      "fallbacks": 5
+    }
+  },
+  "api_summary": {
+    "direct": {
+      "n": 2,
+      "selection": 0,
+      "binding_valid": 0,
+      "bindings": 0,
+      "assembled": 0,
+      "execution": 0
+    },
+    "id_select_assemble": {
+      "n": 2,
+      "selection": 2,
+      "binding_valid": 0,
+      "bindings": 0,
+      "assembled": 0,
+      "execution": 0
+    }
+  },
+  "verdict": "tool_tie",
+  "tool_vs_acquired": {
+    "same_mechanism_on_inclusive_repairs": true,
+    "ordinary_lt_only": false,
+    "acquired_adds_beyond_tool": false
+  },
+  "claim_boundaries": {
+    "learning_to_learn": false,
+    "ranking_paused": true,
+    "broader_learning_paused": true,
+    "public_tested_is_scoped": true
+  },
+  "usage": {
+    "calls": 29,
+    "inference_ran": 29,
+    "wall_s": 103.799223,
+    "rss": {
+      "parent_pid": 65854,
+      "server_pid": null,
+      "parent_rss_mib": 36.641,
+      "server_rss_mib": null,
+      "combined_rss_mib": 36.641,
+      "source": "ps_rss_kib",
+      "weight_file_is_not_memory": true
+    },
+    "frozen_cpu_used_s": 3564.568,
+    "frozen_cpu_remaining_s": 35.432,
+    "frozen_debit_s": 0,
+    "product_chat_unused": true,
+    "metal_unused": true,
+    "ledger": "standing_local_cpu_grant",
+    "partial": false
+  },
+  "declared_ids": [
+    "src_eq_span",
+    "src_eq_null",
+    "dev_eq_lt",
+    "tgt_eq_rename",
+    "tgt_eq_gt",
+    "tgt_eq_exclusive",
+    "tgt_eq_unrelated",
+    "tgt_eq_ask",
+    "tgt_eq_repeat",
+    "api_eq_ceil",
+    "api_eq_glue"
+  ],
+  "opened_prior_not_rescored": true,
+  "closed_cpu_untouched": true,
+  "hash": "0aaaeaae391af92468f7adc1765684fad3eb4b99560b47b2ab0493ff81a30f7f",
+  "startup": {
+    "status": "started",
+    "model": ".models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "ngl": 0,
+    "device": "none",
+    "model_sha256": null
+  }
+}
