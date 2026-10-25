@@ -568,3 +568,51 @@ batch twin (others). Net at horizon 100 = per-episode work difference × 100 −
 Declared risk: answer-directed q1 probing leaves more structure unresolved, so flat_eig and b_first pay
 fewer q2 probes (11 and 6) than full (19). Full's margin on total probes is small (199 vs 201 for
 s3_batch).
+
+## 10. Confirmation result (seeds 501–505, frozen code `6e98f0b`) — 5 / 6 gates
+
+Single run plus replay. The digest `53979b15…8167` was identical on both passes. Artifact:
+`artifacts/wave25_vault_confirmation.json`, sha256
+`1cdd80b1ad599ee69e3b3a8d079dbbb551c955af5e68b1a0b79591277d4a1443`. 300 episodes (150 int lists, 150
+records), 600 queries.
+
+| Arm | Solved / 600 | Probes (q1 + q2) | Work | Overhead | Fully loaded |
+| --- | --- | --- | --- | --- | --- |
+| **full** (S3 + vault + ReasoningProcedure) | 600 | 347 (300 + 47) | **1,999,293** | 163,285 | **2,162,578** |
+| s3_batch (static batch-twin admission) | 600 | **346** (300 + 46) | 2,648,293 | 432,950 | 3,081,243 |
+| flat_eig | 600 | 368 (335 + 33) | 2,534,285 | 432,950 | 2,967,235 |
+| b_first | 600 | 347 (330 + 17) | 2,932,619 | 432,950 | 3,365,569 |
+| v4 | 597 | 397 (355 + 42) | 2,723,409 | 432,950 | 3,156,359 |
+| full_no_reuse (counterfactual, not in totals) | 600 | 477 (300 + 177) | 2,102,095 | — | — |
+
+| Gate | Result |
+| --- | --- |
+| C1 zero false certificates (all arms, both queries) | **PASS** (0) |
+| C2 deterministic replay | **PASS** |
+| C3 full solved ≥ all AND probes ≤ s3_batch AND < flat_eig, b_first, v4 | **FAIL**: 347 > 346 (s3_batch) and 347 = 347 (b_first); solved 600 = best; fewer probes than flat_eig (368) and v4 (397) |
+| C4 net vs s3_batch at H = 100 > 0 | **PASS** (+270,266) |
+| C5 q2 probes with reuse < without, 0 false on q2 | **PASS** (47 vs 177; 253/300 q2 answered with 0 probes) |
+| C6 vault keeps every PROVED_SOUND contract; lower-bound net utility ≥ 0 per seed | **PASS** (30 PROVED_SOUND kept on every seed; credited net +152k to +185k per seed) |
+
+Contract activation rates in the full arm, over all certifications: kind 0.84–0.99, provenance 0.82–0.96,
+max_atom 0.48–0.88, length 0.30–0.46, distinct_count 0.22–0.23, parity / first_sign 0 (never sound).
+Batch admission admitted contracts on all five seeds here, so the earlier seed-5 failure did not recur.
+The vault's advantage over batch admission is therefore cost (163k vs 433k overhead, and lower
+certification work), not rescued seeds.
+
+**Reading.**
+* The upgrade is a large work win: 25% less operating work than s3_batch and 30% less fully loaded.
+  That comes from no batch twin, contextual gating of unprofitable checks, and the soft order with the
+  sound early-ambiguity stop.
+* Version-space reuse is clearly real: 130 fewer q2 probes.
+* It does **not** reduce probes relative to s3_batch or bindings-first, which C3 required. The declared
+  risk materialised: answer-directed q1 probing leaves structure unresolved, which q2 then pays for.
+  Bindings-first spends more on q1 (330) and almost nothing on q2 (17).
+* Over two queries, answer-myopic and structure-resolving policies tie on probes. The answer-directed
+  objective is only optimal per query.
+
+**Next experiment (one):** make probing anticipate follow-up queries. Score probes by
+I(Y_q ; Y_x | V_t) plus λ times the expected information on a sample of future queries from the world's
+input distribution, with λ learned on dev from the observed follow-up rate. Test on fresh seeds whether it
+beats both answer-myopic and bindings-first on total probes over a query sequence, without giving up the
+work advantage.
