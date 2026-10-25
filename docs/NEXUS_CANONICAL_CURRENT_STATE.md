@@ -1,6 +1,18 @@
 # NEXUS Seed — Current State
 
-## Wave 24 AGI-gap suite v3 — evaluated once, 4 / 10 gates (latest)
+## Wave 24 v4 six-arm suite — evaluated once, 3 / 9 gates (latest)
+
+Protocol locked at `8915e10` on `codex/wave24-v4-six-arm`; single run at `4322348` on seeds 401–405 +
+a fresh 32-task MBPP slice (Qwen2.5-1.5B on Apple M4 Metal, 88 s). Passed: execution, zero false
+certificates across six arms (shared exact space with explicit guards), independent re-grade and
+deterministic replay. Failed: full NEXUS vs controls once source cost is counted (450 solved vs 449
+amnesiac but about 1M acquisition units; Tycho rejected every source procedure), disambiguation/repair
+transfer, Popper ≥ 15% (4.3%), and MBPP (NEXUS 14 = unverified 14 < verified sampling 16). Designed
+probes beat random probes on active traps (114 vs 96 of 118). Seeds 401–405 and that MBPP slice are now
+consumed. Learned transfer and learning-to-learn are not established.
+[Exact results, scope and hashes](NEXUS_WAVE24_AZR_RULER_CEGIS_SOURCE_PREFLIGHT.md).
+
+## Wave 24 AGI-gap suite v3 — evaluated once, 4 / 10 gates
 
 Protocol locked at `af51f2b`; single run at `3ef7c0c` on seeds 301–305 + held-out QuixBugs (11) +
 held-out MBPP (32), CPU-only Qwen2.5-1.5B, 687 s. Verifier: 0 false certificates; NEXUS beats unverified

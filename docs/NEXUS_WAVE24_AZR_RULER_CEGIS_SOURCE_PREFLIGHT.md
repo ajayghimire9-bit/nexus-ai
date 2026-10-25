@@ -1,19 +1,153 @@
 # Wave 24 AZR–Ruler–CEGIS: pre-freeze report
 
-Updated 2026-10-25. **Latest: v3 suite (protocol locked at `af51f2b`), evaluated once on seeds
-301–305 + held-out QuixBugs (11) + held-out MBPP (32) at `3ef7c0c` (687 s, CPU-only Qwen2.5-1.5B).
-Independent verifier: 4 / 10 gates pass, 0 false certificates, verifier exit 1. Passed: execution,
-zero false certificates, independent re-grade, NEXUS vs unverified 1-shot Qwen. Failed: NEXUS vs
-verified-sampling Qwen (work per correct 2.6× worse), evolved MBPP library vs frozen, layer-2 helper
-in a held-out answer, experienced transfer vs amnesiac (351 vs 358 solved), both meta-policy gates.
-Nothing was retuned after evaluation. Seeds 301–305 and both held-out code splits are now consumed.**
+Updated 2026-10-25. **Latest: v4 six-arm suite (protocol locked at `8915e10`), evaluated once on fresh
+seeds 401–405 + a fresh 32-task MBPP slice at `4322348` (88 s, Qwen2.5-1.5B on Apple M4 Metal).
+Independent verifier (with deterministic replay of Track A): 3 / 9 gates pass — execution, zero false
+certificates, independent re-grade. Failed: G2 (full NEXUS vs controls once source cost is counted),
+G3 (disambiguation / repair transfer), G4 (Popper 4.3% < 15%), G5a (NEXUS 14 = unverified 14 correct),
+G5b (NEXUS 14 < verified sampling 16), G5c (helper library rejected by Tycho). Every failure was
+declared as expected or at risk in the protocol from dev data. Nothing was retuned after evaluation.**
 
-## v4 locked (before seeds 401–405 and the fresh MBPP slice)
+## Latest: v4 six-arm suite — shared exact space, procedures, Tycho, MBPP (seeds 401–405)
 
-Six-arm suite, protocol in the v4 section of `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`, branch
-`codex/wave24-v4-six-arm`. Results will be recorded here after the single launch.
+Protocol: v4 section of `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`. Host: Apple M4, macOS, Python 3.13.5;
+Track A CPU (26.7 s, peak RSS 205 MB); Track B Qwen on Metal through `MetalGrantEnforcer` (61.4 s;
+130 charged calls = 60 fresh + 70 charged cache hits, 15,031 input + 9,323 generated tokens, 60.5 s LLM
+wall; llama-server peak RSS 1,558 MiB, Metal ledger 68.5 s of the 600 s cap). Verification replayed
+Track A from source and reproduced the row digest
+`50e5c5907f9582796665d8aabaddaf9e3d9d441fb6b3e47a9bbdc1dc1403562e` exactly.
 
-## Latest: v3 suite — MBPP, skeleton-free helpers, fair LLM baselines (seeds 301–305)
+### Gates
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| v4_execution_complete | PASS | one launch, 88 s < 900 s cap |
+| v4_independent_regrade_matches | PASS | 0 MBPP grading mismatches; Track A replay digest identical |
+| v4_g1_zero_false_certificates | PASS | 0 wrong UNIQUE certificates over 7 rows × 454 tasks; 0 witness-conservation violations; every verified MBPP answer re-passes its public test |
+| v4_g2_full_nexus_beats_controls | **FAIL** | solved: arm 4 **450** > 448 (arm 2), 449 (arm 5), 432 (arm 6), 337 (arm 1) — but fully loaded work per solve **2,733** vs 1,118 / 530 / 2,889 / 1,043; net benefit vs amnesiac **−991,965** |
+| v4_g3_disambiguation_and_repair_transfer | **FAIL** | seed-level wins for arm 4: disambiguation solve rate 2/5 vs arm 2, 1/5 vs arm 5; subset repair 0/5 on solve rate (all arms solved 67/67) |
+| v4_g4_popper_efficiency | **FAIL** | 45,580 → 43,622 candidate evaluations (−4.3%), 454/454 identical verdicts |
+| v4_g5a_nexus_vs_unverified_qwen | **FAIL** | correct **14 = 14**; precision 0.78 vs 0.44 |
+| v4_g5b_nexus_vs_verified_sampling | **FAIL** | correct 14 vs **16**; work per correct 1,433 vs 1,205; permutation p = 0.95 |
+| v4_g5c_helpers_positive_net_validation_benefit | **FAIL** | Tycho on 12 dev-validation tasks: 0 composition hits, net −419 → library not admitted; 0 held-out answers used a helper |
+
+### Track A — six arms, pooled seeds 401–405 (454 target tasks: 180 passive, 89 trap, 118 active, 67 subset)
+
+| Arm | Solved | Passive | Trap | Active | Subset | Target work | Source acquisition | Work / solve (target) | Work / solve (fully loaded) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 literal_fixed_baseline | 337 | 180 | 89 | 1 | 67 | 351,483 | 0 | 1,043 | 1,043 |
+| 2 abstractions_fixed_refinement | 448 | 180 | 89 | 112 | 67 | 237,518 | 263,238 | 530 | 1,118 |
+| 3 learned_refinement_ttt_trm | **450** | 180 | 89 | 114 | 67 | **232,156** | 263,238 | **516** | 1,101 |
+| 4 full_nexus_reusable_procedures | **450** | 180 | 89 | 114 | 67 | 236,735 | 993,181 | 526 | 2,733 |
+| 5 amnesiac_no_source_control | 449 | 180 | 89 | 113 | 67 | 237,951 | 0 | 530 | **530** |
+| 6 independent_proposal_ablation | 432 | 180 | 89 | 96 | 67 | 254,763 | 993,181 | 590 | 2,889 |
+| (row) full_nexus_frozen_zero_shot | 447 | 180 | 89 | 111 | 67 | 234,268 | 993,181 | 524 | 2,746 |
+
+Per seed (solved, target work) — arm 4: (88, 47.7k) (91, 47.0k) (89, 51.5k) (88, 44.5k) (94, 46.1k);
+arm 5: (88, 47.6k) (91, 46.7k) (89, 51.6k) (88, 45.1k) (93, 46.9k). The two arms differ by one active task
+over five seeds and by < 0.6% of target work.
+
+What the six arms show:
+
+* **Probe design is the only lever that changed solves.** Active tasks: no probes 1/118, independent
+  random probes 96/118, designed probes (propose_refinement) 112–114/118. Arm 4's meta-policy chose
+  a designed probe 97 times and a random probe 29 times. The invented concepts behind the designed probes
+  were mostly bound/length thresholds; `sorted_by` appeared 3 times.
+* **Source procedures did not transfer anything measurable.** Tycho rejected every procedure kind
+  (predicate, recovery, partial, probe) on every seed: the projected saving, at most 72 units per
+  validation task, never covered the validation cost (~20k). So arm 4 ran **without** Library 2 priors.
+  Library 1 found 0 role schemas on every seed (source witnesses are too short to recur). The
+  DiscoRL-style step size settled at η = 0.1 on every seed. Arm 4 ≈ arm 5 on target, plus ~1M units of
+  source acquisition (practice 34–73k, curriculum validation 32–64k, Tycho 43–86k and meta-training
+  33–59k per seed).
+* **Online fast memory helped a little.** Arm 3 (TTT + TRM-style probe revision, no source procedures)
+  had the lowest target work, 2.3% below arm 2, at an equal-or-better solve count.
+* **Exactness held.** All arms certify over the same space, so subset, passive and trap verdicts are
+  identical across arms 1–6. Arm 1's naive generate-and-test guard schedule costs 3.1× the work of
+  constraint-based generation on subset tasks (138.9k vs 45.3k).
+
+### Track B — fresh MBPP slice (32 eval tasks never run by any solver; v3's 32 excluded)
+
+| Arm | Correct | Plausible | Precision | Work | Work / correct | LLM calls |
+| --- | --- | --- | --- | --- | --- | --- |
+| Unverified 1-shot Qwen | 14 | 32 | 0.44 | 12,341 | 882 | 32 |
+| Verified-sampling Qwen (k = 2) | **16** | 20 | 0.80 | 19,283 | 1,205 | 46 |
+| Pure symbolic (helper composition, no LLM) | 2 | 3 | 0.67 | 964 | 482 | 0 |
+| NEXUS-v4 (k = 2) | 14 | 18 | 0.78 | 20,063 | 1,433 | 46 |
+
+All 14 correct NEXUS answers were greedy. On tasks 711 and 526 the learned v3 allocator chose CEGIS
+repair; verified sampling's T = 0.8 resample solved both. The docstring twin never fired, because no
+sampled follow-up candidate passed the public test. Sleep promoted no abstractions, and 3 bridge
+attempts failed. The library was not admitted, so NEXUS ran with an empty library.
+
+### Artifacts and SHA-256
+
+| Path | SHA-256 |
+| --- | --- |
+| `artifacts/wave24_agi_gap_suite_v4.json` | `35a62407922977918f5cc2aa6892fc02a8045d97ff7ca4725dbff4d02ea420ea` |
+| `artifacts/wave24_agi_gap_suite_v4_llm_transcript.jsonl` | `8a64a98be39e147f9e8b6f2e868189be6b16394a69ae43f65fed38a79d5fcfa1` |
+| `artifacts/wave24_agi_gap_suite_v4_verification.json` | `d542203ad9ea11140484367c969777a15f5315051708f734e864a93b78db1b31` |
+| `src/nexus/wave24_v4_world.py` (at `8915e10`) | `8462cc8a4f2a668e2e4ded6e7af0c7a1fe20ef763cff48dcf6b1eafd75ab5d4d` |
+| `src/nexus/wave24_v4_core.py` | `7fbac507ca6b11180ed9d8427abb48e0ef88a5fcf9bdef1434637640d30a90cc` |
+| `src/nexus/wave24_v4_agents.py` | `f495f59fb27af3632358d80e768c97867df0e6a00d678fa35f85770dd5bd01ba` |
+| `src/nexus/wave24_v4_code.py` | `9bea12d036a29d6e5a6d9509ce61ded3900e7c6b540f2d5139a66a5dc8655e8e` |
+| `src/nexus/wave24_v4_suite.py` | `63ff1cb993e4c9d5ab2321648e6a46439360fe61c351f37a91ea5362476365f3` |
+| `src/nexus/wave24_qwen_engine.py` | `c2c7a0ef30d8f53d3406c1b2c4ee1cdb52725ba10e9015068f849989f877658b` |
+| `scripts/run_wave24_agi_gap_suite.py` | `530a0bad152c33f168b69c7c8a621d67918842ca72ae76c77d964665c659504b` |
+| `scripts/verify_wave24_agi_gap_suite.py` | `7f5aaec39cb083a82e7c39a0cd2ee20b2d62bb6a4417dd8e3822f73f68ace871` |
+| `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md` | `49ae3be7e707c631ce56ba44bd82394a83a243ebce941c50273df884cb0695c1` |
+| `tests/test_wave24_v4_suite.py` | `b08f3a32b9681b23d2589474905ffc7c4a3bc4713298796c34d1e52304668043` |
+
+No source, script, test or protocol file changed between `8915e10` and the recorded result.
+
+### Tests
+
+`pytest tests/test_wave24*.py -W error::RuntimeWarning` (15 files): **256 passed, 0 skipped, 0 failed,
+0 warnings**. These include the v4 unit tests for:
+* `{0,1,2} → v % 2` witness conservation;
+* the `last_rec`-vs-`latest` permutation probe, with invented concept `sorted_by:t=True` and a reversal probe;
+* the `rev`-vs-`rotl` 2-step separation;
+* missing-key guard repair after source mining;
+* the Tycho rejection of net-negative or unclean procedures;
+* naive = constrained = Popper exactness;
+* Popper soundness for guard partials.
+
+### Resources (this session's standing-grant ledger)
+
+About 237 s were used before the lock: development runs, the Metal smoke test and engineering checks
+(conservative estimates where a check wasn't separately timed). The locked run took 88 s and the
+replay audit about 30 s, so roughly 355 s of the 3,600 s session allowance has been used in total.
+Metal used 68.5 s of its 600 s cap. No paid service, no network.
+
+### What the evidence does and does not establish
+
+**Established on this world:**
+* An exact, sound certifier over chains plus explicit guards gives zero false certificates across six
+  arms, including active probing.
+* Designed distinguishing probes resolve far more equal-signature traps within a 3-probe budget than
+  independent random probes (114 vs 96 of 118).
+* Popper-style constraint-based guard generation cuts repair work about 3× against generate-and-test,
+  with identical verdicts.
+* A small online fast memory trims target work by about 2%.
+
+**Not established:**
+* That procedures learned on source families transfer. The Tycho gate rejected all of them, and the
+  experienced arm matches the amnesiac one while paying about 1M units of acquisition.
+* Learning-to-learn.
+* A FD-nogood saving of 15% or more.
+* Any MBPP advantage over verified sampling.
+
+There is also a structural lesson: when every arm must certify exactly over the same small space,
+learned priors can only change enumeration order and probe choice. Here that headroom was about 2% of
+work, too little to repay any acquisition cost. These are bounded authored worlds; nothing here
+indicates general intelligence.
+
+**Next experiment:** a probe-scarce disambiguation study, the one place where learning moved solves.
+Use active-only streams with a 1-probe budget and an oracle cost that dominates search. Compare
+source-trained probe-family priors (Tycho-gated against the probe cost) with amnesiac, fixed-designed
+and random probing, on fresh seeds 501–505 with the same exact certifier.
+
+## Historical: v3 suite — MBPP, skeleton-free helpers, fair LLM baselines (seeds 301–305)
 
 Protocol: v3 section of `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`. Run: Linux x86_64 cloud container,
 4 vCPU, CPU-only llama.cpp (`n_gpu_layers = 0`, backend `cpu` on every call), one launch,
