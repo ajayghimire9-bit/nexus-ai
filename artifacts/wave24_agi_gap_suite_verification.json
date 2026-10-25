@@ -1,0 +1,661 @@
+{
+  "all_passed": false,
+  "failed": [
+    "gap4_exploration_accelerates_stream",
+    "gap6_layer2_certified"
+  ],
+  "gates": {
+    "gap1_every_seed_solved_and_total_work": true,
+    "gap1_open_world_solved_and_total_work": true,
+    "gap2_five_domains_significant_vs_fixed": true,
+    "gap2_source_transfer_beats_no_transfer": true,
+    "gap3_meta_curve_every_seed": true,
+    "gap4_eviction_under_shift": true,
+    "gap4_exploration_accelerates_stream": false,
+    "gap4_promotions_have_measured_gain": true,
+    "gap5_bounded_projection_scaling": true,
+    "gap5_messy_and_firing_recovery": true,
+    "gap5_raw_stdlib_ingestion": true,
+    "gap6_layer2_certified": false,
+    "gap7_world_model": true,
+    "gap8_grounded_long_horizon": true,
+    "gap8_intrinsic_goals_help": true,
+    "zero_false_certificates": true
+  },
+  "report": {
+    "false_certificate_count": 0,
+    "gap1_open_world": {
+      "nexus_self_evolving_open_world": {
+        "solved": 16,
+        "total_work": 3267
+      },
+      "nexus_static_quotient_open_world": {
+        "solved": 11,
+        "total_work": 4163
+      },
+      "standalone_or_tool_llm_baseline": {
+        "solved": 4,
+        "total_work": 192
+      },
+      "unpruned_open_stdlib_search": {
+        "solved": 11,
+        "total_work": 4163
+      }
+    },
+    "gap1_per_seed": [
+      {
+        "fixed_solved": 152,
+        "fixed_total_work": 492044,
+        "learned_eval_work": 279633,
+        "learned_solved": 176,
+        "learned_total_work": 322110,
+        "overhead_work": 42477,
+        "seed": 101,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 162,
+        "fixed_total_work": 482407,
+        "learned_eval_work": 318440,
+        "learned_solved": 173,
+        "learned_total_work": 361179,
+        "overhead_work": 42739,
+        "seed": 102,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 163,
+        "fixed_total_work": 438291,
+        "learned_eval_work": 291663,
+        "learned_solved": 181,
+        "learned_total_work": 329457,
+        "overhead_work": 37794,
+        "seed": 103,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 157,
+        "fixed_total_work": 498189,
+        "learned_eval_work": 270070,
+        "learned_solved": 174,
+        "learned_total_work": 313982,
+        "overhead_work": 43912,
+        "seed": 104,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 160,
+        "fixed_total_work": 468946,
+        "learned_eval_work": 256878,
+        "learned_solved": 180,
+        "learned_total_work": 305115,
+        "overhead_work": 48237,
+        "seed": 105,
+        "tasks": 208
+      }
+    ],
+    "gap2_per_domain": {
+      "CELL_AUTOMATA": {
+        "fixed_solved": 86,
+        "fixed_work": 280743,
+        "max_solved_depth_fixed": 3,
+        "max_solved_depth_transfer": 3,
+        "sign_test": {
+          "n": 120,
+          "negative": 39,
+          "p_value": 0.0001580340306025685,
+          "positive": 81
+        },
+        "transfer_solved": 86,
+        "transfer_work": 242698
+      },
+      "GRAPH": {
+        "fixed_solved": 105,
+        "fixed_work": 175503,
+        "max_solved_depth_fixed": 4,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 120,
+          "negative": 17,
+          "p_value": 3.407391432963753e-16,
+          "positive": 103
+        },
+        "transfer_solved": 109,
+        "transfer_work": 65994
+      },
+      "NESTED_DICT": {
+        "fixed_solved": 106,
+        "fixed_work": 474323,
+        "max_solved_depth_fixed": 3,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 158,
+          "negative": 14,
+          "p_value": 2.3185896352942494e-28,
+          "positive": 144
+        },
+        "transfer_solved": 134,
+        "transfer_work": 164121
+      },
+      "NUM_SERIES": {
+        "fixed_solved": 133,
+        "fixed_work": 267421,
+        "max_solved_depth_fixed": 3,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 159,
+          "negative": 41,
+          "p_value": 7.78539861169212e-10,
+          "positive": 118
+        },
+        "transfer_solved": 142,
+        "transfer_work": 160300
+      },
+      "STDLIB_BYTES": {
+        "fixed_solved": 65,
+        "fixed_work": 433872,
+        "max_solved_depth_fixed": 2,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 120,
+          "negative": 0,
+          "p_value": 1.504632769052528e-36,
+          "positive": 120
+        },
+        "transfer_solved": 117,
+        "transfer_work": 138047
+      }
+    },
+    "gap2_transfer_vs_no_transfer": {
+      "no_transfer_solved": 587,
+      "no_transfer_work": 829412,
+      "sign_test": {
+        "n": 553,
+        "negative": 83,
+        "p_value": 1.409654505683797e-66,
+        "positive": 470
+      },
+      "transfer_solved": 588,
+      "transfer_work": 771160
+    },
+    "gap3_per_seed": [
+      {
+        "meta_early": 15419.375,
+        "meta_late": 6950.5,
+        "meta_solved_late": 60,
+        "precision_by_position": [
+          0.0244,
+          0.016,
+          0.0184,
+          0.0224,
+          0.0238
+        ],
+        "reset_late": 6835.0,
+        "reset_solved_late": 58,
+        "rho_meta": -0.8535481794960172,
+        "rho_reset": -0.25790664416426423,
+        "seed": 101
+      },
+      {
+        "meta_early": 13131.375,
+        "meta_late": 10101.875,
+        "meta_solved_late": 57,
+        "precision_by_position": [
+          0.0227,
+          0.0259,
+          0.0185,
+          0.0171,
+          0.0215
+        ],
+        "reset_late": 10493.75,
+        "reset_solved_late": 55,
+        "rho_meta": -0.4421256757101672,
+        "rho_reset": 0.35615679432207914,
+        "seed": 102
+      },
+      {
+        "meta_early": 14058.625,
+        "meta_late": 11259.5,
+        "meta_solved_late": 55,
+        "precision_by_position": [
+          0.0202,
+          0.0218,
+          0.0156,
+          0.0198,
+          0.0193
+        ],
+        "reset_late": 12122.625,
+        "reset_solved_late": 55,
+        "rho_meta": -0.22720347223994705,
+        "rho_reset": 0.4177206794470868,
+        "seed": 103
+      },
+      {
+        "meta_early": 14873.5,
+        "meta_late": 9608.875,
+        "meta_solved_late": 56,
+        "precision_by_position": [
+          0.0234,
+          0.0145,
+          0.0274,
+          0.0231,
+          0.0184
+        ],
+        "reset_late": 9399.875,
+        "reset_solved_late": 56,
+        "rho_meta": -0.6197368757631927,
+        "rho_reset": 0.0,
+        "seed": 104
+      },
+      {
+        "meta_early": 17705.375,
+        "meta_late": 9673.25,
+        "meta_solved_late": 56,
+        "precision_by_position": [
+          0.0172,
+          0.0186,
+          0.022,
+          0.0277,
+          0.0258
+        ],
+        "reset_late": 7621.25,
+        "reset_solved_late": 60,
+        "rho_meta": -0.7478259807461838,
+        "rho_reset": 0.04326266004316766,
+        "seed": 105
+      }
+    ],
+    "gap4": {
+      "evicted_under_shift": 16,
+      "explore_solved": 306,
+      "explore_stream_work": 378734,
+      "idle_exploration_work": 114385,
+      "no_explore_solved": 307,
+      "no_explore_stream_work": 383329,
+      "promotions": 0,
+      "sign_test": {
+        "n": 103,
+        "negative": 7,
+        "p_value": 4.207682867061068e-21,
+        "positive": 96
+      }
+    },
+    "gap5": {
+      "approximate_law_retention": [
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 7,
+            "solved": 7,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 7,
+            "solved": 7,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        }
+      ],
+      "messy_fixed_solved": 56,
+      "messy_learned_solved": 62,
+      "recovery_fired_certified": 33,
+      "scaling": [
+        {
+          "bounded_ms": 0.4115304500032835,
+          "exact_ms": 0.3998158999934276,
+          "n": 100
+        },
+        {
+          "bounded_ms": 1.060994900001333,
+          "exact_ms": 4.099682050002684,
+          "n": 1000
+        },
+        {
+          "bounded_ms": 1.0516730500057747,
+          "exact_ms": 51.77300639999203,
+          "n": 10000
+        }
+      ],
+      "stdlib_ingested": 12
+    },
+    "gap6_certified_layers": {
+      "0": 796,
+      "1": 88
+    },
+    "gap7": {
+      "fixed_solved": 410,
+      "fixed_work": 1191558,
+      "prediction_accuracy": 1.0,
+      "retention": 0.9926829268292683,
+      "sign_test": {
+        "n": 504,
+        "negative": 148,
+        "p_value": 8.193484549985296e-21,
+        "positive": 356
+      },
+      "world_model_solved": 449,
+      "world_model_work": 794827
+    },
+    "gap8_goals": {
+      "directed_solved": 117,
+      "directed_work": 173632,
+      "goals": [
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 2,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "int"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "dict"
+            }
+          ],
+          "unseen": 7
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "EQ",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NUM_SERIES",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "list",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 2,
+              "in_type": "bytes",
+              "out_type": "str"
+            },
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 3,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "EQ",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 2,
+              "in_type": "dict",
+              "out_type": "int"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "GRAPH",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "int"
+            }
+          ],
+          "unseen": 6
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 3,
+              "in_type": "bytes",
+              "out_type": "str"
+            },
+            {
+              "direction": "INC",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "bytes"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "EQ",
+              "failures": 3,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "list"
+            },
+            {
+              "direction": "DEC|EQ",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "dict"
+            }
+          ],
+          "unseen": 9
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "list"
+            },
+            {
+              "direction": "INC",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "bytes"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "EQ",
+              "failures": 2,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "int"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NUM_SERIES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "list",
+              "out_type": "float"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "str"
+            }
+          ],
+          "unseen": 8
+        }
+      ],
+      "sign_test": {
+        "n": 33,
+        "negative": 19,
+        "p_value": 0.48685024166479707,
+        "positive": 14
+      },
+      "undirected_solved": 117,
+      "undirected_work": 181651
+    },
+    "gap8_grounding": {
+      "blind_solved": 111,
+      "blind_work": 926631,
+      "grounded_solved": 205,
+      "grounded_work": 363322,
+      "max_depth": 6,
+      "sign_test": {
+        "n": 239,
+        "negative": 54,
+        "p_value": 5.659850237183399e-18,
+        "positive": 185
+      }
+    },
+    "wrong_unique_answers": 192
+  }
+}

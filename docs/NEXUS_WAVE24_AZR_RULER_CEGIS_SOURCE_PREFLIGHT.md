@@ -1,13 +1,99 @@
 # Wave 24 AZR–Ruler–CEGIS: pre-freeze report
 
-Updated 2026-10-25. **Verdict: v12 executed exactly once on the authorized
-`dev-24001-guidance-v12` grant at implementation commit `4bec9de`. Parent CLI
-exited `0` on the first pass (`integrity_valid`, `scientific_gates_passed`,
-`ready_for_freeze` all true, `errors=[]`). Open world: **16 > 11** solved at
-**137.875 < 149.36** work/solved, matched-subset 1,293 < 1,643, zero false
-certificates. v1–v12 are consumed. Not a freeze.**
+Updated 2026-10-25. **Latest: eight-gap capability suite, locked protocol
+(`77068a2`), evaluated once on fresh seeds 101–105. Independent verifier:
+14 / 16 predeclared gates pass, 0 false certificates; verifier exit 1 because
+G4a (exploration accelerates stream — solved 306 vs 307) and G6 (layer-2
+certified abstraction) failed. Nothing was retuned after evaluation.**
 
-## Latest: guidance v12 — atomic forces, force-pruned 2-hop, raising playground primitives
+## Latest: eight-gap capability suite (protocol `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`)
+
+Environment: Linux cloud clone, Python 3.13.17, CPU only, no LLM (grounding is
+symbolic TF-IDF over the tools' own docstrings — the local Qwen GGUF is absent).
+Standing development grant: one evaluation launch, wall **63.7 s**, CPU 63.4 s
+(< 900 s cap); ledger `runs/experimental/wave24-agi/ledger.jsonl`.
+Development used seeds 1–3 only; all design choices (including raising G2's
+stream length and the meta-decision rules) were made on dev data before the
+evaluation seeds were run. Result: `artifacts/wave24_agi_gap_suite.json`,
+verification: `artifacts/wave24_agi_gap_suite_verification.json`.
+
+**What this is:** a procedural suite of 8 families (3 seen, 5 structurally
+disjoint targets) with unwrapped tools whose faults are real exceptions, a
+uniform cost meter that charges every tool application, probe, prediction,
+training row, projection, law check, self-task proposal, meta-learning step
+and counterfactual, and a strong exhaustive quotiented baseline. **What this is
+not:** general intelligence, open-world competence, or learning-to-learn
+beyond these authored domains.
+
+### Gate results (eval seeds 101–105, α = 0.05, exact sign tests)
+
+| Gap | Before (v12) | After: measured on eval seeds | Gate |
+| --- | --- | --- | --- |
+| G0 integrity | arena-only recount | **0 false certificates** over 6,980 solver rows; wrong-unique answers ~2% for learned AND fixed alike (minimal-depth convention), 0 for the grounded planner | **pass** |
+| 1 full-cost improvement | single dev seed, arena only | Every seed: learned **176/173/181/174/180** vs fixed **152/162/163/157/160** solved; learned TOTAL work (incl. all overhead) **322k/361k/329k/314k/305k** vs fixed **492k/482k/438k/498k/469k**. Arena 16 > 11, 3,267 < 4,163. | **pass** (G1a, G1b) |
+| 2 zero-shot transfer, 5 targets | 3 reported bindings, no effect measured | Transfer vs fixed per target (solved, work incl. target probing, p): CELL 86=86, 243k<281k, p=1.6e-4; GRAPH 109>105, 66k<176k, p=3e-16; NESTED 134>106, 164k<474k, p=2e-28; SERIES 142>133, 160k<267k, p=8e-10; STDLIB 117>65, 138k<434k, p=2e-36. Max solved depth ↑ in 3/5 targets. Source-transferred vs untransferred learner: 588 vs 587 solved, **771k < 829k** work, 470 vs 83 tasks, p=1e-66. | **pass** (G2a, G2b) |
+| 3 learning-to-learn | none | Meta ρ(position, acquisition work) **−0.85/−0.44/−0.23/−0.62/−0.75** vs reset **−0.26/+0.36/+0.42/0.00/+0.04**; meta late-domain work 45–65% of its early-domain work. Mechanism: retiring a force policy that fails LODO validation, gating forward-model pruning by measured payoff, skipping exploration that does not pay, skipping law validation once evidence suffices. Caveats: meta late-domain cost is NOT below the reset control in 3/5 seeds; stepping-stone precision does not rise with position. | **pass** (G3) |
+| 4 self-evolution, closed loop | 0 graduations in v11, disconnected | Idle exploration (fault-boundary memory, model transitions) makes the evaluated stream cheaper on 96 vs 7 tasks (p=4e-21; 378.7k vs 383.3k) but solved **306 vs 307**; idle cost 114k ≫ 4.6k saved; **0** helpers met the ≥3-gain promotion criterion; 16 helpers retired under shift. | **G4a FAIL**, G4b pass (vacuous: no promotions), G4c pass |
+| 5 open-world robustness | wrappers swallowed faults (fixed in v12) | Messy tasks 62 vs 56 solved; **33** certified witnesses whose try/except actually caught an exception; bounded projector 1.05 ms at 10⁴ vs 1.06 ms at 10³ (exact: 51.8 ms); 12 raw stdlib callables ingested. Approximate-law slack test non-discriminative (8/8 both). | **pass** (G5a–c) |
+| 6 hierarchy | playground-only layers | Certified eval witnesses by max layer: **796 layer-0, 88 layer-1, 0 layer-2** (layer 2 appeared once on dev seed 1 only). Parameterized guards not implemented. | **G6 FAIL** |
+| 7 predictive world model | none | 449 vs 410 solved, **795k < 1,192k** work (356 vs 148 tasks, p=8e-21); type-prediction containment 1.00; retention of fixed-solved tasks 0.993. | **pass** |
+| 8 grounding / planning / goals | none | Degraded-text grounded planner, depth 4–6: **205 vs 111** solved, 363k < 927k work, p=6e-18. Intrinsic goals: directed 117 = undirected 117 solved, 173.6k < 181.7k work — gate passes, but per task 14 vs 19 favour **undirected** (p=0.49): **no significant benefit**. | pass (G8a); G8b pass but not significant |
+
+### Full cost accounting (gap 1, per seed; all units on one meter)
+
+| Seed | Learned eval | Learned overhead (laws, probes, model, policy, meta, exploration + counterfactuals) | Learned TOTAL | Fixed TOTAL | Solved L / F |
+| --- | --- | --- | --- | --- | --- |
+| 101 | 279,633 | 42,477 | **322,110** | 492,044 | 176 / 152 |
+| 102 | 318,440 | 42,739 | **361,179** | 482,407 | 173 / 162 |
+| 103 | 291,663 | 37,794 | **329,457** | 438,291 | 181 / 163 |
+| 104 | 270,070 | 43,912 | **313,982** | 498,189 | 174 / 157 |
+| 105 | 256,878 | 48,237 | **305,115** | 468,946 | 180 / 160 |
+
+Each seed: 208 tasks (8 domains × depths 2–4 × 8, plus messy recovery tasks).
+Learned wins come mostly from the forward world model and law pruning; the
+transferred force policy was retired by its own LODO validation in every run.
+
+### Reproducibility
+
+Result `artifacts/wave24_agi_gap_suite.json`
+`d80c15995000352cb54dd5b0a8a54a1cd8dcfd33938468be7dc7f31c224cf7a0`;
+verification `artifacts/wave24_agi_gap_suite_verification.json`
+`f0a1fbc207dc93c5200694a9d9ff454973bb3c896a5d991d17fdede5075b9353`.
+Reproduce: `python3 scripts/run_wave24_agi_gap_suite.py --out <new path>` then
+`python3 scripts/verify_wave24_agi_gap_suite.py <new path>`.
+
+| Path | SHA-256 |
+| --- | --- |
+| `src/nexus/wave24_domains.py` | `0fd77ea52ff586f1b93b20a423b80342aef36ad2f2f483b8a950f32d8bfc7af0` |
+| `src/nexus/wave24_agi_suite.py` | `13565a658b067eefafc1bbc488bfb7f8eacb47e4ac336259d36e260a0cd18c90` |
+| `src/nexus/wave24_agi_benchmarks.py` | `5efc652c26e41ce0847ac656714eaf99b4ea88efe14464babf60889e333b5c45` |
+| `src/nexus/wave24_auto_laws.py` | `b63f3a25fe860d5035beb3b0e85416fed4245c2ae4b3374cc23b7c45aa514491` |
+| `scripts/run_wave24_agi_gap_suite.py` | `29f85a8d4f86bb7e21be23debe152d7c4be2899f0593cbd12cecfadad706ead5` |
+| `scripts/verify_wave24_agi_gap_suite.py` | `965505d1393efc511c07a85527de4b99bfda1fb1f9270b3598a119f15b95ee62` |
+| `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md` | `a1341a5b8f0aad4c01366e127262c8da599517309d0b2adce5edadd67597ee0c` |
+| `tests/test_wave24_agi_suite.py` | `e9ca39663749c0457f34c566aafff7d79a66ca8db53ac908763aff330c87a023` |
+
+Tests: `pytest tests/ -k wave24 -W error::RuntimeWarning` → **204 passed, 0
+warnings, 1 failed** (cross-family test needs the local GGUF model).
+
+### Negative findings worth keeping
+
+- Force-level stepping-stone pruning rates learned on source families do NOT
+  hold on targets (LODO recall 0.70–0.95 < 0.95 floor); the learner retires it.
+  Transfer that works here is meta-knowledge about which algebraic law families
+  are reliable, plus the general machinery.
+- Exploration that adds macros pollutes the toolbox; only knowledge-type
+  discoveries (fault boundaries, transitions) transfer safely, and their value
+  does not repay idle cost within ~25-task streams.
+- Goal-directed exploration has no measurable advantage over undirected
+  exploration with this explorer.
+
+**Next experiment:** make composite discovery generalize (gaps 4/6): promote a
+composite only when it lowers work on held-out *stream* tasks via shadow
+evaluation, and test on a task distribution with genuinely recurring
+sub-pipelines, on fresh seeds.
+
+## Historical: guidance v12 — atomic forces, force-pruned 2-hop, raising playground primitives
 
 ### Execution environment and ledger
 
