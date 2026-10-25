@@ -197,8 +197,8 @@ Sections 2/4/5 of the v11 brief (new `AtomicFieldProjector` /
 | `tests/test_wave24_unlimited_playground.py` | `c7416be72e284e6026e14f59c5e4b65a88d8f8785be9579e06df08dbecedc8da` |
 | `tests/test_wave24_quotient_soundness.py` | `d6cd413c0a94c5e49161633c9124e7e70b7b12d0223e4a3ca8918dda1e170ea4` |
 | `tests/test_wave24_lifelong.py` | `7f17a3fd95f72cb87335c4fc89064faa18e94298cbf6631847fc005c919ac3e9` |
-| `artifacts/wave24_living_brain_sandbox/evolved_toolbox.py` (untracked) | `725c6d3248d51f16873a8f6547c4a4bbd9cb2442bbb98167b64e015661f00b05` |
-| `artifacts/wave24_living_brain_sandbox/skill_lineage.json` (untracked) | `d54f428fefdd729c2d32d0c10d6def9793f243f553d6e1d1e7f545367e2eb8af` |
+| `artifacts/wave24_living_brain_sandbox/evolved_toolbox.py` | `725c6d3248d51f16873a8f6547c4a4bbd9cb2442bbb98167b64e015661f00b05` |
+| `artifacts/wave24_living_brain_sandbox/skill_lineage.json` | `d54f428fefdd729c2d32d0c10d6def9793f243f553d6e1d1e7f545367e2eb8af` |
 
 Other Wave24 sources are unchanged from the v10 table below.
 **Stop for inspection. Do not commit or push. Do not retry v7–v11.**

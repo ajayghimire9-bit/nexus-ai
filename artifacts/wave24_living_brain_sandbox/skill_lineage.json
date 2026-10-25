@@ -1,0 +1,110 @@
+{
+  "skill_2_branch_1ce1fd2c": {
+    "callees": [
+      "skill_2_chain_e63f679a"
+    ],
+    "constructs": [
+      "chain",
+      "if",
+      "try"
+    ],
+    "delta_w_total": 0.0,
+    "force_signature": {
+      "delta_mass": -31,
+      "locus_changes": 1,
+      "quantum_changes": 5
+    },
+    "layer": 2,
+    "plan": {
+      "body": {
+        "else": {
+          "kind": "chain",
+          "steps": [
+            "skill_2_chain_e63f679a"
+          ]
+        },
+        "guard": "is_negative",
+        "kind": "if",
+        "then": {
+          "kind": "chain",
+          "steps": [
+            "math_acos"
+          ]
+        }
+      },
+      "fallback": {
+        "kind": "chain",
+        "steps": [
+          "skill_2_chain_e63f679a"
+        ]
+      },
+      "kind": "try"
+    },
+    "primitive_cost": 7,
+    "pure_digest": "5aac65d698ef5543967e414781016784713ae21eec580c4074ab1e2fbaa6c829",
+    "pure_plan": {
+      "body": {
+        "else": {
+          "kind": "chain",
+          "steps": [
+            "operator_inv",
+            "math_acos"
+          ]
+        },
+        "guard": "is_negative",
+        "kind": "if",
+        "then": {
+          "kind": "chain",
+          "steps": [
+            "math_acos"
+          ]
+        }
+      },
+      "fallback": {
+        "kind": "chain",
+        "steps": [
+          "operator_inv",
+          "math_acos"
+        ]
+      },
+      "kind": "try"
+    },
+    "source_sha256": "5c962df5f90be2227742ce1c9c2f056b68608006685e08f6974cda2e06682219",
+    "statements": 10,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_2_chain_e63f679a": {
+    "callees": [],
+    "constructs": [
+      "chain"
+    ],
+    "delta_w_total": 0.0,
+    "force_signature": {
+      "delta_mass": -28,
+      "locus_changes": 1,
+      "quantum_changes": 7
+    },
+    "layer": 1,
+    "plan": {
+      "kind": "chain",
+      "steps": [
+        "operator_inv",
+        "math_acos"
+      ]
+    },
+    "primitive_cost": 2,
+    "pure_digest": "e63f679a094f67a9e8f8b5f627d37b35bc993580a58a5d0003e987e8a2ef76e4",
+    "pure_plan": {
+      "kind": "chain",
+      "steps": [
+        "operator_inv",
+        "math_acos"
+      ]
+    },
+    "source_sha256": "43140af5a01055ad9b50043289e79576c4c41a4bedd2edf66dd4fee4d20589bf",
+    "statements": 5,
+    "status": "nursery",
+    "uses": []
+  }
+}
