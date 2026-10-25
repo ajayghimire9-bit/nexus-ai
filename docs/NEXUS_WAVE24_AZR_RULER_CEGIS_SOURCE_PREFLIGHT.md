@@ -1,13 +1,100 @@
 # Wave 24 AZR–Ruler–CEGIS: pre-freeze report
 
-Updated 2026-10-25. **Latest: v2 suite (protocol locked at `ccacbb3`), evaluated once on fresh
-seeds 201–205 (274 s). Independent verifier: 21 / 25 gates pass, 0 false certificates
-(v1 + v2 rows), verifier exit 1. Failed: V2-G4b (more solved on every seed — seed 202 tied
-184 = 184), V2-G6a (≥ 15 layer-2 witnesses on every seed — seed 205 had 7), V2-G3b (useful-branch
-ratio rise, p = 0.61), and the v1 regression gate G2b (source transfer 602 vs 607 solved). Nothing
-was retuned after evaluation.**
+Updated 2026-10-25. **Latest: v3 suite (protocol locked at `af51f2b`), evaluated once on seeds
+301–305 + held-out QuixBugs (11) + held-out MBPP (32) at `3ef7c0c` (687 s, CPU-only Qwen2.5-1.5B).
+Independent verifier: 4 / 10 gates pass, 0 false certificates, verifier exit 1. Passed: execution,
+zero false certificates, independent re-grade, NEXUS vs unverified 1-shot Qwen. Failed: NEXUS vs
+verified-sampling Qwen (work per correct 2.6× worse), evolved MBPP library vs frozen, layer-2 helper
+in a held-out answer, experienced transfer vs amnesiac (351 vs 358 solved), both meta-policy gates.
+Nothing was retuned after evaluation. Seeds 301–305 and both held-out code splits are now consumed.**
 
-## Latest: v2 suite — wake-sleep, deep hierarchy, skeletons, wild arena (seeds 201–205)
+## Latest: v3 suite — MBPP, skeleton-free helpers, fair LLM baselines (seeds 301–305)
+
+Protocol: v3 section of `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`. Run: Linux x86_64 cloud container,
+4 vCPU, CPU-only llama.cpp (`n_gpu_layers = 0`, backend `cpu` on every call), one launch,
+`execution_status COMPLETE`, wall 687.4 s (cap 900 s; 1,267 s session allowance remaining at start).
+LLM: 258 charged calls (121 fresh, 137 charged cache hits), 46,765 input + 34,154 generated tokens,
+662 s of LLM wall time. Verification was run afterwards on an Apple M4 (macOS, Python 3.13.5) in 0.3 s;
+it re-executes stored answers and makes no new evaluation draws. No source, script or protocol file
+changed between `af51f2b` and the verified result.
+
+### Gates
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| v3_execution_complete | PASS | one launch, 687 s < 900 s cap |
+| v3_zero_false_certificates | PASS | 0 procedural false certificates; every verified code answer re-passes public tests |
+| v3_independent_regrade_matches | PASS | 0 grading mismatches |
+| v3_code_vs_unverified_qwen | PASS | pooled 43 held-out: correct **10 vs 7**, precision **0.59 vs 0.17** |
+| v3_code_vs_verified_sampling | **FAIL** | correct 10 vs 9, but work per correct **20,415 vs 7,793**; paired permutation p = 0.98 |
+| v3_mbpp_evolved_dominates_frozen | **FAIL** | 6 vs 6 correct; 6,584 vs 6,500 work per correct; p = 0.80 |
+| v3_layer2_helper_in_heldout_answer | **FAIL** | 0 correct held-out answers used any library helper (1 helper composition attempt, not correct) |
+| v3_transfer_experienced_beats_amnesiac_and_fixed | **FAIL** | solved experienced **351** / amnesiac **358** / fixed 303 of 415; work 743k < 779k < 993k |
+| v3_meta_late_useful_branch_share | **FAIL** | 20 / 30 pairs favour meta, sign test p = 0.099 |
+| v3_meta_late_work_per_solve | **FAIL** | meta 1,946 vs reset 1,632 work per solve (pooled); 12 / 30 pairs favour meta |
+
+### Code tracks (held-out; work = executed line events + LLM token units)
+
+| Arm | QuixBugs correct / plausible (11) | MBPP correct / plausible (32) | Pooled correct | Precision | Work per correct |
+| --- | --- | --- | --- | --- | --- |
+| Unverified 1-shot Qwen | 2 / 11 | 5 / 30 | 7 | 0.17 | 4,124 |
+| Verified-sampling Qwen | 3 / 3 | 6 / 10 | 9 | 0.69 | 7,793 |
+| NEXUS (QuixBugs `nexus_cegis`, MBPP `nexus_evolved`) | **4** / 7 | 6 / 10 | **10** | 0.59 | 20,415 |
+| MBPP `nexus_frozen` (reference) | — | 6 / 10 | — | 0.60 | 6,500 |
+
+MBPP NEXUS answer stages: greedy 8, CEGIS 1, helper composition 1, none 22. Library grew online from
+26 to 36 helpers (by layer 32 L1 / 4 L2), 0 anti-unified abstractions promoted, 8 rejected.
+QuixBugs fault localisation + CEGIS cost 164,648 units for 4 correct (41,162 per correct), against
+36,003 for 3 correct by verified sampling.
+
+### Procedural tracks (seeds 301–305)
+
+Transfer (5 target families per seed, 415 tasks): experienced uses less target-side work than the
+amnesiac control (743,485 vs 779,143; 236 / 380 paired tasks favour experienced, p = 2.7e-6) but solves
+**7 fewer** tasks. Source training cost 260,604 units on top, reported separately. If that cost is
+included, experienced costs 1,004,089 units in total against 779,143 for amnesiac. 41 portable-schema
+bindings were admitted. Meta vs reset, late families: meta raises the useful-branch share slightly
+(0.0175 vs 0.0165, not significant) but costs more work per solve.
+
+### Artifacts and SHA-256
+
+| Path | SHA-256 |
+| --- | --- |
+| `artifacts/wave24_agi_gap_suite_v3.json` | `be9d131daed7656986214e7d25ab8740f9634d07d09f9e87c38a92d7c6e4c5b4` |
+| `artifacts/wave24_agi_gap_suite_v3_llm_transcript.jsonl` | `0c44c9d02534998a1ee3061a2671241e3d152419fd043c9c4851440adad9a87c` |
+| `artifacts/wave24_agi_gap_suite_v3_verification.json` | `5f59b140fb81ae73edb4a2b0caf99e27da9fefc94dbc3ef692e0ca687f569593` |
+| `src/nexus/wave24_v3_suite.py` (at `af51f2b`) | `d6ed99d799fd360508439a37e3517cfc9687c1f9f75054f26097a8d861d63372` |
+| `src/nexus/wave24_v3_procedural.py` | `2db89555bdc877326013750bdbf3d23972bc16f1b6a60a85a7061e63b29abd56` |
+| `src/nexus/wave24_mbpp.py` | `59ac44dd410977338d808d2d89e859f12d6902112f04cb571ba3ad46546db0cc` |
+| `src/nexus/wave24_mbpp_evolve.py` | `3979b8815b4e4b5d1ecd644aba02e252c7b0afcdc778b787d0e3d84a8bf3429f` |
+| `src/nexus/wave24_helpers.py` | `84f6f6623a27179f1b780630445807431572c151052923f1ac9d0c94238b612d` |
+| `src/nexus/wave24_llm_repair.py` | `26780ff8119834179a57bdc39feac00eb9879c6c8ec8fe5bd53b259b83ac0f6a` |
+| `src/nexus/wave24_qwen_engine.py` | `ab3ac837a665758c0105c3509510e6dbdf5a5fdafe516aff10f9c899eea04231` |
+| `scripts/run_wave24_agi_gap_suite.py` | `c9227f68122fba84acbc4e91d8043a3badfae1daf2a2e50ec3efaa236cbf96b7` |
+| `scripts/verify_wave24_agi_gap_suite.py` | `fdb591d44b35a56f7049c9afa3a22907c201731af13c8357b2a0c46bf4bdcadd` |
+| `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md` | `0625301bce33dbe83c00fd9a1f8a3d944df85cc091b183aa8f0a6689b125580f` |
+
+### Tests
+
+On the Apple M4 (Python 3.13.5, pytest 9.1.1, torch 2.14.1), the 15 `tests/test_wave24*.py` files:
+**233 passed, 0 skipped, 0 failed, 0 warnings** with `-W error::RuntimeWarning`. The lock commit
+reported 236 from a broader `-k wave24` selection in the Linux container.
+
+### What the evidence does and does not establish
+
+Established: a verifier-gated NEXUS cascade gives more correct held-out code answers with much higher
+precision than unverified 1-shot Qwen-1.5B, with zero false certificates across all tracks. Not
+established: an advantage over the simple verified-sampling baseline once cost is counted. NEXUS's
+fault-localisation and CEGIS prompts cost about 2.6× more per correct answer for one extra solve.
+Also not established: any benefit from the dev-trained MBPP helper library (no held-out hits), or
+cross-family transfer that solves more than starting fresh. The transfer result repeats the v2
+pattern: source experience makes search cheaper but loses solves. Learning-to-learn and the
+meta-policy remain unsupported.
+
+**Next experiment:** v4. Diagnose why the experienced arm loses solves to the amnesiac arm
+(per-task loss attribution on dev seeds), then test on fresh seeds 401–405 with new held-out code data.
+
+## Historical: v2 suite — wake-sleep, deep hierarchy, skeletons, wild arena (seeds 201–205)
 
 Linux cloud clone, CPU only, no LLM. Result `artifacts/wave24_agi_gap_suite_v2.json`
 (`b6e2acec48b2529c42a91c1c9912a66d542a55f043d31a49754dafde8c5f0f72`), verification

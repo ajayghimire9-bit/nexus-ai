@@ -1,0 +1,231 @@
+{
+  "all_passed": false,
+  "failed": [
+    "v3_code_vs_verified_sampling",
+    "v3_layer2_helper_in_heldout_answer",
+    "v3_mbpp_evolved_dominates_frozen",
+    "v3_meta_late_useful_branch_share",
+    "v3_meta_late_work_per_solve",
+    "v3_transfer_experienced_beats_amnesiac_and_fixed"
+  ],
+  "gates": {
+    "v3_code_vs_unverified_qwen": true,
+    "v3_code_vs_verified_sampling": false,
+    "v3_execution_complete": true,
+    "v3_independent_regrade_matches": true,
+    "v3_layer2_helper_in_heldout_answer": false,
+    "v3_mbpp_evolved_dominates_frozen": false,
+    "v3_meta_late_useful_branch_share": false,
+    "v3_meta_late_work_per_solve": false,
+    "v3_transfer_experienced_beats_amnesiac_and_fixed": false,
+    "v3_zero_false_certificates": true
+  },
+  "report": {
+    "code_table": {
+      "mbpp:nexus_evolved": {
+        "correct": 6,
+        "plausible": 10,
+        "precision": 0.6,
+        "tasks": 32,
+        "work": 39502,
+        "work_per_correct": 6583.666666666667
+      },
+      "mbpp:nexus_frozen": {
+        "correct": 6,
+        "plausible": 10,
+        "precision": 0.6,
+        "tasks": 32,
+        "work": 38997,
+        "work_per_correct": 6499.5
+      },
+      "mbpp:standalone": {
+        "correct": 5,
+        "plausible": 30,
+        "precision": 0.16666666666666666,
+        "tasks": 32,
+        "work": 20341,
+        "work_per_correct": 4068.2
+      },
+      "mbpp:verified_sampling": {
+        "correct": 6,
+        "plausible": 10,
+        "precision": 0.6,
+        "tasks": 32,
+        "work": 34136,
+        "work_per_correct": 5689.333333333333
+      },
+      "nexus": {
+        "correct": 10,
+        "llm_work": 58932,
+        "plausible": 17,
+        "precision": 0.5882352941176471,
+        "tasks": 43,
+        "work": 204150,
+        "work_per_correct": 20415.0
+      },
+      "quixbugs:nexus_cegis": {
+        "correct": 4,
+        "plausible": 7,
+        "precision": 0.5714285714285714,
+        "tasks": 11,
+        "work": 164648,
+        "work_per_correct": 41162.0
+      },
+      "quixbugs:qwen_standalone": {
+        "correct": 2,
+        "plausible": 11,
+        "precision": 0.18181818181818182,
+        "tasks": 11,
+        "work": 8528,
+        "work_per_correct": 4264.0
+      },
+      "quixbugs:verified_sampling": {
+        "correct": 3,
+        "plausible": 3,
+        "precision": 1.0,
+        "tasks": 11,
+        "work": 36003,
+        "work_per_correct": 12001.0
+      },
+      "standalone": {
+        "correct": 7,
+        "llm_work": 28869,
+        "plausible": 41,
+        "precision": 0.17073170731707318,
+        "tasks": 43,
+        "work": 28869,
+        "work_per_correct": 4124.142857142857
+      },
+      "verified_sampling": {
+        "correct": 9,
+        "llm_work": 51341,
+        "plausible": 13,
+        "precision": 0.6923076923076923,
+        "tasks": 43,
+        "work": 70139,
+        "work_per_correct": 7793.222222222223
+      }
+    },
+    "false_code_certificates": [],
+    "grading_mismatches": [],
+    "llm": {
+      "backend": "cpu",
+      "calls": 258,
+      "charged_cache_hits": 137,
+      "fresh_calls": 121,
+      "generated_tokens": 34154,
+      "input_tokens": 46765,
+      "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "wall_s": 662.4407235509948
+    },
+    "mbpp_evolved_vs_frozen_permutation": {
+      "n": 32,
+      "p_value": 0.797020297970203,
+      "statistic": -84.16666666666697
+    },
+    "mbpp_layers": {
+      "correct_using_layer2_helper": 0,
+      "correct_using_library": 0,
+      "library_after": {
+        "abstractions": 0,
+        "by_layer": {
+          "1": 32,
+          "2": 4
+        },
+        "by_origin": {
+          "aux": 1,
+          "solution": 35
+        },
+        "helpers": 36,
+        "max_layer": 2,
+        "promotions": [],
+        "rejections": 8
+      },
+      "library_before": {
+        "abstractions": 0,
+        "by_layer": {
+          "1": 23,
+          "2": 3
+        },
+        "by_origin": {
+          "aux": 1,
+          "solution": 25
+        },
+        "helpers": 26,
+        "max_layer": 2,
+        "promotions": [],
+        "rejections": 0
+      },
+      "stages": {
+        "cegis": 1,
+        "greedy": 8,
+        "helper_composition": 1,
+        "none": 22
+      }
+    },
+    "meta_late": {
+      "pairs": 30,
+      "pooled": {
+        "meta": {
+          "expansions": 32690,
+          "on_path": 572,
+          "solved": 277,
+          "useful_branch_share": 0.017497705720403794,
+          "work": 539026,
+          "work_per_solve": 1945.942238267148
+        },
+        "reset": {
+          "expansions": 36163,
+          "on_path": 595,
+          "solved": 276,
+          "useful_branch_share": 0.016453280977794985,
+          "work": 450423,
+          "work_per_solve": 1631.9673913043478
+        }
+      },
+      "sign_share": {
+        "n": 30,
+        "negative": 10,
+        "p_value": 0.09873714670538902,
+        "positive": 20
+      },
+      "sign_work_per_solve": {
+        "n": 30,
+        "negative": 18,
+        "p_value": 0.361594608053565,
+        "positive": 12
+      }
+    },
+    "nexus_vs_verified_sampling_permutation": {
+      "n": 43,
+      "p_value": 0.9814018598140186,
+      "statistic": -12621.777777777777
+    },
+    "procedural_false_certificates": 0,
+    "transfer": {
+      "amnesiac": {
+        "solved": 358,
+        "tasks": 415,
+        "work": 779143
+      },
+      "experienced": {
+        "solved": 351,
+        "tasks": 415,
+        "work": 743485
+      },
+      "fixed": {
+        "solved": 303,
+        "tasks": 415,
+        "work": 993264
+      }
+    },
+    "transfer_bindings": 41,
+    "transfer_sign_vs_amnesiac": {
+      "n": 380,
+      "negative": 144,
+      "p_value": 2.7328348102871376e-06,
+      "positive": 236
+    },
+    "transfer_source_training_work": 260604
+  }
+}

@@ -1,5 +1,16 @@
 # NEXUS Seed — Current State
 
+## Wave 24 AGI-gap suite v3 — evaluated once, 4 / 10 gates (latest)
+
+Protocol locked at `af51f2b`; single run at `3ef7c0c` on seeds 301–305 + held-out QuixBugs (11) +
+held-out MBPP (32), CPU-only Qwen2.5-1.5B, 687 s. Verifier: 0 false certificates; NEXUS beats unverified
+1-shot Qwen (10 vs 7 correct, precision 0.59 vs 0.17). Failed: verified-sampling baseline
+(work per correct 20.4k vs 7.8k), evolved MBPP library (no held-out benefit), layer-2 helper use,
+experienced vs amnesiac transfer (351 vs 358 solved, cheaper but fewer solves), both meta-policy gates.
+Seeds 301–305 and the held-out QuixBugs/MBPP splits are consumed. Learned transfer and
+learning-to-learn are not established. The earlier v1/v2 results are in the same report.
+[Exact results, scope and hashes](NEXUS_WAVE24_AZR_RULER_CEGIS_SOURCE_PREFLIGHT.md).
+
 ## AZR–Ruler–CEGIS preflight — v10 SOURCE DEVELOPMENT (not a freeze)
 
 Latest owner-authorized revision is **guidance v10**: worker COMPLETE on
