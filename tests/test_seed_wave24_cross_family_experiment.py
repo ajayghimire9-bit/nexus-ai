@@ -103,7 +103,7 @@ def test_meta_procedure_optimizer_cross_family_transfer_and_symkan_gating() -> N
         freeze_commit_sha='0' * 40,
         seeds=(0, 1),
         use_dev_suite=True,
-        execute_metal_llm=False,
+        execute_metal_llm=True,
     )
 
     t2_sum = payload['track2_factorial_summary']

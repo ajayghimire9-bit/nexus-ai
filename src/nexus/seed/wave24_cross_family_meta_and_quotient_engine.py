@@ -36,6 +36,7 @@ import hashlib
 import json
 import math
 import random
+import tempfile
 import time
 from typing import Any
 
@@ -4062,38 +4063,39 @@ def run_wave24_experiment(
     # Cache LLM completions per turn prompt so all 3 methods see the exact same raw LLM output
     llm_outputs_by_turn: dict[tuple[str, int], tuple[str, dict[str, Any]]] = {}
     if execute_metal_llm:
-        grant = ExplicitMetalGrant(
-            granted_by='user_wave24_explicit_request',
-            purpose='wave24_track3_metal_gpu_evaluation',
-            max_calls=max(16, len(suite['track3_turns']) + 4),
-        )
-        cfg = RuntimeConfig(
-            model_path=str(gguf_path),
-            n_ctx=1024,
-            n_threads=4,
-            max_Model_calls=grant.max_calls,
-        )
-        with PersistentMetalRuntime(cfg, grant) as metal_rt:
-            for t_spec in suite['track3_turns']:
-                key = (t_spec['dialogue_id'], t_spec['turn_index'])
-                resp = metal_rt.generate_Slot(
-                    system_prompt='You are a precise reasoning assistant. Answer directly and concisely.',
-                    user_prompt=t_spec['user_prompt'],
-                    max_tokens=48,
-                    temperature=0.0,
-                    seed=42,
-                )
-                llm_outputs_by_turn[key] = (
-                    resp.text,
-                    {
-                        'model_path': str(gguf_path),
-                        'model_sha256': gguf_sha256,
-                        'n_gpu_layers': -1,
-                        'latency_s': round(resp.latency_sec, 4),
-                        'prompt_tokens': resp.prompt_tokens,
-                        'completion_tokens': resp.completion_tokens,
-                    },
-                )
+        with tempfile.TemporaryDirectory(prefix='nexus_wave24_metal_') as tmpdir:
+            ledger_path = f'{tmpdir}/wave24_metal_ledger.json'
+            cfg = RuntimeConfig(
+                model_path=str(gguf_path),
+                max_tokens=48,
+                prompt_cache=True,
+                application_cache=False,
+            )
+            grant = ExplicitMetalGrant(
+                authorized=True,
+                owner='wave24_cross_family_experiment',
+                reason='wave24_track3_metal_gpu_evaluation',
+                ledger_path=ledger_path,
+                n_gpu_layers=-1,
+            )
+            with PersistentMetalRuntime(cfg, grant) as metal_rt:
+                runtime_meta = dict(metal_rt.metadata or {})
+                for t_spec in suite['track3_turns']:
+                    key = (t_spec['dialogue_id'], t_spec['turn_index'])
+                    prompt = w21_m3._format_chatml_prompt(
+                        t_spec['user_prompt'],
+                        '{}',
+                    )
+                    call_seed = 101 + int(t_spec['turn_index'])
+                    llm_out = metal_rt.complete(prompt, None, temperature=0.0, seed=call_seed)
+                    raw_text = str(llm_out['content']).strip()
+                    llm_tel = dict(llm_out['telemetry'])
+                    llm_tel['model_path'] = str(gguf_path)
+                    llm_tel['model_file'] = runtime_meta.get('model_file')
+                    llm_tel['model_sha256'] = runtime_meta.get('model_sha256') or gguf_sha256
+                    llm_tel['prompt_sha256'] = llm_out['request']['prompt_sha256']
+                    llm_tel['n_gpu_layers'] = -1
+                    llm_outputs_by_turn[key] = (raw_text, llm_tel)
     else:
         for t_spec in suite['track3_turns']:
             key = (t_spec['dialogue_id'], t_spec['turn_index'])

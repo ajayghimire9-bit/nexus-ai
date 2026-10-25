@@ -52,8 +52,9 @@
 
 ---
 
-## 5. Phase-1 File SHA-256 Digests
-- `src/nexus/seed/wave24_cross_family_meta_and_quotient_engine.py`: `4e639754ee3472e9cceb36d7e96ac00e4153c8256556ac9b95b817301d41354f`
+## 5. Phase-1 File SHA-256 Digests & Pre-Artifact Constructor Fix Disclosure
+- `src/nexus/seed/wave24_cross_family_meta_and_quotient_engine.py`: `8304abc8c942de3c248c88988366e2c3a2c258c08c3e6d1f3a34d50b18155efb`
 - `scripts/run_wave24_cross_family_experiment.py`: `a1a95b7442c3786a35aba54a076758b06ce0da5b755b7f031df76becb95f4c8e`
 - `scripts/verify_wave24_cross_family_experiment.py`: `5256f7aa117303b7b867d33f844dec7d7d0e8aa3fe4acb2129374939f6517906`
-- `tests/test_seed_wave24_cross_family_experiment.py`: `3c1806f82cc87fb357c948d404b3c02baabb5c7b5966ae7577ed9b558d51a216`
+- `tests/test_seed_wave24_cross_family_experiment.py`: `0396b68533888178ab9ad906090902c4f961d67edf00ec42a6de649526bf0059`
+- **Transparent Pre-Artifact Commit Note (`f78a129`)**: In initial Phase-1 commit `f78a12900780ab583ecb61a8febafafaeedfe8f7`, `tests/test_seed_wave24_cross_family_experiment.py` ran with `execute_metal_llm=False`, and `ExplicitMetalGrant(granted_by=...)` at line 4065 threw `TypeError: ExplicitMetalGrant.__init__() got an unexpected keyword argument 'granted_by'` before executing any LLM turn or writing any artifact to `artifacts/`. To strictly obey the zero-amend rule (`zero_amend_on_branch == True`), `ExplicitMetalGrant(authorized=True, owner=..., reason=..., ledger_path=..., n_gpu_layers=-1)` was corrected in a forward Pre-Assessment Freeze Commit, `execute_metal_llm=True` was enabled in `tests/test_seed_wave24_cross_family_experiment.py`, and the post-freeze `assessment_seed` is derived via SHA-256 from this forward Pre-Assessment Freeze Commit SHA.
