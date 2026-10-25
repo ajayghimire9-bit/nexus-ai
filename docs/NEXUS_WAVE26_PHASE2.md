@@ -136,3 +136,38 @@ The code is unchanged except that the oracle cost is now a parameter. Gates are 
 python3 scripts/phase2_oracle.py --confirm-b --c 2000 --n 8 --checkpoint runs/experimental/wave26_phase2b_confirm.jsonl --out artifacts/wave26_phase2b_confirmation.json
 python3 scripts/phase2_oracle.py --replay-of artifacts/wave26_phase2b_confirmation.json --n 8
 ```
+
+### Phase 2b confirmation result (seeds 2006–2010, c_oracle = 2000, frozen `b78140e`) — **PHASE 2 PASS**
+
+* Replay in a fresh process (`PYTHONHASHSEED=271828`) gave an identical digest `7f080b76…0a70`.
+* Artifact: `artifacts/wave26_phase2b_confirmation.json`, sha256
+  `e0740dbc485ff712ac12f9aab29f0139180660972da5a0729c41612f8f4dc6f2`.
+
+| Arm | ε = 0.01 | ε = 0.05 | ε = 0.10 | Solved | False certs (≤ 99% bound) | Empty V | Probes | Fully loaded |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| exact_eig_noisy | 39 | 39 | 28 | 106 / 120 | 1 (≤ 4) | 0 | 359 | 8,505,775 |
+| **full_noisy** | 39 | 40 | 39 | **118 / 120** | 1 (≤ 4) | 0 | **266** | **8,401,286** (−1.2%) |
+| naive_exact_elim | 39 | 34 | 36 | 109 / 120 | **5 (> 4)** | 6 | 120 | 8,112,753 |
+
+The ε columns count solved queries out of 40.
+
+| Gate | Result |
+| --- | --- |
+| Calibrated soundness (exact and full, every ε) | **PASS** (1 false certificate each, at ε = 0.01, within the δ = 0.01 bound ≤ 2) |
+| full fully loaded < exact | **PASS** (−1.2%) |
+| solved(full) ≥ solved(exact) | **PASS** (118 vs 106) |
+| G_tycho | **PASS** (360 / 360) |
+| G_replay | **PASS** |
+
+**Reading.**
+* The noise-tolerant certificate is *calibrated*, not perfect.
+  * At ε = 0.01 the likelihood-ratio rule needs only a one-disagreement gap. One corrupted response
+    against the truth produced a wrong certificate in both exact and full (the same noise stream).
+  * That is within the declared δ, but it is a real false certificate. "0 false certificates" no longer
+    holds under noise; "false-certificate rate ≤ δ" does.
+* The naive exact-elimination control exceeded the bound (5 false certificates, 6 empty version spaces):
+  exact elimination is not safe under noise.
+* With opaque mechanisms (no proved pruning), NEXUS's cost advantage over the unlearned baseline appears
+  only once probes are expensive. At c = 2000 it is −1.2%, thin, with 12 more queries solved and 26% fewer
+  probes. At c = 20 it was +2.4%.
+* The earlier attempt on 2001–2005 (c = 20, FAIL) stands as recorded.
