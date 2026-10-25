@@ -1,12 +1,95 @@
 # Wave 24 AZR–Ruler–CEGIS: pre-freeze report
 
-Updated 2026-10-25. **Latest: eight-gap capability suite, locked protocol
-(`77068a2`), evaluated once on fresh seeds 101–105. Independent verifier:
-14 / 16 predeclared gates pass, 0 false certificates; verifier exit 1 because
-G4a (exploration accelerates stream — solved 306 vs 307) and G6 (layer-2
-certified abstraction) failed. Nothing was retuned after evaluation.**
+Updated 2026-10-25. **Latest: v2 suite (protocol locked at `ccacbb3`), evaluated once on fresh
+seeds 201–205 (274 s). Independent verifier: 21 / 25 gates pass, 0 false certificates
+(v1 + v2 rows), verifier exit 1. Failed: V2-G4b (more solved on every seed — seed 202 tied
+184 = 184), V2-G6a (≥ 15 layer-2 witnesses on every seed — seed 205 had 7), V2-G3b (useful-branch
+ratio rise, p = 0.61), and the v1 regression gate G2b (source transfer 602 vs 607 solved). Nothing
+was retuned after evaluation.**
 
-## Latest: eight-gap capability suite (protocol `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`)
+## Latest: v2 suite — wake-sleep, deep hierarchy, skeletons, wild arena (seeds 201–205)
+
+Linux cloud clone, CPU only, no LLM. Result `artifacts/wave24_agi_gap_suite_v2.json`
+(`b6e2acec48b2529c42a91c1c9912a66d542a55f043d31a49754dafde8c5f0f72`), verification
+`artifacts/wave24_agi_gap_suite_v2_verification.json`
+(`58dc4f9a6af3420f1862e32e7c133871f332a5b63623c02802562134cd8b346f`). Dev seeds 1–5 only were
+used for development; the declared world assumption (idiom streams with shared structure) and all
+known dev risks are in the protocol.
+
+### `a9ef200` (seeds 101–105) vs v2 (seeds 201–205)
+
+| Gap | a9ef200 | v2 on seeds 201–205 | v2 gate |
+| --- | --- | --- | --- |
+| 4 self-evolution | FAIL: idle exploration cost 114k to save 4.6k, 0 helpers, 306 vs 307 solved | Wake-sleep, no blind rollouts. Promoted 20–24 helpers per seed, used in 36–64 certified answers per seed. Total work incl. ALL sleep/shadow/bridge/setup **lower on every seed**: 1.051M<1.066M, 0.955M<0.966M, 1.223M<1.243M, 1.184M<1.343M, 1.268M<1.326M. Solved **177>175, 184=184, 165>160, 172>158, 166>158**. | G4a pass, **G4b FAIL (seed 202 tie)**, G4c pass |
+| 6 hierarchy | FAIL: 0 layer-2 witnesses | Certified layer≥2 witnesses **25 / 27 / 35 / 48 / 7**; layer-3 witnesses 0/0/4/5/1. Depth≥5 tasks: evolved 116 vs layer-1-cap 108 vs no-evolution 106 (pooled; ≥ on every seed). Parameterized guards / fitted-threshold FILTER and ITERATE loops are in the grammar. | **G6a FAIL (seed 205)**, G6b pass |
+| 2 cross-family transfer | partial (law flags only) | Skeleton + policy + relevance transfer **302 vs 183** solved, 3.21M < 3.58M work vs law-only. **But the same learner with no source training solves 346 at 2.94M** — the transferred relevance model hurts; learned transfer is not demonstrated. | V2-G2 pass (as specified); negative vs no-source reported |
+| 3 learning-to-learn | partial | Meta late-domain acquisition work < reset on **every** seed (71k<81k, 39k<50k, 68k<79k, 82k<91k, 72k<80k). Useful-branch ratio rises in only 9/15 (seed, order) pairs (p = 0.61). | G3a pass, **G3b FAIL** |
+| 8a language | keyword overlap (205 vs 111 on planning) | Compositional clause parser with edge-case oracles + paraphrased wording: **80/80 vs 17/80** solved, 1.3k vs 13.9k work, per-task p = 2e-19 (parser and specs share an author — not held-out NL understanding). | pass |
+| 8b intrinsic goals | 14 vs 19 tasks, p = 0.49 | Goal = own failure residuals, re-attacked in governed sleep: **164 vs 116 (undirected) vs 106 (none)** solved; per-task p = 1.7e-4 vs undirected, 2e-9 vs none. | pass (both) |
+| Wild arena | — | QuixBugs 11 held-out programs × 5 test splits: learned (Ochiai FL) **16 vs 15 correct**, 26 vs 26 plausible, 3.04M < 3.50M line-events; repaired programs: bucketsort, find_in_sorted, next_permutation, rpn_eval (most failures need multi-edit or non-modelled edits). Law discovery **34/35 vs 6/35** (MDL vs linear). | W1, W2 pass |
+| v1 regression | 14/16 | G1 every seed (167–184 vs 157–170 solved; 269k–381k vs 438k–495k total work), G2a, G3, G5, G7, G8a pass; **G2b FAIL**: source transfer 602 vs 607 solved (work 736k < 757k) — a regression introduced by v2 core changes. | 10/11 |
+
+### Example certified layer-2 / layer-3 witnesses (unfold to primitives for verification)
+
+```text
+seed 201 LIST_INT      L2  ['macro[MAP(square)>sum]']
+seed 203 INT           L3  ['double', 'macro[dec>macro[macro[inc>mod10]>square]]']        (primitive depth 5)
+seed 203 STDLIB_BYTES  L3  ['macro[MAP(inc)>macro[MAP(double)>MAP(dec)]]']
+seed 204 CELL_AUTOMATA L3  ['macro[macro[invert>MAP(inc)]>try[step30|live]]']               (recovery inside a macro)
+seed 204 NUM_SERIES    L3  ['macro[macro[MAP(dec)>MAP(not1)]>normalize]']
+```
+
+Example real QuixBugs repairs (seed 201): `rpn_eval` swap_args line 4; `next_permutation`
+negate_condition line 6; `bucketsort` name_replace line 7. Plausible-but-wrong patches (pass
+public tests, fail held-out ones) occur: 26 plausible vs 16 correct.
+
+### Cost accounting (gap 4, per seed; every unit on one meter)
+
+| Seed | Evolved stream + setup | Sleep (shadow + bridges) | Evolved TOTAL | No-evolution TOTAL |
+| --- | --- | --- | --- | --- |
+| 201 | 958,005 | 93,307 | **1,051,312** | 1,066,128 |
+| 202 | 881,676 | 73,483 | **955,159** | 966,189 |
+| 203 | 1,110,614 | 111,891 | **1,222,505** | 1,243,057 |
+| 204 | 1,066,243 | 117,326 | **1,183,569** | 1,343,425 |
+| 205 | 1,135,045 | 132,893 | **1,267,938** | 1,326,045 |
+
+### Tests
+
+`pytest tests/ -k wave24 -v -W error::RuntimeWarning`: **214 passed, 1 skipped, 0 failed, 0
+warnings** (the GGUF cross-family test skips with an explicit reason when the local weights are absent).
+
+### v2 source SHA-256
+
+| Path | SHA-256 |
+| --- | --- |
+| `src/nexus/wave24_skeletons.py` | `0e4a8a6d8b875457105799fd8bc5c41bd7953b9421774e43c39cdd72a29d5c6d` |
+| `src/nexus/wave24_wake_sleep.py` | `d66c440fcc5a076a957ea3932b5d4dbc3b25664744e2688a18c9c3df8fbf5b8c` |
+| `src/nexus/wave24_semantic_spec.py` | `884462250b9a3d0d71a7c315ab2dcc517063e661d8fad00cfb933baca0bed1f2` |
+| `src/nexus/wave24_code_repair.py` | `0db05a6f78df7e6f57f716472565837904a023d5150e6e89d83fc3123f360bf2` |
+| `src/nexus/wave24_agi_benchmarks_v2.py` | `b26d5d5c06a69df722ebfba1fbdd1aa8a2aa3850fdf52b1a0675ee37bca89d7e` |
+| `src/nexus/wave24_agi_suite.py` | `449f56ca498a324b3f8d46462201e73c6b5de02c0d794d2ec34129fb14db532b` |
+| `scripts/run_wave24_agi_gap_suite.py` | `fabad0b86da3e5462f83ca3d3c2bb3940662a89b9ed88d076f62df37166620d2` |
+| `scripts/verify_wave24_agi_gap_suite.py` | `8c7958aaa877afb5d1cab7415a62fdacb87ad1a22b95bd0bdf6426f9abaab7b3` |
+| `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md` | `d92eb8d85ce8fdc0500bc76a6efc14eb8541bc65292ff1e6b6f8441d7b92f0c8` |
+| `tests/test_wave24_v2_mechanisms.py` | `329b48ad2afb82c12950d57e81965bed3b6562cfb924378cd0d6dc9c252524cb` |
+| `fixtures/quixbugs/split.json` | `07b6270ee8badcaf18e72ca89c4c4680ad1e156be09cb2fb1552ced9b5aa9b68` |
+
+### What the evidence does and does not establish
+
+Established on this suite: profitable shadow-gated self-evolution under full cost accounting on
+streams with recurring structure; certified layer-2/3 abstractions that unlock deeper tasks;
+compositional spec parsing with edge oracles; failure-driven goal setting that beats undirected
+self-training per task; real third-party program repair and law discovery. Not established:
+learned cross-family transfer beyond a generic skeleton library (negative), a rising useful-branch
+ratio, more-solves on every seed, ≥ 15 layer-2 witnesses on every seed, open-ended or general
+intelligence. The idiom-stream world assumption is what makes self-evolution pay; uniform random
+streams (v1) do not reward it.
+
+**Next experiment:** fix the v1 G2b regression and the harmful transferred relevance model (gate
+relevance transfer by leave-one-domain-out validation, as the force policy already is), then test on
+fresh seeds.
+
+## Historical: eight-gap capability suite (a9ef200) (protocol `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`)
 
 Environment: Linux cloud clone, Python 3.13.17, CPU only, no LLM (grounding is
 symbolic TF-IDF over the tools' own docstrings — the local Qwen GGUF is absent).

@@ -1,0 +1,1227 @@
+{
+  "all_passed": false,
+  "failed": [
+    "gap2_source_transfer_beats_no_transfer",
+    "v2_gap4_more_solved_every_seed",
+    "v2_gap6_layer2plus_ge15_every_seed",
+    "v2_gap3_useful_branch_ratio_increases"
+  ],
+  "gates": {
+    "gap1_every_seed_solved_and_total_work": true,
+    "gap1_open_world_solved_and_total_work": true,
+    "gap2_five_domains_significant_vs_fixed": true,
+    "gap2_source_transfer_beats_no_transfer": false,
+    "gap3_meta_curve_every_seed": true,
+    "gap5_bounded_projection_scaling": true,
+    "gap5_messy_and_firing_recovery": true,
+    "gap5_raw_stdlib_ingestion": true,
+    "gap7_world_model": true,
+    "gap8_grounded_long_horizon": true,
+    "v2_gap2_skeleton_policy_beats_law_only": true,
+    "v2_gap3_late_meta_cheaper_than_reset_every_seed": true,
+    "v2_gap3_useful_branch_ratio_increases": false,
+    "v2_gap4_less_total_work_every_seed": true,
+    "v2_gap4_more_solved_every_seed": false,
+    "v2_gap4_promoted_and_used_every_seed": true,
+    "v2_gap6_hierarchy_unlocks_depth5": true,
+    "v2_gap6_layer2plus_ge15_every_seed": false,
+    "v2_gap8a_semantic_beats_keyword": true,
+    "v2_gap8b_directed_beats_none_p01": true,
+    "v2_gap8b_directed_beats_undirected_p01": true,
+    "v2_wild_code_repair": true,
+    "v2_wild_law_discovery": true,
+    "v2_zero_false_certificates": true,
+    "zero_false_certificates": true
+  },
+  "report": {
+    "false_certificate_count": 0,
+    "gap1_open_world": {
+      "nexus_self_evolving_open_world": {
+        "solved": 16,
+        "total_work": 3267
+      },
+      "nexus_static_quotient_open_world": {
+        "solved": 11,
+        "total_work": 4163
+      },
+      "standalone_or_tool_llm_baseline": {
+        "solved": 4,
+        "total_work": 192
+      },
+      "unpruned_open_stdlib_search": {
+        "solved": 11,
+        "total_work": 4163
+      }
+    },
+    "gap1_per_seed": [
+      {
+        "fixed_solved": 157,
+        "fixed_total_work": 476957,
+        "learned_eval_work": 331597,
+        "learned_solved": 167,
+        "learned_total_work": 380757,
+        "overhead_work": 49160,
+        "seed": 201,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 159,
+        "fixed_total_work": 463187,
+        "learned_eval_work": 255333,
+        "learned_solved": 174,
+        "learned_total_work": 301670,
+        "overhead_work": 46337,
+        "seed": 202,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 158,
+        "fixed_total_work": 494551,
+        "learned_eval_work": 327815,
+        "learned_solved": 177,
+        "learned_total_work": 371746,
+        "overhead_work": 43931,
+        "seed": 203,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 165,
+        "fixed_total_work": 440165,
+        "learned_eval_work": 229849,
+        "learned_solved": 184,
+        "learned_total_work": 268906,
+        "overhead_work": 39057,
+        "seed": 204,
+        "tasks": 208
+      },
+      {
+        "fixed_solved": 170,
+        "fixed_total_work": 437883,
+        "learned_eval_work": 289070,
+        "learned_solved": 182,
+        "learned_total_work": 337808,
+        "overhead_work": 48738,
+        "seed": 205,
+        "tasks": 208
+      }
+    ],
+    "gap2_per_domain": {
+      "CELL_AUTOMATA": {
+        "fixed_solved": 88,
+        "fixed_work": 252795,
+        "max_solved_depth_fixed": 3,
+        "max_solved_depth_transfer": 3,
+        "sign_test": {
+          "n": 120,
+          "negative": 36,
+          "p_value": 1.3897012121027624e-05,
+          "positive": 84
+        },
+        "transfer_solved": 88,
+        "transfer_work": 214117
+      },
+      "GRAPH": {
+        "fixed_solved": 108,
+        "fixed_work": 184402,
+        "max_solved_depth_fixed": 4,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 120,
+          "negative": 24,
+          "p_value": 2.162228172529954e-11,
+          "positive": 96
+        },
+        "transfer_solved": 114,
+        "transfer_work": 78335
+      },
+      "NESTED_DICT": {
+        "fixed_solved": 122,
+        "fixed_work": 426517,
+        "max_solved_depth_fixed": 3,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 160,
+          "negative": 9,
+          "p_value": 2.1895920451771055e-34,
+          "positive": 151
+        },
+        "transfer_solved": 138,
+        "transfer_work": 146152
+      },
+      "NUM_SERIES": {
+        "fixed_solved": 138,
+        "fixed_work": 240549,
+        "max_solved_depth_fixed": 3,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 158,
+          "negative": 53,
+          "p_value": 4.28140790784601e-05,
+          "positive": 105
+        },
+        "transfer_solved": 142,
+        "transfer_work": 155892
+      },
+      "STDLIB_BYTES": {
+        "fixed_solved": 62,
+        "fixed_work": 452064,
+        "max_solved_depth_fixed": 2,
+        "max_solved_depth_transfer": 4,
+        "sign_test": {
+          "n": 120,
+          "negative": 0,
+          "p_value": 1.504632769052528e-36,
+          "positive": 120
+        },
+        "transfer_solved": 120,
+        "transfer_work": 141988
+      }
+    },
+    "gap2_transfer_vs_no_transfer": {
+      "no_transfer_solved": 607,
+      "no_transfer_work": 756554,
+      "sign_test": {
+        "n": 549,
+        "negative": 81,
+        "p_value": 3.6423045677440306e-67,
+        "positive": 468
+      },
+      "transfer_solved": 602,
+      "transfer_work": 736484
+    },
+    "gap3_per_seed": [
+      {
+        "meta_early": 15917.0,
+        "meta_late": 11677.875,
+        "meta_solved_late": 55,
+        "precision_by_position": [
+          0.0204,
+          0.0212,
+          0.0231,
+          0.0162,
+          0.0122
+        ],
+        "reset_late": 12434.875,
+        "reset_solved_late": 55,
+        "rho_meta": -0.3318446111080458,
+        "rho_reset": 0.2400284074096988,
+        "seed": 201
+      },
+      {
+        "meta_early": 17944.25,
+        "meta_late": 10073.625,
+        "meta_solved_late": 58,
+        "precision_by_position": [
+          0.0208,
+          0.0174,
+          0.0162,
+          0.0134,
+          0.0238
+        ],
+        "reset_late": 11342.5,
+        "reset_solved_late": 57,
+        "rho_meta": -0.5581666754852643,
+        "rho_reset": -0.024562537539453734,
+        "seed": 202
+      },
+      {
+        "meta_early": 14814.375,
+        "meta_late": 9469.625,
+        "meta_solved_late": 57,
+        "precision_by_position": [
+          0.0155,
+          0.0192,
+          0.0131,
+          0.0195,
+          0.0181
+        ],
+        "reset_late": 11051.875,
+        "reset_solved_late": 56,
+        "rho_meta": -0.3005512867997577,
+        "rho_reset": 0.245440346836908,
+        "seed": 203
+      },
+      {
+        "meta_early": 17662.0,
+        "meta_late": 6640.0,
+        "meta_solved_late": 62,
+        "precision_by_position": [
+          0.0209,
+          0.0176,
+          0.0229,
+          0.0203,
+          0.0246
+        ],
+        "reset_late": 8339.625,
+        "reset_solved_late": 61,
+        "rho_meta": -0.6523849021904634,
+        "rho_reset": -0.25849213105659874,
+        "seed": 204
+      },
+      {
+        "meta_early": 17835.625,
+        "meta_late": 6772.625,
+        "meta_solved_late": 59,
+        "precision_by_position": [
+          0.0192,
+          0.0146,
+          0.0122,
+          0.0225,
+          0.018
+        ],
+        "reset_late": 7338.375,
+        "reset_solved_late": 59,
+        "rho_meta": -0.7675792981079292,
+        "rho_reset": -0.25233755650763207,
+        "seed": 205
+      }
+    ],
+    "gap4": {
+      "evicted_under_shift": 48,
+      "explore_solved": 305,
+      "explore_stream_work": 470199,
+      "idle_exploration_work": 113242,
+      "no_explore_solved": 306,
+      "no_explore_stream_work": 472098,
+      "promotions": 1,
+      "sign_test": {
+        "n": 107,
+        "negative": 29,
+        "p_value": 2.3518927469991957e-06,
+        "positive": 78
+      }
+    },
+    "gap5": {
+      "approximate_law_retention": [
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        },
+        {
+          "0.0": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          },
+          "0.5": {
+            "fixed": 8,
+            "solved": 8,
+            "tasks": 8
+          }
+        }
+      ],
+      "messy_fixed_solved": 52,
+      "messy_learned_solved": 55,
+      "recovery_fired_certified": 39,
+      "scaling": [
+        {
+          "bounded_ms": 0.4197823999902539,
+          "exact_ms": 0.401926600011393,
+          "n": 100
+        },
+        {
+          "bounded_ms": 1.0538959999848885,
+          "exact_ms": 7.065709900007278,
+          "n": 1000
+        },
+        {
+          "bounded_ms": 1.0751110499995775,
+          "exact_ms": 49.71872539999822,
+          "n": 10000
+        }
+      ],
+      "stdlib_ingested": 12
+    },
+    "gap6_certified_layers": {
+      "0": 783,
+      "1": 101
+    },
+    "gap7": {
+      "fixed_solved": 395,
+      "fixed_work": 1242407,
+      "prediction_accuracy": 1.0,
+      "retention": 0.9949367088607595,
+      "sign_test": {
+        "n": 497,
+        "negative": 139,
+        "p_value": 2.6327312481123372e-23,
+        "positive": 358
+      },
+      "world_model_solved": 437,
+      "world_model_work": 852130
+    },
+    "gap8_goals": {
+      "directed_solved": 136,
+      "directed_work": 200152,
+      "goals": [
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "EQ",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "int"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 2,
+              "in_type": "dict",
+              "out_type": "dict"
+            }
+          ],
+          "unseen": 6
+        },
+        {
+          "domain": "NUM_SERIES",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "list",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "INC",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "bytes"
+            },
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 9
+        },
+        {
+          "domain": "NUM_SERIES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "list",
+              "out_type": "float"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "GRAPH",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "str"
+            },
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "EQ",
+              "failures": 2,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "DEC",
+              "failures": 2,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "int"
+            },
+            {
+              "direction": "DEC|EQ",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "dict"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NUM_SERIES",
+          "goals": [
+            {
+              "direction": "DEC",
+              "failures": 2,
+              "in_type": "list",
+              "out_type": "list"
+            },
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "list",
+              "out_type": "float"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "str"
+            },
+            {
+              "direction": "INC",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "bytes"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "EQ",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "DEC",
+              "failures": 1,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 3,
+              "in_type": "dict",
+              "out_type": "int"
+            },
+            {
+              "direction": "DEC|EQ",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "dict"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NUM_SERIES",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "list",
+              "out_type": "float"
+            }
+          ],
+          "unseen": 9
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "INC",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "bytes"
+            },
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "bytes",
+              "out_type": "list"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "goals": [
+            {
+              "direction": "EQ",
+              "failures": 2,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            },
+            {
+              "direction": "DEC",
+              "failures": 2,
+              "in_type": "tuple",
+              "out_type": "tuple"
+            }
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "goals": [
+            {
+              "direction": "EQ|INC",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "dict"
+            }
+          ],
+          "unseen": 1
+        },
+        {
+          "domain": "GRAPH",
+          "goals": [
+            {
+              "direction": "TYPE_CHANGE",
+              "failures": 1,
+              "in_type": "dict",
+              "out_type": "int"
+            }
+          ],
+          "unseen": 6
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "goals": [
+            {
+              "direction": "INC",
+              "failures": 2,
+              "in_type": "bytes",
+              "out_type": "bytes"
+            }
+          ],
+          "unseen": 10
+        }
+      ],
+      "sign_test": {
+        "n": 32,
+        "negative": 12,
+        "p_value": 0.21532714972272515,
+        "positive": 20
+      },
+      "undirected_solved": 136,
+      "undirected_work": 203527
+    },
+    "gap8_grounding": {
+      "blind_solved": 121,
+      "blind_work": 928935,
+      "grounded_solved": 214,
+      "grounded_work": 355630,
+      "max_depth": 6,
+      "sign_test": {
+        "n": 240,
+        "negative": 44,
+        "p_value": 4.3805713537268174e-24,
+        "positive": 196
+      }
+    },
+    "superseded_v1_gates": {
+      "gap4_eviction_under_shift": true,
+      "gap4_exploration_accelerates_stream": false,
+      "gap4_promotions_have_measured_gain": true,
+      "gap6_layer2_certified": false,
+      "gap8_intrinsic_goals_help": true
+    },
+    "v2_false_certificate_count": 0,
+    "v2_gap2": {
+      "generic_macros": [
+        [
+          "macro[MAP(dec)>FOLD(prod)]"
+        ],
+        [],
+        [
+          "macro[MAP(half)>FOLD(mean)]"
+        ],
+        [],
+        []
+      ],
+      "law_only": [
+        183,
+        3582930
+      ],
+      "policy_validated": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "skeletons_no_source": [
+        346,
+        2943195
+      ],
+      "transfer": [
+        302,
+        3205395
+      ],
+      "transfer_vs_no_source_sign": {
+        "n": 410,
+        "negative": 195,
+        "p_value": 0.34808014210696336,
+        "positive": 215
+      }
+    },
+    "v2_gap3_per_seed": [
+      {
+        "meta_early_ratio": 0.004187855219862399,
+        "meta_late_ratio": 0.004278758668174888,
+        "meta_late_work": 71158.5,
+        "reset_late_ratio": 0.0028415899209147865,
+        "reset_late_work": 80503.66666666667,
+        "seed": 201
+      },
+      {
+        "meta_early_ratio": 0.0037417108139147187,
+        "meta_late_ratio": 0.004806396550175187,
+        "meta_late_work": 39304.5,
+        "reset_late_ratio": 0.0032877392140442294,
+        "reset_late_work": 49539.166666666664,
+        "seed": 202
+      },
+      {
+        "meta_early_ratio": 0.005831627272163286,
+        "meta_late_ratio": 0.004889838129496403,
+        "meta_late_work": 68033.83333333333,
+        "reset_late_ratio": 0.003311876107845881,
+        "reset_late_work": 78560.66666666667,
+        "seed": 203
+      },
+      {
+        "meta_early_ratio": 0.004701384583591651,
+        "meta_late_ratio": 0.006179882106864423,
+        "meta_late_work": 82182.16666666667,
+        "reset_late_ratio": 0.0034469338967031745,
+        "reset_late_work": 91431.5,
+        "seed": 204
+      },
+      {
+        "meta_early_ratio": 0.003971246166993415,
+        "meta_late_ratio": 0.004683278294806364,
+        "meta_late_work": 71969.16666666667,
+        "reset_late_ratio": 0.003260826341114248,
+        "reset_late_work": 80478.66666666667,
+        "seed": 205
+      }
+    ],
+    "v2_gap3_useful_ratio_sign": {
+      "n": 15,
+      "negative": 6,
+      "p_value": 0.60723876953125,
+      "positive": 9
+    },
+    "v2_gap4_6_per_seed": [
+      {
+        "deep5_evolved": 23,
+        "deep5_layer1_cap": 21,
+        "deep5_no_evolution": 22,
+        "deep5_tasks": 34,
+        "evolved_sleep_work": 93307,
+        "evolved_solved": 177,
+        "evolved_total_work": 1051312,
+        "layer2plus_certified": 25,
+        "layer3plus_certified": 0,
+        "no_evolution_solved": 175,
+        "no_evolution_total_work": 1066128,
+        "promoted": 20,
+        "promoted_used_in_certified": 55,
+        "seed": 201
+      },
+      {
+        "deep5_evolved": 18,
+        "deep5_layer1_cap": 18,
+        "deep5_no_evolution": 18,
+        "deep5_tasks": 28,
+        "evolved_sleep_work": 73483,
+        "evolved_solved": 184,
+        "evolved_total_work": 955159,
+        "layer2plus_certified": 27,
+        "layer3plus_certified": 0,
+        "no_evolution_solved": 184,
+        "no_evolution_total_work": 966189,
+        "promoted": 21,
+        "promoted_used_in_certified": 42,
+        "seed": 202
+      },
+      {
+        "deep5_evolved": 25,
+        "deep5_layer1_cap": 23,
+        "deep5_no_evolution": 21,
+        "deep5_tasks": 60,
+        "evolved_sleep_work": 111891,
+        "evolved_solved": 165,
+        "evolved_total_work": 1222505,
+        "layer2plus_certified": 35,
+        "layer3plus_certified": 4,
+        "no_evolution_solved": 160,
+        "no_evolution_total_work": 1243057,
+        "promoted": 24,
+        "promoted_used_in_certified": 54,
+        "seed": 203
+      },
+      {
+        "deep5_evolved": 26,
+        "deep5_layer1_cap": 22,
+        "deep5_no_evolution": 23,
+        "deep5_tasks": 58,
+        "evolved_sleep_work": 117326,
+        "evolved_solved": 172,
+        "evolved_total_work": 1183569,
+        "layer2plus_certified": 48,
+        "layer3plus_certified": 5,
+        "no_evolution_solved": 158,
+        "no_evolution_total_work": 1343425,
+        "promoted": 24,
+        "promoted_used_in_certified": 64,
+        "seed": 204
+      },
+      {
+        "deep5_evolved": 24,
+        "deep5_layer1_cap": 24,
+        "deep5_no_evolution": 22,
+        "deep5_tasks": 51,
+        "evolved_sleep_work": 132893,
+        "evolved_solved": 166,
+        "evolved_total_work": 1267938,
+        "layer2plus_certified": 7,
+        "layer3plus_certified": 1,
+        "no_evolution_solved": 158,
+        "no_evolution_total_work": 1326045,
+        "promoted": 21,
+        "promoted_used_in_certified": 36,
+        "seed": 205
+      }
+    ],
+    "v2_gap8a": {
+      "keyword_solved": 17,
+      "keyword_work": 13924,
+      "semantic_solved": 80,
+      "semantic_work": 1283,
+      "solved_sign_test": {
+        "n": 63,
+        "negative": 0,
+        "p_value": 2.168404344971009e-19,
+        "positive": 63
+      },
+      "tasks": 80
+    },
+    "v2_gap8b": {
+      "directed_solved": 164,
+      "goals": [
+        {
+          "domain": "CELL_AUTOMATA",
+          "failures": 2,
+          "goal": [
+            "seq",
+            "seq",
+            "(0,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "failures": 2,
+          "goal": [
+            "map",
+            "scalar",
+            "(-1, 0)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NUM_SERIES",
+          "failures": 3,
+          "goal": [
+            "seq",
+            "seq",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "GRAPH",
+          "failures": 3,
+          "goal": [
+            "map",
+            "map",
+            "(-1, 0)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "failures": 3,
+          "goal": [
+            "str",
+            "str",
+            "(1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "failures": 3,
+          "goal": [
+            "seq",
+            "seq",
+            "(0,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "failures": 3,
+          "goal": [
+            "map",
+            "scalar",
+            "(0, 1)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NUM_SERIES",
+          "failures": 5,
+          "goal": [
+            "seq",
+            "seq",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "GRAPH",
+          "failures": 1,
+          "goal": [
+            "map",
+            "scalar",
+            "(-1, 0)"
+          ],
+          "unseen": 1
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "failures": 2,
+          "goal": [
+            "str",
+            "scalar",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "failures": 1,
+          "goal": [
+            "seq",
+            "seq",
+            "(0,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "failures": 1,
+          "goal": [
+            "map",
+            "map",
+            "(-1,)"
+          ],
+          "unseen": 3
+        },
+        {
+          "domain": "NUM_SERIES",
+          "failures": 9,
+          "goal": [
+            "seq",
+            "seq",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "GRAPH",
+          "failures": 3,
+          "goal": [
+            "map",
+            "scalar",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "failures": 1,
+          "goal": [
+            "str",
+            "scalar",
+            "(1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "failures": 3,
+          "goal": [
+            "seq",
+            "scalar",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "failures": 6,
+          "goal": [
+            "map",
+            "scalar",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NUM_SERIES",
+          "failures": 8,
+          "goal": [
+            "seq",
+            "seq",
+            "(0,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "GRAPH",
+          "failures": 4,
+          "goal": [
+            "map",
+            "seq",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "failures": 3,
+          "goal": [
+            "str",
+            "str",
+            "(1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "CELL_AUTOMATA",
+          "failures": 3,
+          "goal": [
+            "seq",
+            "seq",
+            "(0,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "NESTED_DICT",
+          "failures": 3,
+          "goal": [
+            "map",
+            "map",
+            "(-1, 0)"
+          ],
+          "unseen": 9
+        },
+        {
+          "domain": "NUM_SERIES",
+          "failures": 7,
+          "goal": [
+            "seq",
+            "scalar",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "GRAPH",
+          "failures": 5,
+          "goal": [
+            "map",
+            "map",
+            "(-1,)"
+          ],
+          "unseen": 10
+        },
+        {
+          "domain": "STDLIB_BYTES",
+          "failures": 4,
+          "goal": [
+            "str",
+            "str",
+            "(1,)"
+          ],
+          "unseen": 10
+        }
+      ],
+      "none_solved": 106,
+      "undirected_solved": 116,
+      "vs_none": {
+        "n": 127,
+        "negative": 30,
+        "p_value": 1.984553317143075e-09,
+        "positive": 97
+      },
+      "vs_undirected": {
+        "n": 139,
+        "negative": 47,
+        "p_value": 0.00016852183862911795,
+        "positive": 92
+      }
+    },
+    "v2_wild": {
+      "law_tasks": 35,
+      "laws_correct": {
+        "linear": 6,
+        "mdl": 34
+      },
+      "repair_correct": {
+        "fixed": 15,
+        "learned": 16
+      },
+      "repair_plausible": {
+        "fixed": 26,
+        "learned": 26
+      },
+      "repair_work": {
+        "fixed": 3498673,
+        "learned": 3040157
+      },
+      "repaired_programs": [
+        "bucketsort",
+        "find_in_sorted",
+        "next_permutation",
+        "rpn_eval"
+      ]
+    },
+    "wrong_unique_answers": 182
+  }
+}
