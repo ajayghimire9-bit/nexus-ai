@@ -72,7 +72,7 @@ class AtomicFieldProjector:
             n = abs(value)
             bits = [(i, (n >> i) & 1) for i in range(n.bit_length())]
             return [(("bit", i), ("bit", i, b)) for i, b in bits] + [(("sign",), ("sign", value < 0))]
-        if isinstance(value, str):
+        if isinstance(value, (str, bytes, bytearray)):
             return [(("i", i), ("c", ch)) for i, ch in enumerate(value)]
         if isinstance(value, (list, tuple)):
             return [(("i", i), ("v", freeze(v) if _freezable(v) else repr(v))) for i, v in enumerate(value)]
@@ -112,7 +112,7 @@ class AtomicFieldProjector:
 
 
 def _is_container(value):
-    return isinstance(value, (str, list, tuple, dict, set, frozenset))
+    return isinstance(value, (str, bytes, bytearray, list, tuple, dict, set, frozenset))
 
 
 def _freezable(value):
