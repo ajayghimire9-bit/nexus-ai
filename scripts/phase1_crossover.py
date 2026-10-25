@@ -66,6 +66,8 @@ def table(rows, meta, cells, costs):
         for c in costs:
             agg = {a: dict(episodes=0, solved=0, probes=0, false=0, work=0.0, amortised=0.0, fully_loaded=0.0) for a in ARMS}
             for s, mt in meta.items():
+                if key not in mt.get("episodes", {}):
+                    continue                                  # unit not run (partial grid): never priced as zero
                 p = price([r for r in cr if r["seed"] == s], mt["episodes"][key], mt["once"], c)
                 for a in ARMS:
                     for k in agg[a]:
@@ -80,7 +82,10 @@ def table(rows, meta, cells, costs):
 
 
 def select(tab):
-    cand = [v for v in tab.values() if v["full_beats"]]
+    # corrected after the dev grid (disclosed in docs/NEXUS_WAVE26_PHASE1.md): a cell only counts if the
+    # vault arm also solves at least as many queries as exact_eig_enum - cost alone rewards giving up
+    cand = [v for v in tab.values() if v["full_beats"] and
+            v["arms"]["full_nexus_vault"]["solved"] >= v["arms"]["exact_eig_enum"]["solved"]]
     if not cand:
         return None
     cand.sort(key=lambda v: (not v["b"], -v["full_margin"], v["c"]))
@@ -133,7 +138,9 @@ def main():
         rep["G_tycho"] = g_tycho(rows)
         rep["G_replay"] = g_replay(__file__, ["--cell", a.cell, "--c", str(a.c), "--n", str(a.n)], rep["digest"])
         v = list(tab.values())[0]
-        rep["phase1_pass"] = v["full_beats"] and rep["G_soundness"]["passed"] and rep["G_replay"]["passed"]
+        rep["phase1_pass"] = (v["full_beats"] and
+                              v["arms"]["full_nexus_vault"]["solved"] >= v["arms"]["exact_eig_enum"]["solved"] and
+                              rep["G_soundness"]["passed"] and rep["G_replay"]["passed"])
     Path(a.out).write_text(json.dumps(dict(schema="wave26_phase1", report=rep, rows=rows), default=repr, sort_keys=True))
     for k, v in tab.items():
         ex = v["arms"]["exact_eig_enum"]["fully_loaded"]
