@@ -1,16 +1,215 @@
 # Wave 24 AZR–Ruler–CEGIS: pre-freeze report
 
-Updated 2026-10-25. **Verdict: v10 worker COMPLETE on the authorized
-`dev-24001-guidance-v10` grant. Independent replay of the saved
-payload is all-green (`integrity_valid`, `scientific_gates_passed`,
-`ready_for_freeze`). The parent CLI exited `1` on the first pass
-because two certified `NO_PROGRAM` stream cells were labeled
-`certificate_valid=False` and because skill-reuse / island witnesses
-were checked before unfold. Those are verifier bookkeeping issues,
-not a scientific miss. v7/v8/v9 stay closed. No freeze, commit, or
-push. v10 is consumed — do not retry.**
+Updated 2026-10-25. **Verdict: v11 executed exactly once on the authorized
+`dev-24001-guidance-v11` grant. Parent CLI exited `0` on the first pass
+(`integrity_valid`, `scientific_gates_passed`, `ready_for_freeze` all true,
+`errors=[]`). v11 also corrects a label leak found in v10's open-world
+arena (below): the v10 `12 > 11` open-world margin was obtained by selecting
+the piecewise repair against the hidden `task["expected"]` label. The v11
+`12 > 11` margin is honest. The requested `>= 13` open-world target was NOT
+met. v1–v11 are consumed. No freeze, commit or push.**
 
-## Latest: guidance v10 — live experience transfer, hop-1 compounding
+## Latest: guidance v11 — honest piecewise repair, unfold-before-validate, layered AST toolbox
+
+### Execution environment and ledger caveat
+
+Executed in a **fresh Claude Code cloud clone** of
+`codex/wave24-azr-ruler-cegis` at HEAD `cc837fa` plus the uncommitted v11
+sources below. Linux, Python 3.13.17, torch 2.14.1+cpu (CPU only, no MPS,
+no LLM). The v6–v10 `runs/experimental/wave24-azr` receipts live on the
+owner's Mac and are **not present in this clone**; only the tracked v1–v5
+receipts were importable. The run therefore used the owner-authorized
+`session_refresh_s=60.0` path, exactly like v10. The v11 receipt was written
+to this container's `runs/experimental/wave24-azr/attempts/dev-24001-guidance-v11`
+(gitignored, ephemeral). **Treat v11 as consumed on every machine**; the
+receipt digests are recorded below. Do not relaunch v11.
+
+### Integrity findings fixed before launch
+
+1. **Open-world label leak (v10).** `ConditionalPatchCombinator.propose`
+   returned a patch that memorized the failing public pairs and otherwise
+   returned the base op's output; `run_open_world_arena` then looped over
+   operators until `patch(query) == task["expected"]`. That is selection by
+   the hidden answer. It produced the only v10 task beyond static
+   (`OPEN_CODE_AND_SCHEMA_REPAIR #5`). Replaced by
+   `ConditionalPatchCombinator.synthesize`: a declared finite
+   `(guard, then_op, else_op)` space over a fixed task-agnostic guard family
+   (`is_negative`, `is_zero`, `is_float`, `is_empty`, public-input
+   `has_key[k]`, exception-safe `ok[op]`). A candidate must reproduce every
+   public pair; the query is certified only if all fitting candidates agree
+   (else `AMBIGUOUS_WITNESS_FOUND`). The expected label is used only for
+   grading after the choice is locked. Escalation runs only when hop-1 found
+   no unique program and some op fits some public pair.
+2. **Arena false-certificate count was hardcoded `0`.** Every claimed
+   arena certificate is now unfolded (`unfold_to_primitives`) and re-executed
+   on public IO and the query; the verifier independently recounts failed
+   certificates, requires `certificate_valid is True` on every solved
+   non-LLM cell, and recomputes `method_summary` from the cells.
+3. **Arena fuzz was a no-op** (it classified `expected` against itself).
+   `OpenWorldTwinFuzzer.probe` now runs the certified program on boundary
+   inputs and records `exec_err` / `raised` counts.
+4. **Unfold before validation.** New `unfold_to_primitives(expr, input_sort)`
+   (and `ParametricSkillMacro.unfold_to_primitives`) fully expands skill
+   calls, islands and open holes. `DualMemoryLearner._direct_ok` and the
+   verifier's `verify_direct_witness` now validate only the pure primitive
+   AST (the verifier rejects any residual skill/island/hole node).
+5. `NO_PROGRAM_IN_BOUNDED_GRAMMAR` baseline cells were already labeled as
+   valid negative certificates in the committed v10 code; unchanged.
+
+### Open-world arena: honest configurations measured before launch
+
+| Configuration | evolving solved | static solved | evolving work/solved | static work/solved |
+| --- | --- | --- | --- | --- |
+| v10 code (label-leaking repair) | 12 | 11 | 110.92 | 149.36 |
+| v11 default (hop-1 + declared piecewise) — **launched** | **12** | 11 | **123.42** | 149.36 |
+| v11 `residual_multihop=True` (hops=3 on hop-1 `NO_PROGRAM`) | 14 | 11 | 217.64 | 149.36 |
+
+The two deep solves need hop 2 and cost 653 and 913 work units, so with
+this engine `>= 13 solved` and `work/solved < 149.36` cannot both hold (13
+solves would average at least ~164). The flag defaults to off (v10
+protocol); the configuration was fixed before launch, not after seeing v11.
+Three authored arena labels appear wrong (`_teacher` checks the
+`strip().lower()` branch before the `#`-comment branch, so e.g.
+`OPEN_LOG_FORENSICS #5` expects `"#only\nkeep=3"`); evaluator labels were
+**not** changed.
+
+### v11 confirmation gates
+
+| Gate | v11 measured outcome |
+| --- | --- |
+| Parent CLI exit | **0 on Pass 1.** `integrity_valid=true`, `scientific_gates_passed=true`, `ready_for_freeze=true`, `replayed=true`, `errors=[]`. Worker in-process verify also integrity-valid. |
+| False certificates | **0** across 100/100 matrix cells, streams and arena (arena now directly re-executed and recounted). |
+| Identical-library guidance | **Cleared.** Learned 517 < fixed 545, same 3-skill library, 1 hop each. |
+| Adaptive vs fixed streams | **Cleared.** 12/12 > 11/12. |
+| Lifelong learning | **Cleared.** Adaptive training-inclusive 7,027 < cache 8,749 (< fixed 13,649); `lifelong_learning_demonstrated=true`. |
+| Unseen World 5 (`BIT_CELLULAR_AUTOMATA`) | **Cleared.** `unseen_world_selfplay_tasks=0`, `unseen_world_training_rows=0`, `unseen_world_zero_shot_transferred_skills_count=3`; deep (teacher primitive cost 4) target solved zero-shot: transferred doctor 561 work, unguided 577, source-free 881. |
+| Open-world arena | **Partially cleared.** Evolving 12 > 11 static/unpruned and > 4 LLM baseline; work/solved 123.42 < 149.36. **Requested `>= 13` not met** (see table above). |
+| Arena Lyapunov depths | **Cleared.** `[1, 2, 3, 4, 5]`, max 5. `arbitrary_depth_demonstrated=false`. |
+| ATP homeostasis | **Cleared.** ATP 100.0, entropy 0.9536 in [0.25, 0.98], freeze 0, drift 0, 10 Shift-4 distractors quarantined, band respected. |
+| Session remaining | `session_remaining_s=53.49` — **> 50.0 (gate list) but below the > 55.0 target** stated in the v11 brief. |
+| Runtime | Worker wall 6.470 s (supervised child incl. imports; internal wall 5.32 s), independent replay 0.038 s, peak RSS 236.6 MiB, cap 15 s. Slower than v10's 3.125 s on the owner's Mac; different machine. |
+
+Payload `execution_status=COMPLETE`, `source_manifest_version=11`,
+`direct_certificate_verification=true`, payload SHA-256 (embedded canonical)
+`cb8c7ac9619c41354e0d1ac214150d6f94384e999547794710d34327cb15086a`.
+Receipt file byte SHA-256s: `worker.json`
+`d65ecbd4a00357438eafaac3afeebb42c2a0ab5d89955a329cf595b112d2dfea`,
+`receipt.json` `77ced3c4c2463972b78c2d9a8970ffa0cec2abf7ee634617d687c00bb239fab6`,
+`complete-receipt.json` `12458e554f06683d1ece7826a752c0f8c5ce8fa12a895458b50293bf0dd64e17`,
+`verifier.json` `affa86564a9dc8d7b66f30d806d11b756c1a162f2588ee2f8d55bf35acc4ad28`.
+Capability flags: 6/7 (arbitrary depth honestly false;
+`all_seven_general_capabilities_demonstrated=false`). This is finite inspected
+source development on seed 24001, not general intelligence.
+
+### Tests
+
+- `pytest tests/test_wave24_*.py -W error::RuntimeWarning`: **180 passed, 0
+  warnings** (7.6 s), including new tests for piecewise synthesis (certifies
+  only on agreement, never reads a label, reports ambiguity), verifier
+  recounting of tampered arena cells, real fuzz, opt-in residual multi-hop,
+  `unfold_to_primitives`, `_direct_ok` on open/island witnesses, and the AST
+  compiler (multi-statement chain, if/else + try/except, layer-2 calling
+  layer-1, rejection on expansion disagreement, nursery/graduation).
+- Full unfiltered `pytest -v -W error::RuntimeWarning` was **not completed**:
+  after installing the `research` extras it ran >10 min at <1% of 421 files
+  (legacy RL studies; `tests/test_action_conditioned_q_resume.py` alone
+  exceeds 300 s and showed 2 early failures in untouched code). Stopped.
+- `tests/test_seed_wave24_cross_family_experiment.py` needs the local GGUF
+  model `qwen2.5-0.5b-instruct-q4_k_m.gguf`, absent in the cloud clone.
+
+### Playground and `evolved_toolbox.py` (dev sandbox)
+
+`python3 scripts/run_nexus_unlimited_playground.py --epochs 3 --dev-sandbox`
+exited 0 in 0.193 s: ATP 100.0, entropy 0.9536, 0 false certificates,
+`max_hierarchy_layer=2`, constructs `chain`/`if`/`try`, max primitive cost 7.
+New mechanics:
+
+- `UnlimitedPythonGround` scans all 11 SAFE_MODULES (math 43, statistics 36,
+  operator 13, itertools 10, re 6, collections 5, difflib 5, json 4, string 2,
+  fractions 2, datetime 0 unary candidates), drops int-identity and
+  behavioral duplicates, and fills the 24-op budget round-robin. Only `math`
+  and `operator` yield non-identity int→int behaviors under the int wrapper.
+- `compile_verified_skill_ast` builds real Python ASTs (`ast` nodes →
+  `ast.unparse` → `ast.parse` → `compile` → restricted `exec`), with
+  `v_i` stepping-stone locals, `if x < 0:` / `else:` phase splits and a
+  `try/except (ValueError, KeyError, ZeroDivisionError, TypeError,
+  OverflowError)` guard. Every function is checked against its fully unfolded
+  primitive plan on check inputs, public IO, the query and integer fuzz cases.
+- Three phases per epoch: explore (self-proposed novel depth-2 task, ≤3
+  proposals), compound (library-level search over skill singles/pairs, unique
+  query value required), phase-boundary probing (sign-flip divergence between
+  the top skill and a primitive → piecewise synthesis → conditional skill).
+- `skill_lineage.json` stores layer, callees, plan and pure primitive plan;
+  `PersistentNexusBrain.unfold_to_primitives(name)` reconstructs it.
+- Cold nursery: new skills hold no ATP; they graduate only after ≥2 verified
+  uses with measured ΔW > 0 (library-search work vs a primitive-only
+  counterfactual run, capped at 4,000 — so ΔW is a lower bound).
+
+Dev-sandbox toolbox after 3 epochs (epochs 0–1 were honestly
+`AMBIGUOUS_WITNESS_FOUND`; nothing graduated yet):
+
+```python
+def skill_2_chain_e63f679a(x):          # layer 1, 2 primitive steps
+    if not isinstance(x, int):
+        return x
+    v_1 = _apply(operator.inv, x)
+    v_2 = _apply(math.acos, v_1)
+    return v_2
+
+def skill_2_branch_1ce1fd2c(x):         # layer 2, calls layer 1
+    if not isinstance(x, int):
+        return x
+    try:
+        if x < 0:
+            v_1 = _apply(math.acos, x)
+            return v_1
+        else:
+            v_2 = skill_2_chain_e63f679a(x)
+            return v_2
+    except (ValueError, KeyError, ZeroDivisionError, TypeError, OverflowError):
+        v_3 = skill_2_chain_e63f679a(x)
+        return v_3
+```
+
+Honest caveats: `_apply` maps out-of-domain results back to the input, so
+several stdlib "skills" are behaviorally simple (e.g. `acos` on negatives is
+identity); the `except` branch is defensive and unreachable on int inputs
+because every step is already exception-safe. An informational 8-epoch run
+(not a gate) reached layer 6, max primitive cost 51, 4 graduated skills.
+Sections 2/4/5 of the v11 brief (new `AtomicFieldProjector` /
+`AtomicForceRole` classes, a local Qwen proposer in the playground,
+`UniversalForceFunctor` rename) were **not implemented**; the existing
+`atomic_signature` / `NoetherConservationGate` / role functors were reused.
+
+### Current working-tree SHA-256 (v11 sources)
+
+| Path | SHA-256 |
+| --- | --- |
+| `src/nexus/wave24_quotient_core.py` | `46336746ae130db673fcaa0b19b2e5cfd2f75b126f59cd2e5bf7ae3d745a839b` |
+| `src/nexus/wave24_self_evolving_loop.py` | `137825b0ac58ef4505cb06e27a4806bc6ef76b8dfd031aaad6bc6c3990ecc334` |
+| `src/nexus/wave24_open_world_arena.py` | `ff20dafc4a9d3d5d66bf87e28c0c356dd9e62698d567ad7d59d42a16d8ef8ef5` |
+| `src/nexus/wave24_unlimited_playground.py` | `834e18afbac3a9f808bbf65b23f93a6209b033246e10cc1fde4a2084f75fd6c1` |
+| `scripts/run_wave24_azr_ruler_cegis.py` | `19f1d1f18f688d4b6b4eb9ebe91bf5250011041dddd8044f193b444c6f190b82` |
+| `scripts/verify_wave24_azr_ruler_cegis.py` | `c7beba118061d528bb20a89491458b37a4d8703234f9a7420e7a1e5dd7120d62` |
+| `scripts/run_nexus_unlimited_playground.py` | `ce7d078204eb7af5dc73a4f211421db753392583f270b374173c5ebea5523f9f` |
+| `configs/wave24_azr_dev_guidance_allocation.json` | `5ac41d3a29d068b112d4c7c3f07c46ea19e382067fa0cdd65cc9295f1871101d` |
+| `tests/test_wave24_open_world_arena.py` | `11ec66fb6345990bb88feec6aa8efdd3d97cea4934eb9bda44e05bcdfa419edb` |
+| `tests/test_wave24_unlimited_playground.py` | `c7416be72e284e6026e14f59c5e4b65a88d8f8785be9579e06df08dbecedc8da` |
+| `tests/test_wave24_quotient_soundness.py` | `d6cd413c0a94c5e49161633c9124e7e70b7b12d0223e4a3ca8918dda1e170ea4` |
+| `tests/test_wave24_lifelong.py` | `7f17a3fd95f72cb87335c4fc89064faa18e94298cbf6631847fc005c919ac3e9` |
+| `artifacts/wave24_living_brain_sandbox/evolved_toolbox.py` (untracked) | `725c6d3248d51f16873a8f6547c4a4bbd9cb2442bbb98167b64e015661f00b05` |
+| `artifacts/wave24_living_brain_sandbox/skill_lineage.json` (untracked) | `d54f428fefdd729c2d32d0c10d6def9793f243f553d6e1d1e7f545367e2eb8af` |
+
+Other Wave24 sources are unchanged from the v10 table below.
+**Stop for inspection. Do not commit or push. Do not retry v7–v11.**
+Remaining before any freeze: the `>= 13` open-world target needs a cheaper
+hop-2 mechanism, not a looser gate; session remaining was 53.49 s (< 55);
+Commit-1 still requires a pushed freeze SHA and an explicit final allocation.
+
+## Historical: guidance v10 — live experience transfer, hop-1 compounding
+
+**v11 note:** v10's open-world `12 > 11` relied on label-selected piecewise
+repair (see v11 findings); its other gates are unaffected.
 
 Executed exactly once on `codex/wave24-azr-ruler-cegis` at committed
 HEAD `3616059f5595127fef9680ae4601107bd078f488` plus the uncommitted
