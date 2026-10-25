@@ -518,3 +518,53 @@ The record world is still small: 2–4 hypotheses' worth of answer clusters per 
    stratified sample, with its cost still billed.
 3. Keep S5/S6 gated: s3 already reaches one probe per task here, which leaves no headroom for an
    amortised probe head on this family.
+
+## 9. Locked confirmation protocol — answer-equivalence version spaces, dual-ledger vault, reasoning procedure
+
+Locked before any seed 501–505 outcome. Code: `src/nexus/wave25_vault.py` (+ instrumentation in
+`wave25_contracts.py`, `wave25_s3.py`, `wave24_v4_core.py`), tests `tests/test_wave25_vault.py`. Run once:
+`python3 scripts/confirm_wave25_vault.py --seeds 501 502 503 504 505 --replay --out
+artifacts/wave25_vault_confirmation.json` (the script refuses to overwrite).
+
+**Episodes.** Per seed and world (int lists; records with randomised field names and a correlated
+distractor), 30 multi-query episodes. Each episode is one latent teacher with public pairs, a first query
+q1 selected so the exact certificate on the public pairs is AMBIGUOUS, and a second query q2 sampled
+from the world. The declared space is fixed from the public inputs + q1. The oracle (teacher, 20 units
+per call, never on a query) allows 3 probes per query. Episodes from both worlds are interleaved in a
+seeded order, so the reasoning procedure evolves across worlds.
+
+**Arms.**
+1. `full`: S3 controller over the persistent version space; dual-ledger vault with online lower-bound
+   utility gating per context (no batch twin); ReasoningProcedure (contextual activation, two-tier
+   generator scheduling, soft op-order prior) with the sound early-ambiguity stop.
+2. `s3_batch`: the previous wave25 S3 with static batch-twin admission.
+3. `flat_eig`.
+4. `b_first`.
+5. `v4`.
+
+Arms 2–5 use the batch-admitted certifier. Every arm keeps its own observations from q1 to q2. A
+`full_no_reuse` counterfactual (q2 from public pairs only, on a frozen copy of the procedure) is reported
+and not counted in any total.
+
+**Fully loaded.** Total episode work, plus per seed the one-time contract learning (full) or learning +
+batch twin (others). Net at horizon 100 = per-episode work difference × 100 − overhead difference.
+
+**Gates.**
+* C1: 0 false certificates in every arm, both queries.
+* C2: the replay digest is identical.
+* C3: full solved ≥ every arm, AND full probes ≤ s3_batch's AND < flat_eig, b_first and v4.
+* C4: net benefit of full vs s3_batch at horizon 100 > 0.
+* C5: full q2 probes < full_no_reuse q2 probes, with 0 false certificates on q2.
+* C6: on every seed, the vault keeps every PROVED_SOUND contract, and the credited lower-bound net
+  utility of the full arm's active checks is ≥ 0.
+
+**Dev evidence (seeds 1–3; 180 episodes, 360 queries).**
+* Probes: full 199, s3_batch 201, flat_eig 207, b_first 208, v4 233 (v4 left 1 unsolved).
+* Work: full 1.135M, s3_batch 1.506M, flat_eig 1.420M.
+* Net vs s3_batch +245k.
+* q2 probes: full 19 vs 101 without reuse.
+* 0 false certificates.
+
+Declared risk: answer-directed q1 probing leaves more structure unresolved, so flat_eig and b_first pay
+fewer q2 probes (11 and 6) than full (19). Full's margin on total probes is small (199 vs 201 for
+s3_batch).

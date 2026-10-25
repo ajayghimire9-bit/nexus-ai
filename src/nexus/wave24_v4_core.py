@@ -332,6 +332,7 @@ class Searcher:
         self.abstract, self.max_depth = abstract, max_depth
         self.pruned_abstract = 0
         self.level_sizes = []
+        self.early_stopped_depth = None
         self._partial_keys = set()
         self._side, self._side_keys = [], set()
         self.frontier = [((), self.inputs)]
@@ -394,6 +395,7 @@ class Searcher:
                         found.setdefault(vkey(out[-1]), (prog, out[-1]))
                         if self.early and len(found) >= 2:
                             self.depth = depth
+                            self.early_stopped_depth = depth
                             return found
                     continue
                 nxt.append((prog, out))

@@ -113,7 +113,7 @@ def _thresholds(h):
     return {(s.path, s.val) for m in h for s in m.slots if isinstance(s, Pred)}
 
 
-def factored_candidates(H, yq, public, query, rng, m, *, max_pairs=6):
+def factored_candidates(H, yq, public, query, rng, m, *, max_pairs=6, labels=False):
     """Disagreement edits from competing answer clusters H_y1 vs H_y2 (binding and composition)."""
     clusters = defaultdict(list)
     for h, y in zip(H, yq):
@@ -150,11 +150,11 @@ def factored_candidates(H, yq, public, query, rng, m, *, max_pairs=6):
                         for j in range(i + 1, len(b)):
                             x = [dict(r) for r in b]
                             x[i][f], x[j][f] = x[j][f], x[i][f]
-                            out.append(x)
+                            out.append(("field_swap", x))
                         if isinstance(b[i][f], bool):
                             x = [dict(r) for r in b]
                             x[i][f] = not x[i][f]
-                            out.append(x)
+                            out.append(("bool_toggle", x))
             for path, val in th:
                 if not isinstance(val, (int, float)) or isinstance(val, bool):
                     continue
@@ -165,19 +165,19 @@ def factored_candidates(H, yq, public, query, rng, m, *, max_pairs=6):
                             x[i][path] = v
                         else:
                             x[i] = v
-                        out.append(x)
+                        out.append(("threshold_boundary", x))
             # composition-disagreement edits: boundary perturbations around k
             if comp_differs:
                 for i in range(len(b)):
-                    out.append([it for j, it in enumerate(b) if j != i])
-                    out.append([b[i]] + [it for j, it in enumerate(b) if j != i])
+                    out.append(("drop_item", [it for j, it in enumerate(b) if j != i]))
+                    out.append(("move_front", [b[i]] + [it for j, it in enumerate(b) if j != i]))
                     dup = dict(b[i]) if rec else b[i]
                     if rec:
                         for f in fields:
                             if f != "." and isinstance(dup.get(f), bool):
                                 dup[f] = not dup[f]
-                    out.append(list(b) + [dup])
-    return out
+                    out.append(("dup_toggle", list(b) + [dup]))
+    return out if labels else [x for _, x in out]
 
 
 def _dedup(cands, seen):

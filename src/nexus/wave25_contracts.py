@@ -255,14 +255,21 @@ def make_contract_pruner(props, *, attribution=None, maps=None):
     terminal = props.get("scalar_terminal", False)
     maps = list(maps or ())
 
+    last = [None]
+
     def note(key, n=1):
         if attribution is not None:
             attribution[key] += n
+        if not isinstance(key, tuple):
+            last[0] = key
 
     def prune(pub, targets, r, m):
+        last[0] = None
         hit = _prune(pub, targets, r, m)
         if hit:
             note(("remaining", r))
+            if last[0] is not None:
+                note(("by", last[0], r))
         return hit
 
     def _prune(pub, targets, r, m):
@@ -402,7 +409,8 @@ def tycho_admit_contracts(lib, val_tasks, world_of, *, micro=12, horizon=100, se
                      loo_abs_error_over_total_saving=sum(loo) / max(1, sum(savings)),
                      per_property_prunes=prop_attr, per_property_checks=checks,
                      per_property_value={p: round(v, 1) for p, v in value.items()}, admitted=admitted,
-                     prunes_by_remaining_depth={str(k[1]): c for k, c in attr_total.items() if isinstance(k, tuple)})
+                     prunes_by_remaining_depth={str(k[1]): c for k, c in attr_total.items()
+                                                if isinstance(k, tuple) and k[0] == "remaining"})
     return lib.tycho
 
 
