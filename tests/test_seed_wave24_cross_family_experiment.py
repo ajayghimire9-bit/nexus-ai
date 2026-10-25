@@ -90,6 +90,12 @@ def test_observational_quotient_witness_engine_100_percent_soundness_on_dev_suit
 
 def test_meta_procedure_optimizer_cross_family_transfer_and_symkan_gating() -> None:
     """(b) & (c) Verifies `MetaProcedureOptimizer` trained on Families A & B transfers to unseen Families C & D."""
+    from nexus.seed.wave21_grounded_llm_epistemic_gate import resolve_local_pretrained_gguf_path
+    try:
+        resolve_local_pretrained_gguf_path()
+    except FileNotFoundError:
+        import pytest
+        pytest.skip("local pretrained GGUF weights (qwen2.5-0.5b-instruct-q4_k_m.gguf) are absent on this machine")
     src_suite = build_wave24_source_training_suite()
     meta_opt = MetaProcedureOptimizer()
     train_info = meta_opt.fit_from_source_families_ab(src_suite['track2_source_tasks'])

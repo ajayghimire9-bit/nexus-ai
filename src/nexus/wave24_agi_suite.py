@@ -407,20 +407,37 @@ UNIQUE = "UNIQUE_MINIMAL_DEPTH_IN_DECLARED_SPACE"
 
 def recovery_tool(a, b):
     def run(x, a=a, b=b):
+        run.last_cost = 0
         try:
-            return a(x)
+            out = a(x)
+            run.last_cost += _cost_of(a)
+            return out
         except Exception:
-            return b(x)
+            run.last_cost += _cost_of(a)
+            try:
+                return b(x)
+            finally:
+                run.last_cost += _cost_of(b)
+    run.last_cost = 0
     return Tool(f"try[{a.name}|{b.name}]", run, f"{a.doc} otherwise {b.doc}", a.cost + b.cost,
                 layer=max(a.layer, b.layer) + 1, parts=(a.name, b.name), children=(a, b), kind="recovery")
+
+
+def _cost_of(tool):
+    return max(1, tool.fn.last_cost) if hasattr(tool.fn, "last_cost") else tool.cost
 
 
 def macro_tool(tools_by_name, chain):
     parts = [tools_by_name[n] for n in chain]
     def run(x, parts=parts):
+        run.last_cost = 0
         for p in parts:
-            x = p(x)
+            try:
+                x = p(x)
+            finally:
+                run.last_cost += _cost_of(p)   # exact primitive work of every part, loops included
         return x
+    run.last_cost = 0
     return Tool("macro[" + ">".join(chain) + "]", run, " then ".join(p.doc for p in parts),
                 sum(p.cost for p in parts), layer=max(p.layer for p in parts) + 1, parts=tuple(chain),
                 children=tuple(parts), kind="macro")
@@ -429,14 +446,20 @@ def macro_tool(tools_by_name, chain):
 def apply_tool(tool, values, meter, category="search_work_units", *, where=None):
     """Apply to every value (each application charged). `where`, if a list, receives the faulting index."""
     out = []
+    variable = hasattr(tool.fn, "last_cost")   # loops report their exact step count
     for i, v in enumerate(values):
-        meter.charge(category, tool.cost)
+        if not variable:
+            meter.charge(category, tool.cost)
         try:
             out.append(tool(v))
         except Exception:
+            if variable:
+                meter.charge(category, max(1, tool.fn.last_cost))
             if where is not None:
                 where.append(i)
             return None, True
+        if variable:
+            meter.charge(category, max(1, tool.fn.last_cost))
     return out, False
 
 
@@ -585,8 +608,13 @@ def grade(task, res):
 class NexusLearner:
     """One persistent learner across domains: forces, world model, policy, macros, explorer."""
 
-    def __init__(self, *, seed=0, meta=True, transfer=True, frozen=False):
+    def __init__(self, *, seed=0, meta=True, transfer=True, frozen=False, skeleton_mode="none", invent=True):
         self.meta, self.transfer, self.frozen = meta, transfer, frozen
+        self.skeleton_mode = skeleton_mode   # none | all | transfer
+        self.skeleton_prior = Counter()      # domain-agnostic (type, slot) schemas seen in certified solutions
+        self.relevance = Counter()           # (abstract I/O feature, skeleton type) -> certified uses
+        self.feature_seen = Counter()        # abstract I/O feature -> certified solutions
+        self.invent = invent
         self.policy = StoneUsefulnessPolicy()
         self.rng = random.Random(seed)
         self.classifier = AtomicForceClassifier()
@@ -687,20 +715,68 @@ class NexusLearner:
     def toolset(self):
         return self.tools + [m for m in self.macros.values()]
 
+    @staticmethod
+    def io_feature(task):
+        """Domain-agnostic task signature: (input kind, output kind, mass relation)."""
+        def kind(v):
+            return "map" if isinstance(v, dict) else "str" if isinstance(v, (str, bytes)) else \
+                "seq" if isinstance(v, (list, tuple)) else "scalar"
+        x, y = task.public[0]
+        rel = {(amass(b) > amass(a)) - (amass(b) < amass(a)) for a, b in task.public}
+        return (kind(x), kind(y), tuple(sorted(rel)))
+
+    def relevant_types(self, task, *, min_seen=3, floor=0.1):
+        """Learned skeleton-type relevance for this I/O signature, or None (no evidence -> all types)."""
+        f = self.io_feature(task)
+        n = self.feature_seen[f]
+        if n < min_seen:
+            return None
+        from nexus.wave24_skeletons import SKELETON_TYPES
+        return {t for t in SKELETON_TYPES if self.relevance[(f, t)] / n >= floor}
+
+    def task_skeletons(self, task, restrict=True):
+        """Skeleton instantiations for this task (parameters fitted on its public inputs only)."""
+        if self.skeleton_mode == "none":
+            return []
+        from nexus.wave24_skeletons import skeleton_library, spec_key, SKELETON_TYPES
+        types = self.relevant_types(task) if (restrict and self.meta) else None
+        lib = skeleton_library([x for x, _ in task.public], self.tools, types=SKELETON_TYPES if types is None else types)
+        if self.skeleton_mode == "transfer":
+            allowed = {k for k, n in self.skeleton_prior.items() if n >= 1}
+            lib = [t for t in lib if spec_key(t) in allowed]
+        return lib
+
     # ---- solving one task with the full learned system
     def solve(self, task, *, budget, max_depth=4):
-        res = solve(task, self.toolset(), max_depth=max_depth, budget=budget, learned=True,
+        restricted = self.meta and self.skeleton_mode != "none" and self.relevant_types(task) is not None
+        task_tools = self.toolset() + self.task_skeletons(task)
+        for t in task_tools:
+            # skeleton types are domain-agnostic force classes the policy can transfer across families
+            self.forces.setdefault(t.name, "SK_" + t.name.split("(")[0] if t.kind == "skeleton" else "F_COMPOSITE")
+        res = solve(task, task_tools, max_depth=max_depth, budget=budget, learned=True,
                     model=self.model, policy=self.policy if self.policy_prune else None, forces=self.forces_all(),
                     recovery_map=self.recovery_map, laws=self.laws, predict=self.predict_on,
                     fault_memory=self.fault_memory)
         if not getattr(self, "_exploring", False):
             self._gate_prediction(task, res)
+        if restricted and res.status != UNIQUE and res.work < budget:
+            # Declared fallback: learned skeleton relevance mispredicted -> full skeleton library.
+            full = self.toolset() + self.task_skeletons(task, restrict=False)
+            for t in full:
+                self.forces.setdefault(t.name, "SK_" + t.name.split("(")[0] if t.kind == "skeleton" else "F_COMPOSITE")
+            spent = res.work
+            res = solve(task, full, max_depth=max_depth, budget=max(1, budget - spent), learned=True, model=self.model,
+                        policy=self.policy if self.policy_prune else None, forces=self.forces_all(),
+                        laws=self.laws, predict=self.predict_on, fault_memory=self.fault_memory)
+            res.work += spent
+            res.relevance_fallback = True
+            task_tools = full
         if res.status == "UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED" or (res.status == "NO_PROGRAM_IN_BOUNDED_GRAMMAR"
                                                                    and (res.pruned_policy or res.pruned_model)):
             # Declared fallback: the pruned space was empty/insufficient -> exhaustive search,
             # paying the remaining budget. Work of BOTH passes is counted.
             spent = res.work
-            res2 = solve(task, self.toolset(), max_depth=max_depth, budget=max(1, budget - spent), learned=False,
+            res2 = solve(task, task_tools, max_depth=max_depth, budget=max(1, budget - spent), learned=False,
                          model=self.model, forces=self.forces_all(), laws=self.laws)
             res2.work += spent
             res2.fallback = True
@@ -745,7 +821,15 @@ class NexusLearner:
         for tool in getattr(res, "_chain", ()):
             if tool.kind == "recovery":
                 self.recovery_map.setdefault(tool.children[0].name, set()).add(tool.children[1].name)
-        if getattr(self, "_exploring", False):
+        from nexus.wave24_skeletons import skeletons_in
+        keys = skeletons_in(getattr(res, "_chain", ()))
+        for key in keys:
+            self.skeleton_prior[key] += 1
+        f = self.io_feature(task)
+        self.feature_seen[f] += 1
+        for t in {k[0] for k in keys}:
+            self.relevance[(f, t)] += 1
+        if getattr(self, "_exploring", False) or not self.invent:
             return  # self-play contributes knowledge (faults, transitions), never stream recurrence counts
         # invent-vs-reuse: a sub-chain (primitives, recovery composites or existing macros) is
         # invented only once it RECURS in certified solutions; composites of composites raise the layer.

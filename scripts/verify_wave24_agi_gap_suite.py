@@ -199,7 +199,125 @@ def verify(payload):
                                 goals=[x for run in g["gap8_goals"] for x in run["goals"]])
     gates["gap8_intrinsic_goals_help"] = (sum(r["solved"] for r in D) >= sum(r["solved"] for r in U)
         and sum(r["work"] for r in D) < sum(r["work"] for r in U))
+    if "gaps_v2" in payload:
+        for old in ("gap4_exploration_accelerates_stream", "gap4_promotions_have_measured_gain", "gap4_eviction_under_shift",
+                    "gap6_layer2_certified", "gap8_intrinsic_goals_help"):
+            report.setdefault("superseded_v1_gates", {})[old] = gates.pop(old)
+        verify_v2(payload["gaps_v2"], gates, report)
     return dict(gates=gates, all_passed=all(gates.values()), failed=[k for k, v in gates.items() if not v], report=report)
+
+
+def verify_v2(g, gates, report):
+    """Predeclared v2 gates (docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md, section v2)."""
+    v2_rows = [r for runs in g.values() for run in runs for r in run.get("rows", [])]
+    false = sum(1 for r in v2_rows if r.get("certificate_valid") is False)
+    report["v2_false_certificate_count"] = false
+    gates["v2_zero_false_certificates"] = false == 0
+
+    # gaps 4 + 6 (every seed)
+    per = []
+    for run in g["gap4_6"]:
+        rows, doms = run["rows"], run["domains"]
+        def m(method, key):
+            return [r for r in rows if r["method"] == method]
+        ev, no, cap = m("evolved", 0), m("no_evolution", 0), m("evolved_layer1_cap", 0)
+        overhead = lambda method: sum(d["sleep_work"] + d["setup_work"] for d in doms if d["method"] == method)
+        promoted = sum(len(d["promotions"]) for d in doms if d["method"] == "evolved")
+        names = {p["macro"] for d in doms if d["method"] == "evolved" for p in d["promotions"]}
+        used = sum(1 for r in ev if r["solved"] and any(w in names for w in r["witness"]))
+        per.append(dict(seed=run["seed"], promoted=promoted, promoted_used_in_certified=used,
+                        evolved_solved=sum(r["solved"] for r in ev), no_evolution_solved=sum(r["solved"] for r in no),
+                        evolved_total_work=sum(r["work"] for r in ev) + overhead("evolved"),
+                        no_evolution_total_work=sum(r["work"] for r in no) + overhead("no_evolution"),
+                        evolved_sleep_work=sum(d["sleep_work"] for d in doms if d["method"] == "evolved"),
+                        layer2plus_certified=sum(1 for r in ev if r["solved"] and r["layer_max"] >= 2),
+                        layer3plus_certified=sum(1 for r in ev if r["solved"] and r["layer_max"] >= 3),
+                        deep5_evolved=sum(r["solved"] for r in ev if r["depth"] >= 5),
+                        deep5_layer1_cap=sum(r["solved"] for r in cap if r["depth"] >= 5),
+                        deep5_no_evolution=sum(r["solved"] for r in no if r["depth"] >= 5),
+                        deep5_tasks=sum(1 for r in ev if r["depth"] >= 5)))
+    report["v2_gap4_6_per_seed"] = per
+    gates["v2_gap4_promoted_and_used_every_seed"] = all(s["promoted"] > 0 and s["promoted_used_in_certified"] > 0 for s in per)
+    gates["v2_gap4_more_solved_every_seed"] = all(s["evolved_solved"] > s["no_evolution_solved"] for s in per)
+    gates["v2_gap4_less_total_work_every_seed"] = all(s["evolved_total_work"] < s["no_evolution_total_work"] for s in per)
+    gates["v2_gap6_layer2plus_ge15_every_seed"] = all(s["layer2plus_certified"] >= 15 for s in per)
+    gates["v2_gap6_hierarchy_unlocks_depth5"] = (sum(s["deep5_evolved"] for s in per) > sum(s["deep5_layer1_cap"] for s in per)
+                                                 and all(s["deep5_evolved"] >= s["deep5_layer1_cap"] for s in per))
+
+    # gap 2 v2
+    rows2 = [r for run in g["gap2_v2"] for r in run["rows"]]
+    tot = lambda method: (sum(r["solved"] for r in rows2 if r["method"] == method),
+                          sum(r["work"] + r.get("setup_work", 0) for r in rows2 if r["method"] == method))
+    T, Lw, N = tot("skeleton_policy_transfer"), tot("law_only"), tot("skeletons_no_source")
+    TT = [r for r in rows2 if r["method"] == "skeleton_policy_transfer"]
+    NN = [r for r in rows2 if r["method"] == "skeletons_no_source"]
+    report["v2_gap2"] = dict(transfer=T, law_only=Lw, skeletons_no_source=N,
+                             transfer_vs_no_source_sign=sign_test([b["work"] - a["work"] for a, b in zip(TT, NN)]),
+                             generic_macros=[run["generic_macros"] for run in g["gap2_v2"]],
+                             policy_validated=[run["policy_validated"] for run in g["gap2_v2"]])
+    gates["v2_gap2_skeleton_policy_beats_law_only"] = T[0] > Lw[0] and T[1] < Lw[1]
+
+    # gap 3 v2
+    seeds3, pairs = [], []
+    for run in g["gap3_v2"]:
+        rs = run["runs"]
+        mean = lambda method, ps, key="acquisition_work": sum(r[key] for r in rs if r["method"] == method and r["position"] in ps) / \
+            max(1, sum(1 for r in rs if r["method"] == method and r["position"] in ps))
+        ratio = lambda method, ps: sum(r["on_path"] for r in rs if r["method"] == method and r["position"] in ps) / \
+            max(1, sum(r["expansions"] for r in rs if r["method"] == method and r["position"] in ps))
+        for o in {r["order"] for r in rs}:
+            ro = [r for r in rs if r["order"] == o and r["method"] == "meta"]
+            e = sum(r["on_path"] for r in ro if r["position"] in (0, 1)) / max(1, sum(r["expansions"] for r in ro if r["position"] in (0, 1)))
+            l = sum(r["on_path"] for r in ro if r["position"] in (3, 4)) / max(1, sum(r["expansions"] for r in ro if r["position"] in (3, 4)))
+            pairs.append(l - e)
+        seeds3.append(dict(seed=run["seed"], meta_late_work=mean("meta", (3, 4)), reset_late_work=mean("reset", (3, 4)),
+                           meta_early_ratio=ratio("meta", (0, 1)), meta_late_ratio=ratio("meta", (3, 4)),
+                           reset_late_ratio=ratio("reset", (3, 4))))
+    report["v2_gap3_per_seed"] = seeds3
+    report["v2_gap3_useful_ratio_sign"] = sign_test(pairs)
+    gates["v2_gap3_late_meta_cheaper_than_reset_every_seed"] = all(s["meta_late_work"] < s["reset_late_work"] for s in seeds3)
+    st = sign_test(pairs)
+    gates["v2_gap3_useful_branch_ratio_increases"] = st["positive"] > st["negative"] and st["p_value"] < ALPHA
+
+    # gap 8a v2: semantic parser vs keyword retrieval (paired per task, solved outcome)
+    rows8 = [r for run in g["gap8a_v2"] for r in run["rows"]]
+    S = [r for r in rows8 if r["method"] == "semantic_parser"]
+    K = [r for r in rows8 if r["method"] == "keyword_retrieval"]
+    t8 = sign_test([int(a["solved"]) - int(b["solved"]) for a, b in zip(S, K)])
+    report["v2_gap8a"] = dict(semantic_solved=sum(r["solved"] for r in S), keyword_solved=sum(r["solved"] for r in K),
+                              semantic_work=sum(r["work"] for r in S), keyword_work=sum(r["work"] for r in K), tasks=len(S),
+                              solved_sign_test=t8)
+    gates["v2_gap8a_semantic_beats_keyword"] = (t8["positive"] > t8["negative"] and t8["p_value"] < 0.01
+                                                and sum(r["work"] for r in S) < sum(r["work"] for r in K))
+
+    # gap 8b v2: per-task p < 0.01 vs undirected AND vs no self-training (work), solved >=
+    rows8b = [r for run in g["gap8b_v2"] for r in run["rows"]]
+    for r in rows8b:
+        r["work_cost"] = r["work"] + (0 if r["solved"] else 10**6)
+    D, U, tu = paired(rows8b, "directed", "undirected", key=lambda r: r["work_cost"])
+    D2, Nn, tn = paired(rows8b, "directed", "no_self_training", key=lambda r: r["work_cost"])
+    report["v2_gap8b"] = dict(directed_solved=sum(r["solved"] for r in D), undirected_solved=sum(r["solved"] for r in U),
+                              none_solved=sum(r["solved"] for r in Nn), vs_undirected=tu, vs_none=tn,
+                              goals=[x for run in g["gap8b_v2"] for x in run["goals"]])
+    gates["v2_gap8b_directed_beats_undirected_p01"] = tu["positive"] > tu["negative"] and tu["p_value"] < 0.01 \
+        and sum(r["solved"] for r in D) >= sum(r["solved"] for r in U)
+    gates["v2_gap8b_directed_beats_none_p01"] = tn["positive"] > tn["negative"] and tn["p_value"] < 0.01 \
+        and sum(r["solved"] for r in D) >= sum(r["solved"] for r in Nn)
+
+    # wild external arena
+    rep_rows = [r for run in g["wild"] for r in run["repair"]]
+    law_rows = [r for run in g["wild"] for r in run["laws"]]
+    agg = lambda rows, method, key: sum(r[key] for r in rows if r["method"] == method)
+    report["v2_wild"] = dict(repair_correct=dict(learned=agg(rep_rows, "learned", "correct"), fixed=agg(rep_rows, "fixed", "correct")),
+                             repair_plausible=dict(learned=agg(rep_rows, "learned", "plausible"), fixed=agg(rep_rows, "fixed", "plausible")),
+                             repair_work=dict(learned=agg(rep_rows, "learned", "work"), fixed=agg(rep_rows, "fixed", "work")),
+                             repaired_programs=sorted({r["program"] for r in rep_rows if r["method"] == "learned" and r["correct"]}),
+                             laws_correct=dict(mdl=agg(law_rows, "mdl_law_discovery", "correct"), linear=agg(law_rows, "linear_fit", "correct")),
+                             law_tasks=len(law_rows) // 2)
+    w = report["v2_wild"]
+    gates["v2_wild_code_repair"] = w["repair_correct"]["learned"] >= w["repair_correct"]["fixed"] and \
+        w["repair_correct"]["learned"] > 0 and w["repair_work"]["learned"] < w["repair_work"]["fixed"]
+    gates["v2_wild_law_discovery"] = w["laws_correct"]["mdl"] > w["laws_correct"]["linear"]
 
 
 def main(argv=None):

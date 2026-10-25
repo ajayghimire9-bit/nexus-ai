@@ -27,10 +27,13 @@ from nexus.wave24_open_world_arena import run_open_world_arena  # noqa: E402
 from nexus.wave24_quotient_core import WorkMeter  # noqa: E402
 
 EVAL_SEEDS = (101, 102, 103, 104, 105)
+EVAL_SEEDS_V2 = (201, 202, 203, 204, 205)
 SOURCES = ("src/nexus/wave24_domains.py", "src/nexus/wave24_agi_suite.py", "src/nexus/wave24_agi_benchmarks.py",
            "src/nexus/wave24_auto_laws.py", "src/nexus/wave24_open_world_arena.py",
            "scripts/run_wave24_agi_gap_suite.py", "scripts/verify_wave24_agi_gap_suite.py",
-           "docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md")
+           "docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md", "src/nexus/wave24_skeletons.py", "src/nexus/wave24_wake_sleep.py",
+           "src/nexus/wave24_semantic_spec.py", "src/nexus/wave24_code_repair.py", "src/nexus/wave24_agi_benchmarks_v2.py",
+           "fixtures/quixbugs/split.json")
 WALL_CAP_S = 900.0
 
 
@@ -41,8 +44,11 @@ def source_hashes():
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default=str(ROOT / "artifacts" / "wave24_agi_gap_suite.json"))
-    ap.add_argument("--seeds", type=int, nargs="*", default=list(EVAL_SEEDS))
+    ap.add_argument("--seeds", type=int, nargs="*")
+    ap.add_argument("--suite", choices=("v1", "v2"), default="v1")
     args = ap.parse_args(argv)
+    if args.seeds is None:
+        args.seeds = list(EVAL_SEEDS_V2 if args.suite == "v2" else EVAL_SEEDS)
     out = Path(args.out)
     if out.exists():
         raise SystemExit(f"{out} already recorded; the locked evaluation is one-use")
@@ -60,6 +66,17 @@ def main(argv=None):
                 payload["execution_status"] = "INCOMPLETE_WALL_CAP"
                 break
             payload["gaps"][name].append(fn(seed))
+    if args.suite == "v2":
+        from nexus.wave24_agi_benchmarks_v2 import GAPS_V2
+        payload["suite"] = "v2"
+        payload["gaps_v2"] = {}
+        for name, fn in GAPS_V2.items():
+            payload["gaps_v2"][name] = []
+            for seed in args.seeds:
+                if time.perf_counter() - started > WALL_CAP_S:
+                    payload["execution_status"] = "INCOMPLETE_WALL_CAP"
+                    break
+                payload["gaps_v2"][name].append(fn(seed))
     payload["open_world_arena"] = run_open_world_arena(WorkMeter(limit=8_000_000, wall_limit=8.))
     payload.setdefault("execution_status", "COMPLETE")
     payload["wall_s"] = time.perf_counter() - started
