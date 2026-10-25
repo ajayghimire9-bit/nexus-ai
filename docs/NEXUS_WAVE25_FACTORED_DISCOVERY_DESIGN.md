@@ -674,3 +674,54 @@ Python sets of strings, whose order depends on the per-process hash seed. It now
 order. The S3 (§8) and vault (§10) runs were replayed only in-process (same hash seed), so their exact
 digests are not guaranteed across processes. Their single-run results stand as recorded, but an exact
 re-run may differ in tie-breaks.
+
+## 12. Confirmation result (seeds 601–605, frozen code `b7d7a48`) — 3 / 6 gates
+
+Single run. The replay ran in a separate process with `PYTHONHASHSEED=424242`, and the digest `9b7af14b…1897`
+was identical. Artifact: `artifacts/wave25_anticipate_confirmation.json`, sha256
+`d89efecbe0d743b909d7d92664a2b8d8bd54f66fc271df456c8cd45ad95caba2`. 200 episodes per regime (A: 200
+queries; B and C: 400 queries each).
+
+| Arm | Solved (A / B / C) | Probes A / B / C | Total probes | Fully loaded work |
+| --- | --- | --- | --- | --- |
+| revisable | 200 / 400 / 396 | 200 / 228 / 249 | 677 | 3,779,348 |
+| myopic (ab0dcd5) | 200 / 400 / 396 | 200 / 234 / 259 | 693 | **3,655,671** |
+| fixed_lambda | 200 / 400 / 396 | 200 / 229 / 248 | 677 | 3,844,476 |
+| s3_batch | 200 / 400 / 396 | 200 / 231 / 257 | 688 | 5,446,368 |
+| b_first | 200 / 400 / 396 | 213 / 226 / 231 | **670** | 5,978,959 |
+| flat_eig | 200 / 400 / 396 | 221 / 244 / 263 | 728 | 5,411,108 |
+
+| Gate | Result |
+| --- | --- |
+| C1 zero false certificates | **PASS** (0 in every arm, regime and seed; the 4 unsolved regime-C queries are AMBIGUOUS within the probe budget in every arm) |
+| C2 deterministic replay (cross-process) | **PASS** |
+| C3 probe dominance | **FAIL**: revisable 677 > b_first 670; on A + C, revisable 449 vs fixed_lambda 448 (needed strictly fewer). It beats myopic (−16), s3_batch (−11) and flat_eig (−51). |
+| C4 lowest fully-loaded work | **FAIL**: myopic is lower by 123,677 (3.4%). Revisable beats fixed_lambda (−65k), s3_batch (−1.67M), flat_eig (−1.63M) and b_first (−2.20M). |
+| C5 revisable belief adaptation | **FAIL**: `p_cont` revised correctly on every seed (A → 0.00, B and C → 1.00, no labels), but the boundary weight in C exceeded B on only 3 of 5 seeds |
+| C6 vault integrity | **PASS** (30 PROVED_SOUND kept in every NEXUS arm, regime and seed; credited net utility positive) |
+
+**What the evidence says.**
+* The continuation belief works. With no follow-ups, the revisable controller converges to the myopic
+  controller's behaviour (0 lookahead probes, 200 probes in A, the same as myopic). But it pays its early
+  exploration (+11k work in A vs myopic).
+* Lookahead buys a small probe reduction when follow-ups exist (B: −6, C: −10 vs myopic). The extra
+  candidate evaluations cost more than those probes save, so fully-loaded work rises 3.4%. Under this cost
+  model, one probe (20 oracle units plus re-certification) is cheaper than scanning dozens of candidates
+  against |H| hypotheses.
+* Bindings-first still has the fewest total probes. It over-invests on q1 (213 in A) but nearly
+  eliminates follow-up probes. Its work, however, is 58% higher.
+* The proxy-mixture signal (whether a follow-up was ambiguous under V_t) does not separate the shifted
+  regime from the related one. Regime-C follow-ups were selected to be ambiguous under the *public-only*
+  version space, but most stop being ambiguous once q1's probes have refined V_t, so the signal is weak.
+
+**Conclusion.** On this benchmark family, anticipating follow-up queries does not dominate. The myopic
+answer-directed controller remains the best on cost; resolving structure eagerly remains the best on
+probe count. They trade off, and the revisable controller sits between them without beating either on
+its own axis. The revisable *belief* machinery is validated (correct, label-free revision of `p_cont`), but
+the lookahead it gates has little leverage here, because the oracle is cheap relative to candidate scoring.
+
+**Next experiment (one):** make the trade-off explicit rather than hoping one controller dominates.
+Raise the oracle cost into the regime where probes are expensive (e.g., 20 → 2,000 units, as when a
+probe is a real experiment), on fresh seeds. Test whether the revisable controller then dominates myopic
+on fully-loaded work in B and C while staying equal in A. This is the regime the anticipatory design is
+for, and the current cost model does not exercise it.
