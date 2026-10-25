@@ -28,7 +28,7 @@ from nexus.wave24_quotient_core import (
     expanded_skill_call,
     expression_wire,
     PopperianTwinVerifier,
-    ExhaustiveASTEnumerator, unfold_workspace_expr, expression_from_wire,
+    ExhaustiveASTEnumerator, unfold_workspace_expr, unfold_to_primitives, expression_from_wire,
     NoetherConservationGate, atomic_signature, structural_mass, locus_mask,
 )
 from nexus.wave24_auto_laws import (AutoOperatorFingerprinter, structural_measure, OpenPythonToolboxAdapter,
@@ -2460,7 +2460,9 @@ class DualMemoryLearner:
     def _direct_ok(self, grammar, task, result):
         if result.status != "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE" or not result.witnesses:
             return False
-        expr = result.witnesses[0]
+        # Skill calls / islands are unfolded to pure primitive syntax first, as
+        # the independent verifier does; a folded witness is never trusted.
+        expr = unfold_to_primitives(result.witnesses[0], grammar.input_sort, self.meter)
         for x, y in task.public_io:
             if freeze(eval_expr(expr, x, grammar.ops, self.meter, "direct_certificate_work_units")) != freeze(y):
                 return False

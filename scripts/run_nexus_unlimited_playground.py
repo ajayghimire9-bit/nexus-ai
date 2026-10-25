@@ -37,10 +37,18 @@ def main(argv=None):
         "normalized_atp_entropy": report["normalized_atp_entropy"],
         "recipes": report["recipes"],
         "solved": [row["solved"] for row in report["reports"]],
+        "max_hierarchy_layer": report["max_hierarchy_layer"],
+        "constructs": report["constructs"],
+        "max_primitive_cost": report["max_primitive_cost"],
+        "nursery": report["nursery"],
+        "graduated": report["graduated"],
+        "false_certificate_count": report["false_certificate_count"],
         "wall_s": report["wall_s"],
         "brain_dir": brain_dir,
     }, indent=2, sort_keys=True))
     PersistentNexusBrain(brain_dir).metabolic.assert_stable()
+    if report["false_certificate_count"]:
+        raise SystemExit("playground produced a false certificate")
     if args.dev_sandbox and report["wall_s"] >= 0.5:
         raise SystemExit("dev-sandbox playground exceeded 0.5s")
     return 0

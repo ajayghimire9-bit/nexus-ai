@@ -33,13 +33,85 @@ def test_open_world_stream_is_twenty_four_tasks_across_four_shifts():
     assert all(len([t for t in tasks if t["shift"] == s]) == 6 for s in {t["shift"] for t in tasks})
 
 
-def test_piecewise_combinator_repairs_d_fail_when_base_fits_half():
+def test_piecewise_combinator_splits_d_pass_and_d_fail_without_memorizing():
     def base(x):
         return x.strip()
     public = (("  ok  ", "ok"), ("  yes ", "yes"), ("nope", "FIXED"))
-    patch = ConditionalPatchCombinator().propose(None, public, base, meter=meter())
-    assert patch and len(patch["D_fail"]) == 1
-    assert patch["patch"]("nope") == "FIXED" and patch["patch"]("  ok  ") == "ok"
+    split = ConditionalPatchCombinator().propose(None, public, base, meter=meter())
+    assert split and len(split["D_pass"]) == 2 and len(split["D_fail"]) == 1
+    assert "patch" not in split  # no lookup table of failing labels
+
+
+def _ops():
+    return (
+        Operator("op_0", ("INT",), "INT", lambda x: abs(x)),
+        Operator("op_1", ("INT",), "INT", lambda x: 0 if x < 0 else x * 10),
+        Operator("op_2", ("INT",), "INT", lambda x: x + 1),
+    )
+
+
+def test_piecewise_synthesis_certifies_only_when_all_fitting_programs_agree():
+    # Negatives -> 0 (op_1), non-negatives -> abs (op_0); no single op fits both.
+    public = ((5, 5), (-3, 0))
+    out = ConditionalPatchCombinator().synthesize(_ops(), public, 2, meter=meter())
+    assert out["status"] == ConditionalPatchCombinator.STATUS_UNIQUE
+    assert out["query_value"] == 2 and out["witness"][0] == "is_negative"
+    from nexus.wave24_open_world_arena import run_piecewise
+    g = Grammar("INT", _ops())
+    assert all(run_piecewise(out["witness"], x, g, (5, -3)) == y for x, y in public)
+
+
+def test_piecewise_synthesis_never_reads_a_hidden_label():
+    # The call signature has no expected/teacher argument; the same public IO
+    # and query always yield the same certified value.
+    import inspect
+    params = inspect.signature(ConditionalPatchCombinator.synthesize).parameters
+    assert not {"expected", "teacher", "label"} & set(params)
+    a = ConditionalPatchCombinator().synthesize(_ops(), ((5, 5), (-3, 0)), 2, meter=meter())
+    b = ConditionalPatchCombinator().synthesize(_ops(), ((5, 5), (-3, 0)), 2, meter=meter())
+    assert a == b
+
+
+def test_piecewise_synthesis_reports_ambiguity_instead_of_guessing():
+    ops = (*_ops(), Operator("op_3", ("INT",), "INT", lambda x: 5 if x > 0 else x))
+    out = ConditionalPatchCombinator().synthesize(ops, ((5, 5), (-3, 0)), 2, meter=meter())
+    assert out["status"] == "AMBIGUOUS_WITNESS_FOUND" and out["distinct_query_values"] >= 2
+
+
+def test_arena_certificates_are_recounted_by_the_verifier():
+    import copy, sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from scripts.verify_wave24_azr_ruler_cegis import verify_open_world_arena
+    import pytest
+    arena = run_open_world_arena(meter())
+    assert arena["false_certificate_count"] == 0
+    evo = [c["methods"]["nexus_self_evolving_open_world"] for c in arena["cells"]]
+    assert all(m["certificate_valid"] is True for m in evo if m["solved"])
+    tampered = copy.deepcopy(arena)
+    tampered["cells"][0]["methods"]["nexus_static_quotient_open_world"]["certificate_valid"] = False
+    with pytest.raises(ValueError, match="failed direct certificate"):
+        verify_open_world_arena(tampered)
+    tampered = copy.deepcopy(arena)
+    tampered["method_summary"]["nexus_self_evolving_open_world"]["solved"] += 1
+    with pytest.raises(ValueError):
+        verify_open_world_arena(tampered)
+
+
+def test_arena_fuzz_runs_the_certified_program():
+    arena = run_open_world_arena(meter())
+    probes = [c["methods"]["nexus_self_evolving_open_world"]["fuzz"] for c in arena["cells"]
+              if c["methods"]["nexus_self_evolving_open_world"]["solved"]]
+    assert probes and all(p["cases"] >= 1 and p["raised"] == 0 for p in probes)
+
+
+def test_residual_multihop_is_opt_in_and_solves_more_at_higher_cost():
+    base = run_open_world_arena(meter())
+    deep = run_open_world_arena(meter(), residual_multihop=True)
+    b = base["method_summary"]["nexus_self_evolving_open_world"]
+    d = deep["method_summary"]["nexus_self_evolving_open_world"]
+    assert base["residual_multihop"] is False and deep["residual_multihop"] is True
+    assert d["solved"] >= b["solved"] and deep["false_certificate_count"] == 0
 
 
 def test_twin_fuzzer_emits_boundary_cases():

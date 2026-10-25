@@ -16,7 +16,7 @@ from nexus.evolution1.catalogue import digest
 from nexus.wave24_auto_laws import AutoOperatorFingerprinter
 from nexus.wave24_quotient_core import (
     Grammar, Operator, WorkMeter, WorkExhausted, ExactEnumerator, GoalCheck,
-    SearchResult, apply, eval_expr, freeze, primitive_cost, variable,
+    SearchResult, apply, eval_expr, freeze, primitive_cost, variable, unfold_to_primitives,
 )
 from nexus.wave24_self_evolving_loop import (
     DualMemoryLearner, HomeostaticMetabolicController, PublicTask,
@@ -118,10 +118,48 @@ class OpenWorldStdlibToolbox:
         return Grammar("STR", tuple(operators), conditionals=True), probes
 
 
+def _safe_key(value):
+    try:
+        return freeze(value)
+    except (TypeError, ValueError):
+        return ("unfreezable", EXEC_ERR)
+
+
+def _is_number(x):
+    return isinstance(x, (int, float)) and not isinstance(x, bool)
+
+
+def guard_family(public_inputs):
+    """Fixed, task-agnostic input predicates declared before any search.
+
+    Dict-key guards use only keys present in the PUBLIC inputs. No query
+    output or teacher label is ever consulted to build or rank guards.
+    """
+    guards = [
+        ("is_negative", lambda x: _is_number(x) and x < 0),
+        ("is_zero", lambda x: _is_number(x) and x == 0),
+        ("is_float", lambda x: type(x) is float),
+        ("is_empty", lambda x: isinstance(x, (str, list, dict)) and len(x) == 0),
+    ]
+    keys = sorted({k for x in public_inputs if isinstance(x, dict) for k in x if isinstance(k, str)})
+    for key in keys:
+        guards.append((f"has_key[{key}]", lambda x, k=key: isinstance(x, dict) and k in x))
+    return tuple(guards)
+
+
 class ConditionalPatchCombinator:
-    """Synthesize a piecewise guard when a base program fits only D_pass."""
+    """Piecewise (guard, then, else) synthesis over a declared finite space.
+
+    A candidate fits only if it reproduces EVERY public pair. The query value
+    is certified only when all fitting candidates in the declared space agree
+    on it; otherwise the result is AMBIGUOUS. Selection never reads labels
+    beyond the public IO (no hidden query answer, no memorized D_fail table).
+    """
+
+    STATUS_UNIQUE = "UNIQUE_QUERY_OUTPUT_IN_DECLARED_PIECEWISE_SPACE"
 
     def propose(self, grammar, public_io, base_fn, *, meter):
+        """D_pass / D_fail diagnostic split for one base program (no query claim)."""
         passing, failing = [], []
         for x, y in public_io:
             meter.charge("piecewise_guard_work_units")
@@ -129,29 +167,71 @@ class ConditionalPatchCombinator:
                 pred = base_fn(x)
             except Exception:
                 pred = EXEC_ERR
-            (passing if freeze(pred) == freeze(y) else failing).append((x, y))
-        if not public_io or len(passing)/len(public_io) < 0.5 or not failing:
+            (passing if _safe_key(pred) == _safe_key(y) else failing).append((x, y))
+        if not public_io or not passing or not failing:
             return None
-        labels = {freeze(x): y for x, y in public_io}
-        def patched(x):
-            try:
-                pred = base_fn(x)
-            except Exception:
-                pred = EXEC_ERR
-            try:
-                want = labels.get(freeze(x))
-            except Exception:
-                want = None
-            if want is not None and freeze(pred) == freeze(want):
-                return pred
-            for fx, fy in failing:
+        return dict(guarded=True, D_pass=tuple(passing), D_fail=tuple(failing))
+
+    def synthesize(self, operators, public_io, query, *, meter, prefer=()):
+        inputs = tuple(x for x, _ in public_io) + (query,)
+        n = len(public_io)
+        outs, passes = {}, {}
+        for op in operators:
+            row = []
+            for x in inputs:
+                meter.charge("piecewise_guard_work_units")
                 try:
-                    if freeze(fx) == freeze(x):
-                        return fy
+                    row.append(op.fn(x))
                 except Exception:
-                    continue
-            return pred
-        return dict(guarded=True, D_pass=tuple(passing), D_fail=tuple(failing), patch=patched)
+                    row.append(EXEC_ERR)
+            outs[op.name] = row
+            passes[op.name] = tuple(_safe_key(row[i]) == _safe_key(public_io[i][1]) for i in range(n))
+        if any(all(v) for v in passes.values()) or not any(any(v) for v in passes.values()):
+            return dict(status="NOT_ESCALATED", fitting=0)
+        guards = list(guard_family(tuple(x for x, _ in public_io)))
+        # Exception-safe guards: route on whether a partially-passing op errors.
+        for op in operators:
+            if any(passes[op.name]):
+                guards.append((f"ok[{op.name}]", lambda x, name=op.name, idx={_safe_key(v): i for i, v in enumerate(inputs)}:
+                               outs[name][idx[_safe_key(x)]] != EXEC_ERR))
+        fitting = []
+        for gname, gfn in guards:
+            vec = []
+            for x in inputs:
+                meter.charge("piecewise_guard_work_units")
+                try:
+                    vec.append(gfn(x) is True)
+                except Exception:
+                    vec.append(None)
+            if None in vec or len(set(vec[:n])) < 2:
+                continue  # trivial split is ordinary single-op search
+            then_ok = [o.name for o in operators if all(passes[o.name][i] for i in range(n) if vec[i])]
+            else_ok = [o.name for o in operators if all(passes[o.name][i] for i in range(n) if not vec[i])]
+            for t in then_ok:
+                for e in else_ok:
+                    meter.charge("piecewise_guard_work_units")
+                    fitting.append(((gname, t, e), outs[t if vec[n] else e][n]))
+        if not fitting:
+            return dict(status="NO_PROGRAM_IN_BOUNDED_GRAMMAR", fitting=0)
+        values = {_safe_key(v) for _, v in fitting}
+        if len(values) == 1 and fitting[0][1] != EXEC_ERR:
+            # Tie-break only among candidates already agreeing on the query.
+            rank = {name: i for i, name in enumerate(prefer)}
+            best = min(fitting, key=lambda f: sum(rank.get(n, len(rank)+1) for n in f[0][1:]))
+            return dict(status=self.STATUS_UNIQUE, fitting=len(fitting), witness=best[0],
+                        query_value=best[1])
+        return dict(status="AMBIGUOUS_WITNESS_FOUND", fitting=len(fitting), distinct_query_values=len(values))
+
+
+def run_piecewise(witness, x, grammar, public_inputs):
+    gname, then_name, else_name = witness
+    guard = dict(guard_family(public_inputs)).get(gname)
+    if guard is None and gname.startswith("ok[") and gname.endswith("]"):
+        op = grammar.ops[gname[3:-1]]
+        guard = lambda v: op.fn(v) != EXEC_ERR
+    if guard is None:
+        raise ValueError("unknown piecewise guard")
+    return grammar.ops[then_name if guard(x) is True else else_name].fn(x)
 
 
 class OpenWorldTwinFuzzer:
@@ -184,6 +264,20 @@ class OpenWorldTwinFuzzer:
         if any(v == EXEC_ERR for v in fuzz_outputs):
             return "AMBIGUOUS_WITNESS_FOUND"
         return "SURVIVED"
+
+    def probe(self, fn, query, *, meter):
+        """Run the actual certified program on boundary inputs."""
+        cases = self.suite(query)
+        exec_err = raised = 0
+        for item in cases:
+            meter.charge("open_world_fuzz_work_units")
+            try:
+                if fn(item) == EXEC_ERR:
+                    exec_err += 1
+            except Exception:
+                raised += 1
+        return dict(cases=len(cases), exec_err=exec_err, raised=raised,
+                    verdict="CRASHED" if raised else "GUARDED_EXEC_ERR" if exec_err else "SURVIVED")
 
 
 class OpenWorldTaskStream:
@@ -337,13 +431,31 @@ def _solve_open(grammar, task, *, meter, skills=(), doctor=None, guided=True, bo
         work = local.total
         meter.charge("open_world_search_work_units", work)
         unique = result.status == "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE"
-        ok = unique and freeze(result.query_values[0]) == freeze(task["expected"]) if result.query_values else False
         witness = result.witnesses[0] if result.witnesses else None
+        certificate_valid = None
+        if unique:
+            certificate_valid = direct_open_certificate(grammar, view, witness, result.query_values[0], meter=meter)
+        ok = bool(unique and certificate_valid and freeze(result.query_values[0]) == freeze(task["expected"]))
         return dict(solved=ok, status=result.status, work=work, hops=len(engine.last_report.get("hops") or ()),
-                    witness=witness)
+                    witness=witness, certificate_valid=certificate_valid)
     except WorkExhausted:
         meter.charge("open_world_search_work_units", local.total)
-        return dict(solved=False, status="UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED", work=local.total, hops=0, witness=None)
+        return dict(solved=False, status="UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED", work=local.total, hops=0, witness=None,
+                    certificate_valid=None)
+
+
+def direct_open_certificate(grammar, view, witness, query_value, *, meter):
+    """Unfold to pure primitives, then re-execute on public IO and the query."""
+    if witness is None:
+        return False
+    try:
+        pure = unfold_to_primitives(witness, grammar.input_sort)
+        for x, y in view.public_io:
+            if freeze(eval_expr(pure, x, grammar.ops, meter, "open_world_certificate_work_units")) != freeze(y):
+                return False
+        return freeze(eval_expr(pure, view.query, grammar.ops, meter, "open_world_certificate_work_units")) == freeze(query_value)
+    except (ValueError, TypeError, KeyError):
+        return False
 
 
 def _llm_baseline(task, *, meter):
@@ -354,7 +466,12 @@ def _llm_baseline(task, *, meter):
                 work=8, hops=0, runtime="deterministic_neuro_symbolic_fallback")
 
 
-def run_open_world_arena(meter, host=None):
+def run_open_world_arena(meter, host=None, *, residual_multihop=False):
+    """residual_multihop=False is the v10 protocol (hop-1 + piecewise only).
+
+    True adds a hops=3 residual pass on tasks hop-1 exhausted; it solves more
+    tasks but each deep solve costs several times the static per-task work.
+    """
     toolbox = OpenWorldStdlibToolbox()
     grammar, probes = toolbox.grammar(meter=meter)
     roles = AutoOperatorFingerprinter(probe_cap=64).fingerprint_roles(
@@ -402,24 +519,50 @@ def run_open_world_arena(meter, host=None):
                                    guided=False, bound=2, limit=3000, hops=1)
             if fallback["solved"]:
                 evolving = dict(fallback, work=hop1["work"] + fallback["work"])
-        if not evolving["solved"]:
-            g_task = _task_grammar(learner.contexts["OPEN_WORLD"]["grammar"], task)
-            for op in (*[o for o in g_task.operators if o.name in set(preferred)], *g_task.operators):
-                patch = combinator.propose(g_task, task["public"], op.fn, meter=meter)
-                if patch is not None and freeze(patch["patch"](task["query"])) == freeze(task["expected"]):
-                    evolving = dict(evolving, solved=True, status="PIECEWISE_GUARD_REPAIR", work=evolving["work"]+3)
-                    meter.charge("open_world_piecewise_work_units", 3)
-                    preferred.append(op.name)
-                    break
-        fuzz = fuzzer.suite(task["query"])
-        fuzz_out = []
-        for item in fuzz:
+        g_task = _task_grammar(learner.contexts["OPEN_WORLD"]["grammar"], task)
+        if not evolving["solved"] and evolving["status"] != "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE":
+            # Residual escalation only: hop-1 found no unique program. The
+            # combinator itself declines when no op fits any public pair.
+            local = WorkMeter(limit=3000, wall_limit=min(meter.wall_limit, 2.0))
             try:
-                fuzz_out.append(eval_expr(variable(task["output_sort"] if False else grammar.input_sort), item, grammar.ops, meter, "open_world_fuzz_work_units") if False else EXEC_ERR if item in (None, "", {}, []) else item)
-            except Exception:
-                fuzz_out.append(EXEC_ERR)
-        evolving["fuzz"] = fuzzer.classify((task["expected"],), task["expected"], fuzz_out)
-        witness = hop1.get("witness") or evolving.get("witness")
+                piece = combinator.synthesize(g_task.operators, task["public"], task["query"], meter=local)
+            except WorkExhausted:
+                piece = dict(status="UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED", fitting=0)
+            meter.charge("open_world_piecewise_work_units", local.total)
+            evolving = dict(evolving, work=evolving["work"]+local.total, piecewise=dict(
+                status=piece["status"], fitting=piece["fitting"], work=local.total))
+            if piece["status"] == combinator.STATUS_UNIQUE:
+                public_inputs = tuple(x for x, _ in task["public"])
+                replay_ok = all(_safe_key(run_piecewise(piece["witness"], x, g_task, public_inputs)) == _safe_key(y)
+                                for x, y in task["public"]) and _safe_key(
+                                run_piecewise(piece["witness"], task["query"], g_task, public_inputs)) == _safe_key(piece["query_value"])
+                evolving.update(status=piece["status"], certificate_valid=replay_ok,
+                                piecewise_witness=list(piece["witness"]),
+                                solved=bool(replay_ok and _safe_key(piece["query_value"]) == _safe_key(task["expected"])))
+                if evolving["solved"]:
+                    for name in piece["witness"][1:]:
+                        if name not in preferred:
+                            preferred.append(name)
+        if residual_multihop and not evolving["solved"] and evolving["status"] == "NO_PROGRAM_IN_BOUNDED_GRAMMAR" \
+                and evolving.get("piecewise", {}).get("status") != combinator.STATUS_UNIQUE:
+            # Residual multi-hop escalation, only after hop-1 exhausted its
+            # space with no program and no piecewise certificate exists.
+            deep = _solve_open(learner.contexts["OPEN_WORLD"]["grammar"], task, meter=meter,
+                               skills=learner.contexts["OPEN_WORLD"]["library"].snapshot(),
+                               doctor=learner.doctor, guided=True, bound=2, limit=3000, hops=3,
+                               preferred=tuple(preferred))
+            evolving = dict(deep, work=evolving["work"]+deep["work"], piecewise=evolving.get("piecewise"),
+                            residual_multihop=True)
+        if evolving.get("piecewise_witness"):
+            public_inputs = tuple(x for x, _ in task["public"])
+            program = lambda v, w=tuple(evolving["piecewise_witness"]): run_piecewise(w, v, g_task, public_inputs)
+        elif evolving.get("witness") is not None and evolving.get("certificate_valid"):
+            pure = unfold_to_primitives(evolving["witness"], g_task.input_sort)
+            program = lambda v, e=pure: guarded(lambda z: eval_expr(e, z, grammar.ops, meter, "open_world_fuzz_work_units"))(v)
+        else:
+            program = None
+        evolving["fuzz"] = fuzzer.probe(program, task["query"], meter=meter) if program is not None else None
+        witness = evolving.get("witness")
         evolving.pop("witness", None)
         hop1.pop("witness", None)
         row["methods"]["nexus_self_evolving_open_world"] = evolving
@@ -432,7 +575,8 @@ def run_open_world_arena(meter, host=None):
         snap = learner.metabolic.assert_stable()
         telemetry.append(dict(shift=task["shift"], index=task["index"], **snap))
         cells.append(row)
-    false = 0
+    # Every certificate claimed by any method was re-executed directly above.
+    false = sum(1 for c in cells for m in c["methods"].values() if m.get("certificate_valid") is False)
     summary = {}
     for method in methods:
         solved = [c["methods"][method] for c in cells if c["methods"][method]["solved"]]
@@ -440,7 +584,7 @@ def run_open_world_arena(meter, host=None):
         summary[method] = dict(solved=len(solved), total_work=work,
             work_per_solved=(sum(r["work"] for r in solved)/len(solved)) if solved else None)
     evicted = {e["skill"] for e in learner.metabolic.evicted}
-    return dict(schema="wave24_open_world_arena_v1", toolbox_size=len(grammar.operators),
+    return dict(schema="wave24_open_world_arena_v1", toolbox_size=len(grammar.operators), residual_multihop=residual_multihop,
         task_count=len(tasks), cells=cells, method_summary=summary, metabolic_telemetry=telemetry,
         metabolic_stability=dict(
             atp_total_sum=telemetry[-1]["atp_total_sum"] if telemetry else 0.0,

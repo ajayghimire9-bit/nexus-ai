@@ -575,3 +575,23 @@ def test_noether_last_step_has_zero_false_certificates():
     assert guided.status == reference.status
     assert tuple(map(freeze, guided.query_values)) == tuple(map(freeze, reference.query_values))
     assert verify_certificate(g, public, query, "I", 3, guided, meter=meter())
+
+
+def test_unfold_to_primitives_removes_skill_calls_islands_and_holes():
+    from nexus.wave24_quotient_core import (Grammar, Operator, ParametricSkillMacro, apply, typed_hole,
+        variable, workspace_leaf, unfold_to_primitives, eval_expr)
+    op = Operator("op_0", ("INT",), "INT", lambda x: x + 1)
+    g = Grammar("INT", (op,))
+    skill = ParametricSkillMacro(apply(op, apply(op, typed_hole("INT"))), ("INT",))
+    folded = workspace_leaf(apply(op, skill.call(variable("INT"))))
+    pure = unfold_to_primitives(folded, "INT")
+    kinds = set()
+    def walk(e):
+        kinds.add(e.kind)
+        for c in e.children:
+            walk(c)
+    walk(pure)
+    assert kinds == {"apply", "var"}
+    assert eval_expr(pure, 4, g.ops) == 7
+    assert skill.unfold_to_primitives().key() == unfold_to_primitives(skill.call(variable("INT"))).key()
+    assert unfold_to_primitives(skill.body, "INT").key() == skill.unfold_to_primitives().key()

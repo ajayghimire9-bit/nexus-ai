@@ -353,6 +353,10 @@ class ParametricSkillMacro:
             raise ValueError("typed skill arguments required")
         return Expr("skill_call", self.sort, digest(self.key()), (self.body, *arguments))
 
+    def unfold_to_primitives(self, expr=None, meter=None):
+        """Pure primitive AST for this skill (or for an expression calling it)."""
+        return unfold_to_primitives(self if expr is None else expr, self.input_sorts[0], meter)
+
     def expansion_cost(self, operators):
         def count(e):
             if e.kind == "hole":
@@ -408,6 +412,26 @@ def unfold_workspace_expr(expr, meter=None):
     if expr.kind in ("island", "macro"):
         return unfold_workspace_expr(expr.children[0], meter)
     return Expr(expr.kind, expr.sort, expr.value, tuple(unfold_workspace_expr(c, meter) for c in expr.children))
+
+
+def unfold_to_primitives(expr, input_sort=None, meter=None):
+    """Deterministic full unfold of skills, islands and open holes to a closed primitive AST.
+
+    Witness validation (public IO, query, cost) always runs on this result,
+    never on folded skill/island syntax.
+    """
+    if isinstance(expr, ParametricSkillMacro):
+        if len(expr.input_sorts) != 1:
+            raise ValueError("only unary skills unfold to a closed program")
+        expr = expr.call(variable(expr.input_sorts[0]))
+    pure = unfold_workspace_expr(expr, meter)
+    def has_hole(node):
+        return node.kind == "hole" or any(has_hole(c) for c in node.children)
+    if has_hole(pure):
+        if input_sort is None:
+            raise ValueError("open witness needs the grammar input sort to unfold")
+        pure = substitute_holes(pure, (variable(input_sort),))
+    return pure
 
 
 def workspace_leaf(expr):

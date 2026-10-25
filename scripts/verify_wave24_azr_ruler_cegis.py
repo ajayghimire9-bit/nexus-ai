@@ -24,7 +24,7 @@ from nexus.seed.experimental import read
 from nexus.wave24_quotient_core import (
     WorkMeter, freeze, primitive_cost, validate_program, eval_expr, verify_certificate,
     skill_from_wire, expression_from_wire, Grammar, Operator, solve,
-    unfold_workspace_expr, substitute_holes, variable,
+    unfold_workspace_expr, unfold_to_primitives, substitute_holes, variable,
 )
 from nexus.wave24_self_evolving_loop import METHODS, procedural_worlds
 
@@ -46,9 +46,9 @@ def verify_direct_witness(grammar, public_io, query, result, meter):
         for child in getattr(expr, "children", ()):
             yield from nodes(child)
     for index, raw in enumerate(result.witnesses[:2]):
-        expr = unfold_workspace_expr(raw)
-        if any(node.kind == "hole" for node in nodes(expr)):
-            expr = substitute_holes(expr, (variable(grammar.input_sort),))
+        expr = unfold_to_primitives(raw, grammar.input_sort)
+        if any(node.kind in ("skill_call", "island", "macro", "hole") for node in nodes(expr)):
+            raise ValueError("witness did not unfold to pure primitives")
         validate_program(expr, grammar)
         for x, y in public_io:
             if freeze(eval_expr(expr, x, grammar.ops, meter)) != freeze(y):
@@ -196,6 +196,19 @@ def verify_open_world_arena(arena):
     require(arena.get("schema")=="wave24_open_world_arena_v1", "invalid open-world schema")
     require(arena.get("task_count")==24 and arena.get("toolbox_size",0)>=40, "incomplete open-world grid")
     require(arena.get("false_certificate_count")==0, "open-world false certificate")
+    # Independent recount from the saved cells; the arena's own aggregates are not trusted.
+    cells=arena.get("cells") or []
+    require(len(cells)==24, "open-world cell grid differs")
+    recount=sum(1 for c in cells for m in c["methods"].values() if m.get("certificate_valid") is False)
+    require(recount==0, "open-world cells contain a failed direct certificate")
+    for c in cells:
+        for name,m in c["methods"].items():
+            if name!="standalone_or_tool_llm_baseline" and m.get("solved"):
+                require(m.get("certificate_valid") is True, "solved open-world cell lacks a direct certificate: "+name)
+    for name,s in (arena.get("method_summary") or {}).items():
+        solved=[c["methods"][name] for c in cells if c["methods"][name]["solved"]]
+        require(s.get("solved")==len(solved) and s.get("total_work")==sum(c["methods"][name]["work"] for c in cells),
+                "open-world summary differs from cells: "+name)
     require(arena.get("lyapunov",{}).get("dynamic_lyapunov_max_hops_reached",0)>=4,
             "Lyapunov horizon did not exceed the old 3-hop constant")
     summary=arena.get("method_summary") or {}

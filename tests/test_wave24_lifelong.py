@@ -205,3 +205,19 @@ def test_durable_memory_round_trip_uses_an_external_hash_anchor_and_matching_too
     forged=deepcopy(saved);forged["source_updates"]+=1
     other=DualMemoryLearner(meter=meter());other.enter("A",g,roles,probes)
     with pytest.raises(ValueError,match="anchor"):other.restore_state(forged,expected_digest=saved["state_sha256"])
+
+
+def test_direct_ok_unfolds_open_skill_witness_before_checking():
+    from nexus.wave24_quotient_core import (Grammar, Operator, ParametricSkillMacro, SearchResult,
+        WorkMeter, apply, typed_hole, workspace_leaf)
+    from nexus.wave24_self_evolving_loop import DualMemoryLearner, PublicTask
+    op = Operator("op_0", ("INT",), "INT", lambda x: x + 1)
+    g = Grammar("INT", (op,))
+    skill = ParametricSkillMacro(apply(op, apply(op, typed_hole("INT"))), ("INT",))
+    task = PublicTask(((0, 2), (1, 3)), 5, "INT")
+    learner = DualMemoryLearner(meter=WorkMeter(limit=10_000, wall_limit=2.))
+    for witness in (skill.body, workspace_leaf(skill.body)):
+        result = SearchResult("UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE", (witness,), (7,), True, 0)
+        assert learner._direct_ok(g, task, result) is True
+    wrong = SearchResult("UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE", (skill.body,), (8,), True, 0)
+    assert learner._direct_ok(g, task, wrong) is False
