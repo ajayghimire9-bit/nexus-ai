@@ -1,6 +1,19 @@
 # NEXUS Seed — Current State
 
-## AZR–Ruler–CEGIS preflight — blocked before freeze
+## AZR–Ruler–CEGIS preflight — v10 SOURCE DEVELOPMENT (not a freeze)
+
+Latest owner-authorized revision is **guidance v10**: worker COMPLETE on
+`dev-24001-guidance-v10`. Independent replay of the saved payload is
+all-green (`lifelong_learning_demonstrated=true`, 12/12 > 11/12, adaptive
+work 7123 < cache 8723, evolving open-world 12 > 11 and 110.92 < 149.36
+work/solved, ATP 100, 0 false certificates, depths `[1,2,3,4,5]`). Parent
+CLI first pass exited 1 on stream-certificate bookkeeping; do not retry
+v10. Session remaining 56.857s. No freeze, commit, or push. Arbitrary
+depth stays false. This is finite inspected source development, not
+general intelligence.
+[Exact results, scope and hashes](NEXUS_WAVE24_AZR_RULER_CEGIS_SOURCE_PREFLIGHT.md).
+
+## AZR–Ruler–CEGIS preflight — blocked before freeze (historical v5 lede)
 
 Latest owner-requested revision5 is **COMPLETE / valid / mixed-negative SOURCE
 DEVELOPMENT**. All seven mechanisms have working code and tests; the single

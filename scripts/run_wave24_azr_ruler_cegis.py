@@ -609,6 +609,10 @@ def main(argv=None):
             (ROOT/"docs/evidence/wave24_azr_dev_guidance_v9.json").exists()
             or (ROOT/"runs/experimental/wave24-azr/attempts/dev-24001-guidance-v9").exists()):
         raise ValueError("dev-24001-guidance-v9 grant already consumed; preserved receipt forbids automatic retry")
+    if args.dev_preflight and run_id == "dev-24001-guidance-v10" and (
+            (ROOT/"docs/evidence/wave24_azr_dev_guidance_v10.json").exists()
+            or (ROOT/"runs/experimental/wave24-azr/attempts/dev-24001-guidance-v10").exists()):
+        raise ValueError("dev-24001-guidance-v10 grant already consumed; preserved receipt forbids automatic retry")
     if args.post_freeze and (ROOT/"artifacts/wave24_azr_ruler_cegis.json").exists():
         raise ValueError("final assessment already recorded; refusing before any seed or resource reservation")
     import subprocess

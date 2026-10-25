@@ -9,10 +9,14 @@ def test_persistent_brain_compounds_skills_across_epochs(tmp_path):
     meter = WorkMeter(limit=400_000, wall_limit=1.)
     first = run_playground(tmp_path / "brain", epochs=2, meter=meter)
     assert first["epochs"] == 2
+    assert first["toolbox"]
     assert abs(first["atp_total_sum"] - 100.0) < 1e-6
     assert 0.25 <= first["normalized_atp_entropy"] <= 0.98
     revived = PersistentNexusBrain(tmp_path / "brain", meter=WorkMeter(limit=100_000, wall_limit=1.))
     assert revived.toolbox_path.exists()
+    assert (tmp_path / "brain" / "universal_meta_recipes.json").exists()
+    assert (tmp_path / "brain" / "symptom_doctor_state.json").exists()
+    assert revived.recipes and revived.doctor.rows
     second = run_playground(tmp_path / "brain", epochs=1, meter=WorkMeter(limit=200_000, wall_limit=1.))
     assert second["epochs"] == 1
     assert abs(second["atp_total_sum"] - 100.0) < 1e-6

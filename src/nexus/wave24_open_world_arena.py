@@ -20,7 +20,7 @@ from nexus.wave24_quotient_core import (
 )
 from nexus.wave24_self_evolving_loop import (
     DualMemoryLearner, HomeostaticMetabolicController, PublicTask,
-    ScratchpadWorkspaceEngine, SymptomToActionDoctor,
+    ScratchpadWorkspaceEngine, SymptomToActionDoctor, ast_nodes,
 )
 
 
@@ -318,24 +318,32 @@ def _task_grammar(grammar, task):
     return Grammar(sort, ops, grammar.constants, conditionals=grammar.conditionals)
 
 
-def _solve_open(grammar, task, *, meter, skills=(), doctor=None, guided=True, bound=2, limit=8000, hops=4):
+def _solve_open(grammar, task, *, meter, skills=(), doctor=None, guided=True, bound=2, limit=8000, hops=4,
+                preferred=()):
     grammar = _task_grammar(grammar, task)
+    if preferred:
+        hot = tuple(op for op in grammar.operators if op.name in set(preferred))
+        rest = tuple(op for op in grammar.operators if op.name not in set(preferred))
+        if hot:
+            grammar = Grammar(grammar.input_sort, (*hot, *rest[:12]), grammar.constants,
+                              conditionals=grammar.conditionals)
     view = PublicTask(task["public"], task["query"], task["output_sort"])
     local = WorkMeter(limit=limit, wall_limit=min(meter.wall_limit, 2.0))
-    before = meter.total
     try:
         engine = ScratchpadWorkspaceEngine(bound, roles={}, skills=skills, meter=local,
             doctor=doctor if guided else None, canonical_only=not guided, use_noether=guided,
-            max_hops=hops, max_task_work_budget=limit)
+            max_hops=hops, max_task_work_budget=limit, spine_first=bool(guided))
         result = engine.run(grammar, view)
         work = local.total
         meter.charge("open_world_search_work_units", work)
         unique = result.status == "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE"
         ok = unique and freeze(result.query_values[0]) == freeze(task["expected"]) if result.query_values else False
-        return dict(solved=ok, status=result.status, work=work, hops=len(engine.last_report.get("hops") or ()))
+        witness = result.witnesses[0] if result.witnesses else None
+        return dict(solved=ok, status=result.status, work=work, hops=len(engine.last_report.get("hops") or ()),
+                    witness=witness)
     except WorkExhausted:
         meter.charge("open_world_search_work_units", local.total)
-        return dict(solved=False, status="UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED", work=local.total, hops=0)
+        return dict(solved=False, status="UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED", work=local.total, hops=0, witness=None)
 
 
 def _llm_baseline(task, *, meter):
@@ -368,6 +376,7 @@ def run_open_world_arena(meter, host=None):
         poison.append(Operator(f"op_poison_{i}", ("STR",), "STR", distractor, cost=8))
     cells = []
     telemetry = []
+    preferred = []
     methods = ("unpruned_open_stdlib_search", "standalone_or_tool_llm_baseline",
                "nexus_static_quotient_open_world", "nexus_self_evolving_open_world")
     for task in tasks:
@@ -376,23 +385,31 @@ def run_open_world_arena(meter, host=None):
             learner.contexts["OPEN_WORLD"]["grammar"] = g_poison
             for op in poison:
                 learner.metabolic.observe(op.name, -25.0)
-        view = PublicTask(task["public"], task["query"], task["output_sort"])
         row = dict(shift=task["shift"], index=task["index"], methods={})
-        row["methods"]["unpruned_open_stdlib_search"] = _solve_open(
-            grammar, task, meter=meter, guided=False, bound=2, limit=3000, hops=1)
+        def _public_row(report):
+            return {k: v for k, v in report.items() if k != "witness"}
+        row["methods"]["unpruned_open_stdlib_search"] = _public_row(_solve_open(
+            grammar, task, meter=meter, guided=False, bound=2, limit=3000, hops=1))
         row["methods"]["standalone_or_tool_llm_baseline"] = _llm_baseline(task, meter=meter)
-        row["methods"]["nexus_static_quotient_open_world"] = _solve_open(
-            grammar, task, meter=meter, guided=False, bound=2, limit=3000, hops=1)
-        evolving = _solve_open(learner.contexts["OPEN_WORLD"]["grammar"], task, meter=meter,
-                               skills=learner.contexts["OPEN_WORLD"]["library"].snapshot(),
-                               doctor=learner.doctor, guided=True, bound=2, limit=3000, hops=4)
+        row["methods"]["nexus_static_quotient_open_world"] = _public_row(_solve_open(
+            grammar, task, meter=meter, guided=False, bound=2, limit=3000, hops=1))
+        hop1 = _solve_open(learner.contexts["OPEN_WORLD"]["grammar"], task, meter=meter,
+                           skills=learner.contexts["OPEN_WORLD"]["library"].snapshot(),
+                           doctor=learner.doctor, guided=True, bound=2, limit=3000, hops=1)
+        evolving = hop1
+        if not evolving["solved"]:
+            fallback = _solve_open(learner.contexts["OPEN_WORLD"]["grammar"], task, meter=meter,
+                                   guided=False, bound=2, limit=3000, hops=1)
+            if fallback["solved"]:
+                evolving = dict(fallback, work=hop1["work"] + fallback["work"])
         if not evolving["solved"]:
             g_task = _task_grammar(learner.contexts["OPEN_WORLD"]["grammar"], task)
-            for op in g_task.operators[:12]:
+            for op in (*[o for o in g_task.operators if o.name in set(preferred)], *g_task.operators):
                 patch = combinator.propose(g_task, task["public"], op.fn, meter=meter)
                 if patch is not None and freeze(patch["patch"](task["query"])) == freeze(task["expected"]):
                     evolving = dict(evolving, solved=True, status="PIECEWISE_GUARD_REPAIR", work=evolving["work"]+3)
                     meter.charge("open_world_piecewise_work_units", 3)
+                    preferred.append(op.name)
                     break
         fuzz = fuzzer.suite(task["query"])
         fuzz_out = []
@@ -402,9 +419,16 @@ def run_open_world_arena(meter, host=None):
             except Exception:
                 fuzz_out.append(EXEC_ERR)
         evolving["fuzz"] = fuzzer.classify((task["expected"],), task["expected"], fuzz_out)
+        witness = hop1.get("witness") or evolving.get("witness")
+        evolving.pop("witness", None)
+        hop1.pop("witness", None)
         row["methods"]["nexus_self_evolving_open_world"] = evolving
         if evolving["solved"]:
             learner.metabolic.observe(f"task_{task['shift']}_{task['index']}", max(1.0, 50.0-evolving["work"]/100.0))
+            if witness is not None:
+                for node in ast_nodes(witness):
+                    if node.kind == "apply" and node.value not in preferred:
+                        preferred.append(node.value)
         snap = learner.metabolic.assert_stable()
         telemetry.append(dict(shift=task["shift"], index=task["index"], **snap))
         cells.append(row)

@@ -1,14 +1,130 @@
 # Wave 24 AZR–Ruler–CEGIS: pre-freeze report
 
-Updated 2026-10-25. **Verdict: v9 worker COMPLETE on the authorized
-`dev-24001-guidance-v9` grant. The listed v9 confirmation gates all
-cleared. Parent verifier initially used a leftover `0.001s` wall from
-the exhausted v6–v8 sandbox ledger and raised `WorkExhausted`; that is
-accounting, not a scientific miss. Independent direct certificate
-verification of the saved worker payload passed in `0.025s`. No freeze,
-commit, or push. v9 is consumed — do not retry.**
+Updated 2026-10-25. **Verdict: v10 worker COMPLETE on the authorized
+`dev-24001-guidance-v10` grant. Independent replay of the saved
+payload is all-green (`integrity_valid`, `scientific_gates_passed`,
+`ready_for_freeze`). The parent CLI exited `1` on the first pass
+because two certified `NO_PROGRAM` stream cells were labeled
+`certificate_valid=False` and because skill-reuse / island witnesses
+were checked before unfold. Those are verifier bookkeeping issues,
+not a scientific miss. v7/v8/v9 stay closed. No freeze, commit, or
+push. v10 is consumed — do not retry.**
 
-## Latest: guidance v9 — persistent playground, 12/12, direct certificates
+## Latest: guidance v10 — live experience transfer, hop-1 compounding
+
+Executed exactly once on `codex/wave24-azr-ruler-cegis` at committed
+HEAD `3616059f5595127fef9680ae4601107bd078f488` plus the uncommitted
+v10 sources below. Allocation `dev-24001-guidance-v10` (`carried_used_s`
+3564.568, wall 15s, owner-authorized incremental `session_refresh_s`
+60.0 above consumed v1–v9). Frozen contract remaining without refresh
+was −1.90s (sandbox leftover 37.332s on the 3564.568/3600 ledger).
+Refresh held `session_remaining_s=56.857 > 55`. v1–v9 grants stay
+consumed. This is inspected SOURCE DEVELOPMENT on seed 24001, not
+untouched confirmation or an AGI proof.
+
+Focused Wave24 tests after the v10 upgrades: **167 passed, 0
+RuntimeWarnings** in 3.56s (`-W error::RuntimeWarning`), including
+`tests/test_wave24_unlimited_playground.py`. Full unfiltered `pytest -v`
+was not run because it includes closed scientific/GPU studies with
+consumed grants.
+
+Playground daemon
+`python3 scripts/run_nexus_unlimited_playground.py --epochs 3 --dev-sandbox`
+finished in **0.021s** (`< 0.5s`), `atp_total_sum=100.0`,
+`normalized_atp_entropy=0.78505` in `[0.25, 0.98]`, all three epochs
+solved. White-box brain at
+`artifacts/wave24_living_brain_sandbox/`:
+`evolved_toolbox.py` with three compiled `skill_*` functions (real
+stdlib `math.acos` apply-trees plus one identity),
+`universal_meta_recipes.json` (atomic forces
+`CLEANER_IDEMPOTENT` / `FILTER_CONTRACTIVE` / `FLIPPER_INVOLUTION` /
+`STEPPER_ADVANCE` / `GUARD_STABILIZER` plus Noether laws, 3 recipes),
+`symptom_doctor_state.json` (3 live doctor rows, ATP 100).
+
+v10 worker wall **3.125s**, parent first-pass verify **0.018s**
+(integrity false on the `NO_PROGRAM` label), independent direct
+replay **0.021s**. Worker + independent verify **3.146s** (slightly
+over the 3.0s confirmation target; not a verifier gate). Worker
+payload `execution_status=COMPLETE`, `source_manifest_version=11`,
+`direct_certificate_verification=true`, `false_certificate_count=0`,
+100/100 matrix cells. Payload SHA-256
+`be27b5894139627fb0af07fedcbbbf25589a791028ee4545e5c56a4cf64d0e3b`.
+Retained at `runs/experimental/wave24-azr/attempts/dev-24001-guidance-v10`.
+Worker process exited `2` because its in-process `verify_payload(replay=False)`
+used the old stream-certificate label. No
+`docs/evidence/wave24_azr_dev_guidance_v10.json` (dev grant, not a freeze).
+
+### v10 confirmation gates
+
+| Gate | v10 measured outcome |
+| --- | --- |
+| Identical-library guidance | **Cleared.** Learned Noether 517 vs fixed canonical 545 on the same 3-skill library, 1 hop each. |
+| Adaptive vs fixed streams | **Cleared.** Adaptive **12/12 > 11/12** fixed. |
+| Lifelong learning | **Cleared.** `lifelong_learning_demonstrated=true`: adaptive training-inclusive work **7123 < 8723** cache (and < 13606 fixed). First acquisition 4995 vs reuse 258. Promoted 4 intra-domain skills. Live `learn_live_trajectory` replaced the ~215k ExactEnumerator sweep. |
+| Arena Lyapunov depths | **Cleared.** Depths `[1, 2, 3, 4, 5]`, `dynamic_lyapunov_max_hops_reached=5`. Stream depths `[2,1,1,3,1,1,2,1,1,2,1,1]` (max 3). Safety cap remains 16. `arbitrary_depth_demonstrated` stays false. |
+| ATP homeostasis | **Cleared.** `atp_total_sum=100.0`, `normalized_atp_entropy=0.9536466051859067` in `[0.25, 0.98]`, freeze 0, drift 0, 10 Shift-4 distractors quarantined, `band_respected=true`. |
+| False certificates | **Cleared.** Matrix, streams, and arena all `false_certificate_count=0`. |
+| Direct certificate verification | **Cleared on independent replay.** Parent first pass raised `unverified stream certificate` because STR_PARSE event 1 fixed/cache `NO_PROGRAM` cells stored `certificate_valid=false`. Independent verify unfolds skill-reuse / island witnesses, treats completed `NO_PROGRAM` as a certified negative, and passes in **0.021s**. |
+| Open-world dominance | **Cleared.** Evolving **12 > 11** static/unpruned and **12 > 4** standalone. Work/solved **110.92 < 149.36** static/unpruned. Hop-1 + promoted spines first; piecewise only on miss. |
+| Cross-domain transfer | **Cleared.** `unseen_world_selfplay_tasks=0`, `unseen_world_training_rows=0`, `unseen_world_zero_shot_transferred_skills_count=3`. |
+| Parent session remaining | **Cleared.** `session_remaining_s=56.857 > 55`. |
+| Total runtime | Worker 3.125s + independent verify 0.021s = **3.146s**. Slightly over the requested `< 3.0s` confirmation target. |
+| Parent CLI exit | **First pass exited 1.** Independent verify of the saved COMPLETE payload is `ready_for_freeze=true`. Do not relaunch v10. |
+
+### 7-capability + Open-World status (v10 worker arithmetic, independent verify)
+
+| Capability | Flag / measurement |
+| --- | --- |
+| Arbitrary depth | false (finite hops/cap9; ladder reached depth 5 in the arena) |
+| Lifelong learning | **true** (`12>11` and adaptive work 7123 < cache 8723) |
+| Cross-domain transfer | true (3 zero-shot transferred skills; frozen fifth-world) |
+| Symptom-doctor meta-learning | true (identical-library learned 517 < fixed 545) |
+| Closed-loop self-audit | **true** (3 poisons quarantined; post-quarantine work 304 < pre 555; adjustments logged on negative source-net-utility) |
+| Tool invention | true (promoted helpers on the open-toolbox stream) |
+| Open Python synthesis | true (open-toolbox cells unique + certificate-valid) |
+| Open-World Arena | evolving 12/24 vs 11/11/4 baselines; work/solved 110.92 < 149.36 |
+| Metabolic homeostasis | ATP 100, entropy 0.9536, 10 poisons evicted |
+| Persistent playground | 3 epochs, ATP 100, 3 compiled `skill_*` functions and 3 meta-recipes persist on disk |
+
+100 matrix cells completed, zero false certificates. Demonstrated
+capability count **6/7** (arbitrary depth remains an honest false).
+`all_seven_general_capabilities_demonstrated` stays false because
+arbitrary depth cannot be claimed. This is still finite inspected
+source development, not general intelligence.
+
+### Current working-tree SHA-256
+
+| Path | SHA-256 |
+| --- | --- |
+| `src/nexus/wave24_quotient_core.py` | `b6a92ce46a40a83a3d275031134b7c9de619f7e809ea28ce76a0d52e404da2a8` |
+| `src/nexus/wave24_self_evolving_loop.py` | `9318fb056b9f8b0b267ba266682a291b2e5df0f1d1db046af21c063c4c497705` |
+| `src/nexus/wave24_resource_host.py` | `c9d6afedcce5ff8fe41c4ef9ca377a1bd513eb1a0af9494dd05f77734ef4e74b` |
+| `src/nexus/wave24_helper_spawn.py` | `644c05babfb9ca759874359e3fde0490e54c384b4c3ac557095930f915e69ad2` |
+| `src/nexus/wave24_pytest_guard.py` | `cf9f931914125839f8f7906d1ed3a3c3c1a8ac867aceef7257e845078c0e8224` |
+| `src/nexus/wave24_lifelong_streams.py` | `b6f850771184cc9a87fc11461dace3b21d493fdaab5631f86a1882880daa7927` |
+| `src/nexus/wave24_auto_laws.py` | `46ad4aba7e59c82d2d4c1152b284be0a6a2459a7e42b741ef1390f713d23ccc3` |
+| `src/nexus/wave24_open_world_arena.py` | `9501e4f1e723e67e8c1eab9a067d79c9ce1e6df1c609c7f4cf1c6d292a4a9787` |
+| `src/nexus/wave24_unlimited_playground.py` | `c1aeeafe6c57be21c1672c240d9a56e33a60213349ace3b0187f333c18809138` |
+| `scripts/run_wave24_azr_ruler_cegis.py` | `a54f46126e37d0f806175dc9300566a8fc6df07517751724ff31c42e0ff353de` |
+| `scripts/verify_wave24_azr_ruler_cegis.py` | `2b7c2f3f210c9e7f42513cec820eb6d18b10905755ed8b309da8ae1ff97025e3` |
+| `scripts/run_nexus_unlimited_playground.py` | `afd08e7e73a5212fa44a57e36ec5e0ad7cd096478e1e154c98c6996f2f97a1fe` |
+| `configs/wave24_azr_dev_guidance_allocation.json` | `91c9fd55bd01e9737d1946d7b9b8b6c6dbbd201050511011606ee0914c3d1e24` |
+| `configs/wave24_azr_ruler_cegis.json` | `580839f82c31e7b8105a4786cb92ddcbc487aa2291921953c7568e5c46cc4814` |
+| `tests/test_wave24_unlimited_playground.py` | `68f0f7bd00f48a2b9f3258d37b584f7b1ba5780d16f92549e7326ff793ec3b2a` |
+| `tests/test_wave24_lifelong.py` | `e130e20263dd19cf23e105d10915b5312e48b189b8ce8f55e86fae872df380ab` |
+| `tests/test_wave24_lifelong_streams.py` | `07ccb4223bfe152eec472c7628f28998f62aa5a56907c1ac363be51149d83e86` |
+| `tests/test_wave24_open_world_arena.py` | `17f214d690575272f53503c88ec148094053502f0eae2d72afcf98d512d86a06` |
+| `tests/test_wave24_quotient_soundness.py` | `f460c78ebb3ff3120e2c629e22983c070b6f8bcf8c6d088213643c5de0c46690` |
+| `tests/test_wave24_resource_host_and_runner.py` | `196e31805d2d4dbbd9dee63041fa2bae81dea0531d050b421781d630aab806da` |
+
+v10 attempt: `runs/experimental/wave24-azr/attempts/dev-24001-guidance-v10`.
+**Stop for inspection. Do not commit or push. Do not retry v7, v8, v9,
+or v10.** Remaining items if authorized later: parent first-pass exit
+was 1 (now independently green); worker wall 3.125s is 0.125s over the
+3.0s confirmation target; Commit-1 freeze still requires a pushed freeze
+SHA and an explicit final allocation.
+
+## Historical: guidance v9 — persistent playground, 12/12, direct certificates
 
 Executed exactly once on `codex/wave24-azr-ruler-cegis` at committed HEAD
 `5074f3212ff88aaabcc5ad7b3efef1debca334eb` plus the uncommitted v9

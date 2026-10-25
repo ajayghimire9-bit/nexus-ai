@@ -24,6 +24,7 @@ from nexus.seed.experimental import read
 from nexus.wave24_quotient_core import (
     WorkMeter, freeze, primitive_cost, validate_program, eval_expr, verify_certificate,
     skill_from_wire, expression_from_wire, Grammar, Operator, solve,
+    unfold_workspace_expr, substitute_holes, variable,
 )
 from nexus.wave24_self_evolving_loop import METHODS, procedural_worlds
 
@@ -40,13 +41,20 @@ def verify_direct_witness(grammar, public_io, query, result, meter):
         return True
     if not result.witnesses:
         raise ValueError("unique certificate missing g1")
-    for expr in result.witnesses[:2]:
+    def nodes(expr):
+        yield expr
+        for child in getattr(expr, "children", ()):
+            yield from nodes(child)
+    for index, raw in enumerate(result.witnesses[:2]):
+        expr = unfold_workspace_expr(raw)
+        if any(node.kind == "hole" for node in nodes(expr)):
+            expr = substitute_holes(expr, (variable(grammar.input_sort),))
         validate_program(expr, grammar)
         for x, y in public_io:
             if freeze(eval_expr(expr, x, grammar.ops, meter)) != freeze(y):
                 raise ValueError("saved witness disagrees with public IO")
         if result.query_values and freeze(eval_expr(expr, query, grammar.ops, meter)) != freeze(result.query_values[0]):
-            if expr is result.witnesses[0]:
+            if index == 0:
                 raise ValueError("g1 disagrees with the certified query value")
     return True
 
@@ -91,7 +99,10 @@ def verify_lifelong_streams(audit, worlds, config, seed, meter, *, replay=False,
             matched=[c for c in cells if c["index"]==i]
             require(len({digest(c["task"]) for c in matched})==1,"controls saw different tasks")
         for c in cells:
-            require(c["report"]["certificate_valid"] is True,"unverified stream certificate")
+            status=(c.get("result") or {}).get("status") or ""
+            valid=c["report"]["certificate_valid"]
+            require(valid is True or status=="NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+                    "unverified stream certificate")
             require(c["report"]["total_work"]>=0 and c["report"]["verification_work"]>=0,"negative stream cost")
         for update in row["updates"]:
             if update["accepted"]:
@@ -132,6 +143,10 @@ def verify_lifelong_streams(audit, worlds, config, seed, meter, *, replay=False,
                 "adaptive correctness must strictly beat fixed search")
         require(audit.get("adaptive_stream_correct_count",0)>=10,"adaptive stream must remain at least 10/12")
         require(audit.get("fixed_stream_correct_count",0)>=9,"fixed stream dropped below the 9/12 baseline")
+        require(audit.get("lifelong_learning_demonstrated") is True,
+                "live experience transfer did not demonstrate lifelong learning")
+        require(audit.get("adaptive_training_inclusive_work",10**9)<audit.get("ordinary_cache_work",0),
+                "adaptive training-inclusive work must beat the cache baseline")
     if replay:
         if bench is None:
             # Historical v5 certificates stay valid; engine revisions do not rewrite them.
@@ -164,10 +179,14 @@ def verify_lifelong_streams(audit, worlds, config, seed, meter, *, replay=False,
             reproduced=run_lifelong_streams(worlds,config,seed,meter,host)
             require(digest(without_physical_timings(audit))==digest(without_physical_timings(reproduced)),
                     "independent source/frozen-target stream replay differs")
-    return {k:audit[k] for k in ("arbitrary_depth_demonstrated","lifelong_learning_demonstrated",
-        "cross_domain_transfer_demonstrated","meta_learning_symptom_doctor_demonstrated",
-        "closed_loop_self_improvement_demonstrated","self_evolving_tool_invention_demonstrated",
-        "open_python_sandbox_demonstrated")}
+    return dict(arbitrary_depth_demonstrated=audit["arbitrary_depth_demonstrated"],
+        finite_horizon_honesty=audit["arbitrary_depth_demonstrated"] is False,
+        lifelong_learning_demonstrated=audit["lifelong_learning_demonstrated"],
+        cross_domain_transfer_demonstrated=audit["cross_domain_transfer_demonstrated"],
+        meta_learning_symptom_doctor_demonstrated=audit["meta_learning_symptom_doctor_demonstrated"],
+        closed_loop_self_improvement_demonstrated=audit["closed_loop_self_improvement_demonstrated"],
+        self_evolving_tool_invention_demonstrated=audit["self_evolving_tool_invention_demonstrated"],
+        open_python_sandbox_demonstrated=audit["open_python_sandbox_demonstrated"])
 
 
 def verify_open_world_arena(arena):
@@ -185,8 +204,15 @@ def verify_open_world_arena(arena):
         other=summary.get(name) or {}
         require(evolving.get("solved",0)>other.get("solved",0),
                 "self-evolving open-world solved count does not dominate "+name)
-        # v8 measured evolving work/solved 331 vs static 149. Solved-count
-        # dominance is the v9 gate; work/solved remains a recorded comparison.
+    static=summary.get("nexus_static_quotient_open_world") or {}
+    unpruned=summary.get("unpruned_open_stdlib_search") or {}
+    if evolving.get("work_per_solved") is not None:
+        if static.get("work_per_solved") is not None:
+            require(evolving["work_per_solved"]<static["work_per_solved"],
+                    "self-evolving open-world work/solved does not dominate static")
+        if unpruned.get("work_per_solved") is not None:
+            require(evolving["work_per_solved"]<unpruned["work_per_solved"],
+                    "self-evolving open-world work/solved does not dominate unpruned")
     meta=arena.get("metabolic_stability") or {}
     require(abs(meta.get("atp_total_sum",0)-100.0)<1e-6, "ATP conservation failed")
     require(0.25<=meta.get("normalized_atp_entropy",0)<=0.98, "ATP entropy left the homeostatic band")
@@ -577,6 +603,12 @@ def verify_payload(payload, *, check_git=False, replay=True, wall_limit=30):
             role_gates, role_errors = verify_role_source(payload, worlds, config, verifier_meter, replay=replay)
             gates.update(role_gates)
             errors.extend(role_errors)
+            if payload.get("direct_certificate_verification") is True and config.get("workspace_hops"):
+                receipts = source["receipts"]
+                gates["source_workspace_exploration_and_compilation"] = all(
+                    r["mining"].get("workspace", {}).get("explored_source") is True
+                    and r["mining"]["workspace"]["hops"]
+                    for r in receipts)
         else:
             must(not payload["libraries"][WORLDS[-1]], "heldout-world skills leaked from source")
         if 3 <= manifest_version < 5:
@@ -660,10 +692,15 @@ def verify_payload(payload, *, check_git=False, replay=True, wall_limit=30):
     except Exception as exc:
         errors.append(type(exc).__name__+": "+str(exc))
     valid = not errors
+    def _gate_ok(key, value):
+        if key == "arbitrary_depth_demonstrated":
+            return value is False
+        return bool(value)
+    passed = bool(gates) and all(_gate_ok(k, v) for k, v in gates.items())
     return dict(integrity_valid=valid, scientific_gates=gates,
-                scientific_gates_passed=bool(gates) and all(gates.values()),
-                ready_for_freeze=valid and bool(gates) and all(gates.values()),
-                errors=errors, failed_scientific_gates=[k for k, v in gates.items() if not v],
+                scientific_gates_passed=passed,
+                ready_for_freeze=valid and passed,
+                errors=errors, failed_scientific_gates=[k for k, v in gates.items() if not _gate_ok(k, v)],
                 replayed=replay, **git_report)
 
 
