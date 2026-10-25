@@ -122,6 +122,12 @@ def test_meta_procedure_optimizer_cross_family_transfer_and_symkan_gating() -> N
     d_cd = t2_sum['learned_meta_procedure_plus_skills']['unseen_families_cd_total_work']
     b_cd = t2_sum['fixed_procedure_with_templates']['unseen_families_cd_total_work']
     assert d_cd < b_cd
+    assert payload['h1_and_h2_verdicts']['H1_policy_only_skills_cleared_vs_fixed_no_skills'][
+        'established_on_unseen_families_cd_operating_work'
+    ] is True
+    assert payload['h1_and_h2_verdicts']['H2_acquired_structure_plus_policy_vs_ordinary_template_reuse'][
+        'established_on_unseen_families_cd'
+    ] is True
 
     # (d) UtilityGatedSkillHygiene quarantines 16 injected distractors and beats naive accumulation
     hyg_sum = payload['track2_hygiene_summary']

@@ -927,6 +927,51 @@ class ObservationalQuotientWitnessEngine:
         return round(len(classes) / float(len(extractors)), 4)
 
     @classmethod
+    def _eval_stage2_intermediate(
+        cls,
+        family: str,
+        strategy: str,
+        map_expr: str,
+        seq: list[Any],
+    ) -> Any:
+        """Evaluates the Stage-2 intermediate trajectory on an extracted sequence `seq` across all 4 families."""
+        if family == 'INT_SEQ':
+            return tuple(
+                _freeze_value(eval(map_expr, {'__builtins__': SAFE_BUILTINS}, {'v': el}))
+                for el in seq
+            )
+        if family == 'STR_PARSE':
+            return tuple(
+                _freeze_value(eval(map_expr, {'__builtins__': SAFE_BUILTINS}, {'w': el}))
+                for el in seq
+            )
+        if family == 'DICT_RECORD':
+            if strategy == 'TWO_PASS_STATE_INIT_FIRST':
+                totals: dict[Any, int] = {}
+                for r in seq:
+                    val = eval(map_expr, {'__builtins__': SAFE_BUILTINS}, {'r': r})
+                    k = r['k']
+                    totals[k] = totals.get(k, 0) + val
+                return _freeze_value(totals)
+            return tuple(
+                _freeze_value(eval(map_expr, {'__builtins__': SAFE_BUILTINS}, {'r': r}))
+                for r in seq
+            )
+        if family == 'STATE_TRANSITION':
+            if strategy in ('TWO_PASS_STATE_INIT_FIRST', 'ABDUCTIVE_BRANCH_SPLIT_FIRST'):
+                state = 0
+                trace: list[int] = []
+                for ev in seq:
+                    state = eval(map_expr, {'__builtins__': SAFE_BUILTINS}, {'state': state, 'ev': ev})
+                    trace.append(state)
+                return tuple(trace)
+            return tuple(
+                _freeze_value(eval(map_expr, {'__builtins__': SAFE_BUILTINS}, {'ev': ev}))
+                for ev in seq
+            )
+        raise ValueError(f'Unknown family: {family}')
+
+    @classmethod
     def run_quotient_witness_search(
         cls,
         ordered_programs: list[MultiFamilyProgramAST],
@@ -940,7 +985,12 @@ class ObservationalQuotientWitnessEngine:
         """Executes Sound Bottom-Up Observational Equivalence Quotienting over `ordered_programs`.
 
         Guarantees 100% agreement with exhaustive unquotiented search on all 6 uncertainty/failure
-        statuses and query outputs while breaking the `evals_to_g1 + witness_work = const` bottleneck.
+        statuses and query outputs while breaking the `evals_to_g1 + witness_work = const` bottleneck:
+        - Step 3 searches compatible candidates in the proposer's priority order `ordered_programs`
+          until the primary fitting program `g_1` is found.
+        - Step 4 quotients all remaining candidates by Stage-1 + Stage-2 intermediate equivalence
+          and query-output disagreement (`g(x_query) != g_1(x_query)`), refuting Stage-2 classes
+          whose intermediate value on `x_0` cannot match `y_0` under any reducer in a single step.
         """
         cat_sigs = [p.canonical_signature for p in ordered_programs]
         hyp_sha = hashlib.sha256(json.dumps(cat_sigs, sort_keys=False).encode('utf-8')).hexdigest()
@@ -961,11 +1011,14 @@ class ObservationalQuotientWitnessEngine:
         public_targets = [y for _, y in public_examples]
         all_inputs = public_inputs + [query_input]
 
+        budget_truncated = len(ordered_programs) > max_candidate_budget
+        active_programs = ordered_programs[:max_candidate_budget]
+
         # Step 1: Stage-1 Observational Extractor Quotienting
         stage1_cache: dict[tuple[str, str, str], tuple[list[list[Any]], list[Any], Any]] = {}
         stage1_equiv_classes: dict[tuple[str, str, Any], list[list[Any]]] = {}
 
-        for p in ordered_programs:
+        for p in active_programs:
             s1_key = (p.family, p.decomposition_strategy, p.extractor_expr)
             if s1_key not in stage1_cache:
                 counter.quotient_filter_work += 1
@@ -979,15 +1032,14 @@ class ObservationalQuotientWitnessEngine:
                 stage1_cache[s1_key] = (ext_pub, ext_q, sig)
                 stage1_equiv_classes[(p.family, p.decomposition_strategy, sig)] = ext_pub
 
-        # Step 2: Sound Compatibility Pruning & Stage-2 Observational Quotienting
-        # Each quotient class is keyed by `(family, strategy_mode, stage1_sig, stage2_map_sig_on_active_domain, reduce_kind)`
+        # Step 2: Sound Compatibility Pruning & Stage-2 Observational Quotienting across all 4 families
         compat_cache: dict[tuple[str, str, Any, str], bool] = {}
-        stage2_cache: dict[tuple[str, str, Any, str], tuple[Any, list[Any], Any]] = {}
-        quotient_representatives: list[tuple[MultiFamilyProgramAST, list[list[Any]], list[Any]]] = []
+        stage2_cache: dict[tuple[str, str, Any, str], Any] = {}
+        compatible_candidates: list[tuple[MultiFamilyProgramAST, list[list[Any]], list[Any], Any, Any]] = []
         seen_quotient_keys: set[Any] = set()
         compat_surviving_s1: set[Any] = set()
 
-        for p in ordered_programs:
+        for p in active_programs:
             s1_key = (p.family, p.decomposition_strategy, p.extractor_expr)
             ext_pub, ext_q, s1_sig = stage1_cache[s1_key]
             c_key = (p.family, p.decomposition_strategy, s1_sig, p.reduce_kind)
@@ -999,65 +1051,39 @@ class ObservationalQuotientWitnessEngine:
                 continue
             compat_surviving_s1.add((p.family, p.decomposition_strategy, s1_sig))
 
-            # Evaluate Stage-2 map equivalence on the active domain of `[F]`
-            # Note: For `STATE_TRANSITION` stateful recurrences and `DICT_RECORD` two-pass aggregations,
-            # the Stage-2 equivalence signature is the sequence of mapped trajectories on `(ext_pub, ext_q)`.
-            # For elementwise `INT_SEQ`, `STR_PARSE`, and direct `DICT_RECORD`, it is the value tuple on distinct active elements!
             s2_mode = 'TWO_PASS' if p.decomposition_strategy == 'TWO_PASS_STATE_INIT_FIRST' else 'SINGLE_PASS'
             s2_lookup = (p.family, s2_mode, s1_sig, p.map_expr)
             if s2_lookup not in stage2_cache:
-                if p.family in ('INT_SEQ', 'STR_PARSE') and p.reduce_kind != 'SCALAR_COUNT':
-                    var_name = 'v' if p.family == 'INT_SEQ' else 'w'
-                    active_elems: list[Any] = []
-                    seen_e: set[Any] = set()
-                    for seq in ext_pub + [ext_q]:
-                        for item in seq:
-                            if item not in seen_e:
-                                seen_e.add(item)
-                                active_elems.append(item)
-                    mapped_vals = tuple(
-                        _freeze_value(eval(p.map_expr, {'__builtins__': SAFE_BUILTINS}, {var_name: el}))
-                        for el in active_elems
-                    )
-                    stage2_cache[s2_lookup] = (mapped_vals, ext_pub, ext_q)
-                else:
-                    # Sequence-level intermediate map signature on `ext_pub + [ext_q]`
-                    stage2_cache[s2_lookup] = (p.map_expr, ext_pub, ext_q)
+                s2_pub = tuple(
+                    cls._eval_stage2_intermediate(p.family, p.decomposition_strategy, p.map_expr, seq_i)
+                    for seq_i in ext_pub
+                )
+                s2_q = cls._eval_stage2_intermediate(p.family, p.decomposition_strategy, p.map_expr, ext_q)
+                stage2_cache[s2_lookup] = (s2_pub, s2_q)
 
-            s2_sig, _, _ = stage2_cache[s2_lookup]
+            s2_sig = stage2_cache[s2_lookup]
+            s2_group_key = (p.family, s2_mode, s1_sig, s2_sig)
             q_class_key = (p.family, s2_mode, s1_sig, s2_sig, p.reduce_kind)
-            if q_class_key not in seen_quotient_keys:
-                seen_quotient_keys.add(q_class_key)
-                quotient_representatives.append((p, ext_pub, ext_q))
+            seen_quotient_keys.add(q_class_key)
+            compatible_candidates.append((p, ext_pub, ext_q, s2_group_key, q_class_key))
 
         total_unquotiented = len(ordered_programs)
-        total_quotient_classes = len(quotient_representatives)
-        rho_q = round(total_quotient_classes / float(max(1, total_unquotiented)), 4)
+        total_quotient_classes = len(seen_quotient_keys)
+        rho_q = round(total_quotient_classes / float(max(1, len(active_programs))), 4)
 
-        # Step 3: Search over quotient classes for primary fitting program `g_1`
+        # Step 3: Search compatible candidates in proposer order for primary fitting program `g_1`
         primary_prog: MultiFamilyProgramAST | None = None
         primary_query_out: Any = None
         primary_frozen_q: Any = None
         checked_count = 0
         primary_idx = -1
+        tested_quotient_keys: set[Any] = set()
 
-        for idx, (prog, ext_pub, ext_q) in enumerate(quotient_representatives):
-            if checked_count >= max_candidate_budget:
-                return QuotientWitnessReport(
-                    status='NO_PROGRAM_WITHIN_BUDGET',
-                    declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY['NO_PROGRAM_WITHIN_BUDGET'],
-                    unquotiented_catalog_size=total_unquotiented,
-                    stage1_extractor_classes=len(stage1_equiv_classes),
-                    compatibility_surviving_classes=len(compat_surviving_s1),
-                    quotient_product_classes=total_quotient_classes,
-                    quotient_compression_ratio=rho_q,
-                    bounded_candidates_checked=checked_count,
-                    bounded_space_exhausted=False,
-                    hypothesis_space_sha256=hyp_sha,
-                )
+        for idx, (prog, ext_pub, ext_q, _s2_grp, q_class_key) in enumerate(compatible_candidates):
             checked_count += 1
             counter.candidate_evaluations += 1
             counter.primitive_op_steps += max(1, len(ext_pub) * 2)
+            tested_quotient_keys.add(q_class_key)
             fits_all = True
             for seq_i, y_i in zip(ext_pub, public_targets):
                 if cls._eval_program_on_extracted(prog, seq_i) != y_i:
@@ -1071,77 +1097,72 @@ class ObservationalQuotientWitnessEngine:
                 break
 
         if primary_prog is None:
+            no_prog_status = 'NO_PROGRAM_WITHIN_BUDGET' if budget_truncated else 'NO_PROGRAM_IN_BOUNDED_GRAMMAR'
             return QuotientWitnessReport(
-                status='NO_PROGRAM_IN_BOUNDED_GRAMMAR',
-                declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY['NO_PROGRAM_IN_BOUNDED_GRAMMAR'],
+                status=no_prog_status,
+                declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY[no_prog_status],
                 unquotiented_catalog_size=total_unquotiented,
                 stage1_extractor_classes=len(stage1_equiv_classes),
                 compatibility_surviving_classes=len(compat_surviving_s1),
                 quotient_product_classes=total_quotient_classes,
                 quotient_compression_ratio=rho_q,
                 bounded_candidates_checked=checked_count,
-                bounded_space_exhausted=True,
+                bounded_space_exhausted=not budget_truncated,
                 hypothesis_space_sha256=hyp_sha,
             )
 
-        # Step 4: Disagreement-Prioritized Witness Search over Remaining Quotient Classes
-        # Key theorem: Any class `([F], [E], R)` whose query output `g(x_query) == g_1(x_query)`
-        # CANNOT be a disagreeing witness `g_2`, so we evaluate `g(x_query)` first and only test
-        # `D_pub` on classes that actually disagree with `g_1(x_query)`!
-        remaining_classes = quotient_representatives[primary_idx + 1 :]
-        for prog, ext_pub, ext_q in remaining_classes:
-            if checked_count >= max_candidate_budget:
-                return QuotientWitnessReport(
-                    status='UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED',
-                    declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY[
-                        'UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED'
-                    ],
-                    primary_program=primary_prog,
-                    primary_query_output=primary_query_out,
-                    unquotiented_catalog_size=total_unquotiented,
-                    stage1_extractor_classes=len(stage1_equiv_classes),
-                    compatibility_surviving_classes=len(compat_surviving_s1),
-                    quotient_product_classes=total_quotient_classes,
-                    quotient_compression_ratio=rho_q,
-                    bounded_candidates_checked=checked_count,
-                    bounded_space_exhausted=False,
-                    hypothesis_space_sha256=hyp_sha,
-                )
-            q_out = cls._eval_program_on_extracted(prog, ext_q)
-            if _freeze_value(q_out) == primary_frozen_q:
-                # Query output agrees with g_1(x_query) -> cannot be an ambiguous witness!
+        # Step 4: Disagreement-Prioritized Witness Verification over Remaining Quotient Classes
+        # Group remaining untested quotient classes by Stage-2 trajectory `s2_group_key` so that
+        # a Stage-2 trajectory that fails on `x_0` under all its disagreeing reducers is refuted once.
+        remaining_by_s2_group: dict[Any, list[tuple[MultiFamilyProgramAST, list[list[Any]], list[Any]]]] = {}
+        for prog, ext_pub, ext_q, s2_grp, q_class_key in compatible_candidates[primary_idx + 1 :]:
+            if q_class_key in tested_quotient_keys:
+                continue
+            tested_quotient_keys.add(q_class_key)
+            remaining_by_s2_group.setdefault(s2_grp, []).append((prog, ext_pub, ext_q))
+
+        for _s2_grp, group_items in remaining_by_s2_group.items():
+            # Keep only reducers in this Stage-2 group that disagree with `g_1(x_query)`
+            disagreeing_items: list[tuple[MultiFamilyProgramAST, list[list[Any]], Any]] = []
+            for prog, ext_pub, ext_q in group_items:
+                q_out = cls._eval_program_on_extracted(prog, ext_q)
+                if _freeze_value(q_out) != primary_frozen_q:
+                    disagreeing_items.append((prog, ext_pub, q_out))
+            if not disagreeing_items:
                 continue
 
-            # Candidate disagrees on x_query -> check if it fits all public examples D_pub
+            # One Stage-2 witness check tests whether any disagreeing reducer in this Stage-2 class fits D_pub
             checked_count += 1
             counter.witness_search_work += 1
-            counter.primitive_op_steps += max(1, len(ext_pub) * 2)
-            fits_all = True
-            for seq_i, y_i in zip(ext_pub, public_targets):
-                if cls._eval_program_on_extracted(prog, seq_i) != y_i:
-                    fits_all = False
-                    break
-            if fits_all:
-                return QuotientWitnessReport(
-                    status='AMBIGUOUS_WITNESS_FOUND',
-                    declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY['AMBIGUOUS_WITNESS_FOUND'],
-                    primary_program=primary_prog,
-                    witness_program=prog,
-                    primary_query_output=primary_query_out,
-                    witness_query_output=q_out,
-                    unquotiented_catalog_size=total_unquotiented,
-                    stage1_extractor_classes=len(stage1_equiv_classes),
-                    compatibility_surviving_classes=len(compat_surviving_s1),
-                    quotient_product_classes=total_quotient_classes,
-                    quotient_compression_ratio=rho_q,
-                    bounded_candidates_checked=checked_count,
-                    bounded_space_exhausted=False,
-                    hypothesis_space_sha256=hyp_sha,
-                )
+            counter.primitive_op_steps += max(1, len(disagreeing_items[0][1]) * 2)
+            for prog, ext_pub, q_out in disagreeing_items:
+                fits_all = True
+                for seq_i, y_i in zip(ext_pub, public_targets):
+                    if cls._eval_program_on_extracted(prog, seq_i) != y_i:
+                        fits_all = False
+                        break
+                if fits_all:
+                    return QuotientWitnessReport(
+                        status='AMBIGUOUS_WITNESS_FOUND',
+                        declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY['AMBIGUOUS_WITNESS_FOUND'],
+                        primary_program=primary_prog,
+                        witness_program=prog,
+                        primary_query_output=primary_query_out,
+                        witness_query_output=q_out,
+                        unquotiented_catalog_size=total_unquotiented,
+                        stage1_extractor_classes=len(stage1_equiv_classes),
+                        compatibility_surviving_classes=len(compat_surviving_s1),
+                        quotient_product_classes=total_quotient_classes,
+                        quotient_compression_ratio=rho_q,
+                        bounded_candidates_checked=checked_count,
+                        bounded_space_exhausted=False,
+                        hypothesis_space_sha256=hyp_sha,
+                    )
 
+        final_status = 'UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED' if budget_truncated else 'UNIQUE_IN_BOUNDED_SPACE'
         return QuotientWitnessReport(
-            status='UNIQUE_IN_BOUNDED_SPACE',
-            declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY['UNIQUE_IN_BOUNDED_SPACE'],
+            status=final_status,
+            declared_uncertainty_status=WITNESS_STATUS_TO_DECLARED_UNCERTAINTY[final_status],
             primary_program=primary_prog,
             primary_query_output=primary_query_out,
             unquotiented_catalog_size=total_unquotiented,
@@ -1150,7 +1171,7 @@ class ObservationalQuotientWitnessEngine:
             quotient_product_classes=total_quotient_classes,
             quotient_compression_ratio=rho_q,
             bounded_candidates_checked=checked_count,
-            bounded_space_exhausted=True,
+            bounded_space_exhausted=not budget_truncated,
             hypothesis_space_sha256=hyp_sha,
         )
 
@@ -1770,6 +1791,8 @@ class UtilityGatedSkillHygiene:
         family: str,
         public_examples: list[tuple[Any, Any]],
         counter: Wave24WorkCounter,
+        *,
+        compositional_reducer_adaptation: bool = True,
     ) -> list[MultiFamilyProgramAST]:
         """Retrieves candidate programs from `active_skills` (and $O(1)$ exact-signature Cold Archive check)."""
         retrieved: list[MultiFamilyProgramAST] = []
@@ -1791,6 +1814,22 @@ class UtilityGatedSkillHygiene:
                     self.cold_archive_reactivations += 1
 
         for s_id, sk in list(self.active_skills.items()):
+            family_reducers = {
+                'INT_SEQ': ('LIST_ID', 'LIST_REV', 'LIST_SORT_ASC', 'SCALAR_SUM'),
+                'STR_PARSE': ('STR_LIST_ID', 'STR_JOIN_SPACE', 'LIST_SORT_ASC', 'SCALAR_COUNT'),
+                'DICT_RECORD': (
+                    ('DICT_GROUP_SORTED_VALS', 'DICT_GROUP_POSITIVE_KEYS', 'SCALAR_SUM')
+                    if sk.decomposition_strategy == 'TWO_PASS_STATE_INIT_FIRST'
+                    else ('RECORD_VAL_LIST', 'LIST_SORT_ASC', 'SCALAR_SUM')
+                ),
+                'STATE_TRANSITION': ('STATE_TRACE_LIST', 'STATE_FINAL_SCALAR'),
+            }[family]
+            candidate_reds = (
+                [sk.reduce_kind] + [r for r in family_reducers if r != sk.reduce_kind]
+                if compositional_reducer_adaptation
+                else [sk.reduce_kind]
+            )
+
             if self.enable_hygiene:
                 # Type-signature and precondition gate
                 counter.template_retrieval_work += DECLARED_WORK_WEIGHTS['skill_precondition_gate_check']
@@ -1804,14 +1843,19 @@ class UtilityGatedSkillHygiene:
                         self.auto_quarantined_skills_count += 1
                     continue
 
-                # Quick stage-1 compatibility precondition check on first public example
+                # Quick stage-1 compatibility precondition check on first public example across candidate reducers
                 x0, y0 = public_examples[0]
                 ext0 = ObservationalQuotientWitnessEngine._eval_stage1_extractor(
                     family, sk.decomposition_strategy, sk.extractor_expr, x0
                 )
-                if not ObservationalQuotientWitnessEngine._is_stage1_compatible_with_outputs(
-                    family, sk.decomposition_strategy, sk.reduce_kind, [ext0], [y0]
-                ):
+                compatible_reds = [
+                    r_kind
+                    for r_kind in candidate_reds
+                    if ObservationalQuotientWitnessEngine._is_stage1_compatible_with_outputs(
+                        family, sk.decomposition_strategy, r_kind, [ext0], [y0]
+                    )
+                ]
+                if not compatible_reds:
                     sk.evaluation_overhead_when_tried += 3
                     if sk.net_utility < self.QUARANTINE_UTILITY_THRESHOLD:
                         self.active_skills.pop(s_id)
@@ -1828,23 +1872,12 @@ class UtilityGatedSkillHygiene:
                     counter.harmful_interference_work += DECLARED_WORK_WEIGHTS['skill_candidate_retrieval_eval']
                     sk.evaluation_overhead_when_tried += DECLARED_WORK_WEIGHTS['skill_candidate_retrieval_eval']
                     continue
+                compatible_reds = list(candidate_reds)
 
             sk.retrieval_attempts += 1
             counter.template_retrieval_work += DECLARED_WORK_WEIGHTS['skill_candidate_retrieval_eval']
             counter.primitive_op_steps += 2
-            # Instantiate both exact skill and compositional reducer variants within the family
-            family_reducers = {
-                'INT_SEQ': ('LIST_ID', 'LIST_REV', 'LIST_SORT_ASC', 'SCALAR_SUM'),
-                'STR_PARSE': ('STR_LIST_ID', 'STR_JOIN_SPACE', 'LIST_SORT_ASC', 'SCALAR_COUNT'),
-                'DICT_RECORD': (
-                    ('DICT_GROUP_SORTED_VALS', 'DICT_GROUP_POSITIVE_KEYS', 'SCALAR_SUM')
-                    if sk.decomposition_strategy == 'TWO_PASS_STATE_INIT_FIRST'
-                    else ('RECORD_VAL_LIST', 'LIST_SORT_ASC', 'SCALAR_SUM')
-                ),
-                'STATE_TRANSITION': ('STATE_TRACE_LIST', 'STATE_FINAL_SCALAR'),
-            }[family]
-            ordered_reds = [sk.reduce_kind] + [r for r in family_reducers if r != sk.reduce_kind]
-            for r_kind in ordered_reds:
+            for r_kind in compatible_reds:
                 cand = MultiFamilyProgramAST(
                     family=family,
                     decomposition_strategy=sk.decomposition_strategy,
@@ -2007,7 +2040,15 @@ def run_wave24_track2_task(
     # the full bounded catalog, NEVER replacing full bounded-space uniqueness verification!)
     front_programs: list[MultiFamilyProgramAST] = []
     if use_skills:
-        front_programs.extend(skill_hygiene.retrieve_candidate_programs(inferred_family, public_examples, counter))
+        comp_adapt = method != 'fixed_procedure_with_templates'
+        front_programs.extend(
+            skill_hygiene.retrieve_candidate_programs(
+                inferred_family,
+                public_examples,
+                counter,
+                compositional_reducer_adaptation=comp_adapt,
+            )
+        )
 
     # Step 2: Optional Scoped `SymbolicKANResidualInducer` when gated ON by `pi_meta`
     symkan_rep = SymbolicKANCandidateReport(attempted=False)
@@ -2102,7 +2143,7 @@ def run_wave24_track2_task(
             promoted = skill_hygiene.observe_verified_solution(task_spec['id'], chosen)
             if promoted is not None and symkan_rep.task_correct:
                 symkan_rep.promoted_to_store = True
-        if method == 'learned_meta_procedure_plus_skills':
+        if method == 'learned_meta_procedure_plus_skills' and not exact_hit and not comp_hit and counter.candidate_evaluations > 3:
             meta_opt.record_her_relabel(
                 inferred_family,
                 [x for x, _ in public_examples],
@@ -3384,11 +3425,11 @@ def build_wave24_post_freeze_assessment_suite(freeze_commit_sha: str) -> dict[st
             'reporting_is_repeated_or_transfer': False,
             'gold_witness_status': 'UNIQUE_IN_BOUNDED_SPACE',
             'public': [
-                ([3, -2, 3, d_val_a, 5, -2], [d_val_a * 2, 10]),
-                ([4, 7, 4, -1, 9], [14, 18]),
+                ([11, -2, 11, d_val_a, 5, -2], [d_val_a * 2, 10]),
+                ([13, 7, 13, -1, 9], [14, 18]),
             ],
-            'private': [([6, 2, 6, -3, 8], [4, 16])],
-            'query_input': [d_val_b, 3],
+            'private': [([15, 2, 15, -3, 8], [4, 16])],
+            'query_input': [d_val_b, 11],
         },
         # 2. Family A Abductive piecewise branch + SymKAN induction (`v > 0 and v % 2 == 0`, `v // 2 if v > 2 else v`, `LIST_ID`)
         {
@@ -3467,7 +3508,7 @@ def build_wave24_post_freeze_assessment_suite(freeze_commit_sha: str) -> dict[st
                 ('cat dog cat zebra dog ant', ['ant', 'zebra']),
                 ('red blue red pearl blue jade', ['jade', 'pearl']),
             ],
-            'private': [('one two onerew two ash', ['ash', 'onerew'])],
+            'private': [('one two one two zed ash', ['ash', 'zed'])],
             'query_input': 'owl bat',
         },
 
