@@ -62,3 +62,51 @@ python3 scripts/phase2_oracle.py --replay-of artifacts/wave26_phase2_confirmatio
 ```
 
 Seeds 2001–2005 are one-use and registry-enforced.
+
+## Confirmation result (seeds 2001–2005, frozen code `a7c4eb9`) — **PHASE 2 FAIL** (total-cost criterion)
+
+* Call 1, confirmation: 155.7 s. Call 2, fresh-process replay with `PYTHONHASHSEED=271828`: 156.4 s.
+* Digests `61373ef3…98e8` are identical.
+* Artifact: `artifacts/wave26_phase2_confirmation.json`, sha256
+  `91f927eaa7c78f65ad94bb140957818a42cbfc7680ea2221c55712be5c664ab2`.
+* 40 episodes × 3 noise levels = 120 queries per arm.
+
+| Arm | ε = 0.01 | ε = 0.05 | ε = 0.10 | Solved | False certs (≤ 99% bound) | Empty V | Probes | Fully loaded |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| exact_eig_noisy | 40 | 39 | 31 | 110 / 120 | 0 (≤ 4) | 0 | 372 | **7,744,965** |
+| full_noisy | 40 | 40 | 40 | **120 / 120** | 0 (≤ 4) | 0 | **256** | 7,933,737 (+2.4%) |
+| naive_exact_elim | 40 | 40 | 35 | 115 / 120 | **1** (≤ 4) | **4** | 121 | 7,940,173 |
+
+The ε columns count solved queries out of 40.
+
+| Gate | Result |
+| --- | --- |
+| Calibrated soundness (noise-tolerant arms, every ε) | **PASS** (0 false certificates in 230 certificates) |
+| full_noisy fully loaded < exact_eig_noisy | **FAIL** (+2.4%) |
+| solved(full) ≥ solved(exact) | PASS (120 vs 110) |
+| G_tycho | PASS (360 / 360 rows) |
+| G_replay | PASS |
+
+Secondary measure (not a gate): cost per solved query is 66.1k for full vs 70.4k for exact.
+
+Opaque tools' empirical contract: 233k–260k observed transitions per seed, 0 sub-multiset violations. It
+was used for ordering only and never for pruning.
+
+**Reading.**
+* The noise-tolerant certificate does what it is for. 0 false certificates over 230 certificates, at noise
+  up to 10%.
+* The naive exact-elimination control shows why the rule is needed. At ε = 0.10 it emptied the version
+  space 4 times (the truth was eliminated by noise) and issued 1 false certificate.
+* Answer-directed probing solves every query (vs 110 / 120) with 31% fewer probes.
+* On total cost the system **does not** beat the unlearned baseline. With opaque mechanisms no proved
+  contract can prune, which removes the pruning that produced Phase 1's −59%. At c_oracle = 20 the 116
+  saved probes are worth ≈ 2.3k units, against contract learning and candidate scoring.
+
+**Implication.** The Phase 1 advantage depends on white-box, provable mechanisms. To keep it with opaque
+tools, NEXUS needs either a sound way to bound an opaque tool's behaviour (e.g. a verified wrapper
+contract, or a library specification adopted as an explicit, audited assumption), or a regime where probes
+are expensive. In the Phase 1 grid, the vault's margin shrank as c_oracle grew, while the probe saving
+here grows with c_oracle.
+
+**Phase 2 has not passed.** Per the roadmap's dependency order, Phases 4–6 should not start until it does,
+or until the owner decides how to proceed.
