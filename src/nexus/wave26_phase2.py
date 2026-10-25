@@ -182,7 +182,7 @@ def prepare(ep, vault):
                 status=res.status)
 
 
-def run_arm(ep, prep, arm, eps, *, seed):
+def run_arm(ep, prep, arm, eps, *, seed, c_oracle=C_ORACLE):
     m = meter(10**12)
     for k, v in prep["base_by"].items():
         m.charge(k, v)
@@ -242,7 +242,7 @@ def run_arm(ep, prep, arm, eps, *, seed):
         if best is None or best_key[0] <= 1e-12:
             break
         n += 1
-        m.charge("oracle_work_units", C_ORACLE)
+        m.charge("oracle_work_units", c_oracle)
         y = run(ep["teacher"], best)
         if rng_noise.random() < eps:
             y = corrupt(y, rng_noise)
@@ -259,7 +259,7 @@ def run_arm(ep, prep, arm, eps, *, seed):
                 H=len(H), pruning=prep["pruning"])
 
 
-def run_seed(seed, n_eps, *, epsilons=EPSILONS):
+def run_seed(seed, n_eps, *, epsilons=EPSILONS, c_oracle=C_ORACLE):
     world = records_world_f(seed, CELL[2])
     eps_list = make_episodes2(world, seed, n_eps)
     lib = learn_contracts()
@@ -273,10 +273,10 @@ def run_seed(seed, n_eps, *, epsilons=EPSILONS):
                 empirical.update(t.fn.observed)
         for eps in epsilons:
             for arm in ARMS:
-                r = run_arm(ep, prep, arm, eps, seed=seed)
+                r = run_arm(ep, prep, arm, eps, seed=seed, c_oracle=c_oracle)
                 r.update(seed=seed, episode=i)
                 rows.append(r)
-    return dict(seed=seed, rows=rows, n=len(eps_list), contract_learning=learn_cost,
+    return dict(seed=seed, rows=rows, n=len(eps_list), contract_learning=learn_cost, c_oracle=c_oracle,
                 empirical_contract=dict(empirical))
 
 

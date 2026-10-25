@@ -110,3 +110,29 @@ here grows with c_oracle.
 
 **Phase 2 has not passed.** Per the roadmap's dependency order, Phases 4–6 should not start until it does,
 or until the owner decides how to proceed.
+
+## Phase 2b — owner option 2: re-run at a higher oracle cost on a fresh range (locked before seeds 2006–2010)
+
+The owner chose option 2. The registry gets a new one-use range `("phase2", "confirm_b") = 2006–2010`,
+disjoint from every other range. Phase 2 arms make no cost-dependent decisions, so the oracle cost was
+selected by **re-pricing the dev artifact (seeds 711–715) only**. The spent 2001–2005 outcomes were not
+used for the choice.
+
+| c_oracle | full / exact (dev) | Solved full / exact |
+| --- | --- | --- |
+| 20 | 1.009 | 90 / 82 |
+| 200 | 1.007 | 90 / 82 |
+| **2000** | **0.988** | 90 / 82 |
+| 20000 | 0.886 | 90 / 82 |
+
+**Selection rule.** The smallest cost in the Phase 1 grid at which the dev re-pricing crosses →
+**c_oracle = 2000**. The dev margin there is thin (1.2%); declared risk. At high oracle cost the naive
+control is cheapest because it stops early, but it is not sound under noise (false certificates and empty
+version spaces), so it is not a valid comparator for the gate.
+
+The code is unchanged except that the oracle cost is now a parameter. Gates are identical to Phase 2.
+
+```
+python3 scripts/phase2_oracle.py --confirm-b --c 2000 --n 8 --checkpoint runs/experimental/wave26_phase2b_confirm.jsonl --out artifacts/wave26_phase2b_confirmation.json
+python3 scripts/phase2_oracle.py --replay-of artifacts/wave26_phase2b_confirmation.json --n 8
+```

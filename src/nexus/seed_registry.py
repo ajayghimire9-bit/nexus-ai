@@ -24,6 +24,8 @@ class SeedHygieneError(RuntimeError):
 REGISTRY = {
     ("phase1", "dev"): range(701, 706), ("phase1", "confirm"): range(1001, 1006),
     ("phase2", "dev"): range(711, 716), ("phase2", "confirm"): range(2001, 2006),
+    # owner-approved (2026-10-26, Phase 2 option 2): re-run at a higher oracle cost on a fresh range
+    ("phase2", "confirm_b"): range(2006, 2011),
     ("phase3", "vault_group_a"): range(3001, 3011), ("phase3", "vault_group_b"): range(3011, 3021),
     ("phase3", "vault_external"): range(3021, 3031),
     ("phase4", "dev"): range(721, 726), ("phase4", "confirm"): range(4001, 4006),

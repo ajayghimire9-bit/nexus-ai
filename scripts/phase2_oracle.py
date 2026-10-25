@@ -19,7 +19,7 @@ def digest(outs):
                         for o in outs for r in o["rows"]])
 
 
-def run(seeds, n, checkpoint=None):
+def run(seeds, n, checkpoint=None, c=20):
     from nexus.wave26_phase2 import run_seed
     outs, done = [], set()
     ck = Path(checkpoint) if checkpoint else None
@@ -31,7 +31,7 @@ def run(seeds, n, checkpoint=None):
     for s in seeds:
         if s in done:
             continue
-        o = run_seed(s, n)
+        o = run_seed(s, n, c_oracle=c)
         outs.append(o)
         if ck:
             with ck.open("a") as f:
@@ -44,6 +44,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dev", action="store_true")
     ap.add_argument("--confirm", action="store_true")
+    ap.add_argument("--confirm-b", action="store_true", help="owner-approved re-run range 2006-2010")
+    ap.add_argument("--c", type=int, default=20)
     ap.add_argument("--digest-only", action="store_true")
     ap.add_argument("--replay-of")
     ap.add_argument("--n", type=int, default=6)
@@ -51,16 +53,18 @@ def main():
     ap.add_argument("--out")
     a = ap.parse_args()
     from nexus import seed_registry as R
-    seeds = list(range(711, 716)) if a.dev else list(range(2001, 2006))
+    seeds = list(range(711, 716)) if a.dev else list(range(2006, 2011)) if a.confirm_b else list(range(2001, 2006))
     if a.digest_only:
-        print(digest(run(seeds, a.n)))
+        print(digest(run(seeds, a.n, c=a.c)))
         return
     if a.replay_of:
         from nexus.standing_gates import g_replay
         art = json.loads(Path(a.replay_of).read_text())
         t0 = time.perf_counter()
         try:
-            art["report"]["G_replay"] = g_replay(__file__, ["--confirm", "--n", str(a.n)], art["report"]["digest"])
+            mode = "--confirm-b" if art.get("confirm_b") else "--confirm"
+            art["report"]["G_replay"] = g_replay(__file__, [mode, "--n", str(a.n), "--c", str(art.get("c_oracle", 20))],
+                                                 art["report"]["digest"])
         finally:
             with LEDGER.open("a") as f:
                 f.write(json.dumps(dict(run="wave26-phase2-replay", wall_s=time.perf_counter() - t0, status="COMPLETE")) + "\n")
@@ -71,16 +75,18 @@ def main():
     if a.dev:
         R.claim("phase2", "dev", seeds, run_id="phase2-dev", record=False)
     else:
+        a.confirm = True
         if not a.checkpoint:
             raise SystemExit("confirmation requires --checkpoint")
-        R.claim("phase2", "confirm", seeds, run_id="phase2-confirm")
+        R.claim("phase2", "confirm_b" if a.confirm_b else "confirm", seeds,
+                run_id="phase2-confirm-b" if a.confirm_b else "phase2-confirm")
     t0, status = time.perf_counter(), "FAILED"
     try:
-        outs = run(seeds, a.n, a.checkpoint)
+        outs = run(seeds, a.n, a.checkpoint, c=a.c)
         status = "COMPLETE"
     finally:
         with LEDGER.open("a") as f:
-            f.write(json.dumps(dict(run="wave26-phase2-" + ("dev" if a.dev else "confirm"), seeds=seeds,
+            f.write(json.dumps(dict(run="wave26-phase2-" + ("dev" if a.dev else "confirm"), seeds=seeds, c_oracle=a.c,
                                     wall_s=time.perf_counter() - t0, status=status)) + "\n")
     from nexus.standing_gates import g_tycho
     from nexus.wave26_phase2 import score
@@ -88,8 +94,9 @@ def main():
     rep["digest"] = digest(outs)
     rep["G_tycho"] = g_tycho([r for o in outs for r in o["rows"]])
     rep["phase2_pass_excluding_replay"] = rep["calibrated_soundness"] and rep["full_beats_exact"] and rep["G_tycho"]["passed"]
-    rep["G_replay"] = "PENDING (--replay-of)" if a.confirm else "n/a (dev)"
-    Path(a.out).write_text(json.dumps(dict(schema="wave26_phase2", report=rep, seeds_raw=outs), default=repr, sort_keys=True))
+    rep["G_replay"] = "PENDING (--replay-of)" if not a.dev else "n/a (dev)"
+    Path(a.out).write_text(json.dumps(dict(schema="wave26_phase2", report=rep, seeds_raw=outs, c_oracle=a.c,
+                                           confirm_b=a.confirm_b), default=repr, sort_keys=True))
     for k, v in sorted(rep["table"].items()):
         print(f"{k:28s} solved {v['solved']}/{v['episodes']} certs {v['certs']} false {v['false']} (<= {v['false_bound_99']}) "
               f"empty {v['empty']} probes {v['probes']} fully_loaded {int(v['fully_loaded'])}")
