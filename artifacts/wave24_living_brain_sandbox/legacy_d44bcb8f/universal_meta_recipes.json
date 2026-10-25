@@ -1,0 +1,36 @@
+{
+  "atomic_forces": [
+    "CLEANER_IDEMPOTENT",
+    "FILTER_CONTRACTIVE",
+    "FLIPPER_INVOLUTION",
+    "STEPPER_ADVANCE",
+    "GUARD_STABILIZER"
+  ],
+  "noether_laws": [
+    "MASS_PRESERVING",
+    "MASS_CONTRACTIVE",
+    "MULTISET_PRESERVING_PERMUTATION"
+  ],
+  "recipes": [
+    {
+      "atomic_force": "CLEANER_IDEMPOTENT",
+      "epoch": 2,
+      "inner_job_tag": "FLIPPER_INVOLUTION",
+      "kind": "chain",
+      "noether": [],
+      "operator": "math_acos",
+      "outer_job_tag": "CLEANER_IDEMPOTENT",
+      "skill": "skill_2_chain_e63f679a"
+    },
+    {
+      "atomic_force": "COMPOSITE_LAYER_1",
+      "epoch": 2,
+      "inner_job_tag": "CLEANER_IDEMPOTENT",
+      "kind": "try",
+      "noether": [],
+      "operator": "skill_2_chain_e63f679a",
+      "outer_job_tag": "COMPOSITE_LAYER_1",
+      "skill": "skill_2_branch_1ce1fd2c"
+    }
+  ]
+}

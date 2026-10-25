@@ -1,10 +1,10 @@
 {
   "atomic_forces": [
-    "CLEANER_IDEMPOTENT",
-    "FILTER_CONTRACTIVE",
-    "FLIPPER_INVOLUTION",
-    "STEPPER_ADVANCE",
-    "GUARD_STABILIZER"
+    "F_SELECT",
+    "F_TRANSLATE",
+    "F_TRANSMUTE",
+    "F_CONDENSE",
+    "F_BRANCH"
   ],
   "noether_laws": [
     "MASS_PRESERVING",
@@ -13,24 +13,322 @@
   ],
   "recipes": [
     {
-      "atomic_force": "CLEANER_IDEMPOTENT",
+      "atomic_force": "F_TRANSMUTE",
+      "epoch": 0,
+      "inner_job_tag": "FLIPPER_INVOLUTION",
+      "kind": "chain",
+      "noether": [],
+      "operator": "operator_neg",
+      "outer_job_tag": "FLIPPER_INVOLUTION",
+      "skill": "skill_0_chain_45d55644",
+      "universal_force_functors": [
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ]
+      ]
+    },
+    {
+      "atomic_force": "F_BRANCH",
+      "epoch": 0,
+      "inner_job_tag": "CLEANER_IDEMPOTENT",
+      "kind": "if",
+      "noether": [],
+      "operator": "skill_0_chain_45d55644",
+      "outer_job_tag": "COMPOSITE_LAYER_1",
+      "skill": "skill_0_branch_d220ad09",
+      "universal_force_functors": []
+    },
+    {
+      "atomic_force": "F_TRANSMUTE",
+      "epoch": 0,
+      "inner_job_tag": "GUARD_STABILIZER",
+      "kind": "try",
+      "noether": [],
+      "operator": "skill_0_branch_d220ad09",
+      "outer_job_tag": "COMPOSITE_LAYER_2",
+      "skill": "skill_0_recover_17ff9193",
+      "universal_force_functors": []
+    },
+    {
+      "atomic_force": "F_BRANCH",
+      "epoch": 1,
+      "inner_job_tag": "FLIPPER_INVOLUTION",
+      "kind": "chain",
+      "noether": [],
+      "operator": "operator_not_",
+      "outer_job_tag": "GUARD_STABILIZER",
+      "skill": "skill_1_chain_82f1719b",
+      "universal_force_functors": [
+        [
+          "F_BRANCH",
+          "F_BRANCH"
+        ]
+      ]
+    },
+    {
+      "atomic_force": "F_BRANCH",
+      "epoch": 1,
+      "inner_job_tag": "COMPOSITE_LAYER_1",
+      "kind": "chain",
+      "noether": [],
+      "operator": "skill_1_chain_82f1719b",
+      "outer_job_tag": "COMPOSITE_LAYER_1",
+      "skill": "skill_1_compound_6cb45d36",
+      "universal_force_functors": [
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_BRANCH",
+          "F_BRANCH"
+        ]
+      ]
+    },
+    {
+      "atomic_force": "F_TRANSMUTE",
+      "epoch": 1,
+      "inner_job_tag": "COMPOSITE_LAYER_2",
+      "kind": "if",
+      "noether": [],
+      "operator": "skill_0_recover_17ff9193",
+      "outer_job_tag": "COMPOSITE_LAYER_3",
+      "skill": "skill_1_branch_88319daf",
+      "universal_force_functors": []
+    },
+    {
+      "atomic_force": "F_TRANSMUTE",
       "epoch": 2,
       "inner_job_tag": "FLIPPER_INVOLUTION",
       "kind": "chain",
       "noether": [],
-      "operator": "math_acos",
-      "outer_job_tag": "CLEANER_IDEMPOTENT",
-      "skill": "skill_2_chain_e63f679a"
+      "operator": "skill_1_branch_88319daf",
+      "outer_job_tag": "COMPOSITE_LAYER_4",
+      "skill": "skill_2_chain_67c7515f",
+      "universal_force_functors": [
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_SELECT",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_SELECT"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ]
+      ]
     },
     {
-      "atomic_force": "COMPOSITE_LAYER_1",
+      "atomic_force": "F_BRANCH",
       "epoch": 2,
-      "inner_job_tag": "CLEANER_IDEMPOTENT",
-      "kind": "try",
+      "inner_job_tag": "COMPOSITE_LAYER_1",
+      "kind": "chain",
       "noether": [],
-      "operator": "skill_2_chain_e63f679a",
-      "outer_job_tag": "COMPOSITE_LAYER_1",
-      "skill": "skill_2_branch_1ce1fd2c"
+      "operator": "skill_2_chain_67c7515f",
+      "outer_job_tag": "COMPOSITE_LAYER_5",
+      "skill": "skill_2_compound_c29b968f",
+      "universal_force_functors": [
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_SELECT",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_SELECT"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ]
+      ]
+    },
+    {
+      "atomic_force": "F_BRANCH",
+      "epoch": 2,
+      "inner_job_tag": "GUARD_STABILIZER",
+      "kind": "if",
+      "noether": [],
+      "operator": "skill_2_compound_c29b968f",
+      "outer_job_tag": "COMPOSITE_LAYER_6",
+      "skill": "skill_2_branch_18d8f35f",
+      "universal_force_functors": []
+    },
+    {
+      "atomic_force": "F_TRANSMUTE",
+      "epoch": 2,
+      "inner_job_tag": "COMPOSITE_LAYER_7",
+      "kind": "if",
+      "noether": [
+        "MASS_EXPANSIVE"
+      ],
+      "operator": "math_exp2",
+      "outer_job_tag": "STEPPER_ADVANCE",
+      "skill": "skill_2_recover_88da0f12",
+      "universal_force_functors": []
+    },
+    {
+      "atomic_force": "F_BRANCH",
+      "epoch": 3,
+      "inner_job_tag": "COMPOSITE_LAYER_1",
+      "kind": "chain",
+      "noether": [],
+      "operator": "operator_not_",
+      "outer_job_tag": "GUARD_STABILIZER",
+      "skill": "skill_3_chain_45fc7dee",
+      "universal_force_functors": [
+        [
+          "F_BRANCH",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_BRANCH"
+        ]
+      ]
+    },
+    {
+      "atomic_force": "F_BRANCH",
+      "epoch": 3,
+      "inner_job_tag": "COMPOSITE_LAYER_1",
+      "kind": "chain",
+      "noether": [
+        "MASS_EXPANSIVE"
+      ],
+      "operator": "skill_2_branch_18d8f35f",
+      "outer_job_tag": "COMPOSITE_LAYER_7",
+      "skill": "skill_3_compound_1c0a234f",
+      "universal_force_functors": [
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_BRANCH",
+          "F_BRANCH"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ],
+        [
+          "F_SELECT",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_SELECT"
+        ],
+        [
+          "F_BRANCH",
+          "F_TRANSMUTE"
+        ],
+        [
+          "F_TRANSMUTE",
+          "F_BRANCH"
+        ]
+      ]
+    },
+    {
+      "atomic_force": "F_BRANCH",
+      "epoch": 3,
+      "inner_job_tag": "CLEANER_IDEMPOTENT",
+      "kind": "if",
+      "noether": [
+        "MASS_EXPANSIVE"
+      ],
+      "operator": "skill_2_recover_88da0f12",
+      "outer_job_tag": "COMPOSITE_LAYER_8",
+      "skill": "skill_3_recover_9dc055f3",
+      "universal_force_functors": []
     }
+  ],
+  "universal_force_functors": [
+    [
+      "F_BRANCH",
+      "F_BRANCH"
+    ],
+    [
+      "F_BRANCH",
+      "F_TRANSMUTE"
+    ],
+    [
+      "F_SELECT",
+      "F_TRANSMUTE"
+    ],
+    [
+      "F_TRANSMUTE",
+      "F_BRANCH"
+    ],
+    [
+      "F_TRANSMUTE",
+      "F_SELECT"
+    ]
   ]
 }

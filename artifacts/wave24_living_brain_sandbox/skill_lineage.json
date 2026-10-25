@@ -1,109 +1,1257 @@
 {
-  "skill_2_branch_1ce1fd2c": {
+  "skill_0_branch_d220ad09": {
     "callees": [
-      "skill_2_chain_e63f679a"
+      "skill_0_chain_45d55644"
     ],
     "constructs": [
       "chain",
-      "if",
-      "try"
+      "if"
     ],
     "delta_w_total": 0.0,
+    "except_fired_on": [],
     "force_signature": {
-      "delta_mass": -31,
-      "locus_changes": 1,
-      "quantum_changes": 5
+      "defined_probes": 7,
+      "delta_mass": 4,
+      "force": "F_TRANSMUTE",
+      "locus_changes": 4,
+      "quantum_changes": 7
     },
     "layer": 2,
     "plan": {
-      "body": {
-        "else": {
-          "kind": "chain",
-          "steps": [
-            "skill_2_chain_e63f679a"
-          ]
-        },
-        "guard": "is_negative",
-        "kind": "if",
-        "then": {
-          "kind": "chain",
-          "steps": [
-            "math_acos"
-          ]
-        }
-      },
-      "fallback": {
+      "else": {
         "kind": "chain",
         "steps": [
-          "skill_2_chain_e63f679a"
+          "skill_0_chain_45d55644"
         ]
       },
-      "kind": "try"
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "math_fabs"
+        ]
+      }
     },
-    "primitive_cost": 7,
-    "pure_digest": "5aac65d698ef5543967e414781016784713ae21eec580c4074ab1e2fbaa6c829",
+    "primitive_cost": 4,
+    "pure_digest": "c7c3cb5a17667284642aa0741b865689eacb48c60948a421af1381f53387cd3e",
     "pure_plan": {
-      "body": {
-        "else": {
-          "kind": "chain",
-          "steps": [
-            "operator_inv",
-            "math_acos"
-          ]
-        },
-        "guard": "is_negative",
-        "kind": "if",
-        "then": {
-          "kind": "chain",
-          "steps": [
-            "math_acos"
-          ]
-        }
-      },
-      "fallback": {
+      "else": {
         "kind": "chain",
         "steps": [
           "operator_inv",
-          "math_acos"
+          "operator_neg"
         ]
       },
-      "kind": "try"
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "math_fabs"
+        ]
+      }
     },
-    "source_sha256": "5c962df5f90be2227742ce1c9c2f056b68608006685e08f6974cda2e06682219",
-    "statements": 10,
+    "source_sha256": "e358af2517a780e7c78ccd02ccaa5f68d8cba85b67d05052c47ee27b70c528cc",
+    "statements": 7,
     "status": "nursery",
     "uses": []
   },
-  "skill_2_chain_e63f679a": {
+  "skill_0_chain_45d55644": {
     "callees": [],
     "constructs": [
       "chain"
     ],
-    "delta_w_total": 0.0,
+    "delta_w_total": 9653.0,
+    "except_fired_on": [],
     "force_signature": {
-      "delta_mass": -28,
-      "locus_changes": 1,
+      "defined_probes": 7,
+      "delta_mass": 2,
+      "force": "F_BRANCH",
+      "locus_changes": 6,
       "quantum_changes": 7
+    },
+    "graduated_after_uses": 2,
+    "layer": 1,
+    "plan": {
+      "kind": "chain",
+      "steps": [
+        "operator_inv",
+        "operator_neg"
+      ]
+    },
+    "primitive_cost": 2,
+    "pure_digest": "45d5564442959c9b0c5d081ab0d59977bee99fbce0ba40078c9f1972f7b5f592",
+    "pure_plan": {
+      "kind": "chain",
+      "steps": [
+        "operator_inv",
+        "operator_neg"
+      ]
+    },
+    "source_sha256": "6a28e10b39884ee187a61412c79b5188e8dae50bc80e68e5012e66c2a47e947a",
+    "statements": 5,
+    "status": "graduated",
+    "uses": [
+      {
+        "delta_w": 3952.0,
+        "task": "1357b94648dffbb5c5c69f675f7bfe767282c454ab8a19013a1fcbd74d049ab9"
+      },
+      {
+        "delta_w": 3839.0,
+        "task": "4d3f218ed0bb7c7388343d3a935835fbc8da3b0ba4e3aa6ba6cdd0c2109c707f"
+      },
+      {
+        "delta_w": 1862.0,
+        "task": "d5c59191175d464e515e95e7910404b0f5ea345a4efce6a7d2fdb5cde38e3c3f"
+      }
+    ]
+  },
+  "skill_0_recover_17ff9193": {
+    "callees": [
+      "skill_0_branch_d220ad09"
+    ],
+    "constructs": [
+      "chain",
+      "try"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [
+      -7,
+      -3,
+      -2,
+      2,
+      3,
+      5,
+      7,
+      11
+    ],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 2,
+      "force": "F_TRANSMUTE",
+      "locus_changes": 2,
+      "quantum_changes": 4
+    },
+    "layer": 3,
+    "plan": {
+      "body": {
+        "kind": "chain",
+        "steps": [
+          "math_cbrt"
+        ]
+      },
+      "fallback": {
+        "kind": "chain",
+        "steps": [
+          "skill_0_branch_d220ad09"
+        ]
+      },
+      "kind": "try"
+    },
+    "primitive_cost": 6,
+    "pure_digest": "c3d1ba61299c7918618f54dcc256f5ee23ee0965f159b7c7a86a4c2874a3e585",
+    "pure_plan": {
+      "body": {
+        "kind": "chain",
+        "steps": [
+          "math_cbrt"
+        ]
+      },
+      "fallback": {
+        "kind": "seq",
+        "parts": [
+          {
+            "else": {
+              "kind": "chain",
+              "steps": [
+                "operator_inv",
+                "operator_neg"
+              ]
+            },
+            "guard": "is_negative",
+            "kind": "if",
+            "then": {
+              "kind": "chain",
+              "steps": [
+                "math_fabs"
+              ]
+            }
+          }
+        ]
+      },
+      "kind": "try"
+    },
+    "source_sha256": "12661666de5c5e6164b18f93daa51a929c64c3e7d81981c1033690c39416424f",
+    "statements": 7,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_1_branch_88319daf": {
+    "callees": [
+      "skill_0_branch_d220ad09",
+      "skill_0_recover_17ff9193"
+    ],
+    "constructs": [
+      "chain",
+      "if"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 2,
+      "force": "F_TRANSMUTE",
+      "locus_changes": 2,
+      "quantum_changes": 5
+    },
+    "layer": 4,
+    "plan": {
+      "else": {
+        "kind": "chain",
+        "steps": [
+          "skill_0_recover_17ff9193"
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "skill_0_branch_d220ad09"
+        ]
+      }
+    },
+    "primitive_cost": 11,
+    "pure_digest": "e5a1169b042a6bcd5d948ce0e8a6df176e3ebf833d3127c67ac70f765f2b8fac",
+    "pure_plan": {
+      "else": {
+        "kind": "seq",
+        "parts": [
+          {
+            "body": {
+              "kind": "chain",
+              "steps": [
+                "math_cbrt"
+              ]
+            },
+            "fallback": {
+              "kind": "seq",
+              "parts": [
+                {
+                  "else": {
+                    "kind": "chain",
+                    "steps": [
+                      "operator_inv",
+                      "operator_neg"
+                    ]
+                  },
+                  "guard": "is_negative",
+                  "kind": "if",
+                  "then": {
+                    "kind": "chain",
+                    "steps": [
+                      "math_fabs"
+                    ]
+                  }
+                }
+              ]
+            },
+            "kind": "try"
+          }
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "seq",
+        "parts": [
+          {
+            "else": {
+              "kind": "chain",
+              "steps": [
+                "operator_inv",
+                "operator_neg"
+              ]
+            },
+            "guard": "is_negative",
+            "kind": "if",
+            "then": {
+              "kind": "chain",
+              "steps": [
+                "math_fabs"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "source_sha256": "c4d4131067176d9dff29bece50a9bea6f0b50ddd6a38a0e10b5c8e167396ce3a",
+    "statements": 7,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_1_chain_82f1719b": {
+    "callees": [],
+    "constructs": [
+      "chain"
+    ],
+    "delta_w_total": 3952.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": -10,
+      "force": "F_BRANCH",
+      "locus_changes": 5,
+      "quantum_changes": 6
     },
     "layer": 1,
     "plan": {
       "kind": "chain",
       "steps": [
         "operator_inv",
-        "math_acos"
+        "operator_not_"
       ]
     },
     "primitive_cost": 2,
-    "pure_digest": "e63f679a094f67a9e8f8b5f627d37b35bc993580a58a5d0003e987e8a2ef76e4",
+    "pure_digest": "82f1719b25311f22614fc349f6f49d06e119487413b9e079911d521178a03437",
     "pure_plan": {
       "kind": "chain",
       "steps": [
         "operator_inv",
-        "math_acos"
+        "operator_not_"
       ]
     },
-    "source_sha256": "43140af5a01055ad9b50043289e79576c4c41a4bedd2edf66dd4fee4d20589bf",
+    "source_sha256": "f139521463f46496e0516314d39d2866aed970101d5ef72776b37817ea017282",
     "statements": 5,
+    "status": "nursery",
+    "uses": [
+      {
+        "delta_w": 3952.0,
+        "task": "1357b94648dffbb5c5c69f675f7bfe767282c454ab8a19013a1fcbd74d049ab9"
+      }
+    ]
+  },
+  "skill_1_compound_6cb45d36": {
+    "callees": [
+      "skill_0_chain_45d55644",
+      "skill_1_chain_82f1719b"
+    ],
+    "constructs": [
+      "chain"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": -10,
+      "force": "F_BRANCH",
+      "locus_changes": 6,
+      "quantum_changes": 6
+    },
+    "layer": 2,
+    "plan": {
+      "kind": "chain",
+      "steps": [
+        "skill_0_chain_45d55644",
+        "skill_1_chain_82f1719b"
+      ]
+    },
+    "primitive_cost": 4,
+    "pure_digest": "d4bc8e036fa6c6f94e3d399e2bab7b6448f59cec529fd805cf386b59e7cf5559",
+    "pure_plan": {
+      "kind": "chain",
+      "steps": [
+        "operator_inv",
+        "operator_neg",
+        "operator_inv",
+        "operator_not_"
+      ]
+    },
+    "source_sha256": "b4fdb86b12ebc7b83309a037ea54eb0e7a126c29f0c2dec38c136e0067b9e220",
+    "statements": 5,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_2_branch_18d8f35f": {
+    "callees": [
+      "skill_2_compound_c29b968f"
+    ],
+    "constructs": [
+      "chain",
+      "if"
+    ],
+    "delta_w_total": 1862.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 5,
+      "force": "F_BRANCH",
+      "locus_changes": 6,
+      "quantum_changes": 7
+    },
+    "layer": 7,
+    "plan": {
+      "else": {
+        "kind": "chain",
+        "steps": [
+          "skill_2_compound_c29b968f"
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "math_isfinite"
+        ]
+      }
+    },
+    "primitive_cost": 16,
+    "pure_digest": "203b106e2cfc5363a6932387fab3ef35b9331d79abb139f43187c84ac2e60181",
+    "pure_plan": {
+      "else": {
+        "kind": "seq",
+        "parts": [
+          {
+            "kind": "seq",
+            "parts": [
+              {
+                "kind": "chain",
+                "steps": [
+                  "operator_inv",
+                  "operator_neg"
+                ]
+              },
+              {
+                "kind": "seq",
+                "parts": [
+                  {
+                    "kind": "chain",
+                    "steps": [
+                      "operator_inv"
+                    ]
+                  },
+                  {
+                    "else": {
+                      "kind": "seq",
+                      "parts": [
+                        {
+                          "body": {
+                            "kind": "chain",
+                            "steps": [
+                              "math_cbrt"
+                            ]
+                          },
+                          "fallback": {
+                            "kind": "seq",
+                            "parts": [
+                              {
+                                "else": {
+                                  "kind": "chain",
+                                  "steps": [
+                                    "operator_inv",
+                                    "operator_neg"
+                                  ]
+                                },
+                                "guard": "is_negative",
+                                "kind": "if",
+                                "then": {
+                                  "kind": "chain",
+                                  "steps": [
+                                    "math_fabs"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "kind": "try"
+                        }
+                      ]
+                    },
+                    "guard": "is_negative",
+                    "kind": "if",
+                    "then": {
+                      "kind": "seq",
+                      "parts": [
+                        {
+                          "else": {
+                            "kind": "chain",
+                            "steps": [
+                              "operator_inv",
+                              "operator_neg"
+                            ]
+                          },
+                          "guard": "is_negative",
+                          "kind": "if",
+                          "then": {
+                            "kind": "chain",
+                            "steps": [
+                              "math_fabs"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "math_isfinite"
+        ]
+      }
+    },
+    "source_sha256": "41880aa06a775c4e37392da4d5ba76d0ff2396ab230117b69e71ae4d1e06f5dd",
+    "statements": 7,
+    "status": "nursery",
+    "uses": [
+      {
+        "delta_w": 1862.0,
+        "task": "d5c59191175d464e515e95e7910404b0f5ea345a4efce6a7d2fdb5cde38e3c3f"
+      }
+    ]
+  },
+  "skill_2_chain_67c7515f": {
+    "callees": [
+      "skill_1_branch_88319daf"
+    ],
+    "constructs": [
+      "chain"
+    ],
+    "delta_w_total": 3839.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 2,
+      "force": "F_BRANCH",
+      "locus_changes": 6,
+      "quantum_changes": 7
+    },
+    "layer": 5,
+    "plan": {
+      "kind": "chain",
+      "steps": [
+        "operator_inv",
+        "skill_1_branch_88319daf"
+      ]
+    },
+    "primitive_cost": 12,
+    "pure_digest": "75d4a0d0fe4d70dc6586fc1be68f47d684114c68ead5491f91d2cf6ae813f79e",
+    "pure_plan": {
+      "kind": "seq",
+      "parts": [
+        {
+          "kind": "chain",
+          "steps": [
+            "operator_inv"
+          ]
+        },
+        {
+          "else": {
+            "kind": "seq",
+            "parts": [
+              {
+                "body": {
+                  "kind": "chain",
+                  "steps": [
+                    "math_cbrt"
+                  ]
+                },
+                "fallback": {
+                  "kind": "seq",
+                  "parts": [
+                    {
+                      "else": {
+                        "kind": "chain",
+                        "steps": [
+                          "operator_inv",
+                          "operator_neg"
+                        ]
+                      },
+                      "guard": "is_negative",
+                      "kind": "if",
+                      "then": {
+                        "kind": "chain",
+                        "steps": [
+                          "math_fabs"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "kind": "try"
+              }
+            ]
+          },
+          "guard": "is_negative",
+          "kind": "if",
+          "then": {
+            "kind": "seq",
+            "parts": [
+              {
+                "else": {
+                  "kind": "chain",
+                  "steps": [
+                    "operator_inv",
+                    "operator_neg"
+                  ]
+                },
+                "guard": "is_negative",
+                "kind": "if",
+                "then": {
+                  "kind": "chain",
+                  "steps": [
+                    "math_fabs"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "source_sha256": "46cbd7cee47fecf3981d9d9566ea53be2c42269313975ac9d491f250019b1acb",
+    "statements": 5,
+    "status": "nursery",
+    "uses": [
+      {
+        "delta_w": 3839.0,
+        "task": "4d3f218ed0bb7c7388343d3a935835fbc8da3b0ba4e3aa6ba6cdd0c2109c707f"
+      }
+    ]
+  },
+  "skill_2_compound_c29b968f": {
+    "callees": [
+      "skill_0_chain_45d55644",
+      "skill_2_chain_67c7515f"
+    ],
+    "constructs": [
+      "chain"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 4,
+      "force": "F_BRANCH",
+      "locus_changes": 6,
+      "quantum_changes": 7
+    },
+    "layer": 6,
+    "plan": {
+      "kind": "chain",
+      "steps": [
+        "skill_0_chain_45d55644",
+        "skill_2_chain_67c7515f"
+      ]
+    },
+    "primitive_cost": 14,
+    "pure_digest": "199353767d9405859afa47a3a27187a4efb310ae5d1fdc329e87b404068950b3",
+    "pure_plan": {
+      "kind": "seq",
+      "parts": [
+        {
+          "kind": "chain",
+          "steps": [
+            "operator_inv",
+            "operator_neg"
+          ]
+        },
+        {
+          "kind": "seq",
+          "parts": [
+            {
+              "kind": "chain",
+              "steps": [
+                "operator_inv"
+              ]
+            },
+            {
+              "else": {
+                "kind": "seq",
+                "parts": [
+                  {
+                    "body": {
+                      "kind": "chain",
+                      "steps": [
+                        "math_cbrt"
+                      ]
+                    },
+                    "fallback": {
+                      "kind": "seq",
+                      "parts": [
+                        {
+                          "else": {
+                            "kind": "chain",
+                            "steps": [
+                              "operator_inv",
+                              "operator_neg"
+                            ]
+                          },
+                          "guard": "is_negative",
+                          "kind": "if",
+                          "then": {
+                            "kind": "chain",
+                            "steps": [
+                              "math_fabs"
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "kind": "try"
+                  }
+                ]
+              },
+              "guard": "is_negative",
+              "kind": "if",
+              "then": {
+                "kind": "seq",
+                "parts": [
+                  {
+                    "else": {
+                      "kind": "chain",
+                      "steps": [
+                        "operator_inv",
+                        "operator_neg"
+                      ]
+                    },
+                    "guard": "is_negative",
+                    "kind": "if",
+                    "then": {
+                      "kind": "chain",
+                      "steps": [
+                        "math_fabs"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "source_sha256": "1ee15dff6b9f30a959e1a76e785823d97c5f5a4a55ffd4aa36dc7441169ad063",
+    "statements": 5,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_2_recover_88da0f12": {
+    "callees": [
+      "skill_2_branch_18d8f35f"
+    ],
+    "constructs": [
+      "chain",
+      "if"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 9,
+      "force": "F_BRANCH",
+      "locus_changes": 6,
+      "quantum_changes": 7
+    },
+    "layer": 8,
+    "plan": {
+      "else": {
+        "kind": "chain",
+        "steps": [
+          "math_exp2"
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "skill_2_branch_18d8f35f"
+        ]
+      }
+    },
+    "primitive_cost": 18,
+    "pure_digest": "8865763310db4f54227054f36d5409a8f5a8e250587b2f329a2a6340ac966a47",
+    "pure_plan": {
+      "else": {
+        "kind": "chain",
+        "steps": [
+          "math_exp2"
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "seq",
+        "parts": [
+          {
+            "else": {
+              "kind": "seq",
+              "parts": [
+                {
+                  "kind": "seq",
+                  "parts": [
+                    {
+                      "kind": "chain",
+                      "steps": [
+                        "operator_inv",
+                        "operator_neg"
+                      ]
+                    },
+                    {
+                      "kind": "seq",
+                      "parts": [
+                        {
+                          "kind": "chain",
+                          "steps": [
+                            "operator_inv"
+                          ]
+                        },
+                        {
+                          "else": {
+                            "kind": "seq",
+                            "parts": [
+                              {
+                                "body": {
+                                  "kind": "chain",
+                                  "steps": [
+                                    "math_cbrt"
+                                  ]
+                                },
+                                "fallback": {
+                                  "kind": "seq",
+                                  "parts": [
+                                    {
+                                      "else": {
+                                        "kind": "chain",
+                                        "steps": [
+                                          "operator_inv",
+                                          "operator_neg"
+                                        ]
+                                      },
+                                      "guard": "is_negative",
+                                      "kind": "if",
+                                      "then": {
+                                        "kind": "chain",
+                                        "steps": [
+                                          "math_fabs"
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "kind": "try"
+                              }
+                            ]
+                          },
+                          "guard": "is_negative",
+                          "kind": "if",
+                          "then": {
+                            "kind": "seq",
+                            "parts": [
+                              {
+                                "else": {
+                                  "kind": "chain",
+                                  "steps": [
+                                    "operator_inv",
+                                    "operator_neg"
+                                  ]
+                                },
+                                "guard": "is_negative",
+                                "kind": "if",
+                                "then": {
+                                  "kind": "chain",
+                                  "steps": [
+                                    "math_fabs"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "guard": "is_negative",
+            "kind": "if",
+            "then": {
+              "kind": "chain",
+              "steps": [
+                "math_isfinite"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "source_sha256": "745a45ee9a11c77beeab00cbc47df50eca51301387d0039370d1e99c00c930ba",
+    "statements": 7,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_3_chain_45fc7dee": {
+    "callees": [
+      "skill_1_chain_82f1719b"
+    ],
+    "constructs": [
+      "chain"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": -5,
+      "force": "F_BRANCH",
+      "locus_changes": 6,
+      "quantum_changes": 6
+    },
+    "layer": 2,
+    "plan": {
+      "kind": "chain",
+      "steps": [
+        "skill_1_chain_82f1719b",
+        "operator_not_"
+      ]
+    },
+    "primitive_cost": 3,
+    "pure_digest": "ca3399d8cde5e7146227252f5afe52682e142b3b77b89bca6c6b393957851b2d",
+    "pure_plan": {
+      "kind": "chain",
+      "steps": [
+        "operator_inv",
+        "operator_not_",
+        "operator_not_"
+      ]
+    },
+    "source_sha256": "6c4c84abdbab4a0233a3dbd88532001eb72a7eeadeeea3105f0c025e01b572a0",
+    "statements": 5,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_3_compound_1c0a234f": {
+    "callees": [
+      "skill_0_chain_45d55644",
+      "skill_2_branch_18d8f35f"
+    ],
+    "constructs": [
+      "chain"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 7,
+      "force": "F_BRANCH",
+      "locus_changes": 7,
+      "quantum_changes": 7
+    },
+    "layer": 8,
+    "plan": {
+      "kind": "chain",
+      "steps": [
+        "skill_0_chain_45d55644",
+        "skill_2_branch_18d8f35f"
+      ]
+    },
+    "primitive_cost": 18,
+    "pure_digest": "ba13fa9769543181b22058b80c1bde3f9c65234caea249a86329729e79cd4fa0",
+    "pure_plan": {
+      "kind": "seq",
+      "parts": [
+        {
+          "kind": "chain",
+          "steps": [
+            "operator_inv",
+            "operator_neg"
+          ]
+        },
+        {
+          "else": {
+            "kind": "seq",
+            "parts": [
+              {
+                "kind": "seq",
+                "parts": [
+                  {
+                    "kind": "chain",
+                    "steps": [
+                      "operator_inv",
+                      "operator_neg"
+                    ]
+                  },
+                  {
+                    "kind": "seq",
+                    "parts": [
+                      {
+                        "kind": "chain",
+                        "steps": [
+                          "operator_inv"
+                        ]
+                      },
+                      {
+                        "else": {
+                          "kind": "seq",
+                          "parts": [
+                            {
+                              "body": {
+                                "kind": "chain",
+                                "steps": [
+                                  "math_cbrt"
+                                ]
+                              },
+                              "fallback": {
+                                "kind": "seq",
+                                "parts": [
+                                  {
+                                    "else": {
+                                      "kind": "chain",
+                                      "steps": [
+                                        "operator_inv",
+                                        "operator_neg"
+                                      ]
+                                    },
+                                    "guard": "is_negative",
+                                    "kind": "if",
+                                    "then": {
+                                      "kind": "chain",
+                                      "steps": [
+                                        "math_fabs"
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "kind": "try"
+                            }
+                          ]
+                        },
+                        "guard": "is_negative",
+                        "kind": "if",
+                        "then": {
+                          "kind": "seq",
+                          "parts": [
+                            {
+                              "else": {
+                                "kind": "chain",
+                                "steps": [
+                                  "operator_inv",
+                                  "operator_neg"
+                                ]
+                              },
+                              "guard": "is_negative",
+                              "kind": "if",
+                              "then": {
+                                "kind": "chain",
+                                "steps": [
+                                  "math_fabs"
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "guard": "is_negative",
+          "kind": "if",
+          "then": {
+            "kind": "chain",
+            "steps": [
+              "math_isfinite"
+            ]
+          }
+        }
+      ]
+    },
+    "source_sha256": "a966d10a4d2601d2b4fc2819677c985ce40ce4c1b7dd9e31b578c211690b51c5",
+    "statements": 5,
+    "status": "nursery",
+    "uses": []
+  },
+  "skill_3_recover_9dc055f3": {
+    "callees": [
+      "skill_2_recover_88da0f12"
+    ],
+    "constructs": [
+      "chain",
+      "if"
+    ],
+    "delta_w_total": 0.0,
+    "except_fired_on": [],
+    "force_signature": {
+      "defined_probes": 7,
+      "delta_mass": 7,
+      "force": "F_BRANCH",
+      "locus_changes": 7,
+      "quantum_changes": 7
+    },
+    "layer": 9,
+    "plan": {
+      "else": {
+        "kind": "chain",
+        "steps": [
+          "skill_2_recover_88da0f12"
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "math_isinf"
+        ]
+      }
+    },
+    "primitive_cost": 20,
+    "pure_digest": "99cf2892396db4784fdf2ef9f08ae014aa15451cd77310b35827c71b0a617fc3",
+    "pure_plan": {
+      "else": {
+        "kind": "seq",
+        "parts": [
+          {
+            "else": {
+              "kind": "chain",
+              "steps": [
+                "math_exp2"
+              ]
+            },
+            "guard": "is_negative",
+            "kind": "if",
+            "then": {
+              "kind": "seq",
+              "parts": [
+                {
+                  "else": {
+                    "kind": "seq",
+                    "parts": [
+                      {
+                        "kind": "seq",
+                        "parts": [
+                          {
+                            "kind": "chain",
+                            "steps": [
+                              "operator_inv",
+                              "operator_neg"
+                            ]
+                          },
+                          {
+                            "kind": "seq",
+                            "parts": [
+                              {
+                                "kind": "chain",
+                                "steps": [
+                                  "operator_inv"
+                                ]
+                              },
+                              {
+                                "else": {
+                                  "kind": "seq",
+                                  "parts": [
+                                    {
+                                      "body": {
+                                        "kind": "chain",
+                                        "steps": [
+                                          "math_cbrt"
+                                        ]
+                                      },
+                                      "fallback": {
+                                        "kind": "seq",
+                                        "parts": [
+                                          {
+                                            "else": {
+                                              "kind": "chain",
+                                              "steps": [
+                                                "operator_inv",
+                                                "operator_neg"
+                                              ]
+                                            },
+                                            "guard": "is_negative",
+                                            "kind": "if",
+                                            "then": {
+                                              "kind": "chain",
+                                              "steps": [
+                                                "math_fabs"
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "kind": "try"
+                                    }
+                                  ]
+                                },
+                                "guard": "is_negative",
+                                "kind": "if",
+                                "then": {
+                                  "kind": "seq",
+                                  "parts": [
+                                    {
+                                      "else": {
+                                        "kind": "chain",
+                                        "steps": [
+                                          "operator_inv",
+                                          "operator_neg"
+                                        ]
+                                      },
+                                      "guard": "is_negative",
+                                      "kind": "if",
+                                      "then": {
+                                        "kind": "chain",
+                                        "steps": [
+                                          "math_fabs"
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "guard": "is_negative",
+                  "kind": "if",
+                  "then": {
+                    "kind": "chain",
+                    "steps": [
+                      "math_isfinite"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "guard": "is_negative",
+      "kind": "if",
+      "then": {
+        "kind": "chain",
+        "steps": [
+          "math_isinf"
+        ]
+      }
+    },
+    "source_sha256": "5b696861e7c1843e8d2e68cbf0ab3b5d080179524a91cbc989b45ebcd2c4a42f",
+    "statements": 7,
     "status": "nursery",
     "uses": []
   }

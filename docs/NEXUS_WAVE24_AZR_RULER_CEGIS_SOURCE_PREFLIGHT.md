@@ -1,15 +1,168 @@
 # Wave 24 AZR–Ruler–CEGIS: pre-freeze report
 
-Updated 2026-10-25. **Verdict: v11 executed exactly once on the authorized
-`dev-24001-guidance-v11` grant. Parent CLI exited `0` on the first pass
-(`integrity_valid`, `scientific_gates_passed`, `ready_for_freeze` all true,
-`errors=[]`). v11 also corrects a label leak found in v10's open-world
-arena (below): the v10 `12 > 11` open-world margin was obtained by selecting
-the piecewise repair against the hidden `task["expected"]` label. The v11
-`12 > 11` margin is honest. The requested `>= 13` open-world target was NOT
-met. v1–v11 are consumed. No freeze, commit or push.**
+Updated 2026-10-25. **Verdict: v12 executed exactly once on the authorized
+`dev-24001-guidance-v12` grant at implementation commit `4bec9de`. Parent CLI
+exited `0` on the first pass (`integrity_valid`, `scientific_gates_passed`,
+`ready_for_freeze` all true, `errors=[]`). Open world: **16 > 11** solved at
+**137.875 < 149.36** work/solved, matched-subset 1,293 < 1,643, zero false
+certificates. v1–v12 are consumed. Not a freeze.**
 
-## Latest: guidance v11 — honest piecewise repair, unfold-before-validate, layered AST toolbox
+## Latest: guidance v12 — atomic forces, force-pruned 2-hop, raising playground primitives
+
+### Execution environment and ledger
+
+Same fresh Claude Code cloud clone as v11 (Linux, Python 3.13.17, torch
+2.14.1+cpu, CPU only, no MPS, no LLM), **not** the owner's M4 Mac. Branch
+`codex/wave24-azr-ruler-cegis`; implementation committed as `4bec9de` before
+launch. The v11 receipt is present in this clone's
+`runs/experimental/wave24-azr`; v6–v10 receipts remain only on the Mac. v12
+used the owner-authorized `session_refresh_s=60.0` path. Treat v12 as
+consumed everywhere; do not relaunch.
+
+### What changed
+
+1. **`AtomicFieldProjector` / `AtomicForceClassifier`** (`wave24_auto_laws.py`).
+   One O(N) pass maps any value to atoms (str/list/tuple: index→element;
+   dict: key→(key, value); set: element; int: bit atoms + sign, mass = bit
+   width) and an `AtomicSignature(mass, locus_mask, quantum_multiset_hash,
+   quantum_bloom_64, bond_bitmap, binding_hash)` using blake2b-seeded
+   `splitmix64`. **Deviation from the brief:** a sixth field `binding_hash`
+   (XOR over (locus, quantum)) is required, because XOR over coordinates alone
+   is permutation-invariant and cannot detect `F_TRANSLATE`. Container→scalar
+   transitions are `F_CONDENSE` (incomparable masses). A callable showing
+   different non-identity forces on different probes is `F_BRANCH`. Roles are
+   empirical probe priors, never soundness proofs.
+2. **`UniversalForceFunctor`** (`wave24_self_evolving_loop.py`): lifts a
+   promoted 2-step skill to `(outer_force, inner_force)` and instantiates it
+   on any force-fingerprinted grammar. Source preparation lifted 10 functors
+   and bound **3** onto World 5 (`[F_TRANSLATE, F_TRANSLATE]`,
+   `[F_TRANSLATE, F_TRANSMUTE]` ×2) with zero target tasks. These bindings are
+   **reported, not installed**, so the registered fifth-world matrix library is
+   unchanged; the 3 installed transfers remain the existing role-functor ones.
+   The playground persists force functors to `universal_meta_recipes.json`;
+   the arena learns them online and uses them to order 2-hop search.
+3. **Open-world arena** (`wave24_open_world_arena.py`), default
+   `force_two_hop=True`. After guided hop-1 returns `NO_PROGRAM`:
+   (a) `PromotedChainLibrary` — previously solved 2-hop chains; certified
+   only if all fitting promoted chains agree (space = hop-1 ∪ library);
+   (b) `ForcePrunedResidualTwoHop` — stepping stones restricted to the public
+   mass-deficit force direction and required to move every public mass
+   strictly toward its target (a **declared heuristic restriction**), then an
+   O(1) b_rem==1 law prune (mass-preserving / contractive / multiset-preserving)
+   before evaluating op_2 — sound, and uncharged exactly like the engine's
+   existing Noether skip; certified only if every fitting chain in the declared
+   space agrees; (c) the honest piecewise synthesizer from v11. A per-task
+   evaluation cache charges each op(x) once.
+4. **v10/v11 accounting bug fixed.** When guided hop-1 failed, an unguided
+   hop-1 fallback ran and its work was added only if it solved the task. In the
+   v11 code it never solved one (same bounded space) yet consumed ~2,200 units
+   that were not attributed to the evolving method. v11's piecewise-solved
+   task alone omitted 214 units: **v11's honest work/solved was 141.25, not
+   123.42** (still < 149.36). v12 runs the fallback only after a guided budget
+   exhaustion and always counts its work.
+5. **Playground primitives raise.** The int wrapper no longer returns `x`
+   on a domain fault; it raises `ValueError` (search grammar sees `EXEC_ERR`).
+   Compiled `_apply` raises on non-integer results. A fault-recovery phase
+   synthesizes `try/except` skills from `ok[op]` guards; compiled-vs-plan
+   checks compare outcomes including raised exception classes. A toolbox
+   compiled under the old swallowing `_apply` is archived to `legacy_*/`
+   (v11 sandbox brain → `legacy_d44bcb8f/`). Graduated skills keep receiving
+   counterfactual utility; cumulative < 0 evicts.
+6. Verifier: recomputes and gates matched-subset work from saved cells.
+
+### v12 confirmation gates
+
+| Gate | v12 measured outcome |
+| --- | --- |
+| Parent CLI exit | **0 on Pass 1.** `integrity_valid`, `scientific_gates_passed`, `ready_for_freeze`, `replayed` all true; `errors=[]`. |
+| False certificates | **0** — matrix (100/100 cells), streams, arena (re-executed and recounted). |
+| Identical-library guidance | **Cleared.** 517 < 545. |
+| Streams / lifelong | **Cleared.** 12/12 > 11/12; training-inclusive 7,027 < cache 8,749 (< fixed 13,649); `lifelong_learning_demonstrated=true`. |
+| World 5 (`BIT_CELLULAR_AUTOMATA`) | **Cleared.** 0 self-play tasks, 0 training rows, 3 installed zero-shot role transfers + 3 reported force-functor bindings; deep target (teacher cost 4) solved zero-shot: doctor 561, unguided 577, source-free 881 work. |
+| Open-world solved | **16 > 11** static/unpruned, > 4 LLM baseline. |
+| Open-world work/solved | **137.875 < 149.36.** Brief's stretch target `< 135.0` **not met**. |
+| Matched subset (11 tasks both solve) | **1,293 < 1,643.** Total work 3,267 < 4,163. |
+| 2-hop cost | Force-pruned 2-hop residual 38 and 82 work (v11 unpruned engine: 653 / 913). Promoted-chain siblings 8 work each (brief asked 2–5). Task totals include the failed guided hop-1 (102–200) that must precede them. |
+| Lyapunov / ATP | `[1,2,3,4,5]`; ATP 100.0, entropy 0.9536, freeze 0, drift 0, 10 distractors quarantined. |
+| Session remaining | **52.95 s** — > 50 gate, **below the > 55.0 target**. |
+| Runtime | Worker 7.005 s (internal 5.62 s), replay 0.046 s, peak RSS 237.0 MiB, cap 15 s. |
+
+Payload `COMPLETE`, `source_manifest_version=11`, embedded payload SHA-256
+`143d19bd2db42691845523e330c1447c79f2e68ff540be29b5dde367f6f23df8`.
+Receipt bytes: `worker.json`
+`90c2990cd5c449b321889bfeac802bd257aeacb5eb153a7aba8651c3a257785a`,
+`receipt.json` `4a08939ab99c44e02d6efdb2a886e5b47c25df10e09800d2c1fd1c1ea524b3cd`,
+`complete-receipt.json` `67768e081d874ef18fc7adcc2ec3dd57725765ef5c4300e51cca191e91f50096`,
+`verifier.json` `affa86564a9dc8d7b66f30d806d11b756c1a162f2588ee2f8d55bf35acc4ad28`.
+
+**Dev-set caveat.** The arena's 24 tasks are authored development tasks that
+were inspected while designing v12 (residual-before-piecewise ordering, cache,
+fallback rule). The 16 > 11 result is source development evidence on seen
+tasks, not held-out validation. Capability flags 6/7; arbitrary depth stays
+false; not general intelligence.
+
+### Tests
+
+`pytest tests/ -k wave24 -W error::RuntimeWarning`: **191 passed, 0
+warnings, 1 failed** — the failure is
+`test_seed_wave24_cross_family_experiment.py`, which needs the local GGUF
+model `qwen2.5-0.5b-instruct-q4_k_m.gguf` (absent in the cloud clone; it
+should pass on the Mac). New `tests/test_wave24_atomic_forces.py` covers
+splitmix64, projector conservation exactness, the five force roles, functor
+lift/bind, force-pruned 2-hop certification, promoted-chain reuse and the v12
+arena gates; playground tests cover raising primitives, a `try/except` that
+genuinely fires, legacy-toolbox archiving and post-graduation utility.
+
+### Playground (`--epochs 4 --dev-sandbox`)
+
+Exit 0 in 0.346 s; ATP 100.0, entropy 0.739, 0 false certificates; 13
+skills, `max_hierarchy_layer=9`, max primitive cost 20, constructs
+`chain`/`if`/`try`; 1 graduated (`skill_0_chain_45d55644`), 12 in the cold
+nursery. Persisted force functors: `[F_BRANCH,F_BRANCH]`,
+`[F_BRANCH,F_TRANSMUTE]`, `[F_SELECT,F_TRANSMUTE]`, `[F_TRANSMUTE,F_BRANCH]`,
+`[F_TRANSMUTE,F_SELECT]`.
+
+```python
+def skill_0_recover_17ff9193(x):        # layer 3; except fires on 8 check inputs
+    if not isinstance(x, int):
+        return x
+    try:
+        v_1 = _apply(math.cbrt, x)       # raises on non-cubes
+        return v_1
+    except (ValueError, KeyError, ZeroDivisionError, TypeError, OverflowError):
+        v_2 = skill_0_branch_d220ad09(x)  # layer-2 if/else skill
+        return v_2
+```
+
+Only 1 of the 3 compiled `try` skills has a reachable `except` on the check
+inputs; the other two bodies never raise there (recorded as
+`except_fired_on=[]`).
+
+### Current SHA-256 (v12)
+
+| Path | SHA-256 |
+| --- | --- |
+| `src/nexus/wave24_auto_laws.py` | `9b1b89d4d3986dbc74bb09dfd0f85eeb5cf9db6c6574175c938d7a45b37442c5` |
+| `src/nexus/wave24_self_evolving_loop.py` | `cf79658f9c233c19b8a01c7404dbff7b203603cada91fd87b7f90a0ba730f9b0` |
+| `src/nexus/wave24_open_world_arena.py` | `3fa9fc663b11f0f245e94da03a2e2717a74b1afcc46ba1be23c61469f0be901b` |
+| `src/nexus/wave24_unlimited_playground.py` | `0079676ef24b2ee886a5406e0cd8c8aa3819a8a59c9fc4064ba135846ad9b0ca` |
+| `scripts/run_wave24_azr_ruler_cegis.py` | `7365f787e393bcad6992539963296a233db16016882fc324ee22fa66ff8b5073` |
+| `scripts/verify_wave24_azr_ruler_cegis.py` | `7a7e620bd732dab5d74536442f99be44b036b03ea2ddbd8bc4b4b5a2f2b20690` |
+| `configs/wave24_azr_dev_guidance_allocation.json` | `0b7879c05fb6e95e37042e99072023732e6acbb855924f90909c3d46611a2864` |
+| `tests/test_wave24_atomic_forces.py` | `d6dbec378e4570f14f7cfdb0235a508e7803e2e631d2dd614376bfd1452b6028` |
+| `tests/test_wave24_unlimited_playground.py` | `70617cc72948c6276f230e7fb103c6619e49405da7ace7172b46e3dff7369996` |
+| `artifacts/wave24_living_brain_sandbox/evolved_toolbox.py` | `069581d3fcde6456e3830d2d29e7d3d75f113720dd7b16e0d34faea2e2bb9247` |
+| `artifacts/wave24_living_brain_sandbox/skill_lineage.json` | `1ff00d6fda371e41ff6cd21f793e7757dfc8dd86098463a5c8e8440f8da72c61` |
+| `artifacts/wave24_living_brain_sandbox/universal_meta_recipes.json` | `6a19e043c02d72d4d732e0cf8f3d983c700982966eaea593c4a76354ac481005` |
+
+Unchanged since v11: `wave24_quotient_core.py`, playground CLI, and the other
+tests. **Do not retry v7–v12.** Next scientific step: validate the force-pruned
+2-hop policy on a fresh, never-inspected open-world task set before any freeze.
+
+## Historical: guidance v11 — honest piecewise repair, unfold-before-validate, layered AST toolbox
+
+**v12 note:** v11's arena work under-counted the unguided fallback; honest
+v11 work/solved was 141.25 (see v12 item 4).
 
 ### Execution environment and ledger caveat
 
