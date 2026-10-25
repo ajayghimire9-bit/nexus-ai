@@ -379,3 +379,59 @@ against a named exact baseline on the same tasks, never against a weakened one.
   disabled, not assumed.
 - Ground-truth cause strata are generator artefacts. Routing accuracy on them does not establish
   open-world self-diagnosis.
+
+## 7. Spike results: S1 and S2 (dev only, 2026-10-25)
+
+Code: `src/nexus/wave25_factored.py`, `scripts/spike_wave25.py`, `tests/test_wave25_spike.py`
+(6 tests: exhaustive no-false-prune check of every abstract rule, verdict preservation, the hand-checked F/S
+law, the rule learner, the rule probe on a record task with randomised field names, edit-space order).
+Development happened on dev seeds 1–3. The code was frozen at `33ab762`, then run once, unchanged, on
+dev seeds 4–6, which are the numbers below (artifact `artifacts/wave25_spike_s1_s2_dev.json`, sha256
+`3bb10f18a4e47c863d2a48593f152477750756c97ae86feb75d1ee4a54719a64`). This is exploration evidence, not a
+locked evaluation.
+
+What was built:
+* Mechanisms F, S, Sort, Map, Agg as white-box slot operators, with a binding grammar instantiated
+  from each task's own unlabeled inputs. Record field names are randomised per seed, and a distractor
+  field is correlated with the score field.
+* Three tier-1 abstract rules (length, distinct-count, provenance / Map-closure), plugged into the v4
+  ObsEGraph certifier through a new sound pruning hook.
+* The κ slot-relative features, a conjunction learner over them, and an exhaustive source-scope check.
+* A rule concretiser over field-value edits.
+* Four baselines: v4 designed probes, exact-EIG over v4 perturbations, exact-EIG over the same edit
+  space, and random probes.
+
+**S1 — PASS (mechanism), Tycho negative at the declared horizon.** Over 180 tasks, certification work
+including the abstract checks fell from 136,712 to 56,793 (−58%) on int lists and from 126,116 to 53,939
+(−57%) on records. Candidate evaluations fell by 74% and 70%. Verdicts and witness sets were identical
+on 180/180 tasks (seeds 1–3: −43% and −45%). Measuring the benefit on 20 validation tasks cost 597,809
+units, against a saving of 845 units per task. At the 100-task horizon the projected net is therefore
+−513k, and break-even is about 707 downstream tasks. Tycho admitted only `length`, on one seed of three.
+Because these rules are proved (tier 1), validation is needed only to estimate benefit, not for
+soundness. A cheaper benefit estimator is the obvious next lever, but it has not been tested.
+
+**S2 — KILL criterion met.**
+* The learner recovered exactly the F/S law, `(|K_s∖K_t| ≥ 1) ∧ (|K_t∖K_s| ≥ 1)`, from source int-list
+  traces. It held with 0 violations on all 2,046 scope cases, and produced no rule for the commuting
+  pairs (F,F) and (F,Sort).
+* The rule transferred to records without any field mapping and fired 12 times.
+* On the F/S composition-ambiguous stratum (9 tasks), it needed 12 probes against 11 for each of the
+  two exact-EIG baselines and 12 for v4 designed probes. Work was 111k against 104–110k.
+* On the other ambiguous record tasks (111): rule 151 probes, eig-edit 147, eig-perturb 122, v4 145
+  (2 unsolved), random 218 (35 unsolved).
+* Mining cost 637k units, so the projected net is −719k.
+* Zero false certificates in every arm.
+
+The reason it failed: in this world the exact EIG over generic perturbations already finds the
+separating probe in one shot, so a rule can only save design cost, and with 2–4 hypotheses that cost is
+small. Most ambiguity in the record world is binding ambiguity, not composition ambiguity: the F/S
+stratum is 8% of active tasks.
+
+Consequences for the plan:
+1. Interface C (tier-1 abstract pruning) is the first factored component to pay on this benchmark
+   family. It should be carried into the next locked suite as the certifier's default once Tycho's
+   benefit estimate is made cheaper, and that estimator should be tested on dev first.
+2. The non-commutativity rule is learnable and transferable but does not pay where exact EIG over cheap
+   perturbations is available. It can only matter when probes are expensive or hypotheses are many.
+   S3 (ξ-targeting over bindings) addresses the dominant binding ambiguity and is the next spike.
+   S5 and S6 stay gated, since S2 shows no headroom for an amortised head here.
