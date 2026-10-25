@@ -331,6 +331,7 @@ class Searcher:
         # reaches the targets (sound pruner; its own evaluation work is charged by the callee)
         self.abstract, self.max_depth = abstract, max_depth
         self.pruned_abstract = 0
+        self.level_sizes = []
         self._partial_keys = set()
         self._side, self._side_keys = [], set()
         self.frontier = [((), self.inputs)]
@@ -399,6 +400,7 @@ class Searcher:
         self.depth = depth
         self.frontier = nxt
         self._side = side
+        self.level_sizes.append(len(nxt))
         return found
 
     def _side_add(self, side, prog, out, full):
