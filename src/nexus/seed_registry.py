@@ -71,14 +71,26 @@ def claim(phase, kind, seeds, *, run_id, record=True):
     if key in ONE_USE:
         if sorted(seeds) != list(REGISTRY[key]):
             raise SeedHygieneError(f"{key} must be claimed whole and once: {list(REGISTRY[key])}")
-        for row in _spent():
-            if tuple(row["key"]) == key:
-                raise SeedHygieneError(f"{key} already spent by run {row['run_id']}")
+        rows = _spent()
+        spent = sum(1 for r in rows if "override" not in r and tuple(r["key"]) == key)
+        overrides = sum(1 for r in rows if r.get("override") and tuple(r["key"]) == key)
+        if spent > overrides:
+            raise SeedHygieneError(f"{key} already spent ({spent} claim(s), {overrides} owner override(s))")
         if record:
             SPENT_LEDGER.parent.mkdir(parents=True, exist_ok=True)
             with SPENT_LEDGER.open("a") as f:
                 f.write(json.dumps(dict(key=list(key), seeds=seeds, run_id=run_id)) + "\n")
     return seeds
+
+
+def owner_override(phase, kind, *, reason, approved_by):
+    """Record a one-time owner authorisation to claim a spent one-use range once more (auditable)."""
+    key = (phase, kind)
+    if key not in ONE_USE:
+        raise SeedHygieneError(f"{key} is not a one-use range")
+    SPENT_LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    with SPENT_LEDGER.open("a") as f:
+        f.write(json.dumps(dict(key=list(key), override=True, reason=reason, approved_by=approved_by)) + "\n")
 
 
 def assert_dev_seed(phase, seed):

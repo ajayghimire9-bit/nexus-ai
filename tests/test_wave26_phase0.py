@@ -57,3 +57,15 @@ def test_standing_gate_helpers():
 
 def test_agents_md_carries_rule_1():
     assert "RULE 1 (BLIND VAULT FIREWALL)" in (ROOT / "AGENTS.md").read_text()
+
+
+def test_owner_override_allows_exactly_one_more_claim(tmp_path, monkeypatch):
+    monkeypatch.setenv("NEXUS_SEED_LEDGER", str(tmp_path / "spent.jsonl"))
+    import importlib
+    import nexus.seed_registry as R
+    R = importlib.reload(R)
+    R.claim("phase1", "confirm", range(1001, 1006), run_id="c1")
+    R.owner_override("phase1", "confirm", reason="outcome never written", approved_by="owner")
+    R.claim("phase1", "confirm", range(1001, 1006), run_id="c2")
+    with pytest.raises(R.SeedHygieneError):
+        R.claim("phase1", "confirm", range(1001, 1006), run_id="c3")
