@@ -1,5 +1,75 @@
 # NEXUS Seed — Code Ownership and Reuse
 
+## AZR–Ruler–CEGIS — new source preparation, not frozen
+
+Revision5 reuses those same owners. `ScratchpadWorkspaceEngine` extends the
+existing workspace owner with declared cap9; `DualMemoryLearner` reuses ridge,
+the E1 Journal and existing skill view for source-only updates and anchored
+durable state. `JobTagRecipeEngine`, `SymptomToActionDoctor`,
+`ClosedLoopSelfAuditor` and `AutonomousToolInventor` live in
+`wave24_self_evolving_loop.py`. `OpenPythonToolboxSandbox` is a pipeline over
+the typed adapter in `wave24_auto_laws.py`; actual vetted-helper child replay
+uses `wave24_resource_host.py`. It is not a hostile-code security sandbox.
+`wave24_lifelong_streams.py` owns only procedural orchestration/controls and
+arithmetic, with independent replay in the existing verifier. No duplicate
+memory/RL framework, arbitrary imports, runtime replacement or frozen model edit.
+
+One revision5 dev launch:0 false certificates,4/7 finite benefit checks pass,
+but general learning/doctor benefit fail. Ordinary caching is a cheap strong
+control; learned policy updates do not automatically establish learning-to-learn.
+All five historical dev receipts and exact source snapshots are preserved;
+the default consumed grant refuses relaunch. No commit/freeze/push.
+See the source preflight for exact numbers and negative results.
+
+Previous revision4 ownership checkpoint (preserved chronology):
+
+Latest extension remains in the same owners: `PhenotypeAffinityCompass` and
+`StigmergicWorkspaceEngine` in `wave24_self_evolving_loop.py`; typed executable
+workspace leaves/unfolding in `wave24_quotient_core.py`; independent hop replay
+uses that core's separate exhaustive syntax recurrence. Source compilation
+feeds `ParametricSkillMacro`, the existing ridge critic and E1 journal skill
+view. `OpenToolboxLearningEngine` connects trusted raw-callable ingestion,
+source-only learning and immutable target solves. No parallel agent/memory/RL
+framework or historical-runtime replacement is introduced. Role functors are
+empirical transfer proposals, never certified pruning laws. Certificate B is
+explicitly the reached-hop grammar (B_hop3,3 hops,3 public slots,primitive cap6).
+All query variants of an island survive, rather than only one stored twin.
+
+The v3 role-ratchet preflight passed its registered development gates. The
+subsequent v4 workspace preflight completed100 cells with0 false certificates
+and passed A/B, but FAILED all-source compilation: no new deep INT_SEQ source
+signature appeared in its selected workspace. All target deep tasks finished
+in hop1, so target hopping efficacy is unmeasured. Full-cost efficiency is
+negative. Four consumed receipts and exact source snapshots are preserved;
+default preflight retries are refused and the session debit survives a clone.
+No Commit1,final assessment or live promotion. See the updated source report.
+
+Earlier source-frontier v2 ownership checkpoint (chronology):
+
+`nexus/wave24_quotient_core.py` extends the existing Wave24 catalog quotient
+contract with recursive typed full signatures and a separate exhaustive syntax
+reference. `wave24_auto_laws.py` adds anonymous finite-carrier execution checks;
+no family-specific pruning tables are imported. `wave24_self_evolving_loop.py`
+reuses `nexus.nn.ridge`, canonical digest and the E1 Journal. Its AST skill view
+now mines completed quotient-frontier classes, fits a distinct binary-label
+`DerivationOutcomeCritic` through the existing ridge path, and anti-unifies
+typed open contexts. `ParametricSkillMacro` lives in the quotient core so the
+interpreter, both enumerators and independent verifier share explicit typed
+argument substitution and primitive/MDL accounting. No closed program is
+passed off as a parameterized operator. The v2 dev rerun fixes source yield
+(20 tasks/182 rows), but B0=3 still admits no requested skills; no deep-horizon
+or learned search benefit is claimed. Both consumed dev receipts are preserved.
+The existing skill view
+does not replace the existing Session or skill stores. Historical engines and
+the live runtime remain unchanged. `wave24_resource_host.py` supervises the
+fixed worker using the existing EXPERIMENTAL grants, reservations and settlements,
+with synchronized CPU/MPS adapters. The runner/verifier bind procedural banks,
+typed certificates and resource receipts; no second memory or RL framework is
+introduced. The dev preflight failed Certificate B and remains blocked before
+freeze. Consumed-grant accounting survives a fresh clone; no final run is enabled
+by the dev approval.
+[Source gate and exact limitations](NEXUS_WAVE24_AZR_RULER_CEGIS_SOURCE_PREFLIGHT.md).
+
 ## Wave18 M4-GPU neuro-symbolic candidate — source gate passed
 
 `wave18_m4_gpu_neuro_symbolic_learner.py` reuses the frozen Wave17 interpreter,

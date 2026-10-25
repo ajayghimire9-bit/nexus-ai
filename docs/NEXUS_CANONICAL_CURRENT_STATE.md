@@ -1,5 +1,100 @@
 # NEXUS Seed — Current State
 
+## AZR–Ruler–CEGIS preflight — blocked before freeze
+
+Latest owner-requested revision5 is **COMPLETE / valid / mixed-negative SOURCE
+DEVELOPMENT**. All seven mechanisms have working code and tests; the single
+preflight passes only4/7 finite benefit flags, not general capabilities. Three
+hops and primitive cap9 replace v4's cap6 in explicit config v4; B0=3 and the
+original Certificate A space remain unchanged. Arbitrary depth is not possible
+under that finite cap and remains false. All earlier results stay unchanged.
+
+100 main cells plus42 stream cells independently replay with0 false certificates.
+All A/B matrix gates pass. Fifteen source feedback events fit the critic; no
+fifth-world self-play/training/updates. Frozen target transferred recipes cost
+6432 work versus26127 source-free same-hop, but the same library WITHOUT the
+learned doctor costs4998. Adaptive source decisions are7/12 correct versus9/12
+fixed/cache; total decision+learning work933872 versus504809 fixed and306510
+ordinary cache. Learning and doctor-benefit gates FAIL. The old INT_SEQ
+all-source-compilation gate remains false. Do not relabel these as7/7 success.
+
+Controlled source audit quarantines3 harmful injected shortcuts and reduces
+identity work11658→1596, with3 real portfolio preference adjustments. A real
+Python composite helper is compiled, child-verified and source-accepted at full
+primitive cost5; raw-toolbox decisions are3/3 correct. This is bounded composite
+synthesis over trusted supplied primitives, not unrestricted Python/AGI or new
+semantics. Exact witnesses, full history and protected-memory state are saved.
+
+Pre-run163 tests pass; final164 pass with one documented fork/thread warning.
+Debit4.218562000023667s; carried used3574.313863209013s /
+remaining25.686136790986893s. CPU only;0 environment/GPU/LLM/historical-model
+operations. All five immutable receipts are portable and retry-protected.
+No Commit1,final assessment,commit,push,main change or history rewrite.
+Next proposed question isolates frozen symptom-guided portfolio reachability
+from fixed library effects under equal work; not executed.
+[Exact results, scope and hashes](NEXUS_WAVE24_AZR_RULER_CEGIS_SOURCE_PREFLIGHT.md).
+
+Previous revision4 checkpoint (preserved chronology):
+
+Latest owner-requested **workspace v4** source development is COMPLETE and
+mathematically valid:10 contexts/100 cells,zero false certificates,both A/B
+gates pass,12 source skills,6 role functors and3 fifth-world zero-shot proposals
+with zero fifth-world training. The full declared readiness screen FAILS:
+INT_SEQ's sampled source workspace saturates without an extra deep task or
+multi-hop compiled context. Do not drop that gate or rerun to get green.
+All five scored deep tasks finished in hop1; four unique bounded query outputs
+and one ambiguity witness do not demonstrate a target hopping advantage.
+Full-cost stage5 work1432544 versus4068 primitive baseline does not break even.
+
+`PhenotypeAffinityCompass`, typed executable islands, at most3 hops/3 slots,
+all intermediate query variants, independent per-hop exhaustive verification,
+source-only trajectory compilation and the bounded open-toolbox API are
+implemented. B0 remains3 and full primitive cap6; B's exact scope is now the
+reached hop grammar, not all primitive programs of cost6 or the old MDL space.
+Historical MDL failure is preserved. No target feedback updates the source
+library or critic. The previous v3 role-ratchet development gates passed under
+their different grammar and remain a separate saved record.
+
+Before v4 launch143 tests passed in1.90s. No unfiltered historical-suite pass is
+claimed. Debit2.1779485419974662s; latest carried used3570.0953012089894s /
+remaining29.90469879101056s. Zero new environment interactions,GPU/LLM/world-model
+operations or historical weight changes. No final assessment,Commit1,push or
+main merge. [Exact report and all four immutable dev records](NEXUS_WAVE24_AZR_RULER_CEGIS_SOURCE_PREFLIGHT.md).
+Next is one source-headroom/equal-workspace comparison proposal, not executed.
+Final post-accounting verification:148 passed in2.67s,including all four saved
+dev replays,retry refusal,contradiction handling,and bounded callable/skill
+iterator consumption. No second scored v4 run occurred.
+
+Earlier v2 preparation checkpoint (preserved chronology):
+
+New work is isolated on `codex/wave24-azr-ruler-cegis` from `073d9297`.
+The explicitly requested quotient-frontier fix now produces 20 source tasks,
+182 derivation rows and 128 fitted rows (one CPU update), with 0 false
+certificates in a complete 50-cell development rerun. Typed open skills are
+implemented and independently tested, but the unchanged B0=3 makes their
+required cost interval [3,2] empty. Zero skills are eligible; Certificate B
+remains 0/2 deep tasks. The fifth-world self-play prohibition is preserved.
+The disagreement head has no positive source labels; no critic search benefit
+is claimed. No Commit 1, final run, commit or push has occurred. See the exact
+v2 report and both preserved receipts in the source preflight below.
+Latest carried balance: 3566.3835469589985s used / 33.61645304100148s remaining.
+Current focused/regression verification: 104 passed in 1.32s, including
+independent source-label/ridge replay and tampering checks. This is not an
+unfiltered historical-suite pass.
+
+Original v1 launch (preserved chronology):
+The resource host, single-attempt runner and strict verifier are implemented.
+The approved dev-only MPS preflight completed 5 tasks / 50 cells with zero false
+certificates. Exact agreement and uniqueness-work reductions passed; Certificate B
+failed. All 24 source attempts yielded zero frontier tasks, training rows or skills.
+MPS was slower than CPU at every calibrated size. Final focused regression:
+82 passed. This is not a full historical-suite pass. The consumed dev receipt is
+preserved, retries are refused, and no final seed, bank, Commit 1 or push occurred.
+Carried balance: 3565.716134874995s used / 34.28386512500492s remaining.
+See [source preflight](NEXUS_WAVE24_AZR_RULER_CEGIS_SOURCE_PREFLIGHT.md).
+The completed cross-family study below is separate closed evidence and remains
+unchanged.
+
 ## Wave 24 Cross-Family Meta-Procedure Optimization, Observational Equivalence Quotienting & Interference Immunity (`f78a129 -> 64eb731 -> ab20012`)
 
 See full tables, artifact hashes, training provenance, and comparative ablations in [Wave 24 Cross-Family Protocol](NEXUS_WAVE24_CROSS_FAMILY_PROTOCOL.md) and [Wave 24 Cross-Family Results](NEXUS_WAVE24_CROSS_FAMILY_RESULTS.md):

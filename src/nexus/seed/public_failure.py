@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ast
+import json
 from typing import Any
 
 EQUALITY_FAILURE = "For value equal to limit, expected True, received False."
@@ -10,6 +11,17 @@ OPERATOR_HINTS = (
     "less-than-or-equal", "change the operator", "use <=", "use >=",
     "LtE", "replace < with",
 )
+
+
+def serialize_revision_feedback(feedback: dict[str, Any]) -> str:
+    """Canonical public feedback transport used by function-contract callers.
+
+    Serialization adds no operator hints or hidden outcomes and rejects NaNs.
+    The missing export prevented seven existing test modules from importing.
+    """
+    if type(feedback) is not dict:
+        raise ValueError("public_feedback_dictionary_required")
+    return json.dumps(feedback, sort_keys=True, ensure_ascii=True, allow_nan=False)
 
 
 def _numeric_values_equal(inp: Any) -> bool:

@@ -1,0 +1,3761 @@
+{
+  "executed_source_snapshot": {
+    "src/nexus/wave24_resource_host.py": "\"\"\"Owner-budgeted Wave24 device adapter and supervised EXPERIMENTAL worker.\n\nReuses Sandbox grant/reservation/settlement accounting and write_new. This is\nnot a security boundary for arbitrary code. Only the fixed Wave24 worker is\ndispatched. MPS and optional llama calls require an explicit exact allocation.\n\"\"\"\nfrom __future__ import annotations\n\nfrom contextlib import nullcontext\nfrom dataclasses import asdict, dataclass\nimport math\nimport os\nfrom pathlib import Path\nimport signal\nimport shutil\nimport subprocess\nimport sys\nimport time\n\nfrom nexus.evolution1.catalogue import digest\nfrom nexus.seed.experimental import Sandbox, read, write_new\nfrom nexus.seed.process_memory import _rss_kib\n\n\n@dataclass(frozen=True)\nclass Allocation:\n    owner: str\n    reason: str\n    wall_s: float = 30.0\n    cpu_s: int = 30\n    memory_mb: int = 1024\n    carried_used_s: float = 3564.568\n    session_limit_s: float = 3600.0\n    mps_approved: bool = False\n    llm_approved: bool = False\n\n    def __post_init__(self):\n        values = (self.wall_s, self.cpu_s, self.memory_mb, self.carried_used_s, self.session_limit_s)\n        if not self.owner.strip() or not self.reason.strip() or any(not math.isfinite(v) for v in values):\n            raise ValueError(\"explicit owner, reason and finite allocation required\")\n        if not 0 < self.wall_s <= 900 or type(self.cpu_s) is not int or self.cpu_s < 1:\n            raise ValueError(\"bounded wall and integral CPU caps required\")\n        if type(self.memory_mb) is not int or not 64 <= self.memory_mb <= 16384:\n            raise ValueError(\"bounded memory allocation required\")\n        if not 0 <= self.carried_used_s < self.session_limit_s <= 3600:\n            raise ValueError(\"carried session allowance cannot be reset or exceeded\")\n        if self.wall_s > self.session_limit_s-self.carried_used_s:\n            raise ValueError(\"allocation exceeds remaining carried session allowance\")\n        if type(self.mps_approved) is not bool or type(self.llm_approved) is not bool:\n            raise ValueError(\"explicit device/runtime approval flags required\")\n\n\nclass Wave24ResourceHost:\n    def __init__(self, allocation, meter, *, torch_module=None, runtime=None):\n        if not isinstance(allocation, Allocation):\n            raise ValueError(\"validated allocation required\")\n        if torch_module is None:\n            import torch as torch_module\n        self.torch, self.allocation, self.meter = torch_module, allocation, meter\n        self.cpu_device = self.torch.device(\"cpu\")\n        available = bool(self.torch.backends.mps.is_available())\n        self.mps_device = self.torch.device(\"mps\") if available else None\n        self.runtime = runtime\n        self.mps_crossover_batch_size = None\n        self.calibration = []\n        self.stats = dict(cpu_scoring_calls=0, mps_scoring_calls=0, cpu_wall_ms=0.,\n                          mps_sync_wall_ms=0., cpu_weight_updates=0, mps_weight_updates=0,\n                          cpu_tensor_operations=0, mps_tensor_operations=0,\n                          runtime_calls=0, runtime_wall_ms=0., runtime_work_units=0,\n                          symbolic_fallback_calls=0)\n\n    def _op(self, device, fn):\n        is_mps = str(device) == \"mps\"\n        if is_mps and (not self.allocation.mps_approved or self.mps_device is None):\n            raise ValueError(\"MPS requires exact approved allocation and available device\")\n        if is_mps:\n            self.torch.mps.synchronize()\n        try:\n            return fn()\n        finally:\n            if is_mps:\n                self.torch.mps.synchronize()\n            self.stats[\"mps_tensor_operations\" if is_mps else \"cpu_tensor_operations\"] += 1\n\n    def _timed(self, device, fn, *, scoring=False, update=False):\n        is_mps = str(device) == \"mps\"\n        if is_mps:\n            if not self.allocation.mps_approved:\n                raise ValueError(\"MPS allocation not approved\")\n            self.torch.mps.synchronize()\n        started = time.perf_counter()\n        try:\n            return fn()\n        finally:\n            if is_mps:\n                self.torch.mps.synchronize()\n            elapsed = (time.perf_counter()-started)*1000\n            self.stats[\"mps_sync_wall_ms\" if is_mps else \"cpu_wall_ms\"] += elapsed\n            if scoring:\n                self.stats[\"mps_scoring_calls\" if is_mps else \"cpu_scoring_calls\"] += 1\n            if update:\n                self.stats[\"mps_weight_updates\" if is_mps else \"cpu_weight_updates\"] += 1\n\n    def route(self, batch_size, *, update=False):\n        if type(batch_size) is not int or batch_size < 1:\n            raise ValueError(\"positive batch size\")\n        can_mps = self.mps_device is not None and self.allocation.mps_approved\n        if can_mps and (update or self.mps_crossover_batch_size is not None\n                        and batch_size >= self.mps_crossover_batch_size):\n            return self.mps_device\n        return self.cpu_device\n\n    def _mlp(self, values, device):\n        \"\"\"Each MPS tensor operation has its own synchronization wrapper.\"\"\"\n        t = self.torch\n        op = lambda fn: self._op(device, fn)\n        x = op(lambda: t.tensor(values, dtype=t.float32, device=device))\n        width = len(values[0])\n        # Deterministic calibration weights; no scientific task/answer inputs.\n        w = op(lambda: t.full((width, 16), .03125, dtype=t.float32, device=device))\n        v = op(lambda: t.full((16, 2), .0625, dtype=t.float32, device=device))\n        a = op(lambda: t.full((width, width), .015625, dtype=t.float32, device=device))\n        h = op(lambda: t.matmul(x, w))\n        h = op(lambda: t.tanh(h))\n        logits = op(lambda: t.matmul(h, v))\n        bilinear = op(lambda: t.matmul(x, a))\n        bilinear = op(lambda: t.mul(bilinear, x))\n        bilinear = op(lambda: t.sum(bilinear, dim=1, keepdim=True))\n        logits = op(lambda: t.add(logits, bilinear))\n        cpu = op(lambda: logits.to(\"cpu\"))\n        return cpu.tolist()\n\n    def calibrate_cpu_mps_threshold(self, *, repeats=2):\n        if type(repeats) is not int or not 1 <= repeats <= 5:\n            raise ValueError(\"bounded calibration repetitions\")\n        self.calibration = []\n        for batch in (16, 64, 256, 512, 1024):\n            values = [[((i+j) % 11-5)/5 for j in range(6)] for i in range(batch)]\n            row = dict(batch_size=batch, cpu_ms=None, mps_sync_ms=None, max_abs_error=None)\n            outputs = {}\n            for label, device in ((\"cpu\", self.cpu_device), (\"mps\", self.mps_device)):\n                if device is None or label == \"mps\" and not self.allocation.mps_approved:\n                    continue\n                samples = []\n                for _ in range(repeats):\n                    # Declared arithmetic work, separate from measured timing.\n                    self.meter.charge(\"setup_work_units\", batch*(6*16+16*2+6*6))\n                    key = \"cpu_wall_ms\" if label == \"cpu\" else \"mps_sync_wall_ms\"\n                    before = self.stats[key]\n                    outputs[label] = self._timed(device, lambda: self._mlp(values, device), scoring=True)\n                    samples.append(self.stats[key]-before)\n                row[\"cpu_ms\" if label == \"cpu\" else \"mps_sync_ms\"] = min(samples)\n            if \"mps\" in outputs:\n                error = max(abs(a-b) for x, y in zip(outputs[\"cpu\"], outputs[\"mps\"]) for a, b in zip(x, y))\n                row[\"max_abs_error\"] = error\n                if error > 1e-4:\n                    raise ValueError(\"CPU/MPS scorer calibration exceeds 1e-4 tolerance\")\n            self.calibration.append(row)\n        # Require all measured larger sizes to favor MPS; never invent a crossover.\n        self.mps_crossover_batch_size = next((r[\"batch_size\"] for i, r in enumerate(self.calibration)\n            if all(v[\"mps_sync_ms\"] is not None and v[\"mps_sync_ms\"] < v[\"cpu_ms\"]\n                   for v in self.calibration[i:])), None)\n        return dict(rows=self.calibration, mps_crossover_batch_size=self.mps_crossover_batch_size,\n                    mps_available=self.mps_device is not None, mps_authorized=self.allocation.mps_approved,\n                    synchronized_per_operation=True)\n\n    def score_ridge(self, values, models, *, meter=None):\n        if not values or len(models) != 2:\n            raise ValueError(\"nonempty six-feature batches and two ridge heads required\")\n        meter = self.meter if meter is None else meter\n        meter.charge(\"scorer_work_units\", len(values)*12)\n        device, t = self.route(len(values)), self.torch\n        def run():\n            op = lambda fn: self._op(device, fn)\n            x = op(lambda: t.tensor(values, dtype=t.float32, device=device))\n            outputs = []\n            for scale, beta in models:\n                s = op(lambda: t.tensor(scale, dtype=t.float32, device=device))\n                b = op(lambda: t.tensor(beta, dtype=t.float32, device=device))\n                z = op(lambda: t.div(x, s))\n                y = op(lambda: t.matmul(z, b))\n                outputs.append(op(lambda: y.to(\"cpu\")).tolist())\n            return list(map(list, zip(*outputs)))\n        return self._timed(device, run, scoring=True)\n\n    def update_ridge(self, x_values, y_values, *, ridge=1.0):\n        \"\"\"Batched source-only weight update. Caller owns the data-role boundary.\"\"\"\n        if not x_values or len(x_values) != len(y_values) or not math.isfinite(ridge) or ridge <= 0:\n            raise ValueError(\"bounded source batch and positive ridge required\")\n        device, t = self.route(len(x_values), update=True), self.torch\n        self.meter.charge(\"training_work_units\", len(x_values)*6*6*2)\n        def run():\n            op = lambda fn: self._op(device, fn)\n            x = op(lambda: t.tensor(x_values, dtype=t.float32, device=device))\n            y = op(lambda: t.tensor(y_values, dtype=t.float32, device=device))\n            squared = op(lambda: t.square(x))\n            scale = op(lambda: t.mean(squared, dim=0))\n            scale = op(lambda: t.sqrt(scale))\n            small = op(lambda: t.lt(scale, 1e-8))\n            ones = op(lambda: t.ones_like(scale))\n            scale = op(lambda: t.where(small, ones, scale))\n            z = op(lambda: t.div(x, scale))\n            zt = op(lambda: t.transpose(z, 0, 1))\n            lhs = op(lambda: t.matmul(zt, z))\n            lhs = op(lambda: t.mul(lhs, 2.))  # existing antisymmetric ridge augmentation\n            eye = op(lambda: t.eye(len(x_values[0]), dtype=t.float32, device=device))\n            regularizer = op(lambda: t.mul(eye, ridge))\n            lhs = op(lambda: t.add(lhs, regularizer))\n            rhs = op(lambda: t.matmul(zt, y))\n            rhs = op(lambda: t.mul(rhs, 2.))\n            beta = op(lambda: t.linalg.solve(lhs, rhs))\n            return op(lambda: scale.to(\"cpu\")).numpy(), op(lambda: beta.to(\"cpu\")).numpy()\n        return self._timed(device, run, update=True)\n\n    def query_runtime(self, prompt, schema=None, *, seed=0):\n        if self.runtime is None:\n            self.stats[\"symbolic_fallback_calls\"] += 1\n            return dict(content=\"\", termination=\"pure_symbolic_no_runtime\", inference_ran=False)\n        if not self.allocation.llm_approved:\n            raise ValueError(\"llama runtime requires separate explicit approval\")\n        # PersistentMetalRuntime.complete blocks until its nonstreaming HTTP\n        # response has terminated. Partial/streaming values are refused here.\n        start = time.perf_counter()\n        try:\n            result = self.runtime.complete(prompt, schema, temperature=0., seed=seed)\n            if result.get(\"termination\") not in (\"natural_or_stop\", \"hit_token_cap\"):\n                raise ValueError(\"runtime response has not fully terminated\")\n            self.stats[\"runtime_work_units\"] += int(result.get(\"telemetry\", {}).get(\"generated_tokens\") or 0)\n            return result\n        finally:\n            self.stats[\"runtime_calls\"] += 1\n            self.stats[\"runtime_wall_ms\"] += (time.perf_counter()-start)*1000\n\n    @staticmethod\n    def supervise(repository, request, allocation, *, run_id, directory=None):\n        \"\"\"One durable reservation, kernel CPU cap and parent wall/RSS watchdog.\n\n        Memory enforcement is explicitly sampled RSS (20 ms watchdog), not a\n        macOS RLIMIT_AS claim. GPU/driver virtual memory mappings are not RSS.\n        Failure/kill consumes the attempt and its measured/reserved debit.\n        \"\"\"\n        repository = Path(repository).resolve()\n        sandbox = Sandbox(repository, directory or repository/\"runs/experimental/wave24-azr\")\n        with sandbox.locked():\n            remaining = allocation.session_limit_s-allocation.carried_used_s-sandbox.used_s()\n            if allocation.wall_s > remaining:\n                raise ValueError(\"insufficient carried allowance; no session reset\")\n            caps = dict(wall_s=allocation.wall_s, cpu_s=allocation.cpu_s, memory_mb=allocation.memory_mb,\n                        real_steps=0, imagined_transitions=0, updates=request[\"config\"][\"max_source_rows\"])\n            grant_id = \"wave24-\"+run_id\n            sandbox.grant(grant_id, allocation.owner, allocation.reason, caps, allocation.session_limit_s,\n                          allocation.carried_used_s, device=\"gpu\" if allocation.mps_approved else \"cpu\",\n                          memory_policy=\"sampled_rss\")\n            attempt = sandbox.directory/\"attempts\"/run_id\n            attempt.mkdir(parents=True, exist_ok=False)\n            write_new(attempt/\"input.json\", dict(request, allocation=asdict(allocation)))\n            sandbox.append(\"reserved\", dict(run_id=run_id, wall_cap_s=allocation.wall_s,\n                           grant=grant_id, request_sha256=digest(request), phase=\"wave24_azr\"))\n            start, peak, failure, proc = time.monotonic(), 0., None, None\n            temporary = request.get(\"temporary_output_directory\")\n            output = Path(temporary)/\"worker.json\" if temporary else attempt/\"worker.json\"\n            try:\n                env = dict(os.environ, OMP_NUM_THREADS=\"1\", OPENBLAS_NUM_THREADS=\"1\", PYTHONDONTWRITEBYTECODE=\"1\",\n                           NEXUS_W24_SUPERVISED=\"1\", NEXUS_W24_CPU_CAP=str(allocation.cpu_s))\n                with (attempt/\"worker.log\").open(\"xb\") as log:\n                    proc = subprocess.Popen([sys.executable, str(repository/\"scripts/run_wave24_azr_ruler_cegis.py\"),\n                        \"--worker-input\", str(attempt/\"input.json\"), \"--worker-output\", str(output)],\n                        cwd=repository, env=env, stdout=log, stderr=log, start_new_session=True)\n                    while proc.poll() is None:\n                        elapsed = time.monotonic()-start\n                        rss = _rss_kib(proc.pid)\n                        if rss is not None:\n                            peak = max(peak, rss/1024.)\n                        elif proc.poll() is None:\n                            failure = \"rss_unreadable\"\n                            os.killpg(proc.pid, signal.SIGKILL)\n                            break\n                        if elapsed > allocation.wall_s or peak > allocation.memory_mb:\n                            failure = \"wall_cap\" if elapsed > allocation.wall_s else \"rss_cap\"\n                            os.killpg(proc.pid, signal.SIGKILL)\n                            break\n                        # Polling wait serves the watchdog; no experiment is left detached.\n                        try:\n                            proc.wait(timeout=.02)\n                        except subprocess.TimeoutExpired:\n                            pass\n                    proc.wait(timeout=2)\n                if proc.returncode:\n                    failure = failure or \"worker_exit_\"+str(proc.returncode)\n            finally:\n                if proc is not None and proc.poll() is None:\n                    os.killpg(proc.pid, signal.SIGKILL)\n                    proc.wait(timeout=2)\n                wall = time.monotonic()-start\n                sandbox.append(\"settled\", dict(run_id=run_id, charged_wall_s=wall,\n                    peak_rss_mib=peak, failure=failure, exit_code=None if proc is None else proc.returncode))\n            if temporary:\n                # Preserve failed/partial engineering evidence before the\n                # caller's TemporaryDirectory is removed. Never artifacts/.\n                shutil.copytree(temporary, attempt/\"private-output\", dirs_exist_ok=False)\n            receipt = dict(run_id=run_id, wall_s=wall, peak_rss_mib=peak, failure=failure,\n                           carried_used_s=allocation.carried_used_s, session_used_s=allocation.carried_used_s+sandbox.used_s(),\n                           session_remaining_s=allocation.session_limit_s-allocation.carried_used_s-sandbox.used_s(),\n                           memory_enforcement=\"sampled_rss_20ms\", attempt_directory=str(attempt))\n            write_new(attempt/\"receipt.json\", receipt)\n            return (read(output) if output.exists() else dict(schema=\"wave24_azr_v1\", execution_status=\"INCOMPLETE\")), receipt\n",
+    "scripts/run_wave24_azr_ruler_cegis.py": "#!/usr/bin/env python3\n\"\"\"Single-attempt AZR runner. Default refuses execution; --dev-preflight is temporary.\n\nNo final cryptographic seed is drawn until a pushed freeze passes provenance,\nan explicit final allocation is validated and a durable attempt is reserved.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nfrom dataclasses import asdict, fields\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport secrets\nimport sys\nimport tempfile\nimport time\n\n# Set by the supervising parent before this module imports numpy/torch.\nif os.environ.get(\"NEXUS_W24_SUPERVISED\") == \"1\":\n    import resource\n    _cap = int(os.environ[\"NEXUS_W24_CPU_CAP\"])\n    resource.setrlimit(resource.RLIMIT_CPU, (_cap, _cap))\n\nROOT = Path(__file__).resolve().parents[1]\nsys.path.insert(0, str(ROOT))\nsys.path.insert(0, str(ROOT/\"src\"))\n\nfrom nexus.evolution1.catalogue import digest\nfrom nexus.seed.experimental import read, write_new\nfrom nexus.wave24_quotient_core import (\n    WorkMeter, WorkExhausted, SearchResult, expression_wire, expression_from_wire,\n    freeze, unfreeze, primitive_cost, solve, verify_certificate, symkan_accounting,\n)\nfrom nexus.wave24_auto_laws import AutoOperatorFingerprinter\nfrom nexus.wave24_resource_host import Allocation, Wave24ResourceHost\nfrom nexus.wave24_self_evolving_loop import (\n    METHODS, World, PublicTask, SeededProceduralTaskGenerator, ZeroDataFrontierSelfPlay,\n    DualHeadExecutionScorer, JournalSkillView, FrozenSourceState, MeterView,\n    source_execution_trace, source_shadow_pairs, procedural_worlds, run_method,\n    horizon_break_even,\n)\n\nCONFIG_PATH = \"configs/wave24_azr_ruler_cegis.json\"\nPHASE1_FILES = (\n    \"src/nexus/wave24_quotient_core.py\", \"src/nexus/wave24_auto_laws.py\",\n    \"src/nexus/wave24_self_evolving_loop.py\", \"src/nexus/wave24_resource_host.py\",\n    \"src/nexus/wave24_pytest_guard.py\",\n    \"scripts/run_wave24_azr_ruler_cegis.py\", \"scripts/verify_wave24_azr_ruler_cegis.py\",\n    \"tests/test_wave24_quotient_soundness.py\", \"tests/test_wave24_resource_host_and_runner.py\",\n    CONFIG_PATH, \"docs/NEXUS_WAVE24_AZR_RULER_CEGIS_PROTOCOL.md\",\n    \"src/nexus/nn/ridge.py\", \"src/nexus/evolution1/fixtures.py\",\n    \"src/nexus/evolution1/catalogue.py\", \"src/nexus/seed/experimental.py\",\n    \"src/nexus/seed/process_memory.py\", \"src/nexus/seed/metal_model_runtime.py\",\n    \"src/nexus/seed/local_model_runtime.py\",\n    \"src/nexus/seed/public_failure.py\",\n)\nWORLDS = (\"INT_SEQ\", \"STR_PARSE\", \"DICT_RECORD\", \"STATE_TRANSITION\", \"BIT_CELLULAR_AUTOMATA\")\n\n\ndef source_hashes(repository=ROOT):\n    return {p: hashlib.sha256((Path(repository)/p).read_bytes()).hexdigest() for p in PHASE1_FILES}\n\n\ndef validate_config(config):\n    expected = read(ROOT/CONFIG_PATH)\n    if set(config) != set(expected) or config[\"schema\"] != \"wave24_azr_config_v1\":\n        raise ValueError(\"exact versioned configuration fields required\")\n    integer_fields = (\"b0\", \"mdl_bound\", \"tasks_per_world_tier\", \"repetitions\", \"public_count\",\n        \"generator_attempts_per_stratum\", \"source_attempts_per_world\", \"max_source_rows\", \"max_skills_per_world\",\n        \"shadow_tasks_per_skill\", \"shadow_gain_bound\", \"calibration_repeats\", \"work_unit_cap\", \"cell_work_unit_cap\",\n        \"cpu_s\", \"memory_mb\")\n    if any(type(config[k]) is not int or config[k] < 1 for k in integer_fields):\n        raise ValueError(\"positive integral bounded config values required\")\n    if config[\"b0\"] > 6 or config[\"mdl_bound\"] > 6 or config[\"repetitions\"] != 2:\n        raise ValueError(\"declared finite horizons and exactly two acquisition passes required\")\n    if config[\"source_attempts_per_world\"] > 100 or config[\"generator_attempts_per_stratum\"] > 1000 or config[\"max_source_rows\"] > 512:\n        raise ValueError(\"source/generator bounds exceeded\")\n    if config[\"calibration_repeats\"] > 5 or not 0 < config[\"shadow_alpha\"] < 1 or config[\"ridge\"] <= 0:\n        raise ValueError(\"invalid fixed calibration/ridge/hygiene settings\")\n    if config[\"heldout_world\"] != WORLDS[-1] or config[\"heldout_test_time_selfplay\"] is not False:\n        raise ValueError(\"fifth world remains source-unseen; no test-time training\")\n    if config[\"min_uniqueness_reduction\"] != 0.:\n        raise ValueError(\"strict positive work reduction gate cannot be redefined\")\n    return config\n\n\ndef derive_seed(seed, purpose, world):\n    return int(hashlib.sha256(f\"{seed}:{purpose}:{world}\".encode()).hexdigest(), 16)\n\n\ndef task_wire(task):\n    return dict(public_io=[[freeze(x), freeze(y)] for x, y in task.public_io],\n                query=freeze(task.query), output_sort=task.output_sort)\n\n\ndef task_from_wire(value):\n    if set(value) != {\"public_io\", \"query\", \"output_sort\"} or not value[\"public_io\"]:\n        raise ValueError(\"complete public task encoding required\")\n    return PublicTask(tuple((unfreeze(x), unfreeze(y)) for x, y in value[\"public_io\"]),\n                      unfreeze(value[\"query\"]), value[\"output_sort\"])\n\n\ndef result_wire(result):\n    return dict(status=result.status, witnesses=[expression_wire(e) for e in result.witnesses],\n                query_values=[freeze(v) for v in result.query_values], complete=result.complete,\n                root_equivalence_discharges=result.root_equivalence_discharges)\n\n\ndef result_from_wire(value):\n    if set(value) != {\"status\", \"witnesses\", \"query_values\", \"complete\", \"root_equivalence_discharges\"}:\n        raise ValueError(\"exact certificate fields required\")\n    if type(value[\"complete\"]) is not bool or type(value[\"root_equivalence_discharges\"]) is not int:\n        raise ValueError(\"invalid certificate flags\")\n    return SearchResult(value[\"status\"], tuple(expression_from_wire(e) for e in value[\"witnesses\"]),\n                        tuple(unfreeze(v) for v in value[\"query_values\"]), value[\"complete\"], value[\"root_equivalence_discharges\"])\n\n\nclass CellMeter:\n    def __init__(self, parent, cap):\n        self.parent, self.cap, self.start = parent, cap, parent.total\n\n    @property\n    def total(self):\n        return self.parent.total\n\n    def charge(self, category=\"search_work_units\", n=1):\n        if self.parent.total-self.start+n > self.cap:\n            raise WorkExhausted(\"cell work cap\")\n        self.parent.charge(category, n)\n\n\ndef build_bank(worlds, config, seed, meter, *, dev=False):\n    tasks, counts, rejections = [], {}, {}\n    for i, world in enumerate(worlds):\n        generator = SeededProceduralTaskGenerator(derive_seed(seed, \"evaluation\", world.name),\n                                                config[\"b0\"], public_count=config[\"public_count\"])\n        tiers = ((\"Tier-1\" if i % 2 == 0 else \"Tier-2\"),) if dev else (\"Tier-1\", \"Tier-2\")\n        for tier in tiers:\n            count, seen, rejected = 0, set(), 0\n            wanted = 1 if dev else config[\"tasks_per_world_tier\"]\n            for _ in range(config[\"generator_attempts_per_stratum\"]):\n                if count == wanted:\n                    break\n                generated = generator.sample(world, meter)\n                task = generated.public_view\n                key = digest((world.name, task_wire(task)))\n                if generated.tier != tier or key in seen:\n                    rejected += 1\n                    continue\n                if tier == \"Tier-2\":\n                    ref = solve(world.grammar, task.public_io, task.query, task.output_sort, config[\"b0\"],\n                                quotient=False, meter=MeterView(meter, \"generator_work_units\"))\n                    if ref.status != \"NO_PROGRAM_IN_BOUNDED_GRAMMAR\":\n                        rejected += 1\n                        continue\n                seen.add(key)\n                count += 1\n                tasks.append(dict(task_id=key, world=world.name, tier=tier, public=task_wire(task),\n                                  teacher=expression_wire(generated.teacher),\n                                  teacher_primitive_cost=generated.teacher_primitive_cost,\n                                  teacher_query=freeze(generated.teacher_query)))\n            counts[world.name+\":\"+tier] = dict(expected=wanted, actual=count)\n            rejections[world.name+\":\"+tier] = rejected\n    return tasks, counts, rejections\n\n\ndef prepare_source(worlds, config, seed, meter, host):\n    scorer = DualHeadExecutionScorer(config[\"ridge\"], resource_host=host)\n    libraries = {w.name: JournalSkillView() for w in worlds}\n    all_rows, candidates, receipts = [], {}, []\n    for world in worlds[:-1]:\n        player = ZeroDataFrontierSelfPlay(derive_seed(seed, \"source\", world.name), config[\"b0\"])\n        player.wake(world, attempts=config[\"source_attempts_per_world\"], meter=meter)\n        programs = []\n        for generated in player.accepted:\n            trace = source_execution_trace(world.grammar, generated.public_view, 2*config[\"b0\"], meter)\n            all_rows.extend(trace[\"training_rows\"])\n            programs.extend(trace[\"witnesses\"])\n        candidates[world.name] = JournalSkillView.recurring_subdags(programs)[:config[\"max_skills_per_world\"]]\n        receipts.append(dict(world=world.name, attempts=player.attempts, frontier_tasks=len(player.accepted),\n                             candidate_skills=len(candidates[world.name])))\n    selected = all_rows[:config[\"max_source_rows\"]]\n    if selected:\n        scorer.fit(selected, meter=meter)\n    hygiene = []\n    for world in worlds[:-1]:\n        generator = SeededProceduralTaskGenerator(derive_seed(seed, \"shadow\", world.name),\n                                                config[\"b0\"], public_count=config[\"public_count\"])\n        for skill in candidates[world.name]:\n            if primitive_cost(skill, world.grammar.ops) > 2*config[\"b0\"]:\n                continue\n            records = []\n            for _ in range(config[\"shadow_tasks_per_skill\"]):\n                task = generator.sample(world, MeterView(meter, \"training_work_units\")).public_view\n                records.append(dict(world=world.name, purpose=\"training_shadow\", task=task))\n            try:\n                pairs = source_shadow_pairs(world, records, skill, b0=2*config[\"b0\"], meter=meter)\n                decision = libraries[world.name].promote(skill, pairs, gain_bound=config[\"shadow_gain_bound\"],\n                                                       alpha=config[\"shadow_alpha\"])\n                hygiene.append(dict(world=world.name, ast=expression_wire(skill), **decision,\n                                    pairs=[asdict(p) for p in pairs]))\n            except ValueError as exc:\n                # Rejected/duplicate/invalid source evidence is retained, not\n                # converted into a successful promotion or rerolled.\n                hygiene.append(dict(world=world.name, ast=expression_wire(skill), accepted=False, error=str(exc), pairs=[]))\n    return scorer, libraries, dict(receipts=receipts, available_rows=len(all_rows), fitted_rows=len(selected),\n        source_feedback_sha256=digest(selected), hygiene=hygiene, scorer_source_digest=scorer.source_digest,\n        source_rows=selected, scorer_fingerprint=scorer.fingerprint(),\n        scorer_parameters=None if scorer.models is None else [(s.tolist(), b.tolist()) for s, b in scorer.models],\n        heldout_training_tasks=0, heldout_test_time_selfplay=False)\n\n\ndef execute_request(request, allocation, *, output_path=None):\n    if request.get(\"mode\") not in (\"dev_preflight\", \"post_freeze_assessment\"):\n        raise ValueError(\"explicit source preflight or frozen assessment mode required\")\n    config = validate_config(request[\"config\"])\n    if (allocation.wall_s > config[\"wall_s\"] or allocation.cpu_s > config[\"cpu_s\"]\n            or allocation.memory_mb > config[\"memory_mb\"]\n            or allocation.carried_used_s != config[\"carried_used_s\"]\n            or allocation.session_limit_s != config[\"session_limit_s\"]):\n        raise ValueError(\"allocation does not match or tightens beyond the frozen resource contract\")\n    meter = WorkMeter(limit=config[\"work_unit_cap\"], wall_limit=allocation.wall_s)\n    payload = dict(schema=\"wave24_azr_v1\", mode=request[\"mode\"], source_commit=request[\"source_commit\"],\n        freeze_commit=request.get(\"freeze_commit\"), source_hashes=request[\"source_hashes\"],\n        config=config, config_sha256=digest(config), seed=None, cells=[], tasks=[],\n        execution_status=\"INCOMPLETE\", allocation=asdict(allocation), false_certificate_count=0,\n        independent_task_count=0, total_evaluation_cells=0, source_preparation={}, laws={},\n        setup_work_units=0, training_work_units=0, method_summary={}, break_even={},\n        symkan_reports=[], **symkan_accounting([]))\n    started, cpu_start = time.perf_counter(), time.process_time()\n    host = None\n    try:\n        if output_path is not None:\n            write_new(Path(output_path).parent/\"header.json\", payload)\n        # Parent has already reserved the single attempt and validated freeze.\n        seed = 24001 if request[\"mode\"] == \"dev_preflight\" else secrets.randbits(256)\n        payload[\"seed\"] = seed\n        if output_path is not None:\n            write_new(Path(output_path).parent/\"seed.json\", dict(seed=seed, source_commit=request[\"source_commit\"],\n                      freeze_commit=request.get(\"freeze_commit\"), mode=request[\"mode\"]))\n        host = Wave24ResourceHost(allocation, meter)\n        payload[\"runtime_route\"] = host.query_runtime(\"\")\n        payload[\"versions\"] = dict(python=sys.version, torch=host.torch.__version__)\n        payload[\"calibration\"] = host.calibrate_cpu_mps_threshold(repeats=config[\"calibration_repeats\"])\n        worlds = procedural_worlds()\n        laws = {}\n        for world in worlds:\n            bundle = AutoOperatorFingerprinter().discover(world.grammar.operators, world.carriers,\n                                                         complete_carriers=True, meter=meter)\n            laws[world.name] = bundle\n            payload[\"laws\"][world.name] = dict(certified=bundle.certified, probe_digest=bundle.probe_digest,\n                certified_structural_laws=[asdict(l) for l in bundle.certified_structural_laws],\n                empirical_probe_priors=[asdict(l) for l in bundle.empirical_probe_priors])\n        scorer, libraries, source = prepare_source(worlds, config, seed, meter, host)\n        payload[\"source_preparation\"] = source\n        frozen = {name: FrozenSourceState.capture(lib, scorer, worlds[:-1]) for name, lib in libraries.items()}\n        payload[\"libraries\"] = {name: [expression_wire(s) for s in lib.snapshot()] for name, lib in libraries.items()}\n        tasks, grid, rejected = build_bank(worlds, config, seed, meter, dev=request[\"mode\"] == \"dev_preflight\")\n        payload.update(tasks=tasks, generation_grid=grid, generator_rejections=rejected,\n                       independent_task_count=len(tasks))\n        by_name = {w.name: w for w in worlds}\n        for item in tasks:\n            world, task = by_name[item[\"world\"]], task_from_wire(item[\"public\"])\n            for repetition in range(config[\"repetitions\"]):\n                for method in METHODS:\n                    library = libraries[world.name]\n                    if method == METHODS[3]:\n                        # Certificate A only admits exact primitive expansions <= B0.\n                        class FixedView:\n                            def snapshot(self):\n                                return tuple(s for s in library.snapshot() if primitive_cost(s, world.grammar.ops) <= config[\"b0\"])\n                        selected_library = FixedView()\n                    else:\n                        selected_library = library\n                    before, trace = meter.total, {}\n                    if allocation.mps_approved and host.mps_device is not None:\n                        host.torch.mps.synchronize()\n                    begin = time.perf_counter()\n                    result = run_method(method, world, task, b0=config[\"b0\"],\n                        mdl_bound=config[\"mdl_bound\"], meter=CellMeter(meter, config[\"cell_work_unit_cap\"]),\n                        laws=laws[world.name], library=selected_library,\n                        scorer=scorer if scorer.models is not None else None, trace=trace)\n                    if allocation.mps_approved and host.mps_device is not None:\n                        host.torch.mps.synchronize()\n                    elapsed, cost = (time.perf_counter()-begin)*1000, meter.total-before\n                    cert_valid, error, checked = None, None, False\n                    if result.status != \"UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED\":\n                        try:\n                            cert_valid = verify_certificate(world.grammar, task.public_io, task.query, task.output_sort,\n                                config[\"mdl_bound\"] if method == METHODS[4] else config[\"b0\"], result,\n                                meter=MeterView(meter, \"verification_work_units\"),\n                                macros=library.snapshot() if method == METHODS[4] else (), mdl=method == METHODS[4])\n                            checked = True\n                        except ValueError as exc:\n                            cert_valid, error, checked = False, str(exc), True\n                            payload[\"false_certificate_count\"] += 1\n                    frozen[world.name].verify(library, scorer)\n                    cell = dict(task_id=item[\"task_id\"], world=world.name, tier=item[\"tier\"], method=method,\n                        repetition=repetition, result=result_wire(result), work_units=cost,\n                        work_to_g1=trace.get(\"work_to_g1\"), work_to_g2=trace.get(\"work_to_g2\"),\n                        work_to_uniqueness=trace.get(\"work_to_uniqueness\"), wall_clock_ms=elapsed,\n                        first_acquisition_work=cost if repetition == 0 else None,\n                        repeated_use_work=cost if repetition else None,\n                        certificate_checked=checked, certificate_valid=cert_valid, certificate_error=error)\n                    payload[\"cells\"].append(cell)\n                    if output_path is not None:\n                        write_new(Path(output_path).parent/\"cells\"/f'{len(payload[\"cells\"])-1:06}.json', cell)\n        payload[\"execution_status\"] = \"COMPLETE\" if all(v[\"actual\"] == v[\"expected\"] for v in grid.values()) else \"INCOMPLETE\"\n    except Exception as exc:\n        payload[\"execution_status\"] = \"INCOMPLETE\" if isinstance(exc, WorkExhausted) else \"INVALID\"\n        payload[\"execution_error\"] = type(exc).__name__+\": \"+str(exc)\n    finally:\n        payload[\"total_evaluation_cells\"] = len(payload[\"cells\"])\n        payload[\"setup_work_units\"] = meter.counts[\"setup_work_units\"]\n        payload[\"training_work_units\"] = meter.counts[\"training_work_units\"]\n        payload[\"resource_counts\"] = dict(meter.counts)\n        payload[\"resource_stats\"] = {} if host is None else dict(host.stats)\n        payload[\"wall_clock_ms\"] = (time.perf_counter()-started)*1000\n        payload[\"cpu_seconds\"] = time.process_time()-cpu_start\n        summarize(payload)\n    return payload\n\n\ndef summarize(payload):\n    for method in METHODS:\n        cells = [c for c in payload[\"cells\"] if c[\"method\"] == method]\n        payload[\"method_summary\"][method] = dict(cells=len(cells),\n            unresolved_rate=sum(c[\"result\"][\"status\"] == \"UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED\" for c in cells)/len(cells) if cells else None,\n            first_acquisition_work=sum(c[\"first_acquisition_work\"] or 0 for c in cells),\n            repeated_use_work=sum(c[\"repeated_use_work\"] or 0 for c in cells))\n        if not cells:\n            continue\n        baseline = {(c[\"task_id\"], c[\"repetition\"]): c for c in payload[\"cells\"] if c[\"method\"] == METHODS[0]}\n        matched = [c for c in cells if (c[\"task_id\"], c[\"repetition\"]) in baseline]\n        payload[\"break_even\"][method] = horizon_break_even(payload[\"setup_work_units\"] if method in METHODS[2:] else 0,\n            payload[\"training_work_units\"] if method in METHODS[3:] else 0,\n            [c[\"work_units\"] for c in matched],\n            [baseline[(c[\"task_id\"], c[\"repetition\"])][\"work_units\"] for c in matched])\n\n\ndef load_allocation(path, *, dev):\n    data = read(path)\n    expected_purpose = \"dev_preflight_only\" if dev else \"post_freeze_assessment_only\"\n    if data.get(\"authorized\") is not True or data.get(\"purpose\") != expected_purpose or data.get(\"max_attempts\") != 1:\n        raise ValueError(\"distinct exact one-attempt allocation required for this mode\")\n    names = {f.name for f in fields(Allocation)}\n    return Allocation(**{k: data[k] for k in names})\n\n\ndef worker(input_path, output_path):\n    if os.environ.get(\"NEXUS_W24_SUPERVISED\") != \"1\":\n        raise ValueError(\"worker may only run under the bounded resource host\")\n    envelope = read(input_path)\n    allocation = Allocation(**envelope.pop(\"allocation\"))\n    if source_hashes() != envelope[\"source_hashes\"]:\n        raise ValueError(\"source changed after host reservation\")\n    if envelope[\"mode\"] == \"post_freeze_assessment\":\n        from scripts.verify_wave24_azr_ruler_cegis import verify_git\n        verify_git(ROOT, envelope[\"freeze_commit\"], envelope[\"source_hashes\"])\n    payload = execute_request(envelope, allocation, output_path=output_path)\n    from scripts.verify_wave24_azr_ruler_cegis import verify_payload\n    payload[\"verification\"] = verify_payload(payload, check_git=False, replay=False)\n    payload[\"payload_sha256\"] = digest(payload)\n    write_new(output_path, payload)\n    return 0 if payload[\"verification\"][\"integrity_valid\"] else 2\n\n\ndef main(argv=None):\n    p = argparse.ArgumentParser(description=__doc__)\n    p.add_argument(\"--dev-preflight\", action=\"store_true\")\n    p.add_argument(\"--post-freeze\", action=\"store_true\")\n    p.add_argument(\"--freeze-commit\")\n    p.add_argument(\"--allocation-file\")\n    p.add_argument(\"--worker-input\")\n    p.add_argument(\"--worker-output\")\n    args = p.parse_args(argv)\n    if args.worker_input:\n        return worker(args.worker_input, args.worker_output)\n    if args.dev_preflight == args.post_freeze:\n        p.error(\"choose --dev-preflight or explicitly authorized --post-freeze\")\n    import subprocess\n    from scripts.verify_wave24_azr_ruler_cegis import verify_git, verify_payload\n    config = validate_config(read(ROOT/CONFIG_PATH))\n    allocation_path = args.allocation_file or str(ROOT/\"configs/wave24_azr_dev_allocation.json\")\n    allocation = load_allocation(allocation_path, dev=args.dev_preflight)\n    head = subprocess.check_output([\"git\", \"rev-parse\", \"HEAD\"], cwd=ROOT, text=True).strip()\n    hashes = source_hashes()\n    if args.post_freeze:\n        verify_git(ROOT, args.freeze_commit, hashes, require_pushed=True)\n    request = dict(mode=\"dev_preflight\" if args.dev_preflight else \"post_freeze_assessment\", config=config,\n                   source_commit=head, freeze_commit=args.freeze_commit, source_hashes=hashes)\n    run_id = \"dev-24001\" if args.dev_preflight else \"final-\"+str(args.freeze_commit)[:12]\n    with tempfile.TemporaryDirectory(prefix=\"nexus-wave24-dev-\" if args.dev_preflight else \"nexus-wave24-final-\") as tmp:\n        request[\"temporary_output_directory\"] = tmp\n        payload, receipt = Wave24ResourceHost.supervise(ROOT, request, allocation, run_id=run_id)\n        temporary = Path(tmp)/\"checked-output.json\"\n        write_new(temporary, payload)\n        verification_start = time.perf_counter()\n        remaining = min(allocation.wall_s-receipt[\"wall_s\"], receipt[\"session_remaining_s\"])\n        report = verify_payload(read(temporary), check_git=args.post_freeze, replay=True,\n                                wall_limit=max(.001, remaining))\n        verification_wall = time.perf_counter()-verification_start\n        from nexus.seed.experimental import Sandbox\n        sandbox = Sandbox(ROOT, ROOT/\"runs/experimental/wave24-azr\")\n        with sandbox.locked():\n            sandbox.debit(run_id+\"-verify\", verification_wall, \"independent temporary-output replay\",\n                          payload.get(\"payload_sha256\") or \"incomplete_worker\")\n            receipt[\"verification_wall_s\"] = verification_wall\n            receipt[\"session_used_s\"] = allocation.carried_used_s+sandbox.used_s()\n            receipt[\"session_remaining_s\"] = allocation.session_limit_s-receipt[\"session_used_s\"]\n        if remaining <= 0 or receipt[\"wall_s\"]+verification_wall > allocation.wall_s:\n            report[\"errors\"].append(\"combined worker + verifier wall cap exceeded\")\n            report[\"integrity_valid\"] = report[\"ready_for_freeze\"] = False\n        write_new(Path(receipt[\"attempt_directory\"])/\"complete-receipt.json\", receipt)\n        # The authoritative journal/receipt survives temporary dev outputs.\n        write_new(Path(receipt[\"attempt_directory\"])/\"verifier.json\", report)\n        if args.post_freeze:\n            write_new(ROOT/\"artifacts/wave24_azr_ruler_cegis.json\", dict(payload=payload, receipt=receipt, verification=report))\n        print(json.dumps(dict(mode=request[\"mode\"], verification=report, receipt=receipt,\n                              independent_task_count=payload.get(\"independent_task_count\"),\n                              total_evaluation_cells=payload.get(\"total_evaluation_cells\"),\n                              calibration=payload.get(\"calibration\"), method_summary=payload.get(\"method_summary\")), indent=2))\n        return 0 if report[\"ready_for_freeze\"] else 1\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n",
+    "scripts/verify_wave24_azr_ruler_cegis.py": "#!/usr/bin/env python3\n\"\"\"Strict saved-evidence verifier. Valid execution and scientific success differ.\n\nNever repairs a payload, fills a grid, changes a threshold or runs an LLM.\nNegative scientific gates return a nonzero CLI exit even if arithmetic is valid.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport hashlib\nimport json\nimport math\nfrom pathlib import Path\nimport re\nimport subprocess\nimport sys\n\nROOT = Path(__file__).resolve().parents[1]\nsys.path.insert(0, str(ROOT))\nsys.path.insert(0, str(ROOT/\"src\"))\n\nfrom nexus.evolution1.catalogue import digest\nfrom nexus.seed.experimental import read\nfrom nexus.wave24_quotient_core import WorkMeter, freeze, primitive_cost, validate_program, eval_expr, verify_certificate\nfrom nexus.wave24_self_evolving_loop import METHODS, procedural_worlds\n\nBRANCH = \"codex/wave24-azr-ruler-cegis\"\nBASE = \"073d9297e6b9b350368f31ee7d18418ef9071634\"\n\n\ndef require_complete_grid(task_ids, cells, repetitions=2):\n    expected = {(t, m, r) for t in task_ids for m in METHODS for r in range(repetitions)}\n    keys = [(c[\"task_id\"], c[\"method\"], c[\"repetition\"]) for c in cells]\n    if len(keys) != len(set(keys)) or set(keys) != expected:\n        raise ValueError(\"incomplete or duplicate registered method/task/repetition grid\")\n    return True\n\n\ndef require_symkan_identities(reports, payload):\n    attempted = nonempty = abstained = faithful = 0\n    for report in reports:\n        a, n, f = report[\"attempted\"], bool(report[\"induced_expression\"]), report[\"faithful_export\"]\n        if type(a) is not bool or type(f) is not bool or n and not a or f != n:\n            raise ValueError(\"invalid SymKAN report/export\")\n        attempted += a\n        nonempty += n\n        abstained += a and not n\n        faithful += f\n    counts = dict(symkan_attempted_count=attempted, symkan_nonempty_induced_count=nonempty,\n                  symkan_abstained_count=abstained, symkan_faithful_export_count=faithful)\n    if any(type(payload[k]) is not int or payload[k] != v for k, v in counts.items()):\n        raise ValueError(\"SymKAN counts differ from actual reports\")\n    if attempted != nonempty+abstained or faithful != nonempty:\n        raise ValueError(\"SymKAN accounting identity failed\")\n    return True\n\n\ndef git(repository, *args):\n    return subprocess.check_output([\"git\", *args], cwd=repository, timeout=15)\n\n\ndef verify_git(repository, freeze_commit, hashes, *, require_pushed=False):\n    from scripts.run_wave24_azr_ruler_cegis import PHASE1_FILES\n    if type(freeze_commit) is not str or not re.fullmatch(\"[0-9a-f]{40}\", freeze_commit):\n        raise ValueError(\"exact Commit-1 freeze SHA required\")\n    if set(hashes) != set(PHASE1_FILES):\n        raise ValueError(\"incomplete Phase-1 source manifest\")\n    branch = git(repository, \"branch\", \"--show-current\").decode().strip()\n    if branch != BRANCH:\n        raise ValueError(\"wrong Wave24 research branch\")\n    subprocess.run([\"git\", \"merge-base\", \"--is-ancestor\", BASE, freeze_commit], cwd=repository, check=True, capture_output=True)\n    subprocess.run([\"git\", \"merge-base\", \"--is-ancestor\", freeze_commit, \"HEAD\"], cwd=repository, check=True, capture_output=True)\n    for path, claimed in hashes.items():\n        frozen = git(repository, \"show\", freeze_commit+\":\"+path)\n        current = (Path(repository)/path).read_bytes()\n        if frozen != current or hashlib.sha256(frozen).hexdigest() != claimed:\n            raise ValueError(\"Phase-1 bytes/hash changed: \"+path)\n    if git(repository, \"diff\", freeze_commit, \"--\", *PHASE1_FILES):\n        raise ValueError(\"nonempty Phase-1 diff\")\n    reflog = git(repository, \"reflog\", \"show\", \"--format=%gs\", branch).decode().lower()\n    if not reflog.strip():\n        raise ValueError(\"missing local branch audit trail\")\n    if any(s in reflog for s in (\"commit (amend)\", \"rebase\", \"reset:\")):\n        raise ValueError(\"history rewrite present in available branch reflog\")\n    if require_pushed:\n        head = git(repository, \"rev-parse\", \"HEAD\").decode().strip()\n        if head != freeze_commit:\n            raise ValueError(\"new final execution must start at Commit 1 itself\")\n        for remote in (\"origin\", \"github\"):\n            advertised = git(repository, \"ls-remote\", \"--heads\", remote, \"refs/heads/\"+branch).decode().split()\n            if not advertised or advertised[0] != freeze_commit:\n                raise ValueError(\"freeze not pushed to \"+remote)\n    return dict(phase1_zero_diff=True, zero_amend_on_branch=True,\n                history_audit_scope=\"available local branch reflog + anchored ancestry; not a universal proof of absent erased history\")\n\n\ndef verify_payload(payload, *, check_git=False, replay=True, wall_limit=30):\n    from scripts.run_wave24_azr_ruler_cegis import (\n        WORLDS, PHASE1_FILES, validate_config, task_from_wire, result_from_wire, build_bank,\n    )\n    from nexus.wave24_quotient_core import expression_from_wire\n    errors, gates, git_report = [], {}, {}\n    def must(condition, message):\n        if not condition:\n            errors.append(message)\n    try:\n        must(type(payload) is dict and payload.get(\"schema\") == \"wave24_azr_v1\", \"invalid schema\")\n        if errors:\n            raise ValueError(\"required schema missing\")\n        config = validate_config(payload[\"config\"])\n        must(payload[\"config_sha256\"] == digest(config), \"configuration hash differs\")\n        if \"payload_sha256\" in payload:\n            copy = dict(payload)\n            claimed = copy.pop(\"payload_sha256\")\n            must(claimed == digest(copy), \"payload hash differs\")\n        must(set(payload[\"source_hashes\"]) == set(PHASE1_FILES), \"incomplete source hash grid\")\n        must(all(re.fullmatch(\"[0-9a-f]{64}\", v) for v in payload[\"source_hashes\"].values()), \"invalid source hash\")\n        must(payload[\"mode\"] in (\"dev_preflight\", \"post_freeze_assessment\"), \"invalid result mode\")\n        must(type(payload[\"seed\"]) is int and payload[\"seed\"] >= 0, \"missing assessment/dev seed\")\n        if payload[\"mode\"] == \"dev_preflight\":\n            must(payload[\"seed\"] == 24001, \"development seed must remain 24001\")\n        must(payload[\"execution_status\"] == \"COMPLETE\", \"execution incomplete or invalid\")\n        cells, tasks = payload[\"cells\"], payload[\"tasks\"]\n        must(payload[\"independent_task_count\"] == len(tasks), \"task count differs\")\n        must(payload[\"total_evaluation_cells\"] == len(cells), \"evaluation-cell count differs\")\n        by_task = {t[\"task_id\"]: t for t in tasks}\n        must(len(by_task) == len(tasks), \"duplicate task IDs\")\n        expected_task_count = 5 if payload[\"mode\"] == \"dev_preflight\" else 5*2*config[\"tasks_per_world_tier\"]\n        must(len(tasks) == expected_task_count, \"incomplete registered task strata\")\n        actual_strata = {(w, t): 0 for w in WORLDS for t in (\"Tier-1\", \"Tier-2\")}\n        for task in tasks:\n            must((task[\"world\"], task[\"tier\"]) in actual_strata, \"unknown world/tier\")\n            actual_strata[(task[\"world\"], task[\"tier\"])] += 1\n            must(task[\"task_id\"] == digest((task[\"world\"], task[\"public\"])), \"task ID not bound to public data\")\n        for i, world in enumerate(WORLDS):\n            if payload[\"mode\"] == \"dev_preflight\":\n                wanted = \"Tier-1\" if i % 2 == 0 else \"Tier-2\"\n                must(actual_strata[(world, wanted)] == 1 and actual_strata[(world, \"Tier-2\" if wanted == \"Tier-1\" else \"Tier-1\")] == 0,\n                     \"dev world allocation differs: \"+world)\n            else:\n                must(all(actual_strata[(world, tier)] == config[\"tasks_per_world_tier\"] for tier in (\"Tier-1\", \"Tier-2\")),\n                     \"incomplete per-world tier allocation: \"+world)\n        expected = {(t[\"task_id\"], m, r) for t in tasks for m in METHODS for r in range(config[\"repetitions\"])}\n        keyed = {(c[\"task_id\"], c[\"method\"], c[\"repetition\"]): c for c in cells}\n        require_complete_grid(by_task, cells, config[\"repetitions\"])\n        must(len(keyed) == len(cells) and set(keyed) == expected, \"incomplete or duplicated cell grid\")\n        must(len(cells) == expected_task_count*5*2, \"registered full-cell count not met\")\n        must(payload[\"false_certificate_count\"] == 0, \"false certificate count nonzero\")\n        measured_false = sum(c[\"certificate_valid\"] is False for c in cells)\n        must(measured_false == payload[\"false_certificate_count\"], \"false certificate aggregate differs\")\n        worlds = {w.name: w for w in procedural_worlds()}\n        verifier_meter = WorkMeter(limit=50_000_000, wall_limit=wall_limit)\n        if replay:\n            regenerated, generation_grid, rejected = build_bank(tuple(worlds.values()), config, payload[\"seed\"],\n                verifier_meter, dev=payload[\"mode\"] == \"dev_preflight\")\n            must(digest(regenerated) == digest(tasks), \"saved tasks differ from locked procedural seed\")\n            must(generation_grid == payload[\"generation_grid\"] and rejected == payload[\"generator_rejections\"], \"generator accounting differs\")\n        for row in tasks:\n            task, world = task_from_wire(row[\"public\"]), worlds[row[\"world\"]]\n            must(row[\"world\"] in WORLDS, \"unknown task family\")\n            if replay:\n                ast = expression_from_wire(row[\"teacher\"])\n                validate_program(ast, world.grammar)\n                cost = primitive_cost(ast, world.grammar.ops)\n                must(cost == row[\"teacher_primitive_cost\"], \"teacher expansion cost differs\")\n                must((cost <= config[\"b0\"]) if row[\"tier\"] == \"Tier-1\" else config[\"b0\"] < cost <= 2*config[\"b0\"],\n                     \"teacher outside tier horizon\")\n                must(all(freeze(eval_expr(ast, x, world.grammar.ops, verifier_meter)) == freeze(y) for x, y in task.public_io),\n                     \"teacher/public I/O mismatch\")\n                must(freeze(eval_expr(ast, task.query, world.grammar.ops, verifier_meter)) == tuple_tree(row[\"teacher_query\"]),\n                     \"teacher query mismatch\")\n        unique_work = {m: 0 for m in METHODS[:3]}\n        unique_counts = {m: 0 for m in METHODS[:3]}\n        matches, comparisons, deep_ok, deep_total = 0, 0, 0, 0\n        for cell in cells:\n            row = by_task[cell[\"task_id\"]]\n            must(cell[\"world\"] == row[\"world\"] and cell[\"tier\"] == row[\"tier\"], \"cell/task mismatch\")\n            work = cell[\"work_units\"]\n            must(type(work) is int and work >= 0, \"invalid cell work\")\n            must(type(cell[\"wall_clock_ms\"]) in (int, float) and math.isfinite(cell[\"wall_clock_ms\"]) and cell[\"wall_clock_ms\"] >= 0,\n                 \"invalid cell wall time\")\n            for key in (\"work_to_g1\", \"work_to_g2\", \"work_to_uniqueness\"):\n                v = cell[key]\n                must(v is None or type(v) is int and 0 <= v <= work, \"invalid/censored work endpoint: \"+key)\n            must(cell[\"first_acquisition_work\"] == (work if cell[\"repetition\"] == 0 else None), \"first-use work differs\")\n            must(cell[\"repeated_use_work\"] == (work if cell[\"repetition\"] == 1 else None), \"repeat work differs\")\n            result = result_from_wire(cell[\"result\"])\n            unknown = result.status == \"UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED\"\n            must(unknown or cell[\"certificate_checked\"] is True and cell[\"certificate_valid\"] is True, \"unverified completed certificate\")\n            if replay and not unknown:\n                world, task = worlds[row[\"world\"]], task_from_wire(row[\"public\"])\n                evolved = cell[\"method\"] == METHODS[4]\n                skills = tuple(expression_from_wire(x) for x in payload[\"libraries\"][world.name]) if evolved else ()\n                verify_certificate(world.grammar, task.public_io, task.query, task.output_sort,\n                                   config[\"mdl_bound\"] if evolved else config[\"b0\"], result,\n                                   meter=verifier_meter, macros=skills, mdl=evolved)\n            baseline = keyed[(cell[\"task_id\"], METHODS[0], cell[\"repetition\"])]\n            if cell[\"tier\"] == \"Tier-1\" and cell[\"method\"] in METHODS[1:3] and not unknown:\n                comparisons += 1\n                agrees = result.status == baseline[\"result\"][\"status\"]\n                if result.status.startswith(\"UNIQUE_QUERY\"):\n                    agrees = agrees and result.query_values == result_from_wire(baseline[\"result\"]).query_values\n                matches += agrees\n                must(agrees, \"completed Tier-1 status/output disagreement\")\n            if cell[\"tier\"] == \"Tier-1\" and cell[\"method\"] in METHODS[:3] and result.status.startswith(\"UNIQUE_QUERY\"):\n                must(cell[\"work_to_uniqueness\"] is not None, \"missing uniqueness-work endpoint\")\n                unique_work[cell[\"method\"]] += cell[\"work_to_uniqueness\"] or 0\n                unique_counts[cell[\"method\"]] += 1\n            if cell[\"tier\"] == \"Tier-2\" and cell[\"method\"] == METHODS[4]:\n                deep_total += 1\n                static = [keyed[(cell[\"task_id\"], m, cell[\"repetition\"])][\"result\"][\"status\"] for m in METHODS[:4]]\n                good = all(v == \"NO_PROGRAM_IN_BOUNDED_GRAMMAR\" for v in static)\n                good = good and result.status in (\"AMBIGUOUS_WITNESS_FOUND\", \"UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE\") and bool(result.witnesses)\n                deep_ok += good\n        gates[\"completed_tier1_exact_agreement\"] = comparisons > 0 and matches == comparisons\n        base_n = unique_counts[METHODS[0]]\n        gates[\"stage2_reduces_work_to_uniqueness\"] = base_n > 0 and unique_counts[METHODS[1]] == base_n and unique_work[METHODS[1]] < unique_work[METHODS[0]]\n        gates[\"stage3_reduces_work_to_uniqueness\"] = base_n > 0 and unique_counts[METHODS[2]] == base_n and unique_work[METHODS[2]] < unique_work[METHODS[0]]\n        gates[\"certificate_b_deep_horizon\"] = deep_total > 0 and deep_ok == deep_total\n        for method in METHODS:\n            rows = [c for c in cells if c[\"method\"] == method]\n            summary = payload[\"method_summary\"][method]\n            must(summary[\"cells\"] == len(rows), \"method cell count differs\")\n            rate = sum(c[\"result\"][\"status\"] == \"UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED\" for c in rows)/len(rows) if rows else None\n            must(summary[\"unresolved_rate\"] == rate, \"unresolved rate differs\")\n            for metric in (\"first_acquisition_work\", \"repeated_use_work\"):\n                must(summary[metric] == sum(c[metric] or 0 for c in rows), \"method work aggregate differs\")\n            if rows:\n                ledger = payload[\"break_even\"][method]\n                setup = payload[\"setup_work_units\"] if method in METHODS[2:] else 0\n                training = payload[\"training_work_units\"] if method in METHODS[3:] else 0\n                p, b, first = setup+training, 0, None\n                for n, c in enumerate(rows, 1):\n                    p += c[\"work_units\"]\n                    b += keyed[(c[\"task_id\"], METHODS[0], c[\"repetition\"])][\"work_units\"]\n                    if first is None and p < b:\n                        first = n\n                must(ledger == dict(N=len(rows), proposed_total=p, baseline_total=b,\n                                    strict_break_even=p < b, first_observed_break_even=first), \"Horizon-N ledger arithmetic differs\")\n        must(payload[\"setup_work_units\"] == payload[\"resource_counts\"].get(\"setup_work_units\", 0), \"setup accounting differs\")\n        must(payload[\"training_work_units\"] == payload[\"resource_counts\"].get(\"training_work_units\", 0), \"training accounting differs\")\n        require_symkan_identities(payload[\"symkan_reports\"], payload)\n        source = payload[\"source_preparation\"]\n        must(len(source[\"source_rows\"]) == source[\"fitted_rows\"] <= config[\"max_source_rows\"], \"source row cap/count differs\")\n        must(source[\"source_feedback_sha256\"] == digest(source[\"source_rows\"]), \"source feedback hash differs\")\n        must(all(r[\"purpose\"] == \"training\" for r in source[\"source_rows\"]), \"hidden feedback entered source fitting\")\n        must(source[\"heldout_training_tasks\"] == 0 and source[\"heldout_test_time_selfplay\"] is False, \"heldout world trained\")\n        must(not payload[\"libraries\"][WORLDS[-1]], \"heldout-world skills leaked from source\")\n        for entry in source[\"hygiene\"]:\n            if entry[\"accepted\"]:\n                pairs = entry[\"pairs\"]\n                must(len(pairs) >= 2 and len({p[\"task_id\"] for p in pairs}) == len(pairs), \"invalid shadow units\")\n                gains = [p[\"without_skill_work\"]-p[\"with_skill_work\"] for p in pairs]\n                must(all(abs(v) <= config[\"shadow_gain_bound\"] for v in gains), \"shadow gain exceeds bound\")\n                lcb = sum(gains)/len(gains)-2*config[\"shadow_gain_bound\"]*math.sqrt(math.log(1/config[\"shadow_alpha\"])/(2*len(pairs)))\n                must(lcb > 0 and math.isclose(lcb, entry[\"lcb\"], abs_tol=1e-8), \"invalid promotion LCB\")\n        must(payload[\"resource_stats\"].get(\"runtime_calls\", 0) == 0, \"unexpected LLM runtime execution\")\n        if check_git or payload[\"mode\"] == \"post_freeze_assessment\":\n            git_report = verify_git(ROOT, payload[\"freeze_commit\"], payload[\"source_hashes\"])\n    except Exception as exc:\n        errors.append(type(exc).__name__+\": \"+str(exc))\n    valid = not errors\n    return dict(integrity_valid=valid, scientific_gates=gates,\n                scientific_gates_passed=bool(gates) and all(gates.values()),\n                ready_for_freeze=valid and bool(gates) and all(gates.values()),\n                errors=errors, failed_scientific_gates=[k for k, v in gates.items() if not v],\n                replayed=replay, **git_report)\n\n\ndef tuple_tree(v):\n    return tuple(tuple_tree(x) for x in v) if isinstance(v, (list, tuple)) else v\n\n\ndef main(argv=None):\n    p = argparse.ArgumentParser(description=__doc__)\n    p.add_argument(\"payload\")\n    p.add_argument(\"--post-freeze\", action=\"store_true\")\n    args = p.parse_args(argv)\n    data = read(args.payload)\n    payload = data.get(\"payload\", data)\n    report = verify_payload(payload, check_git=args.post_freeze, replay=True)\n    print(json.dumps(report, indent=2))\n    return 0 if report[\"ready_for_freeze\"] else 1\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n",
+    "tests/test_wave24_resource_host_and_runner.py": "\"\"\"Source-only host/protocol tests; mocked MPS is not a GPU experiment.\"\"\"\nfrom copy import deepcopy\nfrom dataclasses import replace\nfrom pathlib import Path\nfrom types import SimpleNamespace\nimport json\nimport time\n\nimport pytest\n\nfrom nexus.wave24_quotient_core import WorkMeter, freeze\nfrom nexus.wave24_resource_host import Allocation, Wave24ResourceHost\nfrom nexus.wave24_self_evolving_loop import DualHeadExecutionScorer\nfrom scripts.run_wave24_azr_ruler_cegis import (\n    ROOT, CONFIG_PATH, PHASE1_FILES, WORLDS, validate_config, source_hashes,\n    load_allocation, task_wire, task_from_wire, result_wire, result_from_wire,\n)\nfrom scripts.verify_wave24_azr_ruler_cegis import verify_payload, verify_git\nfrom nexus.seed.experimental import read\n\n\ndef allocation(**kw):\n    return Allocation(owner=\"unit fixture\", reason=\"mocked deterministic source test\", **kw)\n\n\ndef fake_torch(events, available=True):\n    return SimpleNamespace(device=lambda name: name,\n        backends=SimpleNamespace(mps=SimpleNamespace(is_available=lambda: available)),\n        mps=SimpleNamespace(synchronize=lambda: events.append(\"sync\")))\n\n\ndef test_exact_allocation_cannot_reset_or_expand_carried_allowance():\n    assert allocation().session_limit_s-allocation().carried_used_s == pytest.approx(35.432)\n    for kwargs in (dict(wall_s=40.), dict(carried_used_s=-1), dict(memory_mb=0), dict(mps_approved=\"yes\")):\n        with pytest.raises(ValueError):\n            allocation(**kwargs)\n\n\ndef test_every_mps_operation_and_timing_boundary_are_synchronized():\n    events = []\n    host = Wave24ResourceHost(allocation(mps_approved=True), WorkMeter(), torch_module=fake_torch(events))\n    result = host._timed(host.mps_device, lambda: host._op(host.mps_device, lambda: events.append(\"operation\") or 7), scoring=True)\n    assert result == 7\n    assert events == [\"sync\", \"sync\", \"operation\", \"sync\", \"sync\"]\n    assert host.stats[\"mps_scoring_calls\"] == 1\n    assert host.stats[\"mps_tensor_operations\"] == 1\n\n\ndef test_unapproved_mps_never_executes_an_operation():\n    events = []\n    host = Wave24ResourceHost(allocation(), WorkMeter(), torch_module=fake_torch(events))\n    assert str(host.route(4096)) == \"cpu\"\n    with pytest.raises(ValueError, match=\"approved\"):\n        host._op(\"mps\", lambda: events.append(\"bad\"))\n    assert not events\n\n\ndef test_calibration_has_fixed_batches_charges_setup_and_does_not_invent_crossover(monkeypatch):\n    host = Wave24ResourceHost(allocation(mps_approved=True), WorkMeter(), torch_module=fake_torch([]))\n    def mlp(values, device):\n        # Deterministic mocked timing is separate from actual hardware evidence.\n        return [[0., 0.] for _ in values]\n    monkeypatch.setattr(host, \"_mlp\", mlp)\n    def timed(device, fn, **kw):\n        host.stats[\"cpu_wall_ms\" if device == \"cpu\" else \"mps_sync_wall_ms\"] += 1. if device == \"cpu\" else 2.\n        return fn()\n    monkeypatch.setattr(host, \"_timed\", timed)\n    report = host.calibrate_cpu_mps_threshold(repeats=1)\n    assert [r[\"batch_size\"] for r in report[\"rows\"]] == [16, 64, 256, 512, 1024]\n    assert report[\"mps_crossover_batch_size\"] is None\n    assert host.meter.counts[\"setup_work_units\"] > 0\n    host.mps_crossover_batch_size = 256\n    assert host.route(64) == \"cpu\" and host.route(256) == \"mps\" and host.route(16, update=True) == \"mps\"\n\n\ndef test_cpu_ridge_host_matches_existing_ridge_and_is_metered():\n    import numpy as np\n    from nexus.nn.ridge import fit_ridge\n    host = Wave24ResourceHost(allocation(), WorkMeter())\n    x = [[1., i, i*i, i%2, 0., 1.] for i in range(1, 7)]\n    y = [[float(i), float(7-i)] for i in range(1, 7)]\n    scale, beta = host.update_ridge(x, y, ridge=1.)\n    models = tuple((scale, beta[:, i]) for i in range(2))\n    outputs = host.score_ridge(x, models)\n    for head in range(2):\n        reference = fit_ridge(x, [row[head] for row in y], ridge=1.)\n        expected = (np.asarray(x)/reference[0]) @ reference[1]\n        assert np.allclose(np.asarray(outputs)[:, head], expected, atol=1e-4, rtol=1e-4)\n    assert host.stats[\"cpu_weight_updates\"] == host.stats[\"cpu_scoring_calls\"] == 1\n    assert host.stats[\"mps_scoring_calls\"] == 0\n\n\ndef test_complete_runtime_response_required_and_fallback_has_zero_model_calls():\n    host = Wave24ResourceHost(allocation(), WorkMeter(), torch_module=fake_torch([]))\n    assert host.query_runtime(\"unused\")[\"inference_ran\"] is False\n    assert host.stats[\"runtime_calls\"] == 0\n    host.runtime = SimpleNamespace(complete=lambda *a, **k: {\"content\": \"partial\", \"termination\": \"streaming\"})\n    with pytest.raises(ValueError, match=\"approval\"):\n        host.query_runtime(\"blocked\")\n    host.allocation = replace(host.allocation, llm_approved=True)\n    with pytest.raises(ValueError, match=\"terminated\"):\n        host.query_runtime(\"partial\")\n    def complete(*args, **kwargs):\n        return {\"content\": \"done\", \"termination\": \"natural_or_stop\", \"telemetry\": {\"generated_tokens\": 2}}\n    host.runtime = SimpleNamespace(complete=complete)\n    assert host.query_runtime(\"mock\")[\"content\"] == \"done\"\n    assert host.stats[\"runtime_work_units\"] == 2\n\n\ndef test_config_and_dev_allocation_are_explicit_and_final_cannot_reuse_dev():\n    config = read(ROOT/CONFIG_PATH)\n    assert validate_config(config) == config\n    assert set(source_hashes()) == set(PHASE1_FILES)\n    path = ROOT/\"configs/wave24_azr_dev_allocation.json\"\n    assert load_allocation(path, dev=True).mps_approved\n    with pytest.raises(ValueError, match=\"distinct\"):\n        load_allocation(path, dev=False)\n    changed = dict(config, heldout_test_time_selfplay=True)\n    with pytest.raises(ValueError, match=\"fifth\"):\n        validate_config(changed)\n\n\ndef test_final_git_gate_rejects_missing_sha_before_touching_seed_or_output():\n    with pytest.raises(ValueError, match=\"freeze SHA\"):\n        verify_git(ROOT, None, source_hashes())\n\n\ndef test_verifier_rejects_incomplete_or_fabricated_preflight():\n    result = verify_payload(dict(schema=\"wave24_azr_v1\", execution_status=\"COMPLETE\"), replay=False)\n    assert not result[\"integrity_valid\"] and not result[\"ready_for_freeze\"]\n    assert result[\"errors\"]\n\n\ndef test_import_does_not_launch_worker_or_draw_final_seed(monkeypatch):\n    import scripts.run_wave24_azr_ruler_cegis as runner\n    monkeypatch.setattr(runner.secrets, \"randbits\", lambda *a: pytest.fail(\"final seed drawn\"))\n    with pytest.raises(SystemExit):\n        runner.main([])\n    with pytest.raises(ValueError, match=\"bounded resource host\"):\n        runner.worker(\"not-read.json\", \"not-written.json\")\n\n\ndef test_host_and_runner_source_have_no_history_rewrite_or_historical_output_paths():\n    import ast\n    host = ast.parse((ROOT/\"src/nexus/wave24_resource_host.py\").read_text())\n    calls = [n for n in ast.walk(host) if isinstance(n, ast.Call)]\n    assert calls\n    code = (ROOT/\"scripts/run_wave24_azr_ruler_cegis.py\").read_text()\n    assert \"artifacts/seed_wave\" not in code\n    assert \"secrets.randbits(256)\" in code\n    assert \"TemporaryDirectory\" in code\n\n\ndef test_kernel_cpu_limit_is_installed_before_numpy_torch_imports():\n    code = (ROOT/\"scripts/run_wave24_azr_ruler_cegis.py\").read_text()\n    assert code.index(\"resource.setrlimit\") < code.index(\"from nexus.\")\n\n\ndef test_opt_in_source_guard_reports_protected_execution_not_success():\n    from nexus.wave24_pytest_guard import exclusion_reason\n    assert exclusion_reason(\"def test_old():\\n run_wave16_assessment()\")\n    assert exclusion_reason('def test_gpu():\\n model.to(\"mps\")')\n    assert exclusion_reason('def test_pure():\\n assert 2+2==4') is None\n\n\ndef test_legacy_feedback_export_round_trips_only_supplied_public_evidence():\n    from nexus.seed.public_failure import serialize_revision_feedback\n    evidence = dict(instruction=\"Public tests failed.\", actual=False, expected=True, operator_supplied=False)\n    assert json.loads(serialize_revision_feedback(evidence)) == evidence\n    with pytest.raises(ValueError):\n        serialize_revision_feedback(dict(actual=float(\"nan\")))\n\n\ndef test_strict_grid_rejects_missing_duplicate_and_extra_cells():\n    from scripts.verify_wave24_azr_ruler_cegis import require_complete_grid\n    from nexus.wave24_self_evolving_loop import METHODS\n    cells = [dict(task_id=\"unit-only\", method=m, repetition=r) for m in METHODS for r in range(2)]\n    assert require_complete_grid([\"unit-only\"], cells)\n    for rows in (cells[:-1], cells+[cells[0]], cells+[dict(task_id=\"extra\", method=METHODS[0], repetition=0)]):\n        with pytest.raises(ValueError, match=\"grid\"):\n            require_complete_grid([\"unit-only\"], rows)\n\n\ndef test_strict_symkan_verifier_recomputes_all_four_counts():\n    from scripts.verify_wave24_azr_ruler_cegis import require_symkan_identities\n    reports = [dict(attempted=True, induced_expression=\"x\", faithful_export=True),\n               dict(attempted=True, induced_expression=\"\", faithful_export=False)]\n    counts = dict(symkan_attempted_count=2, symkan_nonempty_induced_count=1,\n                  symkan_abstained_count=1, symkan_faithful_export_count=1)\n    assert require_symkan_identities(reports, counts)\n    for key in counts:\n        bad = dict(counts)\n        bad[key] += 1\n        with pytest.raises(ValueError):\n            require_symkan_identities(reports, bad)\n\n\ndef test_post_freeze_provenance_checks_bytes_remotes_and_rewrite_audit(tmp_path, monkeypatch):\n    import scripts.verify_wave24_azr_ruler_cegis as verifier\n    import hashlib\n    sha = \"a\"*40\n    hashes, contents = {}, {}\n    for path in PHASE1_FILES:\n        content = (\"source unit fixture \"+path).encode()\n        dest = tmp_path/path\n        dest.parent.mkdir(parents=True, exist_ok=True)\n        dest.write_bytes(content)\n        contents[path] = content\n        hashes[path] = hashlib.sha256(content).hexdigest()\n    state = dict(reflog=b\"branch: Created from HEAD\\n\", remote=sha)\n    def fake_git(repo, *args):\n        if args[0] == \"branch\": return (verifier.BRANCH+\"\\n\").encode()\n        if args[0] == \"show\": return contents[args[1].split(\":\", 1)[1]]\n        if args[0] == \"diff\": return b\"\"\n        if args[0] == \"reflog\": return state[\"reflog\"]\n        if args[0] == \"rev-parse\": return (sha+\"\\n\").encode()\n        if args[0] == \"ls-remote\": return (state[\"remote\"]+\"\\trefs/heads/\"+verifier.BRANCH+\"\\n\").encode()\n        raise AssertionError(args)\n    monkeypatch.setattr(verifier, \"git\", fake_git)\n    monkeypatch.setattr(verifier.subprocess, \"run\", lambda *a, **k: None)\n    report = verifier.verify_git(tmp_path, sha, hashes, require_pushed=True)\n    assert report[\"phase1_zero_diff\"] and report[\"zero_amend_on_branch\"]\n    state[\"remote\"] = \"b\"*40\n    with pytest.raises(ValueError, match=\"pushed\"):\n        verifier.verify_git(tmp_path, sha, hashes, require_pushed=True)\n    state[\"remote\"] = sha\n    state[\"reflog\"] = b\"commit (amend): forbidden\\n\"\n    with pytest.raises(ValueError, match=\"rewrite\"):\n        verifier.verify_git(tmp_path, sha, hashes)\n    state[\"reflog\"] = b\"branch: Created from HEAD\\n\"\n    (tmp_path/PHASE1_FILES[0]).write_text(\"changed after freeze\")\n    with pytest.raises(ValueError, match=\"changed\"):\n        verifier.verify_git(tmp_path, sha, hashes)\n\n\ndef test_rss_watchdog_preserves_failed_attempt_and_never_retries(tmp_path, monkeypatch):\n    from contextlib import nullcontext\n    import nexus.wave24_resource_host as module\n    events, signals = [], []\n    class SandboxFixture:\n        def __init__(self, *a):\n            self.directory = tmp_path\n        def locked(self): return nullcontext()\n        def used_s(self): return 0\n        def grant(self, *a, **k): events.append(\"grant\")\n        def append(self, kind, payload): events.append((kind, payload))\n    class ProcessFixture:\n        pid = 777777\n        returncode = None\n        def poll(self): return self.returncode\n        def wait(self, timeout=None):\n            self.returncode = -9\n            return -9\n    process = ProcessFixture()\n    monkeypatch.setattr(module, \"Sandbox\", SandboxFixture)\n    monkeypatch.setattr(module.subprocess, \"Popen\", lambda *a, **k: process)\n    monkeypatch.setattr(module, \"_rss_kib\", lambda pid: 2048*1024)\n    monkeypatch.setattr(module.os, \"killpg\", lambda *args: signals.append(args))\n    output, receipt = module.Wave24ResourceHost.supervise(ROOT, dict(config=dict(max_source_rows=1)),\n                                                        allocation(), run_id=\"unit-rss\")\n    assert signals and receipt[\"failure\"] == \"rss_cap\" and output[\"execution_status\"] == \"INCOMPLETE\"\n    assert [e[0] for e in events if isinstance(e, tuple)] == [\"reserved\", \"settled\"]\n    assert (tmp_path/\"attempts/unit-rss/receipt.json\").exists()\n    with pytest.raises(FileExistsError):\n        module.Wave24ResourceHost.supervise(ROOT, dict(config=dict(max_source_rows=1)), allocation(), run_id=\"unit-rss\")\n"
+  },
+  "schema": "wave24_azr_consumed_dev_v1",
+  "purpose": "development_not_confirmation",
+  "run_id": "dev-24001",
+  "consumed": true,
+  "allocation_sha256": "24c42cc6cdec64caa0df5953c203b51f487db1829640654dc9097ef2cef0ea63",
+  "receipt": {
+    "attempt_directory": "/Users/ajayghimire/.gemini/antigravity/scratch/nexus-ai/runs/experimental/wave24-azr/attempts/dev-24001",
+    "carried_used_s": 3564.568,
+    "failure": null,
+    "memory_enforcement": "sampled_rss_20ms",
+    "peak_rss_mib": 353.890625,
+    "run_id": "dev-24001",
+    "session_remaining_s": 34.28386512500492,
+    "session_used_s": 3565.716134874995,
+    "verification_wall_s": 0.03629737498704344,
+    "wall_s": 1.111837500007823
+  },
+  "verification": {
+    "errors": [],
+    "failed_scientific_gates": [
+      "certificate_b_deep_horizon"
+    ],
+    "integrity_valid": true,
+    "ready_for_freeze": false,
+    "replayed": true,
+    "scientific_gates": {
+      "certificate_b_deep_horizon": false,
+      "completed_tier1_exact_agreement": true,
+      "stage2_reduces_work_to_uniqueness": true,
+      "stage3_reduces_work_to_uniqueness": true
+    },
+    "scientific_gates_passed": false
+  },
+  "payload": {
+    "allocation": {
+      "carried_used_s": 3564.568,
+      "cpu_s": 30,
+      "llm_approved": false,
+      "memory_mb": 1024,
+      "mps_approved": true,
+      "owner": "repository owner",
+      "reason": "Exact owner reply approving one local MPS development preflight: 30 seconds wall and CPU, 1 GiB process memory, zero environment interactions, within the carried 35.432 seconds remaining. Does not authorize final assessment.",
+      "session_limit_s": 3600.0,
+      "wall_s": 30.0
+    },
+    "break_even": {
+      "exhaustive_primitive_baseline": {
+        "N": 10,
+        "baseline_total": 2034,
+        "first_observed_break_even": null,
+        "proposed_total": 2034,
+        "strict_break_even": false
+      },
+      "stage2_exact_quotient_baseline": {
+        "N": 10,
+        "baseline_total": 2034,
+        "first_observed_break_even": 1,
+        "proposed_total": 1118,
+        "strict_break_even": true
+      },
+      "stage3_quotient_plus_auto_laws": {
+        "N": 10,
+        "baseline_total": 2034,
+        "first_observed_break_even": null,
+        "proposed_total": 1229478,
+        "strict_break_even": false
+      },
+      "stage4_zero_data_selfplay_fixed_bound": {
+        "N": 10,
+        "baseline_total": 2034,
+        "first_observed_break_even": null,
+        "proposed_total": 1232926,
+        "strict_break_even": false
+      },
+      "stage5_self_evolving_dual_horizon": {
+        "N": 10,
+        "baseline_total": 2034,
+        "first_observed_break_even": null,
+        "proposed_total": 1232926,
+        "strict_break_even": false
+      }
+    },
+    "calibration": {
+      "mps_authorized": true,
+      "mps_available": true,
+      "mps_crossover_batch_size": null,
+      "rows": [
+        {
+          "batch_size": 16,
+          "cpu_ms": 0.022666004952043295,
+          "max_abs_error": 1.4901161193847656e-08,
+          "mps_sync_ms": 4.305541981011629
+        },
+        {
+          "batch_size": 64,
+          "cpu_ms": 0.04745798651129007,
+          "max_abs_error": 1.4901161193847656e-08,
+          "mps_sync_ms": 3.786875051446259
+        },
+        {
+          "batch_size": 256,
+          "cpu_ms": 0.10804098565131426,
+          "max_abs_error": 1.4901161193847656e-08,
+          "mps_sync_ms": 4.1903749806806445
+        },
+        {
+          "batch_size": 512,
+          "cpu_ms": 0.1538749784231186,
+          "max_abs_error": 1.4901161193847656e-08,
+          "mps_sync_ms": 2.13350000558421
+        },
+        {
+          "batch_size": 1024,
+          "cpu_ms": 0.29604200972244143,
+          "max_abs_error": 1.4901161193847656e-08,
+          "mps_sync_ms": 2.2253330098465085
+        }
+      ],
+      "synchronized_per_operation": true
+    },
+    "cells": [
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 217,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 2,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.6378330290317535,
+        "work_to_g1": 7,
+        "work_to_g2": null,
+        "work_to_uniqueness": 217,
+        "work_units": 217,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 69,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.22595800692215562,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 69,
+        "work_units": 69,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 75,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.3060419694520533,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 75,
+        "work_units": 75,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 69,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.26899995282292366,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 69,
+        "work_units": 69,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 69,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.23154099471867085,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 69,
+        "work_units": 69,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": 217,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 2,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.5911249900236726,
+        "work_to_g1": 7,
+        "work_to_g2": null,
+        "work_to_uniqueness": 217,
+        "work_units": 217,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": 69,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.24429202312603593,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 69,
+        "work_units": 69,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": 75,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.3249580040574074,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 75,
+        "work_units": 75,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": 69,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.29383297078311443,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 69,
+        "work_units": 69,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": 69,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "SEQ",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.278332969173789,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 69,
+        "work_units": 69,
+        "world": "INT_SEQ"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 217,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.40095800068229437,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 217,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.25129097048193216,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 129,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 127,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.31224999111145735,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 127,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 18.03195901447907,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 129,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.26533298660069704,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 129,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": 217,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.35683397436514497,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 217,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.35216601099818945,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 129,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": 127,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.3220420330762863,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 127,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.342042010743171,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 129,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.27620798209682107,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 129,
+        "world": "STR_PARSE"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 217,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 1,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.9640000062063336,
+        "work_to_g1": 7,
+        "work_to_g2": null,
+        "work_to_uniqueness": 217,
+        "work_units": 217,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.623249972704798,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 120,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 1.0274579981341958,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 120,
+        "work_units": 120,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.6928329821676016,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.680500001180917,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": 217,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 1,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.9239159990102053,
+        "work_to_g1": 7,
+        "work_to_g2": null,
+        "work_to_uniqueness": 217,
+        "work_units": 217,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.6182920187711716,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": 120,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.8821669616736472,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 120,
+        "work_units": 120,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.6636659963987768,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "dict",
+              [
+                [
+                  [
+                    "str",
+                    "a"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ],
+                [
+                  [
+                    "str",
+                    "b"
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "DICT",
+              "value": [
+                "none"
+              ]
+            }
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.6089169764891267,
+        "work_to_g1": 9,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "DICT_RECORD"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 149,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.4088749992661178,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 149,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 103,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.2915420336648822,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 103,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 100,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.3708750009536743,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 100,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 103,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.3792499774135649,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 103,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 103,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.3310419851914048,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 103,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": 149,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.46679098159074783,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 149,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": 103,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.3452079836279154,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 103,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": 100,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.37979200715199113,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 100,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": 103,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.3578749601729214,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 103,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": 103,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [],
+          "root_equivalence_discharges": 0,
+          "status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+          "witnesses": []
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "tier": "Tier-2",
+        "wall_clock_ms": 0.32108405139297247,
+        "work_to_g1": null,
+        "work_to_g2": null,
+        "work_to_uniqueness": null,
+        "work_units": 103,
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 217,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.7474590092897415,
+        "work_to_g1": 22,
+        "work_to_g2": null,
+        "work_to_uniqueness": 217,
+        "work_units": 217,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.4866669769398868,
+        "work_to_g1": 19,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 127,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.5410420126281679,
+        "work_to_g1": 20,
+        "work_to_g2": null,
+        "work_to_uniqueness": 127,
+        "work_units": 127,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.5112090148031712,
+        "work_to_g1": 19,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": 129,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": null,
+        "repetition": 0,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.4582080291584134,
+        "work_to_g1": 19,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "exhaustive_primitive_baseline",
+        "repeated_use_work": 217,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.7031669956631958,
+        "work_to_g1": 22,
+        "work_to_g2": null,
+        "work_to_uniqueness": 217,
+        "work_units": 217,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage2_exact_quotient_baseline",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.49000000581145287,
+        "work_to_g1": 19,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage3_quotient_plus_auto_laws",
+        "repeated_use_work": 127,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.5383330280892551,
+        "work_to_g1": 20,
+        "work_to_g2": null,
+        "work_to_uniqueness": 127,
+        "work_units": 127,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage4_zero_data_selfplay_fixed_bound",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.510333979036659,
+        "work_to_g1": 19,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      },
+      {
+        "certificate_checked": true,
+        "certificate_error": null,
+        "certificate_valid": true,
+        "first_acquisition_work": null,
+        "method": "stage5_self_evolving_dual_horizon",
+        "repeated_use_work": 129,
+        "repetition": 1,
+        "result": {
+          "complete": true,
+          "query_values": [
+            [
+              "tuple",
+              [
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  0
+                ],
+                [
+                  "int",
+                  1
+                ]
+              ]
+            ]
+          ],
+          "root_equivalence_discharges": 0,
+          "status": "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE",
+          "witnesses": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "BITS",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "BITS",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "tier": "Tier-1",
+        "wall_clock_ms": 0.44833397259935737,
+        "work_to_g1": 19,
+        "work_to_g2": null,
+        "work_to_uniqueness": 129,
+        "work_units": 129,
+        "world": "BIT_CELLULAR_AUTOMATA"
+      }
+    ],
+    "config": {
+      "b0": 3,
+      "calibration_repeats": 2,
+      "carried_used_s": 3564.568,
+      "cell_work_unit_cap": 1000000,
+      "cpu_s": 30,
+      "generator_attempts_per_stratum": 64,
+      "heldout_test_time_selfplay": false,
+      "heldout_world": "BIT_CELLULAR_AUTOMATA",
+      "max_skills_per_world": 2,
+      "max_source_rows": 128,
+      "mdl_bound": 3,
+      "memory_mb": 1024,
+      "min_uniqueness_reduction": 0.0,
+      "public_count": 5,
+      "repetitions": 2,
+      "ridge": 1.0,
+      "schema": "wave24_azr_config_v1",
+      "session_limit_s": 3600.0,
+      "shadow_alpha": 0.05,
+      "shadow_gain_bound": 100000,
+      "shadow_tasks_per_skill": 8,
+      "source_attempts_per_world": 6,
+      "tasks_per_world_tier": 2,
+      "wall_s": 30.0,
+      "work_unit_cap": 50000000
+    },
+    "config_sha256": "6f8868473ef2ad98fe088c8a644435c7b137681304060a7c785b1d03bc46c67e",
+    "cpu_seconds": 0.264833,
+    "execution_status": "COMPLETE",
+    "false_certificate_count": 0,
+    "freeze_commit": null,
+    "generation_grid": {
+      "BIT_CELLULAR_AUTOMATA:Tier-1": {
+        "actual": 1,
+        "expected": 1
+      },
+      "DICT_RECORD:Tier-1": {
+        "actual": 1,
+        "expected": 1
+      },
+      "INT_SEQ:Tier-1": {
+        "actual": 1,
+        "expected": 1
+      },
+      "STATE_TRANSITION:Tier-2": {
+        "actual": 1,
+        "expected": 1
+      },
+      "STR_PARSE:Tier-2": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    "generator_rejections": {
+      "BIT_CELLULAR_AUTOMATA:Tier-1": 3,
+      "DICT_RECORD:Tier-1": 1,
+      "INT_SEQ:Tier-1": 1,
+      "STATE_TRANSITION:Tier-2": 0,
+      "STR_PARSE:Tier-2": 1
+    },
+    "independent_task_count": 5,
+    "laws": {
+      "BIT_CELLULAR_AUTOMATA": {
+        "certified": true,
+        "certified_structural_laws": [
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "abs_max",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "bit_popcount",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "idempotent",
+            "measure": null,
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_contract",
+            "measure": "abs_max",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_2"
+          }
+        ],
+        "empirical_probe_priors": [],
+        "probe_digest": "4d05840b03ee35fcc7d9b239832593fe0c0af552f8689a6f8ed20707f803c938"
+      },
+      "DICT_RECORD": {
+        "certified": true,
+        "certified_structural_laws": [
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "idempotent",
+            "measure": null,
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "idempotent",
+            "measure": null,
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_contract",
+            "measure": "key_set",
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_contract",
+            "measure": "len",
+            "operator": "op_2"
+          }
+        ],
+        "empirical_probe_priors": [],
+        "probe_digest": "4677f30ee009ca51996e0a6cfea4b7c420a2ad6899d094f500a58c0b8446b32c"
+      },
+      "INT_SEQ": {
+        "certified": true,
+        "certified_structural_laws": [
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "abs_max",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "bit_popcount",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "abs_max",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "bit_popcount",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "idempotent",
+            "measure": null,
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "abs_max",
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "bit_popcount",
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_2"
+          }
+        ],
+        "empirical_probe_priors": [],
+        "probe_digest": "c9fdf50bb2ff5643088ee7c92ee0e32f96914afb35c710697c25d95230f641e2"
+      },
+      "STATE_TRANSITION": {
+        "certified": true,
+        "certified_structural_laws": [
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "abs_max",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "bit_popcount",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "abs_max",
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_2"
+          }
+        ],
+        "empirical_probe_priors": [],
+        "probe_digest": "b8aaec116125487b170e7787d1f663e210414f3d5693081442366aa4b464a554"
+      },
+      "STR_PARSE": {
+        "certified": true,
+        "certified_structural_laws": [
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "char_set",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_0"
+          },
+          {
+            "constant_key": null,
+            "kind": "involution",
+            "measure": null,
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_equal",
+            "measure": "len",
+            "operator": "op_1"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_contract",
+            "measure": "char_set",
+            "operator": "op_2"
+          },
+          {
+            "constant_key": null,
+            "kind": "measure_contract",
+            "measure": "len",
+            "operator": "op_2"
+          }
+        ],
+        "empirical_probe_priors": [],
+        "probe_digest": "9c812d4a3e8757eded1f04b033ec662ede2c562e95bb47a82052a9f3bfda4363"
+      }
+    },
+    "libraries": {
+      "BIT_CELLULAR_AUTOMATA": [],
+      "DICT_RECORD": [],
+      "INT_SEQ": [],
+      "STATE_TRANSITION": [],
+      "STR_PARSE": []
+    },
+    "method_summary": {
+      "exhaustive_primitive_baseline": {
+        "cells": 10,
+        "first_acquisition_work": 1017,
+        "repeated_use_work": 1017,
+        "unresolved_rate": 0.0
+      },
+      "stage2_exact_quotient_baseline": {
+        "cells": 10,
+        "first_acquisition_work": 559,
+        "repeated_use_work": 559,
+        "unresolved_rate": 0.0
+      },
+      "stage3_quotient_plus_auto_laws": {
+        "cells": 10,
+        "first_acquisition_work": 549,
+        "repeated_use_work": 549,
+        "unresolved_rate": 0.0
+      },
+      "stage4_zero_data_selfplay_fixed_bound": {
+        "cells": 10,
+        "first_acquisition_work": 559,
+        "repeated_use_work": 559,
+        "unresolved_rate": 0.0
+      },
+      "stage5_self_evolving_dual_horizon": {
+        "cells": 10,
+        "first_acquisition_work": 559,
+        "repeated_use_work": 559,
+        "unresolved_rate": 0.0
+      }
+    },
+    "mode": "dev_preflight",
+    "payload_sha256": "64f34dc30bf3a23578d8eb3196c36be0f5a4f6e2bbf9bbce86125370433f21fe",
+    "resource_counts": {
+      "cache_lookup_work_units": 766,
+      "candidate_work_units": 354,
+      "exact_work_units": 1118,
+      "generator_work_units": 603,
+      "law_prune_work_units": 20,
+      "reference_construction_work_units": 130,
+      "search_work_units": 3764,
+      "setup_work_units": 1228380,
+      "signature_work_units": 334,
+      "training_work_units": 3428,
+      "verification_work_units": 10410
+    },
+    "resource_stats": {
+      "cpu_scoring_calls": 10,
+      "cpu_tensor_operations": 120,
+      "cpu_wall_ms": 3.368623903952539,
+      "cpu_weight_updates": 0,
+      "mps_scoring_calls": 10,
+      "mps_sync_wall_ms": 467.8015010431409,
+      "mps_tensor_operations": 120,
+      "mps_weight_updates": 0,
+      "runtime_calls": 0,
+      "runtime_wall_ms": 0.0,
+      "runtime_work_units": 0,
+      "symbolic_fallback_calls": 1
+    },
+    "runtime_route": {
+      "content": "",
+      "inference_ran": false,
+      "termination": "pure_symbolic_no_runtime"
+    },
+    "schema": "wave24_azr_v1",
+    "seed": 24001,
+    "setup_work_units": 1228380,
+    "source_commit": "073d9297e6b9b350368f31ee7d18418ef9071634",
+    "source_hashes": {
+      "configs/wave24_azr_ruler_cegis.json": "f90362bbe722805c18ba465a938dbc6973c5a7ff1ec675797cda4a84efb2f5e1",
+      "docs/NEXUS_WAVE24_AZR_RULER_CEGIS_PROTOCOL.md": "dfae06aa19eafa20f3a740dfcc457efda94565b2456db69cf535df02ccefed9e",
+      "scripts/run_wave24_azr_ruler_cegis.py": "485a3d56e5ec62ba067d50ce04f8f12444c80477fd04b8c7a40c73e155b659fe",
+      "scripts/verify_wave24_azr_ruler_cegis.py": "6db3e1bf0d0eb10e26cbbff05c9986e147797902eea27d572b6eea272747300d",
+      "src/nexus/evolution1/catalogue.py": "410f101121f7370a91d1fab87439237193c08bd96a02e45792004ce57087a3c9",
+      "src/nexus/evolution1/fixtures.py": "b40f77c28bb21a06ae62ff78d77ec0748f2cbdd4f26e3f5847355836fc05969c",
+      "src/nexus/nn/ridge.py": "05f38e5f7b5fd0f04c52113d2fd15493b92f88f905e85930b0d3d0ba5a924564",
+      "src/nexus/seed/experimental.py": "89e06e4cff1a00f6081aec1e1f7f31db86ab7225327435599313c24618f175dc",
+      "src/nexus/seed/local_model_runtime.py": "5b5b0aed48c9f1e0809f53b6cfc66a6d73ccc11b35798ad3ff6c99e8d48ce781",
+      "src/nexus/seed/metal_model_runtime.py": "4aa1f979573f8e0146e676843cba672023d3246ac7ff8a42b2d433760f72546a",
+      "src/nexus/seed/process_memory.py": "87c1e03456c01545a35e0e995e9dc1ef721845f61d121e820c0854fb8b9c53b0",
+      "src/nexus/seed/public_failure.py": "312db5d1124edaf48182b0eae2db327f38cf325b3b9466888ef5ce006f030e77",
+      "src/nexus/wave24_auto_laws.py": "aae4dadb72d697f019adaef703031e305caa273ca966d9b5132961339a9e7d6f",
+      "src/nexus/wave24_pytest_guard.py": "c6c934532b2b9fb5c7dec870e67d8218fd777337fc1f641a6857079d49c634d9",
+      "src/nexus/wave24_quotient_core.py": "077cecaa7d9b893eb7b9431afd6f7aab561416b2d45ebde566977b9b22412604",
+      "src/nexus/wave24_resource_host.py": "d5761cf8490fe3c4447a0f518a09a135a2d81cd011a615539c228ec019a63f1e",
+      "src/nexus/wave24_self_evolving_loop.py": "a6f4a0da965b94b53e050955979feed6689f01fe2ff028b7d862974a486a313e",
+      "tests/test_wave24_quotient_soundness.py": "623392e797692227f4ccc1c682dd7e8f809b553a7ed45a5fa6319386be2168a4",
+      "tests/test_wave24_resource_host_and_runner.py": "809ec93545f1c1c3a52ace9cd3848b9ee7220f27b6d511c65d37b39700960a4d"
+    },
+    "source_preparation": {
+      "available_rows": 0,
+      "fitted_rows": 0,
+      "heldout_test_time_selfplay": false,
+      "heldout_training_tasks": 0,
+      "hygiene": [],
+      "receipts": [
+        {
+          "attempts": 6,
+          "candidate_skills": 0,
+          "frontier_tasks": 0,
+          "world": "INT_SEQ"
+        },
+        {
+          "attempts": 6,
+          "candidate_skills": 0,
+          "frontier_tasks": 0,
+          "world": "STR_PARSE"
+        },
+        {
+          "attempts": 6,
+          "candidate_skills": 0,
+          "frontier_tasks": 0,
+          "world": "DICT_RECORD"
+        },
+        {
+          "attempts": 6,
+          "candidate_skills": 0,
+          "frontier_tasks": 0,
+          "world": "STATE_TRANSITION"
+        }
+      ],
+      "scorer_fingerprint": "47d557f69c3bede6ffc78c5fc98bb6acd14efd67a2ec05ab7111f7f7fb27b77d",
+      "scorer_parameters": null,
+      "scorer_source_digest": null,
+      "source_feedback_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_rows": []
+    },
+    "symkan_abstained_count": 0,
+    "symkan_attempted_count": 0,
+    "symkan_faithful_export_count": 0,
+    "symkan_nonempty_induced_count": 0,
+    "symkan_reports": [],
+    "tasks": [
+      {
+        "public": {
+          "output_sort": "SEQ",
+          "public_io": [
+            [
+              [
+                "tuple",
+                []
+              ],
+              [
+                "tuple",
+                []
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "query": [
+            "tuple",
+            [
+              [
+                "int",
+                0
+              ],
+              [
+                "int",
+                0
+              ]
+            ]
+          ]
+        },
+        "task_id": "b42fbb99ff3a1653dd1c9bda7ab7c322d560908e384349382a8509d1423f17fb",
+        "teacher": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "kind": "var",
+                  "sort": "SEQ",
+                  "value": [
+                    "none"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "SEQ",
+              "value": [
+                "str",
+                "op_0"
+              ]
+            }
+          ],
+          "kind": "apply",
+          "sort": "SEQ",
+          "value": [
+            "str",
+            "op_0"
+          ]
+        },
+        "teacher_primitive_cost": 3,
+        "teacher_query": [
+          "tuple",
+          [
+            [
+              "int",
+              0
+            ],
+            [
+              "int",
+              0
+            ]
+          ]
+        ],
+        "tier": "Tier-1",
+        "world": "INT_SEQ"
+      },
+      {
+        "public": {
+          "output_sort": "STR",
+          "public_io": [
+            [
+              [
+                "str",
+                ""
+              ],
+              [
+                "str",
+                ""
+              ]
+            ],
+            [
+              [
+                "str",
+                "ba"
+              ],
+              [
+                "str",
+                ""
+              ]
+            ],
+            [
+              [
+                "str",
+                "bbb"
+              ],
+              [
+                "str",
+                "b"
+              ]
+            ],
+            [
+              [
+                "str",
+                "bba"
+              ],
+              [
+                "str",
+                "b"
+              ]
+            ],
+            [
+              [
+                "str",
+                "aba"
+              ],
+              [
+                "str",
+                "a"
+              ]
+            ]
+          ],
+          "query": [
+            "str",
+            "a"
+          ]
+        },
+        "task_id": "5dc37610e67a658311ca80727f70e376e6bb368111e2b6ac16fe9f6f66a1ed5d",
+        "teacher": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [],
+                      "kind": "var",
+                      "sort": "STR",
+                      "value": [
+                        "none"
+                      ]
+                    }
+                  ],
+                  "kind": "apply",
+                  "sort": "STR",
+                  "value": [
+                    "str",
+                    "op_0"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "STR",
+              "value": [
+                "str",
+                "op_2"
+              ]
+            }
+          ],
+          "kind": "apply",
+          "sort": "STR",
+          "value": [
+            "str",
+            "op_2"
+          ]
+        },
+        "teacher_primitive_cost": 4,
+        "teacher_query": [
+          "str",
+          ""
+        ],
+        "tier": "Tier-2",
+        "world": "STR_PARSE"
+      },
+      {
+        "public": {
+          "output_sort": "DICT",
+          "public_io": [
+            [
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "a"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ],
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "none"
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "a"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ],
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "none"
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "a"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "a"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "int",
+                      0
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "int",
+                      0
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "a"
+                    ],
+                    [
+                      "none"
+                    ]
+                  ],
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "dict",
+                [
+                  [
+                    [
+                      "str",
+                      "a"
+                    ],
+                    [
+                      "none"
+                    ]
+                  ],
+                  [
+                    [
+                      "str",
+                      "b"
+                    ],
+                    [
+                      "int",
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "query": [
+            "dict",
+            [
+              [
+                [
+                  "str",
+                  "a"
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ],
+              [
+                [
+                  "str",
+                  "b"
+                ],
+                [
+                  "int",
+                  0
+                ]
+              ]
+            ]
+          ]
+        },
+        "task_id": "daacaef3a76fe02f56b38f1f499f8910875014da0ee06b2ddfcc48d3fb888e47",
+        "teacher": {
+          "children": [],
+          "kind": "var",
+          "sort": "DICT",
+          "value": [
+            "none"
+          ]
+        },
+        "teacher_primitive_cost": 1,
+        "teacher_query": [
+          "dict",
+          [
+            [
+              [
+                "str",
+                "a"
+              ],
+              [
+                "int",
+                0
+              ]
+            ],
+            [
+              [
+                "str",
+                "b"
+              ],
+              [
+                "int",
+                0
+              ]
+            ]
+          ]
+        ],
+        "tier": "Tier-1",
+        "world": "DICT_RECORD"
+      },
+      {
+        "public": {
+          "output_sort": "STATE",
+          "public_io": [
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "query": [
+            "tuple",
+            [
+              [
+                "int",
+                1
+              ],
+              [
+                "int",
+                1
+              ]
+            ]
+          ]
+        },
+        "task_id": "ad07f4483fc071c6a9be19aa470537e57164a5c49e1b4af87c66aed6fa97fe63",
+        "teacher": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [],
+                      "kind": "var",
+                      "sort": "STATE",
+                      "value": [
+                        "none"
+                      ]
+                    }
+                  ],
+                  "kind": "apply",
+                  "sort": "STATE",
+                  "value": [
+                    "str",
+                    "op_0"
+                  ]
+                }
+              ],
+              "kind": "apply",
+              "sort": "STATE",
+              "value": [
+                "str",
+                "op_1"
+              ]
+            }
+          ],
+          "kind": "apply",
+          "sort": "STATE",
+          "value": [
+            "str",
+            "op_2"
+          ]
+        },
+        "teacher_primitive_cost": 4,
+        "teacher_query": [
+          "tuple",
+          [
+            [
+              "int",
+              1
+            ],
+            [
+              "int",
+              1
+            ]
+          ]
+        ],
+        "tier": "Tier-2",
+        "world": "STATE_TRANSITION"
+      },
+      {
+        "public": {
+          "output_sort": "BITS",
+          "public_io": [
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    0
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "tuple",
+                [
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    1
+                  ],
+                  [
+                    "int",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "query": [
+            "tuple",
+            [
+              [
+                "int",
+                1
+              ],
+              [
+                "int",
+                0
+              ],
+              [
+                "int",
+                0
+              ]
+            ]
+          ]
+        },
+        "task_id": "fce92c8404559e1a4743d931b7348938e14e2b31b2a21d405136b23b86a1d385",
+        "teacher": {
+          "children": [
+            {
+              "children": [],
+              "kind": "var",
+              "sort": "BITS",
+              "value": [
+                "none"
+              ]
+            }
+          ],
+          "kind": "apply",
+          "sort": "BITS",
+          "value": [
+            "str",
+            "op_0"
+          ]
+        },
+        "teacher_primitive_cost": 2,
+        "teacher_query": [
+          "tuple",
+          [
+            [
+              "int",
+              0
+            ],
+            [
+              "int",
+              0
+            ],
+            [
+              "int",
+              1
+            ]
+          ]
+        ],
+        "tier": "Tier-1",
+        "world": "BIT_CELLULAR_AUTOMATA"
+      }
+    ],
+    "total_evaluation_cells": 50,
+    "training_work_units": 3428,
+    "verification": {
+      "errors": [],
+      "failed_scientific_gates": [
+        "certificate_b_deep_horizon"
+      ],
+      "integrity_valid": true,
+      "ready_for_freeze": false,
+      "replayed": false,
+      "scientific_gates": {
+        "certificate_b_deep_horizon": false,
+        "completed_tier1_exact_agreement": true,
+        "stage2_reduces_work_to_uniqueness": true,
+        "stage3_reduces_work_to_uniqueness": true
+      },
+      "scientific_gates_passed": false
+    },
+    "versions": {
+      "python": "3.13.5 (main, Jun 11 2025, 15:36:57) [Clang 17.0.0 (clang-1700.0.13.3)]",
+      "torch": "2.14.1"
+    },
+    "wall_clock_ms": 577.2290000459179
+  }
+}
