@@ -45,11 +45,13 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default=str(ROOT / "artifacts" / "wave24_agi_gap_suite.json"))
     ap.add_argument("--seeds", type=int, nargs="*")
-    ap.add_argument("--suite", choices=("v1", "v2", "v3"), default="v1")
+    ap.add_argument("--suite", choices=("v1", "v2", "v3", "v4"), default="v1")
     ap.add_argument("--mbpp-n", type=int, default=None)
     args = ap.parse_args(argv)
     if args.suite == "v3":
         return main_v3(args)
+    if args.suite == "v4":
+        return main_v4(args)
     if args.seeds is None:
         args.seeds = list(EVAL_SEEDS_V2 if args.suite == "v2" else EVAL_SEEDS)
     out = Path(args.out)
@@ -152,6 +154,71 @@ def main_v3(args):
         LEDGER.parent.mkdir(parents=True, exist_ok=True)
         with LEDGER.open("a") as f:
             f.write(json.dumps(dict(run="wave24-agi-gap-suite-v3", seeds=seeds, wall_s=payload["wall_s"],
+                                    cpu_s=payload["cpu_s"], output_sha256=hashlib.sha256(text.encode()).hexdigest(),
+                                    status=status)) + "\n")
+    print(json.dumps(dict(status=status, wall_s=payload["wall_s"], out=str(out),
+                          sha256=hashlib.sha256(text.encode()).hexdigest()), indent=2))
+    return 0 if status == "COMPLETE" else 2
+
+
+SOURCES_V4 = ("src/nexus/wave24_v4_world.py", "src/nexus/wave24_v4_core.py", "src/nexus/wave24_v4_agents.py",
+              "src/nexus/wave24_v4_code.py", "src/nexus/wave24_v4_suite.py", "src/nexus/wave24_domains.py",
+              "src/nexus/wave24_auto_laws.py", "src/nexus/wave24_quotient_core.py", "src/nexus/wave24_mbpp.py",
+              "src/nexus/wave24_helpers.py", "src/nexus/wave24_mbpp_evolve.py", "src/nexus/wave24_qwen_engine.py",
+              "src/nexus/seed/metal_model_runtime.py", "fixtures/mbpp/split.json", "fixtures/mbpp/mbpp.jsonl",
+              "artifacts/wave24_mbpp_dev_library.json", "scripts/run_wave24_agi_gap_suite.py",
+              "scripts/verify_wave24_agi_gap_suite.py", "docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md")
+
+
+def session_remaining_v4():
+    """Standing grant: 3600 s per session, counted from the last session-start marker (all rows after it,
+    engineering checks and failed runs included)."""
+    rows = [json.loads(l) for l in LEDGER.read_text().splitlines() if l.strip()] if LEDGER.exists() else []
+    start = max((i for i, r in enumerate(rows) if r.get("session_marker")), default=-1)
+    return SESSION_CAP_S - sum(float(r.get("wall_s") or 0) for r in rows[start + 1:])
+
+
+def main_v4(args):
+    from nexus.wave24_v4_suite import MBPP_N, SEEDS_V4, run_v4
+    seeds = args.seeds or list(SEEDS_V4)
+    out = Path(args.out if args.out != str(ROOT / "artifacts" / "wave24_agi_gap_suite.json")
+               else ROOT / "artifacts" / "wave24_agi_gap_suite_v4.json")
+    if out.exists():
+        raise SystemExit(f"{out} already recorded; the locked evaluation is one-use")
+    transcript = out.with_name(out.stem + "_llm_transcript.jsonl")
+    if transcript.exists():
+        raise SystemExit(f"{transcript} exists; refusing to reuse cached completions in a locked run")
+    remaining = session_remaining_v4()
+    cap = min(WALL_CAP_S, remaining - 15.0)
+    if cap < 60:
+        raise SystemExit(f"session experiment allowance exhausted (remaining {remaining:.0f}s)")
+    started, cpu0 = time.perf_counter(), time.process_time()
+    hashes = {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in SOURCES_V4}
+    payload = dict(schema="wave24_suite_v4", source_hashes=hashes, python=sys.version, platform=platform.platform(),
+                   wall_cap_s=cap, session_remaining_at_start_s=remaining)
+    status = "FAILED"
+    try:
+        res = run_v4(seeds=seeds, mbpp_n=args.mbpp_n or MBPP_N, wall_cap_s=cap, started=started,
+                     transcript_path=str(transcript), log=lambda m: print(m, flush=True))
+        payload.update(res)
+        status = res["execution_status"]
+    finally:
+        payload["execution_status"] = status
+        payload["wall_s"] = time.perf_counter() - started
+        payload["cpu_s"] = time.process_time() - cpu0
+        if transcript.exists():
+            payload["llm_transcript_sha256"] = hashlib.sha256(transcript.read_bytes()).hexdigest()
+        from nexus.wave24_qwen_engine import METAL_LEDGER
+        if METAL_LEDGER.exists():
+            ml = json.loads(METAL_LEDGER.read_text())
+            payload["metal_ledger"] = dict(used_s=ml.get("used_s"), peak_rss_mib=ml.get("peak_rss_mib"),
+                                           calls=len(ml.get("calls") or []))
+        out.parent.mkdir(parents=True, exist_ok=True)
+        text = json.dumps(payload, default=_json_default, sort_keys=True)
+        out.write_text(text)
+        LEDGER.parent.mkdir(parents=True, exist_ok=True)
+        with LEDGER.open("a") as f:
+            f.write(json.dumps(dict(run="wave24-agi-gap-suite-v4", seeds=seeds, wall_s=payload["wall_s"],
                                     cpu_s=payload["cpu_s"], output_sha256=hashlib.sha256(text.encode()).hexdigest(),
                                     status=status)) + "\n")
     print(json.dumps(dict(status=status, wall_s=payload["wall_s"], out=str(out),

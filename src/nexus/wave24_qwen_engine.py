@@ -55,6 +55,9 @@ def locate_server():
     raise FileNotFoundError("llama-server executable not found; set NEXUS_LLAMA_SERVER")
 
 
+METAL_LEDGER = Path(__file__).resolve().parents[2] / "runs" / "experimental" / "wave24-agi" / "metal_ledger.json"
+
+
 def chatml(system, user):
     return (f"<|im_start|>system\n{system}<|im_end|>\n<|im_start|>user\n{user}<|im_end|>\n"
             f"<|im_start|>assistant\n")
@@ -69,7 +72,9 @@ class QwenEngine:
         self.server = locate_server()
         hw = apple_silicon_metal_available()
         grant = ExplicitMetalGrant.from_config({"owner": os.environ.get("USER", "owner"),
-                                                "reason": "wave24 v3 Qwen-1.5B candidate generation"})
+                                                "reason": "wave24 Qwen-1.5B candidate generation",
+                                                "ledger_path": os.environ.get("NEXUS_METAL_LEDGER")
+                                                or str(METAL_LEDGER)})
         self.backend = "metal" if (hw.get("available") and grant.authorized) else "cpu"
         self.hardware = hw
         self.max_tokens, self.context, self.threads = max_tokens, context, threads
@@ -77,6 +82,7 @@ class QwenEngine:
         self._grant = grant
         self.rows = []
         self.rt = None
+        self.enforcer = None
         self.cache = {}
         self.cache_path = cache_path or os.environ.get("NEXUS_QWEN_CACHE")
         if self.cache_path and Path(self.cache_path).exists():
@@ -94,7 +100,10 @@ class QwenEngine:
             cfg = RuntimeConfig(model_path=str(self.model), executable=self.server, context_size=self.context,
                                 threads=min(4, self.threads), max_tokens=self.max_tokens,
                                 request_timeout_s=self.timeout, startup_timeout_s=60)
+            from nexus.seed.metal_model_runtime import MetalGrantEnforcer
             self.rt = PersistentMetalRuntime(cfg, self._grant)
+            # Every Metal request goes through the owner grant's hard RSS / per-call wall / session caps.
+            self.enforcer = MetalGrantEnforcer(self._grant, runtime=self.rt)
         else:
             from nexus.seed.local_model_runtime import PersistentLocalRuntime, RuntimeConfig
             cfg = RuntimeConfig(model_path=str(self.model), executable=self.server, context_size=self.context,
@@ -136,7 +145,8 @@ class QwenEngine:
                                          int(seed), self.max_tokens]).encode()).hexdigest()
         hit = self.cache.get(key)
         if hit is None:
-            raw = self._post(chatml(system, user) + prefix, temperature=temperature, seed=seed, stop=stop)
+            post = lambda: self._post(chatml(system, user) + prefix, temperature=temperature, seed=seed, stop=stop)
+            raw = self.enforcer.guarded_call(post) if self.enforcer is not None else post()
             if raw.get("tokens_evaluated") is None or raw.get("tokens_predicted") is None:
                 raise RuntimeError("runtime returned no token counts; refusing to charge zero LLM cost")
             hit = dict(key=key, content=raw["content"], input_tokens=int(raw["tokens_evaluated"]),
@@ -168,7 +178,8 @@ class QwenEngine:
                     charged_cache_hits=sum(r["cache_hit"] for r in self.rows), generated_tokens=sum(r["generated_tokens"] for r in self.rows),
                     input_tokens=sum(r["input_tokens"] for r in self.rows),
                     wall_s=sum(r["wall_s"] for r in self.rows),
-                    max_tokens=self.max_tokens, server=self.meta if self.rt else None)
+                    max_tokens=self.max_tokens, server=self.meta if self.rt else None,
+                    metal_session_remaining_s=self.enforcer.remaining_session_s() if self.enforcer else None)
 
     def close(self):
         if self.rt is not None:

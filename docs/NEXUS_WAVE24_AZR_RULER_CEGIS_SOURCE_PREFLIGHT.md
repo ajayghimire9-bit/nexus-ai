@@ -8,6 +8,11 @@ verified-sampling Qwen (work per correct 2.6× worse), evolved MBPP library vs f
 in a held-out answer, experienced transfer vs amnesiac (351 vs 358 solved), both meta-policy gates.
 Nothing was retuned after evaluation. Seeds 301–305 and both held-out code splits are now consumed.**
 
+## v4 locked (before seeds 401–405 and the fresh MBPP slice)
+
+Six-arm suite, protocol in the v4 section of `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`, branch
+`codex/wave24-v4-six-arm`. Results will be recorded here after the single launch.
+
 ## Latest: v3 suite — MBPP, skeleton-free helpers, fair LLM baselines (seeds 301–305)
 
 Protocol: v3 section of `docs/NEXUS_WAVE24_AGI_GAP_PROTOCOL.md`. Run: Linux x86_64 cloud container,

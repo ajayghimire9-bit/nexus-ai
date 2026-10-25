@@ -489,13 +489,177 @@ def verify_v3(payload):
                 report=report)
 
 
+V4_ARMS = ("literal_fixed_baseline", "abstractions_fixed_refinement", "learned_refinement_ttt_trm",
+           "full_nexus_reusable_procedures", "amnesiac_no_source_control", "independent_proposal_ablation")
+V4_FULL = "full_nexus_reusable_procedures"
+V4_CONTROLS = ("literal_fixed_baseline", "abstractions_fixed_refinement", "amnesiac_no_source_control",
+               "independent_proposal_ablation")
+
+
+def one_sided_sign(wins, losses):
+    """Exact one-sided sign test P(X >= wins | n = wins + losses, p = 1/2); ties are dropped."""
+    n = wins + losses
+    if n == 0:
+        return 1.0
+    return sum(math.comb(n, i) for i in range(wins, n + 1)) / 2 ** n
+
+
+def procedural_digest(rows):
+    import hashlib
+    keep = [(r["seed"], r["arm"], r["domain"], r["kind"], r["status"], r["solved"], r["false_certificate"], r["work"])
+            for r in rows]
+    return hashlib.sha256(json.dumps(keep).encode()).hexdigest()
+
+
+def _arm_totals(seed_res, arm, kinds=None):
+    rows = [r for r in seed_res["rows"] if r["arm"] == arm and (kinds is None or r["kind"] in kinds)]
+    solved = sum(r["solved"] for r in rows)
+    target = sum(r["work"] for r in rows) + (seed_res["setup_work"].get(arm, 0) if kinds is None else 0)
+    return dict(tasks=len(rows), solved=solved, target_work=target,
+                source_work=seed_res["source_cost"].get(arm, 0) if kinds is None else 0)
+
+
+def verify_v4(payload, *, replay=False):
+    gates, report = {}, {}
+    gates["v4_execution_complete"] = payload.get("execution_status") == "COMPLETE"
+    proc = payload.get("procedural", [])
+    rows = [r for s in proc for r in s["rows"]]
+    # ---------------- G1 zero false certificates (procedural, every arm incl. the frozen row, every kind)
+    fc_proc = [(r["seed"], r["arm"], r["domain"], r["kind"]) for r in rows if r["false_certificate"]]
+    fc_code = []
+    mismatch = []
+    mb = payload.get("mbpp", {})
+    if mb.get("rows"):
+        from nexus.wave24_mbpp import Meter, grade, load_tasks, passes
+        by_id = {t.task_id: t for t in load_tasks()}
+        for r in mb["rows"]:
+            t = by_id[r["task_id"]]
+            ans = r.get("answer")
+            if ans is not None and r["method"] != "standalone":
+                if not passes(ans, t.public, Meter(), setup=t.setup)[0]:
+                    fc_code.append((r["method"], r["task_id"]))
+            if bool(grade(ans, t)) != bool(r["correct"]):
+                mismatch.append((r["method"], r["task_id"]))
+    # witness conservation (Y_q subset of Y^_q) for arms that complete every level: an AMBIGUOUS verdict on a
+    # gold-AMBIGUOUS task must contain the truth
+    conservation = [(r["seed"], r["arm"], r["domain"], r["kind"]) for r in rows
+                    if r.get("complete_levels") and r["gold"] == "AMBIGUOUS" and r["status"] == "AMBIGUOUS_WITNESS_FOUND"
+                    and not r["truth_in_witness_set"]]
+    report["false_certificates"] = dict(procedural=fc_proc, code=fc_code, witness_conservation=conservation)
+    report["false_certificate_count"] = len(fc_proc) + len(fc_code)
+    gates["v4_g1_zero_false_certificates"] = bool(proc) and not fc_proc and not fc_code and not conservation
+    report["grading_mismatches"] = mismatch
+    gates["v4_independent_regrade_matches"] = not mismatch
+    if replay:
+        from nexus.wave24_v4_agents import run_seed
+        again = [r for s in proc for r in run_seed(s["seed"])["rows"]]
+        report["procedural_replay"] = dict(recorded=procedural_digest(rows), replayed=procedural_digest(again))
+        gates["v4_independent_regrade_matches"] = gates["v4_independent_regrade_matches"] and \
+            report["procedural_replay"]["recorded"] == report["procedural_replay"]["replayed"]
+    # ---------------- per-arm tables (pooled + per seed, per kind)
+    table = {}
+    for arm in V4_ARMS + ("full_nexus_frozen_zero_shot",):
+        per_seed = [_arm_totals(s, arm) for s in proc]
+        tot = {k: sum(p[k] for p in per_seed) for k in ("tasks", "solved", "target_work", "source_work")}
+        tot["fully_loaded_work"] = tot["target_work"] + tot["source_work"]
+        tot["work_per_solve_target"] = tot["target_work"] / max(1, tot["solved"])
+        tot["work_per_solve_fully_loaded"] = tot["fully_loaded_work"] / max(1, tot["solved"])
+        tot["by_kind"] = {}
+        for kind in ("passive", "trap", "active", "subset"):
+            kr = [r for r in rows if r["arm"] == arm and r["kind"] == kind]
+            tot["by_kind"][kind] = dict(tasks=len(kr), solved=sum(r["solved"] for r in kr),
+                                        work=sum(r["work"] for r in kr), probes=sum(r["probes"] for r in kr))
+        tot["per_seed"] = per_seed
+        table[arm] = tot
+    report["arms"] = table
+    # ---------------- G2 decisive cross-domain hypothesis (pooled, fully loaded)
+    a4 = table[V4_FULL]
+    g2 = {}
+    for c in V4_CONTROLS:
+        tc = table[c]
+        g2[c] = dict(solved=(a4["solved"], tc["solved"]),
+                     fully_loaded_work_per_solve=(a4["work_per_solve_fully_loaded"], tc["work_per_solve_fully_loaded"]),
+                     passes=a4["solved"] > tc["solved"] and
+                     a4["work_per_solve_fully_loaded"] < tc["work_per_solve_fully_loaded"])
+    a5 = table["amnesiac_no_source_control"]
+    net = (a5["target_work"] - a4["target_work"]) - a4["source_work"]
+    report["g2"] = dict(per_control=g2, net_benefit_vs_amnesiac=net)
+    gates["v4_g2_full_nexus_beats_controls"] = all(v["passes"] for v in g2.values()) and net > 0
+    # ---------------- G3 disambiguation / subset-repair transfer (seed-level one-sided sign tests)
+    g3 = {}
+    for name, kinds in (("disambiguation", ("trap", "active")), ("subset_repair", ("subset",))):
+        for c in ("abstractions_fixed_refinement", "amnesiac_no_source_control"):
+            sw = sl = ww = wl = 0
+            for s in proc:
+                x, y = _arm_totals(s, V4_FULL, kinds), _arm_totals(s, c, kinds)
+                rx, ry = x["solved"] / max(1, x["tasks"]), y["solved"] / max(1, y["tasks"])
+                sw, sl = sw + (rx > ry), sl + (rx <= ry)
+                ww, wl = ww + (x["target_work"] < y["target_work"]), wl + (x["target_work"] >= y["target_work"])
+            p_s, p_w = one_sided_sign(sw, sl), one_sided_sign(ww, wl)
+            g3[f"{name}_vs_{c}"] = dict(solve_rate_seed_wins=sw, solve_rate_p=p_s, work_seed_wins=ww, work_p=p_w,
+                                        passes=p_s < ALPHA and p_w < ALPHA)
+    report["g3"] = g3
+    gates["v4_g3_disambiguation_and_repair_transfer"] = all(v["passes"] for v in g3.values())
+    # ---------------- G4 Popper efficiency with exact verdicts
+    audit = [a for s in proc for a in s["popper_audit"]]
+    off = sum(a["evals_off"] for a in audit)
+    on = sum(a["evals_on"] for a in audit)
+    same = all(a["same_verdict"] for a in audit)
+    report["g4"] = dict(tasks=len(audit), evaluations_off=off, evaluations_on=on,
+                        reduction=1 - on / max(1, off), same_verdicts=same)
+    gates["v4_g4_popper_efficiency"] = bool(audit) and on <= 0.85 * off and same
+    # ---------------- G5 real-world MBPP
+    code = {}
+    for meth in ("standalone", "verified_sampling", "symbolic", "nexus_v4"):
+        rs = [r for r in mb.get("rows", []) if r["method"] == meth]
+        c, pl = sum(bool(r["correct"]) for r in rs), sum(bool(r["plausible"]) for r in rs)
+        code[meth] = dict(tasks=len(rs), correct=c, plausible=pl, precision=c / pl if pl else 0.0,
+                          work=sum(r["work"] for r in rs), work_per_correct=sum(r["work"] for r in rs) / c if c else None,
+                          llm_calls=sum(r.get("llm_calls", 0) for r in rs))
+    report["code_table"] = code
+    nx, sa, vs = code["nexus_v4"], code["standalone"], code["verified_sampling"]
+    gates["v4_g5a_nexus_vs_unverified_qwen"] = nx["tasks"] > 0 and nx["correct"] > sa["correct"] and \
+        nx["precision"] > sa["precision"]
+    gates["v4_g5b_nexus_vs_verified_sampling"] = nx["tasks"] > 0 and nx["correct"] > vs["correct"] and \
+        nx["work_per_correct"] is not None and vs["work_per_correct"] is not None and \
+        nx["work_per_correct"] < vs["work_per_correct"]
+    if nx["tasks"]:
+        A = [r for r in mb["rows"] if r["method"] == "nexus_v4"]
+        B = [r for r in mb["rows"] if r["method"] == "verified_sampling"]
+        report["nexus_vs_verified_sampling_permutation"] = permutation_ratio_test(A, B)
+    ty = mb.get("tycho", {})
+    used = sum(1 for r in mb.get("rows", []) if r["method"] == "nexus_v4" and r["correct"] and r.get("library_used"))
+    used += sum(1 for r in mb.get("rows", []) if r["method"] == "nexus_v4" and r["correct"]
+                and r.get("stage") == "helper_composition")
+    report["g5c"] = dict(tycho=ty, correct_heldout_answers_using_library=used)
+    gates["v4_g5c_helpers_positive_net_validation_benefit"] = bool(ty.get("admitted")) and \
+        ty.get("net_benefit", 0) > 0 and used >= 1
+    report["llm"] = {k: payload.get("llm_telemetry", {}).get(k) for k in
+                     ("backend", "model", "calls", "fresh_calls", "charged_cache_hits", "generated_tokens",
+                      "input_tokens", "wall_s")}
+    report["resources"] = dict(payload.get("resources", {}), wall_s=payload.get("wall_s"),
+                               metal_ledger=payload.get("metal_ledger"))
+    report["source_reports"] = [dict(seed=s["seed"], admitted=s["source_report"]["admitted"],
+                                     eta=s["source_report"]["eta"], n_schemas=s["source_report"]["n_schemas"],
+                                     tycho=s["source_report"]["tycho"], source_ledger=s["source_ledger"])
+                                for s in proc]
+    return dict(gates=gates, all_passed=all(gates.values()), failed=sorted(k for k, v in gates.items() if not v),
+                report=report)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("path", nargs="?", default=str(ROOT / "artifacts" / "wave24_agi_gap_suite.json"))
     ap.add_argument("--report")
+    ap.add_argument("--replay", action="store_true", help="v4: re-run Track A from source and compare digests")
     args = ap.parse_args(argv)
     payload = json.loads(Path(args.path).read_text())
-    result = verify_v3(payload) if payload.get("schema") == "wave24_suite_v3" else verify(payload)
+    if payload.get("schema") == "wave24_suite_v4":
+        result = verify_v4(payload, replay=args.replay)
+    elif payload.get("schema") == "wave24_suite_v3":
+        result = verify_v3(payload)
+    else:
+        result = verify(payload)
     text = json.dumps(result, indent=2, sort_keys=True)
     if args.report:
         Path(args.report).write_text(text)
