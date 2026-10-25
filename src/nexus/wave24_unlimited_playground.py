@@ -11,8 +11,9 @@ from pathlib import Path
 import time
 
 from nexus.evolution1.catalogue import digest
-from nexus.wave24_auto_laws import AutoOperatorFingerprinter, JOB_TAGS, universal_job_tags
-from nexus.wave24_open_world_arena import ConditionalPatchCombinator, OpenWorldTwinFuzzer, guarded
+from nexus.wave24_auto_laws import (AutoOperatorFingerprinter, JOB_TAGS, universal_job_tags,
+                                   AtomicFieldProjector, AtomicForceClassifier)
+from nexus.wave24_open_world_arena import ConditionalPatchCombinator, OpenWorldTwinFuzzer, guarded, EXEC_ERR
 from nexus.wave24_quotient_core import (
     Grammar, Operator, WorkMeter, apply, eval_expr, freeze, primitive_cost, variable,
     NoetherConservationGate, unfold_workspace_expr,
@@ -28,7 +29,7 @@ SAFE_MODULES = (
     "operator", "difflib", "fractions", "datetime",
 )
 PROBES = (-2, -1, 0, 1, 2, 3, 7)
-ATOMIC_FORCES = JOB_TAGS
+from nexus.wave24_auto_laws import ATOMIC_FORCES  # five universal atomic forces
 NOETHER_LAWS = ("MASS_PRESERVING", "MASS_CONTRACTIVE", "MULTISET_PRESERVING_PERMUTATION")
 
 
@@ -102,6 +103,8 @@ def plan_steps(plan):
         return plan_steps(plan["then"]) + plan_steps(plan["else"])
     if plan["kind"] == "try":
         return plan_steps(plan["body"]) + plan_steps(plan["fallback"])
+    if plan["kind"] == "seq":
+        return [step for part in plan["parts"] for step in plan_steps(part)]
     raise ValueError("unknown skill plan kind")
 
 
@@ -201,20 +204,27 @@ def _plan_body(plan, imports, counter):
     raise ValueError("compiler accepts chain / if / try plans")
 
 
+# Partial-domain primitives RAISE (no silent identity fallback), so compiled
+# try/except and if/else guards genuinely fire on fault inputs.
 _APPLY_SOURCE = (
     "def _apply(fn, value):\n"
-    "    try:\n"
-    "        out = fn(value)\n"
-    "    except Exception:\n"
-    "        return value\n"
+    "    out = fn(value)\n"
     "    if type(out) is bool:\n"
     "        return int(out)\n"
-    "    if type(out) is float and out == int(out) and abs(out) < 10 ** 6:\n"
+    "    if type(out) is float and out == out and abs(out) < 10 ** 6 and out == int(out):\n"
     "        return int(out)\n"
     "    if type(out) is int and abs(out) < 10 ** 6:\n"
     "        return out\n"
-    "    return value\n"
+    "    raise ValueError('non-integer result outside the int domain')\n"
 )
+
+
+def outcome(fn, x):
+    """('ok', frozen value) or ('raise', exception class) -- compared exactly."""
+    try:
+        return ("ok", freeze(fn(x)))
+    except (ValueError, KeyError, ZeroDivisionError, TypeError, OverflowError) as exc:
+        return ("raise", type(exc).__name__ if not isinstance(exc, ValueError) else "ValueError")
 
 
 def compile_verified_skill_ast(name, plan, *, lineage, primitives, checks, callables=None):
@@ -248,15 +258,18 @@ def compile_verified_skill_ast(name, plan, *, lineage, primitives, checks, calla
     fn = namespace[name]
     pure = unfold_plan_to_primitives(plan, lineage)
     for x in checks:
-        if freeze(fn(x)) != freeze(eval_plan(pure, x, primitives)):
+        if outcome(fn, x) != outcome(lambda v: eval_plan(pure, v, primitives), x):
             raise ValueError("compiled skill disagrees with its unfolded primitive expansion")
+    except_fired = tuple(x for x in checks if plan["kind"] == "try"
+                         and outcome(lambda v: eval_plan(unfold_plan_to_primitives(plan["body"], lineage), v, primitives), x)[0] == "raise"
+                         and outcome(fn, x)[0] == "ok")
     callees = sorted({s for s in plan_steps(plan) if s.startswith("skill_")})
     layer = 1 + max((lineage[c]["layer"] for c in callees), default=0)
     statements = sum(1 for n in ast.walk(fn_def) if isinstance(n, (ast.Assign, ast.Return, ast.If, ast.Try)))
     record = dict(layer=layer, plan=plan, pure_plan=pure, callees=callees,
                   primitive_cost=plan_primitive_cost(pure), statements=statements,
                   constructs=sorted(plan_kinds(plan)),
-                  source_sha256=digest(source))
+                  source_sha256=digest(source), except_fired_on=list(except_fired))
     return source, fn, record
 
 
@@ -288,7 +301,23 @@ class PersistentNexusBrain:
         legacy = self.root / "doctor_state.json"
         return modern if modern.exists() or not legacy.exists() else legacy
 
+    def _archive_incompatible_semantics(self):
+        """A toolbox compiled under an older _apply would silently rebind new skills to it."""
+        if not self.toolbox_path.exists():
+            return None
+        text = self.toolbox_path.read_text()
+        if "def _apply(" not in text or _APPLY_SOURCE in text:
+            return None
+        legacy = self.root / ("legacy_" + digest(text)[:8])
+        legacy.mkdir(exist_ok=True)
+        for name in ("evolved_toolbox.py", "skill_lineage.json", "universal_meta_recipes.json",
+                     "symptom_doctor_state.json", "job_tag_recipes.json", "doctor_state.json"):
+            if (self.root / name).exists():
+                (self.root / name).replace(legacy / name)
+        return legacy
+
     def load(self):
+        self.archived_legacy = self._archive_incompatible_semantics()
         recipes = self._recipe_path()
         doctor = self._doctor_path()
         if recipes.exists():
@@ -313,6 +342,8 @@ class PersistentNexusBrain:
             "atomic_forces": list(ATOMIC_FORCES),
             "noether_laws": list(NOETHER_LAWS),
             "recipes": self.recipes,
+            "universal_force_functors": sorted({tuple(f) for r in self.recipes
+                                                for f in r.get("universal_force_functors", ())}),
         }, indent=2, sort_keys=True))
         (self.root / "symptom_doctor_state.json").write_text(json.dumps({
             "delta_w": self.metabolic.delta_w,
@@ -368,7 +399,13 @@ class PersistentNexusBrain:
         if entry["status"] == "nursery" and len(entry["uses"]) >= 2 and entry["delta_w_total"] > 0 \
                 and all(u["delta_w"] > 0 for u in entry["uses"]):
             entry["status"] = "graduated"
+            entry["graduated_after_uses"] = len(entry["uses"])
             self.metabolic.observe(name, entry["delta_w_total"])
+        elif entry["status"] == "graduated":
+            # Live counterfactual utility keeps flowing; cumulative < 0 evicts.
+            self.metabolic.observe(name, float(delta_w))
+            if name not in self.metabolic.delta_w:
+                entry["status"] = "evicted"
         self.save()
         return True
 
@@ -415,7 +452,11 @@ PUBLIC_INPUTS = (-2, -1, 0, 1, 3, 7)
 
 
 def _behavior(fn, inputs=CHECK_INPUTS):
-    return tuple(freeze(fn(x)) for x in inputs)
+    return tuple(outcome(fn, x) for x in inputs)
+
+
+def _total_on(fn, inputs):
+    return all(outcome(fn, x)[0] == "ok" for x in inputs)
 
 
 class _Callable:
@@ -445,8 +486,8 @@ class UnlimitedPythonGround:
                 scanned[module_name] += 1
                 meter.charge("playground_crawl_work_units", len(PROBES))
                 sig = _behavior(wrapped, PROBES)
-                if sig in seen:
-                    continue  # identity on int probes or a behavioral duplicate
+                if sig in seen or sum(o[0] == "ok" for o in sig) < 2:
+                    continue  # identity, a behavioral duplicate, or (almost) nowhere defined
                 seen.add(sig)
                 per_module[module_name].append((f"{module_name}_{name}", wrapped))
         # Round-robin across modules so one module cannot monopolise the budget.
@@ -464,7 +505,9 @@ class UnlimitedPythonGround:
         operators, qualnames = [], {}
         for index, (name, fn) in enumerate(callables):
             op_name = f"op_{index}"
-            operators.append(Operator(op_name, ("INT",), "INT", fn))
+            # The search grammar sees faults as the EXEC_ERR token; compiled
+            # skills and plan semantics see the raising primitive.
+            operators.append(Operator(op_name, ("INT",), "INT", guarded(fn)))
             qualnames[op_name] = name
         grammar = Grammar("INT", tuple(operators))
         finger = AutoOperatorFingerprinter()
@@ -475,10 +518,11 @@ class UnlimitedPythonGround:
         elapsed_ms = (time.perf_counter() - t0) * 1000
         meter.charge("playground_crawl_work_units", len(operators))
         jobs = {op.name: universal_job_tags(roles[op.name]) for op in grammar.operators if op.name in roles}
+        forces = {q: AtomicForceClassifier().classify(fn, PROBES).force for q, fn in primitives.items()}
         return dict(grammar=grammar, roles=roles, noether=gate.tags, qualnames=qualnames,
                     job_tags=jobs, crawl_ms=(time.perf_counter() - started) * 1000,
                     fingerprint_ms=elapsed_ms, operator_count=len(operators),
-                    primitives=primitives, skills=skills,
+                    primitives=primitives, skills=skills, forces=forces,
                     module_selected={m: sum(1 for q in primitives if q.startswith(m + "_")) for m in per_module},
                     module_scanned=scanned)
 
@@ -491,17 +535,17 @@ class UnlimitedPythonGround:
         def wrapped(value):
             try:
                 out = fn(value)
-            except Exception:
-                return value
+            except Exception as exc:  # any stdlib fault becomes one explicit domain error
+                raise ValueError(f"domain fault: {type(exc).__name__}") from None
             if type(out) is bool:
                 return int(out)
-            if type(out) is float and out == int(out) and abs(out) < 10**6:
+            if type(out) is float and out == out and abs(out) < 10**6 and out == int(out):
                 return int(out)
             if type(out) is int and abs(out) < 10**6:
                 return out
-            return value
+            raise ValueError("non-integer result outside the int domain")
         wrapped.__name__ = getattr(fn, "__name__", "wrapped")
-        return guarded(wrapped)
+        return wrapped
 
 
 class OpenEndedCuriosityLoop:
@@ -526,6 +570,13 @@ class OpenEndedCuriosityLoop:
 
     def _known_behaviors(self, crawled, local):
         return {_behavior(fn) for fn in self._all_fns(crawled, local).values()}
+
+    @staticmethod
+    def _proposable(teacher, query):
+        """The proposer only poses tasks its own teacher answers on all public inputs and the query."""
+        if not _total_on(teacher, (*PUBLIC_INPUTS, query)):
+            return False
+        return len({freeze(teacher(x)) for x in PUBLIC_INPUTS}) >= 2
 
     def _task(self, teacher, query):
         public = tuple((x, teacher(x)) for x in PUBLIC_INPUTS)
@@ -556,13 +607,17 @@ class OpenEndedCuriosityLoop:
 
     @staticmethod
     def _force_signature(fn):
-        from nexus.wave24_quotient_core import atomic_signature
+        projector = AtomicFieldProjector()
         deltas = []
         for x in PROBES:
-            a, b = atomic_signature(x), atomic_signature(fn(x))
-            deltas.append((b[0] - a[0], int(b[1] != a[1]), int(b[2] != a[2])))
+            if outcome(fn, x)[0] != "ok":
+                continue
+            a, b = projector.project(x), projector.project(fn(x))
+            deltas.append((b.mass - a.mass, int(b.locus_mask != a.locus_mask),
+                           int(b.quantum_multiset_hash != a.quantum_multiset_hash)))
         return dict(delta_mass=sum(d[0] for d in deltas), locus_changes=sum(d[1] for d in deltas),
-                    quantum_changes=sum(d[2] for d in deltas))
+                    quantum_changes=sum(d[2] for d in deltas), defined_probes=len(deltas),
+                    force=AtomicForceClassifier().classify(fn, PROBES).force)
 
     def _counterfactual_work(self, grammar, task, exclude, crawled, limit=4000):
         """Work for the same task with the reused skills removed from the grammar."""
@@ -576,6 +631,7 @@ class OpenEndedCuriosityLoop:
         return local.total
 
     def _recipe(self, crawled, plan, epoch, name):
+        from nexus.wave24_self_evolving_loop import UniversalForceFunctor
         names = {v: k for k, v in crawled["qualnames"].items()}
         steps = plan_steps(plan)
         def force(step):
@@ -583,9 +639,16 @@ class OpenEndedCuriosityLoop:
                 return "COMPOSITE_LAYER_" + str(self.brain.lineage[step]["layer"])
             jobs = crawled["job_tags"].get(names.get(step), ())
             return jobs[0] if jobs else "EMPIRICAL"
+        pure = unfold_plan_to_primitives(plan, self.brain.lineage)
+        pure_steps = plan_steps(pure) if "if" not in plan_kinds(pure) and "try" not in plan_kinds(pure) else []
+        functors = UniversalForceFunctor.lift_chain(tuple(pure_steps), crawled["forces"], source_skill=name,
+                                                    source_domain="PLAYGROUND_INT")
         self.brain.recipes.append(dict(epoch=epoch, skill=name, kind=plan["kind"],
             outer_job_tag=force(steps[-1]), inner_job_tag=force(steps[0]),
-            atomic_force=force(steps[-1]), operator=steps[-1],
+            atomic_force=crawled["forces"].get(steps[-1], self.brain.lineage.get(steps[-1], {}).get(
+                "force_signature", {}).get("force", "F_BRANCH")),
+            operator=steps[-1],
+            universal_force_functors=[[f.outer_force, f.inner_force] for f in functors],
             noether=[str(t) for t in crawled["noether"].get(names.get(steps[-1]), ())]))
         jobs = crawled["job_tags"].get(names.get(steps[-1]), ())
         self.brain.doctor.rows.append(dict(
@@ -615,7 +678,7 @@ class OpenEndedCuriosityLoop:
         for k in range(len(pairs)):
             (qa, fa), (qb, fb) = pairs[(epoch * 7 + k) % len(pairs)]
             teacher = lambda x, fa=fa, fb=fb: fb(fa(x))
-            if _behavior(teacher) in known or len({teacher(x) for x in PUBLIC_INPUTS}) < 2:
+            if _behavior(teacher) in known or not self._proposable(teacher, 2):
                 continue
             if found == skip:
                 break
@@ -657,7 +720,7 @@ class OpenEndedCuriosityLoop:
         for k in range(len(pairs)):
             a, b = pairs[(epoch * 5 + k) % len(pairs)]
             teacher = lambda x, fa=fns[a], fb=fns[b]: fb(fa(x))
-            if _behavior(teacher) not in known and len({teacher(x) for x in PUBLIC_INPUTS}) >= 2:
+            if _behavior(teacher) not in known and self._proposable(teacher, 5):
                 break
         else:
             return dict(phase="compound", proposed=False)
@@ -671,16 +734,17 @@ class OpenEndedCuriosityLoop:
             ok = True
             for x, y in task.public_io:
                 self.meter.charge("playground_library_search_work_units")
-                if freeze(fn(x)) != freeze(y):
+                if outcome(fn, x) != ("ok", freeze(y)):
                     ok = False
                     break
             if ok:
                 self.meter.charge("playground_library_search_work_units")
-                fits.append((steps, fn(task.query)))
+                got = outcome(fn, task.query)
+                fits.append((steps, fn(task.query) if got[0] == "ok" else EXEC_ERR))
         with_work = self.meter.total - before
         out = dict(phase="compound", proposed=True, teacher=[a, b], fitting=len(fits), solved=False, compiled=None)
         values = {freeze(v) for _, v in fits}
-        if len(values) != 1:
+        if len(values) != 1 or EXEC_ERR in {v for _, v in fits}:
             out["status"] = "AMBIGUOUS_WITNESS_FOUND" if fits else "NO_PROGRAM_IN_BOUNDED_GRAMMAR"
             return out
         steps, value = min(fits, key=lambda f: len(f[0]))
@@ -714,13 +778,14 @@ class OpenEndedCuriosityLoop:
         # primitive that diverges from the base skill only on one phase.
         for k in range(len(prims)):
             q = prims[(epoch * 3 + k) % len(prims)]
-            diverge = [x for x in CHECK_INPUTS if x < 0 and freeze(fns[q](x)) != freeze(fns[base](x))]
+            diverge = [x for x in CHECK_INPUTS if x < 0 and outcome(fns[q], x) != outcome(fns[base], x)]
             teacher = lambda x, fq=fns[q], fs=fns[base]: fq(x) if x < 0 else fs(x)
-            if diverge and _behavior(teacher) not in known and len({teacher(x) for x in PUBLIC_INPUTS}) >= 2:
+            query = -3 if epoch % 2 else 4
+            if diverge and _behavior(teacher) not in known and self._proposable(teacher, query):
                 break
         else:
             return dict(phase="phase_boundary", proposed=False)
-        task, expected = self._task(teacher, -3 if epoch % 2 else 4)
+        task, expected = self._task(teacher, query)
         ops = [_Callable(n, fns[n]) for n in sorted(fns)]
         # Declared tie-break among programs that agree on the certified query:
         # reuse library skills (higher layer first) over raw primitives.
@@ -734,8 +799,8 @@ class OpenEndedCuriosityLoop:
         guard, then, other = piece["witness"]
         if not out["solved"] or guard not in INT_GUARDS:
             return out
-        plan = dict(kind="try", body=dict(kind="if", guard=guard, then=dict(kind="chain", steps=[then]),
-                    **{"else": dict(kind="chain", steps=[other])}), fallback=dict(kind="chain", steps=[other]))
+        plan = dict(kind="if", guard=guard, then=dict(kind="chain", steps=[then]),
+                    **{"else": dict(kind="chain", steps=[other])})
         name = f"skill_{epoch}_branch_{digest(plan)[:8]}"
         record = self._admit(name, plan, task, piece["query_value"], crawled, local)
         if record is not None:
@@ -743,11 +808,59 @@ class OpenEndedCuriosityLoop:
             self._recipe(crawled, plan, epoch, name)
         return out
 
+    # -- phase D: fault recovery -> try/except skill that really fires -------
+    def fault_recovery(self, epoch, crawled, local):
+        fns = self._all_fns(crawled, local)
+        names = sorted(fns, key=lambda n: (not n.startswith("skill_"), n))
+        known = self._known_behaviors(crawled, local)
+        partial = [n for n in names if not _total_on(fns[n], CHECK_INPUTS)
+                   and sum(outcome(fns[n], x)[0] == "ok" for x in PUBLIC_INPUTS) >= 3
+                   and not _total_on(fns[n], PUBLIC_INPUTS)]
+        total = [n for n in names if _total_on(fns[n], CHECK_INPUTS)]
+        pairs = [(a, b) for a in partial for b in total if a != b]
+        for k in range(len(pairs)):
+            body, fallback = pairs[(epoch * 11 + k) % len(pairs)]
+            fault_inputs = [x for x in CHECK_INPUTS if outcome(fns[body], x)[0] == "raise"]
+            query = next((x for x in fault_inputs if x not in PUBLIC_INPUTS), fault_inputs[0])
+            def teacher(x, fa=fns[body], fb=fns[fallback]):
+                try:
+                    return fa(x)
+                except (ValueError, KeyError, ZeroDivisionError, TypeError, OverflowError):
+                    return fb(x)
+            if _behavior(teacher) not in known and self._proposable(teacher, query):
+                break
+        else:
+            return dict(phase="fault_recovery", proposed=False)
+        task, expected = self._task(teacher, query)
+        ops = [_Callable(n, fns[n]) for n in names]
+        piece = self.patch.synthesize(ops, task.public_io, task.query, meter=self.meter, prefer=tuple(names))
+        out = dict(phase="fault_recovery", proposed=True, body=body, fallback=fallback, fault_inputs=fault_inputs,
+                   status=piece["status"], fitting=piece.get("fitting", 0), solved=False, compiled=None)
+        if piece["status"] != self.patch.STATUS_UNIQUE:
+            return out
+        out["solved"] = freeze(piece["query_value"]) == freeze(expected)
+        guard, then, other = piece["witness"]
+        if not out["solved"]:
+            return out
+        if guard == f"ok[{then}]":
+            plan = dict(kind="try", body=dict(kind="chain", steps=[then]), fallback=dict(kind="chain", steps=[other]))
+        elif guard in INT_GUARDS:
+            plan = dict(kind="if", guard=guard, then=dict(kind="chain", steps=[then]),
+                        **{"else": dict(kind="chain", steps=[other])})
+        else:
+            return out
+        name = f"skill_{epoch}_recover_{digest(plan)[:8]}"
+        record = self._admit(name, plan, task, piece["query_value"], crawled, local)
+        if record is not None:
+            out.update(compiled=name, layer=record["layer"], except_fired_on=record["except_fired_on"])
+            self._recipe(crawled, plan, epoch, name)
+        return out
+
     def play_epoch(self, epoch):
         crawled = self.ground.crawl(self.brain, meter=self.meter)
         local = {}
         phases = [self.explore(epoch, crawled, local), self.compound(epoch, crawled, local),
-                  self.phase_boundary(epoch, crawled, local)]
+                  self.phase_boundary(epoch, crawled, local), self.fault_recovery(epoch, crawled, local)]
         self.brain.save()
         snap = self.brain.metabolic.assert_stable()
         return dict(epoch=epoch, solved=any(p.get("solved") for p in phases), phases=phases,
@@ -768,6 +881,8 @@ class OpenEndedCuriosityLoop:
                     max_primitive_cost=max((v["primitive_cost"] for v in lineage.values()), default=0),
                     nursery=sorted(k for k, v in lineage.items() if v["status"] == "nursery"),
                     graduated=sorted(k for k, v in lineage.items() if v["status"] == "graduated"),
+                    evicted=sorted(k for k, v in lineage.items() if v["status"] == "evicted"),
+                    except_fired_skills=sorted(k for k, v in lineage.items() if v.get("except_fired_on")),
                     false_certificate_count=self.false_certificates)
 
 

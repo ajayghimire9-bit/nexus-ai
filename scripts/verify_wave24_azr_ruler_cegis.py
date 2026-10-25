@@ -209,6 +209,15 @@ def verify_open_world_arena(arena):
         solved=[c["methods"][name] for c in cells if c["methods"][name]["solved"]]
         require(s.get("solved")==len(solved) and s.get("total_work")==sum(c["methods"][name]["work"] for c in cells),
                 "open-world summary differs from cells: "+name)
+    if "matched_subset" in arena:
+        both=[c for c in cells if c["methods"]["nexus_static_quotient_open_world"]["solved"]
+              and c["methods"]["nexus_self_evolving_open_world"]["solved"]]
+        recomputed=dict(task_count=len(both),
+            static_work=sum(c["methods"]["nexus_static_quotient_open_world"]["work"] for c in both),
+            evolving_work=sum(c["methods"]["nexus_self_evolving_open_world"]["work"] for c in both))
+        require(arena["matched_subset"]==recomputed, "open-world matched-subset work differs from cells")
+        require(recomputed["task_count"]>0 and recomputed["evolving_work"]<recomputed["static_work"],
+                "self-evolving matched-subset work does not beat static")
     require(arena.get("lyapunov",{}).get("dynamic_lyapunov_max_hops_reached",0)>=4,
             "Lyapunov horizon did not exceed the old 3-hop constant")
     summary=arena.get("method_summary") or {}

@@ -988,6 +988,88 @@ class AlgebraicRoleFunctor:
         return tuple(found)
 
 
+@dataclass(frozen=True)
+class UniversalForceFunctor:
+    """Domain-agnostic (outer_force, inner_force) schema of a promoted 2-step skill.
+
+    Forces come from AtomicForceClassifier probes on the source grammar, so a
+    functor names no operator, sort or family and can be bound onto any
+    grammar whose operators have been force-fingerprinted.
+    """
+    outer_force: str
+    inner_force: str
+    source_skill: str
+    source_domain: str = ""
+
+    def key(self):
+        return (self.outer_force, self.inner_force)
+
+    @classmethod
+    def lift_chain(cls, steps, forces, *, source_skill, source_domain=""):
+        """steps innermost-first; returns one functor per adjacent (outer, inner) pair."""
+        out = []
+        for inner, outer in zip(steps, steps[1:]):
+            if inner in forces and outer in forces:
+                out.append(cls(forces[outer], forces[inner], source_skill, source_domain))
+        return tuple(out)
+
+    @classmethod
+    def lift(cls, skill, forces, *, source_domain=""):
+        steps, node = [], skill.body
+        while node.kind == "apply" and len(node.children) == 1:
+            steps.append(node.value)
+            node = node.children[0]
+        if node.kind != "hole" or len(steps) < 2:
+            return ()
+        return cls.lift_chain(tuple(reversed(steps)), forces, source_skill=digest(skill.key()),
+                              source_domain=source_domain)
+
+    def instantiate(self, grammar, forces, *, meter):
+        found = []
+        for outer, inner in product(grammar.operators, repeat=2):
+            meter.charge("setup_work_units")
+            if len(outer.inputs) != 1 or len(inner.inputs) != 1 or outer.inputs[0] != inner.output:
+                continue
+            if forces.get(outer.name) == self.outer_force and forces.get(inner.name) == self.inner_force:
+                skill = ParametricSkillMacro(apply(outer, apply(inner, typed_hole(inner.inputs[0]))), inner.inputs)
+                skill.validate(grammar)
+                found.append(skill)
+        return tuple(found)
+
+
+def force_table(grammar, carriers, *, meter=None):
+    from nexus.wave24_auto_laws import AtomicForceClassifier
+    roles = AtomicForceClassifier().classify_operators(grammar.operators, carriers, meter=meter)
+    return {name: role.force for name, role in roles.items()}
+
+
+def zero_shot_force_transfer(functors, grammar, forces, probe_inputs, *, meter, max_skills=3):
+    """Bind force functors onto an unseen grammar; unlabeled probe dedupe only, no target tasks."""
+    inputs = tuple(probe_inputs)
+    seen, selected, lineage = set(), [], []
+    for expr in (variable(grammar.input_sort), *(apply(op, variable(grammar.input_sort))
+                 for op in grammar.operators if op.inputs == (grammar.input_sort,))):
+        seen.add((expr.sort, tuple(freeze(eval_expr(expr, x, grammar.ops, meter, "setup_work_units")) for x in inputs)))
+    candidates = {}
+    for functor in functors:
+        for skill in functor.instantiate(grammar, forces, meter=meter):
+            if skill.input_sorts == (grammar.input_sort,):
+                candidates.setdefault(skill.key(), (skill, functor))
+    for key in sorted(candidates, key=repr):
+        skill, functor = candidates[key]
+        call = skill.call(variable(grammar.input_sort))
+        signature = (call.sort, tuple(freeze(eval_expr(call, x, grammar.ops, meter, "setup_work_units")) for x in inputs))
+        if signature in seen:
+            continue
+        seen.add(signature)
+        selected.append(skill)
+        lineage.append(dict(skill=skill_wire(skill), source_skill=functor.source_skill, source_domain=functor.source_domain,
+                            force_functor=[functor.outer_force, functor.inner_force], target_training_tasks=0))
+        if len(selected) == max_skills:
+            break
+    return tuple(selected), tuple(lineage)
+
+
 def zero_shot_role_transfer(functors, grammar, roles, probe_inputs, *, meter, max_skills=3):
     """Only role matches and unlabeled startup deduplication, no target tasks."""
     if not 1 <= max_skills <= 3:

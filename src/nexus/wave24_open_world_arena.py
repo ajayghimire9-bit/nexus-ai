@@ -13,7 +13,8 @@ import statistics
 from urllib.parse import parse_qs, urlparse
 
 from nexus.evolution1.catalogue import digest
-from nexus.wave24_auto_laws import AutoOperatorFingerprinter
+from nexus.wave24_auto_laws import (AutoOperatorFingerprinter, AtomicFieldProjector, AtomicForceClassifier,
+                                   F_SELECT, F_TRANSLATE, F_TRANSMUTE, F_CONDENSE, F_BRANCH)
 from nexus.wave24_quotient_core import (
     Grammar, Operator, WorkMeter, WorkExhausted, ExactEnumerator, GoalCheck,
     SearchResult, apply, eval_expr, freeze, primitive_cost, variable, unfold_to_primitives,
@@ -129,6 +130,27 @@ def _is_number(x):
     return isinstance(x, (int, float)) and not isinstance(x, bool)
 
 
+class TaskEvalCache:
+    """Per-task memo of op(x): an operator application is charged once per task, on first use."""
+
+    def __init__(self):
+        self.values = {}
+        self.hits = 0
+
+    def __call__(self, op, x, meter, category):
+        key = (op.name, _safe_key(x))
+        if key in self.values:
+            self.hits += 1
+            return self.values[key]
+        meter.charge(category)
+        try:
+            value = op.fn(x)
+        except Exception:
+            value = EXEC_ERR
+        self.values[key] = value
+        return value
+
+
 def guard_family(public_inputs):
     """Fixed, task-agnostic input predicates declared before any search.
 
@@ -172,18 +194,15 @@ class ConditionalPatchCombinator:
             return None
         return dict(guarded=True, D_pass=tuple(passing), D_fail=tuple(failing))
 
-    def synthesize(self, operators, public_io, query, *, meter, prefer=()):
+    def synthesize(self, operators, public_io, query, *, meter, prefer=(), cache=None):
         inputs = tuple(x for x, _ in public_io) + (query,)
         n = len(public_io)
+        cache = cache if cache is not None else TaskEvalCache()
         outs, passes = {}, {}
         for op in operators:
             row = []
             for x in inputs:
-                meter.charge("piecewise_guard_work_units")
-                try:
-                    row.append(op.fn(x))
-                except Exception:
-                    row.append(EXEC_ERR)
+                row.append(cache(op, x, meter, "piecewise_guard_work_units"))
             outs[op.name] = row
             passes[op.name] = tuple(_safe_key(row[i]) == _safe_key(public_io[i][1]) for i in range(n))
         if any(all(v) for v in passes.values()) or not any(any(v) for v in passes.values()):
@@ -387,6 +406,175 @@ class OpenWorldTaskStream:
         return y0
 
 
+class ForcePrunedResidualTwoHop:
+    """Residual 2-hop search op_2(op_1(x)) in a declared force-pruned space.
+
+    Hop 1 (heuristic, declared): stepping stones are restricted to the atomic
+    force direction of the public mass deficit and must move every public
+    input's mass strictly toward its target (never past it).
+    Hop 2 (sound, b_rem == 1): an op_2 whose certified probe law (mass
+    preserving / contractive, multiset preserving) cannot reach Y_pub is
+    skipped in O(1) before any evaluation.
+    The query is certified only if every fitting chain in this declared space
+    agrees. Learned (outer, inner) force functors only ORDER the search.
+    """
+
+    STATUS_UNIQUE = "UNIQUE_QUERY_OUTPUT_IN_DECLARED_FORCE_PRUNED_SPACE"
+    DIRECTIONS = {"DECREASE": (F_SELECT, F_CONDENSE), "EQUAL": (F_TRANSLATE, F_TRANSMUTE),
+                  "INCREASE": (F_TRANSMUTE, F_BRANCH)}
+
+    def __init__(self, grammar, probes, *, meter):
+        self.projector = AtomicFieldProjector()
+        self.roles = AtomicForceClassifier(self.projector, EXEC_ERR).classify_operators(
+            grammar.operators, {k: tuple(v) for k, v in probes.items()}, meter=meter)
+        self.functors = []  # learned (outer_force, inner_force), most recent first
+
+    def _mass(self, value):
+        return self.projector.project(value).mass
+
+    def direction(self, public_io):
+        deltas = {(self._mass(y) > self._mass(x)) - (self._mass(y) < self._mass(x)) for x, y in public_io}
+        if deltas == {-1}:
+            return "DECREASE"
+        if deltas == {0}:
+            return "EQUAL"
+        if deltas == {1}:
+            return "INCREASE"
+        return None
+
+    def _hard_prune(self, op, stones, public_io):
+        role = self.roles.get(op.name)
+        if role is None:
+            return False
+        for v, (_, y) in zip(stones, public_io):
+            mv, my = self._mass(v), self._mass(y)
+            if role.mass_preserving and mv != my:
+                return True
+            if role.mass_contractive and mv <= my:
+                return True
+            if role.multiset_preserving and self.projector.project(v).quantum_multiset_hash != \
+                    self.projector.project(y).quantum_multiset_hash:
+                return True
+        return False
+
+    def _rank(self, inner_force, outer_force):
+        try:
+            return self.functors.index((outer_force, inner_force))
+        except ValueError:
+            return len(self.functors)
+
+    def search(self, grammar, task, *, meter, cache=None):
+        cache = cache if cache is not None else TaskEvalCache()
+        public = task["public"]
+        direction = self.direction(public)
+        if direction is None:
+            return dict(status="NOT_ESCALATED", fitting=0, reason="mixed_mass_deficit")
+        allowed = self.DIRECTIONS[direction]
+        sort = OpenWorldTaskStream._sort(public[0][0])
+        inner_ops = [op for op in grammar.operators if op.inputs == (sort,)
+                     and self.roles.get(op.name) and self.roles[op.name].force in allowed]
+        stones = []
+        for op in inner_ops:
+            vs = []
+            for x, y in public:
+                v = cache(op, x, meter, "force_two_hop_work_units")
+                mx, mv, my = self._mass(x), self._mass(v), self._mass(y)
+                toward = (my <= mv < mx) if direction == "DECREASE" else (mx < mv <= my) if direction == "INCREASE" else mv == mx
+                if v == EXEC_ERR or not toward or _safe_key(v) == _safe_key(x):
+                    vs = None
+                    break
+                vs.append(v)
+            if vs is not None:
+                stones.append((op, tuple(vs)))
+        fitting = []
+        pruned = 0
+        for op1, vs in sorted(stones, key=lambda st: st[0].name):
+            # Typed grammar: op_2 must accept op_1's declared output sort.
+            outer_ops = sorted((op for op in grammar.operators if op.inputs == (op1.output,)),
+                key=lambda op: (self._rank(self.roles[op1.name].force, self.roles.get(op.name).force
+                                           if self.roles.get(op.name) else None), op.name))
+            for op2 in outer_ops:
+                # O(1) law lookup, uncharged like the engine's last-step Noether skip.
+                if self._hard_prune(op2, vs, public):
+                    pruned += 1
+                    continue
+                ok = True
+                for v, (_, y) in zip(vs, public):
+                    if _safe_key(cache(op2, v, meter, "force_two_hop_work_units")) != _safe_key(y):
+                        ok = False
+                        break
+                if ok:
+                    v_query = cache(op1, task["query"], meter, "force_two_hop_work_units")
+                    fitting.append(((op1.name, op2.name), cache(op2, v_query, meter, "force_two_hop_work_units")))
+        report = dict(direction=direction, stepping_stones=len(stones), inner_candidates=len(inner_ops),
+                      noether_pruned=pruned, fitting=len(fitting))
+        if not fitting:
+            return dict(report, status="NO_PROGRAM_IN_BOUNDED_GRAMMAR")
+        values = {_safe_key(v) for _, v in fitting}
+        if len(values) == 1 and fitting[0][1] != EXEC_ERR:
+            best = min(fitting, key=lambda f: (self._rank(self.roles[f[0][0]].force, self.roles[f[0][1]].force), f[0]))
+            return dict(report, status=self.STATUS_UNIQUE, witness=best[0], query_value=best[1])
+        return dict(report, status="AMBIGUOUS_WITNESS_FOUND", distinct_query_values=len(values))
+
+    def learn(self, witness):
+        functor = (self.roles[witness[1]].force, self.roles[witness[0]].force)
+        if functor in self.functors:
+            self.functors.remove(functor)
+        self.functors.insert(0, functor)
+        return functor
+
+
+class PromotedChainLibrary:
+    """Solved 2-hop chains promoted for sibling tasks.
+
+    Consulted only after hop-1 exhausted its space with NO program, so the
+    declared space is hop-1 ∪ promoted chains; the query is certified only if
+    every fitting promoted chain agrees.
+    """
+
+    STATUS_UNIQUE = "UNIQUE_QUERY_OUTPUT_IN_DECLARED_LIBRARY_SPACE"
+
+    def __init__(self):
+        self.chains = []
+
+    def promote(self, chain):
+        if tuple(chain) not in self.chains:
+            self.chains.append(tuple(chain))
+
+    def search(self, grammar, task, *, meter, cache=None):
+        cache = cache if cache is not None else TaskEvalCache()
+        fitting = []
+        for chain in self.chains:
+            if any(name not in grammar.ops for name in chain):
+                continue
+            ok = True
+            for x, y in task["public"]:
+                v = x
+                for name in chain:
+                    v = cache(grammar.ops[name], v, meter, "promoted_chain_work_units")
+                if _safe_key(v) != _safe_key(y):
+                    ok = False
+                    break
+            if ok:
+                v = task["query"]
+                for name in chain:
+                    v = cache(grammar.ops[name], v, meter, "promoted_chain_work_units")
+                fitting.append((chain, v))
+        if not fitting:
+            return dict(status="NO_PROGRAM_IN_BOUNDED_GRAMMAR", fitting=0)
+        values = {_safe_key(v) for _, v in fitting}
+        if len(values) == 1 and fitting[0][1] != EXEC_ERR:
+            return dict(status=self.STATUS_UNIQUE, fitting=len(fitting), witness=fitting[0][0], query_value=fitting[0][1])
+        return dict(status="AMBIGUOUS_WITNESS_FOUND", fitting=len(fitting))
+
+
+def _chain_expr(grammar, chain, sort):
+    expr = variable(sort)
+    for name in chain:
+        expr = apply(grammar.ops[name], expr)
+    return expr
+
+
 def lyapunov_depth_ladder(meter):
     """Variable-depth hop ladder on +1; terminates by deficit, not hop==3."""
     op = Operator("op_0", ("INT",), "INT", lambda x: x+1)
@@ -466,8 +654,10 @@ def _llm_baseline(task, *, meter):
                 work=8, hops=0, runtime="deterministic_neuro_symbolic_fallback")
 
 
-def run_open_world_arena(meter, host=None, *, residual_multihop=False):
-    """residual_multihop=False is the v10 protocol (hop-1 + piecewise only).
+def run_open_world_arena(meter, host=None, *, residual_multihop=False, force_two_hop=True):
+    """force_two_hop=True (v12 default): hop-1 + piecewise + promoted chains + force-pruned 2-hop.
+
+    force_two_hop=False, residual_multihop=False is the v10/v11 protocol.
 
     True adds a hops=3 residual pass on tasks hop-1 exhausted; it solves more
     tasks but each deep solve costs several times the static per-task work.
@@ -479,6 +669,8 @@ def run_open_world_arena(meter, host=None, *, residual_multihop=False):
     tasks = OpenWorldTaskStream().tasks()
     fuzzer = OpenWorldTwinFuzzer()
     combinator = ConditionalPatchCombinator()
+    two_hop = ForcePrunedResidualTwoHop(grammar, probes, meter=meter)
+    library = PromotedChainLibrary()
     metabolic = HomeostaticMetabolicController()
     metabolic.rebalance()
     learner = DualMemoryLearner(meter=meter, resource_host=host, max_source_updates=16)
@@ -514,18 +706,45 @@ def run_open_world_arena(meter, host=None, *, residual_multihop=False):
                            skills=learner.contexts["OPEN_WORLD"]["library"].snapshot(),
                            doctor=learner.doctor, guided=True, bound=2, limit=3000, hops=1)
         evolving = hop1
-        if not evolving["solved"]:
+        if hop1["status"] == "UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED":
+            # Guided NO_PROGRAM / AMBIGUOUS / UNIQUE already decide the same
+            # bounded space; only a budget-exhausted guided pass is retried.
+            # Its work is ALWAYS counted (v10/v11 dropped it when unsolved).
             fallback = _solve_open(learner.contexts["OPEN_WORLD"]["grammar"], task, meter=meter,
                                    guided=False, bound=2, limit=3000, hops=1)
-            if fallback["solved"]:
-                evolving = dict(fallback, work=hop1["work"] + fallback["work"])
+            evolving = dict(fallback if fallback["solved"] else hop1, work=hop1["work"] + fallback["work"])
+        cache = TaskEvalCache()
+        # Cheap residual searches first (v12): promoted chains, then force-pruned 2-hop.
+        if force_two_hop and not evolving["solved"] and evolving["status"] == "NO_PROGRAM_IN_BOUNDED_GRAMMAR" \
+                and evolving.get("piecewise", {}).get("status") != combinator.STATUS_UNIQUE:
+            # Hop-1 exhausted with no program: promoted chains first, then the
+            # force-pruned 2-hop space. Same base toolbox as the static method.
+            local = WorkMeter(limit=3000, wall_limit=min(meter.wall_limit, 2.0))
+            residual = library.search(grammar, task, meter=local, cache=cache)
+            residual["source"] = "promoted_chain_library"
+            if residual["status"] != library.STATUS_UNIQUE:
+                residual = dict(two_hop.search(grammar, task, meter=local, cache=cache), source="force_pruned_two_hop",
+                                library_status=residual["status"])
+            meter.charge("open_world_residual_two_hop_work_units", local.total)
+            evolving = dict(evolving, work=evolving["work"]+local.total,
+                            residual_two_hop={k: v for k, v in residual.items() if k != "query_value"} | dict(work=local.total))
+            if residual["status"] in (library.STATUS_UNIQUE, two_hop.STATUS_UNIQUE):
+                view = PublicTask(task["public"], task["query"], task["output_sort"])
+                expr = _chain_expr(grammar, residual["witness"], OpenWorldTaskStream._sort(task["public"][0][0]))
+                valid = direct_open_certificate(grammar, view, expr, residual["query_value"], meter=meter)
+                evolving.update(status=residual["status"], witness=expr, certificate_valid=valid,
+                                solved=bool(valid and _safe_key(residual["query_value"]) == _safe_key(task["expected"])))
+                if valid:
+                    library.promote(residual["witness"])
+                    if residual["source"] == "force_pruned_two_hop":
+                        evolving["residual_two_hop"]["learned_functor"] = list(two_hop.learn(residual["witness"]))
         g_task = _task_grammar(learner.contexts["OPEN_WORLD"]["grammar"], task)
-        if not evolving["solved"] and evolving["status"] != "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE":
-            # Residual escalation only: hop-1 found no unique program. The
+        if not evolving["solved"] and not evolving["status"].startswith("UNIQUE"):
+            # Residual escalation only: no declared space certified a program yet. The
             # combinator itself declines when no op fits any public pair.
             local = WorkMeter(limit=3000, wall_limit=min(meter.wall_limit, 2.0))
             try:
-                piece = combinator.synthesize(g_task.operators, task["public"], task["query"], meter=local)
+                piece = combinator.synthesize(g_task.operators, task["public"], task["query"], meter=local, cache=cache)
             except WorkExhausted:
                 piece = dict(status="UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED", fitting=0)
             meter.charge("open_world_piecewise_work_units", local.total)
@@ -583,8 +802,15 @@ def run_open_world_arena(meter, host=None, *, residual_multihop=False):
         work = sum(c["methods"][method]["work"] for c in cells)
         summary[method] = dict(solved=len(solved), total_work=work,
             work_per_solved=(sum(r["work"] for r in solved)/len(solved)) if solved else None)
+    matched = [c for c in cells if c["methods"]["nexus_static_quotient_open_world"]["solved"]
+               and c["methods"]["nexus_self_evolving_open_world"]["solved"]]
+    matched_subset = dict(task_count=len(matched),
+        static_work=sum(c["methods"]["nexus_static_quotient_open_world"]["work"] for c in matched),
+        evolving_work=sum(c["methods"]["nexus_self_evolving_open_world"]["work"] for c in matched))
     evicted = {e["skill"] for e in learner.metabolic.evicted}
     return dict(schema="wave24_open_world_arena_v1", toolbox_size=len(grammar.operators), residual_multihop=residual_multihop,
+        force_two_hop=force_two_hop, matched_subset=matched_subset,
+        learned_force_functors=[list(f) for f in two_hop.functors], promoted_chains=[list(c) for c in library.chains],
         task_count=len(tasks), cells=cells, method_summary=summary, metabolic_telemetry=telemetry,
         metabolic_stability=dict(
             atp_total_sum=telemetry[-1]["atp_total_sum"] if telemetry else 0.0,

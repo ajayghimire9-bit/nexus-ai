@@ -100,5 +100,37 @@ def test_nursery_skills_hold_no_atp_until_measured_savings(tmp_path):
     for name in report["nursery"]:
         assert name not in brain.metabolic.atp
     for name in report["graduated"]:
-        uses = brain.lineage[name]["uses"]
-        assert len(uses) >= 2 and all(u["delta_w"] > 0 for u in uses)
+        entry = brain.lineage[name]
+        first = entry["uses"][:entry["graduated_after_uses"]]
+        assert len(first) >= 2 and all(u["delta_w"] > 0 for u in first)
+        assert name in brain.metabolic.delta_w
+
+
+def test_primitives_raise_and_compiled_try_except_genuinely_fires(tmp_path):
+    import pytest
+    from nexus.wave24_unlimited_playground import UnlimitedPythonGround
+    wrapped = UnlimitedPythonGround._unary(__import__("math").sqrt)
+    with pytest.raises(ValueError):
+        wrapped(-4)
+    with pytest.raises(ValueError):
+        wrapped(2)  # irrational result is outside the int domain, not silently x
+    assert wrapped(9) == 3
+    report = run_playground(tmp_path / "brain", epochs=4, meter=WorkMeter(limit=1_000_000, wall_limit=3.))
+    assert report["except_fired_skills"] and report["false_certificate_count"] == 0
+    brain = PersistentNexusBrain(tmp_path / "brain")
+    fns = dict(brain.load_toolbox_callables())
+    name = report["except_fired_skills"][0]
+    entry = brain.lineage[name]
+    assert entry["plan"]["kind"] == "try"
+    body = entry["plan"]["body"]["steps"][0]
+    x = entry["except_fired_on"][0]
+    crawled = UnlimitedPythonGround().crawl(brain, meter=WorkMeter(limit=200_000, wall_limit=2.))
+    with pytest.raises(ValueError):
+        {**crawled["primitives"], **fns}[body](x)
+    assert isinstance(fns[name](x), int)  # recovered through the except branch
+
+
+def test_legacy_swallowing_toolbox_is_archived_not_rebound(tmp_path):
+    (tmp_path / "evolved_toolbox.py").write_text("def _apply(fn, value):\n    return value\n")
+    brain = PersistentNexusBrain(tmp_path)
+    assert brain.archived_legacy is not None and (brain.archived_legacy / "evolved_toolbox.py").exists()

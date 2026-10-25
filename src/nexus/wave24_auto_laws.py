@@ -26,6 +26,180 @@ def structural_measure(value):
     return 1
 
 
+_MASK64 = (1 << 64) - 1
+
+
+def splitmix64(value):
+    """Deterministic 64-bit finalizer (Steele et al.); value is reduced mod 2^64."""
+    z = (value + 0x9E3779B97F4A7C15) & _MASK64
+    z = ((z ^ (z >> 30)) * 0xBF58476D1CE4E5B9) & _MASK64
+    z = ((z ^ (z >> 27)) * 0x94D049BB133111EB) & _MASK64
+    return z ^ (z >> 31)
+
+
+def _atom_hash(token):
+    """Stable 64-bit seed for one locus/quantum (process-independent, unlike hash())."""
+    return splitmix64(int.from_bytes(hashlib.blake2b(repr(token).encode(), digest_size=8).digest(), "big"))
+
+
+@dataclass(frozen=True)
+class AtomicSignature:
+    mass: int
+    locus_mask: int
+    quantum_multiset_hash: int
+    quantum_bloom_64: int
+    bond_bitmap: int
+    # XOR over (locus, quantum) pairs. locus_mask alone is permutation-invariant
+    # (XOR of coordinates), so arrangement changes are only visible here.
+    binding_hash: int = 0
+
+
+BOND_NONEMPTY, BOND_NONDECREASING, BOND_STRICT_INCREASING, BOND_ADJACENT_EQUAL, BOND_HOMOGENEOUS = 1, 2, 4, 8, 16
+
+
+class AtomicFieldProjector:
+    """One O(N) pass from any value to (locus, quantum) atoms and a 64-bit signature.
+
+    str/list/tuple: locus = index, quantum = element. dict: locus = key,
+    quantum = (key, value). set/frozenset: locus = quantum = element (order-free).
+    int: locus = bit index, quantum = (index, bit) plus a sign atom; mass = bit width.
+    Scalars (float, bool, None, other): one atom. Equal multiset hashes are
+    necessary, not sufficient, for permutation equality (64-bit hash).
+    """
+
+    def atoms(self, value):
+        if type(value) is int:
+            n = abs(value)
+            bits = [(i, (n >> i) & 1) for i in range(n.bit_length())]
+            return [(("bit", i), ("bit", i, b)) for i, b in bits] + [(("sign",), ("sign", value < 0))]
+        if isinstance(value, str):
+            return [(("i", i), ("c", ch)) for i, ch in enumerate(value)]
+        if isinstance(value, (list, tuple)):
+            return [(("i", i), ("v", freeze(v) if _freezable(v) else repr(v))) for i, v in enumerate(value)]
+        if isinstance(value, dict):
+            return [(("k", repr(k)), ("kv", repr(k), freeze(v) if _freezable(v) else repr(v))) for k, v in value.items()]
+        if isinstance(value, (set, frozenset)):
+            return [(("e", repr(v)), ("e", repr(v))) for v in sorted(value, key=repr)]
+        return [(("scalar",), ("s", freeze(value) if _freezable(value) else repr(value)))]
+
+    def project(self, value):
+        atoms = self.atoms(value)
+        locus = quantum = bloom = binding = 0
+        for loc, q in atoms:
+            locus ^= _atom_hash(loc)
+            binding ^= _atom_hash((loc, q))
+            h = _atom_hash(q)
+            quantum = (quantum + h) & _MASK64
+            bloom |= 1 << (h % 64)
+        bond = 0
+        quanta = [q for _, q in atoms]
+        if quanta:
+            bond |= BOND_NONEMPTY
+            if len({type(q[-1]) for q in quanta}) == 1:
+                bond |= BOND_HOMOGENEOUS
+            pairs = list(zip(quanta, quanta[1:]))
+            try:
+                if pairs and all(a[-1] <= b[-1] for a, b in pairs):
+                    bond |= BOND_NONDECREASING
+                if pairs and all(a[-1] < b[-1] for a, b in pairs):
+                    bond |= BOND_STRICT_INCREASING
+            except TypeError:
+                pass
+            if any(a == b for a, b in pairs):
+                bond |= BOND_ADJACENT_EQUAL
+        mass = abs(value).bit_length() if type(value) is int else len(atoms)
+        return AtomicSignature(mass, locus, quantum, bloom, bond, binding)
+
+
+def _is_container(value):
+    return isinstance(value, (str, list, tuple, dict, set, frozenset))
+
+
+def _freezable(value):
+    try:
+        freeze(value)
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
+F_SELECT, F_TRANSLATE, F_TRANSMUTE, F_CONDENSE, F_BRANCH = (
+    "F_SELECT", "F_TRANSLATE", "F_TRANSMUTE", "F_CONDENSE", "F_BRANCH")
+ATOMIC_FORCES = (F_SELECT, F_TRANSLATE, F_TRANSMUTE, F_CONDENSE, F_BRANCH)
+
+
+@dataclass(frozen=True)
+class AtomicForceRole:
+    """Empirical force role from probes; a search-ordering prior, never a soundness proof."""
+    force: str
+    probes_used: int
+    identity_probes: int
+    mass_preserving: bool
+    mass_contractive: bool
+    multiset_preserving: bool
+    locus_preserving: bool
+    local_forces: tuple
+
+
+def local_force(before, after):
+    """Force of one observed transition between two AtomicSignatures (None = identity)."""
+    if before == after:
+        return None
+    if after.mass == before.mass:
+        if after.quantum_multiset_hash == before.quantum_multiset_hash and (
+                after.locus_mask != before.locus_mask or after.binding_hash != before.binding_hash):
+            return F_TRANSLATE
+        if after.locus_mask == before.locus_mask and after.quantum_multiset_hash != before.quantum_multiset_hash:
+            return F_TRANSMUTE
+    subset = (after.quantum_bloom_64 & ~before.quantum_bloom_64) == 0
+    if after.mass <= before.mass and subset:
+        return F_SELECT
+    if after.mass < before.mass:
+        return F_CONDENSE
+    return F_TRANSMUTE  # non-conservative re-encoding (parse, type change, growth)
+
+
+class AtomicForceClassifier:
+    """Fingerprint a callable into one of the five universal atomic forces."""
+
+    def __init__(self, projector=None, error_token="EXEC_ERR"):
+        self.projector = projector or AtomicFieldProjector()
+        self.error_token = error_token
+
+    def classify(self, fn, probes, *, meter=None):
+        rows = []
+        for x in probes:
+            if meter is not None:
+                meter.charge("atomic_force_probe_work_units")
+            try:
+                y = fn(x)
+            except Exception:
+                continue
+            if isinstance(y, str) and y == self.error_token:
+                continue
+            rows.append((self.projector.project(x), self.projector.project(y), _is_container(x) and not _is_container(y)))
+        # Container -> scalar is aggregation regardless of the (incomparable) masses.
+        forces = [F_CONDENSE if fused else local_force(a, b) for a, b, fused in rows]
+        rows = [(a, b) for a, b, _ in rows]
+        active = sorted({f for f in forces if f is not None})
+        if not active:
+            force = F_SELECT  # identity on every defined probe: trivially selective
+        elif len(active) == 1:
+            force = active[0]
+        else:
+            force = F_BRANCH  # different forces on different phases of the domain
+        return AtomicForceRole(force=force, probes_used=len(rows), identity_probes=forces.count(None),
+            mass_preserving=bool(rows) and all(a.mass == b.mass for a, b in rows),
+            mass_contractive=bool(rows) and all(b.mass < a.mass for a, b in rows),
+            multiset_preserving=bool(rows) and all(a.quantum_multiset_hash == b.quantum_multiset_hash for a, b in rows),
+            locus_preserving=bool(rows) and all(a.locus_mask == b.locus_mask for a, b in rows),
+            local_forces=tuple(forces))
+
+    def classify_operators(self, operators, probes_by_sort, *, meter=None):
+        return {op.name: self.classify(op.fn, probes_by_sort.get(op.inputs[0], ()), meter=meter)
+                for op in operators if len(op.inputs) == 1}
+
+
 @dataclass(frozen=True)
 class AlgebraicRoleSignature:
     primary: str

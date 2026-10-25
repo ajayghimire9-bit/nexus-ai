@@ -55,6 +55,7 @@ from nexus.wave24_self_evolving_loop import (
     horizon_break_even,
     DerivationOutcomeCritic, mine_parametric_skills,
     select_ratcheted_source_skills, AlgebraicRoleFunctor, zero_shot_role_transfer,
+    UniversalForceFunctor, force_table, zero_shot_force_transfer,
     source_metabolic_utility,
     verify_workspace_certificate, ScratchpadWorkspaceEngine,
 )
@@ -294,6 +295,8 @@ def prepare_role_source(worlds, config, seed, meter, host):
     roles = {w.name: AutoOperatorFingerprinter(probe_cap=config["role_probe_cap"]).fingerprint_roles(
         w.grammar.operators, w.carriers, meter=meter) for w in worlds}
     rows, receipts, hygiene, schemas = [], [], [], {}
+    forces = {w.name: force_table(w.grammar, w.carriers, meter=meter) for w in worlds}
+    force_schemas = {}
     for world in worlds[:-1]:
         player = ZeroDataFrontierSelfPlay(derive_seed(seed, "source", world.name), config["b0"],
             public_count=config["source_public_count"], behavioral_features=True)
@@ -310,6 +313,8 @@ def prepare_role_source(worlds, config, seed, meter, host):
             if decision["accepted"]:
                 for functor in AlgebraicRoleFunctor.lift(skill, roles[world.name]):
                     schemas.setdefault(functor.key(), functor)
+                for functor in UniversalForceFunctor.lift(skill, forces[world.name], source_domain=world.name):
+                    force_schemas.setdefault(functor.key(), functor)
         for skill in libraries[world.name].snapshot():
             final_utility = source_metabolic_utility(skill, player, world,
                 library_size=len(libraries[world.name].snapshot()), meter=meter)
@@ -327,6 +332,11 @@ def prepare_role_source(worlds, config, seed, meter, host):
         meter=meter, max_skills=config["max_skills_per_world"])
     for skill, record in zip(transferred, lineage):
         libraries[target.name].install_transfer(skill, target.grammar, record)
+    # Force functors are bound and reported only; they are NOT installed, so the
+    # registered matrix library for the fifth world is unchanged by this report.
+    force_functors = tuple(force_schemas[k] for k in sorted(force_schemas))
+    force_bound, force_lineage = zero_shot_force_transfer(force_functors, target.grammar, forces[target.name],
+        target.inputs, meter=meter, max_skills=3)
     return critic, libraries, dict(recipe="role_ratchet_v3", receipts=receipts,
         available_rows=sum(r["training_rows_generated"] for r in receipts), fitted_rows=len(selected_rows),
         source_rows=selected_rows, source_feedback_sha256=digest(selected_rows), scorer_source_digest=critic.source_digest,
@@ -336,6 +346,8 @@ def prepare_role_source(worlds, config, seed, meter, host):
         intra_domain_promoted_skills_count=sum(len(libraries[w.name].snapshot()) for w in worlds[:-1]),
         unseen_world_selfplay_tasks=0, unseen_world_training_rows=0,
         unseen_world_zero_shot_transferred_skills_count=len(transferred), transfer_lineage=lineage,
+        force_tables=forces, universal_force_functors=[asdict(f) for f in force_functors],
+        unseen_world_force_functor_bindings_count=len(force_bound), force_transfer_lineage=force_lineage,
         heldout_training_tasks=0, heldout_test_time_selfplay=False, hygiene=hygiene)
 
 
@@ -414,7 +426,8 @@ def execute_request(request, allocation, *, output_path=None):
         scorer, libraries, source = prepare_source(worlds, config, seed, meter, host)
         payload["source_preparation"] = source
         for key in ("intra_domain_promoted_skills_count", "cross_domain_role_functors_count", "unseen_world_selfplay_tasks",
-                    "unseen_world_training_rows", "unseen_world_zero_shot_transferred_skills_count"):
+                    "unseen_world_training_rows", "unseen_world_zero_shot_transferred_skills_count",
+                    "unseen_world_force_functor_bindings_count"):
             if key in source:
                 payload[key] = source[key]
         from nexus.wave24_auto_laws import AlgebraicRoleSignature
@@ -617,6 +630,10 @@ def main(argv=None):
             (ROOT/"docs/evidence/wave24_azr_dev_guidance_v11.json").exists()
             or (ROOT/"runs/experimental/wave24-azr/attempts/dev-24001-guidance-v11").exists()):
         raise ValueError("dev-24001-guidance-v11 grant already consumed; preserved receipt forbids automatic retry")
+    if args.dev_preflight and run_id == "dev-24001-guidance-v12" and (
+            (ROOT/"docs/evidence/wave24_azr_dev_guidance_v12.json").exists()
+            or (ROOT/"runs/experimental/wave24-azr/attempts/dev-24001-guidance-v12").exists()):
+        raise ValueError("dev-24001-guidance-v12 grant already consumed; preserved receipt forbids automatic retry")
     if args.post_freeze and (ROOT/"artifacts/wave24_azr_ruler_cegis.json").exists():
         raise ValueError("final assessment already recorded; refusing before any seed or resource reservation")
     import subprocess
@@ -668,7 +685,8 @@ def main(argv=None):
                                   if k in ("recipe", "available_rows", "fitted_rows", "heldout_training_tasks",
                                       "intra_domain_promoted_skills_count", "cross_domain_role_functors_count",
                                       "unseen_world_selfplay_tasks", "unseen_world_training_rows",
-                                      "unseen_world_zero_shot_transferred_skills_count")},
+                                      "unseen_world_zero_shot_transferred_skills_count",
+                                      "unseen_world_force_functor_bindings_count")},
                               calibration=payload.get("calibration"), method_summary=payload.get("method_summary"),
                               lifelong_summary={k:v for k,v in payload.get("lifelong_7_capability_audit",{}).items()
                                   if k not in ("stream1","stream2","stream3")}), indent=2))
