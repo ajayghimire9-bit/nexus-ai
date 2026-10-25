@@ -313,10 +313,11 @@ class Searcher:
     """
 
     def __init__(self, public, query, ops, *, popper=True, extra=(), order=None, early_ambiguity=False,
-                 partial_depth=2, m=None, budget=20000):
+                 partial_depth=2, m=None, budget=20000, max_depth=3, abstract=None):
         self.m = m or meter(budget)
         self.xs = [x for x, _ in public]
         self.targets = [vkey(y) for _, y in public]
+        self._target_values = [y for _, y in public]
         self.n = len(self.xs)
         self.inputs = self.xs + list(extra) + [query]
         self.graph = ObsEGraph(self.n)
@@ -326,6 +327,10 @@ class Searcher:
         self.order = order
         self.popper, self.early = popper, early_ambiguity
         self.partial_depth = partial_depth
+        # abstract(values_public, targets, remaining_depth, meter) -> True iff provably no plain completion
+        # reaches the targets (sound pruner; its own evaluation work is charged by the callee)
+        self.abstract, self.max_depth = abstract, max_depth
+        self.pruned_abstract = 0
         self._partial_keys = set()
         self._side, self._side_keys = [], set()
         self.frontier = [((), self.inputs)]
@@ -378,6 +383,10 @@ class Searcher:
                         self._side_add(side, prog, out, full)
                     continue
                 if not self.graph.add(prog, out):
+                    continue
+                if self.abstract is not None and list(keys) != targets and \
+                        self.abstract(pub, self._target_values, self.max_depth - depth, self.m):
+                    self.pruned_abstract += 1
                     continue
                 if list(keys) == targets:
                     if out[-1] is not RAISED:
