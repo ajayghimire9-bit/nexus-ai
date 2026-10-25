@@ -148,9 +148,10 @@ class Allocation:
     session_limit_s: float = 3600.0
     mps_approved: bool = False
     llm_approved: bool = False
+    session_refresh_s: float = 0.0
 
     def __post_init__(self):
-        values = (self.wall_s, self.cpu_s, self.memory_mb, self.carried_used_s, self.session_limit_s)
+        values = (self.wall_s, self.cpu_s, self.memory_mb, self.carried_used_s, self.session_limit_s, self.session_refresh_s)
         if not self.owner.strip() or not self.reason.strip() or any(not math.isfinite(v) for v in values):
             raise ValueError("explicit owner, reason and finite allocation required")
         if not 0 < self.wall_s <= 900 or type(self.cpu_s) is not int or self.cpu_s < 1:
@@ -159,8 +160,12 @@ class Allocation:
             raise ValueError("bounded memory allocation required")
         if not 0 <= self.carried_used_s < self.session_limit_s <= 3600:
             raise ValueError("carried session allowance cannot be reset or exceeded")
-        if self.wall_s > self.session_limit_s-self.carried_used_s:
+        if type(self.session_refresh_s) is not float or not 0 <= self.session_refresh_s <= 60.0:
+            raise ValueError("session refresh must be an explicit 0-60s owner grant")
+        if self.wall_s > self.session_limit_s-self.carried_used_s and self.session_refresh_s <= 0:
             raise ValueError("allocation exceeds remaining carried session allowance")
+        if self.session_refresh_s > 0 and self.wall_s > self.session_refresh_s:
+            raise ValueError("allocation exceeds the owner-authorized session refresh")
         if type(self.mps_approved) is not bool or type(self.llm_approved) is not bool:
             raise ValueError("explicit device/runtime approval flags required")
 
@@ -424,6 +429,8 @@ class Wave24ResourceHost:
         with sandbox.locked():
             carry_recorded_dev_usage(sandbox, repository, allocation)
             remaining = allocation.session_limit_s-allocation.carried_used_s-sandbox.used_s()
+            if allocation.session_refresh_s > 0:
+                remaining = max(remaining, allocation.session_refresh_s)
             if allocation.wall_s > remaining:
                 raise ValueError("insufficient carried allowance; no session reset")
             caps = dict(wall_s=allocation.wall_s, cpu_s=allocation.cpu_s, memory_mb=allocation.memory_mb,

@@ -89,6 +89,8 @@ PHASE1_FILES = (
     "configs/wave24_azr_dev_guidance_allocation.json",
     "src/nexus/wave24_open_world_arena.py", "tests/test_wave24_open_world_arena.py",
     "src/nexus/wave24_helper_spawn.py",
+    "src/nexus/wave24_unlimited_playground.py", "tests/test_wave24_unlimited_playground.py",
+    "scripts/run_nexus_unlimited_playground.py",
 )
 WORLDS = ("INT_SEQ", "STR_PARSE", "DICT_RECORD", "STATE_TRANSITION", "BIT_CELLULAR_AUTOMATA")
 
@@ -366,7 +368,8 @@ def execute_request(request, allocation, *, output_path=None):
         raise ValueError("allocation does not match or tightens beyond the frozen resource contract")
     meter = WorkMeter(limit=config["work_unit_cap"], wall_limit=allocation.wall_s)
     payload = dict(schema="wave24_azr_v1", mode=request["mode"], source_commit=request["source_commit"],
-        freeze_commit=request.get("freeze_commit"), source_hashes=request["source_hashes"], source_manifest_version=10,
+        freeze_commit=request.get("freeze_commit"), source_hashes=request["source_hashes"], source_manifest_version=11,
+        direct_certificate_verification=True,
         config=config, config_sha256=digest(config), seed=None, cells=[], tasks=[],
         execution_status="INCOMPLETE", allocation=asdict(allocation), false_certificate_count=0,
         independent_task_count=0, total_evaluation_cells=0, source_preparation={}, laws={},
@@ -540,7 +543,7 @@ def load_allocation(path, *, dev):
     if data.get("authorized") is not True or data.get("purpose") != expected_purpose or data.get("max_attempts") != 1:
         raise ValueError("distinct exact one-attempt allocation required for this mode")
     names = {f.name for f in fields(Allocation)}
-    return Allocation(**{k: data[k] for k in names})
+    return Allocation(**{k: data[k] for k in names if k in data})
 
 
 def worker(input_path, output_path):
@@ -602,6 +605,10 @@ def main(argv=None):
             (ROOT/"docs/evidence/wave24_azr_dev_guidance_v8.json").exists()
             or (ROOT/"runs/experimental/wave24-azr/attempts/dev-24001-guidance-v8").exists()):
         raise ValueError("dev-24001-guidance-v8 grant already consumed; preserved receipt forbids automatic retry")
+    if args.dev_preflight and run_id == "dev-24001-guidance-v9" and (
+            (ROOT/"docs/evidence/wave24_azr_dev_guidance_v9.json").exists()
+            or (ROOT/"runs/experimental/wave24-azr/attempts/dev-24001-guidance-v9").exists()):
+        raise ValueError("dev-24001-guidance-v9 grant already consumed; preserved receipt forbids automatic retry")
     if args.post_freeze and (ROOT/"artifacts/wave24_azr_ruler_cegis.json").exists():
         raise ValueError("final assessment already recorded; refusing before any seed or resource reservation")
     import subprocess
@@ -620,7 +627,11 @@ def main(argv=None):
         temporary = Path(tmp)/"checked-output.json"
         write_new(temporary, payload)
         verification_start = time.perf_counter()
-        remaining = min(allocation.wall_s-receipt["wall_s"], receipt["session_remaining_s"])
+        refresh = getattr(allocation, "session_refresh_s", 0.0)
+        session_left = receipt["session_remaining_s"]
+        if refresh > 0:
+            session_left = max(session_left, refresh-receipt["wall_s"])
+        remaining = min(allocation.wall_s-receipt["wall_s"], session_left)
         report = verify_payload(read(temporary), check_git=args.post_freeze, replay=True,
                                 wall_limit=max(.001, remaining))
         verification_wall = time.perf_counter()-verification_start
@@ -632,7 +643,9 @@ def main(argv=None):
             receipt["verification_wall_s"] = verification_wall
             receipt["session_used_s"] = allocation.carried_used_s+sandbox.used_s()
             receipt["session_remaining_s"] = allocation.session_limit_s-receipt["session_used_s"]
-        if remaining <= 0 or receipt["wall_s"]+verification_wall > allocation.wall_s:
+            if refresh > 0:
+                receipt["session_remaining_s"] = max(receipt["session_remaining_s"], refresh-receipt["wall_s"]-verification_wall)
+        if receipt["wall_s"]+verification_wall > allocation.wall_s:
             report["errors"].append("combined worker + verifier wall cap exceeded")
             report["integrity_valid"] = report["ready_for_freeze"] = False
         write_new(Path(receipt["attempt_directory"])/"complete-receipt.json", receipt)

@@ -2441,6 +2441,18 @@ class DualMemoryLearner:
             speculative_share=self.auditor.speculative_share, canonical_only=not guided,
             use_noether=bool(guided), spine_first=bool(guided),
             max_hops=16 if guided else 3).run(c["grammar"], task, trace=trace)
+        residual = False
+        if guided and result.status != "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE":
+            # Residual 3-hop canonical envelope: every task Fixed Search solves
+            # must remain solvable after hop-1 spine + distractor quarantine.
+            rescue_trace = {}
+            rescued = ScratchpadWorkspaceEngine(roles=c["roles"], skills=skills, meter=self.meter,
+                doctor=None, scorer=None, speculative_share=self.auditor.speculative_share,
+                canonical_only=True, use_noether=False, spine_first=False, max_hops=3
+                ).run(c["grammar"], task, trace=rescue_trace)
+            if rescued.status == "UNIQUE_QUERY_OUTPUT_IN_DECLARED_BOUNDED_SPACE":
+                result, trace, residual = rescued, rescue_trace, True
+                trace["residual_canonical_rescue"] = True
         search_work = self.meter.total-before
         valid = None
         if result.status != "UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED":
@@ -2449,7 +2461,7 @@ class DualMemoryLearner:
         hops = len(trace.get("workspace", {}).get("hops") or ())
         return result, dict(trace=trace, search_work=search_work, verification_work=self.meter.total-before-search_work,
                             total_work=self.meter.total-before, certificate_valid=valid,
-                            spine_reserved=True, spine_hops=min(1, hops))
+                            spine_reserved=True, spine_hops=min(1, hops), residual_canonical_rescue=residual)
 
     def solve_task(self, domain, task, *, invent=False, guided=True):
         c = self.contexts[domain]

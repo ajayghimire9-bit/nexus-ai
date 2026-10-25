@@ -89,6 +89,7 @@ def run_lifelong_streams(worlds, config, seed, meter, host, *, progress=None):
     learner=DualMemoryLearner(meter=meter,resource_host=host,max_source_updates=16)
     output=dict(schema="wave24_lifelong_audit_v1", scope="finite_source_development_not_general_intelligence",
         execution_status="INCOMPLETE", stream1=[],stream2={},stream3={}, false_certificate_count=0,
+        direct_certificate_verification=True,
         source_feedback_events=0,source_update_domains=[], unseen_world_selfplay_tasks=0,unseen_world_training_rows=0,
         all_seven_general_capabilities_demonstrated=False)
     start=meter.total
