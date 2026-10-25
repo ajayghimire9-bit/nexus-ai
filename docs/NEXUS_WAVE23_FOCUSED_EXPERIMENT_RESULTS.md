@@ -1,5 +1,22 @@
 # NEXUS Wave 23 — Focused Meta-Learning, Three-State Witness Checking & Scoped Symbolic-KAN Experiment Results
 
+## 0. Mandatory Forensic & Methodological Audit Summary of Wave 23 (`5ace47b -> 30101c5`)
+- **Canonical Classification of Wave 23 (`5ace47b -> 30101c5`)**: **`Developmental / Pre-Freeze Exercised Suite, Verifier Line-142 Failure & Confounded Stopping/Promotion Rules (Preserved Unamended)`**
+- **Three Exact Technical Audit Facts**:
+  1. **Verifier Line-142 Empty-Export Check:** In `scripts/verify_wave23_focused_experiment.py` (frozen at `5ace47b`), line 142 checked `symkan_faithful_export_count == symkan_attempted_count` (`21 == 33`), where `12` attempts occurred on sorted-output tasks (`APPEND_SORT_ASC`/`APPEND_SORT_TOP2`) that returned `None` (`induced_expression = ''`), causing the frozen verifier to return `"valid": false`. All `21/21` non-empty induced KAN expressions had `faithful_export == True`.
+  2. **Why Wave 23 Did Not Establish a First-Acquisition Work Advantage (`17,966` vs `17,919`):** Although `learned_proposer_with_templates` reduced candidate evaluations to find $g_1$ by `18.34%` (`2,903` vs `3,555`), linear witness scanning over the unquotiented catalog $\mathcal{G}_{\text{bound}}$ meant `candidate_evaluations + witness_search_work` was conserved on unique first-acquisition tasks.
+  3. **Remaining Scope Limits Identified by External Audit:** Wave 23 operated within a single-type (`list[int]`) 4-slot template catalog, did not test whether the learning procedure itself improves across unfamiliar task families with disjoint types/operators, and did not test resilience against harmful skill interference under domain shifts.
+- **Six Methodological Confounds Identified by Audit (Describing Wave 23 as Developmental)**:
+  1. **Assessment Tasks Exercised During Development:** `build_wave23_Tracks_suite` existed in `wave23_focused_meta_learning_and_witness_engine.py` before Commit 1 (`5ace47b`) and was exercised by `pytest` during development.
+  2. **Frozen Verifier Failure:** `scripts/verify_wave23_focused_experiment.py` (frozen at `5ace47b`) failed (`"valid": false`) on line 142 (`symkan_faithful_export_count == symkan_attempted_count`, `21 == 33`).
+  3. **Hand-Written Mapping Score & Asymmetric Early Stopping in Track 1:** In Track 1, the "learned" trajectory score (`ambig_hits * 2.0 + repeat_depth * 1.5 + len * 0.25`) was hand-written rather than trained from source-task experience, and only `learned_interventional_mapping_solver` broke early when `len(surviving) <= 1`.
+  4. **Differing Stopping & Promotion Rules Across Methods in Track 2:** `learned_proposer_plus_symkan_with_promotion` was granted a 1-task promotion rule on `w23_t2_09`, whereas ordinary template promotion required 2 solved tasks.
+  5. **Repeated-Use Uniqueness Shortcut Covered Only Retrieved Templates:** Tasks in Track 2 carried an evaluator-supplied `is_repeated_use_task` flag that unlocked a fast-path uniqueness check over `template_front_programs` only; agreement among retrieved templates does not prove uniqueness over the full bounded grammar $\mathcal{G}_{\text{bound}}$.
+  6. **Scripted Controller Comparison in Track 3:** The tool-equipped LLM comparison in Track 3 was a scripted controller comparison around `CompositionalNLWorldCompiler.compile_english_turn`.
+- All original Wave 23 artifacts (`artifacts/seed_wave23_focused_experiment.json`, `artifacts/seed_wave23_suite_manifest.json`) and tables below are preserved unamended for provenance.
+
+---
+
 ## 1. Executive Summary & Reproducible Two-Commit Protocol Verification
 Wave 23 (`cursor/seed-wave23-focused-meta-learning-witness-and-kan-experiment`, starting from `bf6e747`) implements a focused, deconfounded experimental study across three tracks on Apple Silicon M4 (`torch.device("mps")` + Metal GPU `qwen2.5-0.5b-instruct-q4_k_m.gguf`) while preserving NEXUS's single authoritative skill/template and provenance store (`AuthoritativeTemplateStore`).
 
