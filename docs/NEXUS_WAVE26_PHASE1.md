@@ -72,3 +72,25 @@ python3 scripts/phase1_crossover.py --confirm --cell d2/F8/large --c 20 --n 8 --
 * AND an identical replay digest.
 
 S2 vs exact (mark (b)) is reported as well. It is expected to fail, as on the whole dev grid.
+
+## Confirmation attempt 1 (seeds 1001–1005) — outcome LOST, not observed
+
+The locked confirmation ran at `eb7be04`. The main loop finished all five seeds (657.8 s, ledgered). The
+driver then ran the fresh-process replay inside the same invocation before writing the artifact, which
+pushed the invocation past `timeout 900`. The process was killed with no artifact and no checkpoint.
+
+* No outcome was written, printed or seen; the only output was progress lines ("seed N: 8 episodes").
+* The registry marked 1001–1005 as spent, as designed. Ledger charge: 657.8 s + 242.2 s.
+* Phase 1 therefore has **no confirmation result**. It is neither PASS nor FAIL.
+
+**Driver fix.**
+* Confirmation now requires `--checkpoint`.
+* The artifact is written before any replay.
+* Replay is a separate bounded invocation, `--replay-of <artifact>`.
+
+**Decision needed from the owner.** Either:
+1. authorise a re-execution of the identical frozen code on 1001–1005, which is deterministic, and whose
+   outcomes nobody has seen; or
+2. allocate a new confirmation range in the seed registry.
+
+The remaining allocation (~603 s) is not enough for either plus a replay (~660 s + ~650 s).

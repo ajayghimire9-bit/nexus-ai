@@ -102,8 +102,24 @@ def main():
     ap.add_argument("--n", type=int, default=5)
     ap.add_argument("--out")
     ap.add_argument("--checkpoint", help="append-only jsonl of finished (seed, cell) units; resumes from it")
+    ap.add_argument("--replay-of", help="saved confirmation artifact to verify by fresh-process replay")
     ap.add_argument("--wall-cap", type=float, default=840.0, help="stop cleanly between units before this many s")
     a = ap.parse_args()
+    if a.replay_of:
+        from nexus.standing_gates import g_replay
+        art = json.loads(Path(a.replay_of).read_text())
+        rep = art["report"]
+        t0 = time.perf_counter()
+        try:
+            rep["G_replay"] = g_replay(__file__, ["--cell", a.cell, "--c", str(a.c), "--n", str(a.n)], rep["digest"])
+        finally:
+            with LEDGER.open("a") as f:
+                f.write(json.dumps(dict(run="wave26-phase1-replay", wall_s=time.perf_counter() - t0,
+                                        status="COMPLETE")) + "\n")
+        rep["phase1_pass"] = rep["phase1_pass_excluding_replay"] and rep["G_replay"]["passed"]
+        Path(a.replay_of).write_text(json.dumps(art, default=repr, sort_keys=True))
+        print(json.dumps(rep["G_replay"]), rep["phase1_pass"])
+        return
     from nexus import seed_registry as R
     from nexus.wave26_phase1 import CELLS, ORACLE_COSTS
     if a.grid:
@@ -114,6 +130,8 @@ def main():
         costs = (a.c,)
         seeds = list(range(1001, 1006))
         if not a.digest_only:
+            if not a.checkpoint:
+                raise SystemExit("confirmation runs must pass --checkpoint (results are never held only in memory)")
             R.claim("phase1", "confirm", seeds, run_id="phase1-confirm")
     if a.digest_only:
         rows, _, _ = run_seeds(seeds, cells, costs, a.n)
@@ -133,14 +151,14 @@ def main():
     if a.grid:
         rep["selection"] = select(tab)
     else:
-        from nexus.standing_gates import g_replay, g_soundness, g_tycho
+        from nexus.standing_gates import g_soundness, g_tycho
         rep["G_soundness"] = g_soundness([q for r in rows for q in r["queries"]])
         rep["G_tycho"] = g_tycho(rows)
-        rep["G_replay"] = g_replay(__file__, ["--cell", a.cell, "--c", str(a.c), "--n", str(a.n)], rep["digest"])
         v = list(tab.values())[0]
-        rep["phase1_pass"] = (v["full_beats"] and
-                              v["arms"]["full_nexus_vault"]["solved"] >= v["arms"]["exact_eig_enum"]["solved"] and
-                              rep["G_soundness"]["passed"] and rep["G_replay"]["passed"])
+        rep["phase1_pass_excluding_replay"] = (
+            v["full_beats"] and v["arms"]["full_nexus_vault"]["solved"] >= v["arms"]["exact_eig_enum"]["solved"]
+            and rep["G_soundness"]["passed"])
+        rep["G_replay"] = "PENDING: run --replay-of <this artifact> as a separate bounded invocation"
     Path(a.out).write_text(json.dumps(dict(schema="wave26_phase1", report=rep, rows=rows), default=repr, sort_keys=True))
     for k, v in tab.items():
         ex = v["arms"]["exact_eig_enum"]["fully_loaded"]
