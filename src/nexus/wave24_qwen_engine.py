@@ -4,10 +4,18 @@ Apple Silicon + explicit owner grant (NEXUS_EXPLICIT_METAL_GRANT=1) -> Persisten
 with n_gpu_layers=-1 (all layers on the Metal GPU). Anywhere else -> PersistentLocalRuntime on
 CPU. The backend actually used is recorded in every telemetry row; a CPU run is never labelled Metal.
 Every generated and evaluated token is counted so LLM cost enters the work meter.
+
+Deterministic response cache keyed by sha256(model, system, user, prefix, stop, temperature, seed,
+max_tokens): a cache hit returns the identical text AND re-charges the original token counts, so
+caching saves wall-clock only and never makes an arm look cheaper. Optional on-disk cache
+(NEXUS_QWEN_CACHE=<path.jsonl>) makes a run replayable without the model.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import os
+import threading
 import time
 from pathlib import Path
 
@@ -47,36 +55,6 @@ def locate_server():
     raise FileNotFoundError("llama-server executable not found; set NEXUS_LLAMA_SERVER")
 
 
-def _sampled_local_runtime():
-    """CPU runtime with seeded sampling, as a subclass: the pinned shared runtime file is NOT edited."""
-    import threading
-    from nexus.seed.local_model_runtime import PersistentLocalRuntime
-
-    class SampledLocalRuntime(PersistentLocalRuntime):
-        def complete(self, prompt, schema, *, temperature=0.0, seed=None):
-            if float(temperature) == 0.0 and (seed is None or seed == self.config.seed):
-                return super().complete(prompt, schema)
-            with self._lock:
-                start = time.perf_counter()
-                payload = dict(prompt=prompt, n_predict=self.config.max_tokens, temperature=float(temperature),
-                               seed=int(self.config.seed if seed is None else seed), cache_prompt=False)
-                timer = threading.Timer(self.config.request_timeout_s, self.cancel)
-                timer.daemon = True
-                timer.start()
-                try:
-                    raw = self._http("POST", "/completion", payload, self.config.request_timeout_s)
-                finally:
-                    timer.cancel()
-                if type(raw.get("content")) is not str:
-                    raise ValueError("missing completion content")
-                return dict(content=raw["content"], telemetry=dict(
-                    inference_ran=True, application_cache_hit=False, input_tokens=raw.get("tokens_evaluated"),
-                    generated_tokens=raw.get("tokens_predicted"), runtime_timings=raw.get("timings"),
-                    request_wall_s=time.perf_counter() - start))
-
-    return SampledLocalRuntime
-
-
 def chatml(system, user):
     return (f"<|im_start|>system\n{system}<|im_end|>\n<|im_start|>user\n{user}<|im_end|>\n"
             f"<|im_start|>assistant\n")
@@ -85,7 +63,7 @@ def chatml(system, user):
 class QwenEngine:
     """One persistent llama-server process; complete() returns text + exact token telemetry."""
 
-    def __init__(self, *, max_tokens=384, context=4096, threads=4, request_timeout_s=60.0):
+    def __init__(self, *, max_tokens=384, context=4096, threads=4, request_timeout_s=60.0, cache_path=None):
         from nexus.seed.metal_model_runtime import ExplicitMetalGrant, apple_silicon_metal_available
         self.model = locate_model()
         self.server = locate_server()
@@ -99,6 +77,13 @@ class QwenEngine:
         self._grant = grant
         self.rows = []
         self.rt = None
+        self.cache = {}
+        self.cache_path = cache_path or os.environ.get("NEXUS_QWEN_CACHE")
+        if self.cache_path and Path(self.cache_path).exists():
+            for line in Path(self.cache_path).read_text().splitlines():
+                if line.strip():
+                    rec = json.loads(line)
+                    self.cache[rec["key"]] = rec
 
     def start(self):
         if self.rt is not None:
@@ -111,8 +96,7 @@ class QwenEngine:
                                 request_timeout_s=self.timeout, startup_timeout_s=60)
             self.rt = PersistentMetalRuntime(cfg, self._grant)
         else:
-            from nexus.seed.local_model_runtime import RuntimeConfig
-            PersistentLocalRuntime = _sampled_local_runtime()
+            from nexus.seed.local_model_runtime import PersistentLocalRuntime, RuntimeConfig
             cfg = RuntimeConfig(model_path=str(self.model), executable=self.server, context_size=self.context,
                                 threads=min(4, self.threads), max_tokens=self.max_tokens,
                                 request_timeout_s=self.timeout, startup_timeout_s=60)
@@ -120,18 +104,58 @@ class QwenEngine:
         self.meta = dict(self.rt.start(), backend=self.backend, n_gpu_layers=-1 if self.backend == "metal" else 0)
         return self.meta
 
-    def complete(self, system, user, *, temperature=0.0, seed=0, purpose=""):
+    def _post(self, prompt, *, temperature, seed, stop):
+        """One raw /completion request through the owned runtime (same path on Metal and CPU)."""
+        rt = self.rt
+        abort = getattr(rt, "_abort_request", None) or rt.cancel
+        payload = dict(prompt=prompt, n_predict=self.max_tokens, temperature=float(temperature), seed=int(seed),
+                       cache_prompt=False, stop=list(stop))
+        with rt._lock:
+            if rt.process is None or rt.process.poll() is not None:
+                raise RuntimeError("persistent runtime must be started explicitly")
+            rt._cancel.clear()
+            timer = threading.Timer(self.timeout, abort)
+            timer.daemon = True
+            timer.start()
+            try:
+                raw = rt._http("POST", "/completion", payload, self.timeout)
+            finally:
+                timer.cancel()
+        if rt._cancel.is_set():
+            raise TimeoutError("inference cancelled or timed out")
+        if type(raw.get("content")) is not str:
+            raise ValueError("missing completion content")
+        return raw
+
+    def complete(self, system, user, *, temperature=0.0, seed=0, purpose="", prefix="", stop=("<|im_end|>",)):
+        """Returns (prefix + completion, row). `prefix` pre-fills the assistant turn (e.g. a code fence)."""
         self.start()
         t0 = time.perf_counter()
-        out = self.rt.complete(chatml(system, user), None, temperature=temperature, seed=seed)
-        tel = out.get("telemetry") or {}
-        if not tel.get("application_cache_hit") and (tel.get("input_tokens") is None or tel.get("generated_tokens") is None):
-            raise RuntimeError("runtime returned no token counts; refusing to charge zero LLM cost")
-        row = dict(purpose=purpose, backend=self.backend, temperature=temperature, seed=seed,
-                   input_tokens=tel.get("input_tokens") or 0, generated_tokens=tel.get("generated_tokens") or 0,
-                   cache_hit=bool(tel.get("application_cache_hit")), wall_s=time.perf_counter() - t0)
+        stop = tuple(stop)
+        key = hashlib.sha256(json.dumps([self.model.name, system, user, prefix, list(stop), float(temperature),
+                                         int(seed), self.max_tokens]).encode()).hexdigest()
+        hit = self.cache.get(key)
+        if hit is None:
+            raw = self._post(chatml(system, user) + prefix, temperature=temperature, seed=seed, stop=stop)
+            if raw.get("tokens_evaluated") is None or raw.get("tokens_predicted") is None:
+                raise RuntimeError("runtime returned no token counts; refusing to charge zero LLM cost")
+            hit = dict(key=key, content=raw["content"], input_tokens=int(raw["tokens_evaluated"]),
+                       generated_tokens=int(raw["tokens_predicted"]), stopped_word=bool(raw.get("stopped_word") or raw.get("stop_type") == "word"))
+            self.cache[key] = hit
+            if self.cache_path:
+                with open(self.cache_path, "a") as fh:
+                    fh.write(json.dumps(hit) + "\n")
+            cached = False
+        else:
+            cached = True
+        row = dict(purpose=purpose, backend=self.backend, temperature=temperature, seed=seed, request_sha256=key,
+                   input_tokens=hit["input_tokens"], generated_tokens=hit["generated_tokens"], cache_hit=cached,
+                   wall_s=time.perf_counter() - t0)
         self.rows.append(row)
-        return out["content"], row
+        text = prefix + hit["content"]
+        if stop and stop[0].startswith("```") and hit.get("stopped_word"):
+            text += stop[0]
+        return text, row
 
     @staticmethod
     def work_units(row):
@@ -140,9 +164,11 @@ class QwenEngine:
 
     def telemetry(self):
         return dict(backend=self.backend, model=str(self.model.name), hardware=self.hardware,
-                    calls=len(self.rows), generated_tokens=sum(r["generated_tokens"] for r in self.rows),
+                    calls=len(self.rows), fresh_calls=sum(not r["cache_hit"] for r in self.rows),
+                    charged_cache_hits=sum(r["cache_hit"] for r in self.rows), generated_tokens=sum(r["generated_tokens"] for r in self.rows),
                     input_tokens=sum(r["input_tokens"] for r in self.rows),
-                    wall_s=sum(r["wall_s"] for r in self.rows), server=self.meta if self.rt else None)
+                    wall_s=sum(r["wall_s"] for r in self.rows),
+                    max_tokens=self.max_tokens, server=self.meta if self.rt else None)
 
     def close(self):
         if self.rt is not None:

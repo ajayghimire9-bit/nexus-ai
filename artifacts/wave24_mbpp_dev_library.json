@@ -1,0 +1,2213 @@
+{
+ "allocator": {
+  "error:IndexError": {
+   "cegis": [
+    0,
+    2,
+    1332
+   ],
+   "resample": [
+    1,
+    2,
+    1987
+   ]
+  },
+  "error:TypeError": {
+   "cegis": [
+    0,
+    2,
+    543
+   ],
+   "resample": [
+    0,
+    2,
+    984
+   ]
+  },
+  "error:definition failed": {
+   "cegis": [
+    0,
+    1,
+    273
+   ],
+   "resample": [
+    0,
+    1,
+    214
+   ]
+  },
+  "fail": {
+   "cegis": [
+    1,
+    22,
+    17474
+   ],
+   "resample": [
+    1,
+    22,
+    56455
+   ]
+  },
+  "no_code": {
+   "cegis": [
+    0,
+    0,
+    0
+   ],
+   "resample": [
+    2,
+    16,
+    5574
+   ]
+  }
+ },
+ "k": 2,
+ "library": {
+  "helpers": [
+   {
+    "deps": [],
+    "digest": "239cec680b1984a7",
+    "layer": 1,
+    "name": "replace_blank",
+    "origin": "solution",
+    "params": [
+     "s",
+     "c"
+    ],
+    "src": "def replace_blank(s, c):\n    return s.replace(' ', c)",
+    "task_ids": [
+     230
+    ],
+    "text": "Write a function to replace blank spaces with any character in a string."
+   },
+   {
+    "deps": [],
+    "digest": "03aa87860b485bdd",
+    "layer": 1,
+    "name": "is_odd",
+    "origin": "solution",
+    "params": [
+     "n"
+    ],
+    "src": "def is_odd(n):\n    return n & 1 == 1",
+    "task_ids": [
+     887
+    ],
+    "text": "Write a python function to check whether the given number is odd or not using bitwise operator."
+   },
+   {
+    "deps": [],
+    "digest": "af11302e580af2db",
+    "layer": 1,
+    "name": "index_minimum",
+    "origin": "solution",
+    "params": [
+     "tuples"
+    ],
+    "src": "def index_minimum(tuples):\n    min_index = min(range(len(tuples)), key=lambda i: tuples[i][1])\n    return tuples[min_index][0]",
+    "task_ids": [
+     94
+    ],
+    "text": "Write a function to extract the index minimum value record from the given tuples."
+   },
+   {
+    "deps": [
+     "counting_sort"
+    ],
+    "digest": "682db6be4056c495",
+    "layer": 2,
+    "name": "radix_sort",
+    "origin": "solution",
+    "params": [
+     "arr"
+    ],
+    "src": "def radix_sort(arr):\n    max1 = max(arr)\n    exp = 1\n    while max1 // exp > 0:\n        counting_sort(arr, exp)\n        exp *= 10\n    return arr",
+    "task_ids": [
+     516
+    ],
+    "text": "Write a function to sort a list of elements using radix sort."
+   },
+   {
+    "deps": [],
+    "digest": "2dd45dca37e5f578",
+    "layer": 1,
+    "name": "counting_sort",
+    "origin": "aux",
+    "params": [
+     "arr",
+     "exp"
+    ],
+    "src": "def counting_sort(arr, exp):\n    n = len(arr)\n    output = [0] * n\n    count = [0] * 10\n    for i in range(n):\n        index = arr[i] // exp % 10\n        count[index] += 1\n    for i in range(1, 10):\n        count[i] += count[i - 1]\n    for i in range(n - 1, -1, -1):\n        index = arr[i] // exp % 10\n        output[count[index] - 1] = arr[i]\n        count[index] -= 1\n    for i in range(n):\n        arr[i] = output[i]\n    return arr",
+    "task_ids": [
+     516
+    ],
+    "text": "Write a function to sort a list of elements using radix sort."
+   },
+   {
+    "deps": [],
+    "digest": "2759f2da7b93e131",
+    "layer": 1,
+    "name": "odd_Num_Sum",
+    "origin": "solution",
+    "params": [
+     "n"
+    ],
+    "src": "def odd_Num_Sum(n):\n    sum = 0\n    for i in range(1, 2 * n + 1, 2):\n        sum += i ** 4\n    return sum",
+    "task_ids": [
+     770
+    ],
+    "text": "Write a python function to find the sum of fourth power of first n odd natural numbers."
+   },
+   {
+    "deps": [],
+    "digest": "dcfb20d9e8df8720",
+    "layer": 1,
+    "name": "check_valid",
+    "origin": "solution",
+    "params": [
+     "tup"
+    ],
+    "src": "def check_valid(tup):\n    return all(tup)",
+    "task_ids": [
+     713
+    ],
+    "text": "Write a function to check if the given tuple contains all valid values or not."
+   },
+   {
+    "deps": [],
+    "digest": "c88a611cccebd421",
+    "layer": 1,
+    "name": "get_Inv_Count",
+    "origin": "solution",
+    "params": [
+     "a",
+     "n"
+    ],
+    "src": "def get_Inv_Count(a, n):\n    c = 0\n    for i in range(n):\n        for j in range(i + 1, n):\n            if a[i] > a[j]:\n                c += 1\n    return c",
+    "task_ids": [
+     296
+    ],
+    "text": "Write a python function to count inversions in an array."
+   },
+   {
+    "deps": [],
+    "digest": "c03331d1df8e2c7a",
+    "layer": 1,
+    "name": "check_Even_Parity",
+    "origin": "solution",
+    "params": [
+     "n"
+    ],
+    "src": "def check_Even_Parity(n):\n    binary = bin(n)[2:]\n    count = binary.count('1')\n    return count % 2 == 0",
+    "task_ids": [
+     855
+    ],
+    "text": "Write a python function to check for even parity of a given number."
+   },
+   {
+    "deps": [],
+    "digest": "be1adaa8c47070d6",
+    "layer": 1,
+    "name": "maximum",
+    "origin": "solution",
+    "params": [
+     "a",
+     "b"
+    ],
+    "src": "def maximum(a, b):\n    return a if a > b else b",
+    "task_ids": [
+     309
+    ],
+    "text": "Write a python function to find the maximum of two numbers."
+   },
+   {
+    "deps": [],
+    "digest": "de99b404d6342f51",
+    "layer": 1,
+    "name": "opposite_Signs",
+    "origin": "solution",
+    "params": [
+     "a",
+     "b"
+    ],
+    "src": "def opposite_Signs(a, b):\n    return a * b < 0",
+    "task_ids": [
+     58
+    ],
+    "text": "Write a python function to check whether the given two integers have opposite sign or not."
+   },
+   {
+    "deps": [],
+    "digest": "4c3b2065565b8cc7",
+    "layer": 1,
+    "name": "frequency",
+    "origin": "solution",
+    "params": [
+     "arr",
+     "num"
+    ],
+    "src": "def frequency(arr, num):\n    count = 0\n    for i in range(len(arr)):\n        if arr[i] == num:\n            count += 1\n    return count",
+    "task_ids": [
+     168
+    ],
+    "text": "Write a python function to find the frequency of a number in a given array."
+   },
+   {
+    "deps": [],
+    "digest": "b2fc8da2eebd7a21",
+    "layer": 1,
+    "name": "check_equilateral",
+    "origin": "solution",
+    "params": [
+     "a",
+     "b",
+     "c"
+    ],
+    "src": "def check_equilateral(a, b, c):\n    return a == b == c",
+    "task_ids": [
+     51
+    ],
+    "text": "Write a function to print check if the triangle is equilateral or not."
+   },
+   {
+    "deps": [
+     "maximum"
+    ],
+    "digest": "b5d7fa92fc208786",
+    "layer": 2,
+    "name": "max_similar_indices",
+    "origin": "solution",
+    "params": [
+     "a0",
+     "a1"
+    ],
+    "src": "def max_similar_indices(a0, a1):\n    return maximum(a0, a1)",
+    "task_ids": [
+     951
+    ],
+    "text": "Write a function to find the maximum of similar indices in two lists of tuples."
+   },
+   {
+    "deps": [],
+    "digest": "8a994851266a5734",
+    "layer": 1,
+    "name": "min_k",
+    "origin": "solution",
+    "params": [
+     "lst",
+     "k"
+    ],
+    "src": "def min_k(lst, k):\n    lst.sort(key=lambda x: x[1])\n    return lst[:k]",
+    "task_ids": [
+     753
+    ],
+    "text": "Write a function to find minimum k records from tuple list."
+   },
+   {
+    "deps": [],
+    "digest": "9ff57a38e1418710",
+    "layer": 1,
+    "name": "check_monthnum",
+    "origin": "solution",
+    "params": [
+     "month"
+    ],
+    "src": "def check_monthnum(month):\n    if month == 'February':\n        return True\n    else:\n        return False",
+    "task_ids": [
+     336
+    ],
+    "text": "Write a function to check whether the given month name contains 28 days or not."
+   },
+   {
+    "deps": [],
+    "digest": "d7e42582cca2abfd",
+    "layer": 1,
+    "name": "convert",
+    "origin": "solution",
+    "params": [
+     "lst"
+    ],
+    "src": "def convert(lst):\n    return int(''.join(map(str, lst)))",
+    "task_ids": [
+     673
+    ],
+    "text": "Write a python function to convert a list of multiple integers into a single integer."
+   },
+   {
+    "deps": [],
+    "digest": "bde8129c31f8fe14",
+    "layer": 1,
+    "name": "convert_t252",
+    "origin": "solution",
+    "params": [
+     "complex_num"
+    ],
+    "src": "import cmath\ndef convert_t252(complex_num):\n    polar = cmath.polar(complex_num)\n    return polar",
+    "task_ids": [
+     252
+    ],
+    "text": "Write a python function to convert complex numbers to polar coordinates."
+   },
+   {
+    "deps": [],
+    "digest": "9e9477809f127047",
+    "layer": 1,
+    "name": "sum_nums",
+    "origin": "solution",
+    "params": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "src": "def sum_nums(a, b, c, d):\n    if a + b >= c and a + b <= d:\n        return 20\n    else:\n        return a + b",
+    "task_ids": [
+     675
+    ],
+    "text": "Write a function to add two integers. however, if the sum is between the given range it will return 20."
+   },
+   {
+    "deps": [],
+    "digest": "4933801983f765fb",
+    "layer": 1,
+    "name": "mul_list",
+    "origin": "solution",
+    "params": [
+     "list1",
+     "list2"
+    ],
+    "src": "def mul_list(list1, list2):\n    return list(map(lambda x, y: x * y, list1, list2))",
+    "task_ids": [
+     682
+    ],
+    "text": "Write a function to multiply two lists using map and lambda function."
+   },
+   {
+    "deps": [
+     "is_odd"
+    ],
+    "digest": "6549c39c14b6bcd6",
+    "layer": 2,
+    "name": "check_Odd_Parity",
+    "origin": "solution",
+    "params": [
+     "a0"
+    ],
+    "src": "def check_Odd_Parity(a0):\n    return is_odd(a0)",
+    "task_ids": [
+     768
+    ],
+    "text": "Write a python function to check for odd parity of a given number."
+   },
+   {
+    "deps": [],
+    "digest": "c6694d983dc38d1d",
+    "layer": 1,
+    "name": "group_keyvalue",
+    "origin": "solution",
+    "params": [
+     "keyvalue_pairs"
+    ],
+    "src": "def group_keyvalue(keyvalue_pairs):\n    result = {}\n    for key, value in keyvalue_pairs:\n        if key in result:\n            result[key].append(value)\n        else:\n            result[key] = [value]\n    return result",
+    "task_ids": [
+     174
+    ],
+    "text": "Write a function to group a sequence of key-value pairs into a dictionary of lists."
+   },
+   {
+    "deps": [],
+    "digest": "6d19ef607c5bd1f1",
+    "layer": 1,
+    "name": "last_Two_Digits",
+    "origin": "solution",
+    "params": [
+     "n"
+    ],
+    "src": "def last_Two_Digits(n):\n    fact = 1\n    for i in range(1, n + 1):\n        fact *= i\n    return fact % 100",
+    "task_ids": [
+     692
+    ],
+    "text": "Write a python function to find the last two digits in factorial of a given number."
+   },
+   {
+    "deps": [],
+    "digest": "4517cc2d1cb671e1",
+    "layer": 1,
+    "name": "min_coins",
+    "origin": "solution",
+    "params": [
+     "coins",
+     "V",
+     "value"
+    ],
+    "src": "def min_coins(coins, V, value):\n    m = len(coins)\n    dp = [value] * (value + 1)\n    dp[0] = 0\n    for i in range(1, value + 1):\n        for j in range(m):\n            if coins[j] <= i:\n                dp[i] = min(dp[i], 1 + dp[i - coins[j]])\n    return dp[value]",
+    "task_ids": [
+     531
+    ],
+    "text": "Write a function to find minimum number of coins that make a given value."
+   },
+   {
+    "deps": [],
+    "digest": "e5fe2eafa83700b2",
+    "layer": 1,
+    "name": "Split",
+    "origin": "solution",
+    "params": [
+     "L"
+    ],
+    "src": "import functools\ndef Split(L):\n    return list(filter(lambda x: x & 1 == 0, L))",
+    "task_ids": [
+     629
+    ],
+    "text": "Write a python function to find even numbers from a mixed list."
+   },
+   {
+    "deps": [],
+    "digest": "1026d774f4a20b99",
+    "layer": 1,
+    "name": "count_list",
+    "origin": "solution",
+    "params": [
+     "lists"
+    ],
+    "src": "def count_list(lists):\n    count = 0\n    for list in lists:\n        count += 1\n    return count",
+    "task_ids": [
+     792
+    ],
+    "text": "Write a python function to count the number of lists in a given number of lists."
+   }
+  ],
+  "n_abstractions": 0,
+  "promotions": [],
+  "solutions": [
+   {
+    "func": "replace_blank",
+    "name": "replace_blank",
+    "setup": "",
+    "task_id": 230,
+    "tests": [
+     "assert replace_blank(\"hello people\",'@')==(\"hello@people\")",
+     "assert replace_blank(\"python program language\",'$')==(\"python$program$language\")",
+     "assert replace_blank(\"blank space\",\"-\")==(\"blank-space\")"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "is_odd",
+    "name": "is_odd",
+    "setup": "",
+    "task_id": 887,
+    "tests": [
+     "assert is_odd(5) == True",
+     "assert is_odd(6) == False",
+     "assert is_odd(7) == True"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "index_minimum",
+    "name": "index_minimum",
+    "setup": "",
+    "task_id": 94,
+    "tests": [
+     "assert index_minimum([('Rash', 143), ('Manjeet', 200), ('Varsha', 100)]) == 'Varsha'",
+     "assert index_minimum([('Yash', 185), ('Dawood', 125), ('Sanya', 175)]) == 'Dawood'",
+     "assert index_minimum([('Sai', 345), ('Salman', 145), ('Ayesha', 96)]) == 'Ayesha'"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "radix_sort",
+    "name": "radix_sort",
+    "setup": "",
+    "task_id": 516,
+    "tests": [
+     "assert radix_sort([15, 79, 25, 68, 37]) == [15, 25, 37, 68, 79]",
+     "assert radix_sort([9, 11, 8, 7, 3, 2]) == [2, 3, 7, 8, 9, 11]",
+     "assert radix_sort([36, 12, 24, 26, 29]) == [12, 24, 26, 29, 36]"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "odd_Num_Sum",
+    "name": "odd_Num_Sum",
+    "setup": "",
+    "task_id": 770,
+    "tests": [
+     "assert odd_Num_Sum(2) == 82",
+     "assert odd_Num_Sum(3) == 707",
+     "assert odd_Num_Sum(4) == 3108"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "check_valid",
+    "name": "check_valid",
+    "setup": "",
+    "task_id": 713,
+    "tests": [
+     "assert check_valid((True, True, True, True) ) == True",
+     "assert check_valid((True, False, True, True) ) == False",
+     "assert check_valid((True, True, True, True) ) == True"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "get_Inv_Count",
+    "name": "get_Inv_Count",
+    "setup": "",
+    "task_id": 296,
+    "tests": [
+     "assert get_Inv_Count([1,20,6,4,5],5) == 5",
+     "assert get_Inv_Count([1,2,1],3) == 1",
+     "assert get_Inv_Count([1,2,5,6,1],5) == 3"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "check_Even_Parity",
+    "name": "check_Even_Parity",
+    "setup": "",
+    "task_id": 855,
+    "tests": [
+     "assert check_Even_Parity(10) == True",
+     "assert check_Even_Parity(11) == False",
+     "assert check_Even_Parity(18) == True"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "maximum",
+    "name": "maximum",
+    "setup": "",
+    "task_id": 309,
+    "tests": [
+     "assert maximum(5,10) == 10",
+     "assert maximum(-1,-2) == -1",
+     "assert maximum(9,7) == 9"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "opposite_Signs",
+    "name": "opposite_Signs",
+    "setup": "",
+    "task_id": 58,
+    "tests": [
+     "assert opposite_Signs(1,-2) == True",
+     "assert opposite_Signs(3,2) == False",
+     "assert opposite_Signs(-10,-10) == False"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "frequency",
+    "name": "frequency",
+    "setup": "",
+    "task_id": 168,
+    "tests": [
+     "assert frequency([1,2,3],4) == 0",
+     "assert frequency([1,2,2,3,3,3,4],3) == 3",
+     "assert frequency([0,1,2,3,1,2],1) == 2"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "check_equilateral",
+    "name": "check_equilateral",
+    "setup": "",
+    "task_id": 51,
+    "tests": [
+     "assert check_equilateral(6,8,12)==False ",
+     "assert check_equilateral(6,6,12)==False",
+     "assert check_equilateral(6,6,6)==True"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "max_similar_indices",
+    "name": "max_similar_indices",
+    "setup": "",
+    "task_id": 951,
+    "tests": [
+     "assert max_similar_indices([(2, 4), (6, 7), (5, 1)],[(5, 4), (8, 10), (8, 14)]) == [(5, 4), (8, 10), (8, 14)]",
+     "assert max_similar_indices([(3, 5), (7, 8), (6, 2)],[(6, 5), (9, 11), (9, 15)]) == [(6, 5), (9, 11), (9, 15)]",
+     "assert max_similar_indices([(4, 6), (8, 9), (7, 3)],[(7, 6), (10, 12), (10, 16)]) == [(7, 6), (10, 12), (10, 16)]"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "min_k",
+    "name": "min_k",
+    "setup": "",
+    "task_id": 753,
+    "tests": [
+     "assert min_k([('Manjeet', 10), ('Akshat', 4), ('Akash', 2), ('Nikhil', 8)], 2) == [('Akash', 2), ('Akshat', 4)]",
+     "assert min_k([('Sanjeev', 11), ('Angat', 5), ('Akash', 3), ('Nepin', 9)], 3) == [('Akash', 3), ('Angat', 5), ('Nepin', 9)]",
+     "assert min_k([('tanmay', 14), ('Amer', 11), ('Ayesha', 9), ('SKD', 16)], 1) == [('Ayesha', 9)]"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "check_monthnum",
+    "name": "check_monthnum",
+    "setup": "",
+    "task_id": 336,
+    "tests": [
+     "assert check_monthnum(\"February\")==True",
+     "assert check_monthnum(\"January\")==False",
+     "assert check_monthnum(\"March\")==False"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "convert",
+    "name": "convert",
+    "setup": "",
+    "task_id": 673,
+    "tests": [
+     "assert convert([1,2,3]) == 123",
+     "assert convert([4,5,6]) == 456",
+     "assert convert([7,8,9]) == 789"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "convert",
+    "name": "convert_t252",
+    "setup": "",
+    "task_id": 252,
+    "tests": [
+     "assert convert(1) == (1.0, 0.0)",
+     "assert convert(4) == (4.0,0.0)",
+     "assert convert(5) == (5.0,0.0)"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "sum_nums",
+    "name": "sum_nums",
+    "setup": "",
+    "task_id": 675,
+    "tests": [
+     "assert sum_nums(2,10,11,20)==20",
+     "assert sum_nums(15,17,1,10)==32",
+     "assert sum_nums(10,15,5,30)==20"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "mul_list",
+    "name": "mul_list",
+    "setup": "",
+    "task_id": 682,
+    "tests": [
+     "assert mul_list([1, 2, 3],[4,5,6])==[4,10,18]",
+     "assert mul_list([1,2],[3,4])==[3,8]",
+     "assert mul_list([90,120],[50,70])==[4500,8400]"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "check_Odd_Parity",
+    "name": "check_Odd_Parity",
+    "setup": "",
+    "task_id": 768,
+    "tests": [
+     "assert check_Odd_Parity(13) == True",
+     "assert check_Odd_Parity(21) == True",
+     "assert check_Odd_Parity(18) == False"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "group_keyvalue",
+    "name": "group_keyvalue",
+    "setup": "",
+    "task_id": 174,
+    "tests": [
+     "assert group_keyvalue([('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)])=={'yellow': [1, 3], 'blue': [2, 4], 'red': [1]}",
+     "assert group_keyvalue([('python', 1), ('python', 2), ('python', 3), ('python', 4), ('python', 5)])=={'python': [1,2,3,4,5]}",
+     "assert group_keyvalue([('yellow',100), ('blue', 200), ('yellow', 300), ('blue', 400), ('red', 100)])=={'yellow': [100, 300], 'blue': [200, 400], 'red': [100]}"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "last_Two_Digits",
+    "name": "last_Two_Digits",
+    "setup": "",
+    "task_id": 692,
+    "tests": [
+     "assert last_Two_Digits(7) == 40",
+     "assert last_Two_Digits(5) == 20",
+     "assert last_Two_Digits(2) == 2"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "min_coins",
+    "name": "min_coins",
+    "setup": "",
+    "task_id": 531,
+    "tests": [
+     "assert min_coins([9, 6, 5, 1] ,4,11)==2",
+     "assert min_coins([4,5,6,7,8,9],6,9)==1",
+     "assert min_coins([1, 2, 3],3,4)==2"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "Split",
+    "name": "Split",
+    "setup": "",
+    "task_id": 629,
+    "tests": [
+     "assert Split([1,2,3,4,5]) == [2,4]",
+     "assert Split([4,5,6,7,8,0,1]) == [4,6,8,0]",
+     "assert Split ([8,12,15,19]) == [8,12]"
+    ],
+    "verified_on": "all"
+   },
+   {
+    "func": "count_list",
+    "name": "count_list",
+    "setup": "",
+    "task_id": 792,
+    "tests": [
+     "assert count_list([[1, 3], [5, 7], [9, 11], [13, 15, 17]]) == 4",
+     "assert count_list([[1,2],[2,3],[4,5]]) == 3",
+     "assert count_list([[1,0],[2,0]]) == 2"
+    ],
+    "verified_on": "all"
+   }
+  ]
+ },
+ "llm": {
+  "backend": "cpu",
+  "calls": 138,
+  "charged_cache_hits": 138,
+  "fresh_calls": 0,
+  "generated_tokens": 14160,
+  "hardware": {
+   "available": false,
+   "backend": "",
+   "machine": "x86_64",
+   "metal": false,
+   "system": "Linux"
+  },
+  "input_tokens": 22323,
+  "max_tokens": 320,
+  "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "server": {
+   "backend": "cpu",
+   "cold_startup_s": 2.6117104690001725,
+   "cpu_count": 4,
+   "executable_sha256": "f6632f7879a928cb6602967946ac6ab662214456af61399588e06cf144b2893c",
+   "gguf_file_type": 15,
+   "hardware": "x86_64",
+   "model_file": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+   "model_file_bytes": 1117320736,
+   "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+   "n_gpu_layers": 0,
+   "os": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+   "quantization": "Q4_K_M",
+   "quantization_source": "GGUF general.file_type metadata",
+   "runtime_version": "version: 1 (47a3966)\nbuilt with GNU 13.3.0 for Linux x86_64",
+   "settings": {
+    "application_cache": true,
+    "backend": "llama_cpp_server",
+    "context_size": 4096,
+    "executable": "/home/user/tools/llama.cpp/build/bin/llama-server",
+    "host": "127.0.0.1",
+    "max_tokens": 320,
+    "model_path": "/home/user/models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "port": 0,
+    "prompt_cache": false,
+    "request_timeout_s": 60.0,
+    "seed": 42,
+    "startup_timeout_s": 60,
+    "threads": 4
+   }
+  },
+  "wall_s": 0.002283941001223866
+ },
+ "n_train": 58,
+ "report": {
+  "admission_work": 1369,
+  "allocator": {
+   "error:IndexError": {
+    "cegis": [
+     0,
+     2,
+     1332
+    ],
+    "resample": [
+     1,
+     2,
+     1987
+    ]
+   },
+   "error:TypeError": {
+    "cegis": [
+     0,
+     2,
+     543
+    ],
+    "resample": [
+     0,
+     2,
+     984
+    ]
+   },
+   "error:definition failed": {
+    "cegis": [
+     0,
+     1,
+     273
+    ],
+    "resample": [
+     0,
+     1,
+     214
+    ]
+   },
+   "fail": {
+    "cegis": [
+     1,
+     22,
+     17474
+    ],
+    "resample": [
+     1,
+     22,
+     56455
+    ]
+   },
+   "no_code": {
+    "cegis": [
+     0,
+     0,
+     0
+    ],
+    "resample": [
+     2,
+     16,
+     5574
+    ]
+   }
+  },
+  "bridges": [
+   {
+    "task_id": 707,
+    "verified": false,
+    "work": 846
+   },
+   {
+    "task_id": 670,
+    "verified": false,
+    "work": 1680
+   },
+   {
+    "task_id": 503,
+    "verified": false,
+    "work": 889
+   },
+   {
+    "task_id": 500,
+    "verified": false,
+    "work": 500
+   },
+   {
+    "task_id": 421,
+    "verified": false,
+    "work": 526
+   },
+   {
+    "task_id": 343,
+    "verified": false,
+    "work": 3206
+   }
+  ],
+  "correct": 25,
+  "library": {
+   "abstractions": 0,
+   "by_layer": {
+    "1": 23,
+    "2": 3
+   },
+   "by_origin": {
+    "aux": 1,
+    "solution": 25
+   },
+   "helpers": 26,
+   "max_layer": 2,
+   "promotions": [],
+   "rejections": 4
+  },
+  "plausible": 27,
+  "sleep_work": 7647,
+  "sleeps": [
+   {
+    "after": 10,
+    "bridge": {
+     "task_id": 707,
+     "verified": false,
+     "work": 846
+    },
+    "library": 5,
+    "promoted": [],
+    "work": 846
+   },
+   {
+    "after": 20,
+    "bridge": {
+     "task_id": 670,
+     "verified": false,
+     "work": 1680
+    },
+    "library": 7,
+    "promoted": [],
+    "work": 1680
+   },
+   {
+    "after": 30,
+    "bridge": {
+     "task_id": 503,
+     "verified": false,
+     "work": 889
+    },
+    "library": 11,
+    "promoted": [],
+    "work": 889
+   },
+   {
+    "after": 40,
+    "bridge": {
+     "task_id": 500,
+     "verified": false,
+     "work": 500
+    },
+    "library": 14,
+    "promoted": [],
+    "work": 500
+   },
+   {
+    "after": 50,
+    "bridge": {
+     "task_id": 421,
+     "verified": false,
+     "work": 526
+    },
+    "library": 19,
+    "promoted": [],
+    "work": 526
+   },
+   {
+    "after": 58,
+    "bridge": {
+     "task_id": 343,
+     "verified": false,
+     "work": 3206
+    },
+    "library": 26,
+    "promoted": [],
+    "work": 3206
+   }
+  ],
+  "stages": {
+   "cegis": 3,
+   "greedy": 21,
+   "helper_composition": 2,
+   "none": 31,
+   "resample": 1
+  },
+  "tasks": 58,
+  "total_work": 123548,
+  "wake_work": 114532
+ },
+ "rows": [
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1140,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 749,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1173
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1014,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 633,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1031
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1009,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 810,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1023
+  },
+  {
+   "admitted": true,
+   "answer": "def replace_blank(s, c):\n    return s.replace(' ', c)",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 194,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 230,
+   "trace": [
+    "greedy"
+   ],
+   "work": 199
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1745,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 108,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1765
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 6846,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 493,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 26915
+  },
+  {
+   "admitted": true,
+   "answer": "def is_odd(n):\n    return n & 1 == 1",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 200,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 887,
+   "trace": [
+    "greedy"
+   ],
+   "work": 206
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "bridged": true,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1024,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 707,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1242
+  },
+  {
+   "admitted": true,
+   "answer": "def index_minimum(tuples):\n    min_index = min(range(len(tuples)), key=lambda i: tuples[i][1])\n    return tuples[min_index][0]",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 505,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 94,
+   "trace": [
+    "greedy"
+   ],
+   "work": 516
+  },
+  {
+   "admitted": true,
+   "answer": "def radix_sort(arr):\n    max1 = max(arr)\n    exp = 1\n    while max1 // exp > 0:\n        counting_sort(arr, exp)\n        exp *= 10\n    return arr\n\ndef counting_sort(arr, exp):\n    n = len(arr)\n    output = [0] * n\n    count = [0] * 10\n    for i in range(n):\n        index = arr[i] // exp % 10\n        count[index] += 1\n    for i in range(1, 10):\n        count[i] += count[i - 1]\n    for i in range(n - 1, -1, -1):\n        index = arr[i] // exp % 10\n        output[count[index] - 1] = arr[i]\n        count[index] -= 1\n    for i in range(n):\n        arr[i] = output[i]\n    return arr",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 3866,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "cegis",
+   "task_id": 516,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 4056
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 755,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 380,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 763
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1305,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 902,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1343
+  },
+  {
+   "admitted": true,
+   "answer": "def odd_Num_Sum(n):\n    sum = 0\n    for i in range(1, 2 * n + 1, 2):\n        sum += i ** 4\n    return sum",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 364,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 770,
+   "trace": [
+    "greedy"
+   ],
+   "work": 380
+  },
+  {
+   "admitted": false,
+   "answer": "def validate(n):\n    num_str = str(n)\n    for i in range(len(num_str)):\n        if num_str.count(num_str[i]) <= int(num_str[i]):\n            return True\n    return False",
+   "answer_layer": 1,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 514,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 283,
+   "trace": [
+    "greedy"
+   ],
+   "work": 528
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1065,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 254,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1095
+  },
+  {
+   "admitted": true,
+   "answer": "def check_valid(tup):\n    return all(tup)",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 181,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 713,
+   "trace": [
+    "greedy"
+   ],
+   "work": 192
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 4456,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 165,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 4560
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1429,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 164,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 1439
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 730,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 812,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 754
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "bridged": true,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1993,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 670,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 2003
+  },
+  {
+   "admitted": true,
+   "answer": "def get_Inv_Count(a, n):\n    c = 0\n    for i in range(n):\n        for j in range(i + 1, n):\n            if a[i] > a[j]:\n                c += 1\n    return c",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 3531,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "cegis",
+   "task_id": 296,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 3676
+  },
+  {
+   "admitted": true,
+   "answer": "def check_Even_Parity(n):\n    binary = bin(n)[2:]\n    count = binary.count('1')\n    return count % 2 == 0",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 364,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 855,
+   "trace": [
+    "greedy"
+   ],
+   "work": 379
+  },
+  {
+   "admitted": true,
+   "answer": "def maximum(a, b):\n    return a if a > b else b",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 142,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 309,
+   "trace": [
+    "greedy"
+   ],
+   "work": 156
+  },
+  {
+   "admitted": true,
+   "answer": "def opposite_Signs(a, b):\n    return a * b < 0",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 207,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 58,
+   "trace": [
+    "greedy"
+   ],
+   "work": 222
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1092,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 853,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1402
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1028,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 117,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 1054
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 3140,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 481,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 3166
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 4490,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 941,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 4671
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1430,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 391,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 1452
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "bridged": true,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1237,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 503,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1296
+  },
+  {
+   "admitted": true,
+   "answer": "def frequency(arr, num):\n    count = 0\n    for i in range(len(arr)):\n        if arr[i] == num:\n            count += 1\n    return count",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 396,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 168,
+   "trace": [
+    "greedy"
+   ],
+   "work": 420
+  },
+  {
+   "admitted": false,
+   "answer": "def access_key(d, index):\n    if 'physics' in d:\n        return 'physics'\n    elif 'math' in d:\n        return 'math'\n    elif 'chemistry' in d:\n        return 'chemistry'\n    else:\n        return 'No key found'",
+   "answer_layer": 1,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 359,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 679,
+   "trace": [
+    "greedy"
+   ],
+   "work": 377
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1840,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 351,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 21884
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 998,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 519,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1028
+  },
+  {
+   "admitted": true,
+   "answer": "def check_equilateral(a, b, c):\n    return a == b == c",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 191,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 51,
+   "trace": [
+    "greedy"
+   ],
+   "work": 208
+  },
+  {
+   "admitted": true,
+   "answer": "def maximum(a, b):\n    return a if a > b else b\n\ndef max_similar_indices(a0, a1):\n    return maximum(a0, a1)",
+   "answer_layer": 2,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 0,
+   "llm_work": 0,
+   "max_helper_layer": 1,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "helper_composition",
+   "task_id": 951,
+   "trace": [
+    "compose"
+   ],
+   "work": 19
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 3121,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 314,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 3190
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1575,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 754,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1609
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 880,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 593,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 905
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "bridged": true,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 879,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 500,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 914
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 2089,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 695,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 2112
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 2127,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 510,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 2179
+  },
+  {
+   "admitted": true,
+   "answer": "def min_k(lst, k):\n    lst.sort(key=lambda x: x[1])\n    return lst[:k]",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 320,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 753,
+   "trace": [
+    "greedy"
+   ],
+   "work": 344
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 803,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 233,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 835
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 660,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 115,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 682
+  },
+  {
+   "admitted": true,
+   "answer": "def check_monthnum(month):\n    if month == 'February':\n        return True\n    else:\n        return False",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 228,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 336,
+   "trace": [
+    "greedy"
+   ],
+   "work": 249
+  },
+  {
+   "admitted": true,
+   "answer": "def convert(lst):\n    return int(''.join(map(str, lst)))",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 144,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 673,
+   "trace": [
+    "greedy"
+   ],
+   "work": 165
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "bridged": true,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 913,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 421,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 957
+  },
+  {
+   "admitted": true,
+   "answer": "import cmath\n\ndef convert(complex_num):\n    polar = cmath.polar(complex_num)\n    return polar",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 222,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 252,
+   "trace": [
+    "greedy"
+   ],
+   "work": 246
+  },
+  {
+   "admitted": true,
+   "answer": "def sum_nums(a, b, c, d):\n    if a + b >= c and a + b <= d:\n        return 20\n    else:\n        return a + b",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 304,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 675,
+   "trace": [
+    "greedy"
+   ],
+   "work": 328
+  },
+  {
+   "admitted": false,
+   "answer": null,
+   "answer_layer": 0,
+   "bridged": true,
+   "correct": false,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 3333,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": false,
+   "stage": "none",
+   "task_id": 343,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 3457
+  },
+  {
+   "admitted": true,
+   "answer": "def mul_list(list1, list2):\n    return list(map(lambda x, y: x * y, list1, list2))",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 206,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 682,
+   "trace": [
+    "greedy"
+   ],
+   "work": 233
+  },
+  {
+   "admitted": true,
+   "answer": "def is_odd(n):\n    return n & 1 == 1\n\ndef check_Odd_Parity(a0):\n    return is_odd(a0)",
+   "answer_layer": 2,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 0,
+   "llm_work": 0,
+   "max_helper_layer": 1,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "helper_composition",
+   "task_id": 768,
+   "trace": [
+    "compose"
+   ],
+   "work": 34
+  },
+  {
+   "admitted": true,
+   "answer": "def group_keyvalue(keyvalue_pairs):\n    result = {}\n    for key, value in keyvalue_pairs:\n        if key in result:\n            result[key].append(value)\n        else:\n            result[key] = [value]\n    return result",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 330,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 174,
+   "trace": [
+    "greedy"
+   ],
+   "work": 373
+  },
+  {
+   "admitted": true,
+   "answer": "def last_Two_Digits(n):\n    fact = 1\n    for i in range(1, n + 1):\n        fact *= i\n    return fact % 100",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 383,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 692,
+   "trace": [
+    "greedy"
+   ],
+   "work": 426
+  },
+  {
+   "admitted": true,
+   "answer": "def min_coins(coins, V, value):\n    m = len(coins)\n    dp = [value] * (value + 1)\n    dp[0] = 0\n    for i in range(1, value + 1):\n        for j in range(m):\n            if coins[j] <= i:\n                dp[i] = min(dp[i], 1 + dp[i - coins[j]])\n    return dp[value]",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 1533,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "cegis",
+   "task_id": 531,
+   "trace": [
+    "greedy",
+    "resample",
+    "cegis"
+   ],
+   "work": 1750
+  },
+  {
+   "admitted": true,
+   "answer": "import functools\n\ndef Split(L):\n    return list(filter(lambda x: x & 1 == 0, L))",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 3,
+   "llm_work": 550,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "resample",
+   "task_id": 629,
+   "trace": [
+    "greedy",
+    "resample",
+    "resample"
+   ],
+   "work": 603
+  },
+  {
+   "admitted": true,
+   "answer": "def count_list(lists):\n    count = 0\n    for list in lists:\n        count += 1\n    return count",
+   "answer_layer": 1,
+   "correct": true,
+   "library_used": [],
+   "llm_calls": 1,
+   "llm_work": 308,
+   "max_helper_layer": 0,
+   "method": "nexus_evolved",
+   "plausible": true,
+   "stage": "greedy",
+   "task_id": 792,
+   "trace": [
+    "greedy"
+   ],
+   "work": 348
+  }
+ ],
+ "salt": "mbpp-v3-train",
+ "sleep_every": 10,
+ "split": "dev",
+ "task_ids": [
+  749,
+  633,
+  810,
+  230,
+  108,
+  493,
+  887,
+  707,
+  94,
+  516,
+  380,
+  902,
+  770,
+  283,
+  254,
+  713,
+  165,
+  164,
+  812,
+  670,
+  296,
+  855,
+  309,
+  58,
+  853,
+  117,
+  481,
+  941,
+  391,
+  503,
+  168,
+  679,
+  351,
+  519,
+  51,
+  951,
+  314,
+  754,
+  593,
+  500,
+  695,
+  510,
+  753,
+  233,
+  115,
+  336,
+  673,
+  421,
+  252,
+  675,
+  343,
+  682,
+  768,
+  174,
+  692,
+  531,
+  629,
+  792
+ ]
+}

@@ -320,12 +320,182 @@ def verify_v2(g, gates, report):
     gates["v2_wild_law_discovery"] = w["laws_correct"]["mdl"] > w["laws_correct"]["linear"]
 
 
+# =========================================================================== v3
+def permutation_ratio_test(a_rows, b_rows, *, n_perm=10_000, seed=0):
+    """Paired sign-flip permutation test that arm A has LOWER work per correct solve than arm B.
+
+    Statistic D = W_B/S_B - W_A/S_A over the paired tasks; under H0 the two arms are exchangeable
+    within each task. One-sided p = (#{D_perm >= D_obs} + 1) / (n_perm + 1).
+    """
+    import random
+    pairs = [(a["work"], int(a["correct"]), b["work"], int(b["correct"])) for a, b in zip(a_rows, b_rows)]
+
+    def stat(ps):
+        wa, sa = sum(p[0] for p in ps), sum(p[1] for p in ps)
+        wb, sb = sum(p[2] for p in ps), sum(p[3] for p in ps)
+        ra = wa / sa if sa else float("inf")
+        rb = wb / sb if sb else float("inf")
+        if ra == rb:
+            return 0.0
+        return (rb - ra) if math.isfinite(rb - ra) else (math.inf if ra < rb else -math.inf)
+    obs = stat(pairs)
+    rng = random.Random(seed)
+    hits = 0
+    for _ in range(n_perm):
+        perm = [p if rng.random() < 0.5 else (p[2], p[3], p[0], p[1]) for p in pairs]
+        hits += stat(perm) >= obs
+    return dict(n=len(pairs), statistic=obs, p_value=(hits + 1) / (n_perm + 1))
+
+
+def _ratio(rows):
+    s = sum(int(r["correct"]) for r in rows)
+    return sum(r["work"] for r in rows) / s if s else None
+
+
+def _regrade_code(payload, report):
+    """Independent re-execution of every stored answer: false certificates + grading mismatches."""
+    from nexus.wave24_code_repair import Meter as QMeter, Program, run_tests, split_tests
+    from nexus.wave24_mbpp import Meter, grade, load_tasks, passes
+    false, mismatch = [], []
+    by_id = {t.task_id: t for t in load_tasks()}
+    for r in payload["mbpp"]["rows"]:
+        t = by_id[r["task_id"]]
+        ans = r.get("answer")
+        if ans is not None and r["method"] != "standalone":
+            ok, _ = passes(ans, t.public, Meter(), setup=t.setup)
+            if not ok:
+                false.append(("mbpp", r["method"], r["task_id"]))
+        if bool(grade(ans, t)) != bool(r["correct"]):
+            mismatch.append(("mbpp", r["method"], r["task_id"]))
+    qb_split = payload.get("qb_split_seed", 301)
+    for r in payload["quixbugs"]["rows"]:
+        p = Program.load(r["program"])
+        pub, hid = split_tests(p, qb_split)
+        src = r.get("patch")
+        code = None
+        if src:
+            try:
+                code = compile(src, "<candidate>", "exec")
+            except SyntaxError:
+                code = None
+        if r["plausible"] and r["method"] != "qwen_standalone":
+            if code is None or not all(run_tests(code, p.func, pub, QMeter(10**12))):
+                false.append(("quixbugs", r["method"], r["program"]))
+        tests = (list(pub) + list(hid)) if r["method"] == "qwen_standalone" else list(hid)
+        if r["method"] != "qwen_standalone" and not r["plausible"]:
+            regraded = False
+        else:
+            regraded = code is not None and all(run_tests(code, p.func, tests, QMeter(10**12)))
+        if bool(regraded) != bool(r["correct"]):
+            mismatch.append(("quixbugs", r["method"], r["program"]))
+    report["false_code_certificates"] = false
+    report["grading_mismatches"] = mismatch
+    return false, mismatch
+
+
+def verify_v3(payload):
+    gates, report = {}, {}
+    gates["v3_execution_complete"] = payload.get("execution_status") == "COMPLETE"
+    # ---------------- procedural
+    proc = payload.get("procedural", [])
+    t_rows = [r for s in proc for r in s["transfer"]["rows"]]
+    m_runs = [dict(r, seed=s["seed"]) for s in proc for r in s["meta"]["runs"]]
+    proc_false = sum(1 for r in t_rows if r["status"].startswith("UNIQUE") and r["certificate_valid"] is False) + \
+        sum(r["false_certificates"] for r in m_runs)
+    report["procedural_false_certificates"] = proc_false
+    false, mismatch = _regrade_code(payload, report)
+    gates["v3_zero_false_certificates"] = proc_false == 0 and not false
+    gates["v3_independent_regrade_matches"] = not mismatch
+    # ---------------- code: QuixBugs + MBPP held-out (pooled)
+    qb, mb = payload["quixbugs"]["rows"], payload["mbpp"]["rows"]
+    arms = {"standalone": [r for r in qb if r["method"] == "qwen_standalone"] + [r for r in mb if r["method"] == "standalone"],
+            "verified_sampling": [r for r in qb if r["method"] == "verified_sampling"] + [r for r in mb if r["method"] == "verified_sampling"],
+            "nexus": [r for r in qb if r["method"] == "nexus_cegis"] + [r for r in mb if r["method"] == "nexus_evolved"]}
+    table = {}
+    for name, rows in arms.items():
+        c, p = sum(int(r["correct"]) for r in rows), sum(int(r["plausible"]) for r in rows)
+        table[name] = dict(tasks=len(rows), correct=c, plausible=p, precision=c / p if p else None,
+                           work=sum(r["work"] for r in rows), llm_work=sum(r["llm_work"] for r in rows),
+                           work_per_correct=_ratio(rows))
+    for bench, rows_b in (("quixbugs", qb), ("mbpp", mb)):
+        for m in sorted({r["method"] for r in rows_b}):
+            rr = [r for r in rows_b if r["method"] == m]
+            c, p = sum(int(r["correct"]) for r in rr), sum(int(r["plausible"]) for r in rr)
+            table[f"{bench}:{m}"] = dict(tasks=len(rr), correct=c, plausible=p, precision=c / p if p else None,
+                                         work=sum(r["work"] for r in rr), work_per_correct=_ratio(rr))
+    report["code_table"] = table
+    n, s, v = table["nexus"], table["standalone"], table["verified_sampling"]
+    gates["v3_code_vs_unverified_qwen"] = n["correct"] > s["correct"] and (n["precision"] or 0) > (s["precision"] or 0)
+    perm_vs = permutation_ratio_test(arms["nexus"], arms["verified_sampling"])
+    report["nexus_vs_verified_sampling_permutation"] = perm_vs
+    gates["v3_code_vs_verified_sampling"] = n["correct"] > v["correct"] and n["work_per_correct"] is not None and \
+        v["work_per_correct"] is not None and n["work_per_correct"] < v["work_per_correct"]
+    ev = [r for r in mb if r["method"] == "nexus_evolved"]
+    fr = [r for r in mb if r["method"] == "nexus_frozen"]
+    perm_ev = permutation_ratio_test(ev, fr)
+    report["mbpp_evolved_vs_frozen_permutation"] = perm_ev
+    e_c, f_c = sum(int(r["correct"]) for r in ev), sum(int(r["correct"]) for r in fr)
+    e_r, f_r = _ratio(ev), _ratio(fr)
+    gates["v3_mbpp_evolved_dominates_frozen"] = e_c > f_c and e_r is not None and f_r is not None and e_r < f_r \
+        and perm_ev["p_value"] < ALPHA and not false
+    layer2 = [r for r in ev if r["correct"] and r.get("max_helper_layer", 0) >= 2]
+    report["mbpp_layers"] = dict(correct_using_library=sum(1 for r in ev if r["correct"] and r.get("answer_layer", 1) >= 2),
+                                 correct_using_layer2_helper=len(layer2),
+                                 stages={st: sum(r["stage"] == st for r in ev) for st in {r["stage"] for r in ev}},
+                                 library_before=payload["mbpp"].get("library_before"),
+                                 library_after=payload["mbpp"].get("evolution", {}).get("library_after"))
+    gates["v3_layer2_helper_in_heldout_answer"] = len(layer2) >= 1
+    # ---------------- Piece C: transfer
+    agg = defaultdict(lambda: dict(solved=0, work=0, tasks=0))
+    for r in t_rows:
+        a = agg[r["method"]]
+        a["solved"] += int(r["solved"])
+        a["work"] += r["work"] + r.get("setup_work", 0)
+        a["tasks"] += 1
+    report["transfer"] = dict(agg)
+    report["transfer_source_training_work"] = sum(s["transfer"]["source_work"] for s in proc)
+    report["transfer_bindings"] = sum(len(s["transfer"]["bindings"]) for s in proc)
+    ex, am, fx = agg["experienced"], agg["amnesiac"], agg["fixed"]
+    pen = lambda r: r["work"] + r.get("setup_work", 0) + (0 if r["solved"] else 10**6)
+    E = [r for r in t_rows if r["method"] == "experienced"]
+    A = [r for r in t_rows if r["method"] == "amnesiac"]
+    report["transfer_sign_vs_amnesiac"] = sign_test([pen(b) - pen(a) for a, b in zip(E, A)])
+    gates["v3_transfer_experienced_beats_amnesiac_and_fixed"] = ex["solved"] > am["solved"] and ex["solved"] > fx["solved"] \
+        and ex["work"] < am["work"] and ex["work"] < fx["work"]
+    # ---------------- Piece D: meta strategy allocation, late families
+    late = defaultdict(dict)
+    for r in m_runs:
+        if r["position"] >= 3:
+            late[(r["seed"], r["order"], r["position"])][r["method"]] = r
+    pairs = [(v["meta"], v["reset"]) for v in late.values() if "meta" in v and "reset" in v]
+    share = lambda r: r["on_path"] / r["expansions"] if r["expansions"] else 0.0
+    wps = lambda r: r["acquisition_work"] / max(1, r["solved"])
+    st_share = sign_test([share(a) - share(b) for a, b in pairs])
+    st_wps = sign_test([wps(b) - wps(a) for a, b in pairs])
+    pooled = {m: dict(solved=sum(p[i]["solved"] for p in pairs), work=sum(p[i]["acquisition_work"] for p in pairs),
+                      on_path=sum(p[i]["on_path"] for p in pairs), expansions=sum(p[i]["expansions"] for p in pairs))
+              for i, m in ((0, "meta"), (1, "reset"))}
+    for m in pooled.values():
+        m["work_per_solve"] = m["work"] / max(1, m["solved"])
+        m["useful_branch_share"] = m["on_path"] / max(1, m["expansions"])
+    report["meta_late"] = dict(pairs=len(pairs), pooled=pooled, sign_share=st_share, sign_work_per_solve=st_wps)
+    gates["v3_meta_late_useful_branch_share"] = st_share["positive"] > st_share["negative"] and st_share["p_value"] < ALPHA
+    gates["v3_meta_late_work_per_solve"] = pooled["meta"]["work_per_solve"] < pooled["reset"]["work_per_solve"] and \
+        st_wps["positive"] > st_wps["negative"] and st_wps["p_value"] < ALPHA
+    report["llm"] = {k: payload.get("llm_telemetry", {}).get(k) for k in
+                     ("backend", "model", "calls", "fresh_calls", "charged_cache_hits", "generated_tokens",
+                      "input_tokens", "wall_s")}
+    return dict(gates=gates, all_passed=all(gates.values()), failed=sorted(k for k, v in gates.items() if not v),
+                report=report)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("path", nargs="?", default=str(ROOT / "artifacts" / "wave24_agi_gap_suite.json"))
     ap.add_argument("--report")
     args = ap.parse_args(argv)
-    result = verify(json.loads(Path(args.path).read_text()))
+    payload = json.loads(Path(args.path).read_text())
+    result = verify_v3(payload) if payload.get("schema") == "wave24_suite_v3" else verify(payload)
     text = json.dumps(result, indent=2, sort_keys=True)
     if args.report:
         Path(args.report).write_text(text)

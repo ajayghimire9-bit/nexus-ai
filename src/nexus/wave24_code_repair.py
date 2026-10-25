@@ -104,8 +104,10 @@ def _equal(a, b):
     return a == b
 
 
-def run_tests(code, func, tests, meter, *, coverage=None, filename="<candidate>", stop_on_fail=False):
+def run_tests(code, func, tests, meter, *, coverage=None, filename="<candidate>", stop_on_fail=False,
+              line_budget=None):
     """Run tests; returns list of pass booleans. Every line event is charged."""
+    line_budget = CALL_LINE_BUDGET if line_budget is None else line_budget
     ns = {"__builtins__": SAFE_BUILTINS, "__name__": "nexus_repair"}
     try:
         exec(code, ns)
@@ -122,7 +124,7 @@ def run_tests(code, func, tests, meter, *, coverage=None, filename="<candidate>"
             if event == "line":
                 lines[0] += 1
                 covered.add(frame.f_lineno)
-                if lines[0] > CALL_LINE_BUDGET:
+                if lines[0] > line_budget:
                     raise LineBudgetExceeded("per-call line budget")
             return tracer
         ok = False

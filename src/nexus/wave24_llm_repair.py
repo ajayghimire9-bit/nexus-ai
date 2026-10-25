@@ -10,6 +10,15 @@ Methods (same programs, same public/hidden split, same sandbox):
                         with a public-test-validated twin are demoted (overfitting filter).
 Work = executed Python line events (all candidates, twin, fuzz) + LLM work units
 (1 per evaluated prompt token + 4 per generated token). Hidden tests are used only for grading.
+
+v3 fair-comparison arms (all with the same code-fence prefill / stop, same verifier):
+  * qwen_standalone_v3  - greedy repair from the bug report, UNVERIFIED.
+  * verified_sampling   - greedy, then temperature samples, first public-passing patch returned
+                          (no fault localization, no counterexample feedback, no twin, no mutation).
+  * nexus_cegis         - Ochiai fault localization in the prompt, counterexample-guided repair
+                          prompts (observed vs expected on the failing public test), then a bounded
+                          FL-ordered mutation fallback whose plausible patches are adjudicated by a
+                          docstring-only Qwen twin on fuzzed inputs.
 """
 from __future__ import annotations
 
@@ -40,11 +49,20 @@ def split_source(src):
 
 
 def extract_function(text, func):
-    blocks = FENCE.findall(text) or [text]
+    blocks = FENCE.findall(text)
+    if not blocks:                     # unterminated fence (generation stopped at the closing ```)
+        m = re.match(r"\s*```(?:python|py)?[ \t]*\n(.*)", text, re.S)
+        blocks = [m.group(1) if m else text]
     for block in blocks:
-        try:
-            tree = ast.parse(block)
-        except SyntaxError:
+        lines = block.rstrip().splitlines()
+        tree = None
+        while lines:
+            try:
+                tree = ast.parse("\n".join(lines))
+                break
+            except SyntaxError:
+                lines = lines[:-1]      # salvage: drop a trailing line cut off by the token limit
+        if tree is None:
             continue
         keep = [n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.Import, ast.ImportFrom, ast.Assign))]
         if any(isinstance(n, ast.FunctionDef) and n.name == func for n in keep):
@@ -283,3 +301,119 @@ def method_nexus_qwen(program, public, hidden, engine, *, seed, k=3, mutation_bu
                 work=meter.total + llm, llm_work=llm, candidates=n_candidates, plausible_pool=len(plausible),
                 chosen_origin=best[1], twin_validated=twin is not None, twin_agreement=best[4], fuzz_inputs=n_fuzz,
                 stage=stage, patch=best[2])
+
+
+# --------------------------------------------------------------------------- v3 fair-comparison arms
+PREFIX, STOP = "```python\n", ("```",)
+FL_LINE_BUDGET = 200
+
+
+def _ask(engine, system, user, *, temperature, seed, purpose):
+    text, row = engine.complete(system, user, temperature=temperature, seed=seed, purpose=purpose,
+                                prefix=PREFIX, stop=STOP)
+    return text, engine.work_units(row)
+
+
+def _first_failure(code, program, tests, meter):
+    for args, expected in tests:
+        if not all(run_tests(code, program.func, [[args, expected]], meter)):
+            return args, expected, run_tests_capture(code, program.func, args, meter)
+    return None
+
+
+def cegis_prompt(program, public, suspicious, src, failure):
+    args, expected, (status, observed) = failure
+    seen = f"returned {observed}" if status == "ok" else f"raised {observed}"
+    return (repair_prompt(program, public, suspicious) + f"\n\nYour previous attempt:\n```python\n{src}\n```\n"
+            f"It is still wrong: for input {', '.join(map(repr, args))} the expected output is {expected!r} "
+            f"but it {seen}. Return the corrected `{program.func}` function.")
+
+
+def method_qwen_standalone_v3(program, public, hidden, engine):
+    text, w = _ask(engine, SYSTEM, repair_prompt(program, public), temperature=0.0, seed=0,
+                   purpose=f"qb:{program.name}:greedy")
+    src = extract_function(text, program.func)
+    code = _compile(src) if src else None
+    correct = code is not None and _grade(code, program, list(public) + list(hidden))
+    return dict(method="qwen_standalone", plausible=code is not None, correct=correct, work=w, llm_work=w,
+                llm_calls=1, stage="unverified", patch=src)
+
+
+def method_verified_sampling(program, public, hidden, engine, *, k=3, temperature=0.8):
+    meter, llm = Meter(10**12), 0
+    for i in range(k):
+        text, w = _ask(engine, SYSTEM, repair_prompt(program, public), temperature=0.0 if i == 0 else temperature,
+                       seed=i, purpose=f"qb:{program.name}:{'greedy' if i == 0 else f'sample{i}'}")
+        llm += w
+        src = extract_function(text, program.func)
+        code = _compile(src) if src else None
+        if _passes(code, program, public, meter):
+            return dict(method="verified_sampling", plausible=True, correct=_grade(code, program, hidden),
+                        work=meter.total + llm, llm_work=llm, llm_calls=i + 1, stage=f"sample{i}", patch=src)
+    return dict(method="verified_sampling", plausible=False, correct=False, work=meter.total + llm, llm_work=llm,
+                llm_calls=k, stage="none")
+
+
+def method_nexus_cegis(program, public, hidden, engine, *, seed, k=3, temperature=0.8, mutation_budget=20_000,
+                       fuzz_n=16, max_mutation_patches=2):
+    """FL prompt -> verify -> counterexample-guided repair -> bounded FL mutation fallback + twin adjudication."""
+    meter, llm, calls = Meter(10**12), 0, 0
+    tree = ast.parse(program.source)
+    cov = []
+    # Coverage saturates fast: a 200-event trace per test gave identical top-3 Ochiai lines on all 20
+    # dev programs at 8% of the 5,000-event cost (non-terminating bugs otherwise dominate FL cost).
+    run_tests(compile(tree, "<candidate>", "exec"), program.func, public, meter, coverage=cov,
+              line_budget=FL_LINE_BUDGET)
+    sus = ochiai(cov)
+    top = [ln for ln, _ in sorted(sus.items(), key=lambda kv: -kv[1])[:3]]
+    last = None
+    for i in range(k):
+        if last is None:
+            user, temp = repair_prompt(program, public, suspicious=top), (0.0 if i == 0 else temperature)
+        else:
+            user, temp = cegis_prompt(program, public, top, *last), (0.0 if i == 1 else temperature)
+        text, w = _ask(engine, SYSTEM, user, temperature=temp, seed=seed * 10 + i,
+                       purpose=f"qb:{program.name}:{'fl' if last is None else 'cegis'}{i}")
+        llm += w
+        calls += 1
+        src = extract_function(text, program.func)
+        code = _compile(src) if src else None
+        if code is None:
+            continue
+        failure = _first_failure(code, program, public, meter)
+        if failure is None:
+            return dict(method="nexus_cegis", plausible=True, correct=_grade(code, program, hidden),
+                        work=meter.total + llm, llm_work=llm, llm_calls=calls,
+                        stage="fl_greedy" if i == 0 else f"cegis{i}", patch=src)
+        last = (src, failure)
+    # bounded fault-localized mutation fallback (line events are charged like every other execution)
+    plausible = []
+    mutations = enumerate_mutations(tree)
+    mutations.sort(key=lambda m: (-(sus.get(m.lineno, 0.0) + 1e-3), m.lineno))
+    mut_meter = Meter(mutation_budget)
+    try:
+        for m in mutations:
+            mut_meter.charge(1)
+            try:
+                t = apply_mutation(tree, m)
+                code = compile(t, "<candidate>", "exec")
+            except (SyntaxError, ValueError, TypeError):
+                continue
+            if all(run_tests(code, program.func, public, mut_meter, stop_on_fail=True)):
+                plausible.append(("mutation", ast.unparse(t), code))
+                if len(plausible) >= max_mutation_patches:
+                    break
+    except LineBudgetExceeded:
+        pass
+    meter.total += mut_meter.total
+    if not plausible:
+        return dict(method="nexus_cegis", plausible=False, correct=False, work=meter.total + llm, llm_work=llm,
+                    llm_calls=calls, stage="none")
+    twin, w = _twin(program, public, engine, seed, meter)
+    llm += w
+    calls += 1
+    scored, n_fuzz = _rank(plausible, program, public, twin, seed, meter, fuzz_n)
+    best = scored[0]
+    return dict(method="nexus_cegis", plausible=True, correct=_grade(best[3], program, hidden),
+                work=meter.total + llm, llm_work=llm, llm_calls=calls, stage="mutation_fallback",
+                twin_validated=twin is not None, twin_agreement=best[4], fuzz_inputs=n_fuzz, patch=best[2])
