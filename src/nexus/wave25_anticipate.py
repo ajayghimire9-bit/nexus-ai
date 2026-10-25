@@ -186,7 +186,7 @@ class AnticipatoryProcedure(ReasoningProcedure):
             # at the observed cost of one probe (oracle + re-certification), against the Tier-2 scan cost
             ys_b = outputs(H, state["best"], m)
             resid = sum(w * (_H(Counter(yp)) - cond_info(yp, ys_b)) for w, yp in prox)
-            per_probe = ORACLE_COST + (self.cert_work / max(1, self.cert_n))
+            per_probe = getattr(self, "oracle_cost", ORACLE_COST) + (self.cert_work / max(1, self.cert_n))
             t2 = factored_candidates(H, yq, public, query, rng, m, labels=True)
             est_cost = min(len(t2), budget_after_clean) * len(H)
             if self.qm.p_cont * resid * per_probe > est_cost:
