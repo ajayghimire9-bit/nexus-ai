@@ -435,3 +435,86 @@ Consequences for the plan:
    perturbations is available. It can only matter when probes are expensive or hypotheses are many.
    S3 (ξ-targeting over bindings) addresses the dominant binding ambiguity and is the next spike.
    S5 and S6 stay gated, since S2 shows no headroom for an amortised head here.
+
+## 8. S1-Auto + S3 results (dev only, 2026-10-25)
+
+Code: `src/nexus/wave25_contracts.py`, `src/nexus/wave25_s3.py`, `scripts/spike_wave25_s3.py`,
+`tests/test_wave25_s3.py` (12 wave25 tests pass). Developed on dev seeds 1–3. Code and criteria were
+frozen at `5e1c9a8`, then run once, unchanged, on dev seeds 4–6 with a full deterministic replay (digest
+`fdff91b4…73c7` both times). Artifact: `artifacts/wave25_spike_s1auto_s3_dev.json`, sha256
+`1ad78a174e5eadef5f917cb62425e5492dedb13a7be7f44db19913742a086ec6`. Caveat: seeds 4–6 were already
+looked at in S1/S2 (with different task-generator salts), so this is a frozen-code dev check, not untouched
+evaluation data.
+
+### S1-Auto — mechanism passes; strict admission criterion FAILS on 1 of 3 seeds
+
+* **Learner.** Role structural classes were verified on declared universes: F, S sub-multiset; Sort
+  permutation; Map item-wise with `out[i] = g(in[i])` for its own bound g; Agg to-scalar; every role
+  rejects scalars. From the six-property basis it proved 30 contracts and refuted the rest.
+  * Distractors were filtered: `first_sign` was refuted everywhere, and `parity` was refuted for F/S, so
+    it is unusable for pruning.
+  * Provenance for Map was derived as `image_subset`, which recovers the hand-wired S1 Map closure.
+  * Learning cost: 32.7k units, one-time.
+* **Effect (seeds 4–6).** Certification work fell 58% on int lists (136,712 → 57,883) and 47% on records
+  (126,116 → 66,395), net of check cost, with 180/180 verdicts identical. On seed 5 nothing was admitted,
+  so these pooled figures include that seed at 0%.
+* **Cheap Tycho.**
+  * The overhead was 47–72k per seed (12-task stratified micro-sample twin plus learning, all billed),
+    against ~600k in S1.
+  * Seeds 4 and 6 admitted contracts (net +33k / +54k, break-even 68 / 57 tasks).
+  * Seed 5's micro-sample happened to save only 107 units per task (break-even 439), so it admitted
+    nothing.
+  * The twin-free estimator's leave-one-out error is 0.42–2.7× the total saving: still not reliable
+    enough to replace the twin.
+
+### S3 — PASS (all predeclared criteria); kill criterion not met
+
+180 active tasks (90 int lists, 90 records with randomised field names and a correlated distractor), all
+arms on the S1-Auto certifier, shared stop rule (stop when the certificate is UNIQUE), 3-probe budget:
+
+| Arm | Solved | Probes | Work | False certs |
+| --- | --- | --- | --- | --- |
+| **s3** (answer-directed I(Y_q;Y_x\|H), factored + standard candidates) | **180** | **180** | **1,160,444** | 0 |
+| flat_eig (I(H;Y_x), standard perturbations) | 180 | 196 | 1,190,718 | 0 |
+| flat_eig_union (I(H;Y_x), same candidates as s3) | 180 | 199 | 1,458,703 | 0 |
+| b_first (I(B;Y_x) then I(C;Y_x), same candidates) | 180 | 198 | 1,453,229 | 0 |
+| v4 designed probes | 179 | 206 | 1,241,898 | 0 |
+| random | 124 | 390 | 2,187,178 | 0 |
+| flat_eig, no contracts (reference) | 180 | 196 | 1,542,101 | 0 |
+
+* By world: s3 used 90 + 90 probes, flat EIG 93 + 103, v4 92 + 114. The gain sits mostly on records,
+  where the correlated distractor lives.
+* **The answer objective is what helps, not the factored candidates alone.** The same candidates under
+  the flat objective (flat_eig_union) were worse than flat EIG over standard perturbations. Combined with
+  the answer objective, they gave the best result.
+* **Staging.** The hard-coded bindings-first control never reached its composition stage: 198/198 of its
+  probes were binding-stage. Raw binding entropy never reaches zero because observationally equivalent
+  thresholds remain, so "resolve B first" spends probes on binding distinctions that don't matter. s3
+  avoided this without any staging rule.
+* **Answer-sufficient stopping.** 104/180 s3 tasks ended UNIQUE while (C, B) ambiguity remained; 76 of
+  those still had composition ambiguity. 144 tasks started ambiguous in both B and C; in 68 of them one
+  probe resolved both the composition and the answer.
+* **Tycho.** Net vs the best other arm (flat EIG) is +16.8k at the 100-task horizon. Fully loaded, s3 with
+  S1-Auto (overhead included) against flat EIG without contracts is +149k.
+
+### What this does and does not establish
+
+On this dev benchmark family:
+* An answer-directed objective over an exactly enumerated factored hypothesis set gives one probe per
+  task and the lowest total work, with no hard-coded stage order.
+* Automatically acquired, verified operator contracts reproduce the hand-written pruning at about
+  one-eighth of the old admission cost.
+
+Not established:
+* Robust admission on every seed: the micro-sample variance is the weak point.
+* A twin-free benefit estimator.
+* Any result on untouched data: seeds 4–6 are dev, and the next locked suite needs fresh seeds.
+
+The record world is still small: 2–4 hypotheses' worth of answer clusters per task.
+
+**Next:**
+1. Lock a confirmation suite on fresh seeds containing the S1-Auto certifier plus the s3 controller.
+2. Reduce the variance of Tycho's micro-sample before that lock (on dev): for example, a larger
+   stratified sample, with its cost still billed.
+3. Keep S5/S6 gated: s3 already reaches one probe per task here, which leaves no headroom for an
+   amortised probe head on this family.
