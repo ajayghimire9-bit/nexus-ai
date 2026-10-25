@@ -143,7 +143,7 @@ def factored_candidates(H, yq, public, query, rng, m, *, max_pairs=6, labels=Fal
             # binding-disagreement edits: decorrelate competing fields by swapping one field's values between
             # two items (relative rank inverted, the other field kept), toggling booleans, boundary thresholds
             if rec:
-                for f in fields:
+                for f in sorted(fields):
                     if f == ".":
                         continue
                     for i in range(len(b)):
@@ -155,7 +155,7 @@ def factored_candidates(H, yq, public, query, rng, m, *, max_pairs=6, labels=Fal
                             x = [dict(r) for r in b]
                             x[i][f] = not x[i][f]
                             out.append(("bool_toggle", x))
-            for path, val in th:
+            for path, val in sorted(th, key=repr):
                 if not isinstance(val, (int, float)) or isinstance(val, bool):
                     continue
                 for i in range(len(b)):
@@ -173,7 +173,7 @@ def factored_candidates(H, yq, public, query, rng, m, *, max_pairs=6, labels=Fal
                     out.append(("move_front", [b[i]] + [it for j, it in enumerate(b) if j != i]))
                     dup = dict(b[i]) if rec else b[i]
                     if rec:
-                        for f in fields:
+                        for f in sorted(fields):
                             if f != "." and isinstance(dup.get(f), bool):
                                 dup[f] = not dup[f]
                     out.append(("dup_toggle", list(b) + [dup]))

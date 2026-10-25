@@ -616,3 +616,61 @@ I(Y_q ; Y_x | V_t) plus λ times the expected information on a sample of future 
 input distribution, with λ learned on dev from the observed follow-up rate. Test on fresh seeds whether it
 beats both answer-myopic and bindings-first on total probes over a query sequence, without giving up the
 work advantage.
+
+## 11. Locked protocol — anticipatory controller with a revisable query-expectation model (three regimes)
+
+Locked before any seed 601–605 outcome. Code: `src/nexus/wave25_anticipate.py`; tests
+`tests/test_wave25_anticipate.py` (23 wave25 tests in total pass). Run once:
+`python3 scripts/confirm_wave25_anticipate.py --seeds 601 602 603 604 605 --replay --out
+artifacts/wave25_anticipate_confirmation.json`. The replay runs in a separate process with a different
+`PYTHONHASHSEED`.
+
+**Controller.**
+* Score: `I(Y_q;Y_x|V_t) + λ0·p_cont·E_future(x)`.
+* Proxy pools are built only from q_curr, the public inputs and V_t. A test confirms q1 behaviour is
+  identical with and without a held-out q2.
+* `p_cont` is a decaying Beta-Bernoulli (decay 0.9) over completed episodes. Pool weights are a decaying
+  Dirichlet, credited to the pool whose V_t-ambiguity rate matches whether the actual follow-up was
+  ambiguous under V_t.
+* Probing stops once q_curr is certified. The lookahead scan budget is `round(M_MAX·p_cont)`, and no
+  proxies are built when that budget is 0.
+* Tier 2 runs when Tier 1 has no clean split, or (cost-aware lookahead) when
+  `p_cont × residual follow-up entropy × observed per-probe cost > Tier-2 scan cost`. **This extends the
+  owner's rule**, which allowed Tier 2 only without a clean Tier-1 split. The two coincide when
+  `p_cont = 0`.
+* λ0 = 0.5, M_MAX = 20. The dev regime-B grid over (λ0, M_MAX) ∈ {(0.25,10), (0.5,20), (1,20), (1,40),
+  (2,40)} was flat: 140 probes for every setting. The fixed-λ arm is the same code with `p_cont ≡ 1` and
+  uniform weights.
+
+**Regimes.** 20 episodes per world per seed, interleaved:
+* A: q1 only.
+* B: q2 from the world's sampler.
+* C: q2 shifted (length 5; distractor order reversed in records, alternating signs in int lists), and
+  selected so the public-only version space disagrees on it.
+
+Each regime's stream starts from a fresh procedure, and no regime label reaches the controller.
+
+**Arms and gates.** Arms: revisable, myopic (ab0dcd5 S3 procedure), fixed_lambda, s3_batch, b_first,
+flat_eig. Gates C1–C6 are exactly as listed in the script docstring.
+
+**Dev evidence (seeds 1–3, deterministic code).**
+
+| Arm | Probes (A / B / C) | Total probes | Fully loaded work |
+| --- | --- | --- | --- |
+| revisable | 120 / 139 / 155 | 414 | 2.342M |
+| myopic | 120 / 145 / 159 | 424 | **2.211M** |
+| fixed_lambda | 120 / 140 / 155 | 415 | 2.374M |
+| s3_batch | 120 / 142 / 158 | 420 | 3.174M |
+| b_first | 130 / 137 / 145 | **412** | 3.479M |
+| flat_eig | 138 / 153 / 171 | 462 | 3.146M |
+
+* `p_cont` revised to 0.00 in A and 1.00 in B and C on every seed.
+* The boundary weight in C exceeded B only on seed 1.
+* **Expected to fail:** C3 (b_first has fewer total probes), C4 (myopic has less fully-loaded work) and
+  C5 (pool-weight separation of C from B).
+
+**Reproducibility disclosure.** During this development, `factored_candidates` was found to iterate
+Python sets of strings, whose order depends on the per-process hash seed. It now iterates in sorted
+order. The S3 (§8) and vault (§10) runs were replayed only in-process (same hash seed), so their exact
+digests are not guaranteed across processes. Their single-run results stand as recorded, but an exact
+re-run may differ in tie-breaks.
