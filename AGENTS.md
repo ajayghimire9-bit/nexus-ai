@@ -134,3 +134,23 @@ Human-authorized on **2026-10-16**. Applies to future NEXUS development work dur
 - Obtain separate explicit approval before modifying or merging into `main`, deleting important project data, changing security/permission settings, spending money, starting an unbounded autonomous loop, or exceeding any standing limit. This grant does not create a background worker or recurring automation.
 - **These repository instructions do not override Codex's actual sandbox, tool permissions, approval review, security settings, or higher-priority instructions.** Required app-level permission controls still apply; do not bypass them.
 - Confirm completion of this authority setup to the user **before starting the next experiment**. Configuration of these rules is not itself permission to skip that requested confirmation.
+
+## Wave 26 ground rules (owner request, 2026-10-25)
+
+**RULE 1 (BLIND VAULT FIREWALL): The person or agent that tunes NEXUS never sees sealed tasks. During
+development, tuning, or debugging, any read, grep, AST inspection, or exception traceback dump of the
+external Sealed Vault directory (`$NEXUS_SEALED_VAULT_DIR`) is strictly forbidden. Only the locked
+single-shot evaluation runner may load sealed vault tasks, and only by verifying their SHA-256 manifest
+hash committed in the repository.**
+
+- Enforcement: `src/nexus/standing_gates.install_vault_audit_hook` (installed for every pytest session by
+  `tests/conftest.py`) raises on any open() under `$NEXUS_SEALED_VAULT_DIR` unless
+  `NEXUS_SEALED_HARNESS_TOKEN` is set, which only the locked sealed runner does.
+- Seeds: `src/nexus/seed_registry.py` pre-allocates non-overlapping dev / confirmation / vault ranges per
+  phase; confirmation and vault ranges are one-use and persisted in `runs/experimental/seed_registry_spent.jsonl`;
+  violations raise `SeedHygieneError`.
+- Standing gates in every phase: `G_soundness` (0 false UNIQUE certificates; in Phase 2, 0 outside the
+  declared noise tolerance), `G_replay` (fresh-process replay with a different `PYTHONHASHSEED` gives the
+  identical digest), `G_tycho` (every unit on one meter).
+- One branch per phase, from the prior phase's verified commit; protocol committed before its confirmation
+  seeds run once; `main` untouched.
