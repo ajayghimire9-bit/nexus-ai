@@ -1,0 +1,2201 @@
+{
+  "assessment_seed": 4770278686756949663,
+  "freeze_commit_sha": "64eb731846ae8a3e33181d0f61edffa0c2a0af7b",
+  "independent_task_counts": {
+    "total_independent_tasks_and_turns": 36,
+    "track1_independent_tasks": 8,
+    "track2_factorial_independent_tasks": 18,
+    "track2_hygiene_independent_tasks": 14,
+    "track3_independent_turns": 10
+  },
+  "payload_sha256": "b08ed7099b628c5ac0a41b65f4a2cd133f9294372e1b48853114f487f332df60",
+  "retained_all_generated_cases": true,
+  "source_training_suite": {
+    "track1_source_episodes": [
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "candidate_probes": [
+          {
+            "id": "p_short_1",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_inc",
+              "op_dec"
+            ]
+          },
+          {
+            "id": "p_short_2",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 1
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "p_deep_stamp",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 3
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp",
+              "op_dbl",
+              "op_mix_aux",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "p_deep_mix",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 3
+            },
+            "ops": [
+              "op_mix_aux",
+              "op_mix_aux",
+              "op_dbl",
+              "op_acc_stamp"
+            ]
+          }
+        ],
+        "episode_id": "w24_src_map_01",
+        "true_target_mode": "true_counter_aware"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "candidate_probes": [
+          {
+            "id": "p2_short_1",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 4
+            },
+            "ops": [
+              "op_dec",
+              "op_inc"
+            ]
+          },
+          {
+            "id": "p2_deep_stamp",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 4
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp",
+              "op_dbl",
+              "op_mix_aux",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "p2_deep_repeat",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_acc_stamp",
+              "op_acc_stamp",
+              "op_acc_stamp"
+            ]
+          }
+        ],
+        "episode_id": "w24_src_map_02",
+        "true_target_mode": "lookalike_ignore_stamp"
+      }
+    ],
+    "track2_source_tasks": [
+      {
+        "id": "w24_src_a_direct_01",
+        "public": [
+          [
+            [
+              2,
+              -3,
+              4,
+              1
+            ],
+            [
+              4,
+              8
+            ]
+          ],
+          [
+            [
+              6,
+              -1,
+              2
+            ],
+            [
+              12,
+              4
+            ]
+          ],
+          [
+            [
+              -5,
+              8
+            ],
+            [
+              16
+            ]
+          ]
+        ],
+        "query_input": [
+          4,
+          -2,
+          10
+        ]
+      },
+      {
+        "id": "w24_src_a_twopass_02",
+        "public": [
+          [
+            [
+              3,
+              5,
+              3,
+              2,
+              5,
+              3
+            ],
+            [
+              2
+            ]
+          ],
+          [
+            [
+              4,
+              1,
+              4,
+              9,
+              4,
+              1
+            ],
+            [
+              9
+            ]
+          ],
+          [
+            [
+              8,
+              2,
+              8,
+              6,
+              2,
+              8
+            ],
+            [
+              6
+            ]
+          ]
+        ],
+        "query_input": [
+          7,
+          3,
+          7,
+          4,
+          7,
+          3
+        ]
+      },
+      {
+        "id": "w24_src_a_branch_03",
+        "public": [
+          [
+            [
+              2,
+              -2,
+              3,
+              6,
+              4
+            ],
+            [
+              2,
+              3,
+              2
+            ]
+          ],
+          [
+            [
+              8,
+              2,
+              -4,
+              5,
+              10
+            ],
+            [
+              4,
+              2,
+              5
+            ]
+          ],
+          [
+            [
+              4,
+              -6,
+              1,
+              6
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        ],
+        "query_input": [
+          2,
+          12,
+          -4,
+          3,
+          6
+        ]
+      },
+      {
+        "id": "w24_src_b_direct_04",
+        "public": [
+          [
+            "Alpha beta Gamma",
+            "alpha beta gamma"
+          ],
+          [
+            "Delta EPSILON",
+            "delta epsilon"
+          ]
+        ],
+        "query_input": "Omega SIGMA"
+      },
+      {
+        "id": "w24_src_b_twopass_05",
+        "public": [
+          [
+            "cat dog cat bird dog cat",
+            [
+              "bird"
+            ]
+          ],
+          [
+            "red blue red green blue red",
+            [
+              "green"
+            ]
+          ],
+          [
+            "sun moon sun star moon sun",
+            [
+              "star"
+            ]
+          ]
+        ],
+        "query_input": "one two one three two one"
+      },
+      {
+        "id": "w24_src_b_branch_06",
+        "public": [
+          [
+            " Pear to Apple in ",
+            "PEAR to APPLE in"
+          ],
+          [
+            "Data on Node at",
+            "DATA on NODE at"
+          ]
+        ],
+        "query_input": "Code in Rust go"
+      }
+    ]
+  },
+  "suite_definition": {
+    "assessment_seed": 4770278686756949663,
+    "derived_parameters": {
+      "d_val_a": 3,
+      "d_val_b": 5,
+      "s_step_a": 5,
+      "s_step_b": 6,
+      "v_base": 2
+    },
+    "freeze_commit_sha": "64eb731846ae8a3e33181d0f61edffa0c2a0af7b",
+    "suite_name": "wave24_post_freeze_assessment_suite",
+    "track1_tasks": [
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "condition_label": "counter_sensitive_first_acquisition",
+        "gold_validation_status": "UNIQUE_VALIDATED_MAPPING",
+        "id": "w24f_t1_01_counter_aware_first",
+        "is_repeated_transfer": false,
+        "private_init_state": {
+          "aux": 3,
+          "stamp": 0,
+          "val": 4
+        },
+        "private_ops": [
+          "op_inc",
+          "op_acc_stamp",
+          "op_acc_stamp",
+          "op_dbl"
+        ],
+        "public_probes": [
+          {
+            "id": "fp1_2step_a",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_inc",
+              "op_dec"
+            ]
+          },
+          {
+            "id": "fp1_2step_b",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 3
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "fp1_2step_c",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 4
+            },
+            "ops": [
+              "op_dec",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "fp1_3step_mod",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 3
+            },
+            "ops": [
+              "op_dbl",
+              "op_dbl",
+              "op_inc"
+            ]
+          },
+          {
+            "id": "fp1_5step_full_disambig",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 3
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp",
+              "op_dbl",
+              "op_mix_aux",
+              "op_acc_stamp"
+            ]
+          }
+        ],
+        "true_target_mode": "true_counter_aware"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "condition_label": "counter_sensitive_repeated_transfer",
+        "gold_validation_status": "UNIQUE_VALIDATED_MAPPING",
+        "id": "w24f_t1_02_counter_aware_transfer_a",
+        "is_repeated_transfer": true,
+        "private_init_state": {
+          "aux": 2,
+          "stamp": 0,
+          "val": 2
+        },
+        "private_ops": [
+          "op_dbl",
+          "op_acc_stamp",
+          "op_acc_stamp",
+          "op_mix_aux"
+        ],
+        "public_probes": [],
+        "true_target_mode": "true_counter_aware"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "condition_label": "counter_sensitive_repeated_transfer",
+        "gold_validation_status": "UNIQUE_VALIDATED_MAPPING",
+        "id": "w24f_t1_03_counter_aware_transfer_b",
+        "is_repeated_transfer": true,
+        "private_init_state": {
+          "aux": 1,
+          "stamp": 0,
+          "val": 5
+        },
+        "private_ops": [
+          "op_mix_aux",
+          "op_acc_stamp",
+          "op_acc_stamp",
+          "op_inc"
+        ],
+        "public_probes": [],
+        "true_target_mode": "true_counter_aware"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "condition_label": "counter_sensitive_repeated_transfer",
+        "gold_validation_status": "UNIQUE_VALIDATED_MAPPING",
+        "id": "w24f_t1_04_counter_aware_transfer_c",
+        "is_repeated_transfer": true,
+        "private_init_state": {
+          "aux": 3,
+          "stamp": 0,
+          "val": 3
+        },
+        "private_ops": [
+          "op_acc_stamp",
+          "op_acc_stamp",
+          "op_acc_stamp",
+          "op_dec"
+        ],
+        "public_probes": [],
+        "true_target_mode": "true_counter_aware"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "condition_label": "new_interface_stamp_distractor_first_acquisition",
+        "gold_validation_status": "UNIQUE_VALIDATED_MAPPING",
+        "id": "w24f_t1_05_stamp_invariant_first",
+        "is_repeated_transfer": false,
+        "private_init_state": {
+          "aux": 3,
+          "stamp": 0,
+          "val": 3
+        },
+        "private_ops": [
+          "op_inc",
+          "op_acc_stamp",
+          "op_acc_stamp",
+          "op_mix_aux"
+        ],
+        "public_probes": [
+          {
+            "id": "fp5_2step_a",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_inc",
+              "op_dec"
+            ]
+          },
+          {
+            "id": "fp5_2step_b",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "fp5_2step_c",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 4
+            },
+            "ops": [
+              "op_dec",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "fp5_5step_disambig",
+            "init_state": {
+              "aux": 3,
+              "stamp": 0,
+              "val": 3
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp",
+              "op_dbl",
+              "op_mix_aux",
+              "op_acc_stamp"
+            ]
+          }
+        ],
+        "true_target_mode": "lookalike_ignore_stamp"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap",
+          "lookalike_swap_sign"
+        ],
+        "condition_label": "new_interface_stamp_distractor_repeated_transfer",
+        "gold_validation_status": "UNIQUE_VALIDATED_MAPPING",
+        "id": "w24f_t1_06_stamp_invariant_transfer",
+        "is_repeated_transfer": true,
+        "private_init_state": {
+          "aux": 1,
+          "stamp": 0,
+          "val": 4
+        },
+        "private_ops": [
+          "op_dbl",
+          "op_acc_stamp",
+          "op_acc_stamp",
+          "op_dec"
+        ],
+        "public_probes": [],
+        "true_target_mode": "lookalike_ignore_stamp"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp"
+        ],
+        "condition_label": "insufficiently_identifiable_ambiguous",
+        "gold_validation_status": "AMBIGUOUS_VALIDATED_MAPPINGS",
+        "id": "w24f_t1_07_ambiguous_public_probes",
+        "is_repeated_transfer": false,
+        "private_init_state": {
+          "aux": 1,
+          "stamp": 0,
+          "val": 2
+        },
+        "private_ops": [
+          "op_inc",
+          "op_acc_stamp",
+          "op_acc_stamp"
+        ],
+        "public_probes": [
+          {
+            "id": "fp7_short_1",
+            "init_state": {
+              "aux": 1,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_inc",
+              "op_acc_stamp"
+            ]
+          },
+          {
+            "id": "fp7_short_2",
+            "init_state": {
+              "aux": 1,
+              "stamp": 0,
+              "val": 3
+            },
+            "ops": [
+              "op_dec",
+              "op_acc_stamp"
+            ]
+          }
+        ],
+        "true_target_mode": "true_counter_aware"
+      },
+      {
+        "candidate_modes": [
+          "true_counter_aware",
+          "lookalike_ignore_stamp",
+          "lookalike_mod_wrap"
+        ],
+        "condition_label": "genuinely_different_unaligned_dynamics",
+        "gold_validation_status": "NO_VALIDATED_MAPPING",
+        "id": "w24f_t1_08_unaligned_dynamics",
+        "is_repeated_transfer": false,
+        "private_init_state": {
+          "aux": 1,
+          "stamp": 0,
+          "val": 2
+        },
+        "private_ops": [
+          "op_inc",
+          "op_dbl"
+        ],
+        "public_probes": [
+          {
+            "id": "fp8_probe_1",
+            "init_state": {
+              "aux": 1,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_inc",
+              "op_dbl"
+            ]
+          },
+          {
+            "id": "fp8_probe_2",
+            "init_state": {
+              "aux": 1,
+              "stamp": 0,
+              "val": 2
+            },
+            "ops": [
+              "op_mix_aux",
+              "op_acc_stamp",
+              "op_acc_stamp"
+            ]
+          }
+        ],
+        "true_target_mode": "broken_unaligned"
+      }
+    ],
+    "track2_tasks": [
+      {
+        "condition_label": "family_a_twopass_first_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_01_int_twopass_unique_pos",
+        "private": [
+          [
+            [
+              6,
+              2,
+              6,
+              -3,
+              8
+            ],
+            [
+              4,
+              16
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              3,
+              -2,
+              3,
+              3,
+              5,
+              -2
+            ],
+            [
+              6,
+              10
+            ]
+          ],
+          [
+            [
+              4,
+              7,
+              4,
+              -1,
+              9
+            ],
+            [
+              14,
+              18
+            ]
+          ]
+        ],
+        "query_input": [
+          5,
+          3
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "family_a_branch_symkan_first_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_02_int_branch_symkan_first",
+        "private": [
+          [
+            [
+              12,
+              2,
+              -2,
+              1,
+              6
+            ],
+            [
+              6,
+              2,
+              3
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              2,
+              -2,
+              3,
+              6,
+              4,
+              1
+            ],
+            [
+              2,
+              3,
+              2
+            ]
+          ],
+          [
+            [
+              8,
+              2,
+              -4,
+              5,
+              10
+            ],
+            [
+              4,
+              2,
+              5
+            ]
+          ]
+        ],
+        "query_input": [
+          4,
+          2,
+          -6,
+          3,
+          8,
+          10
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "family_a_branch_symkan_second_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_03_int_branch_symkan_second",
+        "private": [
+          [
+            [
+              6,
+              -2,
+              1,
+              2,
+              14
+            ],
+            [
+              3,
+              2,
+              7
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              2,
+              10,
+              -2,
+              3,
+              6
+            ],
+            [
+              2,
+              5,
+              3
+            ]
+          ],
+          [
+            [
+              4,
+              -4,
+              5,
+              8,
+              2
+            ],
+            [
+              2,
+              4,
+              2
+            ]
+          ]
+        ],
+        "query_input": [
+          2,
+          6,
+          12,
+          -2,
+          3
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "family_a_compositional_reuse_after_promotion",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_04_int_branch_compositional_rev",
+        "private": [
+          [
+            [
+              6,
+              -2,
+              5,
+              12,
+              2
+            ],
+            [
+              2,
+              6,
+              3
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              2,
+              -2,
+              3,
+              6,
+              8
+            ],
+            [
+              4,
+              3,
+              2
+            ]
+          ],
+          [
+            [
+              10,
+              4,
+              -4,
+              1,
+              2
+            ],
+            [
+              2,
+              2,
+              5
+            ]
+          ]
+        ],
+        "query_input": [
+          2,
+          8,
+          -4,
+          3,
+          10
+        ],
+        "reporting_is_repeated_or_transfer": true
+      },
+      {
+        "condition_label": "family_b_twopass_first_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_05_str_twopass_unique_join",
+        "private": [
+          [
+            "Sun moon sun Star",
+            "moon star"
+          ]
+        ],
+        "public": [
+          [
+            "Alpha beta ALPHA gamma beta delta",
+            "gamma delta"
+          ],
+          [
+            "Node edge node Graph",
+            "edge graph"
+          ]
+        ],
+        "query_input": "Beam Wave",
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "family_b_twopass_second_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_06_str_twopass_unique_second",
+        "private": [
+          [
+            "Key lock key Bolt",
+            "lock bolt"
+          ]
+        ],
+        "public": [
+          [
+            "Tree leaf tree Root leaf Stem",
+            "root stem"
+          ],
+          [
+            "Host port host Link",
+            "port link"
+          ]
+        ],
+        "query_input": "Mesh Grid",
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "family_b_compositional_reuse",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_07_str_twopass_compositional_sort",
+        "private": [
+          [
+            "one two onerew two ash",
+            [
+              "ash",
+              "onerew"
+            ]
+          ]
+        ],
+        "public": [
+          [
+            "cat dog cat zebra dog ant",
+            [
+              "ant",
+              "zebra"
+            ]
+          ],
+          [
+            "red blue red pearl blue jade",
+            [
+              "jade",
+              "pearl"
+            ]
+          ]
+        ],
+        "query_input": "owl bat",
+        "reporting_is_repeated_or_transfer": true
+      },
+      {
+        "condition_label": "unseen_family_c_counter_sensitive_first_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_08_dict_counter_grouped_first",
+        "private": [
+          [
+            [
+              {
+                "k": "m",
+                "seq": 1,
+                "val": 4
+              },
+              {
+                "k": "n",
+                "seq": 3,
+                "val": 2
+              },
+              {
+                "k": "m",
+                "seq": 2,
+                "val": 1
+              }
+            ],
+            [
+              8,
+              5
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              {
+                "k": "b",
+                "seq": 1,
+                "val": 3
+              },
+              {
+                "k": "a",
+                "seq": 2,
+                "val": 3
+              },
+              {
+                "k": "b",
+                "seq": 3,
+                "val": 4
+              }
+            ],
+            [
+              5,
+              11
+            ]
+          ],
+          [
+            [
+              {
+                "k": "x",
+                "seq": 1,
+                "val": 2
+              },
+              {
+                "k": "y",
+                "seq": 2,
+                "val": 5
+              },
+              {
+                "k": "x",
+                "seq": 4,
+                "val": 3
+              }
+            ],
+            [
+              10,
+              7
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "k": "a",
+            "seq": 1,
+            "val": 5
+          },
+          {
+            "k": "b",
+            "seq": 2,
+            "val": 4
+          }
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "unseen_family_c_counter_sensitive_second_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_09_dict_counter_grouped_second",
+        "private": [
+          [
+            [
+              {
+                "k": "u",
+                "seq": 1,
+                "val": 5
+              },
+              {
+                "k": "v",
+                "seq": 2,
+                "val": 2
+              },
+              {
+                "k": "u",
+                "seq": 3,
+                "val": 3
+              }
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              {
+                "k": "c",
+                "seq": 2,
+                "val": 1
+              },
+              {
+                "k": "a",
+                "seq": 1,
+                "val": 4
+              },
+              {
+                "k": "c",
+                "seq": 3,
+                "val": 2
+              }
+            ],
+            [
+              5,
+              8
+            ]
+          ],
+          [
+            [
+              {
+                "k": "d",
+                "seq": 1,
+                "val": 3
+              },
+              {
+                "k": "b",
+                "seq": 2,
+                "val": 2
+              },
+              {
+                "k": "b",
+                "seq": 4,
+                "val": 4
+              }
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "k": "a",
+            "seq": 1,
+            "val": 4
+          },
+          {
+            "k": "b",
+            "seq": 2,
+            "val": 6
+          }
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "unseen_family_c_repeated_use",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_10_dict_counter_grouped_reuse",
+        "private": [
+          [
+            [
+              {
+                "k": "a",
+                "seq": 1,
+                "val": 1
+              },
+              {
+                "k": "b",
+                "seq": 2,
+                "val": 3
+              },
+              {
+                "k": "a",
+                "seq": 3,
+                "val": 4
+              }
+            ],
+            [
+              9,
+              5
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              {
+                "k": "b",
+                "seq": 1,
+                "val": 5
+              },
+              {
+                "k": "a",
+                "seq": 3,
+                "val": 2
+              },
+              {
+                "k": "b",
+                "seq": 2,
+                "val": 1
+              }
+            ],
+            [
+              5,
+              9
+            ]
+          ],
+          [
+            [
+              {
+                "k": "r",
+                "seq": 2,
+                "val": 3
+              },
+              {
+                "k": "s",
+                "seq": 1,
+                "val": 4
+              },
+              {
+                "k": "r",
+                "seq": 4,
+                "val": 2
+              }
+            ],
+            [
+              11,
+              5
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "k": "a",
+            "seq": 1,
+            "val": 6
+          },
+          {
+            "k": "b",
+            "seq": 2,
+            "val": 3
+          }
+        ],
+        "reporting_is_repeated_or_transfer": true
+      },
+      {
+        "condition_label": "unseen_family_c_branch_first_acquisition",
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_11_dict_branch_prio_first",
+        "private": [
+          [
+            [
+              {
+                "k": "x",
+                "prio": 1,
+                "val": 6
+              },
+              {
+                "k": "y",
+                "prio": 0,
+                "val": 3
+              }
+            ],
+            [
+              12,
+              3
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              {
+                "k": "a",
+                "prio": 1,
+                "val": 3
+              },
+              {
+                "k": "b",
+                "prio": 0,
+                "val": 5
+              },
+              {
+                "k": "c",
+                "prio": 1,
+                "val": 4
+              }
+            ],
+            [
+              6,
+              5,
+              8
+            ]
+          ],
+          [
+            [
+              {
+                "k": "d",
+                "prio": 0,
+                "val": 7
+              },
+              {
+                "k": "e",
+                "prio": 1,
+                "val": 2
+              }
+            ],
+            [
+              7,
+              4
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "k": "m",
+            "prio": 1,
+            "val": 5
+          },
+          {
+            "k": "n",
+            "prio": 0,
+            "val": 9
+          }
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "unseen_family_d_stateful_rollback_first_acquisition",
+        "declared_stateful": true,
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_12_state_rollback_first",
+        "private": [
+          [
+            [
+              {
+                "arg": 6,
+                "op": "step"
+              },
+              {
+                "arg": -10,
+                "op": "step"
+              },
+              {
+                "arg": 3,
+                "op": "step"
+              }
+            ],
+            [
+              6,
+              6,
+              9
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              {
+                "arg": 5,
+                "op": "step"
+              },
+              {
+                "arg": -8,
+                "op": "step"
+              },
+              {
+                "arg": 6,
+                "op": "step"
+              },
+              {
+                "arg": -8,
+                "op": "step"
+              }
+            ],
+            [
+              5,
+              5,
+              11,
+              3
+            ]
+          ],
+          [
+            [
+              {
+                "arg": 2,
+                "op": "step"
+              },
+              {
+                "arg": 5,
+                "op": "step"
+              },
+              {
+                "arg": -9,
+                "op": "step"
+              }
+            ],
+            [
+              2,
+              7,
+              7
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "arg": 5,
+            "op": "step"
+          },
+          {
+            "arg": -2,
+            "op": "step"
+          },
+          {
+            "arg": 4,
+            "op": "step"
+          }
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "unseen_family_d_stateful_rollback_second_acquisition",
+        "declared_stateful": true,
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_13_state_rollback_second",
+        "private": [
+          [
+            [
+              {
+                "arg": 5,
+                "op": "step"
+              },
+              {
+                "arg": -8,
+                "op": "step"
+              },
+              {
+                "arg": 2,
+                "op": "step"
+              }
+            ],
+            [
+              5,
+              5,
+              7
+            ]
+          ]
+        ],
+        "public": [
+          [
+            [
+              {
+                "arg": 4,
+                "op": "step"
+              },
+              {
+                "arg": -6,
+                "op": "step"
+              },
+              {
+                "arg": 5,
+                "op": "step"
+              }
+            ],
+            [
+              4,
+              4,
+              9
+            ]
+          ],
+          [
+            [
+              {
+                "arg": 3,
+                "op": "step"
+              },
+              {
+                "arg": 4,
+                "op": "step"
+              },
+              {
+                "arg": -9,
+                "op": "step"
+              }
+            ],
+            [
+              3,
+              7,
+              7
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "arg": 7,
+            "op": "step"
+          },
+          {
+            "arg": -3,
+            "op": "step"
+          },
+          {
+            "arg": 3,
+            "op": "step"
+          }
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "unseen_family_d_compositional_reuse",
+        "declared_stateful": true,
+        "gold_witness_status": "UNIQUE_IN_BOUNDED_SPACE",
+        "id": "w24f_t2_14_state_rollback_compositional_scalar",
+        "private": [
+          [
+            [
+              {
+                "arg": 8,
+                "op": "step"
+              },
+              {
+                "arg": -12,
+                "op": "step"
+              },
+              {
+                "arg": 4,
+                "op": "step"
+              }
+            ],
+            12
+          ]
+        ],
+        "public": [
+          [
+            [
+              {
+                "arg": 4,
+                "op": "step"
+              },
+              {
+                "arg": -6,
+                "op": "step"
+              },
+              {
+                "arg": 5,
+                "op": "step"
+              }
+            ],
+            9
+          ],
+          [
+            [
+              {
+                "arg": 2,
+                "op": "step"
+              },
+              {
+                "arg": 6,
+                "op": "step"
+              },
+              {
+                "arg": -10,
+                "op": "step"
+              },
+              {
+                "arg": 3,
+                "op": "step"
+              }
+            ],
+            11
+          ]
+        ],
+        "query_input": [
+          {
+            "arg": 6,
+            "op": "step"
+          },
+          {
+            "arg": -9,
+            "op": "step"
+          },
+          {
+            "arg": 5,
+            "op": "step"
+          }
+        ],
+        "reporting_is_repeated_or_transfer": true
+      },
+      {
+        "condition_label": "insufficiently_identifiable_ambiguous_witness",
+        "gold_witness_status": "AMBIGUOUS_WITNESS_FOUND",
+        "id": "w24f_t2_15_ambiguous_witness",
+        "private": [],
+        "public": [
+          [
+            [
+              2,
+              -3,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          [
+            [
+              4,
+              6,
+              3
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        ],
+        "query_input": [
+          2,
+          8,
+          -4,
+          6
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "uniqueness_unknown_budget_cap",
+        "gold_witness_status": "UNIQUENESS_UNKNOWN_BUDGET_EXHAUSTED",
+        "id": "w24f_t2_16_uniqueness_unknown_budget",
+        "max_candidate_budget": 40,
+        "private": [],
+        "public": [
+          [
+            [
+              1,
+              3,
+              5
+            ],
+            [
+              2,
+              6,
+              10
+            ]
+          ],
+          [
+            [
+              3,
+              7
+            ],
+            [
+              6,
+              14
+            ]
+          ]
+        ],
+        "query_input": [
+          1,
+          5,
+          9
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "stateless_deterministic_collision",
+        "declared_stateful": false,
+        "gold_witness_status": "VIOLATES_DECLARED_DETERMINISTIC_ASSUMPTIONS",
+        "id": "w24f_t2_17_stateless_collision",
+        "private": [],
+        "public": [
+          [
+            [
+              2,
+              4
+            ],
+            [
+              4,
+              8
+            ]
+          ],
+          [
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              4
+            ]
+          ]
+        ],
+        "query_input": [
+          2,
+          4
+        ],
+        "reporting_is_repeated_or_transfer": false
+      },
+      {
+        "condition_label": "genuinely_different_out_of_grammar",
+        "gold_witness_status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+        "id": "w24f_t2_18_out_of_grammar",
+        "private": [],
+        "public": [
+          [
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              19,
+              29,
+              39
+            ]
+          ],
+          [
+            [
+              2,
+              4
+            ],
+            [
+              29,
+              49
+            ]
+          ]
+        ],
+        "query_input": [
+          5,
+          6
+        ],
+        "reporting_is_repeated_or_transfer": false
+      }
+    ],
+    "track3_turns": [
+      {
+        "category": "ambiguous_witness_clarify",
+        "dialogue_id": "w24f_dlg_01_int_ambig",
+        "family": "INT_SEQ",
+        "gold_decision_status": "AMBIGUOUS_WITNESS_FOUND_CLARIFY",
+        "gold_value": null,
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            [
+              2,
+              -3,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          [
+            [
+              4,
+              6,
+              3
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        ],
+        "query_input": [
+          2,
+          8,
+          -4,
+          6
+        ],
+        "turn_index": 1,
+        "user_prompt": "In my integer sequence rule, [2, -3, 1] -> [2] and [4, 6, 3] -> [2, 3]. What is the output for [2, 8, -4, 6]?"
+      },
+      {
+        "category": "clarified_unique_resolution",
+        "dialogue_id": "w24f_dlg_01_int_ambig",
+        "family": "INT_SEQ",
+        "gold_decision_status": "VERIFIED_RELATIVE_TO_SELECTED_SPEC",
+        "gold_value": [
+          2,
+          4,
+          3
+        ],
+        "is_clarification_followup": true,
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            [
+              8,
+              -2,
+              2
+            ],
+            [
+              4,
+              2
+            ]
+          ]
+        ],
+        "query_input": [
+          2,
+          8,
+          -4,
+          6
+        ],
+        "save_skill_key": "w24f_int_halve_skill",
+        "turn_index": 2,
+        "user_prompt": "Clarification: for [8, -2, 2] the output is [4, 2] (positive evens halved when > 2). Now evaluate [2, 8, -4, 6]. Return only the list."
+      },
+      {
+        "category": "repeated_skill_reuse",
+        "dialogue_id": "w24f_dlg_01_int_ambig",
+        "family": "INT_SEQ",
+        "gold_decision_status": "VERIFIED_RELATIVE_TO_SELECTED_SPEC",
+        "gold_value": [
+          5,
+          2,
+          2
+        ],
+        "is_repeated_use_turn": true,
+        "public_examples": [],
+        "query_input": [
+          10,
+          2,
+          -3,
+          4
+        ],
+        "reuse_skill_key": "w24f_int_halve_skill",
+        "turn_index": 3,
+        "user_prompt": "Apply the exact same verified integer rule to [10, 2, -3, 4]. Return only the list."
+      },
+      {
+        "category": "verified_string_parse",
+        "dialogue_id": "w24f_dlg_02_str_parse",
+        "family": "STR_PARSE",
+        "gold_decision_status": "VERIFIED_RELATIVE_TO_SELECTED_SPEC",
+        "gold_value": "moon star",
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            "Alpha beta ALPHA gamma beta delta",
+            "gamma delta"
+          ],
+          [
+            "Node edge node Graph",
+            "edge graph"
+          ]
+        ],
+        "query_input": "Sun moon sun Star",
+        "turn_index": 1,
+        "user_prompt": "Keep only words that appear once (case-insensitive), lowercased and joined by space: \"Alpha beta ALPHA gamma beta delta\" -> \"gamma delta\" and \"Node edge node Graph\" -> \"edge graph\". Evaluate \"Sun moon sun Star\"."
+      },
+      {
+        "category": "verified_dict_counter_aggregation",
+        "dialogue_id": "w24f_dlg_03_dict_record",
+        "family": "DICT_RECORD",
+        "gold_decision_status": "VERIFIED_RELATIVE_TO_SELECTED_SPEC",
+        "gold_value": [
+          11,
+          4
+        ],
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            [
+              {
+                "k": "b",
+                "seq": 1,
+                "val": 2
+              },
+              {
+                "k": "a",
+                "seq": 2,
+                "val": 3
+              },
+              {
+                "k": "b",
+                "seq": 3,
+                "val": 4
+              }
+            ],
+            [
+              5,
+              10
+            ]
+          ],
+          [
+            [
+              {
+                "k": "x",
+                "seq": 1,
+                "val": 2
+              },
+              {
+                "k": "y",
+                "seq": 2,
+                "val": 5
+              },
+              {
+                "k": "x",
+                "seq": 4,
+                "val": 3
+              }
+            ],
+            [
+              10,
+              7
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "k": "p",
+            "seq": 1,
+            "val": 4
+          },
+          {
+            "k": "q",
+            "seq": 2,
+            "val": 2
+          },
+          {
+            "k": "p",
+            "seq": 3,
+            "val": 3
+          }
+        ],
+        "save_skill_key": "w24f_dict_seq_skill",
+        "turn_index": 1,
+        "user_prompt": "Sum (val + seq) grouped by sorted key k: [{\"k\":\"b\",\"val\":2,\"seq\":1},{\"k\":\"a\",\"val\":3,\"seq\":2},{\"k\":\"b\",\"val\":4,\"seq\":3}] -> [5, 10]. Evaluate [{\"k\":\"p\",\"val\":4,\"seq\":1},{\"k\":\"q\",\"val\":2,\"seq\":2},{\"k\":\"p\",\"val\":3,\"seq\":3}]."
+      },
+      {
+        "category": "repeated_skill_reuse",
+        "dialogue_id": "w24f_dlg_03_dict_record",
+        "family": "DICT_RECORD",
+        "gold_decision_status": "VERIFIED_RELATIVE_TO_SELECTED_SPEC",
+        "gold_value": [
+          5,
+          9
+        ],
+        "is_repeated_use_turn": true,
+        "public_examples": [],
+        "query_input": [
+          {
+            "k": "b",
+            "seq": 1,
+            "val": 5
+          },
+          {
+            "k": "a",
+            "seq": 3,
+            "val": 2
+          },
+          {
+            "k": "b",
+            "seq": 2,
+            "val": 1
+          }
+        ],
+        "reuse_skill_key": "w24f_dict_seq_skill",
+        "turn_index": 2,
+        "user_prompt": "Apply the same grouped (val + seq) rule to [{\"k\":\"b\",\"val\":5,\"seq\":1},{\"k\":\"a\",\"val\":2,\"seq\":3},{\"k\":\"b\",\"val\":1,\"seq\":2}]."
+      },
+      {
+        "category": "verified_stateful_transition",
+        "declared_stateful": true,
+        "dialogue_id": "w24f_dlg_04_state_transition",
+        "family": "STATE_TRANSITION",
+        "gold_decision_status": "VERIFIED_RELATIVE_TO_SELECTED_SPEC",
+        "gold_value": [
+          5,
+          5,
+          9
+        ],
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            [
+              {
+                "arg": 4,
+                "op": "step"
+              },
+              {
+                "arg": -6,
+                "op": "step"
+              },
+              {
+                "arg": 5,
+                "op": "step"
+              }
+            ],
+            [
+              4,
+              4,
+              9
+            ]
+          ],
+          [
+            [
+              {
+                "arg": 2,
+                "op": "step"
+              },
+              {
+                "arg": 5,
+                "op": "step"
+              },
+              {
+                "arg": -9,
+                "op": "step"
+              }
+            ],
+            [
+              2,
+              7,
+              7
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "arg": 5,
+            "op": "step"
+          },
+          {
+            "arg": -7,
+            "op": "step"
+          },
+          {
+            "arg": 4,
+            "op": "step"
+          }
+        ],
+        "turn_index": 1,
+        "user_prompt": "In this stateful buffer (starts at 0, ignores updates that would drop state below 0), [{\"op\":\"step\",\"arg\":4},{\"op\":\"step\",\"arg\":-6},{\"op\":\"step\",\"arg\":5}] -> [4, 4, 9]. Compute the state trace for [{\"op\":\"step\",\"arg\":5},{\"op\":\"step\",\"arg\":-7},{\"op\":\"step\",\"arg\":4}]."
+      },
+      {
+        "category": "ambiguous_witness_clarify",
+        "declared_stateful": true,
+        "dialogue_id": "w24f_dlg_04_state_transition",
+        "family": "STATE_TRANSITION",
+        "gold_decision_status": "AMBIGUOUS_WITNESS_FOUND_CLARIFY",
+        "gold_value": null,
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            [
+              {
+                "arg": 2,
+                "op": "step"
+              },
+              {
+                "arg": 3,
+                "op": "step"
+              }
+            ],
+            [
+              2,
+              5
+            ]
+          ]
+        ],
+        "query_input": [
+          {
+            "arg": 4,
+            "op": "step"
+          },
+          {
+            "arg": -6,
+            "op": "step"
+          }
+        ],
+        "turn_index": 2,
+        "user_prompt": "New transition rule: [{\"op\":\"step\",\"arg\":2},{\"op\":\"step\",\"arg\":3}] -> [2, 5]. What is the trace for [{\"op\":\"step\",\"arg\":4},{\"op\":\"step\",\"arg\":-6}]?"
+      },
+      {
+        "category": "stateless_deterministic_collision",
+        "declared_stateful": false,
+        "dialogue_id": "w24f_dlg_05_diagnostics",
+        "family": "INT_SEQ",
+        "gold_decision_status": "VIOLATES_DECLARED_DETERMINISTIC_ASSUMPTIONS",
+        "gold_value": null,
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            [
+              2,
+              4
+            ],
+            [
+              4,
+              8
+            ]
+          ],
+          [
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              4
+            ]
+          ]
+        ],
+        "query_input": [
+          6,
+          8
+        ],
+        "turn_index": 1,
+        "user_prompt": "Find a deterministic stateless function f(x) such that f([2, 4]) = [4, 8] and f([2, 4]) = [2, 4], then evaluate f([6, 8])."
+      },
+      {
+        "category": "out_of_bounded_grammar",
+        "declared_stateful": false,
+        "dialogue_id": "w24f_dlg_05_diagnostics",
+        "family": "INT_SEQ",
+        "gold_decision_status": "NO_PROGRAM_IN_BOUNDED_GRAMMAR",
+        "gold_value": null,
+        "is_repeated_use_turn": false,
+        "public_examples": [
+          [
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              19,
+              29,
+              39
+            ]
+          ],
+          [
+            [
+              2,
+              4
+            ],
+            [
+              29,
+              49
+            ]
+          ]
+        ],
+        "query_input": [
+          5,
+          6
+        ],
+        "turn_index": 2,
+        "user_prompt": "In our bounded elementary grammar, find a program mapping [1, 2, 3] -> [19, 29, 39] and [2, 4] -> [29, 49], then evaluate [5, 6]."
+      }
+    ]
+  },
+  "suite_name": "wave24_post_freeze_assessment_suite",
+  "wave": "wave24_cross_family_meta_and_quotient_experiment"
+}
