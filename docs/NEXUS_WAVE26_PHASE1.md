@@ -94,3 +94,46 @@ pushed the invocation past `timeout 900`. The process was killed with no artifac
 2. allocate a new confirmation range in the seed registry.
 
 The remaining allocation (~603 s) is not enough for either plus a replay (~660 s + ~650 s).
+
+## Confirmation (attempt 2, owner-authorised Option 1) — **PHASE 1 PASS**
+
+* **Authorisation.** The owner approved re-running the identical frozen science code on 1001–1005, with an
+  auditable one-time registry override (`763c926`) and an additional 1,800 s allocation. `src/` is
+  unchanged since the lock `eb7be04`; only the driver plumbing changed (checkpoint, artifact written before
+  replay, separate replay call).
+* **Run.** Call 1, confirmation: 657.4 s. Call 2, fresh-process replay with `PYTHONHASHSEED=271828`: 658.7 s.
+  The digests `94583fd9…2d89` are identical.
+* **Artifact.** `artifacts/wave26_phase1_confirmation.json`, sha256
+  `07cb8d42706eacdbf7d6b50909003f175f61f2065c5b6ca2e3fc1bb80d268b8e`.
+
+Cell d2/F8/large, `c_oracle = 20`, 8 multi-query episodes × 5 seeds = 40 episodes (80 queries) per arm:
+
+| Arm | Solved | Probes | Fully loaded | vs exact |
+| --- | --- | --- | --- | --- |
+| exact_eig_enum | 80 / 80 | 63 | 8,864,690 | 1.000 |
+| s2_transferred_rule | 80 / 80 | 66 | 9,141,072 | 1.031 |
+| myopic_s3 | 80 / 80 | 56 | 8,657,881 | 0.977 |
+| revisable_controller | 80 / 80 | 54 | 6,880,185 | 0.776 |
+| **full_nexus_vault** | **80 / 80** | 55 | **3,646,046** | **0.411** |
+
+| Gate | Result |
+| --- | --- |
+| full_nexus_vault fully loaded < exact_eig_enum | **PASS** (−58.9%, contract learning and S2 mining amortised and included) |
+| solved(full) ≥ solved(exact) | **PASS** (80 = 80) |
+| G_soundness | **PASS** (0 false certificates, every arm) |
+| G_tycho | **PASS** (200 / 200 rows reconcile to the single meter) |
+| G_replay | **PASS** (fresh process, different hash seed, identical digest) |
+| (b) S2 rule alone beats exact (reported, not gated) | **FAIL** (1.031) — consistent with the dev grid |
+
+**What this establishes.** In worlds with enough fields and grammar for certification to be expensive,
+the learned, proved contracts plus the revisable controller repay their full acquisition cost against an
+unlearned exact baseline, on fresh seeds, soundly and reproducibly.
+
+**What it does not establish.**
+* The saving comes from abstraction (pruning) and probe policy, not from the transferred S2 rule, which
+  remains uneconomical.
+* No crossover exists in the smallest world.
+* Depth ≥ 4 is untested (infeasible for the exact enumerator).
+* This is one cell of an authored benchmark family.
+
+**Next.** Phase 3 (sealed vault) requires the owner's blind generation session; see the Phase 0 RULE 1.
