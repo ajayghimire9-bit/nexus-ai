@@ -70,6 +70,10 @@ REGISTRY = {
     ("wave31", "val_frag"): range(7116, 7121),
     # Milestone B (programmatic meta-learner): evolution dev, validation (selection) dev, one-use test on an unseen family
     ("wave33", "dev"): range(791, 796), ("wave33", "valsel"): range(796, 801), ("wave33", "test"): range(7301, 7306),
+    # Wave 34 payoff-driven learner DSL: devA = DSL iteration (dev); fit / valsel = the LOCKED final evolution (dev);
+    # test_f3 / test_mixed = one-use confirmation, run once
+    ("wave34", "devA"): range(801, 805), ("wave34", "fit"): range(805, 809), ("wave34", "valsel"): range(809, 814),
+    ("wave34", "test_f3"): range(7401, 7406), ("wave34", "test_mixed"): range(7406, 7411),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.

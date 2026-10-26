@@ -194,12 +194,12 @@ class Evaluator:
         child.send(dict({"cmd": "library", "programs": programs, "seed": seed, "views": list(views)}, **kw))
         return child.recv()["result"]
 
-    def lsolve(self, child, task, program, seed):
+    def lsolve(self, child, task, program, seed, cmd="l_solve"):
         """Milestone B: the child's learner program decides how to solve; graded and metered exactly like solve()."""
         meter = {}
         task.pop("_oracle_log", None)
         c0, t0 = instructions(child.p.pid), time.perf_counter()
-        child.send({"cmd": "l_solve", "view": {"public": task["public"], "query": task["query"]}, "program": program,
+        child.send({"cmd": cmd, "view": {"public": task["public"], "query": task["query"]}, "program": program,
                     "seed": seed})
         msg = self._serve(child, task, meter)
         meter["child_instr"] = instructions(child.p.pid) - c0
@@ -208,6 +208,7 @@ class Evaluator:
         ev = msg.get("evidence")
         row["flag_scope_mismatch"] = bool(ev is not None and not G.is_matched(ev["scope"], self.depth))
         row["used"] = [msg["info"].get("used_macros"), msg["info"].get("used_prior")]
+        row["rec"] = msg["info"].get("rec")
         return row
 
     def solve(self, child, task, arm, mode, library, seed, policy=None):

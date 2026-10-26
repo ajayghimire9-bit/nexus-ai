@@ -75,3 +75,19 @@ def test_metalearner_dsl_is_closed_and_validated():
         M.validate(bad)
     with pytest.raises(ValueError):
         M.validate(dict(M.GEN0_ON, plan={"macro": {"depth": 3, "when": ["true"]}, "prior": {"when": ["true"]}}))
+
+
+def test_wave34_dsl_closed_and_counter_deterministic():
+    from nexus import wave34_learner as L
+    rng = random.Random(4)
+    p = L.validate(dict(L.SEED_ON))
+    for _ in range(300):
+        p = L.crossover(L.mutate(p, rng), L.SEED_PRIOR, rng) if rng.random() < 0.3 else L.mutate(p, rng)
+        L.validate(p)
+    with pytest.raises(ValueError):
+        L.validate(dict(L.SEED_ON, score=["exec", "x"]))
+    from nexus import checker_kernel_v2 as V
+    L.install_counter()
+    u0 = L.UNITS[0]; V.run([{"op": "Sort", "path": ".", "desc": False}], [3, 1, 2]); u1 = L.UNITS[0]
+    V.run([{"op": "Sort", "path": ".", "desc": False}], [3, 1, 2])
+    assert L.UNITS[0] - u1 == u1 - u0 > 0
