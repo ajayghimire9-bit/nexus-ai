@@ -42,7 +42,23 @@ def run_family(ev, fam, seeds):
     return res
 
 
+def run_family_e3(ev, fam, seeds):
+    """Stage C: the shortlisted E3 program ('E3') vs B-online, Fresh-v3, Placebo-v3 (placebo of E3) and the fixed controls."""
+    from nexus import wave34_learner as L
+    prog = json.loads((ROOT / "artifacts/wave36_e3_shortlisted_program.json").read_text())["program"]
+    suite = M4.family_suite(fam, seeds)
+    res = M4.confirm_family(ev, prog, suite)
+    for s, cells in suite.items():
+        for cell, tasks in cells.items():
+            res[s][cell]["E3"] = res[s][cell].pop("Evolved")
+            rows, learn = M4.run_prog(ev, L.SEED_PRIOR, tasks, f"w34cmp:{s}:{cell}")
+            res[s][cell]["B-online"] = dict(F.summ(rows, learn, 0), digest=W.digest(rows))
+    return res
+
+
 def table(res):
+    if "E1" not in next(iter(next(iter(res.values())).values())):
+        return table_e3(res)
     arms = ("E1", "B-online", "Fresh-v3", "Placebo-v3", "Gen0-ON", "Gen0-OFF", "frozen-a0c2", "Fixed-payoff")
     fixed = ("Gen0-ON", "Gen0-OFF", "frozen-a0c2", "Fixed-payoff")
     seeds = sorted(res, key=str)
@@ -58,6 +74,24 @@ def table(res):
                 continue
             out[f"{x}/{b}"] = (tot[x] / tot[b], sum(sum(res[s][c][x]["work"] for c in res[s]) < sum(res[s][c][b]["work"] for c in res[s])
                                                     for s in seeds))
+    return out
+
+
+def table_e3(res):
+    arms = ("E3", "B-online", "Fresh-v3", "Placebo-v3", "Gen0-ON", "Gen0-OFF", "frozen-a0c2", "Fixed-payoff")
+    fixed = ("Gen0-ON", "Gen0-OFF", "frozen-a0c2", "Fixed-payoff", "B-online")
+    seeds = sorted(res, key=str)
+    tot = {a: sum(res[s][c][a]["work"] for s in seeds for c in res[s]) for a in arms}
+    sf = min(fixed, key=lambda a: tot[a])
+    out = dict(total=tot, strongest_fixed=sf, n=sum(res[s][c]["E3"]["n"] for s in seeds for c in res[s]),
+               solved={a: sum(res[s][c][a]["correct"] for s in seeds for c in res[s]) for a in arms},
+               wrong=sum(res[s][c][a]["wrong"] for s in seeds for c in res[s] for a in arms),
+               flags=sum(sum(res[s][c][a]["detectors"].values()) for s in seeds for c in res[s] for a in arms))
+    for b in ("Fresh-v3", "Placebo-v3", "B-online", sf):
+        out[f"E3/{b}"] = (tot["E3"] / tot[b], sum(sum(res[s][c]["E3"]["work"] for c in res[s]) < sum(res[s][c][b]["work"] for c in res[s])
+                                                for s in seeds))
+    out["pass"] = bool(out["wrong"] == 0 and out["flags"] == 0 and all(
+        out[f"E3/{b}"][0] < 1 and out[f"E3/{b}"][1] >= 4 for b in ("Fresh-v3", "Placebo-v3", sf)))
     return out
 
 
@@ -77,13 +111,13 @@ def main():
         seeds = list(R.REGISTRY[("wave36", "confirm_online")])
         spent = [json.loads(l) for l in R.SPENT_LEDGER.read_text().splitlines() if l.strip()]
         if not any(r.get("run_id") == "w36-confirm_online" for r in spent):
-            raise SystemExit("claim first")
+            R.claim("wave36", "confirm_online", list(R.REGISTRY[("wave36", "confirm_online")]), run_id="w36-confirm_online")
         seeds = [s * 10 + {"F2": 1, "F3": 2, "F4": 3, "mixed": 4}[a.family] for s in seeds]   # disjoint streams per family
     p = Path(a.out)
     out = json.loads(p.read_text()) if p.exists() else {}
     if a.family in out:
         raise SystemExit("family already run")
-    res = run_family(ev, a.family, seeds)
+    res = run_family(ev, a.family, seeds) if a.split == "dev" else run_family_e3(ev, a.family, seeds)
     out[a.family] = dict(results=res, table=table(res), D4=D.scan([], fp)["D4_integrity"])
     p.write_text(json.dumps(out, sort_keys=True, default=repr))
     E.ledger_append(dict(run=f"w36-online-{a.split}-{a.family}", wall_s=time.perf_counter() - t0, status="COMPLETE"))

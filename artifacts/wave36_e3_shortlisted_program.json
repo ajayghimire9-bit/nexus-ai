@@ -1,0 +1,85 @@
+{
+ "best_score": 0.9177997687350103,
+ "lineage": 1,
+ "method": "dgm_branching",
+ "program": {
+  "alpha": 1.0,
+  "cap": 200,
+  "explore": 0,
+  "extract": {
+   "m": [
+    "false"
+   ],
+   "p": [
+    "or",
+    [
+     "lt",
+     "m_hit",
+     1.0
+    ],
+    [
+     "and",
+     [
+      "gt",
+      "x_hit",
+      10.0
+     ],
+     [
+      "gt",
+      "x_hit_recent",
+      100.0
+     ]
+    ]
+   ]
+  },
+  "lam": 0.8,
+  "macro_depth": 2,
+  "max_holes": 0,
+  "min_support": 1,
+  "probe": {
+   "mut": 2,
+   "tries": 300
+  },
+  "pscore": [
+   "const",
+   100
+  ],
+  "refit": 8,
+  "score": [
+   "div",
+   [
+    "min",
+    [
+     "feat",
+     "novel"
+    ],
+    [
+     "const",
+     1
+    ]
+   ],
+   [
+    "add",
+    [
+     "const",
+     0.5
+    ],
+    [
+     "const",
+     -1
+    ]
+   ]
+  ],
+  "use": {
+   "m": [
+    "false"
+   ],
+   "p": [
+    "true"
+   ],
+   "x": [
+    "false"
+   ]
+  }
+ }
+}
