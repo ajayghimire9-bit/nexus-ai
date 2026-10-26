@@ -275,9 +275,9 @@ def anti_unify_ops(p, q):
     return out
 
 
-def skeletons_from(programs, max_holes=1):
+def skeletons_from(programs, max_holes=1, min_support=1):
     cores = [core(p) for p in programs if len(core(p)) >= 2]
-    sks = {}
+    sks, support = {}, {}
     for i in range(len(cores)):
         for j in range(i + 1, len(cores)):
             sk = anti_unify_ops(cores[i], cores[j])
@@ -288,7 +288,8 @@ def skeletons_from(programs, max_holes=1):
             sk = [p if isinstance(p, Hole) or not any(isinstance(v, Hole) for v in p.values()) else Hole("op")
                   for p in sk]
             sks[repr(sk)] = sk
-    return [sks[k] for k in sorted(sks)]
+            support[repr(sk)] = support.get(repr(sk), 0) + 1
+    return [sks[k] for k in sorted(sks) if support[k] >= min_support]
 
 
 def library_from_skeletons(sks):
@@ -367,13 +368,18 @@ def projected_skip(identities, tools, depth):
     return 1 - clean_total / total
 
 
-def build(programs, seed, views=(), max_holes=1, depth=3):
-    """Library learning from the source programs the evaluator's checker certified (source-only feedback)."""
-    sks = skeletons_from(programs, max_holes)
+def build(programs, seed, views=(), max_holes=1, depth=3, min_support=1, cap=None):
+    """Library learning from the source programs the evaluator's checker certified (source-only feedback).
+    Wave 32 heuristics: min_support (anti-unification pairs needed per skeleton), cap (max macros; the most recent
+    skeletons win)."""
+    sks = skeletons_from(programs, max_holes, min_support)
     psks = placebo_skeletons(sks, random.Random(f"w31b-placebo:{seed}"))
     ids = learned_identities(views) if views else []
     nst = max(1, LEMMA_STATS["tasks"])
-    return dict(useful=library_from_skeletons(sks), placebo=library_from_skeletons(psks),
+    useful = library_from_skeletons(sks)
+    if cap is not None:
+        useful = useful[:int(cap)]
+    return dict(useful=useful, placebo=library_from_skeletons(psks),
                 skeletons=[repr(s) for s in sks], placebo_skeletons=[repr(s) for s in psks],
                 lemma_kinds=sorted(k for k, c in LEMMA_STATS["kinds"].items() if c / nst >= 0.5),
                 identities=ids, projected_skip=projected_skip(ids, G.G_P, depth) if ids else 0.0)

@@ -27,7 +27,7 @@ def main():
             break
         if job["cmd"] == "library":
             out = S.build(job["programs"], job["seed"], job.get("views", ()), job.get("max_holes", 1),
-                          job.get("depth", 3))
+                          job.get("depth", 3), job.get("min_support", 1), job.get("cap"))
             sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
         elif job["cmd"] == "solve":
             ev, meter, info = S.solve(chan, job["arm"], job["mode"], job["view"], job["library"], job["seed"],
