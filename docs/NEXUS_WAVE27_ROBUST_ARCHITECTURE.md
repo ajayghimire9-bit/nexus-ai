@@ -254,3 +254,25 @@ Locked code sha256:
   orderings.
 * Slope wins: 2/5. Experienced starts near its floor, so its learning slope is flat.
 * 0 false certificates; 14–16 of 16 solved per arm (all arms equal).
+
+## Secondary: wave27_paired_ablation (post-lock, owner registry override; a second pass on sealed splits)
+
+**Group A** (3001–3010, 100 tasks, one call of 584 s).
+* Solved 10, repaired 10%, 0 errors, 0 false certificates.
+* Mean work, first → second encounter: 0.99M → 2.46M (Wave 26: 1.34M → 3.44M).
+* 1 consolidated schema with positive net benefit.
+* Replay: 10/10 seed digests identical.
+* Artifact: `artifacts/wave27_paired_ablation_group_a.json`, sha256 `cc05e8c44eb15e28df9d083958655f50b20076055031e5a0c63394170c1d4efa`.
+
+**Group B + ARC** (2 tasks per seed, orderings 6001–6005, Fresh evaluated once with seed 0).
+* Experienced is cheapest in 5/5: 17.5M vs Fresh 61.0M and Placebo 61.0–62.5M.
+* Slope wins 0/5; 0 false certificates.
+* Replay: 5/5 identical.
+* Artifact: `artifacts/wave27_paired_ablation_group_bx.json`, sha256 `adfa0df5d26ae970a3bebb2b826e689ffbfa5a70f35d5854f3fc5a202cc5289e`.
+* **Solved, Experienced / Fresh / Placebo: 0 / 2 / 2 of 40** (Wave 26: 10 / 10 / 10).
+  * The library-route audit falsified 8–10 Group B certificates that Wave 26 had answered correctly. After
+    the reordered-query audit pair was added, no hypothesis gave the same UNIQUE answer.
+  * Sound (0 false certificates in both waves), but a coverage loss.
+  * The Experienced cost "win" on this split is therefore partly withdrawn certificates, not transfer.
+
+Wave 26 vs Wave 27 scorecard: `docs/NEXUS_WAVE26_VS_WAVE27_SCORECARD.md`.
