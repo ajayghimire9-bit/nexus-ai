@@ -49,3 +49,10 @@ def mixed_test_streams(seed):
     for name, doms in (("Source", ("records", "strings", "graphs")), ("Target", ("grids",))):
         out[name] = _seg(seed, "a", doms, 2) + _seg(seed, "b", doms, 3) + _seg(seed, "c", doms, 2)
     return out
+
+
+# F4 (unseen): COUNTER-VALUED outputs (every earlier family outputs sequences, strings or grids)
+F4 = {"records": (("pa", "cnt", "topc"), ("pb", "cnt")),
+      "strings": (("chars", "cnt", "topc"), ("chars", "rot", "cnt")),
+      "grids": (("cells", "cnt"), ("objs", "sizes", "cnt")),
+      "graphs": (("deg", "topc"), ("reach", "diff", "cnt"))}

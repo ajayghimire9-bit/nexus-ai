@@ -30,19 +30,32 @@ from nexus import wave33_prior as P
 
 COMP = ("m", "p", "x")
 SFEATS = tuple(f"{c}_{k}" for c in COMP for k in ("roi", "roi_recent", "hit", "hit_recent", "uses")) + \
-    ("n_tasks", "n_cert", "repeat_rate", "novel_recent", "lib_size", "est_bfs")
+    ("n_tasks", "n_cert", "repeat_rate", "novel_recent", "lib_size", "est_bfs", "since_fit")
 SCONST = (-1.0, -0.5, -0.1, 0.0, 0.1, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 100.0, 1000.0)
-MFEATS = ("support", "hits", "saved", "age", "len", "survival", "fit_rate")
+MFEATS = ("support", "hits", "saved", "age", "len", "survival", "fit_rate", "novel", "cost")
 NCONST = (-5, -1, 0, 0.5, 1, 2, 5, 100)
 MAX_NODES = 21
 RECENT = 10
 
 TRUE, FALSE = ["true"], ["false"]
+# DSL v2.1 (dev iteration 2): the prior is itself under evolved learning mechanics:
+#   pscore  N over per-solved-task features -> weight of that task in the prior (<= 0 excluded): evolved credit assignment
+#   extract.p is the evolved refit trigger (it can read since_fit and the prior's ROI ledgers); alpha / lam evolvable
 SEED_ON = {"use": {"m": TRUE, "p": FALSE, "x": FALSE}, "extract": {"m": TRUE, "p": FALSE},
-           "score": ["const", 1], "cap": 200, "refit": 4, "explore": 0, "macro_depth": 2, "max_holes": 1, "min_support": 1,
-           "probe": {"mut": 2, "tries": 300}}
+           "score": ["const", 1], "pscore": ["const", 1], "alpha": 1.0, "lam": 0.8, "cap": 200, "refit": 4, "explore": 0,
+           "macro_depth": 2, "max_holes": 1, "min_support": 1, "probe": {"mut": 2, "tries": 300}}
 SEED_OFF = dict(copy.deepcopy(SEED_ON), use={"m": FALSE, "p": FALSE, "x": FALSE}, extract={"m": FALSE, "p": FALSE})
 SEED_PRIOR = dict(copy.deepcopy(SEED_OFF), use={"m": FALSE, "p": TRUE, "x": FALSE}, extract={"m": FALSE, "p": TRUE})
+# Hand-written FIXED net-payoff controller (a comparator, and the 4th fixed learner of the "strongest fixed" bar): every
+# component is used / refreshed only while its measured net ROI (saved - invested - lookup) is positive, after a 5-use
+# probation; macros are kept if they have earned hits or have majority support.
+FIXED_PAYOFF = dict(copy.deepcopy(SEED_ON),
+                    use={"m": ["or", ["lt", "m_uses", 5.0], ["gt", "m_roi_recent", 0.0]],
+                         "p": ["or", ["lt", "p_uses", 5.0], ["gt", "p_roi_recent", -0.1]],
+                         "x": ["or", ["lt", "x_uses", 5.0], ["gt", "x_hit_recent", 0.1]]},
+                    extract={"m": ["and", ["gt", "n_cert", 2.0], ["or", ["lt", "m_uses", 5.0], ["gt", "m_roi", 0.0]]],
+                             "p": ["and", ["gt", "since_fit", 2.0], ["or", ["lt", "p_uses", 5.0], ["gt", "p_roi_recent", -0.5]]]},
+                    score=["add", ["feat", "hits"], ["sub", ["feat", "fit_rate"], ["const", 0.5]]], refit=1, explore=10)
 
 # --------------------------------------------------------------------------- deterministic op-unit counter (child only)
 UNITS = [0]
@@ -96,10 +109,11 @@ def validate(p):
     try:
         ok = (set(p) == set(SEED_ON) and set(p["use"]) == set(COMP) and all(_vb(p["use"][c]) for c in COMP)
               and set(p["extract"]) == {"m", "p"} and all(_vb(p["extract"][c]) for c in ("m", "p")) and _vn(p["score"])
+              and _vn(p["pscore"]) and p["alpha"] in (0.25, 0.5, 1.0, 2.0) and p["lam"] in (0.2, 0.5, 0.8, 1.0)
               and p["cap"] in (10, 40, 200) and p["refit"] in (1, 2, 4, 8) and p["explore"] in (0, 5, 10, 20)
               and p["macro_depth"] in (1, 2) and p["max_holes"] in (0, 1) and p["min_support"] in (1, 2, 3)
               and p["probe"]["mut"] in (1, 2, 3) and p["probe"]["tries"] in (50, 150, 300))
-        exprs = [p["use"][c] for c in COMP] + [p["extract"]["m"], p["extract"]["p"], p["score"]] if ok else []
+        exprs = [p["use"][c] for c in COMP] + [p["extract"]["m"], p["extract"]["p"], p["score"], p["pscore"]] if ok else []
     except (KeyError, TypeError):
         ok = False
     if not ok or any(_nodes(e) > MAX_NODES for e in exprs):
@@ -147,14 +161,18 @@ def mutate(p, rng):
     for _ in range(60):
         q = copy.deepcopy(p)
         for _k in range(rng.choice((1, 1, 2, 3))):
-            site = rng.choice(("use_m", "use_p", "use_x", "ex_m", "ex_p", "score", "score", "cap", "refit", "explore",
-                               "depth", "skel", "probe"))
+            site = rng.choice(("use_m", "use_p", "use_x", "ex_m", "ex_p", "ex_p", "score", "score", "pscore", "pscore",
+                               "prior_hp", "cap", "refit", "explore", "depth", "skel", "probe"))
             if site.startswith("use_"):
                 c = site[-1]; q["use"][c] = _mut(q["use"][c], rng, rand_b)
             elif site.startswith("ex_"):
                 c = site[-1]; q["extract"][c] = _mut(q["extract"][c], rng, rand_b)
             elif site == "score":
                 q["score"] = _mut(q["score"], rng, rand_n)
+            elif site == "pscore":
+                q["pscore"] = _mut(q["pscore"], rng, rand_n)
+            elif site == "prior_hp":
+                q["alpha"], q["lam"] = rng.choice((0.25, 0.5, 1.0, 2.0)), rng.choice((0.2, 0.5, 0.8, 1.0))
             elif site == "cap":
                 q["cap"] = rng.choice((10, 40, 200))
             elif site == "refit":
@@ -180,7 +198,8 @@ def crossover(a, b, rng):
         for c in q[k]:
             if rng.random() < 0.5:
                 q[k][c] = copy.deepcopy(b[k][c])
-    for k in ("score", "cap", "refit", "explore", "macro_depth", "max_holes", "min_support", "probe"):
+    for k in ("score", "pscore", "alpha", "lam", "cap", "refit", "explore", "macro_depth", "max_holes", "min_support",
+              "probe"):
         if rng.random() < 0.5:
             q[k] = copy.deepcopy(b[k])
     return validate(q)
@@ -190,9 +209,10 @@ def crossover(a, b, rng):
 ST = {}
 
 
-def reset():
+def reset(placebo=False):
+    """placebo=True (comparator only): every fitted prior is permuted and macros are size-matched placebo macros."""
     ST.clear()
-    ST.update(progs=[], views=[], cores=set(), n_tasks=0, n_cert=0, repeats=0, recent_new=[], lib=[], items={}, prior=None,
+    ST.update(placebo=placebo, progs=[], views=[], pfeats=[], cores=set(), n_tasks=0, n_cert=0, repeats=0, recent_new=[], lib=[], items={}, prior=None,
               since_fit=0, cost_model={}, led={c: dict(saved=0.0, invested=0.0, lookup=0.0, uses=0, hits=0, recent=[])
                                                for c in COMP})
 
@@ -224,7 +244,8 @@ def feats():
         f.update(_ledger_feats(c))
     rn = ST["recent_new"][-RECENT:]
     f.update(n_tasks=ST["n_tasks"], n_cert=ST["n_cert"], repeat_rate=ST["repeats"] / max(1, ST["n_cert"]),
-             novel_recent=sum(rn) / max(1, len(rn)), lib_size=len(ST["lib"]), est_bfs=est_bfs(4))
+             novel_recent=sum(rn) / max(1, len(rn)), lib_size=len(ST["lib"]), est_bfs=est_bfs(4),
+             since_fit=ST["since_fit"])
     return f
 
 
@@ -374,13 +395,20 @@ def update(prog, candidate, view, certified, rec):
     new = k not in ST["cores"]
     ST["repeats"] += not new; ST["cores"].add(k); ST["recent_new"].append(int(new)); ST["n_cert"] += 1
     ST["progs"].append(candidate); ST["views"].append(view); ST["since_fit"] += 1
+    spent = sum(ph[1] for ph in rec["phases"]) if rec else 0
+    saved_here = max(0.0, est_bfs(len(candidate)) - spent)
+    ST["pfeats"].append({"support": 1, "hits": 0, "saved": saved_here, "age": 0, "len": len(candidate),
+                         "survival": 0.0, "fit_rate": 0.0, "novel": int(new), "cost": spent})
+    for pf in ST["pfeats"]:
+        pf["age"] += 1
     for it in ST["items"].values():
         it["age"] += 1
     f = feats()
     rebuilt = refit = False
     if ev_b(prog["extract"]["m"], f):
         u0 = UNITS[0]
-        cands = S.build(ST["progs"], "w34", max_holes=prog["max_holes"], depth=4, min_support=prog["min_support"])["useful"]
+        cands = S.build(ST["progs"], "w34", max_holes=prog["max_holes"], depth=4,
+                        min_support=prog["min_support"])["placebo" if ST["placebo"] else "useful"]
         cores = [[V.key(s_) for s_ in S.core(p_)] for p_ in ST["progs"]]
         scored = []
         for m in cands:
@@ -388,7 +416,8 @@ def update(prog, candidate, view, certified, rec):
             it = ST["items"].setdefault(V.key(m), {"hits": 0, "saved": 0.0, "age": 0})
             sup = sum(_contains(c_, body) for c_ in cores)
             mf = {"support": sup, "hits": it["hits"], "saved": it["saved"], "age": it["age"], "len": len(body),
-                  "survival": it["hits"] / max(1, it["age"]), "fit_rate": sup / max(1, len(cores))}
+                  "survival": it["hits"] / max(1, it["age"]), "fit_rate": sup / max(1, len(cores)), "novel": 0,
+                  "cost": 0}
             sc = ev_n(prog["score"], mf)
             if sc > 0:
                 scored.append((-sc, V.key(m), m))
@@ -397,7 +426,12 @@ def update(prog, candidate, view, certified, rec):
         rebuilt = True
     if ev_b(prog["extract"]["p"], f) and ST["since_fit"] >= prog["refit"]:
         u0 = UNITS[0]
-        ST["prior"] = P.fit_prior(ST["progs"], G.G_P, ST["views"], 1.0, 0.8)
+        w = [max(0.0, ev_n(prog["pscore"], pf)) for pf in ST["pfeats"]]
+        keep = [i for i, x in enumerate(w) if x > 0]
+        fitted = (P.fit_prior([ST["progs"][i] for i in keep], G.G_P, [ST["views"][i] for i in keep],
+                              prog["alpha"], prog["lam"], weights=[w[i] for i in keep]) if keep else None)
+        if fitted is not None:
+            ST["prior"] = P.permuted_prior(fitted, f"pl{ST['n_cert']}") if ST["placebo"] else fitted
         led["p"]["invested"] += UNITS[0] - u0
         ST["since_fit"] = 0
         refit = True

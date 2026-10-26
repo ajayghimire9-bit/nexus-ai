@@ -162,7 +162,7 @@ def _knowledge(tools, samples, min_obs=6):
     return sig, tmap, red
 
 
-def fit_prior(programs, tools, views, alpha=0.5, lam=0.5, knowledge=True):
+def fit_prior(programs, tools, views, alpha=0.5, lam=0.5, knowledge=True, weights=None):
     """Returns cost[prev+1][t] = -log p(t | prev) for prev in START..T-1, plus learned tool knowledge (type table,
     redundant bigrams) when `knowledge`."""
     T = len(tools)
@@ -175,15 +175,16 @@ def fit_prior(programs, tools, views, alpha=0.5, lam=0.5, knowledge=True):
     members = {s: sum(1 for x in sid if x == s) for s in set(sid)}
     op = [[0.0] * T for _ in range(T + 1)]
     sg = [[0.0] * len(sig_ids) for _ in range(len(sig_ids) + 1)]
-    for p in programs:
+    for pi, p in enumerate(programs):
+        w = 1.0 if weights is None else float(weights[pi])     # weights=None reproduces Milestone A exactly
         prev = START
         for spec in p:
             i = idx.get(V.key(spec))
             if i is None:
                 prev = START
                 continue
-            op[prev + 1][i] += 1
-            sg[(sid[prev] + 1) if prev != START else 0][sid[i]] += 1
+            op[prev + 1][i] += w
+            sg[(sid[prev] + 1) if prev != START else 0][sid[i]] += w
             prev = i
     cost = []
     for r in range(T + 1):

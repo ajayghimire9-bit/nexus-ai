@@ -74,6 +74,9 @@ REGISTRY = {
     # test_f3 / test_mixed = one-use confirmation, run once
     ("wave34", "devA"): range(801, 805), ("wave34", "fit"): range(805, 809), ("wave34", "valsel"): range(809, 814),
     ("wave34", "test_f3"): range(7401, 7406), ("wave34", "test_mixed"): range(7406, 7411),
+    # Wave 35 one-shot multi-family confirmation of ONE frozen learner (one-use, run once)
+    ("wave35", "confirm_F3"): range(7501, 7506), ("wave35", "confirm_F4"): range(7506, 7511),
+    ("wave35", "confirm_mixed"): range(7511, 7516), ("wave35", "confirm_F2"): range(7516, 7521),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.

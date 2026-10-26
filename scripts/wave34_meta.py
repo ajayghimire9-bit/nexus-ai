@@ -18,9 +18,12 @@ SEEDS = {"devA": (801, 802, 803, 804), "fit": (805, 806, 807, 808), "valsel": (8
          "test_f3": (7401, 7402, 7403, 7404, 7405), "test_mixed": (7406, 7407, 7408, 7409, 7410)}
 
 
-def episode(ev, child, tasks, prog, tag):
+SEARCH = {"instr": 0}          # every instruction spent by evolution / selection episodes (discovery-cost accounting)
+
+
+def episode(ev, child, tasks, prog, tag, placebo=False):
     from nexus import wave31_evaluator as E
-    child.send({"cmd": "l2_reset"}); child.recv()
+    child.send({"cmd": "l2_reset", "placebo": placebo}); child.recv()
     rows, learn = [], 0
     for k, t in enumerate(tasks):
         r = ev.lsolve(child, t, prog, f"{tag}:{k}", cmd="l2_solve")
@@ -30,13 +33,14 @@ def episode(ev, child, tasks, prog, tag):
                     "view": {"public": t["public"], "query": t["query"]}, "certified": r["label"] == "exhaustive_UNIQUE"})
         child.recv()
         learn += E.instructions(child.p.pid) - c0
+    SEARCH["instr"] += sum(r["ext"]["evaluator_work"] for r in rows) + learn
     return rows, learn
 
 
-def run_prog(ev, prog, tasks, tag, hashseed="0"):
+def run_prog(ev, prog, tasks, tag, hashseed="0", placebo=False):
     from nexus import wave31_evaluator as E
     ch = E.Child(hashseed)
-    rows, learn = episode(ev, ch, tasks, prog, tag)
+    rows, learn = episode(ev, ch, tasks, prog, tag, placebo)
     ch.close()
     return rows, learn
 
@@ -52,7 +56,7 @@ def baseline(ev, seeds):
     for s in seeds:
         for name, tasks in streams(s).items():
             w = []
-            for p in (L.SEED_ON, L.SEED_OFF):
+            for p in (L.SEED_ON, L.SEED_OFF, L.FIXED_PAYOFF):
                 rows, learn = run_prog(ev, p, tasks, f"w34:{s}:{name}")
                 w.append(sum(r["ext"]["evaluator_work"] for r in rows) + learn)
             out[f"{s}:{name}"] = min(w)
@@ -98,7 +102,7 @@ def evolve(ev, st, seeds, gens, kids_n, path, t0, budget_s):
         rng = random.Random(f"w34-evolve:{path.name}:{gen}")
         gfp = D.fingerprint()
         if gen == 0:
-            kids = [(None, L.SEED_ON), (None, L.SEED_OFF), (None, L.SEED_PRIOR)]
+            kids = [(None, L.SEED_ON), (None, L.SEED_OFF), (None, L.SEED_PRIOR), (None, L.FIXED_PAYOFF)]
         else:
             kids = []
             while len(kids) < kids_n:
@@ -166,6 +170,54 @@ def compare(ev, prog, suite):
     return out
 
 
+FAMILIES = {"F3": "confirm_F3", "F4": "confirm_F4", "mixed": "confirm_mixed", "F2": "confirm_F2"}
+FIXED = ("Gen0-ON", "Gen0-OFF", "frozen-a0c2", "Fixed-payoff")
+
+
+def family_suite(fam, seeds):
+    from nexus import wave34_tasks as T4
+    from nexus import wave33_tasks as T33
+    if fam == "mixed":
+        return {s: T4.mixed_test_streams(s) for s in seeds}
+    if fam == "F2":
+        return {s: {"x2": T33.f2_stream(f"c{s}", 2), "x3": T33.f2_stream(f"c{s}", 3)} for s in seeds}
+    F = T4.F3 if fam == "F3" else T4.F4
+    return {s: {"x2": T4.family_stream(F, s, 2, fam), "x3": T4.family_stream(F, s, 3, fam)} for s in seeds}
+
+
+def confirm_family(ev, prog, suite):
+    """Every arm on identical streams. Learner-interpreter arms: Evolved, Fresh-v3 (SEED_OFF), Placebo-v3 (the evolved learner
+    with permuted prior / placebo macros), Fixed-payoff. Original implementations: Gen0-ON, Gen0-OFF, frozen-a0c2."""
+    from nexus import wave34_learner as L
+    out = compare(ev, prog, suite)
+    for s, cells in suite.items():
+        for cell, tasks in cells.items():
+            for name, p_, pl in (("Fresh-v3", L.SEED_OFF, False), ("Placebo-v3", prog, True), ("Fixed-payoff", L.FIXED_PAYOFF, False)):
+                rows, learn = run_prog(ev, p_, tasks, f"w34cmp:{s}:{cell}", placebo=pl)
+                out[s][cell][name] = F.summ(rows, learn, 0)
+    return out
+
+
+def family_table(res):
+    arms = ("Evolved", "Fresh-v3", "Placebo-v3") + FIXED
+    seeds = sorted(res, key=str)
+    tot = {a: sum(res[s][c][a]["work"] for s in seeds for c in res[s]) for a in arms}
+    strongest = min(FIXED, key=lambda a: tot[a])
+    row = dict(total={a: tot[a] for a in arms}, strongest_fixed=strongest,
+               solved={a: sum(res[s][c][a]["correct"] for s in seeds for c in res[s]) for a in arms},
+               n=sum(res[s][c]["Evolved"]["n"] for s in seeds for c in res[s]),
+               wrong=sum(res[s][c][a]["wrong"] for s in seeds for c in res[s] for a in arms),
+               flags=sum(sum(res[s][c][a]["detectors"].values()) for s in seeds for c in res[s] for a in arms),
+               streams=sum(len(res[s]) for s in seeds))
+    for b in ("Fresh-v3", "Placebo-v3", strongest):
+        row[f"ratio_vs_{b}"] = tot["Evolved"] / tot[b]
+        row[f"seeds_vs_{b}"] = sum(sum(res[s][c]["Evolved"]["work"] for c in res[s]) < sum(res[s][c][b]["work"] for c in res[s])
+                                   for s in seeds)
+    row["pass"] = bool(row["wrong"] == 0 and row["flags"] == 0 and all(
+        row[f"ratio_vs_{b}"] < 1 and row[f"seeds_vs_{b}"] >= 4 for b in ("Fresh-v3", "Placebo-v3", strongest)))
+    return row
+
+
 def report(res, label):
     arms = ("Evolved", "Gen0-ON", "Gen0-OFF", "frozen-a0c2")
     seeds = sorted(res, key=str)
@@ -181,6 +233,7 @@ def report(res, label):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--phase", required=True); ap.add_argument("--tag", default="final")
     ap.add_argument("--gens", type=int, default=16); ap.add_argument("--kids", type=int, default=8)
+    ap.add_argument("--family", default=None)
     a = ap.parse_args()
     from nexus import seed_registry as R
     from nexus import wave31_evaluator as E
@@ -191,10 +244,9 @@ def main():
     path = ROOT / f"artifacts/wave34_{a.tag}_state.json"
     st = json.loads(path.read_text()) if path.exists() else {}
     if a.phase == "devevolve":
-        R.claim("wave34", "devA", list(SEEDS["devA"][:2]), run_id="w34-devevolve", record=False)
+        R.claim("wave34", "devA", list(SEEDS["devA"]), run_id="w34-devevolve", record=False)   # development data
         evolve(ev, st, SEEDS["devA"][:2], a.gens, a.kids, path, t0, 760)
         if st["gen"] >= a.gens and "winner" not in st:
-            R.claim("wave34", "devA", list(SEEDS["devA"][2:]), run_id="w34-devselect", record=False)
             select(ev, st, SEEDS["devA"][2:])
     elif a.phase == "diagnose":
         R.claim("wave34", "devA", list(SEEDS["devA"]), run_id="w34-diagnose", record=False)
@@ -209,6 +261,35 @@ def main():
     elif a.phase == "select":
         R.claim("wave34", "valsel", list(SEEDS["valsel"]), run_id="w34-select", record=False)
         select(ev, st, SEEDS["valsel"])
+    elif a.phase == "dryrun":
+        from nexus import wave34_learner as L
+        st2 = {"winner": L.SEED_PRIOR}        # code-path check only (devA's winner is a DSL v2.0 program)
+        for fam in FAMILIES:
+            suite = family_suite(fam, (801,))
+            suite = {k: {c: v[:6] for c, v in cells.items()} for k, cells in suite.items()}
+            print(fam, json.dumps({k: (v if not isinstance(v, dict) else None) for k, v in family_table(
+                confirm_family(ev, st2["winner"], suite)).items() if k in ("strongest_fixed", "wrong", "flags", "n")}))
+    elif a.phase == "confirm":
+        frozen = json.loads((ROOT / "artifacts/wave35_frozen_learner.json").read_text())
+        cp = ROOT / "artifacts/wave35_confirm.json"
+        out = json.loads(cp.read_text()) if cp.exists() else {"frozen": frozen, "families": {}, "tables": {}}
+        for fam, kind in FAMILIES.items():
+            if fam != a.family or fam in out["families"]:
+                continue
+            seeds = list(R.REGISTRY[("wave35", kind)])
+            R.claim("wave35", kind, seeds, run_id=f"w35-{kind}")
+            res = confirm_family(ev, frozen["program"], family_suite(fam, seeds))
+            out["families"][fam] = res
+            out["tables"][fam] = family_table(res)
+            print(fam, json.dumps({k: v for k, v in out["tables"][fam].items() if k != "total"}), flush=True)
+        if a.family == "F3" and "replay" not in out:
+            s0 = list(R.REGISTRY[("wave35", "confirm_F3")])[2]
+            tasks = family_suite("F3", [s0])[s0]["x3"]
+            rows2, _ = run_prog(ev, frozen["program"], tasks, f"w34cmp:{s0}:x3", "1")
+            out["replay"] = W.digest(rows2) == out["families"]["F3"][s0]["x3"]["Evolved"]["digest"]
+        out.setdefault("D4", {})[a.family] = D.scan([], fp)["D4_integrity"]
+        cp.write_text(json.dumps(out, sort_keys=True, default=repr))
+        print("replay", out.get("replay"), "D4", out["D4"])
     elif a.phase == "test":
         R.claim("wave34", "test_f3", list(SEEDS["test_f3"]), run_id="w34-test-f3")
         R.claim("wave34", "test_mixed", list(SEEDS["test_mixed"]), run_id="w34-test-mixed")
@@ -223,6 +304,8 @@ def main():
         (ROOT / "artifacts/wave34_test.json").write_text(json.dumps(res, sort_keys=True, default=repr))
         report(res["F3"], "TEST F3"); report(res["mixed"], "TEST mixed")
         print("replay", res["replay_7403_F3x3"], "D4", res["D4"])
+    if a.phase in ("evolve", "select"):
+        st["search_instr"] = st.get("search_instr", 0) + SEARCH["instr"]
     path.write_text(json.dumps(st, sort_keys=True, default=repr))
     E.ledger_append(dict(run=f"w34-{a.phase}-{a.tag}", wall_s=time.perf_counter() - t0, status="COMPLETE"))
 

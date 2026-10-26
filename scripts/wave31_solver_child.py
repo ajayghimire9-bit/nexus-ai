@@ -39,7 +39,7 @@ def main():
             out = {"learned": pr, "placebo": P.permuted_prior(pr, job["seed"]), "uniform": P.uniform_prior(len(G.G_P))}
             sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
         elif job["cmd"] == "l2_reset":
-            S.online_reset(); L.reset()
+            S.online_reset(); L.reset(bool(job.get("placebo")))
             sys.stdout.write(json.dumps({"done": True}) + "\n")
         elif job["cmd"] == "l2_solve":
             L.validate(job["program"])
