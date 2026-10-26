@@ -126,3 +126,53 @@ learning cost, at matched exhaustive_UNIQUE strength.
   * **Predeclared success:** the evolved learner's pooled work (both cells) < each of the three, and lower than
     each in ≥ 4/5 seeds, with 0 wrong and 0 flags.
   * **Replay:** 7303 at 3 reps.
+
+### Milestone B: results (zero human selection amendments)
+
+**Evolution** (`artifacts/wave33B_state.json`). 51 learner programs: all admitted, all detectors 0, every replay that
+ran matched, and D4 held.
+
+| Archive seed | Fitness mean |
+| --- | --- |
+| GEN0_ON | 1.031 |
+| GEN0_OFF | 1.000 |
+| SEED_PRIOR | 0.966 |
+| best evolved | 0.958 |
+
+**Locked selection** on valsel 796–800: the top 5 scored 0.9356–0.9391. **Winner: b8c3** (valsel 0.9356). The
+program the evolution composed:
+* **plan:** never propose with macros; always propose with the learned fragment prior;
+* **extraction:** refit the prior every 4 certified tasks; still rebuild the macro library while the repeat rate is
+  ≤ 0.4, which is dead work the evolution did not remove;
+* **proofs:** cite Checker v3's proved axioms only after more than 10 certified tasks;
+* **probe:** 1 mutation, 150 tries.
+
+So the procedure differs from every archive seed, and no human chose it. But it is mostly a recombination of an
+existing component (Milestone A's prior, learned online) with a learned *when-to-cite-proofs* trigger. It is not a
+qualitatively new learning algorithm.
+
+**Test** (unseen family F2, one-use 7301–7305, run once, from an empty library):
+* **Correctness:** every arm 250/250 correct, 0 wrong, 0 detector flags.
+* **Checks:** the replay (7303 at 3 reps) matched, and D4 held.
+
+| Cell | Evolved | Gen 0 ON | Gen 0 OFF | frozen a0c2 |
+| --- | --- | --- | --- | --- |
+| F2 / 2 rep (100) | **40.97** | 42.27 | 42.30 | 41.62 |
+| F2 / 3 rep (150) | **62.41** | 64.47 | 66.87 | 63.66 |
+
+| Evolved vs | Pooled | Seeds where Evolved is cheaper |
+| --- | --- | --- |
+| Gen 0 ON | **0.9685** | 4/5 |
+| Gen 0 OFF | **0.9470** | 5/5 |
+| frozen a0c2 | **0.9820** | **3/5** (per seed: 0.975, 1.000, 0.969, 1.021, 0.947) |
+
+**Predeclared criterion: FAIL.** Pooled, the evolved learner is cheaper than all three arms. It is cheaper than the
+frozen gate in only 3/5 seeds, where ≥ 4/5 was required.
+
+**Reading:**
+* An autonomous, zero-amendment search over *compositional learner programs* produced a learner that transfers to
+  an unseen task family. It is pooled-cheaper than learning ON (−3.2%), learning OFF (−5.3%) and the hand-selected
+  gate (−1.8%).
+* Its edge over the gate is not consistent across seeds.
+* The evolved program mainly composes existing parts (online fragment prior + a proof-citation trigger), so
+  "invented a better learning algorithm" remains **unproved**.
