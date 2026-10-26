@@ -78,7 +78,7 @@ REGISTRY = {
     ("wave35", "confirm_F3"): range(7501, 7506), ("wave35", "confirm_F4"): range(7506, 7511),
     ("wave35", "confirm_mixed"): range(7511, 7516), ("wave35", "confirm_F2"): range(7516, 7521),
     # Wave 36 architecture comparison: stage-C one-use confirmation ranges (run once, after freezing)
-    ("wave36", "confirm_rep"): range(7601, 7606), ("wave36", "confirm_online"): range(7606, 7611),
+    ("wave36", "dev"): range(821, 826), ("wave36", "confirm_rep"): range(7601, 7606), ("wave36", "confirm_online"): range(7606, 7611),
     ("wave36", "confirm_world"): range(7611, 7621),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
