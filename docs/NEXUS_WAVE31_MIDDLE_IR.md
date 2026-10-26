@@ -193,3 +193,102 @@ added after the first smoke found too few strict cases. Seeds 762–765 and admi
   `PYTHONHASHSEED`, and give the identical digest.
 * **Splits:** dev 761–765, then admission_val 7101–7105 **once** (the driver refuses to overwrite an existing
   admission_val artifact). final_sealed is not touched.
+
+# Increment 2 results (NOT LOCKED; development diagnostics)
+
+Protocol and implementation commit: d7fb2c9.
+* **Runs:** dev 761–765, then admission_val 7101–7105, run once.
+* **Replays:** in a fresh process with `PYTHONHASHSEED=1`, the digests are identical (dev 763 `67243c22…`,
+  admission_val 7103 `5cbd66a3…`), so R4 passes.
+* **Checker:** Checker v2 `6ba0a268…`, verified from git object 01d84f6 by the evaluator.
+* **Compute:** about 230 s for the LODO runs plus about 270 s on Metal for the coder.
+
+## admission_val 7101–7105 (dev 761–765 agrees within a few tasks)
+
+Each seed runs 4 LODO folds. Source: 600 tasks, all 600 certified exhaustive_UNIQUE, 0 wrong.
+
+| Category (n) | Fresh / matched | Useful / matched | Placebo / matched | Useful / macro | Placebo / macro |
+| --- | --- | --- | --- | --- | --- |
+| familiar_exact (80) | 80 exh, 1.83M | 80 exh, 1.84M | 80 exh, 1.88M | 80 MACRO, 1.19M | 26 MACRO + 54 ABSTAIN |
+| compositional (140) | 140 exh, 3.44M | 140 exh, 3.47M | 140 exh, 3.53M | **140 MACRO**, 2.22M | 52 MACRO (1 wrong) + 88 ABSTAIN |
+| held_out (70) | 70 exh, 1.65M | 70 exh, 1.77M | 70 exh, 1.71M | 12 MACRO + 58 ABSTAIN | 12 MACRO + 58 ABSTAIN |
+| adversarial_strict (8) | 8 exh after 8 probes | 8 exh | 8 exh | **8 wrong (outside scope)** | 8 wrong (outside scope) |
+| adversarial_weak (31) | 31 exh after 32 probes | 31 exh | 31 exh | 29 correct, 1 wrong | 16 correct, 6 wrong |
+| **All (329)** | **329 correct, 0 wrong**, 8.12M | **329 / 0**, 8.29M | **329 / 0**, 8.35M | 261 correct, **9 wrong**, 4.46M | 105 correct, 15 wrong, 2.04M |
+
+* **Work** = evaluator-metered kernel work + solver-reported prover work, target-only.
+* **Kernel work** in the matched configs is identical across arms (7.925M), by construction.
+* **Source learning** costs 14.52M per split (kernel + prover). Charged to Useful and Placebo, the
+  source-amortised totals are Useful 22.81M and Placebo 22.87M, against Fresh 8.12M.
+* **Child CPU seconds** (unforgeable `wait4`): Fresh 1.02 s, Useful 1.40 s, Placebo 1.50 s (matched); source
+  1.33 s.
+
+## Reading
+
+1. **R1 soundness: PASS.** 0 wrong `exhaustive_UNIQUE` in every matched config, on 329 admission tasks and 345 dev
+   tasks, including every adversarial task. On adversarial_strict, the matched depth-3 check returned AMBIGUOUS
+   with witnesses, and one distinguishing oracle probe per task resolved it correctly.
+2. **The scope loophole is real and is now closed in reporting.** On adversarial_strict, the macro scope gives a
+   *unique, wrong* answer in 8/8 admission tasks (12/12 dev), for both Useful and Placebo. Every one is
+   wrong_teacher_outside_scope, and the certificate is honest only relative to its macro grammar. That is why
+   `MACRO_SCOPE_UNIQUE` is never pooled with `exhaustive_UNIQUE`.
+3. **At matched strength, experience gives no cost advantage here** (R2).
+   * Useful/matched target-only work is 2.1% *above* Fresh/matched.
+   * Source-amortised, it is 2.8× Fresh.
+   * Mechanism: the verdict depends only on the scope, so certification work is identical for every arm, and a
+     library can only cut proposal work. At depth 3 over 18 ops, Fresh's first-fit proposal is already only about
+     2.4% of the total, and macro search adds more than it saves.
+   * Increment 1's 127× familiar-surface saving came from comparing a depth-2 macro certificate with Fresh's
+     depth-4 full enumeration. It does not survive matched strength.
+4. **Macro-scope coverage is a real content effect** (R3).
+   * Learned skeletons let the depth-2 macro scope cover 80/80 familiar and **140/140 compositional** targets, on
+     a held-out domain whose leaf adapter never appeared in the sources.
+   * The size-matched Placebo covers 26/80 and 52/140, with 1 wrong answer.
+   * Held-out cores show no content advantage: 12/70 for both.
+   * The cost is weaker certificates and adversarial wrong answers.
+5. **Practical meaning.** A learned library is useful as a *proposal and coverage* device, and as a cheaper,
+   explicitly weaker certificate class. At the strength of exhaustive_UNIQUE over G_P depth 3, it bought
+   nothing in this regime.
+
+**Limits:**
+* G_P is small (18 ops) and the matched depth is 3, so proposal is cheap. A deeper or larger matched scope is
+  where proposal savings could matter, and that is untested.
+* Adapters are supplied, and the graph leaf (sorted reach set) makes some cores degenerate.
+* Probes are oracle queries on mutated inputs. They are counted separately from work units.
+* Only one adversary design was tested.
+
+## Coder on Apple M4 Metal (owner grant 2026-10-26)
+
+* **Grant and caps.** The grant is recorded in the session ledger. Caps: 60 s per call, a 1,800 s Metal
+  session, and RSS of 4 GB (1.5B) or 7 GB (7B), on a separate Metal ledger.
+* **Setup.** Same 16 tasks (wave30 dev seed 751), the same v4 prompt, and ≤ 4 attempts, so only the backend and
+  checkpoint differ from the CPU diagnosis.
+* **7B weights.** `qwen2.5-coder-7b-instruct-q4_k_m.gguf` (official Qwen GGUF repo). The sha256 `509287f7…4d3c`
+  matches the published LFS oid.
+
+| Checkpoint | Backend | Tasks | Wall | Prompt / decode tok/s | GPU util (idle → run) | Correct | Final buckets |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| coder-1.5B Q4_K_M | Metal | 8 | 29 s (CPU earlier: 254 s) | 1,082 / 85 | 0 → 97% | 0/8 | 5 public-demo miss, 2 runtime, 1 unparsable |
+| coder-1.5B Q4_K_M | Metal | 16 | 58 s | 1,105 / 85 | → 96% | 0/16 | 13 public-demo miss, 2 runtime, 1 unparsable |
+| **coder-7B Q4_K_M** | Metal | 16 | **179 s** | 235 / 22.4 | → 99% | **3/16** | 9 public-demo miss, 4 runtime, 3 correct |
+
+* **Metal speed.** About 8.7× faster than CPU at 1.5B. The 7B 16-task smoke ran in 3.0 min, under the owner's
+  10-minute condition, with a peak RSS of 4.9 GB. Metal results differ slightly from the CPU runs (numerics),
+  which is disclosed.
+* **Buckets.** On the owner's 4-bucket scheme, across all 7B attempts: 7 unparsable, 12 runtime error, 33
+  public-demo miss, 0 held-out miss (and 3 correct).
+* **Capability.** The 7B is the first checkpoint to solve any coder-smoke task: all 3 are family A1. The dominant
+  failure is still valid-but-wrong programs. Status moves from `BLOCKED_MODEL_QUALITY` to
+  `WEAK_BUT_NONZERO (3/16)`.
+* **No coder arm was run.**
+
+## Wave 32 readiness
+
+* **Done:** the independent evaluator / meter boundary exists and is tested:
+  * sandboxed solver child;
+  * evaluator-served checker and oracle;
+  * unforgeable kernel, oracle and CPU meters;
+  * evidence audit;
+  * hash-chained ledger.
+* **Remaining:** prover work is still solver-reported (audited by replay only). Wave 32 needs an explicit owner
+  budget and protocol. No autonomous runs have been started.
