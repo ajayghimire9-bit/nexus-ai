@@ -212,13 +212,20 @@ def solve(chan, arm, mode, view, library, seed, policy=None):
     query = view["query"]
     rng = random.Random(f"w31b-probe:{seed}:{V.key(query)}")
     gp = [dict(t) for t in G.G_P]
+    if library == "online":                       # Wave 32 regime-adaptive learner: the stream's own library
+        library = ONLINE["library"]
     macro_tools = gp + list(library)
+    gated_off = (ONLINE["macro_attempts"] >= 5 and
+                 ONLINE["macro_hits"] / ONLINE["macro_attempts"] < pol.get("macro_hit_min", 0.0))
+    first_round = True
     while True:
         cand = None
-        if arm != "Fresh" and library and pol["macro_first"]:
+        use_macros = arm != "Fresh" and library and pol["macro_first"] and not gated_off
+        if use_macros:
             c = first_fit(public, query, macro_tools, pol["macro_depth"], meter, _order(macro_tools, pol))
             if c is not None:
                 cand = [macro_tools[i] for i in c]
+        hit = False
         if mode == "matched":
             tools, depth = gp, pol["matched_depth"]
             if cand is not None:
@@ -227,7 +234,12 @@ def solve(chan, arm, mode, view, library, seed, policy=None):
                 if len(exp) > depth or any(V.key(t) not in keys for t in exp):
                     cand, info["fallback"] = None, True
                 else:
-                    cand = exp
+                    cand, hit = exp, True
+        if use_macros and first_round:
+            ONLINE["macro_attempts"] += 1
+            ONLINE["macro_hits"] += hit
+        first_round = False
+        if mode == "matched":
             if cand is None:
                 c = first_fit(public, query, gp, depth, meter, _order(gp, pol))
                 cand = None if c is None else [gp[i] for i in c]
@@ -267,6 +279,42 @@ def solve(chan, arm, mode, view, library, seed, policy=None):
         if y.get("error"):
             return ev, meter, dict(info, status="AMBIGUOUS_probe_error")
         public = public + [[x, y["output"]]]
+
+
+# --------------------------------------------------------------------------- Wave 32 online learner (solver side)
+ONLINE = {}
+
+
+def online_reset():
+    ONLINE.clear()
+    ONLINE.update(progs=[], cores=set(), certified=0, repeats=0, library=[], macro_attempts=0, macro_hits=0,
+                  rebuilds=0)
+
+
+online_reset()
+
+
+def online_update(candidate, genome):
+    """Called after each task the checker certified. Regime-adaptive gates (Wave 32 editable scope):
+    warmup (min certified tasks before any rebuild), gate_repeat (min observed within-stream repeat rate of certified
+    cores), rebuild_on (every certified task | only when a new core appears)."""
+    if not genome.get("online", True):
+        return {"rebuilt": False, "library_size": 0}
+    k = V.key(core(candidate))
+    new = k not in ONLINE["cores"]
+    ONLINE["repeats"] += not new
+    ONLINE["cores"].add(k)
+    ONLINE["certified"] += 1
+    ONLINE["progs"].append(candidate)
+    rate = ONLINE["repeats"] / ONLINE["certified"]
+    do = (ONLINE["certified"] >= genome.get("warmup", 1) and rate >= genome.get("gate_repeat", 0.0)
+          and (genome.get("rebuild_on", "every") == "every" or new or not ONLINE["library"]))
+    if do:
+        ONLINE["library"] = build(ONLINE["progs"], "online", max_holes=genome["max_holes"],
+                                  depth=genome.get("matched_depth", 3), min_support=genome["min_support"],
+                                  cap=genome["cap"])["useful"]
+        ONLINE["rebuilds"] += 1
+    return {"rebuilt": do, "library_size": len(ONLINE["library"]), "repeat_rate": rate}
 
 
 # --------------------------------------------------------------------------- library learning

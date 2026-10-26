@@ -33,17 +33,23 @@ FROZEN = {"matched_depth": 3}
 GENES_V3 = dict(GENES, lemmas=("none",), proofs=("none", "all"))
 GEN0_V3 = dict(GEN0, lemmas="none", proofs="none")
 FROZEN_V3 = {"matched_depth": 4, "checker": 3}
+# Repetition x domain factorial: regime-adaptive / selective learning controls, decided INSIDE the sandboxed solver
+# (so their cost is on the OS meter): warmup, repeat-rate gate on macro admission / rebuilds, rebuild trigger, and a
+# macro-proposal hit-rate gate.
+GENES_V3B = dict(GENES_V3, gate_repeat=(0.0, 0.15, 0.3), warmup=(1, 3, 6), rebuild_on=("every", "new_core"),
+                 macro_hit_min=(0.0, 0.25, 0.5))
+GEN0_V3B = dict(GEN0_V3, gate_repeat=0.0, warmup=1, rebuild_on="every", macro_hit_min=0.0)   # = always-ON
 
 
 def validate(g, genes=None):
-    genes = genes or (GENES_V3 if "proofs" in g else GENES)
+    genes = genes or (GENES_V3B if "gate_repeat" in g else GENES_V3 if "proofs" in g else GENES)
     if set(g) != set(genes) or any(g[k] not in genes[k] for k in genes):
         raise ValueError(f"genome outside the editable scope: {g}")
     return g
 
 
 def mutate(g, rng, n=None):
-    genes = GENES_V3 if "proofs" in g else GENES
+    genes = GENES_V3B if "gate_repeat" in g else GENES_V3 if "proofs" in g else GENES
     g = dict(g)
     for k in rng.sample(sorted(k for k in genes if len(genes[k]) > 1), n or rng.choice((1, 2))):
         g[k] = rng.choice([v for v in genes[k] if v != g[k]])
@@ -73,6 +79,30 @@ def episode(ev, child, tasks, genome, tag):
                              min_support=genome["min_support"], cap=genome["cap"])["useful"]
             learn_instr += E.instructions(child.p.pid) - c0
     return rows, learn_instr
+
+
+def episode_v3b(ev, child, tasks, genome, tag):
+    """Online stream from an EMPTY library; the solver child owns the library and every learning decision. The
+    evaluator only relays the checker's label (exhaustive_UNIQUE) and the certified candidate, and meters the child's
+    retired instructions for each update."""
+    from nexus import wave31_evaluator as E
+    validate(genome)
+    pol = dict({k: genome[k] for k in ("order", "lemmas", "macro_first", "macro_depth", "probe_mut", "probe_tries",
+                                       "proofs", "macro_hit_min")}, **FROZEN_V3)
+    gen = dict(genome, matched_depth=FROZEN_V3["matched_depth"])
+    child.send({"cmd": "online_reset"}); child.recv()
+    rows, learn_instr, rebuilds = [], 0, 0
+    for k, t in enumerate(tasks):
+        r = ev.solve(child, t, "Useful", "matched", "online", f"{tag}:{k}", pol)
+        rows.append(r)
+        if r["label"] == "exhaustive_UNIQUE":
+            c0 = E.instructions(child.p.pid)
+            child.send({"cmd": "online_update", "candidate": r["candidate"], "genome": gen})
+            u = child.recv()["result"]
+            learn_instr += E.instructions(child.p.pid) - c0
+            rebuilds += u["rebuilt"]
+            r["library_size"] = u["library_size"]
+    return rows, learn_instr, rebuilds
 
 
 def fitness(rows, learn_instr):

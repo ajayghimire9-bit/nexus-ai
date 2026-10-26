@@ -203,3 +203,36 @@ been inspected and now inform the experimental design. From here on they are **d
 * There is no commit 8a6f202. This continues from 0917de1.
 * The Checker v3 pin is `3c68230e…`, not `7df65196…`.
 * Gen k was 90.46 G, not 90.1 G.
+
+# Repetition × domain factorial: protocol (NOT LOCKED; committed before its outcomes)
+
+* **Fixed:** Checker v3 (pin 1642721, `3c68230e…`), the OS retired-instruction meter, representations and the
+  library mechanics.
+* **Streams:** every stream starts from an empty library, and every learning decision and rebuild runs in the
+  sandboxed solver and is billed.
+* **Cells:**
+  * Domain ∈ {Source = records + strings + graphs (mixed stream), Target = grids};
+  * Repetition ∈ {2, 3} per mechanism (depth-4, 3-op cores).
+* **Editable scope (`GENES_V3B`):** the v3 genome plus regime-adaptive controls:
+  * `warmup`: minimum certified tasks before any rebuild;
+  * `gate_repeat`: minimum observed within-stream repeat rate of certified cores before macros are admitted or
+    rebuilt;
+  * `rebuild_on`: rebuild on every certified task, or only when a new core appears;
+  * `macro_hit_min`: switch macro proposal off when its observed hit rate falls below this, after ≥ 5 attempts.
+* **Policies:**
+  * always-ON = `GEN0_V3B`;
+  * always-OFF = the same with `online: False`;
+  * Gen k(2) and Gen k(3): each is Gen 0 + 5 generations × 5 children, evolved on **Source** streams at that
+    repetition count (fitness dev 771–773; top 3 re-selected on 774–775). The evolution never sees the Target
+    domain. Every generation runs all detectors, D4 integrity and one replay.
+* **Development table:** dev2 781–785, all 4 cells × 4 policies. This also gives the cross-evaluation of the 2-rep-
+  and 3-rep-evolved policies.
+* **Confirmation:** after the table, the design is frozen (committed), and `confirm_rep` 7211–7215 (one-use, unseen)
+  is run **once**, with the same cells and policies.
+* **Confirmation readouts:**
+  * per cell: correct, wrong, detector counts and `evaluator_work`;
+  * the ON/OFF ratio per cell, and its decomposition into domain and repetition effects;
+  * evolved vs always-ON and vs always-OFF per cell, with the matched-repetition Gen k as primary and the other as
+    the cross check;
+  * a replay of 7213 (Target, 3 reps, Gen k(3)).
+* **Prior inspection:** the inspected 7206–7210 grid results are development evidence only.
