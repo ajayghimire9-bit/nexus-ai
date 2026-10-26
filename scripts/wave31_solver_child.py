@@ -37,6 +37,11 @@ def main():
         elif job["cmd"] == "fit_prior":
             pr = P.fit_prior(job["programs"], G.G_P, job["views"], job["alpha"], job["lam"])
             out = {"learned": pr, "placebo": P.permuted_prior(pr, job["seed"]), "uniform": P.uniform_prior(len(G.G_P))}
+            if job.get("frags"):
+                from nexus import wave36_search as F36
+                fr = F36.fragments_from(job["programs"])
+                out.update(frags=fr, frags_placebo=F36.placebo_fragments(fr, job["seed"]),
+                           frags_fixed=F36.fixed_dsl_fragments())
             sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
         elif job["cmd"] == "l2_reset":
             S.online_reset(); L.reset(bool(job.get("placebo")))

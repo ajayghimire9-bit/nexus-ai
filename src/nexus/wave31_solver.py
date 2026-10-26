@@ -242,7 +242,14 @@ def solve(chan, arm, mode, view, library, seed, policy=None):
         first_round = False
         if mode == "matched":
             if cand is None:
-                if pol.get("search") == "best_first":                  # Milestone A: learned fragment prior
+                if pol.get("search") == "frag_best_first":             # R1: fragment library inside best-first
+                    from nexus import wave36_search as F36
+                    exp = F36.frag_best_first(public, query, gp, depth, meter, pol["prior"], pol["frags"])
+                    c = None if exp is None else [[V.key(t) for t in gp].index(V.key(e)) for e in exp]
+                    if c is None:
+                        info["prior_fallback"] = True
+                        c = first_fit(public, query, gp, depth, meter, _order(gp, pol))
+                elif pol.get("search") == "best_first":                  # Milestone A: learned fragment prior
                     c = P.best_first(public, query, gp, depth, meter, pol["prior"])
                     if c is None and "types" in pol["prior"]:
                         info["prior_fallback"] = True
