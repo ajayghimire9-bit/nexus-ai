@@ -64,6 +64,12 @@ REGISTRY = {
     ("wave32", "dev2"): range(781, 786), ("wave32", "confirm_rep"): range(7211, 7216),
     # Wave 32 single regime-detecting policy (owner go-ahead): fresh one-use confirmation, run once after freezing
     ("wave32", "confirm_adapt"): range(7216, 7221),
+    # mixed 2-rep <-> 3-rep stream baseline for the frozen a0c2 gate (one-use)
+    ("wave32", "mixed"): range(7221, 7226),
+    # Milestone A (fragment priors on held-out mechanisms): dev = wave31 dev; fresh one-use validation
+    ("wave31", "val_frag"): range(7116, 7121),
+    # Milestone B (programmatic meta-learner): evolution dev, validation (selection) dev, one-use test on an unseen family
+    ("wave33", "dev"): range(791, 796), ("wave33", "valsel"): range(796, 801), ("wave33", "test"): range(7301, 7306),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.

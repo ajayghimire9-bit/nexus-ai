@@ -439,3 +439,15 @@ cell, with 0 wrong and 0 flags. Among the secondaries, a4c2 also meets the crite
   * Target / 2 rep is a near-tie (1/5 seeds below min).
   * This is development-grade evidence of a regime-adaptive learning procedure, not a general learning-to-learn
     result.
+
+---
+
+# Mixed-repetition stream baseline (protocol; NOT LOCKED)
+
+* **Policy:** the frozen a0c2 gate (frozen at 81edd6a, confirmed at f11c3a1). The owner's brief calls it "7ce7e0e",
+  but no such commit exists. The Checker v3 pin is `3c68230e…` (the brief says `7df65196…`).
+* **Streams:** each stream has three segments in one domain: 2 reps, then 3 reps, then 2 reps, each with its own
+  sub-seed. Cells are Source and Target.
+* **Comparison:** always-ON, always-OFF and frozen-a0c2, on one-use `wave32 mixed` 7221–7225, run once.
+* **Readouts:** frozen-a0c2 / min(ON, OFF) per cell and per seed, correctness, detector counts, and a replay.
+* **Status:** a baseline record, not a new claim.
