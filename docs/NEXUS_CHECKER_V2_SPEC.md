@@ -45,6 +45,17 @@ A value outside these bounds, at any intermediate step, is an execution **error*
     `ir_counter_top {k}`: Counter → Counter (highest counts, ties broken by key);
   * `enc_graph {moves, passable}`: Grid → RelationGraph over passable cells (node = r·W + c, edges by moves);
   * `ir_graph_reach {seeds}`: RelationGraph → List of reachable node ids, sorted.
+* **Wave 31 domain adapters (§2b).** These were added on 2026-10-26 before v2 checked any evidence, under the owner's
+  v2 authorisation for the Wave 31 middle IR. v2 was re-pinned, and no earlier pin was ever used.
+  * `enc_chars`: Str → Sequence of 1-character strings; `dec_chars`: back to Str (≤ 32);
+  * `enc_cells`: Grid → Sequence of colours (row-major);
+  * `ir_counter_keys`: Counter → Sequence of keys;
+  * `ir_graph_degrees`: RelationGraph → Counter of out-degrees per node;
+  * `ir_objects_sizes`: ObjectSet → Sequence of object sizes.
+  * `seq {body: [op, …]}`: a bounded composition of 1–4 non-`seq` ops, with every intermediate value bound-checked.
+    It lets a learned macro be one tool of a declared scope. A certificate over a scope containing `seq` tools is
+    relative to *that* grammar, which is a different grammar from its expansion at a fixed depth. Lemmas on
+    `seq` are rejected.
 * **Unsupported:** any other op, or a known op with malformed parameters. **Unsupported means ABSTAIN**: a
   certificate is never weakened to fit a new representation.
 

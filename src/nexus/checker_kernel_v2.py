@@ -367,6 +367,41 @@ def apply(spec, x, st):
                     seen.add(b)
                     todo.append(b)
         return sorted(seen)
+    if op == "seq":                                   # bounded composition: a learned macro as one tool
+        for b in spec["body"]:
+            x = apply(b, x, st)
+            check_value(x)
+        return x
+    # ---- Wave 31 domain adapters / IR ops (added before v2's first use; spec §2b)
+    if op == "enc_chars":
+        if not isinstance(x, str):
+            raise _Err("not a string")
+        st.add(len(x))
+        return list(x)
+    if op == "dec_chars":
+        xs = _list(x)
+        if not all(isinstance(c, str) and len(c) == 1 for c in xs) or len(xs) > 32:
+            raise _Err("not a char sequence")
+        return "".join(xs)
+    if op == "enc_cells":
+        g = _need_grid(x)
+        st.add(len(g) * len(g[0]))
+        return [c for row in g for c in row]
+    if op == "ir_counter_keys":
+        if not (isinstance(x, dict) and set(x) == {"counts"}):
+            raise _Err("not a Counter")
+        return [p[0] for p in x["counts"]]
+    if op == "ir_graph_degrees":
+        if not (isinstance(x, dict) and set(x) == {"nodes", "edges"}):
+            raise _Err("not a RelationGraph")
+        deg = {n: 0 for n in x["nodes"]}
+        for a, _b in x["edges"]:
+            st.add(1)
+            if a in deg:
+                deg[a] += 1
+        return {"counts": [[n, deg[n]] for n in sorted(deg)]}
+    if op == "ir_objects_sizes":
+        return [len(o["cells"]) for o in _need_objs(x)]
     raise _Err("unknown op")
 
 
@@ -436,6 +471,12 @@ def known(spec):
             return _ints(spec, ("k",), 1, 64)
         if op == "enc_graph":
             return _moves(spec["moves"]) and _ints(spec, ("passable",), 0, 9)
+        if op == "seq":
+            b = spec["body"]
+            return isinstance(b, list) and 1 <= len(b) <= 4 and all(isinstance(x, dict) and x.get("op") != "seq"
+                                                                    and known(x) for x in b)
+        if op in ("enc_chars", "dec_chars", "enc_cells", "ir_counter_keys", "ir_graph_degrees", "ir_objects_sizes"):
+            return set(spec) == {"op"}
         if op == "ir_graph_reach":
             return isinstance(spec["seeds"], list) and all(_isint(s) and 0 <= s < 144 for s in spec["seeds"])
     except (KeyError, TypeError):

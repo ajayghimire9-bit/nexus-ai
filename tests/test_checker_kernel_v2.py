@@ -167,3 +167,24 @@ def test_order_invariance():
         random.Random(9 + s).shuffle(p2)
         v = K.check(_ev(p2, [9, 8, 7], [8, 7, 9], [tools[0]], t2, depth=2))
         assert (v["label"], v.get("k"), v["fitting"]) == (base["label"], base.get("k"), base["fitting"])
+
+
+def test_wave31_adapters_hand_cases():
+    assert r([{"op": "enc_chars"}, {"op": "enc_counter", "path": "."}, {"op": "ir_counter_top", "k": 1},
+              {"op": "ir_counter_keys"}], "banana") == ["a"]
+    assert r([{"op": "enc_chars"}, {"op": "run_heads"}, {"op": "dec_chars"}], "aabccc") == "abc"
+    assert r([{"op": "enc_cells"}, {"op": "enc_counter", "path": "."}, {"op": "dec_counter"}], [[1, 2], [2, 2]]) == [[1, 1], [2, 3]]
+    gr = {"nodes": [0, 1, 2], "edges": [[0, 1], [0, 2], [1, 2]]}
+    assert r([{"op": "ir_graph_degrees"}], gr) == {"counts": [[0, 2], [1, 1], [2, 0]]}
+    assert r([{"op": "enc_objects", "conn": 4, "background": 0}, {"op": "ir_objects_sizes"}], [[1, 1, 0], [0, 0, 2]]) == [2, 1]
+    assert r([{"op": "dec_chars"}], ["ab"]) == K.ERROR
+
+
+def test_seq_macro_semantics_and_bounds():
+    body = [{"op": "enc_counter", "path": "."}, {"op": "ir_counter_top", "k": 1}, {"op": "ir_counter_keys"}]
+    assert r([{"op": "seq", "body": body}], [3, 1, 3]) == r(body, [3, 1, 3]) == [3]
+    assert not K.known({"op": "seq", "body": [{"op": "seq", "body": body}]})
+    assert not K.known({"op": "seq", "body": body * 2})
+    ev = _ev([[[3, 1, 3], [3]]], [2, 2, 5], [2], [{"op": "seq", "body": body}], [{"op": "seq", "body": body}])
+    assert K.check(ev)["label"] == "exhaustive_UNIQUE"
+    assert K.check(dict(ev, lemmas=[{"tool": 0, "post": ["len_le", 0], "public_index": 0}]))["reason"] == "bad_lemma"
