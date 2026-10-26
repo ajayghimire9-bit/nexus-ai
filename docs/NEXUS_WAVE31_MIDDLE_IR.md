@@ -383,3 +383,62 @@ identities are reported only as a **projected** saving, and are never used to sk
 * **I3:** projected_skip, and identity violations on targets.
 * **Splits:** dev 761–765, where 761 (records fold) was used for one smoke before this commit; then val_inc3
   7106–7110, a one-use range claimed whole before running.
+
+# Increment 3 results (NOT LOCKED)
+
+Protocol commit: fa1c6fe.
+* **Runs:** dev 761–765, and val_inc3 7106–7110, a one-use range claimed whole and run once.
+* **Replays:** fresh process with `PYTHONHASHSEED=1`, identical digests (dev 763 `786f34d0…`, val 7108 `ea8ed980…`).
+* **Wall time:** about 1,180 s for dev and 600 s for val.
+
+## val_inc3: 280 target tasks, matched depth-4 G_P scope
+
+Work is `evaluator_work` in G retired instructions (external meter).
+
+| Config | exhaustive_UNIQUE / correct / wrong | Target-only work | vs Fresh-L |
+| --- | --- | --- | --- |
+| Fresh-noL (no proofs) | 280 / 280 / 0 | 1,727.0 | +1.44% |
+| **Fresh-L** (all v2 lemmas, generic) | 280 / 280 / 0 | **1,702.6** | — |
+| **Useful-L** (learned macros + all lemmas) | 280 / 280 / 0 | **1,695.5** | **−0.41%** |
+| Useful-learnedL (source-selected lemma kinds) | 280 / 280 / 0 | 1,719.1 | +0.97% |
+| Placebo-L | 280 / 280 / 0 | 1,709.1 | +0.38% |
+
+* **Per seed:** Useful-L is below Fresh-L in 5/5 seeds (−0.21% … −0.50%) and below Placebo-L in 5/5 (−0.53% … −1.00%).
+* **Net of source learning:** source learning costs 4,021.6 G per split (630 source tasks). Useful-L's total is
+  therefore 5,717 G against Fresh-L's 1,703 G, or **3.36× worse**.
+* **Where the work goes:** the evaluator's kernel instructions are **98.0%** of all work in every config.
+  * Learned macros cut the solver's own (child) work by 21% against Fresh, and against Placebo by 35%.
+  * That child work is only about 2% of the total.
+* **Lemmas:** the v2-verifiable lemmas save 1.4% (Fresh-L vs Fresh-noL). No lemma kind fired on ≥ 50% of source
+  tasks, so source-selected lemmas equal no lemmas.
+* **Dev 761–765** shows the same picture: Useful-L −0.48% vs Fresh-L, and 280/280 correct, 0 wrong everywhere.
+
+## Learned identities (projection only; v2 cannot verify them)
+
+* **What was learned:** 10 identities per fold (Sort·Sort ≡ Sort, rotate·Sort ≡ Sort, Sort·running_max ≡ Sort,
+  running_max·Sort ≡ running_max, prefix_sum·Sort ≡ prefix_sum, …). There were 0 violations on target public
+  inputs.
+* **Projected saving:** a checker that verified them would skip **8.4%** of the depth-4 scope.
+* **Caveat:** prefix_sum·Sort ≡ prefix_sum holds only for non-negative inputs. It is an observation, not a law,
+  which is exactly why it would need a real proof.
+
+## Projection: a sound class-enumerating checker (v3-type; not built)
+
+* **What it does:** enumerates *observational classes* (prefixes with identical values on all public inputs and
+  the query, which is exact, needs no proofs and no learning) instead of every chain.
+* **Measured:** on 12 val targets it reaches the same verdict as v2 on all 12, at a median **19.3× less work**.
+* **Caveat:** this is generic and arm-independent. It is the prover's enumerator, so certifying with it would mean
+  a new checker version, with independent re-implementation and validation under RULE 2 (owner approval).
+* **What would change:** with it, the solver's share would rise from about 2% to roughly 25–30%, and Useful's 21%
+  cut in child work would become a target-only saving of roughly 5–7% against Fresh, still before source cost.
+  This is a projection, not a result.
+
+## Reading: does Useful + verified pruning beat Fresh and Placebo at matched exhaustive strength?
+
+* **Target-only:** yes, but negligibly: −0.41% vs Fresh and −0.79% vs Placebo, consistent over 5/5 seeds.
+* **Net of source learning:** no, by 3.4×.
+* **Why:** the bottleneck is the kernel's naive enumeration (98%). Experience cannot touch it under v2. The only
+  pruning v2 verifies (postcondition lemmas) is generic and saves 1.4%. Learned algebraic collapses are
+  unverifiable under v2.
+* **Highest-value next step:** a separately versioned, independently validated class-enumerating Checker v3. It
+  needs owner authorisation under RULE 2.
