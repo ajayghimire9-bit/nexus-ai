@@ -236,3 +236,34 @@ been inspected and now inform the experimental design. From here on they are **d
     the cross check;
   * a replay of 7213 (Target, 3 reps, Gen k(3)).
 * **Prior inspection:** the inspected 7206–7210 grid results are development evidence only.
+
+## Factorial development results (dev2 781–785) and FROZEN design
+
+**Evolution** (`artifacts/wave32_factorial_state.json`). Both evolutions ran on Source streams; all genomes were
+admitted, detectors were 0, replays matched and D4 held.
+
+| Champion | Selected genome | Settings |
+| --- | --- | --- |
+| Gen k(2) | `r2g2c1` | **online OFF**, proofs all, probe_tries 50, cap 40 |
+| Gen k(3) | `r3g4c0` | **online ON with gate_repeat 0.3**, order short_first, proofs all |
+
+**Development table** (all 0 wrong and 0 detector flags; G instructions; n = tasks per cell):
+
+| Cell (n) | always-ON | always-OFF | Gen k(2) | Gen k(3) | ON / OFF |
+| --- | --- | --- | --- | --- | --- |
+| Source / 2 rep (200) | 65.42 | 64.52 | 63.24 | **63.01** | 1.014 |
+| Source / 3 rep (300) | 98.74 | 98.60 | 96.77 | **95.98** | 1.001 |
+| Target / 2 rep (80) | 60.74 | 60.17 | **59.55** | 60.20 | 1.009 |
+| Target / 3 rep (120) | 86.95 | 92.56 | 91.67 | **86.62** | **0.939** |
+
+**Decomposition** of ln(ON / OFF):
+* repetition main effect −0.042;
+* domain main effect −0.034;
+* **domain × repetition interaction −0.060**.
+
+Learning pays only in the Target × 3-rep cell. A repetition count alone does not explain the earlier sign flip,
+but repetition is the knob that evolution can see: the evolution at 3 reps on Source alone found a gated-ON
+policy (Gen k(3)). That policy is the best, or within 1.1% of the best, in every cell.
+
+**FROZEN** at this commit: policies always-ON, always-OFF, Gen k(2) and Gen k(3) (the genomes in the state
+artifact); cells, streams and readouts as in the protocol. Next is `confirm_rep` 7211–7215, run once.
