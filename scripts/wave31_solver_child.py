@@ -29,6 +29,12 @@ def main():
             out = S.build(job["programs"], job["seed"], job.get("views", ()), job.get("max_holes", 1),
                           job.get("depth", 3), job.get("min_support", 1), job.get("cap"))
             sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
+        elif job["cmd"] == "fit_prior":
+            from nexus import wave33_prior as P
+            from nexus import wave31_grammar as G
+            pr = P.fit_prior(job["programs"], G.G_P, job["views"], job["alpha"], job["lam"])
+            out = {"learned": pr, "placebo": P.permuted_prior(pr, job["seed"]), "uniform": P.uniform_prior(len(G.G_P))}
+            sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
         elif job["cmd"] == "online_reset":
             S.online_reset()
             sys.stdout.write(json.dumps({"done": True}) + "\n")

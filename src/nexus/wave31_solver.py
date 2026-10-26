@@ -241,7 +241,14 @@ def solve(chan, arm, mode, view, library, seed, policy=None):
         first_round = False
         if mode == "matched":
             if cand is None:
-                c = first_fit(public, query, gp, depth, meter, _order(gp, pol))
+                if pol.get("search") == "best_first":                  # Milestone A: learned fragment prior
+                    from nexus import wave33_prior as P
+                    c = P.best_first(public, query, gp, depth, meter, pol["prior"])
+                    if c is None and "types" in pol["prior"]:
+                        info["prior_fallback"] = True
+                        c = P.best_first(public, query, gp, depth, meter, P.uniform_prior(len(gp)))
+                else:
+                    c = first_fit(public, query, gp, depth, meter, _order(gp, pol))
                 cand = None if c is None else [gp[i] for i in c]
         else:
             tools, depth = macro_tools, G.MACRO_DEPTH
