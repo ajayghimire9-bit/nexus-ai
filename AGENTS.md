@@ -164,3 +164,6 @@ followed by a new pin.**
 * Only the kernel's labels (`exhaustive_UNIQUE`, `proposal_relative_UNIQUE`, `AMBIGUOUS(k)`, `ABSTAIN`) count as
   certificates in Wave 30+ results.
 * The prover communicates with the kernel only through a JSON-serialisable Evidence Object.
+* RULE 2 also covers `src/nexus/checker_kernel_v2.py` (separately versioned, owner-authorised 2026-10-26; spec
+  `docs/NEXUS_CHECKER_V2_SPEC.md`; pin `src/nexus/checker_kernel_v2.sha256`). v1 stays unchanged. All arms in one
+  comparison use the same checker version, and unsupported semantics give ABSTAIN.

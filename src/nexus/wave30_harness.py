@@ -104,14 +104,28 @@ def _searcher_round(public, query, tools, m, *, early):
     return (UNIQUE if len(seen) == 1 else AMBIGUOUS), merged
 
 
+PROBE_DESIGN = {"mode": "early"}     # "early" (Wave 30 inc 2) | "complete" (order-invariant, inc 3)
+
+
+def _canon(hyps):
+    return sorted(hyps, key=lambda h: (K.key([spec_of(t.fn) for t in h[2]]), K.key(h[1])))
+
+
 def prove2(view, tools, kind, m, rng):
     """Probe while ambiguous (early-stopped levels expose two disagreeing witnesses). A round that ends UNIQUE is
     complete (early stopping only triggers on a disagreement). Returns (evidence or None, prover status,
     witness evidences, public used, probes)."""
     public = list(view.public)
     probes = 0
+    complete = PROBE_DESIGN["mode"] == "complete"
+    if complete:
+        # order-invariant prover: canonical enumeration order, so class representatives, probe design and hence the
+        # final observations depend only on (observations, declared scope), never on a proposer's candidate order
+        tools = sorted(tools, key=lambda t: K.key(spec_of(t.fn)))
     while True:
-        status, hyps = _searcher_round(public, view.query, tools, m, early=True)
+        status, hyps = _searcher_round(public, view.query, tools, m, early=not complete)
+        if complete:
+            hyps = _canon(hyps)          # order-invariant: every class representative, canonical order
         if status != AMBIGUOUS or probes >= PROBE_BUDGET or view.oracle is None:
             break
         chains = [tuple(t.fn for t in h[2]) for h in hyps]
@@ -159,7 +173,10 @@ class _Sub:
 def solve(arm, view, *, prior=None, seed=0, label=""):
     """arm in A0, A1, A1b-full, A1b-proposal. Sees only `view`."""
     m = meter(10**12)
-    rng = random.Random(f"w30h:{arm}:{seed}:{label}")
+    # probe-design randomness is seeded by the TASK only (not the arm), so arms at matched scope see identical
+    # candidate probe inputs (increment 2 seeded by arm: a fairness defect found during reconciliation)
+    rng = random.Random(f"w30h:{seed}:{label.split(':')[-1]}" if PROBE_DESIGN["mode"] == "complete"
+                        else f"w30h:{arm}:{seed}:{label}")
     t0 = time.perf_counter()
     inputs = [x for x, _ in view.public] + [view.query]
     tools = a0_tools(inputs) if arm == "A0" else a1_tools(inputs)
@@ -205,12 +222,17 @@ def solve(arm, view, *, prior=None, seed=0, label=""):
     if prior is not None and arm in ("A1b-full", "A1b-proposal") and prior.online and uniq:
         prior.sleep({family(t.fn) for t in tools if K.key(spec_of(t.fn)) in {K.key(s) for s in ev["candidate"]}})
         m.charge("source_learning", 1)
+    if KEEP_EVIDENCE["on"] and ev is not None:
+        KEEP_EVIDENCE["items"].append(ev)
     return dict(arm=arm, label=verdict["label"], kernel_k=verdict.get("k"), reason=verdict.get("reason"),
                 answer=ev["claimed_answer"] if uniq else None, prover_status=st, witnesses=sorted(set(witnesses)),
                 scope=scope, scope_kind=(ev or {}).get("scope", {}).get("kind"), probes=probes, work=m.total,
                 work_by=dict(m.counts), wall_s=time.perf_counter() - t0, kernel_s=kernel_s,
                 scope_specs=[K.key(s) for s in (ev or {}).get("scope", {}).get("tools", [])] if ev else None,
                 n_tools=len(tools))
+
+
+KEEP_EVIDENCE = {"on": False, "items": []}
 
 
 class FrozenPrior(WakeSleepPrior):

@@ -1,0 +1,3090 @@
+[
+ {
+  "seed": 7001,
+  "task": 10,
+  "prior": "useful",
+  "initial_public": [
+   [
+    [
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "b"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "a"
+     }
+    ],
+    [
+     false,
+     true,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 7,
+      "tov": "c"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "b"
+     }
+    ],
+    [
+     false,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 4,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "b"
+     }
+    ],
+    [
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "a"
+     },
+     {
+      "mek": false,
+      "bo": 4,
+      "tov": "a"
+     }
+    ],
+    [
+     true
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "mek": true,
+    "bo": 3,
+    "tov": "a"
+   },
+   {
+    "mek": false,
+    "bo": 6,
+    "tov": "a"
+   },
+   {
+    "mek": true,
+    "bo": 5,
+    "tov": "c"
+   },
+   {
+    "mek": false,
+    "bo": 2,
+    "tov": "a"
+   },
+   {
+    "mek": true,
+    "bo": 3,
+    "tov": "a"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     }
+    ],
+    "y": [
+     true,
+     true,
+     false
+    ]
+   }
+  ],
+  "oracle_cost": 20,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[true,false]",
+     "[false,true]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ],
+     [
+      "Comp[+bo,tail:3,id:None]",
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 811958,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 647082,
+   "probe_design": 168,
+   "oracle": 20,
+   "lemma_construction": 616,
+   "checker": 163634
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "#",
+    "desc": true,
+    "cond": "pred",
+    "cparam": {
+     "path": "bo",
+     "cmp": "ge",
+     "val": 5
+    },
+    "transform": "proj",
+    "tparam": "mek"
+   }
+  ],
+  "truth": [
+   true,
+   false
+  ]
+ },
+ {
+  "seed": 7001,
+  "task": 10,
+  "prior": "none",
+  "initial_public": [
+   [
+    [
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "b"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "a"
+     }
+    ],
+    [
+     false,
+     true,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 7,
+      "tov": "c"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "b"
+     }
+    ],
+    [
+     false,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 4,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "b"
+     }
+    ],
+    [
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "a"
+     },
+     {
+      "mek": false,
+      "bo": 4,
+      "tov": "a"
+     }
+    ],
+    [
+     true
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "mek": true,
+    "bo": 3,
+    "tov": "a"
+   },
+   {
+    "mek": false,
+    "bo": 6,
+    "tov": "a"
+   },
+   {
+    "mek": true,
+    "bo": 5,
+    "tov": "c"
+   },
+   {
+    "mek": false,
+    "bo": 2,
+    "tov": "a"
+   },
+   {
+    "mek": true,
+    "bo": 3,
+    "tov": "a"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     }
+    ],
+    "y": [
+     true,
+     true,
+     false
+    ]
+   }
+  ],
+  "oracle_cost": 20,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[true,false]",
+     "[false,true]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ],
+     [
+      "Comp[+bo,pred:bo<=8,id:None]",
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 811958,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 647082,
+   "probe_design": 168,
+   "oracle": 20,
+   "lemma_construction": 616,
+   "checker": 163634
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "#",
+    "desc": true,
+    "cond": "pred",
+    "cparam": {
+     "path": "bo",
+     "cmp": "ge",
+     "val": 5
+    },
+    "transform": "proj",
+    "tparam": "mek"
+   }
+  ],
+  "truth": [
+   true,
+   false
+  ]
+ },
+ {
+  "seed": 7001,
+  "task": 10,
+  "prior": "shuffled",
+  "initial_public": [
+   [
+    [
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "b"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "a"
+     }
+    ],
+    [
+     false,
+     true,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 7,
+      "tov": "c"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "b"
+     }
+    ],
+    [
+     false,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 4,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "b"
+     }
+    ],
+    [
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "a"
+     },
+     {
+      "mek": false,
+      "bo": 4,
+      "tov": "a"
+     }
+    ],
+    [
+     true
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "mek": true,
+    "bo": 3,
+    "tov": "a"
+   },
+   {
+    "mek": false,
+    "bo": 6,
+    "tov": "a"
+   },
+   {
+    "mek": true,
+    "bo": 5,
+    "tov": "c"
+   },
+   {
+    "mek": false,
+    "bo": 2,
+    "tov": "a"
+   },
+   {
+    "mek": true,
+    "bo": 3,
+    "tov": "a"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 5,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 2,
+      "tov": "b"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "a"
+     },
+     {
+      "mek": true,
+      "bo": 8,
+      "tov": "a"
+     }
+    ],
+    "y": [
+     true,
+     false,
+     true,
+     true
+    ]
+   },
+   {
+    "x": [
+     {
+      "mek": true,
+      "bo": 1,
+      "tov": "c"
+     },
+     {
+      "mek": true,
+      "bo": 7,
+      "tov": "c"
+     },
+     {
+      "mek": false,
+      "bo": 8,
+      "tov": "b"
+     },
+     {
+      "mek": true,
+      "bo": 7,
+      "tov": "c"
+     }
+    ],
+    "y": [
+     true,
+     false,
+     true
+    ]
+   }
+  ],
+  "oracle_cost": 40,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[true,false]",
+     "[false,true]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ],
+     [
+      "Comp[+bo,pred:bo>=5,proj:mek]",
+      "Comp[pos,head:3,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[true,false]",
+     "[false,true]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ],
+     [
+      "Comp[+bo,pred:bo>=5,proj:mek]",
+      "Comp[pos,head:4,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 6,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,pred:bo>=5,proj:mek]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 1167714,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 1006434,
+   "probe_design": 336,
+   "oracle": 40,
+   "lemma_construction": 728,
+   "checker": 159738
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "#",
+    "desc": true,
+    "cond": "pred",
+    "cparam": {
+     "path": "bo",
+     "cmp": "ge",
+     "val": 5
+    },
+    "transform": "proj",
+    "tparam": "mek"
+   }
+  ],
+  "truth": [
+   true,
+   false
+  ]
+ },
+ {
+  "seed": 7001,
+  "task": 14,
+  "prior": "useful",
+  "initial_public": [
+   [
+    [
+     2,
+     0,
+     3,
+     6,
+     1
+    ],
+    [
+     6,
+     3
+    ]
+   ],
+   [
+    [
+     2,
+     5,
+     0,
+     8,
+     5
+    ],
+    [
+     8,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     7,
+     4
+    ],
+    [
+     7,
+     4
+    ]
+   ],
+   [
+    [
+     -2,
+     -3,
+     4,
+     -1,
+     6
+    ],
+    [
+     6,
+     4
+    ]
+   ]
+  ],
+  "query": [
+   4,
+   2,
+   -1
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     2,
+     0,
+     3,
+     6,
+     1,
+     3
+    ],
+    "y": [
+     6,
+     3
+    ]
+   },
+   {
+    "x": [
+     5,
+     8,
+     0,
+     5,
+     2
+    ],
+    "y": [
+     5
+    ]
+   }
+  ],
+  "oracle_cost": 40,
+  "scope_tools": 85,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[4,2]",
+     "[4]"
+    ],
+    "witness_programs": [
+     [
+      "S[2,-.]"
+     ],
+     [
+      "Comp[+.,tail:2,id:None]",
+      "Comp[-.,pred:.>=3,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[4,2]",
+     "[4]"
+    ],
+    "witness_programs": [
+     [
+      "S[2,-.]"
+     ],
+     [
+      "Comp[+.,tail:2,id:None]",
+      "Comp[-.,pred:.>=3,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 6,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[4]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,tail:3,id:None]",
+      "Comp[-.,pred:.>=3,id:None]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 81277,
+  "work_by": {
+   "scope_construction": 85,
+   "proposal_generation": 24,
+   "prover": 76585,
+   "probe_design": 336,
+   "oracle": 40,
+   "lemma_construction": 384,
+   "checker": 3823
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "#",
+    "desc": true,
+    "cond": "head",
+    "cparam": 3,
+    "transform": "id",
+    "tparam": null
+   },
+   {
+    "op": "comp",
+    "path": ".",
+    "desc": true,
+    "cond": "pred",
+    "cparam": {
+     "path": ".",
+     "cmp": "ge",
+     "val": 3
+    },
+    "transform": "id",
+    "tparam": null
+   }
+  ],
+  "truth": [
+   4
+  ]
+ },
+ {
+  "seed": 7001,
+  "task": 14,
+  "prior": "none",
+  "initial_public": [
+   [
+    [
+     2,
+     0,
+     3,
+     6,
+     1
+    ],
+    [
+     6,
+     3
+    ]
+   ],
+   [
+    [
+     2,
+     5,
+     0,
+     8,
+     5
+    ],
+    [
+     8,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     7,
+     4
+    ],
+    [
+     7,
+     4
+    ]
+   ],
+   [
+    [
+     -2,
+     -3,
+     4,
+     -1,
+     6
+    ],
+    [
+     6,
+     4
+    ]
+   ]
+  ],
+  "query": [
+   4,
+   2,
+   -1
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     0,
+     7,
+     4,
+     7
+    ],
+    "y": [
+     7,
+     7,
+     4
+    ]
+   }
+  ],
+  "oracle_cost": 20,
+  "scope_tools": 85,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[4,2]",
+     "[4]"
+    ],
+    "witness_programs": [
+     [
+      "S[2,-.]"
+     ],
+     [
+      "Comp[+.,first_occ:.,id:None]",
+      "Comp[-.,pred:.>=3,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[4]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,head:3,id:None]",
+      "Comp[-.,pred:.>=3,id:None]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 47798,
+  "work_by": {
+   "scope_construction": 85,
+   "proposal_generation": 24,
+   "prover": 44285,
+   "probe_design": 168,
+   "oracle": 20,
+   "lemma_construction": 326,
+   "checker": 2890
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "#",
+    "desc": true,
+    "cond": "head",
+    "cparam": 3,
+    "transform": "id",
+    "tparam": null
+   },
+   {
+    "op": "comp",
+    "path": ".",
+    "desc": true,
+    "cond": "pred",
+    "cparam": {
+     "path": ".",
+     "cmp": "ge",
+     "val": 3
+    },
+    "transform": "id",
+    "tparam": null
+   }
+  ],
+  "truth": [
+   4
+  ]
+ },
+ {
+  "seed": 7001,
+  "task": 14,
+  "prior": "shuffled",
+  "initial_public": [
+   [
+    [
+     2,
+     0,
+     3,
+     6,
+     1
+    ],
+    [
+     6,
+     3
+    ]
+   ],
+   [
+    [
+     2,
+     5,
+     0,
+     8,
+     5
+    ],
+    [
+     8,
+     5
+    ]
+   ],
+   [
+    [
+     0,
+     7,
+     4
+    ],
+    [
+     7,
+     4
+    ]
+   ],
+   [
+    [
+     -2,
+     -3,
+     4,
+     -1,
+     6
+    ],
+    [
+     6,
+     4
+    ]
+   ]
+  ],
+  "query": [
+   4,
+   2,
+   -1
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     5,
+     8,
+     0,
+     5,
+     2
+    ],
+    "y": [
+     5
+    ]
+   }
+  ],
+  "oracle_cost": 20,
+  "scope_tools": 85,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[4,2]",
+     "[4]"
+    ],
+    "witness_programs": [
+     [
+      "S[2,-.]"
+     ],
+     [
+      "Comp[pos,head:3,id:None]",
+      "Comp[-.,pred:.>=3,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[4]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[pos,head:3,id:None]",
+      "Comp[-.,pred:.>=3,id:None]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 45671,
+  "work_by": {
+   "scope_construction": 85,
+   "proposal_generation": 24,
+   "prover": 41225,
+   "probe_design": 168,
+   "oracle": 20,
+   "lemma_construction": 326,
+   "checker": 3823
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "#",
+    "desc": true,
+    "cond": "head",
+    "cparam": 3,
+    "transform": "id",
+    "tparam": null
+   },
+   {
+    "op": "comp",
+    "path": ".",
+    "desc": true,
+    "cond": "pred",
+    "cparam": {
+     "path": ".",
+     "cmp": "ge",
+     "val": 3
+    },
+    "transform": "id",
+    "tparam": null
+   }
+  ],
+  "truth": [
+   4
+  ]
+ },
+ {
+  "seed": 7002,
+  "task": 4,
+  "prior": "useful",
+  "initial_public": [
+   [
+    [
+     {
+      "x5": false,
+      "x3": 5,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 9,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "c"
+     }
+    ],
+    [
+     "b"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 3,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 7,
+      "x10": "a"
+     }
+    ],
+    [
+     "c"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "b"
+     },
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 1,
+      "x10": "c"
+     }
+    ],
+    [
+     "a"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": false,
+      "x3": 0,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 5,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "b"
+     }
+    ],
+    [
+     "b"
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "x5": true,
+    "x3": 6,
+    "x10": "a"
+   },
+   {
+    "x5": true,
+    "x3": 3,
+    "x10": "c"
+   },
+   {
+    "x5": false,
+    "x3": 4,
+    "x10": "c"
+   },
+   {
+    "x5": false,
+    "x3": 7,
+    "x10": "a"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 1,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "b"
+     }
+    ],
+    "y": [
+     "a"
+    ]
+   },
+   {
+    "x": [
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 5,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 9,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "c"
+     }
+    ],
+    "y": [
+     "b"
+    ]
+   },
+   {
+    "x": [
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 3,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 7,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "a"
+     }
+    ],
+    "y": [
+     "c"
+    ]
+   }
+  ],
+  "oracle_cost": 60,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[]",
+     "[\"c\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[pos,tail:2,id:None]",
+      "Comp[+x3,pred:x5==False,proj:x10]"
+     ],
+     [
+      "Comp[pos,pred:x5==False,id:None]",
+      "Comp[pos,tail:1,proj:x10]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[\"c\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[pos,pred:x5==False,id:None]",
+      "Comp[pos,tail:1,proj:x10]"
+     ]
+    ]
+   },
+   {
+    "n_public": 6,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[\"c\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[pos,pred:x5==False,id:None]",
+      "Comp[pos,tail:1,proj:x10]"
+     ]
+    ]
+   },
+   {
+    "n_public": 7,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[\"c\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[pos,pred:x5==False,id:None]",
+      "Comp[pos,tail:1,proj:x10]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "AMBIGUOUS_WITNESS_FOUND",
+  "label": "AMBIGUOUS",
+  "kernel_k": 2,
+  "correct": false,
+  "work": 2588159,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 2070679,
+   "probe_design": 600,
+   "oracle": 60,
+   "lemma_construction": 952,
+   "checker": 515430
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "x3",
+    "desc": true,
+    "cond": "head",
+    "cparam": 1,
+    "transform": "proj",
+    "tparam": "x10"
+   }
+  ],
+  "truth": [
+   "a"
+  ]
+ },
+ {
+  "seed": 7002,
+  "task": 4,
+  "prior": "none",
+  "initial_public": [
+   [
+    [
+     {
+      "x5": false,
+      "x3": 5,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 9,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "c"
+     }
+    ],
+    [
+     "b"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 3,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 7,
+      "x10": "a"
+     }
+    ],
+    [
+     "c"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "b"
+     },
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 1,
+      "x10": "c"
+     }
+    ],
+    [
+     "a"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": false,
+      "x3": 0,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 5,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "b"
+     }
+    ],
+    [
+     "b"
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "x5": true,
+    "x3": 6,
+    "x10": "a"
+   },
+   {
+    "x5": true,
+    "x3": 3,
+    "x10": "c"
+   },
+   {
+    "x5": false,
+    "x3": 4,
+    "x10": "c"
+   },
+   {
+    "x5": false,
+    "x3": 7,
+    "x10": "a"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "x5": true,
+      "x3": 7,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 3,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "c"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "a"
+     }
+    ],
+    "y": [
+     "a"
+    ]
+   },
+   {
+    "x": [
+     {
+      "x5": true,
+      "x3": 7,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 3,
+      "x10": "a"
+     }
+    ],
+    "y": [
+     "a"
+    ]
+   }
+  ],
+  "oracle_cost": 40,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[]",
+     "[\"c\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[+x3,first_occ:x10,id:None]",
+      "Comp[+x3,pred:x5==False,proj:x10]"
+     ],
+     [
+      "Comp[pos,first_occ:x5,id:None]",
+      "Comp[+x3,pred:x5==False,proj:x10]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[\"c\"]",
+     "[]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[pos,first_occ:x5,id:None]",
+      "Comp[+x3,pred:x5==False,proj:x10]"
+     ],
+     [
+      "Comp[pos,tail:2,id:None]",
+      "Comp[+x3,pred:x5==False,proj:x10]"
+     ]
+    ]
+   },
+   {
+    "n_public": 6,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[\"a\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 982922,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 809290,
+   "probe_design": 528,
+   "oracle": 40,
+   "lemma_construction": 816,
+   "checker": 171810
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "x3",
+    "desc": true,
+    "cond": "head",
+    "cparam": 1,
+    "transform": "proj",
+    "tparam": "x10"
+   }
+  ],
+  "truth": [
+   "a"
+  ]
+ },
+ {
+  "seed": 7002,
+  "task": 4,
+  "prior": "shuffled",
+  "initial_public": [
+   [
+    [
+     {
+      "x5": false,
+      "x3": 5,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 9,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "c"
+     }
+    ],
+    [
+     "b"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 3,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 7,
+      "x10": "a"
+     }
+    ],
+    [
+     "c"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "b"
+     },
+     {
+      "x5": false,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 1,
+      "x10": "c"
+     }
+    ],
+    [
+     "a"
+    ]
+   ],
+   [
+    [
+     {
+      "x5": false,
+      "x3": 0,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 4,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 5,
+      "x10": "b"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "b"
+     }
+    ],
+    [
+     "b"
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "x5": true,
+    "x3": 6,
+    "x10": "a"
+   },
+   {
+    "x5": true,
+    "x3": 3,
+    "x10": "c"
+   },
+   {
+    "x5": false,
+    "x3": 4,
+    "x10": "c"
+   },
+   {
+    "x5": false,
+    "x3": 7,
+    "x10": "a"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 4,
+      "x10": "c"
+     },
+     {
+      "x5": true,
+      "x3": 3,
+      "x10": "c"
+     },
+     {
+      "x5": true,
+      "x3": 6,
+      "x10": "a"
+     }
+    ],
+    "y": [
+     "a"
+    ]
+   },
+   {
+    "x": [
+     {
+      "x5": true,
+      "x3": 7,
+      "x10": "a"
+     },
+     {
+      "x5": true,
+      "x3": 0,
+      "x10": "a"
+     },
+     {
+      "x5": false,
+      "x3": 7,
+      "x10": "c"
+     },
+     {
+      "x5": false,
+      "x3": 3,
+      "x10": "a"
+     }
+    ],
+    "y": [
+     "a"
+    ]
+   }
+  ],
+  "oracle_cost": 40,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[\"c\"]",
+     "[]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[pos,pred:x5==False,proj:x10]",
+      "Comp[pos,tail:1,id:None]"
+     ],
+     [
+      "Comp[+x3,first_occ:x10,id:None]",
+      "Comp[+x3,pred:x5==False,proj:x10]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[\"a\"]",
+     "[\"c\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ],
+     [
+      "Comp[pos,pred:x5==False,proj:x10]",
+      "Comp[pos,tail:1,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 6,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[\"a\"]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[-x3,head:1,proj:x10]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 1082406,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 908870,
+   "probe_design": 432,
+   "oracle": 40,
+   "lemma_construction": 816,
+   "checker": 171810
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "x3",
+    "desc": true,
+    "cond": "head",
+    "cparam": 1,
+    "transform": "proj",
+    "tparam": "x10"
+   }
+  ],
+  "truth": [
+   "a"
+  ]
+ },
+ {
+  "seed": 7005,
+  "task": 2,
+  "prior": "useful",
+  "initial_public": [
+   [
+    [
+     {
+      "zu": true,
+      "x6": 7,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 7,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "c"
+     }
+    ],
+    [
+     true,
+     true,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 1,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 2,
+      "bo": "a"
+     }
+    ],
+    [
+     false,
+     true,
+     false
+    ]
+   ],
+   [
+    [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     }
+    ],
+    [
+     true,
+     true,
+     true,
+     false
+    ]
+   ],
+   [
+    [
+     {
+      "zu": true,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 9,
+      "bo": "a"
+     }
+    ],
+    [
+     true,
+     false,
+     true
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "zu": false,
+    "x6": 0,
+    "bo": "a"
+   },
+   {
+    "zu": false,
+    "x6": 2,
+    "bo": "a"
+   },
+   {
+    "zu": true,
+    "x6": 2,
+    "bo": "b"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     }
+    ],
+    "y": [
+     true,
+     true,
+     true,
+     true,
+     false
+    ]
+   },
+   {
+    "x": [
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     }
+    ],
+    "y": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false
+    ]
+   },
+   {
+    "x": [
+     {
+      "zu": true,
+      "x6": 2,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 1,
+      "bo": "b"
+     },
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     }
+    ],
+    "y": [
+     false,
+     true,
+     false
+    ]
+   }
+  ],
+  "oracle_cost": 60,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,tail:4,proj:zu]"
+     ],
+     [
+      "Comp[-x6,tail:4,id:None]",
+      "Comp[pos,tail:4,proj:zu]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,tail:5,proj:zu]"
+     ],
+     [
+      "Comp[-x6,tail:5,id:None]",
+      "Comp[pos,tail:5,proj:zu]"
+     ]
+    ]
+   },
+   {
+    "n_public": 6,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,pred:x6<=9,proj:zu]"
+     ],
+     [
+      "Comp[-x6,pred:x6<=9,id:None]",
+      "Comp[pos,pred:x6<=9,proj:zu]"
+     ]
+    ]
+   },
+   {
+    "n_public": 7,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,pred:x6<=9,proj:zu]"
+     ],
+     [
+      "Comp[-x6,pred:x6<=9,id:None]",
+      "Comp[pos,pred:x6<=9,proj:zu]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "AMBIGUOUS_WITNESS_FOUND",
+  "label": "AMBIGUOUS",
+  "kernel_k": 2,
+  "correct": false,
+  "work": 1542113,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 1075158,
+   "probe_design": 504,
+   "oracle": 60,
+   "lemma_construction": 809,
+   "checker": 465144
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "x6",
+    "desc": false,
+    "cond": "pred",
+    "cparam": {
+     "path": "x6",
+     "cmp": "le",
+     "val": 9
+    },
+    "transform": "id",
+    "tparam": null
+   },
+   {
+    "op": "comp",
+    "path": "x6",
+    "desc": false,
+    "cond": "pred",
+    "cparam": {
+     "path": "x6",
+     "cmp": "le",
+     "val": 9
+    },
+    "transform": "proj",
+    "tparam": "zu"
+   }
+  ],
+  "truth": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "seed": 7005,
+  "task": 2,
+  "prior": "none",
+  "initial_public": [
+   [
+    [
+     {
+      "zu": true,
+      "x6": 7,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 7,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "c"
+     }
+    ],
+    [
+     true,
+     true,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 1,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 2,
+      "bo": "a"
+     }
+    ],
+    [
+     false,
+     true,
+     false
+    ]
+   ],
+   [
+    [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     }
+    ],
+    [
+     true,
+     true,
+     true,
+     false
+    ]
+   ],
+   [
+    [
+     {
+      "zu": true,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 9,
+      "bo": "a"
+     }
+    ],
+    [
+     true,
+     false,
+     true
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "zu": false,
+    "x6": 0,
+    "bo": "a"
+   },
+   {
+    "zu": false,
+    "x6": 2,
+    "bo": "a"
+   },
+   {
+    "zu": true,
+    "x6": 2,
+    "bo": "b"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "zu": true,
+      "x6": 2,
+      "bo": "b"
+     },
+     {
+      "zu": false,
+      "x6": 2,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 0,
+      "bo": "a"
+     }
+    ],
+    "y": [
+     false,
+     true,
+     false
+    ]
+   }
+  ],
+  "oracle_cost": 20,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,all:None,proj:zu]"
+     ],
+     [
+      "Comp[-x6,all:None,proj:zu]",
+      "Comp[pos,all:None,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "UNIQUE_IN_BOUNDED_SPACE",
+    "witnesses": [
+     "[false,false,true]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,all:None,proj:zu]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "UNIQUE_IN_BOUNDED_SPACE",
+  "label": "exhaustive_UNIQUE",
+  "kernel_k": null,
+  "correct": true,
+  "work": 839924,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 678960,
+   "probe_design": 168,
+   "oracle": 20,
+   "lemma_construction": 600,
+   "checker": 159738
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "x6",
+    "desc": false,
+    "cond": "pred",
+    "cparam": {
+     "path": "x6",
+     "cmp": "le",
+     "val": 9
+    },
+    "transform": "id",
+    "tparam": null
+   },
+   {
+    "op": "comp",
+    "path": "x6",
+    "desc": false,
+    "cond": "pred",
+    "cparam": {
+     "path": "x6",
+     "cmp": "le",
+     "val": 9
+    },
+    "transform": "proj",
+    "tparam": "zu"
+   }
+  ],
+  "truth": [
+   false,
+   false,
+   true
+  ]
+ },
+ {
+  "seed": 7005,
+  "task": 2,
+  "prior": "shuffled",
+  "initial_public": [
+   [
+    [
+     {
+      "zu": true,
+      "x6": 7,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 7,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "c"
+     }
+    ],
+    [
+     true,
+     true,
+     true
+    ]
+   ],
+   [
+    [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 1,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 2,
+      "bo": "a"
+     }
+    ],
+    [
+     false,
+     true,
+     false
+    ]
+   ],
+   [
+    [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     }
+    ],
+    [
+     true,
+     true,
+     true,
+     false
+    ]
+   ],
+   [
+    [
+     {
+      "zu": true,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 9,
+      "bo": "a"
+     }
+    ],
+    [
+     true,
+     false,
+     true
+    ]
+   ]
+  ],
+  "query": [
+   {
+    "zu": false,
+    "x6": 0,
+    "bo": "a"
+   },
+   {
+    "zu": false,
+    "x6": 2,
+    "bo": "a"
+   },
+   {
+    "zu": true,
+    "x6": 2,
+    "bo": "b"
+   }
+  ],
+  "oracle_observations": [
+   {
+    "x": [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     }
+    ],
+    "y": [
+     true,
+     true,
+     true,
+     true,
+     false
+    ]
+   },
+   {
+    "x": [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 5,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     },
+     {
+      "zu": true,
+      "x6": 4,
+      "bo": "a"
+     }
+    ],
+    "y": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false
+    ]
+   },
+   {
+    "x": [
+     {
+      "zu": false,
+      "x6": 9,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 1,
+      "bo": "b"
+     },
+     {
+      "zu": true,
+      "x6": 2,
+      "bo": "a"
+     },
+     {
+      "zu": false,
+      "x6": 1,
+      "bo": "b"
+     }
+    ],
+    "y": [
+     false,
+     false,
+     true,
+     false
+    ]
+   }
+  ],
+  "oracle_cost": 60,
+  "scope_tools": 414,
+  "scope_kind": "exhaustive",
+  "prover_rounds": [
+   {
+    "n_public": 4,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,pred:x6<=9,proj:zu]"
+     ],
+     [
+      "Comp[-x6,pred:x6<=9,proj:zu]",
+      "Comp[pos,head:4,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 5,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,pred:x6<=9,proj:zu]"
+     ],
+     [
+      "Comp[-x6,pred:x6<=9,proj:zu]",
+      "Comp[pos,head:5,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 6,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,pred:x6<=9,proj:zu]"
+     ],
+     [
+      "Comp[-x6,pred:x6<=9,proj:zu]",
+      "Comp[pos,all:None,id:None]"
+     ]
+    ]
+   },
+   {
+    "n_public": 7,
+    "status": "AMBIGUOUS_WITNESS_FOUND",
+    "witnesses": [
+     "[false,false,true]",
+     "[false,true,false]"
+    ],
+    "witness_programs": [
+     [
+      "Comp[+x6,pred:x6<=9,proj:zu]"
+     ],
+     [
+      "Comp[-x6,pred:x6<=9,proj:zu]",
+      "Comp[pos,all:None,id:None]"
+     ]
+    ]
+   }
+  ],
+  "prover_status": "AMBIGUOUS_WITNESS_FOUND",
+  "label": "AMBIGUOUS",
+  "kernel_k": 2,
+  "correct": false,
+  "work": 1484567,
+  "work_by": {
+   "scope_construction": 414,
+   "proposal_generation": 24,
+   "prover": 1017612,
+   "probe_design": 504,
+   "oracle": 60,
+   "lemma_construction": 809,
+   "checker": 465144
+  },
+  "teacher": [
+   {
+    "op": "comp",
+    "path": "x6",
+    "desc": false,
+    "cond": "pred",
+    "cparam": {
+     "path": "x6",
+     "cmp": "le",
+     "val": 9
+    },
+    "transform": "id",
+    "tparam": null
+   },
+   {
+    "op": "comp",
+    "path": "x6",
+    "desc": false,
+    "cond": "pred",
+    "cparam": {
+     "path": "x6",
+     "cmp": "le",
+     "val": 9
+    },
+    "transform": "proj",
+    "tparam": "zu"
+   }
+  ],
+  "truth": [
+   false,
+   false,
+   true
+  ]
+ }
+]

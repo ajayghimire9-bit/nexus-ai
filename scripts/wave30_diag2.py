@@ -17,10 +17,15 @@ def main():
     ap.add_argument("--prior", default="none")
     ap.add_argument("--online", action="store_true")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--probe-design", default="early", choices=("early", "complete"))
+    ap.add_argument("--keep-evidence")
     a = ap.parse_args()
     from nexus import seed_registry as R
     from nexus.wave30_arms import FAMILIES
+    import nexus.wave30_harness as H
     from nexus.wave30_harness import FrozenPrior, run_stream, summarise, verify_kernel_pin
+    H.PROBE_DESIGN["mode"] = a.probe_design
+    H.KEEP_EVIDENCE["on"] = bool(a.keep_evidence)
     pin = verify_kernel_pin()
     k0, k1, seeds = SPLITS[a.split]
     R.claim(k0, k1, seeds, run_id=f"wave30-inc2-{a.split}", record=False)
@@ -44,10 +49,13 @@ def main():
             rows += [dict(r, seed=s) for r in run_stream(s, a.arm, prior=prior)]
     finally:
         with LEDGER.open("a") as f:
-            f.write(json.dumps(dict(run=f"wave30-inc2-{a.split}-{a.arm}-{a.prior}", wall_s=time.perf_counter() - t0,
+            f.write(json.dumps(dict(run=f"wave30-inc3-{a.split}-{a.arm}-{a.prior}-{a.probe_design}", wall_s=time.perf_counter() - t0,
                                     status="COMPLETE", seeds=list(seeds))) + "\n")
     rep = summarise(rows)
+    if a.keep_evidence:
+        Path(a.keep_evidence).write_text(json.dumps(H.KEEP_EVIDENCE["items"], default=repr))
     out = dict(split=a.split, arm=a.arm, prior=a.prior, online=a.online, kernel_sha256=pin, summary=rep,
+               probe_design=a.probe_design,
                source=source, prior_final=dict(prior.c) if prior else None, rows=rows)
     Path(a.out).write_text(json.dumps(out, default=repr, sort_keys=True))
     print(json.dumps({k: rep[k] for k in ("n", "correct", "exhaustive_certified", "agreement_among_proposals",
