@@ -181,3 +181,76 @@ Locked code sha256:
 * `wave27_core.py` `7692ab66…5155`
 * `wave27_eval.py` `77e688aa…0c72`
 * `wave27_confirm.py` `36a5a59f…72b4`
+
+## Primary confirmation results (locked `e7daf13`; fresh seeds; replays in fresh processes)
+
+**Runs.**
+* Phase 4: 181 s (one call).
+* Phase 5: 703 s + resume call.
+* Phase 6: 613 s (one call).
+
+**Replays: 15 / 15 units identical.**
+* Phase 4: 5 / 5. Phase 5: 5 / 5. Phase 6: 5 / 5.
+* Disclosed incident: two Phase 6 replay calls ran concurrently and the second write erased the first
+  call's results (6011–6013) from the artifact. Those results were restored from
+  `runs/experimental/wave27/replay_p6a.log`, and their recorded digests were checked against the artifact.
+
+**Artifacts (sha256)**
+
+| Artifact | sha256 |
+| --- | --- |
+| `artifacts/wave27_phase4_confirmation.json` | `4f245068…21fd` |
+| `artifacts/wave27_phase5_confirmation.json` | `53d9af1f…f773` |
+| `artifacts/wave27_phase6_confirmation.json` | `68e3b3c3…e5e2` |
+
+### Phase 4 (4011–4015) — **FAIL** (primitives gate)
+
+**Router.** ΔB 30/30, ΔC 30/30 (27 solved), ΔM 30/30.
+
+**Deletion streams.** 120/120 solved, 0 false certificates. 34 core-tier answers, 27 consolidations,
+1 demotion, 83 audits passed and 1 counterexample.
+
+| Primitive | Mean work, first → later (W27) | Streams with later cheaper (W27) | Mean work, first → later (W26, 4001–4005) |
+| --- | --- | --- | --- |
+| F | 34.2k → 17.8k | 6/10 | ≈ 64k → 330k |
+| S | 17.9k → 25.7k | 6/10 | 67k → 48k |
+| Sort | 3.9k → 1.6k | 9/10 | 170k → 40k |
+
+* F reuse is now cheaper than invention on average, a reversal of Wave 26.
+* Absolute costs fell 2–20×.
+* The per-stream 80% bar is still missed for F and S.
+
+### Phase 5 (5011–5015) — **FAIL** (interference gate)
+
+| Lag | Revisit ratio, W27 | Worlds cheaper on revisit | Revisit ratio, W26 |
+| --- | --- | --- | --- |
+| 5 | **0.663** | 18 / 40 | 1.098 |
+| 10 | **0.707** | 14 / 30 | 1.016 |
+| 20 | **0.907** | 10 / 20 | 0.985 |
+
+* **Revisit gate: PASS** (ratio < 1 at all three lags; it failed in Wave 26).
+* Backward interference **14.6% > 10%: FAIL** (Wave 26: 7.3%).
+  * Two revisits account for about two-thirds of the excess: a no-hidden-mechanism ΔB world (+1.16M) and
+    a pred world (+0.89M).
+  * The extended-binding tier certifies over every retained schema, so a larger library makes rebinding
+    dearer.
+* Retirement 13/13 drift-broken opaque contracts: PASS.
+* 0 false certificates; 313/316 solved.
+* 19 consolidations, 1 demotion.
+
+### Phase 6 (6011–6015, held-out synthetic target worlds) — **FAIL** (cost 4/5, slope 2/5)
+
+| Ordering | Experienced | Fresh | Placebo | Experienced cheapest |
+| --- | --- | --- | --- | --- |
+| 6011 | 714k | 1,326k | 1,325k | yes |
+| 6012 | 305k | 2,026k | 2,026k | yes |
+| 6013 | 1,181k | 4,174k | 4,174k | yes |
+| 6014 | 750k | 577k | 575k | **no** |
+| 6015 | 704k | 1,273k | 1,272k | yes |
+
+* **The Placebo problem is fixed.** Placebo retained 0 schemas in every ordering, against 1–2 coincidental
+  schemas in Wave 26. Its cost equals Fresh's to within 0.1%.
+* Experienced retained 3 schemas, all consolidated. It was 1.8–6.6× cheaper than both controls in 4/5
+  orderings.
+* Slope wins: 2/5. Experienced starts near its floor, so its learning slope is flat.
+* 0 false certificates; 14–16 of 16 solved per arm (all arms equal).
