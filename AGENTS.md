@@ -167,3 +167,6 @@ followed by a new pin.**
 * RULE 2 also covers `src/nexus/checker_kernel_v2.py` (separately versioned, owner-authorised 2026-10-26; spec
   `docs/NEXUS_CHECKER_V2_SPEC.md`; pin `src/nexus/checker_kernel_v2.sha256`). v1 stays unchanged. All arms in one
   comparison use the same checker version, and unsupported semantics give ABSTAIN.
+* RULE 2 also covers `src/nexus/checker_kernel_v3.py` (separately versioned, owner-authorised 2026-10-26: bottom-up
+  shared evaluation + verified rewrite proofs; spec `docs/NEXUS_CHECKER_V3_SPEC.md`; pin
+  `src/nexus/checker_kernel_v3.sha256`). v1 and v2 stay unchanged.
