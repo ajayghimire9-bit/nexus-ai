@@ -105,6 +105,30 @@ def lemmas_for(public, tools):
     return out
 
 
+# --------------------------------------------------------------------------- Checker v3 proof citations
+# Solver-side axiom -> tool-pattern table (own code; nothing is imported from checker v3).
+AXIOM_TOOLS = (("sort_fixpoint", lambda t: t == {"op": "Sort", "path": ".", "desc": False}),
+               ("runheads_fixpoint", lambda t: t == {"op": "run_heads"}),
+               ("runmax_fixpoint", lambda t: t == {"op": "running_max"}),
+               ("top_fixpoint", lambda t: t.get("op") == "ir_counter_top"))
+AXIOM_STATS = {}
+
+
+def proofs_for(tools, axioms):
+    return [{"axiom": a, "tool": i} for i, t in enumerate(tools) for a, m in AXIOM_TOOLS if a in axioms and m(t)]
+
+
+def _axioms_for_policy(pol):
+    p = pol.get("proofs", "none")
+    if p == "all":
+        return {a for a, _ in AXIOM_TOOLS}
+    if p in ("learned", "placebo"):
+        return set(pol.get("proof_axioms", []))
+    if p.startswith("rotate:"):
+        return {AXIOM_TOOLS[int(p.split(":")[1]) % len(AXIOM_TOOLS)][0]}
+    return set()
+
+
 # --------------------------------------------------------------------------- probing
 def _mutate(x, rng, alphabet):
     if isinstance(x, str):
@@ -224,7 +248,14 @@ def solve(chan, arm, mode, view, library, seed, policy=None):
         ev = {"checker_version": 2, "public": public, "query": query, "claimed_answer": ans, "candidate": cand,
               "scope": {"kind": "exhaustive", "tools": tools, "max_depth": depth}, "lemmas": lem,
               "trace": {"arm": arm, "mode": mode}}
+        if pol.get("checker", 2) == 3:
+            axs = _axioms_for_policy(pol)
+            ev = dict(ev, checker_version=3, lemmas=[], proofs=proofs_for(tools, axs))
         v = chan.check(ev)
+        if pol.get("checker", 2) == 3 and str(pol.get("proofs", "")).startswith("rotate:") and axs:
+            a = next(iter(axs))
+            st = AXIOM_STATS.setdefault(a, [0, 0])
+            st[0] += v.get("proofs_applied", 0); st[1] += v.get("proof_checks", 0)
         info["checks"] += 1
         if v["label"] != "AMBIGUOUS" or info["probes"] >= G.MAX_PROBES:
             return ev, meter, dict(info, status=v["label"])
@@ -376,10 +407,15 @@ def build(programs, seed, views=(), max_holes=1, depth=3, min_support=1, cap=Non
     psks = placebo_skeletons(sks, random.Random(f"w31b-placebo:{seed}"))
     ids = learned_identities(views) if views else []
     nst = max(1, LEMMA_STATS["tasks"])
+    learned_axioms = sorted(a for a, (ap, ck) in AXIOM_STATS.items() if ck and ap / ck >= 0.1)
+    prng = random.Random(f"w31-placebo-proofs:{seed}")
+    placebo_axioms = sorted(prng.sample([a for a, _ in AXIOM_TOOLS], len(learned_axioms)))
     useful = library_from_skeletons(sks)
     if cap is not None:
         useful = useful[:int(cap)]
     return dict(useful=useful, placebo=library_from_skeletons(psks),
                 skeletons=[repr(s) for s in sks], placebo_skeletons=[repr(s) for s in psks],
                 lemma_kinds=sorted(k for k, c in LEMMA_STATS["kinds"].items() if c / nst >= 0.5),
-                identities=ids, projected_skip=projected_skip(ids, G.G_P, depth) if ids else 0.0)
+                identities=ids, projected_skip=projected_skip(ids, G.G_P, depth) if ids else 0.0,
+                learned_axioms=learned_axioms, placebo_axioms=placebo_axioms,
+                axiom_stats={a: list(v) for a, v in AXIOM_STATS.items()})

@@ -30,10 +30,12 @@ import time
 from pathlib import Path
 
 from nexus import checker_kernel_v2 as V
+from nexus import checker_kernel_v3 as V3
 from nexus import wave31_grammar as G
 
 ROOT = Path(__file__).resolve().parents[2]
 V2_PIN_COMMIT = "01d84f6"
+V3_PIN_COMMIT = "1642721"
 ORACLE_PRICE_INSTR = 50_000_000      # declared price of one oracle query in evaluator_work (retired instructions)
 LEDGER = ROOT / "runs/experimental/wave24-agi/ledger.jsonl"
 VAULT = os.environ.get("NEXUS_SEALED_VAULT_DIR", str(Path.home() / ".gemini/antigravity/sealed_nexus_vault"))
@@ -64,6 +66,15 @@ def instructions(pid):
     if _LIBPROC is None or _LIBPROC.proc_pid_rusage(int(pid), 4, ctypes.byref(r)) != 0:
         raise RuntimeError("instruction counter unavailable")
     return int(r.ri_instructions)
+
+
+def verify_v3():
+    pin = subprocess.run(["git", "-C", str(ROOT), "show", f"{V3_PIN_COMMIT}:src/nexus/checker_kernel_v3.sha256"],
+                         capture_output=True, text=True, check=True).stdout.split()[0]
+    disk = hashlib.sha256((ROOT / "src/nexus/checker_kernel_v3.py").read_bytes()).hexdigest()
+    if disk != pin or Path(V3.__file__).resolve() != (ROOT / "src/nexus/checker_kernel_v3.py").resolve():
+        raise SystemExit("checker v3 does not match its pin; refusing to run")
+    return pin
 
 
 def sandbox_profile():
@@ -120,8 +131,10 @@ class Child:
 class Evaluator:
     ORACLE_CAP = G.MAX_PROBES
 
-    def __init__(self, depth=G.MATCHED_DEPTH):
-        self.pin = verify_v2()
+    def __init__(self, depth=G.MATCHED_DEPTH, checker=2):
+        """`checker`: the one pinned checker every arm of this evaluator is graded by (2 or 3)."""
+        self.checker = checker
+        self.pin = verify_v2() if checker == 2 else verify_v3()
         self.kernel_work = 0
         self.oracle_calls = 0
         self.depth = depth
@@ -133,9 +146,9 @@ class Evaluator:
         if d in self._cache:
             return self._cache[d]
         i0 = instructions(os.getpid())
-        v = V.check(ev)
+        v = (V.check if self.checker == 2 else V3.check)(ev)
         meter["eval_instr"] = meter.get("eval_instr", 0) + instructions(os.getpid()) - i0
-        w = v.get("steps", 0) + v.get("chains_checked", 0)
+        w = v.get("steps", 0) + (v.get("chains_checked", 0) if self.checker == 2 else v.get("point_evals", 0))
         meter["kernel"] = meter.get("kernel", 0) + w
         self.kernel_work += w
         self._cache = {d: v}

@@ -442,3 +442,52 @@ Work is `evaluator_work` in G retired instructions (external meter).
   unverifiable under v2.
 * **Highest-value next step:** a separately versioned, independently validated class-enumerating Checker v3. It
   needs owner authorisation under RULE 2.
+
+---
+
+# Checker v3 and the Wave 31 v3 baseline matrix (NOT LOCKED)
+
+## Checker v3
+
+* **Commits:** pin commit 1642721; sha256 `3c68230e…20f`; spec `docs/NEXUS_CHECKER_V3_SPEC.md`.
+* **Validation:**
+  * 845+ random differential cases against v2;
+  * targeted adversarial tests, each with a deliberately unsound variant (demo-only classes; two-representative
+    truncation) that fails on the same evidence;
+  * stateless probe refinement;
+  * the step-bound logic, checked against direct enumeration;
+  * bounded-exhaustive axiom checks;
+  * proofs never change a verdict.
+* **Identity:** **5,643 / 5,643 verdict-identical v2 checks on every existing Wave 31 task**
+  (`artifacts/checker_v3_identity_*.json`): increment 1 (190), increment 2 (3,633), increment 3 (1,820).
+* **Cost:** v3 uses 17.4× fewer retired instructions than v2 at depth 4, and 3.7× fewer at depth 3.
+* **Pinned file:** the same file that ran the identity checks; there were no edits after them.
+* **Wave 32 evolution** stays paused, per the owner.
+
+## 4-way comparison protocol
+
+Committed before the outcomes of dev 762–765 and val_v3 7111–7115. Dev 761 (records fold) was used for one smoke.
+
+* **Suite:** the increment-3 tasks (depth-4 matched G_P scope, 3-op cores, LODO over 4 domains).
+* **Checkers:** every arm in a comparison is graded by the same pinned checker, verified from its git object.
+* **Meter:** `evaluator_work`, the OS retired-instruction meter (child + checker + oracle price). It includes all
+  graph construction, class maintenance, proof checking, proof citation and library building.
+* **Configs:**
+  * Fresh-v2 (all v2 lemmas);
+  * Fresh-v3 (no proofs);
+  * Fresh-v3-allP (every axiom: generic);
+  * Experienced-v3 (learned macros + source-learned axiom selection);
+  * Placebo-v3 (size-matched macros + the same number of random axioms).
+* **Source learning:** under v3. Source task i cites only axiom i mod 4. An axiom is "learned" if
+  applied / checked ≥ 0.1 on the source verdicts. The cost is charged to Experienced and Placebo.
+* **Comparisons, reported separately:**
+  1. Fresh-v3 vs Fresh-v2;
+  2. Experienced-v3 vs Fresh-v3, and vs Fresh-v3-allP;
+  3. Experienced-v3 vs Placebo-v3;
+  4. Experienced-v3 + source cost vs Fresh-v3.
+* **Gate for the conditional Wave 32 v3 check (predeclared).** The check runs if, on val_v3, either:
+  * Experienced-v3 < Fresh-v3 target-only in ≥ 4/5 seeds with a pooled saving ≥ 3% (a concrete policy lever); or
+  * comparison 4 is < 1 (net-positive).
+
+  The Wave 32 check would be a small evolution under v3 (≤ 4 generations × 4 children), then Gen k vs Gen 0
+  (learning OFF) vs Gen 0 (learning ON) on held-out grids, on a fresh one-use range.
