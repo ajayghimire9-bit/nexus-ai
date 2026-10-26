@@ -20,12 +20,13 @@ def main():
         seeds = list(R.REGISTRY[("wave36", "confirm_world")])
         R.claim("wave36", "confirm_world", seeds, run_id="w36-confirm_world")
     t0 = time.perf_counter()
-    res = {c: {ag: [Wd.run(ag, s, cond, instr=lambda: instructions(os.getpid())) for s in seeds] for ag in Wd.AGENTS}
+    agents = Wd.AGENTS if a.split == "dev" else ("reactive", "model-free", "fixed-model", "N1-BOCPD")   # AGENTS_CONF (frozen)
+    res = {c: {ag: [Wd.run(ag, s, cond, instr=lambda: instructions(os.getpid())) for s in seeds] for ag in agents}
            for c, cond in CONDS.items()}
     out = {"seeds": [str(s) for s in seeds], "results": res, "summary": {}}
     for c in CONDS:
         out["summary"][c] = {}
-        for ag in Wd.AGENTS:
+        for ag in agents:
             rs = res[c][ag]
             d = [r["delay"] for r in rs if r["delay"] is not None]
             out["summary"][c][ag] = dict(ret=sum(r["ret"] for r in rs) / len(rs), brier=sum(r["brier"] for r in rs) / len(rs),
