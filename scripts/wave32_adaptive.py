@@ -146,6 +146,14 @@ def main():
         pol = {"always-ON": dict(A.GEN0_V3C), "always-OFF": dict(A.GEN0_V3C, online=False),
                "Genk(2)": upgrade(prev["champion_2"], A), "Genk(3)": upgrade(prev["champion_3"], A),
                "Genk(adapt)": st["champion"]}
+        if a.phase == "confirm":
+            # FROZEN (amendment 3): primary single policy = a0c2 (= Gen k(3) lifted), the only evaluated candidate that
+            # satisfies the success criterion on dev2; secondary arms: a4c2 (amendment-2 pick) and a6c5 (Source-only
+            # pick); Gen k(2) kept as the learning-OFF reference.
+            by_id = {e["id"]: e["genome"] for e in st["archive"]}
+            pol = {"always-ON": dict(A.GEN0_V3C), "always-OFF": dict(A.GEN0_V3C, online=False),
+                   "Genk(2)": upgrade(prev["champion_2"], A), "Genk(adapt)": by_id["a0c2"],
+                   "secondary:a4c2": by_id["a4c2"], "secondary:a6c5": by_id["a6c5"]}
         F.policies = lambda _st, _A: pol
         if a.phase == "table":
             R.claim("wave32", "dev2", list(DEV2), run_id="wave32a-table", record=False)

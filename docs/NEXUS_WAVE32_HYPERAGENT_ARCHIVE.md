@@ -371,3 +371,32 @@ The replay (7213, Target / 3 rep, Gen k(3)) matched, and D4 held.
 * **Amendment 2** (development only, before any confirmation draw): the same re-selection, but with each stream
   normalised by **min(always-ON, always-OFF) on that stream**. Rule: worst ratio ≤ 1.01, then the minimum mean
   (falling back to the minimum worst ratio).
+* **Amendment 2, result:** no candidate met worst ≤ 1.01 on 774–775. The fallback (minimum worst ratio) picked
+  **a4c2** (online ON, gate 0.4, max_holes 0, proofs all; mean 0.995, worst 1.012). On dev2 it **fails** the
+  criterion:
+
+| Cell | a4c2 / min(ON, OFF) |
+| --- | --- |
+| Source / 2 rep | 1.000 |
+| Source / 3 rep | 0.976 |
+| Target / 2 rep | 1.004 |
+| Target / 3 rep | **1.019** |
+
+* **Amendment 3 = FREEZE** (development only, before any confirmation draw):
+  * **Primary policy:** **a0c2 = the earlier Gen k(3)**, lifted with rebuild_hit_min = 0. It is the only evaluated
+    single policy that satisfies the success criterion on dev2, in both dev tables:
+
+| Cell | First table | Second table |
+| --- | --- | --- |
+| Source / 2 rep | 0.977 | 0.977 |
+| Source / 3 rep | 0.973 | 0.973 |
+| Target / 2 rep | 1.0005 | 1.0007 |
+| Target / 3 rep | 0.996 | 0.996 |
+
+  * **Regime knowledge:** it is never told the regime; its repeat-rate gate (0.3) reads the stream.
+  * **Secondary arms** (reported, not the claim): a4c2 and a6c5. Gen k(2), learning OFF, is the reference.
+  * **Unchanged:** the confirmation criterion and readouts. The confirmation is `confirm_adapt` 7216–7220, run
+    once.
+* **Disclosed:** the 51-genome mixed-regime evolution found no single policy better than Gen k(3). Three selection
+  amendments were made on development data. Choosing the primary by its dev2 result means dev2 is not independent
+  evidence for it; only the confirmation is.
