@@ -47,6 +47,8 @@ REGISTRY = {
     # final_sealed: counterfactual-world instances drawn ONLY by a locked runner after the generator
     # (src/nexus/wave30_alien.py) and models are frozen; never drawn during development or admission
     ("wave30", "final_sealed"): range(9301, 9311),
+    # Wave 31 middle IR (development; NOT LOCKED)
+    ("wave31", "dev"): range(761, 766), ("wave31", "admission_val"): range(7101, 7106),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val")}
 
