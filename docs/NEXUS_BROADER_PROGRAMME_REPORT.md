@@ -141,3 +141,19 @@ N1 shows no retention benefit for returning goals.
 * **Planning:** online heuristic weights gave **identical** expansions. Each domain has a single goal predicate, so
   per-predicate weights only rescale the heuristic; the learner design is degenerate.
 * **Repairs:** the online mutation prior gave no gain (182 vs 168 evaluations, 23/24 verified in both arms).
+
+## Stage 3 FREEZE (this commit; before any confirmation seed is drawn)
+
+Frozen: all code at this commit, the learned-knowledge definitions, the genome, the regime-memory rule, the evolution
+rules, and the thresholds below. Confirmation ranges are one-use and run once.
+
+| Experiment | Confirmation (one-use seeds) | Arms | Predeclared verdict rule |
+| --- | --- | --- | --- |
+| 1 Representation | LODO `confirm_lodo` 7801–7805: 4 folds × (2 src + 2 tgt reps), budget 2 M; slice = encoder tasks | Fresh, Fixed (d), Learned, **Repr**, Placebo, Neural | **PROVED** if Repr total work (fit charged) < Fresh and < Placebo, pooled and in ≥ 4/5 seeds, with solves ≥ Fresh and 0 wrong. **PARTIAL** if it beats only one. Otherwise **NEGATIVE**. |
+| 2 Mechanism discovery | the same runs; slice = withheld-mechanism tasks | the same | **PROVED** if Repr / Learned solves ≥ Fresh, every solution is a novel composition (vs all source solutions), and work < Fresh and < Placebo in ≥ 4/5 seeds. **PARTIAL** if novel solutions are found but the cost bar fails. |
+| 3 Cross-domain transfer | the same runs; slice = withheld domain AND mechanism | the same; primary = Repr (pre-designated) | **PROVED** if Repr < Fresh and < Placebo (≥ 4/5 seeds, pooled), solves ≥ every control, 0 wrong. The Fixed DSL is compared at matched solves: if Fixed solves fewer it is not quality-preserving; if it solves equally and is cheaper, the verdict is at most **PARTIAL**. |
+| 7 Closed-loop neural ranker | the same runs | Neural (training + inference charged, CPU per the Stage 1 rule) | **PROVED** if Neural < Fresh, < Placebo and < Learned in ≥ 4/5 seeds. |
+| 4 Empty-library meta-learning | `confirm_online` 7806–7810: tables streams (an unfamiliar domain for the meta-selection), empty library | Fresh, Baseline-80f9cc2, Meta-learned (the dev-selected genome) | **PROVED** if Meta < Fresh and < Baseline in ≥ 4/5 seeds, with the meta-selection cost (995 G) also reported. |
+| 5 Self-evolution | the evolution itself: 5 lineages × {dgm_branching, incumbent, random}, budget 6, on dev fitness streams; each lineage winner then on `confirm_evo` 7811–7815 untouched streams | every winner, Start-80f9cc2, Fresh | **PROVED** if ≥ 4/5 lineages of a method beat Start on the untouched streams (pooled, with 0 wrong), *and* that method beats random and incumbent. Search cost is included, with break-even reported both ways. |
+| 6 Continual / forgetting | `confirm_cont` 7816–7820: 4-phase streams (strings → graphs → strings return → tables); long world streams | Fresh, Learner-no-gate, **Learner-regime-memory**; N1 vs fixed / reactive / model-free | **PROVED** if regime memory < Fresh and < no-gate in total work in ≥ 4/5 seeds, with return-phase work < Fresh and new-domain work ≤ 1.02 × Fresh. World track reported separately. |
+| Planning / repairs | `confirm_plan_repair` (fresh instances: 12 external blocks 8–11 + 8 internal logistics; 24 repairs) | Fresh vs Online-learned | Report. A learner design that is degenerate on dev is reported as such. |

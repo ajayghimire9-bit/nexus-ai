@@ -80,10 +80,49 @@ def main():
     a = ap.parse_args()
     from nexus import seed_registry as R
     from nexus import w38_eval as WE, w38_online as O
-    R.claim("wave38", "dev", list(R.REGISTRY[("wave38", "dev")]), run_id="w38-online-dev", record=False)
+    if a.split == "dev":
+        R.claim("wave38", "dev", list(R.REGISTRY[("wave38", "dev")]), run_id="w38-online-dev", record=False)
+    else:
+        spent = [json.loads(l) for l in R.SPENT_LEDGER.read_text().splitlines() if l.strip()]
+        if not any(r.get("run_id") == f"w38-{a.split}" for r in spent):
+            R.claim("wave38", a.split, list(R.REGISTRY[("wave38", a.split)]), run_id=f"w38-{a.split}")
     ev = WE.Eval(); t0 = time.perf_counter()
     p = Path(a.out)
     res = json.loads(p.read_text()) if p.exists() else {}
+    if a.exp in ("meta_confirm", "continual_confirm", "evo_confirm"):
+        seeds = list(R.REGISTRY[("wave38", a.split)])
+        for sd in seeds:
+            key = str(sd)
+            if key in res:
+                continue
+            if a.exp == "meta_confirm":
+                best = json.loads((ROOT / "artifacts/w38_online_dev_meta.json").read_text())["selection"]["best"]
+                ts = program_stream(f"metac:{sd}", ("tables",), "all", 1)
+                res[key] = {n: stream_cost(ev, ts, g, f"metac:{sd}") for n, g in
+                            (("Fresh", None), ("Baseline-80f9cc2", O.BASELINE_80F9CC2), ("Meta-learned", best))}
+            elif a.exp == "continual_confirm":
+                phases = [("strings", "a"), ("graphs", "b"), ("strings", "c"), ("tables", "d")]
+                ts, phase_of = [], []
+                for i, (dom, sub) in enumerate(phases):
+                    seg = program_stream(f"contc:{sd}:{sub}", (dom,), "source", 2)
+                    ts += seg; phase_of += [i] * len(seg)
+                res[key] = {"phase_of": phase_of}
+                for n, g in (("Fresh", None), ("Learner-no-gate", O.BASELINE_80F9CC2),
+                             ("Learner-regime-memory", dict(O.BASELINE_80F9CC2, gate="regime"))):
+                    c = stream_cost(ev, ts, g, f"contc:{sd}")
+                    c["phase_work"] = [sum(w for w, ph in zip(c["curve"], phase_of) if ph == i) for i in range(len(phases))]
+                    res[key][n] = c
+            elif a.exp == "evo_confirm":
+                evo = json.loads((ROOT / "artifacts/w38_evolve_final.json").read_text())
+                ts = program_stream(f"evoc:{sd}", FAST, "all", 1)
+                arms = {"Fresh": None, "Start-80f9cc2": O.BASELINE_80F9CC2}
+                arms.update({k: v["best"] for k, v in evo.items() if ":" in k})
+                res[key] = {n: stream_cost(ev, ts, g, f"evoc:{sd}") for n, g in arms.items()}
+            p.write_text(json.dumps(res, sort_keys=True, default=repr))
+            print(a.exp, sd, {n: (round(v["work"] / 1e9, 1), v["correct"], v["n"], v["wrong"]) for n, v in res[key].items()
+                              if isinstance(v, dict) and "work" in v}, flush=True)
+            if time.perf_counter() - t0 > 700:
+                break
     if a.exp == "evolve":
         fit = [program_stream(f"evofit{k}", FAST, "source", 2) for k in range(2)]
         base = [stream_cost(ev, ts, O.BASELINE_80F9CC2, f"evo:{k}")["work"] for k, ts in enumerate(fit)]
@@ -145,7 +184,7 @@ def main():
                 print("continual", name, round(c["work"] / 1e9, 1), [round(x / 1e9, 1) for x in c["phase_work"]], "declared", c["declared"],
                       "wrong", c["wrong"], flush=True)
             p.write_text(json.dumps(res, sort_keys=True, default=repr))
-    if a.exp == "plan_repair":
+    if a.exp in ("plan_repair", "plan_repair_confirm"):
         from nexus import w38_planning as PL, w38_repair as RP
         if "planning" not in res:
             dom = PL.parse_domain(open(ROOT / "artifacts/external/planning_domains/blocks_domain.pddl").read())
