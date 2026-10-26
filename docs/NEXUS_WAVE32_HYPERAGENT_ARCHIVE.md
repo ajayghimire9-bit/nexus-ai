@@ -134,3 +134,21 @@ Champion: g1c2 = Gen 0 with online learning off.
   * deeper or larger scopes.
 
   All of these need owner decisions, and v3 needs a RULE 2 authorisation.
+
+---
+
+# Targeted Wave 32 check under Checker v3 (protocol; committed before its outcomes)
+
+* **Trigger.** The predeclared gate in the Wave 31 v3 matrix was met: on val_v3, Experienced-v3 was below Fresh-v3
+  target-only in 5/5 seeds, with a pooled saving of −6.2%. That makes learned macro proposal a concrete policy lever.
+* **Genome (`GENES_V3`):** as before, with v2 lemmas fixed to none (they are inert under v3) and an editable proof
+  policy (`proofs`: none / all). Frozen: Checker v3 (pinned 1642721), matched G_P at depth 4, the sandbox, the meter
+  and the detectors.
+* **Gen 0:** `GEN0_V3`, the Wave 31 solver with no proofs and online learning ON.
+* **Evolution:** Gen 0 + 4 generations × 4 children, from tournament-picked archive parents. Episodes are depth-4
+  streams on records, strings and graphs, starting from an **empty library**, with fitness on dev 771–773. All 5
+  detectors, D4 integrity and one replay run per generation.
+* **Selection:** top 3 on dev 774–775.
+* **Test:** one-use `wave32 test_v3` 7206–7210, on held-out grids (n_per = 3, an empty library).
+* **Arms:** Gen k, Gen 0 learning ON, Gen 0 learning OFF, and Gen k learning OFF. Readouts are per seed and pooled;
+  a replay of 7208 for Gen k must match.

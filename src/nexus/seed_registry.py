@@ -56,6 +56,8 @@ REGISTRY = {
     # Wave 32 procedure evolution (bounded, NOT LOCKED): dev = evolution on source domains (reusable);
     # test = Gen 0 vs Gen k on the held-out domain from an empty library, one use
     ("wave32", "dev"): range(771, 776), ("wave32", "test"): range(7201, 7206),
+    # Wave 32 targeted check under Checker v3 (gate met in Wave 31 v3 matrix): fresh one-use test range
+    ("wave32", "test_v3"): range(7206, 7211),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val")}
 

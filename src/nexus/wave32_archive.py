@@ -29,18 +29,24 @@ GENES = {
 GEN0 = {"order": "canonical", "lemmas": "all", "macro_first": True, "macro_depth": 2, "probe_mut": 2,
         "probe_tries": 300, "max_holes": 1, "min_support": 1, "cap": 200, "online": True}
 FROZEN = {"matched_depth": 3}
+# Targeted check under Checker v3 (depth-4 matched scope). v2 lemmas are inert under v3; proof citation is editable.
+GENES_V3 = dict(GENES, lemmas=("none",), proofs=("none", "all"))
+GEN0_V3 = dict(GEN0, lemmas="none", proofs="none")
+FROZEN_V3 = {"matched_depth": 4, "checker": 3}
 
 
-def validate(g):
-    if set(g) != set(GENES) or any(g[k] not in GENES[k] for k in GENES):
+def validate(g, genes=None):
+    genes = genes or (GENES_V3 if "proofs" in g else GENES)
+    if set(g) != set(genes) or any(g[k] not in genes[k] for k in genes):
         raise ValueError(f"genome outside the editable scope: {g}")
     return g
 
 
 def mutate(g, rng, n=None):
+    genes = GENES_V3 if "proofs" in g else GENES
     g = dict(g)
-    for k in rng.sample(sorted(GENES), n or rng.choice((1, 2))):
-        g[k] = rng.choice([v for v in GENES[k] if v != g[k]])
+    for k in rng.sample(sorted(k for k in genes if len(genes[k]) > 1), n or rng.choice((1, 2))):
+        g[k] = rng.choice([v for v in genes[k] if v != g[k]])
     return validate(g)
 
 
@@ -52,8 +58,9 @@ def episode(ev, child, tasks, genome, tag):
     """One online stream from an empty library. Returns the rows plus learning cost (external meter only)."""
     from nexus import wave31_evaluator as E
     validate(genome)
-    pol = dict({k: genome[k] for k in ("order", "lemmas", "macro_first", "macro_depth", "probe_mut", "probe_tries")},
-               **FROZEN)
+    v3 = "proofs" in genome
+    keys = ("order", "lemmas", "macro_first", "macro_depth", "probe_mut", "probe_tries") + (("proofs",) if v3 else ())
+    pol = dict({k: genome[k] for k in keys}, **(FROZEN_V3 if v3 else FROZEN))
     lib, progs, rows, learn_instr = [], [], [], 0
     for k, t in enumerate(tasks):
         r = ev.solve(child, t, "Useful", "matched", lib, f"{tag}:{k}", pol)
@@ -62,7 +69,7 @@ def episode(ev, child, tasks, genome, tag):
         if genome["online"] and r["label"] == "exhaustive_UNIQUE":
             progs.append(r["candidate"])
             c0 = E.instructions(child.p.pid)
-            lib = ev.library(child, progs, tag, max_holes=genome["max_holes"], depth=3,
+            lib = ev.library(child, progs, tag, max_holes=genome["max_holes"], depth=pol["matched_depth"],
                              min_support=genome["min_support"], cap=genome["cap"])["useful"]
             learn_instr += E.instructions(child.p.pid) - c0
     return rows, learn_instr
