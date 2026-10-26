@@ -62,6 +62,8 @@ REGISTRY = {
     # Wave 32 repetition x domain factorial: dev2 = development cells (reusable); confirm_rep = fresh one-use
     # confirmation drawn only after the design is frozen
     ("wave32", "dev2"): range(781, 786), ("wave32", "confirm_rep"): range(7211, 7216),
+    # Wave 32 single regime-detecting policy (owner go-ahead): fresh one-use confirmation, run once after freezing
+    ("wave32", "confirm_adapt"): range(7216, 7221),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.

@@ -44,3 +44,20 @@ def test_online_gates_are_solver_side():
     assert all(o["rebuilt"] for o in outs)
     S.online_reset()
     assert not S.online_update(progs[0], dict(A.GEN0_V3B, online=False))["rebuilt"]
+
+
+def test_v3c_genome_and_low_reuse_stops_rebuilds():
+    from nexus import wave31_solver as S
+    from nexus import wave31_tasks as T
+    rng = random.Random(2)
+    g = A.validate(dict(A.GEN0_V3C))
+    for _ in range(200):
+        g = A.mutate(g, rng)
+        assert set(g) == set(A.GENES_V3C)
+    S.online_reset()
+    S.ONLINE.update(macro_attempts=10, macro_hits=1)
+    p = T.teacher("records", T.S3_CORES[0])
+    assert not S.online_update(p, dict(A.GEN0_V3C, rebuild_hit_min=0.35))["rebuilt"]
+    S.online_reset()
+    S.ONLINE.update(macro_attempts=10, macro_hits=1)
+    assert S.online_update(p, dict(A.GEN0_V3C))["rebuilt"]

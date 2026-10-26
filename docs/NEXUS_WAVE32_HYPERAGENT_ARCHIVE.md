@@ -309,3 +309,33 @@ The replay (7213, Target / 3 rep, Gen k(3)) matched, and D4 held.
   * Only one checker, one task family and one repetition design were tested.
   * The 2-rep vs 3-rep champion is still chosen by matching the known repetition count. A single policy that
     detects the regime online (Gen k(3)'s gate is a partial step) was best in 3/4 cells, but not in Source / 2 rep.
+
+---
+
+# Single regime-detecting policy: protocol (owner go-ahead; NOT LOCKED; committed before its outcomes)
+
+* **Goal.** One policy, with no knowledge of the stream's repetition count, that is at least as good as the better
+  fixed policy in every regime.
+* **Fixed:** Checker v3 (pin 1642721), the OS meter, representations and the library mechanics. Every stream
+  starts from an empty library, and all learning decisions run in the sandboxed solver and are billed.
+* **Genome `GENES_V3C`:** `GENES_V3B` plus:
+  * a finer `gate_repeat` (0 … 0.4);
+  * `rebuild_hit_min`: stop rebuilding once the observed macro-proposal hit rate is below it, after ≥ 5 attempts.
+    This is an online low-reuse detector.
+* **Evolution:**
+  * **Fitness:** Source streams at both 2 and 3 repetitions (dev 771–773), scored as the mean over (seed, rep) of
+    work / always-OFF work on that same stream. That normalises each regime equally, with no regime label given to
+    the policy. The worst-case ratio is reported alongside.
+  * **Archive:** seeded with Gen 0 (always-ON) and the earlier Gen k(2) and Gen k(3), lifted with
+    `rebuild_hit_min = 0`, which is behaviourally identical. Then 8 generations × 6 children, with detectors, D4
+    integrity and one replay per generation.
+  * **Selection:** the top 3, re-selected on 774–775 (both reps). The champion is **Gen k(adapt)**.
+* **Development check:** dev2 781–785, 4 cells × {always-ON, always-OFF, Gen k(2), Gen k(3), Gen k(adapt)}.
+* **Confirmation:** after the design is frozen, run **once** on fresh one-use `confirm_adapt` 7216–7220, with the
+  same cells and policies, plus a replay (7218, Target / 3 rep, Gen k(adapt)).
+* **Predeclared success criterion** for Gen k(adapt) on confirmation:
+  * pooled work ≤ min(always-ON, always-OFF) in ≥ 3 of 4 cells; and
+  * ≤ 1.01 × min(always-ON, always-OFF) in every cell;
+  * with 0 wrong and 0 detector flags.
+* **Secondary readout:** Gen k(adapt) vs the regime-matched reference policy (Gen k(2) in 2-rep cells, Gen k(3) in
+  3-rep cells). Those reference policies are told the regime; Gen k(adapt) is not.

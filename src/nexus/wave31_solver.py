@@ -297,7 +297,8 @@ online_reset()
 def online_update(candidate, genome):
     """Called after each task the checker certified. Regime-adaptive gates (Wave 32 editable scope):
     warmup (min certified tasks before any rebuild), gate_repeat (min observed within-stream repeat rate of certified
-    cores), rebuild_on (every certified task | only when a new core appears)."""
+    cores), rebuild_on (every certified task | only when a new core appears), rebuild_hit_min (stop rebuilding once
+    the observed macro-proposal hit rate is below it after >= 5 attempts)."""
     if not genome.get("online", True):
         return {"rebuilt": False, "library_size": 0}
     k = V.key(core(candidate))
@@ -307,8 +308,10 @@ def online_update(candidate, genome):
     ONLINE["certified"] += 1
     ONLINE["progs"].append(candidate)
     rate = ONLINE["repeats"] / ONLINE["certified"]
+    low_reuse = (ONLINE["macro_attempts"] >= 5 and
+                 ONLINE["macro_hits"] / ONLINE["macro_attempts"] < genome.get("rebuild_hit_min", 0.0))
     do = (ONLINE["certified"] >= genome.get("warmup", 1) and rate >= genome.get("gate_repeat", 0.0)
-          and (genome.get("rebuild_on", "every") == "every" or new or not ONLINE["library"]))
+          and not low_reuse and (genome.get("rebuild_on", "every") == "every" or new or not ONLINE["library"]))
     if do:
         ONLINE["library"] = build(ONLINE["progs"], "online", max_holes=genome["max_holes"],
                                   depth=genome.get("matched_depth", 3), min_support=genome["min_support"],

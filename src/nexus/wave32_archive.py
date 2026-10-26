@@ -39,17 +39,22 @@ FROZEN_V3 = {"matched_depth": 4, "checker": 3}
 GENES_V3B = dict(GENES_V3, gate_repeat=(0.0, 0.15, 0.3), warmup=(1, 3, 6), rebuild_on=("every", "new_core"),
                  macro_hit_min=(0.0, 0.25, 0.5))
 GEN0_V3B = dict(GEN0_V3, gate_repeat=0.0, warmup=1, rebuild_on="every", macro_hit_min=0.0)   # = always-ON
+# Single regime-detecting policy: finer repeat-rate gate, plus stopping rebuilds when observed macro reuse is low.
+GENES_V3C = dict(GENES_V3B, gate_repeat=(0.0, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4), rebuild_hit_min=(0.0, 0.2, 0.35, 0.5))
+GEN0_V3C = dict(GEN0_V3B, rebuild_hit_min=0.0)
 
 
 def validate(g, genes=None):
-    genes = genes or (GENES_V3B if "gate_repeat" in g else GENES_V3 if "proofs" in g else GENES)
+    genes = genes or (GENES_V3C if "rebuild_hit_min" in g else GENES_V3B if "gate_repeat" in g
+                      else GENES_V3 if "proofs" in g else GENES)
     if set(g) != set(genes) or any(g[k] not in genes[k] for k in genes):
         raise ValueError(f"genome outside the editable scope: {g}")
     return g
 
 
 def mutate(g, rng, n=None):
-    genes = GENES_V3B if "gate_repeat" in g else GENES_V3 if "proofs" in g else GENES
+    genes = (GENES_V3C if "rebuild_hit_min" in g else GENES_V3B if "gate_repeat" in g
+             else GENES_V3 if "proofs" in g else GENES)
     g = dict(g)
     for k in rng.sample(sorted(k for k in genes if len(genes[k]) > 1), n or rng.choice((1, 2))):
         g[k] = rng.choice([v for v in genes[k] if v != g[k]])
