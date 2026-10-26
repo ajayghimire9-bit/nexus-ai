@@ -67,3 +67,36 @@ These Wave 28 confirmation seeds are now **Wave 29 development data**: 4019, 402
 **Budget at lock:** 11162 s remaining (≤ 900 s per call).
 
 **Locked code sha256 (first 16 hex digits):** `wave29_core.py`, `wave29_eval.py`, `wave29_confirm.py` = 487aba7b41597c42 5dc701a67a92707d 74fb9a921c6cedd0 
+
+## Confirmation results (locked `4cda0cf`; fresh seeds; replays 15/15 identical; G_tycho pass)
+
+**Runs.** Phase 4: 226 s. Phase 5: 871 s. Phase 6: 704 s.
+
+**Artifacts (sha256, first 16 hex digits).**
+* Phase 4: `706d3df76d452c49`.
+* Phase 5: `7129ad4dd7bfdbec`.
+* Phase 6: `638c885fefe7b614`.
+
+| Phase | Gate | Result |
+| --- | --- | --- |
+| all | **G_soundness** | **PASS: 0 false certificates in all three phases** (Wave 28 on its seeds: 8) |
+| 4 (4021–4025) | router | PASS: 90/90 routed (ΔB 25, ΔC 28, ΔM 26 solved) |
+| | primitives | **FAIL**. F 6/10 streams, 37/40 solved (31k → 90k). S 1/10, **31/40 solved** (16k → 64k). Sort 8/10, 36/40 (3.9k → 3.0k) |
+| 5 (5021–5025) | revisit | **FAIL**: 0.711 / 1.509 / 1.835 |
+| | interference | PASS: 5.1% |
+| | retirement | **PASS**: 15/15 retired, 0 false certificates |
+| | solved | 273/328 (83%) |
+| 6 (6021–6025, compositional) | cost | 3/5 |
+| | AUC | 3/5 |
+| | coverage | 5/5 |
+| | joint | **3/5: FAIL** |
+| | raw slope | 3/5 |
+| | false certificates | 0 |
+
+**Reading.**
+* The Occam-margin shell plus x_verify removed every false certificate on fresh seeds.
+* The price is coverage and cost.
+  * Disagreement and verify probes withdraw certificates (Phase 4 S 31/40; Phase 5 83% solved).
+  * Probationary and library reuse now pays for the shell search and verification, so reuse is dearer than
+    invention (F, S) and revisits are dearer at lags 10 and 20.
+* No phase passes all its gates.
