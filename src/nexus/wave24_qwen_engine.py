@@ -66,15 +66,19 @@ def chatml(system, user):
 class QwenEngine:
     """One persistent llama-server process; complete() returns text + exact token telemetry."""
 
-    def __init__(self, *, max_tokens=384, context=4096, threads=4, request_timeout_s=60.0, cache_path=None):
+    def __init__(self, *, max_tokens=384, context=4096, threads=4, request_timeout_s=60.0, cache_path=None,
+                 grant_config=None):
+        """grant_config (optional): extra owner-grant caps (max_rss_mib, max_wall_seconds_per_call,
+        max_session_metal_seconds, reason). It never authorises Metal by itself; authorisation still requires
+        NEXUS_EXPLICIT_METAL_GRANT=1."""
         from nexus.seed.metal_model_runtime import ExplicitMetalGrant, apple_silicon_metal_available
         self.model = locate_model()
         self.server = locate_server()
         hw = apple_silicon_metal_available()
-        grant = ExplicitMetalGrant.from_config({"owner": os.environ.get("USER", "owner"),
-                                                "reason": "wave24 Qwen-1.5B candidate generation",
-                                                "ledger_path": os.environ.get("NEXUS_METAL_LEDGER")
-                                                or str(METAL_LEDGER)})
+        cfg = {"owner": os.environ.get("USER", "owner"), "reason": "wave24 Qwen-1.5B candidate generation",
+               "ledger_path": os.environ.get("NEXUS_METAL_LEDGER") or str(METAL_LEDGER)}
+        cfg.update({k: v for k, v in (grant_config or {}).items() if k != "authorized"})
+        grant = ExplicitMetalGrant.from_config(cfg)
         self.backend = "metal" if (hw.get("available") and grant.authorized) else "cpu"
         self.hardware = hw
         self.max_tokens, self.context, self.threads = max_tokens, context, threads

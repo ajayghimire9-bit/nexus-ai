@@ -95,3 +95,101 @@ Code: `src/nexus/wave31_ir.py` and `scripts/wave31_dev.py`, with 4 tests plus th
 * **Wave 32 is not started**, per the readiness conditions.
   * Done: Checker v2 is built and pinned, and Wave 30 / 31 baselines are reconciled at development level.
   * Still required: an evaluator and meter independent of the solver process, and an explicit Wave 32 budget.
+
+---
+
+# Increment 2 protocol (NOT LOCKED; written and committed before the dev 762–765 and admission_val outcomes)
+
+Owner decisions of 2026-10-26: close the depth-2-vs-depth-3 scope loophole; four-domain LODO with compositional
+skeleton targets; an independent evaluator / meter boundary; dev, then admission_val once. Increment 1 code and
+results are unchanged.
+
+**Corrections to the owner's brief (factual):**
+* Increment 1's Fresh enumerated G_P at depth ≤ **4**, not 3.
+* The increment-1 held-out work was Useful 6.06M / Fresh 7.60M / Placebo 6.05M (not 6.86M).
+* The pinned Checker v2 sha256 is **`6ba0a268…`** (pin commit 01d84f6), not `b1d6c5d1…`. No other v2 pin exists.
+
+Increment 2 adopts the owner's framing, a **depth-3** matched scope, over a new fixed primitive grammar.
+
+**Disclosure:** one dev seed (761) was used for smoke runs while building this, and the adversarial tiers were
+added after the first smoke found too few strict cases. Seeds 762–765 and admission_val are unseen.
+
+## Design
+
+* **Domains and leaves φ_d** (thin adapters into the middle-IR Sequence; checker v2 ops), identical for every arm:
+  * records `proj a`;
+  * strings `enc_chars`;
+  * grids `enc_cells`;
+  * graphs `ir_graph_reach{seeds:[0]}`.
+* **G_P** (`wave31_grammar.G_P`, 18 fixed ops): the 4 leaves, plus `proj b`, `dec_chars`, `ir_graph_degrees`,
+  `enc_objects`, `ir_objects_sizes`, `enc_counter`, `ir_counter_top{1}`, `ir_counter_keys`, and the core ops
+  Sort, run_heads, rotate{1}, prefix_sum, diff, running_max.
+* **LODO rotation.** For each held-out domain h, the source tasks come from the other 3 domains (cores
+  S = {Sort·RUNH, Sort·diff, Sort·prefix_sum, rotate·diff, rotate·prefix_sum, RUNH·rotate}; strings use only
+  the non-numeric ones). The targets are on h, with teacher = φ_h + core:
+  * `familiar_exact`: a core seen verbatim in source, on the new surface.
+  * `compositional`: a core never seen in source, but an instance of a learned skeleton:
+    * [Sort,?] gives Sort·running_max;
+    * [rotate,?] gives rotate·running_max;
+    * [?,diff] gives RUNH·diff;
+    * [?,prefix_sum] gives RUNH·prefix_sum;
+    * for strings, Sort·rotate and rotate·RUNH.
+
+    The skeleton is learned across the 3 source domains and instantiated with G_P ops on the held-out domain,
+    whose leaf adapter never appears in that fold's sources.
+  * `held_out`: no skeleton support (running_max·rotate, diff·Sort; strings RUNH·Sort).
+  * `adversarial_strict` / `adversarial_weak`: built per fold *after* the Useful library is frozen, by an
+    adversary that knows it. The teachers are φ_h + 2 G_P ops (inside the matched scope), with 3 passive demos.
+    * Strict: every macro-scope program that fits the demos gives the same wrong answer.
+    * Weak: some fitting macro-scope program gives a wrong answer.
+* **Library** (solver side, source-only feedback):
+  * The evaluator returns the source candidates that its own checker labelled exhaustive_UNIQUE.
+  * Leaves are stripped to cores, and pairwise **op-level** anti-unification (`anti_unify_ops`, which extends
+    wave30_skeleton's constant-only version) gives typed skeletons. Skeletons with no concrete op are dropped.
+  * Op holes are instantiated with the 12 non-adapter G_P ops, and each instance is a `seq` macro.
+  * **Placebo:** the same skeleton shapes (hole positions) with concrete ops from an irrelevant pool, instantiated
+    the same way; macro counts are reported.
+* **Arms × modes** (5 configs): Fresh/matched, Useful/matched, Placebo/matched, Useful/macro, Placebo/macro.
+  * **Proposal:**
+    * Fresh: first-fit layered search over G_P, depth ≤ 3, with observational dedup. This is a stronger baseline
+      than increment 1's full enumeration, because the kernel verdict does not depend on which fitting candidate
+      is submitted.
+    * Useful / Placebo: first-fit over G_P + macros at depth ≤ 2, then G_P.
+  * **matched:**
+    * The candidate is expanded to G_P ops (seq bodies inlined) and checked over exactly the matched scope
+      (G_P, depth 3).
+    * The same kernel-checkable list-op pruning lemmas are supplied for every arm. A macro candidate that
+      expands outside the matched scope falls back to G_P (charged).
+    * This is the only route to a reported `exhaustive_UNIQUE`, so the certificate strength is identical across
+      arms by construction. I chose Fresh's exact scope over a G_P ∪ macros union: a union scope is a larger,
+      different grammar, matched to neither arm.
+  * **macro:** checked over G_P + macros, depth 2. A UNIQUE verdict is reported as **`MACRO_SCOPE_UNIQUE`** and
+    never pooled with exhaustive_UNIQUE.
+  * **Active probing** (every arm, both modes, ≤ 3 oracle calls per task): on AMBIGUOUS, mutate public inputs
+    until the kernel's two witnesses disagree, ask the oracle, add the pair and re-propose.
+* **Evaluator / meter boundary** (`wave31_evaluator`):
+  * **Isolation:** the solver runs in a child under `sandbox-exec`, which denies writes to the repository,
+    reads of the sealed vault, and network access. The child gets a clean environment and sees TaskViews only.
+  * **Checker and oracle:** both are served by the evaluator.
+  * **Meters the solver cannot alter:**
+    * kernel work (steps + chains), over every check including the evaluator's final re-check;
+    * oracle calls;
+    * the child's CPU seconds (`wait4` rusage);
+    * prover work, which is solver-reported and labelled as such.
+  * **Evidence audit:** final evidence public pairs must equal the passive pairs plus exactly the pairs the
+    oracle answered for that task; otherwise `INVALID_EVIDENCE`.
+  * **Ledger:** the evaluator alone appends to it, with a sha256 hash chain.
+
+## Predeclared readouts (development diagnostics, not admission gates)
+
+* **R1, soundness:** 0 wrong `exhaustive_UNIQUE` in every matched config, including the adversarial tiers.
+  Macro-mode wrong answers are expected on `adversarial_strict` and are reported as wrong_teacher_outside_scope.
+* **R2, cost at matched strength:** target-only work = evaluator kernel work + solver-reported prover work, per
+  category, for Useful/matched vs Fresh/matched vs Placebo/matched. Source-amortised work adds that fold's source
+  learning cost, spread over the fold's target tasks, to Useful and Placebo (Placebo is charged the same source
+  cost, since its shapes come from the learned skeletons). The child's CPU seconds are reported alongside.
+* **R3, macro scope:** coverage and correctness of `MACRO_SCOPE_UNIQUE` per category, Useful vs Placebo.
+* **R4, replay:** one dev seed and one admission_val seed are rerun in a fresh process with a different
+  `PYTHONHASHSEED`, and give the identical digest.
+* **Splits:** dev 761–765, then admission_val 7101–7105 **once** (the driver refuses to overwrite an existing
+  admission_val artifact). final_sealed is not touched.
