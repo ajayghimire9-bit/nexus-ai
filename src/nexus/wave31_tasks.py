@@ -128,3 +128,44 @@ def adversarial_stream(split_seed, held_out, library, n_max=4, draws=4):
             got[tier] += 1
             out.append(dict(t, category=tier))
     return out, steps
+
+
+# --------------------------------------------------------------------------- increment 3 (depth-4 matched scope)
+# 3-op cores: teacher = LEAF + 3 ops (depth 4). Skeletons have <= 1 hole (two cores differing in one position).
+S3_CORES = (("Sort", "RUNH", "rotate"), ("Sort", "RUNH", "diff"), ("Sort", "diff", "prefix_sum"),
+            ("rotate", "diff", "prefix_sum"), ("rotate", "RUNH", "Sort"), ("RUNH", "rotate", "Sort"))
+TARGET3 = {"familiar_exact": (("Sort", "RUNH", "diff"), ("rotate", "RUNH", "Sort")),
+           "compositional": (("Sort", "RUNH", "prefix_sum"), ("Sort", "RUNH", "running_max"),
+                             ("RUNH", "diff", "prefix_sum"), ("running_max", "diff", "prefix_sum")),
+           "held_out": (("running_max", "rotate", "diff"), ("diff", "Sort", "prefix_sum"))}
+STRING_TARGET3 = {"familiar_exact": (("Sort", "RUNH", "rotate"), ("rotate", "RUNH", "Sort")),
+                  "compositional": (("Sort", "RUNH", "Sort"),),
+                  "held_out": (("rotate", "rotate", "RUNH"),)}
+
+
+def source_stream3(split_seed, held_out, n_per=2):
+    rng = random.Random(f"w31c-src:{split_seed}:{held_out}")
+    out = []
+    for d in G.DOMAINS:
+        if d == held_out:
+            continue
+        for core in S3_CORES:
+            if d == "strings" and NUMERIC & set(core):
+                continue
+            for _ in range(n_per):
+                t = _task(d, teacher(d, core), rng, 4, core=list(core), category="source")
+                if t:
+                    out.append(t)
+    return out
+
+
+def target_stream3(split_seed, held_out, n_per=2):
+    rng = random.Random(f"w31c-tgt:{split_seed}:{held_out}")
+    out = []
+    for cat, cores in (STRING_TARGET3 if held_out == "strings" else TARGET3).items():
+        for core in cores:
+            for _ in range(n_per):
+                t = _task(held_out, teacher(held_out, core), rng, 4, core=list(core), category=cat)
+                if t:
+                    out.append(t)
+    return out

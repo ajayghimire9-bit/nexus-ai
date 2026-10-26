@@ -292,3 +292,94 @@ Each seed runs 4 LODO folds. Source: 600 tasks, all 600 certified exhaustive_UNI
   * hash-chained ledger.
 * **Remaining:** prover work is still solver-reported (audited by replay only). Wave 32 needs an explicit owner
   budget and protocol. No autonomous runs have been started.
+
+---
+
+# Correction to increment 2: oracle-on-query leak (found while building the Wave 32 detectors)
+
+**What happened.** Probe inputs were mutations drawn from a pool that included the query input. A mutation can be
+a no-op, so a probe could *equal* the query input, and the oracle then returned the answer.
+
+**Audit.** The committed runs were replayed in a fresh process (every row reproduced exactly).
+
+| Split | Leaked tasks per matched arm | Breakdown |
+| --- | --- | --- |
+| admission_val | **4 of 329** | 3 adversarial_weak, 1 compositional |
+| dev | 4 of 345 | 1 adversarial_strict, 1 adversarial_weak, 2 compositional |
+
+* **adversarial_strict:** 0 of 8 on admission_val leaked, so those rescues stand.
+* **Soundness:** 0 wrong is unaffected.
+* **Correctness:** the corrected admission_val figure is **325/329 uncontaminated correct per matched arm**. The
+  admission run is not repeated, because it was run once.
+
+**Fix.**
+* The solver never probes the query input.
+* The evaluator refuses, and flags (D3), any oracle request on the query input or beyond the cap.
+* Increment-2 replays after the fix will differ only on those rows.
+
+# External work meter (closes the self-reported work gap)
+
+* **What it counts.** `evaluator_work` = retired CPU instructions of the solver child, as counted by the OS kernel
+  (`proc_pid_rusage`, `RUSAGE_INFO_V4.ri_instructions`, read by the evaluator from outside the child). Added to
+  that: the evaluator's own retired instructions spent on kernel checks, plus oracle queries × a declared price
+  of 5·10⁷ instructions. Wall-clock time is recorded alongside.
+* **Precision.** Repeat measurements agree to within 0.004%.
+* **Why not an in-process profiler.** An in-process counter (`sys.setprofile` / `sys.monitoring`) can be disabled
+  by the code it measures. The OS counter cannot be reached from the sandboxed child.
+* **What the solver reports.** Its own numbers are kept only as `solver_reported`. They are never used for
+  admission or ranking, and D5 flags implausible ones.
+* **Detectors** (`wave32_detectors`):
+  * D1 evidence audit;
+  * D2 scope audit;
+  * D3 oracle audit;
+  * D4 integrity (source tree, pins and ledger hash chain);
+  * D5 meter forgery.
+* **Red-team children** (`scripts/wave32_redteam_child.py`): fabricate_pair is caught by D1, scope_downgrade by
+  D2, oracle_on_query is refused by D3, tamper_files is blocked by the sandbox and verified by D4, and
+  forge_meter is flagged by D5. The honest solver triggers none (`tests/test_wave32_detectors.py`).
+
+# Increment 3 protocol (NOT LOCKED; committed before its dev 762–765 and val_inc3 7106–7110 outcomes)
+
+The owner's next-experiment brief of 2026-10-26.
+
+**Factual corrections to that brief:**
+* Increment 2's admission_val was 329/329, now corrected to 325/329, not 258/258.
+* At depth 3 the scope had 6,174 chains, and search was about 2.4% of work (not 7,280 chains and 9%).
+* No 5-detector suite had been run before this commit.
+* The v2 pin is `6ba0a268…`, not `b1d6c5d1…`.
+
+**What Checker v2 can verify.** Checker v2 verifies only **postcondition lemmas on list ops** (len_le / all /
+distinct / sorted, with preservation rules). It has no proof form for algebraic or observational-equivalence
+collapses, and RULE 2 forbids changing it. So part (a) is run with v2-verifiable proofs. Learned algebraic
+identities are reported only as a **projected** saving, and are never used to skip anything in a certificate.
+
+## Design
+
+* **Matched scope:** G_P (18 ops), **depth 4** (111,150 chains). Teachers are a leaf plus a 3-op core.
+* **Source cores (S3):** Sort·RUNH·rotate, Sort·RUNH·diff, Sort·diff·prefix_sum, rotate·diff·prefix_sum,
+  rotate·RUNH·Sort, RUNH·rotate·Sort.
+* **Targets** per held-out domain:
+  * familiar_exact: 2 cores;
+  * compositional: 4 cores, instances of one-hole skeletons;
+  * held_out: 2 cores;
+  * strings: 2, 1 and 1 respectively.
+* **Configs** (all matched, depth 4, exhaustive_UNIQUE strength), through the evaluator with the external meter:
+  * Fresh-noL (no proofs);
+  * Fresh-L (every v2-verifiable lemma: a generic, *non-learned* strong baseline);
+  * Useful-L (learned macros + all lemmas);
+  * Useful-learnedL (macros + only the lemma kinds that fired on ≥ 50% of source tasks);
+  * Placebo-L.
+* **Source learning:** Fresh, depth 4, with all lemmas. Skeletons have ≤ 1 hole. The learned observational
+  identities (bigram ≡ shorter chain on ≥ 8 leaf-transformed source inputs) are used only for
+  `projected_skip` = the fraction of the matched scope they would let a verifying checker skip. Their violations
+  on target public inputs are counted.
+
+## Readouts
+
+* **I1:** 0 wrong exhaustive_UNIQUE in every config.
+* **I2:** per category, target-only `evaluator_work`, and source-amortised work (fold source-learning work added
+  to Useful and Placebo). Useful-L vs Fresh-L vs Placebo-L, plus Fresh-noL, which isolates the generic lemma
+  effect.
+* **I3:** projected_skip, and identity violations on targets.
+* **Splits:** dev 761–765, where 761 (records fold) was used for one smoke before this commit; then val_inc3
+  7106–7110, a one-use range claimed whole before running.

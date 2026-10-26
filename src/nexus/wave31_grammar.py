@@ -40,25 +40,25 @@ G_P = ([{"op": "proj", "path": "a"}, {"op": "proj", "path": "b"}, {"op": "enc_ch
 ADAPTER_OPS = {"proj", "enc_chars", "dec_chars", "enc_cells", "ir_graph_reach", "enc_objects"}
 
 
-def matched_scope():
-    return {"kind": "exhaustive", "tools": [dict(t) for t in G_P], "max_depth": MATCHED_DEPTH}
+def matched_scope(depth=MATCHED_DEPTH):
+    return {"kind": "exhaustive", "tools": [dict(t) for t in G_P], "max_depth": depth}
 
 
-def is_matched(scope):
+def is_matched(scope, depth=MATCHED_DEPTH):
     """True iff `scope` is exactly the matched scope (tool set by canonical key, depth, kind)."""
     try:
-        return (scope["kind"] == "exhaustive" and int(scope["max_depth"]) == MATCHED_DEPTH
+        return (scope["kind"] == "exhaustive" and int(scope["max_depth"]) == depth
                 and sorted(V.key(t) for t in scope["tools"]) == sorted(V.key(t) for t in G_P))
     except (KeyError, TypeError, ValueError):
         return False
 
 
-def report_label(verdict, scope):
+def report_label(verdict, scope, depth=MATCHED_DEPTH):
     """Evaluator-side reporting rule around the unchanged kernel verdict."""
     lab = verdict["label"]
     if lab != "exhaustive_UNIQUE":
         return lab
-    if is_matched(scope):
+    if is_matched(scope, depth):
         return "exhaustive_UNIQUE"
     if any(t.get("op") == "seq" for t in scope["tools"]):
         return "MACRO_SCOPE_UNIQUE"

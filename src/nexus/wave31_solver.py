@@ -36,7 +36,24 @@ from nexus.wave30_skeleton import Hole, anti_unify
 
 
 # --------------------------------------------------------------------------- proposal
-def first_fit(public, query, tools, depth, meter):
+DEFAULT_POLICY = {"matched_depth": 3, "lemmas": "all", "order": "canonical", "macro_first": True, "macro_depth": 2,
+                  "probe_mut": 2, "probe_tries": 300}
+
+
+def _order(tools, policy):
+    """Search ordering (editable in Wave 32). Returns a permutation of tool indices; scopes keep their tools."""
+    idx = list(range(len(tools)))
+    o = policy.get("order", "canonical")
+    if o == "reverse":
+        return idx[::-1]
+    if o == "macros_last":
+        return sorted(idx, key=lambda i: (tools[i].get("op") == "seq", i))
+    if o == "short_first":
+        return sorted(idx, key=lambda i: (len(tools[i].get("body", [0])), i))
+    return idx
+
+
+def first_fit(public, query, tools, depth, meter, order=None):
     xs = [x for x, _ in public] + [query]
     targets = [V.key(y) for _, y in public]
     n = len(public)
@@ -45,7 +62,8 @@ def first_fit(public, query, tools, depth, meter):
     for _d in range(depth):
         nxt = []
         for chain, vals in frontier:
-            for ti, spec in enumerate(tools):
+            for ti in (order if order is not None else range(len(tools))):
+                spec = tools[ti]
                 outs = []
                 for v in vals:
                     o, s = V.run([spec], v)
@@ -137,7 +155,7 @@ def _alphabet(public, query):
     return {"chars": sorted(chars), "colors": sorted(colors), "ints": sorted(ints)}
 
 
-def design_probe(public, query, tools, verdict, rng, meter, tries=300):
+def design_probe(public, query, tools, verdict, rng, meter, tries=300, n_mut=2):
     w = verdict.get("witnesses") or []
     if len(w) < 2:
         return None
@@ -146,7 +164,7 @@ def design_probe(public, query, tools, verdict, rng, meter, tries=300):
     pool = [p[0] for p in public] + [query]
     for _ in range(tries):
         x = rng.choice(pool)
-        for _k in range(rng.randint(1, 2)):
+        for _k in range(rng.randint(1, n_mut)):
             x = _mutate(x, rng, alpha)
         try:
             V.check_value(x)
@@ -155,14 +173,16 @@ def design_probe(public, query, tools, verdict, rng, meter, tries=300):
         a, s1 = V.run(p1, x)
         b, s2 = V.run(p2, x)
         meter["probe_design"] = meter.get("probe_design", 0) + s1 + s2 + 2
-        if V.key(a) != V.key(b) and all(V.key(x) != V.key(p[0]) for p in public):
+        # the query input is never probed (that would ask the oracle for the answer; fixed after the increment-2 audit)
+        if V.key(a) != V.key(b) and V.key(x) != V.key(query) and all(V.key(x) != V.key(p[0]) for p in public):
             return x
     return None
 
 
 # --------------------------------------------------------------------------- one task
-def solve(chan, arm, mode, view, library, seed):
-    """Returns (final evidence or None, meter, info)."""
+def solve(chan, arm, mode, view, library, seed, policy=None):
+    """Returns (final evidence or None, meter, info). `policy` (Wave 32 genome) defaults to DEFAULT_POLICY."""
+    pol = dict(DEFAULT_POLICY, **(policy or {}))
     meter, info = {}, {"probes": 0, "fallback": False, "checks": 0}
     public = [list(p) for p in view["public"]]
     query = view["query"]
@@ -171,12 +191,12 @@ def solve(chan, arm, mode, view, library, seed):
     macro_tools = gp + list(library)
     while True:
         cand = None
-        if arm != "Fresh" and library:
-            c = first_fit(public, query, macro_tools, G.MACRO_DEPTH, meter)
+        if arm != "Fresh" and library and pol["macro_first"]:
+            c = first_fit(public, query, macro_tools, pol["macro_depth"], meter, _order(macro_tools, pol))
             if c is not None:
                 cand = [macro_tools[i] for i in c]
         if mode == "matched":
-            tools, depth = gp, G.MATCHED_DEPTH
+            tools, depth = gp, pol["matched_depth"]
             if cand is not None:
                 exp = expand(cand)
                 keys = {V.key(t) for t in gp}
@@ -185,7 +205,7 @@ def solve(chan, arm, mode, view, library, seed):
                 else:
                     cand = exp
             if cand is None:
-                c = first_fit(public, query, gp, depth, meter)
+                c = first_fit(public, query, gp, depth, meter, _order(gp, pol))
                 cand = None if c is None else [gp[i] for i in c]
         else:
             tools, depth = macro_tools, G.MACRO_DEPTH
@@ -196,7 +216,11 @@ def solve(chan, arm, mode, view, library, seed):
             return None, meter, dict(info, status="no_program_in_scope")
         ans, s = V.run(cand, query)
         meter["prover"] = meter.get("prover", 0) + s
-        lem = lemmas_for(public, tools) if mode == "matched" else []
+        if pol.get("record_lemmas") and mode == "matched":
+            record_lemmas(lemmas_for(public, tools), tools)
+        lem = (lemmas_for(public, tools) if mode == "matched" and pol["lemmas"] == "all" else
+               [m for m in lemmas_for(public, tools) if V.key([tools[m["tool"]]["op"], m["post"]]) in set(pol.get("lemma_kinds", []))]
+               if mode == "matched" and pol["lemmas"] == "learned" else [])
         ev = {"checker_version": 2, "public": public, "query": query, "claimed_answer": ans, "candidate": cand,
               "scope": {"kind": "exhaustive", "tools": tools, "max_depth": depth}, "lemmas": lem,
               "trace": {"arm": arm, "mode": mode}}
@@ -204,7 +228,7 @@ def solve(chan, arm, mode, view, library, seed):
         info["checks"] += 1
         if v["label"] != "AMBIGUOUS" or info["probes"] >= G.MAX_PROBES:
             return ev, meter, dict(info, status=v["label"])
-        x = design_probe(public, query, tools, v, rng, meter)
+        x = design_probe(public, query, tools, v, rng, meter, pol["probe_tries"], pol["probe_mut"])
         if x is None:
             return ev, meter, dict(info, status="AMBIGUOUS_no_probe_found")
         y = chan.oracle(x)
@@ -251,13 +275,15 @@ def anti_unify_ops(p, q):
     return out
 
 
-def skeletons_from(programs):
+def skeletons_from(programs, max_holes=1):
     cores = [core(p) for p in programs if len(core(p)) >= 2]
     sks = {}
     for i in range(len(cores)):
         for j in range(i + 1, len(cores)):
             sk = anti_unify_ops(cores[i], cores[j])
             if sk is None or all(isinstance(p, Hole) for p in sk):
+                continue
+            if sum(isinstance(p, Hole) or any(isinstance(v, Hole) for v in p.values()) for p in sk) > max_holes:
                 continue
             sk = [p if isinstance(p, Hole) or not any(isinstance(v, Hole) for v in p.values()) else Hole("op")
                   for p in sk]
@@ -284,9 +310,70 @@ def placebo_skeletons(sks, rng):
     return out
 
 
-def build(programs, seed):
+LEMMA_STATS = {"tasks": 0, "kinds": {}}
+
+
+def record_lemmas(lem, tools):
+    LEMMA_STATS["tasks"] += 1
+    for k in {V.key([tools[m["tool"]]["op"], m["post"]]) for m in lem}:
+        LEMMA_STATS["kinds"][k] = LEMMA_STATS["kinds"].get(k, 0) + 1
+
+
+def learned_identities(views, min_obs=8):
+    """Observational identities learned from SOURCE inputs: a bigram [a, b] of non-adapter G_P ops that equals a
+    shorter chain ([] / [a] / [b]) on every leaf-transformed source input where both are defined (>= min_obs).
+    These are NOT proofs. Checker v2 cannot verify them (it has no equivalence-proof form), so they are used only to
+    PROJECT how much of the matched scope a future checker could skip."""
+    seqs = []
+    for v in views:
+        for x in [p[0] for p in v["public"]] + [v["query"]]:
+            for leaf in G.LEAF.values():
+                y, _ = V.run(leaf, x)
+                if y != V.ERROR:
+                    seqs.append(y)
+    ops = hole_values()
+    out = []
+    for a in ops:
+        for b in ops:
+            for short in ([], [a], [b]):
+                n, ok = 0, True
+                for x in seqs:
+                    y1, _ = V.run([a, b], x)
+                    y2 = x if not short else V.run(short, x)[0]
+                    if y1 == V.ERROR or y2 == V.ERROR:
+                        continue
+                    n += 1
+                    if V.key(y1) != V.key(y2):
+                        ok = False
+                        break
+                if ok and n >= min_obs:
+                    out.append([a, b, short])
+                    break
+    return out
+
+
+def projected_skip(identities, tools, depth):
+    """Fraction of all chains (length <= depth) over `tools` that contain an adjacent bigram covered by an identity
+    (so they are observationally redundant under that identity)."""
+    red = {(V.key(a), V.key(b)) for a, b, _ in identities}
+    keys = [V.key(t) for t in tools]
+    n = len(tools)
+    total = sum(n ** k for k in range(1, depth + 1))
+    clean = [1] * n                                  # chains of length 1 ending at tool j with no redundant bigram
+    clean_total = n
+    for _k in range(2, depth + 1):
+        clean = [sum(clean[i] for i in range(n) if (keys[i], keys[j]) not in red) for j in range(n)]
+        clean_total += sum(clean)
+    return 1 - clean_total / total
+
+
+def build(programs, seed, views=(), max_holes=1, depth=3):
     """Library learning from the source programs the evaluator's checker certified (source-only feedback)."""
-    sks = skeletons_from(programs)
+    sks = skeletons_from(programs, max_holes)
     psks = placebo_skeletons(sks, random.Random(f"w31b-placebo:{seed}"))
+    ids = learned_identities(views) if views else []
+    nst = max(1, LEMMA_STATS["tasks"])
     return dict(useful=library_from_skeletons(sks), placebo=library_from_skeletons(psks),
-                skeletons=[repr(s) for s in sks], placebo_skeletons=[repr(s) for s in psks])
+                skeletons=[repr(s) for s in sks], placebo_skeletons=[repr(s) for s in psks],
+                lemma_kinds=sorted(k for k, c in LEMMA_STATS["kinds"].items() if c / nst >= 0.5),
+                identities=ids, projected_skip=projected_skip(ids, G.G_P, depth) if ids else 0.0)

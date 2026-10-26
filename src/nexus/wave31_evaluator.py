@@ -20,6 +20,7 @@ Labels come from the evaluator's own Checker v2 call on the final evidence, then
 """
 from __future__ import annotations
 
+import ctypes
 import hashlib
 import json
 import os
@@ -33,6 +34,7 @@ from nexus import wave31_grammar as G
 
 ROOT = Path(__file__).resolve().parents[2]
 V2_PIN_COMMIT = "01d84f6"
+ORACLE_PRICE_INSTR = 50_000_000      # declared price of one oracle query in evaluator_work (retired instructions)
 LEDGER = ROOT / "runs/experimental/wave24-agi/ledger.jsonl"
 VAULT = os.environ.get("NEXUS_SEALED_VAULT_DIR", str(Path.home() / ".gemini/antigravity/sealed_nexus_vault"))
 
@@ -44,6 +46,24 @@ def verify_v2():
     if disk != pin or Path(V.__file__).resolve() != (ROOT / "src/nexus/checker_kernel_v2.py").resolve():
         raise SystemExit("checker v2 does not match its pin; refusing to run")
     return pin
+
+
+class _RU(ctypes.Structure):
+    _fields_ = [("ri_uuid", ctypes.c_uint8 * 16)] + [(f"f{i}", ctypes.c_uint64) for i in range(29)] + \
+               [("ri_instructions", ctypes.c_uint64), ("ri_cycles", ctypes.c_uint64)] + \
+               [(f"g{i}", ctypes.c_uint64) for i in range(4)]
+
+
+_LIBPROC = ctypes.CDLL("/usr/lib/libproc.dylib") if sys.platform == "darwin" else None
+
+
+def instructions(pid):
+    """Retired instructions of process `pid`, read by the OS kernel (proc_pid_rusage, RUSAGE_INFO_V4). The measured
+    process cannot alter this counter."""
+    r = _RU()
+    if _LIBPROC is None or _LIBPROC.proc_pid_rusage(int(pid), 4, ctypes.byref(r)) != 0:
+        raise RuntimeError("instruction counter unavailable")
+    return int(r.ri_instructions)
 
 
 def sandbox_profile():
@@ -65,12 +85,12 @@ def ledger_append(row):
 
 
 class Child:
-    def __init__(self, hashseed="0"):
+    def __init__(self, hashseed="0", script="scripts/wave31_solver_child.py", args=()):
         env = {"PATH": "/usr/bin:/bin", "PYTHONPATH": str(ROOT / "src"), "PYTHONHASHSEED": str(hashseed),
                "PYTHONDONTWRITEBYTECODE": "1", "HOME": "/var/empty"}
         self.t0 = time.perf_counter()
         self.p = subprocess.Popen(["/usr/bin/sandbox-exec", "-p", sandbox_profile(), sys.executable, "-B",
-                                   str(ROOT / "scripts/wave31_solver_child.py")], stdin=subprocess.PIPE,
+                                   str(ROOT / script), *map(str, args)], stdin=subprocess.PIPE,
                                   stdout=subprocess.PIPE, text=True, env=env, cwd="/")
         self.cpu_s = self.wall_s = None
 
@@ -98,27 +118,50 @@ class Child:
 
 
 class Evaluator:
-    def __init__(self):
+    ORACLE_CAP = G.MAX_PROBES
+
+    def __init__(self, depth=G.MATCHED_DEPTH):
         self.pin = verify_v2()
         self.kernel_work = 0
         self.oracle_calls = 0
+        self.depth = depth
+        self._cache = {}
+
+    def _check(self, ev, meter):
+        """Evaluator-side kernel call, metered in kernel steps and in the evaluator's own retired instructions."""
+        d = hashlib.sha256(json.dumps(ev, sort_keys=True).encode()).hexdigest()
+        if d in self._cache:
+            return self._cache[d]
+        i0 = instructions(os.getpid())
+        v = V.check(ev)
+        meter["eval_instr"] = meter.get("eval_instr", 0) + instructions(os.getpid()) - i0
+        w = v.get("steps", 0) + v.get("chains_checked", 0)
+        meter["kernel"] = meter.get("kernel", 0) + w
+        self.kernel_work += w
+        self._cache = {d: v}
+        return v
 
     def _serve(self, child, task, meter):
-        """Serve requests until the child's `done` line. `task` (evaluator-side) is used only for the oracle."""
+        """Serve requests until the child's `done` line. `task` (evaluator-side) is used only for the oracle.
+        Oracle requests on the task's query input, or beyond ORACLE_CAP, are refused and flagged."""
         while True:
             msg = child.recv()
             if msg.get("done"):
                 return msg
             if msg.get("req") == "check":
-                v = V.check(msg["evidence"])
-                w = v.get("steps", 0) + v.get("chains_checked", 0)
-                meter["kernel"] = meter.get("kernel", 0) + w
-                self.kernel_work += w
-                child.send(v)
+                child.send(self._check(msg["evidence"], meter))
             elif msg.get("req") == "oracle":
+                x = msg["input"]
+                if V.key(x) == V.key(task["query"]):
+                    meter["flag_oracle_on_query"] = meter.get("flag_oracle_on_query", 0) + 1
+                    child.send({"error": True, "refused": "query_input"})
+                    continue
+                if meter.get("oracle_calls", 0) >= self.ORACLE_CAP:
+                    meter["flag_oracle_over_cap"] = meter.get("flag_oracle_over_cap", 0) + 1
+                    child.send({"error": True, "refused": "cap"})
+                    continue
                 meter["oracle_calls"] = meter.get("oracle_calls", 0) + 1
                 self.oracle_calls += 1
-                x = msg["input"]
                 try:
                     V.check_value(x)
                     y = V.run(task["teacher"], x)[0] if task else V.ERROR
@@ -132,23 +175,32 @@ class Evaluator:
             else:
                 raise RuntimeError("protocol violation")
 
-    def library(self, child, programs, seed):
+    def library(self, child, programs, seed, views=(), **kw):
         """Source-only feedback: the child receives the candidates of source tasks that the evaluator's own checker
         labelled exhaustive_UNIQUE (labels only; no answers or correctness) and builds both libraries."""
-        child.send({"cmd": "library", "programs": programs, "seed": seed})
+        child.send(dict({"cmd": "library", "programs": programs, "seed": seed, "views": list(views)}, **kw))
         return child.recv()["result"]
 
-    def solve(self, child, task, arm, mode, library, seed):
+    def solve(self, child, task, arm, mode, library, seed, policy=None):
         meter = {}
         task.pop("_oracle_log", None)
+        c0, t0 = instructions(child.p.pid), time.perf_counter()
         child.send({"cmd": "solve", "arm": arm, "mode": mode, "view": {"public": task["public"], "query": task["query"]},
-                    "library": library, "seed": seed})
+                    "library": library, "seed": seed, "policy": policy or {}})
         msg = self._serve(child, task, meter)
-        return self.grade(task, msg, meter)
+        meter["child_instr"] = instructions(child.p.pid) - c0
+        meter["wall_s"] = time.perf_counter() - t0
+        row = self.grade(task, msg, meter)
+        ev = msg.get("evidence")
+        row["flag_scope_mismatch"] = bool(mode == "matched" and ev is not None and not G.is_matched(ev["scope"], self.depth))
+        return row
 
     def grade(self, task, msg, meter):
         ev, info = msg["evidence"], msg["info"]
-        row = dict(category=task["category"], domain=task["domain"], core=task["core"], probes=info["probes"],
+        ext = {k: meter.get(k, 0) for k in ("child_instr", "eval_instr", "oracle_calls", "wall_s",
+                                            "flag_oracle_on_query", "flag_oracle_over_cap")}
+        ext["evaluator_work"] = ext["child_instr"] + ext["eval_instr"] + ext["oracle_calls"] * ORACLE_PRICE_INSTR
+        row = dict(category=task["category"], domain=task["domain"], core=task["core"], probes=info["probes"], ext=ext,
                    fallback=info["fallback"], checks=info["checks"], solver_status=info["status"],
                    solver_reported=msg["meter"], kernel=meter.get("kernel", 0),
                    oracle_calls=meter.get("oracle_calls", 0))
@@ -159,11 +211,10 @@ class Evaluator:
         if not set(V.key(p) for p in task["public"]) <= set(got) or not set(got) <= allowed or \
                 V.key(ev["query"]) != V.key(task["query"]):
             return dict(row, label="INVALID_EVIDENCE", correct=False, wrong=None)
-        v = V.check(ev)
-        w = v.get("steps", 0) + v.get("chains_checked", 0)
-        row["kernel"] += w
-        self.kernel_work += w
-        lab = G.report_label(v, ev["scope"])
+        k0 = meter.get("kernel", 0)
+        v = self._check(ev, meter)
+        row["kernel"] += meter.get("kernel", 0) - k0
+        lab = G.report_label(v, ev["scope"], self.depth)
         uniq = lab.endswith("UNIQUE")
         correct = uniq and V.key(ev["claimed_answer"]) == V.key(task["answer"])
         tk = [V.key(s) for s in task["teacher"]]

@@ -26,10 +26,12 @@ def main():
         if job["cmd"] == "exit":
             break
         if job["cmd"] == "library":
-            out = S.build(job["programs"], job["seed"])
+            out = S.build(job["programs"], job["seed"], job.get("views", ()), job.get("max_holes", 1),
+                          job.get("depth", 3))
             sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
         elif job["cmd"] == "solve":
-            ev, meter, info = S.solve(chan, job["arm"], job["mode"], job["view"], job["library"], job["seed"])
+            ev, meter, info = S.solve(chan, job["arm"], job["mode"], job["view"], job["library"], job["seed"],
+                                     job.get("policy"))
             sys.stdout.write(json.dumps({"done": True, "evidence": ev, "meter": meter, "info": info}) + "\n")
         sys.stdout.flush()
 

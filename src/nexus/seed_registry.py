@@ -49,6 +49,11 @@ REGISTRY = {
     ("wave30", "final_sealed"): range(9301, 9311),
     # Wave 31 middle IR (development; NOT LOCKED)
     ("wave31", "dev"): range(761, 766), ("wave31", "admission_val"): range(7101, 7106),
+    # Wave 31 increment 3 (depth-4 matched scope + verified pruning): fresh one-use validation range
+    ("wave31", "val_inc3"): range(7106, 7111),
+    # Wave 32 procedure evolution (bounded, NOT LOCKED): dev = evolution on source domains (reusable);
+    # test = Gen 0 vs Gen k on the held-out domain from an empty library, one use
+    ("wave32", "dev"): range(771, 776), ("wave32", "test"): range(7201, 7206),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val")}
 
