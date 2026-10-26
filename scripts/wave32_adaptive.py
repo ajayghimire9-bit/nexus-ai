@@ -111,12 +111,17 @@ def main():
         # scored as work / always-OFF work; candidates = top 8 archive members by mean fitness; rule: max ratio <= 1.01,
         # then min mean ratio (fallback: min max ratio).
         R.claim("wave32", "dev", list(SEL), run_id="wave32a-reselect", record=False)
+        # amendment 2: normalise each stream by min(always-ON, always-OFF) on that stream (the success criterion's
+        # yardstick); amendment 1 normalised by always-OFF only and selected a learning-OFF policy.
         off = {}
         for dom in F.DOMAINS:
             for rep in (2, 3):
                 for s in SEL:
-                    rows, learn, reb = F.run(ev, dict(A.GEN0_V3C, online=False), (s,), dom, rep)
-                    off[f"{dom}:{rep}:{s}"] = F.summ(rows, learn, reb)["work"]
+                    w = []
+                    for g in (dict(A.GEN0_V3C, online=False), dict(A.GEN0_V3C)):
+                        rows, learn, reb = F.run(ev, g, (s,), dom, rep)
+                        w.append(F.summ(rows, learn, reb)["work"])
+                    off[f"{dom}:{rep}:{s}"] = min(w)
         res = []
         for e in sorted(st["archive"], key=key)[:8]:
             ratios, wrong, det = [], 0, 0
@@ -131,7 +136,10 @@ def main():
         ok = [r for r in res if r["wrong"] == 0 and r["det"] == 0]
         feas = [r for r in ok if r["max"] <= 1.01]
         champ = min(feas, key=lambda r: r["mean"]) if feas else min(ok, key=lambda r: r["max"])
-        st.update(reselection=res, champion_v1=st.get("champion"), champion_id_v1=st.get("champion_id"),
+        if "reselection" in st:
+            st["reselection_amendment1"] = dict(rows=st["reselection"], champion_id=st["champion_id"])
+        st.update(reselection=res, champion_v1=st.get("champion_v1", st.get("champion")),
+                  champion_id_v1=st.get("champion_id_v1", st.get("champion_id")),
                   champion=champ["genome"], champion_id=champ["id"], reselect_feasible=bool(feas))
         print("champion", champ["id"], champ["genome"], "feasible", bool(feas))
     else:

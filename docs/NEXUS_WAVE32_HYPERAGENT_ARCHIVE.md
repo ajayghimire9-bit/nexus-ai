@@ -364,3 +364,10 @@ The replay (7213, Target / 3 rep, Gen k(3)) matched, and D4 held.
   * then the dev2 check again, then the freeze, then confirm_adapt, run once.
 * **Disclosed:** Target-domain dev streams now inform the policy choice. The confirmation domain is still grids, on
   unseen seeds.
+* **Amendment 1, result (disclosed):** the selection normalised each stream by always-OFF only and picked a0c1,
+  which is the earlier Gen k(2) with learning OFF (mean 0.985, worst 0.991). That score was misaligned with the
+  success criterion, which uses min(ON, OFF): a learning-OFF policy cannot detect regimes, and on dev2 Target / 3 rep
+  it was 5.4% worse than ON.
+* **Amendment 2** (development only, before any confirmation draw): the same re-selection, but with each stream
+  normalised by **min(always-ON, always-OFF) on that stream**. Rule: worst ratio ≤ 1.01, then the minimum mean
+  (falling back to the minimum worst ratio).
