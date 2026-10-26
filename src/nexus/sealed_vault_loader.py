@@ -33,6 +33,9 @@ SPLITS = {"group_a": ("phase3", "vault_group_a"), "group_b": ("phase3", "vault_g
 SealedTask = namedtuple("SealedTask", "train_examples query_inputs oracle_fn hidden_ground_truth_metadata")
 
 
+N_PHYSICAL = 5          # owner (2026-10-26): manifest lines 1-5 are files on disk; the rest are in-memory digests
+
+
 class SealedVaultError(RuntimeError):
     pass
 
@@ -72,29 +75,69 @@ def verify_vault(vault_dir=None, *, committed=COMMITTED_MANIFEST):
         _audit("refused", reason="manifest differs from committed manifest")
         raise SealedVaultError("vault manifest differs from the committed manifest")
     entries = parse_manifest(committed_text)
-    for h, rel in entries:
+    physical, virtual = entries[:N_PHYSICAL], entries[N_PHYSICAL:]
+    for i, (h, rel) in enumerate(physical):
         p = vault / rel
-        if not p.exists() or _sha(p) != h:
-            _audit("refused", reason="file hash mismatch", file_index=entries.index((h, rel)))
-            raise SealedVaultError("vault file hash mismatch (index %d)" % entries.index((h, rel)))
-    _audit("verified", files=len(entries), manifest_sha256=_sha(committed))
+        if not p.is_file() or _sha(p) != h:
+            _audit("refused", reason="physical file hash mismatch", file_index=i)
+            raise SealedVaultError("vault file hash mismatch (index %d)" % i)
+    _audit("physical_verified", files=len(physical), manifest_sha256=_sha(committed))
+    # The remaining entries are in-memory digests of split bundles / task objects (owner, 2026-10-26). They are
+    # checked by the vault's own verify_vault_manifest(), whose module was hash-verified just above.
+    mods = _modules(vault, physical)
+    fn = next((getattr(m, "verify_vault_manifest") for m in mods if callable(getattr(m, "verify_vault_manifest", None))),
+              None)
+    if fn is None:
+        _audit("refused", reason="no verify_vault_manifest in verified modules")
+        raise SealedVaultError("vault exposes no verify_vault_manifest")
+    form, ok = None, False
+    for form, call in (("no_args", lambda: fn()), ("virtual_entries", lambda: fn(virtual)),
+                       ("manifest_path", lambda: fn(str(vm)))):
+        try:
+            ok = bool(call())
+            break
+        except TypeError:
+            continue
+        except Exception as exc:                      # type only (RULE 1)
+            _audit("refused", reason="virtual verification raised", error=type(exc).__name__, call_form=form)
+            raise SealedVaultError("virtual manifest verification raised") from None
+    if not ok:
+        _audit("refused", reason="virtual verification failed", call_form=form)
+        raise SealedVaultError("virtual manifest verification failed")
+    _audit("verified", files=len(physical), virtual=len(virtual), call_form=form)
     return entries
 
 
-def _entry_point(vault, entries):
+_MODS = {}
+
+
+def _modules(vault, physical):
+    """Import the hash-verified physical .py files (harness only); cached per vault."""
+    key = str(vault)
+    if key in _MODS:
+        return _MODS[key]
     sys.path.insert(0, str(vault))
+    mods = []
     try:
-        for i, (_, rel) in enumerate(entries):
+        for i, (_, rel) in enumerate(physical):
             if not rel.endswith(".py"):
                 continue
             spec = importlib.util.spec_from_file_location(f"_sealed_vault_mod_{i}", vault / rel)
             mod = importlib.util.module_from_spec(spec)
+            sys.modules[spec.name] = mod
             spec.loader.exec_module(mod)
-            if callable(getattr(mod, "load_sealed_split", None)):
-                return mod.load_sealed_split
+            mods.append(mod)
     finally:
         sys.path.remove(str(vault))
-    raise SealedVaultError("no manifest-listed module exposes load_sealed_split")
+    _MODS[key] = mods
+    return mods
+
+
+def _entry_point(vault, entries):
+    for mod in _modules(vault, entries[:N_PHYSICAL]):
+        if callable(getattr(mod, "load_sealed_split", None)):
+            return mod.load_sealed_split
+    raise SealedVaultError("no verified module exposes load_sealed_split")
 
 
 def load_split(split_name, seed, *, vault_dir=None, committed=COMMITTED_MANIFEST):

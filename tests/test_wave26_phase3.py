@@ -9,17 +9,25 @@ from nexus import sealed_vault_loader as L
 from nexus.seed_registry import SeedHygieneError
 
 MOCK_API = '''
+def verify_vault_manifest():
+    return True
+
+
 def load_sealed_split(split_name, seed):
     return [([([1, 2], [2, 1])], [[3, 4]], lambda x: list(reversed(x)), {"split": split_name, "seed": seed})]
 '''
 
 
-def _mock_vault(tmp_path):
+def _mock_vault(tmp_path, verify_ok=True):
     v = tmp_path / "mock_vault"
     v.mkdir()
-    (v / "api.py").write_text(MOCK_API)
-    (v / "data.txt").write_text("payload")
-    lines = [f"{hashlib.sha256((v / n).read_bytes()).hexdigest()}  {n}" for n in ("api.py", "data.txt")]
+    (v / "api.py").write_text(MOCK_API.replace("return True", "return %r" % verify_ok))
+    names = ["api.py"]
+    for i in range(4):
+        (v / f"data{i}.txt").write_text(f"payload{i}")
+        names.append(f"data{i}.txt")
+    lines = [f"{hashlib.sha256((v / n).read_bytes()).hexdigest()}  {n}" for n in names]
+    lines += ["0" * 64 + "  virtual_bundle", "1" * 64 + "  virtual_task"]          # in-memory digests
     manifest = "\n".join(lines) + "\n"
     (v / "vault_manifest.sha256").write_text(manifest)
     committed = tmp_path / "committed.sha256"
@@ -30,6 +38,7 @@ def _mock_vault(tmp_path):
 @pytest.fixture
 def env(tmp_path, monkeypatch):
     monkeypatch.setattr(L, "AUDIT_LOG", tmp_path / "access.jsonl")
+    L._MODS.clear()
     return tmp_path
 
 
@@ -47,13 +56,13 @@ def test_loads_with_token_and_matching_hashes(env, monkeypatch):
     tasks = L.load_split("group_a", 3001, vault_dir=v, committed=committed)
     assert isinstance(tasks[0], L.SealedTask) and tasks[0].oracle_fn([1, 2, 3]) == [3, 2, 1]
     events = [json.loads(l)["event"] for l in (env / "access.jsonl").read_text().splitlines()]
-    assert events == ["verified", "loaded"]
+    assert events[-2:] == ["verified", "loaded"]
 
 
 def test_refuses_on_tampered_file_or_manifest(env, monkeypatch):
     v, committed = _mock_vault(env)
     monkeypatch.setenv("NEXUS_SEALED_HARNESS_TOKEN", "locked")
-    (v / "data.txt").write_text("tampered")
+    (v / "data0.txt").write_text("tampered")
     with pytest.raises(L.SealedVaultError):
         L.load_split("group_b", 3011, vault_dir=v, committed=committed)
     v2, committed2 = _mock_vault(env / "second") if (env / "second").mkdir() is None else (None, None)
@@ -79,3 +88,12 @@ def test_committed_manifest_is_present_and_well_formed():
 def test_driver_verifies_vault_before_claiming_seeds():
     src = (L.ROOT / "scripts" / "phase4_invent.py").read_text()
     assert src.index("verify_vault()") < src.index('R.claim("phase3", "vault_group_a"')
+
+
+def test_refuses_when_vault_virtual_verification_fails(env, monkeypatch):
+    (env / "x").mkdir()
+    v, committed = _mock_vault(env / "x", verify_ok=False)
+    monkeypatch.setenv("NEXUS_SEALED_HARNESS_TOKEN", "locked")
+    L._MODS.clear()
+    with pytest.raises(L.SealedVaultError):
+        L.load_split("group_a", 3001, vault_dir=v, committed=committed)
