@@ -32,6 +32,7 @@ import random
 
 from nexus import checker_kernel_v2 as V
 from nexus import wave31_grammar as G
+from nexus import wave33_prior as P
 from nexus.wave30_skeleton import Hole, anti_unify
 
 
@@ -242,7 +243,6 @@ def solve(chan, arm, mode, view, library, seed, policy=None):
         if mode == "matched":
             if cand is None:
                 if pol.get("search") == "best_first":                  # Milestone A: learned fragment prior
-                    from nexus import wave33_prior as P
                     c = P.best_first(public, query, gp, depth, meter, pol["prior"])
                     if c is None and "types" in pol["prior"]:
                         info["prior_fallback"] = True

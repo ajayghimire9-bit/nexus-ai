@@ -61,7 +61,7 @@ def signatures(tools, samples):
     return sig
 
 
-def sample_values(views, tools, depth=3, per_type=3):
+def sample_values(views, tools, depth=3, per_type=2):
     """Type-stratified observed values: source inputs and their images under tool chains of length <= depth, keeping
     at most `per_type` values of each observed type (so intermediate types are covered at bounded cost)."""
     by_type, seen = {}, set()
@@ -127,6 +127,41 @@ def learned_redundancy(tools, samples, min_obs=6):
     return red
 
 
+def _knowledge(tools, samples, min_obs=6):
+    """One pass: images[t][s] for every tool and sample, giving signatures, the type table and redundant bigrams (the
+    redundancy test reuses the images and only runs b on a's outputs)."""
+    imgs = [[V.run([t], v)[0] for v in samples] for t in tools]
+    sig, tmap = [], []
+    for ti in range(len(tools)):
+        pairs, m = set(), {}
+        for v, o in zip(samples, imgs[ti]):
+            if o != V.ERROR:
+                pairs.add((vtype(v), vtype(o)))
+                m.setdefault(vtype(v), set()).add(vtype(o))
+        sig.append(repr(sorted(pairs)))
+        tmap.append({k: sorted(x) for k, x in m.items()})
+    red = []
+    for i in range(len(tools)):
+        outs = [o for o in imgs[i] if o != V.ERROR]
+        for j, b in enumerate(tools):
+            n, ok = 0, True
+            for o in outs:
+                if vtype(o) not in tmap[j]:
+                    continue
+                o2, _ = V.run([b], o)
+                if o2 == V.ERROR:
+                    continue
+                n += 1
+                if V.key(o2) != V.key(o):
+                    ok = False
+                    break
+                if n >= min_obs:
+                    break
+            if ok and n >= min_obs:
+                red.append([i, j])
+    return sig, tmap, red
+
+
 def fit_prior(programs, tools, views, alpha=0.5, lam=0.5, knowledge=True):
     """Returns cost[prev+1][t] = -log p(t | prev) for prev in START..T-1, plus learned tool knowledge (type table,
     redundant bigrams) when `knowledge`."""
@@ -134,7 +169,7 @@ def fit_prior(programs, tools, views, alpha=0.5, lam=0.5, knowledge=True):
     keys = [V.key(t) for t in tools]
     idx = {k: i for i, k in enumerate(keys)}
     samples = sample_values(views, tools)
-    sig = signatures(tools, samples)
+    sig, tmap, red = _knowledge(tools, samples)
     sig_ids = sorted(set(sig))
     sid = [sig_ids.index(s) for s in sig]
     members = {s: sum(1 for x in sid if x == s) for s in set(sid)}
@@ -164,9 +199,9 @@ def fit_prior(programs, tools, views, alpha=0.5, lam=0.5, knowledge=True):
         cost.append(row)
     out = {"cost": cost, "signatures": sig, "n_programs": len(programs)}
     if knowledge:
-        out["types"] = type_table(tools, samples)
+        out["types"] = tmap
         out["observed_types"] = sorted({vtype(x) for x in samples})
-        out["redundant"] = learned_redundancy(tools, samples)
+        out["redundant"] = red
     return out
 
 

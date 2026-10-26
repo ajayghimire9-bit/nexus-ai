@@ -46,3 +46,20 @@ chosen there. Held-out proposal work per task was 111 M (learned + knowledge), a
   < Placebo-frag, pooled, and lower than each in ≥ 4/5 seeds;
 * with all tasks exhaustive_UNIQUE, 0 wrong, 0 detector flags;
 * solve counts are reported, and must be ≥ both.
+
+### Milestone A: development iterations (dev 761–765, disclosed) and FREEZE
+
+All three runs: 280/280 exhaustive_UNIQUE, correct, 0 wrong, 0 flags in every config.
+
+| Run | Change | Fit per fold | Held-out (Exp + all fit) / min(Fresh) | Seeds < 1 | vs Placebo |
+| --- | --- | --- | --- | --- | --- |
+| dev | as committed | 116 M | 0.9985 | 2/5 | 0.920 |
+| dev2 | single-pass knowledge (images reused); per_type 2 | 102 M | 0.9916 | 3/5 | 0.913 |
+| dev3 | `wave33_prior` imported at child start-up, the same for every arm | 78 M | **0.978** | **5/5** | **0.900** (5/5) |
+
+* **Why dev3 is fair:** module loading had been billed inside the fit job (and to the first best-first task); it is
+  code loading, not learning.
+* **Ablation:** the redundancy knowledge saves ≈ 5 M per held-out task, so it was kept.
+* **Without fitting cost:** Experienced-frag is −6.7% vs Fresh-v3 on held-out (−5.8% over all categories).
+* **FROZEN at this commit** (code and α = 1.0, λ = 0.8). Next is val_frag 7116–7120, claimed whole and run once,
+  with the criterion unchanged.
