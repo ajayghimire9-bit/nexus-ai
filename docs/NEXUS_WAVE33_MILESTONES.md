@@ -63,3 +63,34 @@ All three runs: 280/280 exhaustive_UNIQUE, correct, 0 wrong, 0 flags in every co
 * **Without fitting cost:** Experienced-frag is −6.7% vs Fresh-v3 on held-out (−5.8% over all categories).
 * **FROZEN at this commit** (code and α = 1.0, λ = 0.8). Next is val_frag 7116–7120, claimed whole and run once,
   with the criterion unchanged.
+
+### Milestone A: results on val_frag 7116–7120 (one-use, claimed whole, run once; replay of 7118 identical)
+
+Work is G retired instructions; every config is exhaustive_UNIQUE, correct, 0 wrong, 0 flags.
+
+| Category (n) | Fresh-v3 | Fresh-lazy | **Experienced-frag** | Placebo-frag |
+| --- | --- | --- | --- | --- |
+| familiar_exact (80) | 36.42 | 36.84 | **34.69** | 39.97 |
+| compositional (130) | 64.58 | 65.26 | **60.45** | 70.70 |
+| **held_out (70)** | 33.57 | 34.01 | **31.20** | 37.17 |
+| all (280) | 134.57 | 136.11 | **126.34** | 147.83 |
+
+* **Marginal learning cost:** 1.59 G for all 20 folds. It is charged entirely to the held_out tasks.
+* **Held-out, net of all marginal learning cost:**
+  * (Experienced-frag + fit) / min(Fresh-v3, Fresh-lazy) = **0.9765**, with 5/5 seeds < 1 (0.953 … 0.996);
+  * vs Placebo-frag = **0.882**, with 5/5 seeds (0.838 … 0.962).
+* **Solver work alone, on held-out tasks:** 7.99 G vs 10.37 G for Fresh-v3, which is −23%.
+* **Solve counts:** equal, 70/70 for every config. The gain is cost, not coverage.
+
+**Predeclared criterion: PASS.**
+
+**What this establishes.** Knowledge learned from source mechanisms — a transition prior over ops and inferred type
+signatures, a type table for goal-directed pruning, and redundant bigrams — makes certified solving of **held-out
+mechanisms** cheaper than both a fresh solver and a size- and shape-matched placebo. This holds net of the marginal
+learning cost, at matched exhaustive_UNIQUE strength.
+
+**What it does not establish:**
+* Under Definition A (counting the 271.6 G of source-task solving), learning is not repaid.
+* The gain is 2.3% of total work, because the checker (identical across arms) dominates.
+* One task family and one grammar were tested.
+* The held-out mechanisms reuse ops and types seen in source; they are new compositions, not new primitives.
