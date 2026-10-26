@@ -52,3 +52,66 @@ def search(public, query, tools, depth, prior, budget=10**6, meter=None):
     if meter is not None:
         meter["execs"] = meter.get("execs", 0) + execs
     return None
+
+
+def mutate(x, rng, depth=0):
+    """Generic input mutation for active probing (no domain knowledge): edits one atom of the value."""
+    if isinstance(x, str):
+        if not x:
+            return "a"
+        i = rng.randrange(len(x))
+        pool = sorted(set(x)) + list("0123456789")
+        return x[:i] + rng.choice(pool) + x[i + 1:]
+    if isinstance(x, bool) or x is None:
+        return x
+    if isinstance(x, int):
+        return x + rng.choice((-2, -1, 1, 2))
+    if isinstance(x, list):
+        if not x:
+            return x
+        if all(isinstance(r, list) for r in x) and x and all(isinstance(c, int) for r in x for c in r):
+            g = [list(r) for r in x]
+            i, j = rng.randrange(len(g)), rng.randrange(len(g[0]))
+            g[i][j] = rng.choice(sorted({c for r in g for c in r} | {0}))
+            return g
+        y = list(x)
+        k = rng.randrange(len(y))
+        if rng.random() < 0.2 and len(y) > 1:
+            y.pop(k)
+        else:
+            y[k] = mutate(y[k], rng, depth + 1)
+        return y
+    if isinstance(x, dict):
+        if set(x) == {"nodes", "edges"}:
+            e = [list(p) for p in x["edges"]]
+            ns = x["nodes"]
+            if e and rng.random() < 0.5:
+                e.pop(rng.randrange(len(e)))
+            elif len(ns) > 1:
+                a, b = sorted(rng.sample(ns, 2))
+                if [a, b] not in e:
+                    e.append([a, b])
+            return {"nodes": list(ns), "edges": sorted(e)}
+        y = dict(x)
+        if y:
+            k = rng.choice(sorted(y))
+            y[k] = mutate(y[k], rng, depth + 1)
+        return y
+    return x
+
+
+def design_probe(public, query, tools, verdict, rng, tries=200):
+    w = verdict.get("witnesses") or []
+    if len(w) < 2:
+        return None
+    p1, p2 = [tools[i] for i in w[0]["chain"]], [tools[i] for i in w[1]["chain"]]
+    pool = [p[0] for p in public] + [query]
+    seen = {L.key(p[0]) for p in public} | {L.key(query)}
+    for _ in range(tries):
+        x = mutate(rng.choice(pool), rng)
+        if L.key(x) in seen:
+            continue
+        a, b = L.run(p1, x), L.run(p2, x)
+        if L.key(a) != L.key(b):
+            return x
+    return None

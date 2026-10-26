@@ -32,12 +32,12 @@ def features(public, query):
     for x, y in public:
         _walk(x, acc); _walk(y, acc)
     _walk(query, acc)
-    for k in ("cells", "r", "c"):
+    for k in ("cells", "c"):
         acc["fields"].discard(k)
     # structural fields produced by tools (not visible in raw inputs), added by input kind
     acc["fields"] |= {"key", "count"}
     if acc["grid"]:
-        acc["fields"] |= {"size", "color"}
+        acc["fields"] |= {"size", "color", "r"}
     if acc["graph"]:
         acc["fields"] |= {"node", "deg"}
     return acc
