@@ -400,3 +400,42 @@ The replay (7213, Target / 3 rep, Gen k(3)) matched, and D4 held.
 * **Disclosed:** the 51-genome mixed-regime evolution found no single policy better than Gen k(3). Three selection
   amendments were made on development data. Choosing the primary by its dev2 result means dev2 is not independent
   evidence for it; only the confirmation is.
+
+## Confirmation of the single regime-detecting policy (confirm_adapt 7216–7220, one-use, run once after the freeze)
+
+* **Artifact:** `artifacts/wave32_adaptive_confirm.json`.
+* **Correctness:** every cell and policy is 100% correct, with **0 wrong and 0 detector flags**, and D4 held.
+* **Replay:** the run printed **False**, from a **script bug**. The replay re-ran `st["champion"]` (the
+  amendment-2 pick a4c2) against the digest of the frozen primary a0c2. After the fix, re-executing a0c2 on the
+  already-drawn 7218 Target / 3-rep tasks in a fresh child with `PYTHONHASHSEED=1` gives an identical digest
+  (`scripts/wave32_adaptive_replay.py`). No new seeds were drawn, and both values are kept in the artifact.
+
+| Cell (n) | always-ON | always-OFF | **primary a0c2** | / min(ON, OFF) (seeds ≤ min) | Gen k(2) (told the regime, OFF) | a4c2 | a6c5 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Source / 2 rep (200) | 65.59 | 64.55 | **63.94** | **0.991** (4/5) | 0.981 | 0.999 | 0.994 |
+| Source / 3 rep (300) | 99.79 | 99.81 | **97.38** | **0.976** (5/5) | 0.982 | 0.981 | 0.965 |
+| Target / 2 rep (80) | 57.10 | 57.58 | **57.06** | **0.999** (1/5) | 0.998 | 1.009 | 1.012 |
+| Target / 3 rep (120) | 85.37 | 89.71 | **84.48** | **0.990** (5/5) | 1.040 | 0.998 | 1.004 |
+
+**Predeclared criterion: PASS.** The primary was ≤ min(ON, OFF) pooled in **4/4** cells (≥ 3 required), ≤ 1.01 in every
+cell, with 0 wrong and 0 flags. Among the secondaries, a4c2 also meets the criterion (3/4, max 1.009) and a6c5 fails it
+(Target / 2 rep 1.012).
+
+## Reading
+
+* **One policy, never told the regime, is never worse than the better of always-ON and always-OFF.** That held in
+  every cell, and it was better in all four, by 0.1–2.4%.
+* **How it reads the stream:** it keeps learning ON behind an observed repeat-rate gate (0.3). In repetitive
+  streams it learns, so it beats OFF by 5.8% in Target / 3 rep. In streams where learning does not pay, it learns
+  little, so it beats ON by 2.7% in Source / 2 rep.
+* **Comparison with a policy told the regime:** the learning-OFF policy given the regime (Gen k(2)) is up to 0.9%
+  better in the 2-rep cells, but 4.0% worse in Target / 3 rep.
+* **Caveats:**
+  * The gains are small.
+  * The primary is the earlier Gen k(3); the new 51-genome mixed-regime evolution did not beat it.
+  * It was chosen after three disclosed selection amendments on development data, so this confirmation is the
+    only independent evidence for it.
+  * There is one checker, one task family and one repetition design.
+  * Target / 2 rep is a near-tie (1/5 seeds below min).
+  * This is development-grade evidence of a regime-adaptive learning procedure, not a general learning-to-learn
+    result.

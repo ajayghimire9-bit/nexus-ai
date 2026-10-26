@@ -161,7 +161,7 @@ def main():
         else:
             R.claim("wave32", "confirm_adapt", list(CONF), run_id="wave32a-confirm")
             res = dict(frozen_policies=pol, table=F.table(ev, CONF, st, A))
-            rows2, _, _ = F.run(ev, st["champion"], (7218,), "Target", 3, "1")
+            rows2, _, _ = F.run(ev, pol["Genk(adapt)"], (7218,), "Target", 3, "1")   # fixed: replay the FROZEN primary
             res["replay_7218_target3_adapt"] = W.digest(rows2) == res["table"]["Target/3rep"]["Genk(adapt)"]["per_seed"][7218]["digest"]
             res["D4_integrity"] = D.scan([], fp)["D4_integrity"]
             (ROOT / "artifacts/wave32_adaptive_confirm.json").write_text(json.dumps(res, sort_keys=True, default=repr))
