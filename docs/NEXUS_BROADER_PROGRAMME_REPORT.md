@@ -75,3 +75,69 @@ every teacher is verified to be inside the declared scope.
 | Stage 3 (frozen confirmation; exact counts locked in the freeze commit before any seed is drawn) | ≤ 12,000 s |
 | Stage 4 (long continual streams) | ≤ 5,000 s |
 | Reserve | ≥ 10,000 s |
+
+## Stage 2: capability development (development data only)
+
+**Engineering fixes made during Stage 2** (all arms affected equally, all disclosed):
+* **Lazy cost rows.** The eager (T + 1) × T prior matrix cost more than it saved.
+* **Proposal budget 2 M executions,** so that Fresh solves what the others solve and solve counts are comparable.
+  Budget abstentions still count as failures.
+* **Folds run as separate calls.** A first run hit the 890 s cap after 2 folds; its ledger row was appended
+  manually, marked KILLED_AT_CAP.
+* **Regime memory** (experiment 6) after the surprise gate proved inert, with its signature keyed on input type only
+  (an input + output signature made tiny contexts that were never refit).
+* **Probe seeds** depend on the stream only (identical genomes had scored ±6% apart).
+
+### Experiments 1 / 2 / 3 / 7: leave-one-domain-out (dev seeds 841, 842; 140 targets each × 6 arms; learning fit charged)
+
+| Slice | Fresh | Fixed (d) | Learned | **Repr** | Placebo | Neural (exp 7) |
+| --- | --- | --- | --- | --- | --- | --- |
+| E3: withheld domain + mechanism (64) | 1.000 (64/64) | 0.768 (**60/64**) | 0.942 | **0.877 (64/64)** | 0.961 | 0.981 |
+| E1: encoder / representation tasks (136) | 1.000 | 0.831 | 0.910 | **0.854** | 0.931 | 0.978 |
+| all targets (140) | 1.000 | 0.791 (136/140) | 0.917 | **0.860 (140/140)** | 0.940 | 0.978 |
+
+* **Repr vs Placebo:** 0.912 on E3 and 0.915 overall, in 2/2 seeds.
+* **E2:** every withheld-mechanism solution was a composition absent from all source solutions; 13 of 64 used
+  fold / scan / if.
+* **Wrong answers:** 0 everywhere.
+* **Source-task solving** (definition A, an extra curriculum): ≈ 900–1,500 G per fold.
+
+### Experiment 4: meta-learning (dev)
+
+The selected genome is α 0.5, λ 0.5, refit 2, with a meta-selection cost of 995 G.
+
+| Domain | vs Fresh | vs 80f9cc2 |
+| --- | --- | --- |
+| tables | 0.975 (Fresh 17/18) | 0.985 |
+| grids | 0.978 | 1.011 |
+
+### Experiment 5: evolution (dev, 2 lineages per method, budget 6)
+
+* **Best result:** 0.9895 vs the starting learner; most lineages returned the starting genome.
+* **Measurement:** the noise flaw above was fixed.
+
+### Experiment 6: continual (dev)
+
+Long program stream: strings → graphs → strings (return) → tables.
+
+| Learner | Total | Returning phase | New domain |
+| --- | --- | --- | --- |
+| Fresh | 520.9 | 83.2 | 274.5 |
+| no gate | 673.1 | 68.1 | **437.2** (negative transfer) |
+| surprise gate | 693.5 (never fired) | 68.2 | 437.3 |
+| **regime memory** | **504.5** | **68.1** | **274.8** |
+
+World track, long streams (2,000 steps):
+
+| Agent | Return | Brier | Delay, new / returning goal | Compute |
+| --- | --- | --- | --- | --- |
+| N1 | **387.8** | **0.046** | 12–16 | 20.7 G |
+| fixed-model | 274.8 | 0.159 | 70–90 | 0.14 G |
+
+N1 shows no retention benefit for returning goals.
+
+### Planning and repairs (dev)
+
+* **Planning:** online heuristic weights gave **identical** expansions. Each domain has a single goal predicate, so
+  per-predicate weights only rescale the heuristic; the learner design is degenerate.
+* **Repairs:** the online mutation prior gave no gain (182 vs 168 evaluations, 23/24 verified in both arms).

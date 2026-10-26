@@ -82,6 +82,10 @@ REGISTRY = {
     ("wave36", "confirm_world"): range(7611, 7621),
     # Wave 37 learner x change-detection interaction: dev (reusable) and one-use confirmation
     ("wave37", "dev"): range(831, 836), ("wave37", "confirm"): range(7701, 7706),
+    # Wave 38 broader programme: development (reusable) and one-use confirmation ranges (drawn only after the Stage 3 freeze)
+    ("wave38", "dev"): range(841, 851), ("wave38", "confirm_lodo"): range(7801, 7806),
+    ("wave38", "confirm_online"): range(7806, 7811), ("wave38", "confirm_evo"): range(7811, 7816),
+    ("wave38", "confirm_cont"): range(7816, 7821), ("wave38", "confirm_plan_repair"): range(7821, 7826),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.
