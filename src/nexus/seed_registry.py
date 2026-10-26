@@ -35,6 +35,9 @@ REGISTRY = {
     # Wave 26 Phase 4 / 5 / 6 dev ranges
     ("wave27_p4", "confirm"): range(4011, 4016), ("wave27_p5", "confirm"): range(5011, 5016),
     ("wave27_p6", "confirm"): range(6011, 6016),
+    # Wave 28 postcondition core filter (owner, 2026-10-26)
+    ("wave28_p4", "confirm"): range(4016, 4021), ("wave28_p5", "confirm"): range(5016, 5021),
+    ("wave28_p6", "confirm"): range(6016, 6021),
 }
 ONE_USE = {k for k in REGISTRY if k[1] != "dev"}
 
