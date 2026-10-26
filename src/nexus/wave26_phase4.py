@@ -188,11 +188,15 @@ class Library:
     def base_roles(self):
         return [r for r in PRIMITIVES if r not in self.deleted]
 
-    def tools(self, inputs, grammar=BASE, with_schemas=True):
+    def tools(self, inputs, grammar=BASE, with_schemas=True, provenance_holds=False):
         out = [t for t in binding_grammar(inputs, maps=False, **grammar)
                if t.fn.role in self.base_roles]
         if with_schemas:
             for s in sorted(self.schemas):
+                if provenance_holds and s[2] == "proj":
+                    # contract index (sound): every public output is a sub-multiset of its input, and a projecting
+                    # schema returns field values, never input items, so it cannot occur in any fitting chain
+                    continue
                 out += [Tool(c.name(), c, c.name(), kind="primitive", parts=(c.role,))
                         for c in instantiate(s, inputs, present=self.base_roles)]
         return out
@@ -288,7 +292,7 @@ def tiered_certify(public, query, tiers, m):
     return results, answers
 
 
-def solve(public, queries, oracle, lib, *, world_like, seed=0, label=""):
+def solve(public, queries, oracle, lib, *, world_like, seed=0, label="", extra_tools=()):
     """Router + synthesizer over one task (possibly several queries). Only public pairs, queries and charged
     oracle calls reach NEXUS. Base tier first (Occam). If the base tier fails, the router's diagnosis is the
     first repair tier that fits (library, dB, dC, else dM), but the ANSWER is certified over the union of every
@@ -300,17 +304,21 @@ def solve(public, queries, oracle, lib, *, world_like, seed=0, label=""):
     q0 = queries[0]
     route, invented, admitted, used_library, syn_cost = "base", [], [], False, 0
     try:
-        base_tools = lib.tools(inputs, with_schemas=False)
+        extra = list(extra_tools)          # e.g. opaque stdlib tools (unproved class: disables the barrier)
+        base_tools = lib.tools(inputs, with_schemas=False) + extra
         r0 = certify(public, q0, base_tools, 2, m)
         if r0.status != NONE_FOUND:
             tiers = {"base": (base_tools, 2)}
         else:
-            lib_tools = lib.tools(inputs, with_schemas=True)
-            ext_tools = lib.tools(inputs, grammar=EXTENDED, with_schemas=True)
-            barrier = provenance_barrier(public, lib, m)
+            prov = not provenance_barrier(public, Library(deleted=PRIMITIVES), m)
+            lib_tools = lib.tools(inputs, with_schemas=True, provenance_holds=prov) + extra
+            ext_tools = lib.tools(inputs, grammar=EXTENDED, with_schemas=True, provenance_holds=prov) + extra
+            barrier = provenance_barrier(public, lib, m) and not extra
             tiers = {}
             if not barrier:
-                tiers = {"library": (lib_tools, 2), "dB": (ext_tools, 2), "dC": (lib_tools, 3)}
+                # dC = recombination of BASE mechanisms (depth 3, base tools only); library schemas enter at
+                # depth <= 2 in the library / dB / dM tiers, so library growth never inflates the depth-3 search
+                tiers = {"library": (lib_tools, 2), "dB": (ext_tools, 2), "dC": (base_tools, 3)}
             w0 = m.total
             found = synthesize(public, q0, lib, m)
             syn_cost = m.total - w0
@@ -371,7 +379,7 @@ def solve(public, queries, oracle, lib, *, world_like, seed=0, label=""):
                 if lib.admit(sc, discovery_cost=syn_cost, where=label):
                     admitted.append(sc)
                     m.charge("class_verification_work_units", lib.schemas[sc]["class_check"])
-        if ok and route == "library":
+        if ok and route == "library" and "library" in results:
             for t in results["library"].hypotheses[0][2]:
                 if isinstance(t.fn, Comp) and t.fn.schema in lib.schemas:
                     lib.schemas[t.fn.schema]["reuse_tasks"] += 1
@@ -395,7 +403,7 @@ def _base_fits(public, query, lib, grammar, depth):
     return r
 
 
-def make_fault_task(world, rng, kind, *, deleted=()):
+def make_fault_task(world, rng, kind, *, deleted=(), hidden_choice=None):
     """kind in {dB, dC, dM, del:<primitive>}; label is returned for scoring only."""
     lib = Library(deleted=deleted)
     for _ in range(400):
@@ -411,7 +419,7 @@ def make_fault_task(world, rng, kind, *, deleted=()):
             b = [t.fn for t in lib.tools(xs, with_schemas=False)]
             chain = tuple(rng.choice(b) for _ in range(3))
         elif kind == "dM":
-            s = rng.choice(HIDDEN)
+            s = hidden_choice or rng.choice(HIDDEN)
             inst = instantiate(s, xs, present=lib.base_roles)
             if not inst:
                 continue
