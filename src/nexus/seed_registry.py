@@ -80,6 +80,8 @@ REGISTRY = {
     # Wave 36 architecture comparison: stage-C one-use confirmation ranges (run once, after freezing)
     ("wave36", "dev"): range(821, 826), ("wave36", "confirm_rep"): range(7601, 7606), ("wave36", "confirm_online"): range(7606, 7611),
     ("wave36", "confirm_world"): range(7611, 7621),
+    # Wave 37 learner x change-detection interaction: dev (reusable) and one-use confirmation
+    ("wave37", "dev"): range(831, 836), ("wave37", "confirm"): range(7701, 7706),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.

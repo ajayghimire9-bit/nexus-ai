@@ -9,6 +9,7 @@ from nexus import wave31_grammar as G
 from nexus import wave33_metalearner as M
 from nexus import wave34_learner as L
 from nexus import wave36_e1 as _E1  # noqa: F401  (loaded at start-up like every other solver module)
+from nexus import wave37_cd as _CD  # noqa: F401
 L.install_counter()       # deterministic op-unit counter for the learner's own accounting; identical for every arm
 
 
@@ -43,6 +44,18 @@ def main():
                 fr = F36.fragments_from(job["programs"])
                 out.update(frags=fr, frags_placebo=F36.placebo_fragments(fr, job["seed"]),
                            frags_fixed=F36.fixed_dsl_fragments())
+            sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
+        elif job["cmd"] == "cd_reset":
+            from nexus import wave37_cd as CD
+            S.online_reset(); CD.reset(job["mode"])
+            sys.stdout.write(json.dumps({"done": True}) + "\n")
+        elif job["cmd"] == "cd_solve":
+            from nexus import wave37_cd as CD
+            ev, meter, info = CD.solve(chan, job["view"], job["seed"])
+            sys.stdout.write(json.dumps({"done": True, "evidence": ev, "meter": meter, "info": info}) + "\n")
+        elif job["cmd"] == "cd_update":
+            from nexus import wave37_cd as CD
+            out = CD.update(job["candidate"], job["view"], job["certified"], job["rec"])
             sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
         elif job["cmd"] == "e1_reset":
             from nexus import wave36_e1 as E1
