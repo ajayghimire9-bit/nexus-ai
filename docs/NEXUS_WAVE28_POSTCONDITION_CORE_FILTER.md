@@ -126,3 +126,43 @@ Locked code sha256 (first 16 hex digits):
 * `wave28_core.py` `66b00ae079e8aec6`
 * `wave28_eval.py` `a494448264c4c78a`
 * `wave28_confirm.py` `8fcbe48c3af096b5`
+
+## Confirmation results (locked `038f228`; fresh seeds; all replays identical)
+
+**Runs.**
+* Phase 4: 165 s. Phase 5: 616 s. Phase 6: 526 s.
+* Replays: 15/15 units identical (5 per phase).
+
+**Artifacts (sha256, first 16 hex digits).**
+* Phase 4: `1215698b1c810f9c`. Phase 5: `a60d14c28b1b9212`. Phase 6: `6e2afd6b06351050`.
+* Group B + ARC check: `984f6f0718982ad1`.
+
+| Phase | Gate | Result |
+| --- | --- | --- |
+| 4 (4016–4020) | router | PASS: 90/90 routed (ΔB 26 solved, ΔC 25, ΔM 30) |
+| | primitives | **FAIL**. F **8/10** streams (47.4k → 35.5k), S 5/10 (11.6k → 12.0k), Sort 10/10 (4.2k → 1.5k) |
+| | false certificates | **2** (both ΔB, fresh library) |
+| 5 (5016–5020) | revisit | **FAIL**: 0.458 / 0.905 / **1.103** |
+| | interference | PASS: −4.6% |
+| | retirement | 15/15 retired, but 1 false certificate, so **FAIL** |
+| 6 (6016–6020, compositional) | cost | 5/5 |
+| | AUC | 4/5 |
+| | coverage | 5/5 |
+| | joint (cost + AUC + coverage) | **4/5: FAIL** |
+| | raw slope (secondary) | 3/5 |
+| | false certificates | **5** (Fresh 2, Placebo 2, Experienced 1) |
+| Paired Group B + ARC | coverage ≥ 10/40 every arm | **FAIL**: 9/40 for each arm in every ordering (Wave 26 10, Wave 27 0 / 2 / 2) |
+| | Experienced cost / AUC wins | 5/5 / 5/5 (13.1M vs 44.3M) |
+| | false certificates | 0 |
+
+**G_soundness FAIL: 8 false certificates.** All 8 were re-solved after the run: every one reproduces with the
+Wave 27 engine and with the unpruned certifier. **None is caused by the Wave 28 index or by removing the library
+audit.**
+* **Phase 4 (2).** Minimal-size certificates: a 1-step program fits the public pairs of a 2-step ΔB teacher.
+* **Phase 6 (5).** On compositional targets, a single ΔM invention fits the public pairs of a 2-mechanism teacher
+  outside the single-invention space. One Experienced core answer passed its reordered-query audit.
+* **Phase 5 (1).** A library-route coincidence on a drifted world (5019:11:2). The Wave 27 engine's library
+  audit *passed* the same certificate.
+
+The compositional targets and new seeds exposed a limitation that the Wave 26 and Wave 27 seeds did not happen to
+contain.
