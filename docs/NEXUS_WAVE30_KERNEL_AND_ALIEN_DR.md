@@ -233,3 +233,132 @@ Code: `src/nexus/wave30_skeleton.py`; tests included. Not evaluated.
 * `final_sealed` is preserved. Wave 31 and Wave 32 remain provisional.
 
 **Budget:** increment 2 used about 1,500 s. About 5,700 s remain.
+
+---
+
+# Increment 3 (NOT LOCKED): reconciliation, invariance law, sound work reduction, Checker v2, coder diagnosis
+
+## 1. Reconciling the matched-scope A1b arms on admission_val (useful 72 / none 74 / shuffled 73)
+
+Only **4 of 80** tasks differ. They were re-run with full instrumentation
+(`scripts/wave30_reconcile.py` → `artifacts/wave30_reconcile.json`, which holds every observation).
+
+| Task (seed / index) | Arm | Initial public pairs | Oracle observations (cost) | Scope | Budget / completeness | Kernel label | Correct |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 7001 / 10 | useful | 4 | 1 (20) | 414 A1 tools, depth 2, exhaustive | complete | exhaustive_UNIQUE | yes |
+| | none | 4 | 1 (20) | same | complete | exhaustive_UNIQUE | yes |
+| | shuffled | 4 | 2 (40) | same | complete | exhaustive_UNIQUE | yes |
+| 7001 / 14 | useful | 4 | 2 (40) | 85 tools | complete | exhaustive_UNIQUE | yes |
+| | none / shuffled | 4 | 1 (20) | same | complete | exhaustive_UNIQUE | yes |
+| 7002 / 4 | **useful** | 4 | **3 (60), probe budget used up** | 414 tools | complete | **AMBIGUOUS (k = 2, exact)** | **no** |
+| | none / shuffled | 4 | 2 (40) | same | complete | exhaustive_UNIQUE | yes |
+| 7005 / 2 | **useful, shuffled** | 4 | **3 (60), probe budget used up** | 414 tools | complete | **AMBIGUOUS (k = 2, exact)** | **no** |
+| | none | 4 | 1 (20) | same | complete | exhaustive_UNIQUE | yes |
+
+**Explanation.**
+* The declared scope was identical in every case, and all checking completed (no budget exhaustion).
+* The arms differ only in **which oracle observations they collected**.
+* The prover stopped each level at the first two disagreeing witnesses, and those depend on candidate order. It
+  then designed the probe to split *those two*.
+* Under the useful-history order, the first witnesses were same-family near-duplicates (for example tail-k
+  variants). Their probes did not separate the true competitor (an order or projection variant), so after the
+  3-probe budget a 2-way ambiguity remained.
+* For each arm's final observation set, the kernel's verdict is identical under 3 random tool orders.
+
+**Invariance law (permanent regression tests, `tests/test_wave30_invariance.py`).**
+* With identical final observations, identical declared scope and completed checking, the kernel verdict is
+  invariant to tool order and to demonstration order.
+* With the new **order-invariant prover mode** (probe design over all class representatives, canonical
+  enumeration order), the final observations themselves do not depend on candidate order.
+
+**Fairness defect found and fixed.** Increment 2 seeded probe-design randomness by **arm name**, so arms at matched
+scope saw different candidate probe inputs. It is now seeded by task.
+
+**Result in order-invariant mode (admission_val).** A1 and A1b-full (useful) give **identical outcomes on 80 / 80
+tasks**: 76 correct, all exhaustive, 4 AMBIGUOUS. The only difference is A1b's proposal-generation cost, +1,920
+units. The order-invariant probe design also raises coverage (76 vs 72–74 under early-stop design).
+
+**Conclusion.** The negative result stands: this candidate-reordering prior gives no benefit at matched exhaustive
+strength. Under order-invariant probing it cannot change anything by construction. This does not generalise to
+experience-based learning in general.
+
+## 2. Sound work reduction at fixed scope and verdict
+
+Measured on the 80 admission_val evidence objects with the frozen v1 kernel. Evaluations were counted by wrapping
+the kernel's `apply` at runtime; the file is unchanged. Artifact: `artifacts/wave30_workreduce.json`.
+
+| Variant | Kernel evaluations | Chains checked | Preparation work | Net vs no lemmas |
+| --- | --- | --- | --- | --- |
+| no lemmas | 13.41M | 6.67M | 0 | — |
+| all lemmas (baseline) | 11.84M | 5.89M | 8k | **−11.7%** |
+| selective lemmas (keep only for tools surviving demonstration 1) | 13.38M | 6.66M | 19k | −0.1% |
+| fail-fast demonstration order + all lemmas | 11.70M | 5.89M | 94k | −12.1% (−0.45% vs all lemmas) |
+| fail-fast + selective | 13.25M | 6.67M | 105k | −0.5% |
+
+**The verdict was identical in every variant.**
+* Lemma activation is the effective mechanism. A lemma prunes whole chains before any evaluation, so my
+  "selective" predictor, which dropped lemmas for tools that demonstration 1 rejects, discarded most of the
+  benefit.
+* Fail-fast ordering gives about 1.2% fewer evaluations but costs most of that in its own estimation.
+
+## 3. Checker v2
+
+* **Spec first:** `docs/NEXUS_CHECKER_V2_SPEC.md`.
+* **Implementation:** `src/nexus/checker_kernel_v2.py`. Standard library only, no NEXUS imports. Pinned
+  sha256 `bffb627b…5c37`, committed in `37f59c2`. AGENTS.md RULE 2 extended.
+* **Added semantics:**
+  * 2-D grids, move-set connectivity, wrapped coordinate maps, and table-defined cellwise group arithmetic;
+  * middle-IR adapters (ObjectSet, RelationGraph, Counter) for `decode(g(encode(x)))`;
+  * deterministic step and size bounds, and an ERROR token;
+  * AMBIGUOUS returns two concrete witness programs; k is exact for exhaustive scopes.
+* **Validation (13 tests):**
+  * hand-derived grids for coord, knight connectivity, Z2 × Z2 cellwise, and adapters;
+  * bounded exhaustive properties: coord identity and composition closure over all 2 × 2 binary grids and params;
+    connectivity fill and monotonicity over all 3 × 3 binary grids; object round-trip over all 3 × 3 binary grids;
+  * adversarial evidence: a tampered answer, a wrong version, an unknown op, a mis-cited lemma, a lemma on a grid
+    op, oversize and ragged values, an all-ERROR query, disagreeing consistent programs, and tool / pair
+    permutations.
+* The v2-vs-v1 list comparison is a regression check only, not evidence of correctness.
+* **v1 is untouched** (`5082402f…`).
+
+## 4. Coder diagnosis (local models only; CPU; no paid services; no grant reactivated)
+
+**Hardware.** Apple M4, 16 GB, 10 cores. Metal and MPS are available, and torch MPS is available. The engine used
+**CPU because the Metal path is gated by `NEXUS_EXPLICIT_METAL_GRANT=1`**, which was not set. That is a
+deliberate safety gate, left off per instructions; its config caps Metal at 600 s per session and 4 GiB RSS. MLX
+is not installed.
+
+**Checkpoints tested:**
+* `qwen2.5-1.5b-instruct-q4_k_m.gguf`;
+* `qwen2.5-coder-1.5b-instruct-q4_k_m.gguf` (found in `~/Projects/nexus-ai/.models`).
+
+**Smoke suite.** 8 dev tasks, up to 4 feedback attempts each, 32 attempts per row. Buckets per attempt:
+(a) unparsable / invalid / too long, (b) runtime error, (c) valid but fails public, (d) fits public but wrong on
+held-out.
+
+| Model, prompt | (a) unparsable / invalid / too long | (b) runtime | (c) fails public | (d) public fit, held-out wrong | Correct |
+| --- | --- | --- | --- | --- | --- |
+| 1.5B-instruct, original | 11 / 0 / 0 | 17 | 4 | 0 | 0/8 |
+| 1.5B-instruct, few-shot | 4 / 0 / 0 | 19 | 9 | 0 | 0/8 |
+| coder-1.5B, few-shot | 20 / 0 / 0 | 12 | 0 | 0 | 0/8 |
+| 1.5B-instruct, v3 fixed prompt | 0 / 0 / 2 | 25 | 5 | 0 | 0/8 |
+| coder-1.5B, v3 | 2 / 2 / 7 | 12 | 9 | 0 | 0/8 |
+| 1.5B-instruct, v4 (v3 + declared scalar-path adapter) | 0 / 0 / 2 | 9 | **21** | 0 | 0/8 |
+| coder-1.5B, v4 | 2 / 2 / 7 | 3 | **18** | 0 | 0/8 |
+
+**Integration defects found and fixed:**
+* copying the literal placeholder `P`;
+* leaking few-shot field names (`a`, `b`);
+* silently rejecting programs with more than 2 steps;
+* markdown fences;
+* invented field names on scalar lists, now handled by a declared, charged adapter available to every arm.
+
+**After the fixes, failures are valid programs that fail the public examples. At 1.5B, the bottleneck is model
+capability.** These results are tied to these two checkpoints only. They are not evidence about coders in general.
+
+**Stronger local model (estimates, not measured).**
+* Qwen2.5-Coder-7B-Instruct Q4_K_M: about 4.7 GB download, about 6 GB RAM, which fits in 16 GB.
+* On this CPU it would run at roughly 1–2 s per generated token including prompt evaluation (about 5× the 1.5B),
+  so the 16-task A2 smoke would take about 40–60 min. With the Metal grant, an estimated 5–8× faster.
+* A 14B Q4 model (about 9 GB) is marginal on 16 GB.
+* Downloading needs network access and owner approval. Until then A2 / A3 / A4 are **`BLOCKED_MODEL_QUALITY`**.
