@@ -44,6 +44,9 @@ REGISTRY = {
     # Wave 30 three-way split (owner, 2026-10-26): dev; admission_val (used only to ADMIT representations /
     # skeletons, never for final claims; reusable for admission decisions); final_sealed is generated later
     ("wave30", "dev"): range(751, 756), ("wave30", "admission_val"): range(7001, 7006),
+    # final_sealed: counterfactual-world instances drawn ONLY by a locked runner after the generator
+    # (src/nexus/wave30_alien.py) and models are frozen; never drawn during development or admission
+    ("wave30", "final_sealed"): range(9301, 9311),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val")}
 
