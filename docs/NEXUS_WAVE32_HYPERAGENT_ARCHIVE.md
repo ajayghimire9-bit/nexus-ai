@@ -69,3 +69,68 @@
 * **Expected ceiling, stated in advance:** under Checker v2 the kernel is about 98% of evaluator_work at depth 4
   (increment 3). The editable scope can therefore change only a few percent of total work at depth 3, and any
   improvement is bounded accordingly.
+
+# Results (NOT LOCKED)
+
+## Evolution (dev 771–773)
+
+* **Scale:** Gen 0 + 10 generations × 6 children = 61 genomes (`artifacts/wave32_archive.json`, with full lineage).
+* **Admission:** all 61 admitted. Every detector was 0 for every genome, all 11 replays matched, and D4 integrity
+  held in every generation.
+* **Fitness:** every genome was 126/126 correct with 0 wrong, so fitness was decided by work alone.
+* **Best:** g1c2, found in generation 1, at 37.41 G vs Gen 0's 40.28 G (−7.1%). Its single mutation is
+  `online: True → False`.
+* **Archive pattern:** every genome near the top has online learning off, or learning made inert. Later
+  generations found no further gain beyond noise.
+
+## Selection (dev 774–775)
+
+| Genome | Work | Note |
+| --- | --- | --- |
+| g1c2 | 24.38 G | champion |
+| g4c2 | 24.38 G | online off |
+| g6c1 | 24.38 G | online off |
+| Gen 0 | 26.10 G | |
+
+Champion: g1c2 = Gen 0 with online learning off.
+
+## Test (held-out grids, wave32 test 7201–7205, claimed whole, run once; 120 tasks per arm, from an empty library)
+
+| Arm | Correct / exhaustive / wrong | evaluator_work | Child (incl. learning) | Kernel | Detectors |
+| --- | --- | --- | --- | --- | --- |
+| Gen 0 | 120 / 120 / 0 | 59.20 G | 10.61 G | 48.54 G | all 0 |
+| **Gen k (g1c2)** | 120 / 120 / 0 | **55.33 G (−6.5%)** | 6.75 G (−36%) | 48.53 G | all 0 |
+| Gen 0, online off | 120 / 120 / 0 | 55.32 G | 6.74 G | 48.53 G | all 0 |
+| Gen k, online off (= Gen k) | 120 / 120 / 0 | 55.32 G | 6.74 G | 48.53 G | all 0 |
+
+* **Per seed:** Gen k / Gen 0 ranges over 0.922–0.941, with Gen k cheaper in 5/5 seeds. The replay (7203, Gen k)
+  matched, and D4 held.
+* **T1:** PASS.
+* **T2:** Gen k is 6.5% cheaper than Gen 0, consistent over 5/5 seeds.
+* **T3, the decisive readout:** the entire gain is the removal of online learning.
+  * Gen 0 with online learning off equals Gen k to within 0.02%, which is the meter's noise floor (two identical
+    genomes differ by 0.017%).
+  * Online learning changed coverage on 0 of 120 tasks, and cost +7% (0.82 G of rebuilds + 3.1 G of macro-search
+    overhead).
+* **T4:** PASS.
+
+## Reading
+
+* **No learning-procedure improvement was found.** Within this bounded genome, the procedure evolution's best
+  move was to *stop learning*. Under Checker v2 at depth 3:
+  * the kernel is 82% of the work, and it is identical for every procedure;
+  * the base grammar is already cheap to search;
+  * learned macros only add search and rebuild cost.
+
+  The archive, lineage and detectors worked as intended, and the loop optimised the external meter honestly. That
+  includes finding the "do less" solution rather than gaming the meter.
+* **This is a negative result about this regime, not about learning-to-learn in general.** It agrees with Wave 31
+  increments 2 and 3: experience can only pay where proposal or verification cost is something experience can
+  reduce.
+* **What would change the picture:**
+  * a sound class-enumerating Checker v3, about 19× cheaper verification (projected). The solver share would then
+    rise, and proposal savings would matter;
+  * verifiable algebraic pruning proofs (would cover 8.4% of the scope);
+  * deeper or larger scopes.
+
+  All of these need owner decisions, and v3 needs a RULE 2 authorisation.
