@@ -194,6 +194,22 @@ class Evaluator:
         child.send(dict({"cmd": "library", "programs": programs, "seed": seed, "views": list(views)}, **kw))
         return child.recv()["result"]
 
+    def lsolve(self, child, task, program, seed):
+        """Milestone B: the child's learner program decides how to solve; graded and metered exactly like solve()."""
+        meter = {}
+        task.pop("_oracle_log", None)
+        c0, t0 = instructions(child.p.pid), time.perf_counter()
+        child.send({"cmd": "l_solve", "view": {"public": task["public"], "query": task["query"]}, "program": program,
+                    "seed": seed})
+        msg = self._serve(child, task, meter)
+        meter["child_instr"] = instructions(child.p.pid) - c0
+        meter["wall_s"] = time.perf_counter() - t0
+        row = self.grade(task, msg, meter)
+        ev = msg.get("evidence")
+        row["flag_scope_mismatch"] = bool(ev is not None and not G.is_matched(ev["scope"], self.depth))
+        row["used"] = [msg["info"].get("used_macros"), msg["info"].get("used_prior")]
+        return row
+
     def solve(self, child, task, arm, mode, library, seed, policy=None):
         meter = {}
         task.pop("_oracle_log", None)

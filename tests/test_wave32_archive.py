@@ -61,3 +61,17 @@ def test_v3c_genome_and_low_reuse_stops_rebuilds():
     S.online_reset()
     S.ONLINE.update(macro_attempts=10, macro_hits=1)
     assert S.online_update(p, dict(A.GEN0_V3C))["rebuilt"]
+
+
+def test_metalearner_dsl_is_closed_and_validated():
+    from nexus import wave33_metalearner as M
+    rng = random.Random(3)
+    p = M.validate(dict(M.GEN0_ON))
+    for _ in range(300):
+        p = M.mutate(p, rng)
+        M.validate(p)
+    bad = dict(M.GEN0_ON, admit=["exec", "import os"])
+    with pytest.raises(ValueError):
+        M.validate(bad)
+    with pytest.raises(ValueError):
+        M.validate(dict(M.GEN0_ON, plan={"macro": {"depth": 3, "when": ["true"]}, "prior": {"when": ["true"]}}))

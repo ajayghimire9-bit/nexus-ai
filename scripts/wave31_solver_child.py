@@ -6,6 +6,7 @@ import sys
 from nexus import wave31_solver as S
 from nexus import wave33_prior as P          # loaded at start-up for every arm (code loading is not a learning cost)
 from nexus import wave31_grammar as G
+from nexus import wave33_metalearner as M
 
 
 class Chan:
@@ -34,6 +35,16 @@ def main():
         elif job["cmd"] == "fit_prior":
             pr = P.fit_prior(job["programs"], G.G_P, job["views"], job["alpha"], job["lam"])
             out = {"learned": pr, "placebo": P.permuted_prior(pr, job["seed"]), "uniform": P.uniform_prior(len(G.G_P))}
+            sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
+        elif job["cmd"] == "l_reset":
+            S.online_reset(); M.reset()
+            sys.stdout.write(json.dumps({"done": True}) + "\n")
+        elif job["cmd"] == "l_solve":
+            M.validate(job["program"])
+            ev, meter, info = M.solve(chan, job["view"], job["program"], job["seed"])
+            sys.stdout.write(json.dumps({"done": True, "evidence": ev, "meter": meter, "info": info}) + "\n")
+        elif job["cmd"] == "l_update":
+            out = M.update(job["program"], job["candidate"], job["view"], job["certified"])
             sys.stdout.write(json.dumps({"done": True, "result": out}) + "\n")
         elif job["cmd"] == "online_reset":
             S.online_reset()

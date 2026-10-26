@@ -94,3 +94,35 @@ learning cost, at matched exhaustive_UNIQUE strength.
 * The gain is 2.3% of total work, because the checker (identical across arms) dominates.
 * One task family and one grammar were tested.
 * The held-out mechanisms reuse ops and types seen in source; they are new compositions, not new primitives.
+
+## Milestone B: protocol (LOCKED selection criterion; committed before evolution starts)
+
+* **Editable object:** a **compositional learner program** in a closed, typed DSL (`src/nexus/wave33_metalearner.py`),
+  interpreted inside the sandboxed solver and never executed as Python. Evolution writes and composes:
+  * the proposal plan: macro and/or learned-prior stages, guarded by Boolean expressions over observed stream
+    statistics (repeat rate, macro and prior hit rates, counts, library size);
+  * abstraction-extraction triggers (Boolean expressions);
+  * skeleton heuristics;
+  * credit and admission: arithmetic scoring expressions over per-macro support, credited hits, age and length;
+  * the probe policy;
+  * proof citation (lemma generation), also a Boolean expression.
+
+  The complete fallback search is always appended, so no program can lose completeness.
+* **Fixed:** Checker v3, the sandbox, the OS meter, G_P, the matched depth-4 scope and the detectors.
+* **LOCKED selection criterion** (the only one; no human selection amendments):
+  * **Stream score:** learner `evaluator_work` (including every metered update) / the GEN0_OFF learner's work on the
+    same stream.
+  * **Fitness:** the mean stream score over 9 fitness streams (wave33 dev 791–793 × {2 rep, 3 rep, mixed 2→3}; two
+    seeded domains per seed; increment-3 family).
+  * **Admission:** wrong = 0, all 5 detectors 0, and a matching replay when replayed (one child per generation).
+  * **Archive:** seeded with GEN0_ON, GEN0_OFF and SEED_PRIOR. Then 8 generations × 6 children, each mutated from a
+    2-way-tournament archive parent.
+  * **Selection:** the top 5 by fitness are re-scored on wave33 valsel 796–800 (15 streams). **The winner is the
+    lowest mean valsel score.**
+* **Test** (one-use wave33 test 7301–7305, run once):
+  * **Data:** the **unseen family F2** (IR-routed mechanisms that appear in no earlier family), at 2 and 3
+    repetitions, from an empty library.
+  * **Arms:** the evolved learner, Gen 0 learning ON (GEN0_V3C), Gen 0 learning OFF, and the frozen a0c2 gate.
+  * **Predeclared success:** the evolved learner's pooled work (both cells) < each of the three, and lower than
+    each in ≥ 4/5 seeds, with 0 wrong and 0 flags.
+  * **Replay:** 7303 at 3 reps.
