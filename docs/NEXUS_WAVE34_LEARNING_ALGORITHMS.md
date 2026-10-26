@@ -97,3 +97,71 @@ the invested and lookup costs. Item scores are evolved formulas.
 * **Including search cost:** the totals with search_instr added, and the break-even number of streams =
   search_instr / mean per-stream saving against the strongest fixed learner.
 * **Replay:** F3 seed 7503 at 3 reps.
+
+## Wave 35 results (NOT LOCKED)
+
+**Final evolution** under the locked criterion (`artifacts/wave34_final_state.json`): 84 programs, all admitted, all
+detectors 0, every replay that ran matched, and D4 held.
+
+| Program | Score (fitness) |
+| --- | --- |
+| SEED_PRIOR (seed) | **0.948** |
+| best evolved (g5c4) | 0.956 |
+| SEED_ON | 1.067 |
+| SEED_OFF | 1.043 |
+| FIXED_PAYOFF | 1.025 |
+
+**Locked selection** (valsel 809–813): the winner is **g0c2 = the SEED_PRIOR archive seed** (valsel 0.9446, 0/20
+losses), ahead of g5c4 (0.9563) and g10c1 (0.9564). It was frozen at 9950e88 before any confirmation seed was drawn.
+
+**Discovery cost:** `search_instr` = **33,960.7 G** (evolution 30,634 G + selection 3,327 G).
+
+**Frozen learner (exact code):**
+
+```json
+{"use": {"m": ["false"], "p": ["true"], "x": ["false"]}, "extract": {"m": ["false"], "p": ["true"]},
+ "pscore": ["const", 1], "alpha": 1.0, "lam": 0.8, "refit": 4, "score": ["const", 1], "cap": 200, "explore": 0,
+ "macro_depth": 2, "max_holes": 1, "min_support": 1, "probe": {"mut": 2, "tries": 300}}
+```
+
+That is: learn the fragment prior and the tool knowledge online from certified solutions, refit every 4 certified
+tasks, always propose with it, and use no macros and no proofs. **No new mechanism was discovered by evolution**;
+this is the Milestone A mechanism, learned online.
+
+### One-shot multi-family confirmation (one-use seeds, run once; the same frozen learner, no family flags)
+
+Every family and arm: **100% solved, 0 wrong, 0 detector flags**. The replay (F3 7503 at 3 reps) matched, and D4 held
+for every family. Work is in G retired instructions.
+
+| Family (tasks) | Evolved | Fresh-v3 | Placebo-v3 | Gen 0 ON | Gen 0 OFF | a0c2 | Fixed-payoff | Strongest fixed | vs Fresh | vs Placebo | vs strongest | Pass |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| F2 IR-routed (250) | **103.04** | 110.01 | 115.80 | 106.89 | 109.58 | 105.87 | 108.47 | a0c2 | 0.937 (5/5) | 0.890 (5/5) | **0.973 (4/5)** | **yes** |
+| F3 unseen (200) | 75.48 | 75.63 | 80.32 | 75.34 | 76.14 | **73.93** | 77.41 | a0c2 | 0.998 (4/5) | 0.940 (5/5) | **1.021 (0/5)** | no |
+| F4 unseen counter outputs (200) | 69.68 | 66.96 | 71.41 | 68.15 | **66.95** | 67.05 | 70.86 | Gen 0 OFF | **1.041 (0/5)** | 0.976 (5/5) | **1.041 (0/5)** | no |
+| mixed, non-stationary (980) | **395.22** | 441.54 | 463.23 | 457.24 | 440.54 | 441.39 | 461.59 | Gen 0 OFF | 0.895 (5/5) | 0.853 (5/5) | **0.897 (5/5)** | **yes** |
+| **all (1,630)** | **643.4** | 694.1 | 730.8 | 707.6 | 693.2 | 688.2 | 718.3 | (per family) 687.3 | 0.927 | 0.880 | **0.936** | **2 / 4** |
+
+**Including discovery cost:** (643.4 + 33,960.7) / 687.3 = **50.3×** the strongest fixed learners. The saving is
+1.10 G per stream, so break-even comes after **≈ 31,000 streams** of this size.
+
+### Reading
+
+* **The bar is not met.** The single frozen learner beats Fresh-v3, Placebo-v3 and the strongest fixed learner in 2
+  of 4 families: F2, and the long non-stationary mixed streams, where it is −10.3% vs the best fixed learner in 5/5
+  seeds.
+* **It fails on both genuinely unseen families.**
+  * On F3 it is +2.1% vs the a0c2 gate, in 0/5 seeds.
+  * On F4 (counter-valued outputs) it is +4.1% vs no learning, in 0/5 seeds. There the online prior's fitting cost
+    and its misdirected ordering outweigh its savings.
+* **Pooled over all 1,630 tasks:** 0.936 vs the per-family strongest fixed learner, and 0.880 vs Placebo.
+* **Learned knowledge is relevant, not just engineering.** Placebo-v3 loses to the real learner in all 4 families,
+  in 20/20 seeds.
+* **The self-evolution claim is negative.** Under a locked, zero-amendment criterion, 80 evolved programs did not
+  beat the simplest seed; the payoff ledgers and evolved Score / credit formulas never produced a better learner.
+  The discovery cost (34 T instructions) is also ~31,000 streams away from being repaid.
+* **What would change this:**
+  * learners that can *turn learning off per family from measured payoff*. FIXED_PAYOFF tried this by hand and was
+    worse, because its ROI estimates rely on a cost model that is noisy early in a stream;
+  * richer acquisition (new verified law kinds, which need a new checker version);
+  * fitness streams that include counter-valued and string-output families. They were absent from training by
+    design, and that is exactly where the learner failed.
