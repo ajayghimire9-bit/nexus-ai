@@ -41,8 +41,11 @@ REGISTRY = {
     # Wave 29 Occam margin + x_verify (owner, 2026-10-26)
     ("wave29_p4", "confirm"): range(4021, 4026), ("wave29_p5", "confirm"): range(5021, 5026),
     ("wave29_p6", "confirm"): range(6021, 6026),
+    # Wave 30 three-way split (owner, 2026-10-26): dev; admission_val (used only to ADMIT representations /
+    # skeletons, never for final claims; reusable for admission decisions); final_sealed is generated later
+    ("wave30", "dev"): range(751, 756), ("wave30", "admission_val"): range(7001, 7006),
 }
-ONE_USE = {k for k in REGISTRY if k[1] != "dev"}
+ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val")}
 
 
 def _check_disjoint():

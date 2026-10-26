@@ -154,3 +154,13 @@ hash committed in the repository.**
   identical digest), `G_tycho` (every unit on one meter).
 - One branch per phase, from the prior phase's verified commit; protocol committed before its confirmation
   seeds run once; `main` untouched.
+
+## Wave 30 Checker Kernel rule (owner request, 2026-10-26)
+
+**RULE 2 (READ-ONLY CHECKER KERNEL): `src/nexus/checker_kernel.py` is the trusted checker. Agents that develop,
+tune, or debug NEXUS must not modify it. Its sha256 is pinned in `src/nexus/checker_kernel.sha256` and enforced
+by `tests/test_checker_kernel.py`. Any change requires explicit owner approval, recorded in the commit message,
+followed by a new pin.**
+* Only the kernel's labels (`exhaustive_UNIQUE`, `proposal_relative_UNIQUE`, `AMBIGUOUS(k)`, `ABSTAIN`) count as
+  certificates in Wave 30+ results.
+* The prover communicates with the kernel only through a JSON-serialisable Evidence Object.
