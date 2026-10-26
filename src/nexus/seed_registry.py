@@ -31,6 +31,10 @@ REGISTRY = {
     ("phase4", "dev"): range(721, 726), ("phase4", "confirm"): range(4001, 4006),
     ("phase5", "dev"): range(731, 736), ("phase5", "confirm"): range(5001, 5006),     # dev 731-735 (owner, 2026-10-26)
     ("phase6", "dev"): range(741, 746), ("phase6", "orderings_confirm"): range(6001, 6006),   # dev 741-745
+    # Wave 27 robust architecture (owner, 2026-10-26): fresh one-use confirmation ranges; dev reuses the
+    # Wave 26 Phase 4 / 5 / 6 dev ranges
+    ("wave27_p4", "confirm"): range(4011, 4016), ("wave27_p5", "confirm"): range(5011, 5016),
+    ("wave27_p6", "confirm"): range(6011, 6016),
 }
 ONE_USE = {k for k in REGISTRY if k[1] != "dev"}
 
