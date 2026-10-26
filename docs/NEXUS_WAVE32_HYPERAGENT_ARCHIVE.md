@@ -451,3 +451,20 @@ cell, with 0 wrong and 0 flags. Among the secondaries, a4c2 also meets the crite
 * **Comparison:** always-ON, always-OFF and frozen-a0c2, on one-use `wave32 mixed` 7221–7225, run once.
 * **Readouts:** frozen-a0c2 / min(ON, OFF) per cell and per seed, correctness, detector counts, and a replay.
 * **Status:** a baseline record, not a new claim.
+
+## Mixed-stream baseline results (7221–7225, run once; `artifacts/wave32_mixed.json`)
+
+| Domain (tasks) | always-ON | always-OFF | frozen-a0c2 | gate / min(ON, OFF) (seeds) | ON / OFF |
+| --- | --- | --- | --- | --- | --- |
+| Source (700) | 266.43 | **230.73** | 249.14 | **1.080 (0/5)** | 1.155 |
+| Target (280) | 189.36 | 210.72 | **186.61** | **0.986 (5/5)** | 0.899 |
+
+* **Correctness:** all 100% correct, 0 wrong and 0 detector flags. The replay (7223, Target, gate) matched, and D4
+  held.
+* **Reading: negative for robustness.**
+  * On long mixed Source streams (140 tasks), cores recur across segments, so the repeat-rate gate opens.
+  * Learning then costs more than it saves, as the library grows and macro proposal becomes overhead.
+  * The gate cuts that loss roughly in half relative to always-ON, but loses 8.0% to always-OFF.
+  * On mixed Target streams it beats both.
+* **Conclusion:** a single scalar gate on the *repeat rate* is not a reliable regime detector. It measures recurrence,
+  not whether learning is paying.
