@@ -152,3 +152,41 @@ Champion: g1c2 = Gen 0 with online learning off.
 * **Test:** one-use `wave32 test_v3` 7206–7210, on held-out grids (n_per = 3, an empty library).
 * **Arms:** Gen k, Gen 0 learning ON, Gen 0 learning OFF, and Gen k learning OFF. Readouts are per seed and pooled;
   a replay of 7208 for Gen k must match.
+
+## Results of the targeted v3 check (NOT LOCKED)
+
+* **Evolution:** 17 genomes (`artifacts/wave32_v3_archive.json`). All were admitted, all detectors were 0, 5/5
+  replays matched, D4 held, and every genome was 120/120 correct.
+* **Selection (774–775):** the champion is **v4c3**, which is Gen 0 with `online: False`, `proofs: all` and
+  `min_support: 2`.
+
+**Test (held-out grids, one-use 7206–7210, 120 tasks per arm, from an empty library):**
+
+| Arm | Correct / wrong | evaluator_work | Child | Checker |
+| --- | --- | --- | --- | --- |
+| **Gen 0, learning ON** | 120 / 0 | **86.11 G** | 18.81 G (incl. 0.89 G of rebuilds) | 67.05 G |
+| Gen 0, learning OFF | 120 / 0 | 91.35 G | 24.05 G | 67.06 G |
+| Gen k (v4c3) | 120 / 0 | 90.46 G | 24.08 G | 66.13 G |
+| Gen k, learning OFF (= Gen k) | 120 / 0 | 90.44 G | 24.08 G | 66.11 G |
+
+* **Per seed:**
+  * Gen 0 ON / Gen 0 OFF = 0.928–0.950, so learning pays in 5/5 seeds;
+  * Gen k / Gen 0 ON = 1.043–1.068, so Gen k is worse in 5/5;
+  * Gen k / Gen 0 OFF = 0.989–0.991.
+* **Checks:** the replay (7208, Gen k) matched, D4 held, and all detectors were 0.
+
+## Reading
+
+* **Under Checker v3, the online learning procedure pays on a held-out domain at matched exhaustive strength.**
+  Gen 0 with learning ON is 5.8% cheaper than with it OFF, with rebuild costs included, 0 wrong, and an empty
+  library at the start. This is the first verified net-positive *learning-procedure* effect in Waves 30–32. It is
+  a within-stream effect: no source learning is charged, because there is none.
+* **The procedure evolution did not find it, and selected against it.** On the evolution domains (records,
+  strings, graphs) online learning did not pay, so the archive converged on learning OFF. That choice
+  transferred badly: Gen k is 5.1% worse than Gen 0 ON on grids. Its only real gain is the generic proofs (−1%).
+* **Disclosed confound:** the test streams use n_per = 3 repetitions per mechanism and the evolution streams use
+  n_per = 2. More repetition gives a learned library more reuse, so part of the sign flip may come from this
+  design asymmetry rather than from domain shift.
+* **Implication:** fitness must be measured on streams that resemble the deployment regime (repetition rate,
+  domain), or the evolution will optimise away learning. A next check would rerun selection with matched n_per
+  and a multi-domain fitness. It needs an owner decision and fresh one-use seeds.

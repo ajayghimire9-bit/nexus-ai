@@ -491,3 +491,29 @@ Committed before the outcomes of dev 762–765 and val_v3 7111–7115. Dev 761 (
 
   The Wave 32 check would be a small evolution under v3 (≤ 4 generations × 4 children), then Gen k vs Gen 0
   (learning OFF) vs Gen 0 (learning ON) on held-out grids, on a fresh one-use range.
+
+## 4-way results under Checker v3 (val_v3 7111–7115, run once; replay of 7113 identical; dev 761–765 agrees)
+
+280 target tasks per config, all 280 exhaustive_UNIQUE and correct, 0 wrong, 0 INVALID_EVIDENCE, 0 detector flags.
+Work is `evaluator_work` (G retired instructions).
+
+| Config | Total | Child (solver) | Checker |
+| --- | --- | --- | --- |
+| Fresh-v2 | 1,649.4 | 33.6 | 1,615.3 |
+| Fresh-v3 | 127.1 | 33.7 | 92.8 |
+| Fresh-v3-allP (generic proofs) | 125.2 | 33.7 | 91.0 |
+| Experienced-v3 | 119.1 | 27.5 | 91.1 |
+| Placebo-v3 | 132.0 | 40.1 | 91.3 |
+
+1. **Fresh-v3 vs Fresh-v2: 13.0× cheaper** (5/5 seeds, 12.6–13.2×). This is the generic shared-computation gain.
+2. **Experienced-v3 vs Fresh-v3: −6.2%** (5/5 seeds, −4.1% … −7.7%); vs Fresh-v3-allP: −4.9%.
+   * The verified proofs are generic: they give −1.4% (Fresh-v3-allP vs Fresh-v3). The learned axiom selection
+     (sort / run_heads / running_max in all 20 folds) gives about the same.
+   * The experience gain is the learned **macro proposal**: −12% on familiar_exact and −12% on compositional, but
+     **+10% on held_out**, where macro search is pure overhead.
+3. **Experienced-v3 vs Placebo-v3: −9.8%** (5/5 seeds).
+4. **Experienced-v3 + source learning vs Fresh-v3: 3.14× worse** (5/5 seeds).
+   * Source learning costs 279.9 G per split, against a target saving of 7.9 G per 280 tasks. At this rate it
+     would take roughly 10⁴ target tasks per library to repay.
+
+**Gate:** met (5/5 seeds, pooled −6.2% ≥ 3%), so the targeted Wave 32 v3 check was run (see the Wave 32 doc).
