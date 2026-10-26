@@ -339,3 +339,28 @@ The replay (7213, Target / 3 rep, Gen k(3)) matched, and D4 held.
   * with 0 wrong and 0 detector flags.
 * **Secondary readout:** Gen k(adapt) vs the regime-matched reference policy (Gen k(2) in 2-rep cells, Gen k(3) in
   3-rep cells). Those reference policies are told the regime; Gen k(adapt) is not.
+
+## Regime-detecting policy: development results and protocol amendment (before any confirmation draw)
+
+* **Evolution:** 51 genomes, all admitted, detectors 0, replays matched, D4 held.
+  * The champion of the Source-only selection was **a6c5**: online ON, gate_repeat 0.3, warmup 3, rebuild only on a
+    new core, no proofs.
+  * Its fitness mean ratio was 0.969, with a worst stream of 1.020. On selection the mean was 0.977, worst 1.005.
+* **dev2 check of a6c5:** it **fails** the predeclared criterion, while staying 100% correct with 0 wrong.
+
+| Cell | a6c5 / min(ON, OFF) | Seeds where it is ≤ min |
+| --- | --- | --- |
+| Source / 2 rep | 0.980 | 4/5 |
+| Source / 3 rep | 0.956 | 5/5 |
+| Target / 2 rep | 1.015 | 0/5 |
+| Target / 3 rep | 1.019 | 1/5 |
+
+* **Diagnosis:** its evolution and selection saw Source streams only. The warm-up and new-core-only rebuild delay
+  learning on the shorter Target streams.
+* **Amendment** (development data only; the confirmation seeds are still untouched):
+  * re-select among the top 8 archive members on dev 774–775 across **all 4 cells**, each stream scored as work /
+    always-OFF;
+  * rule: worst ratio ≤ 1.01, then the minimum mean (falling back to the minimum worst ratio);
+  * then the dev2 check again, then the freeze, then confirm_adapt, run once.
+* **Disclosed:** Target-domain dev streams now inform the policy choice. The confirmation domain is still grids, on
+  unseen seeds.

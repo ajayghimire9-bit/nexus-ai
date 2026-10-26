@@ -31,7 +31,9 @@ def score(ev, g, seeds, off, hashseed="0"):
             f = F.summ(rows, learn, reb)
             ratios.append(f["work"] / off[f"{s}:{rep}"])
             correct += f["correct"]; wrong += f["wrong"]; n += f["n"]; rows_all += rows
-    return dict(mean_ratio=sum(ratios) / len(ratios), max_ratio=max(ratios), correct=correct, wrong=wrong, n=n,
+    m = sum(ratios) / len(ratios)
+    # `work` = the mean normalised ratio, so the archive's tournament (wave32_archive.better) ranks by it
+    return dict(mean_ratio=m, work=m, max_ratio=max(ratios), correct=correct, wrong=wrong, n=n,
                 detectors=D.scan(rows_all)), rows_all
 
 
@@ -104,6 +106,34 @@ def main():
             champ = min([s for s in sel if s["fit"]["wrong"] == 0 and sum(s["fit"]["detectors"].values()) == 0], key=key)
             st.update(selection=sel, champion=champ["genome"], champion_id=champ["id"])
             print("champion", champ["id"], champ["genome"])
+    elif a.phase == "reselect":
+        # Protocol amendment (dev only): all-cell re-selection on dev 774-775 (Source + Target, 2 + 3 reps), each stream
+        # scored as work / always-OFF work; candidates = top 8 archive members by mean fitness; rule: max ratio <= 1.01,
+        # then min mean ratio (fallback: min max ratio).
+        R.claim("wave32", "dev", list(SEL), run_id="wave32a-reselect", record=False)
+        off = {}
+        for dom in F.DOMAINS:
+            for rep in (2, 3):
+                for s in SEL:
+                    rows, learn, reb = F.run(ev, dict(A.GEN0_V3C, online=False), (s,), dom, rep)
+                    off[f"{dom}:{rep}:{s}"] = F.summ(rows, learn, reb)["work"]
+        res = []
+        for e in sorted(st["archive"], key=key)[:8]:
+            ratios, wrong, det = [], 0, 0
+            for dom in F.DOMAINS:
+                for rep in (2, 3):
+                    for s in SEL:
+                        rows, learn, reb = F.run(ev, e["genome"], (s,), dom, rep)
+                        f = F.summ(rows, learn, reb)
+                        ratios.append(f["work"] / off[f"{dom}:{rep}:{s}"]); wrong += f["wrong"]; det += sum(f["detectors"].values())
+            res.append(dict(id=e["id"], genome=e["genome"], mean=sum(ratios) / len(ratios), max=max(ratios), wrong=wrong, det=det))
+            print("reselect", e["id"], "mean %.4f max %.4f wrong %d det %d" % (res[-1]["mean"], res[-1]["max"], wrong, det), flush=True)
+        ok = [r for r in res if r["wrong"] == 0 and r["det"] == 0]
+        feas = [r for r in ok if r["max"] <= 1.01]
+        champ = min(feas, key=lambda r: r["mean"]) if feas else min(ok, key=lambda r: r["max"])
+        st.update(reselection=res, champion_v1=st.get("champion"), champion_id_v1=st.get("champion_id"),
+                  champion=champ["genome"], champion_id=champ["id"], reselect_feasible=bool(feas))
+        print("champion", champ["id"], champ["genome"], "feasible", bool(feas))
     else:
         pol = {"always-ON": dict(A.GEN0_V3C), "always-OFF": dict(A.GEN0_V3C, online=False),
                "Genk(2)": upgrade(prev["champion_2"], A), "Genk(3)": upgrade(prev["champion_3"], A),
@@ -111,7 +141,7 @@ def main():
         F.policies = lambda _st, _A: pol
         if a.phase == "table":
             R.claim("wave32", "dev2", list(DEV2), run_id="wave32a-table", record=False)
-            st["dev_table"] = F.table(ev, DEV2, st, A)
+            st["dev_table" if "champion_v1" not in st else "dev_table_v2"] = F.table(ev, DEV2, st, A)
         else:
             R.claim("wave32", "confirm_adapt", list(CONF), run_id="wave32a-confirm")
             res = dict(frozen_policies=pol, table=F.table(ev, CONF, st, A))
