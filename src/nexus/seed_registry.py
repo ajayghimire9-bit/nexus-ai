@@ -29,8 +29,8 @@ REGISTRY = {
     ("phase3", "vault_group_a"): range(3001, 3011), ("phase3", "vault_group_b"): range(3011, 3021),
     ("phase3", "vault_external"): range(3021, 3031),
     ("phase4", "dev"): range(721, 726), ("phase4", "confirm"): range(4001, 4006),
-    ("phase5", "dev"): range(731, 734), ("phase5", "confirm"): range(5001, 5006),
-    ("phase6", "dev"): range(741, 744), ("phase6", "orderings_confirm"): range(6001, 6006),
+    ("phase5", "dev"): range(731, 736), ("phase5", "confirm"): range(5001, 5006),     # dev 731-735 (owner, 2026-10-26)
+    ("phase6", "dev"): range(741, 746), ("phase6", "orderings_confirm"): range(6001, 6006),   # dev 741-745
 }
 ONE_USE = {k for k in REGISTRY if k[1] != "dev"}
 

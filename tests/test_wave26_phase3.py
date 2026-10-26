@@ -74,3 +74,8 @@ def test_split_seed_binding_is_enforced(env, monkeypatch):
 def test_committed_manifest_is_present_and_well_formed():
     entries = L.parse_manifest(L.COMMITTED_MANIFEST.read_text())
     assert len(entries) == 39 and all(len(h) == 64 for h, _ in entries)
+
+
+def test_driver_verifies_vault_before_claiming_seeds():
+    src = (L.ROOT / "scripts" / "phase4_invent.py").read_text()
+    assert src.index("verify_vault()") < src.index('R.claim("phase3", "vault_group_a"')

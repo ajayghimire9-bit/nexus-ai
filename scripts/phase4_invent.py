@@ -208,6 +208,8 @@ def main():
     if a.sealed:
         if not os.environ.get("NEXUS_SEALED_HARNESS_TOKEN") or not a.checkpoint:
             raise SystemExit("sealed run requires the harness token and --checkpoint")
+        from nexus.sealed_vault_loader import verify_vault
+        verify_vault()          # integrity first: a refused vault must never mark the sealed seeds spent
         R.claim("phase3", "vault_group_a", range(3001, 3011), run_id="phase4-sealed-group-a")
         status = "FAILED"
         try:
