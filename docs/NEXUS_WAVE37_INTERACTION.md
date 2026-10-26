@@ -46,3 +46,30 @@ Make **both** the combined default **only if**:
 Otherwise keep the components separate under the applicability conditions above. Also reported: n1 / base (pure
 detection overhead) and false declarations on stationary streams. The replay check is `both` on switch_A for seed
 7703.
+
+## Confirmation (wave37 confirm 7701–7705, one-use, run once; `artifacts/wave37_confirm.json`)
+
+All arms 100% correct, **0 wrong, 0 flags**. The replay (both, switch_A, 7703) matched, and D4 held.
+
+| Streams (5 seeds) | base | learner | n1 | both | learner / base | both / learner | n1 / base (overhead) | declarations |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| stationary | 230.12 | **206.15** | 230.32 | 207.76 | **0.896** | 1.0078 (both better in 2/5) | 1.0009 | 10 (all false alarms) |
+| non-stationary | 312.62 | **294.25** | 312.91 | 294.92 | **0.941** | 1.0023 (2/5) | 1.0009 | 10 |
+
+**Adoption rule: NOT MET.** On non-stationary streams, both is not below learner (1.0023, 2/5 seeds); the stationary
+clause (1.0078 ≤ 1.01) holds. **No combined default.** The components stay separate under the applicability
+conditions above.
+
+**Reading:**
+* In this pipeline, all the gain comes from the learner: −10.4% on stationary and −5.9% on non-stationary streams vs
+  base.
+* Change detection costs almost nothing to run (+0.09%), but its resets help nowhere.
+  * On stationary streams it raises about one false alarm per stream. Within a family the surface signature already
+    varies by domain, and the forced relearning costs +0.8%.
+  * On family switches, forgetting does not pay either: the online prior learned on one family still helps on the
+    next, because ops and types are shared across families.
+* N1's demonstrated value remains in the interactive world track, where the hidden rule really does invalidate old
+  evidence.
+* Autonomous architecture search stays experimental. Its next test needs **repeated independent searches** (≥ 3
+  lineages per method) against equally resourced controls (budget-matched random search, and an incumbent with the
+  same evaluations), with discovery cost included in every comparison.
