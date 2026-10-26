@@ -56,10 +56,16 @@ REGISTRY = {
     # Wave 32 procedure evolution (bounded, NOT LOCKED): dev = evolution on source domains (reusable);
     # test = Gen 0 vs Gen k on the held-out domain from an empty library, one use
     ("wave32", "dev"): range(771, 776), ("wave32", "test"): range(7201, 7206),
-    # Wave 32 targeted check under Checker v3 (gate met in Wave 31 v3 matrix): fresh one-use test range
+    # Wave 32 targeted check under Checker v3 (gate met in Wave 31 v3 matrix): fresh one-use test range.
+    # RECLASSIFIED 2026-10-26 (owner): inspected and now informing design -> DEVELOPMENT evidence, never confirmation.
     ("wave32", "test_v3"): range(7206, 7211),
+    # Wave 32 repetition x domain factorial: dev2 = development cells (reusable); confirm_rep = fresh one-use
+    # confirmation drawn only after the design is frozen
+    ("wave32", "dev2"): range(781, 786), ("wave32", "confirm_rep"): range(7211, 7216),
 }
-ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val")}
+ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
+# Spent one-use ranges that were inspected and now inform design; they are development evidence only.
+RECLASSIFIED_AS_DEV = {("wave32", "test_v3"): "inspected Gen0 ON/OFF/Gen k grid results inform the factorial design"}
 
 
 def _check_disjoint():

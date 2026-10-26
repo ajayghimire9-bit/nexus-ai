@@ -190,3 +190,16 @@ Champion: g1c2 = Gen 0 with online learning off.
 * **Implication:** fitness must be measured on streams that resemble the deployment regime (repetition rate,
   domain), or the evolution will optimise away learning. A next check would rerun selection with matched n_per
   and a multi-domain fitness. It needs an owner decision and fresh one-use seeds.
+
+---
+
+# Reclassification (owner, 2026-10-26)
+
+The held-out grids results on `wave32 test_v3` 7206–7210 (Gen 0 ON 86.11 G, Gen 0 OFF 91.35 G, Gen k 90.46 G) have
+been inspected and now inform the experimental design. From here on they are **development evidence**, recorded in
+`seed_registry.RECLASSIFIED_AS_DEV`, and are never reported as untouched confirmation.
+
+**Corrections to the owner's brief:**
+* There is no commit 8a6f202. This continues from 0917de1.
+* The Checker v3 pin is `3c68230e…`, not `7df65196…`.
+* Gen k was 90.46 G, not 90.1 G.
