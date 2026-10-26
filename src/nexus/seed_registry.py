@@ -38,6 +38,9 @@ REGISTRY = {
     # Wave 28 postcondition core filter (owner, 2026-10-26)
     ("wave28_p4", "confirm"): range(4016, 4021), ("wave28_p5", "confirm"): range(5016, 5021),
     ("wave28_p6", "confirm"): range(6016, 6021),
+    # Wave 29 Occam margin + x_verify (owner, 2026-10-26)
+    ("wave29_p4", "confirm"): range(4021, 4026), ("wave29_p5", "confirm"): range(5021, 5026),
+    ("wave29_p6", "confirm"): range(6021, 6026),
 }
 ONE_USE = {k for k in REGISTRY if k[1] != "dev"}
 
