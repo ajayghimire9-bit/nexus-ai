@@ -267,3 +267,45 @@ policy (Gen k(3)). That policy is the best, or within 1.1% of the best, in every
 
 **FROZEN** at this commit: policies always-ON, always-OFF, Gen k(2) and Gen k(3) (the genomes in the state
 artifact); cells, streams and readouts as in the protocol. Next is `confirm_rep` 7211–7215, run once.
+
+## Confirmation (confirm_rep 7211–7215, one-use, run once after freezing)
+
+`artifacts/wave32_factorial_confirm.json`. Every cell and policy: 100% correct, **0 wrong, 0 detector flags**.
+The replay (7213, Target / 3 rep, Gen k(3)) matched, and D4 held.
+
+| Cell (n) | always-ON | always-OFF | Gen k(2) | Gen k(3) | ON / OFF (seeds ON < OFF) |
+| --- | --- | --- | --- | --- | --- |
+| Source / 2 rep (200) | 66.66 | 65.26 | **63.99** | 64.76 | 1.021 (1/5) |
+| Source / 3 rep (300) | 98.55 | 99.11 | 97.23 | **96.16** | 0.994 (4/5) |
+| Target / 2 rep (80) | 57.75 | 57.92 | 57.34 | **57.03** | 0.997 (3/5) |
+| Target / 3 rep (120) | 85.68 | 89.21 | 88.34 | **85.01** | **0.960 (5/5)** |
+
+**Evolved policy matched to the cell's repetition count**, primary readout:
+
+| Cell | Policy | vs ON | vs OFF |
+| --- | --- | --- | --- |
+| Source / 2 | Gen k(2) | 0.960 (5/5 seeds) | 0.980 (5/5) |
+| Source / 3 | Gen k(3) | 0.976 (5/5) | 0.970 (5/5) |
+| Target / 2 | Gen k(2) | 0.993 (3/5) | 0.990 (5/5) |
+| Target / 3 | Gen k(3) | 0.992 (4/5) | **0.953 (5/5)** |
+
+* **Cross-evaluation:** Gen k(3) in the 2-rep cells is 0.972 / 0.988 vs ON. Gen k(2) in the 3-rep cells is
+  0.987 / **1.031** vs ON: learning OFF costs 3% in Target / 3 rep.
+* **Decomposition** of ln(ON / OFF) on confirmation: repetition −0.032, domain −0.029, interaction −0.011.
+
+## Reading
+
+* **The mismatch is resolved.**
+  * Learning ON pays where mechanisms repeat (3 reps), and more so on the Target domain. At 2 reps it is neutral
+    or slightly harmful.
+  * The earlier "evolution turned learning off" came from evolving at 2 reps.
+  * Evolved at 3 reps, on Source domains only, the evolution keeps learning ON behind a repeat-rate gate (0.3).
+    That policy is never worse than the better fixed policy by more than 1.2%, in any cell.
+* **The matched evolved policy beats both fixed policies, pooled, in all 4 confirmation cells.** In 3 of the 4 it
+  does so in ≥ 4/5 seeds against each.
+* **This is development-level evidence of a procedure that adapts to the regime, not learning-to-learn in general.**
+  * The gains are 1–5%.
+  * The policy space is a small typed genome.
+  * Only one checker, one task family and one repetition design were tested.
+  * The 2-rep vs 3-rep champion is still chosen by matching the known repetition count. A single policy that
+    detects the regime online (Gen k(3)'s gate is a partial step) was best in 3/4 cells, but not in Source / 2 rep.

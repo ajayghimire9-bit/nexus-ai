@@ -517,3 +517,28 @@ Work is `evaluator_work` (G retired instructions).
      would take roughly 10⁴ target tasks per library to repay.
 
 **Gate:** met (5/5 seeds, pooled −6.2% ≥ 3%), so the targeted Wave 32 v3 check was run (see the Wave 32 doc).
+
+## Audit: what the ~280 G source-learning cost actually is (`artifacts/wave31_source_audit_*.json`)
+
+* **Method:** an exact accounting replay of the v3 source learning, plus the same source tasks solved as plain
+  Fresh-v3. No new arm outcomes.
+* **Result:** the replay totals agree with the recorded totals within 0.3% (meter noise across processes).
+
+| G instructions (630 source tasks per split) | val_v3 | dev |
+| --- | --- | --- |
+| (a) Fresh-v3 solving the source tasks (baseline Fresh would also pay) | **281.35** (child 52.55 + checker 226.45) | 269.54 |
+| Source solves as run (Fresh + axiom rotation) | 280.38 | 268.52 |
+| Library build (anti-unification, macro instantiation, axiom selection) | **0.33** | 0.33 |
+| (b) Marginal learning overhead = (as run − baseline) + build | **−0.64** | −0.68 |
+
+* **Saving per target task** (Experienced-v3 vs Fresh-v3 on val_v3): 7.94 G / 280 = 28.4 M instructions.
+* **Break-even, Definition A** (the source tasks are pure overhead; nobody needed them solved): 279.9 G / 28.4 M ≈
+  **9,900 target tasks**. This is the earlier "3.14× worse" accounting.
+* **Break-even, Definition B** (marginal: the source tasks are work that would be solved anyway, and learning only
+  adds extraction):
+  * Counting only the build (0.33 G) and ignoring the rotation saving, break-even is ≈ **12 target tasks**.
+  * Including the rotation saving, the marginal cost is negative, so break-even is **immediate**.
+  * Comparison 4 under B is (119.13 + 0.33) / 127.07 = **0.940**, which is −6.0% net.
+* **Reading.** Experience is cheap to extract. Nearly all of the "learning cost" is the price of the source
+  *tasks*. Learning repays when those tasks are part of the workload, as in an online stream, which is what the
+  Wave 32 stream results show. It does not repay when they are an extra curriculum solved only to learn from.
