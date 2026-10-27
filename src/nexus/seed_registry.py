@@ -90,6 +90,9 @@ REGISTRY = {
     ("wave39", "dev"): range(851, 861), ("wave39", "confirm_lodo5"): range(7831, 7836),
     ("wave39", "confirm_world"): range(7836, 7841), ("wave39", "confirm_stream"): range(7841, 7846),
     ("wave39", "confirm_prose"): range(7846, 7847),
+    # Wave 40 (invariance and ceilings): dev + one-use confirmation ranges (claimed whole, once, after the freeze commit)
+    ("wave40", "dev"): range(861, 871), ("wave40", "confirm_lodo"): range(7851, 7856),
+    ("wave40", "confirm_stream"): range(7856, 7861), ("wave40", "confirm_prose"): range(7861, 7862),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.
