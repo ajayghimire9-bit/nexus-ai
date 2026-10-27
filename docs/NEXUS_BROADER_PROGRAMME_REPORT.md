@@ -229,3 +229,68 @@ fold / scan / if. Fresh finds the same novel solutions.
   degenerate, because each domain has a single goal predicate.
 * **Repairs:** 23/24 TEST_VERIFIED_PATCH in both arms (one public-fit-only patch in each). The online prior uses
   181 vs 221 candidate evaluations (−18%), and instructions 6.9 vs 7.0 G (−1.4%).
+
+## Stage 4: long-duration continual study (run once, fresh instances; development-grade, single runs)
+
+**6-phase program stream** (53 tasks: strings → graphs → tables → strings return → graphs return → grids; empty library):
+
+| Learner | Total | strings | graphs | tables (new) | strings (return) | graphs (return) | grids (new) | Solved |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Fresh | 2,009.4 | 83.2 | 159.4 | 275.7 | 73.9 | 117.2 | 1,300.0 | 51/53 |
+| regime memory | 2,005.4 | 82.3 | 165.1 | 275.7 | **61.9** | 120.8 | 1,299.5 | 51/53 |
+| no gate | **1,963.0** | 82.3 | 173.2 | 427.6 | 61.9 | 109.2 | **1,108.8** | **53/53** |
+
+**Reading:**
+* Regime memory retains a returning regime (−16% on the strings return) and prevents negative transfer (tables =
+  Fresh).
+* It also **blocks the positive transfer** the ungated learner gets on grids (−15%).
+* Over this longer stream the ungated learner is cheapest overall, and it solves 2 more tasks.
+
+**World stream** (10,000 steps; noise 0.15, slip 0.1, hazard 1/200):
+
+| Agent | Return | Brier | Delay, return / new goal | Instructions |
+| --- | --- | --- | --- | --- |
+| N1 | **1,995** | **0.044** | **15.0 / 18.3** | 110 G |
+| fixed-model | 1,201 | 0.177 | 130 / 142 | 0.7 G |
+| reactive | 337 | 0.033 | 647 / 438 | 0.2 G |
+
+**External PROSE ledger** (34 tasks, run once; separate from internal confirmations): Fresh and Repr are
+**identical**. Each gives 5 exhaustive_UNIQUE (in-scope); 4 pass every held-out example, and 1 UNIQUE is wrong on
+held-out examples (scope-relative). Work is 101.7 vs 101.5 G. Internal experience gives no external gain; the
+language covers only ≈ 15% of these tasks.
+
+## Capability & Domain Proof Matrix
+
+Work ratios are against the strongest **quality-preserving** control. Discovery cost under definition A means the
+source tasks are an extra curriculum; under mandatory work they are part of the workload, and only marginal fitting
+counts.
+
+| Capability / Experiment | Domains tested (internal + external) | Held-out solve / return | Total work vs strongest control (excl. & incl. discovery cost) | Independent-run repeatability | Certificate / verification class | Final verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 Representation discovery | strings, tables, grids, graphs (LODO) + PROSE | 339/340 (= Fresh); PROSE 4/34 (no gain) | excl.: 0.871 vs Fresh, 0.900 vs Placebo, **1.031 vs the designed Fixed DSL (equal solves)**. Incl. definition A: not repaid (≈ 3.6k tasks to break even); mandatory work: +207 G of fitting, repaid | 5/5 seeds | exhaustive_UNIQUE (Checker v4), 0 wrong | **PARTIAL**: beats Fresh and Placebo, not the hand-designed fixed DSL; "representation" means selecting among declared encoders, not inventing new ones |
+| 2 Mechanism discovery | the same 4 domains (withheld mechanisms) | 159/160 (= Fresh) | 0.902 vs Fresh, 0.916 vs Placebo | 5/5 | exhaustive_UNIQUE, 0 wrong | **PARTIAL**: 159/159 solutions are novel compositions (36 use fold / scan / if) found by bounded search, and Fresh finds the same. Experience makes discovery cheaper; it does not enable it |
+| 3 Cross-domain transfer (withheld domain AND mechanism) | 4 domains, LODO (train 3, test the 4th) | 159/160 (= Fresh; Fixed DSL 149/160) | **0.902 vs Fresh, 0.916 vs Placebo** (Fixed DSL cheaper but loses 10 solves). Incl. definition A: break-even ≈ 3,600 tasks; mandatory work: repaid immediately | **5/5 seeds × 4 folds** | exhaustive_UNIQUE, 0 wrong, 0 flags | **PROVED** (under the frozen rule, within the declared finite scope, 4 internal program domains, −10%) |
+| 4 Empty-library meta-learning | tables (unfamiliar to the meta-selection) | **45/45 vs 39/45** (Fresh, 80f9cc2) | **+14% to +42% work** vs Fresh / 80f9cc2; meta-selection cost 995 G | 5/5 seeds, more solves | exhaustive_UNIQUE, 0 wrong | **NEGATIVE** under the frozen work rule (a quality gain at a cost loss) |
+| 5 Repeatable self-evolution (5 lineages × 3 methods) | strings + graphs | = Fresh on solves | winners ≈ start (±0.5%); the start costs more than Fresh in 4/5 seeds; search 22.3 T, **never repaid** | 15 lineages; no method beats random | exhaustive_UNIQUE, 0 wrong | **NEGATIVE** |
+| 6 Continual adaptation / forgetting | program streams (4- and 6-phase) + SwitchGrid world | programs: 192/200 (= Fresh); world: return 391 vs 268 | program 4-phase: **0.964 vs Fresh, 0.812 vs no gate (5/5)**; 6-phase long stream: 1.002 vs Fresh, 1.022 vs no gate; world N1 +46% return at ≈ 150× compute | 5/5 (4-phase); single run (6-phase); world 10/10 + 5/5 + 1 long | exhaustive_UNIQUE (programs); CALIBRATED_PREDICTION (world: Brier 0.039–0.044 vs 0.18) | **PARTIAL**: regime memory removes negative transfer and retains returns, but blocks positive transfer over longer streams. N1 change detection is strongly positive in the world track |
+| 7 Closed-loop neural ranker | 4 domains (LODO) | 349/350 (= Fresh) | 0.987 vs Fresh, **1.013 vs Placebo, 1.040 vs count prior** (training and inference charged; CPU per the Stage 1 measurement) | loses to Placebo in 5/5 (E1) | exhaustive_UNIQUE, 0 wrong | **NEGATIVE** |
+| Planning (domain 5) | blocksworld (external, 8–11 blocks) + logistics (internal) | 20/20 VALIDATED_PLAN | 1.000 (identical search) | — | VALIDATED_PLAN (independent simulator) | **NEGATIVE** (the learned heuristic is degenerate in single-goal-predicate domains) |
+| Python repairs (domain 6) | 6 bug families, 24 tasks | 23/24 TEST_VERIFIED_PATCH (both arms) | 0.986 instructions, 0.82 candidate evaluations | single confirm | TEST_VERIFIED_PATCH (held-out oracle, separate sandbox) | **INCONCLUSIVE** (a small effect; not predeclared as a claim) |
+
+## Decisive milestone
+
+**"Experience from several domains helps NEXUS learn genuinely unfamiliar mechanisms in another domain, with less
+total work, while preserving answer quality, and this repeats across independent runs."**
+
+* **Supported within this setting.** Experiment 3 meets its frozen rule. Trained on 3 program domains and tested on a
+  withheld 4th domain's withheld mechanisms:
+  * the representation prior cuts total work by **9.8% vs Fresh and 8.4% vs a size-matched permuted history**;
+  * it makes **0 wrong answers** under exhaustive Checker v4 certificates at an identical declared scope;
+  * it solves as many as the strongest quality-preserving control;
+  * this holds in **5/5 independent seeds × 4 held-out folds**.
+* **It does *not* establish:**
+  * cost advantage over a hand-designed fixed prior (cheaper, but it loses 10 solves);
+  * any gain when the source tasks are an extra curriculum (≈ 3,600-task break-even);
+  * any gain on the external PROSE benchmark;
+  * gains for meta-learning, neural ranking or autonomous evolution, all of which were negative;
+  * generalisation beyond one finite language and checker.
