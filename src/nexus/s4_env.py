@@ -177,13 +177,13 @@ def encode(w, scenario, incidents=()):
     log, truth_v, tel, man = {}, [], [], []
     offs = {}
 
+    pending = []
+
     def put(tick, topic, part, rec):
-        k = (topic, part)
-        o = offs.get(k, 0)
-        offs[k] = o + 1
-        rec = dict(rec, offset=o)
-        log.setdefault(tick, {}).setdefault(k, []).append(rec)
-        return o
+        """Queue a record; offsets are assigned at the end in ingest order per partition (an append-only log)."""
+        rec = dict(rec)
+        pending.append((tick, topic, part, rec))
+        return rec
 
     # registry
     regs = [(1, 1, dict(fields={c: n[c] for c in ("order_id", "warehouse_id", "status", "amount", "currency", "discount",
@@ -252,6 +252,7 @@ def encode(w, scenario, incidents=()):
     hist = sorted(w["hist"], key=lambda h: h["key"])
     span = (bf_ticks[1] - bf_ticks[0] + 1) * D
     t_begin = T0 + (bf_ticks[0] - 1) * D
+    controls = [dict(tick=bf_ticks[0], kind="snapshot_begin"), dict(tick=bf_ticks[1], kind="snapshot_end")]
     put(bf_ticks[0], "backfill_orders", 0, dict(msg_id="snap-1-begin", ingest_ts=iso(t_begin + timedelta(minutes=2)),
                                                 control="snapshot_begin", snapshot_id=1, rows=len(hist)))
     snap_ts = T0 - timedelta(minutes=1)
@@ -313,11 +314,16 @@ def encode(w, scenario, incidents=()):
                 o2 = put(tk2, "manifests", 0, dict(rec, ingest_ts=iso(max(ing_m, T0 + (tk2 - 1) * D + timedelta(minutes=7)))))
                 m["copies"].append((tk2, 0, o2))
             man.append(m)
-    for tk in log:
-        for k in log[tk]:
-            log[tk][k].sort(key=lambda x: x["offset"])
+    for i, (tk, topic, part, rec) in sorted(enumerate(pending), key=lambda x: (x[1][1], x[1][2], x[1][0], x[1][3]["ingest_ts"], x[0])):
+        k = (topic, part)
+        rec["offset"] = offs.get(k, 0)
+        offs[k] = rec["offset"] + 1
+        log.setdefault(tk, {}).setdefault(k, []).append(rec)
+    for coll in (truth_v, tel, man):
+        for x in coll:
+            x["copies"] = [(c[0], c[1], c[2]["offset"]) + tuple(c[3:]) for c in x["copies"]]
     truth = dict(scenario=scenario, nt=nt, whs=w["whs"], fx=w["fx"], L=w["L"], buckets=dict(BUCKETS), versions=truth_v,
-                 telemetry=tel, manifests=man, snapshot_rows=len(hist), withheld=w["withheld"], incidents=[],
+                 telemetry=tel, manifests=man, snapshot_rows=len(hist), withheld=w["withheld"], incidents=[], controls=controls,
                  schemas={v: dict(tick=tk, **b) for v, tk, b in regs},
                  tel_schemas={v: dict(tick=tk, **b) for v, tk, b in tregs})
     out = dict(log=log, truth=truth)
@@ -430,6 +436,10 @@ def spec(w):
 def write_log(enc, root, upto, start=1):
     """Write segments of ticks start..upto under root/log (one file per tick per partition)."""
     root = Path(root)
+    if start == 1:          # every partition is provisioned at tick 1, except W1's partition that appears mid-stream
+        for k in sorted({k for v in enc["log"].values() for k in v}):
+            if not (k[0] == "orders_cdc" and k[1] >= 2):
+                (root / "log" / k[0] / f"p{k[1]}").mkdir(parents=True, exist_ok=True)
     for tk in range(start, upto + 1):
         for (topic, part), recs in sorted(enc["log"].get(tk, {}).items()):
             d = root / "log" / topic / f"p{part}"
