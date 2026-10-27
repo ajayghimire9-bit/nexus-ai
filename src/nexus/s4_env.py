@@ -455,3 +455,27 @@ def retention(root, tick, keep=6):
         first = json.loads(f.read_text().split("\n", 1)[0])
         if tick_of(datetime.fromisoformat(first["ingest_ts"].replace("Z", "+00:00"))) <= tick - keep:
             f.unlink()
+
+
+def world_to_json(w):
+    def enc(x):
+        if isinstance(x, datetime):
+            return {"__dt__": x.isoformat()}
+        if isinstance(x, dict):
+            return {k: enc(v) for k, v in x.items()}
+        if isinstance(x, list):
+            return [enc(v) for v in x]
+        return x
+    return json.dumps(enc(w), sort_keys=True)
+
+
+def world_from_json(s):
+    def dec(x):
+        if isinstance(x, dict):
+            if set(x) == {"__dt__"}:
+                return datetime.fromisoformat(x["__dt__"])
+            return {k: dec(v) for k, v in x.items()}
+        if isinstance(x, list):
+            return [dec(v) for v in x]
+        return x
+    return dec(json.loads(s))

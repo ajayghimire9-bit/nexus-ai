@@ -213,6 +213,14 @@ class OpsEnv:
         return rec
 
     # --- authorised actions
+    def ask(self, topic, value):
+        """Simulated stakeholder (counted as human dependence). Answers business facts only, never incident ids or fixes."""
+        self.clarifications = getattr(self, "clarifications", []) + [f"{topic}:{value}"]
+        if topic == "supplier_unit":
+            inc = next((i for i in self.incs if i.name == "unit_shift" and i.supplier == value), None)
+            return "lb" if inc else "kg"
+        return "NOT_A_QUESTION"
+
     def set_deploy(self, key, value):
         if key in AUTH:
             lo, hi = AUTH[key]
@@ -439,12 +447,17 @@ def drift_scan(env, detector, det_state):
             if x["offset"] not in seen and isinstance(x.get("weight"), (int, float)):
                 recs.append(x)
     t0 = _cpu()
+    ver = det_state.setdefault("versions", {})
     for x in sorted(recs, key=lambda x: x["offset"]):
         seen.add(x["offset"])
         s = x["supplier"]
+        pv = x.get("producer_version")
+        if s in ver and ver[s] != pv and not any(a["supplier"] == s for a in alarms):
+            alarms.append(dict(supplier=s, offset=x["offset"], tick=env.t, trigger="producer_metadata"))
+        ver[s] = pv
         det = dets.setdefault(s, DETECTORS[detector]())
         if det.update(x["weight"]) and not any(a["supplier"] == s for a in alarms):
-            alarms.append(dict(supplier=s, offset=x["offset"], tick=env.t))
+            alarms.append(dict(supplier=s, offset=x["offset"], tick=env.t, trigger=detector))
     det_state["cpu_s"] = det_state.get("cpu_s", 0.0) + _cpu() - t0
     return alarms
 
@@ -533,6 +546,38 @@ def _intact_snapshots(env):
     return good
 
 
+def _metadata_changed(env, supplier):
+    vs = []
+    for f in sorted((Path(env.rt["log"]) / "manifests" / "p0").glob("*.jsonl")):
+        for l in f.read_text().splitlines():
+            try:
+                x = json.loads(l)
+            except ValueError:
+                continue
+            if x["supplier"] == supplier:
+                vs.append((x["offset"], x.get("producer_version")))
+    vs.sort()
+    return any(a[1] != b[1] for a, b in zip(vs, vs[1:]))
+
+
+def _localize_by_metadata(env, supplier, unit):
+    recs = []
+    for f in sorted((Path(env.rt["log"]) / "manifests" / "p0").glob("*.jsonl")):
+        for l in f.read_text().splitlines():
+            try:
+                x = json.loads(l)
+            except ValueError:
+                continue
+            if x["supplier"] == supplier:
+                recs.append(x)
+    recs.sort(key=lambda x: x["offset"])
+    ch = next((i for i in range(1, len(recs)) if recs[i].get("producer_version") != recs[i - 1].get("producer_version")), None)
+    if ch is None:
+        return None
+    return dict(supplier=supplier, part=0, from_offset=recs[ch]["offset"], factor=E.UNITS_TO_KG[unit], unit=unit,
+                tick=E.tick_of(E.datetime.fromisoformat(recs[ch]["ingest_ts"].replace("Z", "+00:00"))), source="stakeholder")
+
+
 def _count_after(env, supplier, offset):
     n = 0
     for f in (Path(env.rt["log"]) / "manifests" / "p0").glob("*.jsonl"):
@@ -560,7 +605,7 @@ def _localize_unit_shift(env, supplier):
                 recs.append(x)
     recs.sort(key=lambda x: x["offset"])
     ch = next((i for i in range(1, len(recs)) if recs[i].get("producer_version") != recs[i - 1].get("producer_version")), None)
-    if ch is None or ch < 3 or len(recs) - ch < 3:
+    if ch is None or ch < 3 or len(recs) - ch < 2:
         return None
     med = lambda xs: sorted(xs)[len(xs) // 2]
     ratio = med([x["weight"] for x in recs[ch:]]) / med([x["weight"] for x in recs[:ch]])
@@ -670,8 +715,20 @@ class NexusOps(Operator):
             if loc:
                 keep.append(dict(a, localized=loc))
                 continue
+            if a.get("trigger") == "producer_metadata" and a["tick"] < env.t and not a.get("asked"):
+                unit = env.ask("supplier_unit", a["supplier"])          # too little data to infer the unit: ask
+                a["asked"] = unit
+                if unit in E.UNITS_TO_KG and unit != "kg":
+                    loc = _localize_by_metadata(env, a["supplier"], unit)
+                    if loc:
+                        keep.append(dict(a, localized=loc))
+                        continue
+                if unit == "kg":
+                    self.det_state.setdefault("dismissed", []).append(a)
+                    self.ledger.append(dict(tick=env.t, kind="metadata_change_no_unit_change", alarm=a))
+                    continue
             later = _count_after(env, a["supplier"], a["offset"])
-            if later >= 3:
+            if later >= 3 and not _metadata_changed(env, a["supplier"]):
                 self.det_state.setdefault("dismissed", []).append(a)
                 self.ledger.append(dict(tick=env.t, kind="false_alarm", alarm=a))
             else:
@@ -697,26 +754,34 @@ class NexusOps(Operator):
                 self.ledger.append(dict(tick=env.t, kind="source_unavailable", action="wait", evidence=bad.get("service", [0, {}])[1]))
                 return
             comps = self._compositions(sig, cands, env)
-            chosen = None
+            chosen, tried = None, 0
             for comp in comps:
+                tried += 1
                 if self.cost["shadow_tests"] >= self.MAX_SHADOW:
                     break
                 ok = self._shadow(env, comp)
                 if ok:
-                    chosen = comp
+                    chosen, self._last_ok = comp, ok
                     break
                 if self.library is not None and comp is comps[0] and self._from_library:
                     self.cost["failed_reuse"] += 1
+            if chosen is None:
+                chosen = self._deepen(env, sig, comps[:6])
+                if chosen:
+                    self._last_ok = True
             if chosen is None:
                 self.cost["escalations"] += 1
                 self.ledger.append(dict(tick=env.t, kind="escalated", signature=sig, candidates=[c[0] for c in cands]))
                 return
             apply_composition(env, chosen)
             self.cost["actions"] += len(chosen)
-            self.ledger.append(dict(tick=env.t, kind="repaired", signature=sig, repair=[[c[0], c[1]] for c in chosen],
-                                    verified_in_shadow=True))
+            self.ledger.append(dict(tick=env.t, kind="repaired" if self._last_ok is True else "partial_repair_waiting_for_source",
+                                    signature=sig, repair=[[c[0], c[1]] for c in chosen],
+                                    verified_in_shadow=True, shadow_tests_before=tried, from_library=self._from_library and tried == 1))
             if self.library is not None:
                 self.library.observe(sig, chosen)
+            if self._last_ok == "partial":
+                return
 
     def _compositions(self, sig, cands, env):
         prim = [c for c in cands if c[0] != "catch_up"]
@@ -738,6 +803,28 @@ class NexusOps(Operator):
             self.cost["library_applicability_cpu_s"] += _cpu() - a
         return comps
 
+    def _deepen(self, env, sig, firsts):
+        """Round 2: apply a first composition in a shadow, re-diagnose the shadow's NEW symptoms, test extensions."""
+        for first in firsts:
+            if self.cost["shadow_tests"] >= self.MAX_SHADOW:
+                return None
+            c = env.clone(env.work / "deep")
+            c.runs_this_tick = 0
+            apply_composition(c, first)
+            m2 = monitors(c, None, None)
+            sig2, cands2 = diagnose(c, m2, {})
+            self.cost["shadow_tests"] += 1
+            _rm(env.work / "deep")
+            extra = [x for x in cands2 if x[0] != "catch_up" and x not in first]
+            for k in (1, 2):
+                for ext in itertools.combinations(extra, k):
+                    comp = tuple(x for x in first if x[0] != "catch_up") + ext + (("catch_up", None),)
+                    if self.cost["shadow_tests"] >= self.MAX_SHADOW:
+                        return None
+                    if self._shadow(env, comp):
+                        return comp
+        return None
+
     def _shadow(self, env, comp):
         a = _cpu()
         c = env.clone(env.work / "shadow")
@@ -749,6 +836,11 @@ class NexusOps(Operator):
         drift_ok = all(a["supplier"] in {o["supplier"] for o in c.cfg["deploy"].get("unit_overrides", [])}
                        for a in self.det_state.get("alarms", []) if a.get("localized"))
         ok = r is not None and r.get("exit") == 0 and all(v[0] for k, v in mons.items() if k != "drift") and drift_ok
+        if not ok and r is not None and r.get("exit") not in (0, None, "QUOTA"):
+            err = r.get("err", "")
+            if ("Permission denied" in err or "PermissionError" in err) and drift_ok and \
+                    all(v[0] for k, v in mons.items() if k not in ("drift", "service", "snapshot_complete")):
+                ok = "partial"                          # original symptom gone; only an unavailable source remains
         _rm(env.work / "shadow")
         return ok
 

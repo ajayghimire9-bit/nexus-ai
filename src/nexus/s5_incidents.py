@@ -325,7 +325,7 @@ def evaluate_ops(truth, env, service, ticks=14):
         ok_after = [s["tick"] for s in service if s["tick"] >= t0 and s["ok"]]
         restore[n] = (ok_after[0] - t0) if ok_after else None
     data_ok = all(ok for ok, _ in tables.values())
-    return dict(data_ok=data_ok, service_restored=service[-1]["ok"], correct=data_ok and service[-1]["ok"] and conserv and not dup,
+    return dict(clarifications=len(getattr(env, "clarifications", [])), data_ok=data_ok, service_restored=service[-1]["ok"], correct=data_ok and service[-1]["ok"] and conserv and not dup,
                 tables={t: v[1] for t, v in tables.items() if not v[0]}, freshness_violations=fresh_viol, restore_ticks=restore,
                 duplicate_rows=dup, secret_leaks=leaks, conservation_ok=conserv,
                 quarantined=sum(n for (t, s), n in acc.items() if s == "quarantined"), late=acc.get(("telemetry", "late"), 0))

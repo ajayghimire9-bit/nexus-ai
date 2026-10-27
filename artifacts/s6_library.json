@@ -1,0 +1,782 @@
+{
+ "admitted": [
+  "build:dedup",
+  "build:apply_order",
+  "build:ts_parse",
+  "build:lateness",
+  "build:backfill_merge",
+  "build:schema_handling",
+  "build:snapshots",
+  "build:fx",
+  "build:deletes",
+  "build:malformed"
+ ],
+ "learning_cost": {
+  "loo_maintenance_cpu_s": 89.50912800000005,
+  "source_curriculum_cpu_s": 231.18150599999996,
+  "wall_s": 388.7887883330113
+ },
+ "library": {
+  "frozen": true,
+  "name": "experienced",
+  "procs": [
+   {
+    "active": false,
+    "agreement": 0.8333333333333334,
+    "decision": "commit_protocol",
+    "est_saving_cpu_s": 14.8464,
+    "falsified_on": [
+     "src-925",
+     "src-926"
+    ],
+    "id": "build:commit_protocol",
+    "kind": "build",
+    "option": "transactional",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": [
+     "src evidence disagrees (0.83)"
+    ]
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "dedup",
+    "est_saving_cpu_s": 2.1783,
+    "falsified_on": [
+     "src-925"
+    ],
+    "id": "build:dedup",
+    "kind": "build",
+    "option": "by_msg_id",
+    "preconditions": [
+     "redelivery"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "apply_order",
+    "est_saving_cpu_s": 4.4829,
+    "falsified_on": [
+     "src-922",
+     "src-924"
+    ],
+    "id": "build:apply_order",
+    "kind": "build",
+    "option": "source_version",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "ts_parse",
+    "est_saving_cpu_s": 3.2491,
+    "falsified_on": [
+     "src-921",
+     "src-923",
+     "src-926"
+    ],
+    "id": "build:ts_parse",
+    "kind": "build",
+    "option": "utc",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": false,
+    "agreement": 0.8333333333333334,
+    "decision": "gold_maintenance",
+    "est_saving_cpu_s": 3.4667,
+    "falsified_on": [
+     "src-921",
+     "src-922",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "id": "build:gold_maintenance",
+    "kind": "build",
+    "option": "full_recompute",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": [
+     "src evidence disagrees (0.83)"
+    ]
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "lateness",
+    "est_saving_cpu_s": 2.3907,
+    "falsified_on": [
+     "src-924",
+     "src-925"
+    ],
+    "id": "build:lateness",
+    "kind": "build",
+    "option": "watermark",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "backfill_merge",
+    "est_saving_cpu_s": 1.5747,
+    "falsified_on": [
+     "src-922"
+    ],
+    "id": "build:backfill_merge",
+    "kind": "build",
+    "option": "lww_tombstones",
+    "preconditions": [
+     "backfill"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "schema_handling",
+    "est_saving_cpu_s": 5.3959,
+    "falsified_on": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "id": "build:schema_handling",
+    "kind": "build",
+    "option": "registry_typed",
+    "preconditions": [
+     "registry_evolution"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "snapshots",
+    "est_saving_cpu_s": 8.9356,
+    "falsified_on": [
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "id": "build:snapshots",
+    "kind": "build",
+    "option": "per_tick",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "fx",
+    "est_saving_cpu_s": 4.5647,
+    "falsified_on": [
+     "src-926"
+    ],
+    "id": "build:fx",
+    "kind": "build",
+    "option": "table",
+    "preconditions": [
+     "multi_currency"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "deletes",
+    "est_saving_cpu_s": 2.8102,
+    "falsified_on": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924"
+    ],
+    "id": "build:deletes",
+    "kind": "build",
+    "option": "soft_and_hard",
+    "preconditions": [
+     "soft_delete_flag"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "malformed",
+    "est_saving_cpu_s": 1.1111,
+    "falsified_on": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-925"
+    ],
+    "id": "build:malformed",
+    "kind": "build",
+    "option": "quarantine",
+    "preconditions": [
+     "manifests"
+    ],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925",
+     "src-926"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.5,
+    "id": "ops:monitor:snapshot_complete",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "src-921",
+     "src-923",
+     "src-924",
+     "src-925"
+    ],
+    "repair": [
+     "resnapshot"
+    ],
+    "retired_because": [
+     "saving 0.0478 <= cost 0.4411"
+    ],
+    "signature": "monitor:snapshot_complete"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.667,
+    "id": "ops:monitor:integrity",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-925"
+    ],
+    "repair": [
+     "rollback"
+    ],
+    "retired_because": [
+     "saving 0.0638 <= cost 0.4411"
+    ],
+    "signature": "monitor:integrity"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 1.0,
+    "id": "ops:crash:readonly",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "src-921",
+     "src-922",
+     "src-923",
+     "src-924",
+     "src-925"
+    ],
+    "repair": [
+     "rotate_credentials"
+    ],
+    "retired_because": [
+     "saving 0.0956 <= cost 0.4411"
+    ],
+    "signature": "crash:readonly"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 1.333,
+    "id": "ops:monitor:drift",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "src-922",
+     "src-923",
+     "src-926"
+    ],
+    "repair": [
+     "rollback",
+     "unit_override"
+    ],
+    "retired_because": [
+     "saving 0.1275 <= cost 0.4411"
+    ],
+    "signature": "monitor:drift"
+   },
+   {
+    "active": false,
+    "agreement": 0.5,
+    "est_saving_shadow_tests": 3.0,
+    "id": "ops:oom",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "src-924",
+     "src-926"
+    ],
+    "repair": [
+     "batch"
+    ],
+    "retired_because": [
+     "saving 0.2869 <= cost 0.4411",
+     "src evidence disagrees (0.50)",
+     "failed reuse in leave-one-out (2)"
+    ],
+    "signature": "oom"
+   }
+  ]
+ },
+ "loo": {
+  "921": {
+   "correct": true,
+   "cpu": 7.612977999999963,
+   "fresh_cpu": 32.948021999999995,
+   "ops_correct": true,
+   "outcome": "COMPLETED_VERIFIED"
+  },
+  "922": {
+   "correct": true,
+   "cpu": 10.378436000000004,
+   "fresh_cpu": 30.660125999999998,
+   "ops_correct": true,
+   "outcome": "COMPLETED_VERIFIED"
+  },
+  "923": {
+   "correct": true,
+   "cpu": 5.295148000000003,
+   "fresh_cpu": 36.13623099999997,
+   "ops_correct": true,
+   "outcome": "COMPLETED_VERIFIED"
+  },
+  "924": {
+   "correct": true,
+   "cpu": 8.687391000000025,
+   "fresh_cpu": 36.73443400000001,
+   "ops_correct": true,
+   "outcome": "COMPLETED_VERIFIED"
+  },
+  "925": {
+   "correct": true,
+   "cpu": 29.124639999999992,
+   "fresh_cpu": 44.820566000000014,
+   "ops_correct": true,
+   "outcome": "COMPLETED_VERIFIED"
+  },
+  "926": {
+   "correct": true,
+   "cpu": 28.410535000000056,
+   "fresh_cpu": 49.88212699999999,
+   "ops_correct": true,
+   "outcome": "COMPLETED_VERIFIED"
+  }
+ },
+ "loo_failures": {
+  "ops:oom": 2
+ },
+ "placebo": [
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "dedup",
+   "est_saving_cpu_s": 2.1783,
+   "falsified_on": [
+    "src-925"
+   ],
+   "id": "placebo:build:dedup",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "redelivery"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "apply_order",
+   "est_saving_cpu_s": 4.4829,
+   "falsified_on": [
+    "src-922",
+    "src-924"
+   ],
+   "id": "placebo:build:apply_order",
+   "kind": "build",
+   "option": "arrival",
+   "preconditions": [
+    "cdc"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "ts_parse",
+   "est_saving_cpu_s": 3.2491,
+   "falsified_on": [
+    "src-921",
+    "src-923",
+    "src-926"
+   ],
+   "id": "placebo:build:ts_parse",
+   "kind": "build",
+   "option": "text",
+   "preconditions": [
+    "telemetry"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "lateness",
+   "est_saving_cpu_s": 2.3907,
+   "falsified_on": [
+    "src-924",
+    "src-925"
+   ],
+   "id": "placebo:build:lateness",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "telemetry"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "backfill_merge",
+   "est_saving_cpu_s": 1.5747,
+   "falsified_on": [
+    "src-922"
+   ],
+   "id": "placebo:build:backfill_merge",
+   "kind": "build",
+   "option": "insert_if_absent",
+   "preconditions": [
+    "backfill"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "schema_handling",
+   "est_saving_cpu_s": 5.3959,
+   "falsified_on": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "id": "placebo:build:schema_handling",
+   "kind": "build",
+   "option": "v1_lenient",
+   "preconditions": [
+    "registry_evolution"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "snapshots",
+   "est_saving_cpu_s": 8.9356,
+   "falsified_on": [
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "id": "placebo:build:snapshots",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "cdc"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "fx",
+   "est_saving_cpu_s": 4.5647,
+   "falsified_on": [
+    "src-926"
+   ],
+   "id": "placebo:build:fx",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "multi_currency"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "deletes",
+   "est_saving_cpu_s": 2.8102,
+   "falsified_on": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924"
+   ],
+   "id": "placebo:build:deletes",
+   "kind": "build",
+   "option": "hard_only",
+   "preconditions": [
+    "soft_delete_flag"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "malformed",
+   "est_saving_cpu_s": 1.1111,
+   "falsified_on": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-925"
+   ],
+   "id": "placebo:build:malformed",
+   "kind": "build",
+   "option": "drop_silent",
+   "preconditions": [
+    "manifests"
+   ],
+   "provenance": [
+    "src-921",
+    "src-922",
+    "src-923",
+    "src-924",
+    "src-925",
+    "src-926"
+   ],
+   "retired_because": []
+  }
+ ],
+ "retired": {
+  "build:commit_protocol": [
+   "src evidence disagrees (0.83)"
+  ],
+  "build:gold_maintenance": [
+   "src evidence disagrees (0.83)"
+  ],
+  "ops:crash:readonly": [
+   "saving 0.0956 <= cost 0.4411"
+  ],
+  "ops:monitor:drift": [
+   "saving 0.1275 <= cost 0.4411"
+  ],
+  "ops:monitor:integrity": [
+   "saving 0.0638 <= cost 0.4411"
+  ],
+  "ops:monitor:snapshot_complete": [
+   "saving 0.0478 <= cost 0.4411"
+  ],
+  "ops:oom": [
+   "saving 0.2869 <= cost 0.4411",
+   "src evidence disagrees (0.50)",
+   "failed reuse in leave-one-out (2)"
+  ]
+ },
+ "unit_costs": {
+  "applicability_cpu_s": 0.0022756666666635303,
+  "retrieval_cpu_s": 1.7500000002002025e-05,
+  "shadow_cpu_s": 0.09563537962962869
+ }
+}

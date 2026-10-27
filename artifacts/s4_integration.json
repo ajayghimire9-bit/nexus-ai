@@ -1,0 +1,596 @@
+{
+ "runs": {
+  "0": {
+   "log": [
+    {
+     "step": "live consumer during backfill",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 1.2025418281555176
+    },
+    {
+     "step": "backfill",
+     "exit": 0,
+     "out": "BACKFILL_DONE 125\n",
+     "err": ""
+    },
+    {
+     "step": "kill at before_read",
+     "killed": "before_read",
+     "exit": -9,
+     "err": "",
+     "wall": 0.10811114311218262
+    },
+    {
+     "step": "kill during recovery after before_read",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.26407814025878906
+    },
+    {
+     "step": "kill at before_write",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.27805495262145996
+    },
+    {
+     "step": "kill during recovery after before_write",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.27528929710388184
+    },
+    {
+     "step": "kill at after_write_before_ack",
+     "killed": "after_write_before_ack",
+     "exit": -9,
+     "err": "",
+     "wall": 0.46857690811157227
+    },
+    {
+     "step": "kill during recovery after after_write_before_ack",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.27938199043273926
+    },
+    {
+     "step": "kill at after_ack",
+     "killed": "after_ack",
+     "exit": -9,
+     "err": "",
+     "wall": 0.6379759311676025
+    },
+    {
+     "step": "kill during recovery after after_ack",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.28489017486572266
+    },
+    {
+     "step": "random SIGKILL 0",
+     "killed": "t+1.16s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.1746840476989746
+    },
+    {
+     "step": "random SIGKILL 1",
+     "killed": "t+1.71s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.7289578914642334
+    },
+    {
+     "step": "random SIGKILL 2",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 1.8491010665893555
+    },
+    {
+     "step": "random SIGKILL 3",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 1.759809970855713
+    },
+    {
+     "step": "random SIGKILL 4",
+     "killed": "t+0.74s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.7615189552307129
+    },
+    {
+     "step": "random SIGKILL 5",
+     "killed": "t+1.59s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.6040310859680176
+    },
+    {
+     "step": "random SIGKILL 6",
+     "killed": "t+0.44s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.4591238498687744
+    },
+    {
+     "step": "random SIGKILL 7",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 1.8114349842071533
+    },
+    {
+     "step": "drain",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9536521434783936
+    },
+    {
+     "step": "bad deploy (amount x10)",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9501821994781494
+    },
+    {
+     "step": "restore Delta to version 17 (atomic table commit)",
+     "version_after": 19
+    },
+    {
+     "step": "replay after rollback",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9411730766296387
+    }
+   ],
+   "after_crash_sweep": {
+    "match": true,
+    "source_rows": 100,
+    "lake_rows": 144,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 0,
+    "duplicate_keys": 0
+   },
+   "after_bad_deploy": {
+    "match": false,
+    "source_rows": 100,
+    "lake_rows": 145,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 26,
+    "duplicate_keys": 0
+   },
+   "after_rollback_replay": {
+    "match": true,
+    "source_rows": 100,
+    "lake_rows": 145,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 0,
+    "duplicate_keys": 0
+   },
+   "delta_versions": 20,
+   "slot": {
+    "confirmed_flush": "0/177B1A0",
+    "restart": "0/1771650"
+   },
+   "history_ops": [
+    "MERGE",
+    "RESTORE",
+    "MERGE",
+    "MERGE",
+    "MERGE",
+    "MERGE"
+   ],
+   "kills_delivered": 13
+  },
+  "1": {
+   "log": [
+    {
+     "step": "live consumer during backfill",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9247798919677734
+    },
+    {
+     "step": "backfill",
+     "exit": 0,
+     "out": "BACKFILL_DONE 120\n",
+     "err": ""
+    },
+    {
+     "step": "kill at before_read",
+     "killed": "before_read",
+     "exit": -9,
+     "err": "",
+     "wall": 0.10640192031860352
+    },
+    {
+     "step": "kill during recovery after before_read",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.2650177478790283
+    },
+    {
+     "step": "kill at before_write",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.2821011543273926
+    },
+    {
+     "step": "kill during recovery after before_write",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.27253007888793945
+    },
+    {
+     "step": "kill at after_write_before_ack",
+     "killed": "after_write_before_ack",
+     "exit": -9,
+     "err": "",
+     "wall": 0.4708108901977539
+    },
+    {
+     "step": "kill during recovery after after_write_before_ack",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.2767479419708252
+    },
+    {
+     "step": "kill at after_ack",
+     "killed": "after_ack",
+     "exit": -9,
+     "err": "",
+     "wall": 0.6374990940093994
+    },
+    {
+     "step": "kill during recovery after after_ack",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.285214900970459
+    },
+    {
+     "step": "random SIGKILL 0",
+     "killed": "t+1.55s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.5696001052856445
+    },
+    {
+     "step": "random SIGKILL 1",
+     "killed": "t+0.79s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.8001930713653564
+    },
+    {
+     "step": "random SIGKILL 2",
+     "killed": "t+0.72s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.7347230911254883
+    },
+    {
+     "step": "random SIGKILL 3",
+     "killed": "t+0.72s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.7274072170257568
+    },
+    {
+     "step": "random SIGKILL 4",
+     "killed": "t+1.60s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.6180450916290283
+    },
+    {
+     "step": "random SIGKILL 5",
+     "killed": "t+0.89s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.904782772064209
+    },
+    {
+     "step": "random SIGKILL 6",
+     "killed": "t+1.23s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.2417101860046387
+    },
+    {
+     "step": "random SIGKILL 7",
+     "killed": "t+0.77s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.7849421501159668
+    },
+    {
+     "step": "drain",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.962716817855835
+    },
+    {
+     "step": "bad deploy (amount x10)",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9427998065948486
+    },
+    {
+     "step": "restore Delta to version 17 (atomic table commit)",
+     "version_after": 19
+    },
+    {
+     "step": "replay after rollback",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9394609928131104
+    }
+   ],
+   "after_crash_sweep": {
+    "match": true,
+    "source_rows": 102,
+    "lake_rows": 144,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 0,
+    "duplicate_keys": 0
+   },
+   "after_bad_deploy": {
+    "match": false,
+    "source_rows": 102,
+    "lake_rows": 145,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 21,
+    "duplicate_keys": 0
+   },
+   "after_rollback_replay": {
+    "match": true,
+    "source_rows": 102,
+    "lake_rows": 145,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 0,
+    "duplicate_keys": 0
+   },
+   "delta_versions": 20,
+   "slot": {
+    "confirmed_flush": "0/177ACE0",
+    "restart": "0/1771650"
+   },
+   "history_ops": [
+    "MERGE",
+    "RESTORE",
+    "MERGE",
+    "MERGE",
+    "MERGE",
+    "MERGE"
+   ],
+   "kills_delivered": 16
+  },
+  "2": {
+   "log": [
+    {
+     "step": "live consumer during backfill",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9182970523834229
+    },
+    {
+     "step": "backfill",
+     "exit": 0,
+     "out": "BACKFILL_DONE 119\n",
+     "err": ""
+    },
+    {
+     "step": "kill at before_read",
+     "killed": "before_read",
+     "exit": -9,
+     "err": "",
+     "wall": 0.10986495018005371
+    },
+    {
+     "step": "kill during recovery after before_read",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.2554659843444824
+    },
+    {
+     "step": "kill at before_write",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.2740159034729004
+    },
+    {
+     "step": "kill during recovery after before_write",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.27170300483703613
+    },
+    {
+     "step": "kill at after_write_before_ack",
+     "killed": "after_write_before_ack",
+     "exit": -9,
+     "err": "",
+     "wall": 0.4650440216064453
+    },
+    {
+     "step": "kill during recovery after after_write_before_ack",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.267758846282959
+    },
+    {
+     "step": "kill at after_ack",
+     "killed": "after_ack",
+     "exit": -9,
+     "err": "",
+     "wall": 0.6186470985412598
+    },
+    {
+     "step": "kill during recovery after after_ack",
+     "killed": "before_write",
+     "exit": -9,
+     "err": "",
+     "wall": 0.2807576656341553
+    },
+    {
+     "step": "random SIGKILL 0",
+     "killed": "t+1.26s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.2764222621917725
+    },
+    {
+     "step": "random SIGKILL 1",
+     "killed": "t+0.55s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.5665228366851807
+    },
+    {
+     "step": "random SIGKILL 2",
+     "killed": "t+1.27s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.284803867340088
+    },
+    {
+     "step": "random SIGKILL 3",
+     "killed": "t+0.32s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.33330202102661133
+    },
+    {
+     "step": "random SIGKILL 4",
+     "killed": "t+1.40s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.4128289222717285
+    },
+    {
+     "step": "random SIGKILL 5",
+     "killed": "t+1.29s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.304687261581421
+    },
+    {
+     "step": "random SIGKILL 6",
+     "killed": "t+1.16s",
+     "exit": -9,
+     "err": "",
+     "wall": 1.1695361137390137
+    },
+    {
+     "step": "random SIGKILL 7",
+     "killed": "t+0.84s",
+     "exit": -9,
+     "err": "",
+     "wall": 0.857213020324707
+    },
+    {
+     "step": "drain",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9537649154663086
+    },
+    {
+     "step": "bad deploy (amount x10)",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9423501491546631
+    },
+    {
+     "step": "restore Delta to version 17 (atomic table commit)",
+     "version_after": 19
+    },
+    {
+     "step": "replay after rollback",
+     "killed": null,
+     "exit": 0,
+     "err": "",
+     "wall": 0.9413769245147705
+    }
+   ],
+   "after_crash_sweep": {
+    "match": true,
+    "source_rows": 106,
+    "lake_rows": 139,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 0,
+    "duplicate_keys": 0
+   },
+   "after_bad_deploy": {
+    "match": false,
+    "source_rows": 101,
+    "lake_rows": 141,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 19,
+    "duplicate_keys": 0
+   },
+   "after_rollback_replay": {
+    "match": true,
+    "source_rows": 101,
+    "lake_rows": 141,
+    "extra": 0,
+    "missing": 0,
+    "wrong": 0,
+    "duplicate_keys": 0
+   },
+   "delta_versions": 20,
+   "slot": {
+    "confirmed_flush": "0/177AAC0",
+    "restart": "0/1771650"
+   },
+   "history_ops": [
+    "MERGE",
+    "RESTORE",
+    "MERGE",
+    "MERGE",
+    "MERGE",
+    "MERGE"
+   ],
+   "kills_delivered": 16
+  }
+ },
+ "wall_s": 50.79615497589111,
+ "versions": {
+  "postgres": "14.18",
+  "deltalake": "1.6.6",
+  "psycopg": "3.3.6",
+  "pyarrow": "26.0.0"
+ }
+}

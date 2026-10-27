@@ -403,9 +403,20 @@ def _one(name, bundle, spec, full_log, work, runner, ticks, st, base, recs):
             offs = {(t, p): n for t, p, n in con.execute("SELECT topic, part, next FROM _offsets")}
             con.close()
         lag = [k for k, e in ends.items() if offs.get(k, 0) != e + 1]
-        imp = (["partition_discovery", "commit_protocol"] if lag else ["malformed"] if dropped else ["dedup", "partition_discovery"])
-        sev = len(bad) + sum(acc[k] for k in dropped) + sum(abs(offs.get(k, 0) - e - 1) for k, e in ends.items())
-        return sev == 0, f"unaccounted {bad} dropped {dropped} lagging {lag}", imp, sev
+        # spec-derived negative probe: a malformed manifest record must be quarantined (the declared rule), even when the
+        # visible data happens to contain none
+        last = ticks[-1]
+        mrec = next((r for tp, p, r in reversed(recs) if tp == "manifests" and "_undecodable" not in r), None)
+        probe_ok = True
+        if mrec is not None:
+            pr = dict(mrec, msg_id="probe-malformed", weight="N/A")
+            fl = rewrite(full_log, work / "mal_log", with_ticks(spec, lambda tp, p, rs: rs + ([dict(pr, _tick=last)] if tp == "manifests" else [])))
+            _, s2 = replay(runner, bundle, fl, spec, work / "mal", ticks)
+            q = {(r[0], r[1]) for r in (tables(s2, spec).get("quarantine") or [])}
+            probe_ok = ("manifests", "probe-malformed") in q
+        imp = (["partition_discovery", "commit_protocol"] if lag else ["malformed"] if dropped or not probe_ok else ["dedup", "partition_discovery"])
+        sev = len(bad) + sum(acc[k] for k in dropped) + sum(abs(offs.get(k, 0) - e - 1) for k, e in ends.items()) + (not probe_ok)
+        return sev == 0, f"unaccounted {bad} dropped {dropped} lagging {lag} malformed-probe-quarantined {probe_ok}", imp, sev
     if name == "crash_sweep":
         want_fail = []
         for t in (4, 7):

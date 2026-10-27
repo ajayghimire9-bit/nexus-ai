@@ -179,6 +179,9 @@ def build(arm, ws, ask_fn=None, profile=None, library=None):
                                                    runner, suite, bad.get("score", 1), passed)
         else:
             step["fix"] = next((d for d in imp if prop.advance(d)), None)
+        step["cpu_s"] = round(runner.cpu_s - cpu0, 4)
+        if prior and step.get("fix"):
+            step["failed_reuse"] = [d for d in str(step["fix"]).split("+") if d in prior and choice[d] == prior[d]]
         history.append(step)
         search_cpu += runner.cpu_s - cpu0
         search_runs += runner.runs - runs0
@@ -192,7 +195,12 @@ def build(arm, ws, ask_fn=None, profile=None, library=None):
     (bundle / "BUILD.md").write_text(f"# {spec['project']} ({arm})\n\nOutcome: {outcome}\n\nDecisions: {json.dumps(final, sort_keys=True)}\n"
                                      f"\nChecks: {[(r['check'], r['ok']) for r in checks]}\n")
     agent_cpu = _cpu() - c0
+    from nexus import s6_library as SL
+    feats = sorted(SL.features(spec, C.records(full)))
+    failed = sum(len(h.get("failed_reuse", [])) for h in history)
     return dict(arm=arm, project=spec["project"], outcome=outcome, final_choice=final, history=history, library_used=used,
+                features=feats, failed_reuse=failed,
+                failed_reuse_cpu_s=round(sum(h["cpu_s"] for h in history if h.get("failed_reuse")), 4),
                 submitted=outcome.startswith("COMPLETED"),
                 cost=dict(proposals=prop.calls, pipeline_runs=runner.runs, check_runs=runner.runs,
                           final_check_runs=final_runs, final_check_cpu_s=round(final_cpu, 3),
