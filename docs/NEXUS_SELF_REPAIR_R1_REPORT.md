@@ -222,3 +222,51 @@ alternative. They are the next ablation, not part of R1.
   * scheduler: 6 runs per tick;
   * at most 900 s per call;
   * total R1 compute ≤ the 10,544 s remaining.
+
+### 0.9 Development log (dev / src data only, before any freeze; nothing here uses val or test)
+
+1. **Monitor additions, before any dev outcome.** `txn_effect_violation` was added, as declared in the protocol text.
+2. **Monitor defect found on dev.** It skipped every directory starting with `_`, so it reported `_schemas` as missing.
+   The fix skips only `_obs`.
+3. **Fidelity check against the real environment.** `grow_obs` rebuilt from the archive was compared byte for byte with
+   the live ops log, tick by tick. It matched only 13 of 14 ticks in the 4 worlds with an interrupted snapshot:
+   * **Replay-helper defect:** `grow_obs` exposed segments of a partition the observation marks unavailable.
+   * **Monitor gap:** the monitor had no rule for this. It now has `partition_unavailable_exposed`.
+
+   After the fix, `grow_obs` matches the live log on 14 of 14 ticks in all 8 dev worlds.
+4. **The independent test of the post-test fix `0bc3e0c`.** Its `grow` deviates from the live environment from tick 1 in
+   every dev world, matching only 7–8 of 14 ticks. It omits partitions the environment provisions empty at tick 1 (and an
+   unavailable partition). The monitor flags it at tick 1, as `partition_missing`. The pre-fix `grow` is flagged at
+   tick 1 as well. So the post-test fix removed the W1 symptom without making the replay faithful.
+5. **Reconciliation extended after B dev cases.** Silver plus late events missed a `dedup=none` pipeline, because
+   source-version precedence hides duplicates in silver. Reconciliation now also derives, per the spec:
+   * per-topic accounting (applied / duplicate / quarantined / aborted / pending);
+   * `gold_sla`;
+   * supplier volume.
+
+   Lag is no longer typed as a pipeline fault, since it may be quota exhaustion. When no snapshot precedes the onset and
+   no segment has expired yet, rollback 0 (reset and full replay) is used.
+6. **Comparison B, first run (both arms, de3-dev-951 / 952, 20 single-fault mutants each).** By the predeclared rule, B1
+   was **not** adopted:
+   * the rule requires B1's localisation accuracy ≥ B0's **and** a lower mean CPU per repaired mutant;
+   * B0's suspect set is every decision, so it always contains the truth: 31/31 against B1's 24/31;
+   * B1 also cost more per repaired mutant: 3.75 s against 2.88 s;
+   * on other measures B1 was better: it ranked the true decision first in 22 cases (B0: 7), repaired 24 (B0: 23),
+     and needed 153 full verifications (B0: 791).
+
+   **One revision is pre-committed here, with the rule unchanged.** If B1 still fails the rule after it, B0 is the
+   confirmation localiser. The revision fixes defects found in those cases, not thresholds:
+   * **CEGIS gap:** pipeline-suspect failures seen only in failed shadow verifications are now counterexamples, and the
+     best relaxed incident composition is combined with the redeploy candidates. This applies to both arms.
+   * **Stage attribution:** the stage named by a failed run is ranked first, as in the Stage 4 attribution. This applies
+     to both arms.
+   * **Mini traces:** they replay in one run instead of tick by tick, which is valid because silver over orders-only
+     traces does not depend on run batching. This applies to B1 only.
+7. **Comparison A** (de3-dev-951..953, 20 mutants + 2 correct combinations each). A0, A1 and A2 each reject 52 of 60
+   mutants, with 0 false rejections of 6 correct builds. A2 costs 11% more check CPU than A0.
+   * Undetected by every arm: `txn_isolation=read_uncommitted` and `gap_handling=skip`, as designed, since there is no
+     exercising data and they are labelled UNKNOWN; and `lateness=processing_time`, which behaves the same as the
+     watermark rule on these visible logs.
+   * **A2 is adopted** by the rule: it rejects ≥ A0's mutants with 0 false rejections.
+   * The monitor's value is not in decision mutants. It is replay fidelity (items 3 and 4) and ack durability at crash
+     points: `offsets_first` is flagged at 7 of 18 crash points per world, against 0 for the correct protocols.

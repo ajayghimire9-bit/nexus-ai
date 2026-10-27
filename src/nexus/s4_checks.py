@@ -46,6 +46,10 @@ IMPLICATE = {"runs_all_ticks": [], "schema_keys_not_null": ["dedup", "gold_maint
              "gold_equals_recompute": ["gold_maintenance"], "lateness_conformance": ["lateness", "ts_parse", "ts_format"],
              "silver_rederivation": ["schema_handling", "fx", "deletes", "backfill_merge", "apply_order"],
              "rollback_drill": ["snapshots"]}
+# R1 hooks (default None = the Stages 4-6 behaviour): GROW replaces the replay helper; REWRITE_OBS(src_log, dst_log, written_segments) writes
+# observations for a metamorphic rewrite; REPLAY_HOOK(full_log, view, state, tick, run)
+# and CRASH_HOOK(full_log, state, tick) observe every replayed run / crashed state (the R1 independent monitor).
+GROW = REWRITE_OBS = REPLAY_HOOK = CRASH_HOOK = None
 TOL = {"net_usd": 0.011, "revenue_usd": 0.011, "weight_kg": 0.0021, "on_time_rate": 0.00011}
 
 CRASH = r'''
@@ -150,6 +154,7 @@ def rewrite(log, dst, fn):
         parts.setdefault((topic, part), []).extend(json.loads(l) for l in f.read_text().split("\n") if l.strip())
     for d in Path(log).glob("*/p*"):
         (dst / d.parent.name / d.name).mkdir(parents=True, exist_ok=True)
+    written = []
     for (topic, part), recs in parts.items():
         recs = fn(topic, part, recs)
         seg = {}
@@ -157,8 +162,11 @@ def rewrite(log, dst, fn):
             r = dict(r, offset=i)
             seg.setdefault(r["_tick"], []).append(r)
         for tk, rs in seg.items():
+            written.append((topic, part, rs[0]["offset"], rs[-1]["offset"] + 1, tk))
             (dst / topic / f"p{part}" / f"{rs[0]['offset']:08d}.jsonl").write_text(
                 "".join(json.dumps({k: v for k, v in x.items() if k != "_tick"}, sort_keys=True) + "\n" for x in rs))
+    if REWRITE_OBS is not None:
+        REWRITE_OBS(log, dst, written)
     return dst
 
 
@@ -172,6 +180,8 @@ def with_ticks(spec, fn):
 
 def grow(full, dst, upto, spec, keep=6):
     """The log as a consumer sees it at tick `upto`: segments of ticks <= upto, retention applied."""
+    if GROW is not None:
+        return GROW(full, dst, upto, spec, keep)
     dst = Path(dst)
     if dst.exists():
         shutil.rmtree(dst)
@@ -205,6 +215,8 @@ def replay(runner, bundle, full_log, spec, work, ticks, cfg_at=None):
         lg = grow(full_log, work / "log", t, spec)
         r = runner.run(bundle, lg, st, tick=t, cfg=(cfg_at or {}).get(t))
         runs.append(r)
+        if REPLAY_HOOK is not None:
+            REPLAY_HOOK(full_log, lg, st, t, r)
         if r["exit"] != 0:
             break
     return runs, st
@@ -361,8 +373,11 @@ def verify(bundle, spec, full_log, work, runner, suite=NEXUS, ticks=range(1, 9),
     for name in names[1:] if names[0] == "runs_all_ticks" else names:
         if name == "runs_all_ticks":
             continue
+        c0, n0 = runner.cpu_s, runner.runs
         ok, det, imp, score = _one(name, bundle, spec, full_log, work, runner, ticks, st, base, recs)
-        if not add(name, ok, det, imp, score if not ok else 0):
+        ok_more = add(name, ok, det, imp, score if not ok else 0)
+        res[-1].update(cpu_s=round(runner.cpu_s - c0, 4), runs=runner.runs - n0)
+        if not ok_more:
             return res
     return res
 
@@ -446,6 +461,8 @@ def _one(name, bundle, spec, full_log, work, runner, ticks, st, base, recs):
                     runner.run(bundle, lg, s, tick=t, kill_after=rng.uniform(0.005, 0.1))
                 else:
                     runner.run(bundle, lg, s, tick=t, mode="crash", k=k)
+                    if CRASH_HOOK is not None:
+                        CRASH_HOOK(full_log, s, t)
                     if j is not None:
                         runner.run(bundle, lg, s, tick=t, mode="crash", k=j)
                 r = runner.run(bundle, lg, s, tick=t)

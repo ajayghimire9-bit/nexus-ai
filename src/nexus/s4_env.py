@@ -168,8 +168,10 @@ def _ingest(r, t, late_p, lo_h, hi_h):
     return t + timedelta(minutes=r.uniform(1, 90))
 
 
-def encode(w, scenario, incidents=()):
-    """Log + truth for a scenario. Returns dict(log={tick: {(topic, part): [records]}}, truth=...)."""
+def encode(w, scenario, incidents=(), hook=None):
+    """Log + truth for a scenario. Returns dict(log={tick: {(topic, part): [records]}}, truth=...). hook(pending, w, r,
+    scenario) -> dict (R1 withheld classes; default None = the Stages 4-6 behaviour, byte-for-byte) may append records
+    before offsets are assigned; its returned dict is merged into the truth."""
     r = random.Random(w["rseed"] + ":" + scenario)
     n, nt = w["n"], NT[scenario]
     end = T0 + nt * D
@@ -316,6 +318,7 @@ def encode(w, scenario, incidents=()):
                 o2 = put(tk2, "manifests", 0, dict(rec, ingest_ts=iso(max(ing_m, T0 + (tk2 - 1) * D + timedelta(minutes=7)))))
                 m["copies"].append((tk2, 0, o2))
             man.append(m)
+    extra = hook(pending, w, random.Random(w["rseed"] + ":hook:" + scenario), scenario) if hook else {}
     for i, (tk, topic, part, rec) in sorted(enumerate(pending), key=lambda x: (x[1][1], x[1][2], x[1][0], x[1][3]["ingest_ts"], x[0])):
         k = (topic, part)
         rec["offset"] = offs.get(k, 0)
@@ -328,6 +331,7 @@ def encode(w, scenario, incidents=()):
                  telemetry=tel, manifests=man, snapshot_rows=len(hist), withheld=w["withheld"], incidents=[], controls=controls,
                  schemas={v: dict(tick=tk, **b) for v, tk, b in regs},
                  tel_schemas={v: dict(tick=tk, **b) for v, tk, b in tregs})
+    truth.update(extra)
     out = dict(log=log, truth=truth)
     for inc in incidents:                                              # Stage 5 hidden-cause incidents mutate log + truth
         inc.apply(out, w, r)

@@ -1,0 +1,83 @@
+"""R1 library learning + admission (NOT LOCKED; de3/src ONLY). The Stage 6 procedure (s6_library, unchanged) over R1
+experience. Every CPU second here is the Experienced arm's DEDICATED SOURCE-LEARNING cost (reported separately; there is
+no learning during useful work: the library is frozen, observe() refuses).
+  1. NEXUS_Fresh build + end-to-end ops on each src project (source experience; no component benchmark)
+  2. candidate procedures (s6_library.candidates; a build counts as accepted when every check of the R1 suite passed,
+     i.e. its Stage 4 label, since every R1 build is COMPLETED_UNVERIFIED for the two unexercised properties)
+  3. leave-one-out admission trials (NEXUS_Experienced with a library from the other src projects)
+  4. admission / retirement (s6_library.admit), expected uses = 12 (val 4 + test 8); 5. size-matched Placebo
+Writes artifacts/r1_library.json.  python scripts/r1_learn_library.py [--mode B1]"""
+import argparse, json, sys, time
+from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src")); sys.path.insert(0, str(ROOT / "scripts"))
+from nexus import r1_seeds  # noqa: F401
+from nexus import r1_env as RE, s6_library as SL, seed_registry as R
+from nexus.wave31_evaluator import ledger_append
+import r1_run as RUN
+
+
+def cpu_of(a):
+    o = a["ops"] or {"cost": {}}
+    return a["build"]["cost"]["total_cpu_s"] + o["cost"].get("agent_cpu_s", 0.0) + o["cost"].get("shadow_cpu_s", 0.0)
+
+
+def brec(a):
+    return dict(a["build"], outcome=a["build"].get("s4_outcome", a["build"]["outcome"]))
+
+
+def orec(a):
+    return dict(project=a["build"]["project"], ledger=(a["ops"] or {}).get("ledger", []))
+
+
+def main(mode):
+    t0 = time.perf_counter()
+    seeds = list(R.REGISTRY[("de3", "src")])
+    R.claim("de3", "src", seeds, run_id="de3-src", record=False)
+    art = ROOT / "artifacts/r1_src"
+    fresh = {}
+    for s in seeds:
+        w = RE.make_world(s, "src")
+        fresh[s] = RUN.run_project(s, w, "src", ["NEXUS_Fresh"], art, lib=None, plc=SL.Library([], True), mode=mode,
+                                   component=False)["arms"]["NEXUS_Fresh"]
+        print("src", s, fresh[s]["build"]["outcome"], fresh[s]["e2e_correct"], round(cpu_of(fresh[s]), 1), flush=True)
+    curriculum_cpu = sum(cpu_of(v) for v in fresh.values())
+    cands = SL.candidates([brec(v) for v in fresh.values()], [orec(v) for v in fresh.values()])
+    loo, failures, unit = {}, {}, dict(retrieval_cpu_s=[], applicability_cpu_s=[], shadow_cpu_s=[])
+    for s in seeds:
+        others = [x for x in seeds if x != s]
+        c = SL.candidates([brec(fresh[x]) for x in others], [orec(fresh[x]) for x in others])
+        lib = SL.Library([dict(p, active=p["agreement"] == 1.0) for p in c], True, f"loo-{s}")
+        w = RE.make_world(s, "src")
+        r = RUN.run_project(s, w, "src", ["NEXUS_Experienced"], art / "loo", lib=lib, plc=None, mode=mode,
+                            component=False)["arms"]["NEXUS_Experienced"]
+        oc = r["ops"] or {"cost": {}, "ledger": []}
+        loo[s] = dict(cpu=cpu_of(r), fresh_cpu=cpu_of(fresh[s]), outcome=r["build"]["outcome"], correct=r["build_eval"].get("correct"),
+                      e2e=r["e2e_correct"], fresh_e2e=fresh[s]["e2e_correct"])
+        for h in r["build"]["history"]:
+            for d in h.get("failed_reuse", []):
+                failures[f"build:{d}"] = failures.get(f"build:{d}", 0) + 1
+        for e in oc["ledger"]:
+            if e["kind"] == "repaired" and e.get("shadow_tests_before", 1) > 1 and lib.playbook(e["signature"]):
+                failures["ops:" + "|".join(e["signature"])] = failures.get("ops:" + "|".join(e["signature"]), 0) + 1
+        unit["retrieval_cpu_s"].append(r["build"]["cost"]["retrieval_cpu_s"] + oc["cost"].get("library_retrieval_cpu_s", 0.0))
+        unit["applicability_cpu_s"].append(r["build"]["cost"]["applicability_cpu_s"] + oc["cost"].get("library_applicability_cpu_s", 0.0))
+        unit["shadow_cpu_s"].append(oc["cost"].get("shadow_cpu_s", 0.0) / max(1, oc["cost"].get("shadow_tests", 0)))
+        print("loo", s, loo[s], flush=True)
+    maint_cpu = sum(v["cpu"] for v in loo.values())
+    uc = {k: sum(v) / len(v) for k, v in unit.items()}
+    procs = SL.admit(cands, failures, uc, maint_cpu, expected_uses=12)
+    lib = SL.Library(procs, True, "experienced")
+    plc = SL.placebo(procs)
+    out = dict(library=lib.to_json(), placebo=plc, loo=loo, loo_failures=failures, unit_costs=uc, mode=mode,
+               learning_cost=dict(source_curriculum_cpu_s=curriculum_cpu, loo_maintenance_cpu_s=maint_cpu,
+                                  during_useful_work_cpu_s=0.0, wall_s=time.perf_counter() - t0),
+               admitted=[p["id"] for p in procs if p["active"]], retired={p["id"]: p["retired_because"] for p in procs if not p["active"]})
+    (ROOT / "artifacts/r1_library.json").write_text(json.dumps(out, indent=1, sort_keys=True, default=str))
+    ledger_append(dict(run="r1-learn-library", wall_s=time.perf_counter() - t0, status="COMPLETE"))
+    print("admitted", out["admitted"]); print("retired", out["retired"])
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(); ap.add_argument("--mode", default="B1")
+    main(ap.parse_args().mode)
