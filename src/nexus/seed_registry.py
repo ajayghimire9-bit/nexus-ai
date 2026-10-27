@@ -93,6 +93,10 @@ REGISTRY = {
     # Wave 40 (invariance and ceilings): dev + one-use confirmation ranges (claimed whole, once, after the freeze commit)
     ("wave40", "dev"): range(861, 871), ("wave40", "confirm_lodo"): range(7851, 7856),
     ("wave40", "confirm_stream"): range(7856, 7861), ("wave40", "confirm_prose"): range(7861, 7862),
+    # Data-engineering Stages 1-3 (branch codex/nexus-data-engineering): dev projects (reusable), one-use admission-validation
+    # projects (val; val_b only if val fails the admission gate and is reclassified as dev), one-use final-test projects
+    ("de1", "dev"): range(901, 911), ("de1", "val"): range(7901, 7905), ("de1", "val_b"): range(7913, 7917),
+    ("de1", "test"): range(7905, 7913),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.
