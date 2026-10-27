@@ -175,12 +175,20 @@ def grow(full, dst, upto, spec, keep=6):
     dst = Path(dst)
     if dst.exists():
         shutil.rmtree(dst)
+    born = {}                                     # POST-TEST FIX: a partition directory exists only from its first segment's
+    for topic, part, f in segments(full):         # tick (or tick 1 if it was empty-provisioned at start)
+        first = json.loads(f.read_text().split("\n", 1)[0])
+        tk = tick_of(first["ingest_ts"], spec)
+        born[(topic, part)] = min(born.get((topic, part), tk), tk)
     for d in Path(full).glob("*/p*"):
-        (dst / d.parent.name / d.name).mkdir(parents=True, exist_ok=True)
+        k = (d.parent.name, int(d.name[1:]))
+        if born.get(k, 1) <= upto or k not in born:
+            (dst / d.parent.name / d.name).mkdir(parents=True, exist_ok=True)
     for topic, part, f in segments(full):
         first = json.loads(f.read_text().split("\n", 1)[0])
         tk = tick_of(first["ingest_ts"], spec)
         if upto - keep < tk <= upto:
+            (dst / topic / f"p{part}").mkdir(parents=True, exist_ok=True)
             shutil.copy(f, dst / topic / f"p{part}" / f.name)
     return dst
 
