@@ -1,0 +1,932 @@
+{
+ "admitted": [
+  "build:dedup",
+  "build:apply_order",
+  "build:ts_parse",
+  "build:gold_maintenance",
+  "build:backfill_merge",
+  "build:schema_handling",
+  "build:partition_discovery",
+  "build:ts_format",
+  "build:snapshots",
+  "build:fx",
+  "build:deletes",
+  "build:malformed"
+ ],
+ "learning_cost": {
+  "curriculum_wall_s": 414.27709828998195,
+  "during_useful_work_cpu_s": 0.0,
+  "loo_maintenance_cpu_s": 105.567783,
+  "source_curriculum_cpu_s": 357.389441
+ },
+ "library": {
+  "frozen": true,
+  "name": "experienced",
+  "procs": [
+   {
+    "active": false,
+    "agreement": 0.5,
+    "decision": "commit_protocol",
+    "est_saving_cpu_s": 17.4273,
+    "falsified_on": [
+     "de3-src-943",
+     "de3-src-944"
+    ],
+    "id": "build:commit_protocol",
+    "kind": "build",
+    "option": "sink_then_offsets",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": [
+     "src evidence disagrees (0.50)"
+    ]
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "dedup",
+    "est_saving_cpu_s": 6.0221,
+    "falsified_on": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-946"
+    ],
+    "id": "build:dedup",
+    "kind": "build",
+    "option": "by_msg_id",
+    "preconditions": [
+     "redelivery"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "apply_order",
+    "est_saving_cpu_s": 5.0607,
+    "falsified_on": [
+     "de3-src-942",
+     "de3-src-946"
+    ],
+    "id": "build:apply_order",
+    "kind": "build",
+    "option": "source_version",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "ts_parse",
+    "est_saving_cpu_s": 20.0935,
+    "falsified_on": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943"
+    ],
+    "id": "build:ts_parse",
+    "kind": "build",
+    "option": "utc",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "gold_maintenance",
+    "est_saving_cpu_s": 1.863,
+    "falsified_on": [
+     "de3-src-942",
+     "de3-src-946"
+    ],
+    "id": "build:gold_maintenance",
+    "kind": "build",
+    "option": "full_recompute",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": false,
+    "agreement": 0.8333333333333334,
+    "decision": "lateness",
+    "est_saving_cpu_s": 21.0347,
+    "falsified_on": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943"
+    ],
+    "id": "build:lateness",
+    "kind": "build",
+    "option": "watermark",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": [
+     "src evidence disagrees (0.83)"
+    ]
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "backfill_merge",
+    "est_saving_cpu_s": 3.4428,
+    "falsified_on": [
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "id": "build:backfill_merge",
+    "kind": "build",
+    "option": "lww_tombstones",
+    "preconditions": [
+     "backfill"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "schema_handling",
+    "est_saving_cpu_s": 4.3341,
+    "falsified_on": [
+     "de3-src-941",
+     "de3-src-943",
+     "de3-src-944"
+    ],
+    "id": "build:schema_handling",
+    "kind": "build",
+    "option": "registry_typed",
+    "preconditions": [
+     "registry_evolution"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "partition_discovery",
+    "est_saving_cpu_s": 1.6904,
+    "falsified_on": [
+     "de3-src-941",
+     "de3-src-943",
+     "de3-src-944"
+    ],
+    "id": "build:partition_discovery",
+    "kind": "build",
+    "option": "dynamic",
+    "preconditions": [
+     "partitioned"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "ts_format",
+    "est_saving_cpu_s": 1.4472,
+    "falsified_on": [
+     "de3-src-942",
+     "de3-src-946"
+    ],
+    "id": "build:ts_format",
+    "kind": "build",
+    "option": "registry_typed",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "snapshots",
+    "est_saving_cpu_s": 11.6548,
+    "falsified_on": [
+     "de3-src-943",
+     "de3-src-946"
+    ],
+    "id": "build:snapshots",
+    "kind": "build",
+    "option": "per_tick",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "fx",
+    "est_saving_cpu_s": 5.4862,
+    "falsified_on": [
+     "de3-src-941",
+     "de3-src-943",
+     "de3-src-946"
+    ],
+    "id": "build:fx",
+    "kind": "build",
+    "option": "table",
+    "preconditions": [
+     "multi_currency"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "deletes",
+    "est_saving_cpu_s": 6.6272,
+    "falsified_on": [
+     "de3-src-942"
+    ],
+    "id": "build:deletes",
+    "kind": "build",
+    "option": "soft_and_hard",
+    "preconditions": [
+     "soft_delete_flag"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "malformed",
+    "est_saving_cpu_s": 1.2199,
+    "falsified_on": [
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "id": "build:malformed",
+    "kind": "build",
+    "option": "quarantine",
+    "preconditions": [
+     "manifests"
+    ],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945",
+     "de3-src-946"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.667,
+    "id": "ops:crash:decode|monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-945"
+    ],
+    "repair": [
+     "dead_letter"
+    ],
+    "retired_because": [
+     "saving 0.0802 <= cost 0.4216"
+    ],
+    "signature": "crash:decode|monitor:reconciliation"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 2.0,
+    "id": "ops:monitor:drift",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-942",
+     "de3-src-943",
+     "de3-src-946"
+    ],
+    "repair": [
+     "rollback",
+     "unit_override"
+    ],
+    "retired_because": [
+     "saving 0.2404 <= cost 0.4216"
+    ],
+    "signature": "monitor:drift"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.75,
+    "id": "ops:monitor:integrity|monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de3-src-941",
+     "de3-src-943",
+     "de3-src-944",
+     "de3-src-945"
+    ],
+    "repair": [
+     "rollback"
+    ],
+    "retired_because": [
+     "saving 0.0902 <= cost 0.4216"
+    ],
+    "signature": "monitor:integrity|monitor:reconciliation"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.667,
+    "id": "ops:monitor:snapshot_complete",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de3-src-942",
+     "de3-src-944",
+     "de3-src-945"
+    ],
+    "repair": [
+     "resnapshot"
+    ],
+    "retired_because": [
+     "saving 0.0802 <= cost 0.4216"
+    ],
+    "signature": "monitor:snapshot_complete"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 1.5,
+    "id": "ops:monitor:reconciliation|oom",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de3-src-943",
+     "de3-src-944"
+    ],
+    "repair": [
+     "batch"
+    ],
+    "retired_because": [
+     "saving 0.1803 <= cost 0.4216",
+     "failed reuse in leave-one-out (1)"
+    ],
+    "signature": "monitor:reconciliation|oom"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 3.0,
+    "id": "ops:monitor:reconciliation|monitor:watermark_sanity",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de3-src-946"
+    ],
+    "repair": [
+     "future_guard",
+     "rollback"
+    ],
+    "retired_because": [
+     "saving 0.3606 <= cost 0.4216"
+    ],
+    "signature": "monitor:reconciliation|monitor:watermark_sanity"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 1.0,
+    "id": "ops:crash:readonly|monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de3-src-946"
+    ],
+    "repair": [
+     "rotate_credentials"
+    ],
+    "retired_because": [
+     "saving 0.1202 <= cost 0.4216"
+    ],
+    "signature": "crash:readonly|monitor:reconciliation"
+   }
+  ]
+ },
+ "loo": {
+  "941": {
+   "correct": true,
+   "cpu": 13.936419000000003,
+   "e2e": true,
+   "fresh_cpu": 82.95857599999997,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "942": {
+   "correct": true,
+   "cpu": 15.648372000000004,
+   "e2e": true,
+   "fresh_cpu": 76.13732799999998,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "943": {
+   "correct": true,
+   "cpu": 33.03185,
+   "e2e": true,
+   "fresh_cpu": 89.758475,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "944": {
+   "correct": true,
+   "cpu": 27.477589000000002,
+   "e2e": true,
+   "fresh_cpu": 44.80016100000002,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "945": {
+   "correct": true,
+   "cpu": 7.339708,
+   "e2e": true,
+   "fresh_cpu": 13.370899999999999,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "946": {
+   "correct": true,
+   "cpu": 8.133844999999999,
+   "e2e": true,
+   "fresh_cpu": 50.364001,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  }
+ },
+ "loo_failures": {
+  "ops:monitor:reconciliation|oom": 1
+ },
+ "mode": "B0",
+ "placebo": [
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "dedup",
+   "est_saving_cpu_s": 6.0221,
+   "falsified_on": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:dedup",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "redelivery"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "apply_order",
+   "est_saving_cpu_s": 5.0607,
+   "falsified_on": [
+    "de3-src-942",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:apply_order",
+   "kind": "build",
+   "option": "arrival",
+   "preconditions": [
+    "cdc"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "ts_parse",
+   "est_saving_cpu_s": 20.0935,
+   "falsified_on": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943"
+   ],
+   "id": "placebo:build:ts_parse",
+   "kind": "build",
+   "option": "text",
+   "preconditions": [
+    "telemetry"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "gold_maintenance",
+   "est_saving_cpu_s": 1.863,
+   "falsified_on": [
+    "de3-src-942",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:gold_maintenance",
+   "kind": "build",
+   "option": "delta_no_retract",
+   "preconditions": [
+    "cdc"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "backfill_merge",
+   "est_saving_cpu_s": 3.4428,
+   "falsified_on": [
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:backfill_merge",
+   "kind": "build",
+   "option": "insert_if_absent",
+   "preconditions": [
+    "backfill"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "schema_handling",
+   "est_saving_cpu_s": 4.3341,
+   "falsified_on": [
+    "de3-src-941",
+    "de3-src-943",
+    "de3-src-944"
+   ],
+   "id": "placebo:build:schema_handling",
+   "kind": "build",
+   "option": "v1_lenient",
+   "preconditions": [
+    "registry_evolution"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "partition_discovery",
+   "est_saving_cpu_s": 1.6904,
+   "falsified_on": [
+    "de3-src-941",
+    "de3-src-943",
+    "de3-src-944"
+   ],
+   "id": "placebo:build:partition_discovery",
+   "kind": "build",
+   "option": "static_initial",
+   "preconditions": [
+    "partitioned"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "ts_format",
+   "est_saving_cpu_s": 1.4472,
+   "falsified_on": [
+    "de3-src-942",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:ts_format",
+   "kind": "build",
+   "option": "iso_only",
+   "preconditions": [
+    "telemetry"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "snapshots",
+   "est_saving_cpu_s": 11.6548,
+   "falsified_on": [
+    "de3-src-943",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:snapshots",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "cdc"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "fx",
+   "est_saving_cpu_s": 5.4862,
+   "falsified_on": [
+    "de3-src-941",
+    "de3-src-943",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:fx",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "multi_currency"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "deletes",
+   "est_saving_cpu_s": 6.6272,
+   "falsified_on": [
+    "de3-src-942"
+   ],
+   "id": "placebo:build:deletes",
+   "kind": "build",
+   "option": "hard_only",
+   "preconditions": [
+    "soft_delete_flag"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "malformed",
+   "est_saving_cpu_s": 1.2199,
+   "falsified_on": [
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "id": "placebo:build:malformed",
+   "kind": "build",
+   "option": "drop_silent",
+   "preconditions": [
+    "manifests"
+   ],
+   "provenance": [
+    "de3-src-941",
+    "de3-src-942",
+    "de3-src-943",
+    "de3-src-944",
+    "de3-src-945",
+    "de3-src-946"
+   ],
+   "retired_because": []
+  }
+ ],
+ "retired": {
+  "build:commit_protocol": [
+   "src evidence disagrees (0.50)"
+  ],
+  "build:lateness": [
+   "src evidence disagrees (0.83)"
+  ],
+  "ops:crash:decode|monitor:reconciliation": [
+   "saving 0.0802 <= cost 0.4216"
+  ],
+  "ops:crash:readonly|monitor:reconciliation": [
+   "saving 0.1202 <= cost 0.4216"
+  ],
+  "ops:monitor:drift": [
+   "saving 0.2404 <= cost 0.4216"
+  ],
+  "ops:monitor:integrity|monitor:reconciliation": [
+   "saving 0.0902 <= cost 0.4216"
+  ],
+  "ops:monitor:reconciliation|monitor:watermark_sanity": [
+   "saving 0.3606 <= cost 0.4216"
+  ],
+  "ops:monitor:reconciliation|oom": [
+   "saving 0.1803 <= cost 0.4216",
+   "failed reuse in leave-one-out (1)"
+  ],
+  "ops:monitor:snapshot_complete": [
+   "saving 0.0802 <= cost 0.4216"
+  ]
+ },
+ "unit_costs": {
+  "applicability_cpu_s": 0.002621333333333502,
+  "retrieval_cpu_s": 2.4666666667614207e-05,
+  "shadow_cpu_s": 0.12020099007936556
+ }
+}

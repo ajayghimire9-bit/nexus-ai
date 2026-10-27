@@ -135,6 +135,13 @@ def main(path, lib_path=None):
     if comp:
         print(f"component benchmark (NEXUS_Fresh operator, SUPPLIED correct pipeline): ops correct {sum(c['eval']['correct'] for c in comp)}/{len(comp)}, "
               f"silent {sum(c['eval']['silent'] for c in comp)}, escalations {sum(c['cost'].get('escalations', 0) for c in comp)}")
+    sens = [(p["arms"]["NEXUS_Fresh"], p["arms"]["NEXUS_Fresh"].get("sensitivity")) for p in P.values() if "NEXUS_Fresh" in p["arms"]]
+    sens = [(a, x) for a, x in sens if x]
+    if sens:
+        ok = sum(bool(a["build"]["submitted"] and x["eval"]["correct"] and not x["eval"]["open_escalation"]) for a, x in sens)
+        print(f"sensitivity (NON-CONFIRMATORY; NEXUS_Fresh's own pipeline, localiser {sens[0][1].get('mode')}): end-to-end correct "
+              f"{ok}/{n} (confirmatory arm: {rows['NEXUS_Fresh']['e2e']}/{n}), silent {sum(x['eval']['silent'] for a, x in sens)}, "
+              f"operator CPU {sum(x['cost'].get('agent_cpu_s', 0) + x['cost'].get('shadow_cpu_s', 0) for a, x in sens):.1f} s")
     return rows
 
 

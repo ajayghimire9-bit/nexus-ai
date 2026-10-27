@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from nexus import r1_seeds  # noqa: F401  (registers the de3 ranges)
+from nexus import r1_checks as RC, r1_monitor as M
 from nexus import r1_agent as RA, r1_env as RE, r1_evaluator as RV, r1_ops as RO, r1_template as RT, s4_evaluator as V
 from nexus import s5_ops as O, s6_library as SL, seed_registry as R
 from nexus.wave31_evaluator import ledger_append, LEDGER
@@ -99,6 +100,11 @@ def run_project(seed, w, split, arms, art, lib=None, plc=None, mode=None, compon
     mode = mode or freeze().get("ops_mode", "B1")
     enc = RE.encode(w, "build")
     out = {"features": w["features"], "x_class": w.get("x_class"), "arms": {}}
+    chk = Path(tempfile.mkdtemp(prefix="r1chk_"))           # val-gate measurement: the correct replay vs the observations
+    RE.write_log(enc, chk / "vis", 8, archive=True)
+    out["replay_view_violations"] = sum(len(M.check_view(RC.grow_obs(chk / "vis" / "log", chk / "v", k), M.load_obs(chk / "vis" / "log", k)))
+                                        for k in range(1, 9))
+    shutil.rmtree(chk, ignore_errors=True)
     for arm in arms:
         library = lib if arm in ("NEXUS_Experienced", "Fixed_Policy") else plc if arm == "NEXUS_Placebo" else None
         if library is None and arm in ("NEXUS_Experienced", "NEXUS_Placebo"):
@@ -118,6 +124,11 @@ def run_project(seed, w, split, arms, art, lib=None, plc=None, mode=None, compon
         if rec["submitted"]:
             op = operator(arm, library if arm.startswith("NEXUS") else None, seed, w["spec"], mode)
             ops = ops_once(w, split, seed, ws / "bundle", rec["final_choice"], op, d, "e2e")
+        sens = None
+        if component and arm == "NEXUS_Fresh" and ops is not None and freeze().get("sensitivity_mode"):
+            sm = freeze()["sensitivity_mode"]                 # NON-CONFIRMATORY: the same own pipeline, the other localiser
+            sens = ops_once(w, split, seed, ws / "bundle", rec["final_choice"], operator(arm, None, seed, w["spec"], sm), d, "sens")
+            sens["mode"] = sm
         comp = None
         if component and arm == "NEXUS_Fresh":
             b = d / "supplied"
@@ -133,7 +144,7 @@ def run_project(seed, w, split, arms, art, lib=None, plc=None, mode=None, compon
         if ops:
             (dst / "incident_ledger.jsonl").write_text("".join(json.dumps(x, default=str) + "\n" for x in ops["ledger"]))
         out["arms"][arm] = dict(build=rec, build_eval={k: v for k, v in ev.items() if k != "tables"}, ops=ops, component=comp,
-                                e2e_correct=e2e)
+                                e2e_correct=e2e, sensitivity=sens)
         O._rm(d)
     return out
 

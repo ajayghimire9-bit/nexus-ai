@@ -724,9 +724,13 @@ def _mini_recs(d):
 
 
 class FixedPolicyOps(NexusOpsR1):
-    """Same monitors / reconciliation / authority; a fixed runbook, no shadow search."""
+    """Same monitors / reconciliation / authority; a fixed sequential runbook, no shadow search:
+    1. the incident runbook: every diagnosed primitive at once (one rollback, one batch size) + catch-up;
+    2. only if pipeline-suspect symptoms remain (other than lag), ONE typed redeploy per signature: the top typed hole,
+       its first alternative option, rollback before the onset, catch-up;
+    3. otherwise escalate. An incident is resolved only when reconciliation passes."""
 
-    def _turn(self, env):
+    def _bad(self, env):
         mons = self._mons(env)
         if self.detector:
             self._triage_alarms(env)
@@ -734,7 +738,10 @@ class FixedPolicyOps(NexusOpsR1):
                 open_ = [a for a in self.det_state.get("alarms", []) if a.get("localized") and
                          a["supplier"] not in {o["supplier"] for o in env.cfg["deploy"].get("unit_overrides", [])}]
                 mons["drift"] = (not open_, dict(alarms=open_))
-        bad = {k: v for k, v in mons.items() if not v[0]}
+        return mons, {k: v for k, v in mons.items() if not v[0]}
+
+    def _turn(self, env):
+        mons, bad = self._bad(env)
         if not bad:
             self.open = None
             return
@@ -748,28 +755,34 @@ class FixedPolicyOps(NexusOpsR1):
             seen_rb |= c[0] == "rollback"
             prim.append(c)
         comp = tuple(prim) + (("catch_up", None),)
-        key = "|".join(sig)
-        tried = getattr(self, "_redeployed", set())
-        if any(k in PIPELINE_SUSPECT for k in bad) and key not in tried:
-            arch = _archive(env)
-            hole = next(iter(localize_b1(env, self.spec, bad, arch, stage_holes(env))[0]), None)
-            if hole:
-                alt = next(o for o in RT.DECISIONS[hole] if o != env.choice[hole])
-                onset = _onset(env, bad, arch)
-                comp = tuple(x for x in prim if x[0] != "rollback") + (("redeploy", dict(env.choice, **{hole: alt})),) + \
-                    _rollback_tail(env, onset)
-                tried.add(key)
-                self._redeployed = tried
         apply_comp(env, comp)
         self.cost["actions"] += len(comp)
-        post = self._mons(env)
-        if all(v[0] for k, v in post.items() if k != "drift"):
+        mons, bad = self._bad(env)
+        rec = bad.get("reconciliation", (True, {}))[1]
+        lag_only = "reconciliation" in bad and not any(rec.get(k) for k in ("silver_mismatch", "late_mismatch", "accounting",
+                                                                             "sla_mismatch", "volume_mismatch")) and \
+            all(c["kind"].startswith("lag") for c in rec.get("coverage", []))
+        key = "|".join(sig)
+        tried = self.__dict__.setdefault("_redeployed", set())
+        if any(k in PIPELINE_SUSPECT for k in bad) and not lag_only and key not in tried:
+            arch = _archive(env)
+            hole = next(iter(localize_b1(env, self.spec, bad, arch, stage_holes(env))[0]), None)
+            tried.add(key)
+            if hole:
+                alt = next(o for o in RT.DECISIONS[hole] if o != env.choice[hole])
+                comp2 = (("redeploy", dict(env.choice, **{hole: alt})),) + _rollback_tail(env, _onset(env, bad, arch))
+                apply_comp(env, comp2)
+                self.cost["actions"] += len(comp2)
+                comp = comp + comp2
+                mons, bad = self._bad(env)
+        if not bad:
             self.ledger.append(dict(tick=env.t, kind="repaired", signature=sig, repair=[[c[0], c[1]] for c in comp], reconciled=True))
             self.open = None
         else:
             self.cost["escalations"] += 1
             self.open = sig
-            self.ledger.append(dict(tick=env.t, kind="escalated", signature=sig, repair=[[c[0], c[1]] for c in comp]))
+            self.ledger.append(dict(tick=env.t, kind="escalated", signature=sig, repair=[[c[0], c[1]] for c in comp],
+                                    remaining=sorted(bad)))
 
 
 def run_ops(enc, incs, work, bundle, operator, choice, profile=None, ticks=14):

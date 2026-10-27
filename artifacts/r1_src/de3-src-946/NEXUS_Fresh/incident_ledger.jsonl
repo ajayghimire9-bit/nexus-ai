@@ -1,0 +1,5 @@
+{"tick": 11, "kind": "false_alarm", "alarm": {"supplier": "S2", "offset": 50, "tick": 9, "trigger": "fixed_ratio"}}
+{"tick": 11, "kind": "repaired", "signature": ["monitor:reconciliation", "monitor:watermark_sanity"], "repair": [["future_guard", true], ["rollback", 10], ["catch_up", null]], "own_pipeline": false, "verified_in_shadow": true, "reconciled": true, "shadow_tests_before": 4, "from_library": false}
+{"tick": 12, "kind": "false_alarm", "alarm": {"supplier": "S1", "offset": 61, "tick": 11, "trigger": "fixed_ratio"}}
+{"tick": 12, "kind": "repaired", "signature": ["crash:readonly", "monitor:reconciliation"], "repair": [["rotate_credentials", null], ["catch_up", null]], "own_pipeline": false, "verified_in_shadow": true, "reconciled": true, "shadow_tests_before": 2, "from_library": false}
+{"tick": 14, "kind": "repaired", "signature": ["monitor:drift"], "repair": [["unit_override", {"supplier": "S1", "part": 0, "from_offset": 72, "factor": 0.45359237, "unit": "lb", "tick": 14}], ["rollback", 13], ["catch_up", null]], "own_pipeline": false, "verified_in_shadow": true, "reconciled": true, "shadow_tests_before": 1, "from_library": false}

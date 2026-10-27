@@ -54,7 +54,8 @@ def fixed_policy(ws, profile=None, library=None):
     bundle, scratch = ws / "bundle", ws / "scratch"
     bundle.mkdir(exist_ok=True); scratch.mkdir(exist_ok=True)
     runner = RC.Runner(profile)
-    prior = {p["decision"]: p["option"] for p in (library.retrieve("build") if library else [])}
+    # the src-majority option of EVERY decision with src evidence (protocol 0.7), admitted or retired by the Stage 6 rule
+    prior = {p["decision"]: p["option"] for p in (library.procs if library else []) if p["kind"] == "build"}
     prop = A.Proposer(spec["project"], prior)
     choice = prop.choice()
     (bundle / "pipeline.py").write_text(RT.emit(choice))
