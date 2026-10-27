@@ -66,7 +66,7 @@ def main():
     else:
         spent = [json.loads(l) for l in R.SPENT_LEDGER.read_text().splitlines() if l.strip()]
         if not any(r.get("run_id") == "w40-confirm_lodo" for r in spent):
-            R.claim("wave39", "confirm_lodo5", list(R.REGISTRY[("wave40", "confirm_lodo")]), run_id="w40-confirm_lodo")
+            R.claim("wave40", "confirm_lodo", list(R.REGISTRY[("wave40", "confirm_lodo")]), run_id="w40-confirm_lodo")
         if a.seed not in R.REGISTRY[("wave40", "confirm_lodo")]:
             raise SystemExit("seed outside wave40 confirm_lodo")
     ev = WE.Eval(); t0 = time.perf_counter()
