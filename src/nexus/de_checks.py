@@ -61,8 +61,9 @@ class Runner:
         self.runs, self.cpu_s, self.wall_s = 0, 0.0, 0.0
 
     def run(self, bundle, landing, state, crash_after=None, timeout=120):
-        args = [str(Path(bundle) / "pipeline.py"), "--landing", str(landing), "--state", str(state), "--config",
-                str(Path(bundle) / "config.json")]
+        bundle, landing, state = Path(bundle).resolve(), Path(landing).resolve(), Path(state).resolve()
+        args = [str(bundle / "pipeline.py"), "--landing", str(landing), "--state", str(state), "--config",
+                str(bundle / "config.json")]
         if crash_after is not None:
             w = Path(state).parent / "_nexus_crash.py"
             w.write_text(CRASH)
