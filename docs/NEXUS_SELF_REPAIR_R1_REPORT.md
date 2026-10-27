@@ -285,3 +285,26 @@ if any frozen file differs from HEAD. The frozen choices:
   typed redeploy only if pipeline-suspect symptoms remain.
 * **Library:** learned on de3/src only (§0.9).
 * **Budget:** val ≤ 1,500 s and test ≤ 3,300 s of the remaining grant.
+
+### 0.11 Validation result and the post-validation revision (val is spent and reclassified as dev)
+
+**`de3/val` (7941–7944) ran once, at `e9b0705`. Gate: FAILED.**
+
+* NEXUS_Fresh was end-to-end correct on **2 of 4** (the gate needs ≥ 3/4).
+* The other two gate conditions held: 0 silent errors for every NEXUS arm, and 0 replay-view violations.
+* Other arms: NEXUS_Experienced 3/4, Fixed_Policy 3/4, Conventional_Checked 0/4 with 1 silent error.
+
+As pre-registered, val is spent and reclassified as dev, the implementation may change, and `val_b` is used once. Both
+NEXUS_Fresh failures were self-detected, with open escalations and no silent error.
+
+| world | mechanism (inspected; dev data from now on) | fix (generic; applies to every arm with these monitors) |
+|---|---|---|
+| 7941 | The build chose `ts_parse=text` and `lateness=processing_time`. Both pass every build check because they behave the same on the visible log. In operations, text timestamps made `watermark_sanity` fire at ticks 2, 3 and 5. That monitor was not pipeline-suspect, so own-pipeline repair never ran, and the operator escalated. At tick 12 B0 tried only single changes, which cannot fix two wrong decisions. | `watermark_sanity` is pipeline-suspect, typed to `ts_parse`, `ts_format` and `lateness`. B0 tries pairs among the first implicated decisions after the implicated singles and before the other singles, as the Stage 4 search orders them. |
+| 7943 (every arm, Fixed_Policy included) | A clock skew rewrote the event time of the FIRST copy of a telemetry record. A producer-retry duplicate delivered next tick kept the original time. The config-state consistency monitor checked every copy against the stored flag, which belongs to the first copy, so it reported an inconsistency that no repair can remove. The operator escalated every turn, and a later corruption was left unrepaired. | Consistency is judged on the first delivered copy of each msg_id, the copy the pipeline applies (R1 override; `s5_ops` is unchanged). This is a plausible mechanism for the Stages 4–6 test-7934 escalation, also a late clock skew, but that remains **undetermined**: the sealed world is not inspected. |
+
+* **After the fixes, on the spent val worlds:** NEXUS_Fresh is correct on both 7941 and 7943. On 7941 it notices the
+  text-timestamp mismatch at tick 2 and redeploys `ts_parse=utc`, then repairs `lateness=watermark` at tick 12.
+* **Library:** not re-learned. Its admitted content is build procedures only, which the build agent produces unchanged.
+  Every ops playbook was retired. The measured learning cost stays as measured.
+* **Rule declared before `val_b`:** if `val_b` fails its gate, the sealed test is **not** opened. R1 then ends with the
+  validation failure reported, and the test seeds stay unopened for a later increment.

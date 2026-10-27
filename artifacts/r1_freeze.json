@@ -13,6 +13,7 @@
   "a property with no exercising evidence is UNKNOWN (txn_isolation, gap_safety on every visible log)"
  ],
  "budget": {
+  "remaining_at_freeze_rev2_s": 5962.0,
   "remaining_at_freeze_s": 7231.0,
   "test_cap_s": 3300,
   "val_cap_s": 1500
@@ -37,7 +38,7 @@
   "src/nexus/r1_env.py": "fb0398772e5eb7771dacf43efa8728bdeda4053b4db0c8079404b174a3b0d88e",
   "src/nexus/r1_evaluator.py": "ac0d1ab114a9cfe8de6169a7ca1ad045b4c3742770e877a55975db127354dc95",
   "src/nexus/r1_monitor.py": "ab6a274f33ba4c81032f88f40e41dafaac25d00e7f2a5dee116abfb39816f92a",
-  "src/nexus/r1_ops.py": "cb1ff04669c2034d579aa63aa60794f7cffd1115e6f5e6900a3f8dc7927aa79a",
+  "src/nexus/r1_ops.py": "eac9ea445369341fe6eeac37448c8390fe9ecf4129ed29443e632899fd8650d7",
   "src/nexus/r1_seeds.py": "6b11d87ef80813ef404a8c16cfe32c342b943f5e0d6c56f72197ac45e0cbd383",
   "src/nexus/r1_template.py": "e7e9fe08593914df8031e9f8babbbd2a15d4344b2302624a5cc8aa9b10ba88b7",
   "src/nexus/s4_agent.py": "8a1158a8b1d4ac7d717935b35426767f24f0ae8d45d4425010b488c535e5e412",
@@ -58,7 +59,13 @@
  "ops_mode": "B0",
  "ops_mode_reason": "predeclared rule 0.6 applied after the single pre-committed revision: B1 adopted only if localisation accuracy (true decision in the suspect set) >= B0 AND mean CPU per repaired mutant lower; B1 29/31 vs 31/31 and 2.882 vs 2.661 s",
  "primary_metric": "end-to-end correct completed projects (8 sealed de3/test projects)",
+ "revision_2_changes": [
+  "config-state consistency judged on the first delivered copy of each msg_id",
+  "watermark_sanity pipeline-suspect, typed to ts_parse / ts_format / lateness",
+  "B0: implicated singles, then pairs among the first 4 implicated decisions, then other singles"
+ ],
+ "rule_val_b": "if de3/val_b fails its gate the sealed test is NOT opened",
  "sensitivity_label": "NON-CONFIRMATORY: NEXUS_Fresh's own submitted pipeline operated a second time with localiser B1",
  "sensitivity_mode": "B1",
- "status": "FROZEN before de3/val (code, assumptions, gates and budgets below; the runner refuses uncommitted changes to these files)"
+ "status": "FROZEN, revision 2, before de3/val_b (revision 1 at e9b0705 failed de3/val, which is spent and reclassified as dev; report 0.11). The runner refuses uncommitted changes to the frozen files."
 }

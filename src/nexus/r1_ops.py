@@ -278,8 +278,60 @@ def reconcile(env, spec):
     return ok, ev
 
 
+def consistency_first_copy(env):
+    """s5_ops.consistency judged on the FIRST delivered copy of each msg_id only (the copy the pipeline applies; later copies
+    are duplicates by the identity rule even when a faulty producer changed their payload). R1 revision after val (dev log)."""
+    st = Path(env.rt["state"]) / "lake.db"
+    if not st.exists():
+        return (True, {})
+    dep = env.cfg["deploy"]
+    try:
+        con = sqlite3.connect(f"file:{st}?mode=ro", uri=True)
+        man = dict(con.execute("SELECT msg_id, kg FROM bronze_man").fetchall())
+        fut = dict(con.execute("SELECT msg_id, future FROM bronze_tel").fetchall())
+        con.close()
+    except sqlite3.Error:
+        return (True, {})
+    first = {}
+    for topic in ("manifests", "telemetry"):
+        for d in Path(env.rt["log"]).glob(f"{topic}/p*"):
+            if not os.access(d, os.R_OK):
+                continue
+            part = int(d.name[1:])
+            for f in d.glob("*.jsonl"):
+                for l in f.read_text().splitlines():
+                    try:
+                        x = json.loads(l)
+                    except ValueError:
+                        continue
+                    k = (topic, x.get("msg_id"))
+                    if k not in first or (x["ingest_ts"], part, x["offset"]) < first[k][0]:
+                        first[k] = ((x["ingest_ts"], part, x["offset"]), part, x)
+    bad = []
+    for (topic, mid), (_, part, x) in first.items():
+        tk = E_tick(x["ingest_ts"])
+        if topic == "manifests" and mid in man and isinstance(x.get("weight"), (int, float)):
+            kg = x["weight"]
+            for ov in dep.get("unit_overrides", []):
+                if ov["supplier"] == x["supplier"] and x["offset"] >= ov["from_offset"] and part == ov.get("part", 0):
+                    kg *= ov["factor"]
+            if abs(kg - man[mid]) > 1e-6:
+                bad.append(tk)
+        if topic == "telemetry" and mid in fut and dep.get("future_guard"):
+            want = int((C.utc(x["event_ts"]) - C.utc(x["ingest_ts"])).total_seconds() > 300)
+            if want != fut[mid]:
+                bad.append(tk)
+    return (not bad, dict(inconsistent_records=len(bad), earliest_tick=min(bad) if bad else None))
+
+
+def E_tick(ingest):
+    return RE.E.tick_of(RE.E.datetime.fromisoformat(ingest.replace("Z", "+00:00")))
+
+
 def monitors_r1(env, spec, detector=None, det_state=None):
     out = O.monitors(env, detector, det_state)
+    if "config_state_consistency" in out:
+        out["config_state_consistency"] = consistency_first_copy(env)
     try:
         v = M.check_consumer(env.rt["state"], env.obs())
     except (OSError, ValueError):
@@ -289,7 +341,7 @@ def monitors_r1(env, spec, detector=None, det_state=None):
     return out
 
 
-PIPELINE_SUSPECT = ("reconciliation", "observation_conformance", "integrity", "gold_recompute", "accounting")
+PIPELINE_SUSPECT = ("reconciliation", "observation_conformance", "integrity", "gold_recompute", "accounting", "watermark_sanity")
 
 
 def apply_comp(env, comp):
@@ -317,7 +369,8 @@ ACC_HOLES.update({("orders_cdc", "aborted"): ["txn_isolation"], ("orders_cdc", "
 B0_TABLE = {"reconciliation": C.IMPLICATE["silver_rederivation"] + ["lateness", "ts_parse", "ts_format", "dedup",
                                                                      "partition_discovery", "commit_protocol"],
             "observation_conformance": ["commit_protocol", "partition_discovery"], "integrity": ["dedup", "commit_protocol"],
-            "gold_recompute": ["gold_maintenance"], "accounting": ["malformed", "dedup"]}
+            "gold_recompute": ["gold_maintenance"], "accounting": ["malformed", "dedup"],
+            "watermark_sanity": ["ts_parse", "ts_format", "lateness"]}
 
 
 def _features(keys, arch, obs):
@@ -398,6 +451,9 @@ def localize_b1(env, spec, bad, arch=None, first=()):
             score[h] += 1.0
     if not bad.get("gold_recompute", (True,))[0]:
         score["gold_maintenance"] += 1.0
+    if not bad.get("watermark_sanity", (True,))[0]:
+        for h in ("ts_parse", "ts_format"):
+            score[h] += 1.0
     return [h for h, s in score.most_common() if s > 0], dict(score)
 
 
@@ -695,7 +751,13 @@ class NexusOpsR1(O.NexusOps):
         else:
             suspects = localize_b0(bad, stage_holes(env))
             scores = {}
-            survivors = [((d, o),) for d in suspects for o in RT.DECISIONS[d] if o != choice[d]]
+            # as in the Stage 4 search: single changes of the implicated decisions, then pairs among the first implicated
+            # decisions, then single changes of every other decision
+            impl = [d for d in suspects if d in stage_holes(env) or any(d in B0_TABLE.get(k, []) for k in bad)]
+            single = lambda ds: [((d, o),) for d in ds for o in RT.DECISIONS[d] if o != choice[d]]
+            survivors = single(impl) + [((d1, o1), (d2, o2)) for d1, d2 in itertools.combinations(impl[:4], 2)
+                                        for o1 in RT.DECISIONS[d1] if o1 != choice[d1] for o2 in RT.DECISIONS[d2] if o2 != choice[d2]] \
+                + single([d for d in suspects if d not in impl])
         self.cost["localisation_cpu_s"] += _cpu() - a
         full = 0
         for cand in survivors:
