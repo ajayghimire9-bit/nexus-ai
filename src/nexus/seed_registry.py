@@ -86,6 +86,10 @@ REGISTRY = {
     ("wave38", "dev"): range(841, 851), ("wave38", "confirm_lodo"): range(7801, 7806),
     ("wave38", "confirm_online"): range(7806, 7811), ("wave38", "confirm_evo"): range(7811, 7816),
     ("wave38", "confirm_cont"): range(7816, 7821), ("wave38", "confirm_plan_repair"): range(7821, 7826),
+    # Wave 39 (external transfer): dev + one-use confirmation ranges (claimed whole, once, by the frozen runners)
+    ("wave39", "dev"): range(851, 861), ("wave39", "confirm_lodo5"): range(7831, 7836),
+    ("wave39", "confirm_world"): range(7836, 7841), ("wave39", "confirm_stream"): range(7841, 7846),
+    ("wave39", "confirm_prose"): range(7846, 7847),
 }
 ONE_USE = {k for k in REGISTRY if k[1] not in ("dev", "admission_val", "dev2")}
 # Spent one-use ranges that were inspected and now inform design; they are development evidence only.

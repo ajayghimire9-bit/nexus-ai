@@ -172,3 +172,5 @@ followed by a new pin.**
   `src/nexus/checker_kernel_v3.sha256`). v1 and v2 stay unchanged.
 * RULE 2 also covers `src/nexus/checker_kernel_v4.py` (Wave 38 language: lambda-parameterised tools; owner-authorised
   2026-10-26; spec `docs/NEXUS_CHECKER_V4_SPEC.md`; pin `src/nexus/checker_kernel_v4.sha256`). v1, v2 and v3 stay unchanged.
+* RULE 2 also covers `src/nexus/checker_kernel_v5.py` (Wave 39 general constructs + SCOPE_UNIQUE / UNDER_SPECIFIED_WARNING
+  contract; owner-authorised 2026-10-27; spec `docs/NEXUS_CHECKER_V5_SPEC.md`; pin `src/nexus/checker_kernel_v5.sha256`). v1-v4 stay unchanged.
