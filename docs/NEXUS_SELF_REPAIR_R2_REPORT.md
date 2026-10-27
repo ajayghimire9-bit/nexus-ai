@@ -241,3 +241,109 @@ library, evaluator, baseline policies and split registry.
 | budget caps | val ≤ 2,000 s, val_b ≤ 2,000 s, test ≤ 4,500 s |
 
 The gates are those of §0.8.
+
+## 1. Validation (`de4/val` 7961–7964, run once at `8a92efc`): PASSED on the first attempt
+
+| arm | natural | forced recovery |
+|---|---|---|
+| NEXUS_Fresh | 4/4 | 4/4 (X1 2/2, X2 2/2) |
+| every NEXUS arm | 0 silent errors | 0 silent errors |
+| Fixed_Policy | 4/4 | 4/4 |
+| Conventional_Checked | 0/4 (3 silent errors) | — |
+
+* There were 0 replay-view violations.
+* Secondary comparison, on the same forced deployments: B1 4/4 at 7.8 s of operator CPU, B0 2/4 at 76.1 s.
+* No revision was made, and val_b is unopened.
+
+## 2. Sealed confirmation (`de4/test`): INCOMPLETE because of a harness crash
+
+**What ran:** the one-shot test started at `861b3c7` (frozen `8a92efc`).
+
+* The first call scored 7971–7973.
+* The second call scored 7974 and 7975, then **the runner crashed on de4-test-7976** with `KeyError: 'JPY'`, raised in
+  harness code rather than in a pipeline subprocess.
+* My resume loop retried after the crash, so it **re-executed 7976 twice more** before I stopped it. A crash should
+  have stopped the loop.
+* 7977 and 7978 never ran. Nothing has been re-run since, and no code was changed in order to finish the split.
+* The crashed calls' 581 s is ledgered as an **estimate** from file timestamps.
+
+**Crash cause: undetermined.** The vault is not inspected; one attempted directory listing was blocked by the
+permission system and not retried.
+
+* Post-test, on dev worlds with the X3 hook enabled (974, 976, 978 and 972), the crash did **not** reproduce.
+* The candidate mechanism is an X3 order whose create record arrives late (tick ≥ 9) while an earlier update of the same
+  order falls in the visible window. The build-time Stage 4 silver derivation, which is not de4-aware, would then index
+  the fx table with JPY. That pattern occurred in 0 of 14 dev and src worlds, so the mechanism is **unconfirmed**.
+
+**Scorecard on the 5 scored projects** (`artifacts/r2_test_scorecard_partial.txt`; X4 = 7971, 7973, 7975; X3 = 7972, 7974).
+It is reported as partial, not as an 8-project result.
+
+| measure | Conventional_Checked | Fixed_Policy | NEXUS_Fresh | NEXUS_Placebo | NEXUS_Experienced |
+|---|---|---|---|---|---|
+| **Natural end-to-end correct** | 0/5 | 2/5 | 3/5 | 3/5 | 3/5 |
+| silent errors (natural) | 2 | 1 | 1 | 1 | 1 |
+| ops data correct | 0/5 | 2/5 | 3/5 | 3/5 | 3/5 |
+| open escalation at end | 0 | 2 | 1 | 1 | 1 |
+| exactly-once crash trials failed | 30/184 | 0/296 | 0/164 | 0/164 | 0/164 |
+| fully loaded engineering CPU s | 18.7 | 46.6 | 263.2 | 394.7 | 99.6 |
+| own-pipeline repairs | 0 | 0 | 5 | 5 | 4 |
+| clarifications / escalations | 0/0 | 0/9 | 0/4 | 0/4 | 0/4 |
+| X3 natural: deployed mishandles / detected / repaired / correct | 2/0/0/0 | 2/2/0/0 | 2/2/1/1 | 2/2/1/1 | 2/2/1/1 |
+| X4 natural: deployed mishandles / correct | 0 / 0 of 3 | 0 / 2 of 3 | 0 / 2 of 3 | 0 / 2 of 3 | 0 / 2 of 3 |
+| **Forced recovery X3**: affected / detected / repaired / correct / silent | 2/0/0/0/0 | 2/2/0/0/0 | 2/2/1/1/0 | 2/2/1/1/0 | 2/2/1/1/0 |
+| **Forced recovery X4**: affected / detected / repaired / correct / silent | 3/0/0/0/2 | 3/3/0/0/0 | 3/3/3/2/1 | 3/3/3/2/1 | 3/3/3/2/1 |
+
+* Experienced / Fresh fully loaded CPU: 0.378 (CI 0.272–0.487), cheaper in 5/5. Experienced / Placebo: 0.252.
+  End-to-end is equal at 3 = 3. The break-even point is 14.2 projects.
+* **Secondary comparison** (same forced deployments and incidents): B1 3/5 at 21.0 s, against B0 2/5 at 42.1 s and 1
+  silent error.
+* **Component benchmark:** 4/5, with 1 silent error.
+
+**Failure mechanisms (from committed outputs only):**
+
+* **7971 (X4): a silent error.** One silver row differs from the reference while every monitor and the event-level
+  reconciliation passed. That holds both naturally and after the forced repair, which correctly redeployed
+  `discount_unit=registry_unit` at tick 9. The mechanism is undetermined.
+* **7974 (X3):** self-detected in every NEXUS arm, unrepaired, escalated.
+
+### 2.1 Verdicts (frozen rules; the 3 unscored projects cannot change them)
+
+* **Natural: FAIL.** At most 3 + 3 = 6/8 is reachable, below the required 7/8, and every NEXUS arm already has 1 silent
+  error.
+* **Forced recovery: FAIL.** X4 has 1 silent error in every NEXUS arm. X3 stands at 1/2, so it is undetermined at the
+  class level.
+* **Learning claim: INCONCLUSIVE.** Only 5 of 8 projects were scored. On those five, the cost criteria are met at equal
+  correctness of 3/5. That correctness is inadequate.
+* **Experienced against Fixed_Policy:** Experienced is more correct (3/5 against 2/5) but 2.1× more expensive in CPU.
+
+## 3. What R2 established (with bounds)
+
+* **Count-based reconciliation was blind to identity errors, and event-level reconciliation catches them.** It flagged
+  48/48 mutation states on dev against R1's 8/48, with 0 false alarms on 8 clean states.
+* It is **not sufficient**: one silent silver-row error remains on the test (7971).
+* The R1 7953-style "silent error" was reproduced on dev as an **evaluator-reference defect** (an incident relabelled an
+  event through its retry duplicate), not as a pipeline fault.
+* **B1 beats B0 under a correctly designed rule:** 42/44 against 33/44 on dev. Val 4/4 against 2/4 and test 3/5 against
+  2/5 agree in direction.
+* **Comparison C:** no improvement over C0.
+* **Ops playbooks:** all rejected again.
+* **Fixed_Policy:** strong on dev and val after strengthening; 2/5 on the partial test.
+
+## 4. Resources
+
+* **Budget:** R2 used **5,023 s** of ledger wall time, including the 581 s crashed-call estimate. At the end of R2,
+  `scripts/r2_budget.py` shows 12,539 s remaining of the 32,390 s allowance. A later grant is accounted separately,
+  starting from this number.
+* **Commits:**
+
+  | commit | contents |
+  |---|---|
+  | `19e298f` | pre-registration |
+  | `5ddc216` | implementation |
+  | `eb898ee` | dev results |
+  | `8a92efc` | freeze |
+  | val commit | validation |
+  | `861b3c7` | seal |
+  | `d208ab6` | test results (incomplete) |
+  | this commit | report |
+* **Protected files:** 912/912 unchanged.
