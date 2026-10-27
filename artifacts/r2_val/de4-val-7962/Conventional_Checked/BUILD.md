@@ -1,0 +1,7 @@
+# de4-val-7962 (Conventional_Checked)
+
+Outcome: COMPLETED_CHECKED
+
+Decisions: {"apply_order": "arrival", "backfill_merge": "lww_tombstones", "commit_protocol": "sink_then_offsets", "dedup": "by_msg_id", "deletes": "hard_only", "discount_unit": "registry_unit", "fx": "table", "fx_unknown": "error", "gap_handling": "skip", "gold_maintenance": "delta_no_retract", "lateness": "processing_time", "malformed": "quarantine", "partition_discovery": "dynamic", "schema_handling": "registry_typed", "snapshots": "per_tick", "ts_format": "registry_typed", "ts_parse": "utc", "txn_isolation": "read_committed"}
+
+Checks: [('runs_all_ticks', True), ('schema_keys_not_null', True), ('rerun_unchanged', True), ('nonempty_outputs', True)]
