@@ -186,20 +186,20 @@ Never alter a single byte or file path of any pinned checker kernel or its `.sha
 - **Checker v5 (`src/nexus/checker_kernel_v5.py`):** `2cd3a4caf33070558a2d7394497dd1d548583be5b04e1d7a18eac661790244d4`
 
 ### 2. Quarantined `BURNED` External Benchmark Tasks
-The following 4 PROSE tasks were inspected during Wave 39 grammar design and are permanently marked **`BURNED`** (excluded from all unburned external confirmation claims; unburned confirmation is `19/24 = 79.2%`):
+The following 4 PROSE tasks were inspected during Wave 39 grammar design and are permanently marked **`BURNED`** (excluded from all unburned external confirmation claims):
 - `BillingCode.000002`
 - `EmergencyCall.000004`
 - `FilePath.000001`
 - `UserAgent.000007`
 
 ### 3. Active Core Modules & Entry Points
-- **Canonical Outcome Contract (`CERTIFIED`, `REPAIRED`, `ABSTAINED`, `REJECTED`):** `src/nexus/outcome_contract.py`
+- **Outcome Contract** (per input: `VALID_UNIQUE`, `ABSTAIN_ERROR`, `UNDER_SPECIFIED_WARNING`, `ASK_CLARIFICATION`, `ABSTAIN_UNSUPPORTED`; per project additionally `COMPLETED_VERIFIED`, `COMPLETED_UNVERIFIED`, `HARD_FAIL`): `src/nexus/outcome_contract.py`
 - **Order-Invariant Synthesis Engine (`B_exec = 500`, `B_total = 700.0`):** `src/nexus/w40_search.py`
 - **Order-Invariant LODO Representation & Macro Learner:** `src/nexus/w40_learn.py`
 - **Dual-Budget Buffered Online Stream Learner (`K = 4`, `tau = 0.10`):** `src/nexus/w40_online.py`
 - **Subprocess Evaluation Harness & OS Retired-Instruction Meter:** `src/nexus/w40_eval.py`, `src/nexus/wave31_evaluator.py`, `src/nexus/wave32_detectors.py`
 - **Non-Stationary World & Change Detector (`N1-merge-exact`):** `src/nexus/w39_world.py`
-- **External Benchmark Loader (`PROSE`):** `src/nexus/w39_prose.py`
+- **External Benchmark Loader (`PROSE`):** `scripts/w39_prose.py`
 - **Unified Regression Gate (`228/228` tests + SHA-256 verification):** `scripts/de_stage1_regression.py`
 - **Documentation & Roadmap:** `README.md`, `docs/INDEX.md`, `docs/ARCHITECTURE.md`, `docs/ROADMAP_10_STAGES.md`, `docs/NEXUS_WAVE40_INVARIANCE_AND_CEILINGS.md`
 

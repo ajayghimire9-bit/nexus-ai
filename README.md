@@ -54,8 +54,8 @@ Scientific honesty is a core requirement of this repository. Every claim is sepa
 | **Generate, test, and repair complex SQL/Python pipelines** | **Technically achievable** with a capable model, execution tools, and independent testing (Active in Stages 1–3). |
 | **Build streaming pipelines, lakes, warehouses, and cloud infrastructure** | **Technically achievable**, operating established engines (PostgreSQL, Debezium, Apache Flink, Apache Iceberg) through NEXUS (Stages 4–5). |
 | **Operate those systems and recover from failures** | **Achievable within demonstrated operating conditions**, with strict state-reconciliation and reliability engineering (Stage 5). |
-| **Reuse experience to reduce future work** | **Plausible; bounded evidence proved** (`0.796x Fresh` and `0.878x Placebo` across `5/5` seeds on internal synthesis folds; `-61.2%` LODO work reduction at Wave 40; tested on full data pipelines in Stage 6). |
-| **Transfer reliably to unfamiliar companies and workloads** | **Still unproved at production project scale** (`19/24 = 79.2%` proved on unburned external PROSE string/record synthesis; tested across withheld data-engineering domains in Stage 7). |
+| **Reuse experience to reduce future work** | **Plausible; bounded evidence** (`0.796x Fresh` and `0.878x Placebo` work across `5/5` seeds on internal synthesis folds, Wave 40; negligible vs a hand-designed prior; tested on data pipelines in Stage 6). |
+| **Transfer reliably to unfamiliar companies and workloads** | **Still unproved at production scale** (external PROSE, Wave 40: 36 held-out-valid of 175 evaluable, 6 of 42 certified-but-held-out-fail; Stage 3: 8/8 on sealed synthetic logistics projects with held-out schemas; withheld domains in Stage 7). |
 | **Autonomously invent better learning procedures repeatedly and economically** | **Open research problem**; requires multi-lineage improvements that repay discovery cost on untouched projects (Stages 8–9). |
 | **Replace an entire team across arbitrary environments at low cost** | **Not yet demonstrated**; evaluated strictly on sustained external workloads with explicit scope and authority boundaries (Stage 10). |
 
@@ -150,52 +150,56 @@ Autonomous engineering systems fail in practice if verification or meta-learning
 
 ## 7. The 10-Stage Engineering & Verification Roadmap
 
-NEXUS progresses from its verified Wave 40 symbolic/transfer baseline (`46c3e53`) through a 10-stage engineering programme (detailed in [`docs/ROADMAP_10_STAGES.md`](docs/ROADMAP_10_STAGES.md)):
+Full definitions, exit conditions and the standing rules: [`docs/NEXUS_10_STAGE_ROADMAP.md`](docs/NEXUS_10_STAGE_ROADMAP.md).
+Results: [`docs/NEXUS_STAGES_1_TO_3_REPORT.md`](docs/NEXUS_STAGES_1_TO_3_REPORT.md) and, as Stages 4–6 complete, `docs/NEXUS_STAGES_4_TO_6_REPORT.md`.
 
-| Stage | Milestone | Core Verification Gate |
-| :---: | :--- | :--- |
-| **Stage 1** | **Baseline Freeze & Closed Outcome Contract** (`src/nexus/outcome_contract.py`, `scripts/de_stage1_regression.py`) | `228/228` tests passing (`222` Wave 40 + `6` Stage 1), 5 pinned checker SHA-256 digests intact, `0` false accepts. |
-| **Stage 2** | **Logistics Data-Engineering Environment & Protected Evaluator** (`src/nexus/de_env.py`, `src/nexus/de_evaluator.py`) | Independent truth-vs-landing generator (`b1`, `b2`, `b2_rerun`, `b2_crash`) with `100%` soundness/completeness on clean vs. single-fault pipelines. |
-| **Stage 3** | **Invariant-Guided Pipeline Synthesis & Repair vs. Naive Baseline** | Head-to-head comparison under matched budgets showing invariant-guided synthesis/repair eliminates silent corruption where naive exit-code-0 agents fail. |
-| **Stage 4** | **Live Engines: CDC, Streaming & Lakehouse (`PostgreSQL`, `Debezium`, `Flink`, `Iceberg`)** | End-to-end exactly-once delivery across snapshot-to-stream transitions, out-of-order events, and schema evolution. |
-| **Stage 5** | **Production Operations, Crash Recovery & Cost Control** | Automated incident diagnosis, idempotent backfill/replay after worker kill (`SIGKILL`), and cloud/query budget enforcement. |
-| **Stage 6** | **Cross-Project Experience Reuse & Procedural Memory** | Verified reduction in total engineering cost (`B_total`) on new projects after charging all retrieval and validation overhead. |
-| **Stage 7** | **Zero-Shot Transfer to Unfamiliar Enterprise Domains** | High certified completion rate (`0` silent corruptions) on held-out industry schemas and undocumented legacy sources (`Pool 2` holdouts). |
-| **Stage 8** | **Autonomous Check & Operator Discovery** | Self-discovered validation checks and transformation operators that pass shadow-vault soundness gates without human authoring. |
-| **Stage 9** | **Multi-Lineage Meta-Learning That Repays Discovery Cost** | End-to-end amortization: cumulative compute spent discovering better engineering procedures is repaid across unseen project streams. |
-| **Stage 10** | **Sustained Autonomous Operations on Sealed External Workloads** | Single-shot confirmation on the sealed blind vault (`$NEXUS_SEALED_VAULT_DIR`) across all 7 scorecard measures. |
+| # | Stage | Exit condition (predeclared) | Status |
+| :---: | :--- | :--- | :--- |
+| 1 | **Trustworthy starting point:** component audit, regression and outcome distinguishability | 100% of the pinned regression suite; valid / ABSTAIN_ERROR / UNDER_SPECIFIED / ASK_CLARIFICATION / unsupported never conflated | **PASS**: 228/228 |
+| 2 | **Logistics engineering environment + independent evaluator** (truth world → messy CDC, telemetry, CSV drops, sqlite snapshots; batch 3 held out) | 8/8 deliberately broken exit-0 pipelines caught with exact reasons; 0 false alarms | **PASS**: 8/8 on 6/6 dev projects |
+| 3 | **Unfamiliar projects without history:** Conventional vs NEXUS, same generator, tools and budgets | Frozen one-shot sealed test; full 7-measure scorecard | **PASS**: NEXUS 8/8 correct, 0 silent errors; Conventional 0/8 (8 silent) |
+| 4 | **Real streaming, CDC and lakehouse recovery:** offset log with separately committed offsets, watermarks and retractions, live backfills, schema evolution, bad-deploy rollback, withheld fault classes | Reference-matching outputs at checkpoints, during live + backfill, and after crash recovery on sealed projects | in progress |
+| 5 | **Deployment responsibility and hidden-cause incidents:** deployment config, incident ledger, N1-based drift alarms | Service and 100% data correctness restored; a restart that leaves corrupted data fails | in progress |
+| 6 | **Experience reuse that pays back:** admissible, retirable procedure library | Experienced keeps 0 silent errors and cuts development CPU, rejected-attempt CPU and check runs vs Fresh and Placebo after charging all library costs | in progress |
+| 7 | **Breadth:** new domains and engines | Generalization to withheld domains, schemas and mechanisms | proposed |
+| 8 | **Open-ended code generation** inside the same verification loop | Silent-error rate unchanged or lower at lower human dependence | proposed |
+| 9 | **Self-evolution under the evaluator firewall** | Improvement on withheld projects vs frozen self and Placebo edits | proposed |
+| 10 | **Integrated autonomous DE&Ops evaluation** on withheld projects end to end | 7-measure scorecard against predeclared targets | proposed |
 
 ---
 
 ## 8. Unified 7-Measure Scorecard
 
-Every stage is judged against all **7 measures simultaneously**—never by trading away soundness for completion or hiding learning overhead:
+Logged in every stage report, Stage 1 through Stage 10:
 
-| # | Measure | Operational Definition | Non-Negotiable Requirement |
-| :---: | :--- | :--- | :--- |
-| **1** | **Correctness** | Rate of silent data corruption or false `CERTIFIED` / `COMPLETED_VERIFIED` claims on held-out truth checks. | **`0` false accepts** across all pinned checkers (`v1`–`v5`) and protected evaluators. |
-| **2** | **Completion** | Fraction of tasks/projects reaching `VALID_UNIQUE` / `COMPLETED_VERIFIED` within budget (`B_exec`, `B_total`). | Monotonic or non-regressing improvement on held-out confirmation splits. |
-| **3** | **Reliability** | Invariance to input/example permutation (`5` seeds), hash-seed determinism (`5` `PYTHONHASHSEED` values), idempotency (`b2_rerun`), and crash recovery (`b2_crash`). | **`100%` order invariance**; exact state convergence after crash and replay. |
-| **4** | **Cost** | Total execution-equivalents (`exec_evals + 0.052*rows + 2.0*fits`), wall-clock time, and OS retired CPU instructions (`ri_instructions`). | Strictly within pre-allocated per-task and session ledger caps (`AGENTS.md`). |
-| **5** | **Human Dependence** | Number of stakeholder clarifications requested (`ASK_CLARIFICATION`) and manual interventions required. | Ask **only** on genuinely under-determined rules; `0` unnecessary prompts on specified rules. |
-| **6** | **Learning Benefit** | Net work/cost reduction (`Learned` vs `Uniform` / `NoLearn`) including all training, scoring, and refit costs. | Statistically significant (`p < 0.05` permutation gate) net savings on held-out tasks. |
-| **7** | **Generalization** | Performance on held-out domains (`8`-domain LODO), unburned external benchmarks (`PROSE`), and unseen schema/fault pools (`Pool 2`). | Verified transfer without inspecting or tuning on confirmation/test pools (`BURNED` firewall). |
+| # | Measure | What is logged |
+| :---: | :--- | :--- |
+| 1 | **Correctness** | Independently checked outputs (seen and held-out batches); **silent data errors** (submitted, exit 0, wrong data), tracked explicitly; unresolved ambiguity; exact diagnoses |
+| 2 | **Completion** | Finished projects / incidents, hard failures, explicit abstentions |
+| 3 | **Reliability** | Freshness SLA violations, crash-recovery success and time, duplicate or missing side effects |
+| 4 | **Cost** | Proposer / model calls, CPU (agent, pipeline, checks), storage / IO, learning overhead, wasted work on rejected attempts; operating cost vs full development cost |
+| 5 | **Human dependence** | `ASK_CLARIFICATION` calls (and unnecessary ones), human engineering repairs (must be 0), operational interventions |
+| 6 | **Learning benefit** | Relevant history vs Fresh (no history) and Placebo (irrelevant history), after charging every learning cost |
+| 7 | **Generalization** | Withheld projects, schemas, names, units, currencies, encodings, mechanisms and data batches |
 
 ---
 
-## 9. Verified Foundation (Baseline `46c3e53`)
+## 9. Verified Foundation
 
-All claims below are backed by committed artifacts in `artifacts/` and reproducible via the test and benchmark runners in `tests/` and `scripts/`:
+Every figure below comes from a committed artifact or report. Earlier wording that cited non-existent artifacts and
+unverified figures was removed on 2026-10-27.
 
-| Subsystem / Benchmark | Metric | Verified Result | Artifact / Test Suite |
-| :--- | :--- | :--- | :--- |
-| **Pinned Checker Kernels (`v1`–`v5`)** | SHA-256 Digest Match & Differential Oracle Soundness | **`5/5` hashes intact (`622a29a`), `0` false accepts (`42/42` tests)** | [`tests/test_checker_kernel*.py`](tests/test_checker_kernel_v5.py) |
-| **Search & Learning Order Invariance** | Identical Program & Eval Count across `5` Example Permutations | **`100%` (`175/175` tests; `16/16` LODO cells; `24/24` PROSE tasks)** | [`tests/test_search_order_invariance.py`](tests/test_search_order_invariance.py) ([`artifacts/w40_invariance.json`](artifacts/w40_invariance.json)) |
-| **8-Domain LODO Synthesis (`80` confirm tasks)** | Certified Solve Rate & Mean Evals (`Learned` vs `Uniform`) | **`80.0%` (`64/80`) solved; `22.71` vs `58.59` evals (`-61.2%` work, `p = 0.0078`, `8/8` domains win)** | [`scripts/w40_lodo.py`](scripts/w40_lodo.py) ([`artifacts/w40_lodo.json`](artifacts/w40_lodo.json)) |
-| **External Benchmark Transfer (`PROSE`)** | Unburned Confirmation Solve Rate (`24` unburned; `4` `BURNED`) | **`79.2%` (`19/24` unburned; `0` false accepts)** (`23/28 = 82.1%` all-task ref) | [`scripts/w40_prose.py`](scripts/w40_prose.py) ([`artifacts/w40_prose.json`](artifacts/w40_prose.json)) |
-| **Budgeted Online Stream Learning (`16` streams)** | Total Execution-Equivalent Cost (`exec + 0.052*rows + 2.0*fits`) | **`118.21` (`Buffered K=4`) vs `138.62` (`NoLearn`) (`-14.7%`, `16/16` streams win)** | [`scripts/w40_online.py`](scripts/w40_online.py) ([`artifacts/w40_online.json`](artifacts/w40_online.json)) |
-| **Non-Stationary World (`N1-merge-exact`)** | Change-Point Recall, False Alarms / 1000, Delay, Full-2000 Acc | **Recall `1.000`, FAR `0.0/1000` (`<= 0.10`), Delay `11.1` steps, Acc `0.9467` (`96.2%` of oracle)** | [`src/nexus/w39_world.py`](src/nexus/w39_world.py) ([`artifacts/w39_world.json`](artifacts/w39_world.json)) |
-| **Stage 1 Unified Regression Gate** | Wave 40 Core (`222` tests) + Stage 1 Outcome Contract (`6` tests) | **`228/228` passing (`100%`), `0` failures** | [`scripts/de_stage1_regression.py`](scripts/de_stage1_regression.py) ([`artifacts/de_stage1_regression.json`](artifacts/de_stage1_regression.json)) |
+| Subsystem | Verified result | Source |
+| :--- | :--- | :--- |
+| Pinned checker kernels v1–v5 (`622a29a`) | 5/5 pins intact; 42/42 kernel tests | `tests/test_checker_kernel*.py`, `artifacts/de_stage1_regression.json` |
+| Search-order invariance (state-dominance repair) | 175/175 | `tests/test_search_order_invariance.py` |
+| Internal cross-domain transfer (Wave 40 C1) | Repr-v5 0.796× Fresh, 0.878× Placebo work, 5/5 seeds, equal solves, 0 wrong; vs the hand-designed prior: negligible (Fixed+Repr 0.991× Fixed) | `artifacts/w40_lodo_confirm_785*.json`, `docs/NEXUS_WAVE40_INVARIANCE_AND_CEILINGS.md` |
+| Hierarchical stream memory (Wave 40 C2) | 0.837× Fresh, 0.859× Hard-Gated; 1.000× Ungated (tie) | `artifacts/w40_stream_confirm_785*.json` |
+| External PROSE transfer (Wave 40 C3, 175 evaluable) | Held-out-valid 36; certified-but-held-out-fail 6 of 42; 11 silent failures in 420 inputs; product-level correctness **not established** | `artifacts/w40_prose_confirm2.json` |
+| N1-merge-exact adaptation (Wave 39 C3) | 2.8× fixed-model compute, return 1.003× N1, 5/5 seeds | `artifacts/w39_world_confirm.json` |
+| Stage 1 regression gate | 228/228 | `artifacts/de_stage1_regression.json` |
+| Stage 2 evaluator | 8/8 required broken pipelines (+6 supplementary) caught with exact reasons on 6/6 dev projects; 0 false alarms | `artifacts/de_stage2_proof.json` |
+| Stage 3 sealed final test (8 projects) | NEXUS 8/8 independently correct, 0 silent errors, 0 unresolved ambiguity, 0 repairs; Conventional 0/8 (8 silent). NEXUS development CPU ≈ 33× Conventional; operating cost equal | `artifacts/de_stage3_test.json` |
 
 ---
 
@@ -285,6 +289,6 @@ PYTHONPATH=src .venv/bin/python scripts/w40_online.py
 
 ### 10.3 Further Reading
 - **Architecture & Module Map:** [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- **10-Stage Roadmap & 7-Measure Scorecard:** [`docs/ROADMAP_10_STAGES.md`](docs/ROADMAP_10_STAGES.md)
+- **10-Stage Roadmap & 7-Measure Scorecard:** [`docs/NEXUS_10_STAGE_ROADMAP.md`](docs/NEXUS_10_STAGE_ROADMAP.md) (canonical; `docs/ROADMAP_10_STAGES.md` is an earlier duplicate)
 - **Complete Documentation Index:** [`docs/INDEX.md`](docs/INDEX.md)
 - **Operational Safeguards & Pinned Hashes:** [`AGENTS.md`](AGENTS.md)
