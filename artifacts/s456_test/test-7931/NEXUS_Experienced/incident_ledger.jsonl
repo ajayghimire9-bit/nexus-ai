@@ -1,0 +1,5 @@
+{"tick": 9, "kind": "repaired", "signature": ["monitor:snapshot_complete"], "repair": [["resnapshot", "backfill_orders"], ["catch_up", null]], "verified_in_shadow": true, "shadow_tests_before": 1, "from_library": false}
+{"tick": 12, "kind": "false_alarm", "alarm": {"supplier": "S1", "offset": 47, "tick": 9, "trigger": "fixed_ratio"}}
+{"tick": 13, "kind": "false_alarm", "alarm": {"supplier": "S3", "offset": 52, "tick": 11, "trigger": "fixed_ratio"}}
+{"tick": 13, "kind": "repaired", "signature": ["crash:decode"], "repair": [["dead_letter", ["telemetry", 0, 56]], ["catch_up", null]], "verified_in_shadow": true, "shadow_tests_before": 1, "from_library": false}
+{"tick": 14, "kind": "repaired", "signature": ["monitor:drift"], "repair": [["unit_override", {"supplier": "S2", "part": 0, "from_offset": 63, "factor": 0.45359237, "unit": "lb", "tick": 13}], ["rollback", 12], ["catch_up", null]], "verified_in_shadow": true, "shadow_tests_before": 4, "from_library": false}

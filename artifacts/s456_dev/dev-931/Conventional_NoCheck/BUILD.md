@@ -1,0 +1,7 @@
+# dev-931 (Conventional_NoCheck)
+
+Outcome: COMPLETED_UNVERIFIED
+
+Decisions: {"apply_order": "arrival", "backfill_merge": "insert_if_absent", "commit_protocol": "transactional", "dedup": "none", "deletes": "hard_only", "fx": "none", "gold_maintenance": "full_recompute", "lateness": "none", "malformed": "quarantine", "partition_discovery": "dynamic", "schema_handling": "registry_typed", "snapshots": "none", "ts_format": "registry_typed", "ts_parse": "text"}
+
+Checks: [('runs_all_ticks', True)]

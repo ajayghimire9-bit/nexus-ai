@@ -1,0 +1,5 @@
+{"tick": 9, "kind": "false_alarm", "alarm": {"supplier": "S1", "offset": 39, "tick": 8, "trigger": "fixed_ratio"}}
+{"tick": 10, "kind": "repaired", "signature": ["monitor:drift"], "repair": [["unit_override", {"supplier": "S2", "part": 0, "from_offset": 42, "factor": 0.45359237, "unit": "lb", "tick": 9, "source": "stakeholder"}], ["rollback", 8], ["catch_up", null]], "verified_in_shadow": true, "shadow_tests_before": 4, "from_library": false}
+{"tick": 11, "kind": "repaired", "signature": ["crash:readonly"], "repair": [["rotate_credentials", null], ["catch_up", null]], "verified_in_shadow": true, "shadow_tests_before": 1, "from_library": false}
+{"tick": 13, "kind": "escalated", "signature": ["monitor:watermark_sanity"], "candidates": ["future_guard", "rollback", "catch_up"]}
+{"tick": 14, "kind": "escalated", "signature": ["monitor:watermark_sanity"], "candidates": ["future_guard", "rollback", "catch_up"]}
