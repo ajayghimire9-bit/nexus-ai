@@ -117,3 +117,158 @@ Scheduled production runs are reported separately as operating cost. Dev results
 **Missing-data rule.**
 * The runner checkpoints per project, and a resume after the call cap is not a re-run.
 * A crashed project is recorded as FAIL for the affected arm.
+
+## 1. What is real, what is simulated, what is unsupported
+
+| Component | Status | Evidence |
+| --- | --- | --- |
+| Offset log, exactly-once contract, backfill, registry evolution, watermarks, retractions, rollback (Stage 4) | **Semantic harness (simulated)**: JSONL segment files plus sqlite state, run as separate OS processes | `s4_env`, `s4_template`, `s4_evaluator` |
+| Database CDC | **REAL**: PostgreSQL **14.18** logical replication slot with the built-in `test_decoding` plugin. (My earlier "15+" was wrong.) Debezium is **not** used | `scripts/s4_integration.py` |
+| Persistent source checkpoint | **REAL**: the replication slot's confirmed position, advanced only after the sink commit and with a delayed-acknowledgement window | same |
+| Lakehouse table backend | **REAL**: Delta Lake via delta-rs 1.6.6 (ACID MERGE, optimistic concurrency, `restore`) | same |
+| Process crashes | **REAL**: `os._exit` at every write / ack boundary (harness), and external `SIGKILL` at phase boundaries, during recovery and at random times (both paths) | evaluator and integration |
+| Rollback atomicity | **One atomic Delta commit (`restore`)**, then **coordinated** replay from the retained slot. In the harness: one-file `os.replace` of `lake.db`, plus a rollback-intent journal for `offsets.json`. **Not a global atomic rollback** across database and lake | `s4_template.rollback`, integration step 3 |
+| Pod memory quota, credential expiry, source unavailability (Stage 5) | **Simulated**: a record-count quota with state revert, `chmod`-based read-only sink and unreadable source | `s5_incidents` |
+| Model / LLM proposer | **Unsupported here**: 0 model calls. Build generation is selection over a 14-decision template; ops repairs are compositions of **authored** primitives with **authored** parameter inference, found by **search** | `s4_template`, `s5_ops` |
+
+**Compositional search, and its limits.**
+* **Build:** hill-climbing with severity scores; a regression guard (every check that passed before must still pass);
+  conflict-directed pairs (a change that improves the check but breaks guard G is paired with changes to the decisions G
+  implicates).
+* **Ops:** subsets of up to 3 primitives in canonical order, with two-round deepening (re-diagnosis inside the shadow).
+* **Expressiveness limit:** nothing outside the 14 template decisions and the 7 ops primitive types can be synthesized. The
+  composition is synthesized; the parts are authored.
+
+**The real integration consumer is engineered by me**, not built by a NEXUS agent. It demonstrates that the contract holds
+on real components; it does not show that NEXUS can build such a consumer.
+
+## 2. Results: one combined paired confirmation on 8 sealed `de2/test` projects (code `647bb48`, run once)
+
+**Conditions.** Every test world contains the withheld classes W1 and W2 and one withheld incident class (4 × U1 clock skew,
+4 × U2 poison message).
+
+### Stages 4–6 unified 7-measure scorecard (`scripts/s456_analyze.py artifacts/s456_test.json artifacts/s6_library.json`)
+
+| Measure | Metric | Conventional_Checked | NEXUS_Fresh | NEXUS_Placebo | NEXUS_Experienced | Conventional_NoCheck (ablation) |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 Correctness | build independently correct (checkpoints 4 / 8 / 12, crash trials, rollback) | 0/8 | **4/8** | 4/8 | **4/8** | 0/8 |
+| | build silent errors (submitted, wrong) | 8 | **4** | 4 | **4** | 7 |
+| | held-out ticks 9–12 correct | 0/8 | 4/8 | 4/8 | 4/8 | 0/8 |
+| | ops: final data correct | 0/8 | **7/8** | 7/8 | **7/8** | 0/8 |
+| | quarantined / late records (accounted) | 16 / 104 | 30 / 97 | 30 / 97 | 30 / 97 | 13 / 83 |
+| 2 Completion | builds submitted / abstained / hard fail | 8/0/0 | 8/0/0 | 8/0/0 | 8/0/0 | 7/1/0 |
+| | incidents unresolved at end | 5 | 0 (2 escalations) | 0 | 0 | 13 |
+| 3 Reliability | failed exactly-once crash trials / trials run | 50/314 | **0/296** | 0/296 | **0/296** | 48/286 |
+| | rollback drill ok | 0/8 | 4/8 | 4/8 | 4/8 | 0/8 |
+| | ops service restored at end | 4/8 | 8/8 | 8/8 | 8/8 | 2/8 |
+| | freshness violations (ticks) | 11 | 0 | 0 | 0 | 25 |
+| | duplicate rows / secret leaks | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |
+| 4 Cost | **PRIMARY engineering CPU s** (8 projects) | 17.2 | **347.6** | 556.2 | **119.4** | 7.4 |
+| | build CPU / rejected + repair-search CPU (s) | 17.2 / 11.2 | 339.9 / 230.3 | 548.4 / 390.1 | 111.6 / 55.0 | 7.4 / 4.0 |
+| | check runs (all) / final accepted suite | 420 / 72 | 8,271 / 1,176 | 13,430 / 1,176 | 2,824 / 1,176 | 182 / 56 |
+| | proposals / ops shadow tests | 13 / 0 | 54 / 76 | 92 / 76 | 15 / 76 | 28 / 0 |
+| | library retrieval + applicability CPU (s) | 0 | 0 | 0.019 | 0.018 | 0 |
+| | failed reuse (count / CPU s) | 0 | 0 | **79 / 337.9** | **0 / 0** | 0 |
+| | operating CPU (production runs, s) | 1.7 | 4.1 | 4.2 | 4.2 | 1.5 |
+| 5 Human dependence | clarifications / escalations / human repairs | 0 / 0 / 0 | 1 / 2 / 0 | 1 / 2 / 0 | 1 / 2 / 0 | 0 / 0 / 0 |
+| 6 Learning | Experienced / Fresh engineering CPU | | | | **0.343 (95% CI 0.235–0.421), cheaper on 8/8** | |
+| | Placebo / Fresh | | | **1.600 (CI 1.35–2.11), cheaper on 0/8** | | |
+| | Experienced / Placebo | | | | **0.215 (CI 0.134–0.289), 8/8** | |
+| | library construction (source curriculum 231.2 + leave-one-out maintenance 89.5 s) | | | | 320.7 s; saving 28.5 s per project; **break-even 11.2 projects**; including learning, 1.27× Fresh over these 8 | |
+| 7 Generalization | withheld-class worlds: build / ops correct | 0/8 / 0/8 | 4/8 / 7/8 | 4/8 / 7/8 | 4/8 / 7/8 | 0/8 / 0/8 |
+
+**How the withheld classes went.**
+
+| Class | Outcome |
+| --- | --- |
+| W1 partition growth | **0 of the 4 projects where it mattered were detected.** In all 4 build failures the proposer picked `static_initial`, which passed every NEXUS check. In the other 4 it picked `dynamic` first, by chance |
+| W2 epoch-ms timestamps | 8/8 handled. It fails loudly, so even Conventional repaired it via exception attribution |
+| U2 poison message | 4/4 repaired (dead-letter at the crash offset) |
+| U1 clock skew | 3/4 repaired (future guard + rollback + replay). test-7934 escalated twice and ended with wrong SLA, late and quarantine tables |
+
+**Drift detectors** (NEXUS_Fresh ops; every variant also has the producer-metadata trigger):
+
+| Detector | Ops correct | Alarms | On shifted suppliers | Other (false) | Mean delay | Detector CPU |
+| --- | --- | --- | --- | --- | --- | --- |
+| bocpd_merge_exact | 7/8 | 14 | 6 | 8 | −0.3 ticks (alarms before the shift also counted) | 0.005 s |
+| fixed_ratio | 7/8 | 26 | 13 | 13 | 2.7 ticks | 0.001 s |
+| disabled | 7/8 | 0 | 0 | 0 | n/a | 0.001 s |
+
+### 2.1 Verdicts (predeclared rules, applied unchanged)
+
+| Stage | Verdict | Why |
+| --- | --- | --- |
+| **4** | **FAIL** | The NEXUS_Fresh and Experienced builds were correct on 4/8 (rule: 8/8), with 4 silent errors, all W1. The exactly-once components passed: 0 failed crash trials out of 296 per NEXUS arm. **Real integration: PASS** (seeds 10 and 11: Delta == PostgreSQL after 29 SIGKILLs at every phase boundary and during recovery, and after a bad deploy (22 / 25 wrong rows) was restored and replayed) |
+| **5** | **FAIL** | NEXUS_Fresh ops correct on 7/8 (rule: 8/8), with 2 escalations. The second requirement holds: ConventionalOps restored service on 4/8 and **data on 0/8**, so a restart without repair does not pass |
+| **6** | **FAIL** (cost criterion met, correctness requirement not) | Experienced used 0.343× Fresh and 0.215× Placebo engineering CPU (CI upper bounds 0.421 and 0.289, below 0.90; cheaper on 8/8 against each), with 0 failed reuse. It had the **same** correctness as Fresh (4/8 build, 7/8 ops), but the rule requires 0 silent errors, and it had 4. The library neither caused nor fixed them |
+| **N1 drift hypothesis** | **Supported by the letter of the predeclared rule; no downstream benefit** | Equal ops correctness (7/8) with fewer false alarms than fixed_ratio. But `disabled` also scores 7/8: the producer-metadata trigger and the stakeholder question did the work. Neither detector changed any outcome |
+
+### 2.2 Root causes (post-hoc; the sealed test is not re-run)
+
+1. **W1 (4 silent build errors).** NEXUS's own replay harness (`s4_checks.grow`) created every partition directory at tick 1.
+   Partition growth therefore never happened in NEXUS's self-tests. The NEXUS self-model of its environment lacked fidelity
+   for exactly the unseen failure mode.
+   * A post-test fix (separate commit, after the test) makes partitions appear only with their first segment. On an
+     unregistered probe world, `static_initial` now fails the lag check and the correct pipeline passes.
+   * This is a fix for the future, not a result: confirming it needs a fresh sealed split.
+2. **test-7934 (one ops failure).** A clock skew at tick 13 was detected (watermark sanity), and the right primitives (future
+   guard, rollback) were among the candidates, but no shadow test passed, so the operator escalated twice.
+   * The same composition repairs a late clock skew on a probe world.
+   * The exact cause is **undetermined**, because inspecting the sealed world outside the locked runner is not allowed
+     (RULE 1).
+   * Disclosure: the freeze text says "40 shadow tests per operator turn", but the code caps 40 per run. test-7934 had used 31.
+
+### 2.3 Stage 3 reinterpretation (addendum item 2)
+
+* **What it showed:** Stage 3 showed validation and clarification over a fixed 14-decision generator on about 70 orders per
+  project, with 0 model calls.
+* **What it did not show:** general coding ability, unfamiliar-fault diagnosis, or learned transfer.
+* **The ablation:** here, NEXUS_Experienced against NEXUS_Fresh on the same projects attributes about 66% of Fresh's
+  engineering CPU to starting without procedures. That figure is specific to this Stage 4–6 workload and generator. The
+  Stage 3 numbers (32.73 s, 22.98 s, 712 checks) are descriptive and were not used as thresholds.
+
+## 3. Capability-by-capability evidence
+
+| Capability | Verdict | Evidence |
+| --- | --- | --- |
+| Exactly-once effects under process crashes (harness) | **DEMONSTRATED on the evaluated cases** | 0/296 failed crash trials per NEXUS arm on the sealed test (before every write / ack boundary, during recovery, random SIGKILL); Conventional_Checked failed 50/314 |
+| Exactly-once CDC → lakehouse on real components | **DEMONSTRATED on 2 fresh + 3 dev seeds** | PostgreSQL slot + Delta MERGE with source row versions; 0 duplicate keys; exact match after the crash sweep and after restore + replay. The first design (LSN precedence) **failed** dev seed 1 (a resurrected delete) |
+| Backfill concurrent with live CDC without overwriting newer changes | **DEMONSTRATED** (harness checkpoint at tick 4 + real integration) | source-version precedence, tombstones |
+| Schema evolution (add, rename, widen) | **DEMONSTRATED in the harness** | all NEXUS builds handled v2 / v3; v1-name decoders are caught |
+| Bad-deploy rollback | **Harness 4/8** (it failed wherever W1 corrupted the run); **real 5/5 runs** | coordinated recovery, not global atomic |
+| Detecting unseen failure classes | **MIXED** | loud classes (W2, U2) 12/12; silent class W1 **0/4**; U1 3/4 |
+| Hidden-cause incident repair restoring service and data | **7/8 projects** (FAIL against the 8/8 gate) | 23 shadow-verified repairs: 14 single, 9 compositions; restart-only / runbook operations: 0/8 data |
+| Verified experience reuse cutting cost at matched quality | **Cost effect DEMONSTRATED; quality matched (both 4/8)** | 0.343× Fresh, 0.215× Placebo, 8/8; break-even 11.2 projects when learning is counted |
+| N1-merge-exact as a drift detector | **No downstream benefit** | the disabled detector does equally well because of the metadata trigger |
+| General coding / LLM-level synthesis | **NOT IMPLEMENTED** | template selection plus authored primitives |
+
+## 4. Resources and provenance
+
+* **Budget.** Stages 4–6 used 5,112 s (every run in the hash-chained ledger; one 420 s entry is an estimate for interactive
+  dev trials, disclosed). Total 17,990 s; remaining **10,544 s**.
+* **Protected files.** 391 Stage 1–3 and kernel files are byte-identical before and after
+  (`artifacts/s456_protected_hashes_{before,after}.json`).
+* **Tests.** `tests/test_s456.py` 6/6; Stage 1 regression and the Stage 3 tests still pass.
+* **Dependencies.** Shared `.venv` unchanged. The integration uses a separate venv (`~/.claude-worktrees/venv-s456`: deltalake
+  1.6.6, psycopg 3.3.6, pyarrow 26.0.0) and the local Homebrew PostgreSQL 14.18. No paid service.
+
+**Commits** (`codex/nexus-data-engineering`, fast-forwarded from the isolated worktree branch `claude/s456-work`):
+
+| Commit | Contents |
+| --- | --- |
+| `c4ec6e0` | Pre-registration |
+| `f5c271f` | Stage 4 code |
+| `73ef7db` | Stage 5 code |
+| next commit | Implementation complete |
+| `647bb48` | Freeze + dev results |
+| `0b2ca04` | Val |
+| `3dd164d` | Seal |
+| then | Test results, post-test fix, this report |
+
+## 5. Next experiment (one)
+
+**A fresh sealed split with the fidelity fix, plus an environment-fidelity check.**
+* Before any build, NEXUS should validate its own replay harness against the observable log (partition birth times, segment
+  ordering, registry causality). The W1 failure was a self-model fidelity error, not a missing capability.
+* Then rerun Stages 4–6 on a new one-use split with at least two **new** withheld classes. Reusing W1 would no longer be
+  withheld, because the fix was designed after seeing it.
