@@ -157,3 +157,75 @@ rules, and the thresholds below. Confirmation ranges are one-use and run once.
 | 5 Self-evolution | the evolution itself: 5 lineages × {dgm_branching, incumbent, random}, budget 6, on dev fitness streams; each lineage winner then on `confirm_evo` 7811–7815 untouched streams | every winner, Start-80f9cc2, Fresh | **PROVED** if ≥ 4/5 lineages of a method beat Start on the untouched streams (pooled, with 0 wrong), *and* that method beats random and incumbent. Search cost is included, with break-even reported both ways. |
 | 6 Continual / forgetting | `confirm_cont` 7816–7820: 4-phase streams (strings → graphs → strings return → tables); long world streams | Fresh, Learner-no-gate, **Learner-regime-memory**; N1 vs fixed / reactive / model-free | **PROVED** if regime memory < Fresh and < no-gate in total work in ≥ 4/5 seeds, with return-phase work < Fresh and new-domain work ≤ 1.02 × Fresh. World track reported separately. |
 | Planning / repairs | `confirm_plan_repair` (fresh instances: 12 external blocks 8–11 + 8 internal logistics; 24 repairs) | Fresh vs Online-learned | Report. A learner design that is degenerate on dev is reported as such. |
+
+## Stage 3: frozen confirmation (one-use seeds, run once after cd02435)
+
+### Experiments 1 / 2 / 3 / 7: LODO, `confirm_lodo` 7801–7805
+
+* **Scale:** 20 fold runs; **2,100 target attempts** (350 targets × 6 arms) plus 560 source tasks.
+* **Integrity:** **0 wrong, 0 detector flags** in every arm; D4 held for every seed.
+* **Work:** G retired instructions, with learning fit charged.
+* **Source-task solving** (definition A, an extra curriculum): 21,024 G. **Marginal fitting:** 207 G.
+
+| Slice | Fresh | Fixed (d) | Learned | **Repr** | Placebo | Neural (exp 7) |
+| --- | --- | --- | --- | --- | --- | --- |
+| E3 withheld domain + mechanism (160) | 9,500.7 (159) | 7,443.5 (**149**) | 9,148.7 (159) | **8,571.7 (159)** | 9,361.9 (159) | 9,481.6 (159) |
+| E1 encoder / representation tasks (340) | 16,149.0 (339) | 13,640.7 (339) | 15,253.4 | **14,058.8 (339)** | 15,623.3 | 15,948.1 |
+| all targets (350) | 17,235.8 (349) | 13,845.8 (339) | 16,347.5 | **15,075.6 (349)** | 16,790.5 | 17,003.2 |
+
+**Per-seed comparisons (5 seeds):**
+
+| Comparison | E1 | E3 |
+| --- | --- | --- |
+| Repr < Fresh | 5/5 | 5/5 |
+| Repr < Placebo | 5/5 | 5/5 |
+| Learned < Placebo | 5/5 | 5/5 |
+| Neural < Fresh | 5/5 | 3/5 |
+| Neural < Placebo | 0/5 | 1/5 |
+| Neural < Learned | 0/5 | 0/5 |
+| Repr < Fixed | 0/5 | 0/5 (but Fixed loses 10 solves) |
+
+**E2 novelty:** 159/159 withheld-mechanism solutions are compositions absent from every source solution, and 36 use
+fold / scan / if. Fresh finds the same novel solutions.
+
+### Experiment 4: `confirm_online` 7806–7810 (tables, an empty library)
+
+| Arm | Solved | Work vs Fresh |
+| --- | --- | --- |
+| Meta-learned | **45/45** | **+14% to +42%** in every seed |
+| Fresh | 39/45 | — |
+| 80f9cc2 baseline | 39/45 | ≈ Fresh |
+
+### Experiment 5: self-evolution
+
+* **Lineages:** 15 (5 × {dgm_branching, incumbent, random}).
+* **Search cost:** ≈ 22.3 T instructions.
+* **Development fitness:** winners are 0.9896–1.0023 of the start.
+* **Untouched `confirm_evo` 7811–7815:** every winner is within ±0.5% of Start-80f9cc2, and Start itself costs *more*
+  than Fresh in 4/5 seeds (182.9 vs 190.3 … 206.0 vs 218.6). No method beats random.
+
+### Experiment 6: `confirm_cont` 7816–7820 (strings → graphs → strings return → tables)
+
+| Learner | Total | Return phase | New-domain phase | Solved |
+| --- | --- | --- | --- | --- |
+| Fresh | 2,710.0 | 411.8 | 1,499.6 | 192/200 |
+| no gate | 3,217.1 | 336.5 | 2,075.2 | **199/200** |
+| **regime memory** | **2,612.1** | **336.4** | **1,499.4** | 192/200 |
+
+* **Regime memory:** below Fresh 5/5, below no-gate 5/5, return-phase work below Fresh 5/5 (≈ 0.82×), new-domain
+  work ≤ 1.02 × Fresh 5/5.
+* **World, long streams (5 one-use seeds, 2,000 steps):**
+
+| Agent | Return | Brier | Delay, return / new goal | Compute |
+| --- | --- | --- | --- | --- |
+| N1 | **391.4** | **0.039** | **15.4 / 19.6** | 20.7 G |
+| fixed-model | 267.8 | 0.178 | 94.1 / 132.9 | 0.14 G |
+| reactive | 89.0 | 0.042 | — | — |
+| model-free | 55.2 | 0.050 | — | — |
+
+### Planning and repairs: `confirm_plan_repair`
+
+* **Planning:** 20/20 VALIDATED_PLAN in both arms, with **identical** expansions (21,820). The learner is
+  degenerate, because each domain has a single goal predicate.
+* **Repairs:** 23/24 TEST_VERIFIED_PATCH in both arms (one public-fit-only patch in each). The online prior uses
+  181 vs 221 candidate evaluations (−18%), and instructions 6.9 vs 7.0 G (−1.4%).
