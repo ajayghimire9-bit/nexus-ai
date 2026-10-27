@@ -139,8 +139,8 @@ of transfer):
 * Fixed is 4% cheaper but solves one task fewer and never reaches 70 at any cap, so it is **not** called cheaper.
 
 **Source cost:**
-* Extra curriculum: 2,974 G, break-even after 507 target tasks.
-* Core set: 1,487 G, break-even after 255.
+* Extra curriculum: 2,974 G over 4 folds, i.e. 744 G per prior, break-even after about 127 target tasks per prior. (The first analysis printed 507, which summed all 4 folds' curricula; corrected.)
+* Core set: 1,487 G, about 63 target tasks per prior (first printed as 255).
 * Mandatory work: 0.017 G of fitting.
 
 **Step 5a, world, dev** (3 seeds × 10,000 steps; `artifacts/w39_world_dev.json`):
