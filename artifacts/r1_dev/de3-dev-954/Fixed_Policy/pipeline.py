@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Generated exactly-once streaming consumer. Decisions: {"apply_order": "source_version", "backfill_merge": "lww_tombstones", "commit_protocol": "offsets_first", "dedup": "by_msg_id", "deletes": "soft_and_hard", "fx": "table", "gap_handling": "wait_contiguous", "gold_maintenance": "full_recompute", "lateness": "watermark", "malformed": "quarantine", "partition_discovery": "dynamic", "schema_handling": "registry_typed", "snapshots": "per_tick", "ts_format": "registry_typed", "ts_parse": "utc", "txn_isolation": "read_committed"}"""
+"""Generated exactly-once streaming consumer. Decisions: {"apply_order": "source_version", "backfill_merge": "lww_tombstones", "commit_protocol": "sink_then_offsets", "dedup": "by_msg_id", "deletes": "soft_and_hard", "fx": "table", "gap_handling": "wait_contiguous", "gold_maintenance": "full_recompute", "lateness": "watermark", "malformed": "quarantine", "partition_discovery": "dynamic", "schema_handling": "registry_typed", "snapshots": "per_tick", "ts_format": "registry_typed", "ts_parse": "utc", "txn_isolation": "read_committed"}"""
 import argparse, glob, json, os, shutil, sqlite3, sys
 from datetime import datetime, timedelta, timezone
 
-DEC = {"apply_order": "source_version", "backfill_merge": "lww_tombstones", "commit_protocol": "offsets_first", "dedup": "by_msg_id", "deletes": "soft_and_hard", "fx": "table", "gap_handling": "wait_contiguous", "gold_maintenance": "full_recompute", "lateness": "watermark", "malformed": "quarantine", "partition_discovery": "dynamic", "schema_handling": "registry_typed", "snapshots": "per_tick", "ts_format": "registry_typed", "ts_parse": "utc", "txn_isolation": "read_committed"}
+DEC = {"apply_order": "source_version", "backfill_merge": "lww_tombstones", "commit_protocol": "sink_then_offsets", "dedup": "by_msg_id", "deletes": "soft_and_hard", "fx": "table", "gap_handling": "wait_contiguous", "gold_maintenance": "full_recompute", "lateness": "watermark", "malformed": "quarantine", "partition_discovery": "dynamic", "schema_handling": "registry_typed", "snapshots": "per_tick", "ts_format": "registry_typed", "ts_parse": "utc", "txn_isolation": "read_committed"}
 
 
 class StageError(Exception):
