@@ -1,0 +1,74 @@
+{
+ "1_correctness": {
+  "diagnoses": [
+   "CRASH_RECOVERY_FAILED",
+   "DUPLICATE_KEYS:gold_warehouse_revenue",
+   "IGNORED_SOFT_DELETES",
+   "NON_IDEMPOTENT_RERUN",
+   "UNASKED_AMBIGUITY",
+   "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+   "UNEXPLAINED_MISMATCH:gold_inventory",
+   "UNEXPLAINED_MISMATCH:gold_sla",
+   "UNEXPLAINED_MISMATCH:gold_status_counts",
+   "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+   "UNEXPLAINED_MISMATCH:silver_orders",
+   "UNIT_MISMATCH"
+  ],
+  "heldout_batch3_correct": false,
+  "independently_checked_correct": false,
+  "seen_batches_correct": false,
+  "silent_data_errors": 1,
+  "unresolved_ambiguity": 1
+ },
+ "2_completion": {
+  "explicit_abstentions": 0,
+  "finished": 1,
+  "hard_failures": 0,
+  "outcome": "COMPLETED_UNVERIFIED"
+ },
+ "3_reliability": {
+  "crash_recovered": false,
+  "duplicate_side_effects": 32,
+  "freshness_violations": 0,
+  "idempotent": false,
+  "recovery_s": 0.038
+ },
+ "4_cost": {
+  "agent_cpu_s": 0.012,
+  "check_cpu_s": 0.0,
+  "check_runs": 0,
+  "development_cpu_s": 0.117,
+  "exec_cpu_s": 0.105,
+  "io_bytes": 301166,
+  "learning_overhead_cpu_s": 0.0,
+  "model_calls": 0,
+  "operating_cpu_wall_s_per_batch": 0.039,
+  "pipeline_runs": 3,
+  "proposer_calls": 2,
+  "tool_calls": {
+   "edit_file": 7,
+   "inspect_outputs": 1,
+   "inspect_schema": 1,
+   "read_docs": 1,
+   "run_sql_or_python": 2
+  },
+  "total_cpu_s": 0.117,
+  "wall_s": 0.125,
+  "wasted_cpu_s": 0.036
+ },
+ "5_human_dependence": {
+  "clarifications": 0,
+  "engineering_repairs": 0,
+  "operational_interventions": 0,
+  "unnecessary_clarifications": 0
+ },
+ "6_learning_benefit": {
+  "history": "none (cross-project learning disabled in both arms)",
+  "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+  "vs_placebo": "n/a until Stage 6"
+ },
+ "7_generalization": {
+  "heldout_batch3_correct": false,
+  "split": "dev"
+ }
+}

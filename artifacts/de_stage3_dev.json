@@ -1,0 +1,6021 @@
+{
+ "projects": {
+  "dev-901": {
+   "arms": {
+    "Conventional_Agent_No_NEXUS_Checks": {
+     "agent": {
+      "arm": "Conventional_Agent_No_NEXUS_Checks",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.012,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.106,
+       "io_bytes": 292990,
+       "pipeline_runs": 3,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.118,
+       "wall_s": 0.127,
+       "wasted_cpu_s": 0.036
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "ignore",
+       "ts_parse": "text",
+       "units": "assume_kg",
+       "weight_parse": "drop_silent"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "float_strict"
+        },
+        "exit": 1,
+        "fix": "weight_parse",
+        "k": 0,
+        "stage": "manifest_parse"
+       },
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "drop_silent"
+        },
+        "exit": 0,
+        "k": 1,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-901",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [
+       "GUESSED_AMBIGUOUS_RULE",
+       "MALFORMED_DROPPED",
+       "TEXT_TIMESTAMP_ORDER",
+       "UNASKED_AMBIGUITY",
+       "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+       "UNEXPLAINED_MISMATCH:gold_sla",
+       "UNEXPLAINED_MISMATCH:gold_status_counts",
+       "UNIT_MISMATCH"
+      ],
+      "recovered": true,
+      "recovery_s": 0.037328083999454975,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 2,
+      "wall_s": {
+       "b1": 0.037,
+       "b2": 0.038,
+       "b3": 0.038,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.036,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "GUESSED_AMBIGUOUS_RULE",
+        "MALFORMED_DROPPED",
+        "TEXT_TIMESTAMP_ORDER",
+        "UNASKED_AMBIGUITY",
+        "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+        "UNEXPLAINED_MISMATCH:gold_sla",
+        "UNEXPLAINED_MISMATCH:gold_status_counts",
+        "UNIT_MISMATCH"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 2
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.012,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.118,
+       "exec_cpu_s": 0.106,
+       "io_bytes": 292990,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.038,
+       "pipeline_runs": 3,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.118,
+       "wall_s": 0.127,
+       "wasted_cpu_s": 0.036
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "Conventional_BestCaseProposer_Sensitivity": {
+     "agent": {
+      "arm": "Conventional_BestCaseProposer_Sensitivity",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.072,
+       "io_bytes": 195161,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.081,
+       "wall_s": 0.086,
+       "wasted_cpu_s": 0.0
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 0,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-901",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [
+       "GUESSED_AMBIGUOUS_RULE",
+       "UNASKED_AMBIGUITY"
+      ],
+      "recovered": true,
+      "recovery_s": 0.037792708026245236,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 2,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.04,
+       "b3": 0.04,
+       "b3_crash": 0.036,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "GUESSED_AMBIGUOUS_RULE",
+        "UNASKED_AMBIGUITY"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 2
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.081,
+       "exec_cpu_s": 0.072,
+       "io_bytes": 195161,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.081,
+       "wall_s": 0.086,
+       "wasted_cpu_s": 0.0
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "NEXUS_Engineer_No_History": {
+     "agent": {
+      "arm": "NEXUS_Engineer_No_History",
+      "clarifications": [
+       {
+        "answer": "open",
+        "question": "status_bucket:HLD"
+       },
+       {
+        "answer": "exclude",
+        "question": "carrier_volume:CANCELLED"
+       }
+      ],
+      "cost": {
+       "agent_cpu_s": 0.526,
+       "check_cpu_s": 3.293,
+       "check_runs": 93,
+       "exec_cpu_s": 0.458,
+       "io_bytes": 1171957,
+       "pipeline_runs": 13,
+       "proposer_calls": 7,
+       "tool_calls": {
+        "ask_clarification": 2,
+        "edit_file": 12,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 7,
+        "verify_invariants": 6
+       },
+       "total_cpu_s": 4.277,
+       "wall_s": 4.549,
+       "wasted_cpu_s": 3.004
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "float_strict"
+        },
+        "exit": 1,
+        "fix": "weight_parse",
+        "k": 0,
+        "stage": "manifest_parse"
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "drop_silent"
+        },
+        "exit": 0,
+        "fix": "ts_parse",
+        "k": 1,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "drop_silent"
+        },
+        "exit": 0,
+        "fix": "units",
+        "k": 2,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "drop_silent"
+        },
+        "exit": 0,
+        "fix": "weight_parse",
+        "k": 3,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "coerce_zero"
+        },
+        "exit": 0,
+        "fix": "weight_parse",
+        "k": 4,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "sla_window",
+        "k": 5,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          true
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 6,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 2,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_VERIFIED",
+      "project": "dev-901",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 2,
+      "correct": true,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [],
+      "recovered": true,
+      "recovery_s": 0.03813812497537583,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 0,
+      "wall_s": {
+       "b1": 0.039,
+       "b2": 0.039,
+       "b3": 0.04,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": true,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 0
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_VERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.526,
+       "check_cpu_s": 3.293,
+       "check_runs": 93,
+       "development_cpu_s": 4.277,
+       "exec_cpu_s": 0.458,
+       "io_bytes": 1171957,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 13,
+       "proposer_calls": 7,
+       "tool_calls": {
+        "ask_clarification": 2,
+        "edit_file": 12,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 7,
+        "verify_invariants": 6
+       },
+       "total_cpu_s": 4.277,
+       "wall_s": 4.549,
+       "wasted_cpu_s": 3.004
+      },
+      "5_human_dependence": {
+       "clarifications": 2,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    }
+   },
+   "genuine_questions": [
+    "carrier_volume:CANCELLED",
+    "status_bucket:HLD"
+   ],
+   "heldout": {
+    "carriers": false,
+    "currencies": [],
+    "lateness": false,
+    "names": [],
+    "text_flag": false,
+    "undoc_code": false,
+    "units": []
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": 1,
+     "kind": "flag"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": true,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-902": {
+   "arms": {
+    "Conventional_Agent_No_NEXUS_Checks": {
+     "agent": {
+      "arm": "Conventional_Agent_No_NEXUS_Checks",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.071,
+       "io_bytes": 195208,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.079,
+       "wall_s": 0.084,
+       "wasted_cpu_s": 0.0
+      },
+      "final_choice": {
+       "bronze_dedup": "append",
+       "bucket_uncovered": "cancelled",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "seq_order",
+       "cdc_incremental": "watermark",
+       "deletes": "soft_and_hard",
+       "dims_load": "append",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "join_sum",
+       "sla_window": "ignore",
+       "ts_parse": "text",
+       "units": "assume_kg",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "append",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "soft_and_hard",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 0,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-902",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 171,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": false,
+      "nonempty": true,
+      "reasons": [
+       "ARRIVAL_ORDER_APPLY",
+       "CRASH_RECOVERY_FAILED",
+       "DUPLICATE_KEYS:gold_warehouse_revenue",
+       "DUPLICATE_KEYS:late_events",
+       "DUPLICATE_KEYS:quarantine",
+       "DUPLICATE_KEYS:silver_manifest",
+       "NON_IDEMPOTENT_RERUN",
+       "UNASKED_AMBIGUITY",
+       "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+       "UNEXPLAINED_MISMATCH:gold_inventory",
+       "UNEXPLAINED_MISMATCH:gold_sla",
+       "UNEXPLAINED_MISMATCH:gold_status_counts",
+       "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+       "UNEXPLAINED_MISMATCH:quarantine",
+       "UNEXPLAINED_MISMATCH:silver_manifest",
+       "UNEXPLAINED_MISMATCH:silver_orders",
+       "UNIT_MISMATCH"
+      ],
+      "recovered": false,
+      "recovery_s": 0.03958879201672971,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 2,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.039,
+       "b3": 0.04,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.039,
+       "b3_restart": 0.04
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "ARRIVAL_ORDER_APPLY",
+        "CRASH_RECOVERY_FAILED",
+        "DUPLICATE_KEYS:gold_warehouse_revenue",
+        "DUPLICATE_KEYS:late_events",
+        "DUPLICATE_KEYS:quarantine",
+        "DUPLICATE_KEYS:silver_manifest",
+        "NON_IDEMPOTENT_RERUN",
+        "UNASKED_AMBIGUITY",
+        "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+        "UNEXPLAINED_MISMATCH:gold_inventory",
+        "UNEXPLAINED_MISMATCH:gold_sla",
+        "UNEXPLAINED_MISMATCH:gold_status_counts",
+        "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+        "UNEXPLAINED_MISMATCH:quarantine",
+        "UNEXPLAINED_MISMATCH:silver_manifest",
+        "UNEXPLAINED_MISMATCH:silver_orders",
+        "UNIT_MISMATCH"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 2
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": false,
+       "duplicate_side_effects": 171,
+       "freshness_violations": 0,
+       "idempotent": false,
+       "recovery_s": 0.04
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.079,
+       "exec_cpu_s": 0.071,
+       "io_bytes": 195208,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.079,
+       "wall_s": 0.084,
+       "wasted_cpu_s": 0.0
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "Conventional_BestCaseProposer_Sensitivity": {
+     "agent": {
+      "arm": "Conventional_BestCaseProposer_Sensitivity",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.072,
+       "io_bytes": 186993,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.081,
+       "wall_s": 0.086,
+       "wasted_cpu_s": 0.0
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "cancelled",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 0,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-902",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [
+       "GUESSED_AMBIGUOUS_RULE",
+       "UNASKED_AMBIGUITY"
+      ],
+      "recovered": true,
+      "recovery_s": 0.03797725000185892,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 2,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.04,
+       "b3": 0.039,
+       "b3_crash": 0.034,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "GUESSED_AMBIGUOUS_RULE",
+        "UNASKED_AMBIGUITY"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 2
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.081,
+       "exec_cpu_s": 0.072,
+       "io_bytes": 186993,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.081,
+       "wall_s": 0.086,
+       "wasted_cpu_s": 0.0
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "NEXUS_Engineer_No_History": {
+     "agent": {
+      "arm": "NEXUS_Engineer_No_History",
+      "clarifications": [
+       {
+        "answer": "open",
+        "question": "status_bucket:HLD"
+       },
+       {
+        "answer": "exclude",
+        "question": "carrier_volume:CANCELLED"
+       }
+      ],
+      "cost": {
+       "agent_cpu_s": 0.588,
+       "check_cpu_s": 3.489,
+       "check_runs": 99,
+       "exec_cpu_s": 0.635,
+       "io_bytes": 1584725,
+       "pipeline_runs": 18,
+       "proposer_calls": 9,
+       "tool_calls": {
+        "ask_clarification": 2,
+        "edit_file": 14,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 9,
+        "verify_invariants": 9
+       },
+       "total_cpu_s": 4.713,
+       "wall_s": 5.013,
+       "wasted_cpu_s": 3.38
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "cancelled",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "append",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "soft_and_hard",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "dims_load",
+        "k": 0,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "append",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "bronze_dedup",
+        "k": 1,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "cdc_apply",
+        "k": 2,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "ts_parse",
+        "k": 3,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "cdc_incremental",
+        "k": 4,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "units",
+        "k": 5,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "revenue_join",
+        "k": 6,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "sla_window",
+        "k": 7,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          true
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "cancelled",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 8,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 2,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_VERIFIED",
+      "project": "dev-902",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 2,
+      "correct": true,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [],
+      "recovered": true,
+      "recovery_s": 0.03773658402496949,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 0,
+      "wall_s": {
+       "b1": 0.039,
+       "b2": 0.04,
+       "b3": 0.039,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": true,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 0
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_VERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.588,
+       "check_cpu_s": 3.489,
+       "check_runs": 99,
+       "development_cpu_s": 4.713,
+       "exec_cpu_s": 0.635,
+       "io_bytes": 1584725,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 18,
+       "proposer_calls": 9,
+       "tool_calls": {
+        "ask_clarification": 2,
+        "edit_file": 14,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 9,
+        "verify_invariants": 9
+       },
+       "total_cpu_s": 4.713,
+       "wall_s": 5.013,
+       "wasted_cpu_s": 3.38
+      },
+      "5_human_dependence": {
+       "clarifications": 2,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    }
+   },
+   "genuine_questions": [
+    "carrier_volume:CANCELLED",
+    "status_bucket:HLD"
+   ],
+   "heldout": {
+    "carriers": false,
+    "currencies": [],
+    "lateness": false,
+    "names": [],
+    "text_flag": false,
+    "undoc_code": false,
+    "units": []
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": null,
+     "kind": "timestamp"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": true,
+    "unit_encoding": "column"
+   }
+  },
+  "dev-903": {
+   "arms": {
+    "Conventional_Agent_No_NEXUS_Checks": {
+     "agent": {
+      "arm": "Conventional_Agent_No_NEXUS_Checks",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.015,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.141,
+       "io_bytes": 358464,
+       "pipeline_runs": 4,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.156,
+       "wall_s": 0.166,
+       "wasted_cpu_s": 0.07
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "watermark",
+       "deletes": "hard_only",
+       "dims_load": "append",
+       "drift": "alias",
+       "fx": "none",
+       "revenue_join": "semi_join",
+       "sla_window": "ignore",
+       "ts_parse": "text",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "strict",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 1,
+        "fix": "drift",
+        "k": 0,
+        "stage": "manifest_header"
+       },
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 1,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-903",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 32,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": false,
+      "nonempty": true,
+      "reasons": [
+       "CRASH_RECOVERY_FAILED",
+       "DUPLICATE_KEYS:gold_warehouse_revenue",
+       "LATENESS_WINDOW_IGNORED",
+       "NON_IDEMPOTENT_RERUN",
+       "NO_CURRENCY_CONVERSION",
+       "UNASKED_AMBIGUITY",
+       "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+       "UNEXPLAINED_MISMATCH:gold_inventory",
+       "UNEXPLAINED_MISMATCH:gold_sla",
+       "UNEXPLAINED_MISMATCH:gold_status_counts",
+       "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+       "UNEXPLAINED_MISMATCH:silver_orders"
+      ],
+      "recovered": false,
+      "recovery_s": 0.03778474999126047,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 2,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.039,
+       "b3": 0.04,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "CRASH_RECOVERY_FAILED",
+        "DUPLICATE_KEYS:gold_warehouse_revenue",
+        "LATENESS_WINDOW_IGNORED",
+        "NON_IDEMPOTENT_RERUN",
+        "NO_CURRENCY_CONVERSION",
+        "UNASKED_AMBIGUITY",
+        "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+        "UNEXPLAINED_MISMATCH:gold_inventory",
+        "UNEXPLAINED_MISMATCH:gold_sla",
+        "UNEXPLAINED_MISMATCH:gold_status_counts",
+        "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+        "UNEXPLAINED_MISMATCH:silver_orders"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 2
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": false,
+       "duplicate_side_effects": 32,
+       "freshness_violations": 0,
+       "idempotent": false,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.015,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.156,
+       "exec_cpu_s": 0.141,
+       "io_bytes": 358464,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 4,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.156,
+       "wall_s": 0.166,
+       "wasted_cpu_s": 0.07
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "Conventional_BestCaseProposer_Sensitivity": {
+     "agent": {
+      "arm": "Conventional_BestCaseProposer_Sensitivity",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.008,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.069,
+       "io_bytes": 178778,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.077,
+       "wall_s": 0.083,
+       "wasted_cpu_s": 0.0
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 0,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-903",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [
+       "GUESSED_AMBIGUOUS_RULE",
+       "UNASKED_AMBIGUITY"
+      ],
+      "recovered": true,
+      "recovery_s": 0.0369172909995541,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 2,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.039,
+       "b3": 0.04,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "GUESSED_AMBIGUOUS_RULE",
+        "UNASKED_AMBIGUITY"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 2
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.008,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.077,
+       "exec_cpu_s": 0.069,
+       "io_bytes": 178778,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.077,
+       "wall_s": 0.083,
+       "wasted_cpu_s": 0.0
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "NEXUS_Engineer_No_History": {
+     "agent": {
+      "arm": "NEXUS_Engineer_No_History",
+      "clarifications": [
+       {
+        "answer": "fulfilled",
+        "question": "status_bucket:HLD"
+       },
+       {
+        "answer": "include",
+        "question": "carrier_volume:CANCELLED"
+       }
+      ],
+      "cost": {
+       "agent_cpu_s": 0.539,
+       "check_cpu_s": 3.112,
+       "check_runs": 87,
+       "exec_cpu_s": 0.57,
+       "io_bytes": 1339309,
+       "pipeline_runs": 16,
+       "proposer_calls": 8,
+       "tool_calls": {
+        "ask_clarification": 2,
+        "edit_file": 13,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 8,
+        "verify_invariants": 7
+       },
+       "total_cpu_s": 4.221,
+       "wall_s": 4.527,
+       "wasted_cpu_s": 2.918
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "strict",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 1,
+        "fix": "drift",
+        "k": 0,
+        "stage": "manifest_header"
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "dims_load",
+        "k": 1,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "text",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "ts_parse",
+        "k": 2,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "cdc_incremental",
+        "k": 3,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "fx",
+        "k": 4,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "deletes",
+        "k": 5,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "sla_window",
+        "k": 6,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          true
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 7,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 2,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_VERIFIED",
+      "project": "dev-903",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 2,
+      "correct": true,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [],
+      "recovered": true,
+      "recovery_s": 0.03749033302301541,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 0,
+      "wall_s": {
+       "b1": 0.039,
+       "b2": 0.04,
+       "b3": 0.04,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.036,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": true,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 0
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_VERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.539,
+       "check_cpu_s": 3.112,
+       "check_runs": 87,
+       "development_cpu_s": 4.221,
+       "exec_cpu_s": 0.57,
+       "io_bytes": 1339309,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.04,
+       "pipeline_runs": 16,
+       "proposer_calls": 8,
+       "tool_calls": {
+        "ask_clarification": 2,
+        "edit_file": 13,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 8,
+        "verify_invariants": 7
+       },
+       "total_cpu_s": 4.221,
+       "wall_s": 4.527,
+       "wasted_cpu_s": 2.918
+      },
+      "5_human_dependence": {
+       "clarifications": 2,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    }
+   },
+   "genuine_questions": [
+    "carrier_volume:CANCELLED",
+    "status_bucket:HLD"
+   ],
+   "heldout": {
+    "carriers": false,
+    "currencies": [],
+    "lateness": false,
+    "names": [],
+    "text_flag": false,
+    "undoc_code": false,
+    "units": []
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": 1,
+     "kind": "flag"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": true,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-904": {
+   "arms": {
+    "Conventional_Agent_No_NEXUS_Checks": {
+     "agent": {
+      "arm": "Conventional_Agent_No_NEXUS_Checks",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.014,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.136,
+       "io_bytes": 329791,
+       "pipeline_runs": 4,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.15,
+       "wall_s": 0.161,
+       "wasted_cpu_s": 0.068
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "seq_order",
+       "cdc_incremental": "rebuild",
+       "deletes": "hard_only",
+       "dims_load": "append",
+       "drift": "alias",
+       "fx": "none",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "text",
+       "units": "assume_kg",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "strict",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 1,
+        "fix": "drift",
+        "k": 0,
+        "stage": "manifest_header"
+       },
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 1,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-904",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 24,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": false,
+      "nonempty": true,
+      "reasons": [
+       "CRASH_RECOVERY_FAILED",
+       "DUPLICATE_KEYS:gold_warehouse_revenue",
+       "NON_IDEMPOTENT_RERUN",
+       "TEXT_TIMESTAMP_ORDER",
+       "UNASKED_AMBIGUITY",
+       "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+       "UNEXPLAINED_MISMATCH:gold_inventory",
+       "UNEXPLAINED_MISMATCH:gold_sla",
+       "UNEXPLAINED_MISMATCH:gold_status_counts",
+       "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+       "UNEXPLAINED_MISMATCH:silver_orders",
+       "UNIT_MISMATCH"
+      ],
+      "recovered": false,
+      "recovery_s": 0.03795625001657754,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 1,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.038,
+       "b3": 0.04,
+       "b3_crash": 0.036,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "CRASH_RECOVERY_FAILED",
+        "DUPLICATE_KEYS:gold_warehouse_revenue",
+        "NON_IDEMPOTENT_RERUN",
+        "TEXT_TIMESTAMP_ORDER",
+        "UNASKED_AMBIGUITY",
+        "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+        "UNEXPLAINED_MISMATCH:gold_inventory",
+        "UNEXPLAINED_MISMATCH:gold_sla",
+        "UNEXPLAINED_MISMATCH:gold_status_counts",
+        "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+        "UNEXPLAINED_MISMATCH:silver_orders",
+        "UNIT_MISMATCH"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 1
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": false,
+       "duplicate_side_effects": 24,
+       "freshness_violations": 0,
+       "idempotent": false,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.014,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.15,
+       "exec_cpu_s": 0.136,
+       "io_bytes": 329791,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 4,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.15,
+       "wall_s": 0.161,
+       "wasted_cpu_s": 0.068
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "Conventional_BestCaseProposer_Sensitivity": {
+     "agent": {
+      "arm": "Conventional_BestCaseProposer_Sensitivity",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.008,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.069,
+       "io_bytes": 174681,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.077,
+       "wall_s": 0.082,
+       "wasted_cpu_s": 0.0
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 0,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-904",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [
+       "UNASKED_AMBIGUITY"
+      ],
+      "recovered": true,
+      "recovery_s": 0.03717450000112876,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 1,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.038,
+       "b3": 0.039,
+       "b3_crash": 0.036,
+       "b3_rerun": 0.038,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "UNASKED_AMBIGUITY"
+       ],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": false,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 1
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.008,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.077,
+       "exec_cpu_s": 0.069,
+       "io_bytes": 174681,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.038,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.077,
+       "wall_s": 0.082,
+       "wasted_cpu_s": 0.0
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    },
+    "NEXUS_Engineer_No_History": {
+     "agent": {
+      "arm": "NEXUS_Engineer_No_History",
+      "clarifications": [
+       {
+        "answer": "exclude",
+        "question": "carrier_volume:CANCELLED"
+       }
+      ],
+      "cost": {
+       "agent_cpu_s": 0.456,
+       "check_cpu_s": 2.751,
+       "check_runs": 80,
+       "exec_cpu_s": 0.548,
+       "io_bytes": 1261421,
+       "pipeline_runs": 16,
+       "proposer_calls": 8,
+       "tool_calls": {
+        "ask_clarification": 1,
+        "edit_file": 13,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 8,
+        "verify_invariants": 7
+       },
+       "total_cpu_s": 3.755,
+       "wall_s": 4.015,
+       "wasted_cpu_s": 2.575
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "other",
+       "carrier_uncovered": "exclude",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "strict",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 1,
+        "fix": "drift",
+        "k": 0,
+        "stage": "manifest_header"
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "dims_load",
+        "k": 1,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "cdc_apply",
+        "k": 2,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "text",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "ts_parse",
+        "k": 3,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "fx",
+        "k": 4,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "units",
+        "k": 5,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "deletes",
+        "k": 6,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          true
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "other",
+         "carrier_uncovered": "exclude",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 7,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 1,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_VERIFIED",
+      "project": "dev-904",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 1,
+      "correct": true,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [],
+      "recovered": true,
+      "recovery_s": 0.037211500050034374,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 0,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.038,
+       "b3": 0.039,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": true,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 0
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_VERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.456,
+       "check_cpu_s": 2.751,
+       "check_runs": 80,
+       "development_cpu_s": 3.755,
+       "exec_cpu_s": 0.548,
+       "io_bytes": 1261421,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.038,
+       "pipeline_runs": 16,
+       "proposer_calls": 8,
+       "tool_calls": {
+        "ask_clarification": 1,
+        "edit_file": 13,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 8,
+        "verify_invariants": 7
+       },
+       "total_cpu_s": 3.755,
+       "wall_s": 4.015,
+       "wasted_cpu_s": 2.575
+      },
+      "5_human_dependence": {
+       "clarifications": 1,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    }
+   },
+   "genuine_questions": [
+    "carrier_volume:CANCELLED"
+   ],
+   "heldout": {
+    "carriers": false,
+    "currencies": [],
+    "lateness": false,
+    "names": [],
+    "text_flag": false,
+    "undoc_code": false,
+    "units": []
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": 1,
+     "kind": "flag"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": false,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-905": {
+   "arms": {
+    "Conventional_Agent_No_NEXUS_Checks": {
+     "agent": {
+      "arm": "Conventional_Agent_No_NEXUS_Checks",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.012,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.105,
+       "io_bytes": 301166,
+       "pipeline_runs": 3,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.117,
+       "wall_s": 0.125,
+       "wasted_cpu_s": 0.036
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "fulfilled",
+       "carrier_uncovered": "include",
+       "cdc_apply": "seq_order",
+       "cdc_incremental": "watermark",
+       "deletes": "hard_only",
+       "dims_load": "append",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "join_sum",
+       "sla_window": "ignore",
+       "ts_parse": "utc",
+       "units": "assume_kg",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "float_strict"
+        },
+        "exit": 1,
+        "fix": "weight_parse",
+        "k": 0,
+        "stage": "manifest_parse"
+       },
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 1,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-905",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 32,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": false,
+      "nonempty": true,
+      "reasons": [
+       "CRASH_RECOVERY_FAILED",
+       "DUPLICATE_KEYS:gold_warehouse_revenue",
+       "IGNORED_SOFT_DELETES",
+       "NON_IDEMPOTENT_RERUN",
+       "UNASKED_AMBIGUITY",
+       "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+       "UNEXPLAINED_MISMATCH:gold_inventory",
+       "UNEXPLAINED_MISMATCH:gold_sla",
+       "UNEXPLAINED_MISMATCH:gold_status_counts",
+       "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+       "UNEXPLAINED_MISMATCH:silver_orders",
+       "UNIT_MISMATCH"
+      ],
+      "recovered": false,
+      "recovery_s": 0.037930749997030944,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 1,
+      "wall_s": {
+       "b1": 0.039,
+       "b2": 0.039,
+       "b3": 0.039,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "CRASH_RECOVERY_FAILED",
+        "DUPLICATE_KEYS:gold_warehouse_revenue",
+        "IGNORED_SOFT_DELETES",
+        "NON_IDEMPOTENT_RERUN",
+        "UNASKED_AMBIGUITY",
+        "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+        "UNEXPLAINED_MISMATCH:gold_inventory",
+        "UNEXPLAINED_MISMATCH:gold_sla",
+        "UNEXPLAINED_MISMATCH:gold_status_counts",
+        "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+        "UNEXPLAINED_MISMATCH:silver_orders",
+        "UNIT_MISMATCH"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 1
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": false,
+       "duplicate_side_effects": 32,
+       "freshness_violations": 0,
+       "idempotent": false,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.012,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.117,
+       "exec_cpu_s": 0.105,
+       "io_bytes": 301166,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 3,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.117,
+       "wall_s": 0.125,
+       "wasted_cpu_s": 0.036
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "Conventional_BestCaseProposer_Sensitivity": {
+     "agent": {
+      "arm": "Conventional_BestCaseProposer_Sensitivity",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.07,
+       "io_bytes": 186992,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.079,
+       "wall_s": 0.084,
+       "wasted_cpu_s": 0.0
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "fulfilled",
+       "carrier_uncovered": "include",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 0,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-905",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [
+       "UNASKED_AMBIGUITY"
+      ],
+      "recovered": true,
+      "recovery_s": 0.03676933399401605,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 1,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.039,
+       "b3": 0.039,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "UNASKED_AMBIGUITY"
+       ],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": false,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 1
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.009,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.079,
+       "exec_cpu_s": 0.07,
+       "io_bytes": 186992,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.079,
+       "wall_s": 0.084,
+       "wasted_cpu_s": 0.0
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    },
+    "NEXUS_Engineer_No_History": {
+     "agent": {
+      "arm": "NEXUS_Engineer_No_History",
+      "clarifications": [
+       {
+        "answer": "include",
+        "question": "carrier_volume:CANCELLED"
+       }
+      ],
+      "cost": {
+       "agent_cpu_s": 0.585,
+       "check_cpu_s": 3.639,
+       "check_runs": 104,
+       "exec_cpu_s": 0.594,
+       "io_bytes": 1506771,
+       "pipeline_runs": 17,
+       "proposer_calls": 9,
+       "tool_calls": {
+        "ask_clarification": 1,
+        "edit_file": 14,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 9,
+        "verify_invariants": 8
+       },
+       "total_cpu_s": 4.817,
+       "wall_s": 5.159,
+       "wasted_cpu_s": 3.499
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "fulfilled",
+       "carrier_uncovered": "include",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "float_strict"
+        },
+        "exit": 1,
+        "fix": "weight_parse",
+        "k": 0,
+        "stage": "manifest_parse"
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "dims_load",
+        "k": 1,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "seq_order",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "cdc_apply",
+        "k": 2,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "watermark",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "cdc_incremental",
+        "k": 3,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "units",
+        "k": 4,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "hard_only",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "deletes",
+        "k": 5,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "revenue_join",
+        "k": 6,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "sla_window",
+        "k": 7,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          true
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "fulfilled",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 8,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 1,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_VERIFIED",
+      "project": "dev-905",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 1,
+      "correct": true,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [],
+      "recovered": true,
+      "recovery_s": 0.036763584008440375,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 0,
+      "wall_s": {
+       "b1": 0.037,
+       "b2": 0.039,
+       "b3": 0.038,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": true,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 0
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_VERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.585,
+       "check_cpu_s": 3.639,
+       "check_runs": 104,
+       "development_cpu_s": 4.817,
+       "exec_cpu_s": 0.594,
+       "io_bytes": 1506771,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.038,
+       "pipeline_runs": 17,
+       "proposer_calls": 9,
+       "tool_calls": {
+        "ask_clarification": 1,
+        "edit_file": 14,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 9,
+        "verify_invariants": 8
+       },
+       "total_cpu_s": 4.817,
+       "wall_s": 5.159,
+       "wasted_cpu_s": 3.499
+      },
+      "5_human_dependence": {
+       "clarifications": 1,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    }
+   },
+   "genuine_questions": [
+    "carrier_volume:CANCELLED"
+   ],
+   "heldout": {
+    "carriers": false,
+    "currencies": [],
+    "lateness": false,
+    "names": [],
+    "text_flag": false,
+    "undoc_code": false,
+    "units": []
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": null,
+     "kind": "timestamp"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": false,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-906": {
+   "arms": {
+    "Conventional_Agent_No_NEXUS_Checks": {
+     "agent": {
+      "arm": "Conventional_Agent_No_NEXUS_Checks",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.014,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.139,
+       "io_bytes": 370776,
+       "pipeline_runs": 4,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.153,
+       "wall_s": 0.165,
+       "wasted_cpu_s": 0.07
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "open",
+       "carrier_uncovered": "include",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "append",
+       "drift": "alias",
+       "fx": "none",
+       "revenue_join": "join_sum",
+       "sla_window": "ignore",
+       "ts_parse": "utc",
+       "units": "assume_kg",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "append",
+         "drift": "strict",
+         "fx": "none",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 1,
+        "fix": "drift",
+        "k": 0,
+        "stage": "manifest_header"
+       },
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 1,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-906",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 24,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": false,
+      "nonempty": true,
+      "reasons": [
+       "CRASH_RECOVERY_FAILED",
+       "DUPLICATE_KEYS:gold_warehouse_revenue",
+       "LATENESS_WINDOW_IGNORED",
+       "NON_IDEMPOTENT_RERUN",
+       "NO_CURRENCY_CONVERSION",
+       "UNASKED_AMBIGUITY",
+       "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+       "UNEXPLAINED_MISMATCH:gold_inventory",
+       "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+       "UNIT_MISMATCH"
+      ],
+      "recovered": false,
+      "recovery_s": 0.0380376250250265,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 1,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.039,
+       "b3": 0.04,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.038,
+       "b3_restart": 0.038
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "CRASH_RECOVERY_FAILED",
+        "DUPLICATE_KEYS:gold_warehouse_revenue",
+        "LATENESS_WINDOW_IGNORED",
+        "NON_IDEMPOTENT_RERUN",
+        "NO_CURRENCY_CONVERSION",
+        "UNASKED_AMBIGUITY",
+        "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+        "UNEXPLAINED_MISMATCH:gold_inventory",
+        "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+        "UNIT_MISMATCH"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 1
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": false,
+       "duplicate_side_effects": 24,
+       "freshness_violations": 0,
+       "idempotent": false,
+       "recovery_s": 0.038
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.014,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.153,
+       "exec_cpu_s": 0.139,
+       "io_bytes": 370776,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 4,
+       "proposer_calls": 2,
+       "tool_calls": {
+        "edit_file": 7,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 2
+       },
+       "total_cpu_s": 0.153,
+       "wall_s": 0.165,
+       "wasted_cpu_s": 0.07
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "Conventional_BestCaseProposer_Sensitivity": {
+     "agent": {
+      "arm": "Conventional_BestCaseProposer_Sensitivity",
+      "clarifications": [],
+      "cost": {
+       "agent_cpu_s": 0.008,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "exec_cpu_s": 0.07,
+       "io_bytes": 186968,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.078,
+       "wall_s": 0.083,
+       "wasted_cpu_s": 0.0
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "open",
+       "carrier_uncovered": "include",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 0,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "dev-906",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 0,
+      "correct": false,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": false,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [
+       "GUESSED_AMBIGUOUS_RULE",
+       "UNASKED_AMBIGUITY"
+      ],
+      "recovered": true,
+      "recovery_s": 0.037438167026266456,
+      "seen_batches_ok": false,
+      "silent_data_error": true,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 1,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.038,
+       "b3": 0.039,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.036,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [
+        "GUESSED_AMBIGUOUS_RULE",
+        "UNASKED_AMBIGUITY"
+       ],
+       "heldout_batch3_correct": false,
+       "independently_checked_correct": false,
+       "seen_batches_correct": false,
+       "silent_data_errors": 1,
+       "unresolved_ambiguity": 1
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_UNVERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.008,
+       "check_cpu_s": 0.0,
+       "check_runs": 0,
+       "development_cpu_s": 0.078,
+       "exec_cpu_s": 0.07,
+       "io_bytes": 186968,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.038,
+       "pipeline_runs": 2,
+       "proposer_calls": 1,
+       "tool_calls": {
+        "edit_file": 6,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 1
+       },
+       "total_cpu_s": 0.078,
+       "wall_s": 0.083,
+       "wasted_cpu_s": 0.0
+      },
+      "5_human_dependence": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": false,
+       "split": "dev"
+      }
+     }
+    },
+    "NEXUS_Engineer_No_History": {
+     "agent": {
+      "arm": "NEXUS_Engineer_No_History",
+      "clarifications": [
+       {
+        "answer": "exclude",
+        "question": "carrier_volume:CANCELLED"
+       }
+      ],
+      "cost": {
+       "agent_cpu_s": 0.47,
+       "check_cpu_s": 2.899,
+       "check_runs": 83,
+       "exec_cpu_s": 0.494,
+       "io_bytes": 1208723,
+       "pipeline_runs": 14,
+       "proposer_calls": 7,
+       "tool_calls": {
+        "ask_clarification": 1,
+        "edit_file": 12,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 7,
+        "verify_invariants": 6
+       },
+       "total_cpu_s": 3.864,
+       "wall_s": 4.248,
+       "wasted_cpu_s": 2.664
+      },
+      "final_choice": {
+       "bronze_dedup": "dedup",
+       "bucket_uncovered": "open",
+       "carrier_uncovered": "include",
+       "cdc_apply": "event_time",
+       "cdc_incremental": "rebuild",
+       "deletes": "soft_and_hard",
+       "dims_load": "replace",
+       "drift": "alias",
+       "fx": "table",
+       "revenue_join": "semi_join",
+       "sla_window": "apply",
+       "ts_parse": "utc",
+       "units": "table",
+       "weight_parse": "quarantine"
+      },
+      "history": [
+       {
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "append",
+         "drift": "strict",
+         "fx": "none",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 1,
+        "fix": "drift",
+        "k": 0,
+        "stage": "manifest_header"
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "append",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "dims_load",
+        "k": 1,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "none",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "fx",
+        "k": 2,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "assume_kg",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "units",
+        "k": 3,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "join_sum",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "revenue_join",
+        "k": 4,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          false
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "ignore",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "fix": "sla_window",
+        "k": 5,
+        "stage": null
+       },
+       {
+        "checks": [
+         [
+          "schema_and_primary_keys",
+          true
+         ],
+         [
+          "idempotent_rerun",
+          true
+         ],
+         [
+          "duplicate_delivery_invariance",
+          true
+         ],
+         [
+          "crash_restart_equivalence",
+          true
+         ],
+         [
+          "seq_relabel_invariance",
+          true
+         ],
+         [
+          "utc_offset_invariance",
+          true
+         ],
+         [
+          "incremental_equals_full_refresh",
+          true
+         ],
+         [
+          "currency_representation_invariance",
+          true
+         ],
+         [
+          "unit_representation_invariance",
+          true
+         ],
+         [
+          "quarantine_conservation",
+          true
+         ],
+         [
+          "deletion_contract",
+          true
+         ],
+         [
+          "shipment_split_invariance",
+          true
+         ],
+         [
+          "late_event_removal_invariance",
+          true
+         ]
+        ],
+        "choice": {
+         "bronze_dedup": "dedup",
+         "bucket_uncovered": "open",
+         "carrier_uncovered": "include",
+         "cdc_apply": "event_time",
+         "cdc_incremental": "rebuild",
+         "deletes": "soft_and_hard",
+         "dims_load": "replace",
+         "drift": "alias",
+         "fx": "table",
+         "revenue_join": "semi_join",
+         "sla_window": "apply",
+         "ts_parse": "utc",
+         "units": "table",
+         "weight_parse": "quarantine"
+        },
+        "exit": 0,
+        "k": 6,
+        "stage": null
+       }
+      ],
+      "human": {
+       "clarifications": 1,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "outcome": "COMPLETED_VERIFIED",
+      "project": "dev-906",
+      "submitted": true
+     },
+     "evaluation": {
+      "clarifications": 1,
+      "correct": true,
+      "crash_injected": true,
+      "duplicate_side_effects": 0,
+      "exits": {
+       "b1": 0,
+       "b2": 0,
+       "b3": 0,
+       "b3_crash": 137,
+       "b3_rerun": 0,
+       "b3_restart": 0
+      },
+      "exits_ok": true,
+      "freshness_violations": 0,
+      "heldout_batch_ok": true,
+      "idempotent": true,
+      "nonempty": true,
+      "reasons": [],
+      "recovered": true,
+      "recovery_s": 0.03741154196904972,
+      "seen_batches_ok": true,
+      "silent_data_error": false,
+      "unnecessary_clarifications": 0,
+      "unresolved_ambiguity": 0,
+      "wall_s": {
+       "b1": 0.038,
+       "b2": 0.039,
+       "b3": 0.039,
+       "b3_crash": 0.035,
+       "b3_rerun": 0.037,
+       "b3_restart": 0.037
+      }
+     },
+     "scorecard": {
+      "1_correctness": {
+       "diagnoses": [],
+       "heldout_batch3_correct": true,
+       "independently_checked_correct": true,
+       "seen_batches_correct": true,
+       "silent_data_errors": 0,
+       "unresolved_ambiguity": 0
+      },
+      "2_completion": {
+       "explicit_abstentions": 0,
+       "finished": 1,
+       "hard_failures": 0,
+       "outcome": "COMPLETED_VERIFIED"
+      },
+      "3_reliability": {
+       "crash_recovered": true,
+       "duplicate_side_effects": 0,
+       "freshness_violations": 0,
+       "idempotent": true,
+       "recovery_s": 0.037
+      },
+      "4_cost": {
+       "agent_cpu_s": 0.47,
+       "check_cpu_s": 2.899,
+       "check_runs": 83,
+       "development_cpu_s": 3.864,
+       "exec_cpu_s": 0.494,
+       "io_bytes": 1208723,
+       "learning_overhead_cpu_s": 0.0,
+       "model_calls": 0,
+       "operating_cpu_wall_s_per_batch": 0.039,
+       "pipeline_runs": 14,
+       "proposer_calls": 7,
+       "tool_calls": {
+        "ask_clarification": 1,
+        "edit_file": 12,
+        "inspect_outputs": 1,
+        "inspect_schema": 1,
+        "read_docs": 1,
+        "run_sql_or_python": 7,
+        "verify_invariants": 6
+       },
+       "total_cpu_s": 3.864,
+       "wall_s": 4.248,
+       "wasted_cpu_s": 2.664
+      },
+      "5_human_dependence": {
+       "clarifications": 1,
+       "engineering_repairs": 0,
+       "operational_interventions": 0,
+       "unnecessary_clarifications": 0
+      },
+      "6_learning_benefit": {
+       "history": "none (cross-project learning disabled in both arms)",
+       "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+       "vs_placebo": "n/a until Stage 6"
+      },
+      "7_generalization": {
+       "heldout_batch3_correct": true,
+       "split": "dev"
+      }
+     }
+    }
+   },
+   "genuine_questions": [
+    "carrier_volume:CANCELLED"
+   ],
+   "heldout": {
+    "carriers": false,
+    "currencies": [],
+    "lateness": false,
+    "names": [],
+    "text_flag": false,
+    "undoc_code": false,
+    "units": []
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": null,
+     "kind": "timestamp"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": false,
+    "unit_encoding": "suffix"
+   }
+  }
+ }
+}

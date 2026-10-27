@@ -1,0 +1,2083 @@
+{
+ "correct_pass": true,
+ "evaluator_sha256": "6001b228c9084310e5091643d464a2b38e236f5acc2a87e4f2aa198dafa878a3",
+ "projects": {
+  "dev-901": {
+   "features": {
+    "batch3": {
+     "late_delivered_events": 2,
+     "late_newest_keys": 1,
+     "out_of_order_keys": 8,
+     "soft": 2
+    },
+    "visible": {
+     "dup_events": 14,
+     "hard": 1,
+     "late_delivered_events": 6,
+     "late_newest_keys": 2,
+     "mixed_units": 3,
+     "multi_ship_delivered_orders": 19,
+     "out_of_order_keys": 13,
+     "soft": 3
+    }
+   },
+   "rows": {
+    "0 correct pipeline (asks)": {
+     "caught": false,
+     "correct": true,
+     "exact": null,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": null,
+     "idempotent": true,
+     "reasons": [],
+     "recovered": true,
+     "silent": true
+    },
+    "1 fan-out join double counting": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "FANOUT_DOUBLE_COUNT",
+     "idempotent": true,
+     "reasons": [
+      "FANOUT_DOUBLE_COUNT"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "2 dropping late corrections": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "DROPPED_LATE_CHANGES",
+     "idempotent": true,
+     "reasons": [
+      "DROPPED_LATE_CHANGES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "3 updates applied out of event-time order": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "ARRIVAL_ORDER_APPLY",
+     "idempotent": true,
+     "reasons": [
+      "ARRIVAL_ORDER_APPLY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "4 ignoring soft deletes": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "IGNORED_SOFT_DELETES",
+     "idempotent": true,
+     "reasons": [
+      "IGNORED_SOFT_DELETES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "5 unit mismatch": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNIT_MISMATCH",
+     "idempotent": true,
+     "reasons": [
+      "UNIT_MISMATCH"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "6 non-idempotent duplicate append on rerun": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:late_events",
+      "DUPLICATE_KEYS:quarantine",
+      "DUPLICATE_KEYS:silver_manifest",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:late_events",
+      "UNEXPLAINED_MISMATCH:quarantine",
+      "UNEXPLAINED_MISMATCH:silver_manifest"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "7 malformed rows coerced to 0": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_ZERO_FILLED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_ZERO_FILLED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "8 guessing an ambiguous business rule": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "GUESSED_AMBIGUOUS_RULE",
+     "idempotent": true,
+     "reasons": [
+      "GUESSED_AMBIGUOUS_RULE",
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S1 timestamps compared as text": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "TEXT_TIMESTAMP_ORDER",
+     "idempotent": true,
+     "reasons": [
+      "TEXT_TIMESTAMP_ORDER"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S2 no currency conversion": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NO_CURRENCY_CONVERSION",
+     "idempotent": true,
+     "reasons": [
+      "NO_CURRENCY_CONVERSION"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S3 malformed rows silently dropped": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_DROPPED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_DROPPED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S4 lateness window ignored": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "LATENESS_WINDOW_IGNORED",
+     "idempotent": true,
+     "reasons": [
+      "LATENESS_WINDOW_IGNORED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S5 dimension snapshot appended": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:gold_warehouse_revenue",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:gold_inventory",
+      "UNEXPLAINED_MISMATCH:gold_warehouse_revenue"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "S6 lucky guess (right answer, never asked)": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNASKED_AMBIGUITY",
+     "idempotent": true,
+     "reasons": [
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    }
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": 1,
+     "kind": "flag"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": true,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-902": {
+   "features": {
+    "batch3": {
+     "late_delivered_events": 1,
+     "late_newest_keys": 1,
+     "out_of_order_keys": 3,
+     "soft": 0
+    },
+    "visible": {
+     "dup_events": 3,
+     "hard": 3,
+     "late_delivered_events": 4,
+     "late_newest_keys": 2,
+     "mixed_units": 3,
+     "multi_ship_delivered_orders": 8,
+     "out_of_order_keys": 8,
+     "soft": 6
+    }
+   },
+   "rows": {
+    "0 correct pipeline (asks)": {
+     "caught": false,
+     "correct": true,
+     "exact": null,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": null,
+     "idempotent": true,
+     "reasons": [],
+     "recovered": true,
+     "silent": true
+    },
+    "1 fan-out join double counting": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "FANOUT_DOUBLE_COUNT",
+     "idempotent": true,
+     "reasons": [
+      "FANOUT_DOUBLE_COUNT"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "2 dropping late corrections": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "DROPPED_LATE_CHANGES",
+     "idempotent": true,
+     "reasons": [
+      "DROPPED_LATE_CHANGES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "3 updates applied out of event-time order": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "ARRIVAL_ORDER_APPLY",
+     "idempotent": true,
+     "reasons": [
+      "ARRIVAL_ORDER_APPLY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "4 ignoring soft deletes": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "IGNORED_SOFT_DELETES",
+     "idempotent": true,
+     "reasons": [
+      "IGNORED_SOFT_DELETES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "5 unit mismatch": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNIT_MISMATCH",
+     "idempotent": true,
+     "reasons": [
+      "UNIT_MISMATCH"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "6 non-idempotent duplicate append on rerun": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:late_events",
+      "DUPLICATE_KEYS:quarantine",
+      "DUPLICATE_KEYS:silver_manifest",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:quarantine",
+      "UNEXPLAINED_MISMATCH:silver_manifest"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "7 malformed rows coerced to 0": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_ZERO_FILLED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_ZERO_FILLED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "8 guessing an ambiguous business rule": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "GUESSED_AMBIGUOUS_RULE",
+     "idempotent": true,
+     "reasons": [
+      "GUESSED_AMBIGUOUS_RULE",
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S1 timestamps compared as text": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "TEXT_TIMESTAMP_ORDER",
+     "idempotent": true,
+     "reasons": [
+      "TEXT_TIMESTAMP_ORDER"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S2 no currency conversion": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NO_CURRENCY_CONVERSION",
+     "idempotent": true,
+     "reasons": [
+      "NO_CURRENCY_CONVERSION"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S3 malformed rows silently dropped": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_DROPPED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_DROPPED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S4 lateness window ignored": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "LATENESS_WINDOW_IGNORED",
+     "idempotent": true,
+     "reasons": [
+      "LATENESS_WINDOW_IGNORED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S5 dimension snapshot appended": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:gold_warehouse_revenue",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:gold_inventory",
+      "UNEXPLAINED_MISMATCH:gold_warehouse_revenue"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "S6 lucky guess (right answer, never asked)": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNASKED_AMBIGUITY",
+     "idempotent": true,
+     "reasons": [
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    }
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": null,
+     "kind": "timestamp"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": true,
+    "unit_encoding": "column"
+   }
+  },
+  "dev-903": {
+   "features": {
+    "batch3": {
+     "late_delivered_events": 2,
+     "late_newest_keys": 1,
+     "out_of_order_keys": 5,
+     "soft": 3
+    },
+    "visible": {
+     "dup_events": 5,
+     "hard": 5,
+     "late_delivered_events": 5,
+     "late_newest_keys": 3,
+     "mixed_units": 3,
+     "multi_ship_delivered_orders": 12,
+     "out_of_order_keys": 8,
+     "soft": 3
+    }
+   },
+   "rows": {
+    "0 correct pipeline (asks)": {
+     "caught": false,
+     "correct": true,
+     "exact": null,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": null,
+     "idempotent": true,
+     "reasons": [],
+     "recovered": true,
+     "silent": true
+    },
+    "1 fan-out join double counting": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "FANOUT_DOUBLE_COUNT",
+     "idempotent": true,
+     "reasons": [
+      "FANOUT_DOUBLE_COUNT"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "2 dropping late corrections": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "DROPPED_LATE_CHANGES",
+     "idempotent": true,
+     "reasons": [
+      "DROPPED_LATE_CHANGES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "3 updates applied out of event-time order": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "ARRIVAL_ORDER_APPLY",
+     "idempotent": true,
+     "reasons": [
+      "ARRIVAL_ORDER_APPLY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "4 ignoring soft deletes": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "IGNORED_SOFT_DELETES",
+     "idempotent": true,
+     "reasons": [
+      "IGNORED_SOFT_DELETES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "5 unit mismatch": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNIT_MISMATCH",
+     "idempotent": true,
+     "reasons": [
+      "UNIT_MISMATCH"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "6 non-idempotent duplicate append on rerun": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:late_events",
+      "DUPLICATE_KEYS:quarantine",
+      "DUPLICATE_KEYS:silver_manifest",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:late_events",
+      "UNEXPLAINED_MISMATCH:quarantine",
+      "UNEXPLAINED_MISMATCH:silver_manifest"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "7 malformed rows coerced to 0": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_ZERO_FILLED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_ZERO_FILLED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "8 guessing an ambiguous business rule": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "GUESSED_AMBIGUOUS_RULE",
+     "idempotent": true,
+     "reasons": [
+      "GUESSED_AMBIGUOUS_RULE",
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S1 timestamps compared as text": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "TEXT_TIMESTAMP_ORDER",
+     "idempotent": true,
+     "reasons": [
+      "TEXT_TIMESTAMP_ORDER"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S2 no currency conversion": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NO_CURRENCY_CONVERSION",
+     "idempotent": true,
+     "reasons": [
+      "NO_CURRENCY_CONVERSION"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S3 malformed rows silently dropped": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_DROPPED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_DROPPED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S4 lateness window ignored": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "LATENESS_WINDOW_IGNORED",
+     "idempotent": true,
+     "reasons": [
+      "LATENESS_WINDOW_IGNORED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S5 dimension snapshot appended": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:gold_warehouse_revenue",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:gold_inventory",
+      "UNEXPLAINED_MISMATCH:gold_warehouse_revenue"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "S6 lucky guess (right answer, never asked)": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNASKED_AMBIGUITY",
+     "idempotent": true,
+     "reasons": [
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    }
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": 1,
+     "kind": "flag"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": true,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-904": {
+   "features": {
+    "batch3": {
+     "late_delivered_events": 1,
+     "late_newest_keys": 1,
+     "out_of_order_keys": 9,
+     "soft": 2
+    },
+    "visible": {
+     "dup_events": 7,
+     "hard": 3,
+     "late_delivered_events": 3,
+     "late_newest_keys": 2,
+     "mixed_units": 3,
+     "multi_ship_delivered_orders": 11,
+     "out_of_order_keys": 4,
+     "soft": 2
+    }
+   },
+   "rows": {
+    "0 correct pipeline (asks)": {
+     "caught": false,
+     "correct": true,
+     "exact": null,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": null,
+     "idempotent": true,
+     "reasons": [],
+     "recovered": true,
+     "silent": true
+    },
+    "1 fan-out join double counting": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "FANOUT_DOUBLE_COUNT",
+     "idempotent": true,
+     "reasons": [
+      "FANOUT_DOUBLE_COUNT"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "2 dropping late corrections": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "DROPPED_LATE_CHANGES",
+     "idempotent": true,
+     "reasons": [
+      "DROPPED_LATE_CHANGES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "3 updates applied out of event-time order": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "ARRIVAL_ORDER_APPLY",
+     "idempotent": true,
+     "reasons": [
+      "ARRIVAL_ORDER_APPLY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "4 ignoring soft deletes": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "IGNORED_SOFT_DELETES",
+     "idempotent": true,
+     "reasons": [
+      "IGNORED_SOFT_DELETES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "5 unit mismatch": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNIT_MISMATCH",
+     "idempotent": true,
+     "reasons": [
+      "UNIT_MISMATCH"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "6 non-idempotent duplicate append on rerun": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:late_events",
+      "DUPLICATE_KEYS:quarantine",
+      "DUPLICATE_KEYS:silver_manifest",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:late_events",
+      "UNEXPLAINED_MISMATCH:quarantine",
+      "UNEXPLAINED_MISMATCH:silver_manifest"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "7 malformed rows coerced to 0": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_ZERO_FILLED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_ZERO_FILLED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "8 guessing an ambiguous business rule": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "GUESSED_AMBIGUOUS_RULE",
+     "idempotent": true,
+     "reasons": [
+      "GUESSED_AMBIGUOUS_RULE",
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S1 timestamps compared as text": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "TEXT_TIMESTAMP_ORDER",
+     "idempotent": true,
+     "reasons": [
+      "TEXT_TIMESTAMP_ORDER"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S2 no currency conversion": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NO_CURRENCY_CONVERSION",
+     "idempotent": true,
+     "reasons": [
+      "NO_CURRENCY_CONVERSION"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S3 malformed rows silently dropped": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_DROPPED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_DROPPED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S4 lateness window ignored": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "LATENESS_WINDOW_IGNORED",
+     "idempotent": true,
+     "reasons": [
+      "LATENESS_WINDOW_IGNORED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S5 dimension snapshot appended": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:gold_warehouse_revenue",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:gold_inventory",
+      "UNEXPLAINED_MISMATCH:gold_warehouse_revenue"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "S6 lucky guess (right answer, never asked)": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNASKED_AMBIGUITY",
+     "idempotent": true,
+     "reasons": [
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    }
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": 1,
+     "kind": "flag"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": false,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-905": {
+   "features": {
+    "batch3": {
+     "late_delivered_events": 2,
+     "late_newest_keys": 1,
+     "out_of_order_keys": 6,
+     "soft": 2
+    },
+    "visible": {
+     "dup_events": 10,
+     "hard": 2,
+     "late_delivered_events": 4,
+     "late_newest_keys": 3,
+     "mixed_units": 3,
+     "multi_ship_delivered_orders": 14,
+     "out_of_order_keys": 4,
+     "soft": 5
+    }
+   },
+   "rows": {
+    "0 correct pipeline (asks)": {
+     "caught": false,
+     "correct": true,
+     "exact": null,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": null,
+     "idempotent": true,
+     "reasons": [],
+     "recovered": true,
+     "silent": true
+    },
+    "1 fan-out join double counting": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "FANOUT_DOUBLE_COUNT",
+     "idempotent": true,
+     "reasons": [
+      "FANOUT_DOUBLE_COUNT"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "2 dropping late corrections": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "DROPPED_LATE_CHANGES",
+     "idempotent": true,
+     "reasons": [
+      "DROPPED_LATE_CHANGES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "3 updates applied out of event-time order": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "ARRIVAL_ORDER_APPLY",
+     "idempotent": true,
+     "reasons": [
+      "ARRIVAL_ORDER_APPLY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "4 ignoring soft deletes": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "IGNORED_SOFT_DELETES",
+     "idempotent": true,
+     "reasons": [
+      "IGNORED_SOFT_DELETES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "5 unit mismatch": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNIT_MISMATCH",
+     "idempotent": true,
+     "reasons": [
+      "UNIT_MISMATCH"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "6 non-idempotent duplicate append on rerun": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:late_events",
+      "DUPLICATE_KEYS:quarantine",
+      "DUPLICATE_KEYS:silver_manifest",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:late_events",
+      "UNEXPLAINED_MISMATCH:quarantine",
+      "UNEXPLAINED_MISMATCH:silver_manifest"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "7 malformed rows coerced to 0": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_ZERO_FILLED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_ZERO_FILLED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "8 guessing an ambiguous business rule": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "GUESSED_AMBIGUOUS_RULE",
+     "idempotent": true,
+     "reasons": [
+      "GUESSED_AMBIGUOUS_RULE",
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S1 timestamps compared as text": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "TEXT_TIMESTAMP_ORDER",
+     "idempotent": true,
+     "reasons": [
+      "TEXT_TIMESTAMP_ORDER"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S2 no currency conversion": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NO_CURRENCY_CONVERSION",
+     "idempotent": true,
+     "reasons": [
+      "NO_CURRENCY_CONVERSION"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S3 malformed rows silently dropped": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_DROPPED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_DROPPED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S4 lateness window ignored": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "LATENESS_WINDOW_IGNORED",
+     "idempotent": true,
+     "reasons": [
+      "LATENESS_WINDOW_IGNORED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S5 dimension snapshot appended": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:gold_warehouse_revenue",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:gold_inventory",
+      "UNEXPLAINED_MISMATCH:gold_warehouse_revenue"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "S6 lucky guess (right answer, never asked)": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNASKED_AMBIGUITY",
+     "idempotent": true,
+     "reasons": [
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    }
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": null,
+     "kind": "timestamp"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": false,
+    "unit_encoding": "suffix"
+   }
+  },
+  "dev-906": {
+   "features": {
+    "batch3": {
+     "late_delivered_events": 1,
+     "late_newest_keys": 1,
+     "out_of_order_keys": 5,
+     "soft": 1
+    },
+    "visible": {
+     "dup_events": 11,
+     "hard": 3,
+     "late_delivered_events": 7,
+     "late_newest_keys": 2,
+     "mixed_units": 3,
+     "multi_ship_delivered_orders": 17,
+     "out_of_order_keys": 8,
+     "soft": 3
+    }
+   },
+   "rows": {
+    "0 correct pipeline (asks)": {
+     "caught": false,
+     "correct": true,
+     "exact": null,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": null,
+     "idempotent": true,
+     "reasons": [],
+     "recovered": true,
+     "silent": true
+    },
+    "1 fan-out join double counting": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "FANOUT_DOUBLE_COUNT",
+     "idempotent": true,
+     "reasons": [
+      "FANOUT_DOUBLE_COUNT"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "2 dropping late corrections": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "DROPPED_LATE_CHANGES",
+     "idempotent": true,
+     "reasons": [
+      "DROPPED_LATE_CHANGES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "3 updates applied out of event-time order": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "ARRIVAL_ORDER_APPLY",
+     "idempotent": true,
+     "reasons": [
+      "ARRIVAL_ORDER_APPLY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "4 ignoring soft deletes": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "IGNORED_SOFT_DELETES",
+     "idempotent": true,
+     "reasons": [
+      "IGNORED_SOFT_DELETES"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "5 unit mismatch": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNIT_MISMATCH",
+     "idempotent": true,
+     "reasons": [
+      "UNIT_MISMATCH"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "6 non-idempotent duplicate append on rerun": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:late_events",
+      "DUPLICATE_KEYS:quarantine",
+      "DUPLICATE_KEYS:silver_manifest",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:late_events",
+      "UNEXPLAINED_MISMATCH:quarantine",
+      "UNEXPLAINED_MISMATCH:silver_manifest"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "7 malformed rows coerced to 0": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_ZERO_FILLED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_ZERO_FILLED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "8 guessing an ambiguous business rule": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "GUESSED_AMBIGUOUS_RULE",
+     "idempotent": true,
+     "reasons": [
+      "GUESSED_AMBIGUOUS_RULE",
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S1 timestamps compared as text": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "TEXT_TIMESTAMP_ORDER",
+     "idempotent": true,
+     "reasons": [
+      "TEXT_TIMESTAMP_ORDER"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S2 no currency conversion": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NO_CURRENCY_CONVERSION",
+     "idempotent": true,
+     "reasons": [
+      "NO_CURRENCY_CONVERSION"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S3 malformed rows silently dropped": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "MALFORMED_DROPPED",
+     "idempotent": true,
+     "reasons": [
+      "MALFORMED_DROPPED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S4 lateness window ignored": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "LATENESS_WINDOW_IGNORED",
+     "idempotent": true,
+     "reasons": [
+      "LATENESS_WINDOW_IGNORED"
+     ],
+     "recovered": true,
+     "silent": true
+    },
+    "S5 dimension snapshot appended": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "NON_IDEMPOTENT_RERUN",
+     "idempotent": false,
+     "reasons": [
+      "CRASH_RECOVERY_FAILED",
+      "DUPLICATE_KEYS:gold_warehouse_revenue",
+      "NON_IDEMPOTENT_RERUN",
+      "UNEXPLAINED_MISMATCH:gold_carrier_volume",
+      "UNEXPLAINED_MISMATCH:gold_inventory",
+      "UNEXPLAINED_MISMATCH:gold_warehouse_revenue"
+     ],
+     "recovered": false,
+     "silent": true
+    },
+    "S6 lucky guess (right answer, never asked)": {
+     "caught": true,
+     "correct": false,
+     "exact": true,
+     "exits": {
+      "b1": 0,
+      "b2": 0,
+      "b3": 0,
+      "b3_crash": 137,
+      "b3_rerun": 0,
+      "b3_restart": 0
+     },
+     "expected": "UNASKED_AMBIGUITY",
+     "idempotent": true,
+     "reasons": [
+      "UNASKED_AMBIGUITY"
+     ],
+     "recovered": true,
+     "silent": true
+    }
+   },
+   "twists": {
+    "carrier_gap": true,
+    "deletion": {
+     "flag_value": null,
+     "kind": "timestamp"
+    },
+    "drift": true,
+    "redeliver": true,
+    "tz_mixed": true,
+    "undoc": false,
+    "unit_encoding": "suffix"
+   }
+  }
+ },
+ "required_pass": true,
+ "stage2_pass": true
+}
