@@ -31,7 +31,7 @@ def main():
     if a.split == "confirm":
         spent = [json.loads(l) for l in R.SPENT_LEDGER.read_text().splitlines() if l.strip()]
         if not any(r.get("run_id") == "w40-confirm_stream" for r in spent):
-            R.claim("wave39", "confirm_stream", list(R.REGISTRY[("wave40", "confirm_stream")]), run_id="w40-confirm_stream")
+            R.claim("wave40", "confirm_stream", list(R.REGISTRY[("wave40", "confirm_stream")]), run_id="w40-confirm_stream")
         if int(a.seed) not in R.REGISTRY[("wave40", "confirm_stream")]:
             raise SystemExit("seed outside confirm_stream")
     else:
