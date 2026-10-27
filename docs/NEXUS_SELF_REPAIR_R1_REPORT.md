@@ -308,3 +308,195 @@ NEXUS_Fresh failures were self-detected, with open escalations and no silent err
   Every ops playbook was retired. The measured learning cost stays as measured.
 * **Rule declared before `val_b`:** if `val_b` fails its gate, the sealed test is **not** opened. R1 then ends with the
   validation failure reported, and the test seeds stay unopened for a later increment.
+
+## 1. What is real, what is simulated, what is not used
+
+| component | status |
+|---|---|
+| Pipelines, checks, crash points (`os._exit` before each sqlite commit / `os.replace`, nested crashes, SIGKILL), rollback | real OS processes on local files |
+| Offset log, retention, publication delays, partition availability, incidents (quota, credentials, outages, corruption) | simulated by the environment, which journals them as authoritative observations |
+| Archive (tiered storage) for operators | simulated: a read-only copy of every published segment |
+| Real PostgreSQL CDC → Delta Lake | not re-run in R1. The Stages 4–6 integration result stands unchanged. |
+| P / PObserve, CrossHair, VeriEQL, Elle, egglog, DBSP, conformal / e-process detector, Dreamer, SEAL, evolutionary search | NOT USED (reasons in §0.3 / §0.5; §0.6 item C is NOT RUN) |
+| Model calls | 0. Builds choose among 16 template decisions; repairs are searched compositions of authored primitives plus redeploys inside that decision space. |
+
+## 2. Results: one-shot sealed confirmation on 8 `de3/test` projects (run once at `6a4a70f` = frozen revision 2)
+
+All 8 projects carry one withheld class: X1 on 7952 / 7954 / 7956 / 7958, X2 on 7951 / 7953 / 7955 / 7957. The ledger
+has three resumable calls (CHECKPOINT, CHECKPOINT, COMPLETE); no project was re-run. The table below is the corrected
+7-measure scorecard, from `python scripts/r1_analyze.py artifacts/r1_test.json artifacts/r1_library.json`, also saved
+in `artifacts/r1_test_scorecard.txt`.
+
+| measure | metric | Conventional_Checked | Fixed_Policy | NEXUS_Fresh | NEXUS_Placebo | NEXUS_Experienced |
+|---|---|---|---|---|---|---|
+| 1 Correctness | **PRIMARY: end-to-end correct** (build → own ops → data) | 0/8 | **7/8** | 4/8 | 4/8 | 4/8 |
+| | silent errors (ends claiming healthy, data wrong) | 2 | 1 | 1 | 1 | 1 |
+| | self-detected failures (data wrong, flagged) | 6 | 0 | 3 | 3 | 3 |
+| | build independently correct (checkpoints + exactly-once + rollback) | 0/8 | 5/8 | 5/8 | 5/8 | 5/8 |
+| | build silent errors / held-out ticks 9–12 ok | 8 / 0 | 3 / 5 | 3 / 5 | 3 / 5 | 3 / 5 |
+| 2 Completion | submitted / abstained / hard fail | 8/0/0 | 8/0/0 | 8/0/0 | 8/0/0 | 8/0/0 |
+| | build label (outcome contract) | 8 × UNVERIFIED | 8 × UNVERIFIED | 8 × UNVERIFIED | 8 × UNVERIFIED | 8 × UNVERIFIED |
+| | open escalation at end | 0 | 0 | 3 | 3 | 3 |
+| 3 Reliability | exactly-once crash trials failed | 20/302 | 0/530 | 0/338 | 0/338 | 0/338 |
+| | rollback drill ok / service restored at end | 0 / 2 | 5 / 8 | 5 / 6 | 5 / 6 | 5 / 6 |
+| | freshness violations / duplicate rows / secret leaks | 45/2/0 | 0/0/0 | 8/0/0 | 8/0/0 | 8/0/0 |
+| 4 Cost | **PRIMARY: fully loaded engineering CPU s** | 14.6 | 75.1 | 400.2 | 698.3 | 178.7 |
+| | build / operations engineering CPU s | 14.6 / 0.0 | 73.3 / 1.7 | 317.0 / 83.2 | 614.9 / 83.4 | 95.0 / 83.7 |
+| | check runs / shadow tests / full verifications | 342/0/0 | 1,773/0/0 | 7,500/395/202 | 14,379/414/213 | 2,316/407/212 |
+| | own-pipeline repairs / failed reuse | 0/0 | 0/0 | 1/0 | 3/94 | 2/0 |
+| 5 Human dependence | clarifications / escalations (all turns) | 0/0 | 1/0 | 1/16 | 1/16 | 1/16 |
+| 6 Learning | ratio of fully loaded CPU | — | Fresh / Fixed = 5.33 (CI 4.13–6.48) | 1.0 | Placebo / Fresh = 1.75 (CI 1.42–2.25) | **Experienced / Fresh = 0.446 (CI 0.324–0.532), cheaper 8/8**; Experienced / Placebo = 0.256 |
+| 7 Generalisation | X1: deployed pipelines mishandling it / self-detected / repaired / end-to-end correct | 3 / 0 / 0 / 0 of 4 | 3 / 3 / 3 / **4 of 4** | 3 / 3 / 0 / 1 of 4 | 3 / 3 / 0 / 1 of 4 | 3 / 3 / 0 / 1 of 4 |
+| | X2: deployed pipelines mishandling it / end-to-end correct | 0 / 0 of 4 | 0 / 3 of 4 | 0 / 3 of 4 | 0 / 3 of 4 | 0 / 3 of 4 |
+
+* **Learning cost:** 463.0 s of dedicated source learning (curriculum 357.4 s + leave-one-out 105.6 s). Learning during
+  useful work is 0 by construction. The saving is 27.7 s per project, so the break-even point is **16.7 projects**.
+  Over these 8 projects, including learning, the total is 1.60 × Fresh.
+* **Component benchmark** (separately labelled: NEXUS_Fresh's operator on the SUPPLIED correct pipeline): 7/8 correct,
+  1 silent (7953, the same quarantine row), 0 escalations.
+* **Sensitivity** (NON-confirmatory: NEXUS_Fresh's own submitted pipeline operated again with localiser B1): end-to-end
+  **7/8**, against 4/8 for the confirmatory B0 arm. It localised and repaired `txn_isolation` in all 3 X1 worlds whose
+  pipeline mishandled it. It was silent on 7953.
+
+### 2.1 Verdicts (predeclared rules, applied unchanged)
+
+* **R1: FAIL.**
+  1. NEXUS_Experienced was end-to-end correct on 4/8, against the required ≥ 7/8.
+  2. There was 1 silent error per NEXUS arm, against the required 0.
+  3. On X1, every mishandling deployment was self-detected (3/3 per NEXUS arm), but only 1/4 X1 projects ended correct,
+     against the required ≥ 3/4.
+
+  On X2, no arm deployed a mishandling pipeline: all chose `wait_contiguous` by the proposer's order. **The X2 repair
+  test was therefore not exercised.** X2 end-to-end was 3/4 for each NEXUS arm, the miss being 7953.
+* **Learning claim: the predeclared criteria are met.**
+  * The Experienced / Fresh CI upper bound is 0.532 < 1.
+  * Experienced end-to-end equals Fresh's: 4 = 4.
+  * Experienced / Placebo is 0.256 < 1.
+
+  It holds only **at maintained but inadequate coverage (4/8)**, as in Stage 6. The strong fixed policy, built from the
+  same src experience, dominates every NEXUS arm: 7/8 at 0.19 × Fresh's CPU, and 0.42 × Experienced's.
+* **The immediate success criterion, piece by piece:**
+  * NEXUS **notices** the unfamiliar mismatch: yes. Every X1 mishandling was flagged at its onset by
+    `txn_effect_violation` plus reconciliation.
+  * It **repairs its own pipeline**: no, in the confirmatory arms (0/3). It did in the non-confirmatory B1 row (3/3),
+    and Fixed_Policy's single typed redeploy did too (3/3).
+  * It **independently reconciles**: yes, except a declared-scope gap that produced 1 silent error (§2.2 item 2).
+  * **Experience reduced the total work:** yes for NEXUS's own engineering cost, 0.446 ×.
+
+### 2.2 Root causes, from the runner's committed outputs (the vault was not inspected)
+
+1. **X1 not repaired by the confirmatory arms: the selection rule chose the wrong localiser.**
+   * B0 orders candidates by an authored monitor → decision table, in which `observation_conformance` implicates
+     `commit_protocol` and `partition_discovery`. `txn_isolation` lies beyond its 12 full verifications, so B0 escalated
+     every turn from tick 10.
+   * The typed violation → hole mapping, used by B1 and by Fixed_Policy, points directly at `txn_isolation`.
+   * The dev rule (§0.6) required B1's suspect set to contain the true decision at least as often as B0's. B0's set is
+     every decision, so that is trivially 100%. The rule also scored CPU per *repaired* case, which leaves out B0's
+     expensive failures. It was a badly designed rule, and it was applied as written.
+2. **The silent error (7953; every NEXUS arm, Fixed_Policy and the component benchmark).**
+   * The final quarantine table differs from the reference by one row, after an interrupted snapshot (tick 11) and a
+     clock skew (tick 13).
+   * Reconciliation compares per-topic accounting counts, not the identity of quarantined rows. The counts agreed, so
+     the operator ended claiming health.
+   * The exact mechanism is **undetermined**: the outputs show the differing table, not why.
+3. **Builds:**
+   * 3/8 builds are wrong in every arm because of X1 at held-out ticks 9–12 (`read_uncommitted`).
+   * This was declared in advance: `txn_isolation` had no build-time evidence and was labelled UNKNOWN. All 40
+     submissions were `COMPLETED_UNVERIFIED`, listing `txn_isolation` and `gap_safety`.
+   * The evaluator still counts them as build silent errors, because they were submitted and wrong.
+
+### 2.3 Method ablations (development data)
+
+* **Observation-to-replay check** (`artifacts/r1_dev_results/monitor_demo.json`, 8 dev worlds):
+  * all 5 replay mutations were flagged at their first visible change, with no flag before it;
+  * 0 violations on `grow_obs`;
+  * `grow_obs` matched the live environment on 14/14 ticks per world;
+  * the pre-fix and post-fix `grow` were both non-conformant from tick 1;
+  * ack-beyond-durable: `offsets_first` was flagged at 7/18 crash points per world, the correct protocols at 0.
+* **A** (`compare_A.json`): A0, A1 and A2 each rejected 52/60 single-fault mutants, with 0/6 false rejections. A2 cost
+  +11% check CPU. The monitor adds replay fidelity, not decision-mutant detection.
+* **B** (`compare_B_first.json`, `compare_B_revised.json`), after the revision:
+
+  | measure | B1 | B0 |
+  |---|---|---|
+  | end-to-end correct | 38/40 | 32/40 |
+  | own-pipeline cases repaired | 29/31 | 23/31 |
+  | true decision ranked first | 23 | 5 |
+  | mean suspect set | 2.6 | 16 |
+  | full verifications | 158 | 771 |
+  | operator CPU | 135 s | 296 s |
+
+  By the predeclared rule, B0 was still kept. The sealed test reproduced the same contrast: 7/8 against 4/8.
+* **C:** NOT RUN.
+
+## 3. Capability-by-capability evidence
+
+| capability | evidence | status |
+|---|---|---|
+| Independent observation-to-replay check | monitor + 5 mutations + fidelity against the live log, dev (§2.3); 0 replay-view violations on all val, val_b and test worlds | **demonstrated on dev**; its value is fidelity, not extra mutant detection |
+| Independent test of the post-test partition fix `0bc3e0c` | non-conformant from tick 1 on 8/8 dev worlds | **the fix is incomplete**: superseded by `grow_obs` |
+| Build → operations on own pipelines | end-to-end metric, build failures carried | **implemented**; NEXUS 4/8, Fixed_Policy 7/8, Conventional 0/8 |
+| Reconciliation before resolution | gate in the shadow and after application | works, except quarantine row identity (1 silent error in 8, every reconciling arm) |
+| Scoped evidence records | 15 properties per build, mapped to the outcome contract | **implemented**; UNKNOWN was honestly reported for unexercised properties (40/40 builds) |
+| Notice an unfamiliar mismatch at run time | X1 self-detected 3/3 per NEXUS arm | **demonstrated** (one class; X2 not exercised) |
+| Repair its own pipeline | confirmatory 0/3 on X1; B1 sensitivity 3/3; Fixed_Policy 3/3; val-7941 after the revision (dev data) | **not demonstrated in the confirmatory arms**; B1 is supported only as non-confirmatory evidence |
+| Experience reduces total work | Experienced / Fresh 0.446 (CI 0.324–0.532), 8/8 cheaper, equal coverage; Experienced / Placebo 0.256; break-even 16.7 projects | **supported for NEXUS's own cost**; dominated by the strong fixed policy |
+| Exactly-once under enumerated crashes | 0/338 failed trials for every NEXUS arm, 0/530 for Fixed_Policy, 20/302 for Conventional | supported within the enumerated crash points |
+
+## 4. Resources and provenance
+
+* **Commit chain on `codex/nexus-data-engineering`** (pushed fast-forward to `origin` and `github`; no other branch was
+  pushed):
+
+  | commit | contents |
+  |---|---|
+  | `9e8a80f` | pre-registration |
+  | `75c4d6d` | implementation |
+  | `6e7b223` | dev results + library |
+  | `e9b0705` | freeze |
+  | `cd75511` | val (FAILED; spent) |
+  | `c225055` | freeze, revision 2 |
+  | `4c35830` | dev bundles |
+  | `135af97` | val_b (PASSED) |
+  | `6a4a70f` | seal |
+  | `994dfcb` | test results |
+  | this commit | report |
+* **Test manifest:** `artifacts/de3_test_vault/MANIFEST.json`. The frozen file hashes are in `artifacts/r1_freeze.json`.
+* **Protected files:** 912 checked before and after (`artifacts/r1_protected_hashes_before.json` /
+  `artifacts/r1_protected_hashes_after.json`), **0 changed**. Aggregate `fbee55671f9afc2b…`.
+* **The Stages 1–6 code was edited only by default-off hooks** in `s4_env.encode` and `s4_checks`. `encode` without a hook
+  is byte-identical to `f7bc420` on de2 src, dev and test worlds, and the Stages 4–6 and checker-kernel tests pass.
+* **Budget:** R1 used **7,382 s**:
+
+  | ledger row | seconds |
+  |---|---|
+  | dev | 1,421 |
+  | comparison B | 1,127 |
+  | comparison A | 463 |
+  | monitor demonstration | 92 |
+  | library curriculum + leave-one-out | 564 |
+  | val | 914 |
+  | val_b | 768 |
+  | test | 1,702 |
+  | interactive trials (ESTIMATE, disclosed) | 330 |
+
+  Carried total: w41 1,959 s + de 375 s + de2 5,112 s + R1 7,382 s. **3,162 s of the 17,990 s grant remain.**
+
+## 5. Unresolved
+
+* The mechanism of the 7953 quarantine-row difference.
+* Whether B1 is better under confirmation: there is only a non-confirmatory 7/8 against 4/8.
+* X2 repair, which no arm needed.
+* The Stages 4–6 test-7934 cause. The consistency false alarm (§0.11) is a plausible mechanism, not a confirmed one.
+
+## 6. Next experiment (one)
+
+**Confirm typed own-pipeline repair (B1) on a fresh sealed split.**
+
+* **Selection rule, pre-registered on dev before any outcome:** end-to-end repair rate and total operator CPU, not
+  suspect-set containment.
+* **Reconciliation:** extended to quarantine-row identity.
+* **Withheld classes:** two new ones, each exercised by construction. In half of each class's worlds, the deployed
+  build decision for that class is the naive option, fixed and recorded before the seal. Then the repair test cannot be
+  vacuous.
+* **Arms:** the strong fixed policy stays the baseline to beat.
