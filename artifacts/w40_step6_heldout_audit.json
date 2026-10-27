@@ -1,0 +1,942 @@
+{
+ "audited": [
+  "BillingCode.000002",
+  "EmergencyCall.000004",
+  "FilePath.000001",
+  "UserAgent.000007"
+ ],
+ "nulls_in_129_tasks": 13,
+ "cases": [
+  {
+   "name": "BillingCode.000002",
+   "split": "withheld_family",
+   "public": [
+    [
+     "[CPT-00350",
+     "[CPT-00350]"
+    ],
+    [
+     "[CPT-00340",
+     "[CPT-00340]"
+    ],
+    [
+     "[CPT-11536",
+     "[CPT-11536]"
+    ]
+   ],
+   "query": "[CPT-11222",
+   "certified_program": [
+    {
+     "op": "fn",
+     "f": [
+      "cat",
+      [
+       "x"
+      ],
+      [
+       "c",
+       "]"
+      ]
+     ]
+    }
+   ],
+   "claimed_answer": "[CPT-11222]",
+   "verdict": {
+    "label": "SCOPE_UNIQUE",
+    "warnings": [
+     "UNDER_SPECIFIED_WARNING"
+    ],
+    "extra_answer_counts": [
+     6,
+     4,
+     4,
+     4,
+     4,
+     4,
+     3
+    ]
+   },
+   "reproduces_w39": true,
+   "heldout": [
+    {
+     "input": "[CPT-11222",
+     "expected": "[CPT-11222]",
+     "got": "[CPT-11222]",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": false
+    },
+    {
+     "input": "[CPT-115]",
+     "expected": "[CPT-115]",
+     "got": "[CPT-115]]",
+     "ok": false,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "[CPT-1153622]",
+     "expected": "[CPT-1153622]",
+     "got": "[CPT-1153622]]",
+     "ok": false,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "[CPT-00340]",
+     "expected": "[CPT-00340]",
+     "got": "[CPT-00340]]",
+     "ok": false,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "[CPT-11536]",
+     "expected": "[CPT-11536]",
+     "got": "[CPT-11536]]",
+     "ok": false,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "[CPT-11222]",
+     "expected": "[CPT-11222]",
+     "got": "[CPT-11222]]",
+     "ok": false,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "[CPT-115",
+     "expected": "[CPT-115]",
+     "got": "[CPT-115]",
+     "ok": true,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "[CPT-1163",
+     "expected": "[CPT-1163]",
+     "got": "[CPT-1163]",
+     "ok": true,
+     "labelled_unique": false,
+     "was_extra_query": true
+    }
+   ],
+   "first_failure": {
+    "input": "[CPT-115]",
+    "expected": "[CPT-115]",
+    "got": "[CPT-115]]",
+    "ok": false,
+    "labelled_unique": false,
+    "was_extra_query": true
+   },
+   "classification": "IN_SCOPE_NOT_DISTINGUISHED",
+   "alternative_program": [
+    {
+     "op": "toks",
+     "c": "d"
+    },
+    {
+     "op": "fold",
+     "o": "cat",
+     "init": ""
+    },
+    {
+     "op": "fn",
+     "f": [
+      "cat",
+      [
+       "cat",
+       [
+        "c",
+        "[CPT-"
+       ],
+       [
+        "x"
+       ]
+      ],
+      [
+       "c",
+       "]"
+      ]
+     ]
+    }
+   ],
+   "n_tools": 410
+  },
+  {
+   "name": "EmergencyCall.000004",
+   "split": "withheld_family",
+   "public": [
+    [
+     "MONTGOMERY AVE & WOODSIDE RD; LOWER MERION; Station 313; 2015-12-11 @ 04:11:35;",
+     "12 Nov 2015 4AM"
+    ],
+    [
+     "DREYCOTT LN & W LANCASTER AVE; LOWER MERION; Station 313; 2015-12-11 @ 01:29:52;",
+     "12 Nov 2015 1AM"
+    ],
+    [
+     "E LEVERING MILL RD & CONSHOHOCKEN STATE RD; LOWER MERION; 2015-12-11 @ 07:29:58;",
+     "12 Nov 2015 7AM"
+    ]
+   ],
+   "query": "PENN VALLEY RD & MANOR RD; LOWER MERION; Station 313; 2015-12-10 @ 20:53:30;",
+   "certified_program": [
+    {
+     "op": "fn",
+     "f": [
+      "bef",
+      [
+       "x"
+      ],
+      ":"
+     ]
+    },
+    {
+     "op": "fn",
+     "f": [
+      "lst",
+      [
+       "x"
+      ]
+     ]
+    },
+    {
+     "op": "fn",
+     "f": [
+      "cat",
+      [
+       "cat",
+       [
+        "c",
+        "12 Nov 2015 "
+       ],
+       [
+        "x"
+       ]
+      ],
+      [
+       "c",
+       "AM"
+      ]
+     ]
+    }
+   ],
+   "claimed_answer": "12 Nov 2015 0AM",
+   "verdict": {
+    "label": "SCOPE_UNIQUE",
+    "warnings": [],
+    "extra_answer_counts": [
+     1,
+     1,
+     1,
+     1
+    ]
+   },
+   "reproduces_w39": true,
+   "heldout": [
+    {
+     "input": "PENN VALLEY RD & MANOR RD; LOWER MERION; Station 313; 2015-12-10 @ 20:53:30;",
+     "expected": "12 Oct 2015 8PM",
+     "got": "12 Nov 2015 0AM",
+     "ok": false,
+     "labelled_unique": true,
+     "was_extra_query": false
+    },
+    {
+     "input": "BELMONT AVE & OVERHILL RD; LOWER MERION; 2015-12-10 @ 23:02:27;",
+     "expected": "12 Oct 2015 11PM",
+     "got": "12 Nov 2015 3AM",
+     "ok": false,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "W MONTGOMERY AVE & PENNSWOOD RD; LOWER MERION; 2015-12-10 @ 19:25:22;",
+     "expected": "12 Oct 2015 7PM",
+     "got": "12 Nov 2015 9AM",
+     "ok": false,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "ROSEMONT AVE & DEAD END; LOWER MERION; Station 313; 2015-12-10 @ 18:43:07;",
+     "expected": "12 Oct 2015 6PM",
+     "got": "12 Nov 2015 8AM",
+     "ok": false,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "AVIGNON DR & DEAD END; LOWER MERION; 2015-12-10 @ 20:01:29-Station:STA24;",
+     "expected": "12 Oct 2015 8PM",
+     "got": "12 Nov 2015 0AM",
+     "ok": false,
+     "labelled_unique": true,
+     "was_extra_query": true
+    }
+   ],
+   "first_failure": {
+    "input": "PENN VALLEY RD & MANOR RD; LOWER MERION; Station 313; 2015-12-10 @ 20:53:30;",
+    "expected": "12 Oct 2015 8PM",
+    "got": "12 Nov 2015 0AM",
+    "ok": false,
+    "labelled_unique": true,
+    "was_extra_query": false
+   },
+   "classification": "OUTSIDE_SCOPE",
+   "alternative_program": null,
+   "n_tools": 479
+  },
+  {
+   "name": "FilePath.000001",
+   "split": "withheld_family",
+   "public": [
+    [
+     "/libero/quas/enim5.png",
+     "enim5"
+    ],
+    [
+     "/libero/enim5.png",
+     "enim5"
+    ],
+    [
+     "/libero/quas/enim2.png",
+     "enim2"
+    ]
+   ],
+   "query": "/libero/enim4.png",
+   "certified_program": [
+    {
+     "op": "toks",
+     "c": "w"
+    },
+    {
+     "op": "fn",
+     "f": [
+      "at",
+      [
+       "x"
+      ],
+      -2
+     ]
+    }
+   ],
+   "claimed_answer": "enim4",
+   "verdict": {
+    "label": "SCOPE_UNIQUE",
+    "warnings": [
+     "UNDER_SPECIFIED_WARNING"
+    ],
+    "extra_answer_counts": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     3,
+     1,
+     1,
+     3,
+     1,
+     10
+    ]
+   },
+   "reproduces_w39": true,
+   "heldout": [
+    {
+     "input": "/libero/enim4.png",
+     "expected": "enim4",
+     "got": "enim4",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": false
+    },
+    {
+     "input": "/libero/quas/enim0.png",
+     "expected": "enim0",
+     "got": "enim0",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/quas/enim3.png",
+     "expected": "enim3",
+     "got": "enim3",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/quas/enim0.png",
+     "expected": "enim0",
+     "got": "enim0",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/quas/enim6.png",
+     "expected": "enim6",
+     "got": "enim6",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/enim0.png",
+     "expected": "enim0",
+     "got": "enim0",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/enim4.png",
+     "expected": "enim4",
+     "got": "enim4",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/enim9.png",
+     "expected": "enim9",
+     "got": "enim9",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/iste/enim3.png",
+     "expected": "enim3",
+     "got": "enim3",
+     "ok": true,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/enim9.png",
+     "expected": "enim9",
+     "got": "enim9",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/enim7.png",
+     "expected": "enim7",
+     "got": "enim7",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/",
+     "expected": "root",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": false,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/enim9.png",
+     "expected": "enim9",
+     "got": "enim9",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "/libero/non3/enim1.png",
+     "expected": "enim1",
+     "got": "enim1",
+     "ok": true,
+     "labelled_unique": false,
+     "was_extra_query": true
+    }
+   ],
+   "first_failure": {
+    "input": "/",
+    "expected": "root",
+    "got": "<ERROR>",
+    "ok": false,
+    "labelled_unique": false,
+    "was_extra_query": true
+   },
+   "classification": "OUTSIDE_SCOPE",
+   "alternative_program": null,
+   "n_tools": 429
+  },
+  {
+   "name": "UserAgent.000007",
+   "split": "withheld_family",
+   "public": [
+    [
+     "Netscape/5.2 (X11 SE; Win64; rv:08.9) OPR/90.65.96.50 Mobile/96.70 CriOS/57.12.97.34",
+     "X11 SE"
+    ],
+    [
+     "Chrome/7.6 (Macintosh LTE 6.6; Intel OS X) Gecko/29.46.78.17 Chrome/14.53.64.88 Firefox/25.63.28.21 Gecko/69.29.09.60",
+     "Macintosh LTE 6.6"
+    ],
+    [
+     "Netscape/9.4 (Unix; Intel OS X) (KHTML, like Gecko)52.55.02 OPR/17.49.16 OPR/51.16.29.50",
+     "Unix"
+    ]
+   ],
+   "query": "Chrome/6.5 (Windows 5.5; Linux x86_64) Safari/21.44 CriOS/29.05.99.06",
+   "certified_program": [
+    {
+     "op": "fn",
+     "f": [
+      "aft",
+      [
+       "x"
+      ],
+      " "
+     ]
+    },
+    {
+     "op": "fn",
+     "f": [
+      "bef",
+      [
+       "x"
+      ],
+      ";"
+     ]
+    },
+    {
+     "op": "fn",
+     "f": [
+      "sl",
+      [
+       "x"
+      ],
+      1,
+      null
+     ]
+    }
+   ],
+   "claimed_answer": "Windows 5.5",
+   "verdict": {
+    "label": "SCOPE_UNIQUE",
+    "warnings": [],
+    "extra_answer_counts": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   },
+   "reproduces_w39": true,
+   "heldout": [
+    {
+     "input": "Chrome/6.5 (Windows 5.5; Linux x86_64) Safari/21.44 CriOS/29.05.99.06",
+     "expected": "Windows 5.5",
+     "got": "Windows 5.5",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/7.3 (X11 SE; rv:75.3) Gecko/14.52 Safari/16.56.30.08 OPR/22.41.84 CriOS/29.60.99",
+     "expected": "X11 SE",
+     "got": "X11 SE",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Mozilla/1.0 (iPhone LTE 2.8; rv:43.7) (KHTML, like Gecko)06.98.51 Version/38.37.58.55",
+     "expected": "iPhone LTE 2.8",
+     "got": "iPhone LTE 2.8",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Chrome/3.2 (Linux; rv:74.1) OPR/76.05.49 Chrome/67.22",
+     "expected": "Linux",
+     "got": "Linux",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Firefox/8.8 (X11 SE 4.8; WOW64) Gecko/99.26.34",
+     "expected": "X11 SE 4.8",
+     "got": "X11 SE 4.8",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "IE/5.8 (Macintosh; Win64) Chrome/66.58 Safari/56.05.91 AppleWebKit/90.30",
+     "expected": "Macintosh",
+     "got": "Macintosh",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "IE/2.1 (iPhone X; rv:82.4) ",
+     "expected": "iPhone X",
+     "got": "iPhone X",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Firefox/6.4 (Macintosh 3.7) Gecko/45.84.94.85 Safari/59.05.19.44 AppleWebKit/39.84.60",
+     "expected": "Macintosh 3.7",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Mozilla/8.7 (iPhone NT 3.3; rv:77.4) AppleWebKit/97.68.28 Mobile/75.01.08.62",
+     "expected": "iPhone NT 3.3",
+     "got": "iPhone NT 3.3",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Netscape/9.0 (Linux; rv:67.9) (KHTML, like Gecko)66.06.69.31 (KHTML, like Gecko)19.72 OPR/15.26 Firefox/10.44.09",
+     "expected": "Linux",
+     "got": "Linux",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "IE/9.1 (MacOS XP 3.1; rv:33.0) Mobile/01.31.49 Gecko/91.90.81.54 Version/32.30.35",
+     "expected": "MacOS XP 3.1",
+     "got": "MacOS XP 3.1",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Mozilla/9.2 (iPhone SE 2.3; rv:25.1) Chrome/63.07.17.82 (KHTML, like Gecko)74.76.71.58 (KHTML, like Gecko)98.50",
+     "expected": "iPhone SE 2.3",
+     "got": "iPhone SE 2.3",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Chrome/2.9 (X11) Mobile/37.95",
+     "expected": "X11",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Mozilla/0.0 (MacOS; Ubuntu; rv:03.8) ",
+     "expected": "MacOS",
+     "got": "MacOS",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Firefox/0.3 (X11 X 2.2; WOW64) OPR/95.17.11 Version/36.56.57.49 Mobile/06.84 OPR/10.31.29",
+     "expected": "X11 X 2.2",
+     "got": "X11 X 2.2",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Firefox/2.2 (Linux; Ubuntu) Chrome/77.43 Firefox/28.24.52.45 Chrome/26.40.69",
+     "expected": "Linux",
+     "got": "Linux",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "Firefox/2.2 (MacOS; rv:54.9) Gecko/87.15 Safari/57.71.54.84 AppleWebKit/86.33.94",
+     "expected": "MacOS",
+     "got": "MacOS",
+     "ok": true,
+     "labelled_unique": true,
+     "was_extra_query": true
+    },
+    {
+     "input": "IE/7.1 (MacOS 4.0; rv:71.7) ",
+     "expected": "MacOS 4.0",
+     "got": "MacOS 4.0",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "IE/0.9 (Windows 8.7) CriOS/20.90.43.47",
+     "expected": "Windows 8.7",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Firefox/1.4 (MacOS X 2.0; rv:31.0) Mobile/42.26.99.46 Gecko/43.73 Firefox/40.70.70",
+     "expected": "MacOS X 2.0",
+     "got": "MacOS X 2.0",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/1.1 (Windows 1.2; rv:87.4) AppleWebKit/01.22.24.03 Chrome/34.35 Version/28.01 AppleWebKit/71.93.21",
+     "expected": "Windows 1.2",
+     "got": "Windows 1.2",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Netscape/0.0 (iPhone X; rv:25.3) Gecko/17.82.18.42 (KHTML, like Gecko)05.87 Version/64.44.65.84",
+     "expected": "iPhone X",
+     "got": "iPhone X",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/5.6 (Linux) Mobile/90.94.38 Safari/36.03",
+     "expected": "Linux",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Firefox/8.6 (Macintosh XP; rv:61.9) ",
+     "expected": "Macintosh XP",
+     "got": "Macintosh XP",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "IE/3.6 (Macintosh SE; Ubuntu; rv:32.7) Firefox/53.24 Safari/95.03",
+     "expected": "Macintosh SE",
+     "got": "Macintosh SE",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/5.4 (iPhone LTE 3.4; Fedora) Gecko/30.76 Chrome/96.96",
+     "expected": "iPhone LTE 3.4",
+     "got": "iPhone LTE 3.4",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/0.7 (iPhone XP 7.8; Intel OS X; rv:16.4) Safari/74.93 Version/14.01.36",
+     "expected": "iPhone XP 7.8",
+     "got": "iPhone XP 7.8",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Netscape/7.8 (Unix 2.5; Intel OS X; rv:17.7) CriOS/57.09.73.87 AppleWebKit/69.66 Version/45.20.82.61 OPR/56.41.71",
+     "expected": "Unix 2.5",
+     "got": "Unix 2.5",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Netscape/6.9 (X11; Intel OS X) ",
+     "expected": "X11",
+     "got": "X11",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Netscape/6.4 (X11 XP 3.9; Ubuntu) Mobile/15.43.34.04 AppleWebKit/03.47.31",
+     "expected": "X11 XP 3.9",
+     "got": "X11 XP 3.9",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/3.0 (Macintosh LTE; Fedora) AppleWebKit/32.13 OPR/45.35.89 Chrome/04.51.12.85 Version/36.31.04.59",
+     "expected": "Macintosh LTE",
+     "got": "Macintosh LTE",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/2.4 (Windows; rv:04.7) AppleWebKit/69.20.17 Chrome/44.23.20 AppleWebKit/16.62.10 Firefox/37.24",
+     "expected": "Windows",
+     "got": "Windows",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/9.0 (MacOS 7.6) Firefox/94.73.72 CriOS/84.20.03 Safari/26.18.17.54 Mobile/83.45.14",
+     "expected": "MacOS 7.6",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/2.7 (Windows XP 6.0) ",
+     "expected": "Windows XP 6.0",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/3.9 (MacOS 4.0; Linux x86_64; rv:17.7) Chrome/42.08 Firefox/72.35.92.17",
+     "expected": "MacOS 4.0",
+     "got": "MacOS 4.0",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/8.1 (Macintosh LTE) AppleWebKit/87.84.33.99 Gecko/93.64",
+     "expected": "Macintosh LTE",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/8.0 (Macintosh 8.7; Linux x86_64) CriOS/84.05.19.08 Firefox/27.35 Mobile/66.07 OPR/15.28.90",
+     "expected": "Macintosh 8.7",
+     "got": "Macintosh 8.7",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/2.2 (MacOS 3.3; WOW64) Firefox/66.80.12.09",
+     "expected": "MacOS 3.3",
+     "got": "MacOS 3.3",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "IE/8.6 (X11) (KHTML, like Gecko)91.48",
+     "expected": "X11",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/4.6 (Windows X 9.4; WOW64; rv:68.9) ",
+     "expected": "Windows X 9.4",
+     "got": "Windows X 9.4",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Netscape/2.1 (iPhone SE 9.9; Ubuntu) (KHTML, like Gecko)77.23",
+     "expected": "iPhone SE 9.9",
+     "got": "iPhone SE 9.9",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Netscape/2.7 (MacOS X) OPR/00.45",
+     "expected": "MacOS X",
+     "got": "<ERROR>",
+     "ok": false,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Mozilla/4.3 (X11 LTE 1.3; Linux x86_64; rv:44.2) AppleWebKit/73.61 Gecko/35.78",
+     "expected": "X11 LTE 1.3",
+     "got": "X11 LTE 1.3",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "IE/0.4 (iPhone SE; rv:26.5) Gecko/76.93",
+     "expected": "iPhone SE",
+     "got": "iPhone SE",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Firefox/2.6 (Linux SE; rv:50.0) Chrome/23.57 OPR/79.20",
+     "expected": "Linux SE",
+     "got": "Linux SE",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/3.7 (iPhone; rv:11.1) CriOS/69.86 Chrome/82.48.39.33 Safari/63.79.01",
+     "expected": "iPhone",
+     "got": "iPhone",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    },
+    {
+     "input": "Chrome/7.1 (Macintosh XP; WOW64; rv:55.5) CriOS/53.79.83.50 Gecko/62.76.97.62 Firefox/07.61 Chrome/20.28.55.19",
+     "expected": "Macintosh XP",
+     "got": "Macintosh XP",
+     "ok": true,
+     "labelled_unique": null,
+     "was_extra_query": false
+    }
+   ],
+   "first_failure": {
+    "input": "Firefox/6.4 (Macintosh 3.7) Gecko/45.84.94.85 Safari/59.05.19.44 AppleWebKit/39.84.60",
+    "expected": "Macintosh 3.7",
+    "got": "<ERROR>",
+    "ok": false,
+    "labelled_unique": true,
+    "was_extra_query": true
+   },
+   "classification": "OUTSIDE_SCOPE",
+   "alternative_program": null,
+   "n_tools": 523
+  }
+ ]
+}
