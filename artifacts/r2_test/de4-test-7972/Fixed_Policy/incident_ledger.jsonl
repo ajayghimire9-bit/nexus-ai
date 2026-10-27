@@ -1,0 +1,7 @@
+{"tick": 9, "kind": "repaired", "signature": ["monitor:snapshot_complete"], "repair": [["resnapshot", "backfill_orders"], ["catch_up", null]], "reconciled": true}
+{"tick": 10, "kind": "escalated", "signature": ["crash:other", "monitor:reconciliation"], "repair": [["catch_up", null]], "remaining": ["reconciliation", "service"]}
+{"tick": 11, "kind": "escalated", "signature": ["crash:other", "monitor:reconciliation", "monitor:watermark_sanity"], "repair": [["future_guard", true], ["rollback", 9], ["catch_up", null]], "remaining": ["reconciliation", "service"]}
+{"tick": 12, "kind": "escalated", "signature": ["crash:other", "monitor:reconciliation"], "repair": [["catch_up", null]], "remaining": ["reconciliation", "service"]}
+{"tick": 13, "kind": "escalated", "signature": ["crash:other", "monitor:reconciliation"], "repair": [["catch_up", null]], "remaining": ["reconciliation", "service"]}
+{"tick": 14, "kind": "false_alarm", "alarm": {"supplier": "S1", "offset": 56, "tick": 11, "trigger": "fixed_ratio"}}
+{"tick": 14, "kind": "escalated", "signature": ["crash:other", "monitor:reconciliation"], "repair": [["catch_up", null]], "remaining": ["reconciliation", "service"]}
