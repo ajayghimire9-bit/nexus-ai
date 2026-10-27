@@ -71,3 +71,49 @@ fault-class ids.
 * Drift-detector settings.
 
 Each of these will be committed in the freeze section before `de2/val` is opened.
+
+### 0.6 FREEZE (committed before `de2/val` or `de2/test` is opened)
+
+**Frozen code.** `s4_env`, `s4_template`, `s4_evaluator`, `s4_checks`, `s4_agent`, `s5_incidents`, `s5_ops`, `s6_library`,
+`s456_seeds`, `scripts/s456_run.py`. The one-use runners refuse to start if any of these differs from HEAD.
+
+**Frozen library.** `artifacts/s6_library.json`, learned on `de2/src` only:
+* 10 build procedures admitted;
+* 2 retired because the src evidence disagrees (two options are correct there);
+* all 5 ops playbooks retired, because their measured saving does not exceed retrieval + applicability + amortised maintenance.
+
+**Frozen detector settings.** `artifacts/s5_detector_calibration.json`. The operator detector is `fixed_ratio` (w = 4, k = 1.4).
+The strict operating point (at most 1 false alarm per 1,000 records and at most 10% misses) was infeasible for both detectors
+on src + dev. That is recorded; selection used min-miss-first.
+
+**Caps.** Per project per arm: at most 40 proposals, 900 CPU-s per build, 40 shadow tests per operator turn, 6 runs per tick,
+and a pod quota of 300 records per run (simulated).
+
+**Primary cost metric (chosen on dev).** Per-project **engineering CPU**: build (agent, every check and repair-search pipeline
+run, library retrieval, applicability and failed reuse) plus operations engineering (operator agent and shadow tests).
+Scheduled production runs are reported separately as operating cost. Dev results (`artifacts/s456_dev.json`):
+* Experienced / Fresh: 0.179 (95% CI 0.13–0.29, 6/6 projects);
+* Placebo / Fresh: 1.56.
+
+**Verdict rules for the one combined paired confirmation on `de2/test` (8 sealed projects, one shot).**
+
+| Stage | PASS iff |
+| --- | --- |
+| 4 | `NEXUS_Fresh` **and** `NEXUS_Experienced` builds independently correct on 8/8 (checkpoints 4, 8 and 12 incl. held-out ticks, 0 failed crash trials, rollback drill), incl. the withheld W1 / W2 worlds, with 0 silent errors; **and** the real integration (`scripts/s4_integration.py`, fresh seeds 10 and 11) ends with Delta == PostgreSQL after the crash sweep and after rollback + replay |
+| 5 | `NEXUS_Fresh` ops: final data correct **and** service restored **and** 0 unresolved incidents on 8/8, incl. the withheld U1 / U2 incidents; **and** `ConventionalOps` (restart / runbooks) fails data on at least one project, showing that a restart without repair does not pass |
+| 6 | `NEXUS_Experienced`: 0 silent errors; build-correct and ops-correct counts each at least Fresh's; **and** pooled engineering CPU at most **0.70× Fresh and at most 0.70× Placebo**, with the paired bootstrap 95% CI upper bound below 0.90 and cheaper in at least 7/8 projects against each. Total cost including library construction is reported with break-even (descriptive) |
+
+**Further reporting rules.**
+* Drift detectors (descriptive): false alarms, true alarms, delay, CPU and downstream ops correctness for `bocpd_merge_exact`,
+  `fixed_ratio` and `disabled`. The N1 hypothesis counts as **supported** only if BOCPD gives more correct ops outcomes, or the
+  same outcomes with fewer false alarms, than `fixed_ratio`.
+* Failure reporting: a failed gate is FAIL. INCONCLUSIVE applies if fewer than 8 projects complete. Nothing is rerun.
+
+**Admission gate on `de2/val` (4 projects, one use).**
+* `NEXUS_Fresh` and `NEXUS_Experienced` must each be build-correct 4/4 and ops-correct 4/4, with 0 silent errors, and
+  Experienced / Fresh engineering CPU must be at most 0.70.
+* If the gate fails, val is reclassified as dev, the failure is fixed and disclosed, and `val_b` is used once.
+
+**Missing-data rule.**
+* The runner checkpoints per project, and a resume after the call cap is not a re-run.
+* A crashed project is recorded as FAIL for the affected arm.
