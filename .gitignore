@@ -1,30 +1,48 @@
+# Virtual environments & build artifacts
 .venv/
 .venv-lab/
 .venv-seed/
 .nexus-lab/
 venv/
+ENV/
 .deps/
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
 *.egg-info/
 dist/
 build/
-.DS_Store
-.env
-.env.*
-!.env.example
+node_modules/
+.next/
+
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local model weights, checkpoints & runtime logs (never committed)
+.models/
 checkpoints/
-runs/
 lightning_logs/
 *.pt
 *.pth
 *.ckpt
-node_modules/
-.next/
-.cursor/*.log
+*.sqlite
+*.db
+runs/
+!runs/experimental/wave24-agi/ledger.jsonl
+!runs/experimental/seed_registry_spent.jsonl
 
-# local model weights / symlinks (never committed)
-.models/
+# Environment & editor / scratch files
+.DS_Store
+.env
+.env.*
+!.env.example
+.cursor/*.log
+*.tmp
+*.bak
+*~
+*.swp
+artifacts/*_dry_state.json
+artifacts/*_dev*_state.json
+artifacts/*_local_untracked_*/

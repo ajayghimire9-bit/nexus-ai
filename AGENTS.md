@@ -174,3 +174,32 @@ followed by a new pin.**
   2026-10-26; spec `docs/NEXUS_CHECKER_V4_SPEC.md`; pin `src/nexus/checker_kernel_v4.sha256`). v1, v2 and v3 stay unchanged.
 * RULE 2 also covers `src/nexus/checker_kernel_v5.py` (Wave 39 general constructs + SCOPE_UNIQUE / UNDER_SPECIFIED_WARNING
   contract; owner-authorised 2026-10-27; spec `docs/NEXUS_CHECKER_V5_SPEC.md`; pin `src/nexus/checker_kernel_v5.sha256`). v1-v4 stay unchanged.
+
+## Wave 40 & Stage 1 Active Baseline (`46c3e53`, updated 2026-10-27)
+
+### 1. Exact Pinned Checker Kernel SHA-256 Hashes (Frozen at Commit `622a29a`)
+Never alter a single byte or file path of any pinned checker kernel or its `.sha256` file:
+- **Checker v1 (`src/nexus/checker_kernel.py`):** `5082402ff2ba7c4de9bc6ca998f0556d88f9ef1fb7c95b2a3f0d15bf79b3121e`
+- **Checker v2 (`src/nexus/checker_kernel_v2.py`):** `6ba0a268ddc5c4f0912f985c214a21e8d92a0af7e1b6b348d5ae1a38cc48379b`
+- **Checker v3 (`src/nexus/checker_kernel_v3.py`):** `3c68230e09cd6cdbdf0c33f1f70caf68ae82c2686bb640e2515801d4d121e20f`
+- **Checker v4 (`src/nexus/checker_kernel_v4.py`):** `c07e21ec104633865f8d6d03d8d30f240962537922c67f4c6f90ea5ed74f5c13`
+- **Checker v5 (`src/nexus/checker_kernel_v5.py`):** `2cd3a4caf33070558a2d7394497dd1d548583be5b04e1d7a18eac661790244d4`
+
+### 2. Quarantined `BURNED` External Benchmark Tasks
+The following 4 PROSE tasks were inspected during Wave 39 grammar design and are permanently marked **`BURNED`** (excluded from all unburned external confirmation claims; unburned confirmation is `19/24 = 79.2%`):
+- `BillingCode.000002`
+- `EmergencyCall.000004`
+- `FilePath.000001`
+- `UserAgent.000007`
+
+### 3. Active Core Modules & Entry Points
+- **Canonical Outcome Contract (`CERTIFIED`, `REPAIRED`, `ABSTAINED`, `REJECTED`):** `src/nexus/outcome_contract.py`
+- **Order-Invariant Synthesis Engine (`B_exec = 500`, `B_total = 700.0`):** `src/nexus/w40_search.py`
+- **Order-Invariant LODO Representation & Macro Learner:** `src/nexus/w40_learn.py`
+- **Dual-Budget Buffered Online Stream Learner (`K = 4`, `tau = 0.10`):** `src/nexus/w40_online.py`
+- **Subprocess Evaluation Harness & OS Retired-Instruction Meter:** `src/nexus/w40_eval.py`, `src/nexus/wave31_evaluator.py`, `src/nexus/wave32_detectors.py`
+- **Non-Stationary World & Change Detector (`N1-merge-exact`):** `src/nexus/w39_world.py`
+- **External Benchmark Loader (`PROSE`):** `src/nexus/w39_prose.py`
+- **Unified Regression Gate (`228/228` tests + SHA-256 verification):** `scripts/de_stage1_regression.py`
+- **Documentation & Roadmap:** `README.md`, `docs/INDEX.md`, `docs/ARCHITECTURE.md`, `docs/ROADMAP_10_STAGES.md`, `docs/NEXUS_WAVE40_INVARIANCE_AND_CEILINGS.md`
+
