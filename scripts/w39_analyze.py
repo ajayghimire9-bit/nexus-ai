@@ -18,6 +18,9 @@ def prose_tables(path, arms=("Fresh-v4", "Fresh-v5", "Placebo-v5", "Fixed-v5", "
         rows = {}
         for arm in arms:
             rs = [T[n].get(arm, {}) for n in names]
+            for x in rs:                       # v4 rows (w38 evaluator) carry total executions only: one iteration
+                if "work" in x and x.get("iters") is None:
+                    x["iters"] = [[x.get("execs", 0), bool(x.get("certified"))]]
             ev = [x for x in rs if x.get("label") not in ("NOT_EVALUABLE", "SKIPPED_FORMAT", None)]
             inputs = [i for x in ev for i in x.get("inputs", [])]
             rows[arm] = dict(
@@ -99,7 +102,9 @@ def lodo_tables(paths, arms=("Fresh-v5", "Placebo-v5", "Fixed-v5", "Repr-v5", "R
                     n_inter += 1
                     for a in arms:
                         inter[a] += f["arms"][a][j]["work"]
-    return dict(per_seed=per_seed, pooled=pooled, source_work=src_work, source_core_work=src_core_work,
+    n_folds = sum(len(f) for f in seeds.values())
+    return dict(per_seed=per_seed, pooled=pooled, source_work=src_work / n_folds, source_core_work=src_core_work / n_folds,
+                n_folds=n_folds,
                 intersection=dict(n=n_inter, work=inter))
 
 
@@ -120,11 +125,11 @@ def show_lodo(t, primary="Repr-v5", controls=("Fresh-v5", "Placebo-v5", "Fixed-v
         print(f"  {primary} vs {c}: total ratio (fit charged) {r_all:.3f} | intersection ratio {r_int:.3f} | solves {P[primary]['correct']} vs "
               f"{P[c]['correct']} | seeds won (cheaper AND solves >=) {wins}/{len(t['per_seed'])}")
     saving = (P["Fresh-v5"]["work"] - P[primary]["work"]) / max(1, P[primary]["n"])
-    extra = t["source_work"] + P[primary]["fit"]
+    extra = t["source_work"] + P[primary]["fit"] / t["n_folds"]          # per prior (each fold trains its own)
     print(f"source accounting: mandatory-work (marginal fit) {P[primary]['fit'] / 1e9:.3f}G | extra-curriculum {extra / 1e9:.0f}G | "
-          f"saving per target task {saving / 1e9:.2f}G | break-even {extra / saving if saving > 0 else float('inf'):.0f} target tasks")
+          f"saving per target task {saving / 1e9:.2f}G | break-even {extra / saving if saving > 0 else float('inf'):.0f} target tasks per prior")
     if "Repr-core-v5" in P:
         sc = (P["Fresh-v5"]["work"] - P["Repr-core-v5"]["work"]) / max(1, P["Repr-core-v5"]["n"])
-        ex = t["source_core_work"] + P["Repr-core-v5"]["fit"]
+        ex = t["source_core_work"] + P["Repr-core-v5"]["fit"] / t["n_folds"]
         print(f"core set: extra-curriculum {ex / 1e9:.0f}G | saving per task {sc / 1e9:.2f}G | break-even "
               f"{ex / sc if sc > 0 else float('inf'):.0f} target tasks")
