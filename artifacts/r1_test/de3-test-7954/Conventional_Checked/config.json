@@ -1,0 +1,52 @@
+{
+ "allowed_hours": 12,
+ "buckets": {
+  "CANCELLED": "cancelled",
+  "DELIVERED": "fulfilled",
+  "PLACED": "open",
+  "RETURNED": "fulfilled",
+  "SHIPPED": "open"
+ },
+ "deploy": {
+  "dead_letter": [],
+  "future_guard": false,
+  "max_records_per_run": null,
+  "unit_overrides": []
+ },
+ "fx": {
+  "CHF": 1.12,
+  "EUR": 1.08,
+  "GBP": 1.27,
+  "USD": 1.0
+ },
+ "processing_order": [
+  "_schemas",
+  "orders_cdc",
+  "backfill_orders",
+  "telemetry",
+  "manifests"
+ ],
+ "t0": "2026-04-01T00:00:00Z",
+ "tick_hours": 48,
+ "units": {
+  "g": 0.001,
+  "kg": 1.0,
+  "lb": 0.45359237
+ },
+ "v1": {
+  "amount": "gross_value",
+  "currency": "currency_code",
+  "deleted": "void_flag",
+  "discount": "rebate_pct",
+  "order_id": "ord_id",
+  "promised_ts": "promise_by",
+  "status": "order_status",
+  "warehouse_id": "wh_id"
+ },
+ "warehouses": [
+  "W1",
+  "W2",
+  "W3",
+  "W4"
+ ]
+}

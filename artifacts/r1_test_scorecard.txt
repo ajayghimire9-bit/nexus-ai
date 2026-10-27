@@ -1,0 +1,36 @@
+projects 8; withheld-class worlds 8
+measure          metric                                               | Conventional_Checked |         Fixed_Policy |          NEXUS_Fresh |        NEXUS_Placebo |    NEXUS_Experienced
+1 Correctness    PRIMARY end-to-end correct (build->own ops->data)    |                  0/8 |                  7/8 |                  4/8 |                  4/8 |                  4/8
+                 silent errors (claims healthy, data wrong)           |                    2 |                    1 |                    1 |                    1 |                    1
+                 self-detected failures (data wrong, flagged)         |                    6 |                    0 |                    3 |                    3 |                    3
+                 build independently correct (ckpt+EO+rollback)       |                  0/8 |                  5/8 |                  5/8 |                  5/8 |                  5/8
+                 build silent errors / held-out ticks 9-12 ok         |                8 / 0 |                3 / 5 |                3 / 5 |                3 / 5 |                3 / 5
+                 ops final data correct (own pipeline)                |                  0/8 |                  7/8 |                  4/8 |                  4/8 |                  4/8
+2 Completion     submitted / abstained / hard fail                    |                8/0/0 |                8/0/0 |                8/0/0 |                8/0/0 |                8/0/0
+                 build labels                                         |               UNVER8 |               UNVER8 |               UNVER8 |               UNVER8 |               UNVER8
+                 open escalation at end                               |                    0 |                    0 |                    3 |                    3 |                    3
+3 Reliability    exactly-once crash trials failed / run               |               20/302 |                0/530 |                0/338 |                0/338 |                0/338
+                 rollback drill ok / service restored at end          |                0 / 2 |                5 / 8 |                5 / 6 |                5 / 6 |                5 / 6
+                 freshness violations (ticks) / dup rows / leaks      |               45/2/0 |                0/0/0 |                8/0/0 |                8/0/0 |                8/0/0
+4 Cost           PRIMARY fully loaded engineering CPU s               |                 14.6 |                 75.1 |                400.2 |                698.3 |                178.7
+                 build CPU s / ops engineering CPU s                  |             14.6/0.0 |             73.3/1.7 |           317.0/83.2 |           614.9/83.4 |            95.0/83.7
+                 check runs / shadow tests / full verifications       |              342/0/0 |             1773/0/0 |         7500/395/202 |        14379/414/213 |         2316/407/212
+                 own-pipeline repairs / failed reuse / lib CPU        |             0/0/0.00 |             0/0/0.00 |             1/0/0.00 |            3/94/0.02 |             2/0/0.02
+5 Human dep.     clarifications / escalations (all turns)             |                  0/0 |                  1/0 |                 1/16 |                 1/16 |                 1/16
+6 Learning       NEXUS_Experienced / NEXUS_Fresh fully loaded CPU = 0.446 (95% CI 0.324-0.532); cheaper in 8/8; e2e 4 vs 4
+6 Learning       NEXUS_Experienced / NEXUS_Placebo fully loaded CPU = 0.256 (95% CI 0.180-0.325); cheaper in 8/8; e2e 4 vs 4
+6 Learning       NEXUS_Placebo / NEXUS_Fresh fully loaded CPU = 1.745 (95% CI 1.419-2.247); cheaper in 0/8; e2e 4 vs 4
+6 Learning       NEXUS_Fresh / Fixed_Policy fully loaded CPU = 5.332 (95% CI 4.126-6.479); cheaper in 0/8; e2e 4 vs 7
+6 Learning       dedicated source learning CPU 463.0 s (curriculum 357.4 + LOO 105.6); learning during useful work 0.0 s; saving/project 27.70 s; break-even 16.7 projects; total incl. learning 1.603x Fresh
+7 Generalization Conventional_Checked X1: worlds 4, ops run 4, deployed mishandles 3, self-detected 0, repaired 0, e2e correct 0/4
+7 Generalization Conventional_Checked X2: worlds 4, ops run 4, deployed mishandles 0, self-detected 0, repaired 0, e2e correct 0/4
+7 Generalization Fixed_Policy         X1: worlds 4, ops run 4, deployed mishandles 3, self-detected 3, repaired 3, e2e correct 4/4
+7 Generalization Fixed_Policy         X2: worlds 4, ops run 4, deployed mishandles 0, self-detected 0, repaired 0, e2e correct 3/4
+7 Generalization NEXUS_Fresh          X1: worlds 4, ops run 4, deployed mishandles 3, self-detected 3, repaired 0, e2e correct 1/4
+7 Generalization NEXUS_Fresh          X2: worlds 4, ops run 4, deployed mishandles 0, self-detected 0, repaired 0, e2e correct 3/4
+7 Generalization NEXUS_Placebo        X1: worlds 4, ops run 4, deployed mishandles 3, self-detected 3, repaired 0, e2e correct 1/4
+7 Generalization NEXUS_Placebo        X2: worlds 4, ops run 4, deployed mishandles 0, self-detected 0, repaired 0, e2e correct 3/4
+7 Generalization NEXUS_Experienced    X1: worlds 4, ops run 4, deployed mishandles 3, self-detected 3, repaired 0, e2e correct 1/4
+7 Generalization NEXUS_Experienced    X2: worlds 4, ops run 4, deployed mishandles 0, self-detected 0, repaired 0, e2e correct 3/4
+component benchmark (NEXUS_Fresh operator, SUPPLIED correct pipeline): ops correct 7/8, silent 1, escalations 0
+sensitivity (NON-CONFIRMATORY; NEXUS_Fresh's own pipeline, localiser B1): end-to-end correct 7/8 (confirmatory arm: 4/8), silent 1, operator CPU 17.5 s
