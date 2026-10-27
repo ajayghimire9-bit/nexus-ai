@@ -16,7 +16,7 @@ from nexus import w39_scope as S
 from nexus.wave31_evaluator import Child, instructions, ledger_append  # noqa: F401
 
 ROOT = Path(__file__).resolve().parents[2]
-V5_PIN_COMMIT = None          # set at the pin commit (see verify_v5)
+V5_PIN_COMMIT = "622a29a"     # the commit that pinned Checker v5
 CHILD = "scripts/w39_child.py"
 
 
@@ -38,6 +38,22 @@ class Eval:
     def child(self, hashseed="0", script=CHILD):
         return Child(hashseed, script)
 
+    def stream(self, tasks, genome, tag, hashseed="0", shrink=4.0, budget=2_000_000, extras=None, oracle=True, depth=None):
+        """One online stream from an EMPTY library (genome None = Fresh). Every update is metered on the child's counter.
+        Updates use certified (SCOPE_UNIQUE) candidates only."""
+        ch = self.child(hashseed, "scripts/w39_online_child.py")
+        self.call(ch, {"cmd": "o_reset", "genome": genome, "shrink": shrink})
+        rows, learn, declared = [], 0, 0
+        for k, t in enumerate(tasks):
+            r = self.solve(ch, t, depth or len(t["teacher"]), f"{tag}:{k}", budget=budget,
+                           extra=(extras[k] if extras else None), oracle=oracle)
+            rows.append(r)
+            if r.get("certified"):
+                u = self.call(ch, {"cmd": "o_update", "candidate": r["candidate"], "public": t["public"]})
+                learn += u["_instr"]; declared = u["declared"]
+        ch.close()
+        return rows, learn, declared
+
     def _check(self, ev, meter):
         i0 = instructions(os.getpid())
         v = V5.check(ev)
@@ -45,7 +61,7 @@ class Eval:
         return v
 
     def solve(self, ch, task, depth, seed, prior=None, budget=2_000_000, extra=None, oracle=True):
-        meter, oracle_log, verdict = {}, [], None
+        meter, oracle_log, verdict, last = {}, [], None, (None, None)
         c0, t0 = instructions(ch.p.pid), time.perf_counter()
         ch.send({"cmd": "solve", "public": task["public"], "query": task["query"], "depth": depth, "seed": seed,
                  "prior": prior, "budget": budget, "extra": extra or []})
@@ -55,6 +71,7 @@ class Eval:
                 break
             if msg.get("req") == "check":
                 verdict = self._check(msg["evidence"], meter)
+                last = (L.key(msg["evidence"]), verdict)
                 ch.send(verdict)
             else:
                 x = msg["input"]
@@ -82,7 +99,9 @@ class Eval:
             if L.key(ev["scope"]) != L.key(S.scope(task["public"], task["query"], depth)) or \
                     L.key(ev.get("extra_queries") or []) != L.key(extra or []):
                 flags["D2"] = 1
-            v = self._check(ev, meter)
+            # the final evidence is re-checked by the evaluator unless it is byte-identical to evidence the evaluator itself
+            # already checked during this solve (Wave 39 efficiency fix; Wave 38 always re-checked: same for every arm)
+            v = last[1] if last[0] == L.key(ev) else self._check(ev, meter)
             uniq = v["label"] == "SCOPE_UNIQUE" and not flags["D1"] and not flags["D2"]
             correct = uniq and L.key(ev["claimed_answer"]) == L.key(task["answer"])
             row.update(label=v["label"] if not (flags["D1"] or flags["D2"]) else "INVALID_EVIDENCE", k=v.get("k"),
