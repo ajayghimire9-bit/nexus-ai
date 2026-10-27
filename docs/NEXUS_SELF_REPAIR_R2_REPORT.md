@@ -222,3 +222,22 @@ undetermined.
    * **Result on de4-dev-973 / 974 / 976 / 977:** natural 4/4 and forced 4/4.
 8. **Incident scheduling.** de4 projects get 2 seen incidents each, while R1's non-test projects got 3. This is noted here
    because the protocol did not state it.
+9. **Regression on de4-dev-971 / 978, final code, all arms.**
+   * Natural and forced recovery: correct for Fixed_Policy and every NEXUS arm on both worlds. Conventional fails both.
+   * Builds: no arm's build was independently correct on either world, because the X class hits held-out ticks 9–12
+     (declared UNKNOWN at build time).
+
+### 0.10 FREEZE (committed before `de4/val` or `de4/test` is opened)
+
+`artifacts/r2_freeze.json` records the frozen choices, gates, caps and budgets, and the sha256 of every frozen file: code,
+library, evaluator, baseline policies and split registry.
+
+| frozen item | value |
+|---|---|
+| localiser | B1 |
+| ordering | C0 |
+| secondary localiser | B0 |
+| forced naive options | X1 `txn_isolation=read_uncommitted`, X2 `gap_handling=skip`, X3 `fx_unknown=error`, X4 `discount_unit=percent_only` |
+| budget caps | val ≤ 2,000 s, val_b ≤ 2,000 s, test ≤ 4,500 s |
+
+The gates are those of §0.8.
