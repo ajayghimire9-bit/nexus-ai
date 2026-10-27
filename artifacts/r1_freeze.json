@@ -1,0 +1,64 @@
+{
+ "arms": [
+  "Conventional_Checked",
+  "Fixed_Policy",
+  "NEXUS_Fresh",
+  "NEXUS_Placebo",
+  "NEXUS_Experienced"
+ ],
+ "assumptions": [
+  "observations (log/_obs) are authoritative environment facts",
+  "reconciliation re-derives the spec from the operator archive below committed offsets; supplier volume is reconciled against the operator's declared unit overrides",
+  "metamorphic chunking is semantics-preserving for the visible data (watermark per ingest tick; no transactions)",
+  "a property with no exercising evidence is UNKNOWN (txn_isolation, gap_safety on every visible log)"
+ ],
+ "budget": {
+  "remaining_at_freeze_s": 7231.0,
+  "test_cap_s": 3300,
+  "val_cap_s": 1500
+ },
+ "build_suite": "A2 = r1_checks.NEXUS: Stage 4 checks + replay_conformance + ack_durability + chunk_invariance over grow_obs",
+ "caps": {
+  "build_cpu_s": 900,
+  "call_s": 900,
+  "full_verifications_per_repair": 12,
+  "localisation_trials": 60,
+  "proposals": 40,
+  "runs_per_tick": 6,
+  "shadow_per_run": 200,
+  "shadow_per_turn": 40
+ },
+ "comparison_C": "NOT RUN (its precondition, A2 and B1 both meeting their dev criteria, failed on B1)",
+ "frozen_sha256": {
+  "artifacts/r1_library.json": "4cecd9af16ebf218886af81b3a62fe1fb8bf529e25dcd21a28235610fa4940d2",
+  "scripts/r1_run.py": "d1bdc676aad5391d4cbced649cc2a2c0249615d7cbfd03b5987b474105ebfc9c",
+  "src/nexus/r1_agent.py": "f73f3a8da6b2ceecf208042fd0f6730aaa848ded95a271fad810f63d70b21436",
+  "src/nexus/r1_checks.py": "5ac7ea50e92aba67ceea30a7255a15c45a1cd83c333d686e262820ee9e2f58bc",
+  "src/nexus/r1_env.py": "fb0398772e5eb7771dacf43efa8728bdeda4053b4db0c8079404b174a3b0d88e",
+  "src/nexus/r1_evaluator.py": "ac0d1ab114a9cfe8de6169a7ca1ad045b4c3742770e877a55975db127354dc95",
+  "src/nexus/r1_monitor.py": "ab6a274f33ba4c81032f88f40e41dafaac25d00e7f2a5dee116abfb39816f92a",
+  "src/nexus/r1_ops.py": "cb1ff04669c2034d579aa63aa60794f7cffd1115e6f5e6900a3f8dc7927aa79a",
+  "src/nexus/r1_seeds.py": "6b11d87ef80813ef404a8c16cfe32c342b943f5e0d6c56f72197ac45e0cbd383",
+  "src/nexus/r1_template.py": "e7e9fe08593914df8031e9f8babbbd2a15d4344b2302624a5cc8aa9b10ba88b7",
+  "src/nexus/s4_agent.py": "8a1158a8b1d4ac7d717935b35426767f24f0ae8d45d4425010b488c535e5e412",
+  "src/nexus/s4_checks.py": "47c50f5c0651ee1aaf1ddad8ee26c64f6b2fd901fd339fc184e15015fdeb80e1",
+  "src/nexus/s4_env.py": "13d554501e133325562f0e898bba42b070cbe2929c83175fba083b0b613467a1",
+  "src/nexus/s4_evaluator.py": "2956849cf554d8574a3cac8abf20000a35f3562c3d479f5e1622506056b16caf",
+  "src/nexus/s4_template.py": "dedd4bb14d9f39ce8c4400705614da9f1912e555960b6e52ce117f90f272a146",
+  "src/nexus/s5_incidents.py": "549fbe6c2e57071b9e2cb5ee14b67fcf5d223ab9957c449b844f36ab7b77d1af",
+  "src/nexus/s5_ops.py": "7fae4bbf0e71444563801b4f673fe1318727f0c0d5a3a38677c2700804a2009a",
+  "src/nexus/s6_library.py": "510b02a3770d471dad6ee1416f20877bf8089e03d72a3f8e574169a9e9f9d008"
+ },
+ "gates": {
+  "learning_claim": "Experienced/Fresh fully loaded CPU CI upper < 1.0 AND Experienced e2e >= Fresh e2e AND Experienced/Placebo < 1.0",
+  "r1_pass": "NEXUS_Experienced e2e >= 7/8 AND 0 silent errors for every NEXUS arm AND, on withheld worlds, for every NEXUS arm every deployed pipeline that mishandles its X class is self-detected and >= 3/4 projects per class end e2e correct",
+  "val": "NEXUS_Fresh end-to-end >= 3/4, 0 silent errors, 0 replay-view violations on the correct replay; a failure spends val, the implementation may change, val_b is used once"
+ },
+ "ops_detector": "fixed_ratio",
+ "ops_mode": "B0",
+ "ops_mode_reason": "predeclared rule 0.6 applied after the single pre-committed revision: B1 adopted only if localisation accuracy (true decision in the suspect set) >= B0 AND mean CPU per repaired mutant lower; B1 29/31 vs 31/31 and 2.882 vs 2.661 s",
+ "primary_metric": "end-to-end correct completed projects (8 sealed de3/test projects)",
+ "sensitivity_label": "NON-CONFIRMATORY: NEXUS_Fresh's own submitted pipeline operated a second time with localiser B1",
+ "sensitivity_mode": "B1",
+ "status": "FROZEN before de3/val (code, assumptions, gates and budgets below; the runner refuses uncommitted changes to these files)"
+}

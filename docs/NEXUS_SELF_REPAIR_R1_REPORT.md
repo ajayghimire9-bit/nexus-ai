@@ -270,3 +270,18 @@ alternative. They are the next ablation, not part of R1.
    * **A2 is adopted** by the rule: it rejects ≥ A0's mutants with 0 false rejections.
    * The monitor's value is not in decision mutants. It is replay fidelity (items 3 and 4) and ack durability at crash
      points: `offsets_first` is flagged at 7 of 18 crash points per world, against 0 for the correct protocols.
+
+### 0.10 FREEZE (committed before `de3/val` or `de3/test` is opened)
+
+`artifacts/r1_freeze.json` records the sha256 of every frozen file, the gates and the caps. The runner refuses val or test
+if any frozen file differs from HEAD. The frozen choices:
+
+* **Localiser:** B0, by the predeclared rule (§0.9 item 6).
+* **Sensitivity row:** NEXUS_Fresh's own pipeline operated with B1. It is non-confirmatory.
+* **Build suite:** A2.
+* **Comparison C:** NOT RUN.
+* **Fixed_Policy:** brought in line with §0.7 on dev, before the freeze. It now takes the src-majority option for every
+  decision with src evidence, admitted or retired, and its runbook is sequential: the incident runbook first, then one
+  typed redeploy only if pipeline-suspect symptoms remain.
+* **Library:** learned on de3/src only (§0.9).
+* **Budget:** val ≤ 1,500 s and test ≤ 3,300 s of the remaining grant.
