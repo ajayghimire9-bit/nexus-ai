@@ -186,3 +186,173 @@ option of every decision fails a check that implicates it, with no false alarm.
 * Truth is held in the runner process and a temporary directory. The separation is enforced by the tool API and import
   isolation, not by an OS boundary.
 * Pipelines run under the macOS sandbox: no network, no writes into the repository, no vault reads.
+
+## Stage 3 results
+
+**Run provenance.**
+* **Val:** run on `c5432ec` (`artifacts/de_stage3_val.json`).
+* **Sealing:** the test was sealed at `017c8ea`; its manifest holds the 8 blob hashes.
+* **Test:** run **once** at `017c8ea`, with the frozen-code guard passing (`artifacts/de_stage3_test.json`).
+* **Bundles:** `artifacts/de_stage3_test/<project>/<arm>/`. Each holds `pipeline.py`, `config.json`, `tests/`,
+  `PIPELINE.md` (documentation), `MANIFEST.json` (dependencies + sha256) and `scorecard.json`.
+
+**Admission gate (val, 4 one-use projects): PASSED.**
+* **NEXUS:** 4/4 independently correct, including held-out batch 3. 0 silent errors; 0 unresolved ambiguity (2/2 genuine
+  questions asked, 0 unnecessary; 2 projects had no ambiguity and NEXUS asked nothing there); 0 repairs; 4/4 idempotent and
+  crash-recovered.
+* **Conventional:** 0/4, with 4 silent errors.
+* **BestCase sensitivity:** 2/4.
+
+### Final test: 8 sealed projects, one shot
+
+**Test conditions.**
+* All 8 test projects use held-out physical names (13–23 of 33 canonical fields each), held-out currencies (JPY, CHF) and the
+  held-out unit (oz).
+* 3 use the held-out text deletion flag.
+* 8 genuine ambiguities are present across 6 projects.
+
+| Measure | Metric | Conventional_Agent_No_NEXUS_Checks | **NEXUS_Engineer_No_History** | BestCase sensitivity (descriptive) |
+| --- | --- | --- | --- | --- |
+| 1 Correctness | independently checked correct | 0/8 | **8/8** | 2/8 |
+| | **silent data errors** | **8** | **0** | 4 |
+| | seen batches 1–2 / held-out batch 3 correct | 0/8 / 0/8 | **8/8 / 8/8** | 4/8 / 4/8 |
+| | unresolved ambiguity (genuine questions never asked) | 8/8 | **0/8** | 8/8 |
+| 2 Completion | finished / hard failures / abstentions | 8 / 0 / 0 | 8 / 0 / 0 | 8 / 0 / 0 |
+| 3 Reliability | freshness SLA violations | 0 | 0 | 0 |
+| | idempotent under rerun / crash recovered | 1/8 / 3/8 | **8/8 / 8/8** | 8/8 / 8/8 |
+| | duplicate side-effect rows | 395 | **0** | 0 |
+| | mean recovery wall time | 0.037 s | 0.037 s | 0.037 s |
+| 4 Cost | proposer calls (model calls = 0) | 14 | 62 | 8 |
+| | pipeline / check executions | 26 / 0 | 122 / 712 | 16 / 0 |
+| | pipeline execution CPU s | 0.90 | 4.21 | 0.55 |
+| | independent checking CPU s | 0.00 | 24.58 | 0.00 |
+| | agent process CPU s | 0.10 | 3.94 | 0.07 |
+| | wasted work (rejected attempts) CPU s | 0.35 | 22.98 | 0.00 |
+| | storage / IO written | 2.22 MB | 9.72 MB | 1.40 MB |
+| | learning overhead | 0 (disabled) | 0 (disabled) | 0 (disabled) |
+| | **full development cost** (CPU s, 8 projects) | 1.00 | **32.73 (≈33×)** | 0.62 |
+| | **operating cost** (mean wall s per batch run) | 0.038 | **0.038** | 0.038 |
+| 5 Human dependence | ASK_CLARIFICATION calls (unnecessary) | 0 (0) | **8 (0)** | 0 (0) |
+| | human engineering repairs / operational interventions | 0 / 0 | **0 / 0** | 0 / 0 |
+| 6 Learning benefit | vs Fresh / Placebo | n/a: 0-history baseline | n/a: 0-history baseline | n/a |
+| 7 Generalization | held-out pools (names, currencies, units, codes, encodings) + held-out batch 3 | 0/8 | **8/8** | 2/8 |
+
+**Paired comparison:** NEXUS was correct and Conventional wrong on 8 projects; the reverse never happened. One-sided sign test
+p = 0.0039 (n = 8, descriptive).
+
+**Conventional diagnoses**, found by the evaluator in exit-0, non-empty outputs:
+* arrival-order apply;
+* dropped late changes;
+* text-timestamp order;
+* ignored soft deletes;
+* unit mismatch;
+* no currency conversion;
+* malformed rows dropped;
+* lateness ignored;
+* non-idempotent rerun / duplicate keys / crash recovery failed;
+* guessed ambiguous rule;
+* unasked ambiguity.
+
+**NEXUS diagnoses:** none.
+
+### Verdicts (predeclared rules)
+
+* **Correctness: NEXUS better**, with 0 NEXUS silent data errors.
+* **Milestone Stages 1–3: PASS.**
+  * Stage 1 at 100% (228/228).
+  * Stage 2 at 8/8 with 0 false alarms.
+  * Test: NEXUS 8/8 correct (≥ 7 required), 0 silent errors, 0 unresolved ambiguity, 0 repairs and 0 interventions; 8/8
+    idempotent and recovered; every cost recorded.
+
+### What this does and does not show (read before citing)
+
+1. **The baseline uses an uninformed proposer, by design.** Conventional's 0/8 mostly reflects that the shared proposer is
+   a seeded random permutation, and its stop rule catches only crashes. With a **best-case** proposer (every
+   project-independent decision right), the conventional stop rule still fails 6/8. All six failures are ambiguity cases:
+   4 were silent wrong guesses and 2 were lucky guesses, flagged as unasked. So, given a perfect code generator, the residual
+   value of NEXUS on these projects is **ambiguity detection plus verified submission**. A frontier-LLM coder would land
+   between the two conventional rows; that is not measured here.
+2. **"Unfamiliar" means unfamiliar instances of known mechanism families.** The decision space (14 decisions), the fault
+   classes and the invariants were all written by the same author who wrote the environment and evaluator. One invariant (the
+   lateness rule) was strengthened after a dev miss. The test withholds names, currencies, units, encodings, status codes,
+   lateness values and data batches. It does **not** withhold fault *mechanisms*. A new class of bug outside the 14 decisions
+   would not be generated, and might not be checked.
+3. **Cost.** Verification costs about 33× the conventional development CPU, and 70% of NEXUS CPU is spent on rejected
+   attempts (a check re-runs the pipeline on rewritten inputs). The operating cost of the delivered pipeline is identical.
+   In absolute terms every project is small: 70 orders and about 0.04 s per batch, sized for the M4. The scale-up behaviour
+   is unknown.
+4. **Independence.** The evaluator imports nothing from NEXUS and computes truth from the generator's clean world. However,
+   the same author built both, so independence is structural, not organisational.
+5. **The truth separation for val and test is enforced by API, not by the OS.** Pipelines run under the macOS sandbox:
+   no network, no repository writes, no vault reads.
+6. **The freshness SLA is coarse.** It counts run failure, runs over 60 s and stale outputs; there is no real-time clock.
+   Real streaming freshness is a Stage 4 matter.
+
+### Post-test fix (separate commit, after the one-shot test)
+
+* **The bug:** run as a CLI with a *relative* bundle path, `tests/invariants.py` failed. The subprocess resolved the path
+  against its own working directory.
+* **Impact:** none on any reported run. The agent and evaluator always pass absolute paths, and the pytest entry point was
+  unaffected (it passed standalone on a dev bundle).
+* **Fix:** `Runner.run` now resolves its paths.
+* **Bundles not rewritten:** the delivered test bundles keep the pre-fix copy, as they are recorded results.
+
+## Stage 4 readiness (Real Streaming, CDC and Lakehouse Recovery)
+
+**Assessment: READY TO START, with four preconditions.**
+
+**Already in place:**
+* Debezium-style envelopes (`op`, `event_ts`, `ingest_ts`, `seq`, partitions);
+* redelivery and out-of-order arrival;
+* late corrections;
+* crash injection without pipeline cooperation;
+* idempotency and rerun protocols;
+* an independent truth-based evaluator with exact diagnoses;
+* sealed one-use splits;
+* the 7-measure scorecard.
+
+**Missing:**
+1. A **continuous offset log** with consumer offsets committed separately from sink writes. This is needed to make
+   exactly-once vs at-least-once visible: Stage 3 batches are whole files.
+2. **Watermark-driven emission** with allowed lateness, and retractions of already-emitted gold rows. Stage 3 recomputes
+   gold per batch.
+3. **Schema-registry evolution:** compatible and incompatible changes, backfills and time-travel rollback after a bad
+   deploy.
+4. **A wider mechanism space** than 14 template decisions (Stage 8 territory, but Stage 4 needs at least new stream
+   operators). New mechanisms must be added **before** a sealed split is drawn, and the honest generalization test must
+   withhold some mechanisms entirely.
+
+**First Stage 4 experiment (proposed).** Extend `de_env` with a partitioned offset log and broker restarts. Freeze a
+streaming generator plus checks on dev. Then measure silent errors, duplicate side effects and recovery time on a new sealed
+split, with at least one fault mechanism withheld from dev and val.
+
+## Resources
+
+* **Grant:** the same 17,990 s carried grant. Wave 41 (paused) used 1,959 s and Stages 1–3 used 375 s, leaving
+  **15,656 s** (`scripts/de_budget.py`, every run in the hash-chained ledger).
+* **Largest single run:** 44 s (final test). CPU only; no paid services; 0 model calls.
+* **Tests:**
+  * 228/228 Stage 1 regression;
+  * `tests/test_de_stage3.py` 6/6;
+  * Stage 2 proof 6/6 projects.
+
+## Repository events during this session (disclosure)
+
+* **The concurrent writer.** An Antigravity agent session shares this worktree (`~/.gemini/antigravity/scratch/nexus-ai`).
+  It made two commits on this branch that I did not write:
+  * `45f51cd`: a "comprehensive cleanup". It moved 50 scripts and docs into `scripts/archive/` and `docs/history/`. It
+    changed `.gitignore` and AGENTS.md. It committed my then-uncommitted Stage 1 files (`outcome_contract.py`,
+    `test_stage1_regression.py`, `de_stage1_regression.py`, `de_budget.py`, `artifacts/de_stage1_regression.json`)
+    unchanged.
+  * `d7ac8c5`: a README rewrite.
+* **Inaccuracies in its AGENTS.md addition.** It describes `outcome_contract.py` as "CERTIFIED / REPAIRED / ABSTAINED /
+  REJECTED"; the file defines VALID_UNIQUE / ABSTAIN_ERROR / UNDER_SPECIFIED_WARNING / ASK_CLARIFICATION /
+  ABSTAIN_UNSUPPORTED plus project outcomes. It cites `src/nexus/w39_prose.py`, which does not exist. It cites
+  "19/24 = 79.2%", which I cannot trace to any committed result.
+* **What I did about it.** I did not revert or edit those commits or AGENTS.md; that is the owner's decision. I pushed the
+  branch, so both commits are now on the remote research branch. The one-use runners refuse to start unless every
+  Stages 1–3 file matches HEAD.
+* **A duplicate roadmap.** That session also wrote `docs/ROADMAP_10_STAGES.md`. The directive's file is
+  `docs/NEXUS_10_STAGE_ROADMAP.md`.
+* **Val generated once outside the runner.** During development, val project 7901 was generated in-process once, to print
+  its held-out-feature flags (empty by construction for val). No content was viewed and no seed was claimed.

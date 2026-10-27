@@ -1,0 +1,63 @@
+{
+ "1_correctness": {
+  "diagnoses": [],
+  "heldout_batch3_correct": true,
+  "independently_checked_correct": true,
+  "seen_batches_correct": true,
+  "silent_data_errors": 0,
+  "unresolved_ambiguity": 0
+ },
+ "2_completion": {
+  "explicit_abstentions": 0,
+  "finished": 1,
+  "hard_failures": 0,
+  "outcome": "COMPLETED_VERIFIED"
+ },
+ "3_reliability": {
+  "crash_recovered": true,
+  "duplicate_side_effects": 0,
+  "freshness_violations": 0,
+  "idempotent": true,
+  "recovery_s": 0.038
+ },
+ "4_cost": {
+  "agent_cpu_s": 0.472,
+  "check_cpu_s": 3.012,
+  "check_runs": 87,
+  "development_cpu_s": 4.005,
+  "exec_cpu_s": 0.521,
+  "io_bytes": 1249236,
+  "learning_overhead_cpu_s": 0.0,
+  "model_calls": 0,
+  "operating_cpu_wall_s_per_batch": 0.038,
+  "pipeline_runs": 15,
+  "proposer_calls": 8,
+  "tool_calls": {
+   "ask_clarification": 1,
+   "edit_file": 13,
+   "inspect_outputs": 1,
+   "inspect_schema": 1,
+   "read_docs": 1,
+   "run_sql_or_python": 8,
+   "verify_invariants": 7
+  },
+  "total_cpu_s": 4.005,
+  "wall_s": 4.266,
+  "wasted_cpu_s": 2.804
+ },
+ "5_human_dependence": {
+  "clarifications": 1,
+  "engineering_repairs": 0,
+  "operational_interventions": 0,
+  "unnecessary_clarifications": 0
+ },
+ "6_learning_benefit": {
+  "history": "none (cross-project learning disabled in both arms)",
+  "vs_fresh": "n/a (this arm IS the Fresh/0-history baseline)",
+  "vs_placebo": "n/a until Stage 6"
+ },
+ "7_generalization": {
+  "heldout_batch3_correct": true,
+  "split": "test"
+ }
+}

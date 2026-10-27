@@ -1,0 +1,100 @@
+{
+ "buckets": {
+  "CANCELLED": "cancelled",
+  "DELIVERED": "fulfilled",
+  "PLACED": "open",
+  "RETURNED": "fulfilled",
+  "SHIPPED": "open"
+ },
+ "carrier_exclude": [
+  "PLACED",
+  "CANCELLED"
+ ],
+ "carrier_include": [
+  "SHIPPED",
+  "DELIVERED",
+  "RETURNED"
+ ],
+ "cdc_source": "sales_orders",
+ "clarifications": {
+  "status_bucket:BKO": "open"
+ },
+ "db": {
+  "inventory": {
+   "columns": {
+    "adj_id": "move_id",
+    "qty": "delta_units",
+    "sku": "item_code",
+    "warehouse_id": "site_code"
+   },
+   "table": "inv_ledger"
+  },
+  "shipments": {
+   "columns": {
+    "carrier": "haulier",
+    "order_id": "ord_id",
+    "shipment_id": "parcel_ref",
+    "shipped_ts": "dispatched_at"
+   },
+   "table": "parcels"
+  },
+  "warehouses": {
+   "columns": {
+    "warehouse_id": "site_code"
+   },
+   "table": "sites"
+  }
+ },
+ "deletion": {
+  "column": "removed_at",
+  "deleted_when": "not null",
+  "kind": "timestamp"
+ },
+ "events_cols": {
+  "event_id": "signal_ref",
+  "event_ts": "observed_ts",
+  "event_type": "milestone",
+  "ingest_ts": "landed_ts",
+  "shipment_id": "consignment"
+ },
+ "fx": {
+  "CHF": 1.12,
+  "EUR": 1.08,
+  "GBP": 1.27,
+  "JPY": 0.0067,
+  "USD": 1.0
+ },
+ "lateness_hours": 4,
+ "manifest": {
+  "packages": [
+   "pieces"
+  ],
+  "shipment_id": [
+   "parcel_ref"
+  ],
+  "unit": [
+   "uom"
+  ],
+  "weight": [
+   "wt",
+   "weight_total"
+  ]
+ },
+ "orders_cols": {
+  "amount": "total_amount",
+  "currency": "ccy",
+  "customer_id": "cust_id",
+  "order_date": "created_on",
+  "order_id": "ord_id",
+  "promised_ts": "promise_by",
+  "status": "order_status",
+  "warehouse_id": "site_code"
+ },
+ "policy": {},
+ "units": {
+  "g": 0.001,
+  "kg": 1.0,
+  "lb": 0.45359237,
+  "oz": 0.028349523125
+ }
+}

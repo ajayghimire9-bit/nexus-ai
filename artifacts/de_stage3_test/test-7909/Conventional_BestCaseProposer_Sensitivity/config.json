@@ -1,0 +1,98 @@
+{
+ "buckets": {
+  "CANCELLED": "cancelled",
+  "DELIVERED": "fulfilled",
+  "PLACED": "open",
+  "RETURNED": "fulfilled",
+  "SHIPPED": "open"
+ },
+ "carrier_exclude": [
+  "PLACED",
+  "CANCELLED"
+ ],
+ "carrier_include": [
+  "SHIPPED",
+  "DELIVERED",
+  "RETURNED"
+ ],
+ "cdc_source": "order_header",
+ "clarifications": {},
+ "db": {
+  "inventory": {
+   "columns": {
+    "adj_id": "move_id",
+    "qty": "quantity",
+    "sku": "item_code",
+    "warehouse_id": "site_code"
+   },
+   "table": "stock_moves"
+  },
+  "shipments": {
+   "columns": {
+    "carrier": "haulier",
+    "order_id": "order_ref",
+    "shipment_id": "consignment_id",
+    "shipped_ts": "handover_ts"
+   },
+   "table": "consignments"
+  },
+  "warehouses": {
+   "columns": {
+    "warehouse_id": "site_code"
+   },
+   "table": "sites"
+  }
+ },
+ "deletion": {
+  "column": "voided_ts",
+  "deleted_when": "not null",
+  "kind": "timestamp"
+ },
+ "events_cols": {
+  "event_id": "evt_id",
+  "event_ts": "occurred_at",
+  "event_type": "kind",
+  "ingest_ts": "received_at",
+  "shipment_id": "consignment"
+ },
+ "fx": {
+  "CHF": 1.12,
+  "EUR": 1.08,
+  "GBP": 1.27,
+  "JPY": 0.0067,
+  "USD": 1.0
+ },
+ "lateness_hours": 12,
+ "manifest": {
+  "packages": [
+   "pkg_count"
+  ],
+  "shipment_id": [
+   "parcel_ref"
+  ],
+  "unit": [
+   "uom"
+  ],
+  "weight": [
+   "mass",
+   "weight_total"
+  ]
+ },
+ "orders_cols": {
+  "amount": "gross_value",
+  "currency": "ccy",
+  "customer_id": "cust_id",
+  "order_date": "booking_date",
+  "order_id": "order_ref",
+  "promised_ts": "promise_by",
+  "status": "order_status",
+  "warehouse_id": "site_code"
+ },
+ "policy": {},
+ "units": {
+  "g": 0.001,
+  "kg": 1.0,
+  "lb": 0.45359237,
+  "oz": 0.028349523125
+ }
+}
