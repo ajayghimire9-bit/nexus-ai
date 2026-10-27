@@ -22,6 +22,7 @@ Truth is never derived from the log; the evaluator's reference reads only the tr
 from __future__ import annotations
 
 import json
+import math
 import random
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -41,6 +42,7 @@ FX = ({"USD": 1.0, "EUR": 1.08, "GBP": 1.27}, {"USD": 1.0, "EUR": 1.08, "GBP": 1
       {"USD": 1.0, "EUR": 1.08, "GBP": 1.27, "CHF": 1.12})
 LATENESS_H = ([12, 24], [12, 24], [6, 36])
 SUPPLIERS = ["S1", "S2", "S3"]
+SUPPLIER_KG = [5.0, 20.0, 2.0]
 OFFS = [timedelta(hours=-5), timedelta(hours=2), timedelta(hours=9), timedelta(0)]
 BUCKETS = {"PLACED": "open", "SHIPPED": "open", "DELIVERED": "fulfilled", "RETURNED": "fulfilled", "CANCELLED": "cancelled"}
 UNITS_TO_KG = {"kg": 1.0, "lb": 0.45359237, "g": 0.001}
@@ -296,7 +298,7 @@ def encode(w, scenario, incidents=()):
             e["copies"].append((tk2, part, o2, iso(ing2)))
         tel.append(e)
         if typ == "PICKED":
-            kg = round(r.uniform(0.5, 60), 3)
+            kg = round(SUPPLIER_KG[key % 3] * math.exp(r.gauss(0, 0.35)), 3)   # per-supplier product weights (log-normal)
             mal = r.random() < 0.04
             ing_m = ing + timedelta(minutes=r.uniform(1, 30))
             if ing_m >= end:
