@@ -54,10 +54,10 @@ def decode(spec, r, reg):
                 deleted=int(a.get(f["deleted"]) or 0))
 
 
-def classify(spec, pre):
-    """{(topic, part, offset): (class, event_id)} for the consumed prefix."""
+def classify(spec, pre, registry=None):
+    """{(topic, part, offset): (class, event_id)} for the consumed prefix (decoding per the PUBLISHED registry)."""
     fx = spec["fx_to_usd"]
-    reg = _reg(pre)
+    reg = _reg(registry if registry is not None else pre)
     fin = {r["txn_id"]: r["control"] for tp, p, o, r in pre if r and str(r.get("control", "")).startswith("txn_")}
     out, seen = {}, set()
     for tp, p, o, r in sorted(pre, key=lambda x: (x[0], x[1], x[2])):
@@ -136,7 +136,10 @@ def reconcile(env, spec):
     except (OSError, ValueError):
         pass
     pre = [(tp, p, o_, r) for tp, p, o_, r, tk in arch if o_ < com.get((tp, p), 0)]
-    want = classify(spec, pre)
+    # the registry is authoritative metadata: decode with every PUBLISHED registry record, not only the consumed ones
+    regs = [(tp, p, o_, r) for tp, p, o_, r, tk in arch if tp == "_schemas" and r]
+    keep = [(tp, p, r) for tp, p, o_, r in regs] + [x for x in keep if x[0] != "_schemas"]
+    want = classify(spec, pre, regs)
     led = _rows(st, "SELECT topic, part, offset, status FROM _consumed") or []
     got = {(t, p, o_): STATUS.get(s, s) for t, p, o_, s in led}
     for k in sorted(set(want) | set(got)):
@@ -148,7 +151,7 @@ def reconcile(env, spec):
     gq = Counter(map(tuple, _rows(st, "SELECT topic, msg_id, reason FROM quarantine") or []))
     ev["quarantine_rows"] = [dict(row=list(r), want=wq[r], got=gq[r]) for r in sorted(set(wq) | set(gq)) if wq[r] != gq[r]]
     # canonical contents + multiplicity of accepted events
-    reg = _reg(pre)
+    reg = _reg(regs)
     first = {}
     for k, (c, eid) in want.items():
         if c == "accepted":

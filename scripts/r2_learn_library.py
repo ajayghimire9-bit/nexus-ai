@@ -105,7 +105,13 @@ def phase_admit(mode):
     lib = SL.Library(procs, True, "experienced")
     plc = SL.placebo(procs)
     wall = sum(v.get("wall_s", 0.0) for v in fresh.values())
-    out = dict(library=lib.to_json(), placebo=plc, loo=loo, loo_failures=failures, unit_costs=uc, mode=mode,
+    counts = {}                                          # per-decision option frequencies of the accepted src builds
+    for v in fresh.values():
+        if brec(v)["outcome"] == "COMPLETED_VERIFIED":
+            for d, o in v["build"]["final_choice"].items():
+                counts.setdefault(d, {}).setdefault(o, 0)
+                counts[d][o] += 1
+    out = dict(library=lib.to_json(), placebo=plc, loo=loo, loo_failures=failures, unit_costs=uc, mode=mode, option_counts=counts,
                learning_cost=dict(source_curriculum_cpu_s=curriculum_cpu, loo_maintenance_cpu_s=maint_cpu,
                                   during_useful_work_cpu_s=0.0, curriculum_wall_s=wall),
                admitted=[p["id"] for p in procs if p["active"]], retired={p["id"]: p["retired_because"] for p in procs if not p["active"]})

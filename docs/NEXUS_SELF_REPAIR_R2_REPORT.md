@@ -151,3 +151,74 @@ undetermined.
   never used for tuning.
 * **Failure rules:** a crashed arm fails that project. A cap hit is saved as a CHECKPOINT and resumed, which is not a
   re-run. Post-test fixes are separate commits and are not results.
+
+### 0.9 Development log (de4 src / dev only; before the freeze)
+
+1. **Reproducer.** Interrupted snapshot at tick 11 plus clock skew at tick 13, forced on 8 de4/dev worlds, run with the
+   correct pipeline, the R1 operator and the R1 reconciliation. On **de4-dev-977**, R1's reconciliation passed while the
+   evaluator scored the data wrong: the same silent pattern as R1's test-7953.
+   * **Mechanism:** event `t00034`'s first delivery (tick 12) has a valid event time. The clock-skew incident rewrote
+     **only its retry duplicate** (tick 13), and the incident's truth update relabelled the whole event as a future event.
+   * **Conclusion:** under the declared identity rule, the first delivery is the event, so the pipeline was right and
+     the **reference** was wrong.
+   * **Fix (environment side, disclosed):** de4 telemetry truth takes each event's time and future flag from its first
+     delivered copy (`r2_env._first_copy_truth`).
+   * Whether this is also what happened on R1's test-7953 stays **undetermined**, since the sealed world is not
+     regenerated. R1 scores are not rescored.
+2. **Event-level reconciliation (`r2_reconcile`).** The test results are in `artifacts/r2_dev_results/reconcile_mutations.json`.
+   * **Setting:** 4 dev worlds × {no incidents, the reproducer setting}, each producing 1 clean state plus 6 mutation
+     kinds (M1–M6).
+   * **Clean states:** both reconcilers accept 8/8.
+   * **Mutations:** R2 flags **48/48**. R1's count-based reconciler flags **8/48**: only the duplicate promoted to
+     accepted (M3). It misses M1 count-preserving substitution, M2 changed payload, M4 missing event, M5 wrong quarantine
+     reason and M6 superseded-payload change.
+   * **Bounds:** these 6 mutation kinds on these 8 states. No claim beyond that.
+   * **Defects found and fixed on dev:**
+     * after a failed run, published outputs legitimately lag the ledger (non-transactional protocols commit consumption
+       per topic), so output comparisons are deferred while ledger, bronze and coverage checks still apply;
+     * decoding now uses every **published** registry record, after a crash on de4-dev-974 where a consumed record's
+       registry version lay beyond the committed `_schemas` offset.
+   * **First-run bug:** `forced=[]` meant "use the schedule", so the "no incidents" baseline of the first test run had
+     unrepaired incidents (`reconcile_mutations_first_run_baseline_bug.json`).
+3. **Localisation fix, applied to both localisers before the comparison.** It was found on de4-dev-971. When a relaxed
+   incident composition exists, localisation uses the evidence observed **after** it, in its shadow. That is the
+   counterexample with the incident removed. R1 discarded shadow evidence for monitors already failing in the real
+   environment, so a crash-time artefact (stale accounting typed to `dedup`) hid a genuine `lateness` defect.
+4. **Comparison B under the frozen rule** (de4-dev-972 X1 and 975 X2; 22 single-fault mutants each = 44 matched cases;
+   identical reconciliation, observations and caps):
+
+   | arm | **end-to-end correct** | total operator CPU, all cases | silent | top-1 (diag.) | mean suspect set (diag.) | full verifications |
+   |---|---|---|---|---|---|---|
+   | B0 | 33/44 | 328.2 s | 0 | 6/35 | 18.0 | 1,372 |
+   | **B1** | **42/44** | **87.4 s** | 0 | 27/35 | 3.0 | 165 |
+
+   **B1 is adopted** (primary: 42 > 33).
+5. **Comparison C** (inside B1, same 44 cases):
+
+   | arm | end-to-end correct | total operator CPU incl. scoring |
+   |---|---|---|
+   | C0 | 42 | 87.4 s |
+   | C1 | 42 | 96.9 s |
+   | C2 | 42 | 98.7 s |
+
+   **No improvement, so C0 is kept.** C1 and C2 ran four processes in parallel, against two for C0. CPU is measured per
+   process, but contention is possible.
+6. **Library** (de4/src; B1 / C0):
+   * 11 build procedures admitted;
+   * `commit_protocol`, `gold_maintenance` and `lateness` retired because the src evidence disagrees;
+   * **every ops playbook rejected** (each saving was ≤ its retrieval and applicability cost);
+   * source learning cost 464.9 s.
+7. **Baseline development (Fixed_Policy) before the freeze.**
+   * **What went wrong on dev:** with this src sample, the src-majority `lateness` option is `processing_time` (4 of 6).
+     It is indistinguishable from `watermark` on visible data. Fixed_Policy therefore abstained twice when the lateness
+     probe caught it, and when the probe did not, it deployed the wrong option and its single typed redeploy took the
+     first alternative in template order (`none`).
+   * **What was strengthened, still a fixed policy with no search:**
+     * the library records the option frequencies of the accepted src builds (`option_counts`);
+     * the build gets ONE fixed fallback: the failing check's implicated decisions move to their second most frequent
+       src option, then there is one more full-suite check;
+     * the typed redeploy uses the most frequent src option other than the current one.
+   * **Preserved from R1:** the precondition checks, the incident runbook and the typed redeploy itself.
+   * **Result on de4-dev-973 / 974 / 976 / 977:** natural 4/4 and forced 4/4.
+8. **Incident scheduling.** de4 projects get 2 seen incidents each, while R1's non-test projects got 3. This is noted here
+   because the protocol did not state it.

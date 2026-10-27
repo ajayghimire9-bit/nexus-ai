@@ -47,6 +47,8 @@ PATCHES = [
                 # the incident's own symptoms are removed; otherwise on the real + shadow evidence (R1)
                 loc_bad = {k: v for k, v in self._shadow_mons.get(json.dumps(relaxed, sort_keys=True, default=str), {}).items() if not v[0] and k != "drift"} if relaxed else {}
                 chosen = self._repair_pipeline(env, sig, loc_bad or dict(bad, **shadow_bad), relaxed)"""),
+    ("""                alt = next(o for o in RT.DECISIONS[hole] if o != env.choice[hole])""",
+     """                alt = SRC_ALT(self, hole, env.choice[hole])"""),
 ]
 
 
@@ -150,6 +152,17 @@ def ORDER_C(op, env, cands, scores, bad):
 
 
 O2.ORDER_C = ORDER_C
+
+
+def SRC_ALT(op, d, cur):
+    """Fixed_Policy's typed redeploy option: the most frequent src option of that decision other than the current one
+    (src experience: artifacts/r2_library.json option_counts); the first alternative when src has no evidence."""
+    cnt = getattr(op, "src_counts", {}).get(d, {})
+    alts = [o for o in RT2.DECISIONS[d] if o != cur]
+    return max(alts, key=lambda o: (cnt.get(o, 0), -alts.index(o)))
+
+
+O2.SRC_ALT = SRC_ALT
 NexusOpsR2, FixedPolicyOps, run_ops, claims_healthy, monitors = (O2.NexusOpsR1, O2.FixedPolicyOps, O2.run_ops, O2.claims_healthy,
                                                                  O2.monitors_r1)
 OpsEnv, apply_comp = O2.OpsEnvR1, O2.apply_comp

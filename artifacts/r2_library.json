@@ -1,0 +1,1016 @@
+{
+ "admitted": [
+  "build:dedup",
+  "build:apply_order",
+  "build:ts_parse",
+  "build:backfill_merge",
+  "build:schema_handling",
+  "build:partition_discovery",
+  "build:ts_format",
+  "build:snapshots",
+  "build:fx",
+  "build:deletes",
+  "build:malformed"
+ ],
+ "learning_cost": {
+  "curriculum_wall_s": 397.029710293049,
+  "during_useful_work_cpu_s": 0.0,
+  "loo_maintenance_cpu_s": 129.037869,
+  "source_curriculum_cpu_s": 335.814876
+ },
+ "library": {
+  "frozen": true,
+  "name": "experienced",
+  "procs": [
+   {
+    "active": false,
+    "agreement": 0.5,
+    "decision": "commit_protocol",
+    "est_saving_cpu_s": 18.0483,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-963"
+    ],
+    "id": "build:commit_protocol",
+    "kind": "build",
+    "option": "sink_then_offsets",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": [
+     "src evidence disagrees (0.50)"
+    ]
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "dedup",
+    "est_saving_cpu_s": 1.5279,
+    "falsified_on": [
+     "de4-src-964",
+     "de4-src-966"
+    ],
+    "id": "build:dedup",
+    "kind": "build",
+    "option": "by_msg_id",
+    "preconditions": [
+     "redelivery"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "apply_order",
+    "est_saving_cpu_s": 8.4162,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "id": "build:apply_order",
+    "kind": "build",
+    "option": "source_version",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "ts_parse",
+    "est_saving_cpu_s": 4.7571,
+    "falsified_on": [
+     "de4-src-964"
+    ],
+    "id": "build:ts_parse",
+    "kind": "build",
+    "option": "utc",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": false,
+    "agreement": 0.6666666666666666,
+    "decision": "gold_maintenance",
+    "est_saving_cpu_s": 1.8631,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963"
+    ],
+    "id": "build:gold_maintenance",
+    "kind": "build",
+    "option": "full_recompute",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": [
+     "src evidence disagrees (0.67)"
+    ]
+   },
+   {
+    "active": false,
+    "agreement": 0.6666666666666666,
+    "decision": "lateness",
+    "est_saving_cpu_s": 2.6572,
+    "falsified_on": [
+     "de4-src-962",
+     "de4-src-964"
+    ],
+    "id": "build:lateness",
+    "kind": "build",
+    "option": "processing_time",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": [
+     "src evidence disagrees (0.67)"
+    ]
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "backfill_merge",
+    "est_saving_cpu_s": 11.6064,
+    "falsified_on": [
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-966"
+    ],
+    "id": "build:backfill_merge",
+    "kind": "build",
+    "option": "lww_tombstones",
+    "preconditions": [
+     "backfill"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "schema_handling",
+    "est_saving_cpu_s": 7.6808,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-966"
+    ],
+    "id": "build:schema_handling",
+    "kind": "build",
+    "option": "registry_typed",
+    "preconditions": [
+     "registry_evolution"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "partition_discovery",
+    "est_saving_cpu_s": 1.2401,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-964",
+     "de4-src-965"
+    ],
+    "id": "build:partition_discovery",
+    "kind": "build",
+    "option": "dynamic",
+    "preconditions": [
+     "partitioned"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "ts_format",
+    "est_saving_cpu_s": 2.279,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965"
+    ],
+    "id": "build:ts_format",
+    "kind": "build",
+    "option": "registry_typed",
+    "preconditions": [
+     "telemetry"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "snapshots",
+    "est_saving_cpu_s": 12.7934,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-964",
+     "de4-src-965"
+    ],
+    "id": "build:snapshots",
+    "kind": "build",
+    "option": "per_tick",
+    "preconditions": [
+     "cdc"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "fx",
+    "est_saving_cpu_s": 6.4579,
+    "falsified_on": [
+     "de4-src-961"
+    ],
+    "id": "build:fx",
+    "kind": "build",
+    "option": "table",
+    "preconditions": [
+     "multi_currency"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "deletes",
+    "est_saving_cpu_s": 2.6227,
+    "falsified_on": [
+     "de4-src-961",
+     "de4-src-964",
+     "de4-src-966"
+    ],
+    "id": "build:deletes",
+    "kind": "build",
+    "option": "soft_and_hard",
+    "preconditions": [
+     "soft_delete_flag"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": true,
+    "agreement": 1.0,
+    "decision": "malformed",
+    "est_saving_cpu_s": 1.2981,
+    "falsified_on": [
+     "de4-src-963"
+    ],
+    "id": "build:malformed",
+    "kind": "build",
+    "option": "quarantine",
+    "preconditions": [
+     "manifests"
+    ],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964",
+     "de4-src-965",
+     "de4-src-966"
+    ],
+    "retired_because": []
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.0,
+    "id": "ops:monitor:drift",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-964"
+    ],
+    "repair": [
+     "rollback",
+     "unit_override"
+    ],
+    "retired_because": [
+     "saving 0.0000 <= cost 0.4704"
+    ],
+    "signature": "monitor:drift"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.0,
+    "id": "ops:monitor:reconciliation|oom",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-961"
+    ],
+    "repair": [
+     "batch"
+    ],
+    "retired_because": [
+     "saving 0.0000 <= cost 0.4704"
+    ],
+    "signature": "monitor:reconciliation|oom"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.0,
+    "id": "ops:monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-961",
+     "de4-src-962",
+     "de4-src-963"
+    ],
+    "repair": [
+     "redeploy",
+     "rollback"
+    ],
+    "retired_because": [
+     "saving 0.0000 <= cost 0.4704"
+    ],
+    "signature": "monitor:reconciliation"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.0,
+    "id": "ops:monitor:observation_conformance|monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-964"
+    ],
+    "repair": [
+     "redeploy",
+     "rollback"
+    ],
+    "retired_because": [
+     "saving 0.0000 <= cost 0.4704"
+    ],
+    "signature": "monitor:observation_conformance|monitor:reconciliation"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 1.0,
+    "id": "ops:monitor:reconciliation|monitor:watermark_sanity",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-962",
+     "de4-src-963",
+     "de4-src-965"
+    ],
+    "repair": [
+     "future_guard",
+     "rollback"
+    ],
+    "retired_because": [
+     "saving 0.1188 <= cost 0.4704"
+    ],
+    "signature": "monitor:reconciliation|monitor:watermark_sanity"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 1.0,
+    "id": "ops:crash:decode|monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-962",
+     "de4-src-965"
+    ],
+    "repair": [
+     "dead_letter"
+    ],
+    "retired_because": [
+     "saving 0.1188 <= cost 0.4704"
+    ],
+    "signature": "crash:decode|monitor:reconciliation"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.5,
+    "id": "ops:monitor:snapshot_complete",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-963",
+     "de4-src-964"
+    ],
+    "repair": [
+     "resnapshot"
+    ],
+    "retired_because": [
+     "saving 0.0594 <= cost 0.4704"
+    ],
+    "signature": "monitor:snapshot_complete"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 1.0,
+    "id": "ops:monitor:integrity|monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-966"
+    ],
+    "repair": [
+     "rollback"
+    ],
+    "retired_because": [
+     "saving 0.1188 <= cost 0.4704"
+    ],
+    "signature": "monitor:integrity|monitor:reconciliation"
+   },
+   {
+    "active": false,
+    "agreement": 1.0,
+    "est_saving_shadow_tests": 0.0,
+    "id": "ops:crash:readonly|monitor:reconciliation",
+    "kind": "ops",
+    "preconditions": [],
+    "provenance": [
+     "de4-src-966"
+    ],
+    "repair": [
+     "rotate_credentials"
+    ],
+    "retired_because": [
+     "saving 0.0000 <= cost 0.4704"
+    ],
+    "signature": "crash:readonly|monitor:reconciliation"
+   }
+  ]
+ },
+ "loo": {
+  "961": {
+   "correct": true,
+   "cpu": 40.359723,
+   "e2e": true,
+   "fresh_cpu": 86.803424,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "962": {
+   "correct": false,
+   "cpu": 14.393638000000006,
+   "e2e": true,
+   "fresh_cpu": 50.563295999999994,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "963": {
+   "correct": false,
+   "cpu": 34.635200000000005,
+   "e2e": true,
+   "fresh_cpu": 71.853717,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "964": {
+   "correct": false,
+   "cpu": 21.974841999999995,
+   "e2e": true,
+   "fresh_cpu": 55.081876,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "965": {
+   "correct": true,
+   "cpu": 10.206824000000001,
+   "e2e": true,
+   "fresh_cpu": 37.174986999999994,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  },
+  "966": {
+   "correct": true,
+   "cpu": 7.467642,
+   "e2e": true,
+   "fresh_cpu": 34.33757600000002,
+   "fresh_e2e": true,
+   "outcome": "COMPLETED_UNVERIFIED"
+  }
+ },
+ "loo_failures": {},
+ "mode": "B1",
+ "option_counts": {
+  "apply_order": {
+   "source_version": 6
+  },
+  "backfill_merge": {
+   "lww_tombstones": 6
+  },
+  "commit_protocol": {
+   "sink_then_offsets": 3,
+   "transactional": 3
+  },
+  "dedup": {
+   "by_msg_id": 6
+  },
+  "deletes": {
+   "soft_and_hard": 6
+  },
+  "discount_unit": {
+   "percent_only": 4,
+   "registry_unit": 2
+  },
+  "fx": {
+   "table": 6
+  },
+  "fx_unknown": {
+   "error": 2,
+   "quarantine": 4
+  },
+  "gap_handling": {
+   "skip": 1,
+   "wait_contiguous": 5
+  },
+  "gold_maintenance": {
+   "full_recompute": 4,
+   "recompute_affected": 2
+  },
+  "lateness": {
+   "processing_time": 4,
+   "watermark": 2
+  },
+  "malformed": {
+   "quarantine": 6
+  },
+  "partition_discovery": {
+   "dynamic": 6
+  },
+  "schema_handling": {
+   "registry_typed": 6
+  },
+  "snapshots": {
+   "per_tick": 6
+  },
+  "ts_format": {
+   "registry_typed": 6
+  },
+  "ts_parse": {
+   "utc": 6
+  },
+  "txn_isolation": {
+   "read_committed": 1,
+   "read_uncommitted": 5
+  }
+ },
+ "placebo": [
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "dedup",
+   "est_saving_cpu_s": 1.5279,
+   "falsified_on": [
+    "de4-src-964",
+    "de4-src-966"
+   ],
+   "id": "placebo:build:dedup",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "redelivery"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "apply_order",
+   "est_saving_cpu_s": 8.4162,
+   "falsified_on": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "id": "placebo:build:apply_order",
+   "kind": "build",
+   "option": "arrival",
+   "preconditions": [
+    "cdc"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "ts_parse",
+   "est_saving_cpu_s": 4.7571,
+   "falsified_on": [
+    "de4-src-964"
+   ],
+   "id": "placebo:build:ts_parse",
+   "kind": "build",
+   "option": "text",
+   "preconditions": [
+    "telemetry"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "backfill_merge",
+   "est_saving_cpu_s": 11.6064,
+   "falsified_on": [
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-966"
+   ],
+   "id": "placebo:build:backfill_merge",
+   "kind": "build",
+   "option": "blind_overwrite",
+   "preconditions": [
+    "backfill"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "schema_handling",
+   "est_saving_cpu_s": 7.6808,
+   "falsified_on": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-966"
+   ],
+   "id": "placebo:build:schema_handling",
+   "kind": "build",
+   "option": "v1_lenient",
+   "preconditions": [
+    "registry_evolution"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "partition_discovery",
+   "est_saving_cpu_s": 1.2401,
+   "falsified_on": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-964",
+    "de4-src-965"
+   ],
+   "id": "placebo:build:partition_discovery",
+   "kind": "build",
+   "option": "static_initial",
+   "preconditions": [
+    "partitioned"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "ts_format",
+   "est_saving_cpu_s": 2.279,
+   "falsified_on": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965"
+   ],
+   "id": "placebo:build:ts_format",
+   "kind": "build",
+   "option": "iso_only",
+   "preconditions": [
+    "telemetry"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "snapshots",
+   "est_saving_cpu_s": 12.7934,
+   "falsified_on": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-964",
+    "de4-src-965"
+   ],
+   "id": "placebo:build:snapshots",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "cdc"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "fx",
+   "est_saving_cpu_s": 6.4579,
+   "falsified_on": [
+    "de4-src-961"
+   ],
+   "id": "placebo:build:fx",
+   "kind": "build",
+   "option": "none",
+   "preconditions": [
+    "multi_currency"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "deletes",
+   "est_saving_cpu_s": 2.6227,
+   "falsified_on": [
+    "de4-src-961",
+    "de4-src-964",
+    "de4-src-966"
+   ],
+   "id": "placebo:build:deletes",
+   "kind": "build",
+   "option": "hard_only",
+   "preconditions": [
+    "soft_delete_flag"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  },
+  {
+   "active": true,
+   "agreement": 1.0,
+   "decision": "malformed",
+   "est_saving_cpu_s": 1.2981,
+   "falsified_on": [
+    "de4-src-963"
+   ],
+   "id": "placebo:build:malformed",
+   "kind": "build",
+   "option": "drop_silent",
+   "preconditions": [
+    "manifests"
+   ],
+   "provenance": [
+    "de4-src-961",
+    "de4-src-962",
+    "de4-src-963",
+    "de4-src-964",
+    "de4-src-965",
+    "de4-src-966"
+   ],
+   "retired_because": []
+  }
+ ],
+ "retired": {
+  "build:commit_protocol": [
+   "src evidence disagrees (0.50)"
+  ],
+  "build:gold_maintenance": [
+   "src evidence disagrees (0.67)"
+  ],
+  "build:lateness": [
+   "src evidence disagrees (0.67)"
+  ],
+  "ops:crash:decode|monitor:reconciliation": [
+   "saving 0.1188 <= cost 0.4704"
+  ],
+  "ops:crash:readonly|monitor:reconciliation": [
+   "saving 0.0000 <= cost 0.4704"
+  ],
+  "ops:monitor:drift": [
+   "saving 0.0000 <= cost 0.4704"
+  ],
+  "ops:monitor:integrity|monitor:reconciliation": [
+   "saving 0.1188 <= cost 0.4704"
+  ],
+  "ops:monitor:observation_conformance|monitor:reconciliation": [
+   "saving 0.0000 <= cost 0.4704"
+  ],
+  "ops:monitor:reconciliation": [
+   "saving 0.0000 <= cost 0.4704"
+  ],
+  "ops:monitor:reconciliation|monitor:watermark_sanity": [
+   "saving 0.1188 <= cost 0.4704"
+  ],
+  "ops:monitor:reconciliation|oom": [
+   "saving 0.0000 <= cost 0.4704"
+  ],
+  "ops:monitor:snapshot_complete": [
+   "saving 0.0594 <= cost 0.4704"
+  ]
+ },
+ "unit_costs": {
+  "applicability_cpu_s": 0.0028196666666667016,
+  "retrieval_cpu_s": 2.5999999997962837e-05,
+  "shadow_cpu_s": 0.11880663888888894
+ }
+}

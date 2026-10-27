@@ -80,6 +80,11 @@ def worlds(split, seeds):
         yield w["seed"], w
 
 
+def src_counts():
+    p = ROOT / "artifacts/r2_library.json"
+    return json.loads(p.read_text()).get("option_counts", {}) if p.exists() else {}
+
+
 def libs():
     p = ROOT / "artifacts/r2_library.json"
     if not p.exists():
@@ -92,7 +97,9 @@ def operator(arm, library, seed, spec, mode, c_mode=None):
     if arm == "Conventional_Checked":
         return O.ConventionalOps(arm, seed=seed)
     if arm == "Fixed_Policy":
-        return RO.FixedPolicyOps(arm, detector=OP_DETECTOR, library=None, seed=seed, spec=spec, mode=mode)
+        op = RO.FixedPolicyOps(arm, detector=OP_DETECTOR, library=None, seed=seed, spec=spec, mode=mode)
+        op.src_counts = src_counts()
+        return op
     op = RO.NexusOpsR2(arm, detector=OP_DETECTOR, library=library, seed=seed, spec=spec, mode=mode)
     op.c_mode = c_mode or freeze().get("c_mode", "C0")
     return op
@@ -131,6 +138,7 @@ def run_project(seed, w, split, arms, art, lib=None, plc=None, mode=None, compon
         (ws / "docs").mkdir(parents=True)
         (ws / "docs/spec.json").write_text(json.dumps(w["spec"], sort_keys=True))
         RE.write_log(enc, ws / "visible", 8, archive=True)
+        RA.COUNTS.clear(); RA.COUNTS.update(src_counts())
         rec = RA.build(arm, ws, profile=profile(), library=library)
         cfg = json.loads((ws / "bundle/config.json").read_text())
         (d / "bad.json").write_text(json.dumps(dict(cfg, fx={k: v * 10 for k, v in cfg["fx"].items()})))
