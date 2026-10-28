@@ -1,0 +1,112 @@
+{
+ "proof": {
+  "U": {
+   "unsat_by_complete_search": true,
+   "nodes": 625,
+   "minimal_histories": 1,
+   "of": 30
+  },
+  "T": {
+   "unsat_by_complete_search": true,
+   "nodes": 3125,
+   "minimal_histories": 2,
+   "of": 30
+  }
+ },
+ "tool": {
+  "rep": "stack",
+  "actions": [
+   "none",
+   "pop_discard",
+   "pop_restore",
+   "push"
+  ],
+  "sols": {
+   "U": "{'SHOW': ('keep', 'none'), 'UNDO': ('keep', 'pop_restore'), 'ADD': ('add', 'push'), 'SUB': ('sub', 'push')}",
+   "T": "{'SET': ('set', 'none'), 'BEGIN': ('keep', 'push'), 'READ': ('keep', 'none'), 'COMMIT': ('keep', 'pop_discard'), 'ROLLBACK': ('keep', 'pop_restore')}"
+  }
+ },
+ "invention_cpu_s": 0.1,
+ "withheld": {
+  "S": {
+   "a_tool": {
+    "solved": 3,
+    "cpu_s": 0.002,
+    "program": "{'INC': ('add', 'none'), 'SHOW': ('keep', 'none'), 'MARK': ('keep', 'push'), 'DROP': ('keep', 'pop_discard'), 'RESTORE': ('keep', 'pop_restore')}",
+    "rep": "stack"
+   },
+   "b_direct": {
+    "solved": 3,
+    "cpu_s": 0.679,
+    "rep": "stack",
+    "timed_out": false,
+    "program": "None"
+   },
+   "b2_direct_retro": {
+    "solved": 3,
+    "cpu_s": 0.076,
+    "rep": "stack",
+    "timed_out": false,
+    "program": "None"
+   },
+   "c_library_successes": {
+    "solved": 0,
+    "cpu_s": 0.001,
+    "rep": null,
+    "timed_out": false,
+    "program": "None"
+   },
+   "d_random_rep": {
+    "solved": 0,
+    "cpu_s": 0.343,
+    "rep": null,
+    "timed_out": false,
+    "program": "None"
+   }
+  },
+  "C": {
+   "a_tool": {
+    "solved": 3,
+    "cpu_s": 0.004,
+    "program": "{'SHOW': ('keep', 'none'), 'UNDO': ('keep', 'pop_restore'), 'ADD': ('add', 'push'), 'BEGIN': ('keep', 'push'), 'ROLLBACK': ('keep', 'pop_restore'), 'SUB': ('sub', 'push')}",
+    "rep": "stack"
+   },
+   "b_direct": {
+    "solved": 3,
+    "cpu_s": 0.723,
+    "rep": "stack",
+    "timed_out": false,
+    "program": "None"
+   },
+   "b2_direct_retro": {
+    "solved": 3,
+    "cpu_s": 0.043,
+    "rep": "stack",
+    "timed_out": false,
+    "program": "None"
+   },
+   "c_library_successes": {
+    "solved": 0,
+    "cpu_s": 0.001,
+    "rep": null,
+    "timed_out": false,
+    "program": "None"
+   },
+   "d_random_rep": {
+    "solved": 0,
+    "cpu_s": 0.313,
+    "rep": null,
+    "timed_out": false,
+    "program": "None"
+   }
+  }
+ },
+ "totals": {
+  "a_tool": 6,
+  "b_direct": 6,
+  "b2_direct_retro": 6,
+  "c_library_successes": 0,
+  "d_random_rep": 0
+ },
+ "outcome": "REJECTED FOR THIS SETTING"
+}

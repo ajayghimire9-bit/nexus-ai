@@ -107,3 +107,99 @@ This document has three parts:
 | 5 experiment translation (v1) | learn the experiment-type order on L, C, I; target energy; hypotheses from the construction bank | mean queries: translation 0.46, info-gain 0.40, fresh 0.46, irrelevant 0.43; identified 14/13/10/10 of 35; source learning 73 s | **INCONCLUSIVE** (3-example hypothesis sets were almost trivial, so there was no headroom). Rerun under priority C |
 | 7 genome pilot | 5 lineages × 3 generations; hyper-network 12,213 parameters (float16) plus a symbolic prior; serialised **22.7 KB** (zlib) | regrowth CPU to target on energy: evolved = defaults = random within about 0.1 s in every lineage; MAML start and full inheritance marginally faster; 0/5 wins | **INCONCLUSIVE** (a 21-operator cost table gives the genome almost no leverage, and the energy stream had little headroom). The size limit does **not** imply that only "how to learn" survives. Shared decoder code (op list, descriptor, `decode`) is fixed infrastructure that is not counted |
 | 6 memory translator (v1) | running at the addendum (old design: irreversible cuts) | — | recorded when complete; the addendum requires cuts to be used for **ordering** unless soundness is checked in a declared scope |
+
+### 0.6 Work after the owner addendum (dev only; raw data in `artifacts/t7_dev/`)
+
+#### Priority A: stronger repair acceptance
+
+* **Data.** The known u5 failure *mechanisms* were reproduced on **fresh** dev data: t7/pdev projects with X3/X4, which
+  are known classes, plus targeted lifecycle tasks. The u5 sealed seeds were not reused.
+* **Components** (`t7_repair`, `t7_platform`):
+  * transition × continuation probes from register-diverse prefixes;
+  * column-level register search with merging (it fixed a fragmentation in which one register was fitted per emitting
+    transition);
+  * a size-5 update grammar, needed for `acc + x + x`;
+  * early-pruning variable order;
+  * condition-crossing status probes;
+  * heightened post-repair monitoring.
+* **Targeted lifecycle results** (X3 kinds present, 16 training keys, 5 dev seeds per family, held-out 200 keys):
+
+  | family | u5 learner: exact / key acc | covered: exact / key acc |
+  |---|---|---|
+  | L.barrier | 5 / 1.000 | 5 / 1.000 |
+  | C.clearing (PARTIAL then COMMIT) | 2 / 0.788 | **5 / 1.000** |
+  | I.session (SUSPEND / RESUME) | 1 / 0.391 | **4 / 0.982** |
+  | E.meter (ESTIMATE = acc + 2x) | 0 / 0.000 | 0 / 0.754 |
+  | **total** | 8/20, 0.545, 5,771 queries, 110 s | **14/20, 0.934**, 14,511 queries, 266 s |
+
+* **8 dev projects** (paired; the same learner in both arms):
+  * NEXUS_Strong: independently correct 6/8, silent errors 1, escalations 0, abstentions 1.
+  * NEXUS_U5: 4/8, 2, 1, 1.
+  * Both remaining failures are energy projects: 12403 is silent (`E.meter`), and 12407 abstains because the lifecycle
+    is unsolved at build.
+* **Outcome:** PROMOTION CANDIDATE (provisional), by the rule set before the run: fewer silent errors, not fewer
+  independently correct.
+* **Costs:** 2.4× lifecycle-learning CPU and 2.5× membership queries.
+* **Dev debugging during priority A, all disclosed:**
+  * a 12-key harness bug (field discovery needs more than 12 keys);
+  * the register-search blow-up;
+  * the column-merge key collision.
+
+#### Trial 3 v2 (priority B) — REJECTED FOR THIS SETTING
+
+* **Correction from v1:** the tool now allows every primitive update with its stack actions, and controls have the same
+  grammar and CPU.
+* **Bounded infeasibility,** established by complete search:
+  * U: 625 nodes, reduced by ddmin to 1 of 30 histories;
+  * T: 3,125 nodes, reduced to 2 of 30 histories.
+* **Synthesised:**
+  * representation = per-key `x` plus a stack of snapshots;
+  * state updates = per-symbol `(g, stack action)`;
+  * reusable operations = push / pop_restore / pop_discard;
+  * task-specific callers = the per-symbol assignments, for example
+    `T: BEGIN=(keep, push), SET=(set, none), COMMIT=(keep, pop_discard), ROLLBACK=(keep, pop_restore), READ=(keep, none)`.
+* **Withheld results:** S (new symbols) and C (composition): tool 6/6 fresh held-out streams, direct search 6/6, direct
+  plus retrodiction 6/6, library from successes 0/6, random representation 0/6.
+* **Cost:** search 0.006 s for the tool (plus 0.1 s invention) against 1.4 s for direct search. That is a cost benefit
+  only; the criterion is solves.
+* **Retrodiction** is used only as a filter on candidate explanations. Other mechanisms (the queue was tried) were
+  ruled out by data, not assumed away.
+
+#### Trial 5 (priority C)
+
+* **v1 and v2 had a fidelity bug:** the hypothesis bank stopped early on a placeholder target, which left at most one
+  hypothesis (v2 output kept in `t5v2_early_stop_bug.json`). Both are **INCONCLUSIVE**.
+* **v2b** (fixed; 1 labelled example; only the ordered experiment-type list survives to the target; no solutions):
+
+  | method | mean queries | identified (of 35) |
+  |---|---|---|
+  | translation | **1.00** | 13 |
+  | info-gain | 1.29 | 13 |
+  | fresh | 0.91 | 10 |
+  | irrelevant | 1.57 | 10 |
+
+* Every method spends about 71 s of CPU on the target; translation also spends 85 s on source learning.
+* **Outcome: REJECTED FOR THIS SETTING.** Translation used 22 % fewer queries than info-gain at equal success, but
+  fresh synthesis used fewer queries (with fewer identified), and the fully loaded CPU is higher.
+
+#### Trial 6 v1 (old design, irreversible cuts) — REJECTED FOR THIS SETTING
+
+* Solved on tasks 9–24 of 3 sequences:
+
+  | arm | solved | CPU |
+  |---|---|---|
+  | unchanged | 38 | 99.2 s |
+  | reset | 30 | 108.8 s |
+  | full replay | 38 | 110.7 s |
+  | joint translator | 38 | 93.8 s |
+
+* The contract passed 3/3.
+* Memory preservation clearly matters (reset −8 solves), and the translator is 15 % cheaper than replay.
+* There was **no learning gain** over the unchanged learner.
+* **v2** (cuts used for ordering only, with regime-aware evidence) is **deferred**: no headroom setting fit the remaining
+  budget fairly.
+
+#### Freeze
+
+`artifacts/t7_freeze.json` lists 32 files with their gates. Spot-check randomness is now seeded per project, so
+schedules are paired across arms.

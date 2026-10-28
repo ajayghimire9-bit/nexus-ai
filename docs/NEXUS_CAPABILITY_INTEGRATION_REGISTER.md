@@ -1,0 +1,108 @@
+# NEXUS capability / integration register (NOT LOCKED; t7, 2026-10-28)
+
+A failed method does not retire its capability goal. Its component is simply left inactive.
+
+## Status vocabulary
+
+* **experimental:** the component exists but is not used by the confirmation stack.
+* **provisionally integrated:** a dev promotion candidate, wired into the confirmation stack and awaiting independent
+  confirmation.
+* **independently confirmed:** it passed a one-use validation and the sealed test.
+* **inactive:** it was tested and left out of the stack.
+
+## Components
+
+### Lifecycle class invention by continuation splitting
+
+* **Module:** `u5_statesplit`.
+* **Call site:** `u5_platform.learn_b` (build and `repair_B`), active on every lifecycle stream.
+* **Artifact:** the generated `StateMachine_*` class per project, with its witnesses.
+* **Evidence:**
+  * u5 dev: 15/15 exact, vs 0/15 for the flat dictionary.
+  * u5 sealed test: 9/12 for NEXUS_U5, vs 0/12 for the flat-dictionary ablation.
+* **Limits:**
+  * finite modes plus numeric registers only;
+  * the u5 update grammar has size ≤ 3;
+  * relearning can miss delayed consequences (see the next component).
+* **Status:** independently confirmed (u5 sealed test, as a pillar), in its u5 form.
+
+### Covered relearning
+
+* **Module:** `t7_repair.learn_class_covered` / `Learner2`.
+* **Call site:** `NexusArmStrong._learn_b`, active at build and on every lifecycle repair.
+* **What it does:**
+  * transition × continuation probes from register-diverse prefixes;
+  * column-level register search with merging;
+  * a size-5 update grammar;
+  * early-pruning variable order.
+* **Artifact:** none persistent; this is a procedure.
+* **Evidence (dev only):**
+  * targeted X3 lifecycle tasks: exact 14/20 vs 8/20, key accuracy 0.93 vs 0.54;
+  * 8 dev projects: independently correct 6/8 vs 4/8, silent errors 1 vs 2, escalations 0 vs 1.
+* **Limits:**
+  * 2.4× lifecycle-learning CPU and 2.5× membership queries;
+  * energy `E.meter` in full projects still fails (1 silent, 1 abstain on dev);
+  * sessions with SUSPEND can time out, which leads to escalation.
+* **Rollback:** set `boost = False` and use `PL.learn_b`, which is the u5 behaviour.
+* **Status:** provisionally integrated.
+
+### Condition-crossing status probes
+
+* **Module:** `t7_repair.crossing_records`.
+* **Call site:** `NexusArmStrong._probe` (build) and `_probe_sample` (repair), active whenever ≥ 2 quarantine labels occur.
+* **Artifact:** none persistent.
+* **Evidence:** included in the 8-project dev comparison above. It was **not separately ablated**.
+* **Limits:** its oracle labels are counted. It only crosses fields that look abnormal relative to accepted records.
+* **Status:** provisionally integrated.
+
+### Heightened post-repair monitoring
+
+* **Module:** `t7_platform` patch.
+* **Call site:** `operate`, active for 2 ticks after a repair (10 records and 6 keys).
+* **Evidence:** included in the dev comparison above, and not separately ablated.
+* **Limits:** spot checks remain sampling-based.
+* **Status:** provisionally integrated.
+
+### Count-based construction costs
+
+* **Module:** `u5_construct` (count policy).
+* **Call site:** every value and status synthesis.
+* **Artifact:** `artifacts/u5_dev/p2_policy.json`.
+* **Evidence:**
+  * u5 dev: −40 % CPU at equal solves;
+  * u5 sealed test vs NoLearning: +1 project, −16 % CPU.
+* **Status:** independently confirmed (small effect).
+
+### Precision-guarded decomposition and type priors
+
+* **Module:** `u5_construct._Bank`, `_Solver`; `u5_platform.synth_status`.
+* **Call site:** all synthesis.
+* **Evidence:** u5 dev fixes (pdev 8010, 8007).
+* **Status:** confirmed as part of the u5 stack.
+
+### Transported-program library function (ΔM)
+
+* **Module:** `t7_transport.as_function`.
+* **Call site:** none.
+* **Evidence:** Trial 4: −49 % CPU vs Fresh on 46 pairs. It was not compared with Heuristic+ΔM.
+* **Status:** experimental (INCONCLUSIVE). Not integrated.
+
+### Rejected or inconclusive mechanisms
+
+| capability | module | outcome | status |
+|---|---|---|---|
+| Gromov–Wasserstein column alignment | `t7_transport.map_gw` | REJECTED for this setting (no better than a random map) | inactive |
+| Matched negative-control library admission | `t7_knockoff` | INCONCLUSIVE (13 candidates) | inactive |
+| Matched negative-control state monitors | `t7_monitors` | INCONCLUSIVE (6 dev projects) | inactive |
+| Check selection over mutant outputs | `t7_oracle` | REJECTED for this setting (held-out kill 0.24 vs 0.54 / 0.80) | inactive |
+| Joint failure-constraint tool invention | `t7_jointtool` | v2 REJECTED for this setting (direct search ties on solves; the tool is about 13× cheaper) | experimental |
+| Experiment-procedure translation | `t7_experiments` | v2b REJECTED for this setting (22 % fewer queries than info-gain, but fully loaded CPU higher and fresh synthesis uses fewer queries) | experimental |
+| Learner + memory translator | `t7_memory` | v1 REJECTED for this setting (equal solves to unchanged; 15 % cheaper than full replay; contract passed); v2 deferred | experimental |
+| 64 KB genome | `t7_genome` | INCONCLUSIVE (no effect; 22.7 KB) | inactive |
+| u5 Pillars 3–5 (library, curriculum, meta-improver) | `u5_library` / `u5_curriculum` / `meta_improver` | not promoted (harm / ceiling) | inactive |
+
+## Assembled stack for the t7 confirmation
+
+* **NEXUS_Tournament_Winner** = `t7_platform.NexusArmStrong` + the u5 learner (count costs, hybrid engine, no library),
+  entered through `t7_platform.run_project`.
+* **The only differences from NEXUS_U5** are the three provisionally integrated components above.

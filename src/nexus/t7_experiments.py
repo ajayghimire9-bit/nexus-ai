@@ -26,6 +26,7 @@ def hypotheses(lab_envs, lab_ys, pool, cfg, budget_s=2.0, cap=40):
     envs = lab_envs + pool
     dummy = list(lab_ys) + [lab_ys[0]] * len(pool)
     s = K.Search(envs, dummy, dict(cfg, cap=25000), [], budget_s)
+    s.tg.match = lambda vec: False          # fidelity fix (v2b): never stop early on the placeholder target - build the bank
     s.run()
     out = []
     n = len(lab_envs)
