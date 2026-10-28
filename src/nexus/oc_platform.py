@@ -51,3 +51,21 @@ class NexusArmStrong(PL.NexusArm):
     _learn_b = T7.NexusArmStrong._learn_b
     _probe = T7.NexusArmStrong._probe
     _probe_sample = T7.NexusArmStrong._probe_sample
+
+
+def _learn_b_certified(events, outputs, query, mode, seed=0):
+    from nexus import oc_cert as OCC
+    if mode != "statesplit":
+        return PL.learn_b(events, outputs, query, mode, seed)
+    r = OCC.learn_class_certified(events, outputs, query, seed=seed)
+    if not r or r["source"] is None:
+        return None
+    return ("class", dict(source=r["source"], name=r["name"], witnesses=r["witnesses"], n_modes=r["machine"]["n"],
+                          n_regs=len(r["machine"]["regs"]), queries=r["queries"], coverage=r["coverage"]))
+
+
+class NexusArmCertified(NexusArmStrong):
+    """oc revision 1: NexusArmStrong + extended certification of every (re)learned lifecycle class."""
+
+    def _learn_b(self, *a, **k):
+        return _learn_b_certified(*a, **k)

@@ -255,3 +255,24 @@ The cap is 20,000 s.
 * The common blocker is **certification reliability**: empirical coverage agreement is silently wrong on about 11–15 %
   of certifications on random mechanisms.
 * **NEXUS_Confirmed** is therefore the f45da4e priority-A stack, unchanged.
+
+## 1. Validation (one-use oc/val 13121–13128, frozen `5432e8d`) — gate FAILED
+
+| arm | independently correct | silent | completed | crash-identical |
+|---|---|---|---|---|
+| NEXUS_Confirmed (f45da4e stack) | 7/8 | **1** (13127 energy) | 8/8 | 8/8 |
+| NEXUS_U5 | 6/8 | 1 | 7/8 | 7/7 |
+| Fixed_Policy | 8/8 | 0 | 8/8 | 8/8 |
+
+* The gate required 8/8 and 0 silent. **FAILED.** The failure is preserved, and the sealed test stays closed unless
+  `val_b` passes.
+
+### 1.1 Revision 1 (the one disclosed revision; diagnosed on dev only)
+
+* **Change: extended certification** (`src/nexus/oc_cert.py`). After coverage agreement, up to 150 random long-word
+  probes (length 6–16, fresh values) are run, and the machine is relearned on any counterexample.
+* **Rationale:** Parts 1 and 2 showed that coverage certification is silently wrong on about 11–15 % of mechanisms.
+* **Dev evidence** (8 paired energy dev projects, `rev1_*.json`): independently correct 5/8 vs 4/8, silent 1 vs 2,
+  abstentions 2 vs 2.
+* **Cost:** about 150 extra membership queries per lifecycle learn.
+* 13127 (validation) was **not** inspected.

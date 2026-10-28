@@ -45,7 +45,7 @@ def main():
             return T7.Project(s, split)
     nx, _ = learners()
     L = nx["NEXUS_U5"][0]
-    arms = [T7.NexusArmStrong("NEXUS_Confirmed", L), T7.NexusArm("NEXUS_U5", L), T7.FixedArm("Fixed_Policy"),
+    arms = [(T7.NexusArmCertified if fr.get("revision") else T7.NexusArmStrong)("NEXUS_Confirmed", L), T7.NexusArm("NEXUS_U5", L), T7.FixedArm("Fixed_Policy"),
             T7.FixedArm("Conventional", monitored=False, handle_units=False)]
     res, status = [], "COMPLETE"
     for s in chunk:
