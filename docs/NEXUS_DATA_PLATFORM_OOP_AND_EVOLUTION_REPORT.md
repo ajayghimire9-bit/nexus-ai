@@ -165,3 +165,21 @@ Final dev pass (`artifacts/oop_dev_results/dev_r1.json`, NEXUS_Synth only, froze
 classes' ticks 9–12) is correct on 3/8, as expected for a build that has not yet met D1 / X1 / X2 data. Earlier
 4-arm dev runs (993, 994, before changes 6–8) showed the R2 arms failing D-class worlds as expected (NEXUS_Template silent
 on 993: no D1 handler). Dev ledger time: 2,524 s. Protected files 912/912 unchanged.
+
+---
+
+## 1. Phase 1 validation (one use, de5/val 7981–7984, frozen `67f9687`) — gate FAILED
+
+| project | classes | natural e2e | silent | forced X | secondary B0 | resynthesis |
+| --- | --- | --- | --- | --- | --- | --- |
+| 7981 | X2 D1 | ✓ | 0 | ✓ | ✗ | syn_decode @ 9 |
+| 7982 | X1 D2 | ✓ | 0 | ✓ | ✓ | — |
+| 7983 | X2 D2 | ✓ | 0 | ✓ | ✓ | — |
+| 7984 | X1 D1 | ✗ | **1** | ✗ | ✗ | syn_decode @ 9 (verified, redeployed) |
+
+Gate "natural e2e ≥ 3/4 AND 0 silent AND 0 crashes": 3/4, **1 silent**, 0 crashes → **FAIL**. Replay-view violations 0.
+On 7984 the synthesised code was repaired correctly at tick 9; the silent error comes from the incident `unit_shift` at
+tick 13 (a supplier's feed switches to pounds): the inherited Stage 5 drift handling dismissed an earlier S3 alarm as a
+false alarm and never localised the late shift, so wrong weights reached gold while the operator claimed healthy. This is
+an operator weakness inherited unchanged from Stages 5 / R1 / R2, not a synthesis failure — but the gate is about the
+deployed system, so it fails. Per protocol one disclosed revision is allowed, then val_b once.
