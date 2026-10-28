@@ -203,3 +203,15 @@ This document has three parts:
 
 `artifacts/t7_freeze.json` lists 32 files with their gates. Spot-check randomness is now seeded per project, so
 schedules are paired across arms.
+
+## 1. Validation (one-use t7/val 12421–12428, frozen `99f504b`) — gate PASSED
+
+| arm (paired; 8 D1/D2 projects; 2 per domain incl. energy) | independently correct | silent errors | completed | crash-identical | human repairs | build+ops CPU |
+|---|---|---|---|---|---|---|
+| **NEXUS_Tournament_Winner** | **8/8** | 0 | 8/8 | 8/8 | 0 | 205.1 s |
+| NEXUS_U5 | 7/8 (12427 energy: build ABSTAIN) | 0 | 7/8 | 7/7 | 0 | 178.1 s |
+| Fixed_Policy | 8/8 | 0 | 8/8 | 8/8 | 0 | 0 |
+| Conventional | 4/8 | 4 | 8/8 | 8/8 | 0 | 0 |
+
+* Gate (frozen): ≥ 7/8, 0 silent, 8/8, 8/8. **PASSED**, so no revision was used.
+* Raw data: `artifacts/t7_val/`.
