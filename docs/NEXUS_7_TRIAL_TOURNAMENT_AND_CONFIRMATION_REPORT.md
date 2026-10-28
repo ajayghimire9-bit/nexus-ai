@@ -72,6 +72,38 @@ This document has three parts:
 * No transfer claim beyond these synthetic generators.
 * No GPU-efficiency claim, because none was measured.
 
-## 0.5 Trial log
+## 0.4a Owner addendum (2026-10-28) — rules now in force
 
-(appended)
+* The addendum supersedes conflicting parts of §0.
+* **Three outcomes** replace KEEP/REJECT:
+  * **PROMOTION CANDIDATE:** the method passes its pre-registered dev comparison. This is provisional.
+  * **REJECTED FOR THIS SETTING:** a valid experiment shows the method fails its criterion.
+  * **INCONCLUSIVE:** the experiment lacked headroom, power, implementation fidelity, budget or evaluator validity.
+* A failed method does not disprove the capability goal.
+* **Execution priority:**
+  * **A.** Strengthen u5 repair acceptance and monitoring on reproduced dev failures.
+  * **B.** A minimal decisive Trial 3.
+  * **C.** Trial 5.
+  * **D.** Trial 6, once headroom exists.
+  * Trials 1, 4 and 7 run only as bounded pilots.
+* A capability / integration register is kept in `docs/NEXUS_CAPABILITY_INTEGRATION_REGISTER.md`.
+* **Confirmation uses fresh seeds.** X3/X4 are now *known* classes, so new X3/X4 seeds test **unseen instances of known
+  fault classes**, not fault-class generalisation.
+* **Reconciliation at the addendum.**
+  * HEAD `f554aee` matches both remotes.
+  * Budget: 14,537 s remaining (t7 had used 4,047 s).
+  * GRANT-NEXUS-MASTER-TOURNAMENT-36000S is not credited again.
+  * The R1/R2 baseline fixes (B1 promotion, `grow_obs`) already exist and were not re-implemented.
+
+## 0.5 Trial log (results under the three-outcome rule; raw data in `artifacts/t7_dev/`)
+
+| trial | what ran | numbers vs controls | outcome |
+|---|---|---|---|
+| 1 library: **matched negative-control admission** (not a formal Model-X knockoff: null hypotheses and exchangeability were not established, so **no FDR guarantee is claimed**) | 13 candidates from 197 of NEXUS's own solutions; one operator-swapped or parameter-permuted twin each; utility on 21 dev tasks | no threshold was reachable, so 0 admitted; current utility admission 0; MDL 5; work 649 s vs current 345 s CPU | **INCONCLUSIVE** (13 < 20 candidates: underpowered). Measured: the twin protocol costs 1.9× current admission |
+| 1 state: matched negative-control monitors | 226 derived per-tick quantities over 6 de5 dev projects (the frozen OOP operator) | W split 74 positive / 48 negative / 104 zero; 0 admitted; the clock-skew-related `telemetry.lag_max.delta` ranks high but is not separable from its twins | **INCONCLUSIVE** (6 projects, too few incident ticks). The 4 one-use `dval` seeds were **not** spent. Monitor admission is not an operational silent-error result |
+| 2 check selection over mutant outputs | 7 mutant classes on correct u5 outputs; typed check grammar; leave-one-class-out over W1, 7953, X1, X2, unit_shift; oracle budget 60 labels per run | mean held-out kill: critic 0.24, equal-cost generic 0.54, unguided 0.80, none 0; 0 false rejections **observed** on fresh clean runs | **REJECTED FOR THIS SETTING** (the critic keeps only checks that kill training classes). Caveats: the mutants edit outputs of the same reference implementation that the oracle uses, so they were **not validated against an independent engine**; row-identity comparison (`q_identity`) was **supplied** in the grammar, so choosing it is selection, not invention; with 7953 held out it was not selected |
+| 3 joint failure-constraint tool (v1) | U and T: single-register space UNSAT by complete search (625 / 3,125 nodes), ddmin to 1 / 2 histories; joint search → stack of snapshots | withheld C: 3/3 streams (direct search at equal compute 0/3; it also failed at 60 s in smoke); withheld S (new symbols): 0/3 | **REJECTED FOR THIS SETTING** (v1 restricted the tool to the exact op combinations seen in U and T, and S needs `add` without `push`). Rerun as v2 under priority B |
+| 4 transport | 46 old→new pairs: renames, widening, unit ×100, epoch-ms, cross-domain | all arms 46/46 correct (fresh fallback); total CPU: Fresh 87.2, Heuristic 57.5, Name 65.1, HDC 81.6, Random 75.5, GW 77.0, GW+ΔM 44.5 s; GW transported 8/46 vs Heuristic 21/46 | **GW alignment: REJECTED FOR THIS SETTING** (no better than a random map). The saving comes from **ΔM** (the old program reused as a library function in resynthesis, alignment-free). **ΔM: INCONCLUSIVE**, because it was not compared with Heuristic+ΔM or with ΔM alone under a pre-registered rule |
+| 5 experiment translation (v1) | learn the experiment-type order on L, C, I; target energy; hypotheses from the construction bank | mean queries: translation 0.46, info-gain 0.40, fresh 0.46, irrelevant 0.43; identified 14/13/10/10 of 35; source learning 73 s | **INCONCLUSIVE** (3-example hypothesis sets were almost trivial, so there was no headroom). Rerun under priority C |
+| 7 genome pilot | 5 lineages × 3 generations; hyper-network 12,213 parameters (float16) plus a symbolic prior; serialised **22.7 KB** (zlib) | regrowth CPU to target on energy: evolved = defaults = random within about 0.1 s in every lineage; MAML start and full inheritance marginally faster; 0/5 wins | **INCONCLUSIVE** (a 21-operator cost table gives the genome almost no leverage, and the energy stream had little headroom). The size limit does **not** imply that only "how to learn" survives. Shared decoder code (op list, descriptor, `decode`) is fixed infrastructure that is not counted |
+| 6 memory translator (v1) | running at the addendum (old design: irreversible cuts) | — | recorded when complete; the addendum requires cuts to be used for **ordering** unless soundness is checked in a declared scope |

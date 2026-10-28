@@ -1,0 +1,108 @@
+{
+ "proof": {
+  "U": {
+   "unsat": true,
+   "nodes": 625,
+   "minimal_histories": 1,
+   "of": 30
+  },
+  "T": {
+   "unsat": true,
+   "nodes": 3125,
+   "minimal_histories": 2,
+   "of": 30
+  }
+ },
+ "tool": {
+  "rep": "stack",
+  "vocab": [
+   [
+    "add",
+    "push"
+   ],
+   [
+    "keep",
+    "none"
+   ],
+   [
+    "keep",
+    "pop_discard"
+   ],
+   [
+    "keep",
+    "pop_restore"
+   ],
+   [
+    "keep",
+    "push"
+   ],
+   [
+    "set",
+    "none"
+   ],
+   [
+    "sub",
+    "push"
+   ]
+  ],
+  "sols": {
+   "U": "{'SHOW': ('keep', 'none'), 'UNDO': ('keep', 'pop_restore'), 'ADD': ('add', 'push'), 'SUB': ('sub', 'push')}",
+   "T": "{'SET': ('set', 'none'), 'BEGIN': ('keep', 'push'), 'READ': ('keep', 'none'), 'COMMIT': ('keep', 'pop_discard'), 'ROLLBACK': ('keep', 'pop_restore')}"
+  }
+ },
+ "invention_cpu_s": 0.098,
+ "withheld": {
+  "S": {
+   "a_joint": {
+    "solved_streams": 0,
+    "cpu_s": 0.056,
+    "program": "None",
+    "exhausted": true
+   },
+   "b_direct": {
+    "solved_streams": 0,
+    "cpu_s": 0.056,
+    "timed_out": true
+   },
+   "c_library_successes": {
+    "solved_streams": 0,
+    "cpu_s": 0.001
+   },
+   "d_random_abstraction": {
+    "solved_streams": 0,
+    "cpu_s": 0.005,
+    "rep": "queue"
+   }
+  },
+  "C": {
+   "a_joint": {
+    "solved_streams": 3,
+    "cpu_s": 0.05,
+    "program": "{'SHOW': ('keep', 'none'), 'UNDO': ('keep', 'pop_restore'), 'ADD': ('add', 'push'), 'BEGIN': ('keep', 'push'), 'ROLLBACK': ('keep', 'pop_restore'), 'SUB': ('sub', 'push')}",
+    "exhausted": true
+   },
+   "b_direct": {
+    "solved_streams": 0,
+    "cpu_s": 0.05,
+    "timed_out": true
+   },
+   "c_library_successes": {
+    "solved_streams": 0,
+    "cpu_s": 0.001
+   },
+   "d_random_abstraction": {
+    "solved_streams": 0,
+    "cpu_s": 0.005,
+    "rep": "none"
+   }
+  }
+ },
+ "totals": {
+  "a_joint": 3,
+  "b_direct": 0,
+  "c_library_successes": 0,
+  "d_random_abstraction": 0
+ },
+ "invented_class_T": "class Invented_T:\n    \"\"\"State = (x, stack of snapshots of x), invented jointly from failure constraints.\"\"\"\n\n    def __init__(self):\n        self.x, self.S = {}, {}\n\n    def ingest(self, key, sym, v):\n        x, S = self.x.get(key, 0), self.S.setdefault(key, [])\n        if sym == 'BEGIN':\n            S.append(x)\n        elif sym == 'COMMIT':\n            if S:\n                S.pop()\n        elif sym == 'READ':\n            self.x[key] = x\n            return [('value', x)]\n        elif sym == 'ROLLBACK':\n            if S:\n                x = S.pop()\n        elif sym == 'SET':\n            x = v\n        self.x[key] = x\n        return []\n",
+ "verdict": "REJECTED"
+}
