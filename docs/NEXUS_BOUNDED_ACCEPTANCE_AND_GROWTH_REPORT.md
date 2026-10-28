@@ -176,3 +176,61 @@ Hand growth rule on oc/ep_val 20600–20699 (dev, 100 episodes), coverage vs bou
 The one remaining dev silent error (20635) is again an out-of-scope kind (the extra kind is absent from training).
 Re-running the 24 Step 1 ocean failures with the bounded check (random growth): 19 correct, 1 silent (20262, out of scope), 4 abstain, 125,182 queries.
 Mostly the bounded check's counterexamples were *repaired* by relearning, not converted into abstentions.
+
+## 3. Steps 3–4 — results on fresh held-out data (pre-registered rules S3, S4)
+
+All arms use the identical bounded acceptance machinery (except the coverage reference row), task memory reset per episode;
+300 fresh micro-episodes (ba/ep_held2 22000–22299) and 12 fresh energy builds (ba/edev2). Raw rows:
+`artifacts/ba_dev/eps_*_ep_held2_0.jsonl`, `artifacts/ba_dev/energy_*_edev2.json`; analysis `artifacts/ba_step4.json`
+(`scripts/ba_step4.py`). The learned rule's records: 746 growth steps from 300 random-growth episodes on oc/ep_train under the
+bounded check (`artifacts/ba_dev/records_bounded.jsonl`). Curve = correct autonomous solves within ≤ 500 / 1k / 2k / 4k queries.
+micro-episodes (ba/ep_held2, 300 fresh)
+| arm | correct autonomous solves | accepted | silent | false acceptance among accepted | abstain | queries | CPU s | curve ≤500 / 1k / 2k / 4k |
+|---|---|---|---|---|---|---|---|---|
+| Learned_Growth_Rule | 265 (88.3 %) | 268 | 3 (1.0 %) | 1.1 % | 32 (10.7 %) | 438,762 | 950.1 | 44 / 139 / 211 / 245 |
+| Shuffled_Growth_Rule | 241 (80.3 %) | 244 | 3 (1.0 %) | 1.2 % | 56 (18.7 %) | 544,263 | 1077.0 | 42 / 139 / 208 / 230 |
+| Hand_Designed_Growth_Rule | 248 (82.7 %) | 250 | 2 (0.7 %) | 0.8 % | 50 (16.7 %) | 399,844 | 615.4 | 38 / 132 / 208 / 234 |
+| Random_Growth_Rule | 213 (71.0 %) | 216 | 3 (1.0 %) | 1.4 % | 84 (28.0 %) | 376,936 | 923.0 | 40 / 125 / 183 / 202 |
+| Hand + coverage acceptance (c84fc76 check) | 214 (71.3 %) | 250 | 36 (12.0 %) | 14.4 % | 50 (16.7 %) | 249,116 | 491.3 | 94 / 154 / 201 / 211 |
+
+energy builds (ba/edev2, 12 fresh)
+| arm | correct autonomous solves | accepted | silent | false acceptance among accepted | abstain | queries | CPU s | curve ≤500 / 1k / 2k / 4k |
+|---|---|---|---|---|---|---|---|---|
+| Learned_Growth_Rule | 12 (100.0 %) | 12 | 0 (0.0 %) | 0.0 % | 0 (0.0 %) | 13,828 | 5.9 | 0 / 8 / 11 / 12 |
+| Shuffled_Growth_Rule | 12 (100.0 %) | 12 | 0 (0.0 %) | 0.0 % | 0 (0.0 %) | 15,659 | 33.5 | 0 / 8 / 11 / 11 |
+| Hand_Designed_Growth_Rule | 4 (33.3 %) | 4 | 0 (0.0 %) | 0.0 % | 8 (66.7 %) | 6,569 | 11.3 | 0 / 2 / 4 / 4 |
+| Random_Growth_Rule | 8 (66.7 %) | 8 | 0 (0.0 %) | 0.0 % | 4 (33.3 %) | 10,132 | 18.4 | 0 / 4 / 8 / 8 |
+| Hand + coverage acceptance (c84fc76 check) | 4 (33.3 %) | 4 | 0 (0.0 %) | 0.0 % | 8 (66.7 %) | 5,369 | 10.9 | 0 / 4 / 4 / 4 |
+
+Paired exact one-sided sign tests on micro-episode solves (Learned vs X; discordant episodes): vs Hand 19 : 2 (p = 0.0001),
+vs Random 53 : 1 (p < 1e-14), vs Shuffled 25 : 1 (p < 1e-6).
+
+* **S3 — PASSED.** Same hand growth rule, coverage vs bounded acceptance: false acceptance among accepted **14.4 % → 0.8 %**
+  (36 → 2 silent of 250 accepted), correct autonomous solves **214 → 248**, abstentions 50 = 50, queries +60 % (249k → 400k),
+  CPU +25 %. The coverage check's early solves (94 within 500 queries) were mostly *cheap acceptances*; the bounded check
+  spends more queries per acceptance, so its ≤ 500 curve point is lower and every later point higher.
+* **S4 — Learned_Growth_Rule PROMOTED** (all four conditions): most solves (265 vs 248 / 241 / 213) with p < 0.05 against
+  each; false acceptance 1.1 % ≤ 0.8 % + 1.0; energy 12/12 (= Shuffled 12/12, > Random 8/12, > Hand 4/12; 0 silent everywhere);
+  curve ≥ each comparator at 4 / 4 budgets.
+* **Remaining silent errors under the bounded check:** 22044 (all arms) is out of scope (an event kind absent from the
+  training stream); 22112 and 22235 are in-scope false acceptances (1–2 per arm, ≤ 0.8 % of accepted) — the check is tested
+  within stated limits, not a proof.
+
+**Why Learned vs Shuffled differs now (it did not at c84fc76).** At c84fc76 the records' reward ("certified within 2 steps")
+was polluted: coverage certified wrong machines on ~11–15 % of episodes, so a growth step that led to a *cheap wrong
+acceptance* was rewarded. With the bounded check the reward is nearly truthful, and the table learns signature-specific
+actions; the shuffled table keeps only the marginal preference. On the most frequent signatures (`artifacts/ba_step4_analysis.json`):
+both choose `expand_update_depth` for an unsatisfiable register column and `add_register` at the register cap with all
+modes used; but for a *label* counterexample with all modes used the learned rule chooses `add_control_mode` (shuffled:
+`expand_update_depth`), at the register cap with modes still free it chooses `add_register` (shuffled:
+`expand_update_depth`), and on a register-search timeout with free modes `merge_registers` (shuffled: `add_register`).
+Mean growth steps: Learned 1.46, Shuffled 1.86, Hand 2.75, Random 2.45. **Energy builds cannot separate Learned from
+Shuffled:** E.meter needs two registers + merging; any rule whose first steps are register / depth extensions solves it,
+and the hand order loses because its first step is always `add_control_mode` (66.7 % abstain within 6 steps). The
+micro-episodes, with varied failure signatures, are where conditioning on the signature pays (25 : 1 discordant episodes).
+
+### 3.1 Part 4 (c84fc76) — what it did and did not show
+The c84fc76 Part 4 artifacts (`artifacts/oc_dev/p4_*`: continuation-class weights such as `random_word = 0.25`, the
+`occam` update order, `budget = 30`, `rounds = 8`, the `all_suffixes` revision flag) are the result of a **search over
+learner configurations** of a fixed, hand-written algorithm. They do **not** show NEXUS inventing a new learning algorithm.
+Part 4 was not rerun.

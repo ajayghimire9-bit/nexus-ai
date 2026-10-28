@@ -143,3 +143,31 @@ A failed method does not retire its capability goal. Its component is simply lef
 | Grey-box contract filter | `oc_learner.Learner3._domain` | REJECTED (no query reduction; −11 % CPU) | experimental |
 | Experiment-class meta-choice | `oc_experiments` | REJECTED (no query reduction on the held-out domain) | inactive |
 | Ledger-conditioned self-evolution | `oc_evolve` | REJECTED (= trace-only; ≈ random; ledger retrospective check failed) | inactive |
+
+## ba track additions (2026-10-28; `docs/NEXUS_BOUNDED_ACCEPTANCE_AND_GROWTH_REPORT.md`)
+
+### Bounded acceptance check
+* **Module:** `ba_accept.bounded_cex` (tier 1 exhaustive kind words to horizon h; tier 2 loaded-prefix · kind ·
+  shortest-emitting-continuation tests with boundary draws), used by `ba_learn.attempt` and
+  `ba_platform.learn_class_bounded`.
+* **Call site:** `ba_platform.NexusArmBounded._learn_b`, at build and on every lifecycle repair; replaces oc revision 1's
+  open-ended random probing. Unaccepted machines abstain / escalate (oc revision 1 returned the last machine).
+* **Label:** `TESTED_WITHIN_STATED_LIMITS` + scope record (alphabet, modes, registers, horizon, tests, value draws, caps).
+* **Evidence:** 300 fresh held-out episodes, hand growth: false acceptance among accepted 14.4 % → 0.8 %, solves 214 → 248,
+  abstentions unchanged; queries +60 %.
+* **Limits:** not a proof; 2 in-scope false acceptances remain; kinds unseen at build are outside the scope.
+* **Rollback:** `NexusArmStrong` / `oc_platform.NexusArmCertified`.
+* **Status:** provisionally integrated.
+
+### Learned hypothesis-space growth rule (Part 2 rerun under the bounded check)
+* **Module:** `oc_learner.TablePolicy` on `artifacts/ba_dev/records_bounded.jsonl`.
+* **Call site:** `ba_platform.learn_class_bounded(growth=...)` (first line; full-space fallback when nothing is accepted).
+* **Evidence:** 265 / 300 vs Hand 248, Shuffled 241, Random 213 (sign tests p ≤ 0.0001); false acceptance 1.1 %; energy 12/12.
+* **Status:** provisionally integrated (promoted by the pre-registered rule S4).
+
+### Extended certification (oc revision 1)
+* **Status:** inactive in the ba stack (replaced by the bounded acceptance check).
+
+### Self-evolution (oc Part 4) — honest scope
+The c84fc76 Part 4 artifacts (weights such as `random_word = 0.25`, `occam` order, budgets, revision flags) demonstrate a
+**search over learner configurations**, not NEXUS inventing a new learning algorithm. Status unchanged: inactive.

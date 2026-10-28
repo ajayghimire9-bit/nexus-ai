@@ -1,0 +1,184 @@
+{
+ "silent_scope": {
+  "learned_bounded": {
+   "silent": 3,
+   "out_of_alphabet": 1,
+   "in_scope": 2,
+   "seeds": [
+    22044,
+    22112,
+    22235
+   ]
+  },
+  "shuffled_bounded": {
+   "silent": 3,
+   "out_of_alphabet": 1,
+   "in_scope": 2,
+   "seeds": [
+    22044,
+    22112,
+    22235
+   ]
+  },
+  "hand_bounded": {
+   "silent": 2,
+   "out_of_alphabet": 1,
+   "in_scope": 1,
+   "seeds": [
+    22044,
+    22235
+   ]
+  },
+  "random_bounded": {
+   "silent": 3,
+   "out_of_alphabet": 1,
+   "in_scope": 2,
+   "seeds": [
+    22044,
+    22112,
+    22235
+   ]
+  },
+  "hand_coverage": {
+   "silent": 36,
+   "out_of_alphabet": 1,
+   "in_scope": 35,
+   "seeds": [
+    22002,
+    22023,
+    22034,
+    22041,
+    22044,
+    22049,
+    22077,
+    22080,
+    22097,
+    22104,
+    22106,
+    22125,
+    22126,
+    22130,
+    22131,
+    22135,
+    22148,
+    22149,
+    22150,
+    22156,
+    22172,
+    22191,
+    22199,
+    22200,
+    22202,
+    22208,
+    22209,
+    22210,
+    22214,
+    22235,
+    22250,
+    22261,
+    22273,
+    22278,
+    22289,
+    22294
+   ]
+  }
+ },
+ "policy_by_signature": [
+  {
+   "signature": {
+    "failure": "unsat",
+    "label_conflict": false,
+    "value_conflict": false,
+    "residual": "none",
+    "states_full": true
+   },
+   "n": 220,
+   "learned": "expand_update_depth",
+   "shuffled": "expand_update_depth"
+  },
+  {
+   "signature": {
+    "failure": "reg_cap",
+    "label_conflict": false,
+    "value_conflict": false,
+    "residual": "none",
+    "states_full": true
+   },
+   "n": 200,
+   "learned": "add_register",
+   "shuffled": "add_register"
+  },
+  {
+   "signature": {
+    "failure": "unsat",
+    "label_conflict": false,
+    "value_conflict": false,
+    "residual": "none",
+    "states_full": false
+   },
+   "n": 174,
+   "learned": "expand_update_depth",
+   "shuffled": "expand_update_depth"
+  },
+  {
+   "signature": {
+    "failure": "cex",
+    "label_conflict": true,
+    "value_conflict": false,
+    "residual": "none",
+    "states_full": true
+   },
+   "n": 135,
+   "learned": "add_control_mode",
+   "shuffled": "expand_update_depth"
+  },
+  {
+   "signature": {
+    "failure": "reg_cap",
+    "label_conflict": false,
+    "value_conflict": false,
+    "residual": "none",
+    "states_full": false
+   },
+   "n": 110,
+   "learned": "add_register",
+   "shuffled": "expand_update_depth"
+  },
+  {
+   "signature": {
+    "failure": "timeout",
+    "label_conflict": false,
+    "value_conflict": false,
+    "residual": "none",
+    "states_full": true
+   },
+   "n": 74,
+   "learned": "merge_registers",
+   "shuffled": "merge_registers"
+  },
+  {
+   "signature": {
+    "failure": "timeout",
+    "label_conflict": false,
+    "value_conflict": false,
+    "residual": "none",
+    "states_full": false
+   },
+   "n": 72,
+   "learned": "merge_registers",
+   "shuffled": "add_register"
+  },
+  {
+   "signature": {
+    "failure": "cex",
+    "label_conflict": false,
+    "value_conflict": true,
+    "residual": "none",
+    "states_full": true
+   },
+   "n": 9,
+   "learned": "add_control_mode",
+   "shuffled": "add_timer_or_window"
+  }
+ ]
+}
