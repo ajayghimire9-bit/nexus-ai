@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import math
 import time
+from bisect import bisect_left, bisect_right
 from collections import Counter, defaultdict
 
 import numpy as np
@@ -312,6 +313,76 @@ def solve(task_envs, ys, cfg, lib=(), budget_s=4.0):
     return node, s.stats(), s
 
 
+class _Bank(Bank):
+    """Bank with RELATIVE lookup slack (e2e dev revision 1). oop_synthesizer.Bank.num_lookup pads intervals by an absolute
+    1e-12; after decomposition divides by a huge left factor (timestamps x 100 ~ 1e11) the interval is ~1e-15 wide and the
+    pad admits wrong programs (found on pdev 8010: (p * (p - p)) accepted as y / p). Phase 1's module is not edited."""
+
+    def num_lookup(self, lo, hi, mask, limit=1):
+        idx = np.flatnonzero(mask)
+        if len(idx) == 0 or len(self.num) == 0:
+            return []
+        j = int(idx[0])
+        order, vals = self._col(j)
+        a, b = bisect_left(vals, lo[j]), bisect_right(vals, hi[j])
+        if b <= a:
+            return []
+        cand = order[a:b]
+        sub = self.M[np.ix_(cand, idx)]
+        slo, shi = lo[idx], hi[idx]
+        eps = 1e-12 * np.maximum(1e-300, np.maximum(np.abs(slo), np.abs(shi)))
+        ok = np.all((sub >= slo - eps) & (sub <= shi + eps), axis=1)
+        hits = [self.num[i] for i in cand[ok]]
+        hits.sort(key=lambda e: e[2])
+        return hits[:limit]
+
+
+class _Solver(Solver):
+    """oop_synthesizer.Solver with a float-precision guard (e2e dev revision 1): a decomposition whose sub-target interval
+    has collapsed below float resolution (e.g. p - R with p ~ 1e11 and |R| ~ 1e-9 rounds to [p, p]) is skipped, because any
+    program then 'matches' by cancellation (pdev 8010 accepted p * (p - p) == 0 for y ~ 1e2). Otherwise identical."""
+
+    def _dec(self, lo, hi, mask, depth, K):
+        h = self.bank.num_lookup(lo, hi, mask)
+        if h:
+            return h[0][0]
+        if depth == 0 or self.out_of_time():
+            return None
+        best = None
+        idx = np.flatnonzero(mask)
+        for e in self.bank.num[:K[0] if depth == 2 else K[1]]:
+            if self.out_of_time():
+                break
+            Ls = np.array([float(v) if _isnum(v) else np.nan for v in e[1]])
+            if np.any(np.isnan(Ls[idx])):
+                continue
+            opts = []
+            with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
+                if np.all(Ls[idx] != 0):
+                    a, b = lo / Ls, hi / Ls
+                    opts.append(("*", True, np.minimum(a, b), np.maximum(a, b)))
+                    a, b = lo * Ls, hi * Ls
+                    opts.append(("/", False, np.minimum(a, b), np.maximum(a, b)))
+                opts.append(("+", True, lo - Ls, hi - Ls))
+                opts.append(("-", True, Ls - hi, Ls - lo))
+                opts.append(("-", False, lo + Ls, hi + Ls))
+            for op, left, rlo, rhi in opts:
+                if np.any(~np.isfinite(rlo[idx])) or np.any(~np.isfinite(rhi[idx])):
+                    continue
+                w, m = rhi[idx] - rlo[idx], np.maximum(np.abs(rlo[idx]), np.abs(rhi[idx]))
+                if np.any(w <= 1e-12 * np.maximum(1.0, m)):
+                    continue                                              # collapsed by cancellation: no evidence
+                r = self._dec(rlo, rhi, mask, depth - 1, K)
+                if r is None:
+                    continue
+                n = ("b", op, e[0], r) if left else ("b", op, r, e[0])
+                if best is None or size(n) < size(best):
+                    best = n
+            if best is not None and size(best) <= e[2] + 4:
+                break
+        return best
+
+
 def solve_hybrid(envs, ys, cfg, lib=(), budget_s=4.0, construct_frac=0.6):
     """Deployment solver: the construction policy runs first (direct matches); if unsolved, the Phase 1 deductive
     decomposition / decision-list solver (oop_synthesizer.Solver, unchanged) runs over the bank THIS construction built.
@@ -320,14 +391,14 @@ def solve_hybrid(envs, ys, cfg, lib=(), budget_s=4.0, construct_frac=0.6):
     node, st, s = solve(envs, ys, cfg, lib, budget_s * construct_frac)
     st = dict(st, stage="construct")
     if node is None:
-        bank = Bank.__new__(Bank)
+        bank = _Bank.__new__(_Bank)
         bank.inputs, bank.E, bank.sig = envs, len(envs), {}
         bank.entries = [(e[0], e[1], e[2]) for e in s.sig.values()]
         bank.levels, bank.consts = {}, []
         bank._num_index()
         tg = Target(ys)
         tol = (lambda t: 1e-6 * max(1.0, abs(t))) if tg.kind == "num" else None
-        sv = Solver(bank, ys, tol=tol, max_s=max(0.2, budget_s - (time.process_time() - t0)))
+        sv = _Solver(bank, ys, tol=tol, max_s=max(0.2, budget_s - (time.process_time() - t0)))
         try:
             cand = sv.solve()
         except RecursionError:

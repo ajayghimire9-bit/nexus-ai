@@ -298,9 +298,48 @@ def synth_value(envs, ys, learner, budget_s, rounds=3, sample=30, seed=0):
     return None, dict(st, cpu_s=round(time.process_time() - t0, 3))
 
 
-def synth_status(envs, labels, max_s):
-    n, st = S.synthesize_scalar(envs, labels, max_s=max_s)
-    return n, st
+def _orders_strings(n, env):
+    """Type priors (domain-free): no ordering of string identifiers; no equality between two booleans (use and / or)."""
+    if n[0] == "b" and n[1] in ("<", "<=") and isinstance(_safe(n[2], env), str):
+        return True
+    if n[0] == "b" and n[1] == "==" and isinstance(_safe(n[2], env), bool) and isinstance(_safe(n[3], env), bool):
+        return True
+    return any(_orders_strings(c, env) for c in n[2:] if isinstance(c, tuple)) if n[0] in ("u", "b", "if") else False
+
+
+def synth_status(envs, labels, max_s, cfg=None, sample=150, rounds=5):
+    """Categorical status program: CEGIS over a stratified sample; the bank is built by the arm's construction policy and
+    decision lists come from the (precision-guarded) Phase 1 Solver logic. Prior (e2e dev revision 2): string values are
+    identifiers, not ordered - no < / <= on string operands (pdev 8007 learned warehouse < 'S07' for membership)."""
+    t0 = time.process_time()
+    cfg = cfg or K.default_config("baseline")
+    pick = S.stratified(envs, sample, labels=labels)
+    st = dict(rounds=0)
+    while True:
+        st["rounds"] += 1
+        left = max_s - (time.process_time() - t0)
+        if left <= 0.5:
+            return None, st
+        ins, outs = [envs[i] for i in pick], [labels[i] for i in pick]
+        _, _, srch = K.solve(ins, outs, dict(cfg, cap=30000), [], 0.4 * left)
+        bank = K._Bank.__new__(K._Bank)
+        bank.inputs, bank.E, bank.sig, bank.levels, bank.consts = ins, len(ins), {}, {}, []
+        bank.entries = [(e[0], e[1], e[2]) for e in srch.sig.values() if not _orders_strings(e[0], ins[0])]
+        bank._num_index()
+        try:
+            n = K._Solver(bank, outs, max_s=max(0.5, max_s - (time.process_time() - t0))).solve()
+        except RecursionError:
+            n = None
+        if n is None:
+            return None, st
+        n = S.simplify(n)
+        bad = [i for i in range(len(envs)) if _safe(n, envs[i]) != labels[i]]
+        if not bad:
+            st["cpu_s"] = round(time.process_time() - t0, 3)
+            return n, st
+        if st["rounds"] >= rounds:
+            return None, st
+        pick = sorted(set(pick) | set(bad[:40]))
 
 
 def learn_b(events, outputs, query, mode, seed=0):
@@ -331,7 +370,7 @@ class NexusArm:
             labs += P.oracle_A(P.ticks[t]["A"], t, "build_labels")
         envs = [{"r": r, "t": P.ticks[t]["registry"]} for r, t in recs]
         c0 = time.process_time()
-        status, sst = synth_status(envs, [s for s, _ in labs], self.status_s)
+        status, sst = synth_status(envs, [s for s, _ in labs], self.status_s, self.learner["cfg"])
         ok = [(e, v) for e, (s, v) in zip(envs, labs) if s == "ok"]
         value, vst = synth_value([e for e, _ in ok], [v for _, v in ok], self.learner, self.value_s, seed=P.seed)
         evs = [e for t in range(1, BUILD_TICKS + 1) for e in P.ticks[t]["B"]]
@@ -359,9 +398,9 @@ class NexusArm:
         if any(g[0] != l[0] for g, l in zip(got, labs)):
             merged_e = archive["envs"] + tr_e
             merged_l = archive["status"] + [s for s, _ in tr_l]
-            st, _ = synth_status(merged_e, merged_l, self.status_s)
+            st, _ = synth_status(merged_e, merged_l, self.status_s, self.learner["cfg"])
             if st is None:
-                st, _ = synth_status(tr_e, [s for s, _ in tr_l], self.status_s)
+                st, _ = synth_status(tr_e, [s for s, _ in tr_l], self.status_s, self.learner["cfg"])
             if st is None:
                 return None
             new.status = st

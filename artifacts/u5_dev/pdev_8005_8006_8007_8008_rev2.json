@@ -1,0 +1,1021 @@
+{
+ "split": "pdev",
+ "seeds": [
+  8005,
+  8006,
+  8007,
+  8008
+ ],
+ "arms": [
+  "NEXUS_U5",
+  "NEXUS_U5-P1",
+  "NEXUS_NoLearning",
+  "Fixed_Policy",
+  "Conventional"
+ ],
+ "promoted": {
+  "p1": true,
+  "p2": "count",
+  "p3": "none",
+  "p4": "none_start_learner",
+  "p5": false
+ },
+ "status": "COMPLETE",
+ "results": [
+  {
+   "arm": "NEXUS_U5",
+   "project": 8005,
+   "domain": "clearing",
+   "fault": "D2",
+   "family": "C.accrued",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.875
+    },
+    "value_stats": {
+     "cpu_s": 7.792,
+     "built": 431919,
+     "kept": 60000,
+     "dup": 333055,
+     "err": 38864,
+     "scored": 0,
+     "solved": true,
+     "level": null,
+     "size": 15,
+     "stage": "decompose"
+    },
+    "build_cpu_s": 20.849,
+    "n_modes": 4,
+    "n_regs": 1,
+    "b_queries": 283
+   },
+   "cost": {
+    "build_cpu_s": 20.85,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 560,
+     "spot": 92,
+     "incident": 0,
+     "mq": 286,
+     "mq_events": 1323
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('par') * (r.get('coupon') * (r.get('tenor_days') / t.get('day_count'))))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)) and (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) and (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW'] / ['NEW'] emit 830.07 / 634.98 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('trade_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('reading')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('par') * (r.get('coupon') * (r.get('tenor_days') / t.get('day_count'))))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)) and (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) and (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW'] / ['NEW'] emit 830.07 / 634.98 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('trade_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('reading')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5-P1",
+   "project": 8005,
+   "domain": "clearing",
+   "fault": "D2",
+   "family": "C.accrued",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 43,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 16,
+     "kind": "escalated",
+     "alarms": [
+      "B:spot_check"
+     ]
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.853
+    },
+    "value_stats": {
+     "cpu_s": 7.766,
+     "built": 431919,
+     "kept": 60000,
+     "dup": 333055,
+     "err": 38864,
+     "scored": 0,
+     "solved": true,
+     "level": null,
+     "size": 15,
+     "stage": "decompose"
+    },
+    "build_cpu_s": 20.743
+   },
+   "cost": {
+    "build_cpu_s": 20.743,
+    "ops_cpu_s": 0.009,
+    "queries": {
+     "build_labels": 560,
+     "spot": 71,
+     "incident": 640,
+     "mq": 6,
+     "mq_events": 82
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    return (r.get('par') * (r.get('coupon') * (r.get('tenor_days') / t.get('day_count'))))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)) and (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) and (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\n# lifecycle stream: flat template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_NoLearning",
+   "project": 8005,
+   "domain": "clearing",
+   "fault": "D2",
+   "family": "C.accrued",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.639
+    },
+    "value_stats": {
+     "cpu_s": 9.706,
+     "built": 626654,
+     "kept": 60000,
+     "dup": 480004,
+     "err": 86650,
+     "scored": 0,
+     "solved": true,
+     "level": null,
+     "size": 15,
+     "stage": "decompose"
+    },
+    "build_cpu_s": 22.49,
+    "n_modes": 4,
+    "n_regs": 1,
+    "b_queries": 283
+   },
+   "cost": {
+    "build_cpu_s": 22.491,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 560,
+     "spot": 67,
+     "incident": 0,
+     "mq": 286,
+     "mq_events": 1323
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('par') * (r.get('coupon') * (r.get('tenor_days') / t.get('day_count'))))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)) and (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) and (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW'] / ['NEW'] emit 830.07 / 634.98 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('trade_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('reading')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('par') * (r.get('coupon') * (r.get('tenor_days') / t.get('day_count'))))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)) and (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) and (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW'] / ['NEW'] emit 830.07 / 634.98 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('trade_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('reading')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 8005,
+   "domain": "clearing",
+   "fault": "D2",
+   "family": "C.accrued",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 73,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((((float(r.get('par')) / 100) if (t.get('units').get('par') == 'minor') else float(r.get('par'))) * float(r.get('coupon'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n    return (((float(r.get('par')) * float(r.get('coupon'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) or (not (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))) or (not (isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((((float(r.get('par')) / 100) if (t.get('units').get('par') == 'minor') else float(r.get('par'))) * float(r.get('coupon'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n    return (((float(r.get('par')) * float(r.get('coupon'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) or (not (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))) or (not (isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 8005,
+   "domain": "clearing",
+   "fault": "D2",
+   "family": "C.accrued",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (((float(r.get('par')) * float(r.get('coupon'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) or (not (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))) or (not (isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return (((float(r.get('par')) * float(r.get('coupon'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('par'), (int, float)) and not isinstance(r.get('par'), bool))) or (not (isinstance(r.get('coupon'), (int, float)) and not isinstance(r.get('coupon'), bool)))) or (not (isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_U5",
+   "project": 8006,
+   "domain": "iot",
+   "fault": "D1",
+   "family": "I.power",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_A",
+     "version": 1
+    }
+   ],
+   "alarms": 2,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.745
+    },
+    "value_stats": {
+     "cpu_s": 0.014,
+     "built": 1063,
+     "kept": 130,
+     "dup": 743,
+     "err": 190,
+     "scored": 0,
+     "solved": true,
+     "level": 8,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 12.931,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 151
+   },
+   "cost": {
+    "build_cpu_s": 12.932,
+    "ops_cpu_s": 0.086,
+    "queries": {
+     "build_labels": 560,
+     "spot": 70,
+     "incident": 30,
+     "mq": 155,
+     "mq_events": 916
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('u_rms') * (r.get('amps') / 100))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool)) and (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 17.2 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('qty_value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('u_rms') * r.get('amps'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool)) and (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 17.2 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('qty_value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5-P1",
+   "project": 8006,
+   "domain": "iot",
+   "fault": "D1",
+   "family": "I.power",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 8,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_A",
+     "version": 1
+    }
+   ],
+   "alarms": 2,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.723
+    },
+    "value_stats": {
+     "cpu_s": 0.014,
+     "built": 1063,
+     "kept": 130,
+     "dup": 743,
+     "err": 190,
+     "scored": 0,
+     "solved": true,
+     "level": 8,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 12.83
+   },
+   "cost": {
+    "build_cpu_s": 12.83,
+    "ops_cpu_s": 0.086,
+    "queries": {
+     "build_labels": 560,
+     "spot": 69,
+     "incident": 30,
+     "mq": 4,
+     "mq_events": 35
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('u_rms') * (r.get('amps') / 100))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool)) and (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\n# lifecycle stream: flat template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return (r.get('u_rms') * r.get('amps'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool)) and (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\n# lifecycle stream: flat template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_NoLearning",
+   "project": 8006,
+   "domain": "iot",
+   "fault": "D1",
+   "family": "I.power",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_A",
+     "version": 1
+    }
+   ],
+   "alarms": 2,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.742
+    },
+    "value_stats": {
+     "cpu_s": 0.12,
+     "built": 10413,
+     "kept": 1166,
+     "dup": 8486,
+     "err": 761,
+     "scored": 0,
+     "solved": true,
+     "level": 7,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 12.976,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 151
+   },
+   "cost": {
+    "build_cpu_s": 12.976,
+    "ops_cpu_s": 0.932,
+    "queries": {
+     "build_labels": 560,
+     "spot": 54,
+     "incident": 30,
+     "mq": 155,
+     "mq_events": 916
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('u_rms') * (r.get('amps') / 100))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool)) and (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 17.2 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('qty_value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('u_rms') * r.get('amps'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool)) and (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 17.2 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('qty_value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 8006,
+   "domain": "iot",
+   "fault": "D1",
+   "family": "I.power",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 71,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('u_rms')) / 100) if (t.get('units').get('u_rms') == 'minor') else float(r.get('u_rms'))) * float(r.get('amps')))\n    return (float(r.get('u_rms')) * float(r.get('amps')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool))) or (not (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('u_rms')) / 100) if (t.get('units').get('u_rms') == 'minor') else float(r.get('u_rms'))) * float(r.get('amps')))\n    return (float(r.get('u_rms')) * float(r.get('amps')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool))) or (not (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 8006,
+   "domain": "iot",
+   "fault": "D1",
+   "family": "I.power",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 217,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (float(r.get('u_rms')) * float(r.get('amps')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool))) or (not (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return (float(r.get('u_rms')) * float(r.get('amps')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('u_rms'), (int, float)) and not isinstance(r.get('u_rms'), bool))) or (not (isinstance(r.get('amps'), (int, float)) and not isinstance(r.get('amps'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_U5",
+   "project": 8007,
+   "domain": "logistics",
+   "fault": "D2",
+   "family": "L.kg",
+   "lifecycle": "L.barrier",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.898
+    },
+    "value_stats": {
+     "cpu_s": 0.014,
+     "built": 1067,
+     "kept": 130,
+     "dup": 747,
+     "err": 190,
+     "scored": 0,
+     "solved": true,
+     "level": 8,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.042,
+    "n_modes": 6,
+    "n_regs": 1,
+    "b_queries": 286
+   },
+   "cost": {
+    "build_cpu_s": 13.043,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 560,
+     "spot": 102,
+     "incident": 0,
+     "mq": 289,
+     "mq_events": 1420
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('gross_lb') * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8b61e637:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    witness reg_0: in mode_1 histories ['CREATE'] / ['CREATE'] emit 893.3 / 311.71 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('gross_lb') * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8b61e637:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    witness reg_0: in mode_1 histories ['CREATE'] / ['CREATE'] emit 893.3 / 311.71 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5-P1",
+   "project": 8007,
+   "domain": "logistics",
+   "fault": "D2",
+   "family": "L.kg",
+   "lifecycle": "L.barrier",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "escalated",
+     "alarms": [
+      "B:spot_check"
+     ]
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 13.034
+    },
+    "value_stats": {
+     "cpu_s": 0.014,
+     "built": 1067,
+     "kept": 130,
+     "dup": 747,
+     "err": 190,
+     "scored": 0,
+     "solved": true,
+     "level": 8,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.139
+   },
+   "cost": {
+    "build_cpu_s": 13.14,
+    "ops_cpu_s": 0.005,
+    "queries": {
+     "build_labels": 560,
+     "spot": 101,
+     "incident": 360,
+     "mq": 6,
+     "mq_events": 75
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    return (r.get('gross_lb') * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\n# lifecycle stream: flat template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_NoLearning",
+   "project": 8007,
+   "domain": "logistics",
+   "fault": "D2",
+   "family": "L.kg",
+   "lifecycle": "L.barrier",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.617
+    },
+    "value_stats": {
+     "cpu_s": 0.118,
+     "built": 10363,
+     "kept": 1142,
+     "dup": 8473,
+     "err": 748,
+     "scored": 0,
+     "solved": true,
+     "level": 7,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 12.848,
+    "n_modes": 6,
+    "n_regs": 1,
+    "b_queries": 286
+   },
+   "cost": {
+    "build_cpu_s": 12.849,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 560,
+     "spot": 79,
+     "incident": 0,
+     "mq": 289,
+     "mq_events": 1420
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('gross_lb') * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8b61e637:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    witness reg_0: in mode_1 histories ['CREATE'] / ['CREATE'] emit 893.3 / 311.71 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('gross_lb') * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8b61e637:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    witness reg_0: in mode_1 histories ['CREATE'] / ['CREATE'] emit 893.3 / 311.71 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 8007,
+   "domain": "logistics",
+   "fault": "D2",
+   "family": "L.kg",
+   "lifecycle": "L.barrier",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 81,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('gross_lb')) / 100) if (t.get('units').get('gross_lb') == 'minor') else float(r.get('gross_lb'))) * t.get('kg_per_lb'))\n    return (float(r.get('gross_lb')) * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (r.get('warehouse') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('gross_lb')) / 100) if (t.get('units').get('gross_lb') == 'minor') else float(r.get('gross_lb'))) * t.get('kg_per_lb'))\n    return (float(r.get('gross_lb')) * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (r.get('warehouse') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 8007,
+   "domain": "logistics",
+   "fault": "D2",
+   "family": "L.kg",
+   "lifecycle": "L.barrier",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (float(r.get('gross_lb')) * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (r.get('warehouse') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return (float(r.get('gross_lb')) * t.get('kg_per_lb'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('gross_lb'), (int, float)) and not isinstance(r.get('gross_lb'), bool))):\n        return 'q:missing'\n    elif (r.get('warehouse') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_U5",
+   "project": 8008,
+   "domain": "clearing",
+   "fault": "D1",
+   "family": "C.usd",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_A",
+     "version": 1
+    }
+   ],
+   "alarms": 2,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.79
+    },
+    "value_stats": {
+     "cpu_s": 0.188,
+     "built": 14399,
+     "kept": 1921,
+     "dup": 10123,
+     "err": 2355,
+     "scored": 0,
+     "solved": true,
+     "level": 12,
+     "size": 11,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.103,
+    "n_modes": 4,
+    "n_regs": 1,
+    "b_queries": 280
+   },
+   "cost": {
+    "build_cpu_s": 13.104,
+    "ops_cpu_s": 1.094,
+    "queries": {
+     "build_labels": 560,
+     "spot": 60,
+     "incident": 30,
+     "mq": 283,
+     "mq_events": 1361
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('sum_amt') * (t.get('fx').get(r.get('currency')) / 100))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW', 'PREPARE', 'ABORT', 'PREPARE', 'ABORT', 'AMEND', 'AMEND'] / ['NEW', 'PREPARE', 'ABORT', 'AMEND'] emit 272.38 / 492.94 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('qty_value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('sum_amt') * t.get('fx').get(r.get('currency')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW', 'PREPARE', 'ABORT', 'PREPARE', 'ABORT', 'AMEND', 'AMEND'] / ['NEW', 'PREPARE', 'ABORT', 'AMEND'] emit 272.38 / 492.94 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('qty_value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5-P1",
+   "project": 8008,
+   "domain": "clearing",
+   "fault": "D1",
+   "family": "C.usd",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 22,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_A",
+     "version": 1
+    },
+    {
+     "tick": 13,
+     "kind": "escalated",
+     "alarms": [
+      "B:spot_check"
+     ]
+    }
+   ],
+   "alarms": 3,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.802
+    },
+    "value_stats": {
+     "cpu_s": 0.189,
+     "built": 14399,
+     "kept": 1921,
+     "dup": 10123,
+     "err": 2355,
+     "scored": 0,
+     "solved": true,
+     "level": 12,
+     "size": 11,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.069
+   },
+   "cost": {
+    "build_cpu_s": 13.07,
+    "ops_cpu_s": 1.147,
+    "queries": {
+     "build_labels": 560,
+     "spot": 77,
+     "incident": 550,
+     "mq": 6,
+     "mq_events": 72
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    return (r.get('sum_amt') * t.get('fx').get(r.get('currency')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\n# lifecycle stream: flat template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_NoLearning",
+   "project": 8008,
+   "domain": "clearing",
+   "fault": "D1",
+   "family": "C.usd",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_A",
+     "version": 1
+    }
+   ],
+   "alarms": 2,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.533
+    },
+    "value_stats": {
+     "cpu_s": 12.423,
+     "built": 800673,
+     "kept": 60000,
+     "dup": 674801,
+     "err": 65872,
+     "scored": 0,
+     "solved": true,
+     "level": null,
+     "size": 11,
+     "stage": "decompose"
+    },
+    "build_cpu_s": 25.1,
+    "n_modes": 4,
+    "n_regs": 1,
+    "b_queries": 280
+   },
+   "cost": {
+    "build_cpu_s": 25.101,
+    "ops_cpu_s": 8.512,
+    "queries": {
+     "build_labels": 560,
+     "spot": 83,
+     "incident": 30,
+     "mq": 283,
+     "mq_events": 1361
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return ((r.get('sum_amt') * t.get('fx').get(r.get('currency'))) / 100)\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW', 'PREPARE', 'ABORT', 'PREPARE', 'ABORT', 'AMEND', 'AMEND'] / ['NEW', 'PREPARE', 'ABORT', 'AMEND'] emit 272.38 / 492.94 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('qty_value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('sum_amt') * t.get('fx').get(r.get('currency')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW', 'PREPARE', 'ABORT', 'PREPARE', 'ABORT', 'AMEND', 'AMEND'] / ['NEW', 'PREPARE', 'ABORT', 'AMEND'] emit 272.38 / 492.94 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('qty_value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 8008,
+   "domain": "clearing",
+   "fault": "D1",
+   "family": "C.usd",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 92,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('sum_amt')) / 100) if (t.get('units').get('sum_amt') == 'minor') else float(r.get('sum_amt'))) * t.get('fx').get(r.get('currency')))\n    return (float(r.get('sum_amt')) * t.get('fx').get(r.get('currency')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('sum_amt')) / 100) if (t.get('units').get('sum_amt') == 'minor') else float(r.get('sum_amt'))) * t.get('fx').get(r.get('currency')))\n    return (float(r.get('sum_amt')) * t.get('fx').get(r.get('currency')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 8008,
+   "domain": "clearing",
+   "fault": "D1",
+   "family": "C.usd",
+   "lifecycle": "C.clearing",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 198,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (float(r.get('sum_amt')) * t.get('fx').get(r.get('currency')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return (float(r.get('sum_amt')) * t.get('fx').get(r.get('currency')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('sum_amt'), (int, float)) and not isinstance(r.get('sum_amt'), bool))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  }
+ ]
+}

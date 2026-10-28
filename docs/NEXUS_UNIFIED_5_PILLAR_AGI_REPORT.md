@@ -233,3 +233,29 @@ are the two files the owner text names.
 * Ablation arms: NEXUS_U5-P1 (FlatDict), and NEXUS_NoLearning (baseline enumerator), which also serves as −P2 because the
   library is empty.
 * Pillar dev compute: about 6,480 s wall (u5 rows of the ledger).
+
+**End-to-end dev** (`artifacts/u5_dev/pdev_*`; 12 D1/D2 projects; independently correct / silent errors)
+
+| run | NEXUS_U5 | NEXUS_U5-P1 | NEXUS_NoLearning | Fixed_Policy | Conventional |
+|---|---|---|---|---|---|
+| r1 (as pre-registered) | 11 / 0 (8010 escalated) | 0 / 6 | 10 / 1 | 12 / 0 | 6 / 6 |
+| rev1 (solver precision) | 12 / 0 | 0 / 9 | 11 / 1 | 12 / 0 | 6 / 6 |
+| **rev2 (status type priors), frozen** | **12 / 0** | 0 / 11 | **12 / 0** | 12 / 0 | 6 / 6 |
+
+* **e2e dev revision 1** (`u5_construct._Bank`, `_Solver`): fixes two float defects in the decomposition, found on pdev 8010
+  (D1 on a timestamp field ×100):
+  * the absolute 1e-12 lookup slack;
+  * interval collapse by cancellation, which accepted `p * (p - p)` for a target near 1e2.
+  * Afterwards the repair finds `(arrival - promised/100) / secs_per_hour`.
+  * Pillar 2's hybrid evaluation was rerun: correct 39 / 39 / 39, CPU 94.6 / 54.1 / 51.9 s; count is still promoted
+    (`p2_eval_hybrid_v1_absolute_slack.json` keeps the first run).
+  * Pillars 3–5 were not rerun: every arm in each comparison used the same engine, and none of those decisions was a
+    promotion.
+* **e2e dev revision 2** (`u5_platform.synth_status`): status programs are now synthesised with the arm's construction bank
+  and the guarded solver, using two domain-free type priors: no ordering of string values, and no `==` between booleans.
+  * On pdev 8007 both arms had learned `warehouse < 'S07'` for membership.
+  * NoLearning's error there was silent for ticks 9–11 because its random spot checks missed it. NEXUS_U5 was caught at
+    tick 9 by luck.
+* **Learning-benefit caveat:** with no library, curriculum or meta-improver promoted, NEXUS_U5 differs from
+  NEXUS_NoLearning only in count-based operator costs.
+* **Frozen:** `artifacts/u5_freeze.json`.
