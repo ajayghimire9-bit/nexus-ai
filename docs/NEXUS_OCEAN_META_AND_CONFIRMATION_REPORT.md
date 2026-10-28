@@ -206,3 +206,52 @@ The cap is 20,000 s.
   transport/alignment **highest** (0.73).
 * **The retrospective check FAILS:** the ledger is too sparse and keyword-confounded to point toward what actually
   worked. The prospective comparison still runs as registered.
+
+### Part 3 — distinguishing experiments as a meta-skill (300 held-out protocol episodes; 150 held-out lifecycle episodes)
+
+* **Meta-training:** the class weights learned on 100 source episodes are weak. Counterexamples found per query:
+  loop_then_probe 0.030, suspend_resume 0.029, gap_repeat 0.027, repeat_twice 0.023, others 0.019.
+
+| domain | selector | correct | mean queries-to-correct | median | total queries | CPU |
+|---|---|---|---|---|---|---|
+| protocol (unseen domain) | meta-learned class choice | 124 | 122.0 | 113.5 | 47,138 | 961 s |
+| protocol | generic L* random words | 131 | 122.3 | 121 | 47,244 | 1,075 s |
+| protocol | memoryless info-gain | **142** | 124.3 | 117.5 | 46,901 | 1,179 s |
+| protocol | random classes | 127 | 122.0 | 121 | 47,381 | 985 s |
+| lifecycle | meta / generic / info-gain / random | 115 / 117 / 115 / 113 | 109.4 / 110.7 / 109.5 / 109.3 | 107 / 108 / 107 / 107 | ≈ 21.5 k each | 116–167 s |
+
+* **Outcome: REJECTED FOR THIS SETTING.** There is no reduction in queries-to-correct vs generic search on the held-out
+  domain, and meta is correct on fewer episodes.
+* Queries are dominated by the initial continuation-splitting phase. The choice of continuation class changes little.
+
+### Part 4 — self-evolution over the audited state-learning surface
+
+* **Audit.** u5's `evolvable_learner` exposed only construction costs and an affinity AST. The oc surface (`oc_evolve`)
+  exposes four state-learning computations:
+  * continuation-class weights;
+  * the partition-revision rule;
+  * the update-proposal order;
+  * the query budget and rounds.
+* **Evolution:** 10 proposals per arm, fitness on 20 `ep_val` episodes. Evolution CPU: ledger 91 s, trace 81 s,
+  random 166 s.
+* Ledger-conditioned and trace-only both accepted the same single edit (random-word weight 1.0 → 0.25), so their surfaces
+  are **identical**. Blind random accepted random-word weight 4.0.
+
+| arm (300 held-out episodes; task memory reset) | learning-curve score | correct | queries | CPU |
+|---|---|---|---|---|
+| Ledger_Conditioned_Learner_Edits (= Trace_Only, identical surface) | 0.331 | 214 | 44,321 | 347 s |
+| Blind_Random_Mutations | 0.331 | 215 | 44,368 | 406 s |
+| Current_Strong_Learner | 0.323 | 210 | 44,319 | 341 s |
+
+* **Outcome: REJECTED FOR THIS SETTING.** Ledger conditioning beats neither trace-only nor random.
+* All evolved surfaces gain about 2 % over the current learner, which is within noise.
+* The ledger retrospective check also failed (see above).
+
+### Summary of the meta-level results (all ≥ 300 held-out episodes)
+
+* No meta-level mechanism met its kill criterion.
+* The most promising is **Part 2's meta-learned growth rule**: energy builds 9/12 vs 0/12, and a better learning curve
+  at every budget. It is rejected only because its higher certification rate came with more silent errors.
+* The common blocker is **certification reliability**: empirical coverage agreement is silently wrong on about 11–15 %
+  of certifications on random mechanisms.
+* **NEXUS_Confirmed** is therefore the f45da4e priority-A stack, unchanged.
