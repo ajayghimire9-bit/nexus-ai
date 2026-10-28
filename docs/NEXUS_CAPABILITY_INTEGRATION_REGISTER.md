@@ -107,3 +107,39 @@ A failed method does not retire its capability goal. Its component is simply lef
 * **NEXUS_Tournament_Winner** = `t7_platform.NexusArmStrong` + the u5 learner (count costs, hybrid engine, no library),
   entered through `t7_platform.run_project`.
 * **The only differences from NEXUS_U5** are the three provisionally integrated components above.
+
+## oc track additions (2026-10-28)
+
+### Extended certification (revision 1)
+
+* **Module:** `oc_cert.learn_class_certified`.
+* **Call site:** `oc_platform.NexusArmCertified._learn_b`, at build and on every lifecycle repair.
+* **What it does:** after coverage agreement, up to 150 random long-word probes; relearn on any counterexample.
+* **Evidence:**
+  * dev energy: 5/8 vs 4/8 independently correct, silent 1 vs 2;
+  * val_b: 8/8;
+  * sealed: 12/15 evaluated, X5 6/7; paired NEXUS_U5: 7/15.
+* **Limits:**
+  * sealed criterion not met (1 silent, 1 unevaluated);
+  * energy is still weak.
+* **Rollback:** use `NexusArmStrong`.
+* **Status:** provisionally integrated.
+
+### Meta-learned hypothesis-space growth (Part 2)
+
+* **Module:** `oc_learner.TablePolicy` + `learn_episode`.
+* **Call site:** none in the confirmation stack.
+* **Evidence (300 held-out episodes):**
+  * exact 235 vs 217, with a better learning curve at every budget;
+  * energy builds 9/12 vs 0/12;
+  * but silent 41 vs 32.
+* **Status:** experimental (REJECTED for this setting by the silent condition).
+
+### Other oc results
+
+| capability | module | outcome | status |
+|---|---|---|---|
+| Version-space querying | `oc_learner.vs_cex` | REJECTED (−65 % queries, 2× silent) | experimental |
+| Grey-box contract filter | `oc_learner.Learner3._domain` | REJECTED (no query reduction; −11 % CPU) | experimental |
+| Experiment-class meta-choice | `oc_experiments` | REJECTED (no query reduction on the held-out domain) | inactive |
+| Ledger-conditioned self-evolution | `oc_evolve` | REJECTED (= trace-only; ≈ random; ledger retrospective check failed) | inactive |

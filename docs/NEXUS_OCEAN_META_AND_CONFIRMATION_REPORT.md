@@ -281,3 +281,64 @@ The cap is 20,000 s.
 
 The full table is in `artifacts/oc_val_b/gate.json`. NEXUS_Confirmed (with revision 1) was independently correct on
 **8/8**, energy 2/2 included. The gate was checked on silent errors, completion and crash identity as well.
+
+## 2. Sealed confirmation (one-shot oc/test 13141–13156, revision 1, manifest `a897005`) — criterion NOT MET, run INCOMPLETE
+
+* **Incompleteness, disclosed.**
+  * Part 3 (the four energy projects) hit the 900 s per-call cap (TIMEOUT). It was killed **before** writing its results
+    file and before project **13155 (energy, X5)** ran.
+  * The one-shot rule forbids rerunning a part, so 13155 is **unevaluated**.
+  * For part 3 only the printed outcome lines of the NEXUS arms survive (`artifacts/oc_test/run_stdout_all_parts.txt`).
+    The Fixed / Conventional lines of part 3 were filtered from the captured output and are lost.
+
+| arm | evaluated | independently correct | data correct | silent | completed | human repairs |
+|---|---|---|---|---|---|---|
+| NEXUS_Confirmed | 15/16 | 12 | 14 | 1 | 15 | 3 |
+| NEXUS_U5 | 15/16 | 7 | 9 | 5 | 14 | 7 |
+| Fixed_Policy | 12/16 | 0 | 3 | 9 | 12 | 33 |
+| Conventional | 12/16 | 0 | 0 | 12 | 12 | 0 |
+
+NEXUS_Confirmed {'X5': '6/7', 'X3': '3/4', 'X4': '3/4'} {'logistics': '3/4', 'clearing': '4/4', 'iot': '4/4', 'energy': '1/3'}
+NEXUS_U5 {'X5': '3/7', 'X3': '2/4', 'X4': '2/4'} {'logistics': '3/4', 'clearing': '3/4', 'iot': '1/4', 'energy': '0/3'}
+crash-identical (complete parts, NEXUS_Confirmed): 12 / 12
+
+* **Criterion** (16/16 independently correct, 0 silent, 16/16 completed and crash-identical): **NOT MET.**
+  * 12 independently correct of the 15 evaluated;
+  * 1 silent error (13143, energy X3);
+  * 1 project unevaluated;
+  * 12/12 crash-identical in the complete parts.
+* **The unseen class X5** (undeclared event-kind vocabulary migration): NEXUS_Confirmed **6/7** independently correct,
+  0 silent (13147 needed 2 escalations). Paired NEXUS_U5: 3/7, with 3 silent X5 errors.
+  * This is the only fault-class-generalisation evidence in the programme. It is favourable, but n = 7, and it is
+    incomplete (13155).
+* **Paired gain over NEXUS_U5** on identical projects: 12 vs 7 independently correct, 1 vs 5 silent errors.
+* **Energy remains the weak domain:** 1/3 evaluated independently correct.
+
+### 2.1 Verbatim code
+
+* **Evolved learner surface** (Part 4; ledger = trace arm; not promoted):
+
+  ```
+  {"weights": {"loop_then_probe": 1.0, "suspend_resume": 1.0, "repeat_twice": 1.0, "reverse_two": 1.0, "gap_repeat": 1.0, "boundary_flush": 1.0, "random_word": 0.25}, "revision": "all_suffixes", "order": "occam", "budget": 30, "rounds": 8}
+  ```
+
+  The computations it parameterises are `oc_experiments.find_cex` / `episode` and `oc_evolve.run_surface` (committed).
+* **Synthesised X5 state machine** (sealed 13146, IoT): relearned after `DISCONNECT_V2` / `READ_V2` raised `?unknown`;
+  correct for ticks 9–16. Full file: `artifacts/oc_test/confirmed_13146_iot_x5.py`.
+* **Synthesised energy state machine** (val_b 13131): 3 modes (open / disputed / idle), registers = count and total.
+  Full file: `artifacts/oc_val_b/confirmed_13131_energy.py`.
+
+### 2.2 Final status
+
+* **Meta-learning and self-evolution** (the stated main aim): no meta-level mechanism met its pre-registered kill
+  criterion on ≥ 300 held-out episodes.
+  * **Part 2's meta-learned growth rule** is the strongest result: energy builds 9/12 vs 0/12, and a better learning curve
+    at every budget. It was rejected only for its silent-error increase, which traces to certification reliability.
+  * Experiment-class meta-choice (Part 3) and ledger-conditioned self-evolution (Part 4) showed no measurable effect.
+  * The ledger itself failed its retrospective check.
+* **Integrated:** extended certification (revision 1) is **provisionally integrated**. Its evidence is val_b 8/8 and
+  sealed X5 6/7, but the sealed criterion was not met, so it is not independently confirmed.
+* **Next experiment:** certification reliability is the binding constraint for every meta-learner tested. Build a
+  certification method with a measured silent rate (≤ 1 % on ≥ 300 held-out ocean episodes) **before** re-running
+  Part 2's meta-learned growth rule. With that in place, the growth rule's energy gain would be testable without the
+  silent-error penalty that rejected it.
