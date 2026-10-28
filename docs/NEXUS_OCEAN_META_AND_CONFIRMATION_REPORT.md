@@ -276,3 +276,8 @@ The cap is 20,000 s.
   abstentions 2 vs 2.
 * **Cost:** about 150 extra membership queries per lifecycle learn.
 * 13127 (validation) was **not** inspected.
+
+### 1.2 val_b (one-use oc/val_b 13131–13138, revision 1) — gate PASSED
+
+The full table is in `artifacts/oc_val_b/gate.json`. NEXUS_Confirmed (with revision 1) was independently correct on
+**8/8**, energy 2/2 included. The gate was checked on silent errors, completion and crash identity as well.

@@ -17,7 +17,8 @@ def main():
     fr = json.loads((ROOT / "artifacts/oc_freeze.json").read_text())
     if split == "val_b" and not fr.get("revision"):
         raise SystemExit("val_b only after one disclosed revision")
-    if split == "test" and not json.loads((ROOT / "artifacts/oc_val/gate.json").read_text())["passed"]:
+    gate = ROOT / ("artifacts/oc_val_b/gate.json" if fr.get("revision") else "artifacts/oc_val/gate.json")
+    if split == "test" and not json.loads(gate.read_text())["passed"]:
         raise SystemExit("validation gate not passed: the sealed test stays closed")
     done = [r for r in ledger_rows() if r.get("run", "").startswith(f"oc-{split}-part")]
     if any(r.get("status") == "CRASHED" for r in done):
