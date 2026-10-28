@@ -2,8 +2,11 @@
   python scripts/mi_discover.py cache                 fast-path cache for the discovery and selection pools
   python scripts/mi_discover.py ARM                    ARM in evolve | random_struct | params; N_EVAL candidate evaluations
   python scripts/mi_discover.py select ARM             top-3 (discovery fitness) re-evaluated on the selection pool -> winner
-Fitness of a candidate procedure = number of episodes (discovery pool) whose held-out stream is reproduced exactly by the machine
-the full-space stage learns with that procedure, minus 0.001 x CPU s (cap CAP_S per episode). Only episodes the shared fast path
+Fitness of a candidate procedure (run 2; disclosed revision after run 1 collapsed onto empty procedures because every candidate
+scored 0 and the CPU penalty was the only signal) = number of episodes (discovery pool) whose held-out stream is reproduced exactly
+by the machine the full-space stage learns with that procedure + 0.5 x the mean fraction of register searches the procedure's
+space explained (learner-side, no evaluator information) - 0.0001 x CPU s (cap CAP_S per episode). Run 1 is kept in
+artifacts/mi_dev/run1/. Only episodes the shared fast path
 did not accept enter the pools (the fast path is identical for every candidate). No human selects or writes a candidate: the
 seed is the transcribed existing procedure; every other candidate is produced by the generic operators of mi_lpl; the winner is
 chosen by the rule above. State: artifacts/mi_dev/disc_<ARM>.json (every candidate: program, lineage, per-episode results)."""
@@ -69,10 +72,10 @@ def evaluate(domain_fn, rows, split, cap_s, max_s=60.0):
         out, s = ML.full_space(ep, domain_fn, ep.seed, max_s=max_s, cap_s=cap_s)
         sc = ML.score(ep, out)
         res.append(dict(i=r["i"], family=r["family"], exact=sc["exact"], silent=sc["silent"], outcome=s["outcome"], cpu_s=s["cpu_s"],
-                        queries=s["queries"], domain_sizes=s.get("domain_sizes")))
-        fit += sc["exact"]
+                        queries=s["queries"], domain_sizes=s.get("domain_sizes"), explained=round(s.get("explained", 0.0), 3)))
+        fit += sc["exact"] + 0.5 * s.get("explained", 0.0) / len(rows)
         cpu += s["cpu_s"]
-    return fit - 0.001 * cpu, res
+    return fit - 0.0001 * cpu, res
 
 
 def domain_of(cand):

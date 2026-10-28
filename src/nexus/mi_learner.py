@@ -37,7 +37,9 @@ class LearnerMI(XR.Learner2X):
         ctx = dict(obs=obs, n_trans=len({t for o in os for t in traces[o[0]][:o[1]]}))
         self._mi_dom, st = self.domain_fn(ctx)
         self.mi_stats = getattr(self, "mi_stats", []) + [st]
-        return super()._search_register(hist, traces, os, val, max_s)
+        rg = super()._search_register(hist, traces, os, val, max_s)
+        self.mi_searches = getattr(self, "mi_searches", []) + [rg is not None]     # learner-side evidence, not the evaluator
+        return rg
 
     def _bt(self, i, order, assign, cons, hist, traces, val, f, init, t0, max_s):
         if time.process_time() - t0 > max_s:
@@ -161,11 +163,13 @@ def full_space(ep, domain_fn, seed, max_s=60.0, rounds=6, cap_s=None):
         outcome = "accepted" if ok and m is not None else ("register_search_failed" if m is None else "acceptance_failed")
     except EpisodeTimeout:
         ok, m, outcome, scope = False, None, "cap_timeout", None
+        stats["explained"] = (sum(getattr(L, "mi_searches", [])) / len(L.mi_searches)) if getattr(L, "mi_searches", None) else 0.0
     finally:
         if cap_s:
             signal.setitimer(signal.ITIMER_REAL, 0)
     stats.update(outcome=outcome, cpu_s=round(time.process_time() - t1, 3), queries=ep.n_queries - q0,
-                 domain_sizes=[s.get("size") for s in getattr(L, "mi_stats", [])][:6])
+                 domain_sizes=[s.get("size") for s in getattr(L, "mi_stats", [])][:6],
+                 explained=(sum(getattr(L, "mi_searches", [])) / len(L.mi_searches)) if getattr(L, "mi_searches", None) else 0.0)
     if not ok or m is None:
         return None, stats
     src, name = SP.class_source(m, witnesses=L.witnesses)

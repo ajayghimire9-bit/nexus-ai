@@ -1,0 +1,300 @@
+{
+ "arm": "random_struct",
+ "cands": [
+  {
+   "kind": "lpl",
+   "prog": {
+    "main": [
+     [
+      "terms",
+      "P0",
+      [
+       "acc",
+       "x"
+      ]
+     ],
+     [
+      "lits",
+      "P1",
+      [
+       0,
+       1
+      ]
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P1"
+     ],
+     [
+      "combine",
+      "P2",
+      "P0",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P3",
+      "P0",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P2",
+      "P2",
+      "P3"
+     ],
+     [
+      "combine",
+      "P3",
+      "P2",
+      "P0",
+      "+"
+     ],
+     [
+      "combine",
+      "P4",
+      "P2",
+      "P0",
+      "-"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "combine",
+      "P4",
+      "P0",
+      "P2",
+      "+"
+     ],
+     [
+      "combine",
+      "P5",
+      "P0",
+      "P2",
+      "-"
+     ],
+     [
+      "union",
+      "P4",
+      "P4",
+      "P5"
+     ],
+     [
+      "union",
+      "P3",
+      "P3",
+      "P4"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P2"
+     ],
+     [
+      "union",
+      "P0",
+      "P0",
+      "P3"
+     ],
+     [
+      "dedupe",
+      "P0",
+      "P0"
+     ],
+     [
+      "sort",
+      "P0",
+      "P0",
+      "size"
+     ],
+     [
+      "ret",
+      "P0"
+     ]
+    ],
+    "helpers": {}
+   },
+   "lineage": {
+    "op": "seed (transcribed existing procedure)"
+   },
+   "id": 0,
+   "fitness": -0.025,
+   "exact": 0,
+   "silent": 0,
+   "per_episode": [
+    {
+     "i": 2,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.077,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 3,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.026,
+     "queries": 89,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 5,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.036,
+     "queries": 160,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 6,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 7,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.018,
+     "queries": 136,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 10,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.012,
+     "queries": 93,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 11,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.024,
+     "queries": 88,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 13,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.595,
+     "queries": 130,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 14,
+     "family": "ADDC",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.026,
+     "queries": 113,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    },
+    {
+     "i": 15,
+     "family": "SUBH",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.003,
+     "queries": 159,
+     "domain_sizes": [
+      53,
+      53,
+      53,
+      53,
+      53,
+      53
+     ]
+    },
+    {
+     "i": 17,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "cap_timeout",
+     "cpu_s": 8.005,
+     "queries": 109,
+     "domain_sizes": [
+      53,
+      53,
+      53
+     ]
+    },
+    {
+     "i": 29,
+     "family": "MUL",
+     "exact": false,
+     "silent": false,
+     "outcome": "register_search_failed",
+     "cpu_s": 0.138,
+     "queries": 83,
+     "domain_sizes": [
+      53,
+      53
+     ]
+    }
+   ],
+   "eval_cpu_s": 24.99,
+   "space_size_empty_ctx": 53
+  }
+ ]
+}

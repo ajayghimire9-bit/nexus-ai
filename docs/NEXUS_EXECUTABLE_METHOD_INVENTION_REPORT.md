@@ -72,3 +72,12 @@ separate selection pool (12 failing `mi/sel` episodes, 20 s cap); winner = best 
 * Novelty levels to be reported separately: new program for a task / reusable method new to NEXUS / materially different from the
   compared algorithms / research-novel (needs a prior-art review — not claimed).
 * Budget estimate: discovery ≤ 7,000 s, selection ≤ 800 s, validation ≤ 2,000 s, confirmation ≤ 14,000 s; reserve ≥ 8,000 s.
+
+### 0.6 Disclosed revision before any winner was selected (development data only)
+
+Discovery run 1 (`artifacts/mi_dev/run1/`): the seed solved 0 / 12 discovery episodes (25 s); every other candidate also scored 0,
+and the CPU tie-break then favoured degenerate procedures (hypothesis spaces of 1–4 expressions, 0.04 s), so `evolve` collapsed
+(24 / 24 evaluations at 0). Stopped after 1 random_struct evaluation (interrupted call charged, 60 s upper bound). Revision (generic,
+applied identically to all three search arms, which restart from zero as run 2): fitness = exact episodes + 0.5 × mean fraction of
+register searches explained by the procedure's space (learner-side evidence, no evaluator information) − 0.0001 × CPU s. Nothing
+else changed.
