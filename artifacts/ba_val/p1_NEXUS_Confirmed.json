@@ -1,0 +1,68 @@
+{
+ "split": "val",
+ "index": 1,
+ "seed": 13262,
+ "arm": "NEXUS_Confirmed",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "NEXUS_Confirmed",
+  "project": 13262,
+  "domain": "iot",
+  "fault": "D1",
+  "family": "I.delta",
+  "lifecycle": "I.session",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "bad_A": 0,
+  "bad_B": 0,
+  "claims_healthy": true,
+  "silent": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "repairs": [
+   {
+    "tick": 9,
+    "kind": "repair_A",
+    "version": 1
+   }
+  ],
+  "alarms": 2,
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.9
+   },
+   "value_stats": {
+    "cpu_s": 0.023,
+    "built": 1684,
+    "kept": 202,
+    "dup": 1175,
+    "err": 307,
+    "scored": 0,
+    "solved": true,
+    "level": 9,
+    "size": 7,
+    "stage": "construct"
+   },
+   "build_cpu_s": 13.162,
+   "n_modes": 2,
+   "n_regs": 2,
+   "b_queries": 391
+  },
+  "cost": {
+   "build_cpu_s": 13.163,
+   "ops_cpu_s": 0.113,
+   "queries": {
+    "build_labels": 566,
+    "spot": 139,
+    "incident": 36,
+    "mq": 465,
+    "mq_events": 2382
+   }
+  },
+  "deployed_source": "def value_fn(r, t):\n    return ((r.get('latest') / 100) - r.get('prev'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)) and (isinstance(r.get('prev'), (int, float)) and not isinstance(r.get('prev'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('trade_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "build_source": "def value_fn(r, t):\n    return (r.get('latest') - r.get('prev'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)) and (isinstance(r.get('prev'), (int, float)) and not isinstance(r.get('prev'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('trade_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "split": "val",
+ "index": 2,
+ "seed": 13263,
+ "arm": "NEXUS_U5",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "NEXUS_U5",
+  "project": 13263,
+  "domain": "energy",
+  "fault": "D2",
+  "family": "E.pf",
+  "lifecycle": "E.meter",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "bad_A": 0,
+  "bad_B": 0,
+  "claims_healthy": true,
+  "silent": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "repairs": [],
+  "alarms": 0,
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 13.021
+   },
+   "value_stats": {
+    "cpu_s": 0.626,
+    "built": 44738,
+    "kept": 7745,
+    "dup": 33869,
+    "err": 3124,
+    "scored": 0,
+    "solved": true,
+    "level": 13,
+    "size": 11,
+    "stage": "construct"
+   },
+   "build_cpu_s": 14.333,
+   "n_modes": 3,
+   "n_regs": 4,
+   "b_queries": 213
+  },
+  "cost": {
+   "build_cpu_s": 14.334,
+   "ops_cpu_s": 0.005,
+   "queries": {
+    "build_labels": 560,
+    "spot": 83,
+    "incident": 0,
+    "mq": 216,
+    "mq_events": 1145
+   }
+  },
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('power_w') / (r.get('voltage') * r.get('current')))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('voltage'), (int, float)) and not isinstance(r.get('voltage'), bool)) and (isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool))) and (isinstance(r.get('current'), (int, float)) and not isinstance(r.get('current'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8d294bd7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 4 data register(s).\n    witness: histories ['OPEN'] vs [] differ after continuation ['ADJUST']\n    witness: histories ['OPEN', 'DISPUTE'] vs [] differ after continuation ['OPEN']\n    witness reg_0: in mode_1 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE', 'OPEN'] / ['OPEN', 'READ'] emit 0 / 1 after ['CLOSE']\n    witness reg_1: in mode_1 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE', 'OPEN'] / ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE', 'OPEN', 'CLOSE', 'OPEN', 'ADJUST'] emit 0 / 544.54 after ['CLOSE']\n    witness reg_2: in mode_2 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE'] / ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE'] emit 2 / 1 after ['OPEN']\n    witness reg_3: in mode_2 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE'] / ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE'] emit 2892.51 / 1301.7 after ['OPEN']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n        self.reg_2 = {}\n        self.reg_3 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        r2 = self.reg_2.get(k, 0)\n        r3 = self.reg_3.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        x3 = rec.get('amt')\n        x3 = x3 if isinstance(x3, (int, float)) and not isinstance(x3, bool) else 0\n        if m == 0:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ADJUST':\n                out = []\n                self.reg_1[k] = (r1 + x1)\n                self.reg_3[k] = (r3 + x3)\n                return out\n            elif s == 'CLOSE':\n                out = [('bill', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'DISPUTE':\n                out = []\n                self.mode[k] = 2\n                return out\n            elif s == 'OPEN':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                self.reg_2[k] = (r2 + 1)\n                self.reg_3[k] = (r3 + x3)\n                return out\n        elif m == 2:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = [('disputed', r2, r3)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "build_source": "def value_fn(r, t):\n    return (r.get('power_w') / (r.get('voltage') * r.get('current')))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('voltage'), (int, float)) and not isinstance(r.get('voltage'), bool)) and (isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool))) and (isinstance(r.get('current'), (int, float)) and not isinstance(r.get('current'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8d294bd7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 4 data register(s).\n    witness: histories ['OPEN'] vs [] differ after continuation ['ADJUST']\n    witness: histories ['OPEN', 'DISPUTE'] vs [] differ after continuation ['OPEN']\n    witness reg_0: in mode_1 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE', 'OPEN'] / ['OPEN', 'READ'] emit 0 / 1 after ['CLOSE']\n    witness reg_1: in mode_1 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE', 'OPEN'] / ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE', 'OPEN', 'CLOSE', 'OPEN', 'ADJUST'] emit 0 / 544.54 after ['CLOSE']\n    witness reg_2: in mode_2 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE'] / ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE'] emit 2 / 1 after ['OPEN']\n    witness reg_3: in mode_2 histories ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE'] / ['OPEN', 'ADJUST', 'READ', 'ADJUST', 'READ', 'ADJUST', 'ADJUST', 'DISPUTE', 'OPEN', 'ADJUST', 'ADJUST', 'READ', 'DISPUTE'] emit 2892.51 / 1301.7 after ['OPEN']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n        self.reg_2 = {}\n        self.reg_3 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        r2 = self.reg_2.get(k, 0)\n        r3 = self.reg_3.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        x3 = rec.get('amt')\n        x3 = x3 if isinstance(x3, (int, float)) and not isinstance(x3, bool) else 0\n        if m == 0:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ADJUST':\n                out = []\n                self.reg_1[k] = (r1 + x1)\n                self.reg_3[k] = (r3 + x3)\n                return out\n            elif s == 'CLOSE':\n                out = [('bill', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'DISPUTE':\n                out = []\n                self.mode[k] = 2\n                return out\n            elif s == 'OPEN':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                self.reg_2[k] = (r2 + 1)\n                self.reg_3[k] = (r3 + x3)\n                return out\n        elif m == 2:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = [('disputed', r2, r3)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+ }
+}

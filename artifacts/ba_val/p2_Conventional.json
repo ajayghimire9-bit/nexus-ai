@@ -1,0 +1,43 @@
+{
+ "split": "val",
+ "index": 2,
+ "seed": 13263,
+ "arm": "Conventional",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "Conventional",
+  "project": 13263,
+  "domain": "energy",
+  "fault": "D2",
+  "family": "E.pf",
+  "lifecycle": "E.meter",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "bad_A": 0,
+  "bad_B": 0,
+  "claims_healthy": true,
+  "silent": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "repairs": [],
+  "alarms": 0,
+  "build": {
+   "build_cpu_s": 0.0
+  },
+  "cost": {
+   "build_cpu_s": 0.0,
+   "ops_cpu_s": 0.004,
+   "queries": {
+    "build_labels": 0,
+    "spot": 0,
+    "incident": 0,
+    "mq": 0,
+    "mq_events": 0
+   }
+  },
+  "deployed_source": "def value_fn(r, t):\n    return (float(r.get('power_w')) / (float(r.get('voltage')) * float(r.get('current'))))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool))) or (not (isinstance(r.get('voltage'), (int, float)) and not isinstance(r.get('voltage'), bool)))) or (not (isinstance(r.get('current'), (int, float)) and not isinstance(r.get('current'), bool)))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+  "build_source": "def value_fn(r, t):\n    return (float(r.get('power_w')) / (float(r.get('voltage')) * float(r.get('current'))))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool))) or (not (isinstance(r.get('voltage'), (int, float)) and not isinstance(r.get('voltage'), bool)))) or (not (isinstance(r.get('current'), (int, float)) and not isinstance(r.get('current'), bool)))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}
