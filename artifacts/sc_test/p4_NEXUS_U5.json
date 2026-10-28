@@ -1,0 +1,184 @@
+{
+ "split": "test",
+ "ident": "4",
+ "seed": 13385,
+ "arm": "NEXUS_U5",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13385,
+  "domain": "clearing",
+  "fault": "X3",
+  "lifecycle": "C.clearing",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": false,
+   "any_B_alarm_after_fault_tick": 9,
+   "schema_alarm_tick": null,
+   "schema_fault_missed": false,
+   "unresolved_escalations": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0,
+   "data_ok": true,
+   "incorrect_healthy_claim": false
+  },
+  "solution_sources": {
+   "build": null,
+   "relearns": [],
+   "mapping": [],
+   "human": 0
+  },
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:unknown_symbol",
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.798
+   },
+   "value_stats": {
+    "cpu_s": 0.192,
+    "built": 14473,
+    "kept": 1932,
+    "dup": 10162,
+    "err": 2379,
+    "scored": 0,
+    "solved": true,
+    "level": 12,
+    "size": 11,
+    "stage": "construct"
+   },
+   "build_cpu_s": 13.115,
+   "n_modes": 4,
+   "n_regs": 1,
+   "b_queries": 282
+  },
+  "cost": {
+   "build_cpu_s": 13.115,
+   "ops_cpu_s": 0.073,
+   "wall_s": 13.191,
+   "queries": {
+    "build_labels": 560,
+    "spot": 92,
+    "incident": 360,
+    "mq": 655,
+    "mq_events": 3018
+   }
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('value') * t.get('fx').get(r.get('cur')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('value'), (int, float)) and not isinstance(r.get('value'), bool))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW'] / ['NEW', 'AMEND', 'NEW'] emit 147.78 / 254.97 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('action')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('qty_value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('value') * t.get('fx').get(r.get('cur')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('value'), (int, float)) and not isinstance(r.get('value'), bool))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_99635c95:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW'] / ['NEW', 'AMEND', 'NEW'] emit 147.78 / 254.97 after ['CANCEL']\n    witness reg_1: in mode_3 histories ['NEW', 'AMEND', 'COMMIT', 'AMEND', 'COMMIT', 'PREPARE'] / ['CANCEL', 'NEW', 'NEW', 'PREPARE', 'ABORT', 'PREPARE'] emit 514.16 / 156.44 after ['COMMIT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('action')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x0 = rec.get('qty_value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        x1 = rec.get('qty_value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.reg_1[k] = x1\n                self.mode[k] = 1\n                return out\n            elif s == 'PARTIAL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                self.reg_1[k] = x1\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PARTIAL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PARTIAL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r1, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PARTIAL':\n                out = [('partial', rec.get('qty_value'), None)]\n                self.reg_1[k] = (r1 - x1)\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+ }
+}

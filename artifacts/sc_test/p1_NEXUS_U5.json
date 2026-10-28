@@ -1,0 +1,185 @@
+{
+ "split": "test",
+ "ident": "1",
+ "seed": 13382,
+ "arm": "NEXUS_U5",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13382,
+  "domain": "iot",
+  "fault": "X6",
+  "lifecycle": "I.session",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "any_B_alarm_after_fault_tick": 9,
+   "schema_alarm_tick": null,
+   "schema_fault_missed": false,
+   "unresolved_escalations": 1,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0,
+   "data_ok": true,
+   "incorrect_healthy_claim": false
+  },
+  "solution_sources": {
+   "build": null,
+   "relearns": [],
+   "mapping": [],
+   "human": 1
+  },
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.931
+   },
+   "value_stats": {
+    "cpu_s": 0.023,
+    "built": 1687,
+    "kept": 205,
+    "dup": 1175,
+    "err": 307,
+    "scored": 0,
+    "solved": true,
+    "level": 9,
+    "size": 7,
+    "stage": "construct"
+   },
+   "build_cpu_s": 13.128,
+   "n_modes": 2,
+   "n_regs": 2,
+   "b_queries": 180
+  },
+  "cost": {
+   "build_cpu_s": 13.128,
+   "ops_cpu_s": 0.013,
+   "wall_s": 13.154,
+   "queries": {
+    "build_labels": 560,
+    "spot": 85,
+    "incident": 360,
+    "mq": 260,
+    "mq_events": 1500
+   }
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('reading') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)) and (isinstance(r.get('reading'), (int, float)) and not isinstance(r.get('reading'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'READ', 'READ', 'READ', 'READ', 'READ', 'READ', 'READ'] emit 0 / 7 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'READ', 'READ', 'READ', 'READ', 'READ', 'READ', 'READ'] emit 0 / 187.4 after ['DISCONNECT']\n    witness reg_2: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['CONNECT']\n    witness reg_3: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 14.3 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('action')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return None\n\n\ndef status_fn(r, t):\n    return None\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}

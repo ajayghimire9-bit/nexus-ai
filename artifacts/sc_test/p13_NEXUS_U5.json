@@ -1,0 +1,190 @@
+{
+ "split": "test",
+ "ident": "13",
+ "seed": 13394,
+ "arm": "NEXUS_U5",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13394,
+  "domain": "iot",
+  "fault": "X5",
+  "lifecycle": "I.session",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": false,
+   "any_B_alarm_after_fault_tick": 9,
+   "schema_alarm_tick": null,
+   "schema_fault_missed": false,
+   "unresolved_escalations": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0,
+   "data_ok": true,
+   "incorrect_healthy_claim": false
+  },
+  "solution_sources": {
+   "build": null,
+   "relearns": [],
+   "mapping": [],
+   "human": 0
+  },
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:unknown_symbol"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 14,
+    "kind": "repair_B",
+    "version": 2
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.916
+   },
+   "value_stats": {
+    "cpu_s": 0.478,
+    "built": 37435,
+    "kept": 6184,
+    "dup": 28203,
+    "err": 3048,
+    "scored": 0,
+    "solved": true,
+    "level": 13,
+    "size": 11,
+    "stage": "construct"
+   },
+   "build_cpu_s": 13.549,
+   "n_modes": 2,
+   "n_regs": 2,
+   "b_queries": 148
+  },
+  "cost": {
+   "build_cpu_s": 13.55,
+   "ops_cpu_s": 1.573,
+   "wall_s": 15.126,
+   "queries": {
+    "build_labels": 560,
+    "spot": 87,
+    "incident": 920,
+    "mq": 598,
+    "mq_events": 3261
+   }
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('elapsed') * (r.get('load') / t.get('j_per_kwh')))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('elapsed'), (int, float)) and not isinstance(r.get('elapsed'), bool)) and (isinstance(r.get('load'), (int, float)) and not isinstance(r.get('load'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['DISCONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'READ', 'READ'] emit 0 / 2 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['DISCONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'READ', 'READ'] emit 0 / 59.4 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('action')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('qty_value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('elapsed') * (r.get('load') / t.get('j_per_kwh')))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('elapsed'), (int, float)) and not isinstance(r.get('elapsed'), bool)) and (isinstance(r.get('load'), (int, float)) and not isinstance(r.get('load'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_5b860c2e:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['DISCONNECT', 'CONNECT'] / ['DISCONNECT', 'CONNECT', 'CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'READ', 'CONNECT', 'READ', 'DISCONNECT', 'READ', 'CONNECT', 'READ', 'READ_V2'] emit 0 / 2 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['DISCONNECT', 'CONNECT'] / ['DISCONNECT', 'CONNECT', 'CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'READ', 'CONNECT', 'READ', 'DISCONNECT', 'READ', 'CONNECT', 'READ', 'READ_V2'] emit 0 / 80.4 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('action')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('qty_value')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISCONNECT_V2':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ_V2':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'DISCONNECT_V2':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'READ_V2':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+ }
+}

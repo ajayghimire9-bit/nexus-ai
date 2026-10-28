@@ -1,0 +1,166 @@
+{
+ "split": "test",
+ "ident": "12",
+ "seed": 13393,
+ "arm": "Fixed_Policy",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13393,
+  "domain": "clearing",
+  "fault": "X5",
+  "lifecycle": "C.clearing",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": false,
+   "any_B_alarm_after_fault_tick": 9,
+   "schema_alarm_tick": null,
+   "schema_fault_missed": false,
+   "unresolved_escalations": 1,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0,
+   "data_ok": true,
+   "incorrect_healthy_claim": false
+  },
+  "solution_sources": {
+   "build": null,
+   "relearns": [],
+   "mapping": [],
+   "human": 1
+  },
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "human"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [],
+  "build": {
+   "build_cpu_s": 0.0
+  },
+  "cost": {
+   "build_cpu_s": 0.0,
+   "ops_cpu_s": 0.006,
+   "wall_s": 0.009,
+   "queries": {
+    "build_labels": 0,
+    "spot": 74,
+    "incident": 360,
+    "mq": 0,
+    "mq_events": 0
+   }
+  },
+  "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return ((float(r.get('exit_px')) - ((float(r.get('buy_px')) / 100) if (t.get('units').get('buy_px') == 'minor') else float(r.get('buy_px')))) * float(r.get('lots')))\n    return ((float(r.get('exit_px')) - float(r.get('buy_px'))) * float(r.get('lots')))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('buy_px'), (int, float)) and not isinstance(r.get('buy_px'), bool))) or (not (isinstance(r.get('exit_px'), (int, float)) and not isinstance(r.get('exit_px'), bool)))) or (not (isinstance(r.get('lots'), (int, float)) and not isinstance(r.get('lots'), bool)))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+  "deployed_source": "def value_fn(r, t):\n    return None\n\n\ndef status_fn(r, t):\n    return None\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}
