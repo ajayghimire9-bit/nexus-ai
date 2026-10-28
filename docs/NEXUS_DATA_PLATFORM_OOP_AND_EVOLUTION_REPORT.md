@@ -183,3 +183,16 @@ tick 13 (a supplier's feed switches to pounds): the inherited Stage 5 drift hand
 false alarm and never localised the late shift, so wrong weights reached gold while the operator claimed healthy. This is
 an operator weakness inherited unchanged from Stages 5 / R1 / R2, not a synthesis failure — but the gate is about the
 deployed system, so it fails. Per protocol one disclosed revision is allowed, then val_b once.
+
+### 1.1 Revision 1 (the one permitted; disclosed) and re-freeze
+
+Diagnosed on **dev** worlds, not val: `scripts/oop_dev_unitshift.py` forces traffic_spike@11 + unit_shift@13 on dev 991 /
+992 / 996. Before the revision both operators produced silent errors (NEXUS_Synth 2/3, unchanged R2 template operator
+2/3; `artifacts/oop_dev_results/unitshift_before.json`). Instrumented cause: a ratio alarm raised by natural variation
+before the shift stays pending; when the producer metadata changes, `drift_scan` raises no second alarm for that supplier;
+the ratio test on a handful of records cannot localise the shift; pending alarms do not fail the healthy claim. Revision:
+an unlocalised alarm whose supplier shows a producer-metadata change takes the existing metadata path (localise, else ask
+the stakeholder for the unit — a counted clarification — then localise by metadata) (`oop_ops.NexusOpsSynth`). NEXUS_Synth
+only; the R2 arms are unchanged. After: NEXUS_Synth 991 / 996 correct, 0 silent; R2 operator still fails
+(`unitshift_rev1.json`). Dev regression with the revision: 8/8 natural, 8/8 forced, 8/8 B0 secondary, 0 silent
+(`dev_rev1.json`). The val_b gate is the val gate, unchanged.

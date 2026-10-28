@@ -1,0 +1,617 @@
+{
+ "de5-dev-991": {
+  "NEXUS_Synth": {
+   "e2e": true,
+   "silent": false,
+   "ledger": [
+    {
+     "tick": 1,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "monitor:watermark_sanity"
+     ],
+     "repair": [
+      [
+       "future_guard",
+       true
+      ],
+      [
+       "redeploy",
+       {
+        "commit_protocol": "transactional",
+        "dedup": "by_msg_id",
+        "ts_parse": "utc",
+        "gold_maintenance": "full_recompute",
+        "lateness": "processing_time",
+        "partition_discovery": "dynamic",
+        "ts_format": "registry_typed",
+        "snapshots": "per_tick",
+        "txn_isolation": "read_uncommitted",
+        "gap_handling": "wait_contiguous",
+        "syn_decode": "p5ba354e8",
+        "syn_net": "p9977eb3b",
+        "syn_status": "p2f20b2da",
+        "syn_silver": "pd512fd99"
+       }
+      ],
+      [
+       "rollback",
+       0
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": true,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 2,
+     "from_library": false
+    },
+    {
+     "tick": 11,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S3",
+      "offset": 51,
+      "tick": 11,
+      "trigger": "fixed_ratio"
+     }
+    },
+    {
+     "tick": 11,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "oom"
+     ],
+     "repair": [
+      [
+       "batch",
+       240
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": false,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 4,
+     "from_library": false
+    },
+    {
+     "tick": 13,
+     "kind": "repaired",
+     "signature": [
+      "monitor:drift"
+     ],
+     "repair": [
+      [
+       "unit_override",
+       {
+        "supplier": "S2",
+        "part": 0,
+        "from_offset": 64,
+        "factor": 0.45359237,
+        "unit": "lb",
+        "tick": 13,
+        "source": "stakeholder"
+       }
+      ],
+      [
+       "rollback",
+       12
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": false,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 3,
+     "from_library": false
+    }
+   ]
+  },
+  "NEXUS_Template": {
+   "e2e": false,
+   "silent": false,
+   "ledger": [
+    {
+     "tick": 1,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "monitor:watermark_sanity"
+     ],
+     "repair": [
+      [
+       "future_guard",
+       true
+      ],
+      [
+       "redeploy",
+       {
+        "commit_protocol": "transactional",
+        "dedup": "by_msg_id",
+        "apply_order": "source_version",
+        "ts_parse": "utc",
+        "gold_maintenance": "full_recompute",
+        "lateness": "processing_time",
+        "backfill_merge": "lww_tombstones",
+        "schema_handling": "registry_typed",
+        "partition_discovery": "dynamic",
+        "ts_format": "registry_typed",
+        "snapshots": "per_tick",
+        "fx": "table",
+        "deletes": "soft_and_hard",
+        "malformed": "quarantine",
+        "txn_isolation": "read_uncommitted",
+        "gap_handling": "wait_contiguous",
+        "fx_unknown": "error",
+        "discount_unit": "percent_only"
+       }
+      ],
+      [
+       "rollback",
+       0
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": true,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 2,
+     "from_library": false
+    },
+    {
+     "tick": 11,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S3",
+      "offset": 51,
+      "tick": 11,
+      "trigger": "fixed_ratio"
+     }
+    },
+    {
+     "tick": 11,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "oom"
+     ],
+     "repair": [
+      [
+       "batch",
+       240
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": false,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 4,
+     "from_library": false
+    },
+    {
+     "tick": 13,
+     "kind": "escalated",
+     "signature": [
+      "monitor:gold_recompute"
+     ],
+     "candidates": [
+      "rollback",
+      "catch_up"
+     ],
+     "pipeline_suspect": [
+      "gold_recompute"
+     ]
+    },
+    {
+     "tick": 14,
+     "kind": "escalated",
+     "signature": [
+      "monitor:gold_recompute"
+     ],
+     "candidates": [
+      "rollback",
+      "catch_up"
+     ],
+     "pipeline_suspect": [
+      "gold_recompute"
+     ]
+    }
+   ]
+  }
+ },
+ "de5-dev-996": {
+  "NEXUS_Synth": {
+   "e2e": true,
+   "silent": false,
+   "ledger": [
+    {
+     "tick": 1,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "monitor:watermark_sanity"
+     ],
+     "repair": [
+      [
+       "future_guard",
+       true
+      ],
+      [
+       "redeploy",
+       {
+        "commit_protocol": "transactional",
+        "dedup": "by_msg_id",
+        "ts_parse": "utc",
+        "gold_maintenance": "full_recompute",
+        "lateness": "processing_time",
+        "partition_discovery": "dynamic",
+        "ts_format": "registry_typed",
+        "snapshots": "per_tick",
+        "txn_isolation": "read_committed",
+        "gap_handling": "skip",
+        "syn_decode": "p5ba354e8",
+        "syn_net": "p9977eb3b",
+        "syn_status": "p2f20b2da",
+        "syn_silver": "pe2b9fdd0"
+       }
+      ],
+      [
+       "rollback",
+       0
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": true,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 2,
+     "from_library": false
+    },
+    {
+     "tick": 7,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation"
+     ],
+     "repair": [
+      [
+       "redeploy",
+       {
+        "commit_protocol": "transactional",
+        "dedup": "by_msg_id",
+        "ts_parse": "utc",
+        "gold_maintenance": "full_recompute",
+        "lateness": "watermark",
+        "partition_discovery": "dynamic",
+        "ts_format": "registry_typed",
+        "snapshots": "per_tick",
+        "txn_isolation": "read_committed",
+        "gap_handling": "skip",
+        "syn_decode": "p5ba354e8",
+        "syn_net": "p9977eb3b",
+        "syn_status": "p2f20b2da",
+        "syn_silver": "pe2b9fdd0"
+       }
+      ],
+      [
+       "rollback",
+       6
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": true,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 1,
+     "from_library": false
+    },
+    {
+     "tick": 9,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S3",
+      "offset": 42,
+      "tick": 8,
+      "trigger": "fixed_ratio"
+     }
+    },
+    {
+     "tick": 9,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation"
+     ],
+     "repair": [
+      [
+       "redeploy",
+       {
+        "commit_protocol": "transactional",
+        "dedup": "by_msg_id",
+        "ts_parse": "utc",
+        "gold_maintenance": "full_recompute",
+        "lateness": "watermark",
+        "partition_discovery": "dynamic",
+        "ts_format": "registry_typed",
+        "snapshots": "per_tick",
+        "txn_isolation": "read_committed",
+        "gap_handling": "skip",
+        "syn_decode": "pb21be4d1",
+        "syn_net": "p9977eb3b",
+        "syn_status": "p2f20b2da",
+        "syn_silver": "pe2b9fdd0"
+       }
+      ],
+      [
+       "rollback",
+       7
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": true,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 1,
+     "from_library": false
+    },
+    {
+     "tick": 11,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "oom"
+     ],
+     "repair": [
+      [
+       "batch",
+       240
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": false,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 4,
+     "from_library": false
+    },
+    {
+     "tick": 13,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S2",
+      "offset": 65,
+      "tick": 13,
+      "trigger": "fixed_ratio"
+     }
+    },
+    {
+     "tick": 13,
+     "kind": "repaired",
+     "signature": [
+      "monitor:drift"
+     ],
+     "repair": [
+      [
+       "unit_override",
+       {
+        "supplier": "S1",
+        "part": 0,
+        "from_offset": 63,
+        "factor": 0.45359237,
+        "unit": "lb",
+        "tick": 13,
+        "source": "stakeholder"
+       }
+      ],
+      [
+       "rollback",
+       12
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": false,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 1,
+     "from_library": false
+    },
+    {
+     "tick": 14,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S3",
+      "offset": 72,
+      "tick": 14,
+      "trigger": "fixed_ratio"
+     }
+    }
+   ]
+  },
+  "NEXUS_Template": {
+   "e2e": false,
+   "silent": true,
+   "ledger": [
+    {
+     "tick": 1,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "monitor:watermark_sanity"
+     ],
+     "repair": [
+      [
+       "future_guard",
+       true
+      ],
+      [
+       "redeploy",
+       {
+        "commit_protocol": "transactional",
+        "dedup": "by_msg_id",
+        "apply_order": "source_version",
+        "ts_parse": "utc",
+        "gold_maintenance": "full_recompute",
+        "lateness": "processing_time",
+        "backfill_merge": "lww_tombstones",
+        "schema_handling": "registry_typed",
+        "partition_discovery": "dynamic",
+        "ts_format": "registry_typed",
+        "snapshots": "per_tick",
+        "fx": "table",
+        "deletes": "soft_and_hard",
+        "malformed": "quarantine",
+        "txn_isolation": "read_committed",
+        "gap_handling": "skip",
+        "fx_unknown": "error",
+        "discount_unit": "registry_unit"
+       }
+      ],
+      [
+       "rollback",
+       0
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": true,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 2,
+     "from_library": false
+    },
+    {
+     "tick": 7,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation"
+     ],
+     "repair": [
+      [
+       "redeploy",
+       {
+        "commit_protocol": "transactional",
+        "dedup": "by_msg_id",
+        "apply_order": "source_version",
+        "ts_parse": "utc",
+        "gold_maintenance": "full_recompute",
+        "lateness": "watermark",
+        "backfill_merge": "lww_tombstones",
+        "schema_handling": "registry_typed",
+        "partition_discovery": "dynamic",
+        "ts_format": "registry_typed",
+        "snapshots": "per_tick",
+        "fx": "table",
+        "deletes": "soft_and_hard",
+        "malformed": "quarantine",
+        "txn_isolation": "read_committed",
+        "gap_handling": "skip",
+        "fx_unknown": "error",
+        "discount_unit": "registry_unit"
+       }
+      ],
+      [
+       "rollback",
+       6
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": true,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 1,
+     "from_library": false
+    },
+    {
+     "tick": 9,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S3",
+      "offset": 42,
+      "tick": 8,
+      "trigger": "fixed_ratio"
+     }
+    },
+    {
+     "tick": 11,
+     "kind": "repaired",
+     "signature": [
+      "monitor:reconciliation",
+      "oom"
+     ],
+     "repair": [
+      [
+       "batch",
+       240
+      ],
+      [
+       "catch_up",
+       null
+      ]
+     ],
+     "own_pipeline": false,
+     "verified_in_shadow": true,
+     "reconciled": true,
+     "shadow_tests_before": 4,
+     "from_library": false
+    },
+    {
+     "tick": 13,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S2",
+      "offset": 65,
+      "tick": 13,
+      "trigger": "fixed_ratio"
+     }
+    },
+    {
+     "tick": 14,
+     "kind": "false_alarm",
+     "alarm": {
+      "supplier": "S3",
+      "offset": 72,
+      "tick": 14,
+      "trigger": "fixed_ratio"
+     }
+    }
+   ]
+  }
+ }
+}

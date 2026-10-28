@@ -95,6 +95,21 @@ def RESYNTH(op, env, holes, arch):
 
 
 O3.RESYNTH = RESYNTH
-NexusOpsSynth, run_ops, claims_healthy, monitors = O3.NexusOpsR1, O3.run_ops, O3.claims_healthy, O3.monitors_r1
+class NexusOpsSynth(O3.NexusOpsR1):
+    """REVISION 1 (after the failed Phase 1 validation; reproduced on dev 991 / 992 / 996 with unit_shift at tick 13): an
+    alarm raised by the ratio detector BEFORE a supplier's producer metadata changed suppressed the metadata alarm
+    (drift_scan raises one alarm per supplier), and its ratio test on a few records could not localise the shift, so it
+    stayed pending - and pending alarms do not fail the healthy claim. Now an unlocalised alarm whose supplier shows a
+    producer-metadata change takes the existing metadata path (localise; if too little data, ask the stakeholder for
+    the unit - a counted clarification - then localise by metadata). NEXUS_Synth only; the R2 arms keep R2 behaviour."""
+
+    def _triage_alarms(self, env):
+        for a in self.det_state.get("alarms", []):
+            if not a.get("localized") and a.get("trigger") != "producer_metadata" and O3.O._metadata_changed(env, a["supplier"]):
+                a["trigger"], a["promoted_from"] = "producer_metadata", a.get("trigger")
+        return super()._triage_alarms(env)
+
+
+run_ops, claims_healthy, monitors = O3.run_ops, O3.claims_healthy, O3.monitors_r1
 OpsEnv, apply_comp, ORDER_C = O3.OpsEnvR1, O3.apply_comp, R2.ORDER_C
 _ = (json, sys)
