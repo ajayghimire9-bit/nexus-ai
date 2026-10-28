@@ -196,3 +196,146 @@ the stakeholder for the unit — a counted clarification — then localise by me
 only; the R2 arms are unchanged. After: NEXUS_Synth 991 / 996 correct, 0 silent; R2 operator still fails
 (`unitshift_rev1.json`). Dev regression with the revision: 8/8 natural, 8/8 forced, 8/8 B0 secondary, 0 silent
 (`dev_rev1.json`). The val_b gate is the val gate, unchanged.
+
+### 1.2 val_b (one use, de5/val_b 7985–7988, frozen `3162c8e`) — gate FAILED; the Phase 1 sealed test is NOT opened
+
+| project | classes | natural e2e | silent | forced X | secondary B0 | resynthesis |
+| --- | --- | --- | --- | --- | --- | --- |
+| 7985 | X2 D1 | ✓ | 0 | ✓ | ✓ | syn_decode @ 9 |
+| 7986 | X1 D2 | ✓ | 0 | ✓ | ✓ | — |
+| 7987 | X2 D2 | ✓ | 0 | ✓ | ✓ | — |
+| 7988 | X1 D1 | ✗ | **1** | ✗ (silent) | ✗ | syn_decode @ 9 (verified, redeployed) |
+
+3/4 natural, **1 silent** → FAIL. By the predeclared rule the test is not opened: the de5/test seeds 7991–7998 were never
+claimed or generated (no vault blobs, no manifest), and no Phase 1 confirmation claim is made.
+
+7988, as far as the stored evidence goes: every monitor reconciled after every repair (decode resynthesised at tick 9;
+clock_skew@10 repaired with future_guard + rollback; poison_message@11 dead-lettered; three earlier repairs moved the
+lateness switch processing_time → none → watermark), yet the evaluator finds wrong data — a **monitor-blind** error in
+the clock-skew / lateness family (cf. R1 7953 / R2 §0.9). The ops evaluation stores no per-table diff, so the exact table
+is not identified; no further revision is permitted and none was made.
+
+---
+
+## 2. Phase 1 outcome
+
+**Verdict: NEGATIVE (gate failed twice; sealed test not opened).** Both silent errors on validation data came from the
+inherited operator / monitor layer (a missed late unit shift; a monitor-blind clock-skew / lateness error). In all 8
+validation projects the synthesised code itself was correct wherever it was exercised: in all 4 D1 projects NEXUS
+resynthesised its decode function at tick 9, verified it in a shadow copy and redeployed it; in all 4 D2 projects the
+build-time classifier quarantined the unknown warehouses. That is an observation about the components, not a passed gate.
+
+What Phase 1 does establish (dev + validation evidence, 16 de5 projects):
+
+* NEXUS can write, from primitives and black-box spec examples, the record functions and the stateful class that replace
+  8 author-written switches, inside the delivered pipeline, in ~43 s CPU per build (synthesis), and repair its own code
+  in production by resynthesis (~37 s CPU per decode resynthesis), through the unchanged R2 verification path.
+* The class is synthesised only after a Markov state violation is found (all 16 builds found one).
+* Generalisation is limited by Occam: the decoder uses literal physical field names wherever no rename was observed
+  (e.g. `a.get('ord_id')`), so a later rename would need a repair. No anti-unified helper `def` was admitted in any
+  project: none would have shortened the code (the size rule rejected them).
+* With oracle queries, the declared quarantine rules (incl. the X3 shape) are learned at build time from the spec monitor;
+  the registry-unit classes are what exercise ops-time resynthesis.
+
+What it does not establish: anything about the sealed X3 / X4 test (not run); any comparison with NEXUS_Template on test;
+learning, transfer or evolution (Phases 2–3, not started).
+
+### 2.1 Verbatim code NEXUS wrote and deployed (val_b 7985, after its tick-9 repair)
+
+```python
+def fn_0483b9c4(a, fields, types):
+    return {
+        'order_id': a.get('ord_id'),
+        'warehouse_id': a.get('wh_id'),
+        'status': a.get('status'),
+        'amount': ((a.get('amount_total') / 100) if ('amount_unit' in types) else a.get(fields.get('amount'))),
+        'currency': a.get('ccy'),
+        'discount': a.get('disc'),
+        'promised_ts': a.get('promised_ts'),
+        'deleted': a.get('deleted')
+    }
+
+
+fn_decode = fn_0483b9c4
+
+
+def fn_9977eb3b(p, fx):
+    return round((p.get('amount') * (fx.get(p.get('currency')) * (1 - (p.get('discount') / 100)))), 2)
+
+
+fn_net = fn_9977eb3b
+
+
+def fn_147cc3aa(topic, rec, row, fx, whs):
+    if isinstance(rec.get('weight'), str):
+        return 'q:malformed_weight'
+    elif ((not (row is None)) and (not (row.get('currency') in fx))):
+        return 'q:unknown_currency'
+    elif ((not (row is None)) and (not (row.get('warehouse_id') in whs))):
+        return 'q:unknown_warehouse'
+    return 'accepted'
+
+
+fn_status = fn_147cc3aa
+
+
+class StreamOrganelle_164d441c:
+    """Markov state violation: identical record content, different required outcome ([true, false]); state = dict keyed by 'key', order 'sv' >, tombstone"""
+
+    def __init__(self):
+        self.state = {}
+
+    def ingest(self, r):
+        k = r.get('key')
+        cur = self.state.get(k)
+        if cur is None or r.get('sv') > cur.get('sv'):
+            self.state[k] = r
+
+    def retract(self, k):
+        self.state.pop(k, None)
+
+    def flush(self):
+        out = []
+        n = 0
+        for k in self.state:
+            n += 1
+            if n > 1000000:
+                break
+            r = self.state[k]
+            if not (not ((not (r.get('payload') is None)) and (r.get('soft') == 0))):
+                out.append(r)
+        return out
+
+
+SilverOrganelle = StreamOrganelle_164d441c
+```
+
+The `amount` branch was written at tick 9 in production, after the reconciliation failure on the new registry version.
+
+### 2.2 7-measure scorecard (validation evidence only; NEXUS_Synth; no sealed scorecard exists for Phase 1)
+
+| # | measure | val (7981–7984, frozen `67f9687`) | val_b (7985–7988, frozen `3162c8e`) |
+| --- | --- | --- | --- |
+| 1 | Correctness | natural e2e 3/4; **1 silent** | natural e2e 3/4; **1 silent** |
+| 2 | Completion | 4/4 builds submitted (COMPLETED_UNVERIFIED: txn / gap properties UNKNOWN in the build window); 0 abstentions; 0 crashes | same |
+| 3 | Reliability | forced X recovery 3/4; freshness violations 0; replay-view violations 0 | forced 3/4; freshness 0; replay-view 0 |
+| 4 | Cost (mean per project) | build 76.2 s CPU (synthesis 42.6 s); ops 21.3 s; resynthesis 81.4 s total | build 63.2 s (synthesis 42.4 s); ops 21.3 s; resynthesis 80.9 s total |
+| 5 | Human dependence | clarifications 0; human engineering repairs 0 | clarifications 1 (revision-1 metadata path); repairs 0 |
+| 6 | Learning benefit | not measured in Phase 1 (no library; Phase 2) | — |
+| 7 | Generalisation | D1 handled by ops-time resynthesis 2/2; D2 by build-time oracle queries 2/2; unseen X classes: not tested | D1 2/2 resynthesised (1 project still silent elsewhere); D2 2/2 |
+
+The 7-arm sealed scorecard the owner asked for (Fresh, Placebo, Experienced, Meta_Learned_Empty_Lib, Evolved_Learner,
+Fixed_Policy, Conventional_Checked) does not exist: the Phase 1 gate failed before any sealed run, and Phases 2–3 were not
+started.
+
+### 2.3 Resources
+
+Phase 1 ledger time 6,107 s of its 12,000 s cap (dev incl. the unit-shift reproduction ≈ 4,700 s, val ≈ 840 s,
+val_b ≈ 560 s); `scripts/oop_budget.py` is authoritative. Protected files 912/912 unchanged.
+
+### 2.4 Recommended next experiment
+
+Close the operator / monitor blind spots that produced both silent errors before building more synthesis on top:
+(1) store the evaluator's per-table diff for every ops run (dev / val only) so a silent error is attributable; (2) a dev-only
+reproduction sweep of clock_skew × lateness repairs on de5 dev worlds to find the monitor-blind case seen on 7988; then a
+fresh Phase 1 attempt on NEW validation and test seeds (de5/test 7991–7998 remain unused) under a new pre-registration.

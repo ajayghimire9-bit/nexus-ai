@@ -1,0 +1,6400 @@
+{
+ "projects": {
+  "de5-val-7985": {
+   "arms": {
+    "NEXUS_Synth": {
+     "build": {
+      "arm": "NEXUS_Synth",
+      "conformance": {
+       "crash_points": 44,
+       "holes_observed": 0,
+       "n_violations": 0,
+       "states": 87,
+       "txns_observed": 0,
+       "views": 87
+      },
+      "cost": {
+       "agent_cpu_s": 48.203,
+       "applicability_cpu_s": 0.0,
+       "check_runs": 703,
+       "exec_cpu_s": 23.55,
+       "final_check_cpu_s": 7.46,
+       "final_check_runs": 222,
+       "pipeline_runs": 703,
+       "proposals": 4,
+       "rejected_and_search_runs": 481,
+       "rejected_cpu_s": 16.09,
+       "retrieval_cpu_s": 0.0,
+       "synthesis_cpu_s": 43.109,
+       "total_cpu_s": 71.753,
+       "wall_s": 73.351
+      },
+      "evidence": [
+       {
+        "assumptions": "sandboxed subprocess per tick",
+        "bounds": "visible ticks 1-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "runs_all_ticks"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "runs",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "declared primary keys",
+        "bounds": "state after tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "schema_keys_not_null",
+         "nonempty_outputs"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_keys",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same log, same tick",
+        "bounds": "one rerun of tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rerun_unchanged"
+        ],
+        "cost": {
+         "cpu_s": 0.034,
+         "runs": 1
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "idempotent_rerun",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observations are authoritative",
+        "bounds": "every replayed view of every check",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [
+         "replay_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "replay_conformance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed offsets are the input universe",
+        "bounds": "visible ticks; committed offsets after each replayed run",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "accounting_and_lag",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 0.276,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "input_coverage",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "spec re-derivation by NEXUS code (not the pipeline's)",
+        "bounds": "visible records; 4 lateness boundary probes",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "silver_rederivation",
+         "gold_equals_recompute",
+         "lateness_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.277,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_reconciliation",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "os._exit before each commit / os.replace, nested + SIGKILL",
+        "bounds": "ticks 4 and 7, enumerated crash points only",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "crash_sweep",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 3.929,
+         "runs": 119
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "exactly_once",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "every record redelivered once",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "duplicate_delivery_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.28,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "dedup",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same-key permutation respecting registry causality",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "arrival_permutation_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.277,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "cdc_order",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "snapshot moved to the first / last visible tick",
+        "bounds": "silver + gold",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "backfill_timing_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.548,
+         "runs": 16
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "backfill_precedence",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "telemetry re-rendered in 6 offsets",
+        "bounds": "visible telemetry",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "utc_offset_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.277,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "tz_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "fx x10 bad deploy, rollback crashed half way",
+        "bounds": "ticks 6-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rollback_drill"
+        ],
+        "cost": {
+         "cpu_s": 0.342,
+         "runs": 10
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "rollback",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "watermark per ingest tick; no transaction spans a chunk",
+        "bounds": "chunk 37",
+        "checker": "r1_checks@5ac7ea50e92a",
+        "checks": [
+         "chunk_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.944,
+         "runs": 28
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "chunk_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed transactions only",
+        "bounds": "0 transactions observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "txn_isolation",
+        "result": "UNKNOWN"
+       },
+       {
+        "assumptions": "observed offset holes only",
+        "bounds": "0 offset holes observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "gap_safety",
+        "result": "UNKNOWN"
+       }
+      ],
+      "evidence_outcome": "COMPLETED_UNVERIFIED",
+      "failed_reuse": 0,
+      "failed_reuse_cpu_s": 0,
+      "features": [
+       "backfill",
+       "cdc",
+       "manifests",
+       "multi_currency",
+       "partitioned",
+       "redelivery",
+       "registry_evolution",
+       "soft_delete_flag",
+       "telemetry"
+      ],
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "skip",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p0e12d836",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "p164d441c",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "history": [
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "skip",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "processing_time",
+         "partition_discovery": "dynamic",
+         "snapshots": "none",
+         "syn_decode": "p0e12d836",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "p164d441c",
+         "syn_status": "p147cc3aa",
+         "ts_format": "iso_only",
+         "ts_parse": "utc",
+         "txn_isolation": "read_uncommitted"
+        },
+        "cpu_s": 0.7437,
+        "failed": "runs_all_ticks",
+        "fix": "ts_format",
+        "k": 0,
+        "trials": 2
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "skip",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "processing_time",
+         "partition_discovery": "dynamic",
+         "snapshots": "none",
+         "syn_decode": "p0e12d836",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "p164d441c",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "utc",
+         "txn_isolation": "read_uncommitted"
+        },
+        "cpu_s": 2.5293,
+        "failed": "lateness_conformance",
+        "fix": "lateness",
+        "k": 1,
+        "trials": 2
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "skip",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "none",
+         "syn_decode": "p0e12d836",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "p164d441c",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "utc",
+         "txn_isolation": "read_uncommitted"
+        },
+        "cpu_s": 12.8167,
+        "failed": "rollback_drill",
+        "fix": "snapshots",
+        "k": 2,
+        "trials": 1
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "skip",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "p0e12d836",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "p164d441c",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "utc",
+         "txn_isolation": "read_uncommitted"
+        },
+        "failed": null,
+        "k": 3
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "library_used": [],
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "de5-val-7985",
+      "s4_outcome": "COMPLETED_VERIFIED",
+      "submitted": true,
+      "synthesis": {
+       "code": "def fn_0e12d836(a, fields, types):\n    return {\n        'order_id': a.get('ord_id'),\n        'warehouse_id': a.get('wh_id'),\n        'status': a.get('status'),\n        'amount': a.get(fields.get('amount')),\n        'currency': a.get('ccy'),\n        'discount': a.get('disc'),\n        'promised_ts': a.get('promised_ts'),\n        'deleted': a.get('deleted')\n    }\n\n\nfn_decode = fn_0e12d836\n\n\ndef fn_9977eb3b(p, fx):\n    return round((p.get('amount') * (fx.get(p.get('currency')) * (1 - (p.get('discount') / 100)))), 2)\n\n\nfn_net = fn_9977eb3b\n\n\ndef fn_147cc3aa(topic, rec, row, fx, whs):\n    if isinstance(rec.get('weight'), str):\n        return 'q:malformed_weight'\n    elif ((not (row is None)) and (not (row.get('currency') in fx))):\n        return 'q:unknown_currency'\n    elif ((not (row is None)) and (not (row.get('warehouse_id') in whs))):\n        return 'q:unknown_warehouse'\n    return 'accepted'\n\n\nfn_status = fn_147cc3aa\n\n\nclass StreamOrganelle_164d441c:\n    \"\"\"Markov state violation: identical record content, different required outcome ([true, false]); state = dict keyed by 'key', order 'sv' >, tombstone\"\"\"\n\n    def __init__(self):\n        self.state = {}\n\n    def ingest(self, r):\n        k = r.get('key')\n        cur = self.state.get(k)\n        if cur is None or r.get('sv') > cur.get('sv'):\n            self.state[k] = r\n\n    def retract(self, k):\n        self.state.pop(k, None)\n\n    def flush(self):\n        out = []\n        n = 0\n        for k in self.state:\n            n += 1\n            if n > 1000000:\n                break\n            r = self.state[k]\n            if not (not ((not (r.get('payload') is None)) and (r.get('soft') == 0))):\n                out.append(r)\n        return out\n\n\nSilverOrganelle = StreamOrganelle_164d441c\n",
+       "programs": {
+        "syn_decode": "p0e12d836",
+        "syn_net": "p9977eb3b",
+        "syn_silver": "p164d441c",
+        "syn_status": "p147cc3aa"
+       },
+       "stats": {
+        "n_examples": {
+         "syn_decode": 169,
+         "syn_net": 67,
+         "syn_silver": 2,
+         "syn_status": 281
+        },
+        "syn_decode": {
+         "cpu_s": 28.321,
+         "hole": "syn_decode",
+         "per": {
+          "amount": {
+           "bank": 2064,
+           "cpu_s": 3.532,
+           "examples": 169,
+           "rounds": 1
+          },
+          "currency": {
+           "bank": 2060,
+           "cpu_s": 3.534,
+           "examples": 169,
+           "rounds": 1
+          },
+          "deleted": {
+           "bank": 2064,
+           "cpu_s": 3.521,
+           "examples": 169,
+           "rounds": 1
+          },
+          "discount": {
+           "bank": 2064,
+           "cpu_s": 3.556,
+           "examples": 169,
+           "rounds": 1
+          },
+          "order_id": {
+           "bank": 2064,
+           "cpu_s": 3.532,
+           "examples": 169,
+           "rounds": 1
+          },
+          "promised_ts": {
+           "bank": 2063,
+           "cpu_s": 3.54,
+           "examples": 169,
+           "rounds": 1
+          },
+          "status": {
+           "bank": 2064,
+           "cpu_s": 3.542,
+           "examples": 169,
+           "rounds": 1
+          },
+          "warehouse_id": {
+           "bank": 2062,
+           "cpu_s": 3.527,
+           "examples": 169,
+           "rounds": 1
+          }
+         },
+         "pid": "p0e12d836"
+        },
+        "syn_net": {
+         "bank": 1895,
+         "cpu_s": 3.216,
+         "examples": 67,
+         "hole": "syn_net",
+         "pid": "p9977eb3b",
+         "rounds": 1
+        },
+        "syn_silver": {
+         "cpu_s": 5.485,
+         "hole": "syn_silver",
+         "kind": "organelle",
+         "markov_witness": true,
+         "pid": "p164d441c",
+         "tried": 1
+        },
+        "syn_status": {
+         "bank": 4039,
+         "cpu_s": 6.081,
+         "examples": 281,
+         "hole": "syn_status",
+         "pid": "p147cc3aa",
+         "rounds": 1
+        }
+       }
+      },
+      "unknown_properties": [
+       "txn_isolation",
+       "gap_safety"
+      ]
+     },
+     "build_eval": {
+      "checkpoints": {
+       "4": true,
+       "8": false,
+       "12": false
+      },
+      "correct": false,
+      "data_ok": false,
+      "eo_failures": 0,
+      "eo_trials": 66,
+      "exits_ok": true,
+      "heldout_ok": false,
+      "reasons": [
+       "ROLLBACK_FAILED",
+       "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+       "UNEXPLAINED_MISMATCH:record_accounting",
+       "UNEXPLAINED_MISMATCH:silver_orders"
+      ],
+      "rollback_ok": false,
+      "seen_ok": false,
+      "silent": true
+     },
+     "e2e_correct": true,
+     "forced": {
+      "actions": [
+       [
+        "redeploy",
+        {
+         "syn_decode": "p0483b9c4"
+        }
+       ],
+       [
+        "request_resnapshot",
+        "backfill_orders"
+       ],
+       [
+        "rollback",
+        5
+       ],
+       [
+        "redeploy",
+        {
+         "gap_handling": "wait_contiguous"
+        }
+       ],
+       [
+        "set_deploy",
+        "unit_overrides",
+        [
+         {
+          "factor": 0.45359237,
+          "from_offset": 52,
+          "part": 0,
+          "supplier": "S2"
+         }
+        ]
+       ],
+       [
+        "rollback",
+        10
+       ]
+      ],
+      "cost": {
+       "actions": 8,
+       "agent_cpu_s": 45.930803000000026,
+       "cheap_checks": 7,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 2,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 44.63553099999997,
+       "own_repairs": 2,
+       "reconcile_cpu_s": 0.1563570000000567,
+       "redeploy_trials": 2,
+       "resyntheses": 1,
+       "shadow_cpu_s": 1.3979670000001132,
+       "shadow_tests": 18,
+       "shrink_tests": 4
+      },
+      "d_class": "D1",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 9,
+       "open_escalation": false,
+       "quarantined": 2,
+       "restore_ticks": {
+        "snapshot_interrupted": 0,
+        "unit_shift": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X2"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p0483b9c4",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "p164d441c",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "forced": [
+       "gap_handling",
+       "skip"
+      ],
+      "incidents": [
+       {
+        "name": "snapshot_interrupted",
+        "tick": 8
+       },
+       {
+        "name": "unit_shift",
+        "tick": 11
+       }
+      ],
+      "ledger": [
+       {
+        "hole": "syn_decode",
+        "kind": "resynthesis",
+        "new": "p0483b9c4",
+        "new_option": true,
+        "previous": "p0e12d836",
+        "stats": {
+         "cpu_s": 44.539,
+         "hole": "syn_decode",
+         "pid": "p0483b9c4"
+        },
+        "tick": 9
+       },
+       {
+        "changed": {
+         "syn_decode": "p0483b9c4"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 6,
+        "scores": {
+         "partition_discovery": 0.253,
+         "syn_decode": 14.891,
+         "syn_net": 0.259,
+         "ts_format": 14.0,
+         "ts_parse": 14.0
+        },
+        "survivors": 3,
+        "suspects": [
+         "syn_decode",
+         "ts_parse",
+         "ts_format",
+         "syn_net",
+         "partition_discovery"
+        ],
+        "tick": 9
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "resnapshot",
+          "backfill_orders"
+         ],
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "skip",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p0483b9c4",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "p164d441c",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          5
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "monitor:reconciliation",
+         "monitor:snapshot_complete"
+        ],
+        "tick": 9,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "gap_handling": "wait_contiguous"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 11,
+        "scores": {
+         "commit_protocol": 5.0,
+         "gap_handling": 8.0
+        },
+        "survivors": 5,
+        "suspects": [
+         "gap_handling",
+         "commit_protocol"
+        ],
+        "tick": 11
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "unit_override",
+          {
+           "factor": 0.45359237,
+           "from_offset": 52,
+           "part": 0,
+           "supplier": "S2",
+           "tick": 11,
+           "unit": "lb"
+          }
+         ],
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p0483b9c4",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "p164d441c",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          10
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 4,
+        "signature": [
+         "monitor:drift",
+         "monitor:observation_conformance",
+         "monitor:reconciliation"
+        ],
+        "tick": 11,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 48,
+         "supplier": "S3",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 12
+       }
+      ],
+      "natural_choice": "skip",
+      "ops_cpu_s": 46.08965099999999,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X2"
+     },
+     "forced_e2e": true,
+     "ops": {
+      "actions": [
+       [
+        "redeploy",
+        {
+         "syn_decode": "p0483b9c4"
+        }
+       ],
+       [
+        "request_resnapshot",
+        "backfill_orders"
+       ],
+       [
+        "rollback",
+        5
+       ],
+       [
+        "redeploy",
+        {
+         "gap_handling": "wait_contiguous"
+        }
+       ],
+       [
+        "set_deploy",
+        "unit_overrides",
+        [
+         {
+          "factor": 0.45359237,
+          "from_offset": 52,
+          "part": 0,
+          "supplier": "S2"
+         }
+        ]
+       ],
+       [
+        "rollback",
+        10
+       ]
+      ],
+      "cost": {
+       "actions": 8,
+       "agent_cpu_s": 45.830221,
+       "cheap_checks": 7,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 2,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 44.55378900000001,
+       "own_repairs": 2,
+       "reconcile_cpu_s": 0.15791300000000064,
+       "redeploy_trials": 2,
+       "resyntheses": 1,
+       "shadow_cpu_s": 1.384750999999989,
+       "shadow_tests": 18,
+       "shrink_tests": 4
+      },
+      "d_class": "D1",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 9,
+       "open_escalation": false,
+       "quarantined": 2,
+       "restore_ticks": {
+        "snapshot_interrupted": 0,
+        "unit_shift": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X2"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p0483b9c4",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "p164d441c",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "incidents": [
+       {
+        "name": "snapshot_interrupted",
+        "tick": 8
+       },
+       {
+        "name": "unit_shift",
+        "tick": 11
+       }
+      ],
+      "ledger": [
+       {
+        "hole": "syn_decode",
+        "kind": "resynthesis",
+        "new": "p0483b9c4",
+        "new_option": true,
+        "previous": "p0e12d836",
+        "stats": {
+         "cpu_s": 44.457,
+         "hole": "syn_decode",
+         "pid": "p0483b9c4"
+        },
+        "tick": 9
+       },
+       {
+        "changed": {
+         "syn_decode": "p0483b9c4"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 6,
+        "scores": {
+         "partition_discovery": 0.253,
+         "syn_decode": 14.891,
+         "syn_net": 0.259,
+         "ts_format": 14.0,
+         "ts_parse": 14.0
+        },
+        "survivors": 3,
+        "suspects": [
+         "syn_decode",
+         "ts_parse",
+         "ts_format",
+         "syn_net",
+         "partition_discovery"
+        ],
+        "tick": 9
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "resnapshot",
+          "backfill_orders"
+         ],
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "skip",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p0483b9c4",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "p164d441c",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          5
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "monitor:reconciliation",
+         "monitor:snapshot_complete"
+        ],
+        "tick": 9,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "gap_handling": "wait_contiguous"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 11,
+        "scores": {
+         "commit_protocol": 5.0,
+         "gap_handling": 8.0
+        },
+        "survivors": 5,
+        "suspects": [
+         "gap_handling",
+         "commit_protocol"
+        ],
+        "tick": 11
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "unit_override",
+          {
+           "factor": 0.45359237,
+           "from_offset": 52,
+           "part": 0,
+           "supplier": "S2",
+           "tick": 11,
+           "unit": "lb"
+          }
+         ],
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p0483b9c4",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "p164d441c",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          10
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 4,
+        "signature": [
+         "monitor:drift",
+         "monitor:observation_conformance",
+         "monitor:reconciliation"
+        ],
+        "tick": 11,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 48,
+         "supplier": "S3",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 12
+       }
+      ],
+      "ops_cpu_s": 45.992779,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X2"
+     },
+     "secondary": {
+      "actions": [
+       [
+        "redeploy",
+        {
+         "syn_decode": "p0483b9c4"
+        }
+       ],
+       [
+        "request_resnapshot",
+        "backfill_orders"
+       ],
+       [
+        "rollback",
+        5
+       ],
+       [
+        "set_deploy",
+        "unit_overrides",
+        [
+         {
+          "factor": 0.45359237,
+          "from_offset": 52,
+          "part": 0,
+          "supplier": "S2"
+         }
+        ]
+       ],
+       [
+        "rollback",
+        10
+       ]
+      ],
+      "cost": {
+       "actions": 7,
+       "agent_cpu_s": 46.80173500000012,
+       "cheap_checks": 0,
+       "escalations": 1,
+       "failed_reuse": 0,
+       "full_verifications": 13,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 44.71082199999998,
+       "own_repairs": 1,
+       "reconcile_cpu_s": 0.15941700000001902,
+       "redeploy_trials": 13,
+       "resyntheses": 1,
+       "shadow_cpu_s": 2.091314000000091,
+       "shadow_tests": 30,
+       "shrink_tests": 0
+      },
+      "d_class": "D1",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 9,
+       "open_escalation": false,
+       "quarantined": 2,
+       "restore_ticks": {
+        "snapshot_interrupted": 0,
+        "unit_shift": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X2"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "skip",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p0483b9c4",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "p164d441c",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "incidents": [
+       {
+        "name": "snapshot_interrupted",
+        "tick": 8
+       },
+       {
+        "name": "unit_shift",
+        "tick": 11
+       }
+      ],
+      "ledger": [
+       {
+        "hole": "syn_decode",
+        "kind": "resynthesis",
+        "new": "p0483b9c4",
+        "new_option": true,
+        "previous": "p0e12d836",
+        "stats": {
+         "cpu_s": 44.68,
+         "hole": "syn_decode",
+         "pid": "p0483b9c4"
+        },
+        "tick": 9
+       },
+       {
+        "changed": {
+         "syn_decode": "p0483b9c4"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B0",
+        "onset": 6,
+        "scores": {},
+        "survivors": 14,
+        "suspects": [
+         "syn_decode",
+         "syn_net",
+         "syn_status",
+         "syn_silver",
+         "lateness",
+         "ts_parse",
+         "ts_format",
+         "dedup",
+         "partition_discovery",
+         "commit_protocol",
+         "gold_maintenance",
+         "snapshots",
+         "txn_isolation",
+         "gap_handling"
+        ],
+        "tick": 9
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "resnapshot",
+          "backfill_orders"
+         ],
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "skip",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p0483b9c4",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "p164d441c",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          5
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "monitor:reconciliation",
+         "monitor:snapshot_complete"
+        ],
+        "tick": 9,
+        "verified_in_shadow": true
+       },
+       {
+        "full_verifications": 12,
+        "kind": "own_pipeline_unrepaired",
+        "mode": "B0",
+        "onset": 11,
+        "scores": {},
+        "survivors": 14,
+        "suspects": [
+         "syn_decode",
+         "syn_net",
+         "syn_status",
+         "syn_silver",
+         "lateness",
+         "ts_parse",
+         "ts_format",
+         "dedup",
+         "partition_discovery",
+         "commit_protocol",
+         "gold_maintenance",
+         "snapshots",
+         "txn_isolation",
+         "gap_handling"
+        ],
+        "tick": 11
+       },
+       {
+        "candidates": [
+         "unit_override",
+         "rollback",
+         "catch_up"
+        ],
+        "kind": "escalated",
+        "pipeline_suspect": [
+         "observation_conformance",
+         "reconciliation"
+        ],
+        "signature": [
+         "monitor:drift",
+         "monitor:observation_conformance",
+         "monitor:reconciliation"
+        ],
+        "tick": 11
+       },
+       {
+        "alarm": {
+         "offset": 48,
+         "supplier": "S3",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 12
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "unit_override",
+          {
+           "factor": 0.45359237,
+           "from_offset": 52,
+           "part": 0,
+           "supplier": "S2",
+           "tick": 11,
+           "unit": "lb"
+          }
+         ],
+         [
+          "rollback",
+          10
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:drift",
+         "monitor:observation_conformance",
+         "monitor:reconciliation"
+        ],
+        "tick": 12,
+        "verified_in_shadow": true
+       }
+      ],
+      "mode": "B0",
+      "ops_cpu_s": 46.96598800000001,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X2"
+     },
+     "secondary_e2e": true,
+     "synth_natural_is_forced": false
+    }
+   },
+   "d_class": "D1",
+   "features": {
+    "backfill_overwrite_traps": 5,
+    "backfill_resurrection_traps": 2,
+    "dups": 7,
+    "float_discounts": 10,
+    "hard": 7,
+    "heldout_late_corrections": 48,
+    "late_corrections": 3,
+    "late_telemetry": 9,
+    "malformed": 1,
+    "out_of_order_keys": 4,
+    "partition2_keys": 12,
+    "renamed_amounts": 81,
+    "soft": 5
+   },
+   "replay_view_violations": 0,
+   "x_class": "X2"
+  },
+  "de5-val-7986": {
+   "arms": {
+    "NEXUS_Synth": {
+     "build": {
+      "arm": "NEXUS_Synth",
+      "conformance": {
+       "crash_points": 12,
+       "holes_observed": 0,
+       "n_violations": 0,
+       "states": 87,
+       "txns_observed": 0,
+       "views": 87
+      },
+      "cost": {
+       "agent_cpu_s": 43.911,
+       "applicability_cpu_s": 0.0,
+       "check_runs": 197,
+       "exec_cpu_s": 6.225,
+       "final_check_cpu_s": 5.033,
+       "final_check_runs": 159,
+       "pipeline_runs": 197,
+       "proposals": 3,
+       "rejected_and_search_runs": 38,
+       "rejected_cpu_s": 1.192,
+       "retrieval_cpu_s": 0.0,
+       "synthesis_cpu_s": 42.267,
+       "total_cpu_s": 50.136,
+       "wall_s": 50.499
+      },
+      "evidence": [
+       {
+        "assumptions": "sandboxed subprocess per tick",
+        "bounds": "visible ticks 1-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "runs_all_ticks"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "runs",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "declared primary keys",
+        "bounds": "state after tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "schema_keys_not_null",
+         "nonempty_outputs"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_keys",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same log, same tick",
+        "bounds": "one rerun of tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rerun_unchanged"
+        ],
+        "cost": {
+         "cpu_s": 0.033,
+         "runs": 1
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "idempotent_rerun",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observations are authoritative",
+        "bounds": "every replayed view of every check",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [
+         "replay_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "replay_conformance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed offsets are the input universe",
+        "bounds": "visible ticks; committed offsets after each replayed run",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "accounting_and_lag",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 0.253,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "input_coverage",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "spec re-derivation by NEXUS code (not the pipeline's)",
+        "bounds": "visible records; 4 lateness boundary probes",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "silver_rederivation",
+         "gold_equals_recompute",
+         "lateness_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.252,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_reconciliation",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "os._exit before each commit / os.replace, nested + SIGKILL",
+        "bounds": "ticks 4 and 7, enumerated crash points only",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "crash_sweep",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 1.755,
+         "runs": 55
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "exactly_once",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "every record redelivered once",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "duplicate_delivery_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.256,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "dedup",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same-key permutation respecting registry causality",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "arrival_permutation_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.253,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "cdc_order",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "snapshot moved to the first / last visible tick",
+        "bounds": "silver + gold",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "backfill_timing_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.502,
+         "runs": 16
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "backfill_precedence",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "telemetry re-rendered in 6 offsets",
+        "bounds": "visible telemetry",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "utc_offset_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.253,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "tz_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "fx x10 bad deploy, rollback crashed half way",
+        "bounds": "ticks 6-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rollback_drill"
+        ],
+        "cost": {
+         "cpu_s": 0.315,
+         "runs": 10
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "rollback",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "watermark per ingest tick; no transaction spans a chunk",
+        "bounds": "chunk 37",
+        "checker": "r1_checks@5ac7ea50e92a",
+        "checks": [
+         "chunk_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.911,
+         "runs": 29
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "chunk_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed transactions only",
+        "bounds": "0 transactions observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "txn_isolation",
+        "result": "UNKNOWN"
+       },
+       {
+        "assumptions": "observed offset holes only",
+        "bounds": "0 offset holes observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "gap_safety",
+        "result": "UNKNOWN"
+       }
+      ],
+      "evidence_outcome": "COMPLETED_UNVERIFIED",
+      "failed_reuse": 0,
+      "failed_reuse_cpu_s": 0,
+      "features": [
+       "backfill",
+       "cdc",
+       "manifests",
+       "multi_currency",
+       "partitioned",
+       "redelivery",
+       "registry_evolution",
+       "soft_delete_flag",
+       "telemetry"
+      ],
+      "final_choice": {
+       "commit_protocol": "transactional",
+       "dedup": "by_msg_id",
+       "gap_handling": "skip",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "pa85e65f3",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pb729633f",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_committed"
+      },
+      "history": [
+       {
+        "choice": {
+         "commit_protocol": "transactional",
+         "dedup": "none",
+         "gap_handling": "skip",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "pa85e65f3",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pb729633f",
+         "syn_status": "p147cc3aa",
+         "ts_format": "iso_only",
+         "ts_parse": "utc",
+         "txn_isolation": "read_committed"
+        },
+        "cpu_s": 0.6894,
+        "failed": "runs_all_ticks",
+        "fix": "ts_format",
+        "k": 0,
+        "trials": 2
+       },
+       {
+        "choice": {
+         "commit_protocol": "transactional",
+         "dedup": "none",
+         "gap_handling": "skip",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "pa85e65f3",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pb729633f",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "utc",
+         "txn_isolation": "read_committed"
+        },
+        "cpu_s": 0.5025,
+        "failed": "schema_keys_not_null",
+        "fix": "dedup",
+        "k": 1,
+        "trials": 1
+       },
+       {
+        "choice": {
+         "commit_protocol": "transactional",
+         "dedup": "by_msg_id",
+         "gap_handling": "skip",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "pa85e65f3",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pb729633f",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "utc",
+         "txn_isolation": "read_committed"
+        },
+        "failed": null,
+        "k": 2
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "library_used": [],
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "de5-val-7986",
+      "s4_outcome": "COMPLETED_VERIFIED",
+      "submitted": true,
+      "synthesis": {
+       "code": "def fn_a85e65f3(a, fields, types):\n    return {\n        'order_id': a.get('ord_id'),\n        'warehouse_id': a.get('warehouse_id'),\n        'status': a.get('order_status'),\n        'amount': a.get(fields.get('amount')),\n        'currency': a.get('ccy'),\n        'discount': a.get('discount_pct'),\n        'promised_ts': a.get('promise_by'),\n        'deleted': a.get('deleted')\n    }\n\n\nfn_decode = fn_a85e65f3\n\n\ndef fn_9977eb3b(p, fx):\n    return round((p.get('amount') * (fx.get(p.get('currency')) * (1 - (p.get('discount') / 100)))), 2)\n\n\nfn_net = fn_9977eb3b\n\n\ndef fn_147cc3aa(topic, rec, row, fx, whs):\n    if isinstance(rec.get('weight'), str):\n        return 'q:malformed_weight'\n    elif ((not (row is None)) and (not (row.get('currency') in fx))):\n        return 'q:unknown_currency'\n    elif ((not (row is None)) and (not (row.get('warehouse_id') in whs))):\n        return 'q:unknown_warehouse'\n    return 'accepted'\n\n\nfn_status = fn_147cc3aa\n\n\nclass StreamOrganelle_b729633f:\n    \"\"\"Markov state violation: identical record content, different required outcome ([true, false]); state = dict keyed by 'key', order 'sv' >, tombstone\"\"\"\n\n    def __init__(self):\n        self.state = {}\n\n    def ingest(self, r):\n        k = r.get('key')\n        cur = self.state.get(k)\n        if cur is None or r.get('sv') > cur.get('sv'):\n            self.state[k] = r\n\n    def retract(self, k):\n        self.state.pop(k, None)\n\n    def flush(self):\n        out = []\n        n = 0\n        for k in self.state:\n            n += 1\n            if n > 1000000:\n                break\n            r = self.state[k]\n            if not (not ((not (r.get('payload') is None)) and (r.get('soft') == 0))):\n                out.append(r)\n        return out\n\n\nSilverOrganelle = StreamOrganelle_b729633f\n",
+       "programs": {
+        "syn_decode": "pa85e65f3",
+        "syn_net": "p9977eb3b",
+        "syn_silver": "pb729633f",
+        "syn_status": "p147cc3aa"
+       },
+       "stats": {
+        "n_examples": {
+         "syn_decode": 165,
+         "syn_net": 68,
+         "syn_silver": 2,
+         "syn_status": 285
+        },
+        "syn_decode": {
+         "cpu_s": 27.934,
+         "hole": "syn_decode",
+         "per": {
+          "amount": {
+           "bank": 2067,
+           "cpu_s": 3.525,
+           "examples": 165,
+           "rounds": 1
+          },
+          "currency": {
+           "bank": 2072,
+           "cpu_s": 3.535,
+           "examples": 165,
+           "rounds": 1
+          },
+          "deleted": {
+           "bank": 2067,
+           "cpu_s": 3.51,
+           "examples": 165,
+           "rounds": 1
+          },
+          "discount": {
+           "bank": 2067,
+           "cpu_s": 3.503,
+           "examples": 165,
+           "rounds": 1
+          },
+          "order_id": {
+           "bank": 2067,
+           "cpu_s": 3.538,
+           "examples": 165,
+           "rounds": 1
+          },
+          "promised_ts": {
+           "bank": 1829,
+           "cpu_s": 3.217,
+           "examples": 165,
+           "rounds": 1
+          },
+          "status": {
+           "bank": 2071,
+           "cpu_s": 3.523,
+           "examples": 165,
+           "rounds": 1
+          },
+          "warehouse_id": {
+           "bank": 2068,
+           "cpu_s": 3.543,
+           "examples": 165,
+           "rounds": 1
+          }
+         },
+         "pid": "pa85e65f3"
+        },
+        "syn_net": {
+         "bank": 1901,
+         "cpu_s": 2.812,
+         "examples": 68,
+         "hole": "syn_net",
+         "pid": "p9977eb3b",
+         "rounds": 1
+        },
+        "syn_silver": {
+         "cpu_s": 5.535,
+         "hole": "syn_silver",
+         "kind": "organelle",
+         "markov_witness": true,
+         "pid": "pb729633f",
+         "tried": 1
+        },
+        "syn_status": {
+         "bank": 3989,
+         "cpu_s": 5.981,
+         "examples": 285,
+         "hole": "syn_status",
+         "pid": "p147cc3aa",
+         "rounds": 1
+        }
+       }
+      },
+      "unknown_properties": [
+       "txn_isolation",
+       "gap_safety"
+      ]
+     },
+     "build_eval": {
+      "checkpoints": {
+       "4": true,
+       "8": true,
+       "12": true
+      },
+      "correct": true,
+      "data_ok": true,
+      "eo_failures": 0,
+      "eo_trials": 28,
+      "exits_ok": true,
+      "heldout_ok": true,
+      "reasons": [],
+      "rollback_ok": true,
+      "seen_ok": true,
+      "silent": false
+     },
+     "e2e_correct": true,
+     "forced": {
+      "actions": [
+       [
+        "rollback",
+        6
+       ],
+       [
+        "redeploy",
+        {
+         "txn_isolation": "read_committed"
+        }
+       ],
+       [
+        "rollback",
+        8
+       ],
+       [
+        "set_deploy",
+        "unit_overrides",
+        [
+         {
+          "factor": 0.45359237,
+          "from_offset": 62,
+          "part": 0,
+          "supplier": "S3"
+         }
+        ]
+       ],
+       [
+        "rollback",
+        11
+       ]
+      ],
+      "cost": {
+       "actions": 8,
+       "agent_cpu_s": 0.8457379999999262,
+       "cheap_checks": 9,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 1,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 0.08802000000000021,
+       "own_repairs": 1,
+       "reconcile_cpu_s": 0.17793300000002432,
+       "redeploy_trials": 1,
+       "shadow_cpu_s": 1.0099369999999706,
+       "shadow_tests": 9,
+       "shrink_tests": 2
+      },
+      "d_class": "D2",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 1,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 14,
+       "open_escalation": false,
+       "quarantined": 9,
+       "restore_ticks": {
+        "partial_deploy_corruption": 0,
+        "unit_shift": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X1"
+      },
+      "final_choice": {
+       "commit_protocol": "transactional",
+       "dedup": "by_msg_id",
+       "gap_handling": "skip",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "pa85e65f3",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pb729633f",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_committed"
+      },
+      "forced": [
+       "txn_isolation",
+       "read_uncommitted"
+      ],
+      "incidents": [
+       {
+        "name": "partial_deploy_corruption",
+        "tick": 8
+       },
+       {
+        "name": "unit_shift",
+        "tick": 12
+       }
+      ],
+      "ledger": [
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "rollback",
+          6
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "monitor:integrity",
+         "monitor:reconciliation"
+        ],
+        "tick": 8,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "txn_isolation": "read_committed"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 9,
+        "scores": {
+         "dedup": 0.5,
+         "gold_maintenance": 0.5,
+         "syn_decode": 0.404,
+         "syn_net": 0.36,
+         "txn_isolation": 12.978
+        },
+        "survivors": 4,
+        "suspects": [
+         "txn_isolation",
+         "dedup",
+         "gold_maintenance",
+         "syn_decode",
+         "syn_net"
+        ],
+        "tick": 10
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "transactional",
+           "dedup": "by_msg_id",
+           "gap_handling": "skip",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa85e65f3",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pb729633f",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          8
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:observation_conformance",
+         "monitor:reconciliation"
+        ],
+        "tick": 10,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 52,
+         "supplier": "S2",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 12
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "unit_override",
+          {
+           "factor": 0.45359237,
+           "from_offset": 62,
+           "part": 0,
+           "source": "stakeholder",
+           "supplier": "S3",
+           "tick": 12,
+           "unit": "lb"
+          }
+         ],
+         [
+          "rollback",
+          11
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 4,
+        "signature": [
+         "monitor:drift"
+        ],
+        "tick": 13,
+        "verified_in_shadow": true
+       }
+      ],
+      "natural_choice": "read_committed",
+      "ops_cpu_s": 1.0028320000000122,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X1"
+     },
+     "forced_e2e": true,
+     "ops": {
+      "actions": [
+       [
+        "rollback",
+        6
+       ],
+       [
+        "set_deploy",
+        "unit_overrides",
+        [
+         {
+          "factor": 0.45359237,
+          "from_offset": 62,
+          "part": 0,
+          "supplier": "S3"
+         }
+        ]
+       ],
+       [
+        "rollback",
+        11
+       ]
+      ],
+      "cost": {
+       "actions": 5,
+       "agent_cpu_s": 0.5391499999999496,
+       "cheap_checks": 0,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 0,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 0.0,
+       "own_repairs": 0,
+       "reconcile_cpu_s": 0.15877600000001735,
+       "redeploy_trials": 0,
+       "shadow_cpu_s": 0.47868899999998504,
+       "shadow_tests": 6,
+       "shrink_tests": 0
+      },
+      "d_class": "D2",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 1,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 14,
+       "open_escalation": false,
+       "quarantined": 9,
+       "restore_ticks": {
+        "partial_deploy_corruption": 0,
+        "unit_shift": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X1"
+      },
+      "final_choice": {
+       "commit_protocol": "transactional",
+       "dedup": "by_msg_id",
+       "gap_handling": "skip",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "pa85e65f3",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pb729633f",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_committed"
+      },
+      "incidents": [
+       {
+        "name": "partial_deploy_corruption",
+        "tick": 8
+       },
+       {
+        "name": "unit_shift",
+        "tick": 12
+       }
+      ],
+      "ledger": [
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "rollback",
+          6
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "monitor:integrity",
+         "monitor:reconciliation"
+        ],
+        "tick": 8,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 52,
+         "supplier": "S2",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 12
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "unit_override",
+          {
+           "factor": 0.45359237,
+           "from_offset": 62,
+           "part": 0,
+           "source": "stakeholder",
+           "supplier": "S3",
+           "tick": 12,
+           "unit": "lb"
+          }
+         ],
+         [
+          "rollback",
+          11
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 4,
+        "signature": [
+         "monitor:drift"
+        ],
+        "tick": 13,
+        "verified_in_shadow": true
+       }
+      ],
+      "ops_cpu_s": 0.6912670000000105,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X1"
+     },
+     "secondary": {
+      "actions": [
+       [
+        "rollback",
+        6
+       ],
+       [
+        "set_deploy",
+        "unit_overrides",
+        [
+         {
+          "factor": 0.45359237,
+          "from_offset": 62,
+          "part": 0,
+          "supplier": "S3"
+         }
+        ]
+       ],
+       [
+        "rollback",
+        11
+       ]
+      ],
+      "cost": {
+       "actions": 5,
+       "agent_cpu_s": 0.5550710000000265,
+       "cheap_checks": 0,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 0,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 0.0,
+       "own_repairs": 0,
+       "reconcile_cpu_s": 0.15937500000009663,
+       "redeploy_trials": 0,
+       "shadow_cpu_s": 0.48624700000003074,
+       "shadow_tests": 6,
+       "shrink_tests": 0
+      },
+      "d_class": "D2",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 1,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 14,
+       "open_escalation": false,
+       "quarantined": 9,
+       "restore_ticks": {
+        "partial_deploy_corruption": 0,
+        "unit_shift": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X1"
+      },
+      "final_choice": {
+       "commit_protocol": "transactional",
+       "dedup": "by_msg_id",
+       "gap_handling": "skip",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "pa85e65f3",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pb729633f",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_committed"
+      },
+      "incidents": [
+       {
+        "name": "partial_deploy_corruption",
+        "tick": 8
+       },
+       {
+        "name": "unit_shift",
+        "tick": 12
+       }
+      ],
+      "ledger": [
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "rollback",
+          6
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "monitor:integrity",
+         "monitor:reconciliation"
+        ],
+        "tick": 8,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 52,
+         "supplier": "S2",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 12
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "unit_override",
+          {
+           "factor": 0.45359237,
+           "from_offset": 62,
+           "part": 0,
+           "source": "stakeholder",
+           "supplier": "S3",
+           "tick": 12,
+           "unit": "lb"
+          }
+         ],
+         [
+          "rollback",
+          11
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 4,
+        "signature": [
+         "monitor:drift"
+        ],
+        "tick": 13,
+        "verified_in_shadow": true
+       }
+      ],
+      "mode": "B0",
+      "ops_cpu_s": 0.7091250000000002,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X1"
+     },
+     "secondary_e2e": true,
+     "synth_natural_is_forced": false
+    }
+   },
+   "d_class": "D2",
+   "features": {
+    "backfill_overwrite_traps": 5,
+    "backfill_resurrection_traps": 5,
+    "dups": 6,
+    "float_discounts": 17,
+    "hard": 9,
+    "heldout_late_corrections": 45,
+    "late_corrections": 2,
+    "late_telemetry": 7,
+    "malformed": 4,
+    "out_of_order_keys": 3,
+    "partition2_keys": 13,
+    "renamed_amounts": 86,
+    "soft": 2
+   },
+   "replay_view_violations": 0,
+   "x_class": "X1"
+  },
+  "de5-val-7987": {
+   "arms": {
+    "NEXUS_Synth": {
+     "build": {
+      "arm": "NEXUS_Synth",
+      "conformance": {
+       "crash_points": 44,
+       "holes_observed": 0,
+       "n_violations": 0,
+       "states": 87,
+       "txns_observed": 0,
+       "views": 87
+      },
+      "cost": {
+       "agent_cpu_s": 48.68,
+       "applicability_cpu_s": 0.0,
+       "check_runs": 785,
+       "exec_cpu_s": 26.219,
+       "final_check_cpu_s": 7.398,
+       "final_check_runs": 220,
+       "pipeline_runs": 785,
+       "proposals": 4,
+       "rejected_and_search_runs": 565,
+       "rejected_cpu_s": 18.82,
+       "retrieval_cpu_s": 0.0,
+       "synthesis_cpu_s": 42.572,
+       "total_cpu_s": 74.898,
+       "wall_s": 76.637
+      },
+      "evidence": [
+       {
+        "assumptions": "sandboxed subprocess per tick",
+        "bounds": "visible ticks 1-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "runs_all_ticks"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "runs",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "declared primary keys",
+        "bounds": "state after tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "schema_keys_not_null",
+         "nonempty_outputs"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_keys",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same log, same tick",
+        "bounds": "one rerun of tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rerun_unchanged"
+        ],
+        "cost": {
+         "cpu_s": 0.033,
+         "runs": 1
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "idempotent_rerun",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observations are authoritative",
+        "bounds": "every replayed view of every check",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [
+         "replay_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "replay_conformance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed offsets are the input universe",
+        "bounds": "visible ticks; committed offsets after each replayed run",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "accounting_and_lag",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 0.277,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "input_coverage",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "spec re-derivation by NEXUS code (not the pipeline's)",
+        "bounds": "visible records; 4 lateness boundary probes",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "silver_rederivation",
+         "gold_equals_recompute",
+         "lateness_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.276,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_reconciliation",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "os._exit before each commit / os.replace, nested + SIGKILL",
+        "bounds": "ticks 4 and 7, enumerated crash points only",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "crash_sweep",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 3.935,
+         "runs": 119
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "exactly_once",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "every record redelivered once",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "duplicate_delivery_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.28,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "dedup",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same-key permutation respecting registry causality",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "arrival_permutation_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.275,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "cdc_order",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "snapshot moved to the first / last visible tick",
+        "bounds": "silver + gold",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "backfill_timing_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.548,
+         "runs": 16
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "backfill_precedence",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "telemetry re-rendered in 6 offsets",
+        "bounds": "visible telemetry",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "utc_offset_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.275,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "tz_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "fx x10 bad deploy, rollback crashed half way",
+        "bounds": "ticks 6-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rollback_drill"
+        ],
+        "cost": {
+         "cpu_s": 0.343,
+         "runs": 10
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "rollback",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "watermark per ingest tick; no transaction spans a chunk",
+        "bounds": "chunk 37",
+        "checker": "r1_checks@5ac7ea50e92a",
+        "checks": [
+         "chunk_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.881,
+         "runs": 26
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "chunk_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed transactions only",
+        "bounds": "0 transactions observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "txn_isolation",
+        "result": "UNKNOWN"
+       },
+       {
+        "assumptions": "observed offset holes only",
+        "bounds": "0 offset holes observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "gap_safety",
+        "result": "UNKNOWN"
+       }
+      ],
+      "evidence_outcome": "COMPLETED_UNVERIFIED",
+      "failed_reuse": 0,
+      "failed_reuse_cpu_s": 0,
+      "features": [
+       "backfill",
+       "cdc",
+       "manifests",
+       "multi_currency",
+       "partitioned",
+       "redelivery",
+       "registry_evolution",
+       "soft_delete_flag",
+       "telemetry"
+      ],
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "processing_time",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p273f1dbd",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pd0fc01fc",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "history": [
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "delta_no_retract",
+         "lateness": "processing_time",
+         "partition_discovery": "dynamic",
+         "snapshots": "none",
+         "syn_decode": "p273f1dbd",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pd0fc01fc",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "text",
+         "txn_isolation": "read_uncommitted"
+        },
+        "cpu_s": 1.691,
+        "failed": "gold_equals_recompute",
+        "fix": "gold_maintenance",
+        "k": 0,
+        "trials": 2
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "processing_time",
+         "partition_discovery": "dynamic",
+         "snapshots": "none",
+         "syn_decode": "p273f1dbd",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pd0fc01fc",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "text",
+         "txn_isolation": "read_uncommitted"
+        },
+        "cpu_s": 4.3875,
+        "failed": "utc_offset_invariance",
+        "fix": "ts_parse",
+        "k": 1,
+        "trials": 1
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "processing_time",
+         "partition_discovery": "dynamic",
+         "snapshots": "none",
+         "syn_decode": "p273f1dbd",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pd0fc01fc",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "utc",
+         "txn_isolation": "read_uncommitted"
+        },
+        "cpu_s": 12.7417,
+        "failed": "rollback_drill",
+        "fix": "snapshots",
+        "k": 2,
+        "trials": 1
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "processing_time",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "p273f1dbd",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pd0fc01fc",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "utc",
+         "txn_isolation": "read_uncommitted"
+        },
+        "failed": null,
+        "k": 3
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "library_used": [],
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "de5-val-7987",
+      "s4_outcome": "COMPLETED_VERIFIED",
+      "submitted": true,
+      "synthesis": {
+       "code": "def fn_273f1dbd(a, fields, types):\n    return {\n        'order_id': a.get('ord_id'),\n        'warehouse_id': a.get('warehouse_id'),\n        'status': a.get('status'),\n        'amount': a.get(fields.get('amount')),\n        'currency': a.get('ccy'),\n        'discount': a.get('discount_pct'),\n        'promised_ts': a.get('promised_ts'),\n        'deleted': a.get('deleted')\n    }\n\n\nfn_decode = fn_273f1dbd\n\n\ndef fn_9977eb3b(p, fx):\n    return round((p.get('amount') * (fx.get(p.get('currency')) * (1 - (p.get('discount') / 100)))), 2)\n\n\nfn_net = fn_9977eb3b\n\n\ndef fn_147cc3aa(topic, rec, row, fx, whs):\n    if isinstance(rec.get('weight'), str):\n        return 'q:malformed_weight'\n    elif ((not (row is None)) and (not (row.get('currency') in fx))):\n        return 'q:unknown_currency'\n    elif ((not (row is None)) and (not (row.get('warehouse_id') in whs))):\n        return 'q:unknown_warehouse'\n    return 'accepted'\n\n\nfn_status = fn_147cc3aa\n\n\nclass StreamOrganelle_d0fc01fc:\n    \"\"\"Markov state violation: identical record content, different required outcome ([true, false]); state = dict keyed by 'key', order 'sv' >, tombstone\"\"\"\n\n    def __init__(self):\n        self.state = {}\n\n    def ingest(self, r):\n        k = r.get('key')\n        cur = self.state.get(k)\n        if cur is None or r.get('sv') > cur.get('sv'):\n            self.state[k] = r\n\n    def retract(self, k):\n        self.state.pop(k, None)\n\n    def flush(self):\n        out = []\n        n = 0\n        for k in self.state:\n            n += 1\n            if n > 1000000:\n                break\n            r = self.state[k]\n            if not (not ((not (r.get('payload') is None)) and (r.get('soft') == 0))):\n                out.append(r)\n        return out\n\n\nSilverOrganelle = StreamOrganelle_d0fc01fc\n",
+       "programs": {
+        "syn_decode": "p273f1dbd",
+        "syn_net": "p9977eb3b",
+        "syn_silver": "pd0fc01fc",
+        "syn_status": "p147cc3aa"
+       },
+       "stats": {
+        "n_examples": {
+         "syn_decode": 154,
+         "syn_net": 63,
+         "syn_silver": 2,
+         "syn_status": 268
+        },
+        "syn_decode": {
+         "cpu_s": 28.379,
+         "hole": "syn_decode",
+         "per": {
+          "amount": {
+           "bank": 2050,
+           "cpu_s": 3.543,
+           "examples": 154,
+           "rounds": 1
+          },
+          "currency": {
+           "bank": 2050,
+           "cpu_s": 3.528,
+           "examples": 154,
+           "rounds": 1
+          },
+          "deleted": {
+           "bank": 2050,
+           "cpu_s": 3.519,
+           "examples": 154,
+           "rounds": 1
+          },
+          "discount": {
+           "bank": 2050,
+           "cpu_s": 3.545,
+           "examples": 154,
+           "rounds": 1
+          },
+          "order_id": {
+           "bank": 2050,
+           "cpu_s": 3.556,
+           "examples": 154,
+           "rounds": 1
+          },
+          "promised_ts": {
+           "bank": 2052,
+           "cpu_s": 3.55,
+           "examples": 154,
+           "rounds": 1
+          },
+          "status": {
+           "bank": 2052,
+           "cpu_s": 3.551,
+           "examples": 154,
+           "rounds": 1
+          },
+          "warehouse_id": {
+           "bank": 2048,
+           "cpu_s": 3.547,
+           "examples": 154,
+           "rounds": 1
+          }
+         },
+         "pid": "p273f1dbd"
+        },
+        "syn_net": {
+         "bank": 1886,
+         "cpu_s": 2.639,
+         "examples": 63,
+         "hole": "syn_net",
+         "pid": "p9977eb3b",
+         "rounds": 1
+        },
+        "syn_silver": {
+         "cpu_s": 5.503,
+         "hole": "syn_silver",
+         "kind": "organelle",
+         "markov_witness": true,
+         "pid": "pd0fc01fc",
+         "tried": 1
+        },
+        "syn_status": {
+         "bank": 3998,
+         "cpu_s": 6.046,
+         "examples": 268,
+         "hole": "syn_status",
+         "pid": "p147cc3aa",
+         "rounds": 1
+        }
+       }
+      },
+      "unknown_properties": [
+       "txn_isolation",
+       "gap_safety"
+      ]
+     },
+     "build_eval": {
+      "checkpoints": {
+       "4": true,
+       "8": true,
+       "12": true
+      },
+      "correct": true,
+      "data_ok": true,
+      "eo_failures": 0,
+      "eo_trials": 66,
+      "exits_ok": true,
+      "heldout_ok": true,
+      "reasons": [],
+      "rollback_ok": true,
+      "seen_ok": true,
+      "silent": false
+     },
+     "e2e_correct": true,
+     "forced": {
+      "actions": [
+       [
+        "set_deploy",
+        "dead_letter",
+        [
+         [
+          "telemetry",
+          0,
+          41
+         ]
+        ]
+       ],
+       [
+        "redeploy",
+        {
+         "gap_handling": "wait_contiguous"
+        }
+       ],
+       [
+        "rotate_credentials"
+       ],
+       [
+        "rollback",
+        9
+       ]
+      ],
+      "cost": {
+       "actions": 6,
+       "agent_cpu_s": 0.7035169999999766,
+       "cheap_checks": 0,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 1,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 0.003030000000023847,
+       "own_repairs": 1,
+       "reconcile_cpu_s": 0.14813600000002225,
+       "redeploy_trials": 1,
+       "shadow_cpu_s": 0.5694399999999824,
+       "shadow_tests": 9,
+       "shrink_tests": 0
+      },
+      "d_class": "D2",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 10,
+       "open_escalation": false,
+       "quarantined": 11,
+       "restore_ticks": {
+        "credential_expiry": 0,
+        "poison_message": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X2"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "processing_time",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p273f1dbd",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pd0fc01fc",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "forced": [
+       "gap_handling",
+       "skip"
+      ],
+      "incidents": [
+       {
+        "name": "poison_message",
+        "tick": 8
+       },
+       {
+        "name": "credential_expiry",
+        "tick": 10
+       }
+      ],
+      "ledger": [
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "dead_letter",
+          [
+           "telemetry",
+           0,
+           41
+          ]
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:decode",
+         "monitor:reconciliation"
+        ],
+        "tick": 8,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "gap_handling": "wait_contiguous"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 10,
+        "scores": {
+         "commit_protocol": 5.0,
+         "gap_handling": 8.0,
+         "gold_maintenance": 2.0,
+         "lateness": 2.0
+        },
+        "survivors": 15,
+        "suspects": [
+         "gap_handling",
+         "commit_protocol",
+         "gold_maintenance",
+         "lateness"
+        ],
+        "tick": 10
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "rotate_credentials",
+          null
+         ],
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "processing_time",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p273f1dbd",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pd0fc01fc",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          9
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:readonly",
+         "monitor:reconciliation"
+        ],
+        "tick": 10,
+        "verified_in_shadow": true
+       }
+      ],
+      "natural_choice": "wait_contiguous",
+      "ops_cpu_s": 0.8882259999999746,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X2"
+     },
+     "forced_e2e": true,
+     "ops": {
+      "actions": [
+       [
+        "set_deploy",
+        "dead_letter",
+        [
+         [
+          "telemetry",
+          0,
+          41
+         ]
+        ]
+       ],
+       [
+        "rotate_credentials"
+       ]
+      ],
+      "cost": {
+       "actions": 4,
+       "agent_cpu_s": 0.40191299999992225,
+       "cheap_checks": 0,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 0,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 0.0,
+       "own_repairs": 0,
+       "reconcile_cpu_s": 0.1493290000001366,
+       "redeploy_trials": 0,
+       "shadow_cpu_s": 0.3114109999999499,
+       "shadow_tests": 4,
+       "shrink_tests": 0
+      },
+      "d_class": "D2",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 10,
+       "open_escalation": false,
+       "quarantined": 11,
+       "restore_ticks": {
+        "credential_expiry": 0,
+        "poison_message": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X2"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "processing_time",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p273f1dbd",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pd0fc01fc",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "incidents": [
+       {
+        "name": "poison_message",
+        "tick": 8
+       },
+       {
+        "name": "credential_expiry",
+        "tick": 10
+       }
+      ],
+      "ledger": [
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "dead_letter",
+          [
+           "telemetry",
+           0,
+           41
+          ]
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:decode",
+         "monitor:reconciliation"
+        ],
+        "tick": 8,
+        "verified_in_shadow": true
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "rotate_credentials",
+          null
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:readonly",
+         "monitor:reconciliation"
+        ],
+        "tick": 10,
+        "verified_in_shadow": true
+       }
+      ],
+      "ops_cpu_s": 0.587030000000027,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X2"
+     },
+     "secondary": {
+      "actions": [
+       [
+        "set_deploy",
+        "dead_letter",
+        [
+         [
+          "telemetry",
+          0,
+          41
+         ]
+        ]
+       ],
+       [
+        "rotate_credentials"
+       ]
+      ],
+      "cost": {
+       "actions": 4,
+       "agent_cpu_s": 0.39500400000002855,
+       "cheap_checks": 0,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 0,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 0.0,
+       "own_repairs": 0,
+       "reconcile_cpu_s": 0.1479269999998678,
+       "redeploy_trials": 0,
+       "shadow_cpu_s": 0.3071760000000303,
+       "shadow_tests": 4,
+       "shrink_tests": 0
+      },
+      "d_class": "D2",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": true,
+       "data_ok": true,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 10,
+       "open_escalation": false,
+       "quarantined": 11,
+       "restore_ticks": {
+        "credential_expiry": 0,
+        "poison_message": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": false,
+       "tables": {},
+       "x_class": "X2"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "processing_time",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p273f1dbd",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pd0fc01fc",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_uncommitted"
+      },
+      "incidents": [
+       {
+        "name": "poison_message",
+        "tick": 8
+       },
+       {
+        "name": "credential_expiry",
+        "tick": 10
+       }
+      ],
+      "ledger": [
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "dead_letter",
+          [
+           "telemetry",
+           0,
+           41
+          ]
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:decode",
+         "monitor:reconciliation"
+        ],
+        "tick": 8,
+        "verified_in_shadow": true
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "rotate_credentials",
+          null
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:readonly",
+         "monitor:reconciliation"
+        ],
+        "tick": 10,
+        "verified_in_shadow": true
+       }
+      ],
+      "mode": "B0",
+      "ops_cpu_s": 0.5803470000000175,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X2"
+     },
+     "secondary_e2e": true,
+     "synth_natural_is_forced": false
+    }
+   },
+   "d_class": "D2",
+   "features": {
+    "backfill_overwrite_traps": 2,
+    "backfill_resurrection_traps": 6,
+    "dups": 6,
+    "float_discounts": 17,
+    "hard": 11,
+    "heldout_late_corrections": 50,
+    "late_corrections": 2,
+    "late_telemetry": 5,
+    "malformed": 2,
+    "out_of_order_keys": 3,
+    "partition2_keys": 12,
+    "renamed_amounts": 92,
+    "soft": 5
+   },
+   "replay_view_violations": 0,
+   "x_class": "X2"
+  },
+  "de5-val-7988": {
+   "arms": {
+    "NEXUS_Synth": {
+     "build": {
+      "arm": "NEXUS_Synth",
+      "conformance": {
+       "crash_points": 44,
+       "holes_observed": 0,
+       "n_violations": 0,
+       "states": 87,
+       "txns_observed": 0,
+       "views": 87
+      },
+      "cost": {
+       "agent_cpu_s": 44.596,
+       "applicability_cpu_s": 0.0,
+       "check_runs": 335,
+       "exec_cpu_s": 11.384,
+       "final_check_cpu_s": 7.489,
+       "final_check_runs": 222,
+       "pipeline_runs": 335,
+       "proposals": 4,
+       "rejected_and_search_runs": 113,
+       "rejected_cpu_s": 3.895,
+       "retrieval_cpu_s": 0.0,
+       "synthesis_cpu_s": 41.699,
+       "total_cpu_s": 55.98,
+       "wall_s": 56.74
+      },
+      "evidence": [
+       {
+        "assumptions": "sandboxed subprocess per tick",
+        "bounds": "visible ticks 1-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "runs_all_ticks"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "runs",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "declared primary keys",
+        "bounds": "state after tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "schema_keys_not_null",
+         "nonempty_outputs"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_keys",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same log, same tick",
+        "bounds": "one rerun of tick 8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rerun_unchanged"
+        ],
+        "cost": {
+         "cpu_s": 0.034,
+         "runs": 1
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "idempotent_rerun",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observations are authoritative",
+        "bounds": "every replayed view of every check",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [
+         "replay_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "replay_conformance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed offsets are the input universe",
+        "bounds": "visible ticks; committed offsets after each replayed run",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "accounting_and_lag",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 0.276,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "input_coverage",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "spec re-derivation by NEXUS code (not the pipeline's)",
+        "bounds": "visible records; 4 lateness boundary probes",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "silver_rederivation",
+         "gold_equals_recompute",
+         "lateness_conformance"
+        ],
+        "cost": {
+         "cpu_s": 0.276,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "output_reconciliation",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "os._exit before each commit / os.replace, nested + SIGKILL",
+        "bounds": "ticks 4 and 7, enumerated crash points only",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "crash_sweep",
+         "ack_durability"
+        ],
+        "cost": {
+         "cpu_s": 3.939,
+         "runs": 119
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "exactly_once",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "every record redelivered once",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "duplicate_delivery_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.28,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "dedup",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "same-key permutation respecting registry causality",
+        "bounds": "visible ticks",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "arrival_permutation_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.276,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "cdc_order",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "snapshot moved to the first / last visible tick",
+        "bounds": "silver + gold",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "backfill_timing_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.549,
+         "runs": 16
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "backfill_precedence",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "telemetry re-rendered in 6 offsets",
+        "bounds": "visible telemetry",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "utc_offset_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.276,
+         "runs": 8
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "tz_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "fx x10 bad deploy, rollback crashed half way",
+        "bounds": "ticks 6-8",
+        "checker": "s4_checks@47c50f5c0651",
+        "checks": [
+         "rollback_drill"
+        ],
+        "cost": {
+         "cpu_s": 0.352,
+         "runs": 10
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "rollback",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "watermark per ingest tick; no transaction spans a chunk",
+        "bounds": "chunk 37",
+        "checker": "r1_checks@5ac7ea50e92a",
+        "checks": [
+         "chunk_invariance"
+        ],
+        "cost": {
+         "cpu_s": 0.953,
+         "runs": 28
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "chunk_invariance",
+        "result": "PASS_WITHIN_SCOPE"
+       },
+       {
+        "assumptions": "observed transactions only",
+        "bounds": "0 transactions observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "txn_isolation",
+        "result": "UNKNOWN"
+       },
+       {
+        "assumptions": "observed offset holes only",
+        "bounds": "0 offset holes observed",
+        "checker": "r1_monitor@ab6a274f33ba",
+        "checks": [],
+        "cost": {
+         "cpu_s": 0,
+         "runs": 0
+        },
+        "evidence_source": "visible log ticks 1-8 (+ probes / transforms named in bounds)",
+        "property": "gap_safety",
+        "result": "UNKNOWN"
+       }
+      ],
+      "evidence_outcome": "COMPLETED_UNVERIFIED",
+      "failed_reuse": 0,
+      "failed_reuse_cpu_s": 0,
+      "features": [
+       "backfill",
+       "cdc",
+       "manifests",
+       "multi_currency",
+       "partitioned",
+       "redelivery",
+       "registry_evolution",
+       "soft_delete_flag",
+       "telemetry"
+      ],
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "processing_time",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "pa0269aa8",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pedc99683",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "text",
+       "txn_isolation": "read_committed"
+      },
+      "history": [
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "none",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "pa0269aa8",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pedc99683",
+         "syn_status": "p147cc3aa",
+         "ts_format": "iso_only",
+         "ts_parse": "text",
+         "txn_isolation": "read_committed"
+        },
+        "cpu_s": 0.7546,
+        "failed": "runs_all_ticks",
+        "fix": "ts_format",
+        "k": 0,
+        "trials": 2
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "none",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "pa0269aa8",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pedc99683",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "text",
+         "txn_isolation": "read_committed"
+        },
+        "cpu_s": 0.5527,
+        "failed": "schema_keys_not_null",
+        "fix": "dedup",
+        "k": 1,
+        "trials": 1
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "watermark",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "pa0269aa8",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pedc99683",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "text",
+         "txn_isolation": "read_committed"
+        },
+        "cpu_s": 2.5875,
+        "failed": "lateness_conformance",
+        "fix": "lateness",
+        "k": 2,
+        "trials": 2
+       },
+       {
+        "choice": {
+         "commit_protocol": "sink_then_offsets",
+         "dedup": "by_msg_id",
+         "gap_handling": "wait_contiguous",
+         "gold_maintenance": "recompute_affected",
+         "lateness": "processing_time",
+         "partition_discovery": "dynamic",
+         "snapshots": "per_tick",
+         "syn_decode": "pa0269aa8",
+         "syn_net": "p9977eb3b",
+         "syn_silver": "pedc99683",
+         "syn_status": "p147cc3aa",
+         "ts_format": "registry_typed",
+         "ts_parse": "text",
+         "txn_isolation": "read_committed"
+        },
+        "failed": null,
+        "k": 3
+       }
+      ],
+      "human": {
+       "clarifications": 0,
+       "engineering_repairs": 0,
+       "operational_interventions": 0
+      },
+      "library_used": [],
+      "outcome": "COMPLETED_UNVERIFIED",
+      "project": "de5-val-7988",
+      "s4_outcome": "COMPLETED_VERIFIED",
+      "submitted": true,
+      "synthesis": {
+       "code": "def fn_a0269aa8(a, fields, types):\n    return {\n        'order_id': a.get('ord_id'),\n        'warehouse_id': a.get('warehouse_id'),\n        'status': a.get('order_status'),\n        'amount': a.get(fields.get('amount')),\n        'currency': a.get('ccy'),\n        'discount': a.get('discount_pct'),\n        'promised_ts': a.get('promise_by'),\n        'deleted': a.get('is_deleted')\n    }\n\n\nfn_decode = fn_a0269aa8\n\n\ndef fn_9977eb3b(p, fx):\n    return round((p.get('amount') * (fx.get(p.get('currency')) * (1 - (p.get('discount') / 100)))), 2)\n\n\nfn_net = fn_9977eb3b\n\n\ndef fn_147cc3aa(topic, rec, row, fx, whs):\n    if isinstance(rec.get('weight'), str):\n        return 'q:malformed_weight'\n    elif ((not (row is None)) and (not (row.get('currency') in fx))):\n        return 'q:unknown_currency'\n    elif ((not (row is None)) and (not (row.get('warehouse_id') in whs))):\n        return 'q:unknown_warehouse'\n    return 'accepted'\n\n\nfn_status = fn_147cc3aa\n\n\nclass StreamOrganelle_edc99683:\n    \"\"\"Markov state violation: identical record content, different required outcome ([true, false]); state = dict keyed by 'key', order 'sv' >, tombstone\"\"\"\n\n    def __init__(self):\n        self.state = {}\n\n    def ingest(self, r):\n        k = r.get('key')\n        cur = self.state.get(k)\n        if cur is None or r.get('sv') > cur.get('sv'):\n            self.state[k] = r\n\n    def retract(self, k):\n        self.state.pop(k, None)\n\n    def flush(self):\n        out = []\n        n = 0\n        for k in self.state:\n            n += 1\n            if n > 1000000:\n                break\n            r = self.state[k]\n            if not (not ((not (r.get('payload') is None)) and (r.get('soft') == 0))):\n                out.append(r)\n        return out\n\n\nSilverOrganelle = StreamOrganelle_edc99683\n",
+       "programs": {
+        "syn_decode": "pa0269aa8",
+        "syn_net": "p9977eb3b",
+        "syn_silver": "pedc99683",
+        "syn_status": "p147cc3aa"
+       },
+       "stats": {
+        "n_examples": {
+         "syn_decode": 167,
+         "syn_net": 64,
+         "syn_silver": 2,
+         "syn_status": 281
+        },
+        "syn_decode": {
+         "cpu_s": 27.669,
+         "hole": "syn_decode",
+         "per": {
+          "amount": {
+           "bank": 2059,
+           "cpu_s": 3.446,
+           "examples": 167,
+           "rounds": 1
+          },
+          "currency": {
+           "bank": 2061,
+           "cpu_s": 3.442,
+           "examples": 167,
+           "rounds": 1
+          },
+          "deleted": {
+           "bank": 2059,
+           "cpu_s": 3.437,
+           "examples": 167,
+           "rounds": 1
+          },
+          "discount": {
+           "bank": 2059,
+           "cpu_s": 3.445,
+           "examples": 167,
+           "rounds": 1
+          },
+          "order_id": {
+           "bank": 2059,
+           "cpu_s": 3.463,
+           "examples": 167,
+           "rounds": 1
+          },
+          "promised_ts": {
+           "bank": 2059,
+           "cpu_s": 3.473,
+           "examples": 167,
+           "rounds": 1
+          },
+          "status": {
+           "bank": 2061,
+           "cpu_s": 3.454,
+           "examples": 167,
+           "rounds": 1
+          },
+          "warehouse_id": {
+           "bank": 2061,
+           "cpu_s": 3.468,
+           "examples": 167,
+           "rounds": 1
+          }
+         },
+         "pid": "pa0269aa8"
+        },
+        "syn_net": {
+         "bank": 1883,
+         "cpu_s": 2.658,
+         "examples": 64,
+         "hole": "syn_net",
+         "pid": "p9977eb3b",
+         "rounds": 1
+        },
+        "syn_silver": {
+         "cpu_s": 5.12,
+         "hole": "syn_silver",
+         "kind": "organelle",
+         "markov_witness": true,
+         "pid": "pedc99683",
+         "tried": 1
+        },
+        "syn_status": {
+         "bank": 4227,
+         "cpu_s": 6.246,
+         "examples": 281,
+         "hole": "syn_status",
+         "pid": "p147cc3aa",
+         "rounds": 1
+        }
+       }
+      },
+      "unknown_properties": [
+       "txn_isolation",
+       "gap_safety"
+      ]
+     },
+     "build_eval": {
+      "checkpoints": {
+       "4": true,
+       "8": true,
+       "12": false
+      },
+      "correct": false,
+      "data_ok": false,
+      "eo_failures": 0,
+      "eo_trials": 66,
+      "exits_ok": true,
+      "heldout_ok": false,
+      "reasons": [
+       "ROLLBACK_FAILED",
+       "UNEXPLAINED_MISMATCH:gold_warehouse_revenue",
+       "UNEXPLAINED_MISMATCH:silver_orders"
+      ],
+      "rollback_ok": false,
+      "seen_ok": true,
+      "silent": true
+     },
+     "e2e_correct": false,
+     "forced": {
+      "actions": [
+       [
+        "redeploy",
+        {
+         "ts_parse": "utc"
+        }
+       ],
+       [
+        "rollback",
+        0
+       ],
+       [
+        "redeploy",
+        {
+         "lateness": "none"
+        }
+       ],
+       [
+        "rollback",
+        2
+       ],
+       [
+        "redeploy",
+        {
+         "lateness": "watermark"
+        }
+       ],
+       [
+        "rollback",
+        5
+       ],
+       [
+        "redeploy",
+        {
+         "syn_decode": "p69751f89"
+        }
+       ],
+       [
+        "rollback",
+        7
+       ],
+       [
+        "redeploy",
+        {
+         "txn_isolation": "read_committed"
+        }
+       ],
+       [
+        "set_deploy",
+        "future_guard",
+        true
+       ],
+       [
+        "rollback",
+        7
+       ],
+       [
+        "set_deploy",
+        "dead_letter",
+        [
+         [
+          "telemetry",
+          0,
+          54
+         ]
+        ]
+       ]
+      ],
+      "cost": {
+       "actions": 18,
+       "agent_cpu_s": 38.50457099999966,
+       "cheap_checks": 15,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 6,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 36.58499399999988,
+       "own_repairs": 5,
+       "reconcile_cpu_s": 0.21192599999983486,
+       "redeploy_trials": 6,
+       "resyntheses": 1,
+       "shadow_cpu_s": 2.4681950000000406,
+       "shadow_tests": 30,
+       "shrink_tests": 6
+      },
+      "d_class": "D1",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": false,
+       "data_ok": false,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 6,
+       "open_escalation": false,
+       "quarantined": 8,
+       "restore_ticks": {
+        "clock_skew": 0,
+        "poison_message": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": true,
+       "tables": {
+        "gold_sla": 1
+       },
+       "x_class": "X1"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p69751f89",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pedc99683",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_committed"
+      },
+      "forced": [
+       "txn_isolation",
+       "read_uncommitted"
+      ],
+      "incidents": [
+       {
+        "name": "clock_skew",
+        "tick": 10
+       },
+       {
+        "name": "poison_message",
+        "tick": 11
+       }
+      ],
+      "ledger": [
+       {
+        "changed": {
+         "ts_parse": "utc"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 1,
+        "scores": {
+         "ts_format": 3.0,
+         "ts_parse": 3.0
+        },
+        "survivors": 3,
+        "suspects": [
+         "ts_parse",
+         "ts_format"
+        ],
+        "tick": 1
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "processing_time",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          0
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 1,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "lateness": "none"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 3,
+        "scores": {
+         "lateness": 1.0,
+         "ts_format": 1.0,
+         "ts_parse": 1.0
+        },
+        "survivors": 9,
+        "suspects": [
+         "lateness",
+         "ts_parse",
+         "ts_format"
+        ],
+        "tick": 3
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "none",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          2
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 3,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "lateness": "watermark"
+        },
+        "full_verifications": 2,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 6,
+        "scores": {
+         "lateness": 1.0,
+         "ts_format": 1.0,
+         "ts_parse": 1.0
+        },
+        "survivors": 9,
+        "suspects": [
+         "lateness",
+         "ts_parse",
+         "ts_format"
+        ],
+        "tick": 6
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          5
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 6,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 32,
+         "supplier": "S1",
+         "tick": 7,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 9
+       },
+       {
+        "hole": "syn_decode",
+        "kind": "resynthesis",
+        "new": "p69751f89",
+        "new_option": true,
+        "previous": "pa0269aa8",
+        "stats": {
+         "cpu_s": 36.4,
+         "hole": "syn_decode",
+         "pid": "p69751f89"
+        },
+        "tick": 9
+       },
+       {
+        "changed": {
+         "syn_decode": "p69751f89"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 8,
+        "scores": {
+         "partition_discovery": 0.501,
+         "syn_decode": 19.889,
+         "ts_format": 18.985,
+         "ts_parse": 18.985
+        },
+        "survivors": 3,
+        "suspects": [
+         "syn_decode",
+         "ts_parse",
+         "ts_format",
+         "partition_discovery"
+        ],
+        "tick": 9
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p69751f89",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_uncommitted"
+          }
+         ],
+         [
+          "rollback",
+          7
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 9,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "txn_isolation": "read_committed"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 8,
+        "scores": {
+         "dedup": 0.5,
+         "gold_maintenance": 0.5,
+         "syn_decode": 1.534,
+         "syn_silver": 0.784,
+         "ts_format": 0.818,
+         "ts_parse": 0.818,
+         "txn_isolation": 12.989
+        },
+        "survivors": 2,
+        "suspects": [
+         "txn_isolation",
+         "syn_decode",
+         "ts_parse",
+         "ts_format",
+         "syn_silver",
+         "dedup",
+         "gold_maintenance"
+        ],
+        "tick": 10
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "future_guard",
+          true
+         ],
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p69751f89",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          7
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 4,
+        "signature": [
+         "monitor:observation_conformance",
+         "monitor:reconciliation",
+         "monitor:watermark_sanity"
+        ],
+        "tick": 10,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 48,
+         "supplier": "S1",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 11
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "dead_letter",
+          [
+           "telemetry",
+           0,
+           54
+          ]
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:decode",
+         "monitor:reconciliation"
+        ],
+        "tick": 11,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 69,
+         "supplier": "S2",
+         "tick": 13,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 14
+       }
+      ],
+      "natural_choice": "read_committed",
+      "ops_cpu_s": 38.68822,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X1"
+     },
+     "forced_e2e": false,
+     "ops": {
+      "actions": [
+       [
+        "redeploy",
+        {
+         "ts_parse": "utc"
+        }
+       ],
+       [
+        "rollback",
+        0
+       ],
+       [
+        "redeploy",
+        {
+         "lateness": "none"
+        }
+       ],
+       [
+        "rollback",
+        2
+       ],
+       [
+        "redeploy",
+        {
+         "lateness": "watermark"
+        }
+       ],
+       [
+        "rollback",
+        5
+       ],
+       [
+        "redeploy",
+        {
+         "syn_decode": "p69751f89"
+        }
+       ],
+       [
+        "rollback",
+        7
+       ],
+       [
+        "set_deploy",
+        "future_guard",
+        true
+       ],
+       [
+        "rollback",
+        9
+       ],
+       [
+        "set_deploy",
+        "dead_letter",
+        [
+         [
+          "telemetry",
+          0,
+          54
+         ]
+        ]
+       ]
+      ],
+      "cost": {
+       "actions": 17,
+       "agent_cpu_s": 37.54937700000005,
+       "cheap_checks": 7,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 5,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 36.539019999999994,
+       "own_repairs": 4,
+       "reconcile_cpu_s": 0.2125220000000354,
+       "redeploy_trials": 5,
+       "resyntheses": 1,
+       "shadow_cpu_s": 1.2580379999999636,
+       "shadow_tests": 16,
+       "shrink_tests": 4
+      },
+      "d_class": "D1",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": false,
+       "data_ok": false,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 6,
+       "open_escalation": false,
+       "quarantined": 8,
+       "restore_ticks": {
+        "clock_skew": 0,
+        "poison_message": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": true,
+       "tables": {
+        "gold_sla": 1
+       },
+       "x_class": "X1"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p69751f89",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pedc99683",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_committed"
+      },
+      "incidents": [
+       {
+        "name": "clock_skew",
+        "tick": 10
+       },
+       {
+        "name": "poison_message",
+        "tick": 11
+       }
+      ],
+      "ledger": [
+       {
+        "changed": {
+         "ts_parse": "utc"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 1,
+        "scores": {
+         "ts_format": 3.0,
+         "ts_parse": 3.0
+        },
+        "survivors": 3,
+        "suspects": [
+         "ts_parse",
+         "ts_format"
+        ],
+        "tick": 1
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "processing_time",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          0
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 1,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "lateness": "none"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 3,
+        "scores": {
+         "lateness": 1.0,
+         "ts_format": 1.0,
+         "ts_parse": 1.0
+        },
+        "survivors": 9,
+        "suspects": [
+         "lateness",
+         "ts_parse",
+         "ts_format"
+        ],
+        "tick": 3
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "none",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          2
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 3,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "lateness": "watermark"
+        },
+        "full_verifications": 2,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 6,
+        "scores": {
+         "lateness": 1.0,
+         "ts_format": 1.0,
+         "ts_parse": 1.0
+        },
+        "survivors": 9,
+        "suspects": [
+         "lateness",
+         "ts_parse",
+         "ts_format"
+        ],
+        "tick": 6
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          5
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 6,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 32,
+         "supplier": "S1",
+         "tick": 7,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 9
+       },
+       {
+        "hole": "syn_decode",
+        "kind": "resynthesis",
+        "new": "p69751f89",
+        "new_option": true,
+        "previous": "pa0269aa8",
+        "stats": {
+         "cpu_s": 36.443,
+         "hole": "syn_decode",
+         "pid": "p69751f89"
+        },
+        "tick": 9
+       },
+       {
+        "changed": {
+         "syn_decode": "p69751f89"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B1",
+        "onset": 8,
+        "scores": {
+         "partition_discovery": 0.501,
+         "syn_decode": 19.889,
+         "ts_format": 18.985,
+         "ts_parse": 18.985
+        },
+        "survivors": 3,
+        "suspects": [
+         "syn_decode",
+         "ts_parse",
+         "ts_format",
+         "partition_discovery"
+        ],
+        "tick": 9
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p69751f89",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          7
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 9,
+        "verified_in_shadow": true
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "future_guard",
+          true
+         ],
+         [
+          "rollback",
+          9
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation",
+         "monitor:watermark_sanity"
+        ],
+        "tick": 10,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 48,
+         "supplier": "S1",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 11
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "dead_letter",
+          [
+           "telemetry",
+           0,
+           54
+          ]
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:decode",
+         "monitor:reconciliation"
+        ],
+        "tick": 11,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 69,
+         "supplier": "S2",
+         "tick": 13,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 14
+       }
+      ],
+      "ops_cpu_s": 37.73522400000002,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X1"
+     },
+     "secondary": {
+      "actions": [
+       [
+        "redeploy",
+        {
+         "ts_parse": "utc"
+        }
+       ],
+       [
+        "rollback",
+        0
+       ],
+       [
+        "redeploy",
+        {
+         "lateness": "none"
+        }
+       ],
+       [
+        "rollback",
+        2
+       ],
+       [
+        "redeploy",
+        {
+         "lateness": "watermark"
+        }
+       ],
+       [
+        "rollback",
+        5
+       ],
+       [
+        "redeploy",
+        {
+         "syn_decode": "p69751f89"
+        }
+       ],
+       [
+        "rollback",
+        7
+       ],
+       [
+        "set_deploy",
+        "future_guard",
+        true
+       ],
+       [
+        "rollback",
+        9
+       ],
+       [
+        "set_deploy",
+        "dead_letter",
+        [
+         [
+          "telemetry",
+          0,
+          54
+         ]
+        ]
+       ]
+      ],
+      "cost": {
+       "actions": 17,
+       "agent_cpu_s": 37.43540500000006,
+       "cheap_checks": 0,
+       "escalations": 0,
+       "failed_reuse": 0,
+       "full_verifications": 7,
+       "library_applicability_cpu_s": 0.0,
+       "library_retrieval_cpu_s": 0.0,
+       "localisation_cpu_s": 36.383475999999916,
+       "own_repairs": 4,
+       "reconcile_cpu_s": 0.21453100000002223,
+       "redeploy_trials": 7,
+       "resyntheses": 1,
+       "shadow_cpu_s": 0.9760040000002057,
+       "shadow_tests": 18,
+       "shrink_tests": 0
+      },
+      "d_class": "D1",
+      "eval": {
+       "claims_healthy": true,
+       "clarifications": 0,
+       "conservation_ok": true,
+       "correct": false,
+       "data_ok": false,
+       "duplicate_rows": 0,
+       "freshness_violations": 0,
+       "late": 6,
+       "open_escalation": false,
+       "quarantined": 8,
+       "restore_ticks": {
+        "clock_skew": 0,
+        "poison_message": 0
+       },
+       "secret_leaks": 0,
+       "self_detected": true,
+       "service_restored": true,
+       "silent": true,
+       "tables": {
+        "gold_sla": 1
+       },
+       "x_class": "X1"
+      },
+      "final_choice": {
+       "commit_protocol": "sink_then_offsets",
+       "dedup": "by_msg_id",
+       "gap_handling": "wait_contiguous",
+       "gold_maintenance": "recompute_affected",
+       "lateness": "watermark",
+       "partition_discovery": "dynamic",
+       "snapshots": "per_tick",
+       "syn_decode": "p69751f89",
+       "syn_net": "p9977eb3b",
+       "syn_silver": "pedc99683",
+       "syn_status": "p147cc3aa",
+       "ts_format": "registry_typed",
+       "ts_parse": "utc",
+       "txn_isolation": "read_committed"
+      },
+      "incidents": [
+       {
+        "name": "clock_skew",
+        "tick": 10
+       },
+       {
+        "name": "poison_message",
+        "tick": 11
+       }
+      ],
+      "ledger": [
+       {
+        "changed": {
+         "ts_parse": "utc"
+        },
+        "full_verifications": 3,
+        "kind": "own_pipeline_localised",
+        "mode": "B0",
+        "onset": 1,
+        "scores": {},
+        "survivors": 13,
+        "suspects": [
+         "syn_decode",
+         "syn_net",
+         "syn_status",
+         "syn_silver",
+         "lateness",
+         "ts_parse",
+         "ts_format",
+         "dedup",
+         "partition_discovery",
+         "commit_protocol",
+         "gold_maintenance",
+         "snapshots",
+         "txn_isolation",
+         "gap_handling"
+        ],
+        "tick": 1
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "processing_time",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          0
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 1,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "lateness": "none"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B0",
+        "onset": 3,
+        "scores": {},
+        "survivors": 13,
+        "suspects": [
+         "syn_decode",
+         "syn_net",
+         "syn_status",
+         "syn_silver",
+         "lateness",
+         "ts_parse",
+         "ts_format",
+         "dedup",
+         "partition_discovery",
+         "commit_protocol",
+         "gold_maintenance",
+         "snapshots",
+         "txn_isolation",
+         "gap_handling"
+        ],
+        "tick": 3
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "none",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          2
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 3,
+        "verified_in_shadow": true
+       },
+       {
+        "changed": {
+         "lateness": "watermark"
+        },
+        "full_verifications": 2,
+        "kind": "own_pipeline_localised",
+        "mode": "B0",
+        "onset": 6,
+        "scores": {},
+        "survivors": 13,
+        "suspects": [
+         "syn_decode",
+         "syn_net",
+         "syn_status",
+         "syn_silver",
+         "lateness",
+         "ts_parse",
+         "ts_format",
+         "dedup",
+         "partition_discovery",
+         "commit_protocol",
+         "gold_maintenance",
+         "snapshots",
+         "txn_isolation",
+         "gap_handling"
+        ],
+        "tick": 6
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "pa0269aa8",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          5
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 6,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 32,
+         "supplier": "S1",
+         "tick": 7,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 9
+       },
+       {
+        "hole": "syn_decode",
+        "kind": "resynthesis",
+        "new": "p69751f89",
+        "new_option": true,
+        "previous": "pa0269aa8",
+        "stats": {
+         "cpu_s": 36.343,
+         "hole": "syn_decode",
+         "pid": "p69751f89"
+        },
+        "tick": 9
+       },
+       {
+        "changed": {
+         "syn_decode": "p69751f89"
+        },
+        "full_verifications": 1,
+        "kind": "own_pipeline_localised",
+        "mode": "B0",
+        "onset": 8,
+        "scores": {},
+        "survivors": 14,
+        "suspects": [
+         "syn_decode",
+         "syn_net",
+         "syn_status",
+         "syn_silver",
+         "lateness",
+         "ts_parse",
+         "ts_format",
+         "dedup",
+         "partition_discovery",
+         "commit_protocol",
+         "gold_maintenance",
+         "snapshots",
+         "txn_isolation",
+         "gap_handling"
+        ],
+        "tick": 9
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": true,
+        "reconciled": true,
+        "repair": [
+         [
+          "redeploy",
+          {
+           "commit_protocol": "sink_then_offsets",
+           "dedup": "by_msg_id",
+           "gap_handling": "wait_contiguous",
+           "gold_maintenance": "recompute_affected",
+           "lateness": "watermark",
+           "partition_discovery": "dynamic",
+           "snapshots": "per_tick",
+           "syn_decode": "p69751f89",
+           "syn_net": "p9977eb3b",
+           "syn_silver": "pedc99683",
+           "syn_status": "p147cc3aa",
+           "ts_format": "registry_typed",
+           "ts_parse": "utc",
+           "txn_isolation": "read_committed"
+          }
+         ],
+         [
+          "rollback",
+          7
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation"
+        ],
+        "tick": 9,
+        "verified_in_shadow": true
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "future_guard",
+          true
+         ],
+         [
+          "rollback",
+          9
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 1,
+        "signature": [
+         "monitor:reconciliation",
+         "monitor:watermark_sanity"
+        ],
+        "tick": 10,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 48,
+         "supplier": "S1",
+         "tick": 10,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 11
+       },
+       {
+        "from_library": false,
+        "kind": "repaired",
+        "own_pipeline": false,
+        "reconciled": true,
+        "repair": [
+         [
+          "dead_letter",
+          [
+           "telemetry",
+           0,
+           54
+          ]
+         ],
+         [
+          "catch_up",
+          null
+         ]
+        ],
+        "shadow_tests_before": 2,
+        "signature": [
+         "crash:decode",
+         "monitor:reconciliation"
+        ],
+        "tick": 11,
+        "verified_in_shadow": true
+       },
+       {
+        "alarm": {
+         "offset": 69,
+         "supplier": "S2",
+         "tick": 13,
+         "trigger": "fixed_ratio"
+        },
+        "kind": "false_alarm",
+        "tick": 14
+       }
+      ],
+      "mode": "B0",
+      "ops_cpu_s": 37.62413799999996,
+      "service": [
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 1
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 2
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 3
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 4
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 5
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 6
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 7
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 8
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 9
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 10
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 11
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 12
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 13
+       },
+       {
+        "lag": 0,
+        "ok": true,
+        "tick": 14
+       }
+      ],
+      "x_class": "X1"
+     },
+     "secondary_e2e": false,
+     "synth_natural_is_forced": false
+    }
+   },
+   "d_class": "D1",
+   "features": {
+    "backfill_overwrite_traps": 5,
+    "backfill_resurrection_traps": 3,
+    "dups": 6,
+    "float_discounts": 14,
+    "hard": 6,
+    "heldout_late_corrections": 51,
+    "late_corrections": 4,
+    "late_telemetry": 10,
+    "malformed": 1,
+    "out_of_order_keys": 4,
+    "partition2_keys": 16,
+    "renamed_amounts": 76,
+    "soft": 7
+   },
+   "replay_view_violations": 0,
+   "x_class": "X1"
+  }
+ },
+ "revisions": [
+  "3162c8e45188fa553567be08fab2eba0958a94c2"
+ ]
+}
