@@ -1,0 +1,1521 @@
+{
+ "M": {
+  "T0": 0.5,
+  "accept": "greedy",
+  "credit": 0.0,
+  "edit_w": {
+   "P": 1.0,
+   "adapt": 1.0,
+   "const": 1.0,
+   "delete": 1.0,
+   "feat": 1.0,
+   "insert": 1.0,
+   "leafcost": 1.0,
+   "lib_drop": 1.0,
+   "opcost": 1.0
+  },
+  "k": 1,
+  "n_eval": 6,
+  "paired": true,
+  "select": "random",
+  "sigma": 0.3,
+  "tau": 0.0
+ },
+ "arm": "M0",
+ "runs": [
+  {
+   "L": {
+    "P": 0,
+    "adapt": true,
+    "leaf_cost": {
+     "key": 1,
+     "num": 1,
+     "var": 1
+    },
+    "lib": [],
+    "lib_cost": {},
+    "op_cost": {
+     "*": 2,
+     "+": 3,
+     "-": 3,
+     "/": 2,
+     "<": 3,
+     "<=": 2,
+     "==": 3,
+     "and": 3,
+     "float": 3,
+     "get": 1,
+     "in": 4,
+     "int": 3,
+     "isnone": 3,
+     "isnum": 3,
+     "isstr": 3,
+     "not": 3,
+     "or": 4,
+     "str": 3
+    },
+    "per_task_s": 1.5,
+    "score": [
+     "+",
+     [
+      "c",
+      0.0
+     ],
+     [
+      "*",
+      [
+       "c",
+       -0.529
+      ],
+      [
+       "f",
+       3
+      ]
+     ]
+    ]
+   },
+   "accepted": 7,
+   "dev": {
+    "correct": 21,
+    "cpu_s": 15.365,
+    "n": 21,
+    "rows": [
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#10800"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#10801"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#10802"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#10800"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#10801"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#10802"
+     },
+     {
+      "cpu_s": 0.0133,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10800"
+     },
+     {
+      "cpu_s": 0.0134,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10801"
+     },
+     {
+      "cpu_s": 0.0134,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10802"
+     },
+     {
+      "cpu_s": 0.6187,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10800"
+     },
+     {
+      "cpu_s": 0.6447,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10801"
+     },
+     {
+      "cpu_s": 0.6546,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10802"
+     },
+     {
+      "cpu_s": 0.022,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10800"
+     },
+     {
+      "cpu_s": 0.0215,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10801"
+     },
+     {
+      "cpu_s": 0.0216,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10802"
+     },
+     {
+      "cpu_s": 0.002,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10800"
+     },
+     {
+      "cpu_s": 0.002,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10801"
+     },
+     {
+      "cpu_s": 0.002,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10802"
+     },
+     {
+      "cpu_s": 0.7121,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10800"
+     },
+     {
+      "cpu_s": 0.3119,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10801"
+     },
+     {
+      "cpu_s": 0.3107,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10802"
+     }
+    ],
+    "solved_train": 21,
+    "wall_cpu_s": 15.472,
+    "wrong_generalisation": 0
+   },
+   "edits": [
+    "opcost in=4",
+    "opcost <==2",
+    "opcost or=4",
+    "insert + f3",
+    "leafcost key=1",
+    "leafcost var=1",
+    "P=0"
+   ],
+   "held": {
+    "correct": 21,
+    "cpu_s": 14.903,
+    "n": 21,
+    "rows": [
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#11000"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#11001"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#11002"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#11000"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#11001"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#11002"
+     },
+     {
+      "cpu_s": 0.0134,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11000"
+     },
+     {
+      "cpu_s": 0.0133,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11001"
+     },
+     {
+      "cpu_s": 0.0133,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11002"
+     },
+     {
+      "cpu_s": 0.6252,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11000"
+     },
+     {
+      "cpu_s": 0.6215,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11001"
+     },
+     {
+      "cpu_s": 0.6212,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11002"
+     },
+     {
+      "cpu_s": 0.0217,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11000"
+     },
+     {
+      "cpu_s": 0.0217,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11001"
+     },
+     {
+      "cpu_s": 0.0216,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11002"
+     },
+     {
+      "cpu_s": 0.002,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11000"
+     },
+     {
+      "cpu_s": 0.002,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11001"
+     },
+     {
+      "cpu_s": 0.002,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11002"
+     },
+     {
+      "cpu_s": 0.3051,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11000"
+     },
+     {
+      "cpu_s": 0.3137,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11001"
+     },
+     {
+      "cpu_s": 0.3042,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11002"
+     }
+    ],
+    "solved_train": 21,
+    "wall_cpu_s": 15.007,
+    "wrong_generalisation": 0
+   },
+   "improve_cpu_s": 125.068,
+   "n_rounds": 15,
+   "seed": 0
+  },
+  {
+   "L": {
+    "P": 0,
+    "adapt": true,
+    "leaf_cost": {
+     "key": 1,
+     "num": 2,
+     "var": 1
+    },
+    "lib": [],
+    "lib_cost": {},
+    "op_cost": {
+     "*": 2,
+     "+": 3,
+     "-": 3,
+     "/": 2,
+     "<": 3,
+     "<=": 3,
+     "==": 3,
+     "and": 3,
+     "float": 3,
+     "get": 1,
+     "in": 3,
+     "int": 3,
+     "isnone": 3,
+     "isnum": 3,
+     "isstr": 3,
+     "not": 3,
+     "or": 3,
+     "str": 3
+    },
+    "per_task_s": 1.5,
+    "score": [
+     "c",
+     0.0939
+    ]
+   },
+   "accepted": 7,
+   "dev": {
+    "correct": 21,
+    "cpu_s": 5.169,
+    "n": 21,
+    "rows": [
+     {
+      "cpu_s": 0.5244,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.celsius#10800"
+     },
+     {
+      "cpu_s": 0.5282,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.celsius#10801"
+     },
+     {
+      "cpu_s": 0.5237,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.celsius#10802"
+     },
+     {
+      "cpu_s": 0.499,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.calib#10800"
+     },
+     {
+      "cpu_s": 0.4818,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.calib#10801"
+     },
+     {
+      "cpu_s": 0.474,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.calib#10802"
+     },
+     {
+      "cpu_s": 0.01,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10800"
+     },
+     {
+      "cpu_s": 0.0096,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10801"
+     },
+     {
+      "cpu_s": 0.0095,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10802"
+     },
+     {
+      "cpu_s": 0.2653,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10800"
+     },
+     {
+      "cpu_s": 0.268,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10801"
+     },
+     {
+      "cpu_s": 0.2677,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10802"
+     },
+     {
+      "cpu_s": 0.0142,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10800"
+     },
+     {
+      "cpu_s": 0.0138,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10801"
+     },
+     {
+      "cpu_s": 0.0138,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10802"
+     },
+     {
+      "cpu_s": 0.0018,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10800"
+     },
+     {
+      "cpu_s": 0.0018,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10801"
+     },
+     {
+      "cpu_s": 0.0018,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10802"
+     },
+     {
+      "cpu_s": 0.415,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10800"
+     },
+     {
+      "cpu_s": 0.4183,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10801"
+     },
+     {
+      "cpu_s": 0.4269,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10802"
+     }
+    ],
+    "solved_train": 21,
+    "wall_cpu_s": 5.232,
+    "wrong_generalisation": 0
+   },
+   "edits": [
+    "opcost *=1",
+    "P=0",
+    "opcost *=2",
+    "leafcost num=2",
+    "P=0",
+    "const 0.000->-0.057",
+    "const -0.057->0.094"
+   ],
+   "held": {
+    "correct": 21,
+    "cpu_s": 5.199,
+    "n": 21,
+    "rows": [
+     {
+      "cpu_s": 0.5264,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.celsius#11000"
+     },
+     {
+      "cpu_s": 0.5254,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.celsius#11001"
+     },
+     {
+      "cpu_s": 0.5264,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.celsius#11002"
+     },
+     {
+      "cpu_s": 0.4993,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.calib#11000"
+     },
+     {
+      "cpu_s": 0.4945,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.calib#11001"
+     },
+     {
+      "cpu_s": 0.492,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.calib#11002"
+     },
+     {
+      "cpu_s": 0.0096,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11000"
+     },
+     {
+      "cpu_s": 0.0095,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11001"
+     },
+     {
+      "cpu_s": 0.0095,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11002"
+     },
+     {
+      "cpu_s": 0.2703,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11000"
+     },
+     {
+      "cpu_s": 0.2632,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11001"
+     },
+     {
+      "cpu_s": 0.2685,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11002"
+     },
+     {
+      "cpu_s": 0.0139,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11000"
+     },
+     {
+      "cpu_s": 0.0138,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11001"
+     },
+     {
+      "cpu_s": 0.0138,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11002"
+     },
+     {
+      "cpu_s": 0.0018,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11000"
+     },
+     {
+      "cpu_s": 0.0018,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11001"
+     },
+     {
+      "cpu_s": 0.0018,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11002"
+     },
+     {
+      "cpu_s": 0.4189,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11000"
+     },
+     {
+      "cpu_s": 0.4175,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11001"
+     },
+     {
+      "cpu_s": 0.4207,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11002"
+     }
+    ],
+    "solved_train": 21,
+    "wall_cpu_s": 5.262,
+    "wrong_generalisation": 0
+   },
+   "improve_cpu_s": 123.494,
+   "n_rounds": 20,
+   "seed": 1
+  },
+  {
+   "L": {
+    "P": 0,
+    "adapt": true,
+    "leaf_cost": {
+     "key": 1,
+     "num": 1,
+     "var": 1
+    },
+    "lib": [],
+    "lib_cost": {},
+    "op_cost": {
+     "*": 2,
+     "+": 3,
+     "-": 3,
+     "/": 2,
+     "<": 3,
+     "<=": 3,
+     "==": 3,
+     "and": 3,
+     "float": 3,
+     "get": 1,
+     "in": 3,
+     "int": 4,
+     "isnone": 3,
+     "isnum": 3,
+     "isstr": 3,
+     "not": 3,
+     "or": 3,
+     "str": 3
+    },
+    "per_task_s": 1.5,
+    "score": [
+     "max",
+     [
+      "c",
+      0.0561
+     ],
+     [
+      "f",
+      7
+     ]
+    ]
+   },
+   "accepted": 7,
+   "dev": {
+    "correct": 21,
+    "cpu_s": 16.062,
+    "n": 21,
+    "rows": [
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#10800"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#10801"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#10802"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#10800"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#10801"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#10802"
+     },
+     {
+      "cpu_s": 0.0133,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10800"
+     },
+     {
+      "cpu_s": 0.0133,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10801"
+     },
+     {
+      "cpu_s": 0.0133,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#10802"
+     },
+     {
+      "cpu_s": 0.5971,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10800"
+     },
+     {
+      "cpu_s": 0.6143,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10801"
+     },
+     {
+      "cpu_s": 0.6006,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#10802"
+     },
+     {
+      "cpu_s": 0.021,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10800"
+     },
+     {
+      "cpu_s": 0.0212,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10801"
+     },
+     {
+      "cpu_s": 0.021,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#10802"
+     },
+     {
+      "cpu_s": 0.0023,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10800"
+     },
+     {
+      "cpu_s": 0.0023,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10801"
+     },
+     {
+      "cpu_s": 0.0023,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#10802"
+     },
+     {
+      "cpu_s": 0.7044,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10800"
+     },
+     {
+      "cpu_s": 0.7022,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10801"
+     },
+     {
+      "cpu_s": 0.7332,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#10802"
+     }
+    ],
+    "solved_train": 21,
+    "wall_cpu_s": 16.173,
+    "wrong_generalisation": 0
+   },
+   "edits": [
+    "adapt=False",
+    "insert max f1",
+    "const 0.000->0.056",
+    "adapt=True",
+    "opcost int=4",
+    "P=0",
+    "feat 1->7"
+   ],
+   "held": {
+    "correct": 21,
+    "cpu_s": 16.053,
+    "n": 21,
+    "rows": [
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#11000"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#11001"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.celsius",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.celsius#11002"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#11000"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#11001"
+     },
+     {
+      "cpu_s": 2.0001,
+      "family": "I.calib",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "decompose",
+      "task": "I.calib#11002"
+     },
+     {
+      "cpu_s": 0.0132,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11000"
+     },
+     {
+      "cpu_s": 0.0131,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11001"
+     },
+     {
+      "cpu_s": 0.0131,
+      "family": "I.power",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.power#11002"
+     },
+     {
+      "cpu_s": 0.6038,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11000"
+     },
+     {
+      "cpu_s": 0.6124,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11001"
+     },
+     {
+      "cpu_s": 0.6064,
+      "family": "I.kwh",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 11,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.kwh#11002"
+     },
+     {
+      "cpu_s": 0.0209,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11000"
+     },
+     {
+      "cpu_s": 0.0209,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11001"
+     },
+     {
+      "cpu_s": 0.0208,
+      "family": "I.delta",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 7,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.delta#11002"
+     },
+     {
+      "cpu_s": 0.0023,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11000"
+     },
+     {
+      "cpu_s": 0.0023,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11001"
+     },
+     {
+      "cpu_s": 0.0023,
+      "family": "I.valid",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 4,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.valid#11002"
+     },
+     {
+      "cpu_s": 0.702,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11000"
+     },
+     {
+      "cpu_s": 0.7116,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11001"
+     },
+     {
+      "cpu_s": 0.707,
+      "family": "I.over",
+      "gen": 1.0,
+      "generalises": true,
+      "size": 9,
+      "solved": true,
+      "stage": "construct",
+      "task": "I.over#11002"
+     }
+    ],
+    "solved_train": 21,
+    "wall_cpu_s": 16.162,
+    "wrong_generalisation": 0
+   },
+   "improve_cpu_s": 132.879,
+   "n_rounds": 15,
+   "seed": 2
+  }
+ ]
+}

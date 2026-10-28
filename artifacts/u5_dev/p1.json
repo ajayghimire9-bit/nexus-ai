@@ -1,0 +1,1571 @@
+{
+ "aggregate": {
+  "flat": {
+   "event_acc": 0.824,
+   "exact": 0,
+   "key_acc": 0.445
+  },
+  "stateless": {
+   "event_acc": 0.6109,
+   "exact": 0,
+   "key_acc": 0.106
+  },
+  "statesplit": {
+   "event_acc": 1.0,
+   "exact": 15,
+   "key_acc": 1.0
+  }
+ },
+ "code": {
+  "C.clearing": "class StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    witness reg_0: in mode_1 histories ['NEW'] / ['NEW'] emit 651.15 / 15.69 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "I.session": "class StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'READ', 'READ', 'READ', 'READ'] emit 0 / 4 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'READ', 'READ', 'READ', 'READ'] emit 0 / 88.5 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('trade_id'), rec.get('action')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "L.barrier": "class StateMachine_8b61e637:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    witness reg_0: in mode_4 histories ['CREATE', 'PAY'] / ['CREATE', 'PAY'] emit 503.99 / 337.51 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('qty_value')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+ },
+ "cpu_s": 0.445,
+ "expressiveness_gate": true,
+ "promoted": true,
+ "rows": [
+  {
+   "cpu_s": 0.029,
+   "family": "L.barrier",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.7309027777777778,
+    "exact": false,
+    "key_acc": 0.20499999999999996
+   },
+   "markov_witness": {
+    "outputs": [
+     [],
+     [
+      "q:invalid"
+     ]
+    ],
+    "record_kind": "PAY"
+   },
+   "modes": 6,
+   "queries": 292,
+   "query_events": 1458,
+   "regs": 1,
+   "seed": 10800,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5494791666666666,
+    "exact": false,
+    "key_acc": 0.06000000000000005
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CREATE"
+     ],
+     [],
+     [
+      "CANCEL"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [],
+     [
+      "CREATE"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PAY"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK",
+      "PAY"
+     ],
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [
+      "DELIVER"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CREATE",
+       "PAY"
+      ],
+      "h2": [
+       "CREATE",
+       "PAY"
+      ],
+      "mode": 4,
+      "v1": 503.99,
+      "v2": 337.51,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.03,
+   "family": "L.barrier",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.6990116801437556,
+    "exact": false,
+    "key_acc": 0.20499999999999996
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "q:invalid"
+     ],
+     []
+    ],
+    "record_kind": "PACK"
+   },
+   "modes": 6,
+   "queries": 291,
+   "query_events": 1476,
+   "regs": 1,
+   "seed": 10801,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5256064690026954,
+    "exact": false,
+    "key_acc": 0.06499999999999995
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CREATE"
+     ],
+     [],
+     [
+      "CANCEL"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [],
+     [
+      "CREATE"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PAY"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK",
+      "PAY"
+     ],
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [
+      "DELIVER"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CREATE"
+      ],
+      "h2": [
+       "CREATE",
+       "DELIVER"
+      ],
+      "mode": 1,
+      "v1": 535.41,
+      "v2": 638.28,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.029,
+   "family": "L.barrier",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.7288977159880834,
+    "exact": false,
+    "key_acc": 0.235
+   },
+   "markov_witness": {
+    "outputs": [
+     [],
+     [
+      "q:invalid"
+     ]
+    ],
+    "record_kind": "PACK"
+   },
+   "modes": 6,
+   "queries": 290,
+   "query_events": 1398,
+   "regs": 1,
+   "seed": 10802,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5302879841112215,
+    "exact": false,
+    "key_acc": 0.06499999999999995
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CREATE"
+     ],
+     [],
+     [
+      "CANCEL"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [],
+     [
+      "CREATE"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PAY"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK",
+      "PAY"
+     ],
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [
+      "DELIVER"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CREATE"
+      ],
+      "h2": [
+       "CREATE"
+      ],
+      "mode": 1,
+      "v1": 690.97,
+      "v2": 218.14,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.028,
+   "family": "L.barrier",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.7753222836095764,
+    "exact": false,
+    "key_acc": 0.35
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "release"
+     ],
+     []
+    ],
+    "record_kind": "PAY"
+   },
+   "modes": 6,
+   "queries": 284,
+   "query_events": 1353,
+   "regs": 1,
+   "seed": 10803,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5773480662983426,
+    "exact": false,
+    "key_acc": 0.020000000000000018
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CREATE"
+     ],
+     [],
+     [
+      "CANCEL"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [],
+     [
+      "CREATE"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PAY"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK",
+      "PAY"
+     ],
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [
+      "DELIVER"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CREATE"
+      ],
+      "h2": [
+       "CREATE"
+      ],
+      "mode": 1,
+      "v1": 520.6,
+      "v2": 155.36,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.03,
+   "family": "L.barrier",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.733099209833187,
+    "exact": false,
+    "key_acc": 0.17000000000000004
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "q:invalid"
+     ],
+     []
+    ],
+    "record_kind": "PAY"
+   },
+   "modes": 6,
+   "queries": 285,
+   "query_events": 1426,
+   "regs": 1,
+   "seed": 10804,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.57243195785777,
+    "exact": false,
+    "key_acc": 0.015000000000000013
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CREATE"
+     ],
+     [],
+     [
+      "CANCEL"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [],
+     [
+      "CREATE"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PAY"
+     ],
+     [
+      "CREATE"
+     ],
+     [
+      "PACK"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "CREATE",
+      "PACK",
+      "PAY"
+     ],
+     [
+      "CREATE",
+      "CANCEL"
+     ],
+     [
+      "DELIVER"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "PAY",
+       "CREATE"
+      ],
+      "h2": [
+       "PAY",
+       "CREATE"
+      ],
+      "mode": 1,
+      "v1": 671.49,
+      "v2": 228.64,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.033,
+   "family": "C.clearing",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.8383287920072662,
+    "exact": false,
+    "key_acc": 0.405
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "q:invalid"
+     ],
+     []
+    ],
+    "record_kind": "PREPARE"
+   },
+   "modes": 4,
+   "queries": 292,
+   "query_events": 1397,
+   "regs": 1,
+   "seed": 10800,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5603996366939146,
+    "exact": false,
+    "key_acc": 0.030000000000000027
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "NEW"
+     ],
+     [],
+     [
+      "AMEND"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [],
+     [
+      "NEW"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "PREPARE"
+     ],
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [
+      "ABORT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "NEW"
+      ],
+      "h2": [
+       "NEW"
+      ],
+      "mode": 1,
+      "v1": 651.15,
+      "v2": 15.69,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.028,
+   "family": "C.clearing",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.764102564102564,
+    "exact": false,
+    "key_acc": 0.31000000000000005
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "cancelled"
+     ],
+     [
+      "q:invalid"
+     ]
+    ],
+    "record_kind": "CANCEL"
+   },
+   "modes": 4,
+   "queries": 285,
+   "query_events": 1311,
+   "regs": 1,
+   "seed": 10801,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5931623931623932,
+    "exact": false,
+    "key_acc": 0.11499999999999999
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "NEW"
+     ],
+     [],
+     [
+      "AMEND"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [],
+     [
+      "NEW"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "PREPARE"
+     ],
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [
+      "ABORT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "NEW"
+      ],
+      "h2": [
+       "NEW"
+      ],
+      "mode": 1,
+      "v1": 715.35,
+      "v2": 112.9,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.032,
+   "family": "C.clearing",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.7753623188405797,
+    "exact": false,
+    "key_acc": 0.31999999999999995
+   },
+   "markov_witness": {
+    "outputs": [
+     [],
+     [
+      "q:invalid"
+     ]
+    ],
+    "record_kind": "NEW"
+   },
+   "modes": 4,
+   "queries": 287,
+   "query_events": 1351,
+   "regs": 1,
+   "seed": 10802,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5869565217391305,
+    "exact": false,
+    "key_acc": 0.125
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "NEW"
+     ],
+     [],
+     [
+      "AMEND"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [],
+     [
+      "NEW"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "PREPARE"
+     ],
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [
+      "ABORT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "NEW",
+       "AMEND"
+      ],
+      "h2": [
+       "NEW"
+      ],
+      "mode": 1,
+      "v1": 103.52,
+      "v2": 466.12,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.028,
+   "family": "C.clearing",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.7902222222222223,
+    "exact": false,
+    "key_acc": 0.39
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "q:invalid"
+     ],
+     []
+    ],
+    "record_kind": "AMEND"
+   },
+   "modes": 4,
+   "queries": 285,
+   "query_events": 1331,
+   "regs": 1,
+   "seed": 10803,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.6017777777777777,
+    "exact": false,
+    "key_acc": 0.18000000000000005
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "NEW"
+     ],
+     [],
+     [
+      "AMEND"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [],
+     [
+      "NEW"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "PREPARE"
+     ],
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [
+      "ABORT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "NEW",
+       "PREPARE",
+       "ABORT"
+      ],
+      "h2": [
+       "AMEND",
+       "NEW"
+      ],
+      "mode": 1,
+      "v1": 565.4,
+      "v2": 817.75,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.028,
+   "family": "C.clearing",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.7943327239488117,
+    "exact": false,
+    "key_acc": 0.39
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "q:invalid"
+     ],
+     []
+    ],
+    "record_kind": "PREPARE"
+   },
+   "modes": 4,
+   "queries": 289,
+   "query_events": 1356,
+   "regs": 1,
+   "seed": 10804,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.5575868372943327,
+    "exact": false,
+    "key_acc": 0.07999999999999996
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "NEW"
+     ],
+     [],
+     [
+      "AMEND"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [],
+     [
+      "NEW"
+     ]
+    ],
+    [
+     "mode",
+     [
+      "NEW",
+      "PREPARE"
+     ],
+     [
+      "NEW",
+      "CANCEL"
+     ],
+     [
+      "ABORT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "NEW"
+      ],
+      "h2": [
+       "NEW",
+       "PREPARE",
+       "ABORT"
+      ],
+      "mode": 1,
+      "v1": 10.99,
+      "v2": 478.88,
+      "w": [
+       "CANCEL"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.031,
+   "family": "I.session",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.9476351351351351,
+    "exact": false,
+    "key_acc": 0.76
+   },
+   "markov_witness": {
+    "outputs": [
+     [],
+     [
+      "session"
+     ]
+    ],
+    "record_kind": "CONNECT"
+   },
+   "modes": 2,
+   "queries": 156,
+   "query_events": 872,
+   "regs": 2,
+   "seed": 10800,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.6993243243243243,
+    "exact": false,
+    "key_acc": 0.135
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CONNECT"
+     ],
+     [],
+     [
+      "CONNECT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CONNECT",
+       "CONNECT"
+      ],
+      "h2": [
+       "CONNECT",
+       "CONNECT",
+       "READ",
+       "READ",
+       "READ",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 0,
+      "v2": 4,
+      "w": [
+       "DISCONNECT"
+      ]
+     },
+     null
+    ],
+    [
+     "register",
+     "reg_1",
+     {
+      "h1": [
+       "CONNECT",
+       "CONNECT"
+      ],
+      "h2": [
+       "CONNECT",
+       "CONNECT",
+       "READ",
+       "READ",
+       "READ",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 0,
+      "v2": 88.5,
+      "w": [
+       "DISCONNECT"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.032,
+   "family": "I.session",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.9513951395139514,
+    "exact": false,
+    "key_acc": 0.74
+   },
+   "markov_witness": {
+    "outputs": [
+     [],
+     [
+      "session"
+     ]
+    ],
+    "record_kind": "CONNECT"
+   },
+   "modes": 2,
+   "queries": 155,
+   "query_events": 944,
+   "regs": 2,
+   "seed": 10801,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.711971197119712,
+    "exact": false,
+    "key_acc": 0.15000000000000002
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CONNECT"
+     ],
+     [],
+     [
+      "CONNECT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CONNECT",
+       "READ"
+      ],
+      "h2": [
+       "CONNECT"
+      ],
+      "mode": 1,
+      "v1": 1,
+      "v2": 0,
+      "w": [
+       "DISCONNECT"
+      ]
+     },
+     null
+    ],
+    [
+     "register",
+     "reg_1",
+     {
+      "h1": [
+       "CONNECT",
+       "READ"
+      ],
+      "h2": [
+       "CONNECT",
+       "READ",
+       "DISCONNECT",
+       "CONNECT",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": -9.2,
+      "v2": 22.2,
+      "w": [
+       "DISCONNECT"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.032,
+   "family": "I.session",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.9502868068833652,
+    "exact": false,
+    "key_acc": 0.775
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "q:invalid"
+     ],
+     []
+    ],
+    "record_kind": "READ"
+   },
+   "modes": 2,
+   "queries": 152,
+   "query_events": 881,
+   "regs": 2,
+   "seed": 10802,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.6940726577437859,
+    "exact": false,
+    "key_acc": 0.18999999999999995
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CONNECT"
+     ],
+     [],
+     [
+      "CONNECT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CONNECT",
+       "DISCONNECT",
+       "CONNECT"
+      ],
+      "h2": [
+       "CONNECT",
+       "DISCONNECT",
+       "CONNECT",
+       "DISCONNECT",
+       "CONNECT",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 0,
+      "v2": 1,
+      "w": [
+       "CONNECT"
+      ]
+     },
+     null
+    ],
+    [
+     "register",
+     "reg_1",
+     {
+      "h1": [
+       "CONNECT",
+       "DISCONNECT",
+       "CONNECT"
+      ],
+      "h2": [
+       "CONNECT",
+       "DISCONNECT",
+       "CONNECT",
+       "DISCONNECT",
+       "CONNECT",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 0,
+      "v2": 36.7,
+      "w": [
+       "CONNECT"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.028,
+   "family": "I.session",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.9481680071492404,
+    "exact": false,
+    "key_acc": 0.755
+   },
+   "markov_witness": {
+    "outputs": [
+     [],
+     [
+      "session"
+     ]
+    ],
+    "record_kind": "CONNECT"
+   },
+   "modes": 2,
+   "queries": 154,
+   "query_events": 881,
+   "regs": 2,
+   "seed": 10803,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.7140303842716711,
+    "exact": false,
+    "key_acc": 0.19999999999999996
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CONNECT"
+     ],
+     [],
+     [
+      "CONNECT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CONNECT",
+       "READ"
+      ],
+      "h2": [
+       "CONNECT",
+       "READ",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 1,
+      "v2": 2,
+      "w": [
+       "CONNECT"
+      ]
+     },
+     null
+    ],
+    [
+     "register",
+     "reg_1",
+     {
+      "h1": [
+       "CONNECT",
+       "READ"
+      ],
+      "h2": [
+       "CONNECT",
+       "READ",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 21.3,
+      "v2": 43.2,
+      "w": [
+       "CONNECT"
+      ]
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "cpu_s": 0.027,
+   "family": "I.session",
+   "flat": {
+    "crashed": false,
+    "event_acc": 0.9329758713136729,
+    "exact": false,
+    "key_acc": 0.665
+   },
+   "markov_witness": {
+    "outputs": [
+     [
+      "q:invalid"
+     ],
+     []
+    ],
+    "record_kind": "READ"
+   },
+   "modes": 2,
+   "queries": 158,
+   "query_events": 879,
+   "regs": 2,
+   "seed": 10804,
+   "stateless": {
+    "crashed": false,
+    "event_acc": 0.6890080428954424,
+    "exact": false,
+    "key_acc": 0.16000000000000003
+   },
+   "statesplit": {
+    "crashed": false,
+    "event_acc": 1.0,
+    "exact": true,
+    "key_acc": 1.0
+   },
+   "witnesses": [
+    [
+     "mode",
+     [
+      "CONNECT"
+     ],
+     [],
+     [
+      "CONNECT"
+     ]
+    ],
+    [
+     "register",
+     "reg_0",
+     {
+      "h1": [
+       "CONNECT"
+      ],
+      "h2": [
+       "CONNECT",
+       "CONNECT",
+       "CONNECT",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 0,
+      "v2": 1,
+      "w": [
+       "CONNECT"
+      ]
+     },
+     null
+    ],
+    [
+     "register",
+     "reg_1",
+     {
+      "h1": [
+       "CONNECT"
+      ],
+      "h2": [
+       "CONNECT",
+       "CONNECT",
+       "CONNECT",
+       "READ"
+      ],
+      "mode": 1,
+      "v1": 0,
+      "v2": -2.8,
+      "w": [
+       "CONNECT"
+      ]
+     },
+     null
+    ]
+   ]
+  }
+ ]
+}

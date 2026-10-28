@@ -40,7 +40,7 @@ def learners():
     arms = {"NEXUS_U5": (mk(*full), "statesplit")}
     if p1:
         arms["NEXUS_U5-P1"] = (mk(*full), "flat")
-    if p2 != "baseline":
+    if p2 != "baseline" and full[1]:                    # with an empty library -P2 == NEXUS_NoLearning (not run twice)
         arms["NEXUS_U5-P2"] = (mk(K.default_config("baseline"), full[1]), "statesplit")
     if p3 != "none":
         arms["NEXUS_U5-P3"] = (mk(full[0], []), "statesplit")

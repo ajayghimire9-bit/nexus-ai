@@ -1,0 +1,108 @@
+{
+ "mdl": [
+  [
+   "fn_081851",
+   [
+    "p0",
+    "p1",
+    "p2"
+   ],
+   "('b', '-', ('b', 'get', ('var', 'p0'), ('var', 'p1')), ('b', 'get', ('var', 'p0'), ('var', 'p2')))"
+  ],
+  [
+   "fn_c83608",
+   [
+    "p0",
+    "p1",
+    "p2"
+   ],
+   "('b', '/', ('b', 'get', ('var', 'p0'), ('var', 'p1')), ('b', 'get', ('var', 'p0'), ('var', 'p2')))"
+  ],
+  [
+   "fn_caadd9",
+   [
+    "p0",
+    "p1",
+    "p2"
+   ],
+   "('b', '*', ('b', 'get', ('var', 'p0'), ('var', 'p1')), ('b', 'get', ('var', 'p0'), ('var', 'p2')))"
+  ],
+  [
+   "fn_c48e18",
+   [
+    "p0",
+    "p1"
+   ],
+   "('b', '-', ('const', 100), ('b', 'get', ('var', 'p0'), ('var', 'p1')))"
+  ],
+  [
+   "fn_974e50",
+   [
+    "p0",
+    "p1"
+   ],
+   "('b', 'get', ('var', 'p0'), ('var', 'p1'))"
+  ]
+ ],
+ "mdl_cpu_s": 0.006,
+ "mdl_source": "def fn_081851(p0, p1, p2):\n    return (p0.get(p1) - p0.get(p2))\n\ndef fn_c83608(p0, p1, p2):\n    return (p0.get(p1) / p0.get(p2))\n\ndef fn_caadd9(p0, p1, p2):\n    return (p0.get(p1) * p0.get(p2))\n\ndef fn_c48e18(p0, p1):\n    return (100 - p0.get(p1))\n\ndef fn_974e50(p0, p1):\n    return p0.get(p1)\n",
+ "utility": [],
+ "utility_cpu_s": 271.485,
+ "utility_log": [
+  {
+   "cpu_s": 28.457,
+   "solved": 16,
+   "step": "base"
+  },
+  {
+   "admitted": false,
+   "cpu_s": 30.411,
+   "solved": 12,
+   "step": "fn_974e50",
+   "uses": 63
+  },
+  {
+   "admitted": false,
+   "cpu_s": 32.483,
+   "solved": 14,
+   "step": "fn_081851",
+   "uses": 10
+  },
+  {
+   "admitted": false,
+   "cpu_s": 35.579,
+   "solved": 10,
+   "step": "fn_c83608",
+   "uses": 10
+  },
+  {
+   "admitted": false,
+   "cpu_s": 38.544,
+   "solved": 10,
+   "step": "fn_caadd9",
+   "uses": 5
+  },
+  {
+   "admitted": false,
+   "cpu_s": 35.452,
+   "solved": 10,
+   "step": "fn_f89b7b",
+   "uses": 5
+  },
+  {
+   "admitted": false,
+   "cpu_s": 31.838,
+   "solved": 12,
+   "step": "fn_c48e18",
+   "uses": 3
+  },
+  {
+   "admitted": false,
+   "cpu_s": 37.929,
+   "solved": 10,
+   "step": "fn_8b6681",
+   "uses": 3
+  }
+ ],
+ "utility_source": ""
+}

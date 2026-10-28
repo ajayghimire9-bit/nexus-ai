@@ -33,15 +33,18 @@ def _subtrees(n):
     return out
 
 
-def _generalise(n, params, keep_num=True):
-    """Replace every leaf (var / string const; numeric consts too unless keep_num) by a positional parameter."""
+def _generalise(n, params, keep_num=True, seen=None):
+    """Replace every leaf (var / string const; numeric consts too unless keep_num) by a positional parameter; identical
+    leaves share one parameter (dev revision 1: without sharing, r.get(a) * r.get(b) needed 4 parameters)."""
+    seen = {} if seen is None else seen
     if n[0] == "var" or (n[0] == "const" and (isinstance(n[1], str) or not keep_num)):
-        p = f"p{len(params)}"
-        params.append(p)
-        return ("var", p)
+        if n not in seen:
+            seen[n] = f"p{len(params)}"
+            params.append(seen[n])
+        return ("var", seen[n])
     if n[0] == "const":
         return n
-    return (n[0], n[1]) + tuple(_generalise(c, params, keep_num) for c in n[2:])
+    return (n[0], n[1]) + tuple(_generalise(c, params, keep_num, seen) for c in n[2:])
 
 
 def fid_of(body, params):

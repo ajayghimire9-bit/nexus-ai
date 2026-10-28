@@ -1,0 +1,54 @@
+{
+ "mdl": [
+  [
+   "fn_8b6681",
+   [
+    "p0",
+    "p1",
+    "p2"
+   ],
+   "('b', '-', ('var', 'p0'), ('b', 'get', ('var', 'p1'), ('var', 'p2')))"
+  ],
+  [
+   "fn_974e50",
+   [
+    "p0",
+    "p1"
+   ],
+   "('b', 'get', ('var', 'p0'), ('var', 'p1'))"
+  ]
+ ],
+ "mdl_cpu_s": 0.002,
+ "mdl_source": "def fn_8b6681(p0, p1, p2):\n    return (p0 - p1.get(p2))\n\ndef fn_974e50(p0, p1):\n    return p0.get(p1)\n",
+ "utility": [],
+ "utility_cpu_s": 129.363,
+ "utility_log": [
+  {
+   "cpu_s": 28.541,
+   "solved": 16,
+   "step": "base"
+  },
+  {
+   "admitted": false,
+   "cpu_s": 30.412,
+   "solved": 12,
+   "step": "fn_974e50",
+   "uses": 63
+  },
+  {
+   "admitted": false,
+   "cpu_s": 31.808,
+   "solved": 12,
+   "step": "fn_c48e18",
+   "uses": 3
+  },
+  {
+   "admitted": false,
+   "cpu_s": 37.949,
+   "solved": 10,
+   "step": "fn_8b6681",
+   "uses": 3
+  }
+ ],
+ "utility_source": ""
+}

@@ -153,6 +153,83 @@ are the two files the owner text names.
 * It would not show learning-to-learn beyond the measured Pillar 5 comparison on author-generated task families.
 * It would not show transfer to real data systems: the testbed is synthetic.
 
-## 0.9 Dev log
+## 0.9 Dev log (pillar dev experiments; raw outputs in `artifacts/u5_dev/`)
 
-(appended as dev runs happen)
+**Pillar 1** (`p1.json`; 15 held-out lifecycle tasks, 200 keys each)
+
+| arm | exact tasks | mean key accuracy | mean event accuracy |
+|---|---|---|---|
+| **StateSplit** (continuation splitting + registers) | **15/15** | **1.000** | **1.000** |
+| FlatDict (per-key last record + table) | 0/15 | 0.445 | 0.824 |
+| Stateless | 0/15 | 0.106 | 0.611 |
+
+* StateSplit is promoted.
+* The expressiveness gate holds (FlatDict exact on 0/15).
+* Discovered structure: L.barrier 6 modes + 1 register; C.clearing 4 modes + 1 register; I.session 2 modes + 2
+  accumulators.
+* Cost: about 150–290 membership queries per task, CPU under 0.1 s per task.
+
+**Pillar 2** (`p2.json`; 42 DEV tasks, 4 s per task)
+
+| policy | hybrid: correct / wrong-gen / CPU | construction only: correct / CPU |
+|---|---|---|
+| baseline enumerator | 38 / 3 / 87.2 s | 19 / 98.0 s |
+| count-based | 39 / 3 / 51.1 s | 31 / 57.6 s |
+| execution-guided | 39 / 3 / 48.7 s | 31 / 54.3 s |
+
+* By the rule, **count** is promoted: exec ties on solves and is only 4.8 % cheaper (< 10 %).
+* The execution features add no measurable value over learned operator costs here.
+* Training used NEXUS's own solutions on 70 src tasks (68 solved, 163 s).
+
+**Pillar 3** (`p3.json`)
+
+| arm | DEV correct | DEV wrong-gen | DEV CPU | charged CPU | HELD correct | HELD CPU | functions |
+|---|---|---|---|---|---|---|---|
+| **none** | **39** | 3 | 51.4 s | 51.4 s | 38 | 57.8 s | 0 |
+| MDL compression | 35 | 1 | 90.9 s | 200.9 s | 34 | 91.6 s | 5 |
+| separate-task utility | 39 | 3 | 51.6 s | 433.1 s | 38 | 58.0 s | 0 (every candidate reduced ADM solves) |
+
+* **Dev revision 1** (before any DEV evaluation): the first candidate generator gave each leaf its own parameter and found
+  only 3 candidates. Identical leaves now share a parameter, giving 7 candidates. The first output is kept in
+  `p3_libs_v1_before_revision.json`.
+* MDL admission measurably **harms** search: 4 fewer solves and 77 % more CPU.
+* Utility admission rejected every candidate, so it matches none at a large admission cost.
+* **none** is promoted.
+
+**Pillar 4** (`p4.json`; 240 s practice each; identical update, re-admission and zero-forgetting check, all accepted)
+
+| arm | practised / solved | DEV correct / CPU | HELD correct / CPU |
+|---|---|---|---|
+| none | 0 / 0 | 39 / 51.5 s | 38 / 57.9 s |
+| random | 207 / 168 | 38 / 50.3 s | 38 / 55.6 s |
+| fixed | 262 / 224 | 39 / 52.6 s | 38 / 58.0 s |
+| failure-boundary | 68 / 29 (8 rejected as too easy) | 39 / 51.6 s | 38 / 58.2 s |
+
+* Not promoted.
+* Every arm reaches the same ceiling (39/42 DEV, where the 3 misses are wrong generalisations of threshold
+  predicates, not search failures). The curriculum comparison has no headroom and is uninformative.
+* **Disclosure:** the start wake and practice use the construction-only solver (`u5_curriculum.wake` / `practise` call
+  `K.solve`), not the hybrid one the runner docstring states. The evaluation used the hybrid solver.
+
+**Pillar 5** (`p5.json`; same L0, B = 120 s, unseen IoT families, 3 seeds)
+
+| arm | DEV correct (seeds 0/1/2) | HELD correct | edits accepted |
+|---|---|---|---|
+| L0 (no improvement) | 21 | 21 | – |
+| M0 | 21/21/21 | 21/21/21 | 7/7/7 |
+| Scalar_Tuning | 21/18/21 | 21/18/21 | 6/8/7 |
+| Random_Modification | 21/21/21 | 21/21/21 | 10/7/6 |
+| M_evolved (meta-evolution 528 s on L+C) | 21/21/21 | 21/21/21 | 4/5/2 |
+
+* M_evolved is not promoted.
+* L0 already solves all 21 IoT dev tasks, so there is no headroom. This experiment **cannot** answer whether improving
+  the improver helps: inconclusive by ceiling.
+* The evolved M differs from M0 in: no constant edits, half-weight P edits, no library-drop edits, and unpaired
+  incumbent evaluation.
+
+**Promoted configuration for the end-to-end arms:**
+* NEXUS_U5 = StateSplit lifecycle classes + count-based construction (hybrid engine), no library, no curriculum, no
+  meta-improver.
+* Ablation arms: NEXUS_U5-P1 (FlatDict), and NEXUS_NoLearning (baseline enumerator), which also serves as −P2 because the
+  library is empty.
+* Pillar dev compute: about 6,480 s wall (u5 rows of the ledger).
