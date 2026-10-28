@@ -1,0 +1,292 @@
+{
+ "split": "sc_dev",
+ "ident": "13301",
+ "seed": 13301,
+ "arm": "SchemaRepair_Shuffled",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13301,
+  "domain": "clearing",
+  "fault": "X6",
+  "lifecycle": "C.clearing",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "any_B_alarm_after_fault_tick": 9,
+   "schema_alarm_tick": 9,
+   "schema_fault_missed": false,
+   "unresolved_escalations": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0,
+   "data_ok": true,
+   "incorrect_healthy_claim": false
+  },
+  "solution_sources": {
+   "build": "growth",
+   "relearns": [],
+   "mapping": [
+    "MAPPING_ACCEPTED"
+   ],
+   "human": 0
+  },
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.242,
+    "queries": 752
+   },
+   {
+    "incidents": 29,
+    "expected": [
+     "amt"
+    ],
+    "candidates": [
+     "amt_amount",
+     "seq",
+     "shard",
+     "src"
+    ],
+    "consistent": [
+     "amt_amount"
+    ],
+    "acceptance": {
+     "stage": "accepted",
+     "scope": {
+      "label": "TESTED_WITHIN_STATED_LIMITS",
+      "alphabet": [
+       "ABORT",
+       "AMEND",
+       "CANCEL",
+       "COMMIT",
+       "NEW",
+       "PREPARE"
+      ],
+      "hyp_modes": 4,
+      "hyp_regs": 1,
+      "exhaustive": {
+       "horizon": 3,
+       "words": 216,
+       "value_draws": "1 generic"
+      },
+      "assumptions": [
+       "per-key machines; behaviour depends on the kind sequence and register values",
+       "register updates affine in (acc, x) (the learner's hypothesis class)",
+       "only kinds observed at build time"
+      ],
+      "structural": {
+       "tests": 101,
+       "depth0_tests": 16,
+       "cap": 700,
+       "loaded_states": 4,
+       "flush_paths": 3,
+       "cap_reached": false
+      },
+      "queries": 333,
+      "runs": {
+       "exhaustive": 216,
+       "depth0": 16,
+       "depth1": 85,
+       "boundary": 16
+      },
+      "stopped": "passed",
+      "mixed_old_new_tests": 101,
+      "mapping_path": "amt_amount",
+      "boundary_draws_on_path": "yes"
+     },
+     "queries": 434
+    },
+    "outcome": "MAPPING_ACCEPTED",
+    "mapping": {
+     "field": "amt",
+     "path": "amt_amount",
+     "version": 1,
+     "when": "'amt' absent and 'amt_amount' numeric"
+    },
+    "step": "mapping_repair",
+    "cpu_s": 0.167,
+    "mq": 434,
+    "incident_example": {
+     "raw": {
+      "entity": "E30100013",
+      "msg_type": "AMEND",
+      "amt_amount": 650.24,
+      "seq": 9001,
+      "shard": 9,
+      "src": 0
+     },
+     "expected": [
+      "amt"
+     ],
+     "observed": [
+      "amt_amount",
+      "entity",
+      "msg_type",
+      "seq",
+      "shard",
+      "src"
+     ],
+     "kind": "AMEND",
+     "mapping_version": 0,
+     "dependencies": {
+      "amt": [
+       "reg_0 update in mode_1"
+      ]
+     }
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.946
+   },
+   "value_stats": {
+    "cpu_s": 0.025,
+    "built": 1067,
+    "kept": 131,
+    "dup": 746,
+    "err": 190,
+    "scored": 0,
+    "solved": true,
+    "level": 8,
+    "size": 7,
+    "stage": "construct"
+   },
+   "build_cpu_s": 13.304
+  },
+  "cost": {
+   "build_cpu_s": 13.305,
+   "ops_cpu_s": 0.174,
+   "wall_s": 13.513,
+   "queries": {
+    "build_labels": 566,
+    "spot": 110,
+    "incident": 360,
+    "mq": 1189,
+    "mq_events": 4227
+   }
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('quantity') * r.get('rate_px'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('quantity'), (int, float)) and not isinstance(r.get('quantity'), bool)) and (isinstance(r.get('rate_px'), (int, float)) and not isinstance(r.get('rate_px'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('entity'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('quantity') * r.get('rate_px'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('quantity'), (int, float)) and not isinstance(r.get('quantity'), bool)) and (isinstance(r.get('rate_px'), (int, float)) and not isinstance(r.get('rate_px'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_e182a3c2:\n    \"\"\"Invented by continuation splitting: 4 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['NEW'] vs [] differ after continuation ['AMEND']\n    witness: histories ['NEW', 'CANCEL'] vs [] differ after continuation ['NEW']\n    witness: histories ['NEW', 'PREPARE'] vs ['NEW', 'CANCEL'] differ after continuation ['ABORT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('entity'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = []\n                self.reg_0[k] = x0\n                return out\n            elif s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = []\n                self.mode[k] = 3\n                return out\n        elif m == 2:\n            if s == 'ABORT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'ABORT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'AMEND':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'COMMIT':\n                out = [('settled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'NEW':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PREPARE':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n\n\n# field mapping v1: read 'amt' from 'amt_amount' when 'amt' absent and 'amt_amount' numeric"
+ }
+}

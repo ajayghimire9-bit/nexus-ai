@@ -1,0 +1,19 @@
+{
+ "split": "sc_dev",
+ "ident": "13305",
+ "seed": 13305,
+ "arm": "NoMapping_Learned",
+ "status": "CRASHED",
+ "result": {
+  "project": 13305,
+  "domain": "clearing",
+  "fault": "X6P",
+  "outcome": "CRASHED",
+  "completed": false,
+  "data_ok": false,
+  "silent": false,
+  "human_repairs": 0,
+  "independently_correct": false,
+  "error": "Traceback (most recent call last):\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/sc_run.py\", line 158, in main\n    r, status = run(P, arm), \"COMPLETE\"\n                ~~~^^^^^^^^\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/scripts/sc_run.py\", line 59, in run\n    res = SCP.PL.operate(P, arm, prog, crash_tick, archive)\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/u5_platform.py[sc-patched]\", line 618, in operate\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/sc_platform.py\", line 261, in repair_B\n    r = self._learn(archive_events, archive_rows, oracle, len(archive_events), old[\"contract\"] if old else None)\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/sc_platform.py\", line 214, in _learn\n    r = BP.learn_class_bounded(view, outputs, query, seed=seed, growth=self.growth)\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/ba_platform.py\", line 89, in learn_class_bounded\n    ok, L, cex, scope = BL.attempt(ep, H, \"bounded\", None, cache, seed, cfg=cfg)\n                        ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/ba_learn.py\", line 42, in attempt\n    L = OL.Learner3(ep.train, ep.y_train, ep.query, H, contract=contract, seed=seed, cache=cache)\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/oc_learner.py\", line 40, in __init__\n    super().__init__(events, outputs, query, seed=seed, max_s=max_s, max_states=H[\"max_states\"])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/u5_statesplit.py\", line 134, in __init__\n    self.f = fields or discover_fields(events, outputs, query)\n                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/u5_statesplit.py\", line 96, in discover_fields\n    for f in sorted(keys, key=lambda f: -len({e.get(f) for e in events})):\n             ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ajayghimire/.claude-worktrees/nexus-s456/src/nexus/u5_statesplit.py\", line 96, in <lambda>\n    for f in sorted(keys, key=lambda f: -len({e.get(f) for e in events})):\n                                              ~~~~~^^^\nTypeError: unhashable type: 'dict'\n"
+ }
+}

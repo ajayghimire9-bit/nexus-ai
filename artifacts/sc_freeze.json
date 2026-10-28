@@ -1,0 +1,47 @@
+{
+ "budgets": {
+  "arm_alarm_s": 780,
+  "bounded_cap_exhaustive": 400,
+  "bounded_cap_structural": 700,
+  "max_relearn": 2,
+  "mixed_tests": 120,
+  "separation_probe_budget": 24
+ },
+ "choice_reason": "pre-registered default A; dev ablation (14 dev projects): A 13/14, B 12/14, C 12/14 independently correct - A not worse",
+ "components": [
+  "f45da4e priority-A stack (covered relearning, crossing probes, post-repair monitoring)",
+  "bounded acceptance (ba_accept, unchanged)",
+  "Learned_Growth_Rule first line + full-space fallback (ba_platform.learn_class_bounded, unchanged)",
+  "runtime field contract (sc_contract)",
+  "generic field-mapping repair (sc_mapping)",
+  "learning view for nullable / structured fields"
+ ],
+ "files": {
+  "artifacts/ba_dev/records_bounded.jsonl": "14dfd978b923d0e4f735fc250e7d8897a6636d5e3e1dee4a86002dcb82859af3",
+  "scripts/ba_eps.py": "9da9e129492afdb7e72918ca60b701056fb6909b82323da5377f102427a362dd",
+  "scripts/sc_budget.py": "f7b006726989fe1017994ad601a3a48da33a11350414cc832a67443ef4978731",
+  "scripts/sc_exec.py": "cb612226608c6bfddc7dcf15422b17ad1dc61c2e6cc7c226d00150b654f67138",
+  "scripts/sc_run.py": "eb3f9ebe82c2cfe19e1ca72dc34f3f9d450d4d6ee666cf66384888923c7bd46d",
+  "scripts/sc_score.py": "5a938cf181ae5df291be7b8ec1cad9d6ac6330293f3a9d4da7f293dd2f4fd6ca",
+  "scripts/u5_run.py": "7091f1b76c4032fb6bf0fae26b42b76487a76943c4e320bbbf34857098f0cd45",
+  "src/nexus/ba_accept.py": "56b66aae01d879fc0a05d15f735eefa971525be5d3cea7a1f5a79dd93679ca33",
+  "src/nexus/ba_learn.py": "f0ba6e7e279d04a87b2770e11b3419668f0c93c7f162b10dd882ba746c4421e5",
+  "src/nexus/ba_platform.py": "fb26faee5d26141662c8a54b504016707f280335fe3ad34c4964151f0bd710dc",
+  "src/nexus/oc_learner.py": "2d54d9a749a5e0165361f61b9ccac4a269611ee2c1f346b4fd911bf2a52c8e10",
+  "src/nexus/oc_platform.py": "daec1c4fd15a58f6c426d27ce465f05a03f2ed873370f33e4ec92510e71ab574",
+  "src/nexus/sc_contract.py": "7a3cacc95f242ac4f4ee696ab8ae35ce37497ddafd5d0a2ab3fefceb7005963c",
+  "src/nexus/sc_mapping.py": "12a0eb404bf060d0e02f172f36ae9248efdada0d8307f8112c2197cfabbfc484",
+  "src/nexus/sc_platform.py": "26c10f2b7138a1e881ee677b102ba966e05bb83e258e0a09af13ad76da4137dc",
+  "src/nexus/sc_seeds.py": "c51c2c9ce2d3d0189a738ed85dcda79dda672896749116a9dad70fc0e892eced",
+  "src/nexus/t7_platform.py": "88a93359ac60f530d527d87e8ed751546e61324faaecb1ea7bf06549066b457a",
+  "src/nexus/t7_repair.py": "b851c350c450ab86e04fe91991a548eefa9d9faba97a930967fbd245a429cb2f",
+  "src/nexus/t7_world.py": "37558727e5a448d998be02c56f91dd9627c775aa65a42900ee28f872671d66a6",
+  "src/nexus/u5_platform.py": "3c1f010b824aed015c7c94068a147aa68b056ab7a3ade5f51b928ef4950fe411",
+  "src/nexus/u5_stateful.py": "e7cae8613d2a288334f0edc3c71fea4c8250c24cbbf14609a98fb1a8adb6964f",
+  "src/nexus/u5_statesplit.py": "7520adf27409e4e82e032ec3d31a6c43b5b1596469fe53c8b371f9233f435576"
+ },
+ "nexus_confirmed_arm": "SchemaRepair_Learned",
+ "outcome_definitions": "scripts/sc_run.py run() fields; gate/criterion scripts/sc_score.py",
+ "parent_commit": "3ab5fc5",
+ "revision": null
+}
