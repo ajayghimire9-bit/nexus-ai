@@ -1,0 +1,189 @@
+{
+ "split": "val",
+ "n": 8,
+ "arms": {
+  "NEXUS_Confirmed": {
+   "evaluated": 8,
+   "independently_correct": 8,
+   "data_ok": 8,
+   "silent": 0,
+   "human_repairs": 0,
+   "wrong_machine_deployed": 0,
+   "schema_detected": "4/4",
+   "schema_missed": 0,
+   "human_repair_failed": 0,
+   "crash_identical": "8/8",
+   "timed_out": 0,
+   "crashed": 0,
+   "by_fault": {
+    "X3": "2/2",
+    "X5": "2/2",
+    "X6": "4/4"
+   },
+   "by_domain": {
+    "clearing": "2/2",
+    "energy": "2/2",
+    "iot": "2/2",
+    "logistics": "2/2"
+   }
+  },
+  "NEXUS_U5": {
+   "evaluated": 8,
+   "independently_correct": 1,
+   "data_ok": 2,
+   "silent": 5,
+   "human_repairs": 5,
+   "wrong_machine_deployed": 5,
+   "schema_detected": "0/4",
+   "schema_missed": 0,
+   "human_repair_failed": 0,
+   "crash_identical": "7/7",
+   "timed_out": 0,
+   "crashed": 0,
+   "by_fault": {
+    "X3": "1/2",
+    "X5": "0/2",
+    "X6": "0/4"
+   },
+   "by_domain": {
+    "clearing": "1/2",
+    "energy": "0/2",
+    "iot": "0/2",
+    "logistics": "0/2"
+   }
+  },
+  "Fixed_Policy": {
+   "evaluated": 8,
+   "independently_correct": 0,
+   "data_ok": 3,
+   "silent": 5,
+   "human_repairs": 6,
+   "wrong_machine_deployed": 5,
+   "schema_detected": "0/4",
+   "schema_missed": 1,
+   "human_repair_failed": 0,
+   "crash_identical": "8/8",
+   "timed_out": 0,
+   "crashed": 0,
+   "by_fault": {
+    "X3": "0/2",
+    "X5": "0/2",
+    "X6": "0/4"
+   },
+   "by_domain": {
+    "clearing": "0/2",
+    "energy": "0/2",
+    "iot": "0/2",
+    "logistics": "0/2"
+   }
+  },
+  "Conventional": {
+   "evaluated": 8,
+   "independently_correct": 0,
+   "data_ok": 0,
+   "silent": 8,
+   "human_repairs": 0,
+   "wrong_machine_deployed": 8,
+   "schema_detected": "0/4",
+   "schema_missed": 4,
+   "human_repair_failed": 0,
+   "crash_identical": "8/8",
+   "timed_out": 0,
+   "crashed": 0,
+   "by_fault": {
+    "X3": "0/2",
+    "X5": "0/2",
+    "X6": "0/4"
+   },
+   "by_domain": {
+    "clearing": "0/2",
+    "energy": "0/2",
+    "iot": "0/2",
+    "logistics": "0/2"
+   }
+  }
+ },
+ "projects": [
+  {
+   "index": 0,
+   "seed": 13361,
+   "domain": "clearing",
+   "fault": "X6",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "SILENT",
+   "Fixed_Policy": "SILENT",
+   "Conventional": "SILENT"
+  },
+  {
+   "index": 1,
+   "seed": 13362,
+   "domain": "iot",
+   "fault": "X6",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "SILENT",
+   "Fixed_Policy": "SILENT",
+   "Conventional": "SILENT"
+  },
+  {
+   "index": 2,
+   "seed": 13363,
+   "domain": "energy",
+   "fault": "X6",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "SILENT",
+   "Fixed_Policy": "SILENT",
+   "Conventional": "SILENT"
+  },
+  {
+   "index": 3,
+   "seed": 13364,
+   "domain": "logistics",
+   "fault": "X6",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "SILENT",
+   "Fixed_Policy": "SILENT",
+   "Conventional": "SILENT"
+  },
+  {
+   "index": 4,
+   "seed": 13365,
+   "domain": "clearing",
+   "fault": "X3",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "CORRECT",
+   "Fixed_Policy": "SILENT",
+   "Conventional": "SILENT"
+  },
+  {
+   "index": 5,
+   "seed": 13366,
+   "domain": "iot",
+   "fault": "X5",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "SILENT",
+   "Fixed_Policy": "COMPLETED/human1/data_ok",
+   "Conventional": "SILENT"
+  },
+  {
+   "index": 6,
+   "seed": 13367,
+   "domain": "energy",
+   "fault": "X3",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "COMPLETED/human1/data_ok",
+   "Fixed_Policy": "COMPLETED/human1/data_ok",
+   "Conventional": "SILENT"
+  },
+  {
+   "index": 7,
+   "seed": 13368,
+   "domain": "logistics",
+   "fault": "X5",
+   "NEXUS_Confirmed": "CORRECT",
+   "NEXUS_U5": "ABSTAIN/bad",
+   "Fixed_Policy": "COMPLETED/human1/data_ok",
+   "Conventional": "SILENT"
+  }
+ ],
+ "passed": true
+}
