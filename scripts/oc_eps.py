@@ -24,9 +24,16 @@ if arm in ("p2_meta", "p2_shuffled"):
         random.Random(13).shuffle(sigs)
         recs = [dict(r, sig=s) for r, s in zip(recs, sigs)]
     pol = OL.TablePolicy(recs)
+import time as _time
 out = ART / f"eps_{arm}_{split}_{start}.jsonl"
-with open(out, "w") as fh:
+done = {json.loads(l)["seed"] for l in out.read_text().splitlines() if l.strip()} if out.exists() else set()
+T0 = _time.perf_counter()
+with open(out, "a") as fh:                                        # resumable: episodes already written are skipped
     for ep in eps:
+        if ep.seed in done:
+            continue
+        if _time.perf_counter() - T0 > 800:                       # stay inside the 900 s call cap; resume next call
+            break
         log = []
         r = OL.learn_episode(ep, pol, contract=contract, version_space=vs, cov_sample=0.25 if vs else 1.0, seed=ep.seed, log=log)
         r.update(seed=ep.seed, regime=ep.regime, needs=ep.needs, log=log)

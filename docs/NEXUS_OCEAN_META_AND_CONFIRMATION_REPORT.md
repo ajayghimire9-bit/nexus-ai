@@ -153,4 +153,56 @@ The cap is 20,000 s.
 
 ## 0.8 Results
 
-(appended)
+### Ledger incident (disclosed)
+
+* An over-broad `pkill` also killed 10 `oc_exec` wrappers, so their wall time was not recorded.
+* I charged each of them manually: 150 s, from file birth to the last write plus 30 s, marked `KILLED_CHARGED_MANUALLY`
+  (1,500 s total).
+* Their completed episodes were kept, and the runs resumed with a resumable runner, at most 4 concurrent.
+
+### Part 1 — task learner (300 held-out micro-episodes; hand growth from H0)
+
+| arm | certified | exact | silent | membership queries | CPU |
+|---|---|---|---|---|---|
+| coverage (f45da4e acceptance) | 249 | 217 | **32** | 254,152 | 677 s |
+| + grey-box contract | 249 | 217 | 32 | 254,460 | 604 s |
+| + version space (25 % cert. sample) | 248 | 185 | 63 | **88,011** | 778 s |
+| both | 248 | 185 | 63 | 88,041 | 698 s |
+
+* **Outcome: REJECTED FOR THIS SETTING.**
+  * Version space cuts queries by 65 % but doubles silent errors and loses 32 exact.
+  * The grey-box contract only cuts CPU (−11 %); queries are unchanged.
+* **Main finding: coverage certification is silently wrong on 32/300 random machines (10.7 %).** The f45da4e acceptance
+  rule is empirical, and its silent-error rate on a broad ocean of mechanisms is far from 0.
+
+### Part 2 — meta-learned hypothesis-space growth
+
+* **Data:** 300 held-out episodes; 725 meta-training records from 300 exploration episodes; 12 full energy build projects.
+
+| arm | certified | exact | silent | queries | exact within 500 / 1k / 2k / 4k queries | steps | energy builds exact / silent |
+|---|---|---|---|---|---|---|---|
+| Hand_Ordered_Rule | 249 | 217 | 32 | 254 k | 88 / 154 / 198 / 215 | 850 | **0/12** / 1 |
+| **Meta_Learned_Growth_Rule** | 276 | **235** | 41 | 276 k | **100 / 168 / 213 / 233** | **403** | **9/12** / 2 |
+| Random_Growth_Order | 242 | 213 | 29 | 255 k | 96 / 156 / 197 / 211 | 700 | 7/12 / 2 |
+| Shuffled_Episode_Placebo | 272 | 237 | 35 | 283 k | 97 / 165 / 211 / 233 | 625 | 0/12 / 2 |
+| f45da4e full space (energy only) | – | – | – | – | – | – | 7/12 / 2 |
+
+* **Outcome: REJECTED FOR THIS SETTING,** by the pre-registered silent ≤ Hand condition (41 vs 32 on micro; 2 vs 1 on
+  energy).
+* **What it does show:**
+  * The meta-learned rule **fixes the energy build-time weakness** (9/12 vs 0/12 for the hand order and 7/12 for f45da4e).
+  * It wins the learning curve at every budget, with half the growth steps.
+* **Caveats:**
+  * On micro-episodes the shuffled placebo matches it (237 vs 235), so that part of the gain comes from action-level
+    priors, not from reading the failure signature.
+  * On energy builds the placebo gets 0/12, so the signature mapping matters there.
+* **Common cause of the silent errors:** each arm's silent rate per certification is 13–15 %. Certification reliability,
+  not growth, is the bottleneck.
+
+### Part 4 — ledger predictor retrospective check
+
+* 620 reports were parsed; only 34 (36 including post-priority-A reports) have an unambiguous verdict line.
+* With the ledger frozen before priority A, the predictor's `P(gain | category)` ranks **verification lowest** (0.39) and
+  transport/alignment **highest** (0.73).
+* **The retrospective check FAILS:** the ledger is too sparse and keyword-confounded to point toward what actually
+  worked. The prospective comparison still runs as registered.
