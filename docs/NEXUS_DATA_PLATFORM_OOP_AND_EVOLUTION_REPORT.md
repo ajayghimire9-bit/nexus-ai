@@ -118,6 +118,50 @@ like-for-like comparison. No component run (no supplied "correct" synthesised pi
 Phase 1 total ≤ 12,000 s of ledger time (dev ≤ 6,500 s, val + val_b ≤ 2,500 s, test ≤ 3,000 s), leaving ≥ 22,000 s for
 Phases 2–3. Per build: synthesis ≤ 400 s CPU, the R1 caps otherwise; per resynthesis ≤ 160 s CPU; R2 shadow caps unchanged.
 
-### 0.8 Development log
+### 0.8 Development log (dev seeds 991–998 only; everything below happened before the freeze)
 
-(filled before the freeze)
+Changes made during development, in order, each prompted by a dev failure:
+
+1. **Silver provenance.** The first example extractor read the silver row's schema version as if it were the winning
+   record's source version; the monitor now also returns which record each silver row comes from (`silver_provenance`).
+2. **Label-stratified sampling.** On 991 the 60-example sample held none of the 8 unknown-warehouse examples, so
+   observational equivalence merged `warehouse in whs` with a spurious literal. Samples now cover every output label;
+   sample 150, ≤ 5 CEGIS rounds, ≤ 40 counterexamples added per round.
+3. **Predicate learner.** Rewritten vectorised (numpy) with Occam-first choice (cheapest literal that finishes the job;
+   exhaustive cheapest pair before greedy), a penalty for comparing with literal example values, guarded two-literal
+   or/and literals, and **decision-list unification** for categorical outputs (rarest label peeled first).
+4. **Monitor robustness.** The R2 monitor crashed (`float(None)`) on a pipeline row with a missing amount (992); in the
+   loaded copy the comparison now reports a content mismatch, and any monitor exception on pipeline output is a failed
+   reconciliation (`monitor_exception`), never a harness crash.
+5. **Folds.** Probe states with a constant accumulator let OE merge `acc + x` with `x`; probes now vary the accumulator.
+6. **Example memory.** Resynthesis at tick 9 on 994 used only the ops archive, which had no malformed manifest yet, and the
+   new classifier lost the malformed rule. Resynthesis now uses NEXUS's build-window examples plus the archive.
+7. **Transaction order.** My template patch classified a record before the transaction check, so an unknown-warehouse
+   order inside an aborted transaction would be quarantined, not aborted (R2's unknown-currency patch has the same order;
+   its worlds never combined the two). Transaction records are now classified when their transaction commits.
+8. **Oracle queries.** On 995 the build check's spec probe (a malformed weight must be quarantined) failed because the
+   visible window had no malformed record. NEXUS now makes membership queries to the black-box monitor: for ≤ 3 observed
+   first deliveries per topic, one scalar field at a time is set to `"N/A"` and the monitor's class is the label (no field
+   or rule is named in the generator; test `test_oracle_queries_are_generic_and_labelled_by_the_monitor`).
+   **Consequence (disclosed):** the declared quarantine rules — malformed weight, unknown currency (X3), unknown warehouse
+   (D2) — are now learned at build time from the spec monitor, before any such data appears. Ops-time resynthesis is then
+   exercised by the registry-unit classes (D1 on dev, X4 on test), which the queries do not reach (they never perturb
+   registry metadata).
+
+Final dev pass (`artifacts/oop_dev_results/dev_r1.json`, NEXUS_Synth only, frozen candidate code):
+
+| project | classes | natural e2e | silent | forced X | secondary B0 | resynthesis |
+| --- | --- | --- | --- | --- | --- | --- |
+| 991 | X2 D2 | ✓ | 0 | ✓ | ✓ | — |
+| 992 | X1 D1 | ✓ | 0 | ✓ | ✓ | syn_decode @ tick 9 |
+| 993 | X2 D1 | ✓ | 0 | ✓ | ✓ | syn_decode @ tick 9 |
+| 994 | X1 D2 | ✓ | 0 | ✓ | ✓ | — |
+| 995 | X2 D2 | ✓ | 0 | ✓ | ✓ | — |
+| 996 | X1 D1 | ✓ | 0 | ✓ | ✓ | syn_decode @ tick 9 |
+| 997 | X2 D1 | ✓ | 0 | ✓ | ✓ | syn_decode @ tick 9 |
+| 998 | X1 D2 | ✓ | 0 | ✓ | ✓ | — |
+
+8/8 natural, 8/8 forced, 8/8 B0 secondary, 0 silent, 0 crashes. The build evaluation (checkpoint 12 includes the
+classes' ticks 9–12) is correct on 3/8, as expected for a build that has not yet met D1 / X1 / X2 data. Earlier
+4-arm dev runs (993, 994, before changes 6–8) showed the R2 arms failing D-class worlds as expected (NEXUS_Template silent
+on 993: no D1 handler). Dev ledger time: 2,524 s. Protected files 912/912 unchanged.

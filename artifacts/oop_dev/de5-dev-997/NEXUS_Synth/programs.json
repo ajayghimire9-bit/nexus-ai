@@ -1,0 +1,569 @@
+{
+ "syn_decode": {
+  "p5ba354e8": {
+   "fields": {
+    "amount": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "b",
+      "get",
+      [
+       "var",
+       "fields"
+      ],
+      [
+       "const",
+       "amount"
+      ]
+     ]
+    ],
+    "currency": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "currency"
+     ]
+    ],
+    "deleted": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "is_deleted"
+     ]
+    ],
+    "discount": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "discount_pct"
+     ]
+    ],
+    "order_id": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "order_id"
+     ]
+    ],
+    "promised_ts": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "promised_ts"
+     ]
+    ],
+    "status": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "status"
+     ]
+    ],
+    "warehouse_id": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "warehouse_id"
+     ]
+    ]
+   },
+   "kind": "record"
+  },
+  "pb21be4d1": {
+   "fields": {
+    "amount": [
+     "if",
+     [
+      "b",
+      "in",
+      [
+       "const",
+       "amount_unit"
+      ],
+      [
+       "var",
+       "types"
+      ]
+     ],
+     [
+      "b",
+      "/",
+      [
+       "b",
+       "get",
+       [
+        "var",
+        "a"
+       ],
+       [
+        "const",
+        "amount_total"
+       ]
+      ],
+      [
+       "const",
+       100
+      ]
+     ],
+     [
+      "b",
+      "get",
+      [
+       "var",
+       "a"
+      ],
+      [
+       "b",
+       "get",
+       [
+        "var",
+        "fields"
+       ],
+       [
+        "const",
+        "amount"
+       ]
+      ]
+     ]
+    ],
+    "currency": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "currency"
+     ]
+    ],
+    "deleted": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "is_deleted"
+     ]
+    ],
+    "discount": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "discount_pct"
+     ]
+    ],
+    "order_id": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "order_id"
+     ]
+    ],
+    "promised_ts": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "promised_ts"
+     ]
+    ],
+    "status": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "status"
+     ]
+    ],
+    "warehouse_id": [
+     "b",
+     "get",
+     [
+      "var",
+      "a"
+     ],
+     [
+      "const",
+      "warehouse_id"
+     ]
+    ]
+   },
+   "kind": "record"
+  }
+ },
+ "syn_net": {
+  "p9977eb3b": {
+   "kind": "function",
+   "node": [
+    "b",
+    "round",
+    [
+     "b",
+     "*",
+     [
+      "b",
+      "get",
+      [
+       "var",
+       "p"
+      ],
+      [
+       "const",
+       "amount"
+      ]
+     ],
+     [
+      "b",
+      "*",
+      [
+       "b",
+       "get",
+       [
+        "var",
+        "fx"
+       ],
+       [
+        "b",
+        "get",
+        [
+         "var",
+         "p"
+        ],
+        [
+         "const",
+         "currency"
+        ]
+       ]
+      ],
+      [
+       "b",
+       "-",
+       [
+        "const",
+        1
+       ],
+       [
+        "b",
+        "/",
+        [
+         "b",
+         "get",
+         [
+          "var",
+          "p"
+         ],
+         [
+          "const",
+          "discount"
+         ]
+        ],
+        [
+         "const",
+         100
+        ]
+       ]
+      ]
+     ]
+    ],
+    [
+     "const",
+     2
+    ]
+   ]
+  }
+ },
+ "syn_silver": {
+  "p4c90991f": {
+   "kind": "class",
+   "spec": {
+    "cmp": ">",
+    "drop": [
+     "u",
+     "not",
+     [
+      "b",
+      "and",
+      [
+       "u",
+       "not",
+       [
+        "u",
+        "isnone",
+        [
+         "b",
+         "get",
+         [
+          "var",
+          "r"
+         ],
+         [
+          "const",
+          "payload"
+         ]
+        ]
+       ]
+      ],
+      [
+       "b",
+       "==",
+       [
+        "b",
+        "get",
+        [
+         "var",
+         "r"
+        ],
+        [
+         "const",
+         "soft"
+        ]
+       ],
+       [
+        "const",
+        0
+       ]
+      ]
+     ]
+    ],
+    "key": "key",
+    "kind": "organelle",
+    "mode": "tombstone",
+    "order": "sv",
+    "tried": 1,
+    "witness": {
+     "a": {
+      "key": 507,
+      "msg_id": "b1-507",
+      "op": "r",
+      "payload": {
+       "amount": 417.75,
+       "currency": "USD",
+       "deleted": 0,
+       "discount": 0.0,
+       "order_id": 507,
+       "promised_ts": "2026-03-28T02:26:41Z",
+       "status": "DELIVERED",
+       "warehouse_id": "W1"
+      },
+      "seq": 48,
+      "soft": 0,
+      "source": "backfill_orders",
+      "sv": 1000
+     },
+     "b": {
+      "key": 507,
+      "msg_id": "b1-507",
+      "op": "r",
+      "payload": {
+       "amount": 417.75,
+       "currency": "USD",
+       "deleted": 0,
+       "discount": 0.0,
+       "order_id": 507,
+       "promised_ts": "2026-03-28T02:26:41Z",
+       "status": "DELIVERED",
+       "warehouse_id": "W1"
+      },
+      "seq": 48,
+      "soft": 0,
+      "source": "backfill_orders",
+      "sv": 1000
+     },
+     "labels": [
+      true,
+      false
+     ]
+    }
+   }
+  }
+ },
+ "syn_status": {
+  "p147cc3aa": {
+   "kind": "function",
+   "node": [
+    "if",
+    [
+     "u",
+     "isstr",
+     [
+      "b",
+      "get",
+      [
+       "var",
+       "rec"
+      ],
+      [
+       "const",
+       "weight"
+      ]
+     ]
+    ],
+    [
+     "const",
+     "q:malformed_weight"
+    ],
+    [
+     "if",
+     [
+      "b",
+      "and",
+      [
+       "u",
+       "not",
+       [
+        "u",
+        "isnone",
+        [
+         "var",
+         "row"
+        ]
+       ]
+      ],
+      [
+       "u",
+       "not",
+       [
+        "b",
+        "in",
+        [
+         "b",
+         "get",
+         [
+          "var",
+          "row"
+         ],
+         [
+          "const",
+          "currency"
+         ]
+        ],
+        [
+         "var",
+         "fx"
+        ]
+       ]
+      ]
+     ],
+     [
+      "const",
+      "q:unknown_currency"
+     ],
+     [
+      "if",
+      [
+       "b",
+       "and",
+       [
+        "u",
+        "not",
+        [
+         "u",
+         "isnone",
+         [
+          "var",
+          "row"
+         ]
+        ]
+       ],
+       [
+        "u",
+        "not",
+        [
+         "b",
+         "in",
+         [
+          "b",
+          "get",
+          [
+           "var",
+           "row"
+          ],
+          [
+           "const",
+           "warehouse_id"
+          ]
+         ],
+         [
+          "var",
+          "whs"
+         ]
+        ]
+       ]
+      ],
+      [
+       "const",
+       "q:unknown_warehouse"
+      ],
+      [
+       "const",
+       "accepted"
+      ]
+     ]
+    ]
+   ]
+  }
+ }
+}

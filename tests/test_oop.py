@@ -141,3 +141,12 @@ def test_grant_recorded_once_and_budget_includes_all_debits():
     src = (ROOT / "scripts/oop_budget.py").read_text()
     for p in ('"w41"', '"de-"', '"de2-"', '"r1-"', '"r2-"', '"oop-"'):
         assert p in src
+
+
+def test_oracle_queries_are_generic_and_labelled_by_the_monitor():
+    from nexus import oop_examples as X
+    src = (ROOT / "src/nexus/oop_examples.py").read_text()
+    block = src[src.index("# oracle queries"):src.index("# silver: accepted")]
+    for word in ("weight", "currency", "warehouse", "discount", "amount"):
+        assert word not in block                           # no field or rule is named in the query generator
+    assert X.PROBE_VALUE == "N/A"

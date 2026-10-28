@@ -82,7 +82,7 @@ def RESYNTH(op, env, holes, arch):
     hs = [h for h in holes if h in OT.SYNTH_HOLES]
     if not hs:
         return
-    ex = X.examples(op.spec, arch)
+    ex = X.merged(op.spec, [X.BUILD_ARCH.get(op.spec["project"], []), arch])   # build experience + operator archive
     for h in hs:
         cur = env.choice.get(h)
         if X.consistent(h, cur, ex):

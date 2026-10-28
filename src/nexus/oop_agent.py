@@ -47,6 +47,7 @@ def build(arm, ws, profile=None, library=None):
     spec = json.loads((ws / "docs/spec.json").read_text())
     OT.reset()
     arch = X.read_log(ws / "visible" / "log", spec)
+    X.BUILD_ARCH[spec["project"]] = arch
     pids, stats, _ = X.synth_all(spec, arch, max_s=SYNTH_MAX_S)
     synth_cpu = M.A._cpu() - c0
     if not all(pids.values()):

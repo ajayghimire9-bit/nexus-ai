@@ -24,6 +24,10 @@ from nexus import oop_template as T
 ORDERS = ("orders_cdc", "backfill_orders")
 
 
+PROBE_RECORDS, PROBE_VALUE = 3, "N/A"
+IDENTITY = ("msg_id", "ingest_ts", "offset")
+
+
 def read_log(log, spec):
     """[(topic, part, offset, record or None, tick)] of every segment of a log directory."""
     out = []
@@ -63,6 +67,29 @@ def examples(spec, arch):
             row = R.decode_full(spec, r, reg) if tp in ORDERS and r.get("after") else None
             st_in.append({"topic": tp, "rec": r, "row": row, "fx": fx, "whs": whs})
             st_out.append(c)
+    # oracle queries (membership queries to the black-box spec monitor): a few observed first deliveries per topic, one
+    # scalar field at a time set to a type-violating value; the monitor's class is the label (a query it cannot decode
+    # is skipped). Generic fuzzing: no field or rule is named.
+    for tp_q in ORDERS + ("manifests",):
+        base = [(tp, p, o, r) for (tp, p, o, r) in pre if tp == tp_q and r and "control" not in r and not r.get("txn_id")
+                and cls.get((tp, p, o), (None,))[0] == "accepted" and (tp not in ORDERS or r.get("after"))][:PROBE_RECORDS]
+        for (tp, p, o, r) in base:
+            slots = [(None, k) for k, v in r.items() if isinstance(v, (int, float, str)) and k not in IDENTITY] + \
+                    [("after", k) for k, v in (r.get("after") or {}).items() if isinstance(v, (int, float, str))]
+            for where, k in slots:
+                m = dict(r, msg_id=f"q-{r['msg_id']}-{k}")
+                if where:
+                    m[where] = dict(r[where], **{k: PROBE_VALUE})
+                else:
+                    m[k] = PROBE_VALUE
+                try:
+                    c = R.classify(spec, regs + [(tp, p, 10 ** 9, m)], regs)[(tp, p, 10 ** 9)][0]
+                    row = R.decode_full(spec, m, reg) if tp in ORDERS and m.get("after") else None
+                except (KeyError, TypeError, ValueError, AttributeError):
+                    continue
+                if c == "accepted" or (c.startswith("q:") and c not in ("q:poison", "q:future_event")):
+                    st_in.append({"topic": tp, "rec": m, "row": row, "fx": fx, "whs": whs})
+                    st_out.append(c)
     # silver: accepted order events (first copies; committed transactions) as bronze rows, arrival order
     order = {t: i for i, t in enumerate(spec["log"]["processing_order"])}
     acc = [(tp, p, o, r) for (tp, p, o, r) in pre if r and tp in ORDERS and "control" not in r and
@@ -88,6 +115,23 @@ def examples(spec, arch):
                     net_out.append(v[3])
     return dict(syn_decode=(dec_in, dec_out), syn_status=(st_in, st_out), syn_net=(net_in, net_out),
                 syn_silver=(seqs, wants))
+
+
+BUILD_ARCH = {}      # project -> the visible-log records of its build: NEXUS's own build experience, kept for resynthesis
+
+
+def merged(spec, archs):
+    """Examples from several record sets (the build window and the operator archive), concatenated per hole."""
+    out = None
+    for a in archs:
+        e = examples(spec, a)
+        if out is None:
+            out = {h: (list(v[0]), list(v[1])) for h, v in e.items()}
+        else:
+            for h, v in e.items():
+                out[h][0].extend(v[0])
+                out[h][1].extend(v[1])
+    return out
 
 
 def _ok_scalar(node, ins, outs, tol=None):

@@ -99,9 +99,21 @@ PATCHES = [
                     lab = fn_status(topic, rec, row, cfg["fx"], cfg["warehouses"])
                 except Exception as e:
                     raise StageError(f"stage=ingest status topic={topic} part={part} offset={o}: {type(e).__name__} {e}")
-                if lab != "accepted":
+                if lab != "accepted" and not (DEC["txn_isolation"] == "read_committed" and rec.get("txn_id")):
                     status = lab
                 elif DEC["txn_isolation"] == "read_committed" and rec.get("txn_id"):"""),
+    # a transaction's records are classified when it commits (pending / aborted records are never quarantined)
+    ("""                    for p_mid, p_key, p_sv, p_op, p_pay, p_soft, p_src, p_tick, p_part, p_off in pend:
+                        if rec["control"] == "txn_commit":""",
+     """                    for p_mid, p_key, p_sv, p_op, p_pay, p_soft, p_src, p_tick, p_part, p_off in pend:
+                        p_lab = "accepted"
+                        if rec["control"] == "txn_commit":
+                            p_lab = fn_status(p_src, {"msg_id": p_mid, "key": p_key, "source_version": p_sv, "op": p_op,
+                                                      "txn_id": rec["txn_id"]}, json.loads(p_pay), cfg["fx"], cfg["warehouses"])
+                        if p_lab != "accepted":
+                            con.execute("UPDATE _consumed SET status=? WHERE topic=? AND part=? AND offset=?", (p_lab, p_src, p_part, p_off))
+                            continue
+                        if rec["control"] == "txn_commit":"""),
     ("""            elif topic == "manifests":
                 try:
                     kg = float(rec["weight"])
