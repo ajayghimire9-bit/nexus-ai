@@ -248,3 +248,78 @@ steps from H0) accepted nothing, so NEXUS escalated instead of deploying a wrong
 same bounded check repaired it correctly (233 s). Hence: growth rule first; if nothing is accepted, the priority-A
 full-space learner under the same check. With this fallback the 13143 replay is independently correct (149 s, 0 human).
 Frozen in `artifacts/ba_freeze.json` (sha256 of every ba module/script, the reused oc/t7/u5 modules and the records file).
+
+## 5. One-use validation (ba/val 13261–13268, frozen code `2d0586e`) — gate PASSED
+
+| arm | evaluated | independently correct | silent | data correct | human repairs | timed out | crashed | by fault | by domain |
+|---|---|---|---|---|---|---|---|---|---|
+| NEXUS_Confirmed | 8/8 | 8/8 | 0 | 8 | 0 | 0 | 0 | {'D1': '4/4', 'D2': '4/4'} | {'clearing': '2/2', 'energy': '2/2', 'iot': '2/2', 'logistics': '2/2'} |
+| NEXUS_U5 | 8/8 | 7/8 | 1 | 7 | 0 | 0 | 0 | {'D1': '4/4', 'D2': '3/4'} | {'clearing': '2/2', 'energy': '1/2', 'iot': '2/2', 'logistics': '2/2'} |
+| Fixed_Policy | 8/8 | 8/8 | 0 | 8 | 0 | 0 | 0 | {'D1': '4/4', 'D2': '4/4'} | {'clearing': '2/2', 'energy': '2/2', 'iot': '2/2', 'logistics': '2/2'} |
+| Conventional | 8/8 | 4/8 | 4 | 4 | 0 | 0 | 0 | {'D1': '0/4', 'D2': '4/4'} | {'clearing': '2/2', 'energy': '2/2', 'iot': '0/2', 'logistics': '0/2'} |
+
+## 6. One-shot sealed confirmation (ba/test 13281–13296; manifest `cce8267`) — criterion NOT MET
+
+All 16 projects × 4 arms were evaluated (one checkpointed call per (project, arm); 0 timeouts, 0 crashes; crash recovery
+identical on 16/16 for NEXUS_Confirmed). Results `artifacts/ba_test/p*_*.json`, `artifacts/ba_test/scorecard.json`.
+
+| arm | evaluated | independently correct | silent | data correct | human repairs | timed out | crashed | by fault | by domain |
+|---|---|---|---|---|---|---|---|---|---|
+| NEXUS_Confirmed | 16/16 | 8/16 | 8 | 8 | 9 | 0 | 0 | {'X3': '4/4', 'X5': '4/4', 'X6': '0/8'} | {'clearing': '2/4', 'energy': '2/4', 'iot': '2/4', 'logistics': '2/4'} |
+| NEXUS_U5 | 16/16 | 3/16 | 12 | 4 | 11 | 0 | 0 | {'X3': '1/4', 'X5': '2/4', 'X6': '0/8'} | {'clearing': '1/4', 'energy': '0/4', 'iot': '0/4', 'logistics': '2/4'} |
+| Fixed_Policy | 16/16 | 0/16 | 14 | 2 | 28 | 0 | 0 | {'X3': '0/4', 'X5': '0/4', 'X6': '0/8'} | {'clearing': '0/4', 'energy': '0/4', 'iot': '0/4', 'logistics': '0/4'} |
+| Conventional | 16/16 | 0/16 | 16 | 0 | 0 | 0 | 0 | {'X3': '0/4', 'X5': '0/4', 'X6': '0/8'} | {'clearing': '0/4', 'energy': '0/4', 'iot': '0/4', 'logistics': '0/4'} |
+
+| seed | domain | fault | NEXUS_Confirmed | NEXUS_U5 | Fixed_Policy | Conventional |
+|---|---|---|---|---|---|---|
+| 13281 | clearing | X6 | SILENT | SILENT | SILENT | SILENT |
+| 13282 | iot | X6 | SILENT | SILENT | SILENT | SILENT |
+| 13283 | energy | X6 | SILENT | SILENT | SILENT | SILENT |
+| 13284 | logistics | X3 | CORRECT | CORRECT | SILENT | SILENT |
+| 13285 | clearing | X3 | CORRECT | SILENT | SILENT | SILENT |
+| 13286 | iot | X3 | CORRECT | SILENT | SILENT | SILENT |
+| 13287 | energy | X3 | CORRECT | COMPLETED/data_ok/human1 | COMPLETED/data_ok/human1 | SILENT |
+| 13288 | logistics | X6 | SILENT | SILENT | SILENT | SILENT |
+| 13289 | clearing | X6 | SILENT | SILENT | SILENT | SILENT |
+| 13290 | iot | X6 | SILENT | SILENT | SILENT | SILENT |
+| 13291 | energy | X6 | SILENT | SILENT | SILENT | SILENT |
+| 13292 | logistics | X5 | CORRECT | CORRECT | SILENT | SILENT |
+| 13293 | clearing | X5 | CORRECT | CORRECT | SILENT | SILENT |
+| 13294 | iot | X5 | CORRECT | SILENT | COMPLETED/data_ok/human8 | SILENT |
+| 13295 | energy | X5 | CORRECT | SILENT | SILENT | SILENT |
+| 13296 | logistics | X6 | SILENT | SILENT | SILENT | SILENT |
+
+**Reading the result.**
+* **Known-but-hard classes (X3 new lifecycle kinds incl. the 13143 energy class, X5 kind rename): NEXUS_Confirmed 8/8
+  independently correct, 0 silent, 0 human repairs** (energy 2/2), vs NEXUS_U5 3/8, Fixed_Policy 0/8, Conventional 0/8.
+  Every one of these needed a lifecycle relearn (`repair_B`), and every relearned machine was accepted by the bounded check
+  and was correct.
+* **Fresh unseen X6 (lifecycle value-field rename): 0/8 for every arm — all silent.** Strict separation:
+  * **No false acceptance by NEXUS:** on X6 NEXUS_Confirmed never deployed a relearned machine — all 7 alarms were escalated
+    because no relearned machine passed acceptance (the archive mixes the old and the new value field, which no single-field
+    register machine fits). In 13290 no alarm fired: the build machine (correct on the documented schema) kept reading the
+    old field, so values became 0 while every label stayed valid — no output invariant can see it and the spot checks missed it.
+  * **Harness defect in X6 (my pre-registered design):** the platform's escalation path ("a human patches it with the corrected
+    handler", `u5_platform._human_patch` → `DocMachine`) reads the *documented* value field, so under X6 even a human repair is
+    wrong. Measured post hoc on non-sealed generator seeds 0–3 (`scripts/ba_x6_diag.py`, `artifacts/ba_test_x6_harness_diag.json`):
+    the human patch is wrong on 12–26 of 320 post-fault lifecycle rows. Rows before detection are not backfilled either.
+    Hence X6 projects could not end correct through escalation; "silent" here (= claims healthy ∧ data wrong) mostly measures
+    detection lag + the wrong human patch, not a NEXUS acceptance error. The evaluator was not changed; the result stands.
+  * **What X6 does show:** NEXUS detects an undeclared value-field rename only through spot checks (7/8, late), and cannot
+    repair it: its lifecycle learner has no notion of a *field* mapping changing over time.
+
+## 7. Status, resources, what is established
+
+* **Bounded acceptance check:** provisionally integrated. Established: on 300 fresh held-out episodes, false acceptance among
+  accepted 14.4 % → 0.8 % with more correct solves (214 → 248) and equal abstention; 0 false acceptances among the 8 sealed
+  relearns. Not established: a guarantee outside the stated scope (2 in-scope false acceptances remain on held-out).
+* **Learned growth rule:** provisionally integrated (S4 promoted; sealed X3/X5 8/8 with it as the first-line learner). The
+  sealed test does not isolate its contribution (full-space fallback present).
+* **Sealed criterion (16/16, 0 silent): NOT MET** — 8/16, 8 silent, all X6.
+* **Resources:** ba ledger rows 8,328 s of 20,275 s available; remaining 11,946 s. CPU only.
+* **Protected:** 912/912 protected files unchanged; 74/74 c84fc76 oc files unchanged; only the register was edited among
+  pre-existing files.
+* **Next experiment (one):** *schema-drift-aware lifecycle repair* — let relearning infer a per-tick field mapping (old field →
+  new field) by testing, on the incident sample, whether a learned machine run on renamed fields matches the oracle; fix the
+  X6 human-patch harness defect in a new, separately versioned platform copy; evaluate on fresh dev X6 projects and fresh
+  one-use data (X6 is now a known class).

@@ -1,0 +1,51 @@
+{
+ "split": "test",
+ "index": 6,
+ "seed": 13287,
+ "arm": "Fixed_Policy",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "Fixed_Policy",
+  "project": 13287,
+  "domain": "energy",
+  "fault": "X3",
+  "family": "E.standing",
+  "lifecycle": "E.meter",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "bad_A": 0,
+  "bad_B": 0,
+  "claims_healthy": true,
+  "silent": false,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "repairs": [
+   {
+    "tick": 9,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   }
+  ],
+  "alarms": 1,
+  "build": {
+   "build_cpu_s": 0.0
+  },
+  "cost": {
+   "build_cpu_s": 0.0,
+   "ops_cpu_s": 0.004,
+   "queries": {
+    "build_labels": 0,
+    "spot": 69,
+    "incident": 360,
+    "mq": 0,
+    "mq_events": 0
+   }
+  },
+  "deployed_source": null,
+  "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return ((((float(r.get('accrual_days')) / 100) if (t.get('units').get('accrual_days') == 'minor') else float(r.get('accrual_days'))) * t.get('standing')) + ((float(r.get('consumed')) * float(r.get('price_c'))) / t.get('cents')))\n    return ((float(r.get('accrual_days')) * t.get('standing')) + ((float(r.get('consumed')) * float(r.get('price_c'))) / t.get('cents')))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('accrual_days'), (int, float)) and not isinstance(r.get('accrual_days'), bool))) or (not (isinstance(r.get('consumed'), (int, float)) and not isinstance(r.get('consumed'), bool)))) or (not (isinstance(r.get('price_c'), (int, float)) and not isinstance(r.get('price_c'), bool)))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}

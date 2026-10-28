@@ -1,0 +1,43 @@
+{
+ "split": "test",
+ "index": 9,
+ "seed": 13290,
+ "arm": "Conventional",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "Conventional",
+  "project": 13290,
+  "domain": "iot",
+  "fault": "X6",
+  "family": "I.celsius",
+  "lifecycle": "I.session",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": false,
+  "bad_A": 0,
+  "bad_B": 19,
+  "claims_healthy": true,
+  "silent": true,
+  "human_repairs": 0,
+  "independently_correct": false,
+  "crash_ok": true,
+  "repairs": [],
+  "alarms": 0,
+  "build": {
+   "build_cpu_s": 0.0
+  },
+  "cost": {
+   "build_cpu_s": 0.0,
+   "ops_cpu_s": 0.003,
+   "queries": {
+    "build_labels": 0,
+    "spot": 0,
+    "incident": 0,
+    "mq": 0,
+    "mq_events": 0
+   }
+  },
+  "deployed_source": "def value_fn(r, t):\n    return ((float(r.get('temp_f')) - t.get('f_zero')) * t.get('c_per_f'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('temp_f'), (int, float)) and not isinstance(r.get('temp_f'), bool))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+  "build_source": "def value_fn(r, t):\n    return ((float(r.get('temp_f')) - t.get('f_zero')) * t.get('c_per_f'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('temp_f'), (int, float)) and not isinstance(r.get('temp_f'), bool))):\n        return 'q:missing'\n    elif (r.get('venue') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}

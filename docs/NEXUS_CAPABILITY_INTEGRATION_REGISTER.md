@@ -156,14 +156,18 @@ A failed method does not retire its capability goal. Its component is simply lef
 * **Evidence:** 300 fresh held-out episodes, hand growth: false acceptance among accepted 14.4 % → 0.8 %, solves 214 → 248,
   abstentions unchanged; queries +60 %.
 * **Limits:** not a proof; 2 in-scope false acceptances remain; kinds unseen at build are outside the scope.
+* **Validation / sealed:** ba/val 8/8 (gate PASSED); sealed 8/16 (criterion NOT MET): X3 + X5 8/8 with 0 silent (every
+  relearned machine accepted and correct); X6 0/8 for every arm (no NEXUS false acceptance: all X6 relearns were refused and
+  escalated; the X6 human patch of the harness is itself wrong).
 * **Rollback:** `NexusArmStrong` / `oc_platform.NexusArmCertified`.
-* **Status:** provisionally integrated.
+* **Status:** provisionally integrated (sealed criterion not met, so not independently confirmed).
 
 ### Learned hypothesis-space growth rule (Part 2 rerun under the bounded check)
 * **Module:** `oc_learner.TablePolicy` on `artifacts/ba_dev/records_bounded.jsonl`.
 * **Call site:** `ba_platform.learn_class_bounded(growth=...)` (first line; full-space fallback when nothing is accepted).
 * **Evidence:** 265 / 300 vs Hand 248, Shuffled 241, Random 213 (sign tests p ≤ 0.0001); false acceptance 1.1 %; energy 12/12.
-* **Status:** provisionally integrated (promoted by the pre-registered rule S4).
+* **Status:** provisionally integrated (promoted by the pre-registered rule S4; in the sealed stack as the first-line learner
+  with the full-space fallback, so its own sealed contribution is not isolated).
 
 ### Extended certification (oc revision 1)
 * **Status:** inactive in the ba stack (replaced by the bounded acceptance check).
@@ -171,3 +175,7 @@ A failed method does not retire its capability goal. Its component is simply lef
 ### Self-evolution (oc Part 4) — honest scope
 The c84fc76 Part 4 artifacts (weights such as `random_word = 0.25`, `occam` order, budgets, revision flags) demonstrate a
 **search over learner configurations**, not NEXUS inventing a new learning algorithm. Status unchanged: inactive.
+
+### Open capability gap found by the ba sealed test
+* **Undeclared value-field rename (X6):** detected only by spot checks (7/8, late); not repairable by any arm (the lifecycle
+  learner has no field-mapping inference; the harness human patch is also wrong). Status: gap, no component.

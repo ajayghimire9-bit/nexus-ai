@@ -1,0 +1,70 @@
+{
+ "split": "test",
+ "index": 15,
+ "seed": 13296,
+ "arm": "NEXUS_U5",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "NEXUS_U5",
+  "project": 13296,
+  "domain": "logistics",
+  "fault": "X6",
+  "family": "L.vol",
+  "lifecycle": "L.barrier",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": false,
+  "bad_A": 0,
+  "bad_B": 15,
+  "claims_healthy": true,
+  "silent": true,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "repairs": [
+   {
+    "tick": 13,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   }
+  ],
+  "alarms": 1,
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.883
+   },
+   "value_stats": {
+    "cpu_s": 7.823,
+    "built": 441964,
+    "kept": 60000,
+    "dup": 341729,
+    "err": 40235,
+    "scored": 0,
+    "solved": true,
+    "level": null,
+    "size": 15,
+    "stage": "decompose"
+   },
+   "build_cpu_s": 20.876,
+   "n_modes": 6,
+   "n_regs": 1,
+   "b_queries": 287
+  },
+  "cost": {
+   "build_cpu_s": 20.877,
+   "ops_cpu_s": 0.009,
+   "queries": {
+    "build_labels": 560,
+    "spot": 81,
+    "incident": 520,
+    "mq": 507,
+    "mq_events": 2904
+   }
+  },
+  "deployed_source": null,
+  "build_source": "def value_fn(r, t):\n    return (r.get('height') * (r.get('l') * (r.get('w') / t.get('cm3_per_l'))))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('height'), (int, float)) and not isinstance(r.get('height'), bool)) and (isinstance(r.get('l'), (int, float)) and not isinstance(r.get('l'), bool))) and (isinstance(r.get('w'), (int, float)) and not isinstance(r.get('w'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('venue') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8b61e637:\n    \"\"\"Invented by continuation splitting: 6 control modes (mode_0 = start), 1 data register(s).\n    witness: histories ['CREATE'] vs [] differ after continuation ['CANCEL']\n    witness: histories ['CREATE', 'CANCEL'] vs [] differ after continuation ['CREATE']\n    witness: histories ['CREATE', 'PACK'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PAY'] vs ['CREATE'] differ after continuation ['PACK']\n    witness: histories ['CREATE', 'PACK', 'PAY'] vs ['CREATE', 'CANCEL'] differ after continuation ['DELIVER']\n    witness reg_0: in mode_1 histories ['CREATE'] / ['CREATE'] emit 527.45 / 139.24 after ['CANCEL']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        x0 = rec.get('amt')\n        x0 = x0 if isinstance(x0, (int, float)) and not isinstance(x0, bool) else 0\n        if m == 0:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = []\n                self.reg_0[k] = x0\n                self.mode[k] = 1\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = []\n                self.mode[k] = 3\n                return out\n            elif s == 'PAY':\n                out = []\n                self.mode[k] = 4\n                return out\n        elif m == 2:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 3:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n        elif m == 4:\n            if s == 'CANCEL':\n                out = [('cancelled', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PACK':\n                out = [('release', r0, None)]\n                self.mode[k] = 5\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 5:\n            if s == 'CANCEL':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CREATE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DELIVER':\n                out = [('delivered', r0, None)]\n                self.mode[k] = 2\n                return out\n            elif s == 'PACK':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'PAY':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+ }
+}

@@ -1,0 +1,100 @@
+{
+ "split": "test",
+ "index": 13,
+ "seed": 13294,
+ "arm": "Fixed_Policy",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "Fixed_Policy",
+  "project": 13294,
+  "domain": "iot",
+  "fault": "X5",
+  "family": "I.celsius",
+  "lifecycle": "I.session",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "bad_A": 0,
+  "bad_B": 0,
+  "claims_healthy": true,
+  "silent": false,
+  "human_repairs": 8,
+  "independently_correct": false,
+  "crash_ok": true,
+  "repairs": [
+   {
+    "tick": 9,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 10,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 11,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 12,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 13,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 14,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 15,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 16,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   }
+  ],
+  "alarms": 8,
+  "build": {
+   "build_cpu_s": 0.0
+  },
+  "cost": {
+   "build_cpu_s": 0.0,
+   "ops_cpu_s": 0.009,
+   "queries": {
+    "build_labels": 0,
+    "spot": 62,
+    "incident": 2760,
+    "mq": 0,
+    "mq_events": 0
+   }
+  },
+  "deployed_source": null,
+  "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return ((((float(r.get('temperature')) / 100) if (t.get('units').get('temperature') == 'minor') else float(r.get('temperature'))) - t.get('f_zero')) * t.get('c_per_f'))\n    return ((float(r.get('temperature')) - t.get('f_zero')) * t.get('c_per_f'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('temperature'), (int, float)) and not isinstance(r.get('temperature'), bool))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}

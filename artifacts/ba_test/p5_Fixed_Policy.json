@@ -1,0 +1,51 @@
+{
+ "split": "test",
+ "index": 5,
+ "seed": 13286,
+ "arm": "Fixed_Policy",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "Fixed_Policy",
+  "project": 13286,
+  "domain": "iot",
+  "fault": "X3",
+  "family": "I.calib",
+  "lifecycle": "I.session",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": false,
+  "bad_A": 0,
+  "bad_B": 16,
+  "claims_healthy": true,
+  "silent": true,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "repairs": [
+   {
+    "tick": 13,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   }
+  ],
+  "alarms": 1,
+  "build": {
+   "build_cpu_s": 0.0
+  },
+  "cost": {
+   "build_cpu_s": 0.0,
+   "ops_cpu_s": 0.004,
+   "queries": {
+    "build_labels": 0,
+    "spot": 80,
+    "incident": 520,
+    "mq": 0,
+    "mq_events": 0
+   }
+  },
+  "deployed_source": null,
+  "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return ((((float(r.get('raw')) / 100) if (t.get('units').get('raw') == 'minor') else float(r.get('raw'))) - t.get('offset')) * t.get('gain'))\n    return ((float(r.get('raw')) - t.get('offset')) * t.get('gain'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('raw'), (int, float)) and not isinstance(r.get('raw'), bool))):\n        return 'q:missing'\n    elif (r.get('device_type') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}

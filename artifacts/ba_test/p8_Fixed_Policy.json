@@ -1,0 +1,51 @@
+{
+ "split": "test",
+ "index": 8,
+ "seed": 13289,
+ "arm": "Fixed_Policy",
+ "status": "COMPLETE",
+ "result": {
+  "arm": "Fixed_Policy",
+  "project": 13289,
+  "domain": "clearing",
+  "fault": "X6",
+  "family": "C.accrued",
+  "lifecycle": "C.clearing",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": false,
+  "bad_A": 0,
+  "bad_B": 20,
+  "claims_healthy": true,
+  "silent": true,
+  "human_repairs": 1,
+  "independently_correct": false,
+  "crash_ok": true,
+  "repairs": [
+   {
+    "tick": 13,
+    "kind": "escalated",
+    "alarms": [
+     "B:spot_check"
+    ]
+   }
+  ],
+  "alarms": 1,
+  "build": {
+   "build_cpu_s": 0.0
+  },
+  "cost": {
+   "build_cpu_s": 0.0,
+   "ops_cpu_s": 0.005,
+   "queries": {
+    "build_labels": 0,
+    "spot": 55,
+    "incident": 520,
+    "mq": 0,
+    "mq_events": 0
+   }
+  },
+  "deployed_source": null,
+  "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((((float(r.get('notional_amt')) / 100) if (t.get('units').get('notional_amt') == 'minor') else float(r.get('notional_amt'))) * float(r.get('yield'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n    return (((float(r.get('notional_amt')) * float(r.get('yield'))) * float(r.get('tenor_days'))) / t.get('day_count'))\n\n\ndef status_fn(r, t):\n    if (((not (isinstance(r.get('notional_amt'), (int, float)) and not isinstance(r.get('notional_amt'), bool))) or (not (isinstance(r.get('yield'), (int, float)) and not isinstance(r.get('yield'), bool)))) or (not (isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)))):\n        return 'q:missing'\n    elif (r.get('desk') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+ }
+}
