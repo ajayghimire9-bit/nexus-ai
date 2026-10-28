@@ -117,7 +117,8 @@ class _Gen:
                     if not X.isnum(X.get_path(e, f)):
                         continue
                     if boundary == "all_equal":
-                        X.set_path(e, f, 0 if j == pos else v0[f])
+                        if j == pos or X.isnum(v0[f]):                 # never write a non-number into a record
+                            X.set_path(e, f, 0 if j == pos else v0[f])
                     elif j == pos:
                         cur = X.get_path(e, f)
                         X.set_path(e, f, {"zero": 0, "unit": 1, "sign": -abs(cur) or -1.0}[boundary])

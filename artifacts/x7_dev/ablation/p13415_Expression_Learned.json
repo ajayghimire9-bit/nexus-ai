@@ -1,0 +1,564 @@
+{
+ "split": "x7_dev",
+ "ident": "13415",
+ "seed": 13415,
+ "arm": "Expression_Learned",
+ "group": "L",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13415,
+  "domain": "energy",
+  "fault": "XD2",
+  "lifecycle": "E.meter",
+  "arm": "Expression_Learned",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "first_B_alarm_tick": 9,
+   "schema_alarm_tick": 9,
+   "shape_alarm_tick": 9,
+   "detection_delay_ticks": 0,
+   "recovery_delay_ticks": 0,
+   "schema_fault_missed": false,
+   "escalation_ticks": [],
+   "wrong_accepted_adapters": 0,
+   "false_schema_incidents": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0
+  },
+  "solution_sources": {
+   "build": "growth",
+   "build_growth_steps": 4,
+   "relearns": [],
+   "mapping": [
+    "ADAPTER_ACCEPTED"
+   ],
+   "stages": [
+    "expression synthesis"
+   ],
+   "human": 0
+  },
+  "adapters": [
+   {
+    "field": "amount",
+    "path": "(if present(amount) then amount else (amount_meta.milli / 1000))",
+    "version": 1,
+    "when": "'amount' absent and every input of the expression is present",
+    "tier": 1,
+    "kinds": [
+     "ADJUST",
+     "READ"
+    ],
+    "paths": [
+     "amount",
+     "amount_meta.milli"
+    ],
+    "provenance": {
+     "shape": "missing",
+     "tier": 1,
+     "evidence_records": 9,
+     "archive_events": 360,
+     "candidates_in_tier": 139,
+     "consistent_in_tier": 1,
+     "probes": [],
+     "acceptance": {
+      "label": "TESTED_WITHIN_STATED_LIMITS",
+      "alphabet": [
+       "ADJUST",
+       "CLOSE",
+       "DISPUTE",
+       "OPEN",
+       "READ"
+      ],
+      "alphabet_size": 5,
+      "hyp_modes": 3,
+      "hyp_regs": 2,
+      "adapter_inputs": [
+       "amount_meta.milli"
+      ],
+      "exhaustive": {
+       "horizon": 3,
+       "words_per_shape": 125,
+       "value_draws": "1 generic per word"
+      },
+      "assumptions": [
+       "per-key machines over kinds observed at build",
+       "register updates in the learner's class",
+       "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+      ],
+      "structural": {
+       "tests": 150,
+       "cap": 700,
+       "loaded_states": 7,
+       "flush_paths": 6,
+       "cap_reached": false
+      },
+      "mixed_old_new_tests": 120,
+      "runs": {
+       "exhaustive_new": 125,
+       "exhaustive_old": 0,
+       "depth0": 25,
+       "depth1": 125,
+       "boundary": 25,
+       "mixed": 120
+      },
+      "queries": 420,
+      "stopped": "passed"
+     }
+    }
+   }
+  ],
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:shape_change",
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.255,
+    "queries": 615,
+    "growth_steps": 4
+   },
+   {
+    "step": "dependencies",
+    "pruned": true,
+    "report": {
+     "regs_before": 2,
+     "dead_regs": [],
+     "unbound_fields": [
+      {
+       "reg": 0,
+       "field": "amount"
+      }
+     ],
+     "identity_updates_removed": 0,
+     "reads_before": [
+      "amount"
+     ],
+     "reads_after": [
+      "amount"
+     ],
+     "regs_after": 2,
+     "sensitivity": {
+      "removed_inputs": [],
+      "streams": 9,
+      "disagreeing_events": 0
+     }
+    },
+    "reads": {
+     "ADJUST": {
+      "amount": [
+       "reg_1 update in mode_1"
+      ]
+     },
+     "READ": {
+      "amount": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "064743d5e34f1d760a175308e9833a0206fcaf673c8ab968cb729215a870395a",
+    "emitted_reads": {
+     "ADJUST": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     },
+     "CLOSE": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "DISPUTE": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "OPEN": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "READ": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   },
+   {
+    "mode": "expression",
+    "incidents": 9,
+    "notices": 16,
+    "expected": [
+     "amount"
+    ],
+    "shape": "missing",
+    "leaves": {
+     "numeric": [
+      "amount_meta.milli",
+      "retry",
+      "src",
+      "ts"
+     ],
+     "parse": []
+    },
+    "bodies_per_tier": {
+     "0": 4,
+     "1": 139,
+     "2": 3975
+    },
+    "tiers": [
+     {
+      "tier": 0,
+      "candidates": 4,
+      "consistent": [],
+      "n_consistent": 0
+     },
+     {
+      "tier": 1,
+      "candidates": 139,
+      "consistent": [
+       "(if present(amount) then amount else (amount_meta.milli / 1000))"
+      ],
+      "n_consistent": 1,
+      "acceptance": [
+       {
+        "expr": "(if present(amount) then amount else (amount_meta.milli / 1000))",
+        "scope": {
+         "label": "TESTED_WITHIN_STATED_LIMITS",
+         "alphabet": [
+          "ADJUST",
+          "CLOSE",
+          "DISPUTE",
+          "OPEN",
+          "READ"
+         ],
+         "alphabet_size": 5,
+         "hyp_modes": 3,
+         "hyp_regs": 2,
+         "adapter_inputs": [
+          "amount_meta.milli"
+         ],
+         "exhaustive": {
+          "horizon": 3,
+          "words_per_shape": 125,
+          "value_draws": "1 generic per word"
+         },
+         "assumptions": [
+          "per-key machines over kinds observed at build",
+          "register updates in the learner's class",
+          "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+         ],
+         "structural": {
+          "tests": 150,
+          "cap": 700,
+          "loaded_states": 7,
+          "flush_paths": 6,
+          "cap_reached": false
+         },
+         "mixed_old_new_tests": 120,
+         "runs": {
+          "exhaustive_new": 125,
+          "exhaustive_old": 0,
+          "depth0": 25,
+          "depth1": 125,
+          "boundary": 25,
+          "mixed": 120
+         },
+         "queries": 420,
+         "stopped": "passed"
+        }
+       }
+      ]
+     }
+    ],
+    "outcome": "ADAPTER_ACCEPTED",
+    "mapping": {
+     "field": "amount",
+     "path": "(if present(amount) then amount else (amount_meta.milli / 1000))",
+     "version": 1,
+     "when": "'amount' absent and every input of the expression is present",
+     "tier": 1,
+     "kinds": [
+      "ADJUST",
+      "READ"
+     ],
+     "paths": [
+      "amount",
+      "amount_meta.milli"
+     ],
+     "provenance": {
+      "shape": "missing",
+      "tier": 1,
+      "evidence_records": 9,
+      "archive_events": 360,
+      "candidates_in_tier": 139,
+      "consistent_in_tier": 1,
+      "probes": [],
+      "acceptance": {
+       "label": "TESTED_WITHIN_STATED_LIMITS",
+       "alphabet": [
+        "ADJUST",
+        "CLOSE",
+        "DISPUTE",
+        "OPEN",
+        "READ"
+       ],
+       "alphabet_size": 5,
+       "hyp_modes": 3,
+       "hyp_regs": 2,
+       "adapter_inputs": [
+        "amount_meta.milli"
+       ],
+       "exhaustive": {
+        "horizon": 3,
+        "words_per_shape": 125,
+        "value_draws": "1 generic per word"
+       },
+       "assumptions": [
+        "per-key machines over kinds observed at build",
+        "register updates in the learner's class",
+        "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+       ],
+       "structural": {
+        "tests": 150,
+        "cap": 700,
+        "loaded_states": 7,
+        "flush_paths": 6,
+        "cap_reached": false
+       },
+       "mixed_old_new_tests": 120,
+       "runs": {
+        "exhaustive_new": 125,
+        "exhaustive_old": 0,
+        "depth0": 25,
+        "depth1": 125,
+        "boundary": 25,
+        "mixed": 120
+       },
+       "queries": 420,
+       "stopped": "passed"
+      }
+     }
+    },
+    "consistency_checks": 143,
+    "cpu_s": 0.366,
+    "step": "mapping_repair",
+    "mq": 420,
+    "evidence_example": {
+     "raw": {
+      "ref": "E41500010",
+      "msg_type": "ADJUST",
+      "ts": 9001,
+      "retry": 9,
+      "src": 3,
+      "amount_meta": {
+       "milli": 891790,
+       "src": "m2"
+      }
+     },
+     "expected_fields": [
+      "amount"
+     ],
+     "observed_fields": [
+      "amount_meta",
+      "msg_type",
+      "ref",
+      "retry",
+      "src",
+      "ts"
+     ],
+     "kind": "ADJUST",
+     "mapping_version": 0,
+     "dependencies": {
+      "amount": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 2,
+    "cpu_s": 20.407
+   },
+   "value_stats": {
+    "cpu_s": 0.613,
+    "built": 44728,
+    "kept": 7744,
+    "dup": 33860,
+    "err": 3124,
+    "scored": 0,
+    "solved": true,
+    "level": 13,
+    "size": 11,
+    "stage": "construct"
+   },
+   "build_A_cpu_s": 21.068,
+   "n_modes": 3,
+   "n_regs": 2,
+   "b_queries": 615
+  },
+  "cost": {
+   "build_A_cpu_s": 21.068,
+   "build_A_shared": true,
+   "build_A_cached_here": false,
+   "build_B_cpu_s": 0.256,
+   "build_B_shared_by": [
+    "Expression_Learned",
+    "FieldOnly_Learned",
+    "NoPrune_Learned",
+    "NoMapping_Learned"
+   ],
+   "build_wall_s": null,
+   "build_queries": {
+    "build_labels": 560,
+    "spot": 0,
+    "incident": 0,
+    "mq": 833,
+    "mq_events": 3903
+   },
+   "ops_cpu_s": 0.376,
+   "operator_ops_cpu_s": 0.374,
+   "ops_wall_s": 0.376,
+   "queries": {
+    "build_labels": 560,
+    "spot": 125,
+    "incident": 360,
+    "mq": 1253,
+    "mq_events": 5731
+   },
+   "mapping_cpu_s": 0.366,
+   "mapping_mq": 420,
+   "relearn_cpu_s": 0
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('power_w') / (r.get('volts') * r.get('i_rms')))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool)) and (isinstance(r.get('volts'), (int, float)) and not isinstance(r.get('volts'), bool))) and (isinstance(r.get('i_rms'), (int, float)) and not isinstance(r.get('i_rms'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8d294bd7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['OPEN'] vs [] differ after continuation ['ADJUST']\n    witness: histories ['OPEN', 'DISPUTE'] vs [] differ after continuation ['OPEN']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ADJUST':\n                out = []\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'CLOSE':\n                out = [('bill', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'DISPUTE':\n                out = []\n                self.mode[k] = 2\n                return out\n            elif s == 'OPEN':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        elif m == 2:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = [('disputed', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('power_w') / (r.get('volts') * r.get('i_rms')))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool)) and (isinstance(r.get('volts'), (int, float)) and not isinstance(r.get('volts'), bool))) and (isinstance(r.get('i_rms'), (int, float)) and not isinstance(r.get('i_rms'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8d294bd7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['OPEN'] vs [] differ after continuation ['ADJUST']\n    witness: histories ['OPEN', 'DISPUTE'] vs [] differ after continuation ['OPEN']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ADJUST':\n                out = []\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'CLOSE':\n                out = [('bill', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'DISPUTE':\n                out = []\n                self.mode[k] = 2\n                return out\n            elif s == 'OPEN':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        elif m == 2:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = [('disputed', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n\n\n# field mapping v1: read 'amount' from '(if present(amount) then amount else (amount_meta.milli / 1000))' when 'amount' absent and every input of the expression is present"
+ }
+}

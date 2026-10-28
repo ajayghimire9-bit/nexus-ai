@@ -1,0 +1,579 @@
+{
+ "split": "x7_dev",
+ "ident": "13414",
+ "seed": 13414,
+ "arm": "NoPrune_Learned",
+ "group": "L",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13414,
+  "domain": "iot",
+  "fault": "XD2",
+  "lifecycle": "I.session",
+  "arm": "NoPrune_Learned",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "first_B_alarm_tick": 9,
+   "schema_alarm_tick": 9,
+   "shape_alarm_tick": null,
+   "detection_delay_ticks": 0,
+   "recovery_delay_ticks": 0,
+   "schema_fault_missed": false,
+   "escalation_ticks": [],
+   "wrong_accepted_adapters": 0,
+   "false_schema_incidents": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0
+  },
+  "solution_sources": {
+   "build": "growth",
+   "build_growth_steps": 2,
+   "relearns": [],
+   "mapping": [
+    "ADAPTER_ACCEPTED"
+   ],
+   "stages": [
+    "expression synthesis"
+   ],
+   "human": 0
+  },
+  "adapters": [
+   {
+    "field": "amount",
+    "path": "(if present(amount) then amount else (amount_meta.milli / 1000))",
+    "version": 1,
+    "when": "'amount' absent and every input of the expression is present",
+    "tier": 1,
+    "kinds": [
+     "CONNECT",
+     "DISCONNECT",
+     "READ"
+    ],
+    "paths": [
+     "amount",
+     "amount_meta.milli"
+    ],
+    "provenance": {
+     "shape": "missing",
+     "tier": 1,
+     "evidence_records": 22,
+     "archive_events": 360,
+     "candidates_in_tier": 147,
+     "consistent_in_tier": 1,
+     "probes": [],
+     "acceptance": {
+      "label": "TESTED_WITHIN_STATED_LIMITS",
+      "alphabet": [
+       "CONNECT",
+       "DISCONNECT",
+       "READ"
+      ],
+      "alphabet_size": 3,
+      "hyp_modes": 2,
+      "hyp_regs": 2,
+      "adapter_inputs": [
+       "amount_meta.milli"
+      ],
+      "exhaustive": {
+       "horizon": 5,
+       "words_per_shape": 243,
+       "value_draws": "1 generic per word"
+      },
+      "assumptions": [
+       "per-key machines over kinds observed at build",
+       "register updates in the learner's class",
+       "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+      ],
+      "structural": {
+       "tests": 24,
+       "cap": 700,
+       "loaded_states": 3,
+       "flush_paths": 4,
+       "cap_reached": false
+      },
+      "mixed_old_new_tests": 24,
+      "runs": {
+       "exhaustive_new": 243,
+       "exhaustive_old": 0,
+       "depth0": 6,
+       "depth1": 18,
+       "boundary": 6,
+       "mixed": 24
+      },
+      "queries": 297,
+      "stopped": "passed"
+     }
+    }
+   }
+  ],
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:spot_check"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.151,
+    "queries": 391,
+    "growth_steps": 2
+   },
+   {
+    "step": "dependencies",
+    "pruned": false,
+    "report": null,
+    "reads": {
+     "CONNECT": {
+      "amount": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "DISCONNECT": {
+      "amount": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "READ": {
+      "amount": [
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "60f428374e8569407ba9f3d7b6628e93e575231f2b8e13a44c470145ff822bf0",
+    "emitted_reads": {
+     "CONNECT": {
+      "amount": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "DISCONNECT": {
+      "amount": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "READ": {
+      "amount": [
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   },
+   {
+    "mode": "expression",
+    "incidents": 22,
+    "notices": 0,
+    "expected": [
+     "amount"
+    ],
+    "shape": "missing",
+    "leaves": {
+     "numeric": [
+      "amount_meta.milli",
+      "lsn",
+      "shard",
+      "src"
+     ],
+     "parse": []
+    },
+    "bodies_per_tier": {
+     "0": 4,
+     "1": 147,
+     "2": 4309
+    },
+    "tiers": [
+     {
+      "tier": 0,
+      "candidates": 4,
+      "consistent": [
+       "(if present(amount) then amount else amount_meta.milli)",
+       "(if present(amount) then amount else lsn)",
+       "(if present(amount) then amount else shard)",
+       "(if present(amount) then amount else src)"
+      ],
+      "n_consistent": 4,
+      "probes": [
+       {
+        "queries": 1,
+        "attempts": 3,
+        "before": 4,
+        "after": 1
+       }
+      ],
+      "acceptance": [
+       {
+        "expr": "(if present(amount) then amount else amount_meta.milli)",
+        "scope": {
+         "label": "TESTED_WITHIN_STATED_LIMITS",
+         "alphabet": [
+          "CONNECT",
+          "DISCONNECT",
+          "READ"
+         ],
+         "alphabet_size": 3,
+         "hyp_modes": 2,
+         "hyp_regs": 2,
+         "adapter_inputs": [
+          "amount_meta.milli"
+         ],
+         "exhaustive": {
+          "horizon": 5,
+          "words_per_shape": 243,
+          "value_draws": "1 generic per word"
+         },
+         "assumptions": [
+          "per-key machines over kinds observed at build",
+          "register updates in the learner's class",
+          "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+         ],
+         "runs": {
+          "exhaustive_new": 17,
+          "exhaustive_old": 0,
+          "depth0": 0,
+          "depth1": 0,
+          "boundary": 0,
+          "mixed": 0
+         },
+         "queries": 17,
+         "stopped": "counterexample"
+        }
+       }
+      ]
+     },
+     {
+      "tier": 1,
+      "candidates": 147,
+      "consistent": [
+       "(if present(amount) then amount else (amount_meta.milli / 1000))"
+      ],
+      "n_consistent": 1,
+      "acceptance": [
+       {
+        "expr": "(if present(amount) then amount else (amount_meta.milli / 1000))",
+        "scope": {
+         "label": "TESTED_WITHIN_STATED_LIMITS",
+         "alphabet": [
+          "CONNECT",
+          "DISCONNECT",
+          "READ"
+         ],
+         "alphabet_size": 3,
+         "hyp_modes": 2,
+         "hyp_regs": 2,
+         "adapter_inputs": [
+          "amount_meta.milli"
+         ],
+         "exhaustive": {
+          "horizon": 5,
+          "words_per_shape": 243,
+          "value_draws": "1 generic per word"
+         },
+         "assumptions": [
+          "per-key machines over kinds observed at build",
+          "register updates in the learner's class",
+          "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+         ],
+         "structural": {
+          "tests": 24,
+          "cap": 700,
+          "loaded_states": 3,
+          "flush_paths": 4,
+          "cap_reached": false
+         },
+         "mixed_old_new_tests": 24,
+         "runs": {
+          "exhaustive_new": 243,
+          "exhaustive_old": 0,
+          "depth0": 6,
+          "depth1": 18,
+          "boundary": 6,
+          "mixed": 24
+         },
+         "queries": 297,
+         "stopped": "passed"
+        }
+       }
+      ]
+     }
+    ],
+    "outcome": "ADAPTER_ACCEPTED",
+    "mapping": {
+     "field": "amount",
+     "path": "(if present(amount) then amount else (amount_meta.milli / 1000))",
+     "version": 1,
+     "when": "'amount' absent and every input of the expression is present",
+     "tier": 1,
+     "kinds": [
+      "CONNECT",
+      "DISCONNECT",
+      "READ"
+     ],
+     "paths": [
+      "amount",
+      "amount_meta.milli"
+     ],
+     "provenance": {
+      "shape": "missing",
+      "tier": 1,
+      "evidence_records": 22,
+      "archive_events": 360,
+      "candidates_in_tier": 147,
+      "consistent_in_tier": 1,
+      "probes": [],
+      "acceptance": {
+       "label": "TESTED_WITHIN_STATED_LIMITS",
+       "alphabet": [
+        "CONNECT",
+        "DISCONNECT",
+        "READ"
+       ],
+       "alphabet_size": 3,
+       "hyp_modes": 2,
+       "hyp_regs": 2,
+       "adapter_inputs": [
+        "amount_meta.milli"
+       ],
+       "exhaustive": {
+        "horizon": 5,
+        "words_per_shape": 243,
+        "value_draws": "1 generic per word"
+       },
+       "assumptions": [
+        "per-key machines over kinds observed at build",
+        "register updates in the learner's class",
+        "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+       ],
+       "structural": {
+        "tests": 24,
+        "cap": 700,
+        "loaded_states": 3,
+        "flush_paths": 4,
+        "cap_reached": false
+       },
+       "mixed_old_new_tests": 24,
+       "runs": {
+        "exhaustive_new": 243,
+        "exhaustive_old": 0,
+        "depth0": 6,
+        "depth1": 18,
+        "boundary": 6,
+        "mixed": 24
+       },
+       "queries": 297,
+       "stopped": "passed"
+      }
+     }
+    },
+    "consistency_checks": 151,
+    "cpu_s": 0.565,
+    "step": "mapping_repair",
+    "mq": 315,
+    "evidence_example": {
+     "raw": {
+      "entity": "E41400110",
+      "msg_type": "CONNECT",
+      "lsn": 9001,
+      "src": 3,
+      "shard": 2,
+      "amount_meta": {
+       "milli": 1600,
+       "src": "m2"
+      }
+     },
+     "expected_fields": [
+      "amount"
+     ],
+     "observed_fields": [
+      "amount_meta",
+      "entity",
+      "lsn",
+      "msg_type",
+      "shard",
+      "src"
+     ],
+     "kind": "CONNECT",
+     "mapping_version": 0,
+     "dependencies": {
+      "amount": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     }
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.862
+   },
+   "value_stats": {
+    "cpu_s": 0.022,
+    "built": 1684,
+    "kept": 202,
+    "dup": 1175,
+    "err": 307,
+    "scored": 0,
+    "solved": true,
+    "level": 9,
+    "size": 7,
+    "stage": "construct"
+   },
+   "build_A_cpu_s": 12.966,
+   "n_modes": 2,
+   "n_regs": 2,
+   "b_queries": 391
+  },
+  "cost": {
+   "build_A_cpu_s": 12.966,
+   "build_A_shared": true,
+   "build_A_cached_here": false,
+   "build_B_cpu_s": 0.151,
+   "build_B_shared_by": [
+    "Expression_Learned",
+    "FieldOnly_Learned",
+    "NoPrune_Learned",
+    "NoMapping_Learned"
+   ],
+   "build_wall_s": null,
+   "build_queries": {
+    "build_labels": 560,
+    "spot": 0,
+    "incident": 0,
+    "mq": 470,
+    "mq_events": 2420
+   },
+   "ops_cpu_s": 0.574,
+   "operator_ops_cpu_s": 0.572,
+   "ops_wall_s": 0.574,
+   "queries": {
+    "build_labels": 560,
+    "spot": 103,
+    "incident": 360,
+    "mq": 785,
+    "mq_events": 3949
+   },
+   "mapping_cpu_s": 0.565,
+   "mapping_mq": 315,
+   "relearn_cpu_s": 0
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('reading') - r.get('previous'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('reading'), (int, float)) and not isinstance(r.get('reading'), bool)) and (isinstance(r.get('previous'), (int, float)) and not isinstance(r.get('previous'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('entity'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('reading') - r.get('previous'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('reading'), (int, float)) and not isinstance(r.get('reading'), bool)) and (isinstance(r.get('previous'), (int, float)) and not isinstance(r.get('previous'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('entity'), rec.get('msg_type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n\n\n# field mapping v1: read 'amount' from '(if present(amount) then amount else (amount_meta.milli / 1000))' when 'amount' absent and every input of the expression is present"
+ }
+}

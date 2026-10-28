@@ -1,0 +1,577 @@
+{
+ "split": "sc_dev",
+ "ident": "13303",
+ "seed": 13303,
+ "arm": "Expression_Learned",
+ "group": "L",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13303,
+  "domain": "energy",
+  "fault": "X6",
+  "lifecycle": "E.meter",
+  "arm": "Expression_Learned",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "first_B_alarm_tick": 9,
+   "schema_alarm_tick": 9,
+   "shape_alarm_tick": 9,
+   "detection_delay_ticks": 0,
+   "recovery_delay_ticks": 0,
+   "schema_fault_missed": false,
+   "escalation_ticks": [],
+   "wrong_accepted_adapters": 0,
+   "false_schema_incidents": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0
+  },
+  "solution_sources": {
+   "build": "growth",
+   "build_growth_steps": 4,
+   "relearns": [],
+   "mapping": [
+    "ADAPTER_ACCEPTED"
+   ],
+   "stages": [
+    "field selection"
+   ],
+   "human": 0
+  },
+  "adapters": [
+   {
+    "field": "amount",
+    "path": "(if present(amount) then amount else amount_amount)",
+    "version": 1,
+    "when": "'amount' absent and every input of the expression is present",
+    "tier": 0,
+    "kinds": [
+     "ADJUST",
+     "READ"
+    ],
+    "paths": [
+     "amount",
+     "amount_amount"
+    ],
+    "provenance": {
+     "shape": "missing",
+     "tier": 0,
+     "evidence_records": 11,
+     "archive_events": 360,
+     "candidates_in_tier": 4,
+     "consistent_in_tier": 4,
+     "probes": [
+      {
+       "queries": 1,
+       "attempts": 5,
+       "before": 4,
+       "after": 1
+      }
+     ],
+     "acceptance": {
+      "label": "TESTED_WITHIN_STATED_LIMITS",
+      "alphabet": [
+       "ADJUST",
+       "CLOSE",
+       "DISPUTE",
+       "OPEN",
+       "READ"
+      ],
+      "alphabet_size": 5,
+      "hyp_modes": 3,
+      "hyp_regs": 2,
+      "adapter_inputs": [
+       "amount_amount"
+      ],
+      "exhaustive": {
+       "horizon": 3,
+       "words_per_shape": 125,
+       "value_draws": "1 generic per word"
+      },
+      "assumptions": [
+       "per-key machines over kinds observed at build",
+       "register updates in the learner's class",
+       "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+      ],
+      "structural": {
+       "tests": 150,
+       "cap": 700,
+       "loaded_states": 7,
+       "flush_paths": 6,
+       "cap_reached": false
+      },
+      "mixed_old_new_tests": 120,
+      "runs": {
+       "exhaustive_new": 125,
+       "exhaustive_old": 0,
+       "depth0": 25,
+       "depth1": 125,
+       "boundary": 25,
+       "mixed": 120
+      },
+      "queries": 420,
+      "stopped": "passed"
+     }
+    }
+   }
+  ],
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:schema_mismatch",
+     "B:shape_change"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.251,
+    "queries": 609,
+    "growth_steps": 4
+   },
+   {
+    "step": "dependencies",
+    "pruned": true,
+    "report": {
+     "regs_before": 2,
+     "dead_regs": [],
+     "unbound_fields": [
+      {
+       "reg": 0,
+       "field": "amount"
+      }
+     ],
+     "identity_updates_removed": 0,
+     "reads_before": [
+      "amount"
+     ],
+     "reads_after": [
+      "amount"
+     ],
+     "regs_after": 2,
+     "sensitivity": {
+      "removed_inputs": [],
+      "streams": 9,
+      "disagreeing_events": 0
+     }
+    },
+    "reads": {
+     "READ": {
+      "amount": [
+       "reg_1 update in mode_1"
+      ]
+     },
+     "ADJUST": {
+      "amount": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "3a77b1bc458be4f0daa7cc76d5e354503994e8cb440977b2417a69ea0ed100d3",
+    "emitted_reads": {
+     "ADJUST": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     },
+     "CLOSE": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "DISPUTE": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "OPEN": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "READ": {
+      "amount": [
+       "reg_0 binding (emitted code reads it)",
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   },
+   {
+    "mode": "expression",
+    "incidents": 11,
+    "notices": 29,
+    "expected": [
+     "amount"
+    ],
+    "shape": "missing",
+    "leaves": {
+     "numeric": [
+      "amount_amount",
+      "retry",
+      "shard",
+      "ts"
+     ],
+     "parse": []
+    },
+    "bodies_per_tier": {
+     "0": 4,
+     "1": 139,
+     "2": 4008
+    },
+    "tiers": [
+     {
+      "tier": 0,
+      "candidates": 4,
+      "consistent": [
+       "(if present(amount) then amount else amount_amount)",
+       "(if present(amount) then amount else retry)",
+       "(if present(amount) then amount else shard)",
+       "(if present(amount) then amount else ts)"
+      ],
+      "n_consistent": 4,
+      "probes": [
+       {
+        "queries": 1,
+        "attempts": 5,
+        "before": 4,
+        "after": 1
+       }
+      ],
+      "acceptance": [
+       {
+        "expr": "(if present(amount) then amount else amount_amount)",
+        "scope": {
+         "label": "TESTED_WITHIN_STATED_LIMITS",
+         "alphabet": [
+          "ADJUST",
+          "CLOSE",
+          "DISPUTE",
+          "OPEN",
+          "READ"
+         ],
+         "alphabet_size": 5,
+         "hyp_modes": 3,
+         "hyp_regs": 2,
+         "adapter_inputs": [
+          "amount_amount"
+         ],
+         "exhaustive": {
+          "horizon": 3,
+          "words_per_shape": 125,
+          "value_draws": "1 generic per word"
+         },
+         "assumptions": [
+          "per-key machines over kinds observed at build",
+          "register updates in the learner's class",
+          "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+         ],
+         "structural": {
+          "tests": 150,
+          "cap": 700,
+          "loaded_states": 7,
+          "flush_paths": 6,
+          "cap_reached": false
+         },
+         "mixed_old_new_tests": 120,
+         "runs": {
+          "exhaustive_new": 125,
+          "exhaustive_old": 0,
+          "depth0": 25,
+          "depth1": 125,
+          "boundary": 25,
+          "mixed": 120
+         },
+         "queries": 420,
+         "stopped": "passed"
+        }
+       }
+      ]
+     }
+    ],
+    "outcome": "ADAPTER_ACCEPTED",
+    "mapping": {
+     "field": "amount",
+     "path": "(if present(amount) then amount else amount_amount)",
+     "version": 1,
+     "when": "'amount' absent and every input of the expression is present",
+     "tier": 0,
+     "kinds": [
+      "ADJUST",
+      "READ"
+     ],
+     "paths": [
+      "amount",
+      "amount_amount"
+     ],
+     "provenance": {
+      "shape": "missing",
+      "tier": 0,
+      "evidence_records": 11,
+      "archive_events": 360,
+      "candidates_in_tier": 4,
+      "consistent_in_tier": 4,
+      "probes": [
+       {
+        "queries": 1,
+        "attempts": 5,
+        "before": 4,
+        "after": 1
+       }
+      ],
+      "acceptance": {
+       "label": "TESTED_WITHIN_STATED_LIMITS",
+       "alphabet": [
+        "ADJUST",
+        "CLOSE",
+        "DISPUTE",
+        "OPEN",
+        "READ"
+       ],
+       "alphabet_size": 5,
+       "hyp_modes": 3,
+       "hyp_regs": 2,
+       "adapter_inputs": [
+        "amount_amount"
+       ],
+       "exhaustive": {
+        "horizon": 3,
+        "words_per_shape": 125,
+        "value_draws": "1 generic per word"
+       },
+       "assumptions": [
+        "per-key machines over kinds observed at build",
+        "register updates in the learner's class",
+        "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+       ],
+       "structural": {
+        "tests": 150,
+        "cap": 700,
+        "loaded_states": 7,
+        "flush_paths": 6,
+        "cap_reached": false
+       },
+       "mixed_old_new_tests": 120,
+       "runs": {
+        "exhaustive_new": 125,
+        "exhaustive_old": 0,
+        "depth0": 25,
+        "depth1": 125,
+        "boundary": 25,
+        "mixed": 120
+       },
+       "queries": 420,
+       "stopped": "passed"
+      }
+     }
+    },
+    "consistency_checks": 4,
+    "cpu_s": 0.381,
+    "step": "mapping_repair",
+    "mq": 421,
+    "evidence_example": {
+     "raw": {
+      "order_id": "E30300023",
+      "type": "READ",
+      "amount_amount": 794.24,
+      "ts": 9001,
+      "shard": 7,
+      "retry": 7
+     },
+     "expected_fields": [
+      "amount"
+     ],
+     "observed_fields": [
+      "amount_amount",
+      "order_id",
+      "retry",
+      "shard",
+      "ts",
+      "type"
+     ],
+     "kind": "READ",
+     "mapping_version": 0,
+     "dependencies": {
+      "amount": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.769
+   },
+   "value_stats": {
+    "cpu_s": 7.889,
+    "built": 437097,
+    "kept": 60000,
+    "dup": 335256,
+    "err": 41841,
+    "scored": 0,
+    "solved": true,
+    "level": null,
+    "size": 23,
+    "stage": "decompose"
+   },
+   "build_A_cpu_s": 20.775,
+   "n_modes": 3,
+   "n_regs": 2,
+   "b_queries": 609
+  },
+  "cost": {
+   "build_A_cpu_s": 20.775,
+   "build_A_shared": true,
+   "build_A_cached_here": false,
+   "build_B_cpu_s": 0.252,
+   "build_B_shared_by": [
+    "Expression_Learned",
+    "FieldOnly_Learned"
+   ],
+   "build_wall_s": null,
+   "build_queries": {
+    "build_labels": 560,
+    "spot": 0,
+    "incident": 0,
+    "mq": 841,
+    "mq_events": 3953
+   },
+   "ops_cpu_s": 0.391,
+   "operator_ops_cpu_s": 0.388,
+   "ops_wall_s": 0.393,
+   "queries": {
+    "build_labels": 560,
+    "spot": 111,
+    "incident": 360,
+    "mq": 1262,
+    "mq_events": 5785
+   },
+   "mapping_cpu_s": 0.381,
+   "mapping_mq": 421,
+   "relearn_cpu_s": 0
+  },
+  "build_source": "def value_fn(r, t):\n    return (((100 * t.get('standing')) + (r.get('usage') * (r.get('unit_rate') / r.get('tenor_days')))) / (100 / r.get('tenor_days')))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)) and (isinstance(r.get('usage'), (int, float)) and not isinstance(r.get('usage'), bool))) and (isinstance(r.get('unit_rate'), (int, float)) and not isinstance(r.get('unit_rate'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8d294bd7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['OPEN'] vs [] differ after continuation ['ADJUST']\n    witness: histories ['OPEN', 'DISPUTE'] vs [] differ after continuation ['OPEN']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ADJUST':\n                out = []\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'CLOSE':\n                out = [('bill', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'DISPUTE':\n                out = []\n                self.mode[k] = 2\n                return out\n            elif s == 'OPEN':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        elif m == 2:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = [('disputed', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (((100 * t.get('standing')) + (r.get('usage') * (r.get('unit_rate') / r.get('tenor_days')))) / (100 / r.get('tenor_days')))\n\n\ndef status_fn(r, t):\n    if (not (((isinstance(r.get('tenor_days'), (int, float)) and not isinstance(r.get('tenor_days'), bool)) and (isinstance(r.get('usage'), (int, float)) and not isinstance(r.get('usage'), bool))) and (isinstance(r.get('unit_rate'), (int, float)) and not isinstance(r.get('unit_rate'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_8d294bd7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['OPEN'] vs [] differ after continuation ['ADJUST']\n    witness: histories ['OPEN', 'DISPUTE'] vs [] differ after continuation ['OPEN']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('type')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'ADJUST':\n                out = []\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'CLOSE':\n                out = [('bill', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'DISPUTE':\n                out = []\n                self.mode[k] = 2\n                return out\n            elif s == 'OPEN':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        elif m == 2:\n            if s == 'ADJUST':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'CLOSE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'DISPUTE':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'OPEN':\n                out = [('disputed', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n\n\n# field mapping v1: read 'amount' from '(if present(amount) then amount else amount_amount)' when 'amount' absent and every input of the expression is present"
+ }
+}

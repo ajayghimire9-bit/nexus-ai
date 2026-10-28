@@ -1,0 +1,563 @@
+{
+ "split": "x7_dev",
+ "ident": "13418",
+ "seed": 13418,
+ "arm": "Expression_Shuffled",
+ "group": "S",
+ "status": "COMPLETE",
+ "result": {
+  "project": 13418,
+  "domain": "iot",
+  "fault": "XD3",
+  "lifecycle": "I.session",
+  "arm": "Expression_Shuffled",
+  "outcome": "COMPLETED",
+  "completed": true,
+  "data_ok": true,
+  "claims_healthy": true,
+  "silent": false,
+  "incorrect_healthy_claim": false,
+  "human_repairs": 0,
+  "independently_correct": true,
+  "crash_ok": true,
+  "fields": {
+   "wrong_machine_deployed": false,
+   "nexus_served_wrong_rows": 0,
+   "schema_fault": true,
+   "first_B_alarm_tick": 9,
+   "schema_alarm_tick": null,
+   "shape_alarm_tick": 9,
+   "detection_delay_ticks": 0,
+   "recovery_delay_ticks": 0,
+   "schema_fault_missed": false,
+   "escalation_ticks": [],
+   "wrong_accepted_adapters": 0,
+   "false_schema_incidents": 0,
+   "unresolved_rows_final": 0,
+   "human_repair_failed": false,
+   "human_served_wrong_rows": 0
+  },
+  "solution_sources": {
+   "build": "growth",
+   "build_growth_steps": 3,
+   "relearns": [],
+   "mapping": [
+    "ADAPTER_ACCEPTED"
+   ],
+   "stages": [
+    "expression synthesis"
+   ],
+   "human": 0
+  },
+  "adapters": [
+   {
+    "field": "amt",
+    "path": "(if present(amt_v2) then (amt / 10) else amt)",
+    "version": 1,
+    "when": "'amt_v2' present",
+    "tier": 1,
+    "kinds": [
+     "CONNECT",
+     "DISCONNECT",
+     "READ"
+    ],
+    "paths": [
+     "amt",
+     "amt_v2"
+    ],
+    "provenance": {
+     "shape": "trigger",
+     "tier": 1,
+     "evidence_records": 40,
+     "archive_events": 360,
+     "candidates_in_tier": 191,
+     "consistent_in_tier": 1,
+     "probes": [],
+     "acceptance": {
+      "label": "TESTED_WITHIN_STATED_LIMITS",
+      "alphabet": [
+       "CONNECT",
+       "DISCONNECT",
+       "READ"
+      ],
+      "alphabet_size": 3,
+      "hyp_modes": 2,
+      "hyp_regs": 2,
+      "adapter_inputs": [
+       "amt",
+       "amt_v2"
+      ],
+      "exhaustive": {
+       "horizon": 5,
+       "words_per_shape": 243,
+       "value_draws": "1 generic per word"
+      },
+      "assumptions": [
+       "per-key machines over kinds observed at build",
+       "register updates in the learner's class",
+       "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+      ],
+      "structural": {
+       "tests": 24,
+       "cap": 700,
+       "loaded_states": 3,
+       "flush_paths": 4,
+       "cap_reached": false
+      },
+      "mixed_old_new_tests": 24,
+      "runs": {
+       "exhaustive_new": 243,
+       "exhaustive_old": 0,
+       "depth0": 6,
+       "depth1": 18,
+       "boundary": 6,
+       "mixed": 24
+      },
+      "queries": 297,
+      "stopped": "passed"
+     }
+    }
+   }
+  ],
+  "per_tick": {
+   "9": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "10": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "11": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "12": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "13": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "14": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "15": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   },
+   "16": {
+    "bad_A": 0,
+    "bad_B": 0,
+    "unresolved_rows": 0,
+    "served_by": "nexus"
+   }
+  },
+  "ledger": [
+   {
+    "tick": 9,
+    "kind": "tick",
+    "alarms": [
+     "B:shape_change"
+    ]
+   },
+   {
+    "tick": 9,
+    "kind": "repair_B",
+    "version": 1
+   },
+   {
+    "tick": 10,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 11,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 12,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 13,
+    "kind": "crash_recovery",
+    "identical": true
+   },
+   {
+    "tick": 13,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 14,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 15,
+    "kind": "tick",
+    "alarms": []
+   },
+   {
+    "tick": 16,
+    "kind": "tick",
+    "alarms": []
+   }
+  ],
+  "log": [
+   {
+    "step": "learn",
+    "learner": "growth",
+    "accepted": true,
+    "n_events": 320,
+    "filled_for_learning": [],
+    "cpu_s": 0.174,
+    "queries": 377,
+    "growth_steps": 3
+   },
+   {
+    "step": "dependencies",
+    "pruned": true,
+    "report": {
+     "regs_before": 2,
+     "dead_regs": [],
+     "unbound_fields": [],
+     "identity_updates_removed": 0,
+     "reads_before": [
+      "amt"
+     ],
+     "reads_after": [
+      "amt"
+     ],
+     "regs_after": 2,
+     "sensitivity": {
+      "removed_inputs": [],
+      "streams": 9,
+      "disagreeing_events": 0
+     }
+    },
+    "reads": {
+     "READ": {
+      "amt": [
+       "reg_1 update in mode_1"
+      ]
+     }
+    },
+    "unpruned_class_sha256": "82123d4e0eec1c3985e4c65f11b9fe80961ef026f2dff16657b783c7d569923f",
+    "emitted_reads": {
+     "CONNECT": {
+      "amt": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "DISCONNECT": {
+      "amt": [
+       "reg_1 binding (emitted code reads it)"
+      ]
+     },
+     "READ": {
+      "amt": [
+       "reg_1 binding (emitted code reads it)",
+       "reg_1 update in mode_1"
+      ]
+     }
+    }
+   },
+   {
+    "mode": "expression",
+    "incidents": 0,
+    "notices": 40,
+    "notice_kinds": [
+     "CONNECT",
+     "DISCONNECT",
+     "READ"
+    ],
+    "targets": [
+     "amt"
+    ],
+    "triggers": [
+     "amt_v2"
+    ],
+    "shape": "trigger",
+    "benign_check": {
+     "label": "TESTED_WITHIN_STATED_LIMITS",
+     "alphabet": [
+      "CONNECT",
+      "DISCONNECT",
+      "READ"
+     ],
+     "alphabet_size": 3,
+     "hyp_modes": 2,
+     "hyp_regs": 2,
+     "adapter_inputs": [
+      "amt",
+      "amt_v2",
+      "batch",
+      "seq",
+      "shard"
+     ],
+     "exhaustive": {
+      "horizon": 5,
+      "words_per_shape": 243,
+      "value_draws": "1 generic per word"
+     },
+     "assumptions": [
+      "per-key machines over kinds observed at build",
+      "register updates in the learner's class",
+      "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+     ],
+     "runs": {
+      "exhaustive_new": 11,
+      "exhaustive_old": 0,
+      "depth0": 0,
+      "depth1": 0,
+      "boundary": 0,
+      "mixed": 0
+     },
+     "queries": 11,
+     "stopped": "counterexample"
+    },
+    "leaves": {
+     "numeric": [
+      "amt",
+      "amt_v2",
+      "batch",
+      "seq",
+      "shard"
+     ],
+     "parse": []
+    },
+    "bodies_per_tier": {
+     "0": 5,
+     "1": 191,
+     "2": 6219
+    },
+    "tiers": [
+     {
+      "tier": 0,
+      "candidates": 5,
+      "consistent": [],
+      "n_consistent": 0
+     },
+     {
+      "tier": 1,
+      "candidates": 191,
+      "consistent": [
+       "(if present(amt_v2) then (amt / 10) else amt)"
+      ],
+      "n_consistent": 1,
+      "acceptance": [
+       {
+        "expr": "(if present(amt_v2) then (amt / 10) else amt)",
+        "scope": {
+         "label": "TESTED_WITHIN_STATED_LIMITS",
+         "alphabet": [
+          "CONNECT",
+          "DISCONNECT",
+          "READ"
+         ],
+         "alphabet_size": 3,
+         "hyp_modes": 2,
+         "hyp_regs": 2,
+         "adapter_inputs": [
+          "amt",
+          "amt_v2"
+         ],
+         "exhaustive": {
+          "horizon": 5,
+          "words_per_shape": 243,
+          "value_draws": "1 generic per word"
+         },
+         "assumptions": [
+          "per-key machines over kinds observed at build",
+          "register updates in the learner's class",
+          "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+         ],
+         "structural": {
+          "tests": 24,
+          "cap": 700,
+          "loaded_states": 3,
+          "flush_paths": 4,
+          "cap_reached": false
+         },
+         "mixed_old_new_tests": 24,
+         "runs": {
+          "exhaustive_new": 243,
+          "exhaustive_old": 0,
+          "depth0": 6,
+          "depth1": 18,
+          "boundary": 6,
+          "mixed": 24
+         },
+         "queries": 297,
+         "stopped": "passed"
+        }
+       }
+      ]
+     }
+    ],
+    "outcome": "ADAPTER_ACCEPTED",
+    "mapping": {
+     "field": "amt",
+     "path": "(if present(amt_v2) then (amt / 10) else amt)",
+     "version": 1,
+     "when": "'amt_v2' present",
+     "tier": 1,
+     "kinds": [
+      "CONNECT",
+      "DISCONNECT",
+      "READ"
+     ],
+     "paths": [
+      "amt",
+      "amt_v2"
+     ],
+     "provenance": {
+      "shape": "trigger",
+      "tier": 1,
+      "evidence_records": 40,
+      "archive_events": 360,
+      "candidates_in_tier": 191,
+      "consistent_in_tier": 1,
+      "probes": [],
+      "acceptance": {
+       "label": "TESTED_WITHIN_STATED_LIMITS",
+       "alphabet": [
+        "CONNECT",
+        "DISCONNECT",
+        "READ"
+       ],
+       "alphabet_size": 3,
+       "hyp_modes": 2,
+       "hyp_regs": 2,
+       "adapter_inputs": [
+        "amt",
+        "amt_v2"
+       ],
+       "exhaustive": {
+        "horizon": 5,
+        "words_per_shape": 243,
+        "value_draws": "1 generic per word"
+       },
+       "assumptions": [
+        "per-key machines over kinds observed at build",
+        "register updates in the learner's class",
+        "adapter inputs drawn from the evidence records' shape (ints 0-9, floats 1-400) + boundary draws"
+       ],
+       "structural": {
+        "tests": 24,
+        "cap": 700,
+        "loaded_states": 3,
+        "flush_paths": 4,
+        "cap_reached": false
+       },
+       "mixed_old_new_tests": 24,
+       "runs": {
+        "exhaustive_new": 243,
+        "exhaustive_old": 0,
+        "depth0": 6,
+        "depth1": 18,
+        "boundary": 6,
+        "mixed": 24
+       },
+       "queries": 297,
+       "stopped": "passed"
+      }
+     }
+    },
+    "consistency_checks": 197,
+    "cpu_s": 1.078,
+    "step": "mapping_repair",
+    "mq": 308,
+    "evidence_example": {
+     "raw": {
+      "device_id": "E41800024",
+      "event": "READ",
+      "amt": 199.0,
+      "seq": 9000,
+      "batch": 2,
+      "shard": 7,
+      "amt_v2": 1
+     },
+     "kind": "READ",
+     "new_paths": [
+      "amt_v2"
+     ]
+    }
+   }
+  ],
+  "build": {
+   "status_stats": {
+    "rounds": 1,
+    "cpu_s": 12.891
+   },
+   "value_stats": {
+    "cpu_s": 0.022,
+    "built": 1684,
+    "kept": 202,
+    "dup": 1175,
+    "err": 307,
+    "scored": 0,
+    "solved": true,
+    "level": 9,
+    "size": 7,
+    "stage": "construct"
+   },
+   "build_A_cpu_s": 12.998,
+   "n_modes": 2,
+   "n_regs": 2,
+   "b_queries": 377
+  },
+  "cost": {
+   "build_A_cpu_s": 12.998,
+   "build_A_shared": true,
+   "build_A_cached_here": true,
+   "build_B_cpu_s": 0.175,
+   "build_B_shared_by": [
+    "Expression_Shuffled"
+   ],
+   "build_wall_s": null,
+   "build_queries": {
+    "build_labels": 560,
+    "spot": 0,
+    "incident": 0,
+    "mq": 504,
+    "mq_events": 2618
+   },
+   "ops_cpu_s": 1.087,
+   "operator_ops_cpu_s": 1.086,
+   "ops_wall_s": 1.19,
+   "queries": {
+    "build_labels": 560,
+    "spot": 129,
+    "incident": 360,
+    "mq": 812,
+    "mq_events": 4113
+   },
+   "mapping_cpu_s": 1.078,
+   "mapping_mq": 308,
+   "relearn_cpu_s": 0
+  },
+  "build_source": "def value_fn(r, t):\n    return (r.get('latest') - r.get('prev'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)) and (isinstance(r.get('prev'), (int, float)) and not isinstance(r.get('prev'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+  "deployed_source": "def value_fn(r, t):\n    return (r.get('latest') - r.get('prev'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)) and (isinstance(r.get('prev'), (int, float)) and not isinstance(r.get('prev'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('desk') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n\n\n# field mapping v1: read 'amt' from '(if present(amt_v2) then (amt / 10) else amt)' when 'amt_v2' present"
+ }
+}
