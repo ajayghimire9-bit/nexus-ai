@@ -215,3 +215,176 @@ schedules are paired across arms.
 
 * Gate (frozen): ≥ 7/8, 0 silent, 8/8, 8/8. **PASSED**, so no revision was used.
 * Raw data: `artifacts/t7_val/`.
+
+## 2. Sealed confirmation (one-shot t7/test 12441–12456, frozen `99f504b`, manifest `2cdd1f4`) — criterion NOT MET (one build abstention)
+
+**Claim scope.** X3 and X4 are KNOWN fault classes (known since the u5 sealed test). These are **unseen instances of
+known classes**, across 4 domains including energy (new in t7). The arms are paired: same projects, same crash ticks, and
+the same initial spot-check schedule.
+
+### 2.1 Final sealed 7-measure scorecard (16 projects)
+
+| arm | independently correct | data correct | silent | completed | crash-identical | human repairs | build CPU s | ops CPU s | oracle labels | membership queries |
+|---|---|---|---|---|---|---|---|---|---|---|
+| NEXUS_Tournament_Winner | 14/16 | 15/16 | 0 | 15/16 | 15/16 | 1 | 417.0 | 382.4 | 14157 | 11544 |
+| NEXUS_U5 | 9/16 | 12/16 | 4 | 16/16 | 16/16 | 3 | 281.5 | 373.3 | 14018 | 6877 |
+| Fixed_Policy | 0/16 | 8/16 | 8 | 16/16 | 16/16 | 14 | 0.0 | 0.1 | 4661 | 0 |
+| Conventional | 0/16 | 0/16 | 16 | 16/16 | 16/16 | 0 | 0.0 | 0.0 | 0 | 0 |
+
+| measure | NEXUS_Tournament_Winner | paired NEXUS_U5 | reading |
+|---|---|---|---|
+| Correctness / 0 silent | **14/16 independently correct, 0 silent** | 9/16, 4 silent | +5 projects and −4 silent errors on identical workloads |
+| Completion | 15/16 (12447 energy: build ABSTAIN, lifecycle unsolved) | 16/16 | the sealed criterion requires 16/16, so it is **not met** |
+| Reliability | 15/15 operated projects crash-identical | 16/16 | |
+| Cost | build 417 s + ops 382 s CPU; 14.2 k oracle labels; 11.5 k membership queries | 282 + 373 s; 14.0 k labels; 6.9 k MQ | +22 % CPU and +68 % MQ, fully loaded |
+| Human dependence | 1 escalation (12451) | 3 | Fixed_Policy: 14 escalations, 8 silent |
+| Learning benefit | no learned component differs between the two NEXUS arms | – | the gain is from repair acceptance, not from learning |
+| Generalization | X3 8/8, X4 6/8; logistics, clearing and iot 4/4 each; energy 2/4 | X3 4/8, X4 5/8; energy 1/4 | energy remains the weak domain |
+
+* **Pre-registered criterion:**
+  * ≥ 14/16: met (14);
+  * 0 silent: met;
+  * 16/16 completed and crash-identical: **not met** (15/16);
+  * more than Fixed_Policy (0): met.
+* **Verdict: NOT MET.** It is not reported as a pass.
+* The paired comparison is descriptive (n = 16). It is the first sealed evidence that the priority-A acceptance
+  components cut silent errors (4 → 0) on unseen instances of known classes.
+* **Non-independent projects,** from committed outputs only:
+  * **12447 (energy X4, E.standing):** the `E.meter` lifecycle was unsolved at build, so the build abstained. NEXUS_U5
+    built a class there and needed a human repair.
+  * **12451 (energy X4):** both arms needed 1 escalation.
+
+### 2.2 The 7-trial verdict table (development outcomes under the addendum's rule)
+
+| trial | best numbers vs controls | outcome |
+|---|---|---|
+| 1 library (matched negative controls; **no FDR claim**) | 13 candidates; 0 admitted; work 649 vs 345 s | INCONCLUSIVE (underpowered) |
+| 1 state monitors (matched negative controls) | 226 quantities; 0 admitted (W +74 / −48) | INCONCLUSIVE (6 projects); validation seeds unspent |
+| 2 check selection | held-out kill 0.24 vs generic 0.54 vs unguided 0.80 | REJECTED FOR THIS SETTING (mutants not validated against an independent engine) |
+| 3 joint tool invention v2 | withheld 6/6 vs direct 6/6 (tool 13× cheaper) | REJECTED FOR THIS SETTING (no solve advantage) |
+| 4 GW transport | GW 77.0 s ≈ Random 75.5 s > Heuristic 57.5 s; ΔM 44.5 s | GW REJECTED FOR THIS SETTING; ΔM INCONCLUSIVE |
+| 5 experiment translation v2b | 1.00 vs 1.29 (info-gain) vs 0.91 (fresh) queries; CPU higher | REJECTED FOR THIS SETTING (v1/v2 INCONCLUSIVE: fidelity bug) |
+| 6 memory translator v1 | 38 = 38 (unchanged) solves; 93.8 vs 110.7 s (replay) | REJECTED FOR THIS SETTING; v2 deferred |
+| 7 64 KB genome (22.7 KB) | 0/5 lineage wins; no measurable effect | INCONCLUSIVE |
+| **A repair acceptance** | dev: 6/8 vs 4/8, silent 1 vs 2; **sealed: 14/16 vs 9/16, silent 0 vs 4** | PROMOTION CANDIDATE; sealed criterion not met (completion 15/16) |
+
+### 2.3 Verbatim code NEXUS wrote (sealed project 12454, IoT X3)
+
+* It was relearned with transition × continuation coverage at tick 9, after the new SUSPEND/RESUME symbols raised
+  `?unknown`.
+* It was correct for ticks 9–16. Paired NEXUS_U5 had 3 silent lifecycle errors on this project.
+* Excerpt of the class:
+
+```python
+class StateMachine_a9d5b9d7:
+    """Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).
+    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']
+    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']
+    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'CONNECT', 'READ', 'CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']
+    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'CONNECT', 'READ', 'CONNECT', 'READ'] emit 0 / 55.8 after ['DISCONNECT']
+    """
+
+    def __init__(self):
+        self.mode = {}
+        self.reg_0 = {}
+        self.reg_1 = {}
+
+    def ingest(self, rec):
+        k, s = rec.get('ref'), rec.get('event')
+        m = self.mode.get(k, 0)
+        r0 = self.reg_0.get(k, 0)
+        r1 = self.reg_1.get(k, 0)
+        x1 = rec.get('amount')
+        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0
+        if m == 0:
+            if s == 'CONNECT':
+                out = []
+                self.mode[k] = 1
+                return out
+            elif s == 'DISCONNECT':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'READ':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'RESUME':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'SUSPEND':
+                out = [('q:invalid', None, None)]
+                return out
+        elif m == 1:
+            if s == 'CONNECT':
+                out = [('session', r0, r1)]
+                self.reg_0[k] = 0
+                self.reg_1[k] = 0
+                return out
+            elif s == 'DISCONNECT':
+                out = [('session', r0, r1)]
+                self.reg_0[k] = 0
+                self.reg_1[k] = 0
+                self.mode[k] = 0
+                return out
+            elif s == 'READ':
+                out = []
+                self.reg_0[k] = (r0 + 1)
+                self.reg_1[k] = (r1 + x1)
+                return out
+            elif s == 'RESUME':
+                out = [('q:invalid', None, None)]
+                return out
+            elif s == 'SUSPEND':
+                out = []
+                self.mode[k] = 2
+                return out
+        elif m == 2:
+            if s == 'CONNECT':
+                out = [('session', r0, r1)]
+                self.reg_0[k] = 0
+                self.reg_1[k] = 0
+                self.mode[k] = 1
+                return out
+            elif s == 'DISCONNECT':
+                out = [('session', r0, r1)]
+                self.reg_0[k] = 0
+                self.reg_1[k] = 0
+                self.mode[k] = 0
+                return out
+            elif s == 'READ':
+                out = []
+                return out
+            elif s == 'RESUME':
+                out = []
+                self.mode[k] = 1
+                return out
+            elif s == 'SUSPEND':
+                out = [('q:invalid', None, None)]
+                return out
+        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm
+```
+
+* The other invented artifacts are committed:
+  * the Trial 3 stack representation and callers: `artifacts/t7_dev/t3v2.json`;
+  * the Trial 2 selected check sets per fold: `t2.json`;
+  * the Trial 6 memory-translator output and contract checks: `t6.json`;
+  * the experiment-type order of Trial 5: `t5v2b.json`.
+
+### 2.4 Resources
+
+* t7 total: about 10,140 s wall (ledger `t7-*`), including the 900 s-capped Trial 6 rerun and every failed or debug run.
+* Carried balance now 8,441 s. The t7 cap (14,000 s) was respected.
+* No GPU was used. Oracle labels and membership queries are in the scorecard. Source learning is reported per trial.
+
+### 2.5 Status after confirmation, and next step
+
+* **Status (see the register):**
+  * The priority-A components stay **provisionally integrated**. The sealed criterion was not met, so they are **not**
+    independently confirmed, although the paired sealed evidence favours them.
+  * Everything else stays experimental or inactive, as tabled.
+* **Unproved:**
+  * fault-class generalisation (no withheld class was tested);
+  * reliable energy-domain lifecycle learning;
+  * every learning-to-learn mechanism in Trials 1, 4, 5, 6 and 7.
+* **Next experiment:** make `E.meter`-style lifecycles learnable at build in full projects. The build stream there still
+  defeats the covered learner (1 dev abstain, 1 sealed abstain). Then re-confirm on fresh seeds with a genuinely
+  withheld fault class, under a new pre-registration.

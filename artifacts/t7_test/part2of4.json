@@ -1,0 +1,822 @@
+{
+ "split": "test",
+ "seeds": [
+  12442,
+  12446,
+  12450,
+  12454
+ ],
+ "status": "COMPLETE",
+ "results": [
+  {
+   "arm": "NEXUS_Tournament_Winner",
+   "project": 12442,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_B",
+     "version": 1
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.872
+    },
+    "value_stats": {
+     "cpu_s": 0.022,
+     "built": 1684,
+     "kept": 202,
+     "dup": 1175,
+     "err": 307,
+     "scored": 0,
+     "solved": true,
+     "level": 9,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.708,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 227
+   },
+   "cost": {
+    "build_cpu_s": 13.709,
+    "ops_cpu_s": 2.921,
+    "queries": {
+     "build_labels": 566,
+     "spot": 144,
+     "incident": 360,
+     "mq": 776,
+     "mq_events": 3813
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('cur') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('cur'), (int, float)) and not isinstance(r.get('cur'), bool)) and (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_a9d5b9d7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 48.7 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = []\n                self.mode[k] = 2\n                return out\n        elif m == 2:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n            elif s == 'RESUME':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('cur') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('cur'), (int, float)) and not isinstance(r.get('cur'), bool)) and (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 48.7 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5",
+   "project": 12442,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 1,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_B",
+     "version": 1
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.867
+    },
+    "value_stats": {
+     "cpu_s": 0.019,
+     "built": 1684,
+     "kept": 202,
+     "dup": 1175,
+     "err": 307,
+     "scored": 0,
+     "solved": true,
+     "level": 9,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.082,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 245
+   },
+   "cost": {
+    "build_cpu_s": 13.083,
+    "ops_cpu_s": 0.128,
+    "queries": {
+     "build_labels": 560,
+     "spot": 73,
+     "incident": 360,
+     "mq": 527,
+     "mq_events": 2953
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('cur') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('cur'), (int, float)) and not isinstance(r.get('cur'), bool)) and (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_a9d5b9d7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 5 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']\n    witness reg_0: in mode_1 histories ['CONNECT', 'CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'CONNECT', 'DISCONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'CONNECT', 'DISCONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 1.9 after ['DISCONNECT']\n    witness reg_2: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['CONNECT']\n    witness reg_3: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 48.7 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n        self.reg_2 = {}\n        self.reg_3 = {}\n        self.reg_4 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        r2 = self.reg_2.get(k, 0)\n        r3 = self.reg_3.get(k, 0)\n        r4 = self.reg_4.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        x3 = rec.get('reading')\n        x3 = x3 if isinstance(x3, (int, float)) and not isinstance(x3, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r2, r3)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                self.reg_2[k] = 1\n                self.reg_3[k] = x3\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = []\n                self.mode[k] = 2\n                return out\n        elif m == 2:\n            if s == 'CONNECT':\n                out = [('session', r4, r4)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                self.reg_2[k] = 1\n                self.reg_3[k] = x3\n                return out\n            elif s == 'RESUME':\n                out = []\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('cur') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('cur'), (int, float)) and not isinstance(r.get('cur'), bool)) and (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('warehouse') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'CONNECT', 'DISCONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'CONNECT', 'DISCONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 1.9 after ['DISCONNECT']\n    witness reg_2: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['CONNECT']\n    witness reg_3: in mode_1 histories ['CONNECT'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'READ', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ'] emit 0 / 48.7 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('op')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 12442,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 13,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 12,
+     "kind": "escalated",
+     "alarms": [
+      "B:spot_check"
+     ]
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 73,
+     "incident": 480,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('cur')) / 100) if (t.get('units').get('cur') == 'minor') else float(r.get('cur'))) - float(r.get('last')))\n    return (float(r.get('cur')) - float(r.get('last')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('cur'), (int, float)) and not isinstance(r.get('cur'), bool))) or (not (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (r.get('warehouse') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 12442,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 39,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (float(r.get('cur')) - float(r.get('last')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('cur'), (int, float)) and not isinstance(r.get('cur'), bool))) or (not (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (r.get('warehouse') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return (float(r.get('cur')) - float(r.get('last')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('cur'), (int, float)) and not isinstance(r.get('cur'), bool))) or (not (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (r.get('warehouse') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_Tournament_Winner",
+   "project": 12446,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.calib",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_B",
+     "version": 1
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.814
+    },
+    "value_stats": {
+     "cpu_s": 0.897,
+     "built": 69777,
+     "kept": 8934,
+     "dup": 55846,
+     "err": 4997,
+     "scored": 0,
+     "solved": true,
+     "level": 14,
+     "size": 11,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.867,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 221
+   },
+   "cost": {
+    "build_cpu_s": 13.867,
+    "ops_cpu_s": 0.206,
+    "queries": {
+     "build_labels": 566,
+     "spot": 128,
+     "incident": 360,
+     "mq": 741,
+     "mq_events": 3517
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (t.get('gain') * (r.get('counts') - t.get('offset')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('counts'), (int, float)) and not isinstance(r.get('counts'), bool))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_a9d5b9d7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']\n    witness reg_0: in mode_1 histories ['CONNECT', 'READ'] / ['CONNECT'] emit 1 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'READ'] / ['CONNECT', 'READ', 'CONNECT', 'READ'] emit 51.7 / 47.0 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = []\n                self.mode[k] = 2\n                return out\n        elif m == 2:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n            elif s == 'RESUME':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (t.get('gain') * (r.get('counts') - t.get('offset')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('counts'), (int, float)) and not isinstance(r.get('counts'), bool))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'READ'] / ['CONNECT'] emit 1 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'READ'] / ['CONNECT', 'READ', 'CONNECT', 'READ'] emit 51.7 / 47.0 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5",
+   "project": 12446,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.calib",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "escalated",
+     "alarms": [
+      "B:unknown_symbol"
+     ]
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.801
+    },
+    "value_stats": {
+     "cpu_s": 0.901,
+     "built": 69777,
+     "kept": 8934,
+     "dup": 55846,
+     "err": 4997,
+     "scored": 0,
+     "solved": true,
+     "level": 14,
+     "size": 11,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.833,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 155
+   },
+   "cost": {
+    "build_cpu_s": 13.833,
+    "ops_cpu_s": 20.045,
+    "queries": {
+     "build_labels": 560,
+     "spot": 72,
+     "incident": 360,
+     "mq": 343,
+     "mq_events": 1738
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    return (t.get('gain') * (r.get('counts') - t.get('offset')))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('counts'), (int, float)) and not isinstance(r.get('counts'), bool))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] emit 0 / 58.3 after ['DISCONNECT']\n    witness reg_2: in mode_1 histories ['CONNECT', 'READ'] / ['CONNECT'] emit 1 / 0 after ['CONNECT']\n    witness reg_3: in mode_1 histories ['CONNECT', 'READ'] / ['CONNECT', 'READ', 'CONNECT', 'READ'] emit 51.7 / 47.0 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('device_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('reading')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 12446,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.calib",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 31,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 15,
+     "kind": "escalated",
+     "alarms": [
+      "B:spot_check"
+     ]
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 72,
+     "incident": 600,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return ((((float(r.get('counts')) / 100) if (t.get('units').get('counts') == 'minor') else float(r.get('counts'))) - t.get('offset')) * t.get('gain'))\n    return ((float(r.get('counts')) - t.get('offset')) * t.get('gain'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('counts'), (int, float)) and not isinstance(r.get('counts'), bool))):\n        return 'q:missing'\n    elif (r.get('device_type') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 12446,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.calib",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 42,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return ((float(r.get('counts')) - t.get('offset')) * t.get('gain'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('counts'), (int, float)) and not isinstance(r.get('counts'), bool))):\n        return 'q:missing'\n    elif (r.get('device_type') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return ((float(r.get('counts')) - t.get('offset')) * t.get('gain'))\n\n\ndef status_fn(r, t):\n    if (not (isinstance(r.get('counts'), (int, float)) and not isinstance(r.get('counts'), bool))):\n        return 'q:missing'\n    elif (r.get('device_type') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_Tournament_Winner",
+   "project": 12450,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_B",
+     "version": 1
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.872
+    },
+    "value_stats": {
+     "cpu_s": 0.019,
+     "built": 1687,
+     "kept": 205,
+     "dup": 1175,
+     "err": 307,
+     "scored": 0,
+     "solved": true,
+     "level": 9,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.045,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 230
+   },
+   "cost": {
+    "build_cpu_s": 13.046,
+    "ops_cpu_s": 0.198,
+    "queries": {
+     "build_labels": 566,
+     "spot": 107,
+     "incident": 360,
+     "mq": 733,
+     "mq_events": 3555
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('latest') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)) and (isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_a9d5b9d7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']\n    witness reg_0: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 3 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 53.5 / 0 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = []\n                self.mode[k] = 2\n                return out\n        elif m == 2:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n            elif s == 'RESUME':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('latest') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)) and (isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 3 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 53.5 / 0 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5",
+   "project": 12450,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_B",
+     "version": 1
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.87
+    },
+    "value_stats": {
+     "cpu_s": 0.019,
+     "built": 1687,
+     "kept": 205,
+     "dup": 1175,
+     "err": 307,
+     "scored": 0,
+     "solved": true,
+     "level": 9,
+     "size": 7,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.013,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 155
+   },
+   "cost": {
+    "build_cpu_s": 13.014,
+    "ops_cpu_s": 0.063,
+    "queries": {
+     "build_labels": 560,
+     "spot": 82,
+     "incident": 360,
+     "mq": 378,
+     "mq_events": 2050
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('latest') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)) and (isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_a9d5b9d7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']\n    witness reg_0: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 3 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 53.5 / 0 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = []\n                self.mode[k] = 2\n                return out\n        elif m == 2:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n            elif s == 'RESUME':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('latest') - r.get('last'))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)) and (isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('device_type') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 3 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'READ', 'READ', 'READ'] / ['CONNECT', 'READ', 'READ', 'READ', 'CONNECT'] emit 53.5 / 0 after ['CONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('order_id'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amt')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 12450,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 11,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 11,
+     "kind": "escalated",
+     "alarms": [
+      "B:spot_check"
+     ]
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 82,
+     "incident": 440,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return (((float(r.get('latest')) / 100) if (t.get('units').get('latest') == 'minor') else float(r.get('latest'))) - float(r.get('last')))\n    return (float(r.get('latest')) - float(r.get('last')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool))) or (not (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (r.get('device_type') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 12450,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.delta",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 40,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (float(r.get('latest')) - float(r.get('last')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool))) or (not (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (r.get('device_type') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return (float(r.get('latest')) - float(r.get('last')))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('latest'), (int, float)) and not isinstance(r.get('latest'), bool))) or (not (isinstance(r.get('last'), (int, float)) and not isinstance(r.get('last'), bool)))):\n        return 'q:missing'\n    elif (r.get('device_type') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "NEXUS_Tournament_Winner",
+   "project": 12454,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.kwh",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": true,
+   "bad_A": 0,
+   "bad_B": 0,
+   "claims_healthy": true,
+   "silent": false,
+   "human_repairs": 0,
+   "independently_correct": true,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_B",
+     "version": 1
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.941
+    },
+    "value_stats": {
+     "cpu_s": 0.46,
+     "built": 37576,
+     "kept": 6230,
+     "dup": 28281,
+     "err": 3065,
+     "scored": 0,
+     "solved": true,
+     "level": 13,
+     "size": 11,
+     "stage": "construct"
+    },
+    "build_cpu_s": 30.718,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 227
+   },
+   "cost": {
+    "build_cpu_s": 30.718,
+    "ops_cpu_s": 87.051,
+    "queries": {
+     "build_labels": 566,
+     "spot": 112,
+     "incident": 360,
+     "mq": 1010,
+     "mq_events": 4738
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('power_w') * (r.get('secs') / t.get('j_per_kwh')))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool)) and (isinstance(r.get('secs'), (int, float)) and not isinstance(r.get('secs'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_a9d5b9d7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'CONNECT', 'READ', 'CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'CONNECT', 'READ', 'CONNECT', 'READ'] emit 0 / 55.8 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = []\n                self.mode[k] = 2\n                return out\n        elif m == 2:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                return out\n            elif s == 'RESUME':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('power_w') * (r.get('secs') / t.get('j_per_kwh')))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool)) and (isinstance(r.get('secs'), (int, float)) and not isinstance(r.get('secs'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 30.1 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "NEXUS_U5",
+   "project": 12454,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.kwh",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 3,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 9,
+     "kind": "repair_B",
+     "version": 1
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "status_stats": {
+     "rounds": 1,
+     "cpu_s": 12.937
+    },
+    "value_stats": {
+     "cpu_s": 0.458,
+     "built": 37576,
+     "kept": 6230,
+     "dup": 28281,
+     "err": 3065,
+     "scored": 0,
+     "solved": true,
+     "level": 13,
+     "size": 11,
+     "stage": "construct"
+    },
+    "build_cpu_s": 13.534,
+    "n_modes": 2,
+    "n_regs": 2,
+    "b_queries": 156
+   },
+   "cost": {
+    "build_cpu_s": 13.535,
+    "ops_cpu_s": 0.146,
+    "queries": {
+     "build_labels": 560,
+     "spot": 89,
+     "incident": 360,
+     "mq": 499,
+     "mq_events": 2764
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return (r.get('power_w') * (r.get('secs') / t.get('j_per_kwh')))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool)) and (isinstance(r.get('secs'), (int, float)) and not isinstance(r.get('secs'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_a9d5b9d7:\n    \"\"\"Invented by continuation splitting: 3 control modes (mode_0 = start), 4 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness: histories ['CONNECT', 'SUSPEND'] vs ['CONNECT'] differ after continuation ['RESUME']\n    witness reg_0: in mode_1 histories ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ', 'CONNECT', 'DISCONNECT', 'CONNECT'] emit 1 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ', 'CONNECT', 'DISCONNECT', 'CONNECT'] emit 45.4 / 0 after ['CONNECT']\n    witness reg_2: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'CONNECT', 'READ', 'CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_3: in mode_1 histories ['CONNECT'] / ['CONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'DISCONNECT', 'CONNECT', 'CONNECT', 'READ', 'CONNECT', 'READ', 'CONNECT', 'READ'] emit 0 / 55.8 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n        self.reg_2 = {}\n        self.reg_3 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        r2 = self.reg_2.get(k, 0)\n        r3 = self.reg_3.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        x3 = rec.get('amount')\n        x3 = x3 if isinstance(x3, (int, float)) and not isinstance(x3, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r2, r3)]\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                self.reg_2[k] = (r2 + 1)\n                self.reg_3[k] = (r3 + x3)\n                return out\n            elif s == 'RESUME':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'SUSPEND':\n                out = []\n                self.mode[k] = 2\n                return out\n        elif m == 2:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_2[k] = (r2 + 1)\n                self.reg_3[k] = (r3 + x3)\n                return out\n            elif s == 'RESUME':\n                out = []\n                self.reg_2[k] = 0\n                self.reg_3[k] = 0\n                self.mode[k] = 1\n                return out\n            elif s == 'SUSPEND':\n                out = [('q:invalid', None, None)]\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n",
+   "build_source": "def value_fn(r, t):\n    return (r.get('power_w') * (r.get('secs') / t.get('j_per_kwh')))\n\n\ndef status_fn(r, t):\n    if (not ((isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool)) and (isinstance(r.get('secs'), (int, float)) and not isinstance(r.get('secs'), bool)))):\n        return 'q:missing'\n    elif (not (r.get('site') in t.get('allowed'))):\n        return 'q:unknown_member'\n    return 'ok'\n\n\nclass StateMachine_19603a73:\n    \"\"\"Invented by continuation splitting: 2 control modes (mode_0 = start), 2 data register(s).\n    witness: histories ['CONNECT'] vs [] differ after continuation ['CONNECT']\n    witness reg_0: in mode_1 histories ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ', 'CONNECT', 'DISCONNECT', 'CONNECT'] emit 1 / 0 after ['CONNECT']\n    witness reg_1: in mode_1 histories ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ'] / ['CONNECT', 'DISCONNECT', 'CONNECT', 'READ', 'CONNECT', 'DISCONNECT', 'CONNECT'] emit 45.4 / 0 after ['CONNECT']\n    witness reg_2: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 1 after ['DISCONNECT']\n    witness reg_3: in mode_1 histories ['CONNECT'] / ['CONNECT', 'READ'] emit 0 / 30.1 after ['DISCONNECT']\n    \"\"\"\n\n    def __init__(self):\n        self.mode = {}\n        self.reg_0 = {}\n        self.reg_1 = {}\n\n    def ingest(self, rec):\n        k, s = rec.get('ref'), rec.get('event')\n        m = self.mode.get(k, 0)\n        r0 = self.reg_0.get(k, 0)\n        r1 = self.reg_1.get(k, 0)\n        x1 = rec.get('amount')\n        x1 = x1 if isinstance(x1, (int, float)) and not isinstance(x1, bool) else 0\n        if m == 0:\n            if s == 'CONNECT':\n                out = []\n                self.mode[k] = 1\n                return out\n            elif s == 'DISCONNECT':\n                out = [('q:invalid', None, None)]\n                return out\n            elif s == 'READ':\n                out = [('q:invalid', None, None)]\n                return out\n        elif m == 1:\n            if s == 'CONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                return out\n            elif s == 'DISCONNECT':\n                out = [('session', r0, r1)]\n                self.reg_0[k] = 0\n                self.reg_1[k] = 0\n                self.mode[k] = 0\n                return out\n            elif s == 'READ':\n                out = []\n                self.reg_0[k] = (r0 + 1)\n                self.reg_1[k] = (r1 + x1)\n                return out\n        return [('?unknown', None, None)]   # a symbol never seen: the operator's monitor raises an alarm\n"
+  },
+  {
+   "arm": "Fixed_Policy",
+   "project": 12454,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.kwh",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 19,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 1,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [
+    {
+     "tick": 13,
+     "kind": "escalated",
+     "alarms": [
+      "B:spot_check"
+     ]
+    }
+   ],
+   "alarms": 1,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.004,
+    "queries": {
+     "build_labels": 0,
+     "spot": 89,
+     "incident": 520,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": null,
+   "build_source": "def value_fn(r, t):\n    if ('units' in t):\n        return ((((float(r.get('power_w')) / 100) if (t.get('units').get('power_w') == 'minor') else float(r.get('power_w'))) * float(r.get('secs'))) / t.get('j_per_kwh'))\n    return ((float(r.get('power_w')) * float(r.get('secs'))) / t.get('j_per_kwh'))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool))) or (not (isinstance(r.get('secs'), (int, float)) and not isinstance(r.get('secs'), bool)))):\n        return 'q:missing'\n    elif (r.get('site') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  },
+  {
+   "arm": "Conventional",
+   "project": 12454,
+   "domain": "iot",
+   "fault": "X3",
+   "family": "I.kwh",
+   "lifecycle": "I.session",
+   "outcome": "COMPLETED",
+   "completed": true,
+   "data_ok": false,
+   "bad_A": 0,
+   "bad_B": 42,
+   "claims_healthy": true,
+   "silent": true,
+   "human_repairs": 0,
+   "independently_correct": false,
+   "crash_ok": true,
+   "repairs": [],
+   "alarms": 0,
+   "build": {
+    "build_cpu_s": 0.0
+   },
+   "cost": {
+    "build_cpu_s": 0.0,
+    "ops_cpu_s": 0.003,
+    "queries": {
+     "build_labels": 0,
+     "spot": 0,
+     "incident": 0,
+     "mq": 0,
+     "mq_events": 0
+    }
+   },
+   "deployed_source": "def value_fn(r, t):\n    return ((float(r.get('power_w')) * float(r.get('secs'))) / t.get('j_per_kwh'))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool))) or (not (isinstance(r.get('secs'), (int, float)) and not isinstance(r.get('secs'), bool)))):\n        return 'q:missing'\n    elif (r.get('site') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)",
+   "build_source": "def value_fn(r, t):\n    return ((float(r.get('power_w')) * float(r.get('secs'))) / t.get('j_per_kwh'))\n\n\ndef status_fn(r, t):\n    if ((not (isinstance(r.get('power_w'), (int, float)) and not isinstance(r.get('power_w'), bool))) or (not (isinstance(r.get('secs'), (int, float)) and not isinstance(r.get('secs'), bool)))):\n        return 'q:missing'\n    elif (r.get('site') in t.get('allowed')):\n        return 'ok'\n    return 'q:unknown_member'\n\n\n# lifecycle stream: doc template (not generated code)"
+  }
+ ]
+}

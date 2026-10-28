@@ -44,7 +44,8 @@ A failed method does not retire its capability goal. Its component is simply lef
   * energy `E.meter` in full projects still fails (1 silent, 1 abstain on dev);
   * sessions with SUSPEND can time out, which leads to escalation.
 * **Rollback:** set `boost = False` and use `PL.learn_b`, which is the u5 behaviour.
-* **Status:** provisionally integrated.
+* **Sealed t7 evidence (paired, n = 16):** 14/16 vs 9/16 independently correct, silent errors 0 vs 4. The sealed criterion was not met (one build abstain).
+* **Status:** provisionally integrated (not independently confirmed).
 
 ### Condition-crossing status probes
 
