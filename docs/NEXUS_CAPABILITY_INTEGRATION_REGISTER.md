@@ -179,3 +179,35 @@ The c84fc76 Part 4 artifacts (weights such as `random_word = 0.25`, `occam` orde
 ### Open capability gap found by the ba sealed test
 * **Undeclared value-field rename (X6):** detected only by spot checks (7/8, late); not repairable by any arm (the lifecycle
   learner has no field-mapping inference; the harness human patch is also wrong). Status: gap, no component.
+
+## sc track additions (2026-10-28; `docs/NEXUS_SCHEMA_CONTRACT_AND_GROWTH_REPORT.md`)
+
+### Runtime field contract
+* **Source:** `src/nexus/sc_contract.py` (`infer`, `ContractRunner`).
+* **Call site:** `sc_platform.Program.new_b` (b_kind `contract`) for every lifecycle program deployed by `NexusArmSchema`;
+  alarm `B:schema_mismatch` in the sc operator.
+* **Activation:** every lifecycle event; a field is checked only on kinds whose accepted machine reads it.
+* **Evidence:** dev 10/10 X6-family faults detected at the fault tick, 0 false alarms on LM; val 4/4, confirmation 8/8 at tick 9.
+* **Cost:** negligible CPU.  **Limits:** single machine-read fields; structured values only through mappings.
+* **Status:** provisionally integrated → passed its one-use validation and confirmation in the sc stack (known classes only).
+
+### Generic field-mapping repair
+* **Source:** `src/nexus/sc_mapping.py` (`repair`).  **Call site:** `sc_platform.NexusArmSchema.repair_B` on schema incidents.
+* **Evidence:** dev 10/10 (incl. decoy via 1 distinguishing query, nested path, gradual migration); val 4/4; confirmation 8/8.
+* **Cost:** ~365–434 charged membership queries per repair (acceptance + mixed tests).  **Limits:** one expected field per
+  incident set; ambiguity beyond 24 probes → abstain; relearn path rarely exercised.
+* **Status:** confirmed for fresh instances of known schema-change classes (not for unseen classes).
+
+### Corrected simulated human repair (evaluation intervention, not a NEXUS component)
+* `sc_platform.HumanRefMachine`: 0 wrong rows on all 48 sc_dev projects; counts as human assistance; privileged.
+
+### Learned growth rule — separate retest (fallback disabled)
+* Fresh sc/ep_held3: 278/300 vs Hand 256, Shuffled 248, Random 226 (sign tests p ≤ 1.5e-6); 0 wrong among accepted in every arm.
+* **Status:** provisionally integrated; its advantage over hand / shuffled growth is now replicated on two fresh held-out sets
+  (ba, sc). In the sc stack it is the first-line learner (full-space fallback present).
+
+### Bounded acceptance check
+* Status unchanged (provisionally integrated); in the sc confirmation every accepted relearn / mapping was correct.
+
+### Known limitation
+* Some energy builds (dev 13327) abstain in every arm: the full-space learner fails register search.
