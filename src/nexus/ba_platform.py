@@ -72,7 +72,8 @@ class _Ep:
 
 def learn_class_bounded(events, outputs, query, seed=0, max_s=60.0, rounds=6, growth=None, cfg=None):
     """Lifecycle learner with the bounded acceptance check. growth=None: Learner2 over the full space (the priority-A learner);
-    growth=policy: hypothesis-space growth from oc_learner.H0 under that policy (ba_learn.attempt per step, <= 6 steps).
+    growth=policy: hypothesis-space growth from oc_learner.H0 under that policy (ba_learn.attempt per step, <= 6 steps); if no
+    machine is accepted, the full-space learner runs as the fallback (decided on dev, 13143 replay; disclosed in the report).
     Returns the accepted machine with its TESTED_WITHIN_STATED_LIMITS scope record, or None (abstain)."""
     from nexus import ba_accept as BA
     from nexus import ba_learn as BL
@@ -80,7 +81,7 @@ def learn_class_bounded(events, outputs, query, seed=0, max_s=60.0, rounds=6, gr
     from nexus import t7_repair as TR
     from nexus import u5_statesplit as SP
     t0 = time.process_time()
-    if growth is not None:
+    if growth is not None:                                       # first line: the promoted growth rule from H0
         ep = _Ep(events, outputs, query)
         H, cache, rnd = dict(OL.H0), {}, __import__("random").Random(seed)
         ok = L = scope = None
@@ -89,42 +90,43 @@ def learn_class_bounded(events, outputs, query, seed=0, max_s=60.0, rounds=6, gr
             if ok or time.process_time() - t0 > 4 * max_s:
                 break
             H, _ = OL.apply(growth(OL.signature(L, cex), H, rnd), H)
-        if not ok or L is None or not L.machine:
-            return None
-        m = L.machine
-    else:
-        L = TR.Learner2(events, outputs, query, seed=seed, max_s=max_s)
-        if L.key is None or L.ctrl is None:
-            return None
-        m = L.learn()
-        ok, scope = False, None
-        for r in range(rounds):
-            if m is None or time.process_time() - t0 > 4 * max_s:
-                break
-            cex = TR.coverage_cex(L)
-            if not cex:
-                cex, scope = BA.bounded_cex(L, seed=seed + r, **(cfg or {}))
-            if not cex:
-                ok = True
-                break
-            relabel = False
-            for evs, rows, word in cex:
-                if L._run_labels(L.hyp, word) != tuple(SP._labels(x) for x in rows):
-                    relabel = True
-                    for i in range(len(word)):
-                        if tuple(word[i:]) not in L.E:
-                            L.E.append(tuple(word[i:]))
-                else:
-                    L.extra_hist.append((evs, rows))
-            hyp = L.learn_control_continue() if relabel else L.hyp
-            if L.learn_registers(hyp) is None:
-                m = None
-                break
-            L.machine = m = L._machine(hyp)
-        if not ok or m is None:
-            return None
+        if ok and L is not None and L.machine:
+            src, name = SP.class_source(L.machine, witnesses=L.witnesses)
+            return dict(source=src, name=name, machine=L.machine, witnesses=L.witnesses, queries=L.n_mq, scope=scope, learner="growth")
+        # fallback (integration decision on dev, ba §3): nothing accepted -> the priority-A full-space learner, same check
+    t1 = time.process_time()
+    L = TR.Learner2(events, outputs, query, seed=seed, max_s=max_s)
+    if L.key is None or L.ctrl is None:
+        return None
+    m = L.learn()
+    ok, scope = False, None
+    for r in range(rounds):
+        if m is None or time.process_time() - t1 > 4 * max_s:
+            break
+        cex = TR.coverage_cex(L)
+        if not cex:
+            cex, scope = BA.bounded_cex(L, seed=seed + r, **(cfg or {}))
+        if not cex:
+            ok = True
+            break
+        relabel = False
+        for evs, rows, word in cex:
+            if L._run_labels(L.hyp, word) != tuple(SP._labels(x) for x in rows):
+                relabel = True
+                for i in range(len(word)):
+                    if tuple(word[i:]) not in L.E:
+                        L.E.append(tuple(word[i:]))
+            else:
+                L.extra_hist.append((evs, rows))
+        hyp = L.learn_control_continue() if relabel else L.hyp
+        if L.learn_registers(hyp) is None:
+            m = None
+            break
+        L.machine = m = L._machine(hyp)
+    if not ok or m is None:
+        return None
     src, name = SP.class_source(m, witnesses=L.witnesses)
-    return dict(source=src, name=name, machine=m, witnesses=L.witnesses, queries=L.n_mq, scope=scope)
+    return dict(source=src, name=name, machine=m, witnesses=L.witnesses, queries=L.n_mq, scope=scope, learner="full_space")
 
 
 class NexusArmBounded(NexusArmStrong):

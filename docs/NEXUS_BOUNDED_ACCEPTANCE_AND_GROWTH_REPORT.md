@@ -234,3 +234,17 @@ The c84fc76 Part 4 artifacts (`artifacts/oc_dev/p4_*`: continuation-class weight
 `occam` update order, `budget = 30`, `rounds = 8`, the `all_suffixes` revision flag) are the result of a **search over
 learner configurations** of a fixed, hand-written algorithm. They do **not** show NEXUS inventing a new learning algorithm.
 Part 4 was not rerun.
+
+## 4. Assembly and freeze (Step 5)
+
+**NEXUS_Confirmed** = `ba_platform.NexusArmBounded`: f45da4e priority-A stack (covered relearning, condition-crossing
+probes, heightened post-repair monitoring) + the bounded acceptance check on every (re)learned lifecycle class + the promoted
+Learned_Growth_Rule as the first-line lifecycle learner.
+
+**Integration decision made on development data before the freeze (disclosed):** dev crash checks on oc/pdev 13101–13104
+were 4/4 independently correct. The spent 13143 (energy X3, regenerated in memory, sha256 = the oc manifest entry) replayed
+with growth-only learning was data-correct but needed 1 human repair: after X3's ESTIMATE appeared, the growth loop (≤ 6
+steps from H0) accepted nothing, so NEXUS escalated instead of deploying a wrong machine. The full-space learner under the
+same bounded check repaired it correctly (233 s). Hence: growth rule first; if nothing is accepted, the priority-A
+full-space learner under the same check. With this fallback the 13143 replay is independently correct (149 s, 0 human).
+Frozen in `artifacts/ba_freeze.json` (sha256 of every ba module/script, the reused oc/t7/u5 modules and the records file).
